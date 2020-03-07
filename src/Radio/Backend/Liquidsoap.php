@@ -371,6 +371,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 }
             }
 
+            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . $this->_cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
             $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . $this->_cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             if ($playlist->isJingle()) {
@@ -507,8 +508,9 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             );
 
             $event->appendLines([
-                'dynamic = audio_to_stereo(request.dynamic(id="' . $this->_getVarName('next_song',
-                    $station) . '", timeout=20., azuracast_next_song))',
+                'dynamic = audio_to_stereo(cue_cut(id="' . $this->_getVarName('cue_next_song',
+                    $station) . '", request.dynamic(id="' . $this->_getVarName('next_song',
+                    $station) . '", timeout=20., azuracast_next_song)))',
                 'radio = fallback(id="' . $this->_getVarName('autodj_fallback',
                     $station) . '", track_sensitive = true, [dynamic, radio])',
             ]);
@@ -529,11 +531,11 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
 
         $event->appendLines([
-            'requests = audio_to_stereo(request.queue(id="' . $this->_getVarName('requests', $station) . '"))',
+            'requests = audio_to_stereo(cue_cut(id="' . $this->_getVarName('cue_requests',
+                $station) . '", request.queue(id="' . $this->_getVarName('requests', $station) . '")))',
             'radio = fallback(id="' . $this->_getVarName('requests_fallback',
                 $station) . '", track_sensitive = true, [requests, radio])',
             '',
-            'radio = cue_cut(id="' . $this->_getVarName('radio_cue', $station) . '", radio)',
             'add_skip_command(radio)',
             '',
             'radio = fallback(id="' . $this->_getVarName('safe_fallback',

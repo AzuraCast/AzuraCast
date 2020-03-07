@@ -71,7 +71,7 @@
                                 :
                             </b>
                             <translate>Manually define how this playlist is used in Liquidsoap configuration.</translate>
-                            <a href="https://www.azuracast.com/help/advanced_playlists.html" target="_blank">
+                            <a href="https://www.azuracast.com/station-management/playlists/#advanced-playlists" target="_blank">
                                 <translate>Learn about Advanced Playlists</translate>
                             </a>
                         </b-form-radio>

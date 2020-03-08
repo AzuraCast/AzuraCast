@@ -8,7 +8,7 @@ class GetNextSong extends Event
 {
     /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
     protected $next_song;
-    
+
     protected Entity\Station $station;
 
     public function __construct(Entity\Station $station)
@@ -55,5 +55,12 @@ class GetNextSong extends Event
     public function getStation(): Entity\Station
     {
         return $this->station;
+    }
+
+    public function __toString()
+    {
+        return (null !== $this->next_song)
+            ? (string)$this->next_song
+            : 'No Song';
     }
 }

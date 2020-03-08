@@ -3,8 +3,8 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\ApiUtilities;
-use App\Radio\Backend\Liquidsoap;
 use App\Normalizer\Annotation\DeepNormalize;
+use App\Radio\Backend\Liquidsoap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -795,7 +795,7 @@ class StationMedia
      */
     public function __toString(): string
     {
-        return $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;
+        return 'StationMedia ' . $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;
     }
 
     /**

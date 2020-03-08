@@ -321,7 +321,9 @@ class AutoDJ implements EventSubscriberInterface
 
                     if ($event->setNextSong($this->playSongFromPlaylist($playlist, $cued_song_history,
                         $preferredMode))) {
-                        $this->logger->info('Playable track found and registered.');
+                        $this->logger->info('Playable track found and registered.', [
+                            'next_song' => (string)$event,
+                        ]);
                         return;
                     }
                 }

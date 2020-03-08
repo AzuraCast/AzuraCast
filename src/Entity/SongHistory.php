@@ -325,7 +325,7 @@ class SongHistory
         if (null === $cued || 0 === $cued) {
             $this->setTimestampCued(time());
         }
-        
+
         $this->sent_to_autodj = true;
     }
 
@@ -558,5 +558,12 @@ class SongHistory
             : $this->song->api($api, $base_url);
 
         return $response;
+    }
+
+    public function __toString()
+    {
+        return (null !== $this->media)
+            ? (string)$this->media
+            : (string)$this->song;
     }
 }

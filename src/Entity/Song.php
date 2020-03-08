@@ -222,6 +222,14 @@ class Song
     }
 
     /**
+     * @return string A string identifying this entity.
+     */
+    public function __toString(): string
+    {
+        return 'Song ' . $this->id . ': ' . $this->artist . ' - ' . $this->title;
+    }
+
+    /**
      * Retrieve the API version of the object/array.
      *
      * @param ApiUtilities $api_utils

@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Config;
+use App\Controller\Traits\LogViewerTrait;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Exception\NotFoundException;
@@ -10,6 +11,8 @@ use App\Form\BackupSettingsForm;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Message\BackupMessage;
+use App\MessageQueue;
 use App\Session\Flash;
 use App\Sync\Task\Backup;
 use League\Flysystem\Adapter\Local;
@@ -18,9 +21,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class BackupsController
 {
+    use LogViewerTrait;
+
     protected SettingsRepository $settingsRepo;
 
     protected Backup $backupTask;
+
+    protected MessageQueue $messageQueue;
 
     protected Filesystem $backupFs;
 
@@ -28,11 +35,13 @@ class BackupsController
 
     public function __construct(
         SettingsRepository $settings_repo,
-        Backup $backup_task
+        Backup $backup_task,
+        MessageQueue $messageQueue
     ) {
         $this->settingsRepo = $settings_repo;
         $this->backupTask = $backup_task;
         $this->backupFs = new Filesystem(new Local(Backup::BASE_DIR));
+        $this->messageQueue = $messageQueue;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -75,15 +84,19 @@ class BackupsController
         if ($request->isPost() && $runForm->isValid($request->getParsedBody())) {
             $data = $runForm->getValues();
 
-            [$result_code, $result_output] = $this->backupTask->runBackup($data['path'], $data['exclude_media']);
+            $tempFile = tempnam('/tmp', 'backup_');
 
-            $is_successful = (0 === $result_code);
+            $message = new BackupMessage();
+            $message->path = $data['path'];
+            $message->excludeMedia = $data['exclude_media'];
+            $message->outputPath = $tempFile;
+
+            $this->messageQueue->produce($message);
 
             return $request->getView()->renderToResponse($response, 'admin/backups/run', [
                 'title' => __('Run Manual Backup'),
                 'path' => $data['path'],
-                'is_successful' => $is_successful,
-                'output' => $result_output,
+                'outputLog' => basename($tempFile),
             ]);
         }
 
@@ -92,6 +105,14 @@ class BackupsController
             'render_mode' => 'edit',
             'title' => __('Run Manual Backup'),
         ]);
+    }
+
+    public function logAction(
+        ServerRequest $request,
+        Response $response,
+        $path
+    ): ResponseInterface {
+        return $this->_view($request, $response, '/tmp/' . $path, true);
     }
 
     public function downloadAction(

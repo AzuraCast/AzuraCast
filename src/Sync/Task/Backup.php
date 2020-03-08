@@ -1,10 +1,10 @@
 <?php
 namespace App\Sync\Task;
 
+use App\Console\Application;
 use App\Entity;
 use App\Message;
 use App\MessageQueue;
-use App\Console\Application;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
@@ -43,7 +43,8 @@ class Backup extends AbstractTask
 
             [$result_code, $result_output] = $this->runBackup(
                 $message->path,
-                $message->exclude_media
+                $message->excludeMedia,
+                $message->outputPath
             );
 
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RESULT, $result_code);
@@ -53,21 +54,26 @@ class Backup extends AbstractTask
 
     /**
      * @param string|null $path
-     * @param bool $exclude_media
+     * @param bool $excludeMedia
+     * @param string|null $outputPath
      *
      * @return array [$result_code, $result_output]
      */
-    public function runBackup($path = null, $exclude_media = false): array
+    public function runBackup(?string $path = null, bool $excludeMedia = false, ?string $outputPath = null): array
     {
         $input_params = [];
         if (null !== $path) {
             $input_params['path'] = $path;
         }
-        if ($exclude_media) {
+        if ($excludeMedia) {
             $input_params['--exclude-media'] = true;
         }
 
-        return $this->console->runCommandWithArgs('azuracast:backup', $input_params);
+        return $this->console->runCommandWithArgs(
+            'azuracast:backup',
+            $input_params,
+            $outputPath ?? 'php://temp'
+        );
     }
 
     /**
@@ -88,11 +94,28 @@ class Backup extends AbstractTask
 
         if ($last_run <= $threshold) {
             // Check if the backup time matches (if it's set).
-            $backup_timecode = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME);
-            if (0 !== $backup_timecode) {
-                $current_timecode = (int)$now_utc->format('Hi');
+            $backupTimecode = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME);
+            
+            if (0 !== $backupTimecode) {
+                $isWithinTimecode = false;
+                $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $now_utc);
 
-                if ($backup_timecode !== $current_timecode) {
+                /** @var Chronos[] $backupTimesToCheck */
+                $backupTimesToCheck = [
+                    $backupDt->subDay(),
+                    $backupDt,
+                ];
+
+                foreach ($backupTimesToCheck as $backupStart) {
+                    $backupEnd = $backupStart->addMinutes(15);
+
+                    if ($now_utc->between($backupStart, $backupEnd)) {
+                        $isWithinTimecode = true;
+                        break;
+                    }
+                }
+
+                if (!$isWithinTimecode) {
                     return;
                 }
             }
@@ -100,7 +123,7 @@ class Backup extends AbstractTask
             // Trigger a new backup.
             $message = new Message\BackupMessage;
             $message->path = 'automatic_backup.zip';
-            $message->exclude_media = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
+            $message->excludeMedia = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
             $this->messageQueue->produce($message);
         }
     }

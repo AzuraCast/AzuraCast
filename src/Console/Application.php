@@ -11,15 +11,16 @@ class Application extends \Silly\Edition\PhpDi\Application
      *
      * @param string $command
      * @param array $args
+     * @param string $outputFile
      *
      * @return array [$return_code, $return_output]
      */
-    public function runCommandWithArgs($command, array $args = []): array
+    public function runCommandWithArgs($command, array $args = [], string $outputFile = 'php://temp'): array
     {
         $input = new ArrayInput(array_merge(['command' => $command], $args));
         $input->setInteractive(false);
 
-        $temp_stream = fopen('php://temp', 'w+');
+        $temp_stream = fopen($outputFile, 'wb+');
         $output = new StreamOutput($temp_stream);
 
         $command = $this->find($command);

@@ -74,6 +74,9 @@ return function (App $app) {
             $group->map(['GET', 'POST'], '/run', Controller\Admin\BackupsController::class . ':runAction')
                 ->setName('admin:backups:run');
 
+            $group->get('/log/{path}', Controller\Admin\BackupsController::class . ':logAction')
+                ->setName('admin:backups:log');
+
             $group->get('/download/{path}', Controller\Admin\BackupsController::class . ':downloadAction')
                 ->setName('admin:backups:download');
 

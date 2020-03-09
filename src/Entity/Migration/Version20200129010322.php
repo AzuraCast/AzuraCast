@@ -17,7 +17,7 @@ final class Version20200129010322 extends AbstractMigration
         return 'Deduplicate streamers and hash passwords for streamer accounts.';
     }
 
-    public function preup(Schema $schema): void
+    public function preUp(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
             'Migration can only be executed safely on \'mysql\'.');

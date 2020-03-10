@@ -71,6 +71,9 @@
                                     <span class="badge badge-success" v-if="row.item.include_in_automation">
                                         <translate>Auto-Assigned</translate>
                                     </span>
+                                    <span class="badge badge-danger" v-if="!row.item.is_enabled">
+                                        <translate>Disabled</translate>
+                                    </span>
                                 </div>
                             </template>
                             <template v-slot:cell(scheduling)="row">

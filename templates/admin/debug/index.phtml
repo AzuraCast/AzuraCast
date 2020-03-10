@@ -36,31 +36,46 @@ $this->layout('main', [
     </div>
     <div class="card-body pb-0">
         <ul class="nav nav-pills nav-pills-scrollable card-header-pills">
-            <?php foreach ($stations as $station_id => $station_name): ?>
+            <?php foreach ($stations as $station): ?>
                 <li class="nav-item">
-                    <a class="nav-link" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="debug_station_<?=$station_id?>" href="#debug_station_<?=$station_id?>"><?=$this->e($station_name)?></a>
+                    <a class="nav-link" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="debug_station_<?=$station['id']?>" href="#debug_station_<?=$station['id']?>"><?=$this->e($station['name'])?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
     </div>
     <div class="tab-content">
-        <?php foreach ($stations as $station_id => $station_name): ?>
-            <div class="card-body card-padding-sm tab-pane" id="debug_station_<?=$station_id?>">
-                <h3><?=$station_name?></h3>
+        <?php foreach ($stations as $station): ?>
+            <div class="card-body card-padding-sm tab-pane" id="debug_station_<?=$station['id']?>">
+                <h3><?=$station['name']?></h3>
 
                 <div class="row">
                     <div class="col">
                         <h5><?=__('Test AutoDJ Next Song')?></h5>
-                        <form class="form" method="get" action="<?=$router->named('admin:debug:nextsong',
-                            ['station_id' => $station_id])?>">
+                        <form class="form" method="GET" action="<?=$router->named('admin:debug:nextsong',
+                            ['station_id' => $station['id']])?>">
                             <div class="form-group">
-                                <label for="<?=$station_id?>_now"><?=__('Test time (Leave blank for current time)')?>:</label>
-                                <input id="<?=$station_id?>_now" name="now" class="form-control" type="datetime-local">
+                                <label for="<?=$station['id']?>_now"><?=__('Test time (Leave blank for current time)')?>:</label>
+                                <input id="<?=$station['id']?>_now" name="now" class="form-control" type="datetime-local">
                             </div>
 
                             <button type="submit" class="btn btn-primary"><?=__('Run Test')?></button>
                         </form>
                     </div>
+                    <?php if ($station['backend_type'] === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
+                        <div class="col">
+                            <h5><?=__('Send Liquidsoap Telnet Command')?></h5>
+
+                            <form class="form" method="POST" action="<?=$router->named('admin:debug:telnet',
+                                ['station_id' => $station['id']])?>">
+                                <div class="form-group">
+                                    <label for="<?=$station['id']?>_command"><?=__('Command')?>:</label>
+                                    <input id="<?=$station['id']?>_command" name="command" class="form-control" type="text">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary"><?=__('Execute Command')?></button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endforeach; ?>

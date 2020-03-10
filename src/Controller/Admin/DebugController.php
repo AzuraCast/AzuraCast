@@ -6,6 +6,7 @@ use App\Event\Radio\GetNextSong;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
+use App\Radio\Backend\Liquidsoap;
 use App\Sync\Runner;
 use Cake\Chronos\Chronos;
 use Monolog\Handler\TestHandler;
@@ -32,7 +33,7 @@ class DebugController
     ): ResponseInterface {
         return $request->getView()->renderToResponse($response, 'admin/debug/index', [
             'sync_times' => $sync->getSyncTimes(),
-            'stations' => $stationRepo->fetchSelect(),
+            'stations' => $stationRepo->fetchArray(),
         ]);
     }
 
@@ -97,6 +98,33 @@ class DebugController
         $autoDJ->calculateNextSong($event);
 
         Chronos::setTestNow(null);
+
+        $this->logger->popHandler();
+
+        return $request->getView()->renderToResponse($response, 'system/log_view', [
+            'sidebar' => null,
+            'title' => __('Debug Output'),
+            'log_records' => $this->testHandler->getRecords(),
+        ]);
+    }
+
+    public function telnetAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
+        $this->logger->pushHandler($this->testHandler);
+
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
+
+        if ($backend instanceof Liquidsoap) {
+            $command = $request->getParam('command');
+
+            $telnetResponse = $backend->command($station, $command);
+            $this->logger->debug('Telnet Command Response', [
+                'response' => $telnetResponse,
+            ]);
+        }
 
         $this->logger->popHandler();
 

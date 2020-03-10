@@ -27,6 +27,9 @@ return function (App $app) {
                 $group->map(['GET', 'POST'], '/nextsong', Controller\Admin\DebugController::class . ':nextsongAction')
                     ->setName('admin:debug:nextsong');
 
+                $group->post('/telnet', Controller\Admin\DebugController::class . ':telnetAction')
+                    ->setName('admin:debug:telnet');
+
             })->add(Middleware\GetStation::class);
 
         })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));

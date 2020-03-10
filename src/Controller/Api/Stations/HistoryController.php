@@ -2,10 +2,10 @@
 namespace App\Controller\Api\Stations;
 
 use App;
+use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Doctrine\Paginator;
 use App\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
@@ -79,10 +79,11 @@ class HistoryController
 
         $qb = $this->em->createQueryBuilder();
 
-        $qb->select('sh, sr, sp, s')
+        $qb->select('sh, sr, sp, ss, s')
             ->from(Entity\SongHistory::class, 'sh')
             ->leftJoin('sh.request', 'sr')
             ->leftJoin('sh.playlist', 'sp')
+            ->leftJoin('sh.streamer', 'ss')
             ->leftJoin('sh.song', 's')
             ->where('sh.station_id = :station_id')
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
@@ -103,6 +104,7 @@ class HistoryController
                 'Track',
                 'Artist',
                 'Playlist',
+                'Streamer',
             ];
 
             foreach ($qb->getQuery()->getArrayResult() as $song_row) {
@@ -115,6 +117,7 @@ class HistoryController
                     $song_row['song']['title'] ?: $song_row['song']['text'],
                     $song_row['song']['artist'],
                     $song_row['playlist']['name'] ?? '',
+                    $song_row['streamer']['display_name'] ?? $song_row['streamer']['streamer_username'] ?? '',
                 ];
 
                 $export_all[] = $export_row;

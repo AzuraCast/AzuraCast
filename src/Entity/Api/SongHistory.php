@@ -42,6 +42,14 @@ class SongHistory implements ResolvableUrlInterface
     public $playlist;
 
     /**
+     * Indicates the current streamer that was connected, if available, or empty string if not.
+     *
+     * @OA\Property(example="Test DJ")
+     * @var string
+     */
+    public $streamer;
+
+    /**
      * Indicates whether the song is a listener request.
      *
      * @OA\Property

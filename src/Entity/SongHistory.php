@@ -75,6 +75,21 @@ class SongHistory
     protected $playlist;
 
     /**
+     * @ORM\Column(name="streamer_id", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $streamer_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="StationStreamer")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="streamer_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var StationStreamer|null
+     */
+    protected $streamer;
+
+    /**
      * @ORM\Column(name="media_id", type="integer", nullable=true)
      * @var int|null
      */
@@ -244,6 +259,22 @@ class SongHistory
     }
 
     /**
+     * @return StationStreamer|null
+     */
+    public function getStreamer(): ?StationStreamer
+    {
+        return $this->streamer;
+    }
+
+    /**
+     * @param StationStreamer|null $streamer
+     */
+    public function setStreamer(?StationStreamer $streamer): void
+    {
+        $this->streamer = $streamer;
+    }
+
+    /**
      * @return StationMedia|null
      */
     public function getMedia(): ?StationMedia
@@ -391,6 +422,10 @@ class SongHistory
     public function setTimestampEnd(int $timestamp_end): void
     {
         $this->timestamp_end = $timestamp_end;
+
+        if (!$this->duration) {
+            $this->duration = $timestamp_end - $this->timestamp_start;
+        }
     }
 
     /**
@@ -540,6 +575,12 @@ class SongHistory
             $response->playlist = $this->playlist->getName();
         } else {
             $response->playlist = '';
+        }
+
+        if ($this->streamer instanceof StationStreamer) {
+            $response->streamer = $this->streamer->getDisplayName();
+        } else {
+            $response->streamer = '';
         }
 
         if ($response instanceof Api\DetailedSongHistory) {

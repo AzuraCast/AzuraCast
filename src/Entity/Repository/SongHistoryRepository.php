@@ -2,8 +2,8 @@
 namespace App\Entity\Repository;
 
 use App\ApiUtilities;
-use App\Entity;
 use App\Doctrine\Repository;
+use App\Entity;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\UriInterface;
@@ -12,8 +12,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class SongHistoryRepository extends Repository
 {
-    /** @var ListenerRepository */
-    protected $listenerRepository;
+    protected ListenerRepository $listenerRepository;
 
     public function __construct(
         EntityManager $em,
@@ -65,13 +64,6 @@ class SongHistoryRepository extends Repository
         return $return;
     }
 
-    /**
-     * @param Entity\Song $song
-     * @param Entity\Station $station
-     * @param array $np
-     *
-     * @return Entity\SongHistory
-     */
     public function register(
         Entity\Song $song,
         Entity\Station $station,
@@ -143,6 +135,11 @@ class SongHistoryRepository extends Repository
         // Processing a new SongHistory item.
         if (!($sh instanceof Entity\SongHistory)) {
             $sh = new Entity\SongHistory($song, $station);
+
+            $currentStreamer = $station->getCurrentStreamer();
+            if ($currentStreamer instanceof Entity\StationStreamer) {
+                $sh->setStreamer($currentStreamer);
+            }
         }
 
         $sh->setTimestampStart(time());

@@ -3,7 +3,7 @@ let range_start = null,
 
 const api_url = "<?=$router->fromHere('api:stations:history') ?>";
 
-$(function() {
+$(function () {
     $(".data-table").bootgrid({
         ajax: true,
         ajaxSettings: {
@@ -14,39 +14,41 @@ $(function() {
         caseSensitive: false,
         rowCount: [10, 25, 50],
         url: api_url,
-        post: function() {
+        post: function () {
             return {
                 start: range_start,
                 end: range_end
             };
         },
         formatters: {
-            "datetime": function(column, row) {
+            "datetime": function (column, row) {
                 return formatTimestamp(row.played_at);
             },
-            "delta": function(column, row) {
+            "delta": function (column, row) {
                 if (row.delta_total > 0) {
-                    return '<big><span class="text-success"><i class="material-icons" aria-hidden="true">trending_up</i> '+row.delta_total+'</span></big>';
+                    return '<big><span class="text-success"><i class="material-icons" aria-hidden="true">trending_up</i> ' + row.delta_total + '</span></big>';
                 } else if (row.delta_total < 0) {
                     return '<big><span class="text-danger"><i class="material-icons" aria-hidden="true">trending_down</i> ' + Math.abs(row.delta_total) + '</span></big>';
                 } else {
                     return '<big>0</big>';
                 }
             },
-            "song_title": function(column, row) {
+            "song_title": function (column, row) {
                 if (row.song_title) {
-                    return '<b>'+row.song_title+'</b><br>'+row.song_artist;
+                    return '<b>' + row.song_title + '</b><br>' + row.song_artist;
                 } else {
                     return row.song_text;
                 }
             },
-            "playlists": function(column, row) {
+            "playlists": function (column, row) {
                 if (row.is_request) {
                     return <?=$this->escapeJs(__('Listener Request')) ?>;
                 } else if (row.playlist) {
-                    return <?=$this->escapeJs(__('Playlist:')) ?>+" "+row.playlist;
+                    return <?=$this->escapeJs(__('Playlist:')) ?>+" " + row.playlist;
+                } else if (row.streamer) {
+                    return <?=$this->escapeJs(__('Live Streamer:')) ?>+" " + row.streamer;
                 } else {
-                    return <?=$this->escapeJs(__('Live Broadcast')) ?>;
+                    return "";
                 }
             }
         }
@@ -65,17 +67,17 @@ $(function() {
             "<?=__('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
             "<?=__('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
-    }, function(start, end) {
+    }, function (start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
         range_start = start.format('YYYY-MM-DD');
         range_end = end.format('YYYY-MM-DD');
 
-        $('#btn-export').attr('href', api_url+'?format=csv&start='+range_start+'&end='+range_end);
+        $('#btn-export').attr('href', api_url + '?format=csv&start=' + range_start + '&end=' + range_end);
         $('.data-table').bootgrid("reload");
     });
 
-    function formatTimestamp(unix_timestamp) {
+    function formatTimestamp (unix_timestamp) {
         return moment.unix(unix_timestamp).format('lll');
     }
 });

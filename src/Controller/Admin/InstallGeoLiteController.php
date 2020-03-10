@@ -8,6 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use App\Session\Flash;
+use App\Sync\Task\UpdateGeoLiteDatabase;
 use Psr\Http\Message\ResponseInterface;
 
 class InstallGeoLiteController
@@ -17,10 +18,23 @@ class InstallGeoLiteController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        GeoLiteSettingsForm $form
+        GeoLiteSettingsForm $form,
+        UpdateGeoLiteDatabase $syncTask
     ): ResponseInterface {
         if (false !== $form->process($request)) {
-            $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
+
+            $flash = $request->getFlash();
+
+            try {
+                $syncTask->updateDatabase();
+                $flash->addMessage(__('Changes saved.'), Flash::SUCCESS);
+            } catch (\Exception $e) {
+                $flash->addMessage(__(
+                    'An error occurred while downloading the GeoLite database: %s',
+                    $e->getMessage() . ' (' . $e->getFile() . ' L' . $e->getLine() . ')'
+                ), Flash::ERROR);
+            }
+
             return $response->withRedirect($request->getUri()->getPath());
         }
 

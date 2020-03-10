@@ -1,11 +1,10 @@
 <?php
 namespace App\Form;
 
+use App\Config;
 use App\Entity;
-use App\Http\ServerRequest;
 use App\Settings;
 use App\Sync\Task\UpdateGeoLiteDatabase;
-use App\Config;
 use Doctrine\ORM\EntityManager;
 
 class GeoLiteSettingsForm extends AbstractSettingsForm
@@ -29,15 +28,5 @@ class GeoLiteSettingsForm extends AbstractSettingsForm
         );
 
         $this->syncTask = $syncTask;
-    }
-
-    public function process(ServerRequest $request): bool
-    {
-        $processed = parent::process($request);
-        if ($processed) {
-            $this->syncTask->run(true);
-        }
-
-        return $processed;
     }
 }

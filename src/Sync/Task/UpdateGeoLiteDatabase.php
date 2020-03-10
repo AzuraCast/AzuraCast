@@ -6,7 +6,7 @@ use App\Service\IpGeolocation;
 use App\Service\IpGeolocator\GeoLite;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 
@@ -42,51 +42,62 @@ class UpdateGeoLiteDatabase extends AbstractTask
             }
         }
 
-        $licenseKey = trim($this->settingsRepo->getSetting(Entity\Settings::GEOLITE_LICENSE_KEY));
-
-        if (!empty($licenseKey)) {
-            $baseDir = GeoLite::getBaseDirectory();
-            $downloadPath = $baseDir . '/geolite.tar.gz';
-
-            try {
-                set_time_limit(900);
-
-                $this->httpClient->get('https://download.maxmind.com/app/geoip_download', [
-                    'query' => [
-                        'license_key' => $licenseKey,
-                        'edition_id' => 'GeoLite2-City',
-                        'suffix' => 'tar.gz',
-                    ],
-                    'decode_content' => false,
-                    'sink' => $downloadPath,
-                    'timeout' => 600,
-                ]);
-            } catch (ClientException $e) {
-                $this->logger->error('Error downloading GeoLite database: ' . $e->getMessage());
-            }
-
-            if (file_exists($downloadPath)) {
-                $process = new Process([
-                    'tar',
-                    'xvzf',
-                    $downloadPath,
-                    '--strip-components=1',
-                ], $baseDir);
-
-                $process->mustRun();
-
-                unlink($downloadPath);
-
-                $newVersion = GeoLite::getVersion();
-                $this->logger->info('GeoLite DB updated. New version: ' . $newVersion);
-            } else {
-                $this->logger->error('Could not download updated GeoLite database.');
-            }
-        } else {
-            $this->logger->info('Not checking for GeoLite updates; no license key provided.');
+        try {
+            $this->updateDatabase();
+        } catch (\Exception $e) {
+            $this->logger->error('Error updating GeoLite database.', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
         }
 
         $this->settingsRepo->setSetting(Entity\Settings::GEOLITE_LAST_RUN, time());
+    }
+
+    public function updateDatabase(): void
+    {
+        $licenseKey = trim($this->settingsRepo->getSetting(Entity\Settings::GEOLITE_LICENSE_KEY));
+
+        if (empty($licenseKey)) {
+            $this->logger->info('Not checking for GeoLite updates; no license key provided.');
+            return;
+        }
+
+        $baseDir = GeoLite::getBaseDirectory();
+        $downloadPath = $baseDir . '/geolite.tar.gz';
+
+        set_time_limit(900);
+
+        $this->httpClient->get('https://download.maxmind.com/app/geoip_download', [
+            RequestOptions::HTTP_ERRORS => true,
+            RequestOptions::QUERY => [
+                'license_key' => $licenseKey,
+                'edition_id' => 'GeoLite2-City',
+                'suffix' => 'tar.gz',
+            ],
+            RequestOptions::DECODE_CONTENT => false,
+            RequestOptions::SINK => $downloadPath,
+            RequestOptions::TIMEOUT => 600,
+        ]);
+
+        if (!file_exists($downloadPath)) {
+            throw new \RuntimeException('New GeoLite database .tar.gz file not found.');
+        }
+
+        $process = new Process([
+            'tar',
+            'xvzf',
+            $downloadPath,
+            '--strip-components=1',
+        ], $baseDir);
+
+        $process->mustRun();
+
+        unlink($downloadPath);
+
+        $newVersion = GeoLite::getVersion();
+        $this->logger->info('GeoLite DB updated. New version: ' . $newVersion);
     }
 }
 

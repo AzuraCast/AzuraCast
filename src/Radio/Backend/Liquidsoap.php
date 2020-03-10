@@ -1216,7 +1216,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
     {
         return $this->command(
             $station,
-            $this->_getVarName('radio_cue', $station) . '.skip'
+            $this->_getVarName('requests_fallback', $station) . '.skip'
         );
     }
 

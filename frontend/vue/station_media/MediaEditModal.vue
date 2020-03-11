@@ -3,7 +3,7 @@
         <b-spinner v-if="loading">
         </b-spinner>
         <b-form class="form" v-else @submit.prevent="doEdit">
-            <b-tabs content-class="mt-3">
+            <b-tabs content-class="mt-3" lazy>
                 <media-form-basic-info :form="$v.form"></media-form-basic-info>
                 <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
                 <media-form-custom-fields :form="form" :custom-fields="customFields"></media-form-custom-fields>
@@ -32,7 +32,7 @@
     import MediaFormCustomFields from './form/MediaFormCustomFields';
     import MediaFormAdvancedSettings from './form/MediaFormAdvancedSettings';
     import InvisibleSubmitButton from '../components/InvisibleSubmitButton';
-    import MediaFormWaveformEditor from "./form/MediaFormWaveformEditor";
+    import MediaFormWaveformEditor from './form/MediaFormWaveformEditor';
 
     export default {
         name: 'EditModal',

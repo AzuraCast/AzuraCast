@@ -371,8 +371,8 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 }
             }
 
-            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . $this->_cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
             $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . $this->_cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
+            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . $this->_cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             if ($playlist->isJingle()) {
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
@@ -508,9 +508,13 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             );
 
             $event->appendLines([
-                'dynamic = audio_to_stereo(cue_cut(id="' . $this->_getVarName('cue_next_song',
-                    $station) . '", request.dynamic(id="' . $this->_getVarName('next_song',
-                    $station) . '", timeout=20., azuracast_next_song)))',
+                'dynamic = request.dynamic(id="' . $this->_getVarName('next_song',
+                    $station) . '", timeout=20., azuracast_next_song)',
+                'dynamic = audio_to_stereo(id="' . $this->_getVarName('stereo_next_song',
+                    $station) . '", dynamic)',
+                'dynamic = cue_cut(id="' . $this->_getVarName('cue_next_song',
+                    $station) . '", dynamic)',
+
                 'radio = fallback(id="' . $this->_getVarName('autodj_fallback',
                     $station) . '", track_sensitive = true, [dynamic, radio])',
             ]);
@@ -531,8 +535,10 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
 
         $event->appendLines([
-            'requests = audio_to_stereo(cue_cut(id="' . $this->_getVarName('cue_requests',
-                $station) . '", request.queue(id="' . $this->_getVarName('requests', $station) . '")))',
+            'requests = request.queue(id="' . $this->_getVarName('requests', $station) . '")',
+            'requests = audio_to_stereo(id="' . $this->_getVarName('stereo_requests', $station) . '", requests)',
+            'requests = cue_cut(id="' . $this->_getVarName('cue_requests', $station) . '", requests)',
+
             'radio = fallback(id="' . $this->_getVarName('requests_fallback',
                 $station) . '", track_sensitive = true, [requests, radio])',
             '',

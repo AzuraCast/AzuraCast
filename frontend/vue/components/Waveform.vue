@@ -19,22 +19,22 @@
 </template>
 
 <script>
-    import WaveSurfer from 'wavesurfer.js'
-    import timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js'
-    import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js'
+    import WaveSurfer from 'wavesurfer.js';
+    import timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
+    import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 
     export default {
         name: 'Waveform',
         props: {
             audioUrl: String
         },
-        data() {
+        data () {
             return {
                 wavesurfer: null,
                 zoom: 0
             };
         },
-        mounted() {
+        mounted () {
             this.wavesurfer = WaveSurfer.create({
                 backend: 'MediaElement',
                 container: '#waveform',
@@ -50,30 +50,34 @@
                 ]
             });
 
+            this.wavesurfer.on('ready', () => {
+                this.$emit('ready');
+            });
+
             this.wavesurfer.load(this.audioUrl);
         },
         methods: {
-            play() {
+            play () {
                 if (this.wavesurfer) {
                     this.wavesurfer.play();
                 }
             },
-            stop() {
+            stop () {
                 if (this.wavesurfer) {
                     this.wavesurfer.pause();
                 }
             },
-            getCurrentTime() {
+            getCurrentTime () {
                 if (this.wavesurfer) {
                     return this.wavesurfer.getCurrentTime();
                 }
             },
-            getDuration() {
+            getDuration () {
                 if (this.wavesurfer) {
                     return this.wavesurfer.getDuration();
                 }
             },
-            addRegion(start, end, color) {
+            addRegion (start, end, color) {
                 if (this.wavesurfer) {
                     this.wavesurfer.addRegion(
                             {
@@ -86,7 +90,7 @@
                     );
                 }
             },
-            clearRegions() {
+            clearRegions () {
                 if (this.wavesurfer) {
                     this.wavesurfer.clearRegions();
                 }
@@ -97,7 +101,7 @@
                 this.wavesurfer.zoom(Number(val));
             }
         },
-        beforeDestroy() {
+        beforeDestroy () {
             this.wavesurfer = null;
         }
     };

@@ -8,7 +8,7 @@
                         the corresponding fields in the advanced playback settings.</p>
                 </div>
                 <b-form-group class="col-md-12">
-                    <waveform ref="waveform" :audio-url="audioUrl"></waveform>
+                    <waveform ref="waveform" :audio-url="audioUrl" @ready="updateRegions"></waveform>
                 </b-form-group>
                 <b-form-group class="col-md-12">
                     <b-button-group>
@@ -51,42 +51,42 @@
 </template>
 
 <script>
-    import Waveform from "../../components/Waveform";
+    import Waveform from '../../components/Waveform';
 
     export default {
         name: 'MediaFormWaveformEditor',
-        components: {Waveform},
+        components: { Waveform },
         props: {
             form: Object,
             audioUrl: String
         },
         computed: {
-            langTitle() {
+            langTitle () {
                 return this.$gettext('Visual Cue Editor');
             }
         },
         methods: {
-            playAudio() {
+            playAudio () {
                 this.$refs.waveform.play();
             },
-            stopAudio() {
+            stopAudio () {
                 this.$refs.waveform.stop();
             },
-            setCueIn() {
+            setCueIn () {
                 let currentTime = this.$refs.waveform.getCurrentTime();
 
                 this.form.cue_in = Math.round((currentTime) * 10) / 10;
 
                 this.updateRegions();
             },
-            setCueOut() {
+            setCueOut () {
                 let currentTime = this.$refs.waveform.getCurrentTime();
 
                 this.form.cue_out = Math.round((currentTime) * 10) / 10;
 
                 this.updateRegions();
             },
-            setFadeOverlap() {
+            setFadeOverlap () {
                 let duration = this.$refs.waveform.getDuration();
                 let cue_out = this.form.cue_out || duration;
                 let currentTime = this.$refs.waveform.getCurrentTime();
@@ -95,7 +95,7 @@
 
                 this.updateRegions();
             },
-            setFadeIn() {
+            setFadeIn () {
                 let currentTime = this.$refs.waveform.getCurrentTime();
                 let cue_in = this.form.cue_in || 0;
 
@@ -103,7 +103,7 @@
 
                 this.updateRegions();
             },
-            setFadeOut() {
+            setFadeOut () {
                 let currentTime = this.$refs.waveform.getCurrentTime();
                 let duration = this.$refs.waveform.getDuration();
                 let cue_out = this.form.cue_out || duration;
@@ -112,7 +112,7 @@
 
                 this.updateRegions();
             },
-            updateRegions() {
+            updateRegions () {
                 let duration = this.$refs.waveform.getDuration();
 
                 let cue_in = this.form.cue_in || 0;
@@ -140,9 +140,6 @@
                     this.$refs.waveform.addRegion(cue_out - fade_out, cue_out, 'hsla(351,100%,48%,0.4)');
                 }
             }
-        },
-        mounted() {
-            this.$refs.waveform.wavesurfer.on('ready', this.updateRegions)
         }
     };
 </script>

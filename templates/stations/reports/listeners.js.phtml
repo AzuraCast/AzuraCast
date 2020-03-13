@@ -1,6 +1,6 @@
 var live_time, is_live, load_timeout, app_datatable, map, api_url;
 
-function cb(start, end) {
+function cb (start, end) {
     is_live = live_time.isSame(start, 'day');
 
     if (is_live) {
@@ -12,16 +12,16 @@ function cb(start, end) {
     updateListeners(start, end);
 }
 
-var updateListeners = function(start, end) {
+var updateListeners = function (start, end) {
     clearTimeout(load_timeout);
 
     var params = {};
-    var export_url = api_url+'?format=csv';
+    var export_url = api_url + '?format=csv';
 
     if (!is_live) {
         params.start = start.format('YYYY-MM-DD');
         params.end = end.format('YYYY-MM-DD');
-        export_url += '&start='+params.start+'&end='+params.end;
+        export_url += '&start=' + params.start + '&end=' + params.end;
     }
 
     $('#btn-export').attr('href', export_url);
@@ -36,9 +36,10 @@ var updateListeners = function(start, end) {
     });
 };
 
-function initMap()
-{
-    map = L.map('map').setView([40, 0], 1);
+function initMap () {
+    map = L.map('map', {
+        fullscreenControl: true
+    }).setView([40, 0], 1);
 
     L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/<?=$customization->getTheme() ?>_all/{z}/{x}/{y}.png', {
         attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
@@ -47,13 +48,13 @@ function initMap()
 
 var markers = new Array();
 
-function setMapPoints(points) {
-    for(i=0;i<markers.length;i++) {
+function setMapPoints (points) {
+    for (i = 0; i < markers.length; i++) {
         map.removeLayer(markers[i]);
     }
     markers = [];
 
-    if (points.length > 1000) {
+    if (points.length > 3000) {
         if ($('#map').is(':visible')) {
             notify(<?=$this->escapeJs(__('There are too many data points to map!')) ?>, 'warning');
             $('#map').hide();
@@ -61,17 +62,17 @@ function setMapPoints(points) {
     } else {
         $('#map').show();
 
-        $.each(points, function(i, l) {
+        $.each(points, function (i, l) {
             if (l.location.status !== 'success')
                 return null;
 
             var marker = new L.marker([l.location.lat, l.location.lon])
-                .bindPopup('IP: '+l.ip+'<br>' +
-                    'Country: '+l.location.country+'<br>' +
-                    'Region: '+l.location.region+'<br>' +
-                    'City: '+l.location.city+'<br>' +
-                    'Time connected: '+l.connected_time+'<br>' +
-                    'User Agent: '+l.user_agent)
+                .bindPopup('IP: ' + l.ip + '<br>' +
+                    'Country: ' + l.location.country + '<br>' +
+                    'Region: ' + l.location.region + '<br>' +
+                    'City: ' + l.location.city + '<br>' +
+                    'Time connected: ' + l.connected_time + '<br>' +
+                    'User Agent: ' + l.user_agent)
                 .addTo(map);
 
             markers.push(marker);
@@ -79,27 +80,37 @@ function setMapPoints(points) {
     }
 }
 
-$(function() {
+$(function () {
     api_url = '<?=$router->named('api:listeners:index', ['station_id' => $station->getId()]) ?>';
     live_time = moment().add(1, 'days');
 
     $('#reportrange').daterangepicker({
         showDropdowns: true,
         minYear: 2016,
-        maxYear: parseInt(moment().format('YYYY'),10),
+        maxYear: parseInt(moment().format('YYYY'), 10),
         startDate: live_time,
         endDate: live_time,
         opens: "left",
         ranges: {
-            <?=$this->escapeJs(__('Live Listeners')) ?>: [live_time, live_time],
-            <?=$this->escapeJs(__('Today')) ?>: [moment(), moment()],
-            <?=$this->escapeJs(__('Yesterday')) ?>: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            <?=$this->escapeJs(__('Last 7 Days')) ?>: [moment().subtract(6, 'days'), moment()],
-            <?=$this->escapeJs(__('Last 30 Days')) ?>: [moment().subtract(29, 'days'), moment()],
-            <?=$this->escapeJs(__('This Month')) ?>: [moment().startOf('month'), moment().endOf('month')],
-            <?=$this->escapeJs(__('Last Month')) ?>: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
+    <?=$this->escapeJs(__('Live Listeners')) ?>:
+    [live_time, live_time],
+    <?=$this->escapeJs(__('Today')) ?>:
+    [moment(), moment()],
+    <?=$this->escapeJs(__('Yesterday')) ?>:
+    [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    <?=$this->escapeJs(__('Last 7 Days')) ?>:
+    [moment().subtract(6, 'days'), moment()],
+    <?=$this->escapeJs(__('Last 30 Days')) ?>:
+    [moment().subtract(29, 'days'), moment()],
+    <?=$this->escapeJs(__('This Month')) ?>:
+    [moment().startOf('month'), moment().endOf('month')],
+    <?=$this->escapeJs(__('Last Month')) ?>:
+    [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+}
+},
+    cb
+)
+    ;
 
     app_datatable = new Vue({
         el: '#app-datatable',
@@ -107,9 +118,9 @@ $(function() {
             listeners: []
         },
         computed: {
-            total_listener_hours: function() {
+            total_listener_hours: function () {
                 var tlh_seconds = 0;
-                this.listeners.forEach(function(listener) {
+                this.listeners.forEach(function (listener) {
                     tlh_seconds += listener.connected_time;
                 });
 

@@ -163,6 +163,14 @@ var jsFiles = {
       'node_modules/leaflet/dist/images/*'
     ]
   },
+  'leaflet-fullscreen': {
+    base: 'node_modules/leaflet.fullscreen',
+    files: [
+      'node_modules/leaflet.fullscreen/Control.FullScreen.js',
+      'node_modules/leaflet.fullscreen/Control.FullScreen.css',
+      'node_modules/leaflet.fullscreen/icon-*.png'
+    ]
+  },
   'nchan': {
     base: null,
     files: [

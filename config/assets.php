@@ -402,10 +402,17 @@ return [
                     'src' => 'dist/lib/leaflet/leaflet.js',
                     'defer' => true,
                 ],
+                [
+                    'src' => 'dist/lib/leaflet-fullscreen/Control.FullScreen.js',
+                    'defer' => true,
+                ],
             ],
             'css' => [
                 [
                     'href' => 'dist/lib/leaflet/leaflet.css',
+                ],
+                [
+                    'href' => 'dist/lib/leaflet-fullscreen/Control.FullScreen.css',
                 ],
             ],
         ],

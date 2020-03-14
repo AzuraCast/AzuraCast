@@ -24,6 +24,7 @@ jobs:
           name: azuracast/azuracast_web_v2
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_names: true 
           cache: ${{ github.event_name != 'schedule' }}
   test:
     needs: [publish]

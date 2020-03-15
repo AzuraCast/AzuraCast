@@ -5,7 +5,7 @@ set -x
 
 cd /tmp
 
-wget --quiet -O dbip-city-lite.mmdb.gz https://download.db-ip.com/free/dbip-city-lite-2020-01.mmdb.gz
+wget --quiet -O dbip-city-lite.mmdb.gz https://download.db-ip.com/free/dbip-city-lite-2020-03.mmdb.gz
 gunzip dbip-city-lite.mmdb.gz
 
 mv dbip-city-lite.mmdb /var/azuracast/dbip/

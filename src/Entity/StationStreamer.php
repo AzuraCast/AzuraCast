@@ -66,6 +66,8 @@ class StationStreamer
     /**
      * @ORM\Column(name="streamer_password", type="string", length=255, nullable=false)
      *
+     * @AuditLog\AuditIgnore()
+     *
      * @Assert\NotBlank()
      * @OA\Property(example="")
      * @var string

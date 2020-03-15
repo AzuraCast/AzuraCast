@@ -1046,7 +1046,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 continue;
             }
 
-            $ls_config[] = $this->getOutputString($station, $mount_row, 'local_' . $i);
+            $ls_config[] = $this->getOutputString($station, $mount_row, 'local_', $i);
         }
 
         $event->appendLines($ls_config);
@@ -1057,11 +1057,12 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param Entity\StationMountInterface $mount
-     * @param string $id
+     * @param string $idPrefix
+     * @param int $id
      *
      * @return string
      */
-    protected function getOutputString(Entity\Station $station, Entity\StationMountInterface $mount, $id = ''): string
+    protected function getOutputString(Entity\Station $station, Entity\StationMountInterface $mount, string $idPrefix, int $id): string
     {
         $settings = (array)$station->getBackendConfig();
         $charset = $settings['charset'] ?? 'UTF-8';
@@ -1073,7 +1074,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
 
         $output_params = [];
         $output_params[] = $output_format;
-        $output_params[] = 'id="' . $this->_getVarName($id, $station) . '"';
+        $output_params[] = 'id="' . $this->_getVarName($idPrefix . $id, $station) . '"';
 
         $output_params[] = 'host = "' . $this->_cleanUpString($mount->getAutodjHost()) . '"';
         $output_params[] = 'port = ' . (int)$mount->getAutodjPort();
@@ -1083,10 +1084,18 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
             $output_params[] = 'user = "' . $this->_cleanUpString($username) . '"';
         }
 
-        $output_params[] = 'password = "' . $this->_cleanUpString($mount->getAutodjPassword()) . '"';
+        $password = $this->_cleanUpString($mount->getAutodjPassword());
+        if ($mount->getAutodjShoutcastMode()) {
+            $password .= ':#' . $id;
+        }
+        $output_params[] = 'password = "' . $password . '"';
 
         if (!empty($mount->getAutodjMount())) {
-            $output_params[] = 'mount = "' . $this->_cleanUpString($mount->getAutodjMount()) . '"';
+            if ($mount->getAutodjShoutcastMode()) {
+                $output_params[] = 'icy_id = ' . $id;
+            } else {
+                $output_params[] = 'mount = "' . $this->_cleanUpString($mount->getAutodjMount()) . '"';
+            }
         }
 
         $output_params[] = 'name = "' . $this->_cleanUpString($station->getName()) . '"';
@@ -1152,7 +1161,7 @@ class Liquidsoap extends AbstractBackend implements EventSubscriberInterface
                 continue;
             }
 
-            $ls_config[] = $this->getOutputString($station, $remote_row, 'relay_' . $i);
+            $ls_config[] = $this->getOutputString($station, $remote_row, 'relay_', $i);
         }
 
         $event->appendLines($ls_config);

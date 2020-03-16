@@ -22,6 +22,7 @@
     - composer
     - { role: influxdb, when: update_revision|int < 10 }
     - { role: ufw, when: update_revision|int < 12 }
+    - { role: dbip, when: update_revision|int < 51 }
     - { role: services, when: update_revision|int < 13 }
     - { role: azuracast-cron, when: update_revision|int < 48 }
     - azuracast-setup

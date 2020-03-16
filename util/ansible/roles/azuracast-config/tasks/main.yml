@@ -1,30 +1,31 @@
 ---
-  - name: Write environment configuration file
-    template: src=env.ini.j2 dest="{{ www_base }}/env.ini" owner=azuracast group=www-data mode=0644 force=no
+- name: Write environment configuration file
+  template: src=env.ini.j2 dest="{{ www_base }}/env.ini" owner=azuracast group=www-data mode=0644 force=no
 
-  - name: Set up environment file
-    ini_file:
-      dest: "{{ www_base }}/env.ini"
-      section: "configuration"
-      option: "application_env"
-      value: "{{ app_env }}"
+- name: Set up environment file
+  ini_file:
+    dest: "{{ www_base }}/env.ini"
+    section: "configuration"
+    option: "application_env"
+    value: "{{ app_env }}"
 
-  - name: Set Permissions on Base App Folder
-    file: path="{{ item }}" state=directory owner=azuracast group=www-data
-    with_items:
-     - "{{ app_base }}"
+- name: Set Permissions on Base App Folder
+  file: path="{{ item }}" state=directory owner=azuracast group=www-data
+  with_items:
+    - "{{ app_base }}"
 
-  - name: Clear temp directory
-    file: path="{{ tmp_base }}" state=absent
+- name: Clear temp directory
+  file: path="{{ tmp_base }}" state=absent
 
-  - name: Create System Folders
-    file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0774
-    with_items:
-     - "{{ tmp_base }}"
-     - "{{ tmp_base }}/proxies"
-     - "{{ app_base }}/stations"
-     - "{{ app_base }}/geoip"
-     - "{{ app_base }}/backups"
-     - "{{ app_base }}/servers"
-     - "{{ app_base }}/servers/shoutcast2"
-     - "{{ app_base }}/servers/icecast2"
+- name: Create System Folders
+  file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0774
+  with_items:
+    - "{{ tmp_base }}"
+    - "{{ tmp_base }}/proxies"
+    - "{{ app_base }}/stations"
+    - "{{ app_base }}/geoip"
+    - "{{ app_base }}/dbip"
+    - "{{ app_base }}/backups"
+    - "{{ app_base }}/servers"
+    - "{{ app_base }}/servers/shoutcast2"
+    - "{{ app_base }}/servers/icecast2"

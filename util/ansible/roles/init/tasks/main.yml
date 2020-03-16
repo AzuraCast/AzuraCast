@@ -1,62 +1,63 @@
 ---
-  - debug:
-      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
+- debug:
+    msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
 
-  - fail:
-      msg: "AzuraCast can only be installed onto computers running Ubuntu 16.04 or 18.04 LTS."
-    when: ansible_distribution != 'Ubuntu'
+- fail:
+    msg: "AzuraCast can only be installed onto computers running Ubuntu 16.04 or 18.04 LTS."
+  when: ansible_distribution != 'Ubuntu'
 
-  - fail:
-      msg: "AzuraCast can only be installed onto computers running Ubuntu 16.04 or 18.04 LTS."
-    when: ansible_distribution_release != 'bionic' and ansible_distribution_release != 'xenial'
+- fail:
+    msg: "AzuraCast can only be installed onto computers running Ubuntu 16.04 or 18.04 LTS."
+  when: ansible_distribution_release != 'bionic' and ansible_distribution_release != 'xenial'
 
-  - name: Add multiverse repository
-    apt_repository:
-      repo: "{{item}}"
-      update_cache: no
-    when:
-      - ansible_distribution == 'Ubuntu'
-      - ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
-    with_items:
-      - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"
-      - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}} multiverse"
-      - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse"
-      - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}}-updates multiverse"
+- name: Add multiverse repository
+  apt_repository:
+    repo: "{{item}}"
+    update_cache: no
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
+  with_items:
+    - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"
+    - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}} multiverse"
+    - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse"
+    - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}}-updates multiverse"
 
-  - name: Update apt
-    apt:
-      update_cache: yes
+- name: Update apt
+  apt:
+    update_cache: yes
 
-  - name: Install system packages
-    apt:
-      name: "{{ packages }}"
-      state: latest
-    vars:
-      packages:
-        - apt-transport-https
-        - curl
-        - wget
-        - tar
-        - build-essential
-        - pwgen
-        - whois
-        - python-pip
-        - zip
-        - unzip
+- name: Install system packages
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - apt-transport-https
+      - curl
+      - wget
+      - tar
+      - build-essential
+      - pwgen
+      - whois
+      - python-pip
+      - gzip
+      - zip
+      - unzip
 
-  - name: Install software-properties (18.04 only)
-    apt:
-      name: software-properties-common
-      state: latest
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+- name: Install software-properties (18.04 only)
+  apt:
+    name: software-properties-common
+    state: latest
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
 
-  - name: Install python-software-properties (16.04 only)
-    apt:
-      name: python-software-properties
-      state: latest
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'bionic'
+- name: Install python-software-properties (16.04 only)
+  apt:
+    name: python-software-properties
+    state: latest
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'bionic'
 
-  - name: Update pip components
-    pip:
-      name: pip
-      state: latest
+- name: Update pip components
+  pip:
+    name: pip
+    state: latest

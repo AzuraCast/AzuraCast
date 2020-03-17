@@ -9,6 +9,10 @@
   @include border-radius($pagination-border-radius);
   @include transition-standard(color);
 
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+
   color: $pagination-color;
   display: block;
   font-size: $btn-font-size;

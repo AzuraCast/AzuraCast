@@ -87,7 +87,7 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        $instructions_url = 'https://www.azuracast.com/install/#updating';
+        $instructions_url = 'https://www.azuracast.com/administration/system/updating.html';
         $instructions_string = __('Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.',
             $instructions_url);
 

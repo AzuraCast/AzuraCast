@@ -738,7 +738,7 @@ class StationMedia
 
             // Convert Liquidsoap-specific annotations to floats.
             if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {
-                $prop = Liquidsoap::toFloat($prop);
+                $prop = Liquidsoap\ConfigWriter::toFloat($prop);
             }
 
             $annotations[$annotation_name] = $prop;

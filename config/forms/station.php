@@ -3,6 +3,7 @@
 use App\Entity\Station;
 use App\Entity\StationMountInterface;
 use App\Radio\Adapters;
+use App\Radio\Backend\Liquidsoap\ConfigWriter;
 
 $frontends = Adapters::listFrontendAdapters(true);
 $frontend_types = [];
@@ -243,11 +244,11 @@ return [
                         'belongsTo' => 'backend_config',
                         'description' => __('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.'),
                         'choices' => [
-                            \App\Radio\Backend\Liquidsoap::CROSSFADE_SMART => __('Smart Mode'),
-                            \App\Radio\Backend\Liquidsoap::CROSSFADE_NORMAL => __('Normal Mode'),
-                            \App\Radio\Backend\Liquidsoap::CROSSFADE_DISABLED => __('Disable Crossfading'),
+                            ConfigWriter::CROSSFADE_SMART => __('Smart Mode'),
+                            ConfigWriter::CROSSFADE_NORMAL => __('Normal Mode'),
+                            ConfigWriter::CROSSFADE_DISABLED => __('Disable Crossfading'),
                         ],
-                        'default' => \App\Radio\Backend\Liquidsoap::CROSSFADE_NORMAL,
+                        'default' => ConfigWriter::CROSSFADE_NORMAL,
                         'form_group_class' => 'col-md-8',
                     ],
                 ],

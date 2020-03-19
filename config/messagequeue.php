@@ -8,7 +8,7 @@ return [
     Message\AddNewMediaMessage::class => Task\Media::class,
     Message\ReprocessMediaMessage::class => Task\Media::class,
 
-    Message\WritePlaylistFileMessage::class => Liquidsoap::class,
+    Message\WritePlaylistFileMessage::class => Liquidsoap\ConfigWriter::class,
 
     Message\UpdateNowPlayingMessage::class => Task\NowPlaying::class,
 

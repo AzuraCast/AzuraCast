@@ -24,11 +24,11 @@ class EditLiquidsoapConfigController
         }
 
         $configSections = [
-            Liquidsoap::CUSTOM_TOP,
-            Liquidsoap::CUSTOM_PRE_PLAYLISTS,
-            Liquidsoap::CUSTOM_PRE_FADE,
-            Liquidsoap::CUSTOM_PRE_LIVE,
-            Liquidsoap::CUSTOM_PRE_BROADCAST,
+            Liquidsoap\ConfigWriter::CUSTOM_TOP,
+            Liquidsoap\ConfigWriter::CUSTOM_PRE_PLAYLISTS,
+            Liquidsoap\ConfigWriter::CUSTOM_PRE_FADE,
+            Liquidsoap\ConfigWriter::CUSTOM_PRE_LIVE,
+            Liquidsoap\ConfigWriter::CUSTOM_PRE_BROADCAST,
         ];
 
         $config = $backend->getEditableConfiguration($station);

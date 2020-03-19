@@ -114,12 +114,12 @@ return function (\App\EventDispatcher $dispatcher) {
 
     // Other event subscribers from across the application.
     $dispatcher->addServiceSubscriber([
-        \App\Radio\AutoDJ::class,
-        \App\Radio\Backend\Liquidsoap::class,
-        \App\Sync\Task\NowPlaying::class,
-        \App\Webhook\Dispatcher::class,
-        \App\Controller\Api\NowplayingController::class,
-        \App\Notification\Manager::class,
+        App\Radio\AutoDJ::class,
+        App\Radio\Backend\Liquidsoap\ConfigWriter::class,
+        App\Sync\Task\NowPlaying::class,
+        App\Webhook\Dispatcher::class,
+        App\Controller\Api\NowplayingController::class,
+        App\Notification\Manager::class,
     ]);
 
 };

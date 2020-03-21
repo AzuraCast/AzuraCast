@@ -150,24 +150,17 @@ class Liquidsoap extends AbstractBackend
         return '/usr/local/bin/liquidsoap';
     }
 
-    /**
-     * If a station uses Manual AutoDJ mode, enqueue a request directly with Liquidsoap.
-     *
-     * @param Entity\Station $station
-     * @param string $music_file
-     *
-     * @return array
-     */
-    public function request(Entity\Station $station, $music_file): array
+    public function isQueueEmpty(Entity\Station $station): bool
     {
         $requests_var = ConfigWriter::getVarName('requests', $station);
 
         $queue = $this->command($station, $requests_var . '.queue');
+        return empty($queue[0]);
+    }
 
-        if (!empty($queue[0])) {
-            throw new \RuntimeException('Song(s) still pending in request queue.');
-        }
-
+    public function enqueue(Entity\Station $station, $music_file): array
+    {
+        $requests_var = ConfigWriter::getVarName('requests', $station);
         return $this->command($station, $requests_var . '.push ' . $music_file);
     }
 
@@ -180,6 +173,8 @@ class Liquidsoap extends AbstractBackend
      */
     public function skip(Entity\Station $station): array
     {
+
+
         return $this->command(
             $station,
             ConfigWriter::getVarName('requests_fallback', $station) . '.skip'

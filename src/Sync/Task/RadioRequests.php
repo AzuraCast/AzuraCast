@@ -3,8 +3,9 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
-use App\Radio\Adapters;
 use App\EventDispatcher;
+use App\Radio\Adapters;
+use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 
@@ -77,7 +78,8 @@ class RadioRequests extends AbstractTask
     {
         // Send request to the station to play the request.
         $backend = $this->adapters->getBackendAdapter($station);
-        if (!method_exists($backend, 'request')) {
+
+        if (!($backend instanceof Liquidsoap)) {
             return false;
         }
 
@@ -108,9 +110,14 @@ class RadioRequests extends AbstractTask
         $track = $event->buildAnnotations();
 
         // Queue request with Liquidsoap.
-        $this->logger->debug('Submitting request to AutoDJ.', ['track' => $track]);
-        $response = $backend->request($station, $track);
+        if (!$backend->isQueueEmpty($station)) {
+            $this->logger->error('Skipping submitting request to Liquidsoap; current queue is occupied.');
+            return false;
+        }
 
+        $this->logger->debug('Submitting request to AutoDJ.', ['track' => $track]);
+
+        $response = $backend->enqueue($station, $track);
         $this->logger->debug('AutoDJ request response', ['response' => $response]);
 
         // Log the request as played.

@@ -5,6 +5,8 @@ use App\Entity;
 use App\Exception\Supervisor\NotRunningException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\AutoDJ;
+use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
@@ -164,6 +166,7 @@ class ServicesController
     public function backendAction(
         ServerRequest $request,
         Response $response,
+        AutoDJ $autodj,
         $do = 'restart'
     ): ResponseInterface {
         $station = $request->getStation();
@@ -171,7 +174,15 @@ class ServicesController
 
         switch ($do) {
             case 'skip':
-                if (method_exists($backend, 'skip')) {
+                if ($backend instanceof Liquidsoap) {
+                    // Automatically queue the "next" song in the request queue.
+                    if (!$station->useManualAutoDJ()) {
+                        $nextSong = $autodj->annotateNextSong($station, true);
+                        if (!empty($nextSong)) {
+                            $backend->enqueue($station, $nextSong);
+                        }
+                    }
+
                     $backend->skip($station);
                 }
 
@@ -179,7 +190,7 @@ class ServicesController
                 break;
 
             case 'disconnect':
-                if (method_exists($backend, 'disconnectStreamer')) {
+                if ($backend instanceof Liquidsoap) {
                     $backend->disconnectStreamer($station);
                 }
 

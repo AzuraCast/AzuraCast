@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,7 +14,7 @@ class StationRequest
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -54,6 +55,12 @@ class StationRequest
     protected $timestamp;
 
     /**
+     * @ORM\Column(name="skip_delay", type="boolean", nullable=false)
+     * @var bool If set to "true", this request was set by an administrator and skips various delays.
+     */
+    protected $skip_delay = false;
+
+    /**
      * @ORM\Column(name="played_at", type="integer")
      * @var int
      */
@@ -65,70 +72,77 @@ class StationRequest
      */
     protected $ip;
 
-    public function __construct(Station $station, StationMedia $track)
+    public function __construct(Station $station, StationMedia $track, bool $skipDelay = false)
     {
         $this->station = $station;
         $this->track = $track;
 
         $this->timestamp = time();
+        $this->skip_delay = $skipDelay;
         $this->played_at = 0;
 
         $this->ip = $_SERVER['REMOTE_ADDR'];
     }
 
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Station
-     */
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    /**
-     * @return StationMedia
-     */
     public function getTrack(): StationMedia
     {
         return $this->track;
     }
 
-    /**
-     * @return int
-     */
     public function getTimestamp(): int
     {
         return $this->timestamp;
     }
 
-    /**
-     * @return int
-     */
+    public function skipDelay(): bool
+    {
+        return $this->skip_delay;
+    }
+
     public function getPlayedAt(): int
     {
         return $this->played_at;
     }
 
-    /**
-     * @param int $played_at
-     */
     public function setPlayedAt(int $played_at)
     {
         $this->played_at = $played_at;
     }
 
-    /**
-     * @return string
-     */
     public function getIp(): string
     {
         return $this->ip;
+    }
+
+    public function shouldPlayNow(Chronos $now = null): bool
+    {
+        if ($this->skip_delay) {
+            return true;
+        }
+
+        $station = $this->station;
+        $stationTz = new \DateTimeZone($station->getTimezone());
+
+        if (null === $now) {
+            $now = Chronos::now($stationTz);
+        }
+
+        $thresholdMins = (int)$station->getRequestDelay();
+        $thresholdMins += random_int(0, $thresholdMins);
+
+        $cued = Chronos::createFromTimestamp($this->timestamp);
+        $threshold = $now->subMinutes($thresholdMins);
+
+        return $threshold->gt($cued);
     }
 }

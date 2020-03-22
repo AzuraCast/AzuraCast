@@ -22,6 +22,8 @@ class AutoDJ implements EventSubscriberInterface
 
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
+    protected Entity\Repository\StationRequestRepository $requestRepo;
+
     protected EventDispatcher $dispatcher;
 
     protected Filesystem $filesystem;
@@ -35,6 +37,7 @@ class AutoDJ implements EventSubscriberInterface
         Entity\Repository\SongRepository $songRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationStreamerRepository $streamerRepo,
+        Entity\Repository\StationRequestRepository $requestRepo,
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
         Logger $logger,
@@ -44,6 +47,7 @@ class AutoDJ implements EventSubscriberInterface
         $this->songRepo = $songRepo;
         $this->spmRepo = $spmRepo;
         $this->streamerRepo = $streamerRepo;
+        $this->requestRepo = $requestRepo;
         $this->dispatcher = $dispatcher;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
@@ -624,43 +628,27 @@ class AutoDJ implements EventSubscriberInterface
      */
     public function getNextSongFromRequests(GetNextSong $event): void
     {
-        $station = $event->getStation();
-
-        $min_minutes = (int)$station->getRequestDelay();
-        $threshold_minutes = $min_minutes + random_int(0, $min_minutes);
-
-        $threshold = time() - ($threshold_minutes * 60);
-
-        // Look up all requests that have at least waited as long as the threshold.
-        $request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
-            FROM App\Entity\StationRequest sr JOIN sr.track sm
-            WHERE sr.played_at = 0 
-            AND sr.station_id = :station_id 
-            AND sr.timestamp <= :threshold
-            ORDER BY sr.id ASC')
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('threshold', $threshold)
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-
-        if ($request instanceof Entity\StationRequest) {
-            $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
-
-            // Log in history
-            $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
-            $sh->setRequest($request);
-            $sh->setMedia($request->getTrack());
-
-            $sh->setDuration($request->getTrack()->getCalculatedLength());
-            $sh->setTimestampCued(time());
-            $this->em->persist($sh);
-
-            $request->setPlayedAt(time());
-            $this->em->persist($request);
-
-            $this->em->flush();
-
-            $event->setNextSong($sh);
+        $request = $this->requestRepo->getNextPlayableRequest($event->getStation());
+        if (null === $request) {
+            return;
         }
+
+        $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
+
+        // Log in history
+        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+        $sh->setRequest($request);
+        $sh->setMedia($request->getTrack());
+
+        $sh->setDuration($request->getTrack()->getCalculatedLength());
+        $sh->setTimestampCued(time());
+        $this->em->persist($sh);
+
+        $request->setPlayedAt(time());
+        $this->em->persist($request);
+
+        $this->em->flush();
+
+        $event->setNextSong($sh);
     }
 }

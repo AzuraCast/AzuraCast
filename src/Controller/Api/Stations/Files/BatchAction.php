@@ -272,7 +272,7 @@ class BatchAction
                     try {
                         $media = $mediaRepo->getOrCreate($station, $file['path']);
 
-                        $newRequest = new Entity\StationRequest($station, $media);
+                        $newRequest = new Entity\StationRequest($station, $media, true);
                         $em->persist($newRequest);
                         $em->flush($newRequest);
                         $files_affected++;

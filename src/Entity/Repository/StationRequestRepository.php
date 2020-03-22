@@ -1,10 +1,11 @@
 <?php
 namespace App\Entity\Repository;
 
-use App\Entity;
-use App\Utilities;
 use App\Doctrine\Repository;
+use App\Entity;
 use App\Exception;
+use App\Utilities;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\NoResultException;
 
 class StationRequestRepository extends Repository
@@ -112,6 +113,35 @@ class StationRequestRepository extends Repository
         }
 
         return true;
+    }
+
+    public function getNextPlayableRequest(Entity\Station $station): ?Entity\StationRequest
+    {
+        $now = Chronos::now(new \DateTimeZone($station->getTimezone()));
+
+        // Look up all requests that have at least waited as long as the threshold.
+        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
+            FROM App\Entity\StationRequest sr JOIN sr.track sm
+            WHERE sr.played_at = 0 
+            AND sr.station = :station
+            ORDER BY sr.skip_delay DESC, sr.id ASC')
+            ->setParameter('station', $station)
+            ->execute();
+
+        foreach ($requests as $request) {
+            /** @var Entity\StationRequest $request */
+            if ($request->shouldPlayNow($now)) {
+                try {
+                    $this->checkRecentPlay($request->getTrack(), $station);
+                } catch (\Exception $e) {
+                    continue;
+                }
+
+                return $request;
+            }
+        }
+
+        return null;
     }
 
     /**

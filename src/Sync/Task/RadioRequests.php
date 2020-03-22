@@ -48,33 +48,16 @@ class RadioRequests extends AbstractTask
                 continue;
             }
 
-            $min_minutes = (int)$station->getRequestDelay();
-            $threshold_minutes = $min_minutes + random_int(0, $min_minutes);
-
-            $threshold = time() - ($threshold_minutes * 60);
-
-            // Look up all requests that have at least waited as long as the threshold.
-            $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
-                FROM App\Entity\StationRequest sr 
-                JOIN sr.track sm
-                WHERE sr.played_at = 0 
-                AND sr.station_id = :station_id 
-                AND sr.timestamp <= :threshold
-                ORDER BY sr.id ASC')
-                ->setParameter('station_id', $station->getId())
-                ->setParameter('threshold', $threshold)
-                ->execute();
-
-            foreach ($requests as $request) {
-                /** @var Entity\StationRequest $request */
-                $this->requestRepo->checkRecentPlay($request->getTrack(), $station);
-                $this->_submitRequest($station, $request);
-                break;
+            $request = $this->requestRepo->getNextPlayableRequest($station);
+            if (null === $request) {
+                continue;
             }
+
+            $this->submitRequest($station, $request);
         }
     }
 
-    protected function _submitRequest(Entity\Station $station, Entity\StationRequest $request): bool
+    protected function submitRequest(Entity\Station $station, Entity\StationRequest $request): bool
     {
         // Send request to the station to play the request.
         $backend = $this->adapters->getBackendAdapter($station);

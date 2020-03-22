@@ -152,32 +152,26 @@ class Liquidsoap extends AbstractBackend
 
     public function isQueueEmpty(Entity\Station $station): bool
     {
-        $requests_var = ConfigWriter::getVarName('requests', $station);
-
-        $queue = $this->command($station, $requests_var . '.queue');
+        $queue = $this->command(
+            $station,
+            ConfigWriter::getVarName($station, 'requests') . '.queue'
+        );
         return empty($queue[0]);
     }
 
     public function enqueue(Entity\Station $station, $music_file): array
     {
-        $requests_var = ConfigWriter::getVarName('requests', $station);
-        return $this->command($station, $requests_var . '.push ' . $music_file);
-    }
-
-    /**
-     * Tell LiquidSoap to skip the currently playing song.
-     *
-     * @param Entity\Station $station
-     *
-     * @return array
-     */
-    public function skip(Entity\Station $station): array
-    {
-
-
         return $this->command(
             $station,
-            ConfigWriter::getVarName('requests_fallback', $station) . '.skip'
+            ConfigWriter::getVarName($station, 'requests') . '.push ' . $music_file
+        );
+    }
+
+    public function skip(Entity\Station $station): array
+    {
+        return $this->command(
+            $station,
+            ConfigWriter::getVarName($station, 'requests_fallback') . '.skip'
         );
     }
 
@@ -202,7 +196,7 @@ class Liquidsoap extends AbstractBackend
 
         return $this->command(
             $station,
-            ConfigWriter::getVarName('input_streamer', $station) . '.stop'
+            ConfigWriter::getVarName($station, 'input_streamer') . '.stop'
         );
     }
 

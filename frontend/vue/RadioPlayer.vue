@@ -1,7 +1,7 @@
 <template>
     <div class="radio-player-widget">
         <template v-if="is_playing">
-            <audio ref="player"/>
+            <audio ref="player" v-bind:title="np.now_playing.song.text"/>
         </template>
 
         <div class="now-playing-details">

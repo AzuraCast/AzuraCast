@@ -69,5 +69,6 @@ ENV APPLICATION_ENV="production" \
 ENTRYPOINT ["dockerize",\
     "-wait","tcp://mariadb:3306",\
     "-wait","tcp://influxdb:8086",\
+    "-wait","tcp://redis:6379",\
     "-timeout","40s"]
 CMD ["/usr/local/bin/my_init"]

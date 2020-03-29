@@ -298,7 +298,7 @@ class User
     {
         return $this->api_keys;
     }
-    
+
     public function getAvatar(int $size = 50): string
     {
         return Gravatar::get($this->email, $size, 'https://www.azuracast.com/img/avatar.png');

@@ -8,6 +8,7 @@ use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Quota;
 use App\Radio\Remote\AdapterProxy;
+use App\Settings;
 use App\Validator\Constraints as AppAssert;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -607,9 +608,16 @@ class Station
         return $this->radio_base_dir;
     }
 
-    public function setRadioBaseDir($new_dir): void
+    public function setRadioBaseDir(?string $newDir = null): void
     {
-        $this->radio_base_dir = $this->truncateString(trim($new_dir));
+        $newDir = $this->truncateString(trim($newDir));
+
+        if (empty($newDir)) {
+            $stationsBaseDir = Settings::getInstance()->getStationDirectory();
+            $newDir = $stationsBaseDir . '/' . $this->getShortName();
+        }
+
+        $this->radio_base_dir = $newDir;
     }
 
     public function getRadioAlbumArtDir(): string

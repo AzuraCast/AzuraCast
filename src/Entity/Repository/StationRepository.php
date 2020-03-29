@@ -6,7 +6,6 @@ use App\Entity;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Settings;
 use App\Sync\Task\Media;
 use App\Utilities;
 use Closure;
@@ -179,10 +178,7 @@ class StationRepository extends Repository
     public function create(Entity\Station $station): Entity\Station
     {
         // Create path for station.
-        $station_base_dir = Settings::getInstance()->getStationDirectory();
-
-        $station_dir = $station_base_dir . '/' . $station->getShortName();
-        $station->setRadioBaseDir($station_dir);
+        $station->setRadioBaseDir(null);
 
         $this->em->persist($station);
 

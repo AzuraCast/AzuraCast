@@ -166,11 +166,13 @@ class StationRequestRepository extends Repository
         try {
             $last_play_time = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.timestamp_start 
                 FROM App\Entity\SongHistory sh 
-                WHERE sh.media_id = :media_id 
+                JOIN sh.song s
+                WHERE (s.artist LIKE :artist OR s.title LIKE :title)
                 AND sh.station_id = :station_id
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
-                ->setParameter('media_id', $media->getId())
+                ->setParameter('artist', $media->getArtist())
+                ->setParameter('title', $media->getTitle())
                 ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $last_play_threshold)
                 ->setMaxResults(1)
@@ -180,7 +182,7 @@ class StationRequestRepository extends Repository
         }
 
         if ($last_play_time > 0) {
-            throw new Exception(__('This song was already played too recently. Wait a while before requesting it again.'));
+            throw new Exception(__('This song or artist. Wait a while before requesting it again.'));
         }
 
         return true;

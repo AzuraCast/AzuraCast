@@ -82,12 +82,9 @@ class Relay
      */
     protected $remotes;
 
-    /**
-     * @param string $base_url
-     */
     public function __construct(string $base_url)
     {
-        $this->base_url = $this->_truncateString($base_url);
+        $this->base_url = $this->truncateString($base_url);
 
         $this->created_at = time();
         $this->updated_at = time();
@@ -103,105 +100,66 @@ class Relay
         $this->updated_at = time();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseUrl(): ?string
     {
         return $this->base_url;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $name
-     */
     public function setName(?string $name): void
     {
-        $this->name = $this->_truncateString($name, 100);
+        $this->name = $this->truncateString($name, 100);
     }
 
-    /**
-     * @return bool
-     */
     public function isIsVisibleOnPublicPages(): bool
     {
         return $this->is_visible_on_public_pages;
     }
 
-    /**
-     * @param bool $is_visible_on_public_pages
-     */
     public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
     {
         $this->is_visible_on_public_pages = $is_visible_on_public_pages;
     }
 
-    /**
-     * @return mixed|null
-     */
     public function getNowplaying()
     {
         return $this->nowplaying;
     }
 
-    /**
-     * @param mixed|null $nowplaying
-     */
     public function setNowplaying($nowplaying): void
     {
         $this->nowplaying = $nowplaying;
     }
 
-    /**
-     * @return int
-     */
     public function getCreatedAt(): int
     {
         return $this->created_at;
     }
 
-    /**
-     * @param int $created_at
-     */
     public function setCreatedAt(int $created_at): void
     {
         $this->created_at = $created_at;
     }
 
-    /**
-     * @return int
-     */
     public function getUpdatedAt(): int
     {
         return $this->updated_at;
     }
 
-    /**
-     * @param int $updated_at
-     */
     public function setUpdatedAt(int $updated_at): void
     {
         $this->updated_at = $updated_at;
     }
-
-    /**
-     * @return Collection
-     */
+    
     public function getRemotes(): Collection
     {
         return $this->remotes;

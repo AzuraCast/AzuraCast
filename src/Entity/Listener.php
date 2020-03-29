@@ -73,13 +73,7 @@ class Listener
      */
     protected $timestamp_end;
 
-    /**
-     * Listener constructor.
-     *
-     * @param Station $station
-     * @param array $client
-     */
-    public function __construct(Station $station, $client)
+    public function __construct(Station $station, array $client)
     {
         $this->station = $station;
 
@@ -87,19 +81,64 @@ class Listener
         $this->timestamp_end = 0;
 
         $this->listener_uid = $client['uid'];
-        $this->listener_user_agent = $this->_truncateString($client['user_agent']) ?? '';
+        $this->listener_user_agent = $this->truncateString($client['user_agent']) ?? '';
         $this->listener_ip = $client['ip'];
         $this->listener_hash = self::calculateListenerHash($client);
     }
 
-    /**
-     * @param array $client
-     *
-     * @return string
-     */
-    public static function calculateListenerHash($client): string
+    public function getId(): int
     {
-        return md5($client['ip'] . $client['user_agent']);
+        return $this->id;
+    }
+
+    public function getStation(): Station
+    {
+        return $this->station;
+    }
+
+    public function getListenerUid(): int
+    {
+        return $this->listener_uid;
+    }
+
+    public function getListenerIp(): string
+    {
+        return $this->listener_ip;
+    }
+
+    public function getListenerUserAgent(): string
+    {
+        return $this->listener_user_agent;
+    }
+
+    public function getListenerHash(): string
+    {
+        return $this->listener_hash;
+    }
+
+    public function getTimestampStart(): int
+    {
+        return $this->timestamp_start;
+    }
+
+    public function getTimestamp(): int
+    {
+        return $this->timestamp_start;
+    }
+
+    public function getTimestampEnd(): int
+    {
+        return $this->timestamp_end;
+    }
+
+    public function setTimestampEnd(int $timestamp_end): void
+    {
+        $this->timestamp_end = $timestamp_end;
+    }
+
+    public function getConnectedSeconds(): int
+    {
+        return $this->timestamp_end - $this->timestamp_start;
     }
 
     /**
@@ -115,94 +154,6 @@ class Listener
             // Ignore clients with the "Icecast" UA as those are relays and not listeners.
             return !(false !== stripos($client['user_agent'], 'Icecast'));
         });
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return Station
-     */
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    /**
-     * @return int
-     */
-    public function getListenerUid(): int
-    {
-        return $this->listener_uid;
-    }
-
-    /**
-     * @return string
-     */
-    public function getListenerIp(): string
-    {
-        return $this->listener_ip;
-    }
-
-    /**
-     * @return string
-     */
-    public function getListenerUserAgent(): string
-    {
-        return $this->listener_user_agent;
-    }
-
-    /**
-     * @return string
-     */
-    public function getListenerHash(): string
-    {
-        return $this->listener_hash;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTimestampStart(): int
-    {
-        return $this->timestamp_start;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTimestamp(): int
-    {
-        return $this->timestamp_start;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTimestampEnd(): int
-    {
-        return $this->timestamp_end;
-    }
-
-    /**
-     * @param int $timestamp_end
-     */
-    public function setTimestampEnd(int $timestamp_end): void
-    {
-        $this->timestamp_end = $timestamp_end;
-    }
-
-    /**
-     * @return int
-     */
-    public function getConnectedSeconds(): int
-    {
-        return $this->timestamp_end - $this->timestamp_start;
     }
 
     public static function getListenerSeconds(array $intervals): int
@@ -237,5 +188,10 @@ class Listener
         }
 
         return $seconds;
+    }
+
+    public static function calculateListenerHash(array $client): string
+    {
+        return md5($client['ip'] . $client['user_agent']);
     }
 }

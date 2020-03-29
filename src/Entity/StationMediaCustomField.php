@@ -57,35 +57,23 @@ class StationMediaCustomField
         $this->field = $field;
     }
 
-    /**
-     * @return StationMedia
-     */
     public function getMedia(): StationMedia
     {
         return $this->media;
     }
 
-    /**
-     * @return CustomField
-     */
     public function getField(): CustomField
     {
         return $this->field;
     }
 
-    /**
-     * @return string|null
-     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @param string|null $value
-     */
-    public function setValue($value): void
+    public function setValue(?string $value = null): void
     {
-        $this->value = $this->_truncateString($value);
+        $this->value = $this->truncateString($value);
     }
 }

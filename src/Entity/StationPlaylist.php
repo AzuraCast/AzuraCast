@@ -266,9 +266,6 @@ class StationPlaylist
         $this->schedule_items = new ArrayCollection;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -276,7 +273,6 @@ class StationPlaylist
 
     /**
      * @AuditLog\AuditIdentifier
-     *
      * @return string
      */
     public function getName(): string
@@ -284,49 +280,31 @@ class StationPlaylist
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
-        $this->name = $this->_truncateString($name, 200);
+        $this->name = $this->truncateString($name, 200);
     }
 
-    /**
-     * @return string
-     */
     public function getShortName(): string
     {
         return Station::getStationShortName($this->name);
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
     public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @return string
-     */
     public function getSource(): string
     {
         return $this->source;
     }
 
-    /**
-     * @param string $source
-     */
     public function setSource(string $source): void
     {
         // Reset the playback queue if source is changed.
@@ -337,17 +315,11 @@ class StationPlaylist
         $this->source = $source;
     }
 
-    /**
-     * @return string
-     */
     public function getOrder(): string
     {
         return $this->order;
     }
 
-    /**
-     * @param string $order
-     */
     public function setOrder(string $order): void
     {
         // Reset the playback queue if order is changed.
@@ -358,81 +330,51 @@ class StationPlaylist
         $this->order = $order;
     }
 
-    /**
-     * @return null|string
-     */
     public function getRemoteUrl(): ?string
     {
         return $this->remote_url;
     }
 
-    /**
-     * @param null|string $remote_url
-     */
     public function setRemoteUrl(?string $remote_url): void
     {
         $this->remote_url = $remote_url;
     }
 
-    /**
-     * @return string
-     */
     public function getRemoteType(): ?string
     {
         return $this->remote_type;
     }
 
-    /**
-     * @param null|string $remote_type
-     */
     public function setRemoteType(?string $remote_type): void
     {
         $this->remote_type = $remote_type;
     }
 
-    /**
-     * @return int
-     */
     public function getRemoteBuffer(): int
     {
         return $this->remote_buffer;
     }
 
-    /**
-     * @param int $remote_buffer
-     */
     public function setRemoteBuffer(int $remote_buffer): void
     {
         $this->remote_buffer = $remote_buffer;
     }
 
-    /**
-     * @return bool
-     */
     public function getIsEnabled(): bool
     {
         return $this->is_enabled;
     }
 
-    /**
-     * @param bool $is_enabled
-     */
     public function setIsEnabled(bool $is_enabled): void
     {
         $this->is_enabled = $is_enabled;
     }
 
-    /**
-     * @return bool
-     */
     public function isJingle(): bool
     {
         return $this->is_jingle;
     }
 
-    /**
-     * @param bool $is_jingle
-     */
     public function setIsJingle(bool $is_jingle): void
     {
         $this->is_jingle = $is_jingle;
@@ -457,9 +399,6 @@ class StationPlaylist
         return 0;
     }
 
-    /**
-     * @return int
-     */
     public function getWeight(): int
     {
         if ($this->weight < 1) {
@@ -469,25 +408,16 @@ class StationPlaylist
         return $this->weight;
     }
 
-    /**
-     * @param int $weight
-     */
     public function setWeight(int $weight): void
     {
         $this->weight = $weight;
     }
 
-    /**
-     * @return bool
-     */
     public function getIncludeInRequests(): bool
     {
         return $this->include_in_requests;
     }
 
-    /**
-     * @param bool $include_in_requests
-     */
     public function setIncludeInRequests(bool $include_in_requests): void
     {
         $this->include_in_requests = $include_in_requests;
@@ -503,33 +433,21 @@ class StationPlaylist
         return ($this->is_enabled && $this->include_in_requests);
     }
 
-    /**
-     * @return bool
-     */
     public function getIncludeInAutomation(): bool
     {
         return $this->include_in_automation;
     }
 
-    /**
-     * @param bool $include_in_automation
-     */
     public function setIncludeInAutomation(bool $include_in_automation): void
     {
         $this->include_in_automation = $include_in_automation;
     }
 
-    /**
-     * @return int
-     */
     public function getPlayedAt(): int
     {
         return $this->played_at;
     }
 
-    /**
-     * @param int $played_at
-     */
     public function setPlayedAt(int $played_at): void
     {
         $this->played_at = $played_at;
@@ -540,17 +458,11 @@ class StationPlaylist
         $this->played_at = time();
     }
 
-    /**
-     * @return array|null
-     */
     public function getQueue(): ?array
     {
         return $this->queue;
     }
 
-    /**
-     * @param array|null $queue
-     */
     public function setQueue(?array $queue): void
     {
         $this->queue = $queue;
@@ -586,9 +498,6 @@ class StationPlaylist
             && !$this->backendLoopPlaylistOnce());
     }
 
-    /**
-     * @return array
-     */
     public function getBackendOptions(): array
     {
         return explode(',', $this->backend_options);
@@ -685,19 +594,11 @@ class StationPlaylist
         }
     }
 
-    /**
-     * @return Station
-     */
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    /**
-     * @param Chronos $now
-     *
-     * @return bool
-     */
     protected function shouldPlayNowPerHour(Chronos $now): bool
     {
         $current_minute = (int)$now->minute;
@@ -718,17 +619,11 @@ class StationPlaylist
         return !$this->wasPlayedInLastXMinutes($now, 30);
     }
 
-    /**
-     * @return int
-     */
     public function getPlayPerHourMinute(): int
     {
         return $this->play_per_hour_minute;
     }
 
-    /**
-     * @param int $play_per_hour_minute
-     */
     public function setPlayPerHourMinute(int $play_per_hour_minute): void
     {
         if ($play_per_hour_minute > 59 || $play_per_hour_minute < 0) {
@@ -748,12 +643,6 @@ class StationPlaylist
         return ($this->played_at > $threshold);
     }
 
-    /**
-     * @param array $songHistoryEntries
-     * @param int $length
-     *
-     * @return bool
-     */
     protected function wasPlayedRecently(array $songHistoryEntries = [], $length = 15): bool
     {
         if (empty($songHistoryEntries)) {
@@ -775,48 +664,30 @@ class StationPlaylist
         return $was_played;
     }
 
-    /**
-     * @return int
-     */
     public function getPlayPerSongs(): int
     {
         return $this->play_per_songs;
     }
 
-    /**
-     * @param int $play_per_songs
-     */
     public function setPlayPerSongs(int $play_per_songs): void
     {
         $this->play_per_songs = $play_per_songs;
     }
 
-    /**
-     * @param Chronos $now
-     *
-     * @return bool
-     */
     protected function shouldPlayNowPerMinute(Chronos $now): bool
     {
         return !$this->wasPlayedInLastXMinutes($now, $this->getPlayPerMinutes());
     }
 
-    /**
-     * @return int
-     */
     public function getPlayPerMinutes(): int
     {
         return $this->play_per_minutes;
     }
 
-    /**
-     * @param int $play_per_minutes
-     */
     public function setPlayPerMinutes(int $play_per_minutes): void
     {
         $this->play_per_minutes = $play_per_minutes;
     }
-
 
     /**
      * Export the playlist into a reusable format.

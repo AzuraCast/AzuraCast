@@ -290,7 +290,7 @@ class StationRemote implements StationMountInterface
 
     public function setCustomListenUrl(string $custom_listen_url = null): void
     {
-        $this->custom_listen_url = $this->_truncateString($custom_listen_url, 255);
+        $this->custom_listen_url = $this->truncateString($custom_listen_url, 255);
     }
 
     /** @inheritdoc */
@@ -306,7 +306,7 @@ class StationRemote implements StationMountInterface
 
     public function setSourceUsername(?string $source_username): void
     {
-        $this->source_username = $this->_truncateString($source_username, 100);
+        $this->source_username = $this->truncateString($source_username, 100);
     }
 
     /** @inheritdoc */
@@ -335,7 +335,7 @@ class StationRemote implements StationMountInterface
 
     public function setSourcePassword(?string $source_password): void
     {
-        $this->source_password = $this->_truncateString($source_password, 100);
+        $this->source_password = $this->truncateString($source_password, 100);
     }
 
     public function getType(): string
@@ -355,7 +355,7 @@ class StationRemote implements StationMountInterface
 
     public function setSourceMount(?string $source_mount): void
     {
-        $this->source_mount = $this->_truncateString($source_mount, 150);
+        $this->source_mount = $this->truncateString($source_mount, 150);
     }
 
     public function getMount(): ?string
@@ -365,7 +365,7 @@ class StationRemote implements StationMountInterface
 
     public function setMount(?string $mount): void
     {
-        $this->mount = $this->_truncateString($mount, 150);
+        $this->mount = $this->truncateString($mount, 150);
     }
 
     public function getAdminPassword(): ?string
@@ -410,7 +410,7 @@ class StationRemote implements StationMountInterface
             $url = 'http://' . $url;
         }
 
-        $this->url = $this->_truncateString($url);
+        $this->url = $this->truncateString($url);
     }
 
     /*
@@ -537,6 +537,6 @@ class StationRemote implements StationMountInterface
      */
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $this->_truncateString($display_name);
+        $this->display_name = $this->truncateString($display_name);
     }
 }

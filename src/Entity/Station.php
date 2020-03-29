@@ -399,37 +399,25 @@ class Station
         $this->sftp_users = new ArrayCollection;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return null|string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param null|string $name
-     */
     public function setName(?string $name = null): void
     {
-        $this->name = $this->_truncateString($name, 100);
+        $this->name = $this->truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
             $this->setShortName($name);
         }
     }
 
-    /**
-     * @return null|string
-     */
     public function getShortName(): ?string
     {
         return (!empty($this->short_name))
@@ -437,15 +425,12 @@ class Station
             : self::getStationShortName($this->name);
     }
 
-    /**
-     * @param null|string $short_name
-     */
     public function setShortName(?string $short_name): void
     {
         $short_name = trim($short_name);
         if (!empty($short_name)) {
             $short_name = self::getStationShortName($short_name);
-            $this->short_name = $this->_truncateString($short_name, 100);
+            $this->short_name = $this->truncateString($short_name, 100);
         }
     }
 
@@ -454,42 +439,26 @@ class Station
         return File::sanitizeFileName($str);
     }
 
-    /**
-     * @param bool $is_enabled
-     */
     public function setIsEnabled(bool $is_enabled): void
     {
         $this->is_enabled = $is_enabled;
     }
 
-    /**
-     * @return null|string
-     */
     public function getFrontendType(): ?string
     {
         return $this->frontend_type;
     }
 
-    /**
-     * @param null|string $frontend_type
-     */
-    public function setFrontendType(string $frontend_type = null): void
+    public function setFrontendType(?string $frontend_type = null): void
     {
         $this->frontend_type = $frontend_type;
     }
 
-    /**
-     * @return array|null
-     */
     public function getFrontendConfig(): ?array
     {
         return $this->frontend_config;
     }
 
-    /**
-     * @param array $frontend_config
-     * @param bool $force_overwrite
-     */
     public function setFrontendConfig(array $frontend_config, $force_overwrite = false): void
     {
         $config = ($force_overwrite) ? [] : (array)$this->frontend_config;
@@ -522,17 +491,11 @@ class Station
         $this->frontend_config = $frontend_config;
     }
 
-    /**
-     * @return null|string
-     */
     public function getBackendType(): ?string
     {
         return $this->backend_type;
     }
 
-    /**
-     * @param null|string $backend_type
-     */
     public function setBackendType(string $backend_type = null): void
     {
         $this->backend_type = $backend_type;
@@ -565,18 +528,11 @@ class Station
         return (bool)($settings['use_manual_autodj'] ?? false);
     }
 
-    /**
-     * @return array|null
-     */
     public function getBackendConfig(): ?array
     {
         return $this->backend_config;
     }
 
-    /**
-     * @param array $backend_config
-     * @param bool $force_overwrite
-     */
     public function setBackendConfig(array $backend_config, $force_overwrite = false): void
     {
         $config = ($force_overwrite) ? [] : (array)$this->backend_config;
@@ -591,9 +547,6 @@ class Station
         $this->backend_config = $config;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAdapterApiKey(): ?string
     {
         return $this->adapter_api_key;
@@ -619,68 +572,44 @@ class Station
         return hash_equals($api_key, $this->adapter_api_key);
     }
 
-    /**
-     * @return null|string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param null|string $description
-     */
     public function setDescription(string $description = null): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return null|string
-     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    /**
-     * @param null|string $url
-     */
     public function setUrl(string $url = null): void
     {
-        $this->url = $this->_truncateString($url);
+        $this->url = $this->truncateString($url);
     }
 
-    /**
-     * @return string|null
-     */
     public function getGenre(): ?string
     {
         return $this->genre;
     }
 
-    /**
-     * @param string|null $genre
-     */
     public function setGenre(?string $genre): void
     {
-        $this->genre = $this->_truncateString($genre, 150);
+        $this->genre = $this->truncateString($genre, 150);
     }
 
-    /**
-     * @return null|string
-     */
     public function getRadioBaseDir(): ?string
     {
         return $this->radio_base_dir;
     }
 
-    /**
-     * @param string $new_dir
-     */
     public function setRadioBaseDir($new_dir): void
     {
-        $this->radio_base_dir = $this->_truncateString(trim($new_dir));
+        $this->radio_base_dir = $this->truncateString(trim($new_dir));
     }
 
     public function getRadioAlbumArtDir(): string
@@ -710,9 +639,6 @@ class Station
         return ltrim(str_replace($this->getRadioMediaDir(), '', $full_path), '/');
     }
 
-    /**
-     * @return string
-     */
     public function getRadioMediaDir(): string
     {
         return (!empty($this->radio_media_dir))
@@ -720,12 +646,9 @@ class Station
             : $this->radio_base_dir . '/media';
     }
 
-    /**
-     * @param string $new_dir
-     */
     public function setRadioMediaDir(?string $new_dir): void
     {
-        $new_dir = $this->_truncateString(trim($new_dir));
+        $new_dir = $this->truncateString(trim($new_dir));
 
         if ($new_dir && $new_dir !== $this->radio_media_dir) {
             if (!empty($new_dir) && !file_exists($new_dir) && !mkdir($new_dir, 0777, true) && !is_dir($new_dir)) {
@@ -736,25 +659,16 @@ class Station
         }
     }
 
-    /**
-     * @return string
-     */
     public function getRadioPlaylistsDir(): string
     {
         return $this->radio_base_dir . '/playlists';
     }
 
-    /**
-     * @return string
-     */
     public function getRadioConfigDir(): string
     {
         return $this->radio_base_dir . '/config';
     }
 
-    /**
-     * @return Api\NowPlaying|null
-     */
     public function getNowplaying(): ?Api\NowPlaying
     {
         if ($this->nowplaying instanceof Api\NowPlaying) {
@@ -763,9 +677,6 @@ class Station
         return null;
     }
 
-    /**
-     * @param Api\NowPlaying|null $nowplaying
-     */
     public function setNowplaying(Api\NowPlaying $nowplaying = null): void
     {
         $this->nowplaying = $nowplaying;
@@ -775,129 +686,81 @@ class Station
         }
     }
 
-    /**
-     * @return int
-     */
     public function getNowplayingTimestamp(): int
     {
         return (int)$this->nowplaying_timestamp;
     }
 
-    /**
-     * @param int $nowplaying_timestamp
-     */
     public function setNowPlayingTimestamp(int $nowplaying_timestamp): void
     {
         $this->nowplaying_timestamp = $nowplaying_timestamp;
     }
 
-    /**
-     * @return array|null
-     */
     public function getAutomationSettings(): ?array
     {
         return $this->automation_settings;
     }
 
-    /**
-     * @param array|null $automation_settings
-     */
     public function setAutomationSettings(array $automation_settings = null): void
     {
         $this->automation_settings = $automation_settings;
     }
 
-    /**
-     * @return int|null
-     */
     public function getAutomationTimestamp(): ?int
     {
         return $this->automation_timestamp;
     }
 
-    /**
-     * @param int|null $automation_timestamp
-     */
     public function setAutomationTimestamp(int $automation_timestamp = null): void
     {
         $this->automation_timestamp = $automation_timestamp;
     }
 
-    /**
-     * @return bool
-     */
     public function getEnableRequests(): bool
     {
         return $this->enable_requests;
     }
 
-    /**
-     * @param bool $enable_requests
-     */
     public function setEnableRequests(bool $enable_requests): void
     {
         $this->enable_requests = $enable_requests;
     }
 
-    /**
-     * @return int|null
-     */
     public function getRequestDelay(): ?int
     {
         return $this->request_delay;
     }
 
-    /**
-     * @param int|null $request_delay
-     */
     public function setRequestDelay(int $request_delay = null): void
     {
         $this->request_delay = $request_delay;
     }
 
-    /**
-     * @return int|null
-     */
     public function getRequestThreshold(): ?int
     {
         return $this->request_threshold;
     }
 
-    /**
-     * @param int|null $request_threshold
-     */
     public function setRequestThreshold(int $request_threshold = null): void
     {
         $this->request_threshold = $request_threshold;
     }
 
-    /**
-     * @return int
-     */
     public function getDisconnectDeactivateStreamer(): int
     {
         return $this->disconnect_deactivate_streamer;
     }
 
-    /**
-     * @param int $disconnect_deactivate_streamer
-     */
     public function setDisconnectDeactivateStreamer(int $disconnect_deactivate_streamer): void
     {
         $this->disconnect_deactivate_streamer = $disconnect_deactivate_streamer;
     }
 
-    /**
-     * @return bool
-     */
     public function getEnableStreamers(): bool
     {
         return $this->enable_streamers;
     }
 
-    /**
-     * @param bool $enable_streamers
-     */
     public function setEnableStreamers(bool $enable_streamers): void
     {
         if ($this->enable_streamers !== $enable_streamers) {
@@ -907,97 +770,61 @@ class Station
         $this->enable_streamers = $enable_streamers;
     }
 
-    /**
-     * @return bool
-     */
     public function getIsStreamerLive(): bool
     {
         return $this->is_streamer_live;
     }
 
-    /**
-     * @param bool $is_streamer_live
-     */
     public function setIsStreamerLive(bool $is_streamer_live): void
     {
         $this->is_streamer_live = $is_streamer_live;
     }
 
-    /**
-     * @return bool
-     */
     public function getEnablePublicPage(): bool
     {
         return (bool)$this->enable_public_page && $this->isEnabled();
     }
 
-    /**
-     * @param bool $enable_public_page
-     */
     public function setEnablePublicPage(bool $enable_public_page): void
     {
         $this->enable_public_page = $enable_public_page;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->is_enabled;
     }
 
-    /**
-     * @return bool
-     */
     public function getNeedsRestart(): bool
     {
         return $this->needs_restart;
     }
 
-    /**
-     * @param bool $needs_restart
-     */
     public function setNeedsRestart(bool $needs_restart): void
     {
         $this->needs_restart = $needs_restart;
     }
 
-    /**
-     * @return bool
-     */
     public function getHasStarted(): bool
     {
         return $this->has_started;
     }
 
-    /**
-     * @param bool $has_started
-     */
     public function setHasStarted(bool $has_started): void
     {
         $this->has_started = $has_started;
     }
 
-    /**
-     * @return int
-     */
     public function getApiHistoryItems(): int
     {
         return $this->api_history_items ?? self::DEFAULT_API_HISTORY_ITEMS;
     }
 
-    /**
-     * @param int|null $api_history_items
-     */
     public function setApiHistoryItems(?int $api_history_items): void
     {
         $this->api_history_items = $api_history_items;
     }
 
-    /**
-     * @return string|null
-     */
     public function getStorageQuota(): ?string
     {
         $raw_quota = $this->getStorageQuotaBytes();
@@ -1016,9 +843,6 @@ class Station
         $this->storage_quota = !empty($storage_quota) ? $storage_quota : null;
     }
 
-    /**
-     * @return BigInteger|null
-     */
     public function getStorageQuotaBytes(): ?BigInteger
     {
         $size = $this->storage_quota;
@@ -1028,9 +852,6 @@ class Station
             : null;
     }
 
-    /**
-     * @return string|null
-     */
     public function getStorageUsed(): ?string
     {
         $raw_size = $this->getStorageUsedBytes();
@@ -1049,9 +870,6 @@ class Station
         $this->storage_used = !empty($storage_used) ? $storage_used : null;
     }
 
-    /**
-     * @return BigInteger
-     */
     public function getStorageUsedBytes(): BigInteger
     {
         $size = $this->storage_used;
@@ -1098,9 +916,6 @@ class Station
         $this->storage_used = (string)$storage_used;
     }
 
-    /**
-     * @return string
-     */
     public function getStorageAvailable(): string
     {
         $raw_size = $this->getRawStorageAvailable();
@@ -1110,9 +925,6 @@ class Station
             : '';
     }
 
-    /**
-     * @return BigInteger|null
-     */
     public function getRawStorageAvailable(): ?BigInteger
     {
         $quota = $this->getStorageQuotaBytes();
@@ -1125,9 +937,6 @@ class Station
         return $quota;
     }
 
-    /**
-     * @return bool
-     */
     public function isStorageFull(): bool
     {
         $available = $this->getRawStorageAvailable();
@@ -1143,17 +952,11 @@ class Station
         return ($used->compareTo($available) !== -1);
     }
 
-    /**
-     * @return int
-     */
     public function getStorageUsePercentage(): int
     {
         return Quota::getPercentage($this->getStorageUsedBytes(), $this->getRawStorageAvailable());
     }
 
-    /**
-     * @return string
-     */
     public function getTimezone(): string
     {
         if (!empty($this->timezone)) {
@@ -1163,49 +966,31 @@ class Station
         return Customization::DEFAULT_TIMEZONE;
     }
 
-    /**
-     * @param string|null $timezone
-     */
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
     }
 
-    /**
-     * @return Collection
-     */
     public function getHistory(): Collection
     {
         return $this->history;
     }
 
-    /**
-     * @return Collection
-     */
     public function getMedia(): Collection
     {
         return $this->media;
     }
 
-    /**
-     * @return Collection
-     */
     public function getStreamers(): Collection
     {
         return $this->streamers;
     }
 
-    /**
-     * @return StationStreamer|null
-     */
     public function getCurrentStreamer(): ?StationStreamer
     {
         return $this->current_streamer;
     }
 
-    /**
-     * @param StationStreamer|null $current_streamer
-     */
     public function setCurrentStreamer(?StationStreamer $current_streamer = null): void
     {
         if (null !== $this->current_streamer || null !== $current_streamer) {
@@ -1213,49 +998,31 @@ class Station
         }
     }
 
-    /**
-     * @return Collection
-     */
     public function getPermissions(): Collection
     {
         return $this->permissions;
     }
 
-    /**
-     * @return Collection
-     */
     public function getPlaylists(): Collection
     {
         return $this->playlists;
     }
 
-    /**
-     * @return Collection
-     */
     public function getMounts(): Collection
     {
         return $this->mounts;
     }
 
-    /**
-     * @return Collection
-     */
     public function getRemotes(): Collection
     {
         return $this->remotes;
     }
 
-    /**
-     * @return Collection
-     */
     public function getWebhooks(): Collection
     {
         return $this->webhooks;
     }
 
-    /**
-     * @return Collection
-     */
     public function getSftpUsers(): Collection
     {
         return $this->sftp_users;

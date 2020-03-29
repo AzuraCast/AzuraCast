@@ -252,90 +252,57 @@ class StationMedia
         $this->generateUniqueId();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Station
-     */
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSongId(): ?string
     {
         return $this->song_id;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     */
-    public function setTitle(string $title = null): void
+    public function setTitle(?string $title = null): void
     {
-        $this->title = $this->_truncateString($title, 200);
+        $this->title = $this->truncateString($title, 200);
     }
 
-    /**
-     * @return null|string
-     */
     public function getArtist(): ?string
     {
         return $this->artist;
     }
 
-    /**
-     * @param null|string $artist
-     */
-    public function setArtist(string $artist = null): void
+    public function setArtist(?string $artist = null): void
     {
-        $this->artist = $this->_truncateString($artist, 200);
+        $this->artist = $this->truncateString($artist, 200);
     }
 
-    /**
-     * @return null|string
-     */
     public function getAlbum(): ?string
     {
         return $this->album;
     }
 
-    /**
-     * @param null|string $album
-     */
-    public function setAlbum(string $album = null): void
+    public function setAlbum(?string $album = null): void
     {
-        $this->album = $this->_truncateString($album, 200);
+        $this->album = $this->truncateString($album, 200);
     }
 
-    /**
-     * @return null|string
-     */
     public function getLyrics(): ?string
     {
         return $this->lyrics;
     }
 
-    /**
-     * @param null|string $lyrics
-     */
-    public function setLyrics($lyrics): void
+    public function setLyrics(?string $lyrics = null): void
     {
         $this->lyrics = $lyrics;
     }
@@ -350,25 +317,16 @@ class StationMedia
         return 'albumart://' . $this->unique_id . '.jpg';
     }
 
-    /**
-     * @return null|string
-     */
     public function getIsrc(): ?string
     {
         return $this->isrc;
     }
 
-    /**
-     * @param null|string $isrc
-     */
-    public function setIsrc(string $isrc = null): void
+    public function setIsrc(?string $isrc = null): void
     {
         $this->isrc = $isrc;
     }
 
-    /**
-     * @return int
-     */
     public function getLength(): int
     {
         return $this->length;
@@ -386,34 +344,22 @@ class StationMedia
         $this->length_text = $length_min . ':' . str_pad($length_sec, 2, '0', STR_PAD_LEFT);
     }
 
-    /**
-     * @return null|string
-     */
     public function getLengthText(): ?string
     {
         return $this->length_text;
     }
 
-    /**
-     * @param null|string $length_text
-     */
-    public function setLengthText(string $length_text = null): void
+    public function setLengthText(?string $length_text = null): void
     {
         $this->length_text = $length_text;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPath(): ?string
     {
         return $this->path;
     }
 
-    /**
-     * @param null|string $path
-     */
-    public function setPath(string $path = null): void
+    public function setPath(?string $path = null): void
     {
         $this->path = $path;
     }
@@ -428,34 +374,22 @@ class StationMedia
         return 'media://' . $this->path;
     }
 
-    /**
-     * @return int|null
-     */
     public function getMtime(): ?int
     {
         return $this->mtime;
     }
 
-    /**
-     * @param int|null $mtime
-     */
-    public function setMtime(int $mtime = null): void
+    public function setMtime(?int $mtime = null): void
     {
         $this->mtime = $mtime;
     }
 
-    /**
-     * @return float|null
-     */
     public function getAmplify(): ?float
     {
         return $this->amplify;
     }
 
-    /**
-     * @param float|null $amplify
-     */
-    public function setAmplify($amplify = null): void
+    public function setAmplify(?float $amplify = null): void
     {
         if ($amplify === '') {
             $amplify = null;
@@ -464,18 +398,12 @@ class StationMedia
         $this->amplify = (null === $amplify) ? null : (float)$amplify;
     }
 
-    /**
-     * @return float|null
-     */
     public function getFadeOverlap(): ?float
     {
         return $this->fade_overlap;
     }
 
-    /**
-     * @param float|null $fade_overlap
-     */
-    public function setFadeOverlap($fade_overlap = null): void
+    public function setFadeOverlap(?float $fade_overlap = null): void
     {
         if ($fade_overlap === '') {
             $fade_overlap = null;
@@ -484,9 +412,6 @@ class StationMedia
         $this->fade_overlap = $fade_overlap;
     }
 
-    /**
-     * @return float|null
-     */
     public function getFadeIn(): ?float
     {
         return $this->fade_in;
@@ -500,9 +425,6 @@ class StationMedia
         $this->fade_in = $this->parseSeconds($fade_in);
     }
 
-    /**
-     * @return float|null
-     */
     public function getFadeOut(): ?float
     {
         return $this->fade_out;
@@ -516,9 +438,6 @@ class StationMedia
         $this->fade_out = $this->parseSeconds($fade_out);
     }
 
-    /**
-     * @return float|null
-     */
     public function getCueIn(): ?float
     {
         return $this->cue_in;
@@ -532,9 +451,6 @@ class StationMedia
         $this->cue_in = $this->parseSeconds($cue_in);
     }
 
-    /**
-     * @return float|null
-     */
     public function getCueOut(): ?float
     {
         return $this->cue_out;
@@ -591,27 +507,16 @@ class StationMedia
         return $length;
     }
 
-    /**
-     * @return int
-     */
     public function getArtUpdatedAt(): int
     {
         return $this->art_updated_at;
     }
 
-    /**
-     * @param int $art_updated_at
-     */
     public function setArtUpdatedAt(int $art_updated_at): void
     {
         $this->art_updated_at = $art_updated_at;
     }
 
-    /**
-     * @param StationPlaylist $playlist
-     *
-     * @return StationPlaylistMedia|null
-     */
     public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
     {
         $item = $this->playlists->filter(function ($spm) use ($playlist) {
@@ -626,17 +531,11 @@ class StationMedia
             : null;
     }
 
-    /**
-     * @return Collection
-     */
     public function getCustomFields(): Collection
     {
         return $this->custom_fields;
     }
 
-    /**
-     * @param Collection $custom_fields
-     */
     public function setCustomFields(Collection $custom_fields): void
     {
         $this->custom_fields = $custom_fields;
@@ -747,18 +646,12 @@ class StationMedia
         return $annotations;
     }
 
-    /**
-     * @return Song|null
-     */
     public function getSong(): ?Song
     {
         return $this->song;
     }
 
-    /**
-     * @param Song|null $song
-     */
-    public function setSong(Song $song = null): void
+    public function setSong(?Song $song = null): void
     {
         $this->song = $song;
     }
@@ -782,17 +675,11 @@ class StationMedia
         return false;
     }
 
-    /**
-     * @return Collection
-     */
     public function getPlaylists(): Collection
     {
         return $this->playlists;
     }
 
-    /**
-     * @return string A string identifying this entity.
-     */
     public function __toString(): string
     {
         return 'StationMedia ' . $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;

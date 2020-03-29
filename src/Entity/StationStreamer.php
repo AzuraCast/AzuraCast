@@ -134,49 +134,31 @@ class StationStreamer
         $this->schedule_items = new ArrayCollection;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Station
-     */
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    /**
-     * @return string
-     */
     public function getStreamerUsername(): string
     {
         return $this->streamer_username;
     }
 
-    /**
-     * @param string $streamer_username
-     */
     public function setStreamerUsername(string $streamer_username): void
     {
-        $this->streamer_username = $this->_truncateString($streamer_username, 50);
+        $this->streamer_username = $this->truncateString($streamer_username, 50);
     }
 
-    /**
-     * @return string
-     */
     public function getStreamerPassword(): string
     {
         return '';
     }
 
-    /**
-     * @param string|null $streamer_password
-     */
     public function setStreamerPassword(?string $streamer_password): void
     {
         $streamer_password = trim($streamer_password);
@@ -193,7 +175,6 @@ class StationStreamer
 
     /**
      * @AuditLog\AuditIdentifier()
-     *
      * @return string
      */
     public function getDisplayName(): string
@@ -203,41 +184,26 @@ class StationStreamer
             : $this->streamer_username;
     }
 
-    /**
-     * @param null|string $display_name
-     */
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $this->_truncateString($display_name);
+        $this->display_name = $this->truncateString($display_name);
     }
 
-    /**
-     * @return null|string
-     */
     public function getComments(): ?string
     {
         return $this->comments;
     }
 
-    /**
-     * @param null|string $comments
-     */
     public function setComments(string $comments = null): void
     {
         $this->comments = $comments;
     }
 
-    /**
-     * @return bool
-     */
     public function isActive(): bool
     {
         return $this->is_active;
     }
 
-    /**
-     * @param bool $is_active
-     */
     public function setIsActive(bool $is_active): void
     {
         $this->is_active = $is_active;
@@ -248,43 +214,26 @@ class StationStreamer
         }
     }
 
-    /**
-     * @return bool
-     */
     public function enforceSchedule(): bool
     {
         return $this->enforce_schedule;
     }
 
-    /**
-     * @param bool $enforce_schedule
-     */
     public function setEnforceSchedule(bool $enforce_schedule): void
     {
         $this->enforce_schedule = $enforce_schedule;
     }
 
-    /**
-     * @return int|null
-     */
     public function getReactivateAt(): ?int
     {
         return $this->reactivate_at;
     }
 
-    /**
-     * @param int|null $reactivate_at
-     */
     public function setReactivateAt(?int $reactivate_at): void
     {
         $this->reactivate_at = $reactivate_at;
     }
 
-    /**
-     * Deactivate this streamer for the specified period of time.
-     *
-     * @param int $seconds
-     */
     public function deactivateFor(int $seconds): void
     {
         $this->is_active = false;
@@ -299,13 +248,6 @@ class StationStreamer
         return $this->schedule_items;
     }
 
-    /**
-     * Determine whether the given DJ is allowed to broadcast at the given moment.
-     *
-     * @param Chronos|null $now
-     *
-     * @return bool
-     */
     public function canStreamNow(Chronos $now = null): bool
     {
         if (!$this->enforceSchedule()) {

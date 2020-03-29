@@ -56,9 +56,6 @@ class CustomField
      */
     protected $auto_assign;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
@@ -66,7 +63,6 @@ class CustomField
 
     /**
      * @AuditLog\AuditIdentifier()
-     *
      * @return string
      */
     public function getName(): string
@@ -74,21 +70,15 @@ class CustomField
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
-        $this->name = $this->_truncateString($name);
+        $this->name = $this->truncateString($name);
 
         if (empty($this->short_name) && !empty($name)) {
             $this->setShortName(Station::getStationShortName($name));
         }
     }
 
-    /**
-     * @return null|string
-     */
     public function getShortName(): ?string
     {
         return (!empty($this->short_name))
@@ -96,36 +86,24 @@ class CustomField
             : Station::getStationShortName($this->name);
     }
 
-    /**
-     * @param null|string $short_name
-     */
     public function setShortName(?string $short_name): void
     {
         $short_name = trim($short_name);
         if (!empty($short_name)) {
-            $this->short_name = $this->_truncateString($short_name, 100);
+            $this->short_name = $this->truncateString($short_name, 100);
         }
     }
 
-    /**
-     * @return string|null
-     */
     public function getAutoAssign(): ?string
     {
         return $this->auto_assign;
     }
 
-    /**
-     * @return bool
-     */
     public function hasAutoAssign(): bool
     {
         return !empty($this->auto_assign);
     }
-
-    /**
-     * @param string|null $auto_assign
-     */
+    
     public function setAutoAssign(?string $auto_assign): void
     {
         $this->auto_assign = $auto_assign;

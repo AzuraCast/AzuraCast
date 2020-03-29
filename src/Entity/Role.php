@@ -53,18 +53,12 @@ class Role implements JsonSerializable
      */
     protected $permissions;
 
-    /**
-     * Role constructor.
-     */
     public function __construct()
     {
         $this->users = new ArrayCollection;
         $this->permissions = new ArrayCollection;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
@@ -72,7 +66,6 @@ class Role implements JsonSerializable
 
     /**
      * @AuditLog\AuditIdentifier()
-     *
      * @return string
      */
     public function getName(): string
@@ -80,25 +73,16 @@ class Role implements JsonSerializable
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
-        $this->name = $this->_truncateString($name, 100);
+        $this->name = $this->truncateString($name, 100);
     }
 
-    /**
-     * @return Collection
-     */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    /**
-     * @return Collection
-     */
     public function getPermissions(): Collection
     {
         return $this->permissions;

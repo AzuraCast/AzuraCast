@@ -75,14 +75,6 @@ class AuditLog
      */
     protected $user;
 
-    /**
-     * @param int $operation
-     * @param string $class
-     * @param string $identifier
-     * @param string|null $targetClass
-     * @param string|null $target
-     * @param array $changes
-     */
     public function __construct(
         int $operation,
         string $class,
@@ -95,9 +87,9 @@ class AuditLog
         $this->user = self::$currentUser;
 
         $this->operation = $operation;
-        $this->class = $this->_filterClassName($class);
+        $this->class = $this->filterClassName($class);
         $this->identifier = $identifier;
-        $this->targetClass = $this->_filterClassName($targetClass);
+        $this->targetClass = $this->filterClassName($targetClass);
         $this->target = $target;
         $this->changes = $changes;
     }
@@ -107,7 +99,7 @@ class AuditLog
      *
      * @return string|null The non-namespaced class name
      */
-    protected function _filterClassName(?string $class): ?string
+    protected function filterClassName(?string $class): ?string
     {
         if (empty($class)) {
             return null;
@@ -129,73 +121,46 @@ class AuditLog
             : null;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
     public function getTimestamp(): int
     {
         return $this->timestamp;
     }
 
-    /**
-     * @return int
-     */
     public function getOperation(): int
     {
         return $this->operation;
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTargetClass(): ?string
     {
         return $this->targetClass;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTarget(): ?string
     {
         return $this->target;
     }
 
-    /**
-     * @return array
-     */
     public function getChanges(): array
     {
         return $this->changes;
     }
 
-    /**
-     * @return string|null
-     */
     public function getUser(): ?string
     {
         return $this->user;

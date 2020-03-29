@@ -70,11 +70,6 @@ class Song
      */
     protected $history;
 
-    /**
-     * Song constructor.
-     *
-     * @param array $song_info
-     */
     public function __construct(array $song_info)
     {
 
@@ -99,9 +94,9 @@ class Song
             }
         }
 
-        $this->text = $this->_truncateString($song_info['text'], 150);
-        $this->title = $this->_truncateString($song_info['title'], 150);
-        $this->artist = $this->_truncateString($song_info['artist'], 150);
+        $this->text = $this->truncateString($song_info['text'], 150);
+        $this->title = $this->truncateString($song_info['title'], 150);
+        $this->artist = $this->truncateString($song_info['artist'], 150);
 
         $new_song_hash = self::getSongHash($song_info);
 
@@ -148,57 +143,36 @@ class Song
         return md5($hash_base);
     }
 
-    /**
-     * @return string|null
-     */
     public function getText(): ?string
     {
         return $this->text;
     }
 
-    /**
-     * @return string|null
-     */
     public function getArtist(): ?string
     {
         return $this->artist;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
     public function getCreated(): int
     {
         return $this->created;
     }
 
-    /**
-     * @return int
-     */
     public function getPlayCount(): int
     {
         return $this->play_count;
     }
 
-    /**
-     * @return int
-     */
     public function getLastPlayed(): int
     {
         return $this->last_played;
@@ -213,17 +187,11 @@ class Song
         $this->last_played = time();
     }
 
-    /**
-     * @return Collection
-     */
     public function getHistory(): Collection
     {
         return $this->history;
     }
-
-    /**
-     * @return string A string identifying this entity.
-     */
+    
     public function __toString(): string
     {
         return 'Song ' . $this->id . ': ' . $this->artist . ' - ' . $this->title;

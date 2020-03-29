@@ -16,7 +16,7 @@ class Settings
     public const PREFER_BROWSER_URL = 'prefer_browser_url';
     public const USE_RADIO_PROXY = 'use_radio_proxy';
     public const HISTORY_KEEP_DAYS = 'history_keep_days';
-    
+
     public const ALWAYS_USE_SSL = 'always_use_ssl';
     public const API_ACCESS_CONTROL = 'api_access_control';
     public const NOWPLAYING_USE_WEBSOCKETS = 'nowplaying_use_websockets';
@@ -81,44 +81,26 @@ class Settings
      */
     protected $setting_value;
 
-    /**
-     * Settings constructor.
-     *
-     * @param string $setting_key
-     */
     public function __construct(string $setting_key)
     {
         $this->setting_key = $setting_key;
     }
 
-    /**
-     * @return string
-     */
     public function getSettingKey(): string
     {
         return $this->setting_key;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSettingValue()
     {
         return $this->setting_value;
     }
 
-    /**
-     * @param mixed $setting_value
-     */
     public function setSettingValue($setting_value)
     {
         $this->setting_value = $setting_value;
     }
 
-    /**
-     * @return mixed
-     * @see getSettingValue
-     */
     public function getValue()
     {
         return $this->setting_value;

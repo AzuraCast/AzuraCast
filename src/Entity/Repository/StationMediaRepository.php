@@ -1,10 +1,10 @@
 <?php
 namespace App\Entity\Repository;
 
+use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception\MediaProcessingException;
 use App\Radio\Filesystem;
-use App\Doctrine\Repository;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
@@ -19,14 +19,11 @@ use voku\helper\UTF8;
 
 class StationMediaRepository extends Repository
 {
-    /** @var Filesystem */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
-    /** @var SongRepository */
-    protected $songRepo;
+    protected SongRepository $songRepo;
 
-    /** @var CustomFieldRepository */
-    protected $customFieldRepo;
+    protected CustomFieldRepository $customFieldRepo;
 
     public function __construct(
         EntityManager $em,

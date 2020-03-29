@@ -56,13 +56,6 @@ class RolePermission implements JsonSerializable
      */
     protected $station;
 
-    /**
-     * RolePermission constructor.
-     *
-     * @param Role $role
-     * @param Station|null $station
-     * @param null $action_name
-     */
     public function __construct(Role $role, Station $station = null, $action_name = null)
     {
         $this->role = $role;
@@ -73,49 +66,31 @@ class RolePermission implements JsonSerializable
         }
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Role
-     */
     public function getRole(): Role
     {
         return $this->role;
     }
 
-    /**
-     * @return Station|null
-     */
     public function getStation(): ?Station
     {
         return $this->station;
     }
 
-    /**
-     * @return bool
-     */
     public function hasStation(): bool
     {
         return (null !== $this->station);
     }
 
-    /**
-     * @return string
-     */
     public function getActionName(): string
     {
         return $this->action_name;
     }
 
-    /**
-     * @param string $action_name
-     */
     public function setActionName(string $action_name)
     {
         $this->action_name = $action_name;

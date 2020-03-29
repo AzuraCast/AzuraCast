@@ -188,17 +188,11 @@ class StationMount implements StationMountInterface
         $this->station = $station;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return bool
-     */
     public function isVisibleOnPublicPages(): bool
     {
         if ($this->is_default) {
@@ -208,201 +202,126 @@ class StationMount implements StationMountInterface
         return $this->is_visible_on_public_pages;
     }
 
-    /**
-     * @param bool $is_visible_on_public_pages
-     */
     public function setIsVisibleOnPublicPages(bool $is_visible_on_public_pages): void
     {
         $this->is_visible_on_public_pages = $is_visible_on_public_pages;
     }
 
-    /**
-     * @return bool
-     */
     public function getIsDefault(): bool
     {
         return $this->is_default;
     }
 
-    /**
-     * @param bool $is_default
-     */
     public function setIsDefault(bool $is_default): void
     {
         $this->is_default = $is_default;
     }
 
-    /**
-     * @return bool
-     */
     public function getIsPublic(): bool
     {
         return $this->is_public;
     }
 
-    /**
-     * @param bool $is_public
-     */
     public function setIsPublic(bool $is_public): void
     {
         $this->is_public = $is_public;
     }
 
-    /**
-     * @return null|string
-     */
     public function getFallbackMount(): ?string
     {
         return $this->fallback_mount;
     }
 
-    /**
-     * @param null|string $fallback_mount
-     */
-    public function setFallbackMount($fallback_mount): void
+    public function setFallbackMount(?string $fallback_mount = null): void
     {
         $this->fallback_mount = $fallback_mount;
     }
 
-    /**
-     * @return mixed
-     */
     public function getRelayUrl()
     {
         return $this->relay_url;
     }
 
-    /**
-     * @param null|string $relay_url
-     */
-    public function setRelayUrl(string $relay_url = null): void
+    public function setRelayUrl(?string $relay_url = null): void
     {
-        $this->relay_url = $this->_truncateString($relay_url);
+        $this->relay_url = $this->truncateString($relay_url);
     }
 
-    /**
-     * @return string|null
-     */
     public function getAuthhash(): ?string
     {
         return $this->authhash;
     }
 
-    /**
-     * @param null|string $authhash
-     */
-    public function setAuthhash(string $authhash = null): void
+    public function setAuthhash(?string $authhash = null): void
     {
-        $this->authhash = $this->_truncateString($authhash);
+        $this->authhash = $this->truncateString($authhash);
     }
 
-    /**
-     * @return bool
-     */
     public function getEnableAutodj(): bool
     {
         return $this->enable_autodj;
     }
 
-    /**
-     * @param bool $enable_autodj
-     */
     public function setEnableAutodj(bool $enable_autodj): void
     {
         $this->enable_autodj = $enable_autodj;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAutodjFormat(): ?string
     {
         return $this->autodj_format;
     }
 
-    /**
-     * @param null|string $autodj_format
-     */
-    public function setAutodjFormat(string $autodj_format = null): void
+    public function setAutodjFormat(?string $autodj_format = null): void
     {
-        $this->autodj_format = $this->_truncateString($autodj_format, 10);
+        $this->autodj_format = $this->truncateString($autodj_format, 10);
     }
 
-    /**
-     * @return int|null
-     */
     public function getAutodjBitrate(): ?int
     {
         return $this->autodj_bitrate;
     }
 
-    /**
-     * @param int|null $autodj_bitrate
-     */
-    public function setAutodjBitrate(int $autodj_bitrate = null): void
+    public function setAutodjBitrate(?int $autodj_bitrate = null): void
     {
         $this->autodj_bitrate = $autodj_bitrate;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCustomListenUrl(): ?string
     {
         return $this->custom_listen_url;
     }
 
-    /**
-     * @param null|string $custom_listen_url
-     */
-    public function setCustomListenUrl(string $custom_listen_url = null): void
+    public function setCustomListenUrl(?string $custom_listen_url = null): void
     {
-        $this->custom_listen_url = $this->_truncateString($custom_listen_url);
+        $this->custom_listen_url = $this->truncateString($custom_listen_url);
     }
 
-    /**
-     * @return string|null
-     */
     public function getFrontendConfig(): ?string
     {
         return $this->frontend_config;
     }
 
-    /**
-     * @param null|string $frontend_config
-     */
-    public function setFrontendConfig(string $frontend_config = null): void
+    public function setFrontendConfig(?string $frontend_config = null): void
     {
         $this->frontend_config = $frontend_config;
     }
 
-    /**
-     * @return int
-     */
     public function getListenersUnique(): int
     {
         return $this->listeners_unique;
     }
 
-    /**
-     * @param int $listeners_unique
-     */
     public function setListenersUnique(int $listeners_unique): void
     {
         $this->listeners_unique = $listeners_unique;
     }
 
-    /**
-     * @return int
-     */
     public function getListenersTotal(): int
     {
         return $this->listeners_total;
     }
 
-    /**
-     * @param int $listeners_total
-     */
     public function setListenersTotal(int $listeners_total): void
     {
         $this->listeners_total = $listeners_total;
@@ -421,9 +340,6 @@ class StationMount implements StationMountInterface
         return $fe_settings['port'];
     }
 
-    /**
-     * @return Station
-     */
     public function getStation(): Station
     {
         return $this->station;
@@ -442,31 +358,21 @@ class StationMount implements StationMountInterface
         return $fe_settings['source_pw'];
     }
 
-    /*
-     * StationMountInterface compliance methods
-     */
-
     /** @inheritdoc */
     public function getAutodjMount(): ?string
     {
         return $this->getName();
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $new_name
-     */
     public function setName(string $new_name): void
     {
         // Ensure all mount point names start with a leading slash.
-        $this->name = $this->_truncateString('/' . ltrim($new_name, '/'), 100);
+        $this->name = $this->truncateString('/' . ltrim($new_name, '/'), 100);
     }
 
     /** @inheritdoc */
@@ -526,11 +432,8 @@ class StationMount implements StationMountInterface
         return $this->name;
     }
 
-    /**
-     * @param string|null $display_name
-     */
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $this->_truncateString($display_name);
+        $this->display_name = $this->truncateString($display_name);
     }
 }

@@ -72,57 +72,36 @@ class StationStreamerBroadcast
         $this->timestampStart = time();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Station
-     */
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    /**
-     * @return StationStreamer
-     */
     public function getStreamer(): StationStreamer
     {
         return $this->streamer;
     }
 
-    /**
-     * @return int
-     */
     public function getTimestampStart(): int
     {
         return $this->timestampStart;
     }
 
-    /**
-     * @return int
-     */
     public function getTimestampEnd(): int
     {
         return $this->timestampEnd;
     }
 
-    /**
-     * @param int $timestampEnd
-     */
     public function setTimestampEnd(int $timestampEnd): void
     {
         $this->timestampEnd = $timestampEnd;
     }
 
-    /**
-     * @return string|null
-     */
     public function getRecordingPath(): ?string
     {
         return $this->recordingPath;

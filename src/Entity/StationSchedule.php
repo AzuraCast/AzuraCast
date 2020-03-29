@@ -100,57 +100,36 @@ class StationSchedule
         }
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return StationPlaylist|null
-     */
     public function getPlaylist(): ?StationPlaylist
     {
         return $this->playlist;
     }
 
-    /**
-     * @return StationStreamer|null
-     */
     public function getStreamer(): ?StationStreamer
     {
         return $this->streamer;
     }
 
-    /**
-     * @return int
-     */
     public function getStartTime(): int
     {
         return (int)$this->start_time;
     }
 
-    /**
-     * @param int $start_time
-     */
     public function setStartTime(int $start_time): void
     {
         $this->start_time = $start_time;
     }
 
-    /**
-     * @return int
-     */
     public function getEndTime(): int
     {
         return (int)$this->end_time;
     }
 
-    /**
-     * @param int $end_time
-     */
     public function setEndTime(int $end_time): void
     {
         $this->end_time = $end_time;
@@ -173,49 +152,31 @@ class StationSchedule
         return $end_time - $start_time;
     }
 
-    /**
-     * @return string|null
-     */
     public function getStartDate(): ?string
     {
         return $this->start_date;
     }
 
-    /**
-     * @param string|null $start_date
-     */
     public function setStartDate(?string $start_date): void
     {
         $this->start_date = $start_date;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEndDate(): ?string
     {
         return $this->end_date;
     }
 
-    /**
-     * @param string|null $end_date
-     */
     public function setEndDate(?string $end_date): void
     {
         $this->end_date = $end_date;
     }
 
-    /**
-     * @return array|null
-     */
     public function getDays(): ?array
     {
         return (!empty($this->days)) ? explode(',', $this->days) : null;
     }
 
-    /**
-     * @param array $days
-     */
     public function setDays($days): void
     {
         $this->days = implode(',', (array)$days);

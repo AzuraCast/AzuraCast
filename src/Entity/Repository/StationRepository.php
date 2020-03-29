@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity\Repository;
 
+use App\Doctrine\Repository;
 use App\Entity;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
@@ -8,7 +9,6 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Settings;
 use App\Sync\Task\Media;
 use App\Utilities;
-use App\Doctrine\Repository;
 use Closure;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -19,20 +19,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
-    /** @var Media */
-    protected $media_sync;
+    protected Media $media_sync;
 
-    /** @var Adapters */
-    protected $adapters;
+    protected Adapters $adapters;
 
-    /** @var Configuration */
-    protected $configuration;
+    protected Configuration $configuration;
 
-    /** @var ValidatorInterface */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
-    /** @var CacheInterface */
-    protected $cache;
+    protected CacheInterface $cache;
 
     public function __construct(
         EntityManager $em,

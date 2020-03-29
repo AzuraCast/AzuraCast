@@ -73,14 +73,6 @@ class Analytics
      */
     protected $station;
 
-    /*
-     * @param Station|null $station
-     * @param string $type
-     * @param null $timestamp
-     * @param int $number_min
-     * @param int $number_max
-     * @param int $number_avg
-     */
     public function __construct(
         Station $station = null,
         $type = 'day',
@@ -97,58 +89,37 @@ class Analytics
         $this->number_avg = $number_avg;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
     public function getTimestamp(): int
     {
         return $this->timestamp;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberMin(): int
     {
         return $this->number_min;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberMax(): int
     {
         return $this->number_max;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberAvg(): int
     {
         return $this->number_avg;
     }
 
-    /**
-     * @return Station|null
-     */
-    public function getStation()
+    public function getStation(): ?Station
     {
         return $this->station;
     }

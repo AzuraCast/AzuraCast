@@ -103,9 +103,6 @@ class ApiKey implements JsonSerializable
         return [$identifier, $verifier];
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
@@ -123,9 +120,6 @@ class ApiKey implements JsonSerializable
         return hash_equals($this->verifier, $this->hashVerifier($verifier));
     }
 
-    /**
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;
@@ -133,7 +127,6 @@ class ApiKey implements JsonSerializable
 
     /**
      * @AuditLog\AuditIdentifier
-     *
      * @return string
      */
     public function getComment(): ?string
@@ -141,12 +134,9 @@ class ApiKey implements JsonSerializable
         return $this->comment;
     }
 
-    /**
-     * @param string $comment
-     */
     public function setComment(?string $comment): void
     {
-        $this->comment = $this->_truncateString($comment);
+        $this->comment = $this->truncateString($comment);
     }
 
     public function jsonSerialize()

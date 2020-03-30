@@ -1,7 +1,7 @@
 <?php
 
-use App\Console\Command;
 use App\Console\Application;
+use App\Console\Command;
 use App\Settings;
 
 return function (Application $console) {
@@ -123,9 +123,9 @@ return function (Application $console) {
     )->setDescription('Trigger regeneration of AzuraCast API documentation.');
 
     $console->command(
-        'azuracast:internal:uptime-wait [service]',
+        'azuracast:internal:uptime-wait',
         Command\UptimeWaitCommand::class
-    )->setDescription('Wait until a service is online and accepting connections before continuing.');
+    )->setDescription('Wait until core services are online and accepting connections before continuing.');
 
     // User-side tools
     $console->command(

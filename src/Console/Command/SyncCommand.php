@@ -2,15 +2,18 @@
 namespace App\Console\Command;
 
 use App;
+use App\Service\UptimeWait;
 use App\Sync\Runner;
-use App\Console\Command\CommandAbstract;
 
 class SyncCommand extends CommandAbstract
 {
     public function __invoke(
         Runner $sync,
+        UptimeWait $uptimeWait,
         string $task = 'nowplaying'
     ) {
+        $uptimeWait->waitForAll();
+
         switch ($task) {
             case 'long':
                 $sync->syncLong();

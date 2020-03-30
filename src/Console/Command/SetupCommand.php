@@ -4,7 +4,6 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Service\AzuraCastCentral;
 use App\Settings;
-use App\Console\Command\CommandAbstract;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -28,6 +27,8 @@ class SetupCommand extends CommandAbstract
             __('Environment: %s', ucfirst($settings[Settings::APP_ENV])),
             __('Installation Method: %s', $settings->isDocker() ? 'Docker' : 'Ansible'),
         ]);
+
+        $this->runCommand($output, 'azuracast:internal:uptime-wait');
 
         if ($update) {
             $io->note(__('Running in update mode.'));

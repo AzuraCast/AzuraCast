@@ -2,53 +2,32 @@
 namespace App\Console\Command;
 
 use App;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
-use Exception;
-use InvalidArgumentException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UptimeWaitCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
-        ?string $service = 'database'
+        App\Service\UptimeWait $uptimeWait
     ) {
-        $attempts = 0;
-        $total_attempts = 5;
-        $sleep_time = 5;
+        $io->writeln('Waiting for dependent services to go online...');
+        $io->progressStart(3);
 
-        $service_name = strtolower($service);
-        switch ($service_name) {
-            case 'influxdb':
-            case 'influx':
-                break;
+        try {
+            $uptimeWait->waitForDatabase();
+            $io->progressAdvance();
 
-            case 'database':
-            case 'mariadb':
-            case 'mysql':
-            default:
-                $conn = $em->getConnection();
+            $uptimeWait->waitForInflux();
+            $io->progressAdvance();
 
-                while ($attempts <= $total_attempts) {
-                    $attempts++;
-
-                    try {
-                        $conn->connect();
-                        $io->writeln('Successfully connected');
-                        return 0;
-                    } catch (Exception $e) {
-                        $io->writeln($e->getMessage());
-                        sleep($sleep_time);
-                        continue;
-                    }
-                }
-
-                return 1;
-                break;
+            $uptimeWait->waitForRedis();
+            $io->progressAdvance();
+        } catch (\Exception $e) {
+            $io->error('Error encountered: ' . $e->getMessage() . ' (' . $e->getFile() . ' L' . $e->getLine() . ')');
+            return 1;
         }
 
-        throw new InvalidArgumentException('Invalid service specified.');
+        $io->progressFinish();
+        return 0;
     }
 }

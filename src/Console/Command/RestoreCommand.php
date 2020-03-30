@@ -3,12 +3,10 @@ namespace App\Console\Command;
 
 use App\Sync\Task\Backup;
 use App\Utilities;
-use App\Console\Command\CommandAbstract;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 use const PATHINFO_EXTENSION;
 
 class RestoreCommand extends CommandAbstract
@@ -126,34 +124,5 @@ class RestoreCommand extends CommandAbstract
             'Restore complete in ' . round($time_diff, 3) . ' seconds.',
         ]);
         return 0;
-    }
-
-    protected function passThruProcess(SymfonyStyle $io, $cmd, $cwd = null, array $env = []): Process
-    {
-        set_time_limit(3600);
-
-        if (is_array($cmd)) {
-            $process = new Process($cmd, $cwd);
-        } else {
-            $process = Process::fromShellCommandline($cmd, $cwd);
-        }
-
-        $process->setTimeout(3500);
-        $process->setIdleTimeout(60);
-
-        $stdout = [];
-        $stderr = [];
-
-        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr) {
-            if ($process::ERR === $type) {
-                $io->getErrorStyle()->write($data);
-                $stderr[] = $data;
-            } else {
-                $io->write($data);
-                $stdout[] = $data;
-            }
-        }, $env);
-
-        return $process;
     }
 }

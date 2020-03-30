@@ -15,5 +15,5 @@ class NewRecord extends Status
      * ))
      * @var array
      */
-    public $links = [];
+    public array $links = [];
 }

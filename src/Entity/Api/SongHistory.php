@@ -15,7 +15,7 @@ class SongHistory implements ResolvableUrlInterface
      * @OA\Property
      * @var int
      */
-    public $sh_id;
+    public int $sh_id;
 
     /**
      * UNIX timestamp when playback started.
@@ -23,7 +23,7 @@ class SongHistory implements ResolvableUrlInterface
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
-    public $played_at;
+    public int $played_at;
 
     /**
      * Duration of the song in seconds
@@ -31,23 +31,23 @@ class SongHistory implements ResolvableUrlInterface
      * @OA\Property(example=180)
      * @var int
      */
-    public $duration;
+    public int $duration = 0;
 
     /**
      * Indicates the playlist that the song was played from, if available, or empty string if not.
      *
      * @OA\Property(example="Top 100")
-     * @var string
+     * @var string|null
      */
-    public $playlist;
+    public ?string $playlist = null;
 
     /**
      * Indicates the current streamer that was connected, if available, or empty string if not.
      *
      * @OA\Property(example="Test DJ")
-     * @var string
+     * @var string|null
      */
-    public $streamer;
+    public ?string $streamer = null;
 
     /**
      * Indicates whether the song is a listener request.
@@ -55,7 +55,7 @@ class SongHistory implements ResolvableUrlInterface
      * @OA\Property
      * @var bool
      */
-    public $is_request;
+    public bool $is_request = false;
 
     /**
      * Song
@@ -63,7 +63,7 @@ class SongHistory implements ResolvableUrlInterface
      * @OA\Property()
      * @var Song
      */
-    public $song;
+    public Song $song;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

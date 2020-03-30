@@ -12,12 +12,13 @@ class StationServiceStatus
      * @OA\Property(example=true)
      * @var bool
      */
-    public $backend_running;
+    public bool $backend_running;
+    
     /**
      * @OA\Property(example=true)
      * @var bool
      */
-    public $frontend_running;
+    public bool $frontend_running;
 
     public function __construct($backend_running, $frontend_running)
     {

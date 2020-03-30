@@ -14,7 +14,7 @@ class DetailedSongHistory extends SongHistory
      * @OA\Property(example=94)
      * @var int
      */
-    public $listeners_start;
+    public int $listeners_start = 0;
 
     /**
      * Number of listeners when song playback ended.
@@ -22,7 +22,7 @@ class DetailedSongHistory extends SongHistory
      * @OA\Property(example=105)
      * @var int
      */
-    public $listeners_end;
+    public int $listeners_end = 0;
 
     /**
      * The sum total change of listeners between the song's start and ending.
@@ -30,5 +30,5 @@ class DetailedSongHistory extends SongHistory
      * @OA\Property(example=11)
      * @var int
      */
-    public $delta_total;
+    public int $delta_total = 0;
 }

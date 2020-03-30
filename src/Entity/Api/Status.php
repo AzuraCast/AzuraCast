@@ -12,17 +12,19 @@ class Status
      * @OA\Property(example=true)
      * @var bool
      */
-    public $success;
+    public bool $success;
+
     /**
      * @OA\Property(example="Changes saved successfully.")
      * @var string
      */
-    public $message;
+    public string $message;
+
     /**
      * @OA\Property(example="<b>Changes saved successfully.</b>")
      * @var string
      */
-    public $formatted_message;
+    public string $formatted_message;
 
     public function __construct(
         $success = true,

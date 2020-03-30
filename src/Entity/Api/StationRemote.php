@@ -2,6 +2,7 @@
 namespace App\Entity\Api;
 
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @OA\Schema(type="object", schema="Api_StationRemote")
@@ -14,7 +15,7 @@ class StationRemote
      * @OA\Property(example=1)
      * @var int
      */
-    public $id;
+    public int $id;
 
     /**
      * Mount point name/URL
@@ -22,13 +23,13 @@ class StationRemote
      * @OA\Property(example="/radio.mp3")
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * Full listening URL specific to this mount
      *
      * @OA\Property(example="http://localhost:8000/radio.mp3")
-     * @var string
+     * @var string|UriInterface
      */
     public $url;
 
@@ -36,17 +37,17 @@ class StationRemote
      * Bitrate (kbps) of the broadcasted audio (if known)
      *
      * @OA\Property(example=128)
-     * @var int
+     * @var int|null
      */
-    public $bitrate;
+    public ?int $bitrate = null;
 
     /**
      * Audio encoding format of broadcasted audio (if known)
      *
      * @OA\Property(example="mp3")
-     * @var string
+     * @var string|null
      */
-    public $format;
+    public ?string $format = null;
 
     /**
      * Listener details
@@ -54,5 +55,5 @@ class StationRemote
      * @OA\Property
      * @var NowPlayingListeners
      */
-    public $listeners;
+    public NowPlayingListeners $listeners;
 }

@@ -16,54 +16,54 @@ class StationSchedule
      * @OA\Property(example=1)
      * @var int
      */
-    public $id;
+    public int $id;
 
     /**
      * The type of this schedule entry.
      * @OA\Property(enum={App\Entity\Api\StationSchedule::TYPE_PLAYLIST, App\Entity\Api\StationSchedule::TYPE_STREAMER}, example=App\Entity\Api\StationSchedule::TYPE_PLAYLIST)
      * @var string
      */
-    public $type;
+    public string $type;
 
     /**
      * Either the playlist or streamer's display name.
      * @OA\Property(example="Example Schedule Entry")
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * The start time of the schedule entry, in UNIX format.
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
-    public $start_timestamp;
+    public int $start_timestamp;
 
     /**
      * The start time of the schedule entry, in ISO 8601 format.
      * @OA\Property(example="020-02-19T03:00:00-06:00")
      * @var string
      */
-    public $start;
+    public string $start;
 
     /**
      * The end time of the schedule entry, in UNIX format.
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
-    public $end_timestamp;
+    public int $end_timestamp;
 
     /**
      * The start time of the schedule entry, in ISO 8601 format.
      * @OA\Property(example="020-02-19T05:00:00-06:00")
      * @var string
      */
-    public $end;
+    public string $end;
 
     /**
      * Whether the event is currently ongoing.
      * @OA\Property(example=true)
      * @var bool
      */
-    public $is_now;
+    public bool $is_now;
 }

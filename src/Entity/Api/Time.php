@@ -16,51 +16,61 @@ class Time
      * @var int
      */
     public $timestamp;
+
     /**
      * @OA\Property(example="2017-06-16 10:33:17")
      * @var string
      */
-    public $gmt_datetime;
+    public string $gmt_datetime;
+
     /**
      * @OA\Property(example="June 16, 2017")
      * @var string
      */
-    public $gmt_date;
+    public string $gmt_date;
+
     /**
      * @OA\Property(example="10:33pm")
      * @var string
      */
-    public $gmt_time;
+    public string $gmt_time;
+
     /**
      * @OA\Property(example="GMT")
      * @var string
      */
-    public $gmt_timezone;
+    public string $gmt_timezone;
+
     /**
      * @OA\Property(example="GMT")
      * @var string
      */
-    public $gmt_timezone_abbr;
+    public string $gmt_timezone_abbr;
+
     /**
      * @OA\Property(example="2017-06-16 10:33:17")
      * @var string
      */
-    public $local_datetime;
+    public string $local_datetime;
+
     /**
      * @OA\Property(example="June 16, 2017")
      * @var string
      */
-    public $local_date;
+    public string $local_date;
+
     /**
      * @OA\Property(example="10:33pm")
      * @var string
      */
-    public $local_time;
+    public string $local_time;
+
     /**
      * @OA\Property(example="UTC")
      * @var string
      */
     public $local_timezone;
+
     /**
      * @OA\Property(example="UTC")
      * @var string

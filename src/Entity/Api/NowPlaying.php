@@ -15,7 +15,7 @@ class NowPlaying implements ResolvableUrlInterface
      * @OA\Property
      * @var Station
      */
-    public $station;
+    public Station $station;
 
     /**
      * Listener details
@@ -23,7 +23,7 @@ class NowPlaying implements ResolvableUrlInterface
      * @OA\Property
      * @var NowPlayingListeners
      */
-    public $listeners;
+    public NowPlayingListeners $listeners;
 
     /**
      * Live broadcast details
@@ -31,7 +31,7 @@ class NowPlaying implements ResolvableUrlInterface
      * @OA\Property
      * @var NowPlayingLive
      */
-    public $live;
+    public NowPlayingLive $live;
 
     /**
      * Current Song
@@ -39,29 +39,29 @@ class NowPlaying implements ResolvableUrlInterface
      * @OA\Property
      * @var NowPlayingCurrentSong
      */
-    public $now_playing;
+    public NowPlayingCurrentSong $now_playing;
 
     /**
      * Next Playing Song
      *
      * @OA\Property
-     * @var SongHistory
+     * @var SongHistory|null
      */
-    public $playing_next;
+    public ?SongHistory $playing_next = null;
 
     /**
      * @OA\Property
      * @var SongHistory[]
      */
-    public $song_history;
+    public array $song_history;
 
     /**
      * Debugging information about where the now playing data comes from.
      *
      * @OA\Property(enum={"hit", "database", "station"})
-     * @var string
+     * @var string|null
      */
-    public $cache;
+    public ?string $cache = null;
 
     /**
      * Update any variable items in the feed.
@@ -78,7 +78,7 @@ class NowPlaying implements ResolvableUrlInterface
      */
     public function toArray(): array
     {
-        return json_decode(json_encode($this), true);
+        return json_decode(json_encode($this), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

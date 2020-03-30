@@ -17,7 +17,7 @@ class UploadFile
      *
      * @var string The destination path of the uploaded file.
      */
-    public $path;
+    public string $path;
 
     /**
      * @OA\Property(example="")
@@ -26,7 +26,7 @@ class UploadFile
      *
      * @var string The base64-encoded contents of the file to upload.
      */
-    public $file;
+    public string $file;
 
     public function getSanitizedFilename(): string
     {

@@ -15,76 +15,76 @@ class Relay implements Entity\Api\ResolvableUrlInterface
      * @OA\Property(example=1)
      * @var int
      */
-    public $id;
+    public int $id;
 
     /**
      * Station name
      * @OA\Property(example="AzuraTest Radio")
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * Station description
      * @OA\Property(example="An AzuraCast station!")
      * @var string
      */
-    public $description;
+    public string $description;
 
     /**
      * Station homepage URL
      * @OA\Property(example="https://www.azuracast.com/")
      * @var string
      */
-    public $url;
+    public string $url;
 
     /**
      * The genre of the station
      * @OA\Property(example="Variety")
      * @var string
      */
-    public $genre;
+    public string $genre;
 
     /**
      * Station "short code", used for URL and folder paths
      * @OA\Property(example="azuratest_radio")
      * @var string
      */
-    public $shortcode;
+    public string $shortcode;
 
     /**
      * Which broadcasting software (frontend) the station uses
      * @OA\Property(example="shoutcast2")
      * @var string
      */
-    public $type;
+    public string $type;
 
     /**
      * The port used by this station to serve its broadcasts.
      * @OA\Property(example=8000)
      * @var int
      */
-    public $port;
+    public int $port;
 
     /**
      * The relay password for the frontend (if applicable).
      * @OA\Property(example="p4ssw0rd")
      * @var string
      */
-    public $relay_pw;
+    public string $relay_pw;
 
     /**
      * The administrator password for the frontend (if applicable).
      * @OA\Property(example="p4ssw0rd")
      * @var string
      */
-    public $admin_pw;
+    public string $admin_pw;
 
     /**
      * @OA\Property()
      * @var Entity\Api\StationMount[]
      */
-    public $mounts;
+    public array $mounts;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

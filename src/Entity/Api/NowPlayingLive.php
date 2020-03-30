@@ -14,14 +14,15 @@ class NowPlayingLive
      * @OA\Property(example=false)
      * @var bool
      */
-    public $is_live;
+    public bool $is_live = false;
+
     /**
      * The current active streamer/DJ, if one is available.
      *
      * @OA\Property(example="DJ Jazzy Jeff")
      * @var string
      */
-    public $streamer_name;
+    public string $streamer_name = '';
 
     public function __construct($is_live = false, $streamer_name = '')
     {

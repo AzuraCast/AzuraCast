@@ -13,24 +13,26 @@ class NowPlayingListeners
      * @OA\Property(example=15)
      * @var int
      */
-    public $current;
+    public int $current = 0;
+
     /**
      * Total unique current listeners
      * @OA\Property(example=15)
      * @var int
      */
-    public $unique;
+    public int $unique = 0;
+
     /**
      * Total non-unique current listeners
      * @OA\Property(example=20)
      * @var int
      */
-    public $total;
+    public int $total = 0;
 
     /**
      * @param array $listeners
      */
-    public function __construct($listeners = [])
+    public function __construct(array $listeners = [])
     {
         if (isset($listeners['current'])) {
             $this->current = (int)$listeners['current'];

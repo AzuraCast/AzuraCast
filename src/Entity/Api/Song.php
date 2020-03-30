@@ -16,7 +16,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="9f33bbc912c19603e51be8e0987d076b")
      * @var string
      */
-    public $id;
+    public string $id;
 
     /**
      * The song title, usually "Artist - Title"
@@ -24,7 +24,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Chet Porter - Aluko River")
      * @var string
      */
-    public $text;
+    public string $text;
 
     /**
      * The song artist.
@@ -32,7 +32,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Chet Porter")
      * @var string
      */
-    public $artist;
+    public string $artist;
 
     /**
      * The song title.
@@ -40,7 +40,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Aluko River")
      * @var string
      */
-    public $title;
+    public string $title;
 
     /**
      * The song album.
@@ -48,7 +48,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Moving Castle")
      * @var string
      */
-    public $album = '';
+    public string $album = '';
 
     /**
      * Lyrics to the song.
@@ -56,13 +56,13 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="")
      * @var string
      */
-    public $lyrics = '';
+    public string $lyrics = '';
 
     /**
      * URL to the album artwork (if available).
      *
      * @OA\Property(example="https://picsum.photos/1200/1200")
-     * @var string
+     * @var string|UriInterface
      */
     public $art = '';
 
@@ -75,7 +75,7 @@ class Song implements ResolvableUrlInterface
      * )
      * @var array
      */
-    public $custom_fields = [];
+    public array $custom_fields = [];
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

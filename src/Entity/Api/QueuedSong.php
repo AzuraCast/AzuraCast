@@ -14,7 +14,7 @@ class QueuedSong extends SongHistory
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
-    public $cued_at;
+    public int $cued_at;
 
     /**
      * Custom AutoDJ playback URI, if it exists.
@@ -22,7 +22,7 @@ class QueuedSong extends SongHistory
      * @OA\Property(example="")
      * @var string
      */
-    public $autodj_custom_uri;
+    public string $autodj_custom_uri = '';
 
     /**
      * @OA\Property(
@@ -33,5 +33,5 @@ class QueuedSong extends SongHistory
      * )
      * @var array
      */
-    public $links = [];
+    public array $links = [];
 }

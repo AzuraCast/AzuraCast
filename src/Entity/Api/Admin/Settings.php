@@ -17,7 +17,7 @@ class Settings
      * @OA\Property()
      * @var string
      */
-    public $base_url;
+    public string $base_url;
 
     /**
      * AzuraCast Instance Name
@@ -25,7 +25,7 @@ class Settings
      * @OA\Property()
      * @var string|null
      */
-    public $instance_name;
+    public ?string $instance_name;
 
     /**
      * System Default Time Zone
@@ -33,7 +33,7 @@ class Settings
      * @OA\Property()
      * @var string|null
      */
-    public $timezone = 'UTC';
+    public ?string $timezone = 'UTC';
 
     /**
      * Prefer Browser URL (If Available)
@@ -42,7 +42,7 @@ class Settings
      * @Assert\Choice({0,1})
      * @var int
      */
-    public $prefer_browser_url = 0;
+    public int $prefer_browser_url = 0;
     /**
      * Use Web Proxy for Radio
      *
@@ -50,7 +50,7 @@ class Settings
      * @Assert\Choice({0,1})
      * @var int
      */
-    public $use_radio_proxy = 0;
+    public int $use_radio_proxy = 0;
     /**
      * Days of Playback History to Keep
      *
@@ -58,7 +58,7 @@ class Settings
      * @Assert\Choice({0,14,30,60,365,730})
      * @var int
      */
-    public $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
+    public int $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
     /**
      * Always Use HTTPS
      *
@@ -66,14 +66,14 @@ class Settings
      * @Assert\Choice({0,1})
      * @var int
      */
-    public $always_use_ssl = 0;
+    public int $always_use_ssl = 0;
     /**
      * API "Access-Control-Allow-Origin" header
      *
      * @OA\Property()
      * @var string
      */
-    public $api_access_control;
+    public string $api_access_control;
     /**
      * Listener Analytics Collection
      *
@@ -81,7 +81,7 @@ class Settings
      * @Assert\Choice({Entity\Analytics::LEVEL_NONE, Entity\Analytics::LEVEL_NO_IP, Entity\Analytics::LEVEL_ALL})
      * @var string
      */
-    public $analytics = Entity\Analytics::LEVEL_ALL;
+    public string $analytics = Entity\Analytics::LEVEL_ALL;
     /**
      * Check for Updates and Announcements
      *
@@ -89,7 +89,7 @@ class Settings
      * @Assert\Choice({Entity\Settings::UPDATES_NONE, Entity\Settings::UPDATES_RELEASE_ONLY, Entity\Settings::UPDATES_ALL})
      * @var int
      */
-    public $central_updates_channel = Entity\Settings::UPDATES_RELEASE_ONLY;
+    public int $central_updates_channel = Entity\Settings::UPDATES_RELEASE_ONLY;
     /**
      * Base Theme for Public Pages
      *
@@ -97,7 +97,7 @@ class Settings
      * @Assert\Choice({"light", "dark"})
      * @var string
      */
-    public $public_theme = 'light';
+    public string $public_theme = 'light';
     /**
      * Hide Album Art on Public Pages
      *
@@ -105,21 +105,21 @@ class Settings
      * @Assert\Choice({0,1})
      * @var int
      */
-    public $hide_album_art = 0;
+    public int $hide_album_art = 0;
     /**
      * Homepage Redirect URL
      *
      * @OA\Property()
      * @var string|null
      */
-    public $homepage_redirect_url;
+    public ?string $homepage_redirect_url;
     /**
      * Default Album Art URL
      *
      * @OA\Property()
      * @var string|null
      */
-    public $default_album_art_url;
+    public ?string $default_album_art_url;
     /**
      * Hide AzuraCast Branding on Public Pages
      *
@@ -127,28 +127,28 @@ class Settings
      * @Assert\Choice({0,1})
      * @var int
      */
-    public $hide_product_name = 0;
+    public int $hide_product_name = 0;
     /**
      * Custom CSS for Public Pages
      *
      * @OA\Property()
      * @var string|null
      */
-    public $custom_css_public;
+    public ?string $custom_css_public;
     /**
      * Custom JS for Public Pages
      *
      * @OA\Property()
      * @var string|null
      */
-    public $custom_js_public;
+    public ?string $custom_js_public;
     /**
      * Custom CSS for Internal Pages
      *
      * @OA\Property()
      * @var string|null
      */
-    public $custom_css_internal;
+    public ?string $custom_css_internal;
 
     /**
      * @param int $prefer_browser_url

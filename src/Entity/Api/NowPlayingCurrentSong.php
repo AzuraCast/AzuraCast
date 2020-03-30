@@ -15,7 +15,7 @@ class NowPlayingCurrentSong extends SongHistory
      * @OA\Property(example=25)
      * @var int
      */
-    public $elapsed;
+    public int $elapsed = 0;
 
     /**
      * Remaining time in the song, in seconds.
@@ -23,14 +23,12 @@ class NowPlayingCurrentSong extends SongHistory
      * @OA\Property(example=155)
      * @var int
      */
-    public $remaining;
+    public int $remaining = 0;
 
     /**
      * Update the "elapsed" and "remaining" timers based on the exact current second.
-     *
-     * @return void
      */
-    public function recalculate()
+    public function recalculate(): void
     {
         $this->elapsed = time() + Entity\SongHistory::PLAYBACK_DELAY_SECONDS - $this->played_at;
         if ($this->elapsed < 0) {

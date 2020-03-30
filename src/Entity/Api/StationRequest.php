@@ -15,7 +15,7 @@ class StationRequest implements ResolvableUrlInterface
      * @OA\Property(example=1)
      * @var string
      */
-    public $request_id;
+    public string $request_id;
 
     /**
      * URL to directly submit request
@@ -23,7 +23,7 @@ class StationRequest implements ResolvableUrlInterface
      * @OA\Property(example="/api/station/1/request/1")
      * @var string
      */
-    public $request_url;
+    public string $request_url;
 
     /**
      * Song
@@ -31,7 +31,7 @@ class StationRequest implements ResolvableUrlInterface
      * @OA\Property
      * @var Song
      */
-    public $song;
+    public Song $song;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

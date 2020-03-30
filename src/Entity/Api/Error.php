@@ -14,35 +14,39 @@ class Error
      * @OA\Property(example=500)
      * @var int
      */
-    public $code;
+    public int $code;
+
     /**
      * The text description of the error.
      *
      * @OA\Property(example="Error description.")
      * @var string
      */
-    public $message;
+    public string $message;
+
     /**
      * The HTML-formatted text description of the error.
      *
      * @OA\Property(example="<b>Error description.</b><br>Detailed error text.")
      * @var string
      */
-    public $formatted_message;
+    public ?string $formatted_message;
+
     /**
      * Stack traces and other supplemental data.
      *
      * @OA\Property(@OA\Items)
      * @var array
      */
-    public $extra_data;
+    public array $extra_data;
+
     /**
      * Used for API calls that expect an \Entity\Api\Status type response.
      *
      * @OA\Property(example=false)
      * @var bool
      */
-    public $success;
+    public bool $success;
 
     public function __construct(
         $code = 500,

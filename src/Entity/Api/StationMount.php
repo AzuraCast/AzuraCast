@@ -16,7 +16,7 @@ class StationMount extends StationRemote implements ResolvableUrlInterface
      * @OA\Property(example="/radio.mp3")
      * @var string
      */
-    public $path;
+    public string $path;
 
     /**
      * If the mount is the default mount for the parent station
@@ -24,7 +24,7 @@ class StationMount extends StationRemote implements ResolvableUrlInterface
      * @OA\Property(example=true)
      * @var bool
      */
-    public $is_default;
+    public bool $is_default;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

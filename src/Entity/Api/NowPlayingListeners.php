@@ -28,19 +28,16 @@ class NowPlayingListeners
      * @var int
      */
     public int $total = 0;
-
-    /**
-     * @param array $listeners
-     */
-    public function __construct(array $listeners = [])
+    
+    public function __construct(?array $listeners = [])
     {
         if (isset($listeners['current'])) {
             $this->current = (int)$listeners['current'];
         } else {
-            $this->current = (int)($listeners['unique'] ?? $listeners['total']);
+            $this->current = (int)($listeners['unique'] ?? $listeners['total'] ?? 0);
         }
 
-        $this->unique = (int)($listeners['unique'] ?? $listeners['current']);
-        $this->total = (int)($listeners['total'] ?? $listeners['current']);
+        $this->unique = (int)($listeners['unique'] ?? $listeners['current'] ?? 0);
+        $this->total = (int)($listeners['total'] ?? $listeners['current'] ?? 0);
     }
 }

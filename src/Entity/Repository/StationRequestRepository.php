@@ -4,9 +4,9 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception;
+use App\Radio\AutoDJ;
 use App\Utilities;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\NoResultException;
 
 class StationRequestRepository extends Repository
 {
@@ -155,34 +155,37 @@ class StationRequestRepository extends Repository
      */
     public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
     {
-        $last_play_threshold_mins = ($station->getRequestThreshold() ?? 15);
+        $lastPlayThresholdMins = ($station->getRequestThreshold() ?? 15);
 
-        if (0 === $last_play_threshold_mins) {
+        if (0 === $lastPlayThresholdMins) {
             return true;
         }
 
-        $last_play_threshold = time() - ($last_play_threshold_mins * 60);
+        $lastPlayThreshold = time() - ($lastPlayThresholdMins * 60);
 
-        try {
-            $last_play_time = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.timestamp_start 
+        $recentTracks = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.id, s.title, s.artist 
                 FROM App\Entity\SongHistory sh 
                 JOIN sh.song s
-                WHERE (s.artist LIKE :artist OR s.title LIKE :title)
-                AND sh.station_id = :station_id
+                WHERE sh.station = :station
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
-                ->setParameter('artist', $media->getArtist())
-                ->setParameter('title', $media->getTitle())
-                ->setParameter('station_id', $station->getId())
-                ->setParameter('threshold', $last_play_threshold)
-                ->setMaxResults(1)
-                ->getSingleScalarResult();
-        } catch (NoResultException $e) {
-            return true;
-        }
+            ->setParameter('station', $station)
+            ->setParameter('threshold', $lastPlayThreshold)
+            ->getArrayResult();
 
-        if ($last_play_time > 0) {
-            throw new Exception(__('This song or artist. Wait a while before requesting it again.'));
+        $song = $media->getSong();
+
+        $eligibleTracks = [
+            [
+                'title' => $song->getTitle(),
+                'artist' => $song->getArtist(),
+            ],
+        ];
+
+        $isDuplicate = (null === AutoDJ::getDistinctTrack($eligibleTracks, $recentTracks));
+        
+        if ($isDuplicate) {
+            throw new Exception(__('This song or artist has been played too recently. Wait a while before requesting it again.'));
         }
 
         return true;

@@ -528,95 +528,65 @@ class AutoDJ implements EventSubscriberInterface
             return null;
         }
 
-        $artists = [];
-        $latest_song_ids_played = [];
+        $latestSongIdsPlayed = [];
+        $playedTracks = [];
 
         foreach ($playedMedia as $history) {
-            $artist_parts = explode(',', $history['song']['artist']);
-            foreach ($artist_parts as $artist) {
-                $artist = trim($artist);
-                if (!empty($artist)) {
-                    $artists[$artist] = $artist;
-                }
-            }
+            $playedTracks[] = [
+                'artist' => $history['song']['artist'],
+                'title' => $history['song']['title'],
+            ];
 
-            $song_id = $history['song']['id'];
-            if (!isset($latest_song_ids_played[$song_id])) {
-                $latest_song_ids_played[$song_id] = $history['timestamp_cued'];
+            $songId = $history['song']['id'];
+
+            if (!isset($latestSongIdsPlayed[$songId])) {
+                $latestSongIdsPlayed[$songId] = $history['timestamp_cued'];
             }
         }
 
-        $this->logger->debug('AutoDJ details', [
-            'artists' => $artists,
-            'latest_song_ids_played' => $latest_song_ids_played,
-            'eligible_media' => $eligibleMedia,
-        ]);
-
-        $without_same_title = [];
+        $eligibleTracks = [];
 
         foreach ($eligibleMedia as $media) {
-            $song_id = $media['song_id'];
-            if (isset($latest_song_ids_played[$song_id])) {
+            $songId = $media['song_id'];
+            if (isset($latestSongIdsPlayed[$songId])) {
                 continue;
             }
 
-            $artist = trim($media['artist']);
-
-            $artist_match_found = false;
-            if (!empty($artist)) {
-                $artist_parts = explode(',', $artist);
-                foreach ($artist_parts as $artist_row) {
-                    $artist_row = trim($artist_row);
-                    if (empty($artist_row)) {
-                        continue;
-                    }
-
-                    if (isset($artists[$artist_row])) {
-                        $artist_match_found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!$artist_match_found) {
-                $media_id_to_play = $media['id'];
-                $this->logger->info('Found track that avoids title and artist match!',
-                    ['media_id' => $media_id_to_play]);
-                return $media_id_to_play;
-            }
-
-            $without_same_title[] = $media;
+            $eligibleTracks[$media['id']] = [
+                'artist' => $media['song']['artist'],
+                'title' => $media['song']['title'],
+            ];
         }
 
-        // If we reach this point, there was no match for avoiding same artist AND title.
-        if (!empty($without_same_title)) {
-            $media = reset($without_same_title);
-            $media_id_to_play = $media['id'];
+        $mediaId = self::getDistinctTrack($eligibleTracks, $playedTracks);
 
-            $this->logger->info('Cannot avoid artist match; defaulting to title match.',
-                ['media_id' => $media_id_to_play]);
-            return $media_id_to_play;
+        if (null !== $mediaId) {
+            $this->logger->info('Found track that avoids duplicate title and artist.',
+                ['media_id' => $mediaId]);
+
+            return $mediaId;
         }
 
         if ($preferredMode) {
 
             // If we reach this point, there's no way to avoid a duplicate title.
-            $media_ids_by_time_played = [];
+            $mediaIdsByTimePlayed = [];
 
             // For each piece of eligible media, get its latest played timestamp.
             foreach ($eligibleMedia as $media) {
-                $song_id = $media['song_id'];
-                $media_ids_by_time_played[$media['id']] = $latest_song_ids_played[$song_id] ?? 0;
+                $songId = $media['song_id'];
+                $mediaIdsByTimePlayed[$media['id']] = $latestSongIdsPlayed[$songId] ?? 0;
             }
 
             // Pull the lowest value, which corresponds to the least recently played song.
-            asort($media_ids_by_time_played);
+            asort($mediaIdsByTimePlayed);
 
             // More efficient way of getting first key.
-            foreach ($media_ids_by_time_played as $media_id_to_play => $unused) {
+            foreach ($mediaIdsByTimePlayed as $mediaId => $unused) {
                 $this->logger->warning('No way to avoid same title OR same artist; using least recently played song.',
-                    ['media_id' => $media_id_to_play]);
-                return $media_id_to_play;
+                    ['media_id' => $mediaId]);
+
+                return $mediaId;
             }
         }
 
@@ -650,5 +620,78 @@ class AutoDJ implements EventSubscriberInterface
         $this->em->flush();
 
         $event->setNextSong($sh);
+    }
+
+    /**
+     * Given an array of eligible tracks, return the first ID that doesn't have a duplicate artist/
+     *   title with any of the previously played tracks.
+     *
+     * Both should be in the form of an array, i.e.:
+     *  [ 'id' => ['artist' => 'Foo', 'title' => 'Fighters'] ]
+     *
+     * @param array $eligibleTracks
+     * @param array $playedTracks
+     *
+     * @return int|string|null
+     */
+    public static function getDistinctTrack(array $eligibleTracks, array $playedTracks)
+    {
+        $artists = [];
+        $titles = [];
+
+        foreach ($playedTracks as $song) {
+            $title = trim($song['title']);
+            $titles[$title] = $title;
+
+            $artistParts = explode(',', $song['artist']);
+            foreach ($artistParts as $artist) {
+                $artist = trim($artist);
+                if (!empty($artist)) {
+                    $artists[$artist] = $artist;
+                }
+            }
+        }
+
+        $eligibleTracksWithoutSameTitle = [];
+
+        foreach ($eligibleTracks as $trackId => $song) {
+            // Avoid all direct title matches.
+            $title = trim($song['title']);
+
+            if (isset($titles[$title])) {
+                continue;
+            }
+
+            // Attempt to avoid an artist match, if possible.
+            $artist = trim($song['artist']);
+
+            $artistMatchFound = false;
+            if (!empty($artist)) {
+                $artistParts = explode(',', $artist);
+                foreach ($artistParts as $artist) {
+                    $artist = trim($artist);
+                    if (empty($artist)) {
+                        continue;
+                    }
+
+                    if (isset($artists[$artist])) {
+                        $artistMatchFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!$artistMatchFound) {
+                return $trackId;
+            }
+
+            $eligibleTracksWithoutSameTitle[$trackId] = $song;
+        }
+
+        foreach ($eligibleTracksWithoutSameTitle as $trackId => $song) {
+            return $trackId;
+        }
+
+        return null;
     }
 }

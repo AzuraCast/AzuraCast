@@ -23,7 +23,7 @@ class SongHistory implements ResolvableUrlInterface
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
-    public int $played_at;
+    public int $played_at = 0;
 
     /**
      * Duration of the song in seconds

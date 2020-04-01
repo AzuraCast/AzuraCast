@@ -69,6 +69,9 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'cache:clear');
 
+        $settingsRepo->deleteSetting(Entity\Settings::NOWPLAYING);
+        $stationRepo->clearNowPlaying();
+
         $io->newLine();
         $io->section(__('Refreshing All Stations'));
         $this->runCommand($output, 'azuracast:radio:restart');
@@ -78,9 +81,6 @@ class SetupCommand extends CommandAbstract
         $settingsRepo->deleteSetting(Entity\Settings::UPDATE_RESULTS);
         $settingsRepo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
         $settingsRepo->deleteSetting(Entity\Settings::EXTERNAL_IP);
-        $settingsRepo->deleteSetting(Entity\Settings::NOWPLAYING);
-
-        $stationRepo->clearNowPlaying();
 
         $io->newLine();
 

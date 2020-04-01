@@ -238,4 +238,13 @@ class StationRepository extends Repository
 
         $this->cache->delete('stations');
     }
+
+    /**
+     * Clear the now-playing cache from all stations.
+     */
+    public function clearNowPlaying(): void
+    {
+        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Station s SET s.nowplaying=null')
+            ->execute();
+    }
 }

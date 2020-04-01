@@ -46,6 +46,8 @@ class Settings
 
     public const NOWPLAYING_LAST_STARTED = 'nowplaying_last_started';
     public const NOWPLAYING_LAST_RUN = 'nowplaying_last_run';
+    public const NOWPLAYING = 'nowplaying';
+
     public const SHORT_SYNC_LAST_RUN = 'sync_fast_last_run';
     public const MEDIUM_SYNC_LAST_RUN = 'sync_last_run';
     public const LONG_SYNC_LAST_RUN = 'sync_slow_last_run';

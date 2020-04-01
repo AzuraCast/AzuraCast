@@ -3,9 +3,9 @@ namespace App\Controller\Api;
 
 use App\Entity;
 use App\Event\Radio\LoadNowPlaying;
+use App\EventDispatcher;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -138,12 +138,12 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromCache(LoadNowPlaying $event)
     {
-        $event->setNowPlaying((array)$this->cache->get('api_nowplaying_data'), 'redis');
+        $event->setNowPlaying((array)$this->cache->get(Entity\Settings::NOWPLAYING), 'redis');
     }
 
     public function loadFromSettings(LoadNowPlaying $event)
     {
-        $event->setNowPlaying((array)$this->settingsRepo->getSetting('nowplaying'), 'settings');
+        $event->setNowPlaying((array)$this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING), 'settings');
     }
 
     public function loadFromStations(LoadNowPlaying $event)

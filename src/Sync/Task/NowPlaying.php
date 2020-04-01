@@ -135,8 +135,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $this->influx->writePoints($influx_points, Database::PRECISION_SECONDS);
         }
 
-        $this->cache->set('api_nowplaying_data', $nowplaying, 120);
-        $this->settingsRepo->setSetting('nowplaying', $nowplaying);
+        $this->cache->set(Entity\Settings::NOWPLAYING, $nowplaying, 120);
+        $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING, $nowplaying);
     }
 
     /**

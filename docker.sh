@@ -9,10 +9,10 @@ ask() {
 
     while true; do
 
-        if [[ "${2:-}" = "Y" ]]; then
+        if [[ "${2:-}" == "Y" ]]; then
             prompt="Y/n"
             default=Y
-        elif [[ "${2:-}" = "N" ]]; then
+        elif [[ "${2:-}" == "N" ]]; then
             prompt="y/N"
             default=N
         else
@@ -32,8 +32,8 @@ ask() {
 
         # Check if the reply is valid
         case "$reply" in
-            Y*|y*) return 0 ;;
-            N*|n*) return 1 ;;
+        Y* | y*) return 0 ;;
+        N* | n*) return 1 ;;
         esac
 
     done
@@ -60,7 +60,7 @@ install() {
             rm get-docker.sh
 
             if [[ $EUID -ne 0 ]]; then
-                sudo usermod -aG docker `whoami`
+                sudo usermod -aG docker "$(whoami)"
 
                 echo "You must log out or restart to apply necessary Docker permissions changes."
                 echo "Restart, then continue installing using this script."
@@ -83,11 +83,11 @@ install() {
                     exit 1
                 fi
 
-                sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose"
+                sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
                 sudo chmod +x /usr/local/bin/docker-compose
                 sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
             else
-                curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+                curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
                 chmod +x /usr/local/bin/docker-compose
                 curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
             fi
@@ -123,7 +123,10 @@ update() {
 
     curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
 
-    FILES_MATCH="$(cmp --silent docker-compose.yml docker-compose.new.yml; echo $?)"
+    FILES_MATCH="$(
+        cmp --silent docker-compose.yml docker-compose.new.yml
+        echo $?
+    )"
     UPDATE_NEW=0
 
     if [[ ${FILES_MATCH} -ne 0 ]]; then
@@ -156,7 +159,7 @@ update() {
     docker-compose run --user="azuracast" --rm web azuracast_update $*
     docker-compose up -d
 
-    docker rmi $(docker images | grep "none" | awk '/ / { print $3 }') 2> /dev/null
+    docker rmi $(docker images | grep "none" | awk '/ / { print $3 }') 2>/dev/null
 
     echo "Update complete!"
     exit
@@ -179,7 +182,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-    docker-compose run --user="azuracast" --rm web azuracast_cli $*
+    docker-compose run --user="azuracast" --rm web azuracast_cli "$@"
     exit
 }
 
@@ -253,8 +256,8 @@ restore-legacy() {
     APP_BASE_DIR=$(pwd)
 
     BACKUP_PATH=${1:-"./backup.tar.gz"}
-    BACKUP_DIR=$(cd `dirname "$BACKUP_PATH"` && pwd)
-    BACKUP_FILENAME=`basename "$BACKUP_PATH"`
+    BACKUP_DIR=$(cd $(dirname "$BACKUP_PATH") && pwd)
+    BACKUP_FILENAME=$(basename "$BACKUP_PATH")
 
     cd $APP_BASE_DIR
 
@@ -289,7 +292,7 @@ restore-legacy() {
 static() {
     cd frontend
     docker-compose build
-    docker-compose run --rm frontend $*
+    docker-compose run --rm frontend "$@"
     exit
 }
 
@@ -309,7 +312,7 @@ dev-tests() {
 # Run linter across all PHP code in the app.
 #
 dev-lint() {
-    docker-compose exec --user="azuracast" web composer phplint -- $*
+    docker-compose exec --user="azuracast" web composer phplint -- "$@"
 }
 
 #
@@ -317,7 +320,7 @@ dev-lint() {
 # Run PHPStan for static analysis.
 #
 dev-phpstan() {
-    docker-compose exec --user="azuracast" web composer phpstan -- $*
+    docker-compose exec --user="azuracast" web composer phpstan -- "$@"
 }
 
 #
@@ -369,4 +372,4 @@ letsencrypt-renew() {
     exit
 }
 
-$*
+"$@"

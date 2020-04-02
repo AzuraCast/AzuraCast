@@ -2,11 +2,11 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use App\Exception;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -82,9 +82,15 @@ class IndexController
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $api_response = $request->getStation()->api($request->getStationFrontend());
-        $api_response->resolveUrls($request->getRouter()->getBaseUrl());
+        $station = $request->getStation();
 
-        return $response->withJson($api_response);
+        $apiResponse = $station->api(
+            $request->getStationFrontend(),
+            $request->getStationRemotes(),
+            null
+        );
+        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
+
+        return $response->withJson($apiResponse);
     }
 }

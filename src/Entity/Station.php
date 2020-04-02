@@ -1040,17 +1040,17 @@ class Station
      * Retrieve the API version of the object/array.
      *
      * @param AbstractFrontend $fa
-     * @param AdapterProxy[] $remote_adapters
-     * @param UriInterface|null $base_url
-     * @param bool $is_nowplaying
+     * @param AdapterProxy[] $remoteAdapters
+     * @param UriInterface|null $baseUrl
+     * @param bool $showAllMounts
      *
      * @return Api\Station
      */
     public function api(
         AbstractFrontend $fa,
-        array $remote_adapters = [],
-        UriInterface $base_url = null,
-        bool $is_nowplaying = false
+        array $remoteAdapters = [],
+        UriInterface $baseUrl = null,
+        bool $showAllMounts = false
     ): Api\Station {
         $response = new Api\Station;
         $response->id = (int)$this->id;
@@ -1060,23 +1060,23 @@ class Station
         $response->frontend = (string)$this->frontend_type;
         $response->backend = (string)$this->backend_type;
         $response->is_public = (bool)$this->enable_public_page;
-        $response->listen_url = $fa->getStreamUrl($this, $base_url);
+        $response->listen_url = $fa->getStreamUrl($this, $baseUrl);
 
         $mounts = [];
         if ($fa::supportsMounts() && $this->mounts->count() > 0) {
             foreach ($this->mounts as $mount) {
                 /** @var StationMount $mount */
-                if ($mount->isVisibleOnPublicPages()) {
-                    $mounts[] = $mount->api($fa, $base_url);
+                if ($showAllMounts || $mount->isVisibleOnPublicPages()) {
+                    $mounts[] = $mount->api($fa, $baseUrl);
                 }
             }
         }
         $response->mounts = $mounts;
 
         $remotes = [];
-        foreach ($remote_adapters as $ra_proxy) {
+        foreach ($remoteAdapters as $ra_proxy) {
             $remote = $ra_proxy->getRemote();
-            if ($remote->isVisibleOnPublicPages()) {
+            if ($showAllMounts || $remote->isVisibleOnPublicPages()) {
                 $remotes[] = $remote->api($ra_proxy->getAdapter());
             }
         }

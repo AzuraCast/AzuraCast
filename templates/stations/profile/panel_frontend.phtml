@@ -13,18 +13,18 @@
 <section class="card mb-4" role="region" id="profile-frontend">
     <div class="card-header bg-primary-dark">
         <h3 class="card-title">
-            <?=__('Broadcasting Service') ?>
+            <?=__('Broadcasting Service')?>
 
-            <small class="badge badge-pill badge-success" v-if="is_running"><?=__('Running') ?></small>
-            <small class="badge badge-pill badge-danger" v-else><?=__('Not Running') ?></small>
+            <small class="badge badge-pill badge-success" v-if="np.services.backend_running"><?=__('Running')?></small>
+            <small class="badge badge-pill badge-danger" v-else><?=__('Not Running')?></small>
 
             <br>
             <small>
-            <?php if (\App\Radio\Adapters::FRONTEND_ICECAST === $frontend_type): ?>
-                Icecast
-            <?php elseif (\App\Radio\Adapters::FRONTEND_SHOUTCAST === $frontend_type): ?>
-                SHOUTcast
-            <?php endif; ?>
+                <?php if (\App\Radio\Adapters::FRONTEND_ICECAST === $frontend_type): ?>
+                    Icecast
+                <?php elseif (\App\Radio\Adapters::FRONTEND_SHOUTCAST === $frontend_type): ?>
+                    SHOUTcast
+                <?php endif; ?>
             </small>
         </h3>
     </div>
@@ -37,29 +37,37 @@
             </colgroup>
             <tbody>
             <tr>
-                <td><?=__('Administration URL') ?></td>
-                <td><a href="<?=$this->e($frontend->getAdminUrl($station)) ?>"><?=$this->e($frontend->getAdminUrl($station)) ?></a></td>
-            </tr>
-            <tr>
-                <td><?=__('Administrator Password') ?></td>
+                <td><?=__('Administration URL')?></td>
                 <td>
-                    <span id="frontend_admin_pw"><?=$this->e($frontend_config['admin_pw']) ?></span>
-                    <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw"><i class="material-icons sm">file_copy</i></i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                    <a href="<?=$this->e($frontend->getAdminUrl($station))?>"><?=$this->e($frontend->getAdminUrl($station))?></a>
                 </td>
             </tr>
             <tr>
-                <td><?=__('Source Password') ?></td>
+                <td><?=__('Administrator Password')?></td>
                 <td>
-                    <span id="frontend_source_pw"><?=$this->e($frontend_config['source_pw']) ?></span>
-                    <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                    <span id="frontend_admin_pw"><?=$this->e($frontend_config['admin_pw'])?></span>
+                    <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_admin_pw">
+                        <i class="material-icons sm">file_copy</i></i>
+                        <span class="sr-only"><?=__('Copy to Clipboard')?></span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><?=__('Source Password')?></td>
+                <td>
+                    <span id="frontend_source_pw"><?=$this->e($frontend_config['source_pw'])?></span>
+                    <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_source_pw">
+                        <i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard')?></span>
+                    </button>
                 </td>
             </tr>
             <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
                 <tr>
-                    <td><?=__('Relay Password') ?></td>
+                    <td><?=__('Relay Password')?></td>
                     <td>
-                        <span id="frontend_relay_pw"><?=$this->e($frontend_config['relay_pw']) ?></span>
-                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw"><i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard') ?></span></button>
+                        <span id="frontend_relay_pw"><?=$this->e($frontend_config['relay_pw'])?></span>
+                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#frontend_relay_pw">
+                            <i class="material-icons sm">file_copy</i><span class="sr-only"><?=__('Copy to Clipboard')?></span>
+                        </button>
                     </td>
                 </tr>
             <?php endif; ?>
@@ -67,17 +75,20 @@
         </table>
 
         <div class="card-actions">
-            <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'restart']) ?>">
+            <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend',
+                ['do' => 'restart'])?>">
                 <i class="material-icons" aria-hidden="true">update</i>
-                <?=__('Restart') ?>
+                <?=__('Restart')?>
             </a>
-            <a class="api-call no-reload btn btn-outline-success" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
+            <a class="api-call no-reload btn btn-outline-success" href="<?=$router->fromHere('api:stations:frontend',
+                ['do' => 'start'])?>">
                 <i class="material-icons" aria-hidden="true">play_arrow</i>
-                <?=__('Start') ?>
+                <?=__('Start')?>
             </a>
-            <a class="api-call no-reload btn btn-outline-danger" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
+            <a class="api-call no-reload btn btn-outline-danger" href="<?=$router->fromHere('api:stations:frontend',
+                ['do' => 'stop'])?>">
                 <i class="material-icons" aria-hidden="true">stop</i>
-                <?=__('Stop') ?>
+                <?=__('Stop')?>
             </a>
         </div>
     <?php endif; ?>

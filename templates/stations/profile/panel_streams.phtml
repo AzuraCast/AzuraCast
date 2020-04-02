@@ -13,7 +13,7 @@
 
 <section class="card mb-4" role="region">
     <div class="card-header bg-primary-dark">
-        <h3 class="card-title"><?=__('Streams') ?></h3>
+        <h3 class="card-title"><?=__('Streams')?></h3>
     </div>
     <table class="table table-sm table-striped table-responsive mb-0">
         <colgroup>
@@ -21,73 +21,72 @@
             <col style="width: 78%;">
             <col style="width: 20%;">
         </colgroup>
-        <?php if (count($stream_urls['local']) > 0): ?>
+        <template v-if="np.station.mounts.length > 0">
             <thead>
             <tr>
-                <th colspan="2"><?=__('Local Streams') ?></th>
-                <th><?=__('Listeners') ?></th>
+                <th colspan="2"><?=__('Local Streams')?></th>
+                <th><?=__('Listeners')?></th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach($stream_urls['local'] as [$stream_id, $stream_name, $stream_url]): ?>
-                <tr class="align-middle" id="mount_<?=$stream_id ?>">
-                    <td class="pr-1">
-                        <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
-                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
-                        </a>
-                    </td>
-                    <td class="pl-1">
-                        <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
-                        <?=$this->link($stream_url) ?>
-                    </td>
-                    <td class="pl-1 text-right">
-                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span class="listeners-total">0</span><br>
-                        <small>
-                            <span class="listeners-unique">0</span> <?=__('Unique') ?>
-                        </small>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+            <tr class="align-middle" v-for="mount in np.station.mounts">
+                <td class="pr-1">
+                    <a class="btn-audio" href="#" v-bind:data-url="mount.url" @click.prevent="toggle(mount.url)">
+                        <i class="material-icons" aria-hidden="true">play_circle_filled</i>
+                    </a>
+                </td>
+                <td class="pl-1">
+                    <h6 class="mb-0">{{ mount.name }}</h6>
+                    <a v-bind:href="mount.url" target="_blank">{{ mount.url }}</a>
+                </td>
+                <td class="pl-1 text-right">
+                    <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
+                    <span class="listeners-total">{{ mount.listeners.total }}</span><br>
+                    <small>
+                        <span class="listeners-unique">{{ mount.listeners.unique }}</span> <?=__('Unique')?>
+                    </small>
+                </td>
+            </tr>
             </tbody>
-        <?php endif; ?>
-        <?php if (count($stream_urls['remote']) > 0): ?>
+        </template>
+
+        <template v-if="np.station.remotes.length > 0">
             <thead>
             <tr>
-                <th colspan="2"><?=__('Remote Relays') ?></th>
-                <th><?=__('Listeners') ?></th>
+                <th colspan="2"><?=__('Remote Relays')?></th>
+                <th><?=__('Listeners')?></th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach($stream_urls['remote'] as [$stream_id, $stream_name, $stream_url]): ?>
-                <tr class="align-middle" id="remote_<?=$stream_id ?>">
-                    <td class="pr-1">
-                        <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
-                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
-                        </a>
-                    </td>
-                    <td class="pl-1">
-                        <h6 class="mb-0"><?=$this->e($stream_name) ?></h6>
-                        <?=$this->link($stream_url) ?>
-                    </td>
-                    <td class="pl-1 text-right">
-                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i> <span class="listeners-total">0</span><br>
-                        <small>
-                            <span class="listeners-unique">0</span> <?=__('Unique') ?>
-                        </small>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+            <tr class="align-middle" v-for="remote in np.station.remotes">
+                <td class="pr-1">
+                    <a class="btn-audio" href="#" v-bind:data-url="remote.url" @click.prevent="toggle(remote.url)">
+                        <i class="material-icons" aria-hidden="true">play_circle_filled</i>
+                    </a>
+                </td>
+                <td class="pl-1">
+                    <h6 class="mb-0">{{ remote.name }}</h6>
+                    <a v-bind:href="remote.url" target="_blank">{{ remote.url }}</a>
+                </td>
+                <td class="pl-1 text-right">
+                    <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
+                    <span class="listeners-total">{{ remote.listeners.total }}</span><br>
+                    <small>
+                        <span class="listeners-unique">{{ remote.listeners.unique }}</span> <?=__('Unique')?>
+                    </small>
+                </td>
+            </tr>
             </tbody>
-        <?php endif; ?>
+        </template>
     </table>
     <div class="card-actions">
-        <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'pls']) ?>">
+        <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'pls'])?>">
             <i class="material-icons" aria-hidden="true">file_download</i>
-            <?=__('Download PLS') ?>
+            <?=__('Download PLS')?>
         </a>
-        <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'm3u']) ?>">
+        <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'm3u'])?>">
             <i class="material-icons" aria-hidden="true">file_download</i>
-            <?=__('Download M3U') ?>
+            <?=__('Download M3U')?>
         </a>
     </div>
 </section>

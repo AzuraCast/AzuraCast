@@ -37,32 +37,6 @@ class ProfileController
             return $view->renderToResponse($response, 'stations/profile/disabled');
         }
 
-        $frontend = $request->getStationFrontend();
-        $remotes = $request->getStationRemotes();
-
-        $stream_urls = [
-            'local' => [],
-            'remote' => [],
-        ];
-
-        foreach ($station->getMounts() as $mount) {
-            $stream_urls['local'][] = [
-                $mount->getId(),
-                $mount->getDisplayName(),
-                (string)$frontend->getUrlForMount($station, $mount),
-            ];
-        }
-
-        foreach ($remotes as $ra_proxy) {
-            $remote = $ra_proxy->getRemote();
-
-            $stream_urls['remote'][] = [
-                $remote->getId(),
-                $remote->getDisplayName(),
-                $ra_proxy->getAdapter()->getPublicUrl($remote),
-            ];
-        }
-
         // Statistics about backend playback.
         $num_songs = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) 
             FROM App\Entity\StationMedia sm 

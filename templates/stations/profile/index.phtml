@@ -16,14 +16,10 @@ $assets
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->load('clipboard')
     ->load('fancybox')
-    ->addInlineJs($this->fetch('stations/profile/index.js', ['nowplaying' => $nowplaying]), 99);
-
-if ($customization->useWebSocketsForNowPlaying()) {
-    $assets->load('nchan');
-}
+    ->addInlineJs($this->fetch('stations/profile/index.js'), 99);
 ?>
 
-<div class="row">
+<div class="row" id="profile">
     <div class="col-lg-7">
         <?=$this->fetch('stations/profile/panel_header')?>
 

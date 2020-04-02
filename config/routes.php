@@ -305,7 +305,7 @@ return function (App $app) {
 
             $group->get('/profile', Controller\Api\Stations\ProfileController::class)
                 ->setName('api:stations:profile')
-                ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+                ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));
 
             $group->get('/schedule', Controller\Api\Stations\ScheduleController::class)
                 ->setName('api:stations:schedule');

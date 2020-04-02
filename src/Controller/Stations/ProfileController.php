@@ -53,54 +53,13 @@ class ProfileController
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
-        // Populate initial nowplaying data.
-        $np = [
-            'station' => [
-                'mounts' => [],
-            ],
-            'now_playing' => [
-                'song' => [
-                    'title' => __('Song Title'),
-                    'artist' => __('Song Artist'),
-                    'art' => '',
-                ],
-                'playlist' => '',
-                'is_request' => false,
-                'duration' => 0,
-            ],
-            'listeners' => [
-                'unique' => 0,
-                'total' => 0,
-            ],
-            'live' => [
-                'is_live' => false,
-                'streamer_name' => '',
-            ],
-            'playing_next' => [
-                'song' => [
-                    'title' => __('Song Title'),
-                    'artist' => __('Song Artist'),
-                    'art' => '',
-                ],
-                'playlist' => '',
-            ],
-        ];
-
-        $station_np = $station->getNowplaying();
-        if ($station_np instanceof Entity\Api\NowPlaying) {
-            $station_np->resolveUrls($request->getRouter()->getBaseUrl());
-            $np = array_intersect_key($station_np->toArray(), $np) + $np;
-        }
-
         $view->addData([
             'num_songs' => $num_songs,
             'num_playlists' => $num_playlists,
-            'stream_urls' => $stream_urls,
             'backend_type' => $station->getBackendType(),
             'backend_config' => (array)$station->getBackendConfig(),
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
-            'nowplaying' => $np,
             'user' => $request->getUser(),
             'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);

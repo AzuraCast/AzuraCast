@@ -111,7 +111,7 @@ class SongHistory
     protected $request_id;
 
     /**
-     * @ORM\OneToOne(targetEntity="StationRequest")
+     * @ORM\ManyToOne(targetEntity="StationRequest")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
      * })

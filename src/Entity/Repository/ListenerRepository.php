@@ -1,8 +1,8 @@
 <?php
 namespace App\Entity\Repository;
 
-use App\Entity;
 use App\Doctrine\Repository;
+use App\Entity;
 use Doctrine\ORM\NoResultException;
 
 class ListenerRepository extends Repository
@@ -58,6 +58,7 @@ class ListenerRepository extends Repository
                     ->setParameter('station_id', $station->getId())
                     ->setParameter('uid', $client['uid'])
                     ->setParameter('hash', $listener_hash)
+                    ->setMaxResults(1)
                     ->getSingleScalarResult();
 
                 if ($existing_id !== null) {

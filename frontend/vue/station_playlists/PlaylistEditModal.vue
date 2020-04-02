@@ -9,6 +9,7 @@
                 <form-source :form="$v.form"></form-source>
                 <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
                                :station-time-zone="stationTimeZone"></form-schedule>
+                <form-advanced :form="$v.form"></form-advanced>
             </b-tabs>
 
             <invisible-submit-button/>
@@ -31,11 +32,12 @@
     import FormBasicInfo from './form/PlaylistFormBasicInfo';
     import FormSource from './form/PlaylistFormSource';
     import FormSchedule from './form/PlaylistFormSchedule';
+    import FormAdvanced from './form/PlaylistFormAdvanced';
     import InvisibleSubmitButton from '../components/InvisibleSubmitButton';
 
     export default {
         name: 'EditModal',
-        components: { FormSchedule, FormSource, FormBasicInfo, InvisibleSubmitButton },
+        components: { FormSchedule, FormSource, FormBasicInfo, FormAdvanced, InvisibleSubmitButton },
         mixins: [validationMixin],
         props: {
             createUrl: String,

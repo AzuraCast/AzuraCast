@@ -12,6 +12,7 @@
                         <translate>This field is required.</translate>
                     </b-form-invalid-feedback>
                 </b-form-group>
+
                 <b-form-group class="col-md-6" label-for="form_edit_weight">
                     <template v-slot:label>
                         <translate>Playlist Weight</translate>
@@ -25,6 +26,7 @@
                         <translate>This field is required.</translate>
                     </b-form-invalid-feedback>
                 </b-form-group>
+
                 <b-form-group class="col-md-12" label-for="form_edit_is_enabled">
                     <template v-slot:description>
                         <translate>If disabled, the playlist will not be included in radio playback, but can still be managed.</translate>
@@ -33,7 +35,8 @@
                         <translate>Is Enabled</translate>
                     </b-form-checkbox>
                 </b-form-group>
-                <b-form-group class="col-md-6" label-for="edit_form_type">
+
+                <b-form-group class="col-md-12" label-for="edit_form_type">
                     <template v-slot:label>
                         <translate>Playlist Type</translate>
                     </template>
@@ -76,35 +79,6 @@
                             </a>
                         </b-form-radio>
                     </b-form-radio-group>
-                </b-form-group>
-
-                <b-form-group class="col-md-6" label-for="edit_form_order">
-                    <template v-slot:label>
-                        <translate>AutoDJ Scheduling Options</translate>
-                    </template>
-                    <template v-slot:description>
-                        <translate>Control how this playlist is handled by the AutoDJ software.</translate>
-                        <br>
-                        <b>
-                            <translate>Warning</translate>
-                            :</b>
-                        <translate>These functions are internal to Liquidsoap and will affect how your AutoDJ works.</translate>
-                    </template>
-
-                    <b-form-checkbox-group stacked id="edit_form_backend_options" v-model="form.backend_options.$model">
-                        <b-form-checkbox value="interrupt">
-                            <translate>Interrupt other songs to play at scheduled time.</translate>
-                        </b-form-checkbox>
-                        <b-form-checkbox value="loop_once">
-                            <translate>Only loop through playlist once.</translate>
-                        </b-form-checkbox>
-                        <b-form-checkbox value="single_track">
-                            <translate>Only play one track at scheduled time.</translate>
-                        </b-form-checkbox>
-                        <b-form-checkbox value="merge">
-                            <translate>Merge playlist to play as a single track.</translate>
-                        </b-form-checkbox>
-                    </b-form-checkbox-group>
                 </b-form-group>
             </b-row>
         </b-form-group>

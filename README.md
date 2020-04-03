@@ -88,14 +88,17 @@ For bug and error reports, we rely exclusively on our [GitHub Issues board](http
 
 Please keep in mind that AzuraCast is a free software project built and maintained by volunteers, so there may be some delays in getting back to you. We will make the absolute best effort possible to resolve your issues and answer your questions.
 
-## Follow Us on Social Media
+## Communities and Social Media
 
 We frequently post to social media any time there are significant updates to our software, security issues that users should be aware of, or upcoming changes to third-party software. You can get these updates in a more timely fashion by following our accounts:
 
 - On Twitter at [@AzuraCast](https://twitter.com/azuracast), or
 - On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
 
-We also have a [Slack channel](https://azuracast.com/slack) for developers, translators and radio station operators to help us collaborate in real time. You are welcome to join us and chat with us directly there.
+If you are an AzuraCast user, station owner, developer or other contributor, you can also join our two communities, where you can ask questions, share your station and more:
+
+- [Slack](https://azuracast.com/slack)
+- [Discord](https://azuracast.com/discord)
 
 Note that our social media channels aren't the best way to report issues to us; instead, you should use the GitHub issues instructions above, as this allows our whole team to help resolve and track the progress of the issue in one location.
 
@@ -116,6 +119,6 @@ We would like to thank the following organizations for their support of AzuraCas
 
 AzuraCast will always be available free of charge, but if you find the software useful and would like to support the project's lead developer, visit either of the links below. Your support is greatly appreciated.
 
-<a href="https://ko-fi.com/A736ATQ" target="_blank" title="Buy me a coffee!"><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=b' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+<a href="https://ko-fi.com/silvereagle" target="_blank" title="Buy me a coffee!"><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=b' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 <a href="https://www.patreon.com/bePatron?u=232463" target="_blank" title="Become a Patron"><img src="https://c5.patreon.com/external/logo/become_a_patron_button.png"></a>

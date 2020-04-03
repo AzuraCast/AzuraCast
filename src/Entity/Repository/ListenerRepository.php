@@ -3,7 +3,6 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
-use Doctrine\ORM\NoResultException;
 
 class ListenerRepository extends Repository
 {
@@ -38,55 +37,47 @@ class ListenerRepository extends Repository
      */
     public function update(Entity\Station $station, $clients): void
     {
-        $clients = (array)$clients;
+        $existingClientsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+            l.id, l.listener_uid, l.listener_hash 
+            FROM App\Entity\Listener l
+            WHERE l.station = :station
+            AND l.timestamp_end = 0')
+            ->setParameter('station', $station)
+            ->getArrayResult();
 
-        $listener_ids = [0];
+        $existingClients = [];
+        foreach ($existingClientsRaw as $client) {
+            $identifier = $client['listener_uid'] . '_' . $client['listener_hash'];
+            $existingClients[$identifier] = $client['id'];
+        }
 
-        foreach ($clients as $client) {
+        foreach ((array)$clients as $client) {
+            $listenerHash = Entity\Listener::calculateListenerHash($client);
+            $identifier = $client['uid'] . '_' . $listenerHash;
+
             // Check for an existing record for this client.
-            try {
-                $listener_hash = Entity\Listener::calculateListenerHash($client);
-
-                /** @throws NoResultException */
-                $existing_id = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-                    l.id 
-                    FROM App\Entity\Listener l
-                    WHERE l.station_id = :station_id
-                    AND l.listener_uid = :uid
-                    AND l.listener_hash = :hash
-                    AND l.timestamp_end = 0')
-                    ->setParameter('station_id', $station->getId())
-                    ->setParameter('uid', $client['uid'])
-                    ->setParameter('hash', $listener_hash)
-                    ->setMaxResults(1)
-                    ->getSingleScalarResult();
-
-                if ($existing_id !== null) {
-                    $listener_ids[] = $existing_id;
-                }
-            } catch (NoResultException $e) {
-                $existing_id = null;
-            }
-
-            if ($existing_id === null) {
+            if (isset($existingClients[$identifier])) {
+                unset($existingClients[$identifier]);
+            } else {
                 // Create a new record.
                 $record = new Entity\Listener($station, $client);
                 $this->em->persist($record);
-                $this->em->flush();
-
-                $listener_ids[] = $record->getId();
             }
         }
 
+        $this->em->flush();
+
         // Mark the end of all other clients on this station.
-        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Listener l
-            SET l.timestamp_end = :time
-            WHERE l.station_id = :station_id
-            AND l.timestamp_end = 0
-            AND l.id NOT IN (:ids)')
-            ->setParameter('time', time())
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('ids', $listener_ids)
-            ->execute();
+        if (!empty($existingClients)) {
+            $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Listener l
+                SET l.timestamp_end = :time
+                WHERE l.station = :station
+                AND l.timestamp_end = 0
+                AND l.id IN (:ids)')
+                ->setParameter('time', time())
+                ->setParameter('station', $station)
+                ->setParameter('ids', array_values($existingClients))
+                ->execute();
+        }
     }
 }

@@ -55,7 +55,7 @@
             </b-tabs>
         </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" @relist="relist"></edit-modal>
+        <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone" @relist="relist"></edit-modal>
         <broadcasts-modal ref="broadcastsModal"></broadcasts-modal>
     </div>
 </template>

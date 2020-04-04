@@ -3,6 +3,7 @@ namespace App\Sync;
 
 use App\Entity;
 use App\Entity\Repository\SettingsRepository;
+use App\Lock\LockManager;
 use App\Settings;
 use Monolog\Logger;
 
@@ -14,6 +15,8 @@ class Runner
     protected Logger $logger;
 
     protected SettingsRepository $settingsRepo;
+
+    protected LockManager $lockManager;
 
     /** @var Task\AbstractTask[] */
     protected array $tasks_nowplaying;
@@ -30,6 +33,7 @@ class Runner
     public function __construct(
         SettingsRepository $settingsRepo,
         Logger $logger,
+        LockManager $lockManager,
         array $tasks_nowplaying,
         array $tasks_short,
         array $tasks_medium,
@@ -37,6 +41,7 @@ class Runner
     ) {
         $this->settingsRepo = $settingsRepo;
         $this->logger = $logger;
+        $this->lockManager = $lockManager;
 
         $this->tasks_nowplaying = $tasks_nowplaying;
         $this->tasks_short = $tasks_short;
@@ -51,62 +56,23 @@ class Runner
      *
      * @param bool $force
      */
-    public function syncNowplaying($force = false)
+    public function syncNowplaying($force = false): void
     {
         $this->logger->info('Running Now Playing sync task');
-        $this->_initSync(10);
+        $this->initSync(600);
 
-        // Prevent nowplaying from running on top of itself.
-        $last_start = $this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, 0);
-        $last_end = $this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING_LAST_RUN, 0);
+        $lock = $this->lockManager->getLock('sync_nowplaying', 600);
 
-        if ($last_start > $last_end && $last_start >= (time() - 10) && !$force) {
-            return;
-        }
+        $lock->run(function () use ($force) {
+            foreach ($this->tasks_nowplaying as $task) {
+                $this->runTimer(get_class($task), function () use ($task, $force) {
+                    /** @var Task\AbstractTask $task */
+                    $task->run($force);
+                });
+            }
 
-        $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING_LAST_STARTED, time());
-
-        foreach ($this->tasks_nowplaying as $task) {
-            $this->_runTimer(get_class($task), function () use ($task, $force) {
-                /** @var Task\AbstractTask $task */
-                $task->run($force);
-            });
-        }
-
-        $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING_LAST_RUN, time());
-    }
-
-    protected function _initSync($script_timeout = 60)
-    {
-        // Immediately halt if setup is not complete.
-        if ($this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
-            die('Setup not complete; halting synchronized task.');
-        }
-
-        set_time_limit($script_timeout);
-        ini_set('memory_limit', '256M');
-
-        if (Settings::getInstance()->isCli()) {
-            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
-            ini_set('display_errors', 1);
-            ini_set('log_errors', 1);
-        }
-    }
-
-    protected function _runTimer($timer_description, callable $timed_function)
-    {
-        // Filter namespace name
-        $timer_description_parts = explode("\\", $timer_description);
-        $timer_description = array_pop($timer_description_parts);
-
-        $start_time = microtime(true);
-
-        $timed_function();
-
-        $end_time = microtime(true);
-        $time_diff = $end_time - $start_time;
-
-        $this->logger->debug('Timer "' . $timer_description . '" completed in ' . round($time_diff, 3) . ' second(s).');
+            $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING_LAST_RUN, time());
+        }, $force);
     }
 
     /**
@@ -115,19 +81,23 @@ class Runner
      *
      * @param bool $force
      */
-    public function syncShort($force = false)
+    public function syncShort($force = false): void
     {
         $this->logger->info('Running 1-minute sync task');
-        $this->_initSync(60);
+        $this->initSync(600);
 
-        foreach ($this->tasks_short as $task) {
-            $this->_runTimer(get_class($task), function () use ($task, $force) {
-                /** @var Task\AbstractTask $task */
-                $task->run($force);
-            });
-        }
+        $lock = $this->lockManager->getLock('sync_short', 600);
 
-        $this->settingsRepo->setSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, time());
+        $lock->run(function () use ($force) {
+            foreach ($this->tasks_short as $task) {
+                $this->runTimer(get_class($task), function () use ($task, $force) {
+                    /** @var Task\AbstractTask $task */
+                    $task->run($force);
+                });
+            }
+
+            $this->settingsRepo->setSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, time());
+        }, $force);
     }
 
     /**
@@ -136,19 +106,23 @@ class Runner
      *
      * @param bool $force
      */
-    public function syncMedium($force = false)
+    public function syncMedium($force = false): void
     {
         $this->logger->info('Running 5-minute sync task');
-        $this->_initSync(300);
+        $this->initSync(600);
 
-        foreach ($this->tasks_medium as $task) {
-            $this->_runTimer(get_class($task), function () use ($task, $force) {
-                /** @var Task\AbstractTask $task */
-                $task->run($force);
-            });
-        }
+        $lock = $this->lockManager->getLock('sync_medium', 600);
 
-        $this->settingsRepo->setSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, time());
+        $lock->run(function () use ($force) {
+            foreach ($this->tasks_medium as $task) {
+                $this->runTimer(get_class($task), function () use ($task, $force) {
+                    /** @var Task\AbstractTask $task */
+                    $task->run($force);
+                });
+            }
+
+            $this->settingsRepo->setSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, time());
+        }, $force);
     }
 
     /**
@@ -157,22 +131,26 @@ class Runner
      *
      * @param bool $force
      */
-    public function syncLong($force = false)
+    public function syncLong($force = false): void
     {
         $this->logger->info('Running 1-hour sync task');
-        $this->_initSync(1800);
+        $this->initSync(1800);
 
-        foreach ($this->tasks_long as $task) {
-            $this->_runTimer(get_class($task), function () use ($task, $force) {
-                /** @var Task\AbstractTask $task */
-                $task->run($force);
-            });
-        }
+        $lock = $this->lockManager->getLock('sync_medium', 1800);
 
-        $this->settingsRepo->setSetting(Entity\Settings::LONG_SYNC_LAST_RUN, time());
+        $lock->run(function () use ($force) {
+            foreach ($this->tasks_long as $task) {
+                $this->runTimer(get_class($task), function () use ($task, $force) {
+                    /** @var Task\AbstractTask $task */
+                    $task->run($force);
+                });
+            }
+
+            $this->settingsRepo->setSetting(Entity\Settings::LONG_SYNC_LAST_RUN, time());
+        }, $force);
     }
 
-    public function getSyncTimes()
+    public function getSyncTimes(): array
     {
         $this->settingsRepo->clearCache();
 
@@ -213,5 +191,38 @@ class Runner
         }
 
         return $syncs;
+    }
+
+    protected function initSync($script_timeout = 60): void
+    {
+        // Immediately halt if setup is not complete.
+        if ($this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
+            die('Setup not complete; halting synchronized task.');
+        }
+
+        set_time_limit($script_timeout);
+        ini_set('memory_limit', '256M');
+
+        if (Settings::getInstance()->isCli()) {
+            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+            ini_set('display_errors', 1);
+            ini_set('log_errors', 1);
+        }
+    }
+
+    protected function runTimer($timer_description, callable $timed_function): void
+    {
+        // Filter namespace name
+        $timer_description_parts = explode("\\", $timer_description);
+        $timer_description = array_pop($timer_description_parts);
+
+        $start_time = microtime(true);
+
+        $timed_function();
+
+        $end_time = microtime(true);
+        $time_diff = $end_time - $start_time;
+
+        $this->logger->debug('Timer "' . $timer_description . '" completed in ' . round($time_diff, 3) . ' second(s).');
     }
 }

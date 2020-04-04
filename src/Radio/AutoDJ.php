@@ -5,7 +5,7 @@ use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\GetNextSong;
 use App\EventDispatcher;
-use App\Service\Mutex;
+use App\Lock\LockManager;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
 use Doctrine\ORM\EntityManager;
@@ -30,7 +30,7 @@ class AutoDJ implements EventSubscriberInterface
 
     protected Logger $logger;
 
-    protected Mutex $mutex;
+    protected LockManager $lockManager;
 
     public function __construct(
         EntityManager $em,
@@ -41,7 +41,7 @@ class AutoDJ implements EventSubscriberInterface
         EventDispatcher $dispatcher,
         Filesystem $filesystem,
         Logger $logger,
-        Mutex $mutex
+        LockManager $lockManager
     ) {
         $this->em = $em;
         $this->songRepo = $songRepo;
@@ -51,7 +51,7 @@ class AutoDJ implements EventSubscriberInterface
         $this->dispatcher = $dispatcher;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
-        $this->mutex = $mutex;
+        $this->lockManager = $lockManager;
     }
 
     /**
@@ -105,10 +105,10 @@ class AutoDJ implements EventSubscriberInterface
             return null;
         }
 
-        // Use a Redis-backed mutex to prevent stacked execution by multiple workers/processes.
-        $mutex = $this->mutex->getMutex('autodj_next_song_' . $station->getId(), 30);
+        $lock = $this->lockManager->getLock('autodj_next_song_' . $station->getId(), 30);
+        $lock->waitForLock();
 
-        return $mutex->synchronized(function () use ($station, $is_autodj) {
+        return $lock->run(function () use ($station, $is_autodj) {
             $this->logger->pushProcessor(function ($record) use ($station) {
                 $record['extra']['station'] = [
                     'id' => $station->getId(),
@@ -142,7 +142,7 @@ class AutoDJ implements EventSubscriberInterface
             }
 
             return $next_song;
-        });
+        }, $is_autodj);
     }
 
     /**

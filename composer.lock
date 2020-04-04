@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b4a8bd1bbb944f5b7e0e176cb647ec8",
+    "content-hash": "fee81268eb552cd3783a0c2b94197203",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2843,6 +2843,7 @@
                 "serialize",
                 "tokenizer"
             ],
+            "abandoned": "opis/closure",
             "time": "2018-03-21T22:21:57+00:00"
         },
         {
@@ -3478,87 +3479,6 @@
                 "xmlrpc"
             ],
             "time": "2018-12-09T16:08:54+00:00"
-        },
-        {
-            "name": "malkusch/lock",
-            "version": "v2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-lock/lock.git",
-                "reference": "093f389ec2f38fc8686d2f70e23378182fce7714"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-lock/lock/zipball/093f389ec2f38fc8686d2f70e23378182fce7714",
-                "reference": "093f389ec2f38fc8686d2f70e23378182fce7714",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1",
-                "psr/log": "^1"
-            },
-            "require-dev": {
-                "eloquent/liberator": "^2.0",
-                "ext-memcached": "*",
-                "ext-pcntl": "*",
-                "ext-pdo_mysql": "*",
-                "ext-pdo_sqlite": "*",
-                "ext-redis": "*",
-                "ext-sysvsem": "*",
-                "johnkary/phpunit-speedtrap": "^3.0",
-                "kriswallsmith/spork": "^0.3",
-                "mikey179/vfsstream": "^1.6",
-                "php-mock/php-mock-phpunit": "^2.1",
-                "phpunit/phpunit": "^7.4",
-                "predis/predis": "^1.1",
-                "squizlabs/php_codesniffer": "^3.3"
-            },
-            "suggest": {
-                "ext-pnctl": "Enables locking with flock without busy waiting in CLI scripts.",
-                "ext-redis": "To use this library with the PHP Redis extension.",
-                "ext-sysvsem": "Enables locking using semaphores.",
-                "predis/predis": "To use this library with predis."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "malkusch\\lock\\": "classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "WTFPL"
-            ],
-            "authors": [
-                {
-                    "name": "Markus Malkusch",
-                    "email": "markus@malkusch.de",
-                    "homepage": "http://markus.malkusch.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Willem Stuursma-Ruwen",
-                    "email": "willem@stuursma.name",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Mutex library for exclusive code execution.",
-            "homepage": "https://github.com/malkusch/lock",
-            "keywords": [
-                "advisory-locks",
-                "cas",
-                "flock",
-                "lock",
-                "locking",
-                "memcache",
-                "mutex",
-                "mysql",
-                "postgresql",
-                "redis",
-                "redlock",
-                "semaphore"
-            ],
-            "time": "2018-12-12T19:53:29+00:00"
         },
         {
             "name": "maxmind-db/reader",
@@ -5407,16 +5327,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801"
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/446d54b4cb6bf489fc9d75f55843658e6f25d801",
-                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
                 "shasum": ""
             },
             "require": {
@@ -5450,7 +5370,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2019-11-01T11:05:21+00:00"
+            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "psr/simple-cache",

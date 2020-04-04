@@ -6,11 +6,11 @@ use App\Entity;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
 use App\EventDispatcher;
+use App\Lock\LockManager;
 use App\Message;
 use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
-use App\Service\Mutex;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Exception;
@@ -46,7 +46,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\ListenerRepository $listener_repo;
 
-    protected Mutex $mutex;
+    protected LockManager $lockManager;
 
     protected string $analytics_level = Entity\Analytics::LEVEL_ALL;
 
@@ -60,7 +60,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         LoggerInterface $logger,
         EventDispatcher $event_dispatcher,
         MessageQueue $message_queue,
-        Mutex $mutex,
+        LockManager $lockManager,
         Entity\Repository\SongHistoryRepository $historyRepository,
         Entity\Repository\SongRepository $songRepository,
         Entity\Repository\ListenerRepository $listenerRepository,
@@ -75,7 +75,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->event_dispatcher = $event_dispatcher;
         $this->message_queue = $message_queue;
         $this->influx = $influx;
-        $this->mutex = $mutex;
+        $this->lockManager = $lockManager;
 
         $this->history_repo = $historyRepository;
         $this->song_repo = $songRepository;
@@ -183,10 +183,20 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Station $station,
         $standalone = false
     ): Entity\Api\NowPlaying {
-        // Use a Redis-backed mutex to prevent stacked execution by multiple workers/processes.
-        $mutex = $this->mutex->getMutex('nowplaying_station_' . $station->getId(), 30);
+        $lock = $this->lockManager->getLock('nowplaying_station_' . $station->getId(), 600);
 
-        return $mutex->synchronized(function () use ($station, $standalone) {
+        if ($lock->isLocked()) {
+            $this->logger->error('NowPlaying is currently being updated for station. Using old data temporarily.', [
+                'station' => [
+                    'id' => $station->getId(),
+                    'name' => $station->getName(),
+                ],
+            ]);
+
+            return $station->getNowplaying();
+        }
+
+        return $lock->run(function () use ($station, $standalone) {
             /** @var Logger $logger */
             $logger = $this->logger;
 
@@ -208,7 +218,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
             // Build the new "raw" NowPlaying data.
             try {
-                $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, null,
+                $event = new GenerateRawNowPlaying(
+                    $station,
+                    $frontend_adapter,
+                    $remote_adapters,
+                    null,
                     $include_clients);
                 $this->event_dispatcher->dispatch($event);
                 $np_raw = $event->getRawResponse();
@@ -252,7 +266,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
                 $np->live = new Entity\Api\NowPlayingLive(false);
             } else {
-                // Pull from current NP data if song details haven't changed.
+                // Pull from current NP data if song details haven't changed .
                 $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
 
                 if ($np_old instanceof Entity\Api\NowPlaying && strcmp($current_song_hash,
@@ -378,7 +392,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      *
      * @param Message\AbstractMessage $message
      */
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         try {
             if ($message instanceof Message\UpdateNowPlayingMessage) {
@@ -393,7 +407,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         }
     }
 
-    public function loadRawFromFrontend(GenerateRawNowPlaying $event)
+    public function loadRawFromFrontend(GenerateRawNowPlaying $event): void
     {
         $np_raw = $event
             ->getFrontend()
@@ -402,7 +416,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $event->setRawResponse($np_raw);
     }
 
-    public function addToRawFromRemotes(GenerateRawNowPlaying $event)
+    public function addToRawFromRemotes(GenerateRawNowPlaying $event): void
     {
         $np_raw = $event->getRawResponse();
 
@@ -418,7 +432,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $event->setRawResponse($np_raw);
     }
 
-    public function cleanUpRawOutput(GenerateRawNowPlaying $event)
+    public function cleanUpRawOutput(GenerateRawNowPlaying $event): void
     {
         $np_raw = $event->getRawResponse();
 

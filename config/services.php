@@ -424,11 +424,13 @@ return [
     App\Sync\Runner::class => function (
         ContainerInterface $di,
         Monolog\Logger $logger,
+        App\Lock\LockManager $lockManager,
         App\Entity\Repository\SettingsRepository $settingsRepo
     ) {
         return new App\Sync\Runner(
             $settingsRepo,
             $logger,
+            $lockManager,
             [
                 $di->get(App\Sync\Task\NowPlaying::class),
                 $di->get(App\Sync\Task\ReactivateStreamer::class),

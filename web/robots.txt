@@ -12,10 +12,10 @@
 # Ignored: http://example.com/site/robots.txt
 #
 # For more information about the robots.txt standard, see:
-# http://www.robotstxt.org/wc/robots.html
+# https://www.robotstxt.org/robotstxt.html
 #
 # For syntax checking, see:
-# http://www.sxw.org.uk/computing/robots/check.html
+# https://developers.google.com/search/reference/robots_txt
 
 User-agent: *
 Disallow: /

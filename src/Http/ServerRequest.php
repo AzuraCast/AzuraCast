@@ -8,6 +8,7 @@ use App\Radio;
 use App\RateLimit;
 use App\Session;
 use App\View;
+use InvalidArgumentException;
 use Mezzio\Session\SessionInterface;
 
 class ServerRequest extends \Slim\Http\ServerRequest
@@ -179,10 +180,24 @@ class ServerRequest extends \Slim\Http\ServerRequest
     protected function getAttributeOfClass($attr, $class_name)
     {
         $object = $this->serverRequest->getAttribute($attr);
-        if ($object instanceof $class_name) {
-            return $object;
+
+        if (empty($object)) {
+            throw new Exception\InvalidRequestAttribute(sprintf(
+                'Attribute "%s" is required and is empty in this request',
+                $attr
+            ));
         }
 
-        throw new Exception(sprintf('Attribute %s must be of type %s.', $attr, $class_name));
+        if (!($object instanceof $class_name)) {
+            throw new InvalidArgumentException(sprintf(
+                'Attribute "%s" must be of type "%s".',
+                $attr,
+                $class_name
+            ));
+        }
+
+        return $object;
+
+
     }
 }

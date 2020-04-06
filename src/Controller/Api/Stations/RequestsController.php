@@ -2,12 +2,12 @@
 namespace App\Controller\Api\Stations;
 
 use App\ApiUtilities;
+use App\Doctrine\Paginator;
 use App\Entity;
+use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use App\Doctrine\Paginator;
-use App\Exception;
 use Doctrine\ORM\EntityManager;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -158,10 +158,16 @@ class RequestsController
                 ->withJson(new Entity\Api\Error(403, __('This station does not accept requests currently.')));
         }
 
-        $is_authenticated = !empty($request->getAttribute(ServerRequest::ATTR_USER));
+        try {
+            $user = $request->getUser();
+        } catch (Exception\InvalidRequestAttribute $e) {
+            $user = null;
+        }
+        
+        $isAuthenticated = ($user instanceof Entity\User);
 
         try {
-            $this->requestRepo->submit($station, $media_id, $is_authenticated);
+            $this->requestRepo->submit($station, $media_id, $isAuthenticated, $request->getIp());
 
             return $response->withJson(new Entity\Api\Status(true, __('Request submitted successfully.')));
         } catch (Exception $e) {

@@ -10,18 +10,12 @@ use Cake\Chronos\Chronos;
 
 class StationRequestRepository extends Repository
 {
-    /**
-     * Submit a new request.
-     *
-     * @param Entity\Station $station
-     * @param int $track_id
-     * @param bool $is_authenticated
-     *
-     * @return mixed
-     * @throws Exception
-     */
-    public function submit(Entity\Station $station, $track_id, $is_authenticated = false)
-    {
+    public function submit(
+        Entity\Station $station,
+        int $trackId,
+        bool $isAuthenticated,
+        string $ip
+    ): int {
         // Forbid web crawlers from using this feature.
         if (Utilities::isCrawler()) {
             throw new Exception(__('Search engine crawlers are not permitted to use this feature.'));
@@ -34,7 +28,7 @@ class StationRequestRepository extends Repository
 
         // Verify that Track ID exists with station.
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-        $media_item = $media_repo->findOneBy(['unique_id' => $track_id, 'station_id' => $station->getId()]);
+        $media_item = $media_repo->findOneBy(['unique_id' => $trackId, 'station_id' => $station->getId()]);
 
         if (!($media_item instanceof Entity\StationMedia)) {
             throw new Exception(__('The song ID you specified could not be found in the station.'));
@@ -50,20 +44,25 @@ class StationRequestRepository extends Repository
         // Check the most recent song history.
         $this->checkRecentPlay($media_item, $station);
 
-        if (!$is_authenticated) {
+        if (!$isAuthenticated) {
             // Check for an existing request from this user.
             $user_ip = $_SERVER['REMOTE_ADDR'];
 
             // Check for any request (on any station) within the last $threshold_seconds.
-            $threshold_mins = $station->getRequestThreshold() ?? 5;
-            $threshold_seconds = $threshold_mins * 60;
+            $thresholdMins = $station->getRequestThreshold() ?? 5;
+            $thresholdSeconds = $thresholdMins * 60;
+
+            // Always have a minimum threshold to avoid flooding.
+            if ($thresholdSeconds < 60) {
+                $thresholdSeconds = 15;
+            }
 
             $recent_requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr 
                 FROM App\Entity\StationRequest sr 
                 WHERE sr.ip = :user_ip 
                 AND sr.timestamp >= :threshold')
-                ->setParameter('user_ip', $user_ip)
-                ->setParameter('threshold', time() - $threshold_seconds)
+                ->setParameter('user_ip', $ip)
+                ->setParameter('threshold', time() - $thresholdSeconds)
                 ->getArrayResult();
 
             if (count($recent_requests) > 0) {
@@ -88,7 +87,7 @@ class StationRequestRepository extends Repository
      * @return bool
      * @throws Exception
      */
-    public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station)
+    public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station): bool
     {
         $pending_request_threshold = time() - (60 * 10);
 
@@ -183,7 +182,7 @@ class StationRequestRepository extends Repository
         ];
 
         $isDuplicate = (null === AutoDJ::getDistinctTrack($eligibleTracks, $recentTracks));
-        
+
         if ($isDuplicate) {
             throw new Exception(__('This song or artist has been played too recently. Wait a while before requesting it again.'));
         }

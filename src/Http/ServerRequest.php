@@ -8,7 +8,6 @@ use App\Radio;
 use App\RateLimit;
 use App\Session;
 use App\View;
-use InvalidArgumentException;
 use Mezzio\Session\SessionInterface;
 
 class ServerRequest extends \Slim\Http\ServerRequest
@@ -109,10 +108,10 @@ class ServerRequest extends \Slim\Http\ServerRequest
     }
 
     /**
-     * Get the current user associated with the request, if it's set.
-     * Set by @return Entity\User
-     * @see \App\Middleware\GetCurrentUser
+     * Get the current logged-in user.
      *
+     * @return Entity\User
+     * @throws Exception\InvalidRequestAttribute
      */
     public function getUser(): Entity\User
     {
@@ -121,10 +120,9 @@ class ServerRequest extends \Slim\Http\ServerRequest
 
     /**
      * Get the current station associated with the request, if it's set.
-     * Set by @return Entity\Station
-     * @throws Exception
-     * @see \App\Middleware\GetStation
      *
+     * @return Entity\Station
+     * @throws Exception\InvalidRequestAttribute
      */
     public function getStation(): Entity\Station
     {
@@ -133,10 +131,9 @@ class ServerRequest extends \Slim\Http\ServerRequest
 
     /**
      * Get the current station frontend associated with the request, if it's set.
-     * Set by @return Radio\Frontend\AbstractFrontend
-     * @throws Exception
-     * @see \App\Middleware\GetStation
      *
+     * @return Radio\Frontend\AbstractFrontend
+     * @throws Exception\InvalidRequestAttribute
      */
     public function getStationFrontend(): Radio\Frontend\AbstractFrontend
     {
@@ -145,10 +142,9 @@ class ServerRequest extends \Slim\Http\ServerRequest
 
     /**
      * Get the current station backend associated with the request, if it's set.
-     * Set by @return Radio\Backend\AbstractBackend
-     * @throws Exception
-     * @see \App\Middleware\GetStation
      *
+     * @return Radio\Backend\AbstractBackend
+     * @throws Exception\InvalidRequestAttribute
      */
     public function getStationBackend(): Radio\Backend\AbstractBackend
     {
@@ -157,14 +153,17 @@ class ServerRequest extends \Slim\Http\ServerRequest
 
     /**
      * @return Radio\Remote\AdapterProxy[]
-     * @throws Exception
+     * @throws Exception\InvalidRequestAttribute
      */
     public function getStationRemotes(): array
     {
         $remotes = $this->serverRequest->getAttribute(self::ATTR_STATION_REMOTES);
 
         if (null === $remotes) {
-            throw new Exception(sprintf('Attribute "%s" was not set.', self::ATTR_STATION_REMOTES));
+            throw new Exception\InvalidRequestAttribute(sprintf(
+                'Attribute "%s" was not set.',
+                self::ATTR_STATION_REMOTES
+            ));
         }
 
         return $remotes;
@@ -175,7 +174,7 @@ class ServerRequest extends \Slim\Http\ServerRequest
      * @param string $class_name
      *
      * @return mixed
-     * @throws Exception
+     * @throws Exception\InvalidRequestAttribute
      */
     protected function getAttributeOfClass($attr, $class_name)
     {
@@ -189,7 +188,7 @@ class ServerRequest extends \Slim\Http\ServerRequest
         }
 
         if (!($object instanceof $class_name)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new Exception\InvalidRequestAttribute(sprintf(
                 'Attribute "%s" must be of type "%s".',
                 $attr,
                 $class_name
@@ -197,7 +196,5 @@ class ServerRequest extends \Slim\Http\ServerRequest
         }
 
         return $object;
-
-
     }
 }

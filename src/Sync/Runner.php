@@ -61,7 +61,7 @@ class Runner
         $this->logger->info('Running Now Playing sync task');
         $this->initSync(600);
 
-        $lock = $this->lockManager->getLock('sync_nowplaying', 600);
+        $lock = $this->lockManager->getLock('sync_nowplaying', 600, $force);
 
         $lock->run(function () use ($force) {
             foreach ($this->tasks_nowplaying as $task) {
@@ -72,7 +72,7 @@ class Runner
             }
 
             $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING_LAST_RUN, time());
-        }, $force);
+        });
     }
 
     /**
@@ -86,7 +86,7 @@ class Runner
         $this->logger->info('Running 1-minute sync task');
         $this->initSync(600);
 
-        $lock = $this->lockManager->getLock('sync_short', 600);
+        $lock = $this->lockManager->getLock('sync_short', 600, $force);
 
         $lock->run(function () use ($force) {
             foreach ($this->tasks_short as $task) {
@@ -97,7 +97,7 @@ class Runner
             }
 
             $this->settingsRepo->setSetting(Entity\Settings::SHORT_SYNC_LAST_RUN, time());
-        }, $force);
+        });
     }
 
     /**
@@ -111,7 +111,7 @@ class Runner
         $this->logger->info('Running 5-minute sync task');
         $this->initSync(600);
 
-        $lock = $this->lockManager->getLock('sync_medium', 600);
+        $lock = $this->lockManager->getLock('sync_medium', 600, $force);
 
         $lock->run(function () use ($force) {
             foreach ($this->tasks_medium as $task) {
@@ -122,7 +122,7 @@ class Runner
             }
 
             $this->settingsRepo->setSetting(Entity\Settings::MEDIUM_SYNC_LAST_RUN, time());
-        }, $force);
+        });
     }
 
     /**
@@ -136,7 +136,7 @@ class Runner
         $this->logger->info('Running 1-hour sync task');
         $this->initSync(1800);
 
-        $lock = $this->lockManager->getLock('sync_medium', 1800);
+        $lock = $this->lockManager->getLock('sync_medium', 1800, $force);
 
         $lock->run(function () use ($force) {
             foreach ($this->tasks_long as $task) {
@@ -147,7 +147,7 @@ class Runner
             }
 
             $this->settingsRepo->setSetting(Entity\Settings::LONG_SYNC_LAST_RUN, time());
-        }, $force);
+        });
     }
 
     public function getSyncTimes(): array

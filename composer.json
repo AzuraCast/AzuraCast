@@ -77,7 +77,8 @@
     "wikimedia/composer-merge-plugin": "^1.4",
     "zendframework/zend-config": "^3.3",
     "zircote/swagger-php": "^3.0",
-    "rlanvin/php-ip": "^2.0"
+    "rlanvin/php-ip": "^2.0",
+    "malkusch/lock": "^2.1"
   },
   "require-dev": {
     "codeception/codeception": "^4.0",

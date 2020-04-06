@@ -105,8 +105,7 @@ class AutoDJ implements EventSubscriberInterface
             return null;
         }
 
-        $lock = $this->lockManager->getLock('autodj_next_song_' . $station->getId(), 30);
-        $lock->waitForLock();
+        $lock = $this->lockManager->getLock('autodj_next_song_' . $station->getId(), 30, true);
 
         return $lock->run(function () use ($station, $is_autodj) {
             $this->logger->pushProcessor(function ($record) use ($station) {
@@ -142,7 +141,7 @@ class AutoDJ implements EventSubscriberInterface
             }
 
             return $next_song;
-        }, $is_autodj);
+        });
     }
 
     /**

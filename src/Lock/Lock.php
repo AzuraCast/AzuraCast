@@ -1,86 +1,85 @@
 <?php
 namespace App\Lock;
 
-use App\Exception\LockAlreadyExistsException;
-use App\Exception\LockWaitExpiredException;
-use Psr\SimpleCache\CacheInterface;
+use malkusch\lock\exception\ExecutionOutsideLockException;
+use malkusch\lock\exception\LockAcquireException;
+use malkusch\lock\exception\LockReleaseException;
+use malkusch\lock\mutex\PHPRedisMutex;
+use malkusch\lock\util\Loop;
+use Psr\Log\LoggerInterface;
+use Redis;
 
-class Lock
+class Lock extends PHPRedisMutex
 {
-    protected CacheInterface $cache;
+    protected LoggerInterface $logger;
 
-    protected string $identifier;
+    protected Loop $loop;
 
-    protected int $timeout = 30;
+    protected int $timeout;
+
+    protected string $key;
+
+    protected float $acquired;
 
     protected bool $waitForLock = false;
 
-    protected int $waitInterval = 1;
-
     protected int $waitTimeout = 30;
 
-    public function __construct(CacheInterface $cache, string $identifier, int $timeout)
-    {
-        $this->cache = $cache;
-        $this->identifier = 'lock_' . $identifier;
-        $this->timeout = $timeout;
+    public function __construct(
+        Redis $redis,
+        LoggerInterface $logger,
+        string $key,
+        int $ttl = 30,
+        bool $waitForLock = false,
+        ?int $waitTimeout = null
+    ) {
+        parent::__construct([$redis], $key, $ttl);
+
+        $this->logger = $logger;
+        $this->setLogger($logger);
+
+        $this->key = $key;
+        $this->timeout = $ttl;
+        $this->waitForLock = $waitForLock;
+        $this->waitTimeout = $waitTimeout ?? $ttl;
     }
 
-    public function waitForLock(int $interval = 1, int $timeout = 30): void
+    protected function lock(): void
     {
-        $this->waitForLock = true;
-        $this->waitInterval = $interval;
-        $this->waitTimeout = $timeout;
-    }
+        if ($this->waitForLock) {
+            $this->loop = new Loop($this->waitTimeout);
 
-    public function isLocked(): bool
-    {
-        return $this->cache->has($this->identifier);
-    }
+            $this->loop->execute(function (): void {
+                $this->acquired = microtime(true);
 
-    public function unlock(): void
-    {
-        $this->cache->delete($this->identifier);
-    }
-
-    public function lock(bool $force = false): void
-    {
-        if (!$force && $this->isLocked()) {
-            throw new LockAlreadyExistsException(sprintf('Lock already exists for identifier "%s".',
-                $this->identifier));
-        }
-
-        $this->cache->set($this->identifier, time(), $this->timeout);
-    }
-
-    public function run(callable $task, bool $force = false)
-    {
-        if ($this->waitForLock && !$force) {
-            $elapsedTime = 0;
-            while (true) {
-                if ($elapsedTime > 0) {
-                    sleep($this->waitInterval);
+                if ($this->acquire($this->key, $this->timeout + 1)) {
+                    $this->loop->end();
                 }
-
-                $elapsedTime += $this->waitInterval;
-
-                try {
-                    $this->lock();
-                    break;
-                } catch (LockAlreadyExistsException $e) {
-                    if ($elapsedTime > $this->waitTimeout) {
-                        throw new LockWaitExpiredException;
-                    }
-                }
-            }
+            });
         } else {
-            $this->lock($force);
+            $this->acquired = microtime(true);
+
+            if (!$this->acquire($this->key, $this->timeout + 1)) {
+                throw new LockAcquireException('Failed to acquire the lock.');
+            }
+        }
+    }
+
+    protected function unlock(): void
+    {
+        $elapsed_time = microtime(true) - $this->acquired;
+        if ($elapsed_time > $this->timeout) {
+            $e = ExecutionOutsideLockException::create($elapsed_time, $this->timeout);
+            $this->logger->error($e->getMessage());
         }
 
-        try {
-            return $task();
-        } finally {
-            $this->unlock();
+        if (!$this->release($this->key)) {
+            throw new LockReleaseException("Failed to release the lock.");
         }
+    }
+
+    public function run(callable $code)
+    {
+        return $this->synchronized($code);
     }
 }

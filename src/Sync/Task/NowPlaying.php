@@ -150,21 +150,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             ->findBy(['is_enabled' => 1]);
 
         $nowplaying = [];
-
         foreach ($stations as $station) {
-            /** @var Entity\Station $station */
-            $last_run = $station->getNowplayingTimestamp();
-
-            if (!$force && $last_run >= (time() - 10)) {
-                $np = $station->getNowplaying();
-
-                if ($np instanceof Entity\Api\NowPlaying) {
-                    $np->update();
-                    $nowplaying[] = $np;
-                    continue;
-                }
-            }
-
             $nowplaying[] = $this->processStation($station);
         }
 
@@ -183,19 +169,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Station $station,
         $standalone = false
     ): Entity\Api\NowPlaying {
-        $lock = $this->lockManager->getLock('nowplaying_station_' . $station->getId(), 600);
-
-        if ($lock->isLocked()) {
-            $this->logger->error('NowPlaying is currently being updated for station. Using old data temporarily.', [
-                'station' => [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
-                ],
-            ]);
-
-            return $station->getNowplaying();
-        }
-
+        $lock = $this->lockManager->getLock('nowplaying_station_' . $station->getId(), 600, true, 30);
+        
         return $lock->run(function () use ($station, $standalone) {
             /** @var Logger $logger */
             $logger = $this->logger;

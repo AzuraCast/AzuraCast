@@ -1,25 +1,27 @@
 <?php
 namespace App\Lock;
 
-use Psr\SimpleCache\CacheInterface;
+use Psr\Log\LoggerInterface;
+use Redis;
 
 class LockManager
 {
-    protected CacheInterface $cache;
+    protected Redis $redis;
 
-    protected array $locks = [];
+    protected LoggerInterface $logger;
 
-    public function __construct(CacheInterface $cache)
+    public function __construct(Redis $redis, LoggerInterface $logger)
     {
-        $this->cache = $cache;
+        $this->redis = $redis;
+        $this->logger = $logger;
     }
 
-    public function getLock(string $identifier, int $timeout = 30): Lock
-    {
-        if (!isset($this->locks[$identifier])) {
-            $this->locks[$identifier] = new Lock($this->cache, $identifier, $timeout);
-        }
-
-        return $this->locks[$identifier];
+    public function getLock(
+        string $key,
+        int $ttl = 30,
+        bool $waitForLock = false,
+        ?int $waitTimeout = null
+    ): Lock {
+        return new Lock($this->redis, $this->logger, $key, $ttl, $waitForLock, $waitTimeout);
     }
 }

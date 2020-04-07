@@ -673,6 +673,10 @@ return function (App $app) {
                 Controller\Stations\Reports\RequestsController::class . ':deleteAction')
                 ->setName('stations:reports:requests:delete');
 
+            $group->get('/requests/clear/{csrf}',
+                Controller\Stations\Reports\RequestsController::class . ':clearAction')
+                ->setName('stations:reports:requests:clear');
+
         })->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
         $group->group('/sftp_users', function (RouteCollectorProxy $group) {

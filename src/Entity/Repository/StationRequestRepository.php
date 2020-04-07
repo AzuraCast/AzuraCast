@@ -12,7 +12,7 @@ class StationRequestRepository extends Repository
 {
     public function submit(
         Entity\Station $station,
-        int $trackId,
+        string $trackId,
         bool $isAuthenticated,
         string $ip
     ): int {
@@ -45,9 +45,6 @@ class StationRequestRepository extends Repository
         $this->checkRecentPlay($media_item, $station);
 
         if (!$isAuthenticated) {
-            // Check for an existing request from this user.
-            $user_ip = $_SERVER['REMOTE_ADDR'];
-
             // Check for any request (on any station) within the last $threshold_seconds.
             $thresholdMins = $station->getRequestThreshold() ?? 5;
             $thresholdSeconds = $thresholdMins * 60;

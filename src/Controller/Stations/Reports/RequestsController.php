@@ -64,4 +64,24 @@ class RequestsController
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));
     }
+
+    public function clearAction(
+        ServerRequest $request,
+        Response $response,
+        $csrf
+    ): ResponseInterface {
+        $request->getCsrf()->verify($csrf, $this->csrf_namespace);
+
+        $station = $request->getStation();
+
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationRequest sr
+            WHERE sr.station = :station
+            AND sr.played_at = 0')
+            ->setParameter('station', $station)
+            ->execute();
+
+        $request->getFlash()->addMessage('<b>All pending requests cleared.</b>', Flash::SUCCESS);
+
+        return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));
+    }
 }

@@ -54,9 +54,7 @@ return function (\App\EventDispatcher $dispatcher) {
             Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console);
         }
 
-        if (file_exists(__DIR__ . '/cli.php')) {
-            call_user_func(include(__DIR__ . '/cli.php'), $console);
-        }
+        call_user_func(include(__DIR__ . '/cli.php'), $console);
     });
 
     $dispatcher->addListener(Event\BuildRoutes::class, function (Event\BuildRoutes $event) {
@@ -68,13 +66,10 @@ return function (\App\EventDispatcher $dispatcher) {
         /** @var Settings $settings */
         $settings = $container->get(Settings::class);
 
-        if (file_exists(__DIR__ . '/routes.php')) {
-            call_user_func(include(__DIR__ . '/routes.php'), $app);
-        }
+        call_user_func(include(__DIR__ . '/routes.php'), $app);
 
         if (file_exists(__DIR__ . '/routes.dev.php')) {
-            $dev_routes = require __DIR__ . '/routes.dev.php';
-            $dev_routes($app);
+            call_user_func(include(__DIR__ . '/routes.dev.php'), $app);
         }
 
         $app->add(Middleware\EnforceSecurity::class);
@@ -103,13 +98,11 @@ return function (\App\EventDispatcher $dispatcher) {
 
     // Build default menus
     $dispatcher->addListener(App\Event\BuildAdminMenu::class, function (\App\Event\BuildAdminMenu $e) {
-        $callable = require(__DIR__ . '/menus/admin.php');
-        $callable($e);
+        call_user_func(include(__DIR__ . '/menus/admin.php'), $e);
     });
 
     $dispatcher->addListener(App\Event\BuildStationMenu::class, function (\App\Event\BuildStationMenu $e) {
-        $callable = require(__DIR__ . '/menus/station.php');
-        $callable($e);
+        call_user_func(include(__DIR__ . '/menus/station.php'), $e);
     });
 
     // Other event subscribers from across the application.

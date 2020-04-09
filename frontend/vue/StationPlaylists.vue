@@ -33,12 +33,16 @@
                                     </b-button>
 
                                     <b-dropdown size="sm" variant="dark" :text="langMore">
-                                        <b-dropdown-item @click.prevent="doToggle(row.item.links.toggle)">
+                                        <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
                                             {{ langToggleButton(row.item) }}
                                         </b-dropdown-item>
                                         <b-dropdown-item @click.prevent="doReorder(row.item.links.order)"
                                                          v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
                                             {{ langReorderButton }}
+                                        </b-dropdown-item>
+                                        <b-dropdown-item @click.prevent="doModify(row.item.links.reshuffle)"
+                                                         v-if="row.item.order === 'shuffle'">
+                                            {{ langReshuffleButton }}
                                         </b-dropdown-item>
                                         <template v-for="format in ['pls', 'm3u']">
                                             <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
@@ -140,6 +144,9 @@
             },
             langReorderButton () {
                 return this.$gettext('Reorder');
+            },
+            langReshuffleButton () {
+                return this.$gettext('Reshuffle');
             }
         },
         mounted () {
@@ -205,7 +212,7 @@
             doReorder (url) {
                 this.$refs.reorderModal.open(url);
             },
-            doToggle (url) {
+            doModify (url) {
                 notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {
                     delay: 3000
                 });

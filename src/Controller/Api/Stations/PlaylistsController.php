@@ -267,6 +267,24 @@ class PlaylistsController extends AbstractScheduledEntityController
         return $response->withJson(new Entity\Api\Status(true, $flash_message));
     }
 
+    public function reshuffleAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    {
+        $record = $this->getRecord($request->getStation(), $id);
+
+        if (!$record instanceof Entity\StationPlaylist) {
+            throw new NotFoundException(__('Playlist not found.'));
+        }
+
+        $record->setQueue(null);
+        $this->em->persist($record);
+        $this->em->flush();
+
+        return $response->withJson(new Entity\Api\Status(
+            true,
+            __('Playlist reshuffled.')
+        ));
+    }
+
     protected function viewRecord($record, \App\Http\ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
@@ -292,6 +310,8 @@ class PlaylistsController extends AbstractScheduledEntityController
         $return['links'] = [
             'toggle' => $router->fromHere('api:stations:playlist:toggle', ['id' => $record->getId()], [], !$isInternal),
             'order' => $router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], !$isInternal),
+            'reshuffle' => $router->fromHere('api:stations:playlist:reshuffle', ['id' => $record->getId()], [],
+                !$isInternal),
             'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 

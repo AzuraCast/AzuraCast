@@ -230,6 +230,9 @@ return function (App $app) {
                 $group->get('/order', Controller\Api\Stations\PlaylistsController::class . ':getOrderAction')
                     ->setName('api:stations:playlist:order');
 
+                $group->put('/reshuffle', Controller\Api\Stations\PlaylistsController::class . ':reshuffleAction')
+                    ->setName('api:stations:playlist:reshuffle');
+
                 $group->put('/order', Controller\Api\Stations\PlaylistsController::class . ':putOrderAction');
 
                 $group->get('/export[/{format}]',

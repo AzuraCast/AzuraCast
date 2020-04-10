@@ -174,7 +174,16 @@ class StationSchedule
 
     public function getDays(): ?array
     {
-        return (!empty($this->days)) ? explode(',', $this->days) : null;
+        if (empty($this->days)) {
+            return null;
+        }
+
+        $days = [];
+        foreach (explode(',', $this->days) as $day) {
+            $days[] = (int)$day;
+        }
+
+        return $days;
     }
 
     public function setDays($days): void
@@ -202,7 +211,6 @@ class StationSchedule
 
         if ($startTime->equals($endTime)) {
             // Create intervals for "play once" type dates.
-            $startTime = $startTime->subMinutes(15);
             $endTime = $endTime->addMinutes(15);
 
             $comparePeriods[] = [$startTime, $endTime];
@@ -234,14 +242,18 @@ class StationSchedule
     public function shouldPlayOnCurrentDate(Chronos $now): bool
     {
         if (!empty($this->start_date)) {
-            $startDate = Chronos::parse($this->start_date . ' 00:00:00', $now->getTimezone());
+            $startDate = Chronos::createFromFormat('Y-m-d', $this->start_date, $now->getTimezone())
+                ->setTime(0, 0, 0);
+
             if ($now->lt($startDate)) {
                 return false;
             }
         }
 
         if (!empty($this->end_date)) {
-            $endDate = Chronos::parse($this->end_date . ' 23:59:59', $now->getTimezone());
+            $endDate = Chronos::createFromFormat('Y-m-d', $this->end_date, $now->getTimezone())
+                ->setTime(23, 59, 59);
+
             if ($now->gt($endDate)) {
                 return false;
             }
@@ -253,15 +265,15 @@ class StationSchedule
     /**
      * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
      *
-     * @param int $day_to_check
+     * @param int $dayToCheck
      *
      * @return bool
      */
-    public function isScheduledToPlayToday(int $day_to_check): bool
+    public function isScheduledToPlayToday(int $dayToCheck): bool
     {
-        $play_once_days = $this->getDays();
-        return empty($play_once_days)
-            || in_array($day_to_check, $play_once_days);
+        $playOnceDays = $this->getDays();
+        return null === $playOnceDays
+            || in_array($dayToCheck, $playOnceDays, true);
     }
 
     /**
@@ -274,7 +286,7 @@ class StationSchedule
      */
     public static function getDateTime($timeCode, Chronos $now = null): Chronos
     {
-        if ($now === null) {
+        if (null === $now) {
             $now = Chronos::now(new DateTimeZone('UTC'));
         }
 

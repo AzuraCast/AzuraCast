@@ -633,7 +633,7 @@ class StationMedia
             }
 
             $prop = mb_convert_encoding($prop, 'UTF-8');
-            $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
+            $prop = str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $prop);
 
             // Convert Liquidsoap-specific annotations to floats.
             if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {

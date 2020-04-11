@@ -93,6 +93,69 @@ class Liquidsoap extends AbstractBackend
     }
 
     /**
+     * Assemble a list of annotations for LiquidSoap.
+     *
+     * Liquidsoap expects a string similar to:
+     *     annotate:type="song",album="$ALBUM",display_desc="$FULLSHOWNAME",
+     *     liq_start_next="2.5",liq_fade_in="3.5",liq_fade_out="3.5":$SONGPATH
+     *
+     * @param Entity\StationMedia $media
+     *
+     * @return array
+     */
+    public function annotateMedia(Entity\StationMedia $media): array
+    {
+        $annotations = [];
+        $annotation_types = [
+            'title' => $media->getTitle(),
+            'artist' => $media->getArtist(),
+            'duration' => $media->getLength(),
+            'song_id' => $media->getSong()->getId(),
+            'media_id' => $media->getId(),
+            'liq_amplify' => $media->getAmplify(),
+            'liq_cross_duration' => $media->getFadeOverlap(),
+            'liq_fade_in' => $media->getFadeIn(),
+            'liq_fade_out' => $media->getFadeOut(),
+            'liq_cue_in' => $media->getCueIn(),
+            'liq_cue_out' => $media->getCueOut(),
+        ];
+
+        // Safety checks for cue lengths.
+        if ($annotation_types['liq_cue_out'] < 0) {
+            $cue_out = abs($annotation_types['liq_cue_out']);
+            if (0 === $cue_out || $cue_out > $annotation_types['duration']) {
+                $annotation_types['liq_cue_out'] = null;
+            } else {
+                $annotation_types['liq_cue_out'] = max(0, $annotation_types['duration'] - $cue_out);
+            }
+        }
+        if (($annotation_types['liq_cue_in'] + $annotation_types['liq_cue_out']) > $annotation_types['duration']) {
+            $annotation_types['liq_cue_out'] = null;
+        }
+        if ($annotation_types['liq_cue_in'] > $annotation_types['duration']) {
+            $annotation_types['liq_cue_in'] = null;
+        }
+
+        foreach ($annotation_types as $annotation_name => $prop) {
+            if (null === $prop) {
+                continue;
+            }
+
+            $prop = mb_convert_encoding($prop, 'UTF-8');
+            $prop = str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $prop);
+
+            // Convert Liquidsoap-specific annotations to floats.
+            if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {
+                $prop = Liquidsoap\ConfigWriter::toFloat($prop);
+            }
+
+            $annotations[$annotation_name] = $prop;
+        }
+
+        return $annotations;
+    }
+
+    /**
      * Execute the specified remote command on LiquidSoap via the telnet API.
      *
      * @param Entity\Station $station

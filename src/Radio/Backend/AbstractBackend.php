@@ -31,6 +31,11 @@ abstract class AbstractBackend extends AbstractAdapter
         return null;
     }
 
+    public function annotateMedia(Entity\StationMedia $media): array
+    {
+        return [];
+    }
+
     public function getProgramName(Entity\Station $station): string
     {
         return 'station_' . $station->getId() . ':station_' . $station->getId() . '_backend';

@@ -4,7 +4,6 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\ApiUtilities;
 use App\Normalizer\Annotation\DeepNormalize;
-use App\Radio\Backend\Liquidsoap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -583,67 +582,6 @@ class StationMedia
             'artist' => $this->artist,
             'title' => $this->title,
         ]);
-    }
-
-    /**
-     * Assemble a list of annotations for LiquidSoap.
-     *
-     * Liquidsoap expects a string similar to:
-     *     annotate:type="song",album="$ALBUM",display_desc="$FULLSHOWNAME",
-     *     liq_start_next="2.5",liq_fade_in="3.5",liq_fade_out="3.5":$SONGPATH
-     *
-     * @return array
-     */
-    public function getAnnotations(): array
-    {
-        $annotations = [];
-        $annotation_types = [
-            'title' => $this->title,
-            'artist' => $this->artist,
-            'duration' => $this->length,
-            'song_id' => $this->getSong()->getId(),
-            'media_id' => $this->id,
-            'liq_amplify' => $this->amplify,
-            'liq_cross_duration' => $this->fade_overlap,
-            'liq_fade_in' => $this->fade_in,
-            'liq_fade_out' => $this->fade_out,
-            'liq_cue_in' => $this->cue_in,
-            'liq_cue_out' => $this->cue_out,
-        ];
-
-        // Safety checks for cue lengths.
-        if ($annotation_types['liq_cue_out'] < 0) {
-            $cue_out = abs($annotation_types['liq_cue_out']);
-            if (0 === $cue_out || $cue_out > $annotation_types['duration']) {
-                $annotation_types['liq_cue_out'] = null;
-            } else {
-                $annotation_types['liq_cue_out'] = max(0, $annotation_types['duration'] - $cue_out);
-            }
-        }
-        if (($annotation_types['liq_cue_in'] + $annotation_types['liq_cue_out']) > $annotation_types['duration']) {
-            $annotation_types['liq_cue_out'] = null;
-        }
-        if ($annotation_types['liq_cue_in'] > $annotation_types['duration']) {
-            $annotation_types['liq_cue_in'] = null;
-        }
-
-        foreach ($annotation_types as $annotation_name => $prop) {
-            if (null === $prop) {
-                continue;
-            }
-
-            $prop = mb_convert_encoding($prop, 'UTF-8');
-            $prop = str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $prop);
-
-            // Convert Liquidsoap-specific annotations to floats.
-            if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {
-                $prop = Liquidsoap\ConfigWriter::toFloat($prop);
-            }
-
-            $annotations[$annotation_name] = $prop;
-        }
-
-        return $annotations;
     }
 
     public function getSong(): ?Song

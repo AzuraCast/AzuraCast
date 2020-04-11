@@ -493,7 +493,7 @@ class ConfigWriter implements EventSubscriberInterface
             $mediaFile = $row[0];
 
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
-            $mediaAnnotations = $mediaFile->getAnnotations();
+            $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
 
             if ($playlist->isJingle()) {
                 $mediaAnnotations['is_jingle_mode'] = 'true';

@@ -14,6 +14,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
 {
+    protected Adapters $adapters;
+
     protected EntityManager $em;
 
     protected Entity\Repository\SongRepository $songRepo;
@@ -33,6 +35,7 @@ class AutoDJ implements EventSubscriberInterface
     protected LockManager $lockManager;
 
     public function __construct(
+        Adapters $adapters,
         EntityManager $em,
         Entity\Repository\SongRepository $songRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
@@ -43,6 +46,7 @@ class AutoDJ implements EventSubscriberInterface
         Logger $logger,
         LockManager $lockManager
     ) {
+        $this->adapters = $adapters;
         $this->em = $em;
         $this->songRepo = $songRepo;
         $this->spmRepo = $spmRepo;
@@ -160,7 +164,9 @@ class AutoDJ implements EventSubscriberInterface
                 $media_path = $fs->getFullPath($media->getPathUri());
 
                 $event->setSongPath($media_path);
-                $event->addAnnotations($media->getAnnotations());
+
+                $backend = $this->adapters->getBackendAdapter($event->getStation());
+                $event->addAnnotations($backend->annotateMedia($media));
 
                 $playlist = $sh->getPlaylist();
 

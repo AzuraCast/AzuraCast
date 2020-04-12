@@ -26,7 +26,6 @@ class StreamersController
         $this->em = $em;
         $this->ac_central = $ac_central;
         $this->settingsRepo = $settingsRepo;
-        $this->csrf_namespace = 'stations_streamers';
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface

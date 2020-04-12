@@ -3,26 +3,27 @@ namespace App\Controller\Stations;
 
 use App\Entity;
 use App\Exception\StationUnsupportedException;
-use App\Form\StationStreamerForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use App\Session\Flash;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
-class StreamersController extends AbstractStationCrudController
+class StreamersController
 {
+    protected EntityManager $em;
+
     protected AzuraCastCentral $ac_central;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        StationStreamerForm $form,
+        EntityManager $em,
         AzuraCastCentral $ac_central,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        parent::__construct($form);
-
+        $this->em = $em;
         $this->ac_central = $ac_central;
         $this->settingsRepo = $settingsRepo;
         $this->csrf_namespace = 'stations_streamers';

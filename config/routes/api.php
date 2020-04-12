@@ -227,13 +227,16 @@ return function (App $app) {
                 $group->put('/toggle', Controller\Api\Stations\PlaylistsController::class . ':toggleAction')
                     ->setName('api:stations:playlist:toggle');
 
-                $group->get('/order', Controller\Api\Stations\PlaylistsController::class . ':getOrderAction')
-                    ->setName('api:stations:playlist:order');
-
                 $group->put('/reshuffle', Controller\Api\Stations\PlaylistsController::class . ':reshuffleAction')
                     ->setName('api:stations:playlist:reshuffle');
 
+                $group->get('/order', Controller\Api\Stations\PlaylistsController::class . ':getOrderAction')
+                    ->setName('api:stations:playlist:order');
+
                 $group->put('/order', Controller\Api\Stations\PlaylistsController::class . ':putOrderAction');
+
+                $group->post('/import', Controller\Api\Stations\PlaylistsController::class . ':importAction')
+                    ->setName('api:stations:playlist:import');
 
                 $group->get('/export[/{format}]',
                     Controller\Api\Stations\PlaylistsController::class . ':exportAction')

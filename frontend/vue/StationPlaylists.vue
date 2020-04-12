@@ -36,6 +36,10 @@
                                         <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
                                             {{ langToggleButton(row.item) }}
                                         </b-dropdown-item>
+                                        <b-dropdown-item @click.prevent="doImport(row.item.links.import)"
+                                                         v-if="row.item.source === 'songs'">
+                                            {{ langImportButton }}
+                                        </b-dropdown-item>
                                         <b-dropdown-item @click.prevent="doReorder(row.item.links.order)"
                                                          v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
                                             {{ langReorderButton }}
@@ -102,6 +106,7 @@
         <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
                     @relist="relist"></edit-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
+        <import-modal ref="importModal" @relist="relist"></import-modal>
     </div>
 </template>
 
@@ -110,11 +115,12 @@
     import Schedule from './components/ScheduleView';
     import EditModal from './station_playlists/PlaylistEditModal';
     import ReorderModal from './station_playlists/PlaylistReorderModal';
+    import ImportModal from './station_playlists/PlaylistImportModal';
     import axios from 'axios';
 
     export default {
         name: 'StationPlaylists',
-        components: { ReorderModal, EditModal, Schedule, DataTable },
+        components: { ImportModal, ReorderModal, EditModal, Schedule, DataTable },
         props: {
             listUrl: String,
             scheduleUrl: String,
@@ -147,6 +153,9 @@
             },
             langReshuffleButton () {
                 return this.$gettext('Reshuffle');
+            },
+            langImportButton () {
+                return this.$gettext('Import from PLS/M3U');
             }
         },
         mounted () {
@@ -211,6 +220,9 @@
             },
             doReorder (url) {
                 this.$refs.reorderModal.open(url);
+            },
+            doImport (url) {
+                this.$refs.importModal.open(url);
             },
             doModify (url) {
                 notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {

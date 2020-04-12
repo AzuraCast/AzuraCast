@@ -6,10 +6,12 @@ use App\Exception;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\PlaylistParser;
 use Cake\Chronos\Chronos;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class PlaylistsController extends AbstractScheduledEntityController
@@ -285,6 +287,103 @@ class PlaylistsController extends AbstractScheduledEntityController
         ));
     }
 
+    public function importAction(
+        ServerRequest $request,
+        Response $response,
+        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        $id
+    ): ResponseInterface {
+        /** @var Entity\StationPlaylist $playlist */
+        $playlist = $this->getRecord($request->getStation(), $id);
+
+        $files = $request->getUploadedFiles();
+
+        if (empty($files['playlist_file'])) {
+            return $response->withStatus(500)
+                ->withJson(new Entity\Api\Error(500, 'No "playlist_file" provided.'));
+        }
+
+        /** @var UploadedFileInterface $file */
+        $file = $files['playlist_file'];
+
+        if (UPLOAD_ERR_OK !== $file->getError()) {
+            return $response->withStatus(500)
+                ->withJson(new Entity\Api\Error(500, $file->getError()));
+        }
+
+        $playlistFile = $file->getStream()->getContents();
+
+        $paths = PlaylistParser::getSongs($playlistFile);
+
+        $totalPaths = count($paths);
+        $foundPaths = 0;
+
+        if (!empty($paths)) {
+            $station = $request->getStation();
+
+            // Assemble list of station media to match against.
+            $media_lookup = [];
+
+            $media_info_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sm.id, sm.path 
+                FROM App\Entity\StationMedia sm 
+                WHERE sm.station = :station')
+                ->setParameter('station', $station)
+                ->getArrayResult();
+
+            foreach ($media_info_raw as $row) {
+                $path_hash = md5($row['path']);
+                $media_lookup[$path_hash] = $row['id'];
+            }
+
+            // Run all paths against the lookup list of hashes.
+            $matches = [];
+
+            foreach ($paths as $path_raw) {
+                // De-Windows paths (if applicable)
+                $path_raw = str_replace('\\', '/', $path_raw);
+
+                // Work backwards from the basename to try to find matches.
+                $path_parts = explode('/', $path_raw);
+                for ($i = 1, $iMax = count($path_parts); $i <= $iMax; $i++) {
+                    $path_attempt = implode('/', array_slice($path_parts, 0 - $i));
+                    $path_hash = md5($path_attempt);
+
+                    if (isset($media_lookup[$path_hash])) {
+                        $matches[] = $media_lookup[$path_hash];
+                    }
+                }
+            }
+
+            // Assign all matched media to the playlist.
+            if (!empty($matches)) {
+                $matched_media = $this->em->createQuery(/** @lang DQL */ 'SELECT sm 
+                    FROM App\Entity\StationMedia sm
+                    WHERE sm.station = :station AND sm.id IN (:matched_ids)')
+                    ->setParameter('station', $station)
+                    ->setParameter('matched_ids', $matches)
+                    ->execute();
+
+                $weight = $playlistMediaRepo->getHighestSongWeight($playlist);
+
+                foreach ($matched_media as $media) {
+                    $weight++;
+
+                    /** @var Entity\StationMedia $media */
+                    $playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
+
+                    $foundPaths++;
+                }
+            }
+
+            $this->em->flush();
+        }
+
+        return $response->withJson(new Entity\Api\Status(
+            true,
+            __('Playlist successfully imported; %d of %d files were successfully matched.', $foundPaths, $totalPaths)
+        ));
+    }
+
     protected function viewRecord($record, \App\Http\ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
@@ -312,6 +411,7 @@ class PlaylistsController extends AbstractScheduledEntityController
             'order' => $router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], !$isInternal),
             'reshuffle' => $router->fromHere('api:stations:playlist:reshuffle', ['id' => $record->getId()], [],
                 !$isInternal),
+            'import' => $router->fromHere('api:stations:playlist:import', ['id' => $record->getId()], [], !$isInternal),
             'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 

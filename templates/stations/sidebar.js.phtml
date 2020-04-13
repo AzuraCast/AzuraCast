@@ -11,35 +11,40 @@ $(function () {
 
     $(document).on('click', '.api-call', function (e) {
         e.stopPropagation();
+
         var btn = $(this);
 
         var btn_original_text = btn.html();
         var trigger_reload = !btn.hasClass('no-reload');
 
-        btn.text(<?=$this->escapeJs(__('Please wait...')) ?>);
-        btn.addClass('disabled');
+        confirmDangerousAction(e.target).then(function (value) {
+            if (value) {
+                btn.text(<?=$this->escapeJs(__('Please wait...')) ?>);
+                btn.addClass('disabled');
 
-        $.ajax({
-            type: "POST",
-            url: btn.attr('href'),
-            success: function (data) {
-                // Only restart if the user isn't on a form page
-                if (trigger_reload && $('form.form').length === 0) {
-                    setTimeout('location.reload()', 2000);
-                } else {
-                    btn.removeClass('disabled').html(btn_original_text);
-                }
+                $.ajax({
+                    type: "POST",
+                    url: btn.attr('href'),
+                    success: function (data) {
+                        // Only restart if the user isn't on a form page
+                        if (trigger_reload && $('form.form').length === 0) {
+                            setTimeout('location.reload()', 2000);
+                        } else {
+                            btn.removeClass('disabled').html(btn_original_text);
+                        }
 
-                var notify_type = (data.success) ? 'success' : 'warning';
-                notify(data.formatted_message, notify_type);
-            },
-            error: function (response) {
-                data = jQuery.parseJSON(response.responseText);
-                notify(data.formatted_message, 'danger');
+                        var notify_type = (data.success) ? 'success' : 'warning';
+                        notify(data.formatted_message, notify_type);
+                    },
+                    error: function (response) {
+                        data = jQuery.parseJSON(response.responseText);
+                        notify(data.formatted_message, 'danger');
 
-                btn.removeClass('disabled').html(btn_original_text);
-            },
-            dataType: "json"
+                        btn.removeClass('disabled').html(btn_original_text);
+                    },
+                    dataType: "json"
+                });
+            }
         });
 
         return false;

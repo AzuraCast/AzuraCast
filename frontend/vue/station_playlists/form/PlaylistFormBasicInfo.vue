@@ -68,7 +68,7 @@
                             </b>
                             <translate>Play once per hour at the specified minute.</translate>
                         </b-form-radio>
-                        <b-form-radio value="advanced">
+                        <b-form-radio value="custom">
                             <b>
                                 <translate>Advanced</translate>
                                 :

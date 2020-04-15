@@ -185,6 +185,7 @@ class SongHistoryRepository extends Repository
     public function getUpcomingQueue(Entity\Station $station): array
     {
         return $this->getUpcomingBaseQuery($station)
+            ->andWhere('sh.sent_to_autodj = 0')
             ->getQuery()
             ->execute();
     }

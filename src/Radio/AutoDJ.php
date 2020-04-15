@@ -267,7 +267,7 @@ class AutoDJ implements EventSubscriberInterface
             AND sh.timestamp_cued >= :threshold
             ORDER BY sh.timestamp_cued DESC')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('threshold', time() - 86399)
+            ->setParameter('threshold', $now->subDay()->getTimestamp())
             ->setMaxResults($song_history_count)
             ->getArrayResult();
 
@@ -323,8 +323,12 @@ class AutoDJ implements EventSubscriberInterface
                 foreach ($eligible_playlists as $playlist_id => $weight) {
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
-                    if ($event->setNextSong($this->playSongFromPlaylist($playlist, $cued_song_history,
-                        $preferredMode))) {
+                    if ($event->setNextSong($this->playSongFromPlaylist(
+                        $playlist,
+                        $cued_song_history,
+                        $now,
+                        $preferredMode
+                    ))) {
                         $this->logger->info('Playable track found and registered.', [
                             'next_song' => (string)$event,
                         ]);
@@ -342,6 +346,7 @@ class AutoDJ implements EventSubscriberInterface
      *
      * @param Entity\StationPlaylist $playlist
      * @param array $recentSongHistory
+     * @param Chronos $now
      * @param bool $preferredMode Whether to return a media ID even if duplicates can't be prevented.
      *
      * @return Entity\SongHistory|string|null
@@ -349,13 +354,14 @@ class AutoDJ implements EventSubscriberInterface
     protected function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
+        Chronos $now,
         bool $preferredMode = true
-    ) {
+    ): ?Entity\SongHistory {
         $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $preferredMode);
 
         if ($media_to_play instanceof Entity\StationMedia) {
             $spm = $media_to_play->getItemForPlaylist($playlist);
-            $spm->played();
+            $spm->played($now->getTimestamp());
 
             $this->em->persist($spm);
 
@@ -363,7 +369,7 @@ class AutoDJ implements EventSubscriberInterface
             $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
             $sh->setPlaylist($playlist);
             $sh->setMedia($media_to_play);
-            $sh->setTimestampCued(time());
+            $sh->setTimestampCued($now->getTimestamp());
 
             $this->em->persist($sh);
             $this->em->flush();
@@ -381,7 +387,7 @@ class AutoDJ implements EventSubscriberInterface
             $sh->setPlaylist($playlist);
             $sh->setAutodjCustomUri($media_uri);
             $sh->setDuration($media_duration);
-            $sh->setTimestampCued(time());
+            $sh->setTimestampCued($now->getTimestamp());
 
             $this->em->persist($sh);
             $this->em->flush();
@@ -598,6 +604,8 @@ class AutoDJ implements EventSubscriberInterface
      */
     public function getNextSongFromRequests(BuildQueue $event): void
     {
+        $now = $event->getNow();
+
         $request = $this->requestRepo->getNextPlayableRequest($event->getStation());
         if (null === $request) {
             return;
@@ -611,10 +619,10 @@ class AutoDJ implements EventSubscriberInterface
         $sh->setMedia($request->getTrack());
 
         $sh->setDuration($request->getTrack()->getCalculatedLength());
-        $sh->setTimestampCued(time());
+        $sh->setTimestampCued($now->getTimestamp());
         $this->em->persist($sh);
 
-        $request->setPlayedAt(time());
+        $request->setPlayedAt($now->getTimestamp());
         $this->em->persist($request);
 
         $this->em->flush();

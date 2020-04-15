@@ -2,7 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity;
-use App\Event\Radio\GetNextSong;
+use App\Event\Radio\BuildQueue;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
@@ -94,7 +94,7 @@ class DebugController
             Chronos::setTestNow($now);
         }
 
-        $event = new GetNextSong($station);
+        $event = new BuildQueue($station);
         $autoDJ->calculateNextSong($event);
 
         Chronos::setTestNow(null);

@@ -3,7 +3,7 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
-use App\Event\Radio\GetNextSong;
+use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
 use App\Lock\LockManager;
 use Cake\Chronos\Chronos;
@@ -14,11 +14,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
 {
+    public const MAX_QUEUE_LENGTH = 3;
+
     protected Adapters $adapters;
 
     protected EntityManager $em;
 
     protected Entity\Repository\SongRepository $songRepo;
+
+    protected Entity\Repository\SongHistoryRepository $songHistoryRepo;
 
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
@@ -38,6 +42,7 @@ class AutoDJ implements EventSubscriberInterface
         Adapters $adapters,
         EntityManager $em,
         Entity\Repository\SongRepository $songRepo,
+        Entity\Repository\SongHistoryRepository $songHistoryRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationStreamerRepository $streamerRepo,
         Entity\Repository\StationRequestRepository $requestRepo,
@@ -49,6 +54,7 @@ class AutoDJ implements EventSubscriberInterface
         $this->adapters = $adapters;
         $this->em = $em;
         $this->songRepo = $songRepo;
+        $this->songHistoryRepo = $songHistoryRepo;
         $this->spmRepo = $spmRepo;
         $this->streamerRepo = $streamerRepo;
         $this->requestRepo = $requestRepo;
@@ -67,8 +73,7 @@ class AutoDJ implements EventSubscriberInterface
             AnnotateNextSong::class => [
                 ['defaultAnnotationHandler', 0],
             ],
-            GetNextSong::class => [
-                ['checkDatabaseForNextSong', 10],
+            BuildQueue::class => [
                 ['getNextSongFromRequests', 5],
                 ['calculateNextSong', 0],
             ],
@@ -85,67 +90,12 @@ class AutoDJ implements EventSubscriberInterface
      */
     public function annotateNextSong(Entity\Station $station, $as_autodj = false): string
     {
-        /** @var Entity\SongHistory|string|null $sh */
-        $sh = $this->getNextSong($station, $as_autodj);
+        $sh = $this->songHistoryRepo->getNextInQueue($station);
 
         $event = new AnnotateNextSong($station, $sh);
         $this->dispatcher->dispatch($event);
 
         return $event->buildAnnotations();
-    }
-
-    /**
-     * If the next song for a station has already been calculated, return the calculated result; otherwise,
-     * calculate the next playing song.
-     *
-     * @param Entity\Station $station
-     * @param bool $is_autodj
-     *
-     * @return Entity\SongHistory|null
-     */
-    public function getNextSong(Entity\Station $station, $is_autodj = false): ?Entity\SongHistory
-    {
-        if ($station->useManualAutoDJ()) {
-            return null;
-        }
-
-        $lock = $this->lockManager->getLock('autodj_next_song_' . $station->getId(), 30, true);
-
-        return $lock->run(function () use ($station, $is_autodj) {
-            $this->logger->pushProcessor(function ($record) use ($station) {
-                $record['extra']['station'] = [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
-                ];
-                return $record;
-            });
-
-            $event = new GetNextSong($station);
-            $this->dispatcher->dispatch($event);
-
-            $this->logger->popProcessor();
-
-            $next_song = $event->getNextSong();
-
-            if ($next_song instanceof Entity\SongHistory && $is_autodj) {
-                $next_song->sentToAutodj();
-                $this->em->persist($next_song);
-
-                // Mark the playlist itself as played at this time.
-                $playlist = $next_song->getPlaylist();
-                if ($playlist instanceof Entity\StationPlaylist) {
-                    $playlist->played();
-                    $this->em->persist($playlist);
-                }
-
-                // The "get next song" function is only called when a streamer is not live
-                $this->streamerRepo->onDisconnect($station);
-
-                $this->em->flush();
-            }
-
-            return $next_song;
-        });
     }
 
     /**
@@ -158,6 +108,20 @@ class AutoDJ implements EventSubscriberInterface
         $sh = $event->getNextSong();
 
         if ($sh instanceof Entity\SongHistory) {
+            $sh->sentToAutodj();
+            $this->em->persist($sh);
+
+            // Mark the playlist itself as played at this time.
+            $playlist = $sh->getPlaylist();
+            if ($playlist instanceof Entity\StationPlaylist) {
+                $playlist->played();
+                $this->em->persist($playlist);
+            }
+
+            // The "get next song" function is only called when a streamer is not live
+            $this->streamerRepo->onDisconnect($event->getStation());
+            $this->em->flush();
+
             $media = $sh->getMedia();
             if ($media instanceof Entity\StationMedia) {
                 $fs = $this->filesystem->getForStation($event->getStation());
@@ -204,40 +168,71 @@ class AutoDJ implements EventSubscriberInterface
         }
     }
 
-    public function checkDatabaseForNextSong(GetNextSong $event): void
+    public function buildQueue(Entity\Station $station): void
     {
-        $next_song = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s, sp, sm
-            FROM App\Entity\SongHistory sh
-            LEFT JOIN sh.song s 
-            LEFT JOIN sh.media sm
-            LEFT JOIN sh.playlist sp
-            WHERE sh.station_id = :station_id
-            AND sh.timestamp_cued != 0
-            AND sh.sent_to_autodj = 0
-            AND sh.timestamp_start = 0
-            AND sh.timestamp_end = 0
-            ORDER BY sh.id DESC')
-            ->setParameter('station_id', $event->getStation()->getId())
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+        $this->logger->pushProcessor(function ($record) use ($station) {
+            $record['extra']['station'] = [
+                'id' => $station->getId(),
+                'name' => $station->getName(),
+            ];
+            return $record;
+        });
 
-        if ($next_song instanceof Entity\SongHistory) {
-            $this->logger->debug('Database has a next song already registered.');
-            $event->setNextSong($next_song);
+        // Determine the "now" time for the queue.
+        $stationTz = new DateTimeZone($station->getTimezone());
+
+        $currentSong = $this->songHistoryRepo->getCurrent($station);
+        if ($currentSong instanceof Entity\SongHistory) {
+            $nowTimestamp = $currentSong->getTimestampStart() + ($currentSong->getDuration() ?? 0);
+            $now = Chronos::createFromTimestamp($nowTimestamp, $stationTz);
+        } else {
+            $now = Chronos::now($stationTz);
         }
+
+        // Adjust "now" time from current queue.
+        $upcomingQueue = $this->songHistoryRepo->getUpcomingQueue($station);
+        $queueLength = count($upcomingQueue);
+
+        if ($queueLength >= self::MAX_QUEUE_LENGTH) {
+            $this->logger->info('AutoDJ queue is already at current max length.');
+            $this->logger->popProcessor();
+            return;
+        }
+
+        foreach ($upcomingQueue as $queueRow) {
+            $duration = $queueRow->getDuration() ?? 0;
+            $now = $now->addSeconds($duration);
+        }
+
+        // Build the remainder of the queue.
+        while ($queueLength < self::MAX_QUEUE_LENGTH) {
+
+            $event = new BuildQueue($station, $now);
+            $this->dispatcher->dispatch($event);
+
+            $queueRow = $event->getNextSong();
+            if ($queueRow instanceof Entity\SongHistory) {
+                $duration = $queueRow->getDuration() ?? 0;
+                $now = $now->addSeconds($duration);
+            }
+
+            $queueLength++;
+        }
+
+        $this->logger->popProcessor();
     }
 
     /**
      * Determine the next-playing song for this station based on its playlist rotation rules.
      *
-     * @param GetNextSong $event
+     * @param BuildQueue $event
      */
-    public function calculateNextSong(GetNextSong $event): void
+    public function calculateNextSong(BuildQueue $event): void
     {
         $this->logger->info('AzuraCast AutoDJ is calculating the next song to play...');
 
         $station = $event->getStation();
-        $now = Chronos::now(new DateTimeZone($station->getTimezone()));
+        $now = $event->getNow();
 
         $song_history_count = 15;
 
@@ -272,7 +267,7 @@ class AutoDJ implements EventSubscriberInterface
             AND sh.timestamp_cued >= :threshold
             ORDER BY sh.timestamp_cued DESC')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('threshold', time() - 86399)
+            ->setParameter('threshold', $now->subDay()->getTimestamp())
             ->setMaxResults($song_history_count)
             ->getArrayResult();
 
@@ -328,8 +323,12 @@ class AutoDJ implements EventSubscriberInterface
                 foreach ($eligible_playlists as $playlist_id => $weight) {
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
-                    if ($event->setNextSong($this->playSongFromPlaylist($playlist, $cued_song_history,
-                        $preferredMode))) {
+                    if ($event->setNextSong($this->playSongFromPlaylist(
+                        $playlist,
+                        $cued_song_history,
+                        $now,
+                        $preferredMode
+                    ))) {
                         $this->logger->info('Playable track found and registered.', [
                             'next_song' => (string)$event,
                         ]);
@@ -347,6 +346,7 @@ class AutoDJ implements EventSubscriberInterface
      *
      * @param Entity\StationPlaylist $playlist
      * @param array $recentSongHistory
+     * @param Chronos $now
      * @param bool $preferredMode Whether to return a media ID even if duplicates can't be prevented.
      *
      * @return Entity\SongHistory|string|null
@@ -354,13 +354,14 @@ class AutoDJ implements EventSubscriberInterface
     protected function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
+        Chronos $now,
         bool $preferredMode = true
-    ) {
+    ): ?Entity\SongHistory {
         $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $preferredMode);
 
         if ($media_to_play instanceof Entity\StationMedia) {
             $spm = $media_to_play->getItemForPlaylist($playlist);
-            $spm->played();
+            $spm->played($now->getTimestamp());
 
             $this->em->persist($spm);
 
@@ -368,7 +369,7 @@ class AutoDJ implements EventSubscriberInterface
             $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
             $sh->setPlaylist($playlist);
             $sh->setMedia($media_to_play);
-            $sh->setTimestampCued(time());
+            $sh->setTimestampCued($now->getTimestamp());
 
             $this->em->persist($sh);
             $this->em->flush();
@@ -386,7 +387,7 @@ class AutoDJ implements EventSubscriberInterface
             $sh->setPlaylist($playlist);
             $sh->setAutodjCustomUri($media_uri);
             $sh->setDuration($media_duration);
-            $sh->setTimestampCued(time());
+            $sh->setTimestampCued($now->getTimestamp());
 
             $this->em->persist($sh);
             $this->em->flush();
@@ -599,10 +600,12 @@ class AutoDJ implements EventSubscriberInterface
     }
 
     /**
-     * @param GetNextSong $event
+     * @param BuildQueue $event
      */
-    public function getNextSongFromRequests(GetNextSong $event): void
+    public function getNextSongFromRequests(BuildQueue $event): void
     {
+        $now = $event->getNow();
+
         $request = $this->requestRepo->getNextPlayableRequest($event->getStation());
         if (null === $request) {
             return;
@@ -616,10 +619,10 @@ class AutoDJ implements EventSubscriberInterface
         $sh->setMedia($request->getTrack());
 
         $sh->setDuration($request->getTrack()->getCalculatedLength());
-        $sh->setTimestampCued(time());
+        $sh->setTimestampCued($now->getTimestamp());
         $this->em->persist($sh);
 
-        $request->setPlayedAt(time());
+        $request->setPlayedAt($now->getTimestamp());
         $this->em->persist($request);
 
         $this->em->flush();

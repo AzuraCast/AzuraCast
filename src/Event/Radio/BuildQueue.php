@@ -2,34 +2,40 @@
 namespace App\Event\Radio;
 
 use App\Entity;
+use Cake\Chronos\Chronos;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class GetNextSong extends Event
+class BuildQueue extends Event
 {
-    /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
-    protected $next_song;
+    protected ?Entity\SongHistory $next_song;
 
     protected Entity\Station $station;
 
-    public function __construct(Entity\Station $station)
+    protected Chronos $now;
+
+    public function __construct(Entity\Station $station, ?Chronos $now = null)
     {
         $this->station = $station;
+
+        $this->now = $now ?? Chronos::now(new \DateTimeZone($station->getTimezone()));
     }
 
-    /**
-     * @return Entity\SongHistory|string|null
-     */
-    public function getNextSong()
+    public function getStation(): Entity\Station
+    {
+        return $this->station;
+    }
+
+    public function getNow(): Chronos
+    {
+        return $this->now;
+    }
+
+    public function getNextSong(): ?Entity\SongHistory
     {
         return $this->next_song;
     }
 
-    /**
-     * @param Entity\SongHistory|string|null $next_song
-     *
-     * @return bool
-     */
-    public function setNextSong($next_song): bool
+    public function setNextSong(?Entity\SongHistory $next_song): bool
     {
         $this->next_song = $next_song;
 
@@ -41,20 +47,9 @@ class GetNextSong extends Event
         return false;
     }
 
-    /**
-     * @return bool
-     */
     public function hasNextSong(): bool
     {
         return (null !== $this->next_song);
-    }
-
-    /**
-     * @return Entity\Station
-     */
-    public function getStation(): Entity\Station
-    {
-        return $this->station;
     }
 
     public function __toString()

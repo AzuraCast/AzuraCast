@@ -436,6 +436,7 @@ return [
                 $di->get(App\Sync\Task\ReactivateStreamer::class),
             ],
             [ // Every minute tasks
+                $di->get(App\Sync\Task\BuildQueue::class),
                 $di->get(App\Sync\Task\RadioRequests::class),
                 $di->get(App\Sync\Task\Backup::class),
                 $di->get(App\Sync\Task\RelayCleanup::class),

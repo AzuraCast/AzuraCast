@@ -149,6 +149,10 @@ class Liquidsoap extends AbstractBackend
                 $prop = Liquidsoap\ConfigWriter::toFloat($prop);
             }
 
+            if ('liq_amplify' === $annotation_name) {
+                $prop .= 'dB';
+            }
+
             $annotations[$annotation_name] = $prop;
         }
 

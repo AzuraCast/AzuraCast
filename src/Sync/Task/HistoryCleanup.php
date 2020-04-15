@@ -30,7 +30,6 @@ class HistoryCleanup extends AbstractTask
         $this->em->createQuery(/** @lang DQL */ 'DELETE 
             FROM App\Entity\SongHistory sh
             WHERE sh.timestamp_cued < :threshold
-            AND sh.sent_to_autodj = 0
             AND sh.timestamp_start = 0
             AND sh.timestamp_end = 0')
             ->setParameter('threshold', $cleanup_threshold)

@@ -170,7 +170,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $standalone = false
     ): Entity\Api\NowPlaying {
         $lock = $this->lockManager->getLock('nowplaying_station_' . $station->getId(), 600, true, 30);
-        
+
         return $lock->run(function () use ($station, $standalone) {
             /** @var Logger $logger */
             $logger = $this->logger;
@@ -231,25 +231,29 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $offline_sh->song = $song_obj->api($this->api_utils, $uri_empty);
                 $np->now_playing = $offline_sh;
 
-                $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
-                $next_song = $this->autodj->getNextSong($station);
-                if ($next_song instanceof Entity\SongHistory) {
-                    $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
-                } else {
-                    $np->playing_next = null;
-                }
+                $np->song_history = $this->history_repo->getHistoryApi(
+                    $station,
+                    $this->api_utils,
+                    $uri_empty
+                );
+
+                $np->playing_next = $this->history_repo->getNextSongApi(
+                    $station,
+                    $this->api_utils,
+                    $uri_empty
+                );
 
                 $np->live = new Entity\Api\NowPlayingLive(false);
             } else {
                 // Pull from current NP data if song details haven't changed .
                 $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
 
-                if ($np_old instanceof Entity\Api\NowPlaying && strcmp($current_song_hash,
-                        $np_old->now_playing->song->id) === 0) {
+                if ($np_old instanceof Entity\Api\NowPlaying &&
+                    0 === strcmp($current_song_hash, $np_old->now_playing->song->id)) {
                     /** @var Entity\Song $song_obj */
                     $song_obj = $this->song_repo->getRepository()->find($current_song_hash);
 
-                    $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+                    $sh_obj = $this->history_repo->register($song_obj, $station, $np);
 
                     $np->song_history = $np_old->song_history;
                     $np->playing_next = $np_old->playing_next;
@@ -257,15 +261,19 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     // SongHistory registration must ALWAYS come before the history/nextsong calls
                     // otherwise they will not have up-to-date database info!
                     $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
-                    $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+                    $sh_obj = $this->history_repo->register($song_obj, $station, $np);
 
-                    $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils,
-                        $uri_empty);
+                    $np->song_history = $this->history_repo->getHistoryApi(
+                        $station,
+                        $this->api_utils,
+                        $uri_empty
+                    );
 
-                    $next_song = $this->autodj->getNextSong($station);
-                    if ($next_song instanceof Entity\SongHistory && $next_song->showInApis()) {
-                        $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
-                    }
+                    $np->playing_next = $this->history_repo->getNextSongApi(
+                        $station,
+                        $this->api_utils,
+                        $uri_empty
+                    );
                 }
 
                 // Update detailed listener statistics, if they exist for the station
@@ -329,7 +337,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $song = $this->song_repo->getRepository()->find($extra_metadata['song_id']);
 
             if ($song instanceof Entity\Song) {
-                $sh = $this->history_repo->getCuedSong($song, $station);
+                $sh = $this->history_repo->getUpcomingFromSong($station, $song);
                 if (!$sh instanceof Entity\SongHistory) {
                     $sh = new Entity\SongHistory($song, $station);
                     $sh->setTimestampCued(time());

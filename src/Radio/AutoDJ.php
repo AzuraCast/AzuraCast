@@ -349,7 +349,7 @@ class AutoDJ implements EventSubscriberInterface
      * @param Chronos $now
      * @param bool $preferredMode Whether to return a media ID even if duplicates can't be prevented.
      *
-     * @return Entity\SongHistory|string|null
+     * @return Entity\SongHistory|null
      */
     protected function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,

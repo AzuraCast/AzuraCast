@@ -7,7 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildQueue extends Event
 {
-    protected ?Entity\SongHistory $next_song;
+    protected ?Entity\SongHistory $next_song = null;
 
     protected Entity\Station $station;
 

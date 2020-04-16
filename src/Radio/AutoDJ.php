@@ -111,13 +111,6 @@ class AutoDJ implements EventSubscriberInterface
             $sh->sentToAutodj();
             $this->em->persist($sh);
 
-            // Mark the playlist itself as played at this time.
-            $playlist = $sh->getPlaylist();
-            if ($playlist instanceof Entity\StationPlaylist) {
-                $playlist->played();
-                $this->em->persist($playlist);
-            }
-
             // The "get next song" function is only called when a streamer is not live
             $this->streamerRepo->onDisconnect($event->getStation());
             $this->em->flush();
@@ -363,6 +356,9 @@ class AutoDJ implements EventSubscriberInterface
         $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $preferredMode);
 
         if ($media_to_play instanceof Entity\StationMedia) {
+            $playlist->setPlayedAt($now->getTimestamp());
+            $this->em->persist($playlist);
+
             $spm = $media_to_play->getItemForPlaylist($playlist);
             $spm->played($now->getTimestamp());
 
@@ -382,6 +378,9 @@ class AutoDJ implements EventSubscriberInterface
 
         if (is_array($media_to_play)) {
             [$media_uri, $media_duration] = $media_to_play;
+
+            $playlist->setPlayedAt($now->getTimestamp());
+            $this->em->persist($playlist);
 
             $sh = new Entity\SongHistory($this->songRepo->getOrCreate([
                 'text' => 'Remote Playlist URL',

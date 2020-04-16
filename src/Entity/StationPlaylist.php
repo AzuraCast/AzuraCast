@@ -453,11 +453,6 @@ class StationPlaylist
         $this->played_at = $played_at;
     }
 
-    public function played(): void
-    {
-        $this->played_at = time();
-    }
-
     public function getQueue(): ?array
     {
         return $this->queue;

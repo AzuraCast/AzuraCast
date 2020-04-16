@@ -451,6 +451,20 @@ return [
                     ],
                 ],
 
+                'autodj_queue_length' => [
+                    'number',
+                    [
+                        'label' => __('AutoDJ Queue Length'),
+                        'label_class' => 'advanced',
+                        'description' => __('If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.'),
+                        'default' => \App\Radio\AutoDJ::DEFAULT_QUEUE_LENGTH,
+                        'min' => 1,
+                        'max' => 25,
+                        'belongsTo' => 'backend_config',
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
                 'use_manual_autodj' => [
                     'toggle',
                     [

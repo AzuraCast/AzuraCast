@@ -5,8 +5,8 @@ use App\Entity;
 use App\Form\StationWebhookForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Webhook\Dispatcher;
 use App\Session\Flash;
+use App\Webhook\Dispatcher;
 use Psr\Http\Message\ResponseInterface;
 
 class WebhooksController extends AbstractStationCrudController
@@ -21,9 +21,7 @@ class WebhooksController extends AbstractStationCrudController
     ) {
         parent::__construct($form);
 
-        if ($form instanceof StationWebhookForm) {
-            $this->webhook_config = $form->getConfig();
-        }
+        $this->webhook_config = $form->getConfig();
 
         $this->csrf_namespace = 'stations_webhooks';
         $this->dispatcher = $dispatcher;

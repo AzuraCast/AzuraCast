@@ -46,7 +46,9 @@ class SongHistoryRepository extends Repository
         }
 
         $history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s 
-            FROM App\Entity\SongHistory sh JOIN sh.song s LEFT JOIN sh.media sm  
+            FROM App\Entity\SongHistory sh 
+            JOIN sh.song s 
+            LEFT JOIN sh.media sm  
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')

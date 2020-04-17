@@ -20,7 +20,9 @@ use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="station")
+ * @ORM\Table(name="station", indexes={
+ *     @ORM\Index(name="idx_short_name", columns={"short_name"})
+ * })
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *

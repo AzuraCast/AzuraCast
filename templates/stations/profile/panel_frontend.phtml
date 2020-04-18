@@ -15,7 +15,7 @@
         <h3 class="card-title">
             <?=__('Broadcasting Service')?>
 
-            <small class="badge badge-pill badge-success" v-if="np.services.backend_running"><?=__('Running')?></small>
+            <small class="badge badge-pill badge-success" v-if="np.services.frontend_running"><?=__('Running')?></small>
             <small class="badge badge-pill badge-danger" v-else><?=__('Not Running')?></small>
 
             <br>
@@ -80,13 +80,14 @@
                 <i class="material-icons" aria-hidden="true">update</i>
                 <?=__('Restart')?>
             </a>
-            <a class="api-call no-reload btn btn-outline-success" href="<?=$router->fromHere('api:stations:frontend',
-                ['do' => 'start'])?>">
+            <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.frontend_running"
+               href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start'])?>">
                 <i class="material-icons" aria-hidden="true">play_arrow</i>
                 <?=__('Start')?>
             </a>
-            <a class="api-call no-reload btn btn-outline-danger" href="<?=$router->fromHere('api:stations:frontend',
-                ['do' => 'stop'])?>">
+            <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.frontend_running"
+               href="<?=$router->fromHere('api:stations:frontend',
+                   ['do' => 'stop'])?>">
                 <i class="material-icons" aria-hidden="true">stop</i>
                 <?=__('Stop')?>
             </a>

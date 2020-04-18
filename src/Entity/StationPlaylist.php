@@ -553,10 +553,13 @@ class StationPlaylist
                     $startTime = $scheduleItem->getStartTime();
                     $endTime = $scheduleItem->getEndTime();
 
-                    $isScheduled = ($startTime === $endTime)
-                        ? !$this->wasPlayedInLastXMinutes($now, 30)
-                        : true;
-                    break;
+                    if (
+                        $startTime !== $endTime
+                        || ($startTime === $endTime && $this->wasPlayedInLastXMinutes($now, 30))
+                    ) {
+                        $isScheduled = true;
+                        break;
+                    }
                 }
             }
 

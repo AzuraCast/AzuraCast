@@ -2,8 +2,8 @@
 namespace App\Radio;
 
 use App\Entity\Station;
-use App\Settings;
 use App\Exception;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
@@ -381,8 +381,6 @@ class Configuration
             'stdout_logfile_maxbytes' => '5MB',
             'stdout_logfile_backups' => '10',
             'redirect_stderr' => 'true',
-            'stopasgroup' => true,
-            'killasgroup' => true,
         ];
 
         $supervisor_config[] = '[program:' . $program_name . ']';

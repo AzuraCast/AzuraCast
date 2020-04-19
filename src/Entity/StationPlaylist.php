@@ -591,7 +591,7 @@ class StationPlaylist
 
                 if (
                     $startTime !== $endTime
-                    || ($startTime === $endTime && $this->wasPlayedInLastXMinutes($now, 30))
+                    || ($startTime === $endTime && !$this->wasPlayedInLastXMinutes($now, 30))
                 ) {
                     return true;
                 }

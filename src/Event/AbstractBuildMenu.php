@@ -28,7 +28,7 @@ abstract class AbstractBuildMenu extends Event
     {
         return $this->acl;
     }
-    
+
     public function getRouter(): Router
     {
         return $this->router;
@@ -82,12 +82,12 @@ abstract class AbstractBuildMenu extends Event
             return false;
         }
 
-        if (isset($item['visible'])) {
-            return (bool)$item['visible'];
+        if (isset($item['visible']) && !$item['visible']) {
+            return false;
         }
 
-        if (isset($item['permission'])) {
-            return $this->checkPermission($item['permission']);
+        if (isset($item['permission']) && !$this->checkPermission($item['permission'])) {
+            return false;
         }
 
         return true;

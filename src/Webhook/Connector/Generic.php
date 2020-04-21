@@ -13,7 +13,7 @@ class Generic extends AbstractConnector
     {
         $config = $webhook->getConfig();
 
-        $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
+        $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
             $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');

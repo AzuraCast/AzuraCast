@@ -460,7 +460,8 @@ return [
     App\Webhook\Dispatcher::class => function (
         ContainerInterface $di,
         App\Config $config,
-        Monolog\Logger $logger
+        Monolog\Logger $logger,
+        App\ApiUtilities $apiUtils
     ) {
         $webhooks = $config->get('webhooks');
         $services = [];
@@ -468,6 +469,6 @@ return [
             $services[$webhook_key] = $di->get($webhook_info['class']);
         }
 
-        return new App\Webhook\Dispatcher($logger, $services);
+        return new App\Webhook\Dispatcher($logger, $apiUtils, $services);
     },
 ];

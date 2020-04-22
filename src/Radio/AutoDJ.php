@@ -190,7 +190,7 @@ class AutoDJ implements EventSubscriberInterface
         $queueLength = count($upcomingQueue);
 
         if ($queueLength >= $maxQueueLength) {
-            $this->logger->info('AutoDJ queue is already at current max length (' . $maxQueueLength . ').');
+            $this->logger->debug('AutoDJ queue is already at current max length (' . $maxQueueLength . ').');
             $this->logger->popProcessor();
             return;
         }

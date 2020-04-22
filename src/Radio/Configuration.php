@@ -403,24 +403,23 @@ class Configuration
             return;
         }
 
+        $station_group = 'station_' . $station->getId();
+
+        // Try forcing the group to stop, but don't hard-fail if it doesn't.
+        try {
+            $this->supervisor->stopProcessGroup($station_group, true);
+            $this->supervisor->removeProcessGroup($station_group);
+        } catch (FaultException $e) {
+            $this->logger->log(Logger::ERROR, $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+            ]);
+        }
+
         $supervisor_config_path = $this->getSupervisorConfigFile($station);
         @unlink($supervisor_config_path);
 
-        $station_group = 'station_' . $station->getId();
-        $affected_groups = $this->_reloadSupervisor();
-
-        if (!in_array($station_group, $affected_groups, true)) {
-            // Try forcing the group to stop, but don't hard-fail if it doesn't.
-            try {
-                $this->supervisor->stopProcessGroup($station_group, true);
-                $this->supervisor->removeProcessGroup($station_group);
-            } catch (FaultException $e) {
-                $this->logger->log(Logger::ERROR, $e->getMessage(), [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'code' => $e->getCode(),
-                ]);
-            }
-        }
+        $this->_reloadSupervisor();
     }
 }

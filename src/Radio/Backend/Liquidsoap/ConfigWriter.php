@@ -768,7 +768,7 @@ class ConfigWriter implements EventSubscriberInterface
             'ignore(output.dummy(live, fallible=true))',
             '',
             'radio = fallback(id="' . self::getVarName($station,
-                'live_fallback') . '", track_sensitive=false, [live, radio])',
+                'live_fallback') . '", replay_metadata=false, track_sensitive=false, [live, radio])',
         ]);
 
         if ($recordLiveStreams) {

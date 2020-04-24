@@ -78,6 +78,7 @@ class Icecast extends AbstractFrontend
     protected function _getDefaults(Entity\Station $station)
     {
         $config_dir = $station->getRadioConfigDir();
+        $settings = Settings::getInstance();
 
         $defaults = [
             'location' => 'AzuraCast',
@@ -121,26 +122,18 @@ class Icecast extends AbstractFrontend
                 'ssl-certificate' => '/etc/nginx/ssl/ssl.crt',
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 'deny-ip' => $this->writeIpBansFile($station),
-                'x-forwarded-for' => '127.0.0.1',
+                'x-forwarded-for' => $settings->isDocker() ? '172.*.*.*' : '127.0.0.1',
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
                 'errorlog' => '/dev/stderr',
-                'loglevel' => Settings::getInstance()->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
+                'loglevel' => $settings->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
                 'logsize' => 10000,
             ],
             'security' => [
                 'chroot' => 0,
             ],
         ];
-
-
-        // Allow all sources to set the X-Forwarded-For header
-        $settings = Settings::getInstance();
-
-        if ($settings->isDocker() && $settings[Settings::DOCKER_REVISION] >= 3) {
-            $defaults['paths']['all-x-forwarded-for'] = '1';
-        }
 
         foreach ($station->getMounts() as $mount_row) {
             /** @var Entity\StationMount $mount_row */

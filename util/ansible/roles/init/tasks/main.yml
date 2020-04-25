@@ -42,24 +42,39 @@
       - build-essential
       - pwgen
       - whois
-      - python-pip
       - gzip
       - zip
       - unzip
 
-- name: Install software-properties (18.04 only)
+- name: Install Focal Packages (20.04)
   apt:
-    name: software-properties-common
+    name: "{{ packages }}"
     state: latest
-  when:
-    - ansible_distribution_release == 'bionic' or ansible_distribution_release == 'focal'
+  vars:
+    packages:
+      - software-properties-common
+      - python3-pip
+  when: ansible_distribution_release == 'focal'
 
-- name: Install python-software-properties (16.04 only)
+- name: Install Bionic Packages (18.04 only)
   apt:
-    name: python-software-properties
+    name: "{{ packages }}"
     state: latest
-  when: 
-    - ansible_distribution_release == 'xenial'
+  vars:
+    packages:
+      - software-properties-common
+      - python-pip
+  when: ansible_distribution_release == 'bionic'
+
+- name: Install Xenial Packages (16.04 only)
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - python-software-properties
+      - python-pip
+  when: ansible_distribution_release == 'xenial'
 
 - name: Update pip components
   pip:

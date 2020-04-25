@@ -5,21 +5,22 @@
     filename: "influxdb"
     update_cache: no
   register: influxdb_list
+  when:
+    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
 
 - name: Add InfluxDB repo key
   apt_key:
     url: https://repos.influxdata.com/influxdb.key
     state: present
   register: influxdb_key
+  when:
+    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
 
 - name: Update apt cache
   apt: update_cache=yes
-  when: influxdb_list.changed == True or influxdb_key.changed == True
-
-- name: Install python-influxdb
-  pip:
-    name: influxdb
-    state: latest
+  when: 
+    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
+    - influxdb_list.changed == True or influxdb_key.changed == True
 
 - name: Install InfluxDB
   apt:

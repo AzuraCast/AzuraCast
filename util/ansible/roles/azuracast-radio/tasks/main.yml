@@ -15,7 +15,7 @@
 
 - name: Download IceCast-KH-AC Source
   get_url:
-    url: https://github.com/AzuraCast/icecast-kh-ac/archive/2.4.0-kh10-ac4.tar.gz
+    url: https://github.com/AzuraCast/icecast-kh-ac/archive/2.4.0-kh13-ac2.tar.gz
     dest: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
     force: yes
 
@@ -43,6 +43,8 @@
   apt_repository:
     repo: "ppa:avsm/ppa"
     update_cache: yes
+  when:
+    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
 
 - name: Install Liquidsoap Dependencies
   apt:
@@ -76,6 +78,16 @@
   args:
     chdir: "{{ app_base }}"
     executable: "bash" # Fixes some possible hang issues.
+  when:
+    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
+
+- name: Initialize OPAM (Focal)
+  become_user: azuracast
+  shell: "opam init --disable-sandboxing -a --bare && opam switch create ocaml-system.4.08.1"
+  args:
+    chdir: "{{ app_base }}"
+  when:
+    - ansible_distribution_release == 'focal'
 
 - name: Build and Install Liquidsoap
   become_user: azuracast
@@ -84,9 +96,20 @@
     chdir: "{{ app_base }}"
     executable: "bash" # Fixes some possible hang issues.
 
-- name: Link Liquidsoap binary
+- name: Link Liquidsoap binary (Xenial/Bionic)
   file:
     src: "{{ app_base }}/.opam/4.08.0/bin/liquidsoap"
     dest: /usr/local/bin/liquidsoap
     state: link
     force: yes
+  when:
+    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
+
+- name: Link Liquidsoap binary (Focal)
+  file:
+    src: "{{ app_base }}/.opam/ocaml-system.4.08.1/bin/liquidsoap"
+    dest: /usr/local/bin/liquidsoap
+    state: link
+    force: yes
+  when:
+    - ansible_distribution_release == 'focal'

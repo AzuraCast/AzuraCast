@@ -3,19 +3,21 @@
     msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
 
 - fail:
-    msg: "AzuraCast can only be installed onto computers running Ubuntu 16.04 or 18.04 LTS."
+    msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu."
   when: ansible_distribution != 'Ubuntu'
 
 - fail:
-    msg: "AzuraCast can only be installed onto computers running Ubuntu 16.04 or 18.04 LTS."
-  when: ansible_distribution_release != 'bionic' and ansible_distribution_release != 'xenial'
+    msg: "The AzuraCast Ansible installation can only be installed onto computers running Ubuntu 16.04, 18.04 or 20.04 LTS."
+  when: 
+    - ansible_distribution_release != 'bionic'
+    - ansible_distribution_release != 'xenial'
+    - ansible_distribution_release != 'focal'
 
 - name: Add multiverse repository
   apt_repository:
     repo: "{{item}}"
     update_cache: no
   when:
-    - ansible_distribution == 'Ubuntu'
     - ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
   with_items:
     - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"
@@ -49,13 +51,15 @@
   apt:
     name: software-properties-common
     state: latest
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+  when:
+    - ansible_distribution_release == 'bionic' or ansible_distribution_release == 'focal'
 
 - name: Install python-software-properties (16.04 only)
   apt:
     name: python-software-properties
     state: latest
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'bionic'
+  when: 
+    - ansible_distribution_release == 'xenial'
 
 - name: Update pip components
   pip:

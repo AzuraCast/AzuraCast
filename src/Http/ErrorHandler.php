@@ -14,7 +14,6 @@ use Mezzio\Session\SessionInterface;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Slim\App;
 use Slim\Exception\HttpException;
@@ -36,8 +35,6 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected Sentry $sentry;
 
-    protected LoggerInterface $logger;
-
     protected Settings $settings;
 
     public function __construct(
@@ -48,9 +45,8 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         Sentry $sentry,
         Settings $settings
     ) {
-        parent::__construct($app->getCallableResolver(), $app->getResponseFactory());
-
-        $this->logger = $logger;
+        parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
+        
         $this->settings = $settings;
         $this->router = $router;
         $this->view = $view;

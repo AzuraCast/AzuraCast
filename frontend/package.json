@@ -30,7 +30,7 @@
     "dirrty": "^1.0.0",
     "easygettext": "^2.12.0",
     "fullcalendar": "^3.10.1",
-    "jquery": "^3.5.0",
+    "jquery": "3.4.1",
     "leaflet": "^1.6.0",
     "leaflet.fullscreen": "^1.6.0",
     "lodash": "^4.17.15",

@@ -309,9 +309,7 @@ class AutoDJ implements EventSubscriberInterface
             ), ['playlists' => $log_playlists]);
 
             // Shuffle playlists by weight.
-            uasort($eligible_playlists, function ($a, $b) {
-                return random_int(0, ($a + $b)) <=> $a;
-            });
+            $this->weightedShuffle($eligible_playlists);
 
             // Loop through the playlists and attempt to play them with no duplicates first,
             // then loop through them again while allowing duplicates.
@@ -335,6 +333,30 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         $this->logger->error('No playable tracks were found.');
+    }
+
+    /**
+     * Apply a weighted shuffle to the given array in the form:
+     *  [ key1 => weight1, key2 => weight2 ]
+     *
+     * Based on: https://gist.github.com/savvot/e684551953a1716208fbda6c4bb2f344
+     *
+     * @param array $array
+     */
+    protected function weightedShuffle(array &$array): void
+    {
+        $arr = $array;
+
+        $max = 1.0 / mt_getrandmax();
+        array_walk($arr, function (&$v, $k) use ($max) {
+            $v = (mt_rand() * $max) ** (1.0 / $v);
+        });
+        arsort($arr);
+        array_walk($arr, function (&$v, $k) use ($array) {
+            $v = $array[$k];
+        });
+
+        $array = $arr;
     }
 
     /**

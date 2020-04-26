@@ -314,8 +314,8 @@ class AutoDJ implements EventSubscriberInterface
             });
 
             // Loop through the playlists and attempt to play them with no duplicates first,
-            // then loop through them again with "preferred mode" turned off.
-            foreach ([true, false] as $preferredMode) {
+            // then loop through them again while allowing duplicates.
+            foreach ([false, true] as $allowDuplicates) {
                 foreach ($eligible_playlists as $playlist_id => $weight) {
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
@@ -323,7 +323,7 @@ class AutoDJ implements EventSubscriberInterface
                         $playlist,
                         $cued_song_history,
                         $now,
-                        $preferredMode
+                        $allowDuplicates
                     ))) {
                         $this->logger->info('Playable track found and registered.', [
                             'next_song' => (string)$event,
@@ -343,7 +343,7 @@ class AutoDJ implements EventSubscriberInterface
      * @param Entity\StationPlaylist $playlist
      * @param array $recentSongHistory
      * @param Chronos $now
-     * @param bool $preferredMode Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
      * @return Entity\SongHistory|null
      */
@@ -351,9 +351,9 @@ class AutoDJ implements EventSubscriberInterface
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
         Chronos $now,
-        bool $preferredMode = true
+        bool $allowDuplicates = false
     ): ?Entity\SongHistory {
-        $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $preferredMode);
+        $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $allowDuplicates);
 
         if ($media_to_play instanceof Entity\StationMedia) {
             $playlist->setPlayedAt($now->getTimestamp());
@@ -403,14 +403,14 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * @param Entity\StationPlaylist $playlist
      * @param array $recentSongHistory
-     * @param bool $preferredMode Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
      * @return Entity\StationMedia|array|null
      */
     protected function getQueuedSong(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
-        bool $preferredMode = true
+        bool $allowDuplicates = false
     ) {
         if (Entity\StationPlaylist::SOURCE_REMOTE_URL === $playlist->getSource()) {
             return $this->playRemoteUrl($playlist);
@@ -419,7 +419,7 @@ class AutoDJ implements EventSubscriberInterface
         switch ($playlist->getOrder()) {
             case Entity\StationPlaylist::ORDER_RANDOM:
                 $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
-                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, $preferredMode);
+                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
                 break;
 
             case Entity\StationPlaylist::ORDER_SEQUENTIAL:
@@ -450,14 +450,18 @@ class AutoDJ implements EventSubscriberInterface
                     }
                 }
 
-                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
+                if ($allowDuplicates) {
+                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
 
-                if (null === $mediaId) {
-                    $this->logger->warning('Duplicate prevention yielded no playable song; resetting song queue.');
+                    if (null === $mediaId) {
+                        $this->logger->warning('Duplicate prevention yielded no playable song; resetting song queue.');
 
-                    // Pull the entire shuffled playlist if a duplicate title can't be avoided.
-                    $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
-                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, true);
+                        // Pull the entire shuffled playlist if a duplicate title can't be avoided.
+                        $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
+                        $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, true);
+                    }
+                } else {
+                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
                 }
 
                 if (null !== $mediaId) {
@@ -476,7 +480,7 @@ class AutoDJ implements EventSubscriberInterface
             $this->logger->error(sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()), [
                 'playlist_id' => $playlist->getId(),
                 'playlist_order' => $playlist->getOrder(),
-                'preferred_mode' => $preferredMode,
+                'allow_duplicates' => $allowDuplicates,
             ]);
             return null;
         }
@@ -522,14 +526,14 @@ class AutoDJ implements EventSubscriberInterface
     /**
      * @param array $eligibleMedia
      * @param array $playedMedia
-     * @param bool $preferredMode Whether to return a media ID even if duplicates can't be prevented.
+     * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
      * @return int|null
      */
     protected function preventDuplicates(
         array $eligibleMedia = [],
         array $playedMedia = [],
-        bool $preferredMode = true
+        bool $allowDuplicates = false
     ): ?int {
         if (empty($eligibleMedia)) {
             $this->logger->debug('Eligible song queue is empty!');
@@ -575,7 +579,7 @@ class AutoDJ implements EventSubscriberInterface
             return $mediaId;
         }
 
-        if ($preferredMode) {
+        if ($allowDuplicates) {
 
             // If we reach this point, there's no way to avoid a duplicate title.
             $mediaIdsByTimePlayed = [];

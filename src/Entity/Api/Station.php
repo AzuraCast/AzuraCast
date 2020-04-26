@@ -13,42 +13,36 @@ class Station implements ResolvableUrlInterface
     /**
      * Station ID
      * @OA\Property(example=1)
-     * @var int
      */
     public int $id;
 
     /**
      * Station name
      * @OA\Property(example="AzuraTest Radio")
-     * @var string
      */
     public string $name;
 
     /**
      * Station "short code", used for URL and folder paths
      * @OA\Property(example="azuratest_radio")
-     * @var string
      */
     public string $shortcode = '';
 
     /**
      * Station description
      * @OA\Property(example="An AzuraCast station!")
-     * @var string
      */
     public string $description = '';
 
     /**
      * Which broadcasting software (frontend) the station uses
      * @OA\Property(example="shoutcast2")
-     * @var string
      */
     public string $frontend = '';
 
     /**
      * Which AutoDJ software (backend) the station uses
      * @OA\Property(example="liquidsoap")
-     * @var string
      */
     public string $backend = '';
 
@@ -62,7 +56,6 @@ class Station implements ResolvableUrlInterface
     /**
      * If the station is public (i.e. should be shown in listings of all stations)
      * @OA\Property(example=true)
-     * @var bool
      */
     public bool $is_public = false;
 
@@ -70,13 +63,13 @@ class Station implements ResolvableUrlInterface
      * @OA\Property()
      * @var StationMount[]
      */
-    public array $mounts = [];
+    public $mounts = [];
 
     /**
      * @OA\Property()
      * @var StationRemote[]
      */
-    public array $remotes = [];
+    public $remotes = [];
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

@@ -14,8 +14,8 @@ Language-Team: Spanish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: es_ES
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -519,17 +519,25 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Lista desactivada.',
       ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => '',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => '',
       ),
       'Request submitted successfully.' => 
       array (
-        0 => '',
+        0 => 'Solicitud enviada con éxito.',
       ),
       'Station restarted.' => 
       array (
-        0 => '',
+        0 => 'Emisora reiniciada.',
       ),
       'Frontend stopped.' => 
       array (
@@ -541,7 +549,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Frontend restarted.' => 
       array (
-        0 => '',
+        0 => 'Interfaz reiniciada.',
       ),
       'Song skipped.' => 
       array (
@@ -553,15 +561,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backend stopped.' => 
       array (
-        0 => '',
+        0 => 'Servidor detenido.',
       ),
       'Backend started.' => 
       array (
-        0 => '',
+        0 => 'Servidor iniciado.',
       ),
       'Backend restarted.' => 
       array (
-        0 => '',
+        0 => 'Servidor reiniciado.',
       ),
       'No recording available.' => 
       array (
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Esta canción ya se ha reproducido recientemente. Espera un momento antes de solicitarla de nuevo.',
+        0 => '',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => '¿Quieres usar SHOUTcast 2? <a href="%s" target="_blank">Instálalo aquí</a> y vuelve a cargar esta página.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'La zona horaria de esta estación actualmente es %s.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => 'La hora actual en la zona horaria de la estación es %s.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Lista de reproducción existente importada.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d canción(es) han sido importadas a la lista de reproducción.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -2395,6 +2387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => '',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => '',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => '',
@@ -2750,6 +2750,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => '',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => '',
@@ -3075,6 +3079,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Run Test' => 
+      array (
+        0 => '',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => '',
+      ),
+      'Command' => 
+      array (
+        0 => '',
+      ),
+      'Execute Command' => 
       array (
         0 => '',
       ),
@@ -3875,6 +3891,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Proporción',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => '',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => '',
+      ),
       'Date Requested' => 
       array (
         0 => 'Fecha de pedido',
@@ -3890,6 +3914,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Not Played' => 
       array (
         0 => 'Sin reproducir',
+      ),
+      'Delete request?' => 
+      array (
+        0 => '',
       ),
       'Report Not Available' => 
       array (

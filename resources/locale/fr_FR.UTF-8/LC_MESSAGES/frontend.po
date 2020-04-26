@@ -10,9 +10,9 @@ msgstr ""
 "X-Crowdin-File: /master/resources/locale/frontend.pot\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2020-03-14 03:00\n"
+"PO-Revision-Date: 2020-04-26 10:14\n"
 
-#: ./vue/StationPlaylists.vue:127
+#: ./vue/StationPlaylists.vue:137
 msgid "# Songs"
 msgstr "# Titres"
 
@@ -33,7 +33,7 @@ msgid "Account List"
 msgstr "Liste des comptes"
 
 #: ./vue/StationMedia.vue:189
-#: ./vue/StationPlaylists.vue:124
+#: ./vue/StationPlaylists.vue:134
 #: ./vue/StationStreamers.vue:83
 #: ./vue/station_playlists/PlaylistReorderModal.vue:11
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:71
@@ -45,7 +45,7 @@ msgid "Add Files to Playlist"
 msgstr "Ajouter des fichiers à la playlist"
 
 #: ./vue/StationPlaylists.vue:18
-#: ./vue/station_playlists/PlaylistEditModal.vue:55
+#: ./vue/station_playlists/PlaylistEditModal.vue:57
 msgid "Add Playlist"
 msgstr "Ajouter une playlist"
 
@@ -59,9 +59,14 @@ msgstr "Ajouter une nouvelle planification"
 msgid "Add Streamer"
 msgstr "Ajouter Streamer"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:69
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:50
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:72
 msgid "Advanced"
 msgstr "Avancé"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:15
+msgid "Advanced Manual AutoDJ Scheduling Options"
+msgstr "Options avancées de programmation manuelle de l'AutoDJ"
 
 #: ./vue/station_media/form/MediaFormAdvancedSettings.vue:92
 msgid "Advanced Playback Settings"
@@ -78,7 +83,7 @@ msgstr "Album"
 msgid "Album Art"
 msgstr "Pochette d'album"
 
-#: ./vue/StationPlaylists.vue:133
+#: ./vue/StationPlaylists.vue:143
 msgid "All Playlists"
 msgstr "Toutes les playlists"
 
@@ -93,12 +98,13 @@ msgstr "Amplifier : Amplification (dB)"
 #: ./vue/station_media/MediaEditModal.vue:172
 #: ./vue/station_media/MediaMoveFilesModal.vue:92
 #: ./vue/station_media/MediaNewDirectoryModal.vue:76
-#: ./vue/station_playlists/PlaylistEditModal.vue:177
+#: ./vue/station_playlists/PlaylistEditModal.vue:179
+#: ./vue/station_playlists/PlaylistImportModal.vue:68
 #: ./vue/station_streamers/StreamerEditModal.vue:152
 msgid "An error occurred and your request could not be completed."
 msgstr "Une erreur est survenue et votre demande n'a pas pu être réalisée."
 
-#: ./vue/StationPlaylists.vue:209
+#: ./vue/StationPlaylists.vue:228
 #: ./vue/station_media/MediaToolbar.vue:194
 msgid "Applying changes..."
 msgstr "Application des modifications..."
@@ -109,19 +115,19 @@ msgstr "Application des modifications..."
 msgid "Artist"
 msgstr "Artiste"
 
-#: ./vue/StationPlaylists.vue:71
+#: ./vue/StationPlaylists.vue:79
 msgid "Auto-Assigned"
 msgstr "Auto-assigné"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:82
-msgid "AutoDJ Scheduling Options"
-msgstr "Options de planification de l'AutoDJ"
+#: ./vue/station_playlists/PlaylistImportModal.vue:8
+msgid "AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed."
+msgstr "AzuraCast analysera le fichier téléchargé à la recherche de correspondances dans la bibliothèque musicale de cette station. Les médias doivent déjà être téléchargés avant de passer à cette étape. Vous pouvez relancer cet outil autant de fois que nécessaire."
 
 #: ./vue/station_media/MediaMoveFilesModal.vue:6
 msgid "Back"
 msgstr "Retour"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:228
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:202
 #: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:90
 msgid "Basic Info"
 msgstr "Informations de base"
@@ -135,7 +141,7 @@ msgid "Broadcasts"
 msgstr "Diffusions"
 
 #: ./vue/station_media/MediaEditModal.vue:164
-#: ./vue/station_playlists/PlaylistEditModal.vue:169
+#: ./vue/station_playlists/PlaylistEditModal.vue:171
 #: ./vue/station_streamers/StreamerEditModal.vue:144
 msgid "Changes saved."
 msgstr "Modifications enregistrées."
@@ -148,7 +154,8 @@ msgstr "Effacer"
 #: ./vue/station_media/MediaMoveFilesModal.vue:34
 #: ./vue/station_media/MediaNewDirectoryModal.vue:15
 #: ./vue/station_media/MediaRenameModal.vue:16
-#: ./vue/station_playlists/PlaylistEditModal.vue:17
+#: ./vue/station_playlists/PlaylistEditModal.vue:18
+#: ./vue/station_playlists/PlaylistImportModal.vue:17
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:20
 #: ./vue/station_streamers/StreamerEditModal.vue:15
 msgid "Close"
@@ -162,7 +169,7 @@ msgstr "Commentaires"
 msgid "Continuous Play"
 msgstr "Lecture continue"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:85
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:18
 msgid "Control how this playlist is handled by the AutoDJ software."
 msgstr "Contrôlez la façon dont cette playlist est gérée par l'AutoDJ."
 
@@ -176,7 +183,7 @@ msgstr "Créer le répertoire"
 msgid "Cue"
 msgstr "Cue"
 
-#: ./vue/StationPlaylists.vue:185
+#: ./vue/StationPlaylists.vue:201
 msgid "Custom"
 msgstr "Personnaliser"
 
@@ -204,12 +211,12 @@ msgstr "Transition en fondu enchaîné : Durée de la superposition (en secondes
 msgid "Custom Fields"
 msgstr "Champs personnalisés"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:214
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:188
 msgid "Default"
 msgstr "Par défaut"
 
 #: ./vue/StationPlaylists.vue:31
-#: ./vue/StationPlaylists.vue:225
+#: ./vue/StationPlaylists.vue:244
 #: ./vue/StationStreamers.vue:43
 #: ./vue/StationStreamers.vue:121
 #: ./vue/station_media/MediaToolbar.vue:53
@@ -231,7 +238,7 @@ msgstr "Supprimer la pochette de l'album"
 msgid "Delete broadcast?"
 msgstr "Supprimer la diffusion ?"
 
-#: ./vue/StationPlaylists.vue:226
+#: ./vue/StationPlaylists.vue:245
 msgid "Delete playlist?"
 msgstr "Supprimer la playlist ?"
 
@@ -248,12 +255,12 @@ msgstr "Annuaire"
 msgid "Directory Name"
 msgstr "Nom du répertoire"
 
-#: ./vue/StationPlaylists.vue:154
+#: ./vue/StationPlaylists.vue:170
 msgid "Disable"
 msgstr "Désactiver"
 
-#: ./vue/StationPlaylists.vue:74
-#: ./vue/StationPlaylists.vue:165
+#: ./vue/StationPlaylists.vue:82
+#: ./vue/StationPlaylists.vue:181
 #: ./vue/StationStreamers.vue:30
 msgid "Disabled"
 msgstr "Désactivé"
@@ -288,7 +295,7 @@ msgstr "Éditer"
 msgid "Edit Media"
 msgstr "Modifier le média"
 
-#: ./vue/station_playlists/PlaylistEditModal.vue:54
+#: ./vue/station_playlists/PlaylistEditModal.vue:56
 msgid "Edit Playlist"
 msgstr "Modifier la playlist"
 
@@ -296,7 +303,7 @@ msgstr "Modifier la playlist"
 msgid "Edit Streamer"
 msgstr "Modifier le Streamer"
 
-#: ./vue/StationPlaylists.vue:155
+#: ./vue/StationPlaylists.vue:171
 msgid "Enable"
 msgstr "Activer"
 
@@ -327,7 +334,7 @@ msgstr "Heure de fin"
 msgid "Enforce Schedule Times"
 msgstr "Faire respecter les horaires"
 
-#: ./vue/StationPlaylists.vue:44
+#: ./vue/StationPlaylists.vue:52
 msgid "Export %{format}"
 msgstr "Exporter %{format}"
 
@@ -357,9 +364,9 @@ msgstr "Vendredi"
 msgid "Full Volume"
 msgstr "Volume maximum"
 
-#: ./vue/StationPlaylists.vue:170
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:42
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:113
+#: ./vue/StationPlaylists.vue:186
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:45
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:87
 msgid "General Rotation"
 msgstr "Rotation générale"
 
@@ -367,11 +374,11 @@ msgstr "Rotation générale"
 msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
 msgstr "Masquer les métadonnées aux auditeurs (\"Mode Jingle\")"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:216
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:190
 msgid "High"
 msgstr "Haut"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:19
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:20
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
 msgstr "Les playlists à poids élevé sont jouées plus fréquemment que les autres playlists à poids faible."
 
@@ -379,11 +386,15 @@ msgstr "Les playlists à poids élevé sont jouées plus fréquemment que les au
 msgid "Home"
 msgstr "Accueil"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:119
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:9
+msgid "If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results."
+msgstr "Si l'une de ces options est activée, cette playlist sera gérée directement via Liquidsoap au lieu d'être gérée via AzuraCast. Cela peut avoir des effets inattendus et ne doit être utilisé que lorsque vous êtes à l'aise avec les résultats."
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:93
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
 msgstr "Si l'auto-assignation est activée, utilisez cette liste de lecture comme l'une des cibles pour les chansons à redistribuer. Cela écrasera le contenu existant de cette liste de lecture."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:29
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:31
 msgid "If disabled, the playlist will not be included in radio playback, but can still be managed."
 msgstr "Si elle est désactivée, la liste de lecture ne sera pas incluse dans la diffusion radio, mais pourra toujours être gérée."
 
@@ -403,7 +414,13 @@ msgstr "Si l'heure de fin est antérieure à l'heure de début, la playlist sera
 msgid "If the end time is before the start time, the schedule entry will continue overnight."
 msgstr "Si l'heure de fin est antérieure à l'heure de début, le programme sera diffusé pendant la nuit."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:122
+#: ./vue/StationPlaylists.vue:158
+#: ./vue/station_playlists/PlaylistImportModal.vue:20
+#: ./vue/station_playlists/PlaylistImportModal.vue:42
+msgid "Import from PLS/M3U"
+msgstr "Importation de PLS/M3U"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:96
 msgid "Include in Automated Assignment"
 msgstr "Inclure dans l'affectation automatique"
 
@@ -415,11 +432,11 @@ msgstr "Notes internes ou commentaires au sujet de l’utilisateur, visible uniq
 msgid "International Standard Recording Code, used for licensing reports."
 msgstr "Code d'enregistrement standard international, utilisé pour les rapports de licence."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:95
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:23
 msgid "Interrupt other songs to play at scheduled time."
 msgstr "Interrompre la lecture des autres titres à l'heure prévue."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:32
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:34
 msgid "Is Enabled"
 msgstr "Est activé"
 
@@ -427,11 +444,11 @@ msgstr "Est activé"
 msgid "ISRC"
 msgstr "ISRC"
 
-#: ./vue/StationPlaylists.vue:64
+#: ./vue/StationPlaylists.vue:72
 msgid "Jingle Mode"
 msgstr "Mode Jingle"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:74
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:77
 msgid "Learn about Advanced Playlists"
 msgstr "En savoir plus sur les playlists avancées"
 
@@ -453,15 +470,15 @@ msgstr "Live"
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:212
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:186
 msgid "Low"
 msgstr "Bas"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:72
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:75
 msgid "Manually define how this playlist is used in Liquidsoap configuration."
 msgstr "Définissez manuellement comment cette playlist est utilisée dans la configuration de Liquidsoap."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:104
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:32
 msgid "Merge playlist to play as a single track."
 msgstr "Fusionner la playlist pour la jouer en une seule piste."
 
@@ -477,7 +494,7 @@ msgstr "Microphone"
 msgid "Microphone Source"
 msgstr "Source du microphone"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:185
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:159
 msgid "Minute of Hour to Play"
 msgstr "Minute de diffusion pour chaque heure"
 
@@ -494,7 +511,7 @@ msgstr "Modifié"
 msgid "Monday"
 msgstr "Lundi"
 
-#: ./vue/StationPlaylists.vue:139
+#: ./vue/StationPlaylists.vue:149
 msgid "More"
 msgstr "Plus"
 
@@ -560,46 +577,46 @@ msgstr "Non planifié"
 msgid "Notes"
 msgstr "Notes"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:161
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:135
 msgid "Number of Minutes Between Plays"
 msgstr "Nombre de minutes entre chaque lecture"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:137
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:111
 msgid "Number of Songs Between Plays"
 msgstr "Nombre de musiques entre chaque lecture"
 
-#: ./vue/StationPlaylists.vue:177
+#: ./vue/StationPlaylists.vue:193
 msgid "Once per %{minutes} Minutes"
 msgstr "Une fois toutes les %{minutes} minutes"
 
-#: ./vue/StationPlaylists.vue:173
+#: ./vue/StationPlaylists.vue:189
 msgid "Once per %{songs} Songs"
 msgstr "Une fois tous les %{songs} titres"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:62
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:179
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:65
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:153
 msgid "Once per Hour"
 msgstr "Une fois par heure"
 
-#: ./vue/StationPlaylists.vue:181
+#: ./vue/StationPlaylists.vue:197
 msgid "Once per Hour (at %{minute})"
 msgstr "Une fois par heure (à %{minute})"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:55
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:155
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:58
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:129
 msgid "Once per x Minutes"
 msgstr "Une fois toutes les x minutes"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:48
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:131
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:51
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:105
 msgid "Once per x Songs"
 msgstr "Une fois tous les x titres"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:98
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:26
 msgid "Only loop through playlist once."
 msgstr "Boucler une seule fois la playlist."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:101
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:29
 msgid "Only play one track at scheduled time."
 msgstr "Lecture d'un seul titre à l'heure prévue."
 
@@ -616,15 +633,15 @@ msgstr "Pause"
 msgid "Play"
 msgstr "Lecture"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:58
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:61
 msgid "Play exactly once every <i>x</i> minutes."
 msgstr "Jouez exactement une fois toutes les <i>x</i> minutes."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:51
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:54
 msgid "Play exactly once every <i>x</i> songs."
 msgstr "Jouez exactement une fois tous les <i>x</i> titres."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:65
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:68
 msgid "Play once per hour at the specified minute."
 msgstr "Jouez une fois par heure à la minute spécifiée."
 
@@ -632,7 +649,7 @@ msgstr "Jouez une fois par heure à la minute spécifiée."
 msgid "Play/Pause"
 msgstr "Lecture/Pause"
 
-#: ./vue/StationPlaylists.vue:125
+#: ./vue/StationPlaylists.vue:135
 msgid "Playlist"
 msgstr "Playlist"
 
@@ -652,11 +669,11 @@ msgstr "Nom de la playlist"
 msgid "Playlist order set."
 msgstr "Ordre de la playlist configuré."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:37
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:40
 msgid "Playlist Type"
 msgstr "Type de playlist"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:16
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:17
 msgid "Playlist Weight"
 msgstr "Poids de la playlist"
 
@@ -694,7 +711,7 @@ msgstr "Actualiser"
 msgid "Remote Playback Buffer (Seconds)"
 msgstr "Mémoire tampon de la diffusion (secondes)"
 
-#: ./vue/StationPlaylists.vue:59
+#: ./vue/StationPlaylists.vue:67
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:80
 msgid "Remote URL"
 msgstr "URL distante"
@@ -722,7 +739,7 @@ msgstr "Renommer"
 msgid "Rename File/Directory"
 msgstr "Renommer le fichier/répertoire"
 
-#: ./vue/StationPlaylists.vue:142
+#: ./vue/StationPlaylists.vue:152
 msgid "Reorder"
 msgstr "Réorganiser"
 
@@ -737,6 +754,10 @@ msgstr "Répéter la playlist"
 #: ./vue/station_media/form/MediaFormAlbumArt.vue:14
 msgid "Replace Album Cover Art"
 msgstr "Remplacer la pochette d'album"
+
+#: ./vue/StationPlaylists.vue:155
+msgid "Reshuffle"
+msgstr "Réorganiser"
 
 #: ./vue/components/DataTable.vue:172
 msgid "Rows per page"
@@ -757,7 +778,7 @@ msgid "Save"
 msgstr "Sauvegarder"
 
 #: ./vue/station_media/MediaEditModal.vue:19
-#: ./vue/station_playlists/PlaylistEditModal.vue:20
+#: ./vue/station_playlists/PlaylistEditModal.vue:21
 #: ./vue/station_streamers/StreamerEditModal.vue:18
 msgid "Save Changes"
 msgstr "Sauvegarder"
@@ -767,7 +788,7 @@ msgstr "Sauvegarder"
 msgid "Schedule"
 msgstr "Planification"
 
-#: ./vue/StationPlaylists.vue:136
+#: ./vue/StationPlaylists.vue:146
 #: ./vue/StationStreamers.vue:95
 msgid "Schedule View"
 msgstr "Calendrier"
@@ -782,7 +803,7 @@ msgstr "Jours de diffusion prévus pour la semaine"
 msgid "Scheduled Time #%{num}"
 msgstr "Heure programmée #%{num}"
 
-#: ./vue/StationPlaylists.vue:126
+#: ./vue/StationPlaylists.vue:136
 msgid "Scheduling"
 msgstr "Calendrier"
 
@@ -800,7 +821,7 @@ msgstr "A quel moment, en secondes depuis le début, l'AutoDJ arrêtera de lire 
 
 #: ./vue/InlinePlayer.vue:105
 msgid "Seek"
-msgstr ""
+msgstr "Cherchez"
 
 #: ./vue/components/DataTable.vue:178
 msgid "Select all visible rows"
@@ -814,29 +835,33 @@ msgstr "Sélectionner les champs affichés"
 msgid "Select File"
 msgstr "Sélectionner un fichier"
 
+#: ./vue/station_playlists/PlaylistImportModal.vue:5
+msgid "Select PLS/M3U File to Import"
+msgstr "Sélectionnez le fichier PLS/M3U à importer"
+
 #: ./vue/components/DataTable.vue:181
 msgid "Select this row"
 msgstr "Sélectionnez cette rubrique"
 
-#: ./vue/StationPlaylists.vue:68
+#: ./vue/StationPlaylists.vue:76
 msgid "Sequential"
 msgstr "Séquentiel"
 
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:25
 msgid "Set Cue In"
-msgstr ""
+msgstr "Point d'entrée"
 
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:29
 msgid "Set Cue Out"
-msgstr ""
+msgstr "Point de sortie"
 
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:39
 msgid "Set Fade In"
-msgstr ""
+msgstr "Point d'entrée en fondu"
 
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:43
 msgid "Set Fade Out"
-msgstr ""
+msgstr "Point de sortie en fondu"
 
 #: ./vue/station_media/MediaToolbar.vue:94
 msgid "Set or clear playlists from the selected media"
@@ -844,7 +869,7 @@ msgstr "Définir ou effacer des listes de lecture à partir du média sélection
 
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:34
 msgid "Set Overlap"
-msgstr ""
+msgstr "Point de chevauchement"
 
 #: ./vue/webcaster/settings.vue:11
 msgid "Settings"
@@ -879,7 +904,7 @@ msgstr "Ordre de lecture des titres"
 msgid "Song Title"
 msgstr "Titre de la musique"
 
-#: ./vue/StationPlaylists.vue:56
+#: ./vue/StationPlaylists.vue:64
 msgid "Song-based"
 msgstr "Sur la base de chansons"
 
@@ -893,11 +918,11 @@ msgstr "Playlist de différents titres"
 msgid "Source"
 msgstr "Source"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:188
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:162
 msgid "Specify the minute of every hour that this playlist should play."
 msgstr "Spécifiez la minute de diffusion pour chaque heure de cette playlist."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:44
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:47
 msgid "Standard playlist, shuffles with other standard playlists based on weight."
 msgstr "Playlist standard, se mélange avec d'autres playlists standard en fonction de leur poids."
 
@@ -986,18 +1011,14 @@ msgstr "Indique la durée quand ce titre sera superposé au titre suivant et pr�
 msgid "The volume in decibels to amplify the track with. Leave blank to use the system default."
 msgstr "Le volume en décibels avec lequel amplifier la piste. Laisser vide pour utiliser la valeur par défaut du système."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:90
-msgid "These functions are internal to Liquidsoap and will affect how your AutoDJ works."
-msgstr "Ces fonctions sont internes à Liquidsoap et affecteront le fonctionnement de votre AutoDJ."
-
 #: ./vue/station_media/MediaNewDirectoryModal.vue:9
 #: ./vue/station_media/MediaRenameModal.vue:10
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:14
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:11
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:24
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:146
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:170
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:194
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:25
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:120
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:144
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:168
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:38
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:51
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:74
@@ -1023,11 +1044,11 @@ msgstr "C'est le nom de l'affichage informel qui sera affiché dans les réponse
 msgid "This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below."
 msgstr "Cette playlist ne possède actuellement aucune programmation horaire. Elle sera diffusée en permanence. Pour ajouter une nouvelle programmation, cliquez sur le bouton ci-dessous."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:164
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:138
 msgid "This playlist will play every $x minutes, where $x is specified below."
 msgstr "Cette playlist jouera chaque $x minutes, où $x est indiqué ci-dessous."
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:140
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:114
 msgid "This playlist will play every $x songs, where $x is specified below."
 msgstr "Cette playlist jouera chaque $x titres, où $x est indiqué ci-dessous."
 
@@ -1098,27 +1119,27 @@ msgstr "Afficher les titres de la playlist"
 
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:65
 msgid "Visual Cue Editor"
-msgstr ""
+msgstr "Éditeur visuel"
 
 #: ./vue/InlinePlayer.vue:108
 #: ./vue/RadioPlayer.vue:317
 msgid "Volume"
 msgstr "Volume"
 
-#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:88
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:6
 msgid "Warning"
 msgstr "Attention"
 
 #: ./vue/components/Waveform.vue:11
 msgid "Waveform Zoom"
-msgstr ""
+msgstr "Zoom sur la forme d'onde"
 
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:132
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:129
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: ./vue/StationPlaylists.vue:170
+#: ./vue/StationPlaylists.vue:186
 msgid "Weight"
 msgstr "Poids"
 

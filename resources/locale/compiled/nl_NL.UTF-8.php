@@ -14,8 +14,8 @@ Language-Team: Dutch
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -519,6 +519,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Afspeellijst uitgeschakeld.',
       ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => '',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Dit station accepteert momenteel geen verzoeken.',
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Dit nummer staat al in de wachtrij, en zal binnen 15 minuten worden afgespeeld.',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Dit nummer is kortgeleden afgespeeld. Wacht even voordat u dit nummer opnieuw aanvraagt.',
+        0 => '',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => 'Wilt u SHOUTcast 2 gebruiken? <a href="%s" target="_blank">Installeer het hier</a>, ververs daarna deze pagina.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'De tijdzone van dit station is momenteel %s.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => 'De huidige tijd in de tijdzone van het station is %s.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Bestaande afspeellijst geïmporteerd.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d nummer(s) is/zijn aan de afspeellijst toegevoegd.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -2395,6 +2387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Geef Liquidsoap de instructie om replaygain metadata te gebruiken, die gekoppeld zijn aan een nummer, om het volume niveau te controleren.',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => '',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => '',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => 'Handmatige AutoDJ Modus',
@@ -2772,6 +2772,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Klaar om te beginnen met uitzenden? Klik om uw station te starten.',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => '',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => 'Herstart om wijzigingen toe te passen',
@@ -3097,6 +3101,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Run Test' => 
+      array (
+        0 => '',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => '',
+      ),
+      'Command' => 
+      array (
+        0 => '',
+      ),
+      'Execute Command' => 
       array (
         0 => '',
       ),
@@ -3897,6 +3913,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Verhouding',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => '',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => '',
+      ),
       'Date Requested' => 
       array (
         0 => 'Datum aangevraagd',
@@ -3912,6 +3936,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Not Played' => 
       array (
         0 => 'Niet afgespeeld',
+      ),
+      'Delete request?' => 
+      array (
+        0 => '',
       ),
       'Report Not Available' => 
       array (

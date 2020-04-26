@@ -14,8 +14,8 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -519,6 +519,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Playlist deaktiviert.',
       ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => '',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Diese Station akzeptiert derzeit keine Anfragen.',
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Doppelte Anfrage: Dieser Song wurde bereits angefordert und wird in Kürze gespielt.',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Dieser Song wurde bereits zu kürzlich gespielt. Warte eine Weile, bevor du ihn erneut anforderst.',
+        0 => '',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => 'Sie möchten SHOUTcast 2 verwenden? <a href="%s" target="_blank">installieren Sie es hier</a> und laden sie diese Seite erneut.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'Die Zeitzone dieser Station ist derzeit %s.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => 'Die aktuelle Zeit in der Zeitzone der Station ist %s.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Vorhandene Wiedergabeliste importiert.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d Lied(er) wurde(n) in die Playlist importiert.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -2396,6 +2388,14 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Liquidsoap anweisen die Replaygain Metadaten eines Songs zu verwenden um die Lautstärke anzupassen.',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => '',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => '',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => 'Manueller AutoDJ-Modus',
@@ -2769,6 +2769,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Bereit zum Streamen? Klicken Sie, um Ihre Station zu starten.',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => '',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => 'Neustart um die Änderungen anzuwenden',
@@ -3096,6 +3100,18 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Run Test' => 
       array (
         0 => 'Test ausführen',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => '',
+      ),
+      'Command' => 
+      array (
+        0 => '',
+      ),
+      'Execute Command' => 
+      array (
+        0 => '',
       ),
       'Server Status' => 
       array (
@@ -3895,6 +3911,14 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Verhältnis',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => '',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => '',
+      ),
       'Date Requested' => 
       array (
         0 => 'Wunsch Datum',
@@ -3910,6 +3934,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Not Played' => 
       array (
         0 => 'Nicht gespielt',
+      ),
+      'Delete request?' => 
+      array (
+        0 => '',
       ),
       'Report Not Available' => 
       array (

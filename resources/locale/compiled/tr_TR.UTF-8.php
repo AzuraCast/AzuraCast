@@ -14,8 +14,8 @@ Language-Team: Turkish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: tr_TR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -519,6 +519,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Çalma Listesi Devredışı Bırakıldı!',
       ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => 'Çalma listesi yeniden karıştırıldı!',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => 'Oynatma listesi başarıyla içe aktarıldı; %d tanesi %d dosyadan başarıyla eşleştirildi.',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Bu radyo şu anda istekleri kabul etmiyor.',
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Yinelenen İstek: Bu şarkı zaten talep edildi ve yakında çalınacaktır.',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Bu şarkı zaten çok yeni çalındı. Tekrar talep etmeden önce biraz bekleyin.',
+        0 => 'Bu şarkı veya sanatçı zaten çok yeni çalındı. Tekrar talep etmeden önce biraz bekleyin.',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => 'SHOUTcast v2 kurmak için <a href="%s" target="_blank">burayı</a> tıklayın ve sonrasında sayfayı yenileyin.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'Bu radyonun saat dilimi %s olarak ayarlanmıştır.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => '%s radyonun saat dilimine göre geçerli zamanıdır.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Çalma listesi içe aktarıldı.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d şarkı(lar) çalma listesine aktarıldı.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -2395,6 +2387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Liquidsoap cihazına ses seviyesini kontrol etmek için bir şarkıyla ilişkili herhangi bir replaygain meta verisini kullanması talimatını verin.',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => 'AutoDJ Kuyruk Uzunluğu',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => 'AzuraCast AutoDJ yazılımını kullanıyorsanız AutoDJ yazılımının kaç şarkıyı otomatik olarak kuyruğa alacağını belirler.',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => 'Manuel AutoDJ Modu',
@@ -2761,6 +2761,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Yayına başlamak için hazır mısınız? Radyonuzu başlatmak için tıklayın.',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => 'Canlı yayın yeniden başlatılsın mı? Mevcut dinleyicilerin bağlantısı kesilir.',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => 'Değişiklikleri Uygulamak İçin Yeniden Başlat',
@@ -3088,6 +3092,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Run Test' => 
       array (
         0 => 'Testi Çalıştır',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => 'Liquidsoap Telnet Komutu Gönder',
+      ),
+      'Command' => 
+      array (
+        0 => 'Komut',
+      ),
+      'Execute Command' => 
+      array (
+        0 => 'Komutu Çalıştır',
       ),
       'Server Status' => 
       array (
@@ -3887,6 +3903,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Oran',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => 'Bekleyen tüm istekler silinsin mi?',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => 'Bekleyen İstekleri Temizle',
+      ),
       'Date Requested' => 
       array (
         0 => 'Talep Edilen Tarih',
@@ -3902,6 +3926,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Not Played' => 
       array (
         0 => 'Oynatılmadı',
+      ),
+      'Delete request?' => 
+      array (
+        0 => 'İstek silinsin mi?',
       ),
       'Report Not Available' => 
       array (
@@ -3921,7 +3949,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Connection Information' => 
       array (
-        0 => 'Canlı Yayın Bilgileri',
+        0 => 'Bağlantı Bilgileri',
       ),
       'Server' => 
       array (

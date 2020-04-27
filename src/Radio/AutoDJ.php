@@ -176,7 +176,7 @@ class AutoDJ implements EventSubscriberInterface
 
         $currentSong = $this->songHistoryRepo->getCurrent($station);
         if ($currentSong instanceof Entity\SongHistory) {
-            $nowTimestamp = $currentSong->getTimestampStart() + ($currentSong->getDuration() ?? 0);
+            $nowTimestamp = $currentSong->getTimestampStart() + ($currentSong->getDuration() ?? 1);
             $now = Chronos::createFromTimestamp($nowTimestamp, $stationTz);
         } else {
             $now = Chronos::now($stationTz);
@@ -189,12 +189,6 @@ class AutoDJ implements EventSubscriberInterface
         $upcomingQueue = $this->songHistoryRepo->getUpcomingQueue($station);
         $queueLength = count($upcomingQueue);
 
-        if ($queueLength >= $maxQueueLength) {
-            $this->logger->debug('AutoDJ queue is already at current max length (' . $maxQueueLength . ').');
-            $this->logger->popProcessor();
-            return;
-        }
-
         foreach ($upcomingQueue as $queueRow) {
             $queueRow->setTimestampCued($now->getTimestamp());
             $this->em->persist($queueRow);
@@ -204,6 +198,12 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         $this->em->flush();
+
+        if ($queueLength >= $maxQueueLength) {
+            $this->logger->debug('AutoDJ queue is already at current max length (' . $maxQueueLength . ').');
+            $this->logger->popProcessor();
+            return;
+        }
 
         // Build the remainder of the queue.
         while ($queueLength < $maxQueueLength) {

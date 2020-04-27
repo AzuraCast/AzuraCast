@@ -196,19 +196,28 @@ class AutoDJ implements EventSubscriberInterface
         }
 
         foreach ($upcomingQueue as $queueRow) {
-            $duration = $queueRow->getDuration() ?? 0;
+            $queueRow->setTimestampCued($now->getTimestamp());
+            $this->em->persist($queueRow);
+
+            $duration = $queueRow->getDuration() ?? 1;
             $now = $now->addSeconds($duration);
         }
 
+        $this->em->flush();
+
         // Build the remainder of the queue.
         while ($queueLength < $maxQueueLength) {
+
+            $this->logger->debug('Adding to station queue.', [
+                'now' => (string)$now,
+            ]);
 
             $event = new BuildQueue($station, $now);
             $this->dispatcher->dispatch($event);
 
             $queueRow = $event->getNextSong();
             if ($queueRow instanceof Entity\SongHistory) {
-                $duration = $queueRow->getDuration() ?? 0;
+                $duration = $queueRow->getDuration() ?? 1;
                 $now = $now->addSeconds($duration);
             }
 
@@ -266,6 +275,20 @@ class AutoDJ implements EventSubscriberInterface
             ->setParameter('threshold', $now->subDay()->getTimestamp())
             ->setMaxResults($song_history_count)
             ->getArrayResult();
+
+        $logSongHistory = [];
+        foreach ($cued_song_history as $row) {
+            $logSongHistory[] = [
+                'song' => $row['song']['text'],
+                'cued_at' => (string)(Chronos::createFromTimestamp($row['timestamp_cued'], $now->getTimezone())),
+                'duration' => $row['duration'],
+                'sent_to_autodj' => $row['sent_to_autodj'],
+            ];
+        }
+
+        $this->logger->debug('AutoDJ recent song playback history', [
+            'history' => $logSongHistory,
+        ]);
 
         // Types of playlists that should play, sorted by priority.
         $typesToPlay = [
@@ -499,7 +522,7 @@ class AutoDJ implements EventSubscriberInterface
         $this->em->flush($playlist);
 
         if (!$mediaId) {
-            $this->logger->error(sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()), [
+            $this->logger->warning(sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()), [
                 'playlist_id' => $playlist->getId(),
                 'playlist_order' => $playlist->getOrder(),
                 'allow_duplicates' => $allowDuplicates,

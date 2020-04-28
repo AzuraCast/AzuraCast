@@ -2,12 +2,12 @@
 
 bool() {
     case "$1" in
-        Y*|y*|true|TRUE|1) return 0 ;;
+    Y* | y* | true | TRUE | 1) return 0 ;;
     esac
     return 1
 }
 
-if [ `whoami` != 'azuracast' ]; then
+if [ $(whoami) != 'azuracast' ]; then
     echo 'This script must be run as the "azuracast" user. Rerunning...'
     sudo -E -u azuracast azuracast_install $@
     exit 1
@@ -17,15 +17,18 @@ update_mode=0
 release_update=0
 original_args=$*
 
-while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
-  --update )
-    update_mode=1
-    ;;
+while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do
+    case $1 in
+    --update)
+        update_mode=1
+        ;;
 
-  -r | --release )
-    release_update=1
-    ;;
-esac; shift; done
+    -r | --release)
+        release_update=1
+        ;;
+    esac
+    shift
+done
 if [[ "$1" == '--' ]]; then shift; fi
 
 if bool "$PREFER_RELEASE_BUILDS"; then
@@ -43,10 +46,12 @@ echo "(Environment: $APPLICATION_ENV)"
 
 if [ $APPLICATION_ENV = "production" ]; then
     if [ $release_update = 1 ]; then
-        COMPOSER_VERSION=${1:-"^0.9.5"}
+        COMPOSER_VERSION=${1:-"^0.10"}
         composer create-project azuracast/azuracast /var/azuracast/new $COMPOSER_VERSION --prefer-dist --no-install
 
+        rm -rf /var/azuracast/www/.git
         find /var/azuracast/www -maxdepth 1 -type d ! -name 'plugins' -name '.' -exec rm -rf {} +
+
         rsync -a -v -q /var/azuracast/new/ /var/azuracast/www
         rm -rf /var/azuracast/new
 

@@ -21,7 +21,8 @@ class StationBackendConfiguration extends Collection
 
     public function getDjPort(): ?int
     {
-        return $this->data[self::DJ_PORT];
+        $port = $this->data[self::DJ_PORT];
+        return is_numeric($port) ? (int)$port : null;
     }
 
     public function setDjPort(?int $port): void
@@ -33,7 +34,8 @@ class StationBackendConfiguration extends Collection
 
     public function getTelnetPort(): ?int
     {
-        return $this->data[self::TELNET_PORT];
+        $port = $this->data[self::TELNET_PORT];
+        return is_numeric($port) ? (int)$port : null;
     }
 
     public function setTelnetPort(?int $port): void
@@ -45,7 +47,7 @@ class StationBackendConfiguration extends Collection
 
     public function recordStreams(): bool
     {
-        return $this->data[self::RECORD_STREAMS] ?? false;
+        return (bool)($this->data[self::RECORD_STREAMS] ?? false);
     }
 
     public function setRecordStreams(?bool $recordStreams): void
@@ -69,7 +71,7 @@ class StationBackendConfiguration extends Collection
 
     public function useManualAutoDj(): bool
     {
-        return $this->data[self::USE_MANUAL_AUTODJ] ?? false;
+        return (bool)($this->data[self::USE_MANUAL_AUTODJ] ?? false);
     }
 
     public function setUseManualAutoDj(?bool $useManualAutoDj): void
@@ -82,7 +84,7 @@ class StationBackendConfiguration extends Collection
 
     public function getAutoDjQueueLength(): int
     {
-        return $this->data[self::AUTODJ_QUEUE_LENGTH] ?? self::DEFAULT_QUEUE_LENGTH;
+        return (int)($this->data[self::AUTODJ_QUEUE_LENGTH] ?? self::DEFAULT_QUEUE_LENGTH);
     }
 
     public function setAutoDjQueueLength(?int $queueLength): void

@@ -69,7 +69,8 @@ class StationFrontendConfiguration extends Collection
 
     public function getPort(): ?int
     {
-        return $this->data[self::PORT];
+        $port = $this->data[self::PORT];
+        return is_numeric($port) ? (int)$port : null;
     }
 
     public function setPort(?int $port): void
@@ -81,7 +82,8 @@ class StationFrontendConfiguration extends Collection
 
     public function getMaxListeners(): ?int
     {
-        return $this->data[self::MAX_LISTENERS];
+        $listeners = $this->data[self::MAX_LISTENERS];
+        return is_numeric($listeners) ? (int)$listeners : null;
     }
 
     public function setMaxListeners(?int $listeners): void

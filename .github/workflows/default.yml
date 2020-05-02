@@ -47,4 +47,4 @@ jobs:
     - name: Echo test output directory
       if: failure()
       run: |
-        cat tests/_output/*.html
+        cat tests/_output/*

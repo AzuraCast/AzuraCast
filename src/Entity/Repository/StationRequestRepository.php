@@ -111,9 +111,11 @@ class StationRequestRepository extends Repository
         return true;
     }
 
-    public function getNextPlayableRequest(Entity\Station $station): ?Entity\StationRequest
-    {
-        $now = Chronos::now(new \DateTimeZone($station->getTimezone()));
+    public function getNextPlayableRequest(
+        Entity\Station $station,
+        ?Chronos $now = null
+    ): ?Entity\StationRequest {
+        $now ??= Chronos::now(new \DateTimeZone($station->getTimezone()));
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 

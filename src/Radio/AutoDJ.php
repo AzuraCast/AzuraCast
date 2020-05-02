@@ -657,7 +657,7 @@ class AutoDJ implements EventSubscriberInterface
     {
         $now = $event->getNow();
 
-        $request = $this->requestRepo->getNextPlayableRequest($event->getStation());
+        $request = $this->requestRepo->getNextPlayableRequest($event->getStation(), $now);
         if (null === $request) {
             return;
         }

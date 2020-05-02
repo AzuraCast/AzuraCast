@@ -85,7 +85,7 @@ class EditLiquidsoapConfigController
             $tok = strtok($tokens);
         }
 
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
         $form = new \App\Form\Form($formConfig, ['backend_config' => $settings]);
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {

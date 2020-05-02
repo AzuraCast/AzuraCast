@@ -50,13 +50,13 @@ class SHOUTcast extends AbstractFrontend
 
     public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
-        $fe_config = (array)$station->getFrontendConfig();
-        $radio_port = $fe_config['port'];
+        $fe_config = $station->getFrontendConfig();
+        $radio_port = $fe_config->getPort();
 
         $base_url = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radio_port;
 
         $np_adapter = new SHOUTcast2($base_url, $this->http_client);
-        $np_adapter->setAdminPassword($fe_config['admin_pw']);
+        $np_adapter->setAdminPassword($fe_config->getAdminPassword());
 
         $np_final = AdapterAbstract::NOWPLAYING_EMPTY;
         $np_final['listeners']['clients'] = [];
@@ -108,10 +108,10 @@ class SHOUTcast extends AbstractFrontend
     protected function _loadFromConfig($config): array
     {
         return [
-            'port' => $config['portbase'],
-            'source_pw' => $config['password'],
-            'admin_pw' => $config['adminpassword'],
-            'max_listeners' => $config['maxuser'],
+            Entity\StationFrontendConfiguration::PORT => $config['portbase'],
+            Entity\StationFrontendConfiguration::SOURCE_PASSWORD => $config['password'],
+            Entity\StationFrontendConfiguration::ADMIN_PASSWORD => $config['adminpassword'],
+            Entity\StationFrontendConfiguration::MAX_LISTENERS => $config['maxuser'],
         ];
     }
 
@@ -119,26 +119,31 @@ class SHOUTcast extends AbstractFrontend
     {
         $config = $this->_getDefaults($station);
 
-        $frontend_config = (array)$station->getFrontendConfig();
+        $frontend_config = $station->getFrontendConfig();
 
-        if (!empty($frontend_config['port'])) {
-            $config['portbase'] = $frontend_config['port'];
+        $port = $frontend_config->getPort();
+        if (null !== $port) {
+            $config['portbase'] = $port;
         }
 
-        if (!empty($frontend_config['source_pw'])) {
-            $config['password'] = $frontend_config['source_pw'];
+        $sourcePw = $frontend_config->getSourcePassword();
+        if (!empty($sourcePw)) {
+            $config['password'] = $sourcePw;
         }
 
-        if (!empty($frontend_config['admin_pw'])) {
-            $config['adminpassword'] = $frontend_config['admin_pw'];
+        $adminPw = $frontend_config->getAdminPassword();
+        if (!empty($adminPw)) {
+            $config['adminpassword'] = $adminPw;
         }
 
-        if (!empty($frontend_config['max_listeners'])) {
-            $config['maxuser'] = $frontend_config['max_listeners'];
+        $maxListeners = $frontend_config->getMaxListeners();
+        if (null !== $maxListeners) {
+            $config['maxuser'] = $maxListeners;
         }
 
-        if (!empty($frontend_config['custom_config'])) {
-            $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
+        $customConfig = $frontend_config->getCustomConfiguration();
+        if (!empty($customConfig)) {
+            $custom_conf = $this->_processCustomConfig($customConfig);
             if (!empty($custom_conf)) {
                 $config = array_merge($config, $custom_conf);
             }

@@ -229,29 +229,27 @@ class Configuration
     public function assignRadioPorts(Station $station, $force = false): void
     {
         if ($station->getFrontendType() !== Adapters::FRONTEND_REMOTE || $station->getBackendType() !== Adapters::BACKEND_NONE) {
-            $frontend_config = (array)$station->getFrontendConfig();
-            $backend_config = (array)$station->getBackendConfig();
+            $frontend_config = $station->getFrontendConfig();
+            $backend_config = $station->getBackendConfig();
 
-            if ($force || empty($frontend_config['port'])) {
+            $base_port = $frontend_config->getPort();
+            if ($force || null === $base_port) {
                 $base_port = $this->getFirstAvailableRadioPort($station);
 
-                $station->setFrontendConfig([
-                    'port' => $base_port,
-                ]);
-            } else {
-                $base_port = (int)$frontend_config['port'];
+                $frontend_config->setPort($base_port);
+                $station->setFrontendConfig($frontend_config);
             }
 
-            if ($force || empty($backend_config['dj_port'])) {
-                $station->setBackendConfig([
-                    'dj_port' => $base_port + 5,
-                ]);
+            $djPort = $backend_config->getDjPort();
+            if ($force || null === $djPort) {
+                $backend_config->setDjPort($base_port + 5);
+                $station->setBackendConfig($backend_config);
             }
 
-            if ($force || empty($backend_config['telnet_port'])) {
-                $station->setBackendConfig([
-                    'telnet_port' => $base_port + 4,
-                ]);
+            $telnetPort = $backend_config->getTelnetPort();
+            if ($force || null === $telnetPort) {
+                $backend_config->setTelnetPort($base_port + 4);
+                $station->setBackendConfig($backend_config);
             }
 
             $this->em->persist($station);

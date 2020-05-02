@@ -1,6 +1,8 @@
 <?php
 
 use App\Entity\Station;
+use App\Entity\StationBackendConfiguration;
+use App\Entity\StationFrontendConfiguration;
 use App\Entity\StationMountInterface;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
@@ -144,7 +146,7 @@ return [
 
             'elements' => [
 
-                'port' => [
+                StationFrontendConfiguration::PORT => [
                     'text',
                     [
                         'label' => __('Customize Broadcasting Port'),
@@ -155,7 +157,7 @@ return [
                     ],
                 ],
 
-                'max_listeners' => [
+                StationFrontendConfiguration::MAX_LISTENERS => [
                     'text',
                     [
                         'label' => __('Maximum Listeners'),
@@ -166,7 +168,7 @@ return [
                     ],
                 ],
 
-                'source_pw' => [
+                StationFrontendConfiguration::SOURCE_PASSWORD => [
                     'text',
                     [
                         'label' => __('Customize Source Password'),
@@ -177,7 +179,7 @@ return [
                     ],
                 ],
 
-                'admin_pw' => [
+                StationFrontendConfiguration::ADMIN_PASSWORD => [
                     'text',
                     [
                         'label' => __('Customize Administrator Password'),
@@ -188,7 +190,7 @@ return [
                     ],
                 ],
 
-                'custom_config' => [
+                StationFrontendConfiguration::CUSTOM_CONFIGURATION => [
                     'textarea',
                     [
                         'label' => __('Custom Configuration'),
@@ -200,7 +202,7 @@ return [
                     ],
                 ],
 
-                'banned_ips' => [
+                StationFrontendConfiguration::BANNED_IPS => [
                     'textarea',
                     [
                         'label' => __('Banned IP Addresses'),
@@ -267,7 +269,7 @@ return [
                     ],
                 ],
 
-                'nrj' => [
+                StationBackendConfiguration::USE_NORMALIZER => [
                     'toggle',
                     [
                         'label' => __('Apply Compression and Normalization'),
@@ -328,7 +330,7 @@ return [
                     ],
                 ],
 
-                'record_streams' => [
+                StationBackendConfiguration::RECORD_STREAMS => [
                     'toggle',
                     [
                         'label' => __('Record Live Broadcasts'),
@@ -341,7 +343,7 @@ return [
                     ],
                 ],
 
-                'record_streams_format' => [
+                StationBackendConfiguration::RECORD_STREAMS_FORMAT => [
                     'radio',
                     [
                         'label' => __('Live Broadcast Recording Format'),
@@ -388,7 +390,7 @@ return [
                     ],
                 ],
 
-                'dj_port' => [
+                StationBackendConfiguration::DJ_PORT => [
                     'text',
                     [
                         'label' => __('Customize DJ/Streamer Port'),
@@ -399,7 +401,7 @@ return [
                     ],
                 ],
 
-                'telnet_port' => [
+                StationBackendConfiguration::TELNET_PORT => [
                     'text',
                     [
                         'label' => __('Customize Internal Request Processing Port'),
@@ -425,7 +427,7 @@ return [
                     ],
                 ],
 
-                'dj_mount_point' => [
+                StationBackendConfiguration::DJ_MOUNT_POINT => [
                     'text',
                     [
                         'label' => __('Customize DJ/Streamer Mount Point'),
@@ -437,7 +439,7 @@ return [
                     ],
                 ],
 
-                'enable_replaygain_metadata' => [
+                StationBackendConfiguration::USE_REPLAYGAIN => [
                     'toggle',
                     [
                         'label' => __('Use Replaygain Metadata'),
@@ -451,13 +453,13 @@ return [
                     ],
                 ],
 
-                'autodj_queue_length' => [
+                StationBackendConfiguration::AUTODJ_QUEUE_LENGTH => [
                     'number',
                     [
                         'label' => __('AutoDJ Queue Length'),
                         'label_class' => 'advanced',
                         'description' => __('If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.'),
-                        'default' => \App\Radio\AutoDJ::DEFAULT_QUEUE_LENGTH,
+                        'default' => StationBackendConfiguration::DEFAULT_QUEUE_LENGTH,
                         'min' => 1,
                         'max' => 25,
                         'belongsTo' => 'backend_config',
@@ -465,7 +467,7 @@ return [
                     ],
                 ],
 
-                'use_manual_autodj' => [
+                StationBackendConfiguration::USE_MANUAL_AUTODJ => [
                     'toggle',
                     [
                         'label' => __('Manual AutoDJ Mode'),
@@ -479,7 +481,7 @@ return [
                     ],
                 ],
 
-                'charset' => [
+                StationBackendConfiguration::CHARSET => [
                     'radio',
                     [
                         'label' => __('Character Set Encoding'),

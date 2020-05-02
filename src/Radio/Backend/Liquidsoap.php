@@ -66,8 +66,8 @@ class Liquidsoap extends AbstractBackend
      */
     public function getTelnetPort(Entity\Station $station): int
     {
-        $settings = (array)$station->getBackendConfig();
-        return (int)($settings['telnet_port'] ?? ($this->getStreamPort($station) - 1));
+        $settings = $station->getBackendConfig();
+        return $settings->getTelnetPort() ?? ($this->getStreamPort($station) - 1);
     }
 
     /**
@@ -79,15 +79,16 @@ class Liquidsoap extends AbstractBackend
      */
     public function getStreamPort(Entity\Station $station): int
     {
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
-        if (!empty($settings['dj_port'])) {
-            return (int)$settings['dj_port'];
+        $djPort = $settings->getDjPort();
+        if (null !== $djPort) {
+            return $djPort;
         }
 
         // Default to frontend port + 5
-        $frontend_config = (array)$station->getFrontendConfig();
-        $frontend_port = $frontend_config['port'] ?? (8000 + (($station->getId() - 1) * 10));
+        $frontend_config = $station->getFrontendConfig();
+        $frontend_port = $frontend_config->getPort() ?? (8000 + (($station->getId() - 1) * 10));
 
         return $frontend_port + 5;
     }
@@ -273,8 +274,9 @@ class Liquidsoap extends AbstractBackend
         string $pass = ''
     ): string {
         // Allow connections using the exact broadcast source password.
-        $fe_config = (array)$station->getFrontendConfig();
-        if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
+        $fe_config = $station->getFrontendConfig();
+        $sourcePw = $fe_config->getSourcePassword();
+        if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
             return 'true';
         }
 
@@ -301,8 +303,8 @@ class Liquidsoap extends AbstractBackend
         Entity\Station $station,
         string $user = ''
     ): string {
-        $backendConfig = (array)$station->getBackendConfig();
-        $recordStreams = (bool)($backendConfig['record_streams'] ?? false);
+        $backendConfig = $station->getBackendConfig();
+        $recordStreams = $backendConfig->recordStreams();
 
         if ($recordStreams) {
             $this->command($station, 'recording.stop');
@@ -317,8 +319,8 @@ class Liquidsoap extends AbstractBackend
     {
         $stream_port = $this->getStreamPort($station);
 
-        $settings = (array)$station->getBackendConfig();
-        $djMount = $settings['dj_mount_point'] ?? '/';
+        $settings = $station->getBackendConfig();
+        $djMount = $settings->getDjMountPoint();
 
         return $base_url
             ->withScheme('wss')

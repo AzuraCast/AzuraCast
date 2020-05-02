@@ -19,13 +19,13 @@ class Icecast extends AbstractFrontend
 
     public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
-        $fe_config = (array)$station->getFrontendConfig();
-        $radio_port = $fe_config['port'];
+        $fe_config = $station->getFrontendConfig();
+        $radio_port = $fe_config->getPort();
 
         $base_url = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radio_port;
 
         $np_adapter = new \NowPlaying\Adapter\Icecast($base_url, $this->http_client);
-        $np_adapter->setAdminPassword($fe_config['admin_pw']);
+        $np_adapter->setAdminPassword($fe_config->getAdminPassword());
 
         $np_final = AdapterAbstract::NOWPLAYING_EMPTY;
         $np_final['listeners']['clients'] = [];
@@ -224,17 +224,17 @@ class Icecast extends AbstractFrontend
      * Configuration
      */
 
-    protected function _loadFromConfig(Entity\Station $station, $config)
+    protected function _loadFromConfig(Entity\Station $station, $config): array
     {
-        $frontend_config = (array)$station->getFrontendConfig();
+        $frontend_config = $station->getFrontendConfig();
 
         return [
-            'custom_config' => $frontend_config['custom_config'],
-            'source_pw' => $config['authentication']['source-password'],
-            'admin_pw' => $config['authentication']['admin-password'],
-            'relay_pw' => $config['authentication']['relay-password'],
-            'streamer_pw' => $config['mount'][0]['password'],
-            'max_listeners' => $config['limits']['clients'],
+            Entity\StationFrontendConfiguration::CUSTOM_CONFIGURATION => $frontend_config->getCustomConfiguration(),
+            Entity\StationFrontendConfiguration::SOURCE_PASSWORD => $config['authentication']['source-password'],
+            Entity\StationFrontendConfiguration::ADMIN_PASSWORD => $config['authentication']['admin-password'],
+            Entity\StationFrontendConfiguration::RELAY_PASSWORD => $config['authentication']['relay-password'],
+            Entity\StationFrontendConfiguration::STREAMER_PASSWORD => $config['mount'][0]['password'],
+            Entity\StationFrontendConfiguration::MAX_LISTENERS => $config['limits']['clients'],
         ];
     }
 
@@ -242,38 +242,45 @@ class Icecast extends AbstractFrontend
     {
         $config = $this->_getDefaults($station);
 
-        $frontend_config = (array)$station->getFrontendConfig();
+        $frontend_config = $station->getFrontendConfig();
 
-        if (!empty($frontend_config['port'])) {
-            $config['listen-socket']['port'] = $frontend_config['port'];
+        $port = $frontend_config->getPort();
+        if (null !== $port) {
+            $config['listen-socket']['port'] = $port;
         }
 
-        if (!empty($frontend_config['source_pw'])) {
-            $config['authentication']['source-password'] = $frontend_config['source_pw'];
+        $sourcePw = $frontend_config->getSourcePassword();
+        if (!empty($sourcePw)) {
+            $config['authentication']['source-password'] = $sourcePw;
         }
 
-        if (!empty($frontend_config['admin_pw'])) {
-            $config['authentication']['admin-password'] = $frontend_config['admin_pw'];
+        $adminPw = $frontend_config->getAdminPassword();
+        if (!empty($adminPw)) {
+            $config['authentication']['admin-password'] = $adminPw;
         }
 
-        if (!empty($frontend_config['relay_pw'])) {
-            $config['authentication']['relay-password'] = $frontend_config['relay_pw'];
+        $relayPw = $frontend_config->getRelayPassword();
+        if (!empty($relayPw)) {
+            $config['authentication']['relay-password'] = $relayPw;
         }
 
-        if (!empty($frontend_config['streamer_pw'])) {
+        $streamerPw = $frontend_config->getStreamerPassword();
+        if (!empty($streamerPw)) {
             foreach ($config['mount'] as &$mount) {
                 if (!empty($mount['password'])) {
-                    $mount['password'] = $frontend_config['streamer_pw'];
+                    $mount['password'] = $streamerPw;
                 }
             }
         }
 
-        if (!empty($frontend_config['max_listeners'])) {
-            $config['limits']['clients'] = $frontend_config['max_listeners'];
+        $maxListeners = $frontend_config->getMaxListeners();
+        if (null !== $maxListeners) {
+            $config['limits']['clients'] = $maxListeners;
         }
 
-        if (!empty($frontend_config['custom_config'])) {
-            $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
+        $customConfig = $frontend_config->getCustomConfiguration();
+        if (!empty($customConfig)) {
+            $custom_conf = $this->_processCustomConfig($customConfig);
             if (!empty($custom_conf)) {
                 $config = self::arrayMergeRecursiveDistinct($config, $custom_conf);
             }

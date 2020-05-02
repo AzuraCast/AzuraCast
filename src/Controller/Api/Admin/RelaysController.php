@@ -61,10 +61,10 @@ class RelaysController
 
             $row->type = $station->getFrontendType();
 
-            $frontend_config = (array)$station->getFrontendConfig();
-            $row->port = $frontend_config['port'] ?? null;
-            $row->relay_pw = $frontend_config['relay_pw'] ?? null;
-            $row->admin_pw = $frontend_config['admin_pw'] ?? null;
+            $frontend_config = $station->getFrontendConfig();
+            $row->port = $frontend_config->getPort();
+            $row->relay_pw = $frontend_config->getRelayPassword();
+            $row->admin_pw = $frontend_config->getAdminPassword();
 
             $mounts = [];
             if ($station->getMounts()->count() > 0) {

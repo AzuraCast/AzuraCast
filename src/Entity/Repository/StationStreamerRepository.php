@@ -58,11 +58,11 @@ class StationStreamerRepository extends Repository
         $this->em->persist($record);
 
         if (Adapters::BACKEND_LIQUIDSOAP === $station->getBackendType()) {
-            $backendConfig = (array)$station->getBackendConfig();
-            $recordStreams = (bool)($backendConfig['record_streams'] ?? false);
+            $backendConfig = $station->getBackendConfig();
+            $recordStreams = $backendConfig->recordStreams();
 
             if ($recordStreams) {
-                $format = $backendConfig['record_streams_format'] ?? Entity\StationMountInterface::FORMAT_MP3;
+                $format = $backendConfig->getRecordStreamsFormat() ?? Entity\StationMountInterface::FORMAT_MP3;
                 $recordingPath = $record->generateRecordingPath($format);
 
                 $this->em->persist($record);

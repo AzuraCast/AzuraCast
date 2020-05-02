@@ -336,8 +336,8 @@ class StationMount implements StationMountInterface
     /** @inheritdoc */
     public function getAutodjPort(): ?int
     {
-        $fe_settings = (array)$this->getStation()->getFrontendConfig();
-        return $fe_settings['port'];
+        $fe_settings = $this->getStation()->getFrontendConfig();
+        return $fe_settings->getPort();
     }
 
     public function getStation(): Station
@@ -354,8 +354,8 @@ class StationMount implements StationMountInterface
     /** @inheritdoc */
     public function getAutodjPassword(): ?string
     {
-        $fe_settings = (array)$this->getStation()->getFrontendConfig();
-        return $fe_settings['source_pw'];
+        $fe_settings = $this->getStation()->getFrontendConfig();
+        return $fe_settings->getSourcePassword();
     }
 
     /** @inheritdoc */

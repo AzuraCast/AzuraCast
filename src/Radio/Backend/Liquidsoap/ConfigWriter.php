@@ -79,7 +79,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $station = $event->getStation();
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
         if (!empty($settings[$sectionName])) {
             $event->appendLines([
@@ -643,7 +643,7 @@ class ConfigWriter implements EventSubscriberInterface
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
@@ -672,10 +672,10 @@ class ConfigWriter implements EventSubscriberInterface
 
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_LIVE);
 
-        $settings = (array)$station->getBackendConfig();
-        $charset = $settings['charset'] ?? 'UTF-8';
-        $dj_mount = $settings['dj_mount_point'] ?? '/';
-        $recordLiveStreams = $settings['record_streams'] ?? false;
+        $settings = $station->getBackendConfig();
+        $charset = $settings->getCharset();
+        $dj_mount = $settings->getDjMountPoint();
+        $recordLiveStreams = $settings->recordStreams();
 
         $authCommand = $this->getApiUrlCommand($station, 'auth', ['dj-user' => '!user', 'dj-password' => '!password']);
         $djonCommand = $this->getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
@@ -803,7 +803,7 @@ class ConfigWriter implements EventSubscriberInterface
     public function writePreBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
         $event->appendLines([
             '# Allow for Telnet-driven insertion of custom metadata.',
@@ -814,7 +814,7 @@ class ConfigWriter implements EventSubscriberInterface
         ]);
 
         // NRJ normalization
-        if (true === (bool)($settings['nrj'] ?? false)) {
+        if ($settings->useNormalizer()) {
             $event->appendLines([
                 '# Normalization and Compression',
                 'radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)',
@@ -823,7 +823,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Replaygain metadata
-        if (true === (bool)($settings['enable_replaygain_metadata'] ?? false)) {
+        if ($settings->useReplayGain()) {
             $event->appendLines([
                 '# Replaygain Metadata',
                 'enable_replaygain_metadata()',
@@ -894,8 +894,8 @@ class ConfigWriter implements EventSubscriberInterface
         string $idPrefix,
         int $id
     ): string {
-        $settings = (array)$station->getBackendConfig();
-        $charset = $settings['charset'] ?? 'UTF-8';
+        $settings = $station->getBackendConfig();
+        $charset = $settings->getCharset();
 
         $output_format = $this->getOutputFormatString(
             $mount->getAutodjFormat(),

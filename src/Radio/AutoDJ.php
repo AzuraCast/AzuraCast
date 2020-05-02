@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoDJ implements EventSubscriberInterface
 {
-    public const DEFAULT_QUEUE_LENGTH = 3;
-
     protected Adapters $adapters;
 
     protected EntityManager $em;
@@ -184,7 +182,7 @@ class AutoDJ implements EventSubscriberInterface
 
         // Adjust "now" time from current queue.
         $backendOptions = $station->getBackendConfig();
-        $maxQueueLength = (int)($backendOptions['autodj_queue_length'] ?? self::DEFAULT_QUEUE_LENGTH);
+        $maxQueueLength = $backendOptions->getAutoDjQueueLength();
 
         $upcomingQueue = $this->songHistoryRepo->getUpcomingQueue($station);
         $queueLength = count($upcomingQueue);

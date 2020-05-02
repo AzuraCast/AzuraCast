@@ -57,9 +57,9 @@ class ProfileController
             'num_songs' => $num_songs,
             'num_playlists' => $num_playlists,
             'backend_type' => $station->getBackendType(),
-            'backend_config' => (array)$station->getBackendConfig(),
+            'backend_config' => $station->getBackendConfig(),
             'frontend_type' => $station->getFrontendType(),
-            'frontend_config' => (array)$station->getFrontendConfig(),
+            'frontend_config' => $station->getFrontendConfig(),
             'user' => $request->getUser(),
             'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
         ]);

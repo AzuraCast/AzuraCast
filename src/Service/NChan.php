@@ -23,8 +23,14 @@ class NChan
             return $settings[Settings::DOCKER_REVISION] >= 5;
         }
 
+        // Check for support for Ansible installations.
+        $supportedCodenames = [
+            'bionic',
+            'focal',
+        ];
+
         $os_details = self::getOperatingSystemDetails();
-        return 'bionic' === $os_details['VERSION_CODENAME'];
+        return in_array($os_details['VERSION_CODENAME'], $supportedCodenames, true);
     }
 
     /**

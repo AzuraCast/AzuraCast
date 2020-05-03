@@ -228,7 +228,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
                 $offline_sh = new Entity\Api\NowPlayingCurrentSong;
                 $offline_sh->sh_id = 0;
-                $offline_sh->song = $song_obj->api($this->api_utils, $uri_empty);
+                $offline_sh->song = $song_obj->api(
+                    $this->api_utils,
+                    $station,
+                    $uri_empty
+                );
                 $np->now_playing = $offline_sh;
 
                 $np->song_history = $this->history_repo->getHistoryApi(

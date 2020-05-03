@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Entity\Station;
 use App\Http\Router;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Psr7\UriResolver;
@@ -30,24 +31,14 @@ class ApiUtilities
         return $this->router;
     }
 
-    /**
-     * Get the album art URL for a given unique StationMedia identifier.
-     *
-     * @param int $stationId
-     * @param string $mediaUniqueId
-     * @param int $mediaUpdatedTimestamp
-     * @param UriInterface|null $baseUri
-     *
-     * @return UriInterface
-     */
     public function getAlbumArtUrl(
-        $stationId,
-        $mediaUniqueId,
+        Station $station,
+        string $mediaUniqueId,
         int $mediaUpdatedTimestamp,
-        UriInterface $baseUri = null
+        ?UriInterface $baseUri = null
     ): UriInterface {
         if (0 === $mediaUpdatedTimestamp) {
-            return $this->getDefaultAlbumArtUrl($baseUri);
+            return $this->getDefaultAlbumArtUrl($station, $baseUri);
         }
 
         if ($baseUri === null) {
@@ -57,25 +48,29 @@ class ApiUtilities
         $path = $this->router->named(
             'api:stations:media:art',
             [
-                'station_id' => $stationId,
+                'station_id' => $station->getId(),
                 'media_id' => $mediaUniqueId . '-' . $mediaUpdatedTimestamp,
             ]
         );
+
         return UriResolver::resolve($baseUri, $path);
     }
 
     /**
+     * @param Station|null $station
      * @param UriInterface|null $baseUri
      *
      * @return UriInterface
      */
-    public function getDefaultAlbumArtUrl(?UriInterface $baseUri = null): UriInterface
-    {
+    public function getDefaultAlbumArtUrl(
+        ?Station $station = null,
+        ?UriInterface $baseUri = null
+    ): UriInterface {
         if ($baseUri === null) {
             $baseUri = $this->router->getBaseUrl();
         }
 
-        return UriResolver::resolve($baseUri, $this->customization->getDefaultAlbumArtUrl());
+        return UriResolver::resolve($baseUri, $this->customization->getDefaultAlbumArtUrl($station));
     }
 
     /**

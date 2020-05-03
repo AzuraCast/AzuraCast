@@ -484,7 +484,7 @@ class SongHistory
 
         $response->song = ($this->media)
             ? $this->media->api($api, $base_url)
-            : $this->song->api($api, $base_url);
+            : $this->song->api($api, $this->station, $base_url);
 
         return $response;
     }

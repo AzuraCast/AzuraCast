@@ -320,6 +320,14 @@ class Station
     protected $timezone = 'UTC';
 
     /**
+     * @ORM\Column(name="default_album_art_url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="https://example.com/image.jpg")
+     * @var string|null The station-specific default album artwork URL.
+     */
+    protected $default_album_art_url = null;
+
+    /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
      * @ORM\OrderBy({"timestamp_start" = "DESC"})
      * @var Collection
@@ -996,6 +1004,22 @@ class Station
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDefaultAlbumArtUrl(): ?string
+    {
+        return $this->default_album_art_url;
+    }
+
+    /**
+     * @param string|null $default_album_art_url
+     */
+    public function setDefaultAlbumArtUrl(?string $default_album_art_url): void
+    {
+        $this->default_album_art_url = $default_album_art_url;
     }
 
     public function getHistory(): Collection

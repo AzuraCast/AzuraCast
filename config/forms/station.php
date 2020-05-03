@@ -89,7 +89,16 @@ return [
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => true,
-                        'form_group_class' => 'col-sm-12',
+                        'form_group_class' => 'col-sm-6',
+                    ],
+                ],
+
+                'default_album_art_url' => [
+                    'text',
+                    [
+                        'label' => __('Default Album Art URL'),
+                        'description' => __('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.'),
+                        'form_group_class' => 'col-md-6',
                     ],
                 ],
 

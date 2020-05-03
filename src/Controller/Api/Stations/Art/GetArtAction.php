@@ -47,9 +47,9 @@ class GetArtAction
         StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
-        $defaultArtRedirect = $response->withRedirect($customization->getDefaultAlbumArtUrl(), 302);
-
         $station = $request->getStation();
+
+        $defaultArtRedirect = $response->withRedirect($customization->getDefaultAlbumArtUrl($station), 302);
         $fs = $filesystem->getForStation($station);
 
         // If a timestamp delimiter is added, strip it automatically.

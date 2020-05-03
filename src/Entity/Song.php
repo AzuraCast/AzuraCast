@@ -72,7 +72,6 @@ class Song
 
     public function __construct(array $song_info)
     {
-
         $this->created = time();
         $this->history = new ArrayCollection;
         $this->update($song_info);
@@ -191,7 +190,7 @@ class Song
     {
         return $this->history;
     }
-    
+
     public function __toString(): string
     {
         return 'Song ' . $this->id . ': ' . $this->artist . ' - ' . $this->title;
@@ -201,18 +200,22 @@ class Song
      * Retrieve the API version of the object/array.
      *
      * @param ApiUtilities $api_utils
+     * @param Station|null $station
      * @param UriInterface|null $base_url
      *
      * @return Api\Song
      */
-    public function api(ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song
-    {
+    public function api(
+        ApiUtilities $api_utils,
+        ?Station $station = null,
+        ?UriInterface $base_url = null
+    ): Api\Song {
         $response = new Api\Song;
         $response->id = (string)$this->id;
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
-        $response->art = $api_utils->getDefaultAlbumArtUrl($base_url);
+        $response->art = $api_utils->getDefaultAlbumArtUrl($station, $base_url);
 
         $response->custom_fields = $api_utils->getCustomFields();
 

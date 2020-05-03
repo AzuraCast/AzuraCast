@@ -227,10 +227,20 @@ class Customization
     /**
      * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
      *
+     * @param Entity\Station|null $station
+     *
      * @return UriInterface
      */
-    public function getDefaultAlbumArtUrl(): UriInterface
+    public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {
+        if ($station instanceof Entity\Station) {
+            $stationCustomUrl = trim($station->getDefaultAlbumArtUrl());
+
+            if (!empty($stationCustomUrl)) {
+                return new Uri($stationCustomUrl);
+            }
+        }
+
         $custom_url = trim($this->settingsRepo->getSetting(Entity\Settings::DEFAULT_ALBUM_ART_URL));
 
         if (!empty($custom_url)) {

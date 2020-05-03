@@ -86,7 +86,7 @@ class EditLiquidsoapConfigController
         }
 
         $settings = $station->getBackendConfig();
-        $form = new \App\Form\Form($formConfig, ['backend_config' => $settings]);
+        $form = new \App\Form\Form($formConfig, ['backend_config' => $settings->all()]);
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             $data = $form->getValues();

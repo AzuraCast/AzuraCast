@@ -113,7 +113,7 @@ class Liquidsoap extends AbstractBackend
             'duration' => $media->getLength(),
             'song_id' => $media->getSong()->getId(),
             'media_id' => $media->getId(),
-            'liq_amplify' => $media->getAmplify(),
+            'liq_amplify' => $media->getAmplify() ?? 0.0,
             'liq_cross_duration' => $media->getFadeOverlap(),
             'liq_fade_in' => $media->getFadeIn(),
             'liq_fade_out' => $media->getFadeOut(),

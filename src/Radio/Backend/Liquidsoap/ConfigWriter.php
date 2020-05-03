@@ -435,10 +435,6 @@ class ConfigWriter implements EventSubscriberInterface
             ]);
         }
 
-        $error_file = Settings::getInstance()->isDocker()
-            ? '/usr/local/share/icecast/web/error.mp3'
-            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
-
         $event->appendLines([
             'requests = request.queue(id="' . self::getVarName($station, 'requests') . '")',
             'requests = audio_to_stereo(id="' . self::getVarName($station, 'stereo_requests') . '", requests)',
@@ -449,8 +445,6 @@ class ConfigWriter implements EventSubscriberInterface
             '',
             'add_skip_command(radio)',
             '',
-            'radio = fallback(id="' . self::getVarName($station,
-                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
         ]);
     }
 
@@ -660,6 +654,16 @@ class ConfigWriter implements EventSubscriberInterface
                 'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
+
+        // Write fallback to safety file immediately after crossfade.
+        $error_file = Settings::getInstance()->isDocker()
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
+
+        $event->appendLines([
+            'radio = fallback(id="' . self::getVarName($station,
+                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
+        ]);
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event): void

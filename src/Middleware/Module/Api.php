@@ -108,6 +108,16 @@ class Api
 
         // Check cookies
         $cookieParams = $request->getCookieParams();
-        return $cookieParams['token'] ?? null;
+        if (!empty($cookieParams['token'])) {
+            return $cookieParams['token'];
+        }
+
+        // Check URL parameters as last resort
+        $queryApiKey = $request->getQueryParam('api-key');
+        if (!empty($queryApiKey)) {
+            return $queryApiKey;
+        }
+        
+        return null;
     }
 }

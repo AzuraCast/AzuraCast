@@ -142,8 +142,7 @@ class Liquidsoap extends AbstractBackend
                 continue;
             }
 
-            $prop = mb_convert_encoding($prop, 'UTF-8');
-            $prop = str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $prop);
+            $prop = self::annotateString($prop);
 
             // Convert Liquidsoap-specific annotations to floats.
             if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {
@@ -158,6 +157,12 @@ class Liquidsoap extends AbstractBackend
         }
 
         return $annotations;
+    }
+
+    public static function annotateString(string $str): string
+    {
+        $str = mb_convert_encoding($str, 'UTF-8');
+        return str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $str);
     }
 
     /**
@@ -240,6 +245,19 @@ class Liquidsoap extends AbstractBackend
         return $this->command(
             $station,
             ConfigWriter::getVarName($station, 'requests_fallback') . '.skip'
+        );
+    }
+
+    public function updateMetadata(Entity\Station $station, array $newMeta): array
+    {
+        $metaStr = [];
+        foreach ($newMeta as $metaKey => $metaVal) {
+            $metaStr[] = $metaKey . '="' . self::annotateString($metaVal) . '"';
+        }
+
+        return $this->command(
+            $station,
+            'custom_metadata.insert ' . implode(',', $metaStr),
         );
     }
 

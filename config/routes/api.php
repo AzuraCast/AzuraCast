@@ -124,6 +124,9 @@ return function (App $app) {
 
             $group->get('/nowplaying', Controller\Api\NowplayingController::class . ':indexAction');
 
+            $group->map(['GET', 'POST'], '/nowplaying/update', Controller\Api\Stations\UpdateMetadataController::class)
+                ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
+
             $group->get('/profile', Controller\Api\Stations\ProfileController::class)
                 ->setName('api:stations:profile')
                 ->add(new Middleware\Permissions(Acl::STATION_VIEW, true));

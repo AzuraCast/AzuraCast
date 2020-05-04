@@ -5,6 +5,7 @@ use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
 use App\Settings;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,7 +18,7 @@ class Manager implements EventSubscriberInterface
 
     protected Logger $logger;
 
-    protected Entity\Repository\SettingsRepository $settings_repo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Settings $app_settings;
 
@@ -32,7 +33,7 @@ class Manager implements EventSubscriberInterface
         $this->em = $em;
         $this->logger = $logger;
         $this->app_settings = $app_settings;
-        $this->settings_repo = $settings_repo;
+        $this->settingsRepo = $settings_repo;
     }
 
     public static function getSubscribedEvents()
@@ -41,11 +42,12 @@ class Manager implements EventSubscriberInterface
             GetNotifications::class => [
                 ['checkComposeVersion', 1],
                 ['checkUpdates', 0],
+                ['checkRecentBackup', -1],
             ],
         ];
     }
 
-    public function checkComposeVersion(GetNotifications $event)
+    public function checkComposeVersion(GetNotifications $event): void
     {
         // This notification is for full administrators only.
         if (!$this->acl->userAllowed($event->getCurrentUser(), Acl::GLOBAL_ALL)) {
@@ -68,20 +70,20 @@ class Manager implements EventSubscriberInterface
         }
     }
 
-    public function checkUpdates(GetNotifications $event)
+    public function checkUpdates(GetNotifications $event): void
     {
         // This notification is for full administrators only.
         if (!$this->acl->userAllowed($event->getCurrentUser(), Acl::GLOBAL_ALL)) {
             return;
         }
 
-        $check_for_updates = (int)$this->settings_repo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
+        $check_for_updates = (int)$this->settingsRepo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
 
         if (Entity\Settings::UPDATES_NONE === $check_for_updates) {
             return;
         }
 
-        $update_data = $this->settings_repo->getSetting(Entity\Settings::UPDATE_RESULTS);
+        $update_data = $this->settingsRepo->getSetting(Entity\Settings::UPDATE_RESULTS);
 
         if (empty($update_data)) {
             return;
@@ -128,6 +130,29 @@ class Manager implements EventSubscriberInterface
                 Notification::INFO
             ));
             return;
+        }
+    }
+
+    public function checkRecentBackup(GetNotifications $event): void
+    {
+        if (!$this->acl->userAllowed($event->getCurrentUser(), Acl::GLOBAL_BACKUPS)) {
+            return;
+        }
+
+        $threshold = Chronos::now()->subWeeks(2)->getTimestamp();
+        $backupLastRun = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
+
+        if ($backupLastRun < $threshold) {
+            $router = $event->getRequest()->getRouter();
+
+            $backupUrl = $router->named('admin:backups:index');
+
+            $event->addNotification(new Notification(
+                __('Installation Not Recently Backed Up'),
+                __('This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.',
+                    $backupUrl),
+                Notification::INFO
+            ));
         }
     }
 }

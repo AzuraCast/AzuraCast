@@ -127,6 +127,11 @@ return function (Application $console) {
         Command\UptimeWaitCommand::class
     )->setDescription('Wait until core services are online and accepting connections before continuing.');
 
+    $console->command(
+        'influxdb:query query',
+        Command\InfluxQueryCommand::class
+    )->setDescription('Execute a query on the InfluxDB database.');
+
     // User-side tools
     $console->command(
         'azuracast:account:reset-password email',

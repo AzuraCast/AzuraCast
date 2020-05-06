@@ -1,9 +1,9 @@
 <?php
 namespace App\Form;
 
+use App\Config;
 use App\Entity;
 use App\Settings;
-use App\Config;
 use Doctrine\ORM\EntityManager;
 
 class SettingsForm extends AbstractSettingsForm

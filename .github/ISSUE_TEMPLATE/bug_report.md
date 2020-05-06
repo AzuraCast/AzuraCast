@@ -21,6 +21,9 @@ Do not include your responses inside the "!--" comments. Add them outside these 
 **Using Docker installation method**
 <!-- Yes/No (Indicate "No" if you are using the Ansible (Bare-metal/Traditional) installation method. -->
 
+**AzuraCast version**
+<!-- This information can be located within the footer of your AzuraCast installation. EG:  v0.10.1, #62b282e (2020-00-00 00:00). -->
+
 **Host Operating System**
 <!-- Indicate what your host operating system is (i.e. Ubuntu 16.04, MacOS High Sierra, Windows 10). -->
 

@@ -1,19 +1,17 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Controller\Traits\LogViewerTrait;
+use App\Controller\AbstractLogViewerController;
 use App\Entity;
+use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Settings;
-use App\Exception;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
-class LogsController
+class LogsController extends AbstractLogViewerController
 {
-    use LogViewerTrait;
-
     protected EntityManager $em;
 
     public function __construct(EntityManager $em)
@@ -30,17 +28,17 @@ class LogsController
             /** @var Entity\Station $station */
             $station_logs[$station->getId()] = [
                 'name' => $station->getName(),
-                'logs' => $this->_getStationLogs($station),
+                'logs' => $this->getStationLogs($station),
             ];
         }
 
         return $request->getView()->renderToResponse($response, 'admin/logs/index', [
-            'global_logs' => $this->_getGlobalLogs(),
+            'global_logs' => $this->getGlobalLogs(),
             'station_logs' => $station_logs,
         ]);
     }
 
-    protected function _getGlobalLogs(): array
+    protected function getGlobalLogs(): array
     {
         $tempDir = Settings::getInstance()->getTempDirectory();
         $logPaths = [];
@@ -80,9 +78,9 @@ class LogsController
     public function viewAction(ServerRequest $request, Response $response, $station_id, $log): ResponseInterface
     {
         if ('global' === $station_id) {
-            $log_areas = $this->_getGlobalLogs();
+            $log_areas = $this->getGlobalLogs();
         } else {
-            $log_areas = $this->_getStationLogs($request->getStation());
+            $log_areas = $this->getStationLogs($request->getStation());
         }
 
         if (!isset($log_areas[$log])) {
@@ -90,6 +88,6 @@ class LogsController
         }
 
         $log = $log_areas[$log];
-        return $this->_view($request, $response, $log['path'], $log['tail'] ?? true);
+        return $this->view($request, $response, $log['path'], $log['tail'] ?? true);
     }
 }

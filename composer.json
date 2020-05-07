@@ -76,7 +76,7 @@
     "symfony/validator": "^4.3",
     "voku/portable-utf8": "^5.4",
     "wikimedia/composer-merge-plugin": "^1.4",
-    "zircote/swagger-php": "dev-fix/typed-properties"
+    "zircote/swagger-php": "dev-master#e61cfa2a4f8d7cc4356ba7450647844463ee7407"
   },
   "require-dev": {
     "codeception/codeception": "^4.0",
@@ -95,12 +95,6 @@
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "3.*"
   },
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/jpuck/swagger-php"
-    }
-  ],
   "replace": {
     "symfony/polyfill-php56": "1.99",
     "symfony/polyfill-php72": "1.99",

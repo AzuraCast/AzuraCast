@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8504b5c6fd96e896208b4560a5ac0821",
+    "content-hash": "31cdbdac8a5f346cb4c3b77d43d76503",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -7810,11 +7810,17 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "dev-fix/typed-properties",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jpuck/swagger-php",
-                "reference": "b743457524325839c4223cba168abf0ab5bee660"
+                "url": "https://github.com/zircote/swagger-php.git",
+                "reference": "e61cfa2a4f8d7cc4356ba7450647844463ee7407"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/e61cfa2a4f8d7cc4356ba7450647844463ee7407",
+                "reference": "e61cfa2a4f8d7cc4356ba7450647844463ee7407",
+                "shasum": ""
             },
             "require": {
                 "doctrine/annotations": "*",
@@ -7839,22 +7845,7 @@
                     "src/functions.php"
                 ]
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "OpenApiTests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit && phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests"
-                ],
-                "docs": [
-                    "vuepress dev docs/"
-                ],
-                "deploy_docs": [
-                    "vuepress build docs/ && cp -r .git docs/.vuepress/dist/.git && cd docs/.vuepress/dist/ && git symbolic-ref HEAD refs/heads/gh-pages && git add --all"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -7878,7 +7869,7 @@
                 "rest",
                 "service discovery"
             ],
-            "time": "2020-02-25T23:25:57+00:00"
+            "time": "2020-05-06T20:45:40+00:00"
         }
     ],
     "packages-dev": [

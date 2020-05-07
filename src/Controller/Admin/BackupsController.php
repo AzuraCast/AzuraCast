@@ -2,7 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Config;
-use App\Controller\Traits\LogViewerTrait;
+use App\Controller\AbstractLogViewerController;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Exception\NotFoundException;
@@ -19,10 +19,8 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
 
-class BackupsController
+class BackupsController extends AbstractLogViewerController
 {
-    use LogViewerTrait;
-
     protected SettingsRepository $settingsRepo;
 
     protected Backup $backupTask;
@@ -112,7 +110,7 @@ class BackupsController
         Response $response,
         $path
     ): ResponseInterface {
-        return $this->_view($request, $response, '/tmp/' . $path, true);
+        return $this->view($request, $response, '/tmp/' . $path, true);
     }
 
     public function downloadAction(

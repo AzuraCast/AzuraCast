@@ -403,19 +403,18 @@ class ConfigWriter implements EventSubscriberInterface
                 log("AzuraCast Raw Response: #{uri}")
                 
                 if uri == "" or string.match(pattern="Error", uri) then
-                    log("AzuraCast Error: Delaying subsequent requests...")
-                    system("sleep 2")
-                    request.create("")
-                else
-                    request.create(uri)
+                    []
+                else 
+                    req = request.create(uri)
+                    [req]                
                 end
             end
             EOF
             );
 
             $event->appendLines([
-                'dynamic = request.dynamic(id="' . self::getVarName($station,
-                    'next_song') . '", timeout=20., azuracast_next_song)',
+                'dynamic = request.dynamic.list(id="' . self::getVarName($station,
+                    'next_song') . '", timeout=20., retry_delay=3., azuracast_next_song)',
                 'dynamic = audio_to_stereo(id="' . self::getVarName($station, 'stereo_next_song') . '", dynamic)',
                 'dynamic = cue_cut(id="' . self::getVarName($station, 'cue_next_song') . '", dynamic)',
 

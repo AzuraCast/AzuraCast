@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.9.9
+  version: 0.10.2
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -1847,9 +1847,11 @@ components:
         instance_name:
           description: 'AzuraCast Instance Name'
           type: string
+          nullable: true
         timezone:
           description: 'System Default Time Zone'
           type: string
+          nullable: true
         prefer_browser_url:
           description: 'Prefer Browser URL (If Available)'
           type: integer
@@ -1880,21 +1882,26 @@ components:
         homepage_redirect_url:
           description: 'Homepage Redirect URL'
           type: string
+          nullable: true
         default_album_art_url:
           description: 'Default Album Art URL'
           type: string
+          nullable: true
         hide_product_name:
           description: 'Hide AzuraCast Branding on Public Pages'
           type: integer
         custom_css_public:
           description: 'Custom CSS for Public Pages'
           type: string
+          nullable: true
         custom_js_public:
           description: 'Custom JS for Public Pages'
           type: string
+          nullable: true
         custom_css_internal:
           description: 'Custom CSS for Internal Pages'
           type: string
+          nullable: true
       type: object
     Api_DetailedSongHistory:
       allOf:
@@ -1929,6 +1936,7 @@ components:
           description: 'The HTML-formatted text description of the error.'
           type: string
           example: '<b>Error description.</b><br>Detailed error text.'
+          nullable: true
         extra_data:
           description: 'Stack traces and other supplemental data.'
           type: array
@@ -1955,7 +1963,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1584208252
+          example: 1588848302
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -1986,9 +1994,15 @@ components:
         live:
           $ref: '#/components/schemas/Api_NowPlayingLive'
         now_playing:
-          $ref: '#/components/schemas/Api_NowPlayingCurrentSong'
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_NowPlayingCurrentSong'
         playing_next:
-          $ref: '#/components/schemas/Api_SongHistory'
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Api_SongHistory'
         song_history:
           type: array
           items:
@@ -2000,6 +2014,7 @@ components:
             - hit
             - database
             - station
+          nullable: true
       type: object
     Api_NowPlayingCurrentSong:
       allOf:
@@ -2051,11 +2066,12 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1584208252
+              example: 1588848302
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
               example: ''
+              nullable: true
             links:
               type: array
               items:
@@ -2090,7 +2106,6 @@ components:
           example: ''
         art:
           description: 'URL to the album artwork (if available).'
-          type: string
           example: 'https://picsum.photos/1200/1200'
         custom_fields:
           type: array
@@ -2106,7 +2121,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1584208252
+          example: 1588848302
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2115,10 +2130,12 @@ components:
           description: 'Indicates the playlist that the song was played from, if available, or empty string if not.'
           type: string
           example: 'Top 100'
+          nullable: true
         streamer:
           description: 'Indicates the current streamer that was connected, if available, or empty string if not.'
           type: string
           example: 'Test DJ'
+          nullable: true
         is_request:
           description: 'Indicates whether the song is a listener request.'
           type: boolean
@@ -2153,7 +2170,6 @@ components:
           example: liquidsoap
         listen_url:
           description: 'The full URL to listen to the default mount of the station'
-          type: string
           example: 'http://localhost:8000/radio.mp3'
         is_public:
           description: 'If the station is public (i.e. should be shown in listings of all stations)'
@@ -2195,16 +2211,17 @@ components:
           example: /radio.mp3
         url:
           description: 'Full listening URL specific to this mount'
-          type: string
           example: 'http://localhost:8000/radio.mp3'
         bitrate:
           description: 'Bitrate (kbps) of the broadcasted audio (if known)'
           type: integer
           example: 128
+          nullable: true
         format:
           description: 'Audio encoding format of broadcasted audio (if known)'
           type: string
           example: mp3
+          nullable: true
         listeners:
           $ref: '#/components/schemas/Api_NowPlayingListeners'
       type: object
@@ -2241,7 +2258,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1584208252
+          example: 1588848302
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2249,7 +2266,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1584208252
+          example: 1588848302
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2289,7 +2306,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1584208252
+          example: 1588848302
       type: object
     Api_Time:
       properties:
@@ -2331,11 +2348,9 @@ components:
     Api_UploadFile:
       properties:
         path:
-          description: 'The destination path of the uploaded file.'
           type: string
           example: relative/path/to/file.mp3
         file:
-          description: 'The base64-encoded contents of the file to upload.'
           type: string
           example: ''
       type: object
@@ -2368,10 +2383,10 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1584208252
+          example: 1588848302
         updated_at:
           type: integer
-          example: 1584208252
+          example: 1588848302
       type: object
     Role:
       properties:
@@ -2480,6 +2495,10 @@ components:
           description: 'The time zone that station operations should take place in.'
           type: string
           example: UTC
+        default_album_art_url:
+          description: 'The station-specific default album artwork URL.'
+          type: string
+          example: 'https://example.com/image.jpg'
       type: object
     StationMedia:
       properties:
@@ -2524,7 +2543,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1584208252
+          example: 1588848302
         amplify:
           description: 'The amount of amplification (in dB) to be applied to the radio source;'
           type: number
@@ -2558,7 +2577,7 @@ components:
         art_updated_at:
           description: 'The latest time (UNIX timestamp) when album art was updated.'
           type: integer
-          example: 1584208252
+          example: 1588848302
         playlists:
           items: {  }
       type: object
@@ -2772,7 +2791,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1584208252
+          example: 1588848302
         schedule_items:
           items: {  }
       type: object
@@ -2843,10 +2862,10 @@ components:
           example: A1B2C3D4
         created_at:
           type: integer
-          example: 1584208252
+          example: 1588848302
         updated_at:
           type: integer
-          example: 1584208252
+          example: 1588848302
         roles:
           items: {  }
       type: object

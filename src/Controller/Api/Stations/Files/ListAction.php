@@ -92,7 +92,7 @@ class ListAction
             }
 
             $artImgSrc = (0 === $media_row['art_updated_at'])
-                ? (string)$customization->getDefaultAlbumArtUrl()
+                ? (string)$customization->getDefaultAlbumArtUrl($station)
                 : (string)$router->named('api:stations:media:art',
                     [
                         'station_id' => $station->getId(),

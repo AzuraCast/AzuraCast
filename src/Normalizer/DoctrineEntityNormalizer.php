@@ -291,7 +291,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
             return $this->serializer->normalize($prop_val, $format, $context);
         }
 
-        return $this->_get($object, $prop_name);
+        $value = $this->_get($object, $prop_name);
+        if ($value instanceof \App\Collection) {
+            $value = $value->all();
+        }
+
+        return $value;
     }
 
     /**

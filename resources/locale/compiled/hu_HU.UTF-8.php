@@ -14,8 +14,8 @@ Language-Team: Hungarian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: hu_HU
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -25,71 +25,71 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'All Permissions' => 
       array (
-        0 => '',
+        0 => 'Minden jog',
       ),
       'View Administration Page' => 
       array (
-        0 => '',
+        0 => 'Adminisztrációs oldal megtekintése',
       ),
       'View System Logs' => 
       array (
-        0 => '',
+        0 => 'Rendszernaplók megtekintése',
       ),
       'Administer Settings' => 
       array (
-        0 => '',
+        0 => 'Adminisztrációs beállítások',
       ),
       'Administer API Keys' => 
       array (
-        0 => '',
+        0 => 'Adminisztrációs API kulcsok',
       ),
       'Administer Users' => 
       array (
-        0 => '',
+        0 => 'Felhasználók kezelése',
       ),
       'Administer Permissions' => 
       array (
-        0 => '',
+        0 => 'Adminisztrátori jogok',
       ),
       'Administer Stations' => 
       array (
-        0 => '',
+        0 => 'Állomások kezelése',
       ),
       'Administer Custom Fields' => 
       array (
-        0 => '',
+        0 => 'Felhasználói egyéni mezők megjelenítése',
       ),
       'Administer Backups' => 
       array (
-        0 => '',
+        0 => 'Visszaállítások kezelése',
       ),
       'View Station Page' => 
       array (
-        0 => '',
+        0 => 'Rádió oldal megtekintése',
       ),
       'View Station Reports' => 
       array (
-        0 => '',
+        0 => 'Rádió jelentések megtekintése',
       ),
       'View Station Logs' => 
       array (
-        0 => '',
+        0 => 'Rádió rendszerüzenetek megtekintése',
       ),
       'Manage Station Profile' => 
       array (
-        0 => '',
+        0 => 'Rádió profil kezelése',
       ),
       'Manage Station Broadcasting' => 
       array (
-        0 => '',
+        0 => 'Állomás sugárzásának kezelése',
       ),
       'Manage Station Streamers' => 
       array (
-        0 => '',
+        0 => 'Dj-k kezelése',
       ),
       'Manage Station Mount Points' => 
       array (
-        0 => '',
+        0 => 'Csatlakozási pontok kezelése',
       ),
       'Manage Station Remote Relays' => 
       array (
@@ -97,99 +97,99 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Manage Station Media' => 
       array (
-        0 => '',
+        0 => 'Állomások kezelése',
       ),
       'Manage Station Automation' => 
       array (
-        0 => '',
+        0 => 'Állomás automatizálásának kezelése',
       ),
       'Manage Station Web Hooks' => 
       array (
-        0 => '',
+        0 => 'Állomás Web Hooksok kezelése',
       ),
       'AzuraCast Backup' => 
       array (
-        0 => '',
+        0 => 'AzuraCast visszaállítások',
       ),
       'Please wait while a backup is generated...' => 
       array (
-        0 => '',
+        0 => 'Kérlek várj amíg a biztonsági másolat legenerálódik...',
       ),
       'Creating temporary directories...' => 
       array (
-        0 => '',
+        0 => 'Ideiglenes mappák készítése...',
       ),
       'Directory "%s" was not created' => 
       array (
-        0 => '',
+        0 => 'Könyvtár "%s" nem sikerült létrehozni',
       ),
       'Backing up MariaDB...' => 
       array (
-        0 => '',
+        0 => 'MariaDB visszaállítása...',
       ),
       'Backing up InfluxDB...' => 
       array (
-        0 => '',
+        0 => 'InfluxDB visszaállítása...',
       ),
       'Creating backup archive...' => 
       array (
-        0 => '',
+        0 => 'Biztonsági archívum létrehozása...',
       ),
       'Cleaning up temporary files...' => 
       array (
-        0 => '',
+        0 => 'Ideiglenes fájlok törlése...',
       ),
       'Backup complete in %.2f seconds.' => 
       array (
-        0 => '',
+        0 => 'Visszaállítás kész %.2f másodperc alatt.',
       ),
       'AzuraCast Settings' => 
       array (
-        0 => '',
+        0 => 'AzuraCast beállítások',
       ),
       'Setting Key' => 
       array (
-        0 => '',
+        0 => 'Beállítási kulcs',
       ),
       'Setting Value' => 
       array (
-        0 => '',
+        0 => 'Beállítás értéke',
       ),
       'Locales generated.' => 
       array (
-        0 => '',
+        0 => 'Helyileg legenerálva.',
       ),
       'Imported locale: %s' => 
       array (
-        0 => '',
+        0 => 'Importált terület beállítva: %s',
       ),
       'Locales imported.' => 
       array (
-        0 => '',
+        0 => 'Helyileg legenerálva.',
       ),
       'Configuration already set up.' => 
       array (
-        0 => '',
+        0 => 'A konfiguráció sikeresen beállítva.',
       ),
       'Configuration successfully written.' => 
       array (
-        0 => '',
+        0 => 'A konfiguráció mentése sikerült.',
       ),
       'Backup path %s not found!' => 
       array (
-        0 => '',
+        0 => 'A visszaállytási fájl %s nem található!',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
-        0 => '',
+        0 => 'A (z) "%s" e-mail cím beállítva adminisztrátornak',
       ),
       'Account not found.' => 
       array (
-        0 => '',
+        0 => 'Nem található fiók.',
       ),
       'AzuraCast Setup' => 
       array (
-        0 => '',
+        0 => 'AzuraCast telepítése',
       ),
       'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
       array (
@@ -519,6 +519,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => '',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => '',
@@ -843,7 +851,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
         0 => '',
       ),
@@ -852,22 +860,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
-      array (
-        0 => '',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => '',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => '',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => '',
-      ),
-      '%d song(s) were imported into the playlist.' => 
       array (
         0 => '',
       ),
@@ -2395,6 +2387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => '',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => '',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => '',
@@ -2750,6 +2750,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => '',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => '',
@@ -3075,6 +3079,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Run Test' => 
+      array (
+        0 => '',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => '',
+      ),
+      'Command' => 
+      array (
+        0 => '',
+      ),
+      'Execute Command' => 
       array (
         0 => '',
       ),
@@ -3875,6 +3891,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Arány',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => '',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => '',
+      ),
       'Date Requested' => 
       array (
         0 => 'Kérés dátuma',
@@ -3890,6 +3914,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Not Played' => 
       array (
         0 => 'Nem játszott',
+      ),
+      'Delete request?' => 
+      array (
+        0 => '',
       ),
       'Report Not Available' => 
       array (

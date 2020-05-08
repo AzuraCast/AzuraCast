@@ -46,7 +46,7 @@ abstract class AbstractConnector implements ConnectorInterface
      *
      * @return array
      */
-    public function _replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
+    public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
     {
         $values = Utilities::flattenArray($np, '.');
         $vars = [];
@@ -66,11 +66,11 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Determine if a passed URL is valid and return it if so, or return null otherwise.
      *
-     * @param string $url_string
+     * @param string|null $url_string
      *
      * @return string|null
      */
-    protected function _getValidUrl($url_string): ?string
+    protected function getValidUrl(?string $url_string = null): ?string
     {
         $url = trim($url_string);
         $pattern = sprintf(UrlValidator::PATTERN, implode('|', ['http', 'https']));

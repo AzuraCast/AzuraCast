@@ -14,8 +14,8 @@ Language-Team: Portuguese, Brazilian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -519,6 +519,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Playlist desativada.',
       ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => '',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Esta estação não aceita solicitações atualmente.',
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Pedido duplicado: esta música já foi solicitada e será reproduzida em breve.',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Esta música já foi reproduzida recentemente. Por favor espere antes de solicitar novamente.',
+        0 => '',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => 'Quer usar SHOUTcast 2? <a href="%s" target="_blank"> instalá-lo aqui </a>, em seguida, recarregue esta página.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'O fuso horário desta estação está atualmente %s.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => 'A hora atual no fuso horário da estação é %s.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Lista de reprodução existente importada.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d música(s) foram importadas na lista de reprodução.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -2395,6 +2387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Liquidsoap Instrue para usar qualquer metadados de replay associados a uma música para controlar seu nível de volume.',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => '',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => '',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => 'Modo AutoDJ manual',
@@ -2761,6 +2761,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Pronto para iniciar a transmissão? Clique para iniciar sua rádio.',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => '',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => 'Reiniciar para Aplicar Alterações',
@@ -3088,6 +3092,18 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Run Test' => 
       array (
         0 => 'Executar teste',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => '',
+      ),
+      'Command' => 
+      array (
+        0 => '',
+      ),
+      'Execute Command' => 
+      array (
+        0 => '',
       ),
       'Server Status' => 
       array (
@@ -3887,6 +3903,14 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Proporção',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => '',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => '',
+      ),
       'Date Requested' => 
       array (
         0 => 'Data do pedido',
@@ -3902,6 +3926,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Not Played' => 
       array (
         0 => 'Não reproduzida',
+      ),
+      'Delete request?' => 
+      array (
+        0 => '',
       ),
       'Report Not Available' => 
       array (

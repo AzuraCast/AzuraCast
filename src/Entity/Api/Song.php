@@ -75,7 +75,7 @@ class Song implements ResolvableUrlInterface
      * )
      * @var array
      */
-    public array $custom_fields = [];
+    public $custom_fields = [];
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

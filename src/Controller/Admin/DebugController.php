@@ -2,13 +2,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity;
-use App\Event\Radio\GetNextSong;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Runner;
-use Cake\Chronos\Chronos;
+use Doctrine\ORM\EntityManager;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
@@ -76,29 +75,24 @@ class DebugController
     public function nextsongAction(
         ServerRequest $request,
         Response $response,
+        EntityManager $em,
         AutoDJ $autoDJ
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
         $station = $request->getStation();
 
-        $nowString = $request->getParam('now');
-        if (!empty($nowString)) {
-            $stationTz = $station->getTimezone();
-            $now = Chronos::parse($nowString, $stationTz);
+        $em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\SongHistory sh
+            WHERE sh.station = :station
+            AND sh.timestamp_cued != 0
+            AND sh.timestamp_start = 0')
+            ->setParameter('station', $station)
+            ->execute();
 
-            $this->logger->debug('Modified time for calculation.', [
-                'new_time' => (string)$now,
-            ]);
+        $this->logger->debug('Current queue cleared.');
 
-            Chronos::setTestNow($now);
-        }
-
-        $event = new GetNextSong($station);
-        $autoDJ->calculateNextSong($event);
-
-        Chronos::setTestNow(null);
-
+        $autoDJ->buildQueue($station);
+        
         $this->logger->popHandler();
 
         return $request->getView()->renderToResponse($response, 'system/log_view', [

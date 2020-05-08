@@ -42,7 +42,11 @@
                 progressColor: '#4081CF',
                 plugins: [
                     timeline.create({
-                        container: '#waveform-timeline'
+                        container: '#waveform-timeline',
+                        primaryColor: '#222',
+                        secondaryColor: '#888',
+                        primaryFontColor: '#222',
+                        secondaryFontColor: '#888'
                     }),
                     regions.create({
                         regions: []
@@ -106,10 +110,3 @@
         }
     };
 </script>
-
-<style lang="scss">
-    .waveform__container {
-        border: 1px solid #757575;
-        border-radius: 4px;
-    }
-</style>

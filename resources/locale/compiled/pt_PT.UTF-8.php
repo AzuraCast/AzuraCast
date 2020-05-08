@@ -14,8 +14,8 @@ Language-Team: Portuguese
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: pt_PT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
@@ -229,59 +229,59 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Reload System Data' => 
       array (
-        0 => '',
+        0 => 'Recarregar dados do sistema',
       ),
       'Refreshing All Stations' => 
       array (
-        0 => '',
+        0 => 'Atualizando todas as estações',
       ),
       'AzuraCast is now updated to the latest version!' => 
       array (
-        0 => '',
+        0 => 'AzuraCast está agora atualizado para a última versão!',
       ),
       'AzuraCast installation complete!' => 
       array (
-        0 => '',
+        0 => 'Instalação do AzuraCast concluída!',
       ),
       'Visit %s to complete setup.' => 
       array (
-        0 => '',
+        0 => 'Visite %s para concluir a instalação.',
       ),
       'Fixtures loaded.' => 
       array (
-        0 => '',
+        0 => 'Instalações carregadas.',
       ),
       'Database created.' => 
       array (
-        0 => '',
+        0 => 'Base de dados criada.',
       ),
       'Retention policies updated.' => 
       array (
-        0 => '',
+        0 => 'Políticas de retenção atualizadas.',
       ),
       'Continuous queries created.' => 
       array (
-        0 => '',
+        0 => 'Consultas contínuas criadas.',
       ),
       'InfluxDB databases created.' => 
       array (
-        0 => '',
+        0 => 'Base de dados InfluxDB criada.',
       ),
       'Record not found.' => 
       array (
-        0 => '',
+        0 => 'Registo não encontrado.',
       ),
       'API Key updated.' => 
       array (
-        0 => '',
+        0 => 'Chave de API atualizada.',
       ),
       'Edit API Key' => 
       array (
-        0 => '',
+        0 => 'Editar chave de API',
       ),
       'API Key deleted.' => 
       array (
-        0 => '',
+        0 => 'Chave de API eliminada.',
       ),
       'Changes saved.' => 
       array (
@@ -297,27 +297,27 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Backup deleted.' => 
       array (
-        0 => '',
+        0 => 'Cópia de segurança eliminada.',
       ),
       'Backup not found.' => 
       array (
-        0 => '',
+        0 => 'Cópia de segurança não encontrada.',
       ),
       'Custom Field updated.' => 
       array (
-        0 => '',
+        0 => 'Campo Personalizado atualizado.',
       ),
       'Custom Field added.' => 
       array (
-        0 => '',
+        0 => 'Campo Personalizado criado.',
       ),
       'Edit Custom Field' => 
       array (
-        0 => '',
+        0 => 'Editar Campo Personalizado',
       ),
       'Add Custom Field' => 
       array (
-        0 => '',
+        0 => 'Adicionar Campo Personalizado',
       ),
       'Custom Field deleted.' => 
       array (
@@ -518,6 +518,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Playlist disabled.' => 
       array (
         0 => 'Lista de reprodução desativada.',
+      ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => '',
       ),
       'This station does not accept requests currently.' => 
       array (
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Esta música já foi reproduzida recentemente. Por favor espere antes de solicitar novamente.',
+        0 => '',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => 'Quer usar o SHOUTcast 2? <a href="%s" target="_blank"> Instale-o aqui</a> e depois atualize esta página.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'O fuso horário da estação é %s.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => 'O tempo atual no fuso horário da estação é %s.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Lista de reprodução existente importada.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d música(s) foram importadas para a lista de reprodução.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -2395,6 +2387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => '',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => '',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => '',
@@ -2750,6 +2750,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Pronto para começar a transmitir? Clique para ligar a estação.',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => '',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => 'Reinicie para aplicar as mudanças',
@@ -3075,6 +3079,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Run Test' => 
+      array (
+        0 => '',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => '',
+      ),
+      'Command' => 
+      array (
+        0 => '',
+      ),
+      'Execute Command' => 
       array (
         0 => '',
       ),
@@ -3875,6 +3891,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => '',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => '',
+      ),
       'Date Requested' => 
       array (
         0 => '',
@@ -3888,6 +3912,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Not Played' => 
+      array (
+        0 => '',
+      ),
+      'Delete request?' => 
       array (
         0 => '',
       ),

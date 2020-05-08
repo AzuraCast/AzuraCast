@@ -643,7 +643,7 @@ class StationMedia
         $response->lyrics = (string)$this->lyrics;
 
         $response->art = $apiUtils->getAlbumArtUrl(
-            $this->station_id,
+            $this->station,
             $this->unique_id,
             $this->art_updated_at,
             $baseUri

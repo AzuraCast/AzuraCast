@@ -33,7 +33,7 @@ class Settings extends Collection
     public const DOCKER_REVISION = 'docker_revision';
 
     // Default settings
-    protected $data = [
+    protected array $data = [
         self::APP_NAME => 'Application',
         self::APP_ENV => self::ENV_PRODUCTION,
 

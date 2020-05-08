@@ -142,8 +142,8 @@ abstract class AbstractFrontend extends AbstractAdapter
 
     public function getPublicUrl(Entity\Station $station, $base_url = null): UriInterface
     {
-        $fe_config = (array)$station->getFrontendConfig();
-        $radio_port = $fe_config['port'];
+        $fe_config = $station->getFrontendConfig();
+        $radio_port = $fe_config->getPort();
 
         if (!($base_url instanceof UriInterface)) {
             $base_url = $this->router->getBaseUrl();
@@ -277,8 +277,10 @@ abstract class AbstractFrontend extends AbstractAdapter
         $ips = [];
         $frontendConfig = $station->getFrontendConfig();
 
-        if (!empty($frontendConfig['banned_ips'])) {
-            $ipsRaw = array_filter(array_map('trim', explode("\n", $frontendConfig['banned_ips'])));
+        $bannedIps = $frontendConfig->getBannedIps();
+
+        if (!empty($bannedIps)) {
+            $ipsRaw = array_filter(array_map('trim', explode("\n", $bannedIps)));
 
             foreach ($ipsRaw as $ip) {
                 try {

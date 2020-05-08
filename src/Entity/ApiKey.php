@@ -62,7 +62,7 @@ class ApiKey implements JsonSerializable
      * @param User $user
      * @param string|null $key An existing API key to import (if one exists).
      */
-    public function __construct(User $user, $key = null)
+    public function __construct(User $user, ?string $key = null)
     {
         $this->user = $user;
 
@@ -115,7 +115,7 @@ class ApiKey implements JsonSerializable
      *
      * @return bool
      */
-    public function verify($verifier): bool
+    public function verify(string $verifier): bool
     {
         return hash_equals($this->verifier, $this->hashVerifier($verifier));
     }

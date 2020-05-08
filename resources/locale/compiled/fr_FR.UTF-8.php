@@ -14,8 +14,8 @@ Language-Team: French
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: fr_FR
 Plural-Forms: nplurals=2; plural=(n > 1);
 X-Crowdin-Project: azuracast
@@ -329,11 +329,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Debug Output' => 
       array (
-        0 => '',
+        0 => 'Débogage',
       ),
       'An error occurred while downloading the GeoLite database: %s' => 
       array (
-        0 => '',
+        0 => 'Une erreur s\'est produite lors du téléchargement de la base de données GeoLite : %s',
       ),
       'Install GeoLite IP Database' => 
       array (
@@ -341,7 +341,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'GeoLite database uninstalled.' => 
       array (
-        0 => '',
+        0 => 'Base de données GeoLite désinstallée.',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
@@ -519,6 +519,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Playlist désactivée.',
       ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => 'La playlist a été remaniée.',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => 'Playlist importée avec succès ; %d des fichiers %d ont été comparés avec succès.',
+      ),
       'This station does not accept requests currently.' => 
       array (
         0 => 'Cette station n\'accepte pas de demandes pour le moment.',
@@ -565,7 +573,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'No recording available.' => 
       array (
-        0 => '',
+        0 => 'Aucun enregistrement disponible.',
       ),
       'Too many login attempts' => 
       array (
@@ -657,7 +665,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Edit Liquidsoap Configuration' => 
       array (
-        0 => '',
+        0 => 'Modifier la configuration de Liquidsoap',
       ),
       'This feature is not currently supported on this station.' => 
       array (
@@ -745,15 +753,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Edit SFTP User' => 
       array (
-        0 => '',
+        0 => 'Modifier les utilisateurs SFTP',
       ),
       'Add SFTP User' => 
       array (
-        0 => '',
+        0 => 'Ajouter un utilisateur SFTP',
       ),
       'SFTP User deleted.' => 
       array (
-        0 => '',
+        0 => 'Utilisateur SFTP supprimé.',
       ),
       'Streamers enabled!' => 
       array (
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Requête en double : cette chanson a déjà été demandée et sera jouée bientôt.',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Cette chanson a déjà été jouée récemment. Attendez un peu avant de la demander à nouveau.',
+        0 => 'Cette musique ou cet artiste a été joué trop récemment. Attendez un peu avant de le redemander.',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => 'Vous souhaitez utiliser SHOUTcast 2 ? <a href="%s" target="_blank">Installez-le ici</a>, ensuite recharger la page.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'Le fuseau horaire de cette station est actuellement %s.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => 'Pour le fuseau horaire de la station, l\'heure actuelle est %s.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Playlist existante importée.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d titres(s) ont été importés dans la playlist.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -965,23 +957,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Welcome to the AzuraCast Liquidsoap configuration editor.' => 
       array (
-        0 => '',
+        0 => 'Bienvenue dans l\'éditeur de configuration d\'AzuraCast Liquidsoap.',
       ),
       'Using this page, you can customize several sections of the Liquidsoap configuration.' => 
       array (
-        0 => '',
+        0 => 'En utilisant cette page, vous pouvez personnaliser plusieurs sections de la configuration de Liquidsoap.',
       ),
       'The non-editable sections are automatically generated by AzuraCast.' => 
       array (
-        0 => '',
+        0 => 'Les sections non éditables sont générées automatiquement par AzuraCast.',
       ),
       'GeoLite database not configured for this installation. See System Administration for instructions.' => 
       array (
-        0 => '',
+        0 => 'La base de données GeoLite n\'est pas configurée pour cette installation. Voir la page Administration du système pour les instructions.',
       ),
       'IP Geolocation by DB-IP' => 
       array (
-        0 => '',
+        0 => 'Géolocalisation d\'IP par DB-IP',
       ),
       'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
       array (
@@ -1661,19 +1653,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Visit the "My License Key" page under the "Services" section.' => 
       array (
-        0 => '',
+        0 => 'Visitez la page "Ma clé de licence" sous la rubrique "Services".',
       ),
       'Click "Generate new license key".' => 
       array (
-        0 => '',
+        0 => 'Cliquez sur "Générer une nouvelle clé de licence".',
       ),
       'Paste the generated license key into the field on this page.' => 
       array (
-        0 => '',
+        0 => 'Collez la clé de licence générée dans le champ de cette page.',
       ),
       'MaxMind License Key' => 
       array (
-        0 => '',
+        0 => 'Clé de licence MaxMind',
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
@@ -1893,11 +1885,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Station Administrator Password' => 
       array (
-        0 => '',
+        0 => 'Mot de passe administrateur de la station distante',
       ),
       'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
       array (
-        0 => '',
+        0 => 'Un mot de passe administrateur est souvent nécessaire pour récupérer les données détaillées des auditeurs et des utilisateurs uniques.',
       ),
       'Broadcast AutoDJ to Remote Station' => 
       array (
@@ -2125,11 +2117,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'SSH Public Keys' => 
       array (
-        0 => '',
+        0 => 'Clés publiques SSH',
       ),
       'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
       array (
-        0 => '',
+        0 => 'Il est possible de fournir des clés publiques SSH que l\'utilisateur peut utiliser pour se connecter au lieu d\'un mot de passe. Entrez une clé par ligne.',
       ),
       'Metadata' => 
       array (
@@ -2249,11 +2241,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Banned IP Addresses' => 
       array (
-        0 => '',
+        0 => 'Adresses IP interdites',
       ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
-        0 => '',
+        0 => 'Indiquez une adresse IP ou un groupe (au format CIDR) par ligne.',
       ),
       'AutoDJ Service' => 
       array (
@@ -2333,19 +2325,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Record Live Broadcasts' => 
       array (
-        0 => '',
+        0 => 'Enregistrement des émissions en direct',
       ),
       'If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.' => 
       array (
-        0 => '',
+        0 => 'Si cette fonction est activée, AzuraCast enregistrera automatiquement toutes les émissions diffusées en direct sur cette station.',
       ),
       'Live Broadcast Recording Format' => 
       array (
-        0 => '',
+        0 => 'Format d\'enregistrement pour la diffusion en direct',
       ),
       'Live Broadcast Recording Bitrate (kbps)' => 
       array (
-        0 => '',
+        0 => 'Débit binaire d\'enregistrement de la diffusion en direct (kbps)',
       ),
       'Deactivate Streamer on Disconnect (Seconds)' => 
       array (
@@ -2394,6 +2386,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.' => 
       array (
         0 => 'Demandez à Liquidsoap d\'utiliser toutes les métadonnées de relecture associées à un morceau pour contrôler son niveau de volume.',
+      ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => '',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => '',
       ),
       'Manual AutoDJ Mode' => 
       array (
@@ -2727,7 +2727,7 @@ exécuté en moins de 2 secondes.',
       ),
       'System Debugger' => 
       array (
-        0 => '',
+        0 => 'Débogueur de système',
       ),
       'Users' => 
       array (
@@ -2764,6 +2764,10 @@ exécuté en moins de 2 secondes.',
       'Ready to start broadcasting? Click to start your station.' => 
       array (
         0 => 'Prêt à diffuser ? Cliquez pour démarrer votre station.',
+      ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => 'Redémarrer la diffusion ? Cela déconnectera tous les auditeurs actuels.',
       ),
       'Restart to Apply Changes' => 
       array (
@@ -2843,7 +2847,7 @@ exécuté en moins de 2 secondes.',
       ),
       'SFTP Users' => 
       array (
-        0 => '',
+        0 => 'Utilisateurs SFTP',
       ),
       'Automated Assignment' => 
       array (
@@ -3059,11 +3063,11 @@ exécuté en moins de 2 secondes.',
       ),
       'The backup process is running in the background. To view the logs, click the button below.' => 
       array (
-        0 => '',
+        0 => 'Le processus de sauvegarde fonctionne en arrière-plan. Pour consulter les journaux, cliquez sur le bouton ci-dessous.',
       ),
       'View Backup Log' => 
       array (
-        0 => '',
+        0 => 'Voir le journal des sauvegardes',
       ),
       'Delete custom field "%s"?' => 
       array (
@@ -3079,19 +3083,31 @@ exécuté en moins de 2 secondes.',
       ),
       'Station-Specific Debugging' => 
       array (
-        0 => '',
+        0 => 'Débogage spécifique à la station',
       ),
       'Test AutoDJ Next Song' => 
       array (
-        0 => '',
+        0 => 'Tester la prochaine musique de l\'AutoDJ',
       ),
       'Test time (Leave blank for current time)' => 
       array (
-        0 => '',
+        0 => 'Durée du test (laisser en blanc pour la durée actuelle)',
       ),
       'Run Test' => 
       array (
-        0 => '',
+        0 => 'Lancer le test',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => 'Envoyer la commande Telnet Liquidsoap',
+      ),
+      'Command' => 
+      array (
+        0 => 'Commande',
+      ),
+      'Execute Command' => 
+      array (
+        0 => 'Exécuter la commande',
       ),
       'Server Status' => 
       array (
@@ -3115,11 +3131,11 @@ exécuté en moins de 2 secondes.',
       ),
       'Uninstall GeoLite database?' => 
       array (
-        0 => '',
+        0 => 'Désinstaller la base de données GeoLite ?',
       ),
       'Uninstall GeoLite Database' => 
       array (
-        0 => '',
+        0 => 'Désinstaller la base de données GeoLite',
       ),
       'GeoLite is not currently installed on this installation.' => 
       array (
@@ -3521,11 +3537,11 @@ exécuté en moins de 2 secondes.',
       ),
       'You can also upload files in bulk via SFTP.' => 
       array (
-        0 => '',
+        0 => 'Vous pouvez également uploader des fichiers en nombre via SFTP.',
       ),
       'Manage SFTP Accounts' => 
       array (
-        0 => '',
+        0 => 'Gérer les comptes SFTP',
       ),
       'Available Logs' => 
       array (
@@ -3689,15 +3705,15 @@ exécuté en moins de 2 secondes.',
       ),
       'Scheduled' => 
       array (
-        0 => '',
+        0 => 'Planifié',
       ),
       'Streamer/DJ' => 
       array (
-        0 => '',
+        0 => 'Streamer/DJ',
       ),
       'Now' => 
       array (
-        0 => '',
+        0 => 'Actuellement',
       ),
       'Streamers/DJs' => 
       array (
@@ -3891,6 +3907,14 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Ratio',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => 'Supprimer toutes les demandes en attente ?',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => 'Effacer les demandes en attente',
+      ),
       'Date Requested' => 
       array (
         0 => 'Date demandée',
@@ -3907,6 +3931,10 @@ exécuté en moins de 2 secondes.',
       array (
         0 => 'Pas joué',
       ),
+      'Delete request?' => 
+      array (
+        0 => 'Supprimer la demande ?',
+      ),
       'Report Not Available' => 
       array (
         0 => 'Rapport non disponible',
@@ -3917,11 +3945,11 @@ exécuté en moins de 2 secondes.',
       ),
       'Live Streamer:' => 
       array (
-        0 => '',
+        0 => 'En direct :',
       ),
       'Delete SFTP User "%s"?' => 
       array (
-        0 => '',
+        0 => 'Supprimer l\'utilisateur SFTP "%s"?',
       ),
       'Connection Information' => 
       array (

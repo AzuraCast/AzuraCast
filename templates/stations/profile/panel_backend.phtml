@@ -29,27 +29,27 @@
         <p><?=sprintf(__('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'),
                 $num_songs, $num_playlists)?></p>
 
-        <?php if ($acl->userAllowed($user, 'manage station media', $station->getId())): ?>
+        <?php if ($acl->userAllowed($user, \App\Acl::STATION_MEDIA, $station->getId())): ?>
             <div class="buttons">
                 <a class="btn btn-primary" href="<?=$router->fromHere('stations:files:index')?>"><?=__('Music Files')?></a>
                 <a class="btn btn-primary" href="<?=$router->fromHere('stations:playlists:index')?>"><?=__('Playlists')?></a>
             </div>
         <?php endif; ?>
     </div>
-    <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+    <?php if ($acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId())): ?>
         <div class="card-actions">
             <a class="api-call no-reload btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend',
                 ['do' => 'restart'])?>">
                 <i class="material-icons" aria-hidden="true">update</i>
                 <?=__('Restart')?>
             </a>
-            <a class="api-call no-reload btn btn-outline-success" href="<?=$router->fromHere('api:stations:backend',
-                ['do' => 'start'])?>">
+            <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.backend_running"
+               href="<?=$router->fromHere('api:stations:backend', ['do' => 'start'])?>">
                 <i class="material-icons" aria-hidden="true">play_arrow</i>
                 <?=__('Start')?>
             </a>
-            <a class="api-call no-reload btn btn-outline-danger" href="<?=$router->fromHere('api:stations:backend',
-                ['do' => 'stop'])?>">
+            <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.backend_running"
+               href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop'])?>">
                 <i class="material-icons" aria-hidden="true">stop</i>
                 <?=__('Stop')?>
             </a>

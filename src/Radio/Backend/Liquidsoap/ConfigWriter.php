@@ -79,7 +79,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $station = $event->getStation();
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
         if (!empty($settings[$sectionName])) {
             $event->appendLines([
@@ -403,19 +403,18 @@ class ConfigWriter implements EventSubscriberInterface
                 log("AzuraCast Raw Response: #{uri}")
                 
                 if uri == "" or string.match(pattern="Error", uri) then
-                    log("AzuraCast Error: Delaying subsequent requests...")
-                    system("sleep 2")
-                    request.create("")
-                else
-                    request.create(uri)
+                    []
+                else 
+                    req = request.create(uri)
+                    [req]                
                 end
             end
             EOF
             );
 
             $event->appendLines([
-                'dynamic = request.dynamic(id="' . self::getVarName($station,
-                    'next_song') . '", timeout=20., azuracast_next_song)',
+                'dynamic = request.dynamic.list(id="' . self::getVarName($station,
+                    'next_song') . '", timeout=20., retry_delay=3., azuracast_next_song)',
                 'dynamic = audio_to_stereo(id="' . self::getVarName($station, 'stereo_next_song') . '", dynamic)',
                 'dynamic = cue_cut(id="' . self::getVarName($station, 'cue_next_song') . '", dynamic)',
 
@@ -435,10 +434,6 @@ class ConfigWriter implements EventSubscriberInterface
             ]);
         }
 
-        $error_file = Settings::getInstance()->isDocker()
-            ? '/usr/local/share/icecast/web/error.mp3'
-            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
-
         $event->appendLines([
             'requests = request.queue(id="' . self::getVarName($station, 'requests') . '")',
             'requests = audio_to_stereo(id="' . self::getVarName($station, 'stereo_requests') . '", requests)',
@@ -449,8 +444,6 @@ class ConfigWriter implements EventSubscriberInterface
             '',
             'add_skip_command(radio)',
             '',
-            'radio = fallback(id="' . self::getVarName($station,
-                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
         ]);
     }
 
@@ -643,7 +636,7 @@ class ConfigWriter implements EventSubscriberInterface
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
@@ -660,6 +653,16 @@ class ConfigWriter implements EventSubscriberInterface
                 'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
+
+        // Write fallback to safety file immediately after crossfade.
+        $error_file = Settings::getInstance()->isDocker()
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
+
+        $event->appendLines([
+            'radio = fallback(id="' . self::getVarName($station,
+                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
+        ]);
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -672,10 +675,10 @@ class ConfigWriter implements EventSubscriberInterface
 
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_LIVE);
 
-        $settings = (array)$station->getBackendConfig();
-        $charset = $settings['charset'] ?? 'UTF-8';
-        $dj_mount = $settings['dj_mount_point'] ?? '/';
-        $recordLiveStreams = $settings['record_streams'] ?? false;
+        $settings = $station->getBackendConfig();
+        $charset = $settings->getCharset();
+        $dj_mount = $settings->getDjMountPoint();
+        $recordLiveStreams = $settings->recordStreams();
 
         $authCommand = $this->getApiUrlCommand($station, 'auth', ['dj-user' => '!user', 'dj-password' => '!password']);
         $djonCommand = $this->getApiUrlCommand($station, 'djon', ['dj-user' => 'dj']);
@@ -768,7 +771,7 @@ class ConfigWriter implements EventSubscriberInterface
             'ignore(output.dummy(live, fallible=true))',
             '',
             'radio = fallback(id="' . self::getVarName($station,
-                'live_fallback') . '", track_sensitive=false, [live, radio])',
+                'live_fallback') . '", replay_metadata=false, track_sensitive=false, [live, radio])',
         ]);
 
         if ($recordLiveStreams) {
@@ -803,7 +806,7 @@ class ConfigWriter implements EventSubscriberInterface
     public function writePreBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
         $station = $event->getStation();
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
         $event->appendLines([
             '# Allow for Telnet-driven insertion of custom metadata.',
@@ -814,7 +817,7 @@ class ConfigWriter implements EventSubscriberInterface
         ]);
 
         // NRJ normalization
-        if (true === (bool)($settings['nrj'] ?? false)) {
+        if ($settings->useNormalizer()) {
             $event->appendLines([
                 '# Normalization and Compression',
                 'radio = normalize(target = 0., window = 0.03, gain_min = -16., gain_max = 0., radio)',
@@ -823,7 +826,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Replaygain metadata
-        if (true === (bool)($settings['enable_replaygain_metadata'] ?? false)) {
+        if ($settings->useReplayGain()) {
             $event->appendLines([
                 '# Replaygain Metadata',
                 'enable_replaygain_metadata()',
@@ -894,8 +897,8 @@ class ConfigWriter implements EventSubscriberInterface
         string $idPrefix,
         int $id
     ): string {
-        $settings = (array)$station->getBackendConfig();
-        $charset = $settings['charset'] ?? 'UTF-8';
+        $settings = $station->getBackendConfig();
+        $charset = $settings->getCharset();
 
         $output_format = $this->getOutputFormatString(
             $mount->getAutodjFormat(),

@@ -45,7 +45,15 @@ abstract class AbstractSettingsForm extends Form
     public function process(ServerRequest $request): bool
     {
         // Populate the form with existing values (if they exist).
-        $this->populate($this->settingsRepo->fetchArray(false));
+        $defaults = $this->settingsRepo->fetchArray(false);
+
+        // Use current URI from request if the base URL isn't set.
+        if (!isset($defaults[Entity\Settings::BASE_URL])) {
+            $currentUri = $request->getUri()->withPath('');
+            $defaults[Entity\Settings::BASE_URL] = (string)$currentUri;
+        }
+
+        $this->populate($defaults);
 
         // Handle submission.
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {

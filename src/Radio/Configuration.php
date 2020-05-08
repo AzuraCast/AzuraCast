@@ -2,8 +2,8 @@
 namespace App\Radio;
 
 use App\Entity\Station;
-use App\Settings;
 use App\Exception;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
@@ -229,29 +229,27 @@ class Configuration
     public function assignRadioPorts(Station $station, $force = false): void
     {
         if ($station->getFrontendType() !== Adapters::FRONTEND_REMOTE || $station->getBackendType() !== Adapters::BACKEND_NONE) {
-            $frontend_config = (array)$station->getFrontendConfig();
-            $backend_config = (array)$station->getBackendConfig();
+            $frontend_config = $station->getFrontendConfig();
+            $backend_config = $station->getBackendConfig();
 
-            if ($force || empty($frontend_config['port'])) {
+            $base_port = $frontend_config->getPort();
+            if ($force || null === $base_port) {
                 $base_port = $this->getFirstAvailableRadioPort($station);
 
-                $station->setFrontendConfig([
-                    'port' => $base_port,
-                ]);
-            } else {
-                $base_port = (int)$frontend_config['port'];
+                $frontend_config->setPort($base_port);
+                $station->setFrontendConfig($frontend_config);
             }
 
-            if ($force || empty($backend_config['dj_port'])) {
-                $station->setBackendConfig([
-                    'dj_port' => $base_port + 5,
-                ]);
+            $djPort = $backend_config->getDjPort();
+            if ($force || null === $djPort) {
+                $backend_config->setDjPort($base_port + 5);
+                $station->setBackendConfig($backend_config);
             }
 
-            if ($force || empty($backend_config['telnet_port'])) {
-                $station->setBackendConfig([
-                    'telnet_port' => $base_port + 4,
-                ]);
+            $telnetPort = $backend_config->getTelnetPort();
+            if ($force || null === $telnetPort) {
+                $backend_config->setTelnetPort($base_port + 4);
+                $station->setBackendConfig($backend_config);
             }
 
             $this->em->persist($station);
@@ -381,8 +379,6 @@ class Configuration
             'stdout_logfile_maxbytes' => '5MB',
             'stdout_logfile_backups' => '10',
             'redirect_stderr' => 'true',
-            'stopasgroup' => true,
-            'killasgroup' => true,
         ];
 
         $supervisor_config[] = '[program:' . $program_name . ']';
@@ -405,24 +401,23 @@ class Configuration
             return;
         }
 
+        $station_group = 'station_' . $station->getId();
+
+        // Try forcing the group to stop, but don't hard-fail if it doesn't.
+        try {
+            $this->supervisor->stopProcessGroup($station_group, true);
+            $this->supervisor->removeProcessGroup($station_group);
+        } catch (FaultException $e) {
+            $this->logger->log(Logger::ERROR, $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+            ]);
+        }
+
         $supervisor_config_path = $this->getSupervisorConfigFile($station);
         @unlink($supervisor_config_path);
 
-        $station_group = 'station_' . $station->getId();
-        $affected_groups = $this->_reloadSupervisor();
-
-        if (!in_array($station_group, $affected_groups, true)) {
-            // Try forcing the group to stop, but don't hard-fail if it doesn't.
-            try {
-                $this->supervisor->stopProcessGroup($station_group, true);
-                $this->supervisor->removeProcessGroup($station_group);
-            } catch (FaultException $e) {
-                $this->logger->log(Logger::ERROR, $e->getMessage(), [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'code' => $e->getCode(),
-                ]);
-            }
-        }
+        $this->_reloadSupervisor();
     }
 }

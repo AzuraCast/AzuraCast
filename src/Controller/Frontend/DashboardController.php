@@ -4,11 +4,11 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Entity;
 use App\Event;
+use App\EventDispatcher;
 use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
@@ -74,7 +74,7 @@ class DashboardController
         }
 
         // Get administrator notifications.
-        $notification_event = new Event\GetNotifications($user);
+        $notification_event = new Event\GetNotifications($user, $request);
         $this->dispatcher->dispatch($notification_event);
 
         $notifications = $notification_event->getNotifications();

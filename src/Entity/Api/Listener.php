@@ -54,5 +54,5 @@ class Listener
      * @OA\Property(@OA\Items)
      * @var array
      */
-    public array $location = [];
+    public $location = [];
 }

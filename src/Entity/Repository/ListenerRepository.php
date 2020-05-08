@@ -71,11 +71,8 @@ class ListenerRepository extends Repository
         if (!empty($existingClients)) {
             $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Listener l
                 SET l.timestamp_end = :time
-                WHERE l.station = :station
-                AND l.timestamp_end = 0
-                AND l.id IN (:ids)')
+                WHERE l.id IN (:ids)')
                 ->setParameter('time', time())
-                ->setParameter('station', $station)
                 ->setParameter('ids', array_values($existingClients))
                 ->execute();
         }

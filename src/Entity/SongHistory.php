@@ -7,7 +7,9 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="song_history", indexes={
- *   @ORM\Index(name="history_idx", columns={"timestamp_start","timestamp_end","listeners_start"}),
+ *     @ORM\Index(name="idx_timestamp_cued", columns={"timestamp_cued"}),
+ *     @ORM\Index(name="idx_timestamp_start", columns={"timestamp_start"}),
+ *     @ORM\Index(name="idx_timestamp_end", columns={"timestamp_end"})
  * })
  * @ORM\Entity()
  */
@@ -482,7 +484,7 @@ class SongHistory
 
         $response->song = ($this->media)
             ? $this->media->api($api, $base_url)
-            : $this->song->api($api, $base_url);
+            : $this->song->api($api, $this->station, $base_url);
 
         return $response;
     }

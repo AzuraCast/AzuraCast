@@ -271,6 +271,11 @@ class StationPlaylist
         return $this->id;
     }
 
+    public function getStation(): Station
+    {
+        return $this->station;
+    }
+
     /**
      * @AuditLog\AuditIdentifier
      * @return string
@@ -453,11 +458,6 @@ class StationPlaylist
         $this->played_at = $played_at;
     }
 
-    public function played(): void
-    {
-        $this->played_at = time();
-    }
-
     public function getQueue(): ?array
     {
         return $this->queue;
@@ -549,25 +549,8 @@ class StationPlaylist
             $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
         }
 
-        if ($this->schedule_items->count() > 0) {
-            $isScheduled = false;
-
-            foreach ($this->schedule_items as $scheduleItem) {
-                /** @var StationSchedule $scheduleItem */
-                if ($scheduleItem->shouldPlayNow($now)) {
-                    $startTime = $scheduleItem->getStartTime();
-                    $endTime = $scheduleItem->getEndTime();
-
-                    $isScheduled = ($startTime === $endTime)
-                        ? !$this->wasPlayedInLastXMinutes($now, 30)
-                        : true;
-                    break;
-                }
-            }
-
-            if (!$isScheduled) {
-                return false;
-            }
+        if (!$this->isScheduledToPlayNow($now)) {
+            return false;
         }
 
         switch ($this->type) {
@@ -594,9 +577,28 @@ class StationPlaylist
         }
     }
 
-    public function getStation(): Station
+    protected function isScheduledToPlayNow(Chronos $now): bool
     {
-        return $this->station;
+        if (0 === $this->schedule_items->count()) {
+            return true;
+        }
+
+        foreach ($this->schedule_items as $scheduleItem) {
+            /** @var StationSchedule $scheduleItem */
+            if ($scheduleItem->shouldPlayNow($now)) {
+                $startTime = $scheduleItem->getStartTime();
+                $endTime = $scheduleItem->getEndTime();
+
+                if (
+                    $startTime !== $endTime
+                    || ($startTime === $endTime && !$this->wasPlayedInLastXMinutes($now, 30))
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     protected function shouldPlayNowPerHour(Chronos $now): bool

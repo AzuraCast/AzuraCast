@@ -15,10 +15,6 @@ $config = [
                     [
                         'label' => __('Site Base URL'),
                         'description' => __('The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.'),
-                        'default' => $_SERVER['HTTP_HOST'],
-                        'filter' => function ($str) {
-                            return str_replace(['http://', 'https://'], ['', ''], trim($str));
-                        },
                         'required' => true,
                         'form_group_class' => 'col-md-6',
                     ],

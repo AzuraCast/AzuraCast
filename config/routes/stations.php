@@ -33,7 +33,7 @@ return function (App $app) {
 
         $group->map(['GET', 'POST'], '/ls_config', Controller\Stations\EditLiquidsoapConfigController::class)
             ->setName('stations:util:ls_config')
-            ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
+            ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
         $group->group('/logs', function (RouteCollectorProxy $group) {
 

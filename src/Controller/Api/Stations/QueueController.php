@@ -56,12 +56,12 @@ class QueueController extends AbstractStationApiCrudController
             LEFT JOIN sh.song s 
             LEFT JOIN sh.media sm
             LEFT JOIN sh.playlist sp 
-            WHERE sh.station_id = :station_id
+            WHERE sh.station = :station
             AND sh.sent_to_autodj = 0
             AND sh.timestamp_start = 0
             AND sh.timestamp_end = 0
-            ORDER BY sh.timestamp_cued DESC')
-            ->setParameter('station_id', $station->getId());
+            ORDER BY sh.timestamp_cued ASC')
+            ->setParameter('station', $station);
 
         return $this->listPaginatedFromQuery($request, $response, $query);
     }

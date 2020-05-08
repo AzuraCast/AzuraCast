@@ -1,10 +1,11 @@
 <?php
 namespace App\Form;
 
+use App\Config;
 use App\Entity;
 use App\Http\Router;
 use App\Http\ServerRequest;
-use App\Config;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Serializer;
@@ -20,6 +21,7 @@ class StationWebhookForm extends EntityForm
         EntityManager $em,
         Serializer $serializer,
         ValidatorInterface $validator,
+        Settings $settings,
         Config $config,
         Router $router
     ) {
@@ -29,7 +31,9 @@ class StationWebhookForm extends EntityForm
         $config_injections = [
             'router' => $router,
             'triggers' => $webhook_config['triggers'],
+            'app_settings' => $settings,
         ];
+
         foreach ($webhook_config['webhooks'] as $webhook_key => $webhook_info) {
             $webhook_forms[$webhook_key] = $config->get('forms/webhook/' . $webhook_key, $config_injections);
         }

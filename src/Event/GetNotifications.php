@@ -2,6 +2,7 @@
 namespace App\Event;
 
 use App\Entity\User;
+use App\Http\ServerRequest;
 use App\Notification\Notification;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -9,17 +10,26 @@ class GetNotifications extends Event
 {
     protected User $current_user;
 
+    protected ServerRequest $request;
+
     protected array $notifications;
 
-    public function __construct(User $current_user)
+    public function __construct(User $current_user, ServerRequest $request)
     {
         $this->current_user = $current_user;
+        $this->request = $request;
+
         $this->notifications = [];
     }
 
     public function getCurrentUser(): User
     {
         return $this->current_user;
+    }
+
+    public function getRequest(): ServerRequest
+    {
+        return $this->request;
     }
 
     /**

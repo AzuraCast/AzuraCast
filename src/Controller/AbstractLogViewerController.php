@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Traits;
+namespace App\Controller;
 
 use App\Entity;
 use App\Exception\NotFoundException;
@@ -8,11 +8,11 @@ use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use Psr\Http\Message\ResponseInterface;
 
-trait LogViewerTrait
+abstract class AbstractLogViewerController
 {
     public static int $maximum_log_size = 1048576;
 
-    protected function _view(
+    protected function view(
         ServerRequest $request,
         Response $response,
         $log_path,
@@ -25,11 +25,8 @@ trait LogViewerTrait
         }
 
         if (!$tail_file) {
-            $log_contents_parts = explode("\n", file_get_contents($log_path));
-            $log_contents_parts = str_replace(['>', '<'], ['&gt;', '&lt;'], $log_contents_parts);
-
-            $log_contents = implode("\n", $log_contents_parts);
-            $log_contents = mb_convert_encoding($log_contents, 'UTF-8', 'UTF-8');
+            $log = file_get_contents($log_path);
+            $log_contents = $this->processLog($request, $log);
 
             return $response->withJson([
                 'contents' => $log_contents,
@@ -59,21 +56,9 @@ trait LogViewerTrait
             $fp = fopen($log_path, 'rb');
             fseek($fp, -$log_visible_size, SEEK_END);
             $log_contents_raw = fread($fp, $log_visible_size);
-
-            $log_contents_parts = explode("\n", $log_contents_raw);
-            if ($cut_first_line) {
-                array_shift($log_contents_parts);
-            }
-            if (end($log_contents_parts) == '') {
-                array_pop($log_contents_parts);
-            }
-
-            $log_contents_parts = str_replace(['>', '<'], ['&gt;', '&lt;'], $log_contents_parts);
-
-            $log_contents = implode("\n", $log_contents_parts);
-            $log_contents = mb_convert_encoding($log_contents, 'UTF-8', 'UTF-8');
-
             fclose($fp);
+
+            $log_contents = $this->processLog($request, $log_contents_raw, $cut_first_line, true);
         }
 
         return $response->withJson([
@@ -83,7 +68,28 @@ trait LogViewerTrait
         ]);
     }
 
-    protected function _getStationLogs(Entity\Station $station): array
+    protected function processLog(
+        ServerRequest $request,
+        string $rawLog,
+        bool $cutFirstLine = false,
+        bool $cutEmptyLastLine = false
+    ): string {
+        $logParts = explode("\n", $rawLog);
+
+        if ($cutFirstLine) {
+            array_shift($logParts);
+        }
+        if ($cutEmptyLastLine && end($logParts) === '') {
+            array_pop($logParts);
+        }
+
+        $logParts = str_replace(['>', '<'], ['&gt;', '&lt;'], $logParts);
+
+        $log = implode("\n", $logParts);
+        return mb_convert_encoding($log, 'UTF-8', 'UTF-8');
+    }
+
+    protected function getStationLogs(Entity\Station $station): array
     {
         $log_paths = [];
 
@@ -139,6 +145,4 @@ trait LogViewerTrait
 
         return $log_paths;
     }
-
-
 }

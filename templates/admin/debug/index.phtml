@@ -50,16 +50,14 @@ $this->layout('main', [
 
                 <div class="row">
                     <div class="col">
-                        <h5><?=__('Test AutoDJ Next Song')?></h5>
-                        <form class="form" method="GET" action="<?=$router->named('admin:debug:nextsong',
-                            ['station_id' => $station['id']])?>">
-                            <div class="form-group">
-                                <label for="<?=$station['id']?>_now"><?=__('Test time (Leave blank for current time)')?>:</label>
-                                <input id="<?=$station['id']?>_now" name="now" class="form-control" type="datetime-local">
-                            </div>
+                        <h5><?=__('Rebuild AutoDJ Queue')?></h5>
 
-                            <button type="submit" class="btn btn-primary"><?=__('Run Test')?></button>
-                        </form>
+                        <div class="buttons">
+                            <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:nextsong',
+                                ['station_id' => $station['id']])?>">
+                                <?=__('Run Test')?>
+                            </a>
+                        </div>
                     </div>
                     <?php if ($station['backend_type'] === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
                         <div class="col">

@@ -55,7 +55,7 @@ class StreamersController
             return $view->renderToResponse($response, 'stations/streamers/disabled');
         }
 
-        $be_settings = (array)$station->getBackendConfig();
+        $be_settings = $station->getBackendConfig();
 
         return $view->renderToResponse($response, 'stations/streamers/index', [
             'server_url' => $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, ''),

@@ -14,8 +14,8 @@ Language-Team: Russian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-03-10T21:07:09+00:00
-PO-Revision-Date: 2020-03-14 03:00
+POT-Creation-Date: 2020-04-16T04:24:39+00:00
+PO-Revision-Date: 2020-04-26 10:14
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
 X-Crowdin-Project: azuracast
@@ -333,7 +333,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'An error occurred while downloading the GeoLite database: %s' => 
       array (
-        0 => '',
+        0 => 'Произошла ошибка при загрузке базы данных GeoLite: %s',
       ),
       'Install GeoLite IP Database' => 
       array (
@@ -518,6 +518,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Playlist disabled.' => 
       array (
         0 => 'Плейлист отключен.',
+      ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => 'Плейлист перетасован.',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => 'Плейлист успешно импортирован; %d из %d файлов успешно совпадают.',
       ),
       'This station does not accept requests currently.' => 
       array (
@@ -843,9 +851,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Дубликат запроса: эта песня уже была запрошена и скоро будет играть.',
       ),
-      'This song was already played too recently. Wait a while before requesting it again.' => 
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => 'Эта песня была сыграна совсем недавно. Подождите некоторое время, прежде чем запросить её снова.',
+        0 => 'Эта песня или исполнитель проигрывалась совсем недавно. Подождите некоторое время, прежде чем запросить её снова.',
       ),
       'Select File' => 
       array (
@@ -854,22 +862,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
         0 => 'Хотите использовать SHOUTcast 2? <a href="%s" target="_blank">Установите его здесь</a>, затем перезагрузите эту страницу.',
-      ),
-      'This station\'s time zone is currently %s.' => 
-      array (
-        0 => 'Часовой пояс этой станции в настоящее время %s.',
-      ),
-      'The current time in the station\'s time zone is %s.' => 
-      array (
-        0 => 'Текущее время в часовом поясе станции - %s.',
-      ),
-      'Existing playlist imported.' => 
-      array (
-        0 => 'Импортировать существующий список воспроизведения.',
-      ),
-      '%d song(s) were imported into the playlist.' => 
-      array (
-        0 => '%d песен было импортировано в плейлист.',
       ),
       'You must be logged in to access this page.' => 
       array (
@@ -2395,6 +2387,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Инструкция для Liquidsoap о использовании любых метаданных replaygain, связанных с песней, для управления уровнем громкости.',
       ),
+      'AutoDJ Queue Length' => 
+      array (
+        0 => 'Длина очереди АвтоДиджея',
+      ),
+      'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
+      array (
+        0 => 'При использовании АвтоДиджея AzuraCast, это определяет, сколько песен заранее АвтоДиджей автоматически заполнит в очередь.',
+      ),
       'Manual AutoDJ Mode' => 
       array (
         0 => 'Ручной Режим АвтоДиджея',
@@ -2772,6 +2772,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Готовы начать вещание? Нажмите, чтобы запустить станцию.',
       ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => 'Перезапустить вещание? Это отключит любых текущих слушателей.',
+      ),
       'Restart to Apply Changes' => 
       array (
         0 => 'Рестарт для применения изменений',
@@ -3066,11 +3070,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The backup process is running in the background. To view the logs, click the button below.' => 
       array (
-        0 => '',
+        0 => 'Процесс резервного копирования выполняется в фоновом режиме. Для просмотра журналов нажмите на кнопку ниже.',
       ),
       'View Backup Log' => 
       array (
-        0 => '',
+        0 => 'Просмотр журнала резервного копирования',
       ),
       'Delete custom field "%s"?' => 
       array (
@@ -3099,6 +3103,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Run Test' => 
       array (
         0 => 'Запустить тест',
+      ),
+      'Send Liquidsoap Telnet Command' => 
+      array (
+        0 => 'Отправить команду Liquidsoap Telnet',
+      ),
+      'Command' => 
+      array (
+        0 => 'Команда',
+      ),
+      'Execute Command' => 
+      array (
+        0 => 'Выполнить команду',
       ),
       'Server Status' => 
       array (
@@ -3899,6 +3915,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Коэффициент',
       ),
+      'Clear all pending requests?' => 
+      array (
+        0 => 'Очистить все ожидающие запросы?',
+      ),
+      'Clear Pending Requests' => 
+      array (
+        0 => 'Очистить ожидающие запросы',
+      ),
       'Date Requested' => 
       array (
         0 => 'Дата запроса',
@@ -3915,6 +3939,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Не сыграно',
       ),
+      'Delete request?' => 
+      array (
+        0 => 'Удалить запрос?',
+      ),
       'Report Not Available' => 
       array (
         0 => 'Отчет недоступен',
@@ -3925,7 +3953,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Live Streamer:' => 
       array (
-        0 => '',
+        0 => 'Cтример Онлайн:',
       ),
       'Delete SFTP User "%s"?' => 
       array (

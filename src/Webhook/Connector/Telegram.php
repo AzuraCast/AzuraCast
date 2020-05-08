@@ -26,7 +26,7 @@ class Telegram extends AbstractConnector
             return;
         }
 
-        $messages = $this->_replaceVariables([
+        $messages = $this->replaceVariables([
             'text' => $config['text'],
         ], $event->getNowPlaying());
 

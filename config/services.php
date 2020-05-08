@@ -431,7 +431,8 @@ return [
             $settingsRepo,
             $logger,
             $lockManager,
-            [
+            [ // Every 15 seconds tasks
+                $di->get(App\Sync\Task\BuildQueue::class),
                 $di->get(App\Sync\Task\NowPlaying::class),
                 $di->get(App\Sync\Task\ReactivateStreamer::class),
             ],
@@ -459,7 +460,8 @@ return [
     App\Webhook\Dispatcher::class => function (
         ContainerInterface $di,
         App\Config $config,
-        Monolog\Logger $logger
+        Monolog\Logger $logger,
+        App\ApiUtilities $apiUtils
     ) {
         $webhooks = $config->get('webhooks');
         $services = [];
@@ -467,6 +469,6 @@ return [
             $services[$webhook_key] = $di->get($webhook_info['class']);
         }
 
-        return new App\Webhook\Dispatcher($logger, $services);
+        return new App\Webhook\Dispatcher($logger, $apiUtils, $services);
     },
 ];

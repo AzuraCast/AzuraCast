@@ -126,6 +126,9 @@ class NowplayingController implements EventSubscriberInterface
             $np = array_filter($np, function ($np_row) {
                 return $np_row->station->is_public;
             });
+
+            // Prevent NP array from returning as an object.
+            $np = array_values($np);
         }
 
         foreach ($np as $np_row) {

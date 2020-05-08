@@ -19,8 +19,15 @@ class RolePermission extends AbstractFixture implements DependentFixtureInterfac
                 [Acl::GLOBAL_ALL, null],
             ],
             'demo_role' => [
-                [Acl::STATION_ALL, $station],
                 [Acl::STATION_VIEW, $station],
+                [Acl::STATION_REPORTS, $station],
+                [Acl::STATION_PROFILE, $station],
+                [Acl::STATION_STREAMERS, $station],
+                [Acl::STATION_MOUNTS, $station],
+                [Acl::STATION_REMOTES, $station],
+                [Acl::STATION_MEDIA, $station],
+                [Acl::STATION_AUTOMATION, $station],
+                [Acl::STATION_WEB_HOOKS, $station],
             ],
         ];
 

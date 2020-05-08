@@ -66,8 +66,8 @@ class Liquidsoap extends AbstractBackend
      */
     public function getTelnetPort(Entity\Station $station): int
     {
-        $settings = (array)$station->getBackendConfig();
-        return (int)($settings['telnet_port'] ?? ($this->getStreamPort($station) - 1));
+        $settings = $station->getBackendConfig();
+        return $settings->getTelnetPort() ?? ($this->getStreamPort($station) - 1);
     }
 
     /**
@@ -79,15 +79,16 @@ class Liquidsoap extends AbstractBackend
      */
     public function getStreamPort(Entity\Station $station): int
     {
-        $settings = (array)$station->getBackendConfig();
+        $settings = $station->getBackendConfig();
 
-        if (!empty($settings['dj_port'])) {
-            return (int)$settings['dj_port'];
+        $djPort = $settings->getDjPort();
+        if (null !== $djPort) {
+            return $djPort;
         }
 
         // Default to frontend port + 5
-        $frontend_config = (array)$station->getFrontendConfig();
-        $frontend_port = $frontend_config['port'] ?? (8000 + (($station->getId() - 1) * 10));
+        $frontend_config = $station->getFrontendConfig();
+        $frontend_port = $frontend_config->getPort() ?? (8000 + (($station->getId() - 1) * 10));
 
         return $frontend_port + 5;
     }
@@ -112,7 +113,7 @@ class Liquidsoap extends AbstractBackend
             'duration' => $media->getLength(),
             'song_id' => $media->getSong()->getId(),
             'media_id' => $media->getId(),
-            'liq_amplify' => $media->getAmplify(),
+            'liq_amplify' => $media->getAmplify() ?? 0.0,
             'liq_cross_duration' => $media->getFadeOverlap(),
             'liq_fade_in' => $media->getFadeIn(),
             'liq_fade_out' => $media->getFadeOut(),
@@ -141,18 +142,27 @@ class Liquidsoap extends AbstractBackend
                 continue;
             }
 
-            $prop = mb_convert_encoding($prop, 'UTF-8');
-            $prop = str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $prop);
+            $prop = self::annotateString($prop);
 
             // Convert Liquidsoap-specific annotations to floats.
             if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {
                 $prop = Liquidsoap\ConfigWriter::toFloat($prop);
             }
 
+            if ('liq_amplify' === $annotation_name) {
+                $prop .= 'dB';
+            }
+
             $annotations[$annotation_name] = $prop;
         }
 
         return $annotations;
+    }
+
+    public static function annotateString(string $str): string
+    {
+        $str = mb_convert_encoding($str, 'UTF-8');
+        return str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $str);
     }
 
     /**
@@ -238,6 +248,19 @@ class Liquidsoap extends AbstractBackend
         );
     }
 
+    public function updateMetadata(Entity\Station $station, array $newMeta): array
+    {
+        $metaStr = [];
+        foreach ($newMeta as $metaKey => $metaVal) {
+            $metaStr[] = $metaKey . '="' . self::annotateString($metaVal) . '"';
+        }
+
+        return $this->command(
+            $station,
+            'custom_metadata.insert ' . implode(',', $metaStr),
+        );
+    }
+
     /**
      * Tell LiquidSoap to disconnect the current live streamer.
      *
@@ -269,8 +292,9 @@ class Liquidsoap extends AbstractBackend
         string $pass = ''
     ): string {
         // Allow connections using the exact broadcast source password.
-        $fe_config = (array)$station->getFrontendConfig();
-        if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
+        $fe_config = $station->getFrontendConfig();
+        $sourcePw = $fe_config->getSourcePassword();
+        if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
             return 'true';
         }
 
@@ -297,8 +321,8 @@ class Liquidsoap extends AbstractBackend
         Entity\Station $station,
         string $user = ''
     ): string {
-        $backendConfig = (array)$station->getBackendConfig();
-        $recordStreams = (bool)($backendConfig['record_streams'] ?? false);
+        $backendConfig = $station->getBackendConfig();
+        $recordStreams = $backendConfig->recordStreams();
 
         if ($recordStreams) {
             $this->command($station, 'recording.stop');
@@ -313,8 +337,8 @@ class Liquidsoap extends AbstractBackend
     {
         $stream_port = $this->getStreamPort($station);
 
-        $settings = (array)$station->getBackendConfig();
-        $djMount = $settings['dj_mount_point'] ?? '/';
+        $settings = $station->getBackendConfig();
+        $djMount = $settings->getDjMountPoint();
 
         return $base_url
             ->withScheme('wss')

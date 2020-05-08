@@ -98,9 +98,9 @@ class StationPlaylistMedia implements JsonSerializable
         return $this->last_played;
     }
 
-    public function played(): void
+    public function played(int $timestamp = null): void
     {
-        $this->last_played = time();
+        $this->last_played = $timestamp ?? time();
     }
 
     /**

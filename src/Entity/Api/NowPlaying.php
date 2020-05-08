@@ -53,7 +53,7 @@ class NowPlaying implements ResolvableUrlInterface
      * @OA\Property
      * @var SongHistory[]
      */
-    public array $song_history = [];
+    public $song_history = [];
 
     /**
      * Debugging information about where the now playing data comes from.

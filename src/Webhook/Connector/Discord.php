@@ -67,7 +67,7 @@ class Discord extends AbstractConnector
     {
         $config = $webhook->getConfig();
 
-        $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
+        $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
             $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
@@ -84,13 +84,13 @@ class Discord extends AbstractConnector
             'footer' => $config['footer'] ?? '',
         ];
 
-        $vars = $this->_replaceVariables($raw_vars, $event->getNowPlaying());
+        $vars = $this->replaceVariables($raw_vars, $event->getNowPlaying());
 
         // Compose webhook
         $embed = [
             'title' => $vars['title'] ?? '',
             'description' => $vars['description'] ?? '',
-            'url' => $this->_getValidUrl($vars['url']) ?? '',
+            'url' => $this->getValidUrl($vars['url']) ?? '',
             'color' => 2201331, // #2196f3
         ];
         $embed = array_filter($embed);
@@ -100,9 +100,9 @@ class Discord extends AbstractConnector
                 'name' => $vars['author'],
             ];
         }
-        if (!empty($vars['thumbnail']) && $this->_getValidUrl($vars['thumbnail'])) {
+        if (!empty($vars['thumbnail']) && $this->getImageUrl($vars['thumbnail'])) {
             $embed['thumbnail'] = [
-                'url' => $this->_getValidUrl($vars['thumbnail']),
+                'url' => $this->getImageUrl($vars['thumbnail']),
             ];
         }
         if (!empty($vars['footer'])) {
@@ -138,5 +138,15 @@ class Discord extends AbstractConnector
         } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from Discord (%d): %s', $e->getCode(), $e->getMessage()));
         }
+    }
+
+    protected function getImageUrl(?string $url = null): ?string
+    {
+        $url = $this->getValidUrl($url);
+        if (null !== $url) {
+            return str_replace('http://', 'https://', $url);
+        }
+
+        return null;
     }
 }

@@ -188,6 +188,29 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
+    protected function getRecord(Entity\Station $station, $id)
+    {
+        $repo = $this->em->getRepository($this->entityClass);
+
+        $fieldsToCheck = ['id', 'unique_id', 'song_id'];
+
+        foreach ($fieldsToCheck as $field) {
+            $record = $repo->findOneBy([
+                'station' => $station,
+                $field => $id,
+            ]);
+
+            if ($record instanceof $this->entityClass) {
+                return $record;
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
     protected function toArray($record, array $context = [])
     {
         $row = parent::toArray($record, $context);

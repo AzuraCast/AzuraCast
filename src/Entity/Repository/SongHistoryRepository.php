@@ -6,6 +6,7 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -28,15 +29,15 @@ class SongHistoryRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     * @param ApiUtilities $api_utils
-     * @param UriInterface|null $base_url
+     * @param ApiUtilities $apiUtils
+     * @param UriInterface|null $baseUrl
      *
      * @return Entity\Api\SongHistory[]
      */
-    public function getHistoryForStation(
+    public function getHistoryApi(
         Entity\Station $station,
-        ApiUtilities $api_utils,
-        UriInterface $base_url = null
+        ApiUtilities $apiUtils,
+        UriInterface $baseUrl = null
     ): array {
         $num_entries = $station->getApiHistoryItems();
 
@@ -45,7 +46,9 @@ class SongHistoryRepository extends Repository
         }
 
         $history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s 
-            FROM App\Entity\SongHistory sh JOIN sh.song s LEFT JOIN sh.media sm  
+            FROM App\Entity\SongHistory sh 
+            JOIN sh.song s 
+            LEFT JOIN sh.media sm  
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')
@@ -57,28 +60,39 @@ class SongHistoryRepository extends Repository
         foreach ($history as $sh) {
             /** @var Entity\SongHistory $sh */
             if ($sh->showInApis()) {
-                $return[] = $sh->api(new Entity\Api\SongHistory, $api_utils, $base_url);
+                $return[] = $sh->api(new Entity\Api\SongHistory, $apiUtils, $baseUrl);
             }
         }
 
         return $return;
     }
 
+    public function getNextSongApi(
+        Entity\Station $station,
+        ApiUtilities $apiUtils,
+        UriInterface $baseUrl = null
+    ): ?Entity\Api\SongHistory {
+        $queue = $this->getUpcomingQueue($station);
+
+        foreach ($queue as $sh) {
+            /** @var Entity\SongHistory $sh */
+            if ($sh->showInApis()) {
+                return $sh->api(new Entity\Api\SongHistory, $apiUtils, $baseUrl);
+            }
+        }
+
+        return null;
+    }
+
     public function register(
         Entity\Song $song,
         Entity\Station $station,
-        array $np
+        Entity\Api\NowPlaying $np
     ): Entity\SongHistory {
         // Pull the most recent history item for this station.
-        $last_sh = $this->em->createQuery(/** @lang DQL */ 'SELECT sh 
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station_id = :station_id
-            ORDER BY sh.timestamp_start DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+        $last_sh = $this->getCurrent($station);
 
-        $listeners = (int)$np['listeners']['current'];
+        $listeners = (int)$np->listeners->current;
 
         if ($last_sh instanceof Entity\SongHistory) {
             if ($last_sh->getSong() === $song) {
@@ -130,7 +144,7 @@ class SongHistoryRepository extends Repository
         }
 
         // Look for an already cued but unplayed song.
-        $sh = $this->getCuedSong($song, $station);
+        $sh = $this->getUpcomingFromSong($station, $song);
 
         // Processing a new SongHistory item.
         if (!($sh instanceof Entity\SongHistory)) {
@@ -152,24 +166,63 @@ class SongHistoryRepository extends Repository
         return $sh;
     }
 
-    /**
-     * @param Entity\Song $song
-     * @param Entity\Station $station
-     *
-     * @return Entity\SongHistory|null
-     */
-    public function getCuedSong(Entity\Song $song, Entity\Station $station): ?Entity\SongHistory
+    public function getCurrent(Entity\Station $station): ?Entity\SongHistory
     {
         return $this->em->createQuery(/** @lang DQL */ 'SELECT sh 
             FROM App\Entity\SongHistory sh
-            WHERE sh.station_id = :station_id
-            AND sh.song_id = :song_id
-            AND sh.timestamp_cued != 0
-            AND sh.timestamp_start = 0
-            ORDER BY sh.timestamp_cued DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('song_id', $song->getId())
+            WHERE sh.station = :station
+            AND sh.timestamp_start != 0
+            AND (sh.timestamp_end IS NULL OR sh.timestamp_end = 0)
+            ORDER BY sh.timestamp_start DESC')
+            ->setParameter('station', $station)
             ->setMaxResults(1)
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param Entity\Station $station
+     *
+     * @return Entity\SongHistory[]
+     */
+    public function getUpcomingQueue(Entity\Station $station): array
+    {
+        return $this->getUpcomingBaseQuery($station)
+            ->andWhere('sh.sent_to_autodj = 0')
+            ->getQuery()
+            ->execute();
+    }
+
+    public function getNextInQueue(Entity\Station $station): ?Entity\SongHistory
+    {
+        return $this->getUpcomingBaseQuery($station)
+            ->andWhere('sh.sent_to_autodj = 0')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
+    public function getUpcomingFromSong(Entity\Station $station, Entity\Song $song): ?Entity\SongHistory
+    {
+        return $this->getUpcomingBaseQuery($station)
+            ->andWhere('sh.song = :song')
+            ->setParameter('song', $song)
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
+    protected function getUpcomingBaseQuery(Entity\Station $station): QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->select('sh, sm, sp, s')
+            ->from(Entity\SongHistory::class, 'sh')
+            ->leftJoin('sh.media', 'sm')
+            ->leftJoin('sh.song', 's')
+            ->leftJoin('sh.playlist', 'sp')
+            ->where('sh.station = :station')
+            ->setParameter('station', $station)
+            ->andWhere('sh.timestamp_cued != 0')
+            ->andWhere('sh.timestamp_start = 0')
+            ->orderBy('sh.timestamp_cued', 'ASC');
     }
 }

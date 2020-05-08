@@ -1,7 +1,7 @@
 #
 # Base install step (done first for caching purposes).
 #
-FROM ubuntu:bionic as base
+FROM ubuntu:focal as base
 
 ENV TZ="UTC"
 

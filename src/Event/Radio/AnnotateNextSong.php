@@ -11,61 +11,46 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class AnnotateNextSong extends Event
 {
-    /** @var null|string|Entity\SongHistory The next song, if it's already calculated. */
-    protected $next_song;
+    /** @var null|Entity\SongHistory The next song, if it's already calculated. */
+    protected ?Entity\SongHistory $nextSong;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     protected array $annotations = [];
 
     /** @var string The path of the song to annotate. */
-    protected string $song_path;
+    protected string $songPath;
 
     protected Entity\Station $station;
 
-    public function __construct(Entity\Station $station, $next_song = null)
+    public function __construct(Entity\Station $station, ?Entity\SongHistory $next_song = null)
     {
         $this->station = $station;
-        $this->next_song = $next_song;
+        $this->nextSong = $next_song;
     }
 
-    /**
-     * @return Entity\Station
-     */
     public function getStation(): Entity\Station
     {
         return $this->station;
     }
 
-    /**
-     * @return string|Entity\SongHistory|null
-     */
-    public function getNextSong()
+    public function getNextSong(): ?Entity\SongHistory
     {
-        return $this->next_song;
+        return $this->nextSong;
     }
 
-    /**
-     * @param array $annotations
-     */
     public function setAnnotations(array $annotations): void
     {
         $this->annotations = $annotations;
     }
 
-    /**
-     * @param array $annotations
-     */
     public function addAnnotations(array $annotations): void
     {
         $this->annotations = array_merge($this->annotations, $annotations);
     }
 
-    /**
-     * @param string $song_path
-     */
-    public function setSongPath(string $song_path): void
+    public function setSongPath(string $songPath): void
     {
-        $this->song_path = $song_path;
+        $this->songPath = $songPath;
     }
 
     /**
@@ -75,7 +60,7 @@ class AnnotateNextSong extends Event
      */
     public function buildAnnotations(): string
     {
-        if (empty($this->song_path)) {
+        if (empty($this->songPath)) {
             return '';
         }
 
@@ -84,16 +69,12 @@ class AnnotateNextSong extends Event
         if (!empty($this->annotations)) {
             $annotations_str = [];
             foreach ($this->annotations as $annotation_key => $annotation_val) {
-                if ($annotation_key == 'liq_amplify') {
-                    $annotations_str[] = $annotation_key . '="' . $annotation_val . 'dB"';
-                    continue;
-                }
                 $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
             }
 
-            return 'annotate:' . implode(',', $annotations_str) . ':' . $this->song_path;
+            return 'annotate:' . implode(',', $annotations_str) . ':' . $this->songPath;
         }
 
-        return $this->song_path;
+        return $this->songPath;
     }
 }

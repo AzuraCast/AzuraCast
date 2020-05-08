@@ -20,7 +20,9 @@ use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="station")
+ * @ORM\Table(name="station", indexes={
+ *     @ORM\Index(name="idx_short_name", columns={"short_name"})
+ * })
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *
@@ -318,6 +320,14 @@ class Station
     protected $timezone = 'UTC';
 
     /**
+     * @ORM\Column(name="default_album_art_url", type="string", length=255, nullable=true)
+     *
+     * @OA\Property(example="https://example.com/image.jpg")
+     * @var string|null The station-specific default album artwork URL.
+     */
+    protected $default_album_art_url = null;
+
+    /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
      * @ORM\OrderBy({"timestamp_start" = "DESC"})
      * @var Collection
@@ -455,18 +465,26 @@ class Station
         $this->frontend_type = $frontend_type;
     }
 
-    public function getFrontendConfig(): ?array
+    public function getFrontendConfig(): StationFrontendConfiguration
     {
-        return $this->frontend_config;
+        return new StationFrontendConfiguration((array)$this->frontend_config);
     }
 
-    public function setFrontendConfig(array $frontend_config, $force_overwrite = false): void
+    /**
+     * @param array|StationFrontendConfiguration $frontend_config
+     * @param bool $force_overwrite
+     */
+    public function setFrontendConfig($frontend_config, bool $force_overwrite = false): void
     {
-        $config = ($force_overwrite) ? [] : (array)$this->frontend_config;
-        foreach ($frontend_config as $cfg_key => $cfg_val) {
-            $config[$cfg_key] = $cfg_val;
+        if (!($frontend_config instanceof StationFrontendConfiguration)) {
+            $config = new StationFrontendConfiguration(
+                ($force_overwrite) ? [] : (array)$this->frontend_config,
+            );
+            $config->replace($frontend_config);
+            $frontend_config = $config;
         }
 
+        $config = $frontend_config->all();
         if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
@@ -507,15 +525,14 @@ class Station
      */
     public function clearPorts(): void
     {
-        $fe_config = (array)$this->frontend_config;
-        unset($fe_config['port']);
+        $fe_config = $this->getFrontendConfig();
+        $fe_config->setPort(null);
+        $this->setFrontendConfig($fe_config);
 
-        $this->frontend_config = $fe_config;
-
-        $be_config = (array)$this->backend_config;
-        unset($be_config['dj_port'], $be_config['telnet_port']);
-
-        $this->backend_config = $be_config;
+        $be_config = $this->getBackendConfig();
+        $be_config->setDjPort(null);
+        $be_config->setTelnetPort(null);
+        $this->setBackendConfig($be_config);
     }
 
     /**
@@ -525,21 +542,31 @@ class Station
      */
     public function useManualAutoDJ(): bool
     {
-        $settings = (array)$this->getBackendConfig();
-        return (bool)($settings['use_manual_autodj'] ?? false);
+        $settings = $this->getBackendConfig();
+        return $settings->useManualAutoDj();
     }
 
-    public function getBackendConfig(): ?array
+    public function getBackendConfig(): StationBackendConfiguration
     {
-        return $this->backend_config;
+        return new StationBackendConfiguration((array)$this->backend_config);
     }
 
-    public function setBackendConfig(array $backend_config, $force_overwrite = false): void
+    /**
+     * @param array|StationBackendConfiguration $backend_config
+     * @param bool $force_overwrite
+     */
+    public function setBackendConfig($backend_config, bool $force_overwrite = false): void
     {
-        $config = ($force_overwrite) ? [] : (array)$this->backend_config;
-        foreach ($backend_config as $cfg_key => $cfg_val) {
-            $config[$cfg_key] = $cfg_val;
+        if (!($backend_config instanceof StationBackendConfiguration)) {
+            $config = new StationBackendConfiguration(
+                ($force_overwrite) ? [] : (array)$this->backend_config
+            );
+            $config->replace($backend_config);
+
+            $backend_config = $config;
         }
+
+        $config = $backend_config->all();
 
         if ($this->backend_config != $config) {
             $this->setNeedsRestart(true);
@@ -977,6 +1004,22 @@ class Station
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDefaultAlbumArtUrl(): ?string
+    {
+        return $this->default_album_art_url;
+    }
+
+    /**
+     * @param string|null $default_album_art_url
+     */
+    public function setDefaultAlbumArtUrl(?string $default_album_art_url): void
+    {
+        $this->default_album_art_url = $default_album_art_url;
     }
 
     public function getHistory(): Collection

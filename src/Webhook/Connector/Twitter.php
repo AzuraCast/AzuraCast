@@ -66,7 +66,7 @@ class Twitter extends AbstractConnector
             'message' => $config['message'] ?? '',
         ];
 
-        $vars = $this->_replaceVariables($raw_vars, $event->getNowPlaying());
+        $vars = $this->replaceVariables($raw_vars, $event->getNowPlaying());
 
         // Dispatch webhook
         $this->logger->debug('Posting to Twitter...');

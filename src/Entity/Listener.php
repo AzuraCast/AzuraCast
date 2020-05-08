@@ -5,8 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="listener", indexes={
- *   @ORM\Index(name="update_idx", columns={"listener_hash"}),
- *   @ORM\Index(name="search_idx", columns={"listener_uid", "timestamp_end"})
+ *     @ORM\Index(name="idx_timestamps", columns={"timestamp_end", "timestamp_start"}),
  * })
  * @ORM\Entity()
  */

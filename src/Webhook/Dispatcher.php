@@ -1,10 +1,11 @@
 <?php
 namespace App\Webhook;
 
+use App\ApiUtilities;
 use App\Entity;
 use App\Event\SendWebhooks;
-use App\Settings;
 use App\Exception;
+use App\Settings;
 use InvalidArgumentException;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -21,9 +22,12 @@ class Dispatcher implements EventSubscriberInterface
     /** @var Connector\ConnectorInterface[] */
     protected array $connectors;
 
-    public function __construct(Logger $logger, array $connectors)
+    protected ApiUtilities $apiUtils;
+
+    public function __construct(Logger $logger, ApiUtilities $apiUtils, array $connectors)
     {
         $this->logger = $logger;
+        $this->apiUtils = $apiUtils;
         $this->connectors = $connectors;
     }
 
@@ -127,6 +131,8 @@ class Dispatcher implements EventSubscriberInterface
         $connector_obj = $this->connectors[$webhook_type];
 
         $np = $station->getNowplaying();
+        $np->resolveUrls($this->apiUtils->getRouter()->getBaseUrl(false));
+        $np->cache = 'event';
 
         $event = new SendWebhooks($station, $np);
         $connector_obj->dispatch($event, $webhook);

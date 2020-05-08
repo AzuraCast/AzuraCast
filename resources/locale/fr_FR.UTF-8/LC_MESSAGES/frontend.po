@@ -916,6 +916,9 @@ msgstr "Démarrer la diffusion"
 msgid "Start Time"
 msgstr "Heure de départ"
 
+msgid "Start/end date cannot be used on playlists with advanced settings!"
+msgstr "La date de départ/de fin ne peut pas être définie pour les playlists ayant des paramètres avancés!"
+
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:56
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:53
 msgid "Station Time Zone"

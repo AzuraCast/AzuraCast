@@ -67,6 +67,9 @@
                             </template>
                             <template v-slot:description>
                                 <translate>To set this schedule to run only within a certain date range, specify a start and end date.</translate>
+                                <div v-if="hasAdvancedSettings" class="text-danger">
+                                    <translate>Start/end date cannot be used on playlists with advanced settings!</translate>
+                                </div>
                             </template>
                             <b-form-input :label-for="'edit_form_start_date_'+index" type="date"
                                           :disabled="hasAdvancedSettings"

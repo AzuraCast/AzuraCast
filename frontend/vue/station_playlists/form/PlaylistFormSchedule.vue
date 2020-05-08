@@ -69,6 +69,7 @@
                                 <translate>To set this schedule to run only within a certain date range, specify a start and end date.</translate>
                             </template>
                             <b-form-input :label-for="'edit_form_start_date_'+index" type="date"
+                                          :disabled="hasAdvancedSettings"
                                           v-model="row.start_date.$model"
                                           :state="row.start_date.$dirty ? !row.start_date.$error : null"></b-form-input>
                             <b-form-invalid-feedback>
@@ -82,6 +83,7 @@
                             </template>
                             <b-form-input :label-for="'edit_form_end_date_'+index" type="date"
                                           v-model="row.end_date.$model"
+                                          :disabled="hasAdvancedSettings"
                                           :state="row.end_date.$dirty ? !row.end_date.$error : null"></b-form-input>
                             <b-form-invalid-feedback>
                                 <translate>This field is required.</translate>
@@ -140,6 +142,9 @@
         computed: {
             langTabTitle () {
                 return this.$gettext('Schedule');
+            },
+            hasAdvancedSettings () {
+                return this.form.backend_options.$model.length > 1;
             }
         },
         methods: {

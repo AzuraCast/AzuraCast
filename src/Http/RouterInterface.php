@@ -31,11 +31,11 @@ interface RouterInterface
     /**
      * Dynamically calculate the base URL the first time it's called, if it is at all in the request.
      *
-     * @param bool $use_request Use the current request for the base URI, if available.
+     * @param bool $useRequest Use the current request for the base URI, if available.
      *
      * @return UriInterface
      */
-    public function getBaseUrl(bool $use_request = true): UriInterface;
+    public function getBaseUrl(bool $useRequest = true): UriInterface;
 
     /**
      * Return a named route based on the current page and its route arguments.

@@ -11,7 +11,7 @@ $config = [
 
             'elements' => [
                 Entity\Settings::BASE_URL => [
-                    'text',
+                    'url',
                     [
                         'label' => __('Site Base URL'),
                         'description' => __('The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.'),

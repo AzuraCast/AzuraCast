@@ -17,7 +17,7 @@ class Router implements RouterInterface
 
     protected Settings $settings;
 
-    protected ServerRequestInterface $currentRequest;
+    protected ?ServerRequestInterface $currentRequest = null;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 

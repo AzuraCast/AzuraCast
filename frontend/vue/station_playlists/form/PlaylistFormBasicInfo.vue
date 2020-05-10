@@ -83,7 +83,7 @@
             </b-row>
         </b-form-group>
 
-        <b-form-group v-if="form.type.$model === 'default'">
+        <b-form-group v-show="form.type.$model === 'default'">
             <template v-slot:label>
                 <translate>General Rotation</translate>
             </template>
@@ -101,7 +101,7 @@
             </b-row>
         </b-form-group>
 
-        <b-form-group v-if="form.type.$model === 'once_per_x_songs'">
+        <b-form-group v-show="form.type.$model === 'once_per_x_songs'">
             <template v-slot:label>
                 <translate>Once per x Songs</translate>
             </template>
@@ -125,7 +125,7 @@
             </b-row>
         </b-form-group>
 
-        <b-form-group v-if="form.type.$model === 'once_per_x_minutes'">
+        <b-form-group v-show="form.type.$model === 'once_per_x_minutes'">
             <template v-slot:label>
                 <translate>Once per x Minutes</translate>
             </template>
@@ -149,7 +149,7 @@
             </b-row>
         </b-form-group>
 
-        <b-form-group v-if="form.type.$model === 'once_per_hour'">
+        <b-form-group v-show="form.type.$model === 'once_per_hour'">
             <template v-slot:label>
                 <translate>Once per Hour</translate>
             </template>

@@ -51,9 +51,9 @@
   "dist/material.js": "dist/material-df68dbf23f.js",
   "dist/radio_player.js": "dist/radio_player-f88abea4e8.js",
   "dist/station_media.js": "dist/station_media-1ac4c7a323.js",
-  "dist/station_playlists.js": "dist/station_playlists-0ef1581c9e.js",
+  "dist/station_playlists.js": "dist/station_playlists-c1c36c2497.js",
   "dist/station_streamers.js": "dist/station_streamers-2e160bdd93.js",
-  "dist/vue_gettext.js": "dist/vue_gettext-c8b122f07c.js",
+  "dist/vue_gettext.js": "dist/vue_gettext-2d25ba9686.js",
   "dist/webcaster.js": "dist/webcaster-09a0e0221a.js",
   "dist/zxcvbn.js": "dist/zxcvbn-f4433cd930.js"
 }

@@ -24,7 +24,7 @@
             </b-row>
         </b-form-group>
 
-        <b-form-group v-if="form.source.$model === 'songs'">
+        <b-form-group v-show="form.source.$model === 'songs'">
             <template v-slot:label>
                 <translate>Song-Based Playlist</translate>
             </template>
@@ -69,7 +69,7 @@
             </b-row>
         </b-form-group>
 
-        <b-form-group v-if="form.source.$model === 'remote_url'">
+        <b-form-group v-show="form.source.$model === 'remote_url'">
             <template v-slot:label>
                 <translate>Remote URL Playlist</translate>
             </template>

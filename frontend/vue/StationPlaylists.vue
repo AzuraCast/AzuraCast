@@ -88,10 +88,13 @@
                                 <span v-html="formatType(row.item)"></span>
                             </template>
                             <template v-slot:cell(num_songs)="row">
-                                <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
-                                    {{ row.item.num_songs }}
-                                </a>
-                                ({{ formatLength(row.item.total_length) }})
+                                <template v-if="row.item.source === 'songs'">
+                                    <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
+                                        {{ row.item.num_songs }}
+                                    </a>
+                                    ({{ formatLength(row.item.total_length) }})
+                                </template>
+                                <template v-else>&nbsp;</template>
                             </template>
                         </data-table>
                     </div>

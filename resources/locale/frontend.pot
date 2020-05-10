@@ -9,6 +9,10 @@ msgstr ""
 msgid "# Songs"
 msgstr ""
 
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:69
+msgid "Start/end date cannot be used on playlists with advanced settings!"
+msgstr ""
+
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:13
 msgid "A playlist containing media files hosted on this server."
 msgstr ""
@@ -42,7 +46,7 @@ msgstr ""
 msgid "Add Playlist"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:109
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:112
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:106
 msgid "Add Schedule Item"
 msgstr ""
@@ -312,7 +316,7 @@ msgstr ""
 msgid "Encoder"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:80
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:82
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:77
 msgid "End Date"
 msgstr ""
@@ -347,7 +351,7 @@ msgstr ""
 msgid "Files removed:"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:134
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:137
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:131
 msgid "Friday"
 msgstr ""
@@ -445,7 +449,7 @@ msgstr ""
 msgid "Learn about Advanced Playlists"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:95
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:98
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:92
 msgid "Leave blank to play on every day of the week."
 msgstr ""
@@ -499,7 +503,7 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:130
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:133
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:127
 msgid "Monday"
 msgstr ""
@@ -761,7 +765,7 @@ msgstr ""
 msgid "Sample Rate"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:135
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:138
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:132
 msgid "Saturday"
 msgstr ""
@@ -776,7 +780,7 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:142
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:145
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:139
 msgid "Schedule"
 msgstr ""
@@ -786,7 +790,7 @@ msgstr ""
 msgid "Schedule View"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:92
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:95
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:89
 msgid "Scheduled Play Days of Week"
 msgstr ""
@@ -963,7 +967,7 @@ msgstr ""
 msgid "Streamer/DJ Accounts"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:136
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:139
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:133
 msgid "Sunday"
 msgstr ""
@@ -1014,8 +1018,8 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:168
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:38
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:51
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:74
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:86
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:76
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:89
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:86
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:115
 #: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:14
@@ -1056,7 +1060,7 @@ msgstr ""
 msgid "This streamer is not scheduled to play at any times."
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:133
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:136
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:130
 msgid "Thursday"
 msgstr ""
@@ -1076,7 +1080,7 @@ msgstr ""
 msgid "To set this schedule to run only within a certain date range, specify a start and end date."
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:131
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:134
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:128
 msgid "Tuesday"
 msgstr ""
@@ -1127,7 +1131,7 @@ msgstr ""
 msgid "Waveform Zoom"
 msgstr ""
 
-#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:132
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:135
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:129
 msgid "Wednesday"
 msgstr ""

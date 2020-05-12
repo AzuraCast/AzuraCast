@@ -24,7 +24,7 @@
             <b-col md="4">
                 <div class="inline-volume-controls d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <a class="btn btn-sm btn-outline-light py-0 px-3" href="#" @click.prevent="volume = 0">
+                        <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 0">
                             <i class="material-icons" aria-hidden="true">volume_mute</i>
                             <span class="sr-only" v-translate>Mute</span>
                         </a>
@@ -34,7 +34,7 @@
                                step="1" v-model="volume">
                     </div>
                     <div class="flex-shrink-0">
-                        <a class="btn btn-sm btn-outline-light py-0 px-3" href="#" @click.prevent="volume = 100">
+                        <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 100">
                             <i class="material-icons" aria-hidden="true">volume_up</i>
                             <span class="sr-only" v-translate>Full Volume</span>
                         </a>
@@ -131,13 +131,13 @@
             addRegion (start, end, color) {
                 if (this.wavesurfer) {
                     this.wavesurfer.addRegion(
-                            {
-                                start: start,
-                                end: end,
-                                resize: false,
-                                drag: false,
-                                color: color
-                            }
+                        {
+                            start: start,
+                            end: end,
+                            resize: false,
+                            drag: false,
+                            color: color
+                        }
                     );
                 }
             },

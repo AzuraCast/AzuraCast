@@ -3,9 +3,9 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Customization;
 use App\Entity;
+use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Filesystem;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
@@ -108,14 +108,28 @@ class ListAction
                     'album' => $media_row['album'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                     'art' => $artImgSrc,
-                    'art_url' => (string)$router->named('api:stations:media:art-internal',
-                        ['station_id' => $station->getId(), 'media_id' => $media_row['id']]),
+                    'art_url' => (string)$router->named(
+                        'api:stations:media:art-internal',
+                        ['station_id' => $station->getId(), 'media_id' => $media_row['id']]
+                    ),
+                    'waveform_url' => (string)$router->named(
+                        'api:stations:media:waveform',
+                        [
+                            'station_id' => $station->getId(),
+                            'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
+                        ]
+                    ),
                     'can_edit' => true,
-                    'edit_url' => (string)$router->named('api:stations:file',
-                        ['station_id' => $station->getId(), 'id' => $media_row['id']]),
-                    'play_url' => (string)$router->named('api:stations:files:download',
+                    'edit_url' => (string)$router->named(
+                        'api:stations:file',
+                        ['station_id' => $station->getId(), 'id' => $media_row['id']]
+                    ),
+                    'play_url' => (string)$router->named(
+                        'api:stations:files:download',
                         ['station_id' => $station->getId()],
-                        ['file' => $media_row['path']], true),
+                        ['file' => $media_row['path']],
+                        true
+                    ),
                     'playlists' => $playlists,
                 ] + $custom_fields;
         }
@@ -134,7 +148,7 @@ class ListAction
         $files = [];
         if (!empty($search_phrase)) {
             foreach ($media_in_dir as $short_path => $media_row) {
-                $files[] = 'media://' . $short_path;
+                $files[] = Filesystem::PREFIX_MEDIA . '://' . $short_path;
             }
         } else {
             $files_raw = $fs->listContents($file_path);
@@ -144,7 +158,7 @@ class ListAction
         }
 
         foreach ($files as $i) {
-            $short = str_replace('media://', '', $i);
+            $short = str_replace(Filesystem::PREFIX_MEDIA . '://', '', $i);
             $meta = $fs->getMetadata($i);
 
             if ('dir' === $meta['type']) {

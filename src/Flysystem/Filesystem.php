@@ -1,8 +1,7 @@
 <?php
-namespace App\Radio;
+namespace App\Flysystem;
 
 use App\Entity;
-use App\Flysystem\StationFilesystem;
 use Cache\Prefixed\PrefixedCachePool;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
@@ -15,9 +14,17 @@ use Psr\Cache\CacheItemPoolInterface;
  */
 class Filesystem
 {
+    public const PREFIX_MEDIA = 'media';
+    public const PREFIX_ALBUM_ART = 'albumart';
+    public const PREFIX_WAVEFORMS = 'waveforms';
+    public const PREFIX_PLAYLISTS = 'playlists';
+    public const PREFIX_CONFIG = 'config';
+    public const PREFIX_RECORDINGS = 'recordings';
+    public const PREFIX_TEMP = 'temp';
+
     protected CacheItemPoolInterface $cachePool;
 
-    /** @var StationFilesystem[] All current interfaces managed by this */
+    /** @var StationFilesystem[] All current interfaces managed by this instance. */
     protected array $interfaces = [];
 
     public function __construct(CacheItemPoolInterface $cachePool)
@@ -30,12 +37,13 @@ class Filesystem
         $station_id = $station->getId();
         if (!isset($this->interfaces[$station_id])) {
             $aliases = [
-                'media' => $station->getRadioMediaDir(),
-                'albumart' => $station->getRadioAlbumArtDir(),
-                'playlists' => $station->getRadioPlaylistsDir(),
-                'config' => $station->getRadioConfigDir(),
-                'recordings' => $station->getRadioRecordingsDir(),
-                'temp' => $station->getRadioTempDir(),
+                self::PREFIX_MEDIA => $station->getRadioMediaDir(),
+                self::PREFIX_ALBUM_ART => $station->getRadioAlbumArtDir(),
+                self::PREFIX_WAVEFORMS => $station->getRadioWaveformsDir(),
+                self::PREFIX_PLAYLISTS => $station->getRadioPlaylistsDir(),
+                self::PREFIX_CONFIG => $station->getRadioConfigDir(),
+                self::PREFIX_RECORDINGS => $station->getRadioRecordingsDir(),
+                self::PREFIX_TEMP => $station->getRadioTempDir(),
             ];
 
             $filesystems = [];

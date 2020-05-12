@@ -1,8 +1,9 @@
 <?php
 namespace App\Middleware\Module;
 
-use App\Http\ServerRequest;
 use App\Exception;
+use App\Flysystem\Filesystem;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -21,7 +22,7 @@ class StationFiles
 
         $params = $request->getParams();
         $file = ltrim($params['file'] ?? '', '/');
-        $file_path = 'media://' . $file;
+        $file_path = Filesystem::PREFIX_MEDIA . '://' . $file;
 
         $request = $request->withAttribute('file', $file)
             ->withAttribute('file_path', $file_path);

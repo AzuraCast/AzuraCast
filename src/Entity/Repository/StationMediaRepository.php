@@ -4,7 +4,8 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception\MediaProcessingException;
-use App\Radio\Filesystem;
+use App\Flysystem\Filesystem;
+use App\Service\AudioWaveform;
 use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
@@ -49,6 +50,13 @@ class StationMediaRepository extends Repository
      */
     public function find($id, Entity\Station $station): ?Entity\StationMedia
     {
+        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
+            $media = $this->findByUniqueId($id, $station);
+            if ($media instanceof Entity\StationMedia) {
+                return $media;
+            }
+        }
+
         return $this->repository->findOneBy([
             'station' => $station,
             'id' => $id,
@@ -391,6 +399,7 @@ class StationMediaRepository extends Repository
         }
 
         $this->loadFromFile($media, $tmp_path);
+        $this->writeWaveform($media, $tmp_path);
 
         if (null !== $tmp_uri) {
             $fs->delete($tmp_uri);
@@ -476,6 +485,39 @@ class StationMediaRepository extends Repository
         }
 
         return false;
+    }
+
+    public function updateWaveform(Entity\StationMedia $media): void
+    {
+        $fs = $this->filesystem->getForStation($media->getStation());
+
+        $mediaUri = $media->getPathUri();
+        $tmpUri = null;
+        try {
+            $tmpPath = $fs->getFullPath($mediaUri);
+        } catch (InvalidArgumentException $e) {
+            $tmpUri = $fs->copyToTemp($mediaUri);
+            $tmpPath = $fs->getFullPath($tmpUri);
+        }
+
+        $this->writeWaveform($media, $tmpPath);
+
+        if (null !== $tmpUri) {
+            $fs->delete($tmpUri);
+        }
+    }
+
+    public function writeWaveform(Entity\StationMedia $media, string $path): bool
+    {
+        $waveform = AudioWaveform::getWaveformFor($path);
+
+        $waveformPath = $media->getWaveformPath();
+
+        $fs = $this->filesystem->getForStation($media->getStation());
+        return $fs->put(
+            $waveformPath,
+            json_encode($waveform, \JSON_UNESCAPED_SLASHES | \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR)
+        );
     }
 
     /**

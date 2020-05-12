@@ -113,3 +113,14 @@
     force: yes
   when:
     - ansible_distribution_release == 'focal'
+
+- name: Add Audiowaveform PPA
+  apt_repository:
+    repo: "ppa:chris-needham/ppa"
+    update_cache: yes
+
+- name: Install Audiowaveform
+  apt:
+    name: audiowaveform
+    state: latest
+    install_recommends: no

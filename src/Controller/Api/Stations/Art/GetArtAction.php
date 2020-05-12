@@ -4,9 +4,9 @@ namespace App\Controller\Api\Stations\Art;
 use App\Customization;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
+use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Filesystem;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -56,7 +56,8 @@ class GetArtAction
         $media_id = explode('-', $media_id)[0];
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $mediaPath = 'albumart://' . $media_id . '.jpg';
+            $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
+            $mediaPath = Filesystem::PREFIX_ALBUM_ART . '://' . $media_id . '.jpg';
         } else {
             $media = $mediaRepo->find($media_id, $station);
             if ($media instanceof StationMedia) {
@@ -67,8 +68,7 @@ class GetArtAction
         }
 
         if ($fs->has($mediaPath)) {
-            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
-                ->withFlysystemFile($fs, $mediaPath, null, 'inline');
+            return $response->withFlysystemFile($fs, $mediaPath, null, 'inline');
         }
 
         return $defaultArtRedirect;

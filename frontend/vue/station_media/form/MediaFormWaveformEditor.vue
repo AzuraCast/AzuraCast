@@ -3,12 +3,15 @@
         <b-form-group>
             <b-row>
                 <div class="col-md-12">
-                    <h4>Visual Cue Editor <sup>BETA</sup></h4>
-                    <p>You are able to set cue points and fades using the visual editor. The timestamps will be saved to
-                        the corresponding fields in the advanced playback settings.</p>
+                    <h4>
+                        <translate>Visual Cue Editor</translate>
+                    </h4>
+                    <p>
+                        <translate>Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.</translate>
+                    </p>
                 </div>
                 <b-form-group class="col-md-12">
-                    <waveform ref="waveform" :audio-url="audioUrl" @ready="updateRegions"></waveform>
+                    <waveform ref="waveform" :audio-url="audioUrl" :waveform-url="waveformUrl" @ready="updateRegions"></waveform>
                 </b-form-group>
                 <b-form-group class="col-md-12">
                     <b-button-group>
@@ -58,7 +61,8 @@
         components: { Waveform },
         props: {
             form: Object,
-            audioUrl: String
+            audioUrl: String,
+            waveformUrl: String
         },
         computed: {
             langTitle () {

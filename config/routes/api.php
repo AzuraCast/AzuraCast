@@ -160,6 +160,10 @@ return function (App $app) {
                 ->setName('api:listeners:index')
                 ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 
+            $group->get('/waveform/{media_id:[a-zA-Z0-9\-]+}.json',
+                Controller\Api\Stations\Waveform\GetWaveformAction::class)
+                ->setName('api:stations:media:waveform');
+
             $group->get('/art/{media_id:[a-zA-Z0-9\-]+}.jpg', Controller\Api\Stations\Art\GetArtAction::class)
                 ->setName('api:stations:media:art');
 

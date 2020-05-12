@@ -652,6 +652,11 @@ class Station
         return $this->radio_base_dir . '/album_art';
     }
 
+    public function getRadioWaveformsDir(): string
+    {
+        return $this->radio_base_dir . '/waveforms';
+    }
+
     public function getRadioTempDir(): string
     {
         return $this->radio_base_dir . '/temp';
@@ -702,6 +707,20 @@ class Station
     public function getRadioConfigDir(): string
     {
         return $this->radio_base_dir . '/config';
+    }
+
+    public function getAllStationDirectories(): array
+    {
+        return [
+            $this->getRadioBaseDir(),
+            $this->getRadioMediaDir(),
+            $this->getRadioAlbumArtDir(),
+            $this->getRadioWaveformsDir(),
+            $this->getRadioPlaylistsDir(),
+            $this->getRadioConfigDir(),
+            $this->getRadioTempDir(),
+            $this->getRadioRecordingsDir(),
+        ];
     }
 
     public function getNowplaying(): ?Api\NowPlaying

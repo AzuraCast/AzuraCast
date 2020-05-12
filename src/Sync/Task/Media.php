@@ -2,9 +2,9 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use App\Flysystem\Filesystem;
 use App\Message;
 use App\MessageQueue;
-use App\Radio\Filesystem;
 use App\Radio\Quota;
 use Bernard\Envelope;
 use Brick\Math\BigInteger;
@@ -109,7 +109,7 @@ class Media extends AbstractTask
         $music_files = [];
         $total_size = BigInteger::zero();
 
-        $fsIterator = $fs->createIterator('media://', [
+        $fsIterator = $fs->createIterator(Filesystem::PREFIX_MEDIA . '://', [
             'filter' => FilterFactory::isFile(),
         ]);
 

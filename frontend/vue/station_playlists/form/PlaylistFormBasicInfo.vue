@@ -36,6 +36,15 @@
                     </b-form-checkbox>
                 </b-form-group>
 
+                <b-form-group class="col-md-12" label-for="form_edit_include_in_on_demand">
+                    <template v-slot:description>
+                        <translate>If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible.</translate>
+                    </template>
+                    <b-form-checkbox id="form_edit_include_in_on_demand" v-model="form.include_in_on_demand.$model">
+                        <translate>Include in On-Demand Player</translate>
+                    </b-form-checkbox>
+                </b-form-group>
+
                 <b-form-group class="col-md-12" label-for="edit_form_type">
                     <template v-slot:label>
                         <translate>Playlist Type</translate>

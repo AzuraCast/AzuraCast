@@ -42,16 +42,16 @@ class ListAction
         $params = $request->getQueryParams();
 
         if (!empty($params['sort'])) {
-            $sort_fields = [
-                'song_title' => 'sm.title',
-                'song_artist' => 'sm.artist',
-                'song_album' => 'sm.album',
+            $sortFields = [
+                'media_title' => 'sm.title',
+                'media_artist' => 'sm.artist',
+                'media_album' => 'sm.album',
             ];
 
-            foreach ($params['sort'] as $sort_key => $sort_direction) {
-                if (isset($sort_fields[$sort_key])) {
-                    $qb->addOrderBy($sort_fields[$sort_key], $sort_direction);
-                }
+            if (isset($sortFields[$params['sort']])) {
+                $sortField = $sortFields[$params['sort']];
+                $sortDirection = $params['sortOrder'] ?? 'ASC';
+                $qb->addOrderBy($sortField, $sortDirection);
             }
         } else {
             $qb->orderBy('sm.artist', 'ASC')

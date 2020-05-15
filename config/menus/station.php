@@ -44,6 +44,13 @@ return function (\App\Event\BuildStationMenu $e) {
             'external' => true,
             'visible' => $station->getEnablePublicPage(),
         ],
+        'ondemand' => [
+            'label' => __('On-Demand Media'),
+            'icon' => 'cloud_download',
+            'url' => $router->named('public:ondemand', ['station_id' => $station->getShortName()]),
+            'external' => true,
+            'visible' => $station->getEnableOnDemand(),
+        ],
         'files' => [
             'label' => __('Music Files'),
             'icon' => 'library_music',

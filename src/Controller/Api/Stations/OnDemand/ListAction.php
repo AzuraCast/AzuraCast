@@ -6,6 +6,7 @@ use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -66,20 +67,26 @@ class ListAction
         $paginator = new Paginator($qb);
         $paginator->setFromRequest($request);
 
+        $isBootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($media) use ($station, $router, $apiUtils) {
+        $paginator->setPostprocessor(function ($media) use ($station, $isBootgrid, $router, $apiUtils) {
             /** @var Entity\StationMedia $media */
             $row = new Entity\Api\StationOnDemand();
 
             $row->track_id = $media->getUniqueId();
-            $row->song = $media->api($apiUtils);
-            $row->download_url = (string)$router->named('api:ondemand:download', [
+            $row->media = $media->api($apiUtils);
+            $row->download_url = (string)$router->named('api:stations:ondemand:download', [
                 'station_id' => $station->getId(),
                 'media_id' => $media->getUniqueId(),
             ]);
 
             $row->resolveUrls($router->getBaseUrl());
+
+            if ($isBootgrid) {
+                return Utilities::flattenArray($row, '_');
+            }
+
             return $row;
         });
 

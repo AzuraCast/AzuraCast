@@ -31,7 +31,7 @@ class StationOnDemand implements ResolvableUrlInterface
      * @OA\Property
      * @var Song
      */
-    public Song $song;
+    public Song $media;
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.
@@ -40,6 +40,6 @@ class StationOnDemand implements ResolvableUrlInterface
      */
     public function resolveUrls(UriInterface $base): void
     {
-        $this->song->resolveUrls($base);
+        $this->media->resolveUrls($base);
     }
 }

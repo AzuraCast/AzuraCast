@@ -41,14 +41,7 @@
             }
 
             this.$eventHub.$on('player_toggle', (url) => {
-                if (this.is_playing && this.audio.src === url) {
-                    this.stop();
-                } else {
-                    this.stop();
-                    Vue.nextTick(() => {
-                        this.play(url);
-                    });
-                }
+                this.toggle(url);
             });
         },
         watch: {
@@ -82,6 +75,7 @@
                     Vue.nextTick(() => {
                         this.play(url);
                     });
+                    return;
                 }
 
                 this.is_playing = true;
@@ -119,10 +113,13 @@
                 this.$eventHub.$emit('player_playing', url);
             },
             toggle (url) {
-                if (this.is_playing) {
+                if (this.is_playing && this.audio.src === url) {
                     this.stop();
                 } else {
-                    this.play(url);
+                    this.stop();
+                    Vue.nextTick(() => {
+                        this.play(url);
+                    });
                 }
             },
             isPlaying () {

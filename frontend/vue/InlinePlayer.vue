@@ -4,14 +4,14 @@
 
         <div class="ml-3 player-inline" v-if="is_playing">
             <div class="inline-seek d-inline-flex align-items-center ml-1" v-if="duration !== 0">
-                <div class="flex-shrink-0 mx-1 text-muted time-display">
+                <div class="flex-shrink-0 mx-1 text-white-50 time-display">
                     {{ currentTimeText }}
                 </div>
                 <div class="flex-fill mx-2">
                     <input type="range" :title="langSeek" class="player-seek-range custom-range" min="0" max="100"
                            step="1" v-model="progress">
                 </div>
-                <div class="flex-shrink-0 mx-1 text-muted time-display">
+                <div class="flex-shrink-0 mx-1 text-white-50 time-display">
                     {{ durationText }}
                 </div>
             </div>

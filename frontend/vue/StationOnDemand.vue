@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" style="height: 100%;">
         <div class="card-header bg-primary-dark">
             <div class="d-flex align-items-center">
                 <div class="flex-shrink">
@@ -18,34 +18,32 @@
             </div>
         </div>
 
-        <div class="table-responsive table-responsive-lg">
-            <data-table ref="datatable" class="on-demand-table" paginated select-fields
-                        :fields="fields" :api-url="listUrl">
-                <template v-slot:cell(download_url)="row">
-                    <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
-                       @click.prevent="playAudio(row.item.download_url)" :title="langPlayPause">
-                        <i class="material-icons" aria-hidden="true" v-if="now_playing_url === row.item.download_url">pause_circle_filled</i>
-                        <i class="material-icons" aria-hidden="true" v-else>play_circle_filled</i>
-                    </a>
-                    &nbsp;
-                    <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
-                        <i class="material-icons">cloud_download</i>
-                    </a>
+        <data-table ref="datatable" class="on-demand-table" paginated select-fields
+                    :fields="fields" :api-url="listUrl">
+            <template v-slot:cell(download_url)="row">
+                <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
+                   @click.prevent="playAudio(row.item.download_url)" :title="langPlayPause">
+                    <i class="material-icons" aria-hidden="true" v-if="now_playing_url === row.item.download_url">pause_circle_filled</i>
+                    <i class="material-icons" aria-hidden="true" v-else>play_circle_filled</i>
+                </a>
+                &nbsp;
+                <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
+                    <i class="material-icons">cloud_download</i>
+                </a>
+            </template>
+            <template v-slot:cell(media_art)="row">
+                <a :href="row.item.media_art" class="album-art" target="_blank"
+                   data-fancybox="gallery">
+                    <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
+                </a>
+            </template>
+            <template v-slot:cell(size)="row">
+                <template v-if="!row.item.size">&nbsp;</template>
+                <template v-else>
+                    {{ formatFileSize(row.item.size) }}
                 </template>
-                <template v-slot:cell(media_art)="row">
-                    <a :href="row.item.media_art" class="album-art" target="_blank"
-                       data-fancybox="gallery">
-                        <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
-                    </a>
-                </template>
-                <template v-slot:cell(size)="row">
-                    <template v-if="!row.item.size">&nbsp;</template>
-                    <template v-else>
-                        {{ formatFileSize(row.item.size) }}
-                    </template>
-                </template>
-            </data-table>
-        </div>
+            </template>
+        </data-table>
     </div>
 </template>
 

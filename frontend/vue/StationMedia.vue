@@ -11,76 +11,74 @@
                            :initial-playlists="initialPlaylists" @relist="onTriggerRelist"></media-toolbar>
         </div>
 
-        <div class="table-responsive table-responsive-lg">
-            <data-table ref="datatable" id="station_media" selectable paginated select-fields
-                        @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
-                        :request-config="requestConfig">
-                <template v-slot:cell(name)="row">
-                    <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
-                        <a :href="row.item.media_art" class="album-art float-right pl-3" target="_blank"
-                           v-if="row.item.media_art" data-fancybox="gallery">
-                            <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
+        <data-table ref="datatable" id="station_media" selectable paginated select-fields
+                    @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
+                    :request-config="requestConfig">
+            <template v-slot:cell(name)="row">
+                <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
+                    <a :href="row.item.media_art" class="album-art float-right pl-3" target="_blank"
+                       v-if="row.item.media_art" data-fancybox="gallery">
+                        <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
+                    </a>
+                    <template v-if="row.item.media_is_playable">
+                        <a class="file-icon btn-audio" href="#" :data-url="row.item.media_play_url"
+                           @click.prevent="playAudio(row.item.media_play_url)" :title="langPlayPause">
+                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>
-                        <template v-if="row.item.media_is_playable">
-                            <a class="file-icon btn-audio" href="#" :data-url="row.item.media_play_url"
-                               @click.prevent="playAudio(row.item.media_play_url)" :title="langPlayPause">
-                                <i class="material-icons" aria-hidden="true">play_circle_filled</i>
-                            </a>
-                        </template>
-                        <template v-else>
-                            <span class="file-icon">
-                                <i class="material-icons" aria-hidden="true" v-if="row.item.is_dir">folder</i>
-                                <i class="material-icons" aria-hidden="true" v-else>note</i>
-                            </span>
-                        </template>
-                        <template v-if="row.item.is_dir">
-                            <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
-                               :title="row.item.name">
-                                {{ row.item.text }}
-                            </a>
-                        </template>
-                        <template v-else>
-                            <a class="name" :href="row.item.media_play_url" target="_blank" :title="row.item.name">
-                                {{ row.item.media_name }}
-                            </a>
-                        </template>
-                        <br>
-                        <small v-if="row.item.is_dir" v-translate>Directory</small>
-                        <small v-else>{{ row.item.text }}</small>
-                    </div>
-                </template>
-                <template v-slot:cell(media_length)="row">
-                    {{ row.item.media_length_text }}
-                </template>
-                <template v-slot:cell(size)="row">
-                    <template v-if="!row.item.size">&nbsp;</template>
+                    </template>
                     <template v-else>
-                        {{ formatFileSize(row.item.size) }}
+                        <span class="file-icon">
+                            <i class="material-icons" aria-hidden="true" v-if="row.item.is_dir">folder</i>
+                            <i class="material-icons" aria-hidden="true" v-else>note</i>
+                        </span>
                     </template>
+                    <template v-if="row.item.is_dir">
+                        <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
+                           :title="row.item.name">
+                            {{ row.item.text }}
+                        </a>
+                    </template>
+                    <template v-else>
+                        <a class="name" :href="row.item.media_play_url" target="_blank" :title="row.item.name">
+                            {{ row.item.media_name }}
+                        </a>
+                    </template>
+                    <br>
+                    <small v-if="row.item.is_dir" v-translate>Directory</small>
+                    <small v-else>{{ row.item.text }}</small>
+                </div>
+            </template>
+            <template v-slot:cell(media_length)="row">
+                {{ row.item.media_length_text }}
+            </template>
+            <template v-slot:cell(size)="row">
+                <template v-if="!row.item.size">&nbsp;</template>
+                <template v-else>
+                    {{ formatFileSize(row.item.size) }}
                 </template>
-                <template v-slot:cell(playlists)="row">
-                    <template v-for="(playlist, index) in row.item.media_playlists">
-                        <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist)"
-                           :title="langPlaylistSelect">{{ playlist }}</a>
-                        <span v-if="index+1 < row.item.media_playlists.length">, </span>
-                    </template>
+            </template>
+            <template v-slot:cell(playlists)="row">
+                <template v-for="(playlist, index) in row.item.media_playlists">
+                    <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist)"
+                       :title="langPlaylistSelect">{{ playlist }}</a>
+                    <span v-if="index+1 < row.item.media_playlists.length">, </span>
                 </template>
-                <template v-slot:cell(commands)="row">
-                    <template v-if="row.item.media_can_edit">
-                        <b-button size="sm" variant="primary"
-                                  @click.prevent="edit(row.item.media_edit_url, row.item.media_art_url, row.item.media_play_url, row.item.media_waveform_url)">
-                            {{ langEditButton }}
-                        </b-button>
-                    </template>
-                    <template v-else-if="row.item.can_rename">
-                        <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
-                            {{ langRenameButton }}
-                        </b-button>
-                    </template>
-                    <template v-else>&nbsp;</template>
+            </template>
+            <template v-slot:cell(commands)="row">
+                <template v-if="row.item.media_can_edit">
+                    <b-button size="sm" variant="primary"
+                              @click.prevent="edit(row.item.media_edit_url, row.item.media_art_url, row.item.media_play_url, row.item.media_waveform_url)">
+                        {{ langEditButton }}
+                    </b-button>
                 </template>
-            </data-table>
-        </div>
+                <template v-else-if="row.item.can_rename">
+                    <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
+                        {{ langRenameButton }}
+                    </b-button>
+                </template>
+                <template v-else>&nbsp;</template>
+            </template>
+        </data-table>
 
         <new-directory-modal :current-directory="currentDirectory" :mkdir-url="mkdirUrl"
                              @relist="onTriggerRelist">
@@ -165,28 +163,28 @@
             });
 
             fields.push(
-                    { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
-                    {
-                        key: 'mtime',
-                        label: this.$gettext('Modified'),
-                        sortable: true,
-                        formatter: (value, key, item) => {
-                            if (!value) {
-                                return '';
-                            }
-                            return moment.unix(value).format('lll');
-                        },
-                        selectable: true,
-                        visible: true
+                { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
+                {
+                    key: 'mtime',
+                    label: this.$gettext('Modified'),
+                    sortable: true,
+                    formatter: (value, key, item) => {
+                        if (!value) {
+                            return '';
+                        }
+                        return moment.unix(value).format('lll');
                     },
-                    {
-                        key: 'playlists',
-                        label: this.$gettext('Playlists'),
-                        sortable: true,
-                        selectable: true,
-                        visible: true
-                    },
-                    { key: 'commands', label: this.$gettext('Actions'), sortable: false }
+                    selectable: true,
+                    visible: true
+                },
+                {
+                    key: 'playlists',
+                    label: this.$gettext('Playlists'),
+                    sortable: true,
+                    selectable: true,
+                    visible: true
+                },
+                { key: 'commands', label: this.$gettext('Actions'), sortable: false }
             );
 
             return {

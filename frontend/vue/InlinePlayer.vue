@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="display: contents">
         <audio-player ref="player"></audio-player>
 
         <div class="ml-3 player-inline" v-if="is_playing">

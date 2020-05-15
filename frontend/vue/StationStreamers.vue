@@ -21,32 +21,30 @@
                         </b-button>
                     </b-card-body>
 
-                    <div class="table-responsive table-responsive-lg">
-                        <data-table ref="datatable" id="station_streamers" :show-toolbar="false" :fields="fields"
-                                    :api-url="listUrl">
-                            <template v-slot:cell(streamer_username)="row">
-                                <code>{{ row.item.streamer_username }}</code>
-                                <div>
-                                    <span class="badge badge-danger" v-if="!row.item.is_active">
-                                        <translate>Disabled</translate>
-                                    </span>
-                                </div>
-                            </template>
-                            <template v-slot:cell(actions)="row">
-                                <b-button-group size="sm">
-                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                                        <translate>Edit</translate>
-                                    </b-button>
-                                    <b-button size="sm" variant="default" @click.prevent="doShowBroadcasts(row.item.links.broadcasts)">
-                                        <translate>Broadcasts</translate>
-                                    </b-button>
-                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                                        <translate>Delete</translate>
-                                    </b-button>
-                                </b-button-group>
-                            </template>
-                        </data-table>
-                    </div>
+                    <data-table ref="datatable" id="station_streamers" :show-toolbar="false" :fields="fields"
+                                :api-url="listUrl">
+                        <template v-slot:cell(streamer_username)="row">
+                            <code>{{ row.item.streamer_username }}</code>
+                            <div>
+                                <span class="badge badge-danger" v-if="!row.item.is_active">
+                                    <translate>Disabled</translate>
+                                </span>
+                            </div>
+                        </template>
+                        <template v-slot:cell(actions)="row">
+                            <b-button-group size="sm">
+                                <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                                    <translate>Edit</translate>
+                                </b-button>
+                                <b-button size="sm" variant="default" @click.prevent="doShowBroadcasts(row.item.links.broadcasts)">
+                                    <translate>Broadcasts</translate>
+                                </b-button>
+                                <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                                    <translate>Delete</translate>
+                                </b-button>
+                            </b-button-group>
+                        </template>
+                    </data-table>
                 </b-tab>
                 <b-tab :title="langScheduleViewTab" no-body>
                     <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"

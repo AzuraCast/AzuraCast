@@ -20,87 +20,85 @@
                         </b-button>
                     </b-card-body>
 
-                    <div class="table-responsive table-responsive-lg">
-                        <data-table ref="datatable" id="station_playlists" paginated :fields="fields"
-                                    :api-url="listUrl">
-                            <template v-slot:cell(actions)="row">
-                                <b-button-group size="sm">
-                                    <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                                        <translate>Edit</translate>
-                                    </b-button>
-                                    <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                                        <translate>Delete</translate>
-                                    </b-button>
+                    <data-table ref="datatable" id="station_playlists" paginated :fields="fields"
+                                :api-url="listUrl">
+                        <template v-slot:cell(actions)="row">
+                            <b-button-group size="sm">
+                                <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
+                                    <translate>Edit</translate>
+                                </b-button>
+                                <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
+                                    <translate>Delete</translate>
+                                </b-button>
 
-                                    <b-dropdown size="sm" variant="dark" :text="langMore">
-                                        <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
-                                            {{ langToggleButton(row.item) }}
+                                <b-dropdown size="sm" variant="dark" :text="langMore">
+                                    <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
+                                        {{ langToggleButton(row.item) }}
+                                    </b-dropdown-item>
+                                    <b-dropdown-item @click.prevent="doImport(row.item.links.import)"
+                                                     v-if="row.item.source === 'songs'">
+                                        {{ langImportButton }}
+                                    </b-dropdown-item>
+                                    <b-dropdown-item @click.prevent="doReorder(row.item.links.order)"
+                                                     v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
+                                        {{ langReorderButton }}
+                                    </b-dropdown-item>
+                                    <b-dropdown-item @click.prevent="doModify(row.item.links.reshuffle)"
+                                                     v-if="row.item.order === 'shuffle'">
+                                        {{ langReshuffleButton }}
+                                    </b-dropdown-item>
+                                    <template v-for="format in ['pls', 'm3u']">
+                                        <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
+                                            <translate :translate-params="{ format: format.toUpperCase() }">
+                                            Export %{format}
+                                            </translate>
                                         </b-dropdown-item>
-                                        <b-dropdown-item @click.prevent="doImport(row.item.links.import)"
-                                                         v-if="row.item.source === 'songs'">
-                                            {{ langImportButton }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item @click.prevent="doReorder(row.item.links.order)"
-                                                         v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
-                                            {{ langReorderButton }}
-                                        </b-dropdown-item>
-                                        <b-dropdown-item @click.prevent="doModify(row.item.links.reshuffle)"
-                                                         v-if="row.item.order === 'shuffle'">
-                                            {{ langReshuffleButton }}
-                                        </b-dropdown-item>
-                                        <template v-for="format in ['pls', 'm3u']">
-                                            <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
-                                                <translate :translate-params="{ format: format.toUpperCase() }">
-                                                Export %{format}
-                                                </translate>
-                                            </b-dropdown-item>
-                                        </template>
-                                    </b-dropdown>
-                                </b-button-group>
+                                    </template>
+                                </b-dropdown>
+                            </b-button-group>
+                        </template>
+                        <template v-slot:cell(name)="row">
+                            <h5 class="m-0">{{ row.item.name }}</h5>
+                            <div>
+                                <span class="badge badge-dark">
+                                    <translate v-if="row.item.source === 'songs'">
+                                        Song-based
+                                    </translate>
+                                    <translate v-else>
+                                        Remote URL
+                                    </translate>
+                                </span>
+                                <span class="badge badge-primary" v-if="row.item.is_jingle">
+                                    <translate>Jingle Mode</translate>
+                                </span>
+                                <span class="badge badge-info"
+                                      v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
+                                    <translate>Sequential</translate>
+                                </span>
+                                <span class="badge badge-info" v-if="row.item.include_in_on_demand">
+                                    <translate>On-Demand</translate>
+                                </span>
+                                <span class="badge badge-success" v-if="row.item.include_in_automation">
+                                    <translate>Auto-Assigned</translate>
+                                </span>
+                                <span class="badge badge-danger" v-if="!row.item.is_enabled">
+                                    <translate>Disabled</translate>
+                                </span>
+                            </div>
+                        </template>
+                        <template v-slot:cell(scheduling)="row">
+                            <span v-html="formatType(row.item)"></span>
+                        </template>
+                        <template v-slot:cell(num_songs)="row">
+                            <template v-if="row.item.source === 'songs'">
+                                <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
+                                    {{ row.item.num_songs }}
+                                </a>
+                                ({{ formatLength(row.item.total_length) }})
                             </template>
-                            <template v-slot:cell(name)="row">
-                                <h5 class="m-0">{{ row.item.name }}</h5>
-                                <div>
-                                    <span class="badge badge-dark">
-                                        <translate v-if="row.item.source === 'songs'">
-                                            Song-based
-                                        </translate>
-                                        <translate v-else>
-                                            Remote URL
-                                        </translate>
-                                    </span>
-                                    <span class="badge badge-primary" v-if="row.item.is_jingle">
-                                        <translate>Jingle Mode</translate>
-                                    </span>
-                                    <span class="badge badge-info"
-                                          v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
-                                        <translate>Sequential</translate>
-                                    </span>
-                                    <span class="badge badge-info" v-if="row.item.include_in_on_demand">
-                                        <translate>On-Demand</translate>
-                                    </span>
-                                    <span class="badge badge-success" v-if="row.item.include_in_automation">
-                                        <translate>Auto-Assigned</translate>
-                                    </span>
-                                    <span class="badge badge-danger" v-if="!row.item.is_enabled">
-                                        <translate>Disabled</translate>
-                                    </span>
-                                </div>
-                            </template>
-                            <template v-slot:cell(scheduling)="row">
-                                <span v-html="formatType(row.item)"></span>
-                            </template>
-                            <template v-slot:cell(num_songs)="row">
-                                <template v-if="row.item.source === 'songs'">
-                                    <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
-                                        {{ row.item.num_songs }}
-                                    </a>
-                                    ({{ formatLength(row.item.total_length) }})
-                                </template>
-                                <template v-else>&nbsp;</template>
-                            </template>
-                        </data-table>
-                    </div>
+                            <template v-else>&nbsp;</template>
+                        </template>
+                    </data-table>
                 </b-tab>
                 <b-tab :title="langScheduleViewTab" no-body>
                     <schedule ref="schedule" :schedule-url="scheduleUrl" :station-time-zone="stationTimeZone"

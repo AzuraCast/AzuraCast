@@ -502,4 +502,16 @@ return [
             ],
         ],
     ],
+
+    'station_on_demand' => [
+        'order' => 10,
+        'require' => ['vue', 'vue-translations', 'bootstrap-vue'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/station_on_demand.js',
+                ],
+            ],
+        ],
+    ],
 ];

@@ -93,6 +93,18 @@ return [
                     ],
                 ],
 
+                'enable_on_demand' => [
+                    'toggle',
+                    [
+                        'label' => __('Enable On-Demand Streaming and Downloads'),
+                        'description' => __('If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                        'form_group_class' => 'col-sm-6',
+                    ],
+                ],
+
                 'default_album_art_url' => [
                     'text',
                     [

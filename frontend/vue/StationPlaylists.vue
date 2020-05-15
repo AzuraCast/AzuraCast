@@ -76,6 +76,9 @@
                                           v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
                                         <translate>Sequential</translate>
                                     </span>
+                                    <span class="badge badge-info" v-if="row.item.include_in_on_demand">
+                                        <translate>On-Demand</translate>
+                                    </span>
                                     <span class="badge badge-success" v-if="row.item.include_in_automation">
                                         <translate>Auto-Assigned</translate>
                                     </span>
@@ -170,8 +173,8 @@
         methods: {
             langToggleButton (record) {
                 return (record.is_enabled)
-                        ? this.$gettext('Disable')
-                        : this.$gettext('Enable');
+                    ? this.$gettext('Disable')
+                    : this.$gettext('Enable');
             },
             formatTime (time) {
                 return moment(time).tz(this.stationTimeZone).format('LT');

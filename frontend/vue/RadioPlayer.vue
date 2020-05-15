@@ -1,8 +1,6 @@
 <template>
     <div class="radio-player-widget">
-        <template v-if="is_playing">
-            <audio ref="player" v-bind:title="np.now_playing.song.text"/>
-        </template>
+        <audio-player ref="player" v-bind:title="np.now_playing.song.text"></audio-player>
 
         <div class="now-playing-details">
             <div class="now-playing-art" v-if="show_album_art && np.now_playing.song.art">
@@ -216,10 +214,10 @@
 <script>
     import axios from 'axios';
     import NchanSubscriber from 'nchan';
-    import store from 'store';
-    import getLogarithmicVolume from './inc/logarithmic_volume';
+    import AudioPlayer from './components/AudioPlayer';
 
     export default {
+        components: { AudioPlayer },
         props: {
             now_playing_uri: {
                 type: String,
@@ -261,42 +259,21 @@
         },
         data: function () {
             return {
+                'is_mounted': false,
                 'np': this.initial_now_playing,
                 'np_elapsed': 0,
-                'is_playing': false,
-                'volume': 55,
                 'current_stream': {
                     'name': '',
                     'url': ''
                 },
-                'audio': null,
                 'np_timeout': null,
                 'nchan_subscriber': null,
                 'clock_interval': null
             };
         },
         mounted: function () {
+            this.is_mounted = true;
             this.clock_interval = setInterval(this.iterateTimer, 1000);
-
-            // Allow pausing from the mobile metadata update.
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.setActionHandler('pause', () => {
-                    this.stop();
-                });
-            }
-
-            // Check webstorage for existing volume preference.
-            if (store.enabled && store.get('player_volume') !== undefined) {
-                this.volume = store.get('player_volume', this.volume);
-            }
-
-            // Check the query string if browser supports easy query string access.
-            if (typeof URLSearchParams !== 'undefined') {
-                var urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.has('volume')) {
-                    this.volume = parseInt(urlParams.get('volume'));
-                }
-            }
 
             // Convert initial NP data from prop to data.
             this.setNowPlaying(this.np);
@@ -368,80 +345,40 @@
             time_display_total () {
                 let time_total = this.np.now_playing.duration;
                 return (time_total) ? this.formatTime(time_total) : null;
-            }
-        },
-        watch: {
-            volume (volume) {
-                if (this.audio !== null) {
-                    this.audio.volume = getLogarithmicVolume(volume);
+            },
+            is_playing () {
+                if (!this.is_mounted) {
+                    return;
                 }
 
-                if (store.enabled) {
-                    store.set('player_volume', volume);
+                return this.$refs.player.isPlaying();
+            },
+            volume: {
+                get () {
+                    if (!this.is_mounted) {
+                        return;
+                    }
+
+                    return this.$refs.player.getVolume();
+                },
+                set (vol) {
+                    this.$refs.player.setVolume(vol);
                 }
             }
         },
         methods: {
             play () {
-                if (this.is_playing) {
-                    return;
-                }
-
-                this.is_playing = true;
-
-                // Wait for "next tick" to force Vue to recreate the <audio> element.
-                Vue.nextTick(() => {
-                    this.audio = this.$refs.player;
-
-                    // Handle audio errors.
-                    this.audio.onerror = (e) => {
-                        if (e.target.error.code === e.target.error.MEDIA_ERR_NETWORK && this.audio.src !== '') {
-                            console.log('Network interrupted stream. Automatically reconnecting shortly...');
-                            setTimeout(this.play, 5000);
-                        }
-                    };
-
-                    this.audio.onended = () => {
-                        if (this.is_playing) {
-                            this.stop();
-
-                            console.log('Network interrupted stream. Automatically reconnecting shortly...');
-                            setTimeout(this.play, 5000);
-                        } else {
-                            this.stop();
-                        }
-                    };
-
-                    this.audio.volume = getLogarithmicVolume(this.volume);
-
-                    this.audio.src = this.current_stream.url;
-                    this.audio.load();
-
-                    this.audio.play();
-                });
+                this.$refs.player.play(this.current_stream.url);
             },
             stop () {
-                this.audio.pause();
-                this.audio.src = '';
-
-                this.is_playing = false;
+                this.$refs.player.stop();
             },
             toggle () {
-                if (this.is_playing) {
-                    this.stop();
-                } else {
-                    this.play();
-                }
+                this.$refs.player.toggle(this.current_stream.url);
             },
             switchStream (new_stream) {
                 this.current_stream = new_stream;
-
-                // Stop the existing stream, then wait for the next Vue "tick", at which point the <audio> element will
-                // no longer exist, then recreate it via play() command.
-                this.stop();
-                Vue.nextTick(() => {
-                    this.play();
-                });
+                this.play();
             },
             checkNowPlaying () {
                 if (this.use_nchan) {

@@ -206,6 +206,15 @@ class StationPlaylist
     protected $include_in_requests = true;
 
     /**
+     * @ORM\Column(name="include_in_on_demand", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
+     * @var bool Whether this playlist's media is included in "on demand" download/streaming if enabled.
+     */
+    protected $include_in_on_demand = false;
+
+    /**
      * @ORM\Column(name="include_in_automation", type="boolean")
      *
      * @OA\Property(example=false)
@@ -426,6 +435,16 @@ class StationPlaylist
     public function setIncludeInRequests(bool $include_in_requests): void
     {
         $this->include_in_requests = $include_in_requests;
+    }
+
+    public function getIncludeInOnDemand(): bool
+    {
+        return $this->include_in_on_demand;
+    }
+
+    public function setIncludeInOnDemand(bool $include_in_on_demand): void
+    {
+        $this->include_in_on_demand = $include_in_on_demand;
     }
 
     /**

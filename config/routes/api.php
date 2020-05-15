@@ -156,6 +156,13 @@ return function (App $app) {
                 ->setName('api:requests:submit')
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
+            $group->get('/ondemand', Controller\Api\Stations\OnDemand\ListAction::class)
+                ->setName('api:stations:ondemand:list');
+
+            $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
+                ->setName('api:stations:ondemand:download')
+                ->add(new Middleware\RateLimit('ondemand', 1, 2));
+
             $group->get('/listeners', Controller\Api\Stations\ListenersController::class . ':indexAction')
                 ->setName('api:listeners:index')
                 ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));

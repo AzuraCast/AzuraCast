@@ -53,8 +53,8 @@
         computed: {
             langTitle () {
                 return this.isEditMode
-                        ? this.$gettext('Edit Playlist')
-                        : this.$gettext('Add Playlist');
+                    ? this.$gettext('Edit Playlist')
+                    : this.$gettext('Add Playlist');
             },
             isEditMode () {
                 return this.editUrl !== null;
@@ -64,6 +64,7 @@
             form: {
                 'name': { required },
                 'is_enabled': { required },
+                'include_in_on_demand': {},
                 'weight': { required },
                 'type': { required },
                 'source': { required },
@@ -94,6 +95,7 @@
                 this.form = {
                     'name': '',
                     'is_enabled': true,
+                    'include_in_on_demand': false,
                     'weight': 3,
                     'type': 'default',
                     'source': 'songs',
@@ -130,6 +132,7 @@
                     this.form = {
                         'name': d.name,
                         'is_enabled': d.is_enabled,
+                        'include_in_on_demand': d.include_in_on_demand,
                         'weight': d.weight,
                         'type': d.type,
                         'source': d.source,
@@ -161,11 +164,11 @@
 
                 axios({
                     method: (this.isEditMode)
-                            ? 'PUT'
-                            : 'POST',
+                        ? 'PUT'
+                        : 'POST',
                     url: (this.isEditMode)
-                            ? this.editUrl
-                            : this.createUrl,
+                        ? this.editUrl
+                        : this.createUrl,
                     data: this.form
                 }).then((resp) => {
                     let notifyMessage = this.$gettext('Changes saved.');

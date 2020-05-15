@@ -269,6 +269,11 @@ var vueProjects = {
     'src_file': 'vue/StationStreamers.vue',
     'filename': 'station_streamers.js',
     'library': 'StationStreamers'
+  },
+  'station_on_demand': {
+    'src_file': 'vue/StationOnDemand.vue',
+    'filename': 'station_on_demand.js',
+    'library': 'StationOnDemand'
   }
 }
 

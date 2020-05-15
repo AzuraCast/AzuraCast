@@ -1,0 +1,18 @@
+<?php
+$this->layout('minimal', [
+    'page_class' => 'embed ondemand station-' . $station->getShortName(),
+    'title' => 'On-Demand Media - ' . $this->e($station->getName()),
+    'hide_footer' => true,
+]);
+
+/** @var \App\Assets $assets */
+$assets
+    ->load('vue')
+    ->load('station_on_demand')
+    ->addInlineJs($this->fetch('frontend/public/ondemand.js', [
+        'station' => $station,
+        'custom_fields' => $custom_fields,
+    ]));
+?>
+
+<div id="station_on_demand"></div>

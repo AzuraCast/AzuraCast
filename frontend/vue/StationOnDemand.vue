@@ -4,7 +4,12 @@
             <div class="d-flex align-items-center">
                 <div class="flex-shrink">
                     <h2 class="card-title py-2">
-                        <translate>On-Demand Media</translate>
+                        <template v-if="stationName">
+                            {{ stationName }}
+                        </template>
+                        <template v-else>
+                            <translate>On-Demand Media</translate>
+                        </template>
                     </h2>
                 </div>
                 <div class="flex-fill text-right">
@@ -14,7 +19,7 @@
         </div>
 
         <div class="table-responsive table-responsive-lg">
-            <data-table ref="datatable" class="on_demand_table" paginated select-fields
+            <data-table ref="datatable" class="on-demand-table" paginated select-fields
                         :fields="fields" :api-url="listUrl">
                 <template v-slot:cell(download_url)="row">
                     <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
@@ -45,11 +50,36 @@
 </template>
 
 <style lang="scss">
-    img.media_manager_album_art {
-        width: 40px;
-        height: auto;
-        border-radius: 5px;
+    .on-demand-table {
+        table.b-table {
+            thead tr th:nth-child(1),
+            tbody tr td:nth-child(1) {
+                padding-right: 0.75rem;
+                width: 3rem;
+                white-space: nowrap;
+            }
+
+            thead tr th:nth-child(2),
+            tbody tr td:nth-child(2) {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+                width: 40px;
+            }
+
+            thead tr th:nth-child(3),
+            tbody tr td:nth-child(3) {
+                padding-left: 0.5rem;
+            }
+        }
+
+        img.media_manager_album_art {
+            width: 40px;
+            height: auto;
+            border-radius: 5px;
+        }
     }
+
+
 </style>
 
 <script>
@@ -61,12 +91,13 @@
         components: { DataTable, InlinePlayer },
         props: {
             listUrl: String,
+            stationName: String,
             customFields: Array
         },
         data () {
             let fields = [
                 { key: 'download_url', label: ' ', sortable: false, selectable: false },
-                { key: 'media_art', label: this.$gettext('Art'), sortable: false, selectable: true },
+                { key: 'media_art', label: this.$gettext('Art'), sortable: false, selectable: false },
                 { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
                 {
                     key: 'media_artist',

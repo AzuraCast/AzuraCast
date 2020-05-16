@@ -1,5 +1,5 @@
 <template>
-    <div style="display: contents">
+    <div :id="id" style="display: contents">
         <div class="card-body p-0">
             <b-row class="align-items-center mb-2" v-if="showToolbar">
                 <b-col xl="7" md="6" sm="12">
@@ -153,7 +153,19 @@
             requestProcess: Function
         },
         data () {
+            let allFields = [];
+            _.forEach(this.fields, function (field) {
+                allFields.push({
+                    key: field.key,
+                    label: _.defaultTo(field.label, ''),
+                    sortable: _.defaultTo(field.sortable, false),
+                    selectable: _.defaultTo(field.selectable, false),
+                    visible: _.defaultTo(field.visible, true)
+                });
+            });
+
             return {
+                allFields: allFields,
                 selected: [],
                 allSelected: false,
                 storeKey: 'datatable_' + this.id + '_settings',
@@ -194,10 +206,16 @@
                 return this.$gettext('Loading...');
             },
             visibleFields () {
-                let fields = this.fields.slice();
+                let fields = this.allFields.slice();
 
                 if (this.selectable) {
-                    fields.unshift({ key: 'selected', label: '', sortable: false });
+                    fields.unshift({
+                        key: 'selected',
+                        label: '',
+                        sortable: false,
+                        selectable: false,
+                        visible: true
+                    });
                 }
 
                 if (!this.selectFields) {
@@ -205,17 +223,16 @@
                 }
 
                 return _.filter(fields, (field) => {
-                    let isSelectable = _.defaultTo(field.selectable, false);
-                    if (!isSelectable) {
+                    if (!field.selectable) {
                         return true;
                     }
 
-                    return _.defaultTo(field.visible, true);
+                    return field.visible;
                 });
             },
             selectableFields () {
-                return _.filter(this.fields.slice(), (field) => {
-                    return _.defaultTo(field.selectable, false);
+                return _.filter(this.allFields.slice(), (field) => {
+                    return field.selectable;
                 });
             },
             showPagination () {

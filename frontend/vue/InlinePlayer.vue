@@ -66,6 +66,7 @@
 
 <script>
     import AudioPlayer from './components/AudioPlayer';
+    import { formatTime } from './inc/format_time';
 
     export default {
         components: { AudioPlayer },
@@ -85,19 +86,10 @@
                 return this.$gettext('Volume');
             },
             durationText () {
-                let minutes = Math.floor(this.duration / 60),
-                    seconds_int = this.duration - minutes * 60,
-                    seconds_str = seconds_int.toString(),
-                    seconds = seconds_str.substr(0, 2);
-
-                return minutes + ':' + seconds;
+                return formatTime(this.duration);
             },
             currentTimeText () {
-                let current_minute = parseInt(this.currentTime / 60) % 60,
-                    current_seconds_long = this.currentTime % 60,
-                    current_seconds = current_seconds_long.toFixed();
-
-                return (current_minute < 10 ? '0' + current_minute : current_minute) + ':' + (current_seconds < 10 ? '0' + current_seconds : current_seconds);
+                return formatTime(this.currentTime);
             },
             duration () {
                 if (!this.is_mounted) {

@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <data-table ref="datatable" class="on-demand-table" paginated select-fields
+        <data-table ref="datatable" id="station_on_demand_table" paginated select-fields
                     :fields="fields" :api-url="listUrl">
             <template v-slot:cell(download_url)="row">
                 <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
@@ -48,7 +48,7 @@
 </template>
 
 <style lang="scss">
-    .on-demand-table {
+    #station_on_demand_table {
         table.b-table {
             thead tr th:nth-child(1),
             tbody tr td:nth-child(1) {
@@ -94,8 +94,8 @@
         },
         data () {
             let fields = [
-                { key: 'download_url', label: ' ', sortable: false, selectable: false },
-                { key: 'media_art', label: this.$gettext('Art'), sortable: false, selectable: false },
+                { key: 'download_url', label: ' ' },
+                { key: 'media_art', label: this.$gettext('Art') },
                 { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
                 {
                     key: 'media_artist',
@@ -103,7 +103,7 @@
                     sortable: true,
                     selectable: true
                 },
-                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true }
+                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false }
             ];
 
             _.forEach(this.customFields.slice(), (field) => {

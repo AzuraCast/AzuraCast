@@ -1,6 +1,6 @@
 <template>
     <div :id="id" style="display: contents">
-        <div class="card-body p-0">
+        <div class="datatable-toolbar-top card-body">
             <b-row class="align-items-center mb-2" v-if="showToolbar">
                 <b-col xl="7" md="6" sm="12">
                     <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
@@ -52,7 +52,7 @@
                 </b-col>
             </b-row>
         </div>
-        <div class="table-responsive table-responsive-lg">
+        <div class="datatable-main table-responsive table-responsive-lg">
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                      :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords"
@@ -95,7 +95,7 @@
                 </template>
             </b-table>
         </div>
-        <div class="card-body p-0">
+        <div class="datatable-toolbar-bottom card-body">
             <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
                           class="mb-0 mt-2" v-if="showPagination">
             </b-pagination>
@@ -104,6 +104,16 @@
 </template>
 
 <style lang="scss">
+    div.datatable-main {
+        flex: 1;
+    }
+
+    div.datatable-toolbar-top,
+    div.datatable-toolbar-bottom {
+        flex: 0;
+        padding: 0;
+    }
+
     table.b-table-selectable {
         thead tr th:nth-child(1),
         tbody tr td:nth-child(1) {

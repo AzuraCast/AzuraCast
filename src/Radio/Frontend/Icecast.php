@@ -7,6 +7,7 @@ use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
+use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Adapter\AdapterAbstract;
 use Psr\Http\Message\UriInterface;
 
@@ -79,11 +80,17 @@ class Icecast extends AbstractFrontend
     {
         $config_dir = $station->getRadioConfigDir();
         $settings = Settings::getInstance();
+        
+        $settingsBaseUrl = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, 'http://localhost');
+        if (strpos($settingsBaseUrl, 'http') !== 0) {
+            $settingsBaseUrl = 'http://' . $settingsBaseUrl;
+        }
+        $baseUrl = new Uri($settingsBaseUrl);
 
         $defaults = [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
-            'hostname' => $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, 'localhost'),
+            'hostname' => $baseUrl->getHost(),
             'limits' => [
                 'clients' => 2500,
                 'sources' => $station->getMounts()->count(),

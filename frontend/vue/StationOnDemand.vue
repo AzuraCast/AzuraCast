@@ -97,12 +97,7 @@
                 { key: 'download_url', label: ' ' },
                 { key: 'media_art', label: this.$gettext('Art') },
                 { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
-                {
-                    key: 'media_artist',
-                    label: this.$gettext('Artist'),
-                    sortable: true,
-                    selectable: true
-                },
+                { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true },
                 { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false }
             ];
 
@@ -110,7 +105,7 @@
                 fields.push({
                     key: field.display_key,
                     label: field.label,
-                    sortable: true,
+                    sortable: false,
                     selectable: true,
                     visible: false
                 });

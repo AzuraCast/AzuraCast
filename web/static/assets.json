@@ -51,7 +51,7 @@
   "dist/material.js": "dist/material-df68dbf23f.js",
   "dist/radio_player.js": "dist/radio_player-562bd0b7db.js",
   "dist/station_media.js": "dist/station_media-c1f7783754.js",
-  "dist/station_on_demand.js": "dist/station_on_demand-72f2524fba.js",
+  "dist/station_on_demand.js": "dist/station_on_demand-93fdfe1195.js",
   "dist/station_playlists.js": "dist/station_playlists-c9f15a1d91.js",
   "dist/station_streamers.js": "dist/station_streamers-b6237bc566.js",
   "dist/vue_gettext.js": "dist/vue_gettext-2d25ba9686.js",

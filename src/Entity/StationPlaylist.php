@@ -510,11 +510,17 @@ class StationPlaylist
      */
     public function isPlayable(): bool
     {
-        return ($this->is_enabled
-            && (self::SOURCE_SONGS !== $this->source || $this->media_items->count() > 0)
-            && !$this->backendInterruptOtherSongs()
-            && !$this->backendMerge()
-            && !$this->backendLoopPlaylistOnce());
+        // Any "advanced" settings are not managed by AzuraCast AutoDJ.
+        if (!$this->is_enabled || $this->backendInterruptOtherSongs() || $this->backendMerge() || $this->backendLoopPlaylistOnce()) {
+            return false;
+        }
+
+        if (self::SOURCE_SONGS === $this->source) {
+            return $this->media_items->count() > 0;
+        }
+
+        // Remote stream playlists aren't supported by the AzuraCast AutoDJ.
+        return self::REMOTE_TYPE_PLAYLIST === $this->remote_type;
     }
 
     public function getBackendOptions(): array

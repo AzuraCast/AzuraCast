@@ -183,40 +183,36 @@ ask() {
     done
 }
 
+# Generate a prompt to set an environment file value.
+envfile-set() {
+    .env --file .env
+
+    .env get "$1"
+    VALUE=${REPLY:-$2}
+
+    echo -n "$3 [$VALUE]: "
+    read INPUT
+
+    VALUE=${INPUT:-$VALUE}
+
+    .env set "${1}=${VALUE}"
+}
+
 #
 # Configure the ports used by AzuraCast.
-# Usage: ./docker.sh setup_ports
 #
 setup-ports() {
-    AZURACAST_HTTP_PORT=80
-    read -p "Port to use for HTTP connections? [80]:" INPUT
-    AZURACAST_HTTP_PORT="${INPUT:-$AZURACAST_HTTP_PORT}"
-
-    AZURACAST_HTTPS_PORT=443
-    read -p "Port to use for HTTPS connections? [443]:" INPUT
-    AZURACAST_HTTPS_PORT="${INPUT:-$AZURACAST_HTTPS_PORT}"
-
-    AZURACAST_SFTP_PORT=2022
-    read -p "Port to use for SFTP connections? [2022]:" INPUT
-    AZURACAST_SFTP_PORT="${INPUT:-$AZURACAST_SFTP_PORT}"
-
-    .env --file .env set AZURACAST_HTTP_PORT="${AZURACAST_HTTP_PORT}" \
-        AZURACAST_HTTPS_PORT="${AZURACAST_HTTPS_PORT}" \
-        AZURACAST_SFTP_PORT="${AZURACAST_SFTP_PORT}"
+    envfile-set "AZURACAST_HTTP_PORT" "80" "Port to use for HTTP connections"
+    envfile-set "AZURACAST_HTTPS_PORT" "443" "Port to use for HTTPS connections"
+    envfile-set "AZURACAST_SFTP_PORT" "2022" "Port to use for SFTP connections"
 }
 
 #
 # Configure the settings used by LetsEncrypt.
 #
 setup-letsencrypt() {
-    read -p "Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt:" INPUT
-    LETSENCRYPT_HOST="${INPUT:-""}"
-
-    read -p "Optional e-mail address for expiration updates:" INPUT
-    LETSENCRYPT_EMAIL="${INPUT:-""}"
-
-    .env --file .env set LETSENCRYPT_HOST="${LETSENCRYPT_HOST}" \
-        LETSENCRYPT_EMAIL="${LETSENCRYPT_EMAIL}"
+    envfile-set "LETSENCRYPT_HOST" "" "Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt"
+    envfile-set "LETSENCRYPT_EMAIL" "" "Optional e-mail address for expiration updates"
 }
 
 #
@@ -534,7 +530,7 @@ dev-codeception() {
 # Usage: ./docker.sh uninstall
 #
 uninstall() {
-    if ask "This operation is destructive and will wipe your existing Docker containers. Continue? [y/N] " N; then
+    if ask "This operation is destructive and will wipe your existing Docker containers. Continue?" N; then
 
         docker-compose down -v
         docker-compose rm -f
@@ -559,9 +555,20 @@ letsencrypt-create() {
     setup-letsencrypt
 
     docker-compose stop web
-    docker-compose rm web
+    docker-compose rm -f web
     docker-compose up -d
     exit
+}
+
+#
+# Utility script to facilitate switching ports.
+# Usage: ./docker.sh change-ports
+#
+change-ports() {
+    setup-ports
+
+    docker-compose down
+    docker-compose up -d
 }
 
 "$@"

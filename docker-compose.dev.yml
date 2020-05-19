@@ -25,7 +25,7 @@ services:
       - stations
       - redis
     env_file: azuracast.env
-    environment: &default-environment
+    environment:
       LANG: ${LANG:-en_US.UTF-8}
       AZURACAST_DC_REVISION: 8
       AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
@@ -58,8 +58,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     env_file: azuracast.env
-    environment:
-      <<: *default-environment
     restart: always
     logging: *default-logging
 

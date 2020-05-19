@@ -17,6 +17,9 @@ touch /tmp/azuracast_nginx_client/.tmpreaper
 touch /tmp/azuracast_fastcgi_temp/.tmpreaper
 chmod -R 777 /tmp/azuracast_*
 
+mkdir -p /etc/letsencrypt
+chown -R azuracast:azuracast /etc/letsencrypt
+
 # SSL self-signed cert generation
 openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=localhost" \
     -days 365 -extensions v3_ca \

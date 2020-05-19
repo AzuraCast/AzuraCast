@@ -27,7 +27,7 @@ services:
     env_file: azuracast.env
     environment: &default-environment
       LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 7
+      AZURACAST_DC_REVISION: 8
       AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
     ports:
       - '${AZURACAST_SFTP_PORT:-2022}:2022'
@@ -54,12 +54,12 @@ services:
     build:
       context: ../docker-azuracast-db
     ports:
-     - "127.0.0.1:3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     env_file: azuracast.env
     environment:
-      << : *default-environment
+      <<: *default-environment
     restart: always
     logging: *default-logging
 
@@ -77,7 +77,7 @@ services:
     build:
       context: ../docker-azuracast-redis
     ports:
-     - "127.0.0.1:6379:6379"
+      - "127.0.0.1:6379:6379"
     restart: always
     logging: *default-logging
     sysctls:
@@ -91,26 +91,26 @@ services:
     build:
       context: ../docker-azuracast-radio
     ports:
-     - '8000:8000'
-     - '8005:8005'
-     - '8006:8006'
-     - '8010:8010'
-     - '8015:8015'
-     - '8016:8016'
-     - '8020:8020'
-     - '8025:8025'
-     - '8026:8026'
-     - '8030:8030'
-     - '8035:8035'
-     - '8036:8036'
-     - '8040:8040'
-     - '8045:8045'
-     - '8046:8046'
+      - '8000:8000'
+      - '8005:8005'
+      - '8006:8006'
+      - '8010:8010'
+      - '8015:8015'
+      - '8016:8016'
+      - '8020:8020'
+      - '8025:8025'
+      - '8026:8026'
+      - '8030:8030'
+      - '8035:8035'
+      - '8036:8036'
+      - '8040:8040'
+      - '8045:8045'
+      - '8046:8046'
     volumes:
-     - station_data:/var/azuracast/stations
-     - ./util/local_ssl:/etc/nginx/ssl:ro
-     - shoutcast2_install:/var/azuracast/servers/shoutcast2
-     - tmp_data:/var/azuracast/www_tmp
+      - station_data:/var/azuracast/stations
+      - ./util/local_ssl:/etc/nginx/ssl:ro
+      - shoutcast2_install:/var/azuracast/servers/shoutcast2
+      - tmp_data:/var/azuracast/www_tmp
     init: true
     restart: always
     ulimits: *default-ulimits

@@ -17,14 +17,5 @@ touch /tmp/azuracast_nginx_client/.tmpreaper
 touch /tmp/azuracast_fastcgi_temp/.tmpreaper
 chmod -R 777 /tmp/azuracast_*
 
-# SSL self-signed cert generation
-openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=localhost" \
-    -days 365 -extensions v3_ca \
-    -keyout /etc/letsencrypt/selfsigned.key \
-    -out /etc/letsencrypt/selfsigned.crt
-
-ln -s /etc/letsencrypt/selfsigned.key /etc/letsencrypt/ssl.key
-ln -s /etc/letsencrypt/selfsigned.crt /etc/letsencrypt/ssl.crt
-
 # Generate the dhparam.pem file (takes a long time)
 openssl dhparam -dsaparam -out /etc/nginx/dhparam.pem 4096

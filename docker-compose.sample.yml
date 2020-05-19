@@ -35,7 +35,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      DEFAULT_EMAIL: ${LETSENCRYPT_EMAIL:-}
+      DEFAULT_EMAIL: ${LETSENCRYPT_EMAIL}
     restart: always
 
   web:
@@ -56,8 +56,8 @@ services:
       AZURACAST_DC_REVISION: 8
       AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
       VIRTUAL_HOST: ${LETSENCRYPT_HOST:-azuracast.local}
-      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST:-}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     volumes:
       - letsencrypt:/etc/letsencrypt
       - www_data:/var/azuracast/www

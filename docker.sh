@@ -187,7 +187,7 @@ ask() {
 # Configure the ports used by AzuraCast.
 # Usage: ./docker.sh setup_ports
 #
-setup_ports() {
+setup-ports() {
     AZURACAST_HTTP_PORT=80
     read -p "Port to use for HTTP connections? [80]:" INPUT
     AZURACAST_HTTP_PORT="${INPUT:-$AZURACAST_HTTP_PORT}"
@@ -200,7 +200,7 @@ setup_ports() {
     read -p "Port to use for SFTP connections? [2022]:" INPUT
     AZURACAST_SFTP_PORT="${INPUT:-$AZURACAST_SFTP_PORT}"
 
-    .env --file .env put AZURACAST_HTTP_PORT="${AZURACAST_HTTP_PORT}" \
+    .env --file .env set AZURACAST_HTTP_PORT="${AZURACAST_HTTP_PORT}" \
         AZURACAST_HTTPS_PORT="${AZURACAST_HTTPS_PORT}" \
         AZURACAST_SFTP_PORT="${AZURACAST_SFTP_PORT}"
 }
@@ -208,14 +208,14 @@ setup_ports() {
 #
 # Configure the settings used by LetsEncrypt.
 #
-setup_letsencrypt() {
+setup-letsencrypt() {
     read -p "Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt:" INPUT
     LETSENCRYPT_HOST="${INPUT:-""}"
 
     read -p "Optional e-mail address for expiration updates:" INPUT
     LETSENCRYPT_EMAIL="${INPUT:-""}"
 
-    .env --file .env put LETSENCRYPT_HOST="${LETSENCRYPT_HOST}" \
+    .env --file .env set LETSENCRYPT_HOST="${LETSENCRYPT_HOST}" \
         LETSENCRYPT_EMAIL="${LETSENCRYPT_EMAIL}"
 }
 
@@ -297,11 +297,11 @@ install() {
     fi
 
     if ask "Customize AzuraCast ports?" N; then
-        setup_ports
+        setup-ports
     fi
 
     if ask "Set up LetsEncrypt?" N; then
-        setup_letsencrypt
+        setup-letsencrypt
     fi
 
     docker-compose pull
@@ -556,7 +556,7 @@ uninstall() {
 # Usage: ./docker.sh letsencrypt-create
 #
 letsencrypt-create() {
-    setup_letsencrypt
+    setup-letsencrypt
 
     docker-compose stop web
     docker-compose rm web

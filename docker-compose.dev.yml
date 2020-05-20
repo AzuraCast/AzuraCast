@@ -9,7 +9,7 @@ services:
       - '${AZURACAST_HTTP_PORT:-80}:80'
       - '${AZURACAST_HTTPS_PORT:-443}:443'
     volumes:
-      - ./util/local_ssl:/etc/nginx/certs:ro
+      - ./util/local_ssl:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web

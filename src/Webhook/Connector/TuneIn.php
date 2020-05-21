@@ -35,7 +35,7 @@ class TuneIn extends AbstractConnector
                     'id' => $config['station_id'],
                     'title' => $np->now_playing->song->title,
                     'artist' => $np->now_playing->song->artist,
-                    'album' => $np->now_playing->song->artist,
+                    'album' => $np->now_playing->song->album,
                 ],
             ]);
 

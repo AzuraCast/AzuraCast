@@ -216,6 +216,18 @@ setup-letsencrypt() {
 }
 
 #
+# Configure release mode settings.
+#
+setup-release() {
+    AZURACAST_VERSION="latest"
+    if ask "Prefer stable release versions of AzuraCast?" N; then
+        AZURACAST_VERSION="stable"
+    fi
+
+    .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
+}
+
+#
 # Run the initial installer of Docker and AzuraCast.
 # Usage: ./docker.sh install
 #
@@ -291,6 +303,8 @@ install() {
         echo "Retrieving default docker-compose.yml file..."
         curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
     fi
+
+    setup-release
 
     if ask "Customize AzuraCast ports?" N; then
         setup-ports

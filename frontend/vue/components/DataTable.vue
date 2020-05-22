@@ -170,7 +170,8 @@
                     label: _.defaultTo(field.label, ''),
                     sortable: _.defaultTo(field.sortable, false),
                     selectable: _.defaultTo(field.selectable, false),
-                    visible: _.defaultTo(field.visible, true)
+                    visible: _.defaultTo(field.visible, true),
+                    formatter: _.defaultTo(field.formatter, null)
                 });
             });
 

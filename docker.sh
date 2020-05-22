@@ -334,6 +334,22 @@ update() {
     )"
     UPDATE_NEW=0
 
+    if [[ ! -f azuracast.env ]]; then
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
+        echo "Default environment file loaded."
+    fi
+
+    # Migrate previous release settings to new environment variable.
+    .env --file azuracast.env get PREFER_RELEASE_BUILDS
+    PREFER_RELEASE_BUILDS="${REPLY:-false}"
+
+    if [[ $PREFER_RELEASE_BUILDS = "true" ]]; then
+        .env --file .env set AZURACAST_VERSION=stable
+    fi
+
+    .env --file azuracast.env set PREFER_RELEASE_BUILDS
+
+    # Check for updated Docker Compose config.
     if [[ ${FILES_MATCH} -ne 0 ]]; then
         if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
             UPDATE_NEW=1
@@ -351,11 +367,6 @@ update() {
 
         docker-compose pull
         docker-compose down
-    fi
-
-    if [[ ! -f azuracast.env ]]; then
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
-        echo "Default environment file loaded."
     fi
 
     docker volume rm azuracast_www_data

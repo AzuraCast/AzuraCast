@@ -325,14 +325,31 @@ install() {
 # Usage: ./docker.sh update
 #
 update() {
+    # Check for a new Docker Utility Script.
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh -o docker.new.sh
 
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
-
-    FILES_MATCH="$(
-        cmp --silent docker-compose.yml docker-compose.new.yml
+    UTILITY_FILES_MATCH="$(
+        cmp --silent docker.sh docker.new.sh
         echo $?
     )"
-    UPDATE_NEW=0
+    UPDATE_UTILITY=0
+
+    if [[ ${UTILITY_FILES_MATCH} -ne 0 ]]; then
+        if ask "The Docker Utility Script has changed since your version. Update to latest version?" Y; then
+            UPDATE_UTILITY=1
+        fi
+    fi
+
+    if [[ ${UPDATE_UTILITY} -ne 0 ]]; then
+        mv docker.new.sh docker.sh
+        chmod a+x docker.sh
+
+        echo "A new Docker Utility Script has been downloaded."
+        echo "Please re-run the update process to continue."
+        exit
+    else
+        rm docker.new.sh
+    fi
 
     if [[ ! -f azuracast.env ]]; then
         curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
@@ -343,20 +360,28 @@ update() {
     .env --file azuracast.env get PREFER_RELEASE_BUILDS
     PREFER_RELEASE_BUILDS="${REPLY:-false}"
 
-    if [[ $PREFER_RELEASE_BUILDS = "true" ]]; then
+    if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
         .env --file .env set AZURACAST_VERSION=stable
     fi
 
     .env --file azuracast.env set PREFER_RELEASE_BUILDS
 
     # Check for updated Docker Compose config.
-    if [[ ${FILES_MATCH} -ne 0 ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
+
+    COMPOSE_FILES_MATCH="$(
+        cmp --silent docker-compose.yml docker-compose.new.yml
+        echo $?
+    )"
+    UPDATE_COMPOSE=0
+
+    if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
         if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
-            UPDATE_NEW=1
+            UPDATE_COMPOSE=1
         fi
     fi
 
-    if [[ ${UPDATE_NEW} -ne 0 ]]; then
+    if [[ ${UPDATE_COMPOSE} -ne 0 ]]; then
         docker-compose -f docker-compose.new.yml pull
         docker-compose down
 

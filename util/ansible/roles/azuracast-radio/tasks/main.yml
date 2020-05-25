@@ -118,9 +118,11 @@
   apt_repository:
     repo: "ppa:chris-needham/ppa"
     update_cache: yes
+  when: ansible_architecture == "x86_64"
 
 - name: Install Audiowaveform
   apt:
     name: audiowaveform
     state: latest
     install_recommends: no
+  when: ansible_architecture == "x86_64"

@@ -1,0 +1,59 @@
+{
+  "type": 3,
+  "title": "AzuraCast",
+  "description": "AzuraCast Web Radio Suite Docker installation.",
+  "administrator_only": false,
+  "image": "",
+  "repository": {
+    "url": "https://github.com/AzuraCast/AzuraCast",
+    "stackfile": "docker-compose.sample.yml"
+  },
+  "logo": "https://www.azuracast.com/img/logo.png",
+  "env": [
+    {
+      "name": "AZURACAST_HTTP_PORT",
+      "label": "HTTP Port",
+      "description": "The port that will receive non-secure HTTP traffic.",
+      "default": "80"
+    },
+    {
+      "name": "AZURACAST_HTTPS_PORT",
+      "label": "HTTPS Port",
+      "description": "The port that will receive secure HTTPS traffic.",
+      "default": "443"
+    },
+    {
+      "name": "LETSENCRYPT_HOST",
+      "label": "LetsEncrypt Host",
+      "description": "The optional domain name to use if wanting to auto-register with LetsEncrypt."
+    },
+    {
+      "name": "LETSENCRYPT_EMAIL",
+      "label": "LetsEncrypt E-mail Address",
+      "description": "The optional e-mail address to receive updates regarding LetsEncrypt certificates."
+    },
+    {
+      "name": "AZURACAST_VERSION",
+      "label": "AzuraCast Release Channel",
+      "description": "Which release channel of AzuraCast to update to.",
+      "preset": true,
+      "select": [
+        {
+          "text": "Rolling Release (Latest Updates)",
+          "value": "latest",
+          "default": true
+        },
+        {
+          "text": "Stable Release",
+          "value": "stable",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "note": "AzuraCast is the free and open-source software suite that makes web radio easy. This is the standard Docker installation for AzuraCast, including all necessary components.",
+  "platform": "linux",
+  "categories": [
+    "streaming"
+  ]
+}

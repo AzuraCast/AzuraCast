@@ -2,10 +2,11 @@
 namespace App\Form;
 
 use App\Acl;
+use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
-use App\Config;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -17,7 +18,7 @@ class StationForm extends EntityForm
 
     protected Acl $acl;
 
-    protected bool $can_see_administration = false;
+    protected Settings $settings;
 
     public function __construct(
         EntityManager $em,
@@ -25,29 +26,44 @@ class StationForm extends EntityForm
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
         Acl $acl,
-        Config $config
+        Config $config,
+        Settings $settings
     ) {
-        $form_config = $config->get('forms/station');
-
-        parent::__construct($em, $serializer, $validator, $form_config);
-
         $this->acl = $acl;
         $this->entityClass = Entity\Station::class;
         $this->station_repo = $station_repo;
+        $this->settings = $settings;
+
+        $form_config = $config->get('forms/station');
+        parent::__construct($em, $serializer, $validator, $form_config);
     }
 
-    public function canSeeAdministration(): bool
+    public function configure(array $options): void
     {
-        return $this->can_see_administration;
+        // Hide "advanced" fields if advanced features are hidden on this installation.
+        if (!$this->settings->enableAdvancedFeatures()) {
+            foreach ($options['groups'] as $groupId => $group) {
+                foreach ($group['elements'] as $elementKey => $element) {
+                    $elementOptions = (array)$element[1];
+                    $class = $elementOptions['label_class'] ?? '';
+
+                    if (false !== strpos($class, 'advanced')) {
+                        unset($options['groups'][$groupId]['elements'][$elementKey]);
+                    }
+                }
+            }
+        }
+
+        parent::configure($options);
     }
 
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
         $user = $request->getUser();
-        $this->can_see_administration = $this->acl->userAllowed($user, Acl::GLOBAL_STATIONS);
 
-        if (!$this->can_see_administration) {
+        $canSeeAdministration = $this->acl->userAllowed($user, Acl::GLOBAL_STATIONS);
+        if (!$canSeeAdministration) {
             foreach ($this->options['groups']['admin']['elements'] as $element_key => $element_info) {
                 unset($this->fields[$element_key]);
             }

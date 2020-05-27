@@ -525,6 +525,11 @@ class StationPlaylist
 
     public function getBackendOptions(): array
     {
+        $settings = \App\Settings::getInstance();
+        if (!$settings->enableAdvancedFeatures()) {
+            return [];
+        }
+
         return explode(',', $this->backend_options);
     }
 

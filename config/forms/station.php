@@ -167,6 +167,26 @@ return [
 
             'elements' => [
 
+                StationFrontendConfiguration::SOURCE_PASSWORD => [
+                    'text',
+                    [
+                        'label' => __('Customize Source Password'),
+                        'description' => __('Leave blank to automatically generate a new password.'),
+                        'belongsTo' => 'frontend_config',
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                StationFrontendConfiguration::ADMIN_PASSWORD => [
+                    'text',
+                    [
+                        'label' => __('Customize Administrator Password'),
+                        'description' => __('Leave blank to automatically generate a new password.'),
+                        'belongsTo' => 'frontend_config',
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
                 StationFrontendConfiguration::PORT => [
                     'text',
                     [
@@ -184,28 +204,6 @@ return [
                         'label' => __('Maximum Listeners'),
                         'label_class' => 'advanced',
                         'description' => __('Maximum number of total listeners across all streams. Leave blank to use the default (250).'),
-                        'belongsTo' => 'frontend_config',
-                        'form_group_class' => 'col-md-6',
-                    ],
-                ],
-
-                StationFrontendConfiguration::SOURCE_PASSWORD => [
-                    'text',
-                    [
-                        'label' => __('Customize Source Password'),
-                        'label_class' => 'advanced',
-                        'description' => __('Leave blank to automatically generate a new password.'),
-                        'belongsTo' => 'frontend_config',
-                        'form_group_class' => 'col-md-6',
-                    ],
-                ],
-
-                StationFrontendConfiguration::ADMIN_PASSWORD => [
-                    'text',
-                    [
-                        'label' => __('Customize Administrator Password'),
-                        'label_class' => 'advanced',
-                        'description' => __('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
                         'form_group_class' => 'col-md-6',
                     ],

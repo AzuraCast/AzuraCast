@@ -108,7 +108,7 @@
         </b-card>
 
         <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
-                    @relist="relist"></edit-modal>
+                    :enable-advanced-features="enableAdvancedFeatures" @relist="relist"></edit-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
         <import-modal ref="importModal" @relist="relist"></import-modal>
     </div>
@@ -130,7 +130,8 @@
             scheduleUrl: String,
             locale: String,
             filesUrl: String,
-            stationTimeZone: String
+            stationTimeZone: String,
+            enableAdvancedFeatures: Boolean
         },
         data () {
             return {

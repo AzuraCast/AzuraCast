@@ -9,7 +9,7 @@
                 <form-source :form="$v.form"></form-source>
                 <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
                                :station-time-zone="stationTimeZone"></form-schedule>
-                <form-advanced :form="$v.form"></form-advanced>
+                <form-advanced :form="$v.form" v-if="enableAdvancedFeatures"></form-advanced>
             </b-tabs>
 
             <invisible-submit-button/>
@@ -41,7 +41,8 @@
         mixins: [validationMixin],
         props: {
             createUrl: String,
-            stationTimeZone: String
+            stationTimeZone: String,
+            enableAdvancedFeatures: Boolean
         },
         data () {
             return {

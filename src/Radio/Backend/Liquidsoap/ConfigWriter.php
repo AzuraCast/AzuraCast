@@ -78,6 +78,11 @@ class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
+        $appSettings = Settings::getInstance();
+        if (!$appSettings->enableAdvancedFeatures()) {
+            return;
+        }
+
         $station = $event->getStation();
         $settings = $station->getBackendConfig();
 

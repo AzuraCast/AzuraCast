@@ -30,9 +30,10 @@ class StationCloneForm extends StationForm
         Acl $acl,
         Configuration $configuration,
         Media $media_sync,
-        Config $config
+        Config $config,
+        Settings $settings
     ) {
-        parent::__construct($em, $serializer, $validator, $station_repo, $acl, $config);
+        parent::__construct($em, $serializer, $validator, $station_repo, $acl, $config, $settings);
 
         $form_config = $config->get('forms/station_clone');
         $this->configure($form_config);

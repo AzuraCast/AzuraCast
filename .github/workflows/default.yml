@@ -65,9 +65,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
       - name: Set up test environment
         run: |
           cp docker-compose.testing.yml docker-compose.override.yml

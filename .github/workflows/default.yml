@@ -53,6 +53,7 @@ jobs:
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
 
+          docker-compose run --rm --user=azuracast web composer install
           docker-compose run --rm --user=azuracast web azuracast_cli locale:import
       - name: Import translations into frontend
         run: |

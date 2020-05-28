@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build, Test and Publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -29,6 +29,7 @@ jobs:
       - name: Clear existing static assets and translations.
         run: |
           rm -rf resources/locale/compiled
+          rm -rf resources/locale/*.UTF-8
           rm -rf resources/locale/translations.json
           rm -rf web/static/dist
           rm -rf web/static/assets.json
@@ -52,19 +53,12 @@ jobs:
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
 
-          ls -lah
-
           docker-compose run --rm --user=azuracast web azuracast_cli locale:import
       - name: Import translations into frontend
         run: |
           docker-compose -f frontend/docker-compose.yml run --rm frontend npm run import-locales
           docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build
 
-  test:
-    name: Test
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Set up test environment
         run: |
           cp docker-compose.testing.yml docker-compose.override.yml
@@ -80,18 +74,13 @@ jobs:
         run: |
           cat tests/_output/*
 
-  publish:
-    name: Publish
-    needs: test
-    if: github.event_name == 'push' || github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    steps:
       - name: Set permissions on files.
         run: |
           chmod -R 644 ./
           chmod a+x bin/console
       - name: Publish to Docker Hub
         uses: docker/build-push-action@v1
+        if: github.event_name == 'push' || github.event_name == 'schedule'
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}

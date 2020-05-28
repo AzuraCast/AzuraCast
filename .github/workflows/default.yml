@@ -33,7 +33,8 @@ jobs:
           download_translations: true
           export_only_approved: false
           push_translations: false
-          config: /github/workspace/crowdin.yaml
+          crowdin_branch_name: master
+          config: crowdin.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
@@ -42,6 +43,8 @@ jobs:
         run: |
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
+
+          ls -lah
 
           docker-compose run --rm --user=azuracast web azuracast_cli locale:import
       - name: Import translations into frontend

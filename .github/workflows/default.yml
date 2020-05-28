@@ -1,10 +1,13 @@
 name: Build, Test and Publish
 on:
   pull_request:
-    branches: 
+    branches:
       - master
   push:
+    paths-ignore:
+      - '.github'
     branches:
+      - ci-testing
       - master
       - stable
   schedule:
@@ -12,6 +15,7 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -19,12 +23,14 @@ jobs:
         run: |
           git gc --prune=now --aggressive
       - name: Build Base Docker Image
-        run: |
-          cp azuracast.sample.env azuracast.env
-          cp docker-compose.sample.yml docker-compose.yml
-          
-          docker-compose pull web
-          docker-compose build web
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: azuracast/azuracast_web_v2
+          tag: latest
+          push: false
+          always_pull: ${{ github.event_name != 'schedule' }}
       - name: Pull latest translations
         uses: crowdin/github-action@1.0.6
         with:
@@ -41,41 +47,49 @@ jobs:
         run: |
       - name: Import translations into backend
         run: |
+          cp azuracast.sample.env azuracast.env
+          cp docker-compose.sample.yml docker-compose.yml
+
           docker-compose run --rm --user=azuracast web azuracast_cli locale:import
       - name: Import translations into frontend
         run: |
           docker-compose -f frontend/docker-compose.yml run --rm frontend npm run import-locales
-          docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build        
+          docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build
+
   test:
-    needs: [build]
+    name: Test
+    needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-      with:
-        fetch-depth: 1
-    - name: Set up test environment
-      run: |
-        docker-compose build web
-        
-        chmod 777 tests/_output/
-        docker-compose run --user="azuracast" --rm web azuracast_install
-    - name: Run test suite
-      run: |
-        docker-compose run --user="azuracast" --rm web composer test
-    - name: Echo test output directory
-      if: failure()
-      run: |
-        cat tests/_output/*
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: Set up test environment
+        run: |
+          docker-compose build web
+
+          chmod 777 tests/_output/
+          docker-compose run --user="azuracast" --rm web azuracast_install
+      - name: Run test suite
+        run: |
+          docker-compose run --user="azuracast" --rm web composer test
+      - name: Echo test output directory
+        if: failure()
+        run: |
+          cat tests/_output/*
+
   publish:
-    needs: [test]
+    name: Publish
+    needs: test
     if: github.event_name == 'push' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: Publish to Docker Hub
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: docker/build-push-action@v1
         with:
-          name: azuracast/azuracast_web_v2
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tag_names: true 
-          cache: ${{ github.event_name != 'schedule' }}
+          repository: azuracast/azuracast_web_v2
+          cache_froms: azuracast/azuracast_web_v2:latest
+          tag_with_ref: true
+          push: true

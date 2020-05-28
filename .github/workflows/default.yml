@@ -22,10 +22,12 @@ jobs:
       - name: Reduce Git repository size.
         run: |
           git gc --prune=now --aggressive
+
       - name: Build base Docker image.
         run: |
           docker pull azuracast/azuracast_web_v2:latest
           docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
+
       - name: Clear existing assets and set permissions.
         run: |
           rm -rf resources/locale/compiled
@@ -33,8 +35,7 @@ jobs:
           rm -rf resources/locale/translations.json
           rm -rf web/static/dist
           rm -rf web/static/assets.json
-          chmod -R 777 resources/locale
-          chmod -R 777 web/static
+
       - name: Pull latest translations.
         uses: crowdin/github-action@1.0.6
         with:
@@ -48,26 +49,28 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
       - name: Set up test environment.
         run: |
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
           cp docker-compose.testing.yml docker-compose.override.yml
-
           docker-compose build web
+
       - name: Import translations into backend.
         run: |
-          docker-compose run --rm --user=azuracast web composer install
-          docker-compose run --rm --user=azuracast web azuracast_cli locale:import
+          docker-compose run --rm web composer ci-import-locales
+
       - name: Import translations into frontend.
         run: |
-          docker-compose -f frontend/docker-compose.yml -f frontend/docker-compose.testing.yml run --rm frontend npm run ci
+          docker-compose -f frontend/docker-compose.yml run --rm --user=root frontend npm run ci
 
       - name: Run test suite.
         run: |
           chmod 777 tests/_output/
           docker-compose run --rm --user="azuracast" web azuracast_install
           docker-compose run --rm --user="azuracast" web composer test
+
       - name: Echo test output directory
         if: failure()
         run: |
@@ -75,9 +78,8 @@ jobs:
 
       - name: Set permissions on files.
         run: |
-          find . -type d -exec chmod 755 {} \;
-          find . -type f -exec chmod 644 {} \;
           chmod a+x bin/console
+
       - name: Publish to Docker Hub
         uses: docker/build-push-action@v1
         if: github.event_name == 'push' || github.event_name == 'schedule'

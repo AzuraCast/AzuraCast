@@ -76,7 +76,8 @@ jobs:
 
       - name: Set permissions on files.
         run: |
-          chmod -R 644 .
+          find . -type d -exec chmod 755 {} \;
+          find . -type f -exec chmod 644 {} \;
           chmod a+x bin/console
       - name: Publish to Docker Hub
         uses: docker/build-push-action@v1

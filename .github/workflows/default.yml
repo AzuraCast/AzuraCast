@@ -35,6 +35,7 @@ jobs:
           rm -rf resources/locale/translations.json
           rm -rf web/static/dist
           rm -rf web/static/assets.json
+          chmod a+x bin/console
 
       - name: Pull latest translations.
         uses: crowdin/github-action@1.0.6
@@ -75,10 +76,6 @@ jobs:
         if: failure()
         run: |
           cat tests/_output/*
-
-      - name: Set permissions on files.
-        run: |
-          chmod a+x bin/console
 
       - name: Publish to Docker Hub
         uses: docker/build-push-action@v1

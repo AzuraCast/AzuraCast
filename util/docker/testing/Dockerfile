@@ -8,3 +8,4 @@ ENV PATH="${PATH}:/var/azuracast/.composer/vendor/bin"
 ENV LANG="en_US.UTF-8" \
     APPLICATION_ENV="testing"
 
+USER root

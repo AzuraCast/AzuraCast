@@ -11,26 +11,20 @@ on:
     - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - name: Reduce Git repository size.
         run: |
           git gc --prune=now --aggressive
-      - name: Publish to Docker Hub
-        uses: elgohr/Publish-Docker-Github-Action@master
-        if: github.event_name == 'push'
-        with:
-          name: azuracast/azuracast_web_v2
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          tag_names: true 
-          cache: ${{ github.event_name != 'schedule' }}
-  build:
-    needs: [publish]
-    runs-on: ubuntu-latest
-    steps:
+      - name: Build Base Docker Image
+        run: |
+          cp azuracast.sample.env azuracast.env
+          cp docker-compose.sample.yml docker-compose.yml
+          
+          docker-compose pull web
+          docker-compose build web
       - name: Pull latest translations
         uses: crowdin/github-action@1.0.6
         with:
@@ -43,12 +37,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
-      - name: Build Docker Web container
+      - name: Build Docker Testing container
         run: |
-          cp azuracast.sample.env azuracast.env
-          cp docker-compose.sample.yml docker-compose.yml
-          cp docker-compose.testing.yml docker-compose.override.yml
-          docker-compose build web
       - name: Import translations into backend
         run: |
           docker-compose run --rm --user=azuracast web azuracast_cli locale:import
@@ -65,9 +55,9 @@ jobs:
         fetch-depth: 1
     - name: Set up test environment
       run: |
+        docker-compose build web
         
         chmod 777 tests/_output/
-        
         docker-compose run --user="azuracast" --rm web azuracast_install
     - name: Run test suite
       run: |
@@ -76,3 +66,15 @@ jobs:
       if: failure()
       run: |
         cat tests/_output/*
+  publish:
+    if: github.event_name == 'push' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish to Docker Hub
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: azuracast/azuracast_web_v2
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_names: true 
+          cache: ${{ github.event_name != 'schedule' }}

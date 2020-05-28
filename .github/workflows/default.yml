@@ -54,6 +54,8 @@ jobs:
         run: |
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
+          cp docker-compose.testing.yml docker-compose.override.yml
+          docker-compose build web
 
           docker-compose run --rm --user=azuracast web composer install
           docker-compose run --rm --user=azuracast web azuracast_cli locale:import
@@ -62,16 +64,11 @@ jobs:
           docker-compose -f frontend/docker-compose.yml run --rm frontend npm run import-locales
           docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build
 
-      - name: Set up test environment.
-        run: |
-          cp docker-compose.testing.yml docker-compose.override.yml
-          docker-compose build web
-
-          chmod 777 tests/_output/
-          docker-compose run --user="azuracast" --rm web azuracast_install
       - name: Run test suite.
         run: |
-          docker-compose run --user="azuracast" --rm web composer test
+          chmod 777 tests/_output/
+          docker-compose run --rm --user="azuracast" web azuracast_install
+          docker-compose run --rm --user="azuracast" web composer test
       - name: Echo test output directory
         if: failure()
         run: |

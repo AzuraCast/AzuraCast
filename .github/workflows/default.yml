@@ -26,6 +26,15 @@ jobs:
         run: |
           docker pull azuracast/azuracast_web_v2:latest
           docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
+      - name: Set permissions
+      - name: Clear existing static assets and translations.
+        run: |
+          rm -rf resources/locale/compiled
+          rm -rf resources/locale/translations.json
+          rm -rf web/static/dist
+          rm -rf web/static/assets.json
+          chmod -R 777 resources/locale
+          chmod -R 777 web/static
       - name: Pull latest translations
         uses: crowdin/github-action@1.0.6
         with:
@@ -81,6 +90,10 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
+      - name: Set permissions on files.
+        run: |
+          chmod -R 644 ./
+          chmod a+x bin/console
       - name: Publish to Docker Hub
         uses: docker/build-push-action@v1
         with:

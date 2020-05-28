@@ -28,7 +28,7 @@ jobs:
           cp docker-compose.sample.yml docker-compose.yml
 
           docker-compose pull web
-          docker-compose -f docker-compose.dev.yml build web
+          docker build -t azuracast/azuracast_web_v2:latest .
       - name: Pull latest translations
         uses: crowdin/github-action@1.0.6
         with:

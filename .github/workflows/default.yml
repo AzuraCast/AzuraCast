@@ -70,7 +70,7 @@ jobs:
         run: |
           chmod 777 tests/_output/
           docker-compose run --rm --user="azuracast" web azuracast_install
-          docker-compose run --rm --user="azuracast" web composer test
+          docker-compose run --rm --user="azuracast" web composer dev-test
 
       - name: Echo test output directory
         if: failure()

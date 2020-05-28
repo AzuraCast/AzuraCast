@@ -104,12 +104,6 @@
     "symfony/polyfill-mbstring": "1.99"
   },
   "scripts": {
-    "test": [
-      "@composer install",
-      "@phplint",
-      "@phpstan",
-      "@codeception-no-coverage"
-    ],
     "dev-test": [
       "@phplint",
       "@phpstan",

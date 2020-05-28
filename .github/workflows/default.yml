@@ -26,7 +26,6 @@ jobs:
         run: |
           docker pull azuracast/azuracast_web_v2:latest
           docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
-      - name: Set permissions
       - name: Clear existing static assets and translations.
         run: |
           rm -rf resources/locale/compiled

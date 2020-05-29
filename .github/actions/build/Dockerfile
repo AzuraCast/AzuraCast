@@ -1,4 +1,4 @@
-FROM azuracast:azuracast_testing:latest
+FROM azuracast/azuracast_testing:latest
 
 USER root
 

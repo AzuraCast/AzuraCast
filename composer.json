@@ -104,12 +104,6 @@
     "symfony/polyfill-mbstring": "1.99"
   },
   "scripts": {
-    "test": [
-      "@composer install",
-      "@phplint",
-      "@phpstan",
-      "@codeception-no-coverage"
-    ],
     "dev-test": [
       "@phplint",
       "@phpstan",
@@ -118,7 +112,11 @@
     "phplint": "phplint",
     "phpstan": "phpstan analyze",
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
-    "codeception-no-coverage": "codecept run --no-interaction"
+    "codeception-no-coverage": "codecept run --no-interaction",
+    "ci-import-locales": [
+      "@composer install",
+      "bin/console locale:import"
+    ]
   },
   "authors": [
     {

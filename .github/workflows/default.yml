@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - '.github'
     branches:
-      - ci-testing
       - master
       - stable
   schedule:

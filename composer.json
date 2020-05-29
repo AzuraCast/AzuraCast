@@ -114,7 +114,6 @@
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
     "ci-import-locales": [
-      "@composer install",
       "bin/console locale:import"
     ]
   },

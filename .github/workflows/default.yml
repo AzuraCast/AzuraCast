@@ -43,6 +43,8 @@ jobs:
 
       - name: Install Composer Dependencies
         uses: php-actions/composer@master
+        with:
+          command: install
 
       - name: Build base Docker image.
         run: |

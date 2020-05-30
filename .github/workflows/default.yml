@@ -64,12 +64,13 @@ jobs:
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
           cp docker-compose.testing.yml docker-compose.override.yml
+
           docker-compose build web
+          docker-compose run --rm --user="azuracast" web azuracast_install
 
       - name: Run functional test suite.
         run: |
           chmod 777 tests/_output/
-          docker-compose run --rm --user="azuracast" web azuracast_install
           docker-compose run --rm --user="azuracast" web composer dev-test
 
       - name: Echo test output directory

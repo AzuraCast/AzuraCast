@@ -28,7 +28,7 @@ USER azuracast
 
 WORKDIR /var/azuracast/www
 
-COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./vendor ./
+COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
 RUN composer install \
     --no-dev \
     --no-ansi \
@@ -41,7 +41,7 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker
 
-VOLUME ["/var/azuracast/www", "/var/azuracast/backups", "/etc/letsencrypt", "/var/azuracast/sftpgo/persist"]
+VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/etc/letsencrypt", "/var/azuracast/sftpgo/persist"]
 
 #
 # END Operations as `azuracast` user

@@ -28,6 +28,7 @@ tmp/cache/*---*
 
 # Composer-generated content
 /vendor/
+!/vendor/.gitkeep
 
 # Ansible deployment files
 /ansible/

@@ -61,7 +61,6 @@ services:
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     volumes:
       - letsencrypt:/etc/letsencrypt
-      - www_data:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
@@ -278,6 +277,5 @@ volumes:
   sftpgo_data: {}
   station_data: {}
   tmp_data: {}
-  www_data: {}
   redis_data: {}
   backups: {}

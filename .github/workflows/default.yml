@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - '.github'
     branches:
+      - ci-testing
       - master
       - stable
   schedule:
@@ -22,34 +23,11 @@ jobs:
         run: |
           git gc --prune=now --aggressive
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache Composer Downloads
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
       - name: Cache PHP dependencies
         uses: actions/cache@v1
         with:
           path: vendor
           key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-
-      - name: Install Composer Dependencies
-        uses: php-actions/composer@master
-        with:
-          command: install
-
-      - name: Build base Docker image.
-        run: |
-          docker pull azuracast/azuracast_web_v2:latest
-          docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
 
       - name: Clear existing assets and set permissions.
         run: |
@@ -75,25 +53,24 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Set up test environment.
+      - name: Import locales, build static assets.
+        uses: ./.github/actions/build
+
+      - name: Set up functional test environment.
         run: |
+          docker pull azuracast/azuracast_web_v2:latest
+          docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
+
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
           cp docker-compose.testing.yml docker-compose.override.yml
+
           docker-compose build web
+          docker-compose run --rm --user="azuracast" web azuracast_install
 
-      - name: Import translations into backend.
-        run: |
-          docker-compose run --rm web composer ci-import-locales
-
-      - name: Import translations into frontend.
-        run: |
-          docker-compose -f frontend/docker-compose.yml run --rm --user=root frontend npm run ci
-
-      - name: Run test suite.
+      - name: Run functional test suite.
         run: |
           chmod 777 tests/_output/
-          docker-compose run --rm --user="azuracast" web azuracast_install
           docker-compose run --rm --user="azuracast" web composer dev-test
 
       - name: Echo test output directory

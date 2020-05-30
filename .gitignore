@@ -27,7 +27,9 @@ tmp/cache/*---*
 /util/package_usage_report*
 
 # Composer-generated content
-/vendor/
+/vendor/*
+/vendor/**/*
+!/vendor/.gitkeep
 
 # Ansible deployment files
 /ansible/

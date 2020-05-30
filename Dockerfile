@@ -28,7 +28,7 @@ USER azuracast
 
 WORKDIR /var/azuracast/www
 
-COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
+COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./vendor ./
 RUN composer install \
     --no-dev \
     --no-ansi \

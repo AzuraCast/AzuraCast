@@ -394,7 +394,6 @@ update() {
         docker-compose down
     fi
 
-    docker volume rm azuracast_www_data
     docker volume rm azuracast_tmp_data
     docker volume rm azuracast_redis_data
 

@@ -233,6 +233,15 @@ class StationPlaylist
     protected $backend_options = '';
 
     /**
+     * @ORM\Column(name="avoid_duplicates", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
+     * @var bool
+     */
+    protected $avoid_duplicates = true;
+
+    /**
      * @ORM\Column(name="played_at", type="integer")
      * @AuditLog\AuditIgnore
      *
@@ -465,6 +474,16 @@ class StationPlaylist
     public function setIncludeInAutomation(bool $include_in_automation): void
     {
         $this->include_in_automation = $include_in_automation;
+    }
+
+    public function getAvoidDuplicates(): bool
+    {
+        return $this->avoid_duplicates;
+    }
+
+    public function setAvoidDuplicates(bool $avoid_duplicates): void
+    {
+        $this->avoid_duplicates = $avoid_duplicates;
     }
 
     public function getPlayedAt(): int

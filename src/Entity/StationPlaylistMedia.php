@@ -49,7 +49,7 @@ class StationPlaylistMedia implements JsonSerializable
     protected $media;
 
     /**
-     * @ORM\Column(name="weight", type="smallint")
+     * @ORM\Column(name="weight", type="integer")
      * @var int
      */
     protected $weight;

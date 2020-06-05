@@ -971,7 +971,7 @@ class ConfigWriter implements EventSubscriberInterface
                 break;
 
             case Entity\StationMountInterface::FORMAT_OPUS:
-                return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+                return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
                 break;
 
             case Entity\StationMountInterface::FORMAT_MP3:

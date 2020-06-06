@@ -153,7 +153,7 @@
                 'isStreaming': false,
                 'djUsername': '',
                 'djPassword': '',
-                'bitrate': 128,
+                'bitrate': 320,
                 'samplerate': 44100,
                 'encoder': 'mp3',
                 'asynchronous': true,

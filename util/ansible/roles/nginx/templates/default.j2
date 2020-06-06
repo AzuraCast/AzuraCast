@@ -1,4 +1,4 @@
-{% if ansible_distribution_release == 'bionic' %}
+{% if ansible_distribution_release != 'xenial' %}
 upstream redis_server {
     nchan_redis_server "redis://localhost:6379";
 }
@@ -27,6 +27,9 @@ server {
 
     ssl_certificate    /etc/nginx/ssl/server.crt;
     ssl_certificate_key    /etc/nginx/ssl/server.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384';
+    ssl_prefer_server_ciphers off;
 
     root {{ app_base }}/www/web;
     index index.php;
@@ -113,7 +116,7 @@ server {
         proxy_set_header Connection "Upgrade";
     }
 
-    {% if ansible_distribution_release == 'bionic' %}
+    {% if ansible_distribution_release != 'xenial' %}
     # pub/sub endpoints
     location ~ /api/live/nowplaying/(\w+)$ {
         nchan_subscriber;

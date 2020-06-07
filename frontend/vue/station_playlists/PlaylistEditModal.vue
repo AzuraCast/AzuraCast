@@ -79,6 +79,7 @@
                 'play_per_hour_minute': {},
                 'include_in_requests': {},
                 'include_in_automation': {},
+                'avoid_duplicates': {},
                 'backend_options': {},
                 'schedule_items': {
                     $each: {
@@ -110,6 +111,7 @@
                     'play_per_hour_minute': 0,
                     'include_in_requests': true,
                     'include_in_automation': false,
+                    'avoid_duplicates': true,
                     'backend_options': [],
                     'schedule_items': []
                 };
@@ -147,6 +149,7 @@
                         'play_per_hour_minute': d.play_per_hour_minute,
                         'include_in_requests': d.include_in_requests,
                         'include_in_automation': d.include_in_automation,
+                        'avoid_duplicates': d.avoid_duplicates,
                         'backend_options': d.backend_options,
                         'schedule_items': d.schedule_items
                     };

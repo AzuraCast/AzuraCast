@@ -435,7 +435,6 @@ return [
                     'number',
                     [
                         'label' => __('DJ/Streamer Buffer Time (Seconds)'),
-                        'label_class' => 'advanced',
                         'description' => __('The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'),
                         'default' => 5,
                         'min' => 0,
@@ -476,7 +475,6 @@ return [
                     'number',
                     [
                         'label' => __('AutoDJ Queue Length'),
-                        'label_class' => 'advanced',
                         'description' => __('If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.'),
                         'default' => StationBackendConfiguration::DEFAULT_QUEUE_LENGTH,
                         'min' => 1,

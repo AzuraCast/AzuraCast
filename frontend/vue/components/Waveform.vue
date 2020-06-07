@@ -91,7 +91,12 @@
             });
 
             axios.get(this.waveformUrl).then((resp) => {
-                this.wavesurfer.load(this.audioUrl, resp.data.data);
+                let waveform = resp.data;
+                if (waveform.data) {
+                    this.wavesurfer.load(this.audioUrl, waveform.data);
+                } else {
+                    this.wavesurfer.load(this.audioUrl);
+                }
             }).catch((err) => {
                 console.error(err);
                 this.wavesurfer.load(this.audioUrl);

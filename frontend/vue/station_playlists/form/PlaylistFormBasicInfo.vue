@@ -27,12 +27,21 @@
                     </b-form-invalid-feedback>
                 </b-form-group>
 
-                <b-form-group class="col-md-12" label-for="form_edit_is_enabled">
+                <b-form-group class="col-md-6" label-for="form_edit_is_enabled">
                     <template v-slot:description>
                         <translate>If disabled, the playlist will not be included in radio playback, but can still be managed.</translate>
                     </template>
                     <b-form-checkbox id="form_edit_is_enabled" v-model="form.is_enabled.$model">
                         <translate>Is Enabled</translate>
+                    </b-form-checkbox>
+                </b-form-group>
+
+                <b-form-group class="col-md-6" label-for="form_edit_avoid_duplicates">
+                    <template v-slot:description>
+                        <translate>Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist.</translate>
+                    </template>
+                    <b-form-checkbox id="form_edit_avoid_duplicates" v-model="form.avoid_duplicates.$model">
+                        <translate>Avoid Duplicate Artists/Titles</translate>
                     </b-form-checkbox>
                 </b-form-group>
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 
+use App\Logger;
 use Symfony\Component\Process\Process;
 
 class AudioWaveform
@@ -26,10 +27,18 @@ class AudioWaveform
         ]);
         $process->setTimeout(60);
         $process->setIdleTimeout(3600);
-        $process->mustRun();
 
-        if (!file_exists($jsonOutPath)) {
-            throw new \RuntimeException('Audio waveform JSON was not generated.');
+        try {
+            $process->mustRun();
+
+            if (!file_exists($jsonOutPath)) {
+                throw new \RuntimeException('Audio waveform JSON was not generated.');
+            }
+        } catch (\Exception $e) {
+            $logger = Logger::getInstance();
+            $logger->error('Audiowaveform exception: ' . $e->getMessage());
+
+            return [];
         }
 
         $inputRaw = file_get_contents($jsonOutPath);

@@ -2,6 +2,7 @@
 - name: Install NodeJS and NPM
   shell: curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n && bash n lts
   args:
+    warn: false
     chdir: "/tmp"
 
 - name: Set permissions for folders
@@ -24,3 +25,8 @@
   shell: npm run build
   args:
     chdir: "{{ www_base }}/frontend"
+
+- name: Set permissions of generated frontend content
+  file: path="{{ item }}" state=directory recurse=yes owner=azuracast group=www-data
+  with_items:
+    - "{{ www_base }}/web/static/dist"

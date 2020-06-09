@@ -29,4 +29,5 @@
     - influxdb
     - services
     - azuracast-setup
+    - azuracast-build
     - azuracast-cron

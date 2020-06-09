@@ -31,6 +31,12 @@ tmp/cache/*---*
 /vendor/**/*
 !/vendor/.gitkeep
 
+# NPM built content
+/web/static/dist/*
+/web/static/dist/**/*
+!/web/static/dist/.gitkeep
+/web/static/assets.json
+
 # Ansible deployment files
 /ansible/
 /util/ansible/deploy.retry

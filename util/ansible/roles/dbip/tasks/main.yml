@@ -5,7 +5,7 @@
     dest: "{{ app_base }}/dbip/dbip-city-lite.mmdb.gz"
 
 - name: Extract DBIP Database
-  shell: "gunzip dbip-city-lite.mmdb.gz"
+  shell: "gunzip -f dbip-city-lite.mmdb.gz"
   args:
     chdir: "{{ app_base }}/dbip"
 

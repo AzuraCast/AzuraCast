@@ -27,6 +27,8 @@
     chdir: "{{ www_base }}/frontend"
 
 - name: Set permissions of generated frontend content
-  file: path="{{ item }}" state=directory recurse=yes owner=azuracast group=www-data
+  shell: "{{ item }}"
   with_items:
-    - "{{ www_base }}/web/static/dist"
+    - "chown -R azuracast:www-data {{ www_base }}"
+    - "find {{ www_base }} -type d -exec chmod 755 {} \;"
+    - "find {{ www_base }} -type f -exec chmod 644 {} \;"

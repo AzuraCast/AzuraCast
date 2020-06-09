@@ -1,6 +1,6 @@
 ---
 - name: Install NodeJS and NPM
-  shell: curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n | bash n lts
+  shell: curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n && bash n lts
   args:
     chdir: "/tmp"
 

@@ -28,6 +28,6 @@
     - composer
     - influxdb
     - services
-    - azuracast-setup
     - azuracast-build
+    - azuracast-setup
     - azuracast-cron

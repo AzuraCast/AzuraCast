@@ -1,26 +1,10 @@
 ---
-- name: Add NodeJS Repository Key
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
-
-- name: Add NodeJS Repository
-  template: src=node_ubuntu.list.j2 dest=/etc/apt/sources.list.d/nodesource.list owner=root group=root mode=0644
-  register: nodejs_list
-
-- name: Update apt cache
-  apt: update_cache=yes
-  when:
-    - nodejs_list.changed == True
-
 - name: Install NodeJS and NPM
-  apt:
-    name: "{{ packages }}"
-    state: latest
-  vars:
-    packages:
-      - nodejs
-      - npm
+  snap:
+    name: node
+    classic: yes
+    channel: 12
+    state: present
 
 - name: Pull Node Dependencies
   become: true

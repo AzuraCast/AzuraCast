@@ -1,10 +1,8 @@
 ---
 - name: Install NodeJS and NPM
-  snap:
-    name: node
-    classic: yes
-    channel: 12
-    state: present
+  shell: curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n | bash n lts
+  args:
+    chdir: "/tmp"
 
 - name: Pull Node Dependencies
   become: true

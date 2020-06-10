@@ -39,7 +39,8 @@ class EditLiquidsoapConfigController
         ];
 
         $config = $backend->getEditableConfiguration($station);
-        $tokens = '•';
+
+        $tokens = Liquidsoap\ConfigWriter::getDividerString();
 
         $formConfig = [
             'method' => 'post',

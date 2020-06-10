@@ -72,8 +72,9 @@ class ConfigWriter implements EventSubscriberInterface
     public function writeCustomConfigurationSection(WriteLiquidsoapConfiguration $event, string $sectionName): void
     {
         if ($event->isForEditing()) {
+            $divider = self::getDividerString();
             $event->appendLines([
-                '•' . $sectionName . '•',
+                $divider . $sectionName . $divider,
             ]);
             return;
         }
@@ -92,6 +93,11 @@ class ConfigWriter implements EventSubscriberInterface
                 $settings[$sectionName],
             ]);
         }
+    }
+
+    public static function getDividerString(): string
+    {
+        return chr(7);
     }
 
     public function writeHeaderFunctions(WriteLiquidsoapConfiguration $event): void

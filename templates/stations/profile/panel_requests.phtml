@@ -11,43 +11,46 @@
 ?>
 
 <section class="card mb-4" role="region">
-<?php if ($station->getEnableRequests()): ?>
-    <div class="card-header bg-primary-dark">
-        <h3 class="card-title">
-            <?=__('Song Requests') ?>
-            <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
-        </h3>
-    </div>
-    <?php if ($acl->userAllowed($user, [\App\Acl::STATION_REPORTS, \App\Acl::STATION_PROFILE], $station->getId())): ?>
-    <div class="card-actions">
-        <?php if ($acl->userAllowed($user, \App\Acl::STATION_REPORTS, $station->getId())): ?>
-            <a class="btn btn-outline-primary" href="<?=$router->fromHere('stations:reports:requests') ?>">
-                <i class="material-icons" aria-hidden="true">assignment</i>
-                <?=__('View') ?>
-            </a>
-        <?php endif; ?>
-        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-            <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable song requests?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'requests', 'csrf' => $csrf]) ?>">
-                <i class="material-icons" aria-hidden="true">close</i>
-                <?=__('Disable') ?>
-            </a>
-        <?php endif; ?>
-    </div>
-    <?php endif; ?>
-<?php else: ?>
-    <div class="card-header bg-primary-dark">
-        <h3 class="card-title">
-            <?=__('Song Requests') ?>
-            <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
-        </h3>
-    </div>
-    <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-        <div class="card-actions">
-            <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable song requests?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'requests', 'csrf' => $csrf]) ?>">
-                <i class="material-icons" aria-hidden="true">check</i>
-                <?=__('Enable') ?>
-            </a>
+    <?php if ($station->getEnableRequests()): ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Song Requests')?>
+                <small class="badge badge-pill badge-success"><?=__('Enabled')?></small>
+            </h3>
         </div>
+        <?php if ($acl->userAllowed($user, [\App\Acl::STATION_REPORTS, \App\Acl::STATION_PROFILE],
+            $station->getId())): ?>
+            <div class="card-actions">
+                <?php if ($acl->userAllowed($user, \App\Acl::STATION_REPORTS, $station->getId())): ?>
+                    <a class="btn btn-outline-primary" href="<?=$router->fromHere('stations:reports:requests')?>">
+                        <i class="material-icons" aria-hidden="true">assignment</i>
+                        <?=__('View')?>
+                    </a>
+                <?php endif; ?>
+                <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
+                    <a class="btn btn-outline-danger" data-confirm-title="<?=$this->e(__('Disable song requests?'))?>" href="<?=$router->fromHere('stations:profile:toggle',
+                        ['feature' => 'requests', 'csrf' => $csrf])?>">
+                        <i class="material-icons" aria-hidden="true">close</i>
+                        <?=__('Disable')?>
+                    </a>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Song Requests')?>
+                <small class="badge badge-pill badge-danger"><?=__('Disabled')?></small>
+            </h3>
+        </div>
+        <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
+            <div class="card-actions">
+                <a class="btn btn-outline-success" data-confirm-title="<?=$this->e(__('Enable song requests?'))?>" href="<?=$router->fromHere('stations:profile:toggle',
+                    ['feature' => 'requests', 'csrf' => $csrf])?>">
+                    <i class="material-icons" aria-hidden="true">check</i>
+                    <?=__('Enable')?>
+                </a>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
-<?php endif; ?>
 </section>

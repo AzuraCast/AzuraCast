@@ -7,7 +7,7 @@ function confirmDangerousAction (el) {
 
   let confirmTitle = 'Are you sure?';
   if ($el.data('confirm-title')) {
-    confirmTitle = decodeURIComponent(JSON.parse('"' + $el.data('confirm-title') + '"'));
+    confirmTitle = $el.data('confirm-title');
   }
 
   let dangerMode = true;

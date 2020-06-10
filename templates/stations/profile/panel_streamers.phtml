@@ -11,43 +11,46 @@
 ?>
 
 <section class="card mb-4" role="region">
-<?php if ($station->getEnableStreamers()): ?>
-    <div class="card-header bg-primary-dark">
-        <h3 class="card-title">
-            <?=__('Streamers/DJs') ?>
-            <small class="badge badge-pill badge-success"><?=__('Enabled') ?></small>
-        </h3>
-    </div>
-    <?php if ($acl->userAllowed($user, [\App\Acl::STATION_STREAMERS, \App\Acl::STATION_PROFILE], $station->getId())): ?>
-    <div class="card-actions">
-        <?php if ($acl->userAllowed($user, \App\Acl::STATION_STREAMERS, $station->getId())): ?>
-            <a class="btn btn-outline-primary" href="<?=$router->fromHere('stations:streamers:index') ?>">
-                <i class="material-icons" aria-hidden="true">settings</i>
-                <?=__('Manage') ?>
-            </a>
+    <?php if ($station->getEnableStreamers()): ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Streamers/DJs')?>
+                <small class="badge badge-pill badge-success"><?=__('Enabled')?></small>
+            </h3>
+        </div>
+        <?php if ($acl->userAllowed($user, [\App\Acl::STATION_STREAMERS, \App\Acl::STATION_PROFILE],
+            $station->getId())): ?>
+            <div class="card-actions">
+                <?php if ($acl->userAllowed($user, \App\Acl::STATION_STREAMERS, $station->getId())): ?>
+                    <a class="btn btn-outline-primary" href="<?=$router->fromHere('stations:streamers:index')?>">
+                        <i class="material-icons" aria-hidden="true">settings</i>
+                        <?=__('Manage')?>
+                    </a>
+                <?php endif; ?>
+                <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
+                    <a class="btn btn-outline-danger" data-confirm-title="<?=$this->e(__('Disable streamers?'))?>" href="<?=$router->fromHere('stations:profile:toggle',
+                        ['feature' => 'streamers', 'csrf' => $csrf])?>">
+                        <i class="material-icons" aria-hidden="true">close</i>
+                        <?=__('Disable')?>
+                    </a>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
+    <?php else: ?>
+        <div class="card-header bg-primary-dark">
+            <h3 class="card-title">
+                <?=__('Streamers/DJs')?>
+                <small class="badge badge-pill badge-danger"><?=__('Disabled')?></small>
+            </h3>
+        </div>
         <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-            <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable streamers?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'streamers', 'csrf' => $csrf]) ?>">
-                <i class="material-icons" aria-hidden="true">close</i>
-                <?=__('Disable') ?>
-            </a>
+            <div class="card-actions">
+                <a class="btn btn-outline-success" data-confirm-title="<?=$this->e(__('Enable streamers?'))?>" href="<?=$router->fromHere('stations:profile:toggle',
+                    ['feature' => 'streamers', 'csrf' => $csrf])?>">
+                    <i class="material-icons" aria-hidden="true">check</i>
+                    <?=__('Enable')?>
+                </a>
+            </div>
         <?php endif; ?>
-    </div>
     <?php endif; ?>
-<?php else: ?>
-    <div class="card-header bg-primary-dark">
-        <h3 class="card-title">
-            <?=__('Streamers/DJs') ?>
-            <small class="badge badge-pill badge-danger"><?=__('Disabled') ?></small>
-        </h3>
-    </div>
-    <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-    <div class="card-actions">
-        <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable streamers?')) ?> href="<?=$router->fromHere('stations:profile:toggle', ['feature' => 'streamers', 'csrf' => $csrf]) ?>">
-            <i class="material-icons" aria-hidden="true">check</i>
-            <?=__('Enable') ?>
-        </a>
-    </div>
-    <?php endif; ?>
-<?php endif; ?>
 </section>

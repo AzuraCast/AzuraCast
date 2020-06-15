@@ -48,7 +48,7 @@ VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/etc/letsencrypt", 
 #
 USER root
 
-EXPOSE 80 443 2022
+EXPOSE 80 2022
 
 # Nginx Proxy environment variables.
 ENV VIRTUAL_HOST="azuracast.local" \

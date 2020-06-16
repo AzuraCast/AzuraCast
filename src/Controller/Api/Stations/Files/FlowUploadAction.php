@@ -10,7 +10,7 @@ use Error;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 
-class UploadAction
+class FlowUploadAction
 {
     public function __invoke(
         ServerRequest $request,
@@ -28,22 +28,22 @@ class UploadAction
         }
 
         try {
-            $flow_response = Flow::process($request, $response, $station->getRadioTempDir());
-            if ($flow_response instanceof ResponseInterface) {
-                return $flow_response;
+            $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
+            if ($flowResponse instanceof ResponseInterface) {
+                return $flowResponse;
             }
 
-            if (is_array($flow_response)) {
+            if (is_array($flowResponse)) {
                 $file = $request->getAttribute('file');
-                $file_path = $request->getAttribute('file_path');
+                $filePath = $request->getAttribute('file_path');
 
-                $sanitized_name = $flow_response['filename'];
+                $sanitizedName = $flowResponse['filename'];
 
-                $final_path = empty($file)
-                    ? $file_path . $sanitized_name
-                    : $file_path . '/' . $sanitized_name;
+                $finalPath = empty($file)
+                    ? $filePath . $sanitizedName
+                    : $filePath . '/' . $sanitizedName;
 
-                $station_media = $mediaRepo->uploadFile($station, $flow_response['path'], $final_path);
+                $station_media = $mediaRepo->uploadFile($station, $flowResponse['path'], $finalPath);
 
                 // If the user is looking at a playlist's contents, add uploaded media to that playlist.
                 if (!empty($params['searchPhrase'])) {
@@ -64,7 +64,7 @@ class UploadAction
                     }
                 }
 
-                $station->addStorageUsed($flow_response['size']);
+                $station->addStorageUsed($flowResponse['size']);
                 $em->flush();
 
                 return $response->withJson(new Entity\Api\Status);

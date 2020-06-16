@@ -28,7 +28,6 @@ return function (App $app) {
 
         $group->get('/files', Controller\Stations\FilesController::class)
             ->setName('stations:files:index')
-            ->add(Middleware\Module\StationFiles::class)
             ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
         $group->map(['GET', 'POST'], '/ls_config', Controller\Stations\EditLiquidsoapConfigController::class)

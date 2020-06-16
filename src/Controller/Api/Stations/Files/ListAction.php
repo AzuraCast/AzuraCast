@@ -34,7 +34,7 @@ class ListAction
         $result = [];
 
         $file = $request->getAttribute('file');
-        $file_path = $request->getAttribute('file_path');
+        $filePath = $request->getAttribute('file_path');
 
         $search_phrase = trim($params['searchPhrase'] ?? '');
 
@@ -151,7 +151,7 @@ class ListAction
                 $files[] = Filesystem::PREFIX_MEDIA . '://' . $short_path;
             }
         } else {
-            $files_raw = $fs->listContents($file_path);
+            $files_raw = $fs->listContents($filePath);
             foreach ($files_raw as $file) {
                 $files[] = $file['filesystem'] . '://' . $file['path'];
             }

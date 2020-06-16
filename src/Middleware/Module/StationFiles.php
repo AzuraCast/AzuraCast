@@ -21,11 +21,12 @@ class StationFiles
         }
 
         $params = $request->getParams();
+
         $file = ltrim($params['file'] ?? '', '/');
-        $file_path = Filesystem::PREFIX_MEDIA . '://' . $file;
+        $filePath = Filesystem::PREFIX_MEDIA . '://' . $file;
 
         $request = $request->withAttribute('file', $file)
-            ->withAttribute('file_path', $file_path);
+            ->withAttribute('file_path', $filePath);
 
         return $handler->handle($request);
     }

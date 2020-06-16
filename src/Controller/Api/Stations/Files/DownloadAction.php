@@ -16,10 +16,10 @@ class DownloadAction
         set_time_limit(600);
 
         $station = $request->getStation();
-        $file_path = $request->getAttribute('file_path');
+        $filePath = $request->getAttribute('file_path');
 
         $fs = $filesystem->getForStation($station);
 
-        return $response->withFlysystemFile($fs, $file_path);
+        return $response->withFlysystemFile($fs, $filePath);
     }
 }

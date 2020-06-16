@@ -222,7 +222,7 @@ return function (App $app) {
                 $group->post('/mkdir', Controller\Api\Stations\Files\MakeDirectoryAction::class)
                     ->setName('api:stations:files:mkdir');
 
-                $group->map(['GET', 'POST'], '/upload', Controller\Api\Stations\Files\UploadAction::class)
+                $group->map(['GET', 'POST'], '/upload', Controller\Api\Stations\Files\FlowUploadAction::class)
                     ->setName('api:stations:files:upload');
 
                 $group->get('/download', Controller\Api\Stations\Files\DownloadAction::class)

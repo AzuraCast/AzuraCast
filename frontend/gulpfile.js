@@ -11,7 +11,6 @@ const sass = require('gulp-sass');
 const clean_css = require('gulp-clean-css');
 const revdel = require('gulp-rev-delete-original');
 const webpackStream = require('webpack-stream');
-const webpack = require('webpack');
 
 var jsFiles = {
   // Core Libraries
@@ -234,103 +233,17 @@ gulp.task('concat-js', function () {
     .pipe(gulp.dest('../web/static/dist'));
 });
 
-var vueProjects = {
-  'vue_gettext': {
-    'src_file': 'vue/VueTranslations.js',
-    'filename': 'vue_gettext.js',
-    'library': 'VueTranslations'
-  },
-  'webcaster': {
-    'src_file': 'vue/Webcaster.vue',
-    'filename': 'webcaster.js',
-    'library': 'Webcaster'
-  },
-  'radio_player': {
-    'src_file': 'vue/RadioPlayer.vue',
-    'filename': 'radio_player.js',
-    'library': 'RadioPlayer'
-  },
-  'inline_player': {
-    'src_file': 'vue/InlinePlayer.vue',
-    'filename': 'inline_player.js',
-    'library': 'InlinePlayer'
-  },
-  'station_media': {
-    'src_file': 'vue/StationMedia.vue',
-    'filename': 'station_media.js',
-    'library': 'StationMedia'
-  },
-  'station_playlists': {
-    'src_file': 'vue/StationPlaylists.vue',
-    'filename': 'station_playlists.js',
-    'library': 'StationPlaylist'
-  },
-  'station_streamers': {
-    'src_file': 'vue/StationStreamers.vue',
-    'filename': 'station_streamers.js',
-    'library': 'StationStreamers'
-  },
-  'station_on_demand': {
-    'src_file': 'vue/StationOnDemand.vue',
-    'filename': 'station_on_demand.js',
-    'library': 'StationOnDemand'
-  }
-};
-
-var vueTasks = Object.keys(vueProjects);
-
-vueTasks.forEach(function (libName) {
-  gulp.task('vue:' + libName, function () {
-    var vueProject = vueProjects[libName];
-    return gulp.src(vueProject.src_file)
-      .pipe(sourcemaps.init())
-      .pipe(webpackStream({
-        mode: 'production',
-        output: {
-          publicPath: '/static/dist',
-          filename: vueProject.filename,
-          library: vueProject.library
-        },
-        resolve: {
-          extensions: ['*', '.js', '.vue', '.json']
-        },
-        module: {
-          rules: [
-            {
-              test: /\.vue$/,
-              loader: 'vue-loader',
-              options: {}
-            },
-            {
-              test: /\.scss$/,
-              use: [
-                'vue-style-loader',
-                'css-loader',
-                'sass-loader'
-              ]
-            }
-          ]
-        },
-        plugins: [
-          new webpack.IgnorePlugin({
-            resourceRegExp: /^vue$/
-          })
-        ]
-      }))
-      .pipe(babel({
-        presets: ['@babel/env']
-      }))
-      .pipe(uglify())
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest('../web/static/dist'));
-  });
+gulp.task('build-vue', function () {
+  return gulp.src(['vue/*.js', 'vue/*.vue'])
+    .pipe(sourcemaps.init())
+    .pipe(webpackStream(require('./webpack.config.js')))
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
+    .pipe(uglify())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('../web/static/dist'));
 });
-
-gulp.task('build-vue', gulp.series(
-  vueTasks.map(function (name) {
-    return 'vue:' + name;
-  })
-));
 
 gulp.task('build-js', function () {
   return gulp.src(['./js/*.js'])

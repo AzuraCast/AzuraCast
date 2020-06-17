@@ -14,7 +14,7 @@ $(function () {
     station_playlists = new Vue({
         el: '#station-playlist',
         render: function (createElement) {
-            return createElement(StationPlaylist.default, {
+            return createElement(StationPlaylists.default, {
                 props: <?=json_encode($props) ?>
             });
         }

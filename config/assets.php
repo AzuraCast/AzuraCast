@@ -41,11 +41,11 @@ return [
     ],
 
     'vue-translations' => [
-        'order' => 2,
+        'order' => 4,
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/vue_gettext.js',
+                    'src' => 'dist/VueTranslations.js',
                 ],
             ],
         ],
@@ -71,6 +71,18 @@ return [
             'css' => [
                 [
                     'href' => 'dist/lib/bootstrap-vue/bootstrap-vue.min.css',
+                ],
+            ],
+        ],
+    ],
+
+    'vue-component-common' => [
+        'order' => 3,
+        'require' => ['vue', 'vue-translations'],
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'dist/vendor.js',
                 ],
             ],
         ],
@@ -420,7 +432,7 @@ return [
 
     'webcaster' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations'],
+        'require' => ['vue-component-common'],
         'files' => [
             'js' => [
                 [
@@ -436,7 +448,7 @@ return [
                     'src' => 'dist/lib/webcaster/webcast.js',
                 ],
                 [
-                    'src' => 'dist/webcaster.js',
+                    'src' => 'dist/Webcaster.js',
                 ],
             ],
         ],
@@ -444,11 +456,11 @@ return [
 
     'radio_player' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations'],
+        'require' => ['vue-component-common'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/radio_player.js',
+                    'src' => 'dist/RadioPlayer.js',
                 ],
             ],
         ],
@@ -456,11 +468,11 @@ return [
 
     'inline_player' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations'],
+        'require' => ['vue-component-common'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/inline_player.js',
+                    'src' => 'dist/InlinePlayer.js',
                 ],
             ],
         ],
@@ -468,11 +480,11 @@ return [
 
     'station_media_manager' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations', 'bootstrap-vue'],
+        'require' => ['vue-component-common', 'bootstrap-vue'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/station_media.js',
+                    'src' => 'dist/StationMedia.js',
                 ],
             ],
         ],
@@ -480,12 +492,12 @@ return [
 
     'station_playlists' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
         'replace' => ['moment'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/station_playlists.js',
+                    'src' => 'dist/StationPlaylists.js',
                 ],
             ],
         ],
@@ -493,11 +505,11 @@ return [
 
     'station_streamers' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations', 'bootstrap-vue', 'moment'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/station_streamers.js',
+                    'src' => 'dist/StationStreamers.js',
                 ],
             ],
         ],
@@ -505,11 +517,11 @@ return [
 
     'station_on_demand' => [
         'order' => 10,
-        'require' => ['vue', 'vue-translations', 'bootstrap-vue'],
+        'require' => ['vue-component-common', 'bootstrap-vue'],
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/station_on_demand.js',
+                    'src' => 'dist/StationOnDemand.js',
                 ],
             ],
         ],

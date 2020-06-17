@@ -3,21 +3,21 @@
         <b-form @submit.prevent="doRename">
             <b-form-group label-for="new_directory_name">
                 <template v-slot:label>
-                    <translate>New File Name</translate>
+                    <translate key="lang_new_directory_name">New File Name</translate>
                 </template>
                 <b-input type="text" id="new_directory_name" v-model="$v.form.newPath.$model"
                          :state="$v.form.newPath.$dirty ? !$v.form.newPath.$error : null" autofocus></b-input>
                 <b-form-invalid-feedback>
-                    <translate>This field is required.</translate>
+                    <translate key="lang_error_required">This field is required.</translate>
                 </b-form-invalid-feedback>
             </b-form-group>
         </b-form>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
-                <translate>Close</translate>
+                <translate key="lang_btn_close">Close</translate>
             </b-button>
             <b-button variant="primary" @click="doRename" :disabled="$v.form.$invalid">
-                <translate>Rename</translate>
+                <translate key="lang_btn_rename">Rename</translate>
             </b-button>
         </template>
     </b-modal>

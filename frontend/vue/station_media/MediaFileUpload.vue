@@ -14,9 +14,9 @@
             </div>
         </div>
         <div id="file_drop_target">
-            <translate>Drag files here to upload to this folder or</translate>
+            <translate key="lang_upload_target">Drag files here to upload to this folder or</translate>
             <button id="file_browse_target" class="file-upload btn btn-primary text-center ml-1" type="button">
-                <translate>Select File</translate>
+                <translate key="lang_select_file">Select File</translate>
                 <i class="material-icons" aria-hidden="true">cloud_upload</i>
             </button>
             <small class="file-name"></small>

@@ -3,20 +3,20 @@
         <b-form @submit.prevent="doMkdir">
             <b-form-group label-for="new_directory_name">
                 <template v-slot:label>
-                    <translate>Directory Name</translate>
+                    <translate key="lang_new_directory_name">Directory Name</translate>
                 </template>
                 <b-input type="text" id="new_directory_name" v-model="$v.newDirectory.$model"
                          :state="$v.newDirectory.$dirty ? !$v.newDirectory.$error : null" autofocus></b-input>
-                <b-form-invalid-feedback v-translate>
+                <b-form-invalid-feedback key="lang_new_directory_invalid" v-translate>
                     This field is required.
                 </b-form-invalid-feedback>
             </b-form-group>
         </b-form>
         <template v-slot:modal-footer>
-            <b-button variant="default" @click="close" v-translate>
+            <b-button variant="default" @click="close" key="lang_btn_close" v-translate>
                 Close
             </b-button>
-            <b-button variant="primary" @click="doMkdir" :disabled="$v.$invalid" v-translate>
+            <b-button variant="primary" @click="doMkdir" key="lang_btn_create" :disabled="$v.$invalid" v-translate>
                 Create Directory
             </b-button>
         </template>

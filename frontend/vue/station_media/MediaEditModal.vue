@@ -14,10 +14,10 @@
         </b-form>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
-                <translate>Close</translate>
+                <translate key="lang_btn_close">Close</translate>
             </b-button>
             <b-button variant="primary" @click="doEdit" :disabled="$v.form.$invalid">
-                <translate>Save Changes</translate>
+                <translate key="lang_btn_save">Save Changes</translate>
             </b-button>
         </template>
     </b-modal>

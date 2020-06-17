@@ -4,10 +4,10 @@
             <b-card-header header-bg-variant="primary-dark">
                 <b-row class="align-items-center">
                     <b-col md="6">
-                        <h2 class="card-title" v-translate>Streamer/DJ Accounts</h2>
+                        <h2 class="card-title" key="lang_title" v-translate>Streamer/DJ Accounts</h2>
                     </b-col>
                     <b-col md="6" class="text-right text-muted">
-                        <translate :translate-params="{ tz: stationTimeZone }">This station's time zone is currently %{tz}.</translate>
+                        <translate key="lang_station_tz" :translate-params="{ tz: stationTimeZone }">This station's time zone is currently %{tz}.</translate>
                     </b-col>
                 </b-row>
             </b-card-header>
@@ -17,7 +17,7 @@
                     <b-card-body body-class="card-padding-sm">
                         <b-button variant="outline-primary" @click.prevent="doCreate">
                             <i class="material-icons" aria-hidden="true">add</i>
-                            <translate>Add Streamer</translate>
+                            <translate key="lang_add_streamer">Add Streamer</translate>
                         </b-button>
                     </b-card-body>
 
@@ -27,20 +27,20 @@
                             <code>{{ row.item.streamer_username }}</code>
                             <div>
                                 <span class="badge badge-danger" v-if="!row.item.is_active">
-                                    <translate>Disabled</translate>
+                                    <translate key="lang_disabled">Disabled</translate>
                                 </span>
                             </div>
                         </template>
                         <template v-slot:cell(actions)="row">
                             <b-button-group size="sm">
                                 <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
-                                    <translate>Edit</translate>
+                                    <translate key="lang_btn_edit">Edit</translate>
                                 </b-button>
                                 <b-button size="sm" variant="default" @click.prevent="doShowBroadcasts(row.item.links.broadcasts)">
-                                    <translate>Broadcasts</translate>
+                                    <translate key="lang_btn_broadcasts">Broadcasts</translate>
                                 </b-button>
                                 <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.links.self)">
-                                    <translate>Delete</translate>
+                                    <translate key="lang_btn_delete">Delete</translate>
                                 </b-button>
                             </b-button-group>
                         </template>

@@ -8,7 +8,7 @@
                             {{ stationName }}
                         </template>
                         <template v-else>
-                            <translate>On-Demand Media</translate>
+                            <translate key="lang_title">On-Demand Media</translate>
                         </template>
                     </h2>
                 </div>

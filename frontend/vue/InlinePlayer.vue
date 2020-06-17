@@ -18,13 +18,13 @@
 
             <a class="btn btn-sm btn-outline-light px-2 ml-1" href="#" @click.prevent="stop()">
                 <i class="material-icons" aria-hidden="true">pause</i>
-                <span class="sr-only" v-translate>Pause</span>
+                <span class="sr-only" key="lang_pause" v-translate>Pause</span>
             </a>
             <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
                 <div class="flex-shrink-0">
                     <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 0">
                         <i class="material-icons" aria-hidden="true">volume_mute</i>
-                        <span class="sr-only" v-translate>Mute</span>
+                        <span class="sr-only" key="lang_mute" v-translate>Mute</span>
                     </a>
                 </div>
                 <div class="flex-fill mx-1">
@@ -34,7 +34,7 @@
                 <div class="flex-shrink-0">
                     <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 100">
                         <i class="material-icons" aria-hidden="true">volume_up</i>
-                        <span class="sr-only" v-translate>Full Volume</span>
+                        <span class="sr-only" key="lang_full_volume" v-translate>Full Volume</span>
                     </a>
                 </div>
             </div>

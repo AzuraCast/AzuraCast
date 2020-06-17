@@ -10,7 +10,7 @@
             </div>
             <div class="now-playing-main">
                 <h6 class="now-playing-live" v-if="np.live.is_live">
-                    <translate class="badge badge-primary">Live</translate>
+                    <translate key="lang_live" class="badge badge-primary">Live</translate>
                     {{ np.live.streamer_name }}
                 </h6>
 

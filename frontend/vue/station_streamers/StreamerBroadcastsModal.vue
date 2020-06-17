@@ -24,7 +24,7 @@
                 <template v-slot:cell(actions)="row">
                     <b-button-group size="sm" v-if="row.item.recording_links_download">
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.recording_links_delete)">
-                            <translate>Delete</translate>
+                            <translate key="lang_btn_delete">Delete</translate>
                         </b-button>
                     </b-button-group>
                     <template v-else>&nbsp;</template>
@@ -33,7 +33,7 @@
         </template>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
-                <translate>Close</translate>
+                <translate key="lang_btn_close">Close</translate>
             </b-button>
         </template>
     </b-modal>

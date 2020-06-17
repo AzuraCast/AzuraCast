@@ -13,7 +13,7 @@
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <label for="waveform-zoom">
-                            <translate>Waveform Zoom</translate>
+                            <translate key="lang_waveform_title">Waveform Zoom</translate>
                         </label>
                     </div>
                     <div class="flex-fill mx-3">
@@ -26,7 +26,7 @@
                     <div class="flex-shrink-0">
                         <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 0">
                             <i class="material-icons" aria-hidden="true">volume_mute</i>
-                            <span class="sr-only" v-translate>Mute</span>
+                            <span class="sr-only" key="lang_mute" v-translate>Mute</span>
                         </a>
                     </div>
                     <div class="flex-fill mx-1">
@@ -36,7 +36,7 @@
                     <div class="flex-shrink-0">
                         <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 100">
                             <i class="material-icons" aria-hidden="true">volume_up</i>
-                            <span class="sr-only" v-translate>Full Volume</span>
+                            <span class="sr-only" key="lang_vol_full" v-translate>Full Volume</span>
                         </a>
                     </div>
                 </div>

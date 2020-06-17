@@ -44,7 +44,7 @@
                         </a>
                     </template>
                     <br>
-                    <small v-if="row.item.is_dir" v-translate>Directory</small>
+                    <small v-if="row.item.is_dir" key="lang_dir" v-translate>Directory</small>
                     <small v-else>{{ row.item.text }}</small>
                 </div>
             </template>

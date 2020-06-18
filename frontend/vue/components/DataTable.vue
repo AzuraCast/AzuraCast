@@ -52,10 +52,10 @@
                 </b-col>
             </b-row>
         </div>
-        <div class="datatable-main table-responsive table-responsive-lg">
+        <div class="datatable-main">
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                      :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
-                     :empty-text="langNoRecords" :empty-filtered-text="langNoRecords"
+                     :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
                 <template v-slot:head(selected)="data">
@@ -138,6 +138,10 @@
         props: {
             id: String,
             apiUrl: String,
+            responsive: {
+                type: [String, Boolean],
+                default: true
+            },
             paginated: {
                 type: Boolean,
                 default: false

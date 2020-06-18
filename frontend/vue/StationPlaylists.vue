@@ -20,7 +20,7 @@
                         </b-button>
                     </b-card-body>
 
-                    <data-table ref="datatable" id="station_playlists" paginated :fields="fields"
+                    <data-table ref="datatable" id="station_playlists" paginated :fields="fields" :responsive="false"
                                 :api-url="listUrl">
                         <template v-slot:cell(actions)="row">
                             <b-button-group size="sm">
@@ -31,7 +31,7 @@
                                     <translate key="lang_btn_delete">Delete</translate>
                                 </b-button>
 
-                                <b-dropdown size="sm" variant="dark" :text="langMore">
+                                <b-dropdown size="sm" variant="dark" boundary="window" :text="langMore">
                                     <b-dropdown-item @click.prevent="doModify(row.item.links.toggle)">
                                         {{ langToggleButton(row.item) }}
                                     </b-dropdown-item>

@@ -52,9 +52,7 @@ return [
         'inline' => [
             'js' => [
                 function (Request $request) {
-                    $locale = $request->getAttribute('locale', Customization::DEFAULT_LOCALE);
-                    $locale = substr($locale, 0, 5);
-                    return 'VueTranslations.default(' . json_encode($locale) . ');';
+                    return 'VueTranslations.default(App.locale);';
                 },
             ],
         ],
@@ -129,6 +127,28 @@ return [
                 [
                     'href' => 'dist/lib/material-icons/material-icons.css',
                 ],
+            ],
+        ],
+        'inline' => [
+            'js' => [
+                function (Request $request) {
+                    $locale = $request->getAttribute('locale', Customization::DEFAULT_LOCALE);
+                    $locale = explode('.', $locale)[0];
+                    $localeWithDashes = str_replace('_', '-', $locale);
+
+                    $app = [
+                        'lang' => [
+                            'confirm' => __('Are you sure?'),
+                            'placeholder' => 'Select...',
+                            'no_results' => 'No results found!',
+                            'advanced' => 'Advanced',
+                        ],
+                        'locale' => $locale,
+                        'locale_with_dashes' => $localeWithDashes,
+                    ];
+
+                    return 'let App = ' . json_encode($app) . ';';
+                },
             ],
         ],
     ],
@@ -272,9 +292,7 @@ return [
         'inline' => [
             'js' => [
                 function (Request $request) {
-                    $locale = $request->getAttribute('locale', Customization::DEFAULT_LOCALE);
-                    $locale = str_replace('_', '-', explode('.', $locale)[0]);
-                    return 'moment.locale(' . json_encode($locale) . ');';
+                    return 'moment.locale(App.locale_with_dashes);';
                 },
             ],
         ],

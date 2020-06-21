@@ -5,7 +5,7 @@ function confirmDangerousAction (el) {
     $el = $el.closest('a');
   }
 
-  let confirmTitle = 'Are you sure?';
+  let confirmTitle = App.lang.confirm;
   if ($el.data('confirm-title')) {
     confirmTitle = $el.data('confirm-title');
   }

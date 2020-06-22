@@ -14,13 +14,15 @@ Language-Team: Turkish
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-04-16T04:24:39+00:00
-PO-Revision-Date: 2020-04-26 10:14
+POT-Creation-Date: 2020-06-21T16:28:26+00:00
+PO-Revision-Date: 2020-06-22 04:07
 Language: tr_TR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
+X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: tr
 X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File-ID: 4
 ',
       ),
       'All Permissions' => 
@@ -267,6 +269,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'InfluxDB veritabanları oluşturuldu.',
       ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Liquidsoap Günlüğü',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Liquidsoap Ayar Dosyası',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Icecast Erişim Günlüğü',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Icecast Hata Günlüğü',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Icecast Ayar Dosyası',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'SHOUTcast Günlüğü',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'SHOUTcast Ayar Dosyası',
+      ),
       'Record not found.' => 
       array (
         0 => 'Kayıt bulunamadı!',
@@ -479,6 +509,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '"%s" &#61;&#62; "%s" taşınamadı.',
       ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Radyo depolama alanı doldu.',
+      ),
       'Directory' => 
       array (
         0 => 'Klasör',
@@ -495,9 +529,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Yeni dizin belirlenmedi!',
       ),
-      'This station is out of available storage space.' => 
+      'This station does not support on-demand streaming.' => 
       array (
-        0 => 'Radyo depolama alanı doldu.',
+        0 => 'Bu istasyon isteğe bağlı akışı desteklemiyor.',
+      ),
+      'File not found.' => 
+      array (
+        0 => 'Dosya bulunamadı.',
       ),
       'Playlist not found.' => 
       array (
@@ -803,34 +841,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Web kancası silindi!',
       ),
-      'Liquidsoap Log' => 
-      array (
-        0 => 'Liquidsoap Günlüğü',
-      ),
-      'Liquidsoap Configuration' => 
-      array (
-        0 => 'Liquidsoap Ayar Dosyası',
-      ),
-      'Icecast Access Log' => 
-      array (
-        0 => 'Icecast Erişim Günlüğü',
-      ),
-      'Icecast Error Log' => 
-      array (
-        0 => 'Icecast Hata Günlüğü',
-      ),
-      'Icecast Configuration' => 
-      array (
-        0 => 'Icecast Ayar Dosyası',
-      ),
-      'SHOUTcast Log' => 
-      array (
-        0 => 'SHOUTcast Günlüğü',
-      ),
-      'SHOUTcast Configuration' => 
-      array (
-        0 => 'SHOUTcast Ayar Dosyası',
-      ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
         0 => 'Arama motoru tarayıcılarının bu özelliği kullanmasına izin verilmemektedir.',
@@ -910,6 +920,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'AzuraCast Yeni Güncellemesi Yayınlandı!',
+      ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => 'Yükleme Son Zamanlarda Yedeklenmedi',
+      ),
+      'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.' => 
+      array (
+        0 => 'Bu kurulum son iki hafta içinde yedeklenmedi. Yeni bir yedek çalıştırmak için <a href="%s" target="_blank">Yedekleme</a> sayfasını ziyaret edin.',
       ),
       '%s is not recognized as a service.' => 
       array (
@@ -1014,6 +1032,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'The port %s is in use by another station.' => 
       array (
         0 => '%s portu başka bir radyo tarafından kullanılıyor.',
+      ),
+      'Are you sure?' => 
+      array (
+        0 => '',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -2179,6 +2201,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Radyonuzu genel sayfalarda ve genel API sonuçlarında gösterin.',
       ),
+      'Enable On-Demand Streaming and Downloads' => 
+      array (
+        0 => 'İsteğe Bağlı Akış ve İndirmeleri Etkinleştir',
+      ),
+      'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
+      array (
+        0 => 'Etkinleştirilirse isteğe bağlı akış etkin olan çalma listelerinden gelen müzikler özel bir genel sayfa aracılığıyla akışa alınabilir ve indirilebilir.',
+      ),
       'URL Stub' => 
       array (
         0 => 'Sabit URL',
@@ -2203,6 +2233,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Bu yazılım yayınınızı dinleyen kitleye ulaştırır.',
       ),
+      'Customize Source Password' => 
+      array (
+        0 => 'Yayın Şifresi',
+      ),
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => 'Otomatik olarak bu şifreyi oluşturmak için boş bırakın.',
+      ),
+      'Customize Administrator Password' => 
+      array (
+        0 => 'Yayın Yönetici Şifresi',
+      ),
       'Customize Broadcasting Port' => 
       array (
         0 => 'Yayın Portu',
@@ -2218,18 +2260,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
         0 => 'Radyonun maksimum toplam dinleyici sayısı belirtin. Varsayılanı (250) kullanmak için boş bırakın.',
-      ),
-      'Customize Source Password' => 
-      array (
-        0 => 'Yayın Şifresi',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => 'Otomatik olarak bu şifreyi oluşturmak için boş bırakın.',
-      ),
-      'Customize Administrator Password' => 
-      array (
-        0 => 'Yayın Yönetici Şifresi',
       ),
       'Custom Configuration' => 
       array (
@@ -2781,6 +2811,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Genel Sayfa',
       ),
+      'On-Demand Media' => 
+      array (
+        0 => 'İsteğe Bağlı Medya',
+      ),
       'Music Files' => 
       array (
         0 => 'Müzik Dosyaları',
@@ -3081,13 +3115,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Radyoya Özgü Hata Ayıklama',
       ),
-      'Test AutoDJ Next Song' => 
+      'Rebuild AutoDJ Queue' => 
       array (
-        0 => 'AutoDJ Sonraki Şarkıyı Test Et',
-      ),
-      'Test time (Leave blank for current time)' => 
-      array (
-        0 => 'Test süresi (Şimdiki zaman için boş bırakın)',
+        0 => 'AutoDJ Sırasını Yeniden Oluştur',
       ),
       'Run Test' => 
       array (
@@ -3671,6 +3701,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Müzik Çalar Hazır Web Kodu',
       ),
+      'On-Demand Embed Code' => 
+      array (
+        0 => 'İsteğe Bağlı Yerleştirme Kodu',
+      ),
       'Request Embed Code' => 
       array (
         0 => 'Şarkı İstekleri Hazır Web Kodu',
@@ -4030,18 +4064,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Delete web hook "%s"?' => 
       array (
         0 => '"%s" web kancasını silmek istediğinizden emin misiniz?',
-      ),
-      'Select...' => 
-      array (
-        0 => 'Seç...',
-      ),
-      'No results found!' => 
-      array (
-        0 => 'Sonuç bulunamadı!',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Gelişmiş',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

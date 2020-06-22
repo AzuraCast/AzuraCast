@@ -14,13 +14,15 @@ Language-Team: Russian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-04-16T04:24:39+00:00
-PO-Revision-Date: 2020-04-26 10:14
+POT-Creation-Date: 2020-06-21T16:28:26+00:00
+PO-Revision-Date: 2020-06-22 04:07
 Language: ru_RU
 Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));
 X-Crowdin-Project: azuracast
+X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: ru
 X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File-ID: 4
 ',
       ),
       'All Permissions' => 
@@ -267,6 +269,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Созданы базы данных InfluxDB.',
       ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Liquidsoap - Журнал',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Liquidsoap - Настройки',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Icecast - Журнал доступа',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Icecast - Журнал ошибок',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Icecast - Настройки',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'SHOUTcast - Журнал',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'SHOUTcast - Настройки',
+      ),
       'Record not found.' => 
       array (
         0 => 'Запись не найдена.',
@@ -479,6 +509,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Не удалось переместить "%s" в "%s"',
       ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'На этой станции нет свободного места для хранения.',
+      ),
       'Directory' => 
       array (
         0 => 'Папка',
@@ -495,9 +529,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Новый путь не указан.',
       ),
-      'This station is out of available storage space.' => 
+      'This station does not support on-demand streaming.' => 
       array (
-        0 => 'На этой станции нет свободного места для хранения.',
+        0 => 'Эта станция не поддерживает вещание по требованию.',
+      ),
+      'File not found.' => 
+      array (
+        0 => 'Файл не найден.',
       ),
       'Playlist not found.' => 
       array (
@@ -803,34 +841,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Веб-хук удалён.',
       ),
-      'Liquidsoap Log' => 
-      array (
-        0 => 'Liquidsoap - Журнал',
-      ),
-      'Liquidsoap Configuration' => 
-      array (
-        0 => 'Liquidsoap - Настройки',
-      ),
-      'Icecast Access Log' => 
-      array (
-        0 => 'Icecast - Журнал доступа',
-      ),
-      'Icecast Error Log' => 
-      array (
-        0 => 'Icecast - Журнал ошибок',
-      ),
-      'Icecast Configuration' => 
-      array (
-        0 => 'Icecast - Настройки',
-      ),
-      'SHOUTcast Log' => 
-      array (
-        0 => 'SHOUTcast - Журнал',
-      ),
-      'SHOUTcast Configuration' => 
-      array (
-        0 => 'SHOUTcast - Настройки',
-      ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
         0 => 'Поисковые роботы не могут использовать эту функцию.',
@@ -910,6 +920,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Доступны новые обновления AzuraCast',
+      ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => 'Резервная копия установки давняя',
+      ),
+      'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.' => 
+      array (
+        0 => 'Эта установка не была сохранена в течение последних двух недель. Посетите страницу <a href="%s" target="_blank">Резервные копии</a>, чтобы создать новую резервную копию.',
       ),
       '%s is not recognized as a service.' => 
       array (
@@ -1014,6 +1032,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'The port %s is in use by another station.' => 
       array (
         0 => 'Порт %s уже используется другой станцией.',
+      ),
+      'Are you sure?' => 
+      array (
+        0 => '',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -2179,6 +2201,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Показывать станцию на публичных страницах и общих результатах API.',
       ),
+      'Enable On-Demand Streaming and Downloads' => 
+      array (
+        0 => 'Включить трансляцию и загрузку по требованию',
+      ),
+      'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
+      array (
+        0 => 'Если включено, музыка из плейлистов с включенным потоком по требованию будет доступна для трансляции и загрузки через специализированную публичную страницу.',
+      ),
       'URL Stub' => 
       array (
         0 => 'Заглушка URL-адреса',
@@ -2203,6 +2233,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Это программное обеспечение доставляет вашу трансляцию для слушателей.',
       ),
+      'Customize Source Password' => 
+      array (
+        0 => 'Настроить Source Пароль',
+      ),
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => 'Оставьте поле пустым, чтобы автоматически генерировать новый пароль.',
+      ),
+      'Customize Administrator Password' => 
+      array (
+        0 => 'Настроить Пароль Администратора',
+      ),
       'Customize Broadcasting Port' => 
       array (
         0 => 'Настроить порт вещания',
@@ -2218,18 +2260,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
         0 => 'Максимальное количество слушателей. Оставьте поле пустым, чтобы использовать значение по умолчанию (250).',
-      ),
-      'Customize Source Password' => 
-      array (
-        0 => 'Настроить Source Пароль',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => 'Оставьте поле пустым, чтобы автоматически генерировать новый пароль.',
-      ),
-      'Customize Administrator Password' => 
-      array (
-        0 => 'Настроить Пароль Администратора',
       ),
       'Custom Configuration' => 
       array (
@@ -2792,6 +2822,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Публичная страница',
       ),
+      'On-Demand Media' => 
+      array (
+        0 => 'Медиа по требованию',
+      ),
       'Music Files' => 
       array (
         0 => 'Музыкальные файлы',
@@ -3092,13 +3126,9 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Отладка для конкретной станции',
       ),
-      'Test AutoDJ Next Song' => 
+      'Rebuild AutoDJ Queue' => 
       array (
-        0 => 'Тест АвтоДиджея Следующая песня',
-      ),
-      'Test time (Leave blank for current time)' => 
-      array (
-        0 => 'Время теста (Оставьте пустым для текущего времени)',
+        0 => 'Перестроить очередь АвтоДиджея',
       ),
       'Run Test' => 
       array (
@@ -3683,6 +3713,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Код вставки плеера',
       ),
+      'On-Demand Embed Code' => 
+      array (
+        0 => 'Код для встраивания по требованию',
+      ),
       'Request Embed Code' => 
       array (
         0 => 'Код вставки для запроса песен',
@@ -4042,18 +4076,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Delete web hook "%s"?' => 
       array (
         0 => 'Удалить вебхук "%s"?',
-      ),
-      'Select...' => 
-      array (
-        0 => 'Выбрать...',
-      ),
-      'No results found!' => 
-      array (
-        0 => 'Ничего не найдено!',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Продвинутый',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

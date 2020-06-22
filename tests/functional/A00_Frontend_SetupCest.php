@@ -1,4 +1,5 @@
 <?php
+
 class A00_Frontend_SetupCest extends CestAbstract
 {
     /**
@@ -54,7 +55,7 @@ class A00_Frontend_SetupCest extends CestAbstract
     protected function setupSettings(FunctionalTester $I)
     {
         $I->submitForm('.form', [
-            'base_url' => 'localhost',
+            'base_url' => 'http://localhost',
         ]);
 
         $I->seeResponseCodeIs(200);

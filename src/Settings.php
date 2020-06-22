@@ -32,6 +32,8 @@ class Settings extends Collection
 
     public const DOCKER_REVISION = 'docker_revision';
 
+    public const ENABLE_ADVANCED_FEATURES = 'enable_advanced_features';
+
     // Default settings
     protected array $data = [
         self::APP_NAME => 'Application',
@@ -138,5 +140,14 @@ class Settings extends Collection
 
         $compareVersion = (int)$this->get(self::DOCKER_REVISION, 0);
         return ($compareVersion >= $version);
+    }
+
+    public function enableAdvancedFeatures(): bool
+    {
+        if (!$this->isDocker()) {
+            return true;
+        }
+
+        return (bool)($this->data[self::ENABLE_ADVANCED_FEATURES] ?? true);
     }
 }

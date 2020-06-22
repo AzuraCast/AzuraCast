@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header bg-primary-dark">
             <h5 class="card-title">
-                <translate>Microphone</translate>
+                <translate key="lang_mic_title">Microphone</translate>
 
                 <div class="float-right">
                     <input type="range" min="0" max="150" value="100" class="custom-range" v-model.number="volume">
@@ -14,9 +14,9 @@
             <div class="control-group d-flex justify-content-center mb-3">
                 <div class="btn-group btn-group-sm">
                     <button class="btn btn-danger" v-on:click="toggleRecording" v-bind:class="{ active: playing }"><i
-                            class="material-icons">mic</i></button>
+                        class="material-icons">mic</i></button>
                     <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
-                        <translate>Cue</translate>
+                        <translate key="lang_btn_cue">Cue</translate>
                     </button>
                 </div>
             </div>
@@ -31,7 +31,7 @@
             </div>
 
             <div class="form-group microphone-entry">
-                <label for="select_microphone_source" class="mb-2" v-translate>Microphone Source</label>
+                <label for="select_microphone_source" class="mb-2" key="lang_mic_source" v-translate>Microphone Source</label>
                 <div class="controls">
                     <select id="select_microphone_source" v-model="device" class="form-control">
                         <option v-for="device_row in devices" v-bind:value="device_row.deviceId">

@@ -41,14 +41,14 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker
 
-VOLUME ["/var/azuracast/www", "/var/azuracast/backups", "/etc/letsencrypt", "/var/azuracast/sftpgo/persist"]
+VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/etc/letsencrypt", "/var/azuracast/sftpgo/persist"]
 
 #
 # END Operations as `azuracast` user
 #
 USER root
 
-EXPOSE 80 443 2022
+EXPOSE 80 2022
 
 # Nginx Proxy environment variables.
 ENV VIRTUAL_HOST="azuracast.local" \
@@ -56,6 +56,7 @@ ENV VIRTUAL_HOST="azuracast.local" \
 
 # Sensible default environment variables.
 ENV APPLICATION_ENV="production" \
+    ENABLE_ADVANCED_FEATURES="false" \
     MYSQL_HOST="mariadb" \
     MYSQL_PORT=3306 \
     MYSQL_USER="azuracast" \

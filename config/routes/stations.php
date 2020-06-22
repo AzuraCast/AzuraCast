@@ -28,7 +28,6 @@ return function (App $app) {
 
         $group->get('/files', Controller\Stations\FilesController::class)
             ->setName('stations:files:index')
-            ->add(Middleware\Module\StationFiles::class)
             ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
         $group->map(['GET', 'POST'], '/ls_config', Controller\Stations\EditLiquidsoapConfigController::class)
@@ -77,7 +76,8 @@ return function (App $app) {
             ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
         $group->get('/queue', Controller\Stations\QueueController::class)
-            ->setName('stations:queue:index');
+            ->setName('stations:queue:index')
+            ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
         $group->group('/remotes', function (RouteCollectorProxy $group) {
 

@@ -7,17 +7,17 @@
                 <media-form-basic-info :form="$v.form"></media-form-basic-info>
                 <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
                 <media-form-custom-fields :form="form" :custom-fields="customFields"></media-form-custom-fields>
-                <media-form-waveform-editor :form="form" :audio-url="audioUrl"></media-form-waveform-editor>
+                <media-form-waveform-editor :form="form" :audio-url="audioUrl" :waveform-url="waveformUrl"></media-form-waveform-editor>
                 <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
             </b-tabs>
             <invisible-submit-button/>
         </b-form>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
-                <translate>Close</translate>
+                <translate key="lang_btn_close">Close</translate>
             </b-button>
             <b-button variant="primary" @click="doEdit" :disabled="$v.form.$invalid">
-                <translate>Save Changes</translate>
+                <translate key="lang_btn_save">Save Changes</translate>
             </b-button>
         </template>
     </b-modal>
@@ -53,6 +53,7 @@
                 loading: true,
                 recordUrl: null,
                 albumArtUrl: null,
+                waveformUrl: null,
                 audioUrl: null,
                 songLength: null,
                 form: this.getBlankForm()
@@ -106,11 +107,12 @@
                     custom_fields: customFields
                 };
             },
-            open (recordUrl, albumArtUrl, audioUrl) {
+            open (recordUrl, albumArtUrl, audioUrl, waveformUrl) {
                 this.loading = true;
                 this.$refs.modal.show();
 
                 this.albumArtUrl = albumArtUrl;
+                this.waveformUrl = waveformUrl;
                 this.recordUrl = recordUrl;
                 this.audioUrl = audioUrl;
 

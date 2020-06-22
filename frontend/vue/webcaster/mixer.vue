@@ -2,7 +2,7 @@
     <div class="mixer card">
         <div class="card-header bg-primary-dark">
             <h5 class="card-title">
-                <translate>Mixer</translate>
+                <translate key="lang_mixer_title">Mixer</translate>
             </h5>
         </div>
         <div class="card-body">

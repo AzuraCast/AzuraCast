@@ -5,17 +5,18 @@ $props = [
     'locale' => substr($customization->getLocale(), 0, 2),
     'filesUrl' => $router->fromHere('stations:files:index'),
     'stationTimeZone' => $station_tz,
+    'enableAdvancedFeatures' => $settings->enableAdvancedFeatures(),
 ]
 ?>
 var station_playlists;
 
 $(function () {
-  station_playlists = new Vue({
-    el: '#station-playlist',
-    render: function (createElement) {
-      return createElement(StationPlaylist.default, {
-        props: <?=json_encode($props) ?>
-      });
-    }
-  });
+    station_playlists = new Vue({
+        el: '#station-playlist',
+        render: function (createElement) {
+            return createElement(StationPlaylists.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
+    });
 });

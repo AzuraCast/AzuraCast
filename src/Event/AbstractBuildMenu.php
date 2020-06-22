@@ -5,6 +5,7 @@ use App\Acl;
 use App\Entity\User;
 use App\Http\Router;
 use App\Http\RouterInterface;
+use App\Settings;
 use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractBuildMenu extends Event
@@ -15,6 +16,8 @@ abstract class AbstractBuildMenu extends Event
 
     protected RouterInterface $router;
 
+    protected Settings $settings;
+
     protected array $menu = [];
 
     public function __construct(Acl $acl, User $user, RouterInterface $router)
@@ -22,6 +25,7 @@ abstract class AbstractBuildMenu extends Event
         $this->acl = $acl;
         $this->user = $user;
         $this->router = $router;
+        $this->settings = Settings::getInstance();
     }
 
     public function getAcl(): Acl
@@ -32,6 +36,11 @@ abstract class AbstractBuildMenu extends Event
     public function getRouter(): Router
     {
         return $this->router;
+    }
+
+    public function getSettings(): Settings
+    {
+        return $this->settings;
     }
 
     /**

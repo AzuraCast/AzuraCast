@@ -1,4 +1,148 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2145,SC2178,SC2120,SC2162
+
+# Functions to manage .env files
+__dotenv=
+__dotenv_file=
+__dotenv_cmd=.env
+
+.env() {
+    REPLY=()
+    [[ $__dotenv_file || ${1-} == -* ]] || .env.--file .env || return
+    if declare -F -- ".env.${1-}" >/dev/null; then
+        .env."$@"
+        return
+    fi
+    .env --help >&2
+    return 64
+}
+
+.env.-f() { .env.--file "$@"; }
+
+.env.get() {
+    .env::arg "get requires a key" "$@" &&
+        [[ "$__dotenv" =~ ^(.*(^|$'\n'))([ ]*)"$1="(.*)$ ]] &&
+        REPLY=${BASH_REMATCH[4]%%$'\n'*} && REPLY=${REPLY%"${REPLY##*[![:space:]]}"}
+}
+
+.env.parse() {
+    local line key
+    while IFS= read -r line; do
+        line=${line#"${line%%[![:space:]]*}"} # trim leading whitespace
+        line=${line%"${line##*[![:space:]]}"} # trim trailing whitespace
+        if [[ ! "$line" || "$line" == '#'* ]]; then continue; fi
+        if (($#)); then
+            for key; do
+                if [[ $key == "${line%%=*}" ]]; then
+                    REPLY+=("$line")
+                    break
+                fi
+            done
+        else
+            REPLY+=("$line")
+        fi
+    done <<<"$__dotenv"
+    ((${#REPLY[@]}))
+}
+
+.env.export() { ! .env.parse "$@" || export "${REPLY[@]}"; }
+
+.env.set() {
+    .env::file load || return
+    local key saved=$__dotenv
+    while (($#)); do
+        key=${1#+}
+        key=${key%%=*}
+        if .env.get "$key"; then
+            REPLY=()
+            if [[ $1 == +* ]]; then
+                shift
+                continue # skip if already found
+            elif [[ $1 == *=* ]]; then
+                __dotenv=${BASH_REMATCH[1]}${BASH_REMATCH[3]}$1$'\n'${BASH_REMATCH[4]#*$'\n'}
+            else
+                __dotenv=${BASH_REMATCH[1]}${BASH_REMATCH[4]#*$'\n'}
+                continue # delete all occurrences
+            fi
+        elif [[ $1 == *=* ]]; then
+            __dotenv+="${1#+}"$'\n'
+        fi
+        shift
+    done
+    [[ $__dotenv == "$saved" ]] || .env::file save
+}
+
+.env.puts() { echo "${1-}" >>"$__dotenv_file" && __dotenv+="$1"$'\n'; }
+
+.env.generate() {
+    .env::arg "key required for generate" "$@" || return
+    .env.get "$1" && return || REPLY=$("${@:2}") || return
+    .env::one "generate: ouptut of '${*:2}' has more than one line" "$REPLY" || return
+    .env.puts "$1=$REPLY"
+}
+
+.env.--file() {
+    .env::arg "filename required for --file" "$@" || return
+    __dotenv_file=$1
+    .env::file load || return
+    (($# < 2)) || .env "${@:2}"
+}
+
+.env::arg() { [[ "${2-}" ]] || {
+    echo "$__dotenv_cmd: $1" >&2
+    return 64
+}; }
+
+.env::one() { [[ "$2" != *$'\n'* ]] || .env::arg "$1"; }
+
+.env::file() {
+    local REPLY=$__dotenv_file
+    case "$1" in
+    load)
+        __dotenv=
+        ! [[ -f "$REPLY" ]] || __dotenv="$(<"$REPLY")"$'\n' || return
+        ;;
+    save)
+        if [[ -L "$REPLY" ]] && declare -F -- realpath.resolved >/dev/null; then
+            realpath.resolved "$REPLY"
+        fi
+        { [[ ! -f "$REPLY" ]] || cp -p "$REPLY" "$REPLY.bak"; } &&
+            printf %s "$__dotenv" >"$REPLY.bak" && mv "$REPLY.bak" "$REPLY"
+        ;;
+    esac
+}
+.env.-h() { .env.--help "$@"; }
+.env.--help() {
+    echo "Usage:
+  $__dotenv_cmd [-f|--file FILE] COMMAND [ARGS...]
+  $__dotenv_cmd -h|--help
+
+Options:
+  -f, --file FILE          Use a file other than .env
+
+Read Commands:
+  get KEY                  Get raw value of KEY (or fail)
+  parse [KEY...]           Get trimmed KEY=VALUE lines for named keys (or all)
+  export [KEY...]          Export the named keys (or all) in shell format
+
+Write Commands:
+  set [+]KEY[=VALUE]...    Set or unset values (in-place w/.bak); + sets default
+  puts STRING              Append STRING to the end of the file
+  generate KEY [CMD...]    Set KEY to the output of CMD unless it already exists;
+                           return the new or existing value."
+}
+
+__dotenv() {
+    set -eu
+    __dotenv_cmd=${0##*/}
+    .env.export() {
+        .env.parse "$@" || return 0
+        printf 'export %q\n' "${REPLY[@]}"
+        REPLY=()
+    }
+    .env "$@" || return $?
+    ${REPLY[@]+printf '%s\n' "${REPLY[@]}"}
+}
 
 # This is a general-purpose function to ask Yes/No questions in Bash, either
 # with or without a default answer. It keeps repeating the question until it
@@ -37,6 +181,50 @@ ask() {
         esac
 
     done
+}
+
+# Generate a prompt to set an environment file value.
+envfile-set() {
+    .env --file .env
+
+    .env get "$1"
+    VALUE=${REPLY:-$2}
+
+    echo -n "$3 [$VALUE]: "
+    read INPUT
+
+    VALUE=${INPUT:-$VALUE}
+
+    .env set "${1}=${VALUE}"
+}
+
+#
+# Configure the ports used by AzuraCast.
+#
+setup-ports() {
+    envfile-set "AZURACAST_HTTP_PORT" "80" "Port to use for HTTP connections"
+    envfile-set "AZURACAST_HTTPS_PORT" "443" "Port to use for HTTPS connections"
+    envfile-set "AZURACAST_SFTP_PORT" "2022" "Port to use for SFTP connections"
+}
+
+#
+# Configure the settings used by LetsEncrypt.
+#
+setup-letsencrypt() {
+    envfile-set "LETSENCRYPT_HOST" "" "Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt"
+    envfile-set "LETSENCRYPT_EMAIL" "" "Optional e-mail address for expiration updates"
+}
+
+#
+# Configure release mode settings.
+#
+setup-release() {
+    AZURACAST_VERSION="latest"
+    if ask "Prefer stable release versions of AzuraCast?" N; then
+        AZURACAST_VERSION="stable"
+    fi
+
+    .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
 }
 
 #
@@ -96,12 +284,19 @@ install() {
 
     if [[ ! -f .env ]]; then
         echo "Writing default .env file..."
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env -o .env
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/sample.env -o .env
     fi
 
     if [[ ! -f azuracast.env ]]; then
         echo "Creating default AzuraCast settings file..."
         curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
+
+        # Generate a random password and replace the MariaDB password with it.
+        NEW_PASSWORD=$(
+            tr </dev/urandom -dc _A-Z-a-z-0-9 | head -c"${1:-32}"
+            echo
+        )
+        sed -i "s/azur4c457/${NEW_PASSWORD}/g" azuracast.env
     fi
 
     if [[ ! -f docker-compose.yml ]]; then
@@ -109,8 +304,18 @@ install() {
         curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
     fi
 
+    setup-release
+
+    if ask "Customize AzuraCast ports?" N; then
+        setup-ports
+    fi
+
+    if ask "Set up LetsEncrypt?" N; then
+        setup-letsencrypt
+    fi
+
     docker-compose pull
-    docker-compose run --user="azuracast" --rm web azuracast_install $*
+    docker-compose run --user="azuracast" --rm web azuracast_install "$@"
     docker-compose up -d
     exit
 }
@@ -120,22 +325,63 @@ install() {
 # Usage: ./docker.sh update
 #
 update() {
+    # Check for a new Docker Utility Script.
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh -o docker.new.sh
 
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
-
-    FILES_MATCH="$(
-        cmp --silent docker-compose.yml docker-compose.new.yml
+    UTILITY_FILES_MATCH="$(
+        cmp --silent docker.sh docker.new.sh
         echo $?
     )"
-    UPDATE_NEW=0
+    UPDATE_UTILITY=0
 
-    if [[ ${FILES_MATCH} -ne 0 ]]; then
-        if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
-            UPDATE_NEW=1
+    if [[ ${UTILITY_FILES_MATCH} -ne 0 ]]; then
+        if ask "The Docker Utility Script has changed since your version. Update to latest version?" Y; then
+            UPDATE_UTILITY=1
         fi
     fi
 
-    if [[ ${UPDATE_NEW} -ne 0 ]]; then
+    if [[ ${UPDATE_UTILITY} -ne 0 ]]; then
+        mv docker.new.sh docker.sh
+        chmod a+x docker.sh
+
+        echo "A new Docker Utility Script has been downloaded."
+        echo "Please re-run the update process to continue."
+        exit
+    else
+        rm docker.new.sh
+    fi
+
+    if [[ ! -f azuracast.env ]]; then
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
+        echo "Default environment file loaded."
+    fi
+
+    # Migrate previous release settings to new environment variable.
+    .env --file azuracast.env get PREFER_RELEASE_BUILDS
+    PREFER_RELEASE_BUILDS="${REPLY:-false}"
+
+    if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
+        .env --file .env set AZURACAST_VERSION=stable
+    fi
+
+    .env --file azuracast.env set PREFER_RELEASE_BUILDS
+
+    # Check for updated Docker Compose config.
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
+
+    COMPOSE_FILES_MATCH="$(
+        cmp --silent docker-compose.yml docker-compose.new.yml
+        echo $?
+    )"
+    UPDATE_COMPOSE=0
+
+    if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
+        if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
+            UPDATE_COMPOSE=1
+        fi
+    fi
+
+    if [[ ${UPDATE_COMPOSE} -ne 0 ]]; then
         docker-compose -f docker-compose.new.yml pull
         docker-compose down
 
@@ -148,19 +394,13 @@ update() {
         docker-compose down
     fi
 
-    if [[ ! -f azuracast.env ]]; then
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
-        echo "Default environment file loaded."
-    fi
-
-    docker volume rm azuracast_www_data
     docker volume rm azuracast_tmp_data
     docker volume rm azuracast_redis_data
 
-    docker-compose run --user="azuracast" --rm web azuracast_update $*
+    docker-compose run --user="azuracast" --rm web azuracast_update "$@"
     docker-compose up -d
 
-    docker rmi $(docker images | grep "none" | awk '/ / { print $3 }') 2>/dev/null
+    docker rmi "$(docker images | grep "none" | awk '/ / { print $3 }')" 2>/dev/null
 
     echo "Update complete!"
     exit
@@ -207,9 +447,9 @@ backup() {
     BACKUP_EXT="${BACKUP_FILENAME##*.}"
     shift
 
-    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_cli azuracast:backup /tmp/cli_backup.${BACKUP_EXT} $*
-    docker cp azuracast_web:tmp/cli_backup.${BACKUP_EXT} ${BACKUP_PATH}
-    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web rm -f /tmp/cli_backup.${BACKUP_EXT}
+    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_cli azuracast:backup "/tmp/cli_backup.${BACKUP_EXT}" "$@"
+    docker cp "azuracast_web:tmp/cli_backup.${BACKUP_EXT}" "${BACKUP_PATH}"
+    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web rm -f "/tmp/cli_backup.${BACKUP_EXT}"
     exit
 }
 
@@ -239,12 +479,13 @@ restore() {
         docker-compose down -v
         docker-compose pull
         docker-compose up -d web
-        docker cp ${BACKUP_PATH} azuracast_web:tmp/cli_backup.${BACKUP_EXT}
-        MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_restore /tmp/cli_backup.${BACKUP_EXT} $*
+        docker cp "${BACKUP_PATH}" "azuracast_web:tmp/cli_backup.${BACKUP_EXT}"
+        MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_restore "/tmp/cli_backup.${BACKUP_EXT}" "$@"
 
         docker-compose down
         docker-compose up -d
     fi
+
     exit
 }
 
@@ -257,12 +498,12 @@ restore-legacy() {
     APP_BASE_DIR=$(pwd)
 
     BACKUP_PATH=${1:-"./backup.tar.gz"}
-    BACKUP_DIR=$(cd $(dirname "$BACKUP_PATH") && pwd)
+    BACKUP_DIR=$(cd "$(dirname "$BACKUP_PATH")" && pwd)
     BACKUP_FILENAME=$(basename "$BACKUP_PATH")
 
-    cd $APP_BASE_DIR
+    cd "$APP_BASE_DIR"
 
-    if [ -f $BACKUP_PATH ]; then
+    if [ -f "$BACKUP_PATH" ]; then
         docker-compose down
 
         docker volume rm azuracast_db_data azuracast_influx_data azuracast_station_data
@@ -270,11 +511,11 @@ restore-legacy() {
         docker volume create azuracast_influx_data
         docker volume create azuracast_station_data
 
-        docker run --rm -v $BACKUP_DIR:/backup \
+        docker run --rm -v "$BACKUP_DIR:/backup" \
             -v azuracast_db_data:/azuracast/db \
             -v azuracast_influx_data:/azuracast/influx \
             -v azuracast_station_data:/azuracast/stations \
-            busybox tar zxvf /backup/$BACKUP_FILENAME
+            busybox tar zxvf "/backup/$BACKUP_FILENAME"
 
         docker-compose up -d
     else
@@ -330,7 +571,7 @@ dev-phpstan() {
 #
 dev-codeception() {
     docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml build web
-    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web composer codeception -- $*
+    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web composer codeception -- "$@"
 }
 
 #
@@ -338,7 +579,7 @@ dev-codeception() {
 # Usage: ./docker.sh uninstall
 #
 uninstall() {
-    if ask "This operation is destructive and will wipe your existing Docker containers. Continue? [y/N] " N; then
+    if ask "This operation is destructive and will wipe your existing Docker containers. Continue?" N; then
 
         docker-compose down -v
         docker-compose rm -f
@@ -357,20 +598,26 @@ uninstall() {
 
 #
 # Create and link a LetsEncrypt SSL certificate.
-# Usage: ./docker.sh letsencrypt-create domainname.example.com
+# Usage: ./docker.sh letsencrypt-create
 #
 letsencrypt-create() {
-    docker-compose exec --user="azuracast" web letsencrypt_connect $*
+    setup-letsencrypt
+
+    docker-compose stop web
+    docker-compose rm -f web
+    docker-compose up -d
     exit
 }
 
 #
-# Renew an existing LetsEncrypt SSL certificate
-# Usage: ./docker.sh letsencrypt-renew
+# Utility script to facilitate switching ports.
+# Usage: ./docker.sh change-ports
 #
-letsencrypt-renew() {
-    docker-compose exec --user="azuracast" web letsencrypt_renew $*
-    exit
+change-ports() {
+    setup-ports
+
+    docker-compose down
+    docker-compose up -d
 }
 
 "$@"

@@ -3,13 +3,13 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Exception\ValidationException;
+use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
 use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
@@ -116,7 +116,7 @@ class FilesController extends AbstractStationApiCrudController
         $temp_path = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
         file_put_contents($temp_path, $api_record->getFileContents());
 
-        $sanitized_path = 'media://' . $api_record->getSanitizedPath();
+        $sanitized_path = Filesystem::PREFIX_MEDIA . '://' . $api_record->getSanitizedPath();
 
         // Process temp path as regular media record.
         $record = $this->media_repo->uploadFile($station, $temp_path, $sanitized_path);
@@ -204,7 +204,7 @@ class FilesController extends AbstractStationApiCrudController
                 return $record;
             }
         }
-        
+
         return null;
     }
 
@@ -236,7 +236,7 @@ class FilesController extends AbstractStationApiCrudController
                 'path' => function ($new_value, $record) {
                     // Detect and handle a rename.
                     if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                        $path_full = 'media://' . $new_value;
+                        $path_full = Filesystem::PREFIX_MEDIA . '://' . $new_value;
 
                         $fs = $this->filesystem->getForStation($record->getStation());
                         $fs->rename($record->getPathUri(), $path_full);

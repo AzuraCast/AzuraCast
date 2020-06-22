@@ -156,9 +156,20 @@ return function (App $app) {
                 ->setName('api:requests:submit')
                 ->add(new Middleware\RateLimit('api', 5, 2));
 
+            $group->get('/ondemand', Controller\Api\Stations\OnDemand\ListAction::class)
+                ->setName('api:stations:ondemand:list');
+
+            $group->get('/ondemand/download/{media_id}', Controller\Api\Stations\OnDemand\DownloadAction::class)
+                ->setName('api:stations:ondemand:download')
+                ->add(new Middleware\RateLimit('ondemand', 1, 2));
+
             $group->get('/listeners', Controller\Api\Stations\ListenersController::class . ':indexAction')
                 ->setName('api:listeners:index')
                 ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
+
+            $group->get('/waveform/{media_id:[a-zA-Z0-9\-]+}.json',
+                Controller\Api\Stations\Waveform\GetWaveformAction::class)
+                ->setName('api:stations:media:waveform');
 
             $group->get('/art/{media_id:[a-zA-Z0-9\-]+}.jpg', Controller\Api\Stations\Art\GetArtAction::class)
                 ->setName('api:stations:media:art');
@@ -211,7 +222,7 @@ return function (App $app) {
                 $group->post('/mkdir', Controller\Api\Stations\Files\MakeDirectoryAction::class)
                     ->setName('api:stations:files:mkdir');
 
-                $group->map(['GET', 'POST'], '/upload', Controller\Api\Stations\Files\UploadAction::class)
+                $group->map(['GET', 'POST'], '/upload', Controller\Api\Stations\Files\FlowUploadAction::class)
                     ->setName('api:stations:files:upload');
 
                 $group->get('/download', Controller\Api\Stations\Files\DownloadAction::class)

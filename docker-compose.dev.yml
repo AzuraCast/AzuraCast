@@ -2,148 +2,34 @@ version: '2.2'
 
 services:
   nginx_proxy:
-    image: azuracast/azuracast_nginx_proxy:latest
     build:
       context: ../docker-azuracast-nginx-proxy
-    ports:
-      - '${AZURACAST_HTTP_PORT:-80}:80'
-      - '${AZURACAST_HTTPS_PORT:-443}:443'
     volumes:
-      - ./util/local_ssl:/etc/nginx/certs:ro
+      - ./util/local_ssl:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    depends_on:
-      - web
-    restart: always
 
   web:
-    image: azuracast/azuracast_web_v2:latest
     build:
       context: .
-    depends_on:
-      - mariadb
-      - influxdb
-      - stations
-      - redis
-    env_file: azuracast.env
-    environment: &default-environment
-      LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 7
-      AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
-    ports:
-      - '${AZURACAST_SFTP_PORT:-2022}:2022'
     volumes:
       - .:/var/azuracast/www
-      - tmp_data:/var/azuracast/www_tmp
-      - station_data:/var/azuracast/stations
-      - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - geolite_install:/var/azuracast/geoip
-      - sftpgo_data:/var/azuracast/sftpgo/persist
-      - backups:/var/azuracast/backups
-    restart: always
-    ulimits: &default-ulimits
-      nofile:
-        soft: 65536
-        hard: 65536
-    logging: &default-logging
-      options:
-        max-size: "1m"
-        max-file: "5"
 
   mariadb:
-    image: azuracast/azuracast_db:latest
     build:
       context: ../docker-azuracast-db
     ports:
-     - "127.0.0.1:3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-    env_file: azuracast.env
-    environment:
-      << : *default-environment
-    restart: always
-    logging: *default-logging
+      - "127.0.0.1:3306:3306"
 
   influxdb:
-    image: azuracast/azuracast_influxdb:latest
     build:
       context: ../docker-azuracast-influxdb
-    volumes:
-      - influx_data:/var/lib/influxdb
-    restart: always
-    logging: *default-logging
 
   redis:
-    image: azuracast/azuracast_redis:latest
     build:
       context: ../docker-azuracast-redis
     ports:
-     - "127.0.0.1:6379:6379"
-    restart: always
-    logging: *default-logging
-    sysctls:
-      net.core.somaxconn: 1024
-    volumes:
-      - redis_data:/data
+      - "127.0.0.1:6379:6379"
 
   stations:
-    container_name: azuracast_stations
-    image: azuracast/azuracast_radio:latest
     build:
       context: ../docker-azuracast-radio
-    ports:
-     - '8000:8000'
-     - '8005:8005'
-     - '8006:8006'
-     - '8010:8010'
-     - '8015:8015'
-     - '8016:8016'
-     - '8020:8020'
-     - '8025:8025'
-     - '8026:8026'
-     - '8030:8030'
-     - '8035:8035'
-     - '8036:8036'
-     - '8040:8040'
-     - '8045:8045'
-     - '8046:8046'
-    volumes:
-     - station_data:/var/azuracast/stations
-     - ./util/local_ssl:/etc/nginx/ssl:ro
-     - shoutcast2_install:/var/azuracast/servers/shoutcast2
-     - tmp_data:/var/azuracast/www_tmp
-    init: true
-    restart: always
-    ulimits: *default-ulimits
-    logging: *default-logging
-
-#  chronograf:
-#    image: chronograf:alpine
-#    ports:
-#     - "8888:8888"
-#    command: "chronograf --influxdb-url=http://influxdb:8086"
-
-#  redis-commander:
-#    image: rediscommander/redis-commander:latest
-#    depends_on:
-#    - redis
-#    environment:
-#      REDIS_HOSTS: "local-app:redis:6379:0,local-sessions:redis:6379:1,local-doctrine:redis:6379:2"
-#    ports:
-#    - "127.0.0.1:8081:8081"
-
-#  blackfire:
-#    image: blackfire/blackfire
-#    environment:
-#      BLACKFIRE_SERVER_ID: ""
-#      BLACKFIRE_SERVER_TOKEN: ""
-
-volumes:
-  db_data: {}
-  influx_data: {}
-  station_data: {}
-  shoutcast2_install: {}
-  geolite_install: {}
-  sftpgo_data: {}
-  tmp_data: {}
-  redis_data: {}
-  backups: {}

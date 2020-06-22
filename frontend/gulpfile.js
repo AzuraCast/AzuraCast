@@ -1,17 +1,16 @@
-'use strict'
+'use strict';
 
-const gulp = require('gulp')
-const babel = require('gulp-babel')
-const del = require('del')
-const rev = require('gulp-rev')
-const concat = require('gulp-concat')
-const uglify = require('gulp-uglify')
-const sourcemaps = require('gulp-sourcemaps')
-const sass = require('gulp-sass')
-const clean_css = require('gulp-clean-css')
-const revdel = require('gulp-rev-delete-original')
-const webpackStream = require('webpack-stream')
-const webpack = require('webpack')
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+const del = require('del');
+const rev = require('gulp-rev');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const sourcemaps = require('gulp-sourcemaps');
+const sass = require('gulp-sass');
+const clean_css = require('gulp-clean-css');
+const revdel = require('gulp-rev-delete-original');
+const webpackStream = require('webpack-stream');
 
 var jsFiles = {
   // Core Libraries
@@ -197,30 +196,30 @@ var jsFiles = {
       'node_modules/bootstrap-vue/dist/bootstrap-vue.min.css'
     ]
   }
-}
+};
 
-var defaultTasks = Object.keys(jsFiles)
+var defaultTasks = Object.keys(jsFiles);
 
 defaultTasks.forEach(function (libName) {
   gulp.task('scripts:' + libName, function () {
     return gulp.src(jsFiles[libName].files, {
       base: jsFiles[libName].base
-    }).pipe(gulp.dest('../web/static/dist/lib/' + libName))
-  })
-})
+    }).pipe(gulp.dest('../web/static/dist/lib/' + libName));
+  });
+});
 
 gulp.task('bundle_deps', gulp.parallel(
   defaultTasks.map(function (name) {
-    return 'scripts:' + name
+    return 'scripts:' + name;
   })
-))
+));
 
 gulp.task('clean', function () {
   return del([
     '../web/static/dist/**/*',
     '../web/static/assets.json'
-  ], { force: true })
-})
+  ], { force: true });
+});
 
 gulp.task('concat-js', function () {
   return gulp.src('./js/inc/*.js')
@@ -231,109 +230,28 @@ gulp.task('concat-js', function () {
     .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('../web/static/dist'))
-})
+    .pipe(gulp.dest('../web/static/dist'));
+});
 
-var vueProjects = {
-  'vue_gettext': {
-    'src_file': 'vue/VueTranslations.js',
-    'filename': 'vue_gettext.js',
-    'library': 'VueTranslations'
-  },
-  'webcaster': {
-    'src_file': 'vue/Webcaster.vue',
-    'filename': 'webcaster.js',
-    'library': 'Webcaster'
-  },
-  'radio_player': {
-    'src_file': 'vue/RadioPlayer.vue',
-    'filename': 'radio_player.js',
-    'library': 'RadioPlayer'
-  },
-  'inline_player': {
-    'src_file': 'vue/InlinePlayer.vue',
-    'filename': 'inline_player.js',
-    'library': 'InlinePlayer'
-  },
-  'station_media': {
-    'src_file': 'vue/StationMedia.vue',
-    'filename': 'station_media.js',
-    'library': 'StationMedia'
-  },
-  'station_playlists': {
-    'src_file': 'vue/StationPlaylists.vue',
-    'filename': 'station_playlists.js',
-    'library': 'StationPlaylist'
-  },
-  'station_streamers': {
-    'src_file': 'vue/StationStreamers.vue',
-    'filename': 'station_streamers.js',
-    'library': 'StationStreamers'
-  }
-}
-
-var vueTasks = Object.keys(vueProjects)
-
-vueTasks.forEach(function (libName) {
-  gulp.task('vue:' + libName, function () {
-    var vueProject = vueProjects[libName]
-    return gulp.src(vueProject.src_file)
-      .pipe(sourcemaps.init())
-      .pipe(webpackStream({
-        mode: 'production',
-        output: {
-          publicPath: '/static/dist',
-          filename: vueProject.filename,
-          library: vueProject.library
-        },
-        resolve: {
-          extensions: ['*', '.js', '.vue', '.json']
-        },
-        module: {
-          rules: [
-            {
-              test: /\.vue$/,
-              loader: 'vue-loader',
-              options: {}
-            },
-            {
-              test: /\.scss$/,
-              use: [
-                'vue-style-loader',
-                'css-loader',
-                'sass-loader'
-              ]
-            }
-          ]
-        },
-        plugins: [
-          new webpack.IgnorePlugin({
-            resourceRegExp: /^vue$/
-          })
-        ]
-      }))
-      .pipe(babel({
-        presets: ['@babel/env']
-      }))
-      .pipe(uglify())
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest('../web/static/dist'))
-  })
-})
-
-gulp.task('build-vue', gulp.series(
-  vueTasks.map(function (name) {
-    return 'vue:' + name
-  })
-))
+gulp.task('build-vue', function () {
+  return gulp.src(['vue/*.js', 'vue/*.vue'])
+    .pipe(sourcemaps.init())
+    .pipe(webpackStream(require('./webpack.config.js')))
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
+    .pipe(uglify())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('../web/static/dist'));
+});
 
 gulp.task('build-js', function () {
   return gulp.src(['./js/*.js'])
     .pipe(sourcemaps.init())
     .pipe(uglify())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('../web/static/dist'))
-})
+    .pipe(gulp.dest('../web/static/dist'));
+});
 
 gulp.task('build-css', function () {
   return gulp.src(['./scss/dark.scss', './scss/light.scss'])
@@ -341,8 +259,8 @@ gulp.task('build-css', function () {
     .pipe(sass())
     .pipe(clean_css())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('../web/static/dist'))
-})
+    .pipe(gulp.dest('../web/static/dist'));
+});
 
 gulp.task('default', gulp.series('clean', gulp.parallel('concat-js', 'build-vue', 'build-js', 'build-css', 'bundle_deps'), function () {
   return gulp.src(['../web/static/dist/**/*.{js,css}'], { base: '../web/static/' })
@@ -350,5 +268,5 @@ gulp.task('default', gulp.series('clean', gulp.parallel('concat-js', 'build-vue'
     .pipe(revdel())
     .pipe(gulp.dest('../web/static/'))
     .pipe(rev.manifest('assets.json'))
-    .pipe(gulp.dest('../web/static/'))
-}))
+    .pipe(gulp.dest('../web/static/'));
+}));

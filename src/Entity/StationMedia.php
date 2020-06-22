@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\ApiUtilities;
+use App\Flysystem\Filesystem;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -313,7 +314,12 @@ class StationMedia
      */
     public function getArtPath(): string
     {
-        return 'albumart://' . $this->unique_id . '.jpg';
+        return Filesystem::PREFIX_ALBUM_ART . '://' . $this->unique_id . '.jpg';
+    }
+
+    public function getWaveformPath(): string
+    {
+        return Filesystem::PREFIX_WAVEFORMS . '://' . $this->unique_id . '.json';
     }
 
     public function getIsrc(): ?string
@@ -370,7 +376,7 @@ class StationMedia
      */
     public function getPathUri(): string
     {
-        return 'media://' . $this->path;
+        return Filesystem::PREFIX_MEDIA . '://' . $this->path;
     }
 
     public function getMtime(): ?int

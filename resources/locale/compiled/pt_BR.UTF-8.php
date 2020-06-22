@@ -14,13 +14,15 @@ Language-Team: Portuguese, Brazilian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-04-16T04:24:39+00:00
-PO-Revision-Date: 2020-04-26 10:14
+POT-Creation-Date: 2020-06-21T16:28:26+00:00
+PO-Revision-Date: 2020-06-22 04:07
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
+X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: pt-BR
 X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File-ID: 4
 ',
       ),
       'All Permissions' => 
@@ -267,6 +269,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Bancos de dados do InfluxDB criados.',
       ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Log do Liquidsoap',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Configuração do Liquidsoap',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Registro de acesso do Icecast',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Registro de Erro do Icecast',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Configuração do Icecast',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'SHOUTcast Log',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'Configuração do SHOUTcast',
+      ),
       'Record not found.' => 
       array (
         0 => 'Registro não encontrado.',
@@ -329,11 +359,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Debug Output' => 
       array (
-        0 => '',
+        0 => 'Saída de depuração',
       ),
       'An error occurred while downloading the GeoLite database: %s' => 
       array (
-        0 => '',
+        0 => 'Um erro ocorreu ao transferir a base de dados do GeoLite: %s',
       ),
       'Install GeoLite IP Database' => 
       array (
@@ -479,6 +509,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Não foi possível mover "%s" para "%s"',
       ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Esta rádio ultrapassou o espaço disponível em disco.',
+      ),
       'Directory' => 
       array (
         0 => 'Diretório',
@@ -495,9 +529,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Novo caminho não especificado.',
       ),
-      'This station is out of available storage space.' => 
+      'This station does not support on-demand streaming.' => 
       array (
-        0 => 'Esta rádio ultrapassou o espaço disponível em disco.',
+        0 => 'Esta estação não suporta streaming sob demanda.',
+      ),
+      'File not found.' => 
+      array (
+        0 => 'Arquivo não encontrado.',
       ),
       'Playlist not found.' => 
       array (
@@ -521,11 +559,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Playlist reshuffled.' => 
       array (
-        0 => '',
+        0 => 'Lista de reprodução reorganizada.',
       ),
       'Playlist successfully imported; %d of %d files were successfully matched.' => 
       array (
-        0 => '',
+        0 => 'Playlist importada com sucesso; %d de %d arquivos foram encontrados com sucesso.',
       ),
       'This station does not accept requests currently.' => 
       array (
@@ -803,34 +841,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Hook web deletado.',
       ),
-      'Liquidsoap Log' => 
-      array (
-        0 => 'Log do Liquidsoap',
-      ),
-      'Liquidsoap Configuration' => 
-      array (
-        0 => 'Configuração do Liquidsoap',
-      ),
-      'Icecast Access Log' => 
-      array (
-        0 => 'Registro de acesso do Icecast',
-      ),
-      'Icecast Error Log' => 
-      array (
-        0 => 'Registro de Erro do Icecast',
-      ),
-      'Icecast Configuration' => 
-      array (
-        0 => 'Configuração do Icecast',
-      ),
-      'SHOUTcast Log' => 
-      array (
-        0 => 'SHOUTcast Log',
-      ),
-      'SHOUTcast Configuration' => 
-      array (
-        0 => 'Configuração do SHOUTcast',
-      ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
         0 => 'Não é permitido que os motores de busca usem este recurso.',
@@ -853,7 +863,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => '',
+        0 => 'Esta música já foi reproduzida recentemente. Por favor espere antes de solicitar novamente.',
       ),
       'Select File' => 
       array (
@@ -910,6 +920,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Novas atualizações AzuraCast disponíveis',
+      ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => 'Instalação sem backup recente',
+      ),
+      'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.' => 
+      array (
+        0 => 'O backup desta instalação não foi feito nas últimas duas semanas. Visite a <a href="%s" target="_blank">Pagina de Backups</a> para executar um novo backup.',
       ),
       '%s is not recognized as a service.' => 
       array (
@@ -1014,6 +1032,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'The port %s is in use by another station.' => 
       array (
         0 => 'A porta %s está sendo usada por outra estação.',
+      ),
+      'Are you sure?' => 
+      array (
+        0 => 'Você tem certeza?',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -1421,7 +1443,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Mood' => 
       array (
-        0 => '',
+        0 => 'Género',
       ),
       'MPEG Location Lookup Table' => 
       array (
@@ -1489,7 +1511,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Position Synchronisation Frame' => 
       array (
-        0 => '',
+        0 => 'Quadro de sincronização de posição',
       ),
       'Private Frame' => 
       array (
@@ -2179,6 +2201,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Exibir a rádio em páginas públicas e em resultados gerais da API.',
       ),
+      'Enable On-Demand Streaming and Downloads' => 
+      array (
+        0 => 'Ativar streaming e downloads On demand',
+      ),
+      'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
+      array (
+        0 => 'Se ativada, as músicas da listas de reprodução com streaming sob demanda ativado estarão disponíveis para transmissão e download por meio de uma página pública especializada.',
+      ),
       'URL Stub' => 
       array (
         0 => 'Endereço encurtado',
@@ -2203,6 +2233,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Este software fornece sua transmissão para o público ouvinte.',
       ),
+      'Customize Source Password' => 
+      array (
+        0 => 'Personalizar a senha da fonte',
+      ),
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => 'Deixe em branco para gerar automaticamente uma nova senha.',
+      ),
+      'Customize Administrator Password' => 
+      array (
+        0 => 'Modificar a senha do Administrador',
+      ),
       'Customize Broadcasting Port' => 
       array (
         0 => 'Personalizar o porto de transmissão',
@@ -2218,18 +2260,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
         0 => 'Número máximo de ouvintes em através de todos os fluxos. Deixe em branco para usar o padrão (250).',
-      ),
-      'Customize Source Password' => 
-      array (
-        0 => 'Personalizar a senha da fonte',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => 'Deixe em branco para gerar automaticamente uma nova senha.',
-      ),
-      'Customize Administrator Password' => 
-      array (
-        0 => 'Modificar a senha do Administrador',
       ),
       'Custom Configuration' => 
       array (
@@ -2389,11 +2419,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AutoDJ Queue Length' => 
       array (
-        0 => '',
+        0 => 'Comprimento da fila AutoDJ',
       ),
       'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
       array (
-        0 => '',
+        0 => 'Se você usar o AutoDJ do AzuraCast, isso determina quantas músicas com antecedência o AutoDJ preencherá automaticamente a fila.',
       ),
       'Manual AutoDJ Mode' => 
       array (
@@ -2763,7 +2793,7 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       ),
       'Restart broadcasting? This will disconnect any current listeners.' => 
       array (
-        0 => '',
+        0 => 'Reiniciar a transmissão? Isto irá desconectar qualquer ouvinte atual.',
       ),
       'Restart to Apply Changes' => 
       array (
@@ -2780,6 +2810,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Public Page' => 
       array (
         0 => 'Página pública',
+      ),
+      'On-Demand Media' => 
+      array (
+        0 => 'Arquivos On Demand',
       ),
       'Music Files' => 
       array (
@@ -3059,11 +3093,11 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       ),
       'The backup process is running in the background. To view the logs, click the button below.' => 
       array (
-        0 => '',
+        0 => 'O processo de backup está sendo executado em segundo plano. Para visualizar os logs, clique no botão abaixo.',
       ),
       'View Backup Log' => 
       array (
-        0 => '',
+        0 => 'Ver registro do backup',
       ),
       'Delete custom field "%s"?' => 
       array (
@@ -3081,13 +3115,9 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Depuração Específica',
       ),
-      'Test AutoDJ Next Song' => 
+      'Rebuild AutoDJ Queue' => 
       array (
-        0 => 'Teste AutoDJ Próxima Música',
-      ),
-      'Test time (Leave blank for current time)' => 
-      array (
-        0 => 'Tempo de teste (Deixe em branco para a hora atual)',
+        0 => 'Reconstruir Fila de AutoDJ',
       ),
       'Run Test' => 
       array (
@@ -3095,15 +3125,15 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       ),
       'Send Liquidsoap Telnet Command' => 
       array (
-        0 => '',
+        0 => 'Enviar comando Telnet Liquidsoap',
       ),
       'Command' => 
       array (
-        0 => '',
+        0 => 'Comando',
       ),
       'Execute Command' => 
       array (
-        0 => '',
+        0 => 'Executar Comando',
       ),
       'Server Status' => 
       array (
@@ -3671,6 +3701,10 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       array (
         0 => 'Código de incorporação do player',
       ),
+      'On-Demand Embed Code' => 
+      array (
+        0 => 'Embed código On Demand',
+      ),
       'Request Embed Code' => 
       array (
         0 => 'Código de incorporação',
@@ -3905,11 +3939,11 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       ),
       'Clear all pending requests?' => 
       array (
-        0 => '',
+        0 => 'Limpar todas as solicitações pendentes?',
       ),
       'Clear Pending Requests' => 
       array (
-        0 => '',
+        0 => 'Limpar todas as solicitações pendentes',
       ),
       'Date Requested' => 
       array (
@@ -3929,7 +3963,7 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       ),
       'Delete request?' => 
       array (
-        0 => '',
+        0 => 'Excluir solicitação?',
       ),
       'Report Not Available' => 
       array (
@@ -3941,7 +3975,7 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       ),
       'Live Streamer:' => 
       array (
-        0 => '',
+        0 => 'Transmissão ao vivo:',
       ),
       'Delete SFTP User "%s"?' => 
       array (
@@ -4030,18 +4064,6 @@ Na maioria dos casos, use a codificação UTF-8 padrão. A codificação ISO-885
       'Delete web hook "%s"?' => 
       array (
         0 => 'Excluir webhook "%s"?',
-      ),
-      'Select...' => 
-      array (
-        0 => 'Selecionar...',
-      ),
-      'No results found!' => 
-      array (
-        0 => 'Nenhum resultado encontrado!',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Avançado',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

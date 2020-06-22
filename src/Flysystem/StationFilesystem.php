@@ -19,7 +19,7 @@ class StationFilesystem extends FilesystemGroup
 
         if (null === $to) {
             $random_prefix = substr(md5(random_bytes(8)), 0, 5);
-            $to = 'temp://' . $random_prefix . '_' . $path_from;
+            $to = Filesystem::PREFIX_TEMP . '://' . $random_prefix . '_' . $path_from;
         }
 
         if ($this->has($to)) {

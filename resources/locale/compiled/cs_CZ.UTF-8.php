@@ -14,13 +14,15 @@ Language-Team: Czech
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-04-16T04:24:39+00:00
-PO-Revision-Date: 2020-04-26 10:14
+POT-Creation-Date: 2020-06-21T16:28:26+00:00
+PO-Revision-Date: 2020-06-22 04:07
 Language: cs_CZ
 Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;
 X-Crowdin-Project: azuracast
+X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: cs
 X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File-ID: 4
 ',
       ),
       'All Permissions' => 
@@ -267,6 +269,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Liquidsoap protokol',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Liquidsoap konfigurace',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Přístupový protokol Icecast',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Chybový protokol Icecast',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Icecast konfigurace',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'SHOUTcast protokol',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'SHOUTcast konfigurace',
+      ),
       'Record not found.' => 
       array (
         0 => '',
@@ -479,6 +509,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Nelze přesunout "%s" do "%s"',
       ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Tato stanice je mimo dostupný úložný prostor.',
+      ),
       'Directory' => 
       array (
         0 => 'Adresář',
@@ -495,9 +529,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'This station is out of available storage space.' => 
+      'This station does not support on-demand streaming.' => 
       array (
-        0 => 'Tato stanice je mimo dostupný úložný prostor.',
+        0 => '',
+      ),
+      'File not found.' => 
+      array (
+        0 => '',
       ),
       'Playlist not found.' => 
       array (
@@ -803,34 +841,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Liquidsoap Log' => 
-      array (
-        0 => 'Liquidsoap protokol',
-      ),
-      'Liquidsoap Configuration' => 
-      array (
-        0 => 'Liquidsoap konfigurace',
-      ),
-      'Icecast Access Log' => 
-      array (
-        0 => 'Přístupový protokol Icecast',
-      ),
-      'Icecast Error Log' => 
-      array (
-        0 => 'Chybový protokol Icecast',
-      ),
-      'Icecast Configuration' => 
-      array (
-        0 => 'Icecast konfigurace',
-      ),
-      'SHOUTcast Log' => 
-      array (
-        0 => 'SHOUTcast protokol',
-      ),
-      'SHOUTcast Configuration' => 
-      array (
-        0 => 'SHOUTcast konfigurace',
-      ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
         0 => '',
@@ -910,6 +920,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Nové aktualizace AzuraCast jsou k dispozici',
+      ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => '',
+      ),
+      'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.' => 
+      array (
+        0 => '',
       ),
       '%s is not recognized as a service.' => 
       array (
@@ -1014,6 +1032,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'The port %s is in use by another station.' => 
       array (
         0 => 'Port %s je používán jinou stanicí.',
+      ),
+      'Are you sure?' => 
+      array (
+        0 => '',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -2179,6 +2201,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Enable On-Demand Streaming and Downloads' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
+      array (
+        0 => '',
+      ),
       'URL Stub' => 
       array (
         0 => '',
@@ -2203,6 +2233,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Customize Source Password' => 
+      array (
+        0 => '',
+      ),
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => '',
+      ),
+      'Customize Administrator Password' => 
+      array (
+        0 => '',
+      ),
       'Customize Broadcasting Port' => 
       array (
         0 => '',
@@ -2216,18 +2258,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
-      array (
-        0 => '',
-      ),
-      'Customize Source Password' => 
-      array (
-        0 => '',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => '',
-      ),
-      'Customize Administrator Password' => 
       array (
         0 => '',
       ),
@@ -2770,6 +2800,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'On-Demand Media' => 
+      array (
+        0 => '',
+      ),
       'Music Files' => 
       array (
         0 => '',
@@ -3070,11 +3104,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Test AutoDJ Next Song' => 
-      array (
-        0 => '',
-      ),
-      'Test time (Leave blank for current time)' => 
+      'Rebuild AutoDJ Queue' => 
       array (
         0 => '',
       ),
@@ -3659,6 +3689,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'On-Demand Embed Code' => 
+      array (
+        0 => '',
+      ),
       'Request Embed Code' => 
       array (
         0 => '',
@@ -4018,18 +4052,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Delete web hook "%s"?' => 
       array (
         0 => '',
-      ),
-      'Select...' => 
-      array (
-        0 => '',
-      ),
-      'No results found!' => 
-      array (
-        0 => '',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Pokročilé',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

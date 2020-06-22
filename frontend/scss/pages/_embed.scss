@@ -1,4 +1,8 @@
 body.embed {
   background: transparent !important;
   min-height: auto;
+
+  &.ondemand {
+    overflow: hidden;
+  }
 }

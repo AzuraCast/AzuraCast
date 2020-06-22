@@ -3,6 +3,7 @@ namespace App\Sync\Task;
 
 use App\ApiUtilities;
 use App\Entity;
+use App\Entity\Station;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
 use App\EventDispatcher;
@@ -292,7 +293,13 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                         ? $current_streamer->getDisplayName()
                         : 'Live DJ';
 
-                    $np->live = new Entity\Api\NowPlayingLive(true, $streamer_name);
+                    $broadcast_start_time = null;
+                    $broadcast = $this->getLatestBroadcast($station);
+                    if (!empty($broadcast)) {
+                        $broadcast_start_time = $broadcast->getTimestampStart();
+                    }
+
+                    $np->live = new Entity\Api\NowPlayingLive(true, $streamer_name, $broadcast_start_time);
                 } else {
                     $np->live = new Entity\Api\NowPlayingLive(false, '');
                 }
@@ -429,5 +436,27 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         });
 
         $event->setRawResponse($np_raw);
+    }
+
+    /**
+     * Returns the latest live broadcast
+     *
+     * @param Entity\Station $station
+
+     * @return Entity\StationStreamerBroadcast
+     */
+    public function getLatestBroadcast(Station $station)
+    {
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb 
+            FROM App\Entity\StationStreamerBroadcast ssb
+            WHERE ssb.station = :station AND ssb.streamer = :streamer
+            ORDER BY ssb.timestampStart DESC
+            ')
+            ->setMaxResults(1)
+            ->setParameter('station', $station)
+            ->setParameter('streamer', $station->getCurrentStreamer());
+        $result = $query->getSingleResult();
+
+        return $result;
     }
 }

@@ -78,15 +78,7 @@ class Configuration
         }
 
         // Ensure all directories exist.
-        $radio_dirs = [
-            $station->getRadioBaseDir(),
-            $station->getRadioMediaDir(),
-            $station->getRadioAlbumArtDir(),
-            $station->getRadioPlaylistsDir(),
-            $station->getRadioConfigDir(),
-            $station->getRadioTempDir(),
-            $station->getRadioRecordingsDir(),
-        ];
+        $radio_dirs = $station->getAllStationDirectories();
         foreach ($radio_dirs as $radio_dir) {
             if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
                 throw new RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));

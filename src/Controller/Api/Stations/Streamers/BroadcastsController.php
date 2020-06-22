@@ -5,9 +5,9 @@ use App\Controller\Api\AbstractApiCrudController;
 use App\Doctrine\Paginator;
 use App\Entity;
 use App\File;
+use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Filesystem;
 use App\Utilities;
 use Psr\Http\Message\ResponseInterface;
 
@@ -61,7 +61,7 @@ class BroadcastsController extends AbstractApiCrudController
             unset($return['recordingPath']);
 
             $recordingPath = $row->getRecordingPath();
-            $recordingUri = 'recordings://' . $recordingPath;
+            $recordingUri = Filesystem::PREFIX_RECORDINGS . '://' . $recordingPath;
 
             if ($fs->has($recordingUri)) {
                 $recordingMeta = $fs->getMetadata($recordingUri);
@@ -134,7 +134,7 @@ class BroadcastsController extends AbstractApiCrudController
         $fs = $filesystem->getForStation($station);
         $filename = basename($recordingPath);
 
-        $recordingPath = 'recordings://' . $recordingPath;
+        $recordingPath = Filesystem::PREFIX_RECORDINGS . '://' . $recordingPath;
 
         return $response->withFlysystemFile(
             $fs,
@@ -163,7 +163,7 @@ class BroadcastsController extends AbstractApiCrudController
 
         if (!empty($recordingPath)) {
             $fs = $filesystem->getForStation($station);
-            $recordingPath = 'recordings://' . $recordingPath;
+            $recordingPath = Filesystem::PREFIX_RECORDINGS . '://' . $recordingPath;
 
             $fs->delete($recordingPath);
 

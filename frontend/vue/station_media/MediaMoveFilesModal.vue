@@ -4,7 +4,7 @@
             <b-col md="6">
                 <b-button size="sm" variant="primary" @click="pageBack" :disabled="dirHistory.length === 0">
                     <i class="material-icons" aria-hidden="true">chevron_left</i>
-                    <translate>Back</translate>
+                    <translate key="lang_btn_back">Back</translate>
                 </b-button>
             </b-col>
             <b-col md="6" class="text-right">
@@ -32,10 +32,10 @@
         </b-row>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
-                <translate>Close</translate>
+                <translate key="lang_btn_close">Close</translate>
             </b-button>
             <b-button variant="primary" @click="doMove">
-                <translate>Move to Directory</translate>
+                <translate key="lang_btn_move">Move to Directory</translate>
             </b-button>
         </template>
     </b-modal>

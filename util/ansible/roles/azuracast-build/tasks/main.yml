@@ -1,0 +1,34 @@
+---
+- name: Install NodeJS and NPM
+  shell: curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n && bash n lts
+  args:
+    warn: false
+    chdir: "/tmp"
+
+- name: Set permissions for folders
+  file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0744
+  with_items:
+    - "{{ www_base }}/frontend/node_modules"
+    - "{{ www_base }}/web/static"
+    - "{{ www_base }}/web/static/dist"
+
+- name: Pull Node Dependencies
+  become: true
+  become_user: azuracast
+  shell: npm ci
+  args:
+    chdir: "{{ www_base }}/frontend"
+
+- name: Build AzuraCast Frontend Scripts
+  become: true
+  become_user: azuracast
+  shell: npm run build
+  args:
+    chdir: "{{ www_base }}/frontend"
+
+- name: Set permissions of generated frontend content
+  shell: "{{ item }}"
+  with_items:
+    - "chown -R azuracast:www-data {{ www_base }}"
+    - "find {{ www_base }} -type d -exec chmod 755 {} \\;"
+    - "find {{ www_base }} -type f -exec chmod 644 {} \\;"

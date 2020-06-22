@@ -256,6 +256,14 @@ class Station
     protected $enable_public_page = true;
 
     /**
+     * @ORM\Column(name="enable_on_demand", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
+     * @var bool Whether this station has a public "on-demand" streaming and download page.
+     */
+    protected $enable_on_demand = false;
+
+    /**
      * @ORM\Column(name="needs_restart", type="boolean")
      *
      * @AuditLog\AuditIgnore()
@@ -652,6 +660,11 @@ class Station
         return $this->radio_base_dir . '/album_art';
     }
 
+    public function getRadioWaveformsDir(): string
+    {
+        return $this->radio_base_dir . '/waveforms';
+    }
+
     public function getRadioTempDir(): string
     {
         return $this->radio_base_dir . '/temp';
@@ -702,6 +715,20 @@ class Station
     public function getRadioConfigDir(): string
     {
         return $this->radio_base_dir . '/config';
+    }
+
+    public function getAllStationDirectories(): array
+    {
+        return [
+            $this->getRadioBaseDir(),
+            $this->getRadioMediaDir(),
+            $this->getRadioAlbumArtDir(),
+            $this->getRadioWaveformsDir(),
+            $this->getRadioPlaylistsDir(),
+            $this->getRadioConfigDir(),
+            $this->getRadioTempDir(),
+            $this->getRadioRecordingsDir(),
+        ];
     }
 
     public function getNowplaying(): ?Api\NowPlaying
@@ -823,6 +850,16 @@ class Station
     public function setEnablePublicPage(bool $enable_public_page): void
     {
         $this->enable_public_page = $enable_public_page;
+    }
+
+    public function getEnableOnDemand(): bool
+    {
+        return $this->enable_on_demand;
+    }
+
+    public function setEnableOnDemand(bool $enable_on_demand): void
+    {
+        $this->enable_on_demand = $enable_on_demand;
     }
 
     public function isEnabled(): bool

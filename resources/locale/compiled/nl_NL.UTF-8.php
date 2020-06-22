@@ -14,13 +14,15 @@ Language-Team: Dutch
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-04-16T04:24:39+00:00
-PO-Revision-Date: 2020-04-26 10:14
+POT-Creation-Date: 2020-06-21T16:28:26+00:00
+PO-Revision-Date: 2020-06-22 04:07
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
+X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: nl
 X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File-ID: 4
 ',
       ),
       'All Permissions' => 
@@ -267,6 +269,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'InfluxDB databases aangemaakt.',
       ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Liquidsoap log',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Liquidsoap configuratie',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Icecast toegangslogboek',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Icecast foutenlogboek',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Icecast configuratie',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'SHOUTcast log',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'SHOUTcast configuratie',
+      ),
       'Record not found.' => 
       array (
         0 => 'Record niet gevonden.',
@@ -329,11 +359,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Debug Output' => 
       array (
-        0 => '',
+        0 => 'Debug uitvoer',
       ),
       'An error occurred while downloading the GeoLite database: %s' => 
       array (
-        0 => '',
+        0 => 'Er is een fout opgetreden tijdens het downloaden van de GeoLite database: %s',
       ),
       'Install GeoLite IP Database' => 
       array (
@@ -341,7 +371,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'GeoLite database uninstalled.' => 
       array (
-        0 => '',
+        0 => 'GeoLite database verwijderd.',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
@@ -479,6 +509,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Kan "%s" niet verplaatsen naar "%s"',
       ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Dit station gebruikt teveel opslagruimte.',
+      ),
       'Directory' => 
       array (
         0 => 'Map',
@@ -495,9 +529,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Nieuw pad niet gespecificeerd.',
       ),
-      'This station is out of available storage space.' => 
+      'This station does not support on-demand streaming.' => 
       array (
-        0 => 'Dit station gebruikt teveel opslagruimte.',
+        0 => 'Dit station ondersteunt geen on-demand streaming.',
+      ),
+      'File not found.' => 
+      array (
+        0 => 'Bestand niet gevonden.',
       ),
       'Playlist not found.' => 
       array (
@@ -521,11 +559,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Playlist reshuffled.' => 
       array (
-        0 => '',
+        0 => 'Afspeellijst geshuffeld.',
       ),
       'Playlist successfully imported; %d of %d files were successfully matched.' => 
       array (
-        0 => '',
+        0 => 'Afspeellijst succesvol geïmporteerd; %d van de %d bestanden zijn succesvol gematcht.',
       ),
       'This station does not accept requests currently.' => 
       array (
@@ -573,7 +611,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'No recording available.' => 
       array (
-        0 => '',
+        0 => 'Geen opname beschikbaar.',
       ),
       'Too many login attempts' => 
       array (
@@ -665,7 +703,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Edit Liquidsoap Configuration' => 
       array (
-        0 => '',
+        0 => 'Liquidsoap configuratie bewerken',
       ),
       'This feature is not currently supported on this station.' => 
       array (
@@ -753,15 +791,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Edit SFTP User' => 
       array (
-        0 => '',
+        0 => 'SFTP-gebruiker bewerken',
       ),
       'Add SFTP User' => 
       array (
-        0 => '',
+        0 => 'SFTP-gebruiker toevoegen',
       ),
       'SFTP User deleted.' => 
       array (
-        0 => '',
+        0 => 'SFTP gebruiker verwijderd.',
       ),
       'Streamers enabled!' => 
       array (
@@ -803,34 +841,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Webhook verwijderd.',
       ),
-      'Liquidsoap Log' => 
-      array (
-        0 => 'Liquidsoap log',
-      ),
-      'Liquidsoap Configuration' => 
-      array (
-        0 => 'Liquidsoap configuratie',
-      ),
-      'Icecast Access Log' => 
-      array (
-        0 => 'Icecast toegangslogboek',
-      ),
-      'Icecast Error Log' => 
-      array (
-        0 => 'Icecast foutenlogboek',
-      ),
-      'Icecast Configuration' => 
-      array (
-        0 => 'Icecast configuratie',
-      ),
-      'SHOUTcast Log' => 
-      array (
-        0 => 'SHOUTcast log',
-      ),
-      'SHOUTcast Configuration' => 
-      array (
-        0 => 'SHOUTcast configuratie',
-      ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
         0 => 'Zoekmachine crawlers zijn niet toegestaan om deze functie te gebruiken.',
@@ -853,7 +863,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'This song or artist has been played too recently. Wait a while before requesting it again.' => 
       array (
-        0 => '',
+        0 => 'Dit nummer is kortgeleden afgespeeld. Wacht even voordat u dit nummer opnieuw aanvraagt.',
       ),
       'Select File' => 
       array (
@@ -911,6 +921,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Er zijn nieuwe AzuraCast updates beschikbaar',
       ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => 'Installatie niet recent geback-upt',
+      ),
+      'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.' => 
+      array (
+        0 => 'Deze installatie is de afgelopen twee weken niet geback-upt. Bezoek de pagina <a href="%s" target="_blank">Backups</a> om een nieuwe back-up te maken.',
+      ),
       '%s is not recognized as a service.' => 
       array (
         0 => '%s is niet herkend als een service.',
@@ -957,23 +975,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Welcome to the AzuraCast Liquidsoap configuration editor.' => 
       array (
-        0 => '',
+        0 => 'Welkom bij de AzuraCast Liquidsoap configuratieomgeving.',
       ),
       'Using this page, you can customize several sections of the Liquidsoap configuration.' => 
       array (
-        0 => '',
+        0 => 'Met behulp van deze pagina kunt u meerdere secties van de Liquidsoap configuratie aanpassen.',
       ),
       'The non-editable sections are automatically generated by AzuraCast.' => 
       array (
-        0 => '',
+        0 => 'De niet-bewerkbare secties worden automatisch gegenereerd door AzuraCast.',
       ),
       'GeoLite database not configured for this installation. See System Administration for instructions.' => 
       array (
-        0 => '',
+        0 => 'De GeoLite database is niet geconfigureerd voor deze installatie. Zie Systeembeheer voor instructies.',
       ),
       'IP Geolocation by DB-IP' => 
       array (
-        0 => '',
+        0 => 'IP Geolocatie door DB-IP',
       ),
       'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
       array (
@@ -1014,6 +1032,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'The port %s is in use by another station.' => 
       array (
         0 => 'De poort %s is in gebruik door een ander station.',
+      ),
+      'Are you sure?' => 
+      array (
+        0 => '',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -1285,11 +1307,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Bpm' => 
       array (
-        0 => '',
+        0 => 'Bpm',
       ),
       'Comment' => 
       array (
-        0 => '',
+        0 => 'Notitie',
       ),
       'Commercial Frame' => 
       array (
@@ -1297,11 +1319,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Commercial Information' => 
       array (
-        0 => '',
+        0 => 'Commerciële Informatie',
       ),
       'Composer' => 
       array (
-        0 => '',
+        0 => 'Componist',
       ),
       'Composer Sort Order' => 
       array (
@@ -1309,7 +1331,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Conductor' => 
       array (
-        0 => '',
+        0 => 'Leider',
       ),
       'Content Group Description' => 
       array (
@@ -1317,27 +1339,27 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Copyright' => 
       array (
-        0 => '',
+        0 => 'Auteursrecht',
       ),
       'Copyright Message' => 
       array (
-        0 => '',
+        0 => 'Auteursrecht bericht',
       ),
       'Date' => 
       array (
-        0 => '',
+        0 => 'Datum',
       ),
       'Encoded By' => 
       array (
-        0 => '',
+        0 => 'Gecodeerd door',
       ),
       'Encoder Settings' => 
       array (
-        0 => '',
+        0 => 'Encoder instellingen',
       ),
       'Encoding Time' => 
       array (
-        0 => '',
+        0 => 'Coderingstijd',
       ),
       'Encrypted Meta Frame' => 
       array (
@@ -1357,15 +1379,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Featured Artist' => 
       array (
-        0 => '',
+        0 => 'Uitgelichte artiest',
       ),
       'File Owner' => 
       array (
-        0 => '',
+        0 => 'Bestands eigenaar',
       ),
       'File Type' => 
       array (
-        0 => '',
+        0 => 'Bestandstype',
       ),
       'General Encapsulated Object' => 
       array (
@@ -1381,15 +1403,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Initial Key' => 
       array (
-        0 => '',
+        0 => 'Initiële sleutel',
       ),
       'Internet Radio Station Name' => 
       array (
-        0 => '',
+        0 => 'Naam internetradio station',
       ),
       'Internet Radio Station Owner' => 
       array (
-        0 => '',
+        0 => 'Eigenaar van internetradio station',
       ),
       'Involved People List' => 
       array (
@@ -1409,19 +1431,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Linked Information' => 
       array (
-        0 => '',
+        0 => 'Gekoppelde informatie',
       ),
       'Lyricist' => 
       array (
-        0 => '',
+        0 => 'Songtekst',
       ),
       'Media Type' => 
       array (
-        0 => '',
+        0 => 'Media type',
       ),
       'Mood' => 
       array (
-        0 => '',
+        0 => 'Stemming',
       ),
       'MPEG Location Lookup Table' => 
       array (
@@ -1437,15 +1459,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Original Album' => 
       array (
-        0 => '',
+        0 => 'Origineel album',
       ),
       'Original Artist' => 
       array (
-        0 => '',
+        0 => 'Originele artiest',
       ),
       'Original Filename' => 
       array (
-        0 => '',
+        0 => 'Officiële bestandsnaam',
       ),
       'Original Lyricist' => 
       array (
@@ -1453,11 +1475,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Original Release Time' => 
       array (
-        0 => '',
+        0 => 'Originele Release Tijd',
       ),
       'Original Year' => 
       array (
-        0 => '',
+        0 => 'Origineel jaar',
       ),
       'Ownership Frame' => 
       array (
@@ -1465,11 +1487,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Part Of A Compilation' => 
       array (
-        0 => '',
+        0 => 'Deel van een compilatie',
       ),
       'Part Of A Set' => 
       array (
-        0 => '',
+        0 => 'Deel van een set',
       ),
       'Performer Sort Order' => 
       array (
@@ -1481,7 +1503,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Playlist Delay' => 
       array (
-        0 => '',
+        0 => 'Afspeellijst vertraging',
       ),
       'Popularimeter' => 
       array (
@@ -1501,7 +1523,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Publisher' => 
       array (
-        0 => '',
+        0 => 'Uitgever',
       ),
       'Recommended Buffer Size' => 
       array (
@@ -1509,15 +1531,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Recording Dates' => 
       array (
-        0 => '',
+        0 => 'Opname datums',
       ),
       'Recording Studio' => 
       array (
-        0 => '',
+        0 => 'Opname studio',
       ),
       'Recording Time' => 
       array (
-        0 => '',
+        0 => 'Opname tijd',
       ),
       'Relative Volume Adjustment' => 
       array (
@@ -1525,19 +1547,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Release Time' => 
       array (
-        0 => '',
+        0 => 'Releasedatum',
       ),
       'Remixer' => 
       array (
-        0 => '',
+        0 => 'Remixer',
       ),
       'ReplayGain Adjustment' => 
       array (
-        0 => '',
+        0 => 'ReplayGain aanpassing',
       ),
       'Reverb' => 
       array (
-        0 => '',
+        0 => 'Galm',
       ),
       'Seek Frame' => 
       array (
@@ -1545,7 +1567,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Set Subtitle' => 
       array (
-        0 => '',
+        0 => 'Ondertiteling instellen',
       ),
       'Signature Frame' => 
       array (
@@ -1557,7 +1579,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Subtitle' => 
       array (
-        0 => '',
+        0 => 'Subtitel',
       ),
       'Synced Tempo Codes' => 
       array (
@@ -1565,7 +1587,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Synchronised Lyric' => 
       array (
-        0 => '',
+        0 => 'Gesynchroniseerde songtekst',
       ),
       'Synchronised Tempo Codes' => 
       array (
@@ -1577,15 +1599,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Terms Of Use' => 
       array (
-        0 => '',
+        0 => 'Gebruiksvoorwaarden',
       ),
       'Text' => 
       array (
-        0 => '',
+        0 => 'Tekst',
       ),
       'Time' => 
       array (
-        0 => '',
+        0 => 'Tijd',
       ),
       'Title' => 
       array (
@@ -1597,11 +1619,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Track Number' => 
       array (
-        0 => '',
+        0 => 'Track Nummer',
       ),
       'Unique File Identifier' => 
       array (
-        0 => '',
+        0 => 'Unieke bestand-id',
       ),
       'Unsynchronised Lyric' => 
       array (
@@ -1609,39 +1631,39 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'URL Artist' => 
       array (
-        0 => '',
+        0 => 'URL artiest',
       ),
       'URL File' => 
       array (
-        0 => '',
+        0 => 'URL bestand',
       ),
       'URL Payment' => 
       array (
-        0 => '',
+        0 => 'URL betaling',
       ),
       'URL Publisher' => 
       array (
-        0 => '',
+        0 => 'URL uitgever',
       ),
       'URL Source' => 
       array (
-        0 => '',
+        0 => 'URL bron',
       ),
       'URL Station' => 
       array (
-        0 => '',
+        0 => 'URL station',
       ),
       'URL User' => 
       array (
-        0 => '',
+        0 => 'URL gebruiker',
       ),
       'Year' => 
       array (
-        0 => '',
+        0 => 'Jaar',
       ),
       'Instructions' => 
       array (
-        0 => '',
+        0 => 'Instructies',
       ),
       'You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station\'s "Listeners" report. To download the GeoLite database:' => 
       array (
@@ -1649,23 +1671,23 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Create an account on <a href="%s" target="_blank">the MaxMind developer site</a>.' => 
       array (
-        0 => '',
+        0 => 'Maak een account aan op <a href="%s" target="_blank">de MaxMind ontwikkelaar site</a>.',
       ),
       'Visit the "My License Key" page under the "Services" section.' => 
       array (
-        0 => '',
+        0 => 'Bezoek de "Mijn Licentiesleutel" pagina onder de sectie "Diensten".',
       ),
       'Click "Generate new license key".' => 
       array (
-        0 => '',
+        0 => 'Klik op "Genereer nieuwe licentiesleutel".',
       ),
       'Paste the generated license key into the field on this page.' => 
       array (
-        0 => '',
+        0 => 'Plak de gegenereerde licentiesleutel in het veld op deze pagina.',
       ),
       'MaxMind License Key' => 
       array (
-        0 => '',
+        0 => 'MaxMind licentiesleutel',
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
@@ -1885,11 +1907,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Remote Station Administrator Password' => 
       array (
-        0 => '',
+        0 => 'Wachtwoord van extern station',
       ),
       'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
       array (
-        0 => '',
+        0 => 'Om gedetailleerde unieke luisteraar- en clientgegevens op te halen, is een beheerders wachtwoord vaak vereist.',
       ),
       'Broadcast AutoDJ to Remote Station' => 
       array (
@@ -2117,11 +2139,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'SSH Public Keys' => 
       array (
-        0 => '',
+        0 => 'Openbare SSH sleutels',
       ),
       'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
       array (
-        0 => '',
+        0 => 'Geef optioneel publieke SSH sleutels in die deze gebruiker kan gebruiken om verbinding te maken in plaats van een wachtwoord. Voer één sleutel per regel in.',
       ),
       'Metadata' => 
       array (
@@ -2179,6 +2201,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Toon het station in openbare pagina\'s en algemene API-resultaten.',
       ),
+      'Enable On-Demand Streaming and Downloads' => 
+      array (
+        0 => 'Schakel On-Demand Streaming en Downloads in',
+      ),
+      'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
+      array (
+        0 => 'Indien ingeschakeld, zullen muziek van afspeellijsten met on-demand streaming beschikbaar zijn om te streamen en downloaden via een gespecialiseerde openbare pagina.',
+      ),
       'URL Stub' => 
       array (
         0 => 'URL-vriendelijke naam',
@@ -2203,6 +2233,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Deze software verstuurt je radiouitzending naar het publiek.',
       ),
+      'Customize Source Password' => 
+      array (
+        0 => 'Bronwachtwoord aanpassen',
+      ),
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => 'Laat dit veld leeg om automatisch een wachtwoord te genereren.',
+      ),
+      'Customize Administrator Password' => 
+      array (
+        0 => 'Beheerderswachtwoord aanpassen',
+      ),
       'Customize Broadcasting Port' => 
       array (
         0 => 'Uitzendpoort aanpassen',
@@ -2219,18 +2261,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Maximumaantal luisteraars over alle stations. Laat leeg om de standaard limiet (250) te gebruiken.',
       ),
-      'Customize Source Password' => 
-      array (
-        0 => 'Bronwachtwoord aanpassen',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => 'Laat dit veld leeg om automatisch een wachtwoord te genereren.',
-      ),
-      'Customize Administrator Password' => 
-      array (
-        0 => 'Beheerderswachtwoord aanpassen',
-      ),
       'Custom Configuration' => 
       array (
         0 => 'Aangepaste configuratie',
@@ -2241,11 +2271,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Banned IP Addresses' => 
       array (
-        0 => '',
+        0 => 'Geblokkeerde e-mailadressen',
       ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
-        0 => '',
+        0 => 'Geef één IP-adres of groep (in CIDR formaat) per regel aan.',
       ),
       'AutoDJ Service' => 
       array (
@@ -2325,19 +2355,19 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Record Live Broadcasts' => 
       array (
-        0 => '',
+        0 => 'Neem Live Uitzendingen op',
       ),
       'If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.' => 
       array (
-        0 => '',
+        0 => 'Indien ingeschakeld, zal AzuraCast automatisch alle live uitzendingen opnemen die op dit station hoorbaar zijn geweest.',
       ),
       'Live Broadcast Recording Format' => 
       array (
-        0 => '',
+        0 => 'Formaat voor live uitzending opnames',
       ),
       'Live Broadcast Recording Bitrate (kbps)' => 
       array (
-        0 => '',
+        0 => 'Bitrate (kbps) voor live uitzending opnames',
       ),
       'Deactivate Streamer on Disconnect (Seconds)' => 
       array (
@@ -2389,7 +2419,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'AutoDJ Queue Length' => 
       array (
-        0 => '',
+        0 => 'AutoDJ wachtrij lengte',
       ),
       'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.' => 
       array (
@@ -2734,7 +2764,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'System Debugger' => 
       array (
-        0 => '',
+        0 => 'Systeem Debugger',
       ),
       'Users' => 
       array (
@@ -2774,7 +2804,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Restart broadcasting? This will disconnect any current listeners.' => 
       array (
-        0 => '',
+        0 => 'Uitzenden opnieuw starten? Dit zal alle huidige luisteraars ontkoppelen.',
       ),
       'Restart to Apply Changes' => 
       array (
@@ -2791,6 +2821,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Public Page' => 
       array (
         0 => 'Publieke pagina',
+      ),
+      'On-Demand Media' => 
+      array (
+        0 => 'On-Demand Media',
       ),
       'Music Files' => 
       array (
@@ -2854,7 +2888,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'SFTP Users' => 
       array (
-        0 => '',
+        0 => 'SFTP gebruikers',
       ),
       'Automated Assignment' => 
       array (
@@ -3070,11 +3104,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'The backup process is running in the background. To view the logs, click the button below.' => 
       array (
-        0 => '',
+        0 => 'Het back-upproces wordt op de achtergrond uitgevoerd. Klik op de knop hieronder om de logboeken te bekijken.',
       ),
       'View Backup Log' => 
       array (
-        0 => '',
+        0 => 'Bekijk back-uplogboek',
       ),
       'Delete custom field "%s"?' => 
       array (
@@ -3090,31 +3124,27 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Station-Specific Debugging' => 
       array (
-        0 => '',
+        0 => 'Station-Specifieke Debugging',
       ),
-      'Test AutoDJ Next Song' => 
+      'Rebuild AutoDJ Queue' => 
       array (
-        0 => '',
-      ),
-      'Test time (Leave blank for current time)' => 
-      array (
-        0 => '',
+        0 => 'AutoDJ wachtrij opnieuw opbouwen',
       ),
       'Run Test' => 
       array (
-        0 => '',
+        0 => 'Test uitvoeren',
       ),
       'Send Liquidsoap Telnet Command' => 
       array (
-        0 => '',
+        0 => 'Stuur Liquidsoap Telnet commando',
       ),
       'Command' => 
       array (
-        0 => '',
+        0 => 'Commando',
       ),
       'Execute Command' => 
       array (
-        0 => '',
+        0 => 'Commando uitvoeren',
       ),
       'Server Status' => 
       array (
@@ -3138,15 +3168,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Uninstall GeoLite database?' => 
       array (
-        0 => '',
+        0 => 'GeoLite database verwijderen?',
       ),
       'Uninstall GeoLite Database' => 
       array (
-        0 => '',
+        0 => 'Verwijder GeoLite database',
       ),
       'GeoLite is not currently installed on this installation.' => 
       array (
-        0 => '',
+        0 => 'GeoLite is momenteel niet geïnstalleerd.',
       ),
       'SHOUTcast Installed' => 
       array (
@@ -3543,11 +3573,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'You can also upload files in bulk via SFTP.' => 
       array (
-        0 => '',
+        0 => 'U kunt ook bestanden in bulk uploaden via SFTP.',
       ),
       'Manage SFTP Accounts' => 
       array (
-        0 => '',
+        0 => 'SFTP accounts beheren',
       ),
       'Available Logs' => 
       array (
@@ -3681,6 +3711,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Player embed-code',
       ),
+      'On-Demand Embed Code' => 
+      array (
+        0 => 'On-Demand insluitcode',
+      ),
       'Request Embed Code' => 
       array (
         0 => 'Request embed-code',
@@ -3711,15 +3745,15 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Scheduled' => 
       array (
-        0 => '',
+        0 => 'Gepland',
       ),
       'Streamer/DJ' => 
       array (
-        0 => '',
+        0 => 'Streamer/DJ',
       ),
       'Now' => 
       array (
-        0 => '',
+        0 => 'Nu',
       ),
       'Streamers/DJs' => 
       array (
@@ -3915,11 +3949,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Clear all pending requests?' => 
       array (
-        0 => '',
+        0 => 'Alle verzoeknummer in de wachtrij verwijderen?',
       ),
       'Clear Pending Requests' => 
       array (
-        0 => '',
+        0 => 'Verwijder verzoeknummer uit de wachtrij',
       ),
       'Date Requested' => 
       array (
@@ -3939,7 +3973,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Delete request?' => 
       array (
-        0 => '',
+        0 => 'Verzoek verwijderen?',
       ),
       'Report Not Available' => 
       array (
@@ -3951,11 +3985,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       ),
       'Live Streamer:' => 
       array (
-        0 => '',
+        0 => 'Live Streamer:',
       ),
       'Delete SFTP User "%s"?' => 
       array (
-        0 => '',
+        0 => 'Verwijder SFTP-gebruiker "%s"?',
       ),
       'Connection Information' => 
       array (
@@ -4040,18 +4074,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'Delete web hook "%s"?' => 
       array (
         0 => 'Webhook "%s" verwijderen?',
-      ),
-      'Select...' => 
-      array (
-        0 => 'Selecteer...',
-      ),
-      'No results found!' => 
-      array (
-        0 => 'Geen resultaten gevonden!',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Geavanceerd',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

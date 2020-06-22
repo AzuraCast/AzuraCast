@@ -2,9 +2,9 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
+use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -39,7 +39,7 @@ class RenameAction
         $fs = $filesystem->getForStation($station);
 
         $originalPathFull = $request->getAttribute('file_path');
-        $newPathFull = 'media://' . $newPath;
+        $newPathFull = Filesystem::PREFIX_MEDIA . '://' . $newPath;
 
         // MountManager::rename's second argument is NOT the full URI >:(
         $fs->rename($originalPathFull, $newPath);

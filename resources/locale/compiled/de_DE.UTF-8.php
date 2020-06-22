@@ -14,13 +14,15 @@ Language-Team: German
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-04-16T04:24:39+00:00
-PO-Revision-Date: 2020-04-26 10:14
+POT-Creation-Date: 2020-06-21T16:28:26+00:00
+PO-Revision-Date: 2020-06-22 04:07
 Language: de_DE
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
+X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: de
 X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File-ID: 4
 ',
       ),
       'All Permissions' => 
@@ -267,6 +269,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'InfluxDB-Datenbanken erstellt.',
       ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Liquidsoap Log',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Liquidsoap Konfiguration',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Icecast Zugriffsprotokoll',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Icecast Fehlerprotokoll',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Icecast-Konfiguration',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'SHOUTcast-Log',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'SHOUTcast-Konfiguration',
+      ),
       'Record not found.' => 
       array (
         0 => 'Eintrag nicht gefunden.',
@@ -479,6 +509,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Konnte "%s" nicht nach "%s" verschieben',
       ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Diese Station hat keinen Speicherplatz mehr.',
+      ),
       'Directory' => 
       array (
         0 => 'Verzeichnis',
@@ -495,9 +529,13 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Neuer Pfad nicht angegeben.',
       ),
-      'This station is out of available storage space.' => 
+      'This station does not support on-demand streaming.' => 
       array (
-        0 => 'Diese Station hat keinen Speicherplatz mehr.',
+        0 => '',
+      ),
+      'File not found.' => 
+      array (
+        0 => '',
       ),
       'Playlist not found.' => 
       array (
@@ -803,34 +841,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'WebHook gelöscht.',
       ),
-      'Liquidsoap Log' => 
-      array (
-        0 => 'Liquidsoap Log',
-      ),
-      'Liquidsoap Configuration' => 
-      array (
-        0 => 'Liquidsoap Konfiguration',
-      ),
-      'Icecast Access Log' => 
-      array (
-        0 => 'Icecast Zugriffsprotokoll',
-      ),
-      'Icecast Error Log' => 
-      array (
-        0 => 'Icecast Fehlerprotokoll',
-      ),
-      'Icecast Configuration' => 
-      array (
-        0 => 'Icecast-Konfiguration',
-      ),
-      'SHOUTcast Log' => 
-      array (
-        0 => 'SHOUTcast-Log',
-      ),
-      'SHOUTcast Configuration' => 
-      array (
-        0 => 'SHOUTcast-Konfiguration',
-      ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
         0 => 'Suchmaschinen-Crawler dürfen diese Funktion nicht verwenden.',
@@ -910,6 +920,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'New AzuraCast Updates Available' => 
       array (
         0 => 'Neue AzuraCast-Updates verfügbar',
+      ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => '',
+      ),
+      'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.' => 
+      array (
+        0 => '',
       ),
       '%s is not recognized as a service.' => 
       array (
@@ -1014,6 +1032,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       'The port %s is in use by another station.' => 
       array (
         0 => 'Der Port %s wird bereits von einer anderen Station verwendet.',
+      ),
+      'Are you sure?' => 
+      array (
+        0 => '',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -2180,6 +2202,14 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Diese Station auf öffentlichen Seiten und allgemeinen API Ergebnissen anzeigen.',
       ),
+      'Enable On-Demand Streaming and Downloads' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
+      array (
+        0 => '',
+      ),
       'URL Stub' => 
       array (
         0 => 'URL-Stub',
@@ -2204,6 +2234,18 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Diese Software liefert Ihre Sendung an das hörende Publikum.',
       ),
+      'Customize Source Password' => 
+      array (
+        0 => 'Anpassen des source passwort',
+      ),
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => 'Leer lassen um ein automatisches Kennwort erstellen zu lassen.',
+      ),
+      'Customize Administrator Password' => 
+      array (
+        0 => 'Anpassen des  Administrator Passwort',
+      ),
       'Customize Broadcasting Port' => 
       array (
         0 => 'Anpassen des Broadcasting-Ports',
@@ -2219,18 +2261,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
         0 => 'Maximale Anzahl von Zuhörern über alle Streams. Leer lassen, um den Standardwert (250) zu verwenden.',
-      ),
-      'Customize Source Password' => 
-      array (
-        0 => 'Anpassen des source passwort',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => 'Leer lassen um ein automatisches Kennwort erstellen zu lassen.',
-      ),
-      'Customize Administrator Password' => 
-      array (
-        0 => 'Anpassen des  Administrator Passwort',
       ),
       'Custom Configuration' => 
       array (
@@ -2789,6 +2819,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Öffentliche Seite',
       ),
+      'On-Demand Media' => 
+      array (
+        0 => '',
+      ),
       'Music Files' => 
       array (
         0 => 'Musik Dateien',
@@ -3089,11 +3123,7 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => '',
       ),
-      'Test AutoDJ Next Song' => 
-      array (
-        0 => '',
-      ),
-      'Test time (Leave blank for current time)' => 
+      'Rebuild AutoDJ Queue' => 
       array (
         0 => '',
       ),
@@ -3679,6 +3709,10 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       array (
         0 => 'Player Einbettungscode',
       ),
+      'On-Demand Embed Code' => 
+      array (
+        0 => '',
+      ),
       'Request Embed Code' => 
       array (
         0 => 'Musikwünsche Einbettungscode',
@@ -4038,18 +4072,6 @@ Bitte freilassen um einen Namen automatisch zu erstellen.',
       'Delete web hook "%s"?' => 
       array (
         0 => 'WebHook "%s" löschen?',
-      ),
-      'Select...' => 
-      array (
-        0 => 'Auswählen...',
-      ),
-      'No results found!' => 
-      array (
-        0 => 'Keine Ergebnisse gefunden!',
-      ),
-      'Advanced' => 
-      array (
-        0 => 'Erweitert',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (

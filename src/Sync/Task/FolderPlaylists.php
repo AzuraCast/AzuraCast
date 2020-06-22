@@ -2,8 +2,8 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use App\Flysystem\Filesystem;
 use App\MessageQueue;
-use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
@@ -75,7 +75,7 @@ class FolderPlaylists extends AbstractTask
             /** @var Entity\StationPlaylistFolder $row */
             $path = $row->getPath();
 
-            if ($fs->has('media://' . $path)) {
+            if ($fs->has(Filesystem::PREFIX_MEDIA . '://' . $path)) {
                 $folders[$path][] = $row->getPlaylist();
             } else {
                 $this->em->remove($row);

@@ -13,25 +13,22 @@ use Slim\Routing\RouteContext;
 
 class Router implements RouterInterface
 {
-    /** @var RouteParserInterface */
-    protected $route_parser;
+    protected RouteParserInterface $routeParser;
 
-    /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
-    /** @var ServerRequestInterface */
-    protected $current_request;
+    protected ?ServerRequestInterface $currentRequest = null;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         Settings $settings,
-        RouteParserInterface $route_parser,
+        RouteParserInterface $routeParser,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->settingsRepo = $settingsRepo;
         $this->settings = $settings;
-        $this->route_parser = $route_parser;
+        $this->routeParser = $routeParser;
     }
 
     /**
@@ -71,15 +68,15 @@ class Router implements RouterInterface
      */
     public function getCurrentRequest(): ServerRequestInterface
     {
-        return $this->current_request;
+        return $this->currentRequest;
     }
 
     /**
-     * @param ServerRequestInterface $current_request
+     * @param ServerRequestInterface $currentRequest
      */
-    public function setCurrentRequest(ServerRequestInterface $current_request): void
+    public function setCurrentRequest(ServerRequestInterface $currentRequest): void
     {
-        $this->current_request = $current_request;
+        $this->currentRequest = $currentRequest;
     }
 
     /**
@@ -98,8 +95,8 @@ class Router implements RouterInterface
         array $query_params = [],
         $absolute = false
     ): string {
-        if ($this->current_request instanceof ServerRequestInterface) {
-            $query_params = array_merge($this->current_request->getQueryParams(), $query_params);
+        if ($this->currentRequest instanceof ServerRequestInterface) {
+            $query_params = array_merge($this->currentRequest->getQueryParams(), $query_params);
         }
 
         return $this->fromHere($route_name, $route_params, $query_params, $absolute);
@@ -121,8 +118,8 @@ class Router implements RouterInterface
         array $query_params = [],
         $absolute = false
     ): string {
-        if ($this->current_request instanceof ServerRequestInterface) {
-            $routeContext = RouteContext::fromRequest($this->current_request);
+        if ($this->currentRequest instanceof ServerRequestInterface) {
+            $routeContext = RouteContext::fromRequest($this->currentRequest);
             $route = $routeContext->getRoute();
         } else {
             $route = null;
@@ -156,22 +153,26 @@ class Router implements RouterInterface
     public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): UriInterface
     {
         return self::resolveUri($this->getBaseUrl(),
-            $this->route_parser->relativeUrlFor($route_name, $route_params, $query_params), $absolute);
+            $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params), $absolute);
     }
 
-    public function getBaseUrl(bool $use_request = true): UriInterface
+    public function getBaseUrl(bool $useRequest = true): UriInterface
     {
-        $baseUrl = new Uri('');
-
-        $settingsBaseUrl = trim($this->settingsRepo->getSetting(Entity\Settings::BASE_URL, ''));
+        $settingsBaseUrl = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, '');
         if (!empty($settingsBaseUrl)) {
+            if (strpos($settingsBaseUrl, 'http') !== 0) {
+                $settingsBaseUrl = 'http://' . $settingsBaseUrl;
+            }
+
             $baseUrl = new Uri($settingsBaseUrl);
+        } else {
+            $baseUrl = new Uri('');
         }
 
         $useHttps = (bool)$this->settingsRepo->getSetting(Entity\Settings::ALWAYS_USE_SSL, 0);
 
-        if ($use_request && $this->current_request instanceof ServerRequestInterface) {
-            $currentUri = $this->current_request->getUri();
+        if ($useRequest && $this->currentRequest instanceof ServerRequestInterface) {
+            $currentUri = $this->currentRequest->getUri();
 
             if ('https' === $currentUri->getScheme()) {
                 $useHttps = true;
@@ -189,7 +190,7 @@ class Router implements RouterInterface
             }
         }
 
-        if ($useHttps) {
+        if ($useHttps && $baseUrl->getScheme() !== '') {
             $baseUrl = $baseUrl->withScheme('https');
         }
 

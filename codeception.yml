@@ -1,31 +1,31 @@
 actor: Tester
 paths:
-    tests: tests
-    log: tests/_output
-    data: tests/_data
-    support: tests/_support
-    envs: tests/_envs
+  tests: tests
+  log: tests/_output
+  data: tests/_data
+  support: tests/_support
+  envs: tests/_envs
+
+bootstrap: _bootstrap.php
 settings:
-    bootstrap: _bootstrap.php
-    colors: true
-    memory_limit: 1024M
-    error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"
+  colors: true
+  memory_limit: 1024M
+  error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"
 extensions:
-    enabled:
-        - Codeception\Extension\RunFailed
+  enabled:
+    - Codeception\Extension\RunFailed
 modules:
 coverage:
   enabled: true
   include:
-   - src/*
+    - src/*
   exclude:
-   # Used in application, but not used in tests
-   - src/Radio/Frontend/ShoutCast2.php
-   - src/Console/Command/*.php
-   - src/Console/Command/*.php
-   - src/Entity/Fixture/*
-   - src/Entity/Migration/*
-  
-   # Exceptions
-   - src/Exception/*.php
-   - src/Mvc/ErrorHandler.php
+    # Used in application, but not used in tests
+    - src/Radio/Frontend/ShoutCast2.php
+    - src/Console/Command/*.php
+    - src/Entity/Fixture/*
+    - src/Entity/Migration/*
+
+    # Exceptions
+    - src/Exception/*.php
+    - src/Mvc/ErrorHandler.php

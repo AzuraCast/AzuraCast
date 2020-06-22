@@ -1,5 +1,5 @@
 <template>
-    <b-form-group>
+    <b-form-group class="waveform-controls">
         <b-row>
             <b-form-group class="col-md-12">
                 <div class="waveform__container">
@@ -7,13 +7,40 @@
                     <div id="waveform"></div>
                 </div>
             </b-form-group>
-            <b-form-group class="col-md-12" label-for="waveform-zoom">
-                <template v-slot:label>
-                    <translate>Waveform Zoom</translate>
-                </template>
-
-                <b-form-input id="waveform-zoom" v-model="zoom" type="range" min="0" max="256"></b-form-input>
-            </b-form-group>
+        </b-row>
+        <b-row class="mt-3">
+            <b-col md="8">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <label for="waveform-zoom">
+                            <translate key="lang_waveform_title">Waveform Zoom</translate>
+                        </label>
+                    </div>
+                    <div class="flex-fill mx-3">
+                        <b-form-input id="waveform-zoom" v-model="zoom" type="range" min="0" max="256" class="w-100"></b-form-input>
+                    </div>
+                </div>
+            </b-col>
+            <b-col md="4">
+                <div class="inline-volume-controls d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                        <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 0">
+                            <i class="material-icons" aria-hidden="true">volume_mute</i>
+                            <span class="sr-only" key="lang_mute" v-translate>Mute</span>
+                        </a>
+                    </div>
+                    <div class="flex-fill mx-1">
+                        <input type="range" :title="langVolume" class="player-volume-range custom-range w-100" min="0" max="100"
+                               step="1" v-model="volume">
+                    </div>
+                    <div class="flex-shrink-0">
+                        <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 100">
+                            <i class="material-icons" aria-hidden="true">volume_up</i>
+                            <span class="sr-only" key="lang_vol_full" v-translate>Full Volume</span>
+                        </a>
+                    </div>
+                </div>
+            </b-col>
         </b-row>
     </b-form-group>
 </template>
@@ -22,16 +49,21 @@
     import WaveSurfer from 'wavesurfer.js';
     import timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
     import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+    import axios from 'axios';
+    import getLogarithmicVolume from '../inc/logarithmic_volume';
+    import store from 'store';
 
     export default {
         name: 'Waveform',
         props: {
-            audioUrl: String
+            audioUrl: String,
+            waveformUrl: String
         },
         data () {
             return {
                 wavesurfer: null,
-                zoom: 0
+                zoom: 0,
+                volume: 0
             };
         },
         mounted () {
@@ -58,7 +90,27 @@
                 this.$emit('ready');
             });
 
-            this.wavesurfer.load(this.audioUrl);
+            axios.get(this.waveformUrl).then((resp) => {
+                let waveform = resp.data;
+                if (waveform.data) {
+                    this.wavesurfer.load(this.audioUrl, waveform.data);
+                } else {
+                    this.wavesurfer.load(this.audioUrl);
+                }
+            }).catch((err) => {
+                console.error(err);
+                this.wavesurfer.load(this.audioUrl);
+            });
+
+            // Check webstorage for existing volume preference.
+            if (store.enabled && store.get('player_volume') !== undefined) {
+                this.volume = store.get('player_volume', 55);
+            }
+        },
+        computed: {
+            langVolume () {
+                return this.$gettext('Volume');
+            }
         },
         methods: {
             play () {
@@ -84,13 +136,13 @@
             addRegion (start, end, color) {
                 if (this.wavesurfer) {
                     this.wavesurfer.addRegion(
-                            {
-                                start: start,
-                                end: end,
-                                resize: false,
-                                drag: false,
-                                color: color
-                            }
+                        {
+                            start: start,
+                            end: end,
+                            resize: false,
+                            drag: false,
+                            color: color
+                        }
                     );
                 }
             },
@@ -103,6 +155,13 @@
         watch: {
             zoom: function (val) {
                 this.wavesurfer.zoom(Number(val));
+            },
+            volume: function (volume) {
+                this.wavesurfer.setVolume(getLogarithmicVolume(volume));
+
+                if (store.enabled) {
+                    store.set('player_volume', volume);
+                }
             }
         },
         beforeDestroy () {

@@ -1,11 +1,13 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Exception\AdvancedFeatureException;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
+use App\Settings;
 use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface;
 
@@ -14,10 +16,15 @@ class EditLiquidsoapConfigController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em
+        EntityManager $em,
+        Settings $settings
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
+
+        if (!$settings->enableAdvancedFeatures()) {
+            throw new AdvancedFeatureException;
+        }
 
         if (!($backend instanceof Liquidsoap)) {
             throw new StationUnsupportedException;
@@ -32,7 +39,8 @@ class EditLiquidsoapConfigController
         ];
 
         $config = $backend->getEditableConfiguration($station);
-        $tokens = '•';
+
+        $tokens = Liquidsoap\ConfigWriter::getDividerString();
 
         $formConfig = [
             'method' => 'post',

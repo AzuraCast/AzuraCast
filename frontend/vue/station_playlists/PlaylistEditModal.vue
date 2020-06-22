@@ -9,17 +9,17 @@
                 <form-source :form="$v.form"></form-source>
                 <form-schedule :form="$v.form" :schedule-items="form.schedule_items"
                                :station-time-zone="stationTimeZone"></form-schedule>
-                <form-advanced :form="$v.form"></form-advanced>
+                <form-advanced :form="$v.form" v-if="enableAdvancedFeatures"></form-advanced>
             </b-tabs>
 
             <invisible-submit-button/>
         </b-form>
         <template v-slot:modal-footer>
             <b-button variant="default" type="button" @click="close">
-                <translate>Close</translate>
+                <translate key="lang_btn_close">Close</translate>
             </b-button>
             <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                <translate>Save Changes</translate>
+                <translate key="lang_btn_save_changes">Save Changes</translate>
             </b-button>
         </template>
     </b-modal>
@@ -41,7 +41,8 @@
         mixins: [validationMixin],
         props: {
             createUrl: String,
-            stationTimeZone: String
+            stationTimeZone: String,
+            enableAdvancedFeatures: Boolean
         },
         data () {
             return {
@@ -53,8 +54,8 @@
         computed: {
             langTitle () {
                 return this.isEditMode
-                        ? this.$gettext('Edit Playlist')
-                        : this.$gettext('Add Playlist');
+                    ? this.$gettext('Edit Playlist')
+                    : this.$gettext('Add Playlist');
             },
             isEditMode () {
                 return this.editUrl !== null;
@@ -64,6 +65,7 @@
             form: {
                 'name': { required },
                 'is_enabled': { required },
+                'include_in_on_demand': {},
                 'weight': { required },
                 'type': { required },
                 'source': { required },
@@ -77,6 +79,7 @@
                 'play_per_hour_minute': {},
                 'include_in_requests': {},
                 'include_in_automation': {},
+                'avoid_duplicates': {},
                 'backend_options': {},
                 'schedule_items': {
                     $each: {
@@ -94,6 +97,7 @@
                 this.form = {
                     'name': '',
                     'is_enabled': true,
+                    'include_in_on_demand': false,
                     'weight': 3,
                     'type': 'default',
                     'source': 'songs',
@@ -107,6 +111,7 @@
                     'play_per_hour_minute': 0,
                     'include_in_requests': true,
                     'include_in_automation': false,
+                    'avoid_duplicates': true,
                     'backend_options': [],
                     'schedule_items': []
                 };
@@ -130,6 +135,7 @@
                     this.form = {
                         'name': d.name,
                         'is_enabled': d.is_enabled,
+                        'include_in_on_demand': d.include_in_on_demand,
                         'weight': d.weight,
                         'type': d.type,
                         'source': d.source,
@@ -143,6 +149,7 @@
                         'play_per_hour_minute': d.play_per_hour_minute,
                         'include_in_requests': d.include_in_requests,
                         'include_in_automation': d.include_in_automation,
+                        'avoid_duplicates': d.avoid_duplicates,
                         'backend_options': d.backend_options,
                         'schedule_items': d.schedule_items
                     };
@@ -161,11 +168,11 @@
 
                 axios({
                     method: (this.isEditMode)
-                            ? 'PUT'
-                            : 'POST',
+                        ? 'PUT'
+                        : 'POST',
                     url: (this.isEditMode)
-                            ? this.editUrl
-                            : this.createUrl,
+                        ? this.editUrl
+                        : this.createUrl,
                     data: this.form
                 }).then((resp) => {
                     let notifyMessage = this.$gettext('Changes saved.');

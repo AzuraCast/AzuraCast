@@ -2,13 +2,13 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
+use App\Flysystem\Filesystem;
 use App\Flysystem\StationFilesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
 use App\MessageQueue;
 use App\Radio\Backend\Liquidsoap;
-use App\Radio\Filesystem;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -33,7 +33,7 @@ class BatchAction
         $files = [];
 
         foreach ($files_raw as $file) {
-            $file_path = 'media://' . $file;
+            $file_path = Filesystem::PREFIX_MEDIA . '://' . $file;
 
             if ($fs->has($file_path)) {
                 $files[] = $file_path;
@@ -223,7 +223,7 @@ class BatchAction
                 $files_found = count($music_files);
 
                 $directory_path = $request->getParam('directory');
-                $directory_path_full = 'media://' . $directory_path;
+                $directory_path_full = Filesystem::PREFIX_MEDIA . '://' . $directory_path;
 
                 try {
                     // Verify that you're moving to a directory (if it's not the root dir).

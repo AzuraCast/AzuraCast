@@ -6,7 +6,7 @@
                             :title="langPlaylistDropdown">
                     <template v-slot:button-content>
                         <i class="material-icons" aria-hidden="true">clear_all</i>
-                        <translate>Playlists</translate>
+                        <translate key="lang_playlists_title">Playlists</translate>
                         <span class="caret"></span>
                     </template>
                     <b-dropdown-form class="pt-2" @submit.prevent="setPlaylists">
@@ -33,31 +33,31 @@
                         </div>
 
                         <b-button type="submit" size="sm" variant="primary">
-                            <translate>Save</translate>
+                            <translate key="lang_btn_save">Save</translate>
                         </b-button>
                         <b-button type="button" size="sm" variant="warning" @click="clearPlaylists()">
-                            <translate>Clear</translate>
+                            <translate key="lang_btn_clear">Clear</translate>
                         </b-button>
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
             <b-button size="sm" variant="primary" @click="doQueue" v-b-tooltip.hover :title="langQueue">
                 <i class="material-icons" aria-hidden="true">queue_play_next</i>
-                <translate>Queue</translate>
+                <translate key="lang_btn_queue">Queue</translate>
             </b-button>
             <b-button size="sm" variant="primary" v-b-modal.move_file>
                 <i class="material-icons" aria-hidden="true">open_with</i>
-                <translate>Move</translate>
+                <translate key="lang_btn_move">Move</translate>
             </b-button>
             <b-button size="sm" variant="danger" @click="doDelete">
                 <i class="material-icons" aria-hidden="true">delete</i>
-                <translate>Delete</translate>
+                <translate key="lang_btn_delete">Delete</translate>
             </b-button>
         </div>
         <div class="col-md-4 text-right">
             <b-button size="sm" variant="primary" v-b-modal.create_directory>
                 <i class="material-icons" aria-hidden="true">folder</i>
-                <translate>New Folder</translate>
+                <translate key="lang_btn_new_folder">New Folder</translate>
             </b-button>
         </div>
     </div>
@@ -172,8 +172,8 @@
                             }
 
                             let notifyMessage = (this.checkedPlaylists.length > 0)
-                                    ? this.$gettext('Playlists updated for selected files:')
-                                    : this.$gettext('Playlists cleared for selected files:');
+                                ? this.$gettext('Playlists updated for selected files:')
+                                : this.$gettext('Playlists cleared for selected files:');
                             notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success');
 
                             this.checkedPlaylists = [];

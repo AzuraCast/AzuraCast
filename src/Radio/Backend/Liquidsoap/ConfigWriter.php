@@ -72,9 +72,15 @@ class ConfigWriter implements EventSubscriberInterface
     public function writeCustomConfigurationSection(WriteLiquidsoapConfiguration $event, string $sectionName): void
     {
         if ($event->isForEditing()) {
+            $divider = self::getDividerString();
             $event->appendLines([
-                '•' . $sectionName . '•',
+                $divider . $sectionName . $divider,
             ]);
+            return;
+        }
+
+        $appSettings = Settings::getInstance();
+        if (!$appSettings->enableAdvancedFeatures()) {
             return;
         }
 
@@ -87,6 +93,11 @@ class ConfigWriter implements EventSubscriberInterface
                 $settings[$sectionName],
             ]);
         }
+    }
+
+    public static function getDividerString(): string
+    {
+        return chr(7);
     }
 
     public function writeHeaderFunctions(WriteLiquidsoapConfiguration $event): void
@@ -403,19 +414,18 @@ class ConfigWriter implements EventSubscriberInterface
                 log("AzuraCast Raw Response: #{uri}")
                 
                 if uri == "" or string.match(pattern="Error", uri) then
-                    log("AzuraCast Error: Delaying subsequent requests...")
-                    system("sleep 2")
-                    request.create("")
-                else
-                    request.create(uri)
+                    []
+                else 
+                    req = request.create(uri)
+                    [req]                
                 end
             end
             EOF
             );
 
             $event->appendLines([
-                'dynamic = request.dynamic(id="' . self::getVarName($station,
-                    'next_song') . '", timeout=20., azuracast_next_song)',
+                'dynamic = request.dynamic.list(id="' . self::getVarName($station,
+                    'next_song') . '", timeout=20., retry_delay=3., azuracast_next_song)',
                 'dynamic = audio_to_stereo(id="' . self::getVarName($station, 'stereo_next_song') . '", dynamic)',
                 'dynamic = cue_cut(id="' . self::getVarName($station, 'cue_next_song') . '", dynamic)',
 
@@ -967,7 +977,7 @@ class ConfigWriter implements EventSubscriberInterface
                 break;
 
             case Entity\StationMountInterface::FORMAT_OPUS:
-                return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="none", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+                return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
                 break;
 
             case Entity\StationMountInterface::FORMAT_MP3:

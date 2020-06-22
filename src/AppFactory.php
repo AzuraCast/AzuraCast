@@ -112,6 +112,10 @@ class AppFactory
             $settings[Settings::BASE_URL] = $_ENV['BASE_URL'];
         }
 
+        if (isset($_ENV['ENABLE_ADVANCED_FEATURES'])) {
+            $settings[Settings::ENABLE_ADVANCED_FEATURES] = $_ENV['ENABLE_ADVANCED_FEATURES'];
+        }
+
         if (file_exists($settings[Settings::CONFIG_DIR] . '/settings.php')) {
             $settingsFile = require($settings[Settings::CONFIG_DIR] . '/settings.php');
 

@@ -21,6 +21,19 @@ class Settings extends AbstractFixture
             Entity\Settings::EXTERNAL_IP => '127.0.0.1',
         ];
 
+        $isDemoMode = (!empty(getenv('INIT_DEMO_API_KEY') ?? ''));
+        if ($isDemoMode) {
+            $settings[Entity\Settings::LISTENER_ANALYTICS] = Entity\Analytics::LEVEL_NO_IP;
+            $settings[Entity\Settings::CUSTOM_JS_PUBLIC] = <<<EOF
+            $(function() {
+              if ($('body').hasClass('login-content')) {
+                $('input[name="username"]').val('demo@azuracast.com');
+                $('input[name="password"]').val('demo');
+              }
+            });
+            EOF;
+        }
+
         foreach ($settings as $setting_key => $setting_value) {
             $record = new Entity\Settings($setting_key);
             $record->setSettingValue($setting_value);

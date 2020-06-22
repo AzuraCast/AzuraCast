@@ -1,6 +1,6 @@
 <template>
     <h3 class="card-subtitle mt-0 mb-2" id="breadcrumb">
-        <a href="#" @click.prevent="changeDirectory('')" v-translate>Home</a>
+        <a href="#" key="lang_home" @click.prevent="changeDirectory('')" v-translate>Home</a>
         <template v-for="part in directoryParts">
             &blacktriangleright;
             <a href="#" @click.prevent="changeDirectory(part.dir)">{{ part.display }}</a>

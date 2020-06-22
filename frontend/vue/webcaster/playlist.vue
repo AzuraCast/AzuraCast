@@ -13,16 +13,16 @@
             <div class="control-group d-flex justify-content-center">
                 <div class="btn-group btn-group-sm">
                     <button class="btn btn-sm btn-success" v-if="!playing || paused" v-on:click="play"><i
-                            class="material-icons">play_arrow</i></button>
+                        class="material-icons">play_arrow</i></button>
                     <button class="btn btn-sm btn-warning" v-if="playing && !paused" v-on:click="togglePause()"><i
-                            class="material-icons">pause</i></button>
+                        class="material-icons">pause</i></button>
                     <button class="btn btn-sm" v-on:click="previous()"><i class="material-icons">fast_rewind</i>
                     </button>
                     <button class="btn btn-sm" v-on:click="next()"><i class="material-icons">fast_forward</i></button>
                     <button class="btn btn-sm btn-danger" v-on:click="stop()"><i class="material-icons">stop</i>
                     </button>
                     <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">
-                        <translate>Cue</translate>
+                        <translate key="lang_btn_cue">Cue</translate>
                     </button>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     <input v-bind:id="id + '_files'" type="file" class="custom-file-input files" accept="audio/*"
                            multiple="multiple" v-on:change="addNewFiles($event.target.files)">
                     <label v-bind:for="id + '_files'" class="custom-file-label">
-                        <translate>Add Files to Playlist</translate>
+                        <translate key="lang_btn_add_files_to_playlist">Add Files to Playlist</translate>
                     </label>
                 </div>
             </div>
@@ -64,13 +64,13 @@
                     <input v-bind:id="id + '_playthrough'" type="checkbox" class="custom-control-input"
                            v-model="playThrough">
                     <label v-bind:for="id + '_playthrough'" class="custom-control-label">
-                        <translate>Continuous Play</translate>
+                        <translate key="lang_continuous_play">Continuous Play</translate>
                     </label>
                 </div>
                 <div class="custom-control custom-checkbox">
                     <input v-bind:id="id + '_loop'" type="checkbox" class="custom-control-input" v-model="loop">
                     <label v-bind:for="id + '_loop'" class="custom-control-label">
-                        <translate>Repeat Playlist</translate>
+                        <translate key="lang_repeat_playlist">Repeat Playlist</translate>
                     </label>
                 </div>
             </div>
@@ -115,8 +115,8 @@
         computed: {
             lang_header () {
                 return (this.id === 'playlist_1')
-                        ? this.$gettext('Playlist 1')
-                        : this.$gettext('Playlist 2');
+                    ? this.$gettext('Playlist 1')
+                    : this.$gettext('Playlist 2');
             },
             lang_unknown_title () {
                 return this.$gettext('Unknown Title');

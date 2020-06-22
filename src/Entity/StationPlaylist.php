@@ -206,6 +206,15 @@ class StationPlaylist
     protected $include_in_requests = true;
 
     /**
+     * @ORM\Column(name="include_in_on_demand", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
+     * @var bool Whether this playlist's media is included in "on demand" download/streaming if enabled.
+     */
+    protected $include_in_on_demand = false;
+
+    /**
      * @ORM\Column(name="include_in_automation", type="boolean")
      *
      * @OA\Property(example=false)
@@ -222,6 +231,15 @@ class StationPlaylist
      * @var string
      */
     protected $backend_options = '';
+
+    /**
+     * @ORM\Column(name="avoid_duplicates", type="boolean")
+     *
+     * @OA\Property(example=true)
+     *
+     * @var bool
+     */
+    protected $avoid_duplicates = true;
 
     /**
      * @ORM\Column(name="played_at", type="integer")
@@ -428,6 +446,16 @@ class StationPlaylist
         $this->include_in_requests = $include_in_requests;
     }
 
+    public function getIncludeInOnDemand(): bool
+    {
+        return $this->include_in_on_demand;
+    }
+
+    public function setIncludeInOnDemand(bool $include_in_on_demand): void
+    {
+        $this->include_in_on_demand = $include_in_on_demand;
+    }
+
     /**
      * Indicates whether this playlist can be used as a valid source of requestable media.
      *
@@ -446,6 +474,16 @@ class StationPlaylist
     public function setIncludeInAutomation(bool $include_in_automation): void
     {
         $this->include_in_automation = $include_in_automation;
+    }
+
+    public function getAvoidDuplicates(): bool
+    {
+        return $this->avoid_duplicates;
+    }
+
+    public function setAvoidDuplicates(bool $avoid_duplicates): void
+    {
+        $this->avoid_duplicates = $avoid_duplicates;
     }
 
     public function getPlayedAt(): int
@@ -491,15 +529,26 @@ class StationPlaylist
      */
     public function isPlayable(): bool
     {
-        return ($this->is_enabled
-            && (self::SOURCE_SONGS !== $this->source || $this->media_items->count() > 0)
-            && !$this->backendInterruptOtherSongs()
-            && !$this->backendMerge()
-            && !$this->backendLoopPlaylistOnce());
+        // Any "advanced" settings are not managed by AzuraCast AutoDJ.
+        if (!$this->is_enabled || $this->backendInterruptOtherSongs() || $this->backendMerge() || $this->backendLoopPlaylistOnce()) {
+            return false;
+        }
+
+        if (self::SOURCE_SONGS === $this->source) {
+            return $this->media_items->count() > 0;
+        }
+
+        // Remote stream playlists aren't supported by the AzuraCast AutoDJ.
+        return self::REMOTE_TYPE_PLAYLIST === $this->remote_type;
     }
 
     public function getBackendOptions(): array
     {
+        $settings = \App\Settings::getInstance();
+        if (!$settings->enableAdvancedFeatures()) {
+            return [];
+        }
+
         return explode(',', $this->backend_options);
     }
 

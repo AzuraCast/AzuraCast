@@ -2,8 +2,9 @@
 
 # AzuraCast: A Self-Hosted Web Radio Manager
 
-[![Build Status](https://travis-ci.com/AzuraCast/AzuraCast.svg?branch=master)](https://travis-ci.com/AzuraCast/AzuraCast)
+[![Build Status](https://github.com/azuracast/azuracast/workflows/Build,%20Test%20and%20Publish/badge.svg)](https://github.com/AzuraCast/AzuraCast/actions)
 [![Apache 2.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
+[![Ethical Open Source](https://img.shields.io/badge/open-ethical-%234baaaa)](https://ethicalsource.dev/definition/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_radio.svg)](https://hub.docker.com/r/azuracast/azuracast_radio/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
 

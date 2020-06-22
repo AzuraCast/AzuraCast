@@ -27,7 +27,15 @@ tmp/cache/*---*
 /util/package_usage_report*
 
 # Composer-generated content
-/vendor/
+/vendor/*
+/vendor/**/*
+!/vendor/.gitkeep
+
+# NPM built content
+/web/static/dist/*
+/web/static/dist/**/*
+!/web/static/dist/.gitkeep
+/web/static/assets.json
 
 # Ansible deployment files
 /ansible/
@@ -38,6 +46,7 @@ tmp/cache/*---*
 # Docker files
 /docker-compose.yml
 /docker-compose.override.yml
+/.env
 
 # Backups
 /*.tar.gz

@@ -24,9 +24,18 @@ class NowPlayingLive
      */
     public string $streamer_name = '';
 
-    public function __construct($is_live = false, $streamer_name = '')
+    /**
+     * The start timestamp of the current broadcast, if one is available.
+     *
+     * @OA\Property(example="1591548318")
+     * @var int|null
+     */
+    public $broadcast_start = null;
+
+    public function __construct($is_live = false, $streamer_name = '', $broadcast_start = null)
     {
         $this->is_live = (bool)$is_live;
         $this->streamer_name = (string)$streamer_name;
+        $this->broadcast_start = $broadcast_start;
     }
 }

@@ -5,6 +5,7 @@ use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
+use App\Flysystem\Filesystem;
 use App\Lock\LockManager;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
@@ -493,18 +494,22 @@ class AutoDJ implements EventSubscriberInterface
                     }
                 }
 
-                if ($allowDuplicates) {
-                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
+                if ($playlist->getAvoidDuplicates()) {
+                    if ($allowDuplicates) {
+                        $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
 
-                    if (null === $mediaId) {
-                        $this->logger->warning('Duplicate prevention yielded no playable song; resetting song queue.');
+                        if (null === $mediaId) {
+                            $this->logger->warning('Duplicate prevention yielded no playable song; resetting song queue.');
 
-                        // Pull the entire shuffled playlist if a duplicate title can't be avoided.
-                        $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
-                        $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, true);
+                            // Pull the entire shuffled playlist if a duplicate title can't be avoided.
+                            $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
+                            $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, true);
+                        }
+                    } else {
+                        $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
                     }
                 } else {
-                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
+                    $mediaId = array_key_first($mediaQueue);
                 }
 
                 if (null !== $mediaId) {

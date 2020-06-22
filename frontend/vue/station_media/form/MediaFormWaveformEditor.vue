@@ -1,51 +1,46 @@
 <template>
     <b-tab :title="langTitle">
+        <p>
+            <translate key="lang_waveform_editor_desc">Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings.</translate>
+        </p>
+
         <b-form-group>
-            <b-row>
-                <div class="col-md-12">
-                    <h4>Visual Cue Editor <sup>BETA</sup></h4>
-                    <p>You are able to set cue points and fades using the visual editor. The timestamps will be saved to
-                        the corresponding fields in the advanced playback settings.</p>
-                </div>
-                <b-form-group class="col-md-12">
-                    <waveform ref="waveform" :audio-url="audioUrl" @ready="updateRegions"></waveform>
-                </b-form-group>
-                <b-form-group class="col-md-12">
-                    <b-button-group>
-                        <b-button variant="light" @click="playAudio">
-                            <i class="material-icons" aria-hidden="true">play_arrow</i>
-                            <span class="sr-only">Play</span>
-                        </b-button>
-                        <b-button variant="dark" @click="stopAudio">
-                            <i class="material-icons" aria-hidden="true">stop</i>
-                            <span class="sr-only">Stop</span>
-                        </b-button>
-                    </b-button-group>
-                    <b-button-group>
-                        <b-button variant="primary" @click="setCueIn">
-                            <translate>Set Cue In</translate>
-                        </b-button>
+            <waveform ref="waveform" :audio-url="audioUrl" :waveform-url="waveformUrl" @ready="updateRegions"></waveform>
+        </b-form-group>
+        <b-form-group>
+            <b-button-group>
+                <b-button variant="light" @click="playAudio">
+                    <i class="material-icons" aria-hidden="true">play_arrow</i>
+                    <span class="sr-only"><translate key="lang_btn_play">Play</translate></span>
+                </b-button>
+                <b-button variant="dark" @click="stopAudio">
+                    <i class="material-icons" aria-hidden="true">stop</i>
+                    <span class="sr-only"><translate key="lang_btn_stop">Stop</translate></span>
+                </b-button>
+            </b-button-group>
+            <b-button-group>
+                <b-button variant="primary" @click="setCueIn">
+                    <translate key="lang_btn_set_cue_in">Set Cue In</translate>
+                </b-button>
 
-                        <b-button variant="primary" @click="setCueOut">
-                            <translate>Set Cue Out</translate>
-                        </b-button>
-                    </b-button-group>
-                    <b-button-group>
-                        <b-button variant="warning" @click="setFadeOverlap">
-                            <translate>Set Overlap</translate>
-                        </b-button>
-                    </b-button-group>
-                    <b-button-group>
-                        <b-button variant="danger" @click="setFadeIn">
-                            <translate>Set Fade In</translate>
-                        </b-button>
+                <b-button variant="primary" @click="setCueOut">
+                    <translate key="lang_btn_set_cue_out">Set Cue Out</translate>
+                </b-button>
+            </b-button-group>
+            <b-button-group>
+                <b-button variant="warning" @click="setFadeOverlap">
+                    <translate key="lang_btn_set_fade_overlap">Set Overlap</translate>
+                </b-button>
+            </b-button-group>
+            <b-button-group>
+                <b-button variant="danger" @click="setFadeIn">
+                    <translate key="lang_btn_set_fade_in">Set Fade In</translate>
+                </b-button>
 
-                        <b-button variant="danger" @click="setFadeOut">
-                            <translate>Set Fade Out</translate>
-                        </b-button>
-                    </b-button-group>
-                </b-form-group>
-            </b-row>
+                <b-button variant="danger" @click="setFadeOut">
+                    <translate key="lang_btn_set_fade_out">Set Fade Out</translate>
+                </b-button>
+            </b-button-group>
         </b-form-group>
     </b-tab>
 </template>
@@ -58,7 +53,8 @@
         components: { Waveform },
         props: {
             form: Object,
-            audioUrl: String
+            audioUrl: String,
+            waveformUrl: String
         },
         computed: {
             langTitle () {

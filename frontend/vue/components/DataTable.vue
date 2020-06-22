@@ -1,105 +1,119 @@
 <template>
-    <div>
-        <b-row class="align-items-center mb-2" v-if="showToolbar">
-            <b-col xl="7" md="6" sm="12">
-                <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                              class="mb-0" v-if="showPagination">
-                </b-pagination>
-            </b-col>
-            <b-col xl="5" md="6" sm="12" class="d-flex">
-                <div class="flex-fill">
-                    <div class="input-group">
-                        <span class="icon glyphicon input-group-addon search"></span>
-                        <b-form-input debounce="200" v-model="filter" class="search-field form-control"
-                                      :placeholder="langSearch"></b-form-input>
+    <div :id="id" style="display: contents">
+        <div class="datatable-toolbar-top card-body">
+            <b-row class="align-items-center mb-2" v-if="showToolbar">
+                <b-col xl="7" md="6" sm="12">
+                    <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
+                                  class="mb-0" v-if="showPagination">
+                    </b-pagination>
+                </b-col>
+                <b-col xl="5" md="6" sm="12" class="d-flex">
+                    <div class="flex-fill">
+                        <div class="input-group">
+                            <span class="icon glyphicon input-group-addon search"></span>
+                            <b-form-input debounce="200" v-model="filter" class="search-field form-control"
+                                          :placeholder="langSearch"></b-form-input>
+                        </div>
                     </div>
-                </div>
-                <div class="flex-shrink-1 pl-3 pr-3">
-                    <b-btn-group class="actions">
-                        <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
-                                  :title="langRefreshTooltip">
-                            <i class="material-icons">refresh</i>
-                        </b-button>
-                        <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover
-                                    :title="langPerPageTooltip">
-                            <b-dropdown-item v-for="pageOption in pageOptions" :key="pageOption"
-                                             :active="(pageOption === perPage)" @click="setPerPage(pageOption)">
-                                {{ getPerPageLabel(pageOption) }}
-                            </b-dropdown-item>
-                        </b-dropdown>
-                        <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
-                                    :title="langSelectFieldsTooltip">
-                            <template v-slot:button-content>
-                                <i class="material-icons" aria-hidden="true">filter_list</i>
-                                <span class="caret"></span>
-                            </template>
-                            <b-dropdown-form class="pt-3">
-                                <div v-for="field in selectableFields" class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input"
-                                               v-bind:id="'chk_field_' + field.key" name="is_field_visible"
-                                               v-model="field.visible" @change="storeSettings">
-                                        <label class="custom-control-label" v-bind:for="'chk_field_'+field.key">
-                                            {{ field.label }}
-                                        </label>
+                    <div class="flex-shrink-1 pl-3 pr-3">
+                        <b-btn-group class="actions">
+                            <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
+                                      :title="langRefreshTooltip">
+                                <i class="material-icons">refresh</i>
+                            </b-button>
+                            <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover
+                                        :title="langPerPageTooltip">
+                                <b-dropdown-item v-for="pageOption in pageOptions" :key="pageOption"
+                                                 :active="(pageOption === perPage)" @click="setPerPage(pageOption)">
+                                    {{ getPerPageLabel(pageOption) }}
+                                </b-dropdown-item>
+                            </b-dropdown>
+                            <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
+                                        :title="langSelectFieldsTooltip">
+                                <template v-slot:button-content>
+                                    <i class="material-icons" aria-hidden="true">filter_list</i>
+                                    <span class="caret"></span>
+                                </template>
+                                <b-dropdown-form class="pt-3">
+                                    <div v-for="field in selectableFields" class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                   v-bind:id="'chk_field_' + field.key" name="is_field_visible"
+                                                   v-model="field.visible" @change="storeSettings">
+                                            <label class="custom-control-label" v-bind:for="'chk_field_'+field.key">
+                                                {{ field.label }}
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                            </b-dropdown-form>
-                        </b-dropdown>
-                    </b-btn-group>
-                </div>
-            </b-col>
-        </b-row>
-
-        <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
-                 :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
-                 :empty-text="langNoRecords" :empty-filtered-text="langNoRecords"
-                 tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
-                 :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
-            <template v-slot:head(selected)="data">
-                <b-form-checkbox :aria-label="langSelectAll" v-model="allSelected"
-                                 @change="toggleSelected"></b-form-checkbox>
-            </template>
-            <template v-slot:cell(selected)="{ rowSelected }">
-                <i class="material-icons">
-                    <template v-if="rowSelected">check_box</template>
-                    <template v-else>check_box_outline_blank</template>
-                </i>
-            </template>
-            <template v-slot:table-busy>
-                <div role="alert" aria-live="polite">
-                    <div class="text-center my-2">
-                        <div class="progress-circular progress-circular-primary mx-auto mb-3">
-                            <div class="progress-circular-wrapper">
-                                <div class="progress-circular-inner">
-                                    <div class="progress-circular-left">
-                                        <div class="progress-circular-spinner"></div>
-                                    </div>
-                                    <div class="progress-circular-gap"></div>
-                                    <div class="progress-circular-right">
-                                        <div class="progress-circular-spinner"></div>
+                                </b-dropdown-form>
+                            </b-dropdown>
+                        </b-btn-group>
+                    </div>
+                </b-col>
+            </b-row>
+        </div>
+        <div class="datatable-main">
+            <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
+                     :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
+                     :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
+                     tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
+                     :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
+                <template v-slot:head(selected)="data">
+                    <b-form-checkbox :aria-label="langSelectAll" v-model="allSelected"
+                                     @change="toggleSelected"></b-form-checkbox>
+                </template>
+                <template v-slot:cell(selected)="{ rowSelected }">
+                    <i class="material-icons">
+                        <template v-if="rowSelected">check_box</template>
+                        <template v-else>check_box_outline_blank</template>
+                    </i>
+                </template>
+                <template v-slot:table-busy>
+                    <div role="alert" aria-live="polite">
+                        <div class="text-center my-2">
+                            <div class="progress-circular progress-circular-primary mx-auto mb-3">
+                                <div class="progress-circular-wrapper">
+                                    <div class="progress-circular-inner">
+                                        <div class="progress-circular-left">
+                                            <div class="progress-circular-spinner"></div>
+                                        </div>
+                                        <div class="progress-circular-gap"></div>
+                                        <div class="progress-circular-right">
+                                            <div class="progress-circular-spinner"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            {{ langLoading }}
                         </div>
-
-                        {{ langLoading }}
                     </div>
-                </div>
-            </template>
-            <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
-            <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
-                <slot :name="name" v-bind="slotData"/>
-            </template>
-        </b-table>
-
-        <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
-                      class="mb-0 mt-2" v-if="showPagination">
-        </b-pagination>
+                </template>
+                <slot v-for="(_, name) in $slots" :name="name" :slot="name"/>
+                <template v-for="(_, name) in $scopedSlots" :slot="name" slot-scope="slotData">
+                    <slot :name="name" v-bind="slotData"/>
+                </template>
+            </b-table>
+        </div>
+        <div class="datatable-toolbar-bottom card-body">
+            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage"
+                          class="mb-0 mt-2" v-if="showPagination">
+            </b-pagination>
+        </div>
     </div>
 </template>
 
 <style lang="scss">
+    div.datatable-main {
+        flex: 1;
+    }
+
+    div.datatable-toolbar-top,
+    div.datatable-toolbar-bottom {
+        flex: 0;
+        padding: 0;
+    }
+
     table.b-table-selectable {
         thead tr th:nth-child(1),
         tbody tr td:nth-child(1) {
@@ -124,6 +138,10 @@
         props: {
             id: String,
             apiUrl: String,
+            responsive: {
+                type: [String, Boolean],
+                default: true
+            },
             paginated: {
                 type: Boolean,
                 default: false
@@ -149,7 +167,20 @@
             requestProcess: Function
         },
         data () {
+            let allFields = [];
+            _.forEach(this.fields, function (field) {
+                allFields.push({
+                    key: field.key,
+                    label: _.defaultTo(field.label, ''),
+                    sortable: _.defaultTo(field.sortable, false),
+                    selectable: _.defaultTo(field.selectable, false),
+                    visible: _.defaultTo(field.visible, true),
+                    formatter: _.defaultTo(field.formatter, null)
+                });
+            });
+
             return {
+                allFields: allFields,
                 selected: [],
                 allSelected: false,
                 storeKey: 'datatable_' + this.id + '_settings',
@@ -190,10 +221,16 @@
                 return this.$gettext('Loading...');
             },
             visibleFields () {
-                let fields = this.fields.slice();
+                let fields = this.allFields.slice();
 
                 if (this.selectable) {
-                    fields.unshift({ key: 'selected', label: '', sortable: false });
+                    fields.unshift({
+                        key: 'selected',
+                        label: '',
+                        sortable: false,
+                        selectable: false,
+                        visible: true
+                    });
                 }
 
                 if (!this.selectFields) {
@@ -201,17 +238,16 @@
                 }
 
                 return _.filter(fields, (field) => {
-                    let isSelectable = _.defaultTo(field.selectable, false);
-                    if (!isSelectable) {
+                    if (!field.selectable) {
                         return true;
                     }
 
-                    return _.defaultTo(field.visible, true);
+                    return field.visible;
                 });
             },
             selectableFields () {
-                return _.filter(this.fields.slice(), (field) => {
-                    return _.defaultTo(field.selectable, false);
+                return _.filter(this.allFields.slice(), (field) => {
+                    return field.selectable;
                 });
             },
             showPagination () {

@@ -1,0 +1,19 @@
+<?php
+$props = [
+    'listUrl' => $router->fromHere('api:stations:ondemand:list'),
+    'customFields' => $custom_fields,
+    'stationName' => $station->getName(),
+]
+?>
+var station_on_demand;
+
+$(function () {
+    station_on_demand = new Vue({
+        el: '#station_on_demand',
+        render: function (createElement) {
+            return createElement(StationOnDemand.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
+    });
+});

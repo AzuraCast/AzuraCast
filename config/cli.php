@@ -134,6 +134,11 @@ return function (Application $console) {
 
     // User-side tools
     $console->command(
+        'azuracast:account:list',
+        Command\ListUsersCommand::class
+    )->setDescription('List all accounts in the system.');
+
+    $console->command(
         'azuracast:account:reset-password email',
         Command\ResetPasswordCommand::class
     )->setDescription('Reset the password of the specified account.');

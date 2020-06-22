@@ -14,13 +14,15 @@ Language-Team: Hungarian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2020-04-16T04:24:39+00:00
-PO-Revision-Date: 2020-04-26 10:14
+POT-Creation-Date: 2020-06-21T16:28:26+00:00
+PO-Revision-Date: 2020-06-22 04:07
 Language: hu_HU
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
+X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: hu
 X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File-ID: 4
 ',
       ),
       'All Permissions' => 
@@ -267,6 +269,34 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Liquidsoap Log' => 
+      array (
+        0 => '',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => '',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => '',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => '',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => '',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => '',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => '',
+      ),
       'Record not found.' => 
       array (
         0 => '',
@@ -479,6 +509,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => '',
+      ),
       'Directory' => 
       array (
         0 => 'Könyvtár',
@@ -495,7 +529,11 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'This station is out of available storage space.' => 
+      'This station does not support on-demand streaming.' => 
+      array (
+        0 => '',
+      ),
+      'File not found.' => 
       array (
         0 => '',
       ),
@@ -803,34 +841,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Liquidsoap Log' => 
-      array (
-        0 => '',
-      ),
-      'Liquidsoap Configuration' => 
-      array (
-        0 => '',
-      ),
-      'Icecast Access Log' => 
-      array (
-        0 => '',
-      ),
-      'Icecast Error Log' => 
-      array (
-        0 => '',
-      ),
-      'Icecast Configuration' => 
-      array (
-        0 => '',
-      ),
-      'SHOUTcast Log' => 
-      array (
-        0 => '',
-      ),
-      'SHOUTcast Configuration' => 
-      array (
-        0 => '',
-      ),
       'Search engine crawlers are not permitted to use this feature.' => 
       array (
         0 => '',
@@ -908,6 +918,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'New AzuraCast Updates Available' => 
+      array (
+        0 => '',
+      ),
+      'Installation Not Recently Backed Up' => 
+      array (
+        0 => '',
+      ),
+      'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.' => 
       array (
         0 => '',
       ),
@@ -1012,6 +1030,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => 'Tisztítás',
       ),
       'The port %s is in use by another station.' => 
+      array (
+        0 => '',
+      ),
+      'Are you sure?' => 
       array (
         0 => '',
       ),
@@ -2179,6 +2201,14 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Enable On-Demand Streaming and Downloads' => 
+      array (
+        0 => '',
+      ),
+      'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
+      array (
+        0 => '',
+      ),
       'URL Stub' => 
       array (
         0 => '',
@@ -2203,6 +2233,18 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
+      'Customize Source Password' => 
+      array (
+        0 => '',
+      ),
+      'Leave blank to automatically generate a new password.' => 
+      array (
+        0 => 'Hagyja üresen, ha véletlenszerű jelszót szeretne generáltatni',
+      ),
+      'Customize Administrator Password' => 
+      array (
+        0 => '',
+      ),
       'Customize Broadcasting Port' => 
       array (
         0 => '',
@@ -2216,18 +2258,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
-      array (
-        0 => '',
-      ),
-      'Customize Source Password' => 
-      array (
-        0 => '',
-      ),
-      'Leave blank to automatically generate a new password.' => 
-      array (
-        0 => 'Hagyja üresen, ha véletlenszerű jelszót szeretne generáltatni',
-      ),
-      'Customize Administrator Password' => 
       array (
         0 => '',
       ),
@@ -2770,6 +2800,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Publikus oldal',
       ),
+      'On-Demand Media' => 
+      array (
+        0 => '',
+      ),
       'Music Files' => 
       array (
         0 => 'Zenei fájlok',
@@ -3070,11 +3104,7 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => '',
       ),
-      'Test AutoDJ Next Song' => 
-      array (
-        0 => '',
-      ),
-      'Test time (Leave blank for current time)' => 
+      'Rebuild AutoDJ Queue' => 
       array (
         0 => '',
       ),
@@ -3659,6 +3689,10 @@ X-Crowdin-File: /master/resources/locale/default.pot
       array (
         0 => 'Lejátszó beágyazási kód',
       ),
+      'On-Demand Embed Code' => 
+      array (
+        0 => '',
+      ),
       'Request Embed Code' => 
       array (
         0 => '',
@@ -4016,18 +4050,6 @@ X-Crowdin-File: /master/resources/locale/default.pot
         0 => '',
       ),
       'Delete web hook "%s"?' => 
-      array (
-        0 => '',
-      ),
-      'Select...' => 
-      array (
-        0 => 'Válasszon...',
-      ),
-      'No results found!' => 
-      array (
-        0 => 'Nincs találat!',
-      ),
-      'Advanced' => 
       array (
         0 => '',
       ),

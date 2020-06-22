@@ -1,5 +1,7 @@
 <?php
 
+use App\Settings;
+
 class C02_Station_MediaCest extends CestAbstract
 {
     /**
@@ -12,33 +14,16 @@ class C02_Station_MediaCest extends CestAbstract
 
         $station_id = $this->test_station->getId();
 
-        $test_song_orig = $this->settings[\App\Settings::BASE_DIR] . '/resources/error.mp3';
-        $test_song = tempnam(sys_get_temp_dir(), 'azuracast');
-        copy($test_song_orig, $test_song);
-
-        $test_file = [
-            'tmp_name' => $test_song,
-            'name' => basename($test_song),
-            'type' => 'audio/mpeg',
-            'size' => filesize($test_song),
-            'error' => \UPLOAD_ERR_OK,
-        ];
-
-        $I->sendPOST('/api/station/' . $station_id . '/files/upload', [
-            'file' => '',
-            'csrf' => '', // CSRF disabled in testing.
-            'flowIdentifier' => 'uploadtest',
-            'flowChunkNumber' => 1,
-            'flowCurrentChunkSize' => filesize($test_song),
-            'flowFilename' => 'error.mp3',
-            'flowTotalSize' => filesize($test_song),
-            'flowTotalChunks' => 1,
-        ], [
-            'file_data' => $test_file,
+        // Upload test song
+        $test_song_orig = $this->settings[Settings::BASE_DIR] . '/resources/error.mp3';
+        $I->sendPOST('/api/station/' . $station_id . '/files', [
+            'path' => 'error.mp3',
+            'file' => base64_encode(file_get_contents($test_song_orig)),
         ]);
 
         $I->seeResponseContainsJson([
-            'success' => true,
+            'title' => 'AzuraCast is Live!',
+            'artist' => 'AzuraCast.com',
         ]);
 
         $I->sendGET('/api/station/' . $station_id . '/files/list');

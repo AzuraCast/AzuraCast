@@ -24,6 +24,8 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
       DEFAULT_HOST: ${LETSENCRYPT_HOST:-azuracast.local}
+    networks:
+      - frontend
     depends_on:
       - web
     restart: always
@@ -36,6 +38,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       DEFAULT_EMAIL: ${LETSENCRYPT_EMAIL}
+    networks:
+      - frontend
     restart: always
 
   web:
@@ -67,6 +71,9 @@ services:
       - geolite_install:/var/azuracast/geoip
       - sftpgo_data:/var/azuracast/sftpgo/persist
       - backups:/var/azuracast/backups
+    networks:
+      - frontend
+      - backend
     restart: always
     ulimits: &default-ulimits
       nofile:
@@ -82,6 +89,8 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     env_file: azuracast.env
+    networks:
+      - backend
     restart: always
     logging: *default-logging
 
@@ -89,17 +98,21 @@ services:
     image: "azuracast/azuracast_influxdb:${AZURACAST_VERSION:-latest}"
     volumes:
       - influx_data:/var/lib/influxdb
+    networks:
+      - backend
     restart: always
     logging: *default-logging
 
   redis:
     image: "azuracast/azuracast_redis:${AZURACAST_VERSION:-latest}"
-    restart: always
-    logging: *default-logging
     sysctls:
       net.core.somaxconn: 1024
     volumes:
       - redis_data:/data
+    networks:
+      - backend
+    restart: always
+    logging: *default-logging
 
   stations:
     container_name: azuracast_stations
@@ -261,10 +274,19 @@ services:
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
       - letsencrypt:/etc/nginx/ssl:ro
       - tmp_data:/var/azuracast/www_tmp
+    networks:
+      - frontend
+      - backend
     init: true
     restart: always
     ulimits: *default-ulimits
     logging: *default-logging
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
 
 volumes:
   nginx_proxy_vhosts: {}

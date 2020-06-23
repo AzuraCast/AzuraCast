@@ -131,9 +131,19 @@ class Version
     {
         $details = $this->getDetails();
 
-        return (isset($details['tag']))
-            ? 'v' . $details['tag'] . ', #' . $details['commit_short'] . ' (' . $details['commit_date'] . ')'
-            : 'v' . self::FALLBACK_VERSION . ' Release Build';
+        if (isset($details['tag'])) {
+            if (isset($_ENV['AZURACAST_VERSION'])) {
+                $dockerVersion = ('latest' === $_ENV['AZURACAST_VERSION'])
+                    ? ' Latest'
+                    : ' Stable';
+            } else {
+                $dockerVersion = '';
+            }
+
+            return 'v' . $details['tag'] . ', #' . $details['commit_short'] . ' (' . $details['commit_date'] . ') ' . $dockerVersion;
+        }
+
+        return 'v' . self::FALLBACK_VERSION . ' Release Build';
     }
 
     /**

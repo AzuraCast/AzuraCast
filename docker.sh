@@ -325,84 +325,86 @@ install() {
 # Usage: ./docker.sh update
 #
 update() {
-    # Check for a new Docker Utility Script.
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh -o docker.new.sh
+    if ask "Please make sure your AzuraCast installation is backed up before updating. Continue?" Y; then
+        # Check for a new Docker Utility Script.
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh -o docker.new.sh
 
-    UTILITY_FILES_MATCH="$(
-        cmp --silent docker.sh docker.new.sh
-        echo $?
-    )"
-    UPDATE_UTILITY=0
+        UTILITY_FILES_MATCH="$(
+            cmp --silent docker.sh docker.new.sh
+            echo $?
+        )"
+        UPDATE_UTILITY=0
 
-    if [[ ${UTILITY_FILES_MATCH} -ne 0 ]]; then
-        if ask "The Docker Utility Script has changed since your version. Update to latest version?" Y; then
-            UPDATE_UTILITY=1
+        if [[ ${UTILITY_FILES_MATCH} -ne 0 ]]; then
+            if ask "The Docker Utility Script has changed since your version. Update to latest version?" Y; then
+                UPDATE_UTILITY=1
+            fi
         fi
-    fi
 
-    if [[ ${UPDATE_UTILITY} -ne 0 ]]; then
-        mv docker.new.sh docker.sh
-        chmod a+x docker.sh
+        if [[ ${UPDATE_UTILITY} -ne 0 ]]; then
+            mv docker.new.sh docker.sh
+            chmod a+x docker.sh
 
-        echo "A new Docker Utility Script has been downloaded."
-        echo "Please re-run the update process to continue."
-        exit
-    else
-        rm docker.new.sh
-    fi
-
-    if [[ ! -f azuracast.env ]]; then
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
-        echo "Default environment file loaded."
-    fi
-
-    # Migrate previous release settings to new environment variable.
-    .env --file azuracast.env get PREFER_RELEASE_BUILDS
-    PREFER_RELEASE_BUILDS="${REPLY:-false}"
-
-    if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
-        .env --file .env set AZURACAST_VERSION=stable
-    fi
-
-    .env --file azuracast.env set PREFER_RELEASE_BUILDS
-
-    # Check for updated Docker Compose config.
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
-
-    COMPOSE_FILES_MATCH="$(
-        cmp --silent docker-compose.yml docker-compose.new.yml
-        echo $?
-    )"
-    UPDATE_COMPOSE=0
-
-    if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
-        if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
-            UPDATE_COMPOSE=1
+            echo "A new Docker Utility Script has been downloaded."
+            echo "Please re-run the update process to continue."
+            exit
+        else
+            rm docker.new.sh
         fi
+
+        if [[ ! -f azuracast.env ]]; then
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
+            echo "Default environment file loaded."
+        fi
+
+        # Migrate previous release settings to new environment variable.
+        .env --file azuracast.env get PREFER_RELEASE_BUILDS
+        PREFER_RELEASE_BUILDS="${REPLY:-false}"
+
+        if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
+            .env --file .env set AZURACAST_VERSION=stable
+        fi
+
+        .env --file azuracast.env set PREFER_RELEASE_BUILDS
+
+        # Check for updated Docker Compose config.
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
+
+        COMPOSE_FILES_MATCH="$(
+            cmp --silent docker-compose.yml docker-compose.new.yml
+            echo $?
+        )"
+        UPDATE_COMPOSE=0
+
+        if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
+            if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
+                UPDATE_COMPOSE=1
+            fi
+        fi
+
+        if [[ ${UPDATE_COMPOSE} -ne 0 ]]; then
+            docker-compose -f docker-compose.new.yml pull
+            docker-compose down
+
+            cp docker-compose.yml docker-compose.backup.yml
+            mv docker-compose.new.yml docker-compose.yml
+        else
+            rm docker-compose.new.yml
+
+            docker-compose pull
+            docker-compose down
+        fi
+
+        docker volume rm azuracast_tmp_data
+        docker volume rm azuracast_redis_data
+
+        docker-compose run --user="azuracast" --rm web azuracast_update "$@"
+        docker-compose up -d
+
+        docker rmi "$(docker images | grep "none" | awk '/ / { print $3 }')" 2>/dev/null
+
+        echo "Update complete!"
     fi
-
-    if [[ ${UPDATE_COMPOSE} -ne 0 ]]; then
-        docker-compose -f docker-compose.new.yml pull
-        docker-compose down
-
-        cp docker-compose.yml docker-compose.backup.yml
-        mv docker-compose.new.yml docker-compose.yml
-    else
-        rm docker-compose.new.yml
-
-        docker-compose pull
-        docker-compose down
-    fi
-
-    docker volume rm azuracast_tmp_data
-    docker volume rm azuracast_redis_data
-
-    docker-compose run --user="azuracast" --rm web azuracast_update "$@"
-    docker-compose up -d
-
-    docker rmi "$(docker images | grep "none" | awk '/ / { print $3 }')" 2>/dev/null
-
-    echo "Update complete!"
     exit
 }
 

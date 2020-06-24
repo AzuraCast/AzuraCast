@@ -134,7 +134,7 @@ class Version
         if (isset($details['tag'])) {
             if (isset($_ENV['AZURACAST_VERSION'])) {
                 $dockerVersion = ('latest' === $_ENV['AZURACAST_VERSION'])
-                    ? ' Latest'
+                    ? ' Rolling'
                     : ' Stable';
             } else {
                 $dockerVersion = '';

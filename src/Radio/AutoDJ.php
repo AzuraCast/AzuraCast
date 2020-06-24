@@ -698,6 +698,14 @@ class AutoDJ implements EventSubscriberInterface
      */
     public static function getDistinctTrack(array $eligibleTracks, array $playedTracks)
     {
+        $artistSeparators = [
+            ', ',
+            ' feat ',
+            ' feat. ',
+            ' & ',
+        ];
+        $dividerString = chr(7);
+
         $artists = [];
         $titles = [];
 
@@ -705,7 +713,7 @@ class AutoDJ implements EventSubscriberInterface
             $title = trim($song['title']);
             $titles[$title] = $title;
 
-            $artistParts = explode(',', $song['artist']);
+            $artistParts = explode($dividerString, str_replace($artistSeparators, $dividerString, $song['artist']));
             foreach ($artistParts as $artist) {
                 $artist = trim($artist);
                 if (!empty($artist)) {
@@ -729,7 +737,7 @@ class AutoDJ implements EventSubscriberInterface
 
             $artistMatchFound = false;
             if (!empty($artist)) {
-                $artistParts = explode(',', $artist);
+                $artistParts = explode($dividerString, str_replace($artistSeparators, $dividerString, $artist));
                 foreach ($artistParts as $artist) {
                     $artist = trim($artist);
                     if (empty($artist)) {

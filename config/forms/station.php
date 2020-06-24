@@ -372,6 +372,7 @@ return [
                             StationMountInterface::FORMAT_OPUS => 'OGG Opus',
                             StationMountInterface::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
                         ],
+                        'default' => StationMountInterface::FORMAT_MP3,
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-4',
                     ],

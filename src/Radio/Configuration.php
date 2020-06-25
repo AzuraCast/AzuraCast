@@ -64,7 +64,7 @@ class Configuration
         if ($regen_auth_key || empty($station->getAdapterApiKey())) {
             $station->generateAdapterApiKey();
             $this->em->persist($station);
-            $this->em->flush($station);
+            $this->em->flush();
         }
 
         $frontend = $this->adapters->getFrontendAdapter($station);
@@ -162,7 +162,7 @@ class Configuration
             $station->setNeedsRestart(false);
 
             $this->em->persist($station);
-            $this->em->flush($station);
+            $this->em->flush();
         }
     }
 

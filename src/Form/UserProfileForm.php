@@ -1,10 +1,10 @@
 <?php
 namespace App\Form;
 
+use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Settings;
-use App\Config;
 use AzuraForms\Field\AbstractField;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Serializer;
@@ -71,7 +71,7 @@ class UserProfileForm extends EntityForm
         }
 
         $this->em->persist($user);
-        $this->em->flush($user);
+        $this->em->flush();
     }
 
     public function getView(ServerRequest $request): string

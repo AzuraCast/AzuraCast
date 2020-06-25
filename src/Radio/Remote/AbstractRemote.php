@@ -167,7 +167,7 @@ abstract class AbstractRemote
         $remote->setListenersTotal($np['listeners']['total']);
         $remote->setListenersUnique($np['listeners']['unique']);
         $this->em->persist($remote);
-        $this->em->flush($remote);
+        $this->em->flush();
 
         if ($np_aggregate['meta']['status'] === 'offline' && $np['meta']['status'] === 'online') {
             $np_aggregate['current_song'] = $np['current_song'];

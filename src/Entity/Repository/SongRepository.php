@@ -1,8 +1,8 @@
 <?php
 namespace App\Entity\Repository;
 
-use App\Entity;
 use App\Doctrine\Repository;
+use App\Entity;
 
 class SongRepository extends Repository
 {
@@ -33,7 +33,7 @@ class SongRepository extends Repository
         }
 
         $this->em->persist($obj);
-        $this->em->flush($obj);
+        $this->em->flush();
 
         return $obj;
     }

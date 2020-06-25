@@ -90,6 +90,6 @@ class Twitter extends AbstractConnector
 
         $webhook->setMetadataKey('last_message_sent', time());
         $this->em->persist($webhook);
-        $this->em->flush($webhook);
+        $this->em->flush();
     }
 }

@@ -1,8 +1,8 @@
 <?php
 namespace App\Entity\Repository;
 
-use App\Entity;
 use App\Doctrine\Repository;
+use App\Entity;
 use Ramsey\Uuid\Uuid;
 
 class SettingsRepository extends Repository
@@ -71,7 +71,7 @@ class SettingsRepository extends Repository
 
         if ($record instanceof Entity\Settings) {
             $this->em->remove($record);
-            $this->em->flush($record);
+            $this->em->flush();
         }
 
         unset(self::$cachedSettings[$key]);
@@ -168,7 +168,7 @@ class SettingsRepository extends Repository
 
         $record->setSettingValue($value);
         $this->em->persist($record);
-        $this->em->flush($record);
+        $this->em->flush();
 
         // Update cached value
         self::$cachedSettings[$key] = $value;

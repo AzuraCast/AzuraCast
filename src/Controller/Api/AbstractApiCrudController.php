@@ -147,7 +147,7 @@ abstract class AbstractApiCrudController
         }
 
         $this->em->persist($record);
-        $this->em->flush($record);
+        $this->em->flush();
 
         return $record;
     }
@@ -181,6 +181,6 @@ abstract class AbstractApiCrudController
         }
 
         $this->em->remove($record);
-        $this->em->flush($record);
+        $this->em->flush();
     }
 }

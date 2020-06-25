@@ -6,11 +6,13 @@ use App\Normalizer\Annotation\DeepNormalize;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Proxy\Proxy;
 use InvalidArgumentException;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -35,14 +37,14 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     public const CLASS_METADATA = 'class_metadata';
     public const ASSOCIATION_MAPPINGS = 'association_mappings';
 
-    /** @var EntityManager */
-    protected $em;
-
     /** @var SerializerInterface|NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
-    /** @var Reader */
-    protected $annotationReader;
+    protected EntityManager $em;
+
+    protected Reader $annotationReader;
+
+    protected Inflector $inflector;
 
     /**
      * @param EntityManager $em
@@ -72,6 +74,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         $this->em = $em;
         $this->annotationReader = $annotationReader;
+        $this->inflector = InflectorFactory::create()->build();
     }
 
     /**
@@ -332,7 +335,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      */
     protected function _getMethodName($var, $prefix = ''): string
     {
-        return Inflector::camelize(($prefix ? $prefix . '_' : '') . $var);
+        return $this->inflector->camelize(($prefix ? $prefix . '_' : '') . $var);
     }
 
     /**
@@ -452,7 +455,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     protected function _isEntity($class): bool
     {
         if (is_object($class)) {
-            $class = ($class instanceof Proxy)
+            $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
                 ? get_parent_class($class)
                 : get_class($class);
         } elseif (!is_string($class)) {

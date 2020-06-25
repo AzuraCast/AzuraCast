@@ -61,6 +61,9 @@ class Module extends Framework implements DoctrineProvider
         $_POST = [];
         $_COOKIE = [];
 
+        $this->em->clear();
+        gc_collect_cycles();
+
         parent::_after($test);
     }
 

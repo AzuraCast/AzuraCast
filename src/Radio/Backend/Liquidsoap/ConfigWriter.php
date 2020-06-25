@@ -482,7 +482,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $mediaBaseDir = $station->getRadioMediaDir() . '/';
         $playlistFile = [];
-
+        
         $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm 
             FROM App\Entity\StationMedia sm 
             JOIN sm.playlists spm  

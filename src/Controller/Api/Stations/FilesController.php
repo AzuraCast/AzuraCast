@@ -249,7 +249,7 @@ class FilesController extends AbstractStationApiCrudController
 
         if ($record instanceof Entity\StationMedia) {
             $this->em->persist($record);
-            $this->em->flush($record);
+            $this->em->flush();
 
             if ($this->media_repo->writeToFile($record)) {
                 $song_info = [

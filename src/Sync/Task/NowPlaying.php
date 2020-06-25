@@ -341,7 +341,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         // Stop Now Playing from processing while doing the steps below.
         $station->setNowPlayingTimestamp(time());
         $this->em->persist($station);
-        $this->em->flush($station);
+        $this->em->flush();
 
         // Process extra metadata sent by Liquidsoap (if it exists).
         if (!empty($extra_metadata['song_id'])) {
@@ -371,7 +371,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $sh->sentToAutodj();
 
                 $this->em->persist($sh);
-                $this->em->flush($sh);
+                $this->em->flush();
             }
         }
 
@@ -442,7 +442,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * Returns the latest live broadcast
      *
      * @param Entity\Station $station
-
+     *
      * @return Entity\StationStreamerBroadcast
      */
     public function getLatestBroadcast(Station $station)

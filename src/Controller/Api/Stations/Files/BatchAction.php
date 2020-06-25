@@ -73,7 +73,7 @@ class BatchAction
                             }
 
                             $em->remove($media);
-                            $em->flush($media);
+                            $em->flush();
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
@@ -102,7 +102,7 @@ class BatchAction
                 }
 
                 $em->persist($station);
-                $em->flush($station);
+                $em->flush();
 
                 // Write new PLS playlist configuration.
                 $backend = $request->getStationBackend();
@@ -250,7 +250,7 @@ class BatchAction
                         }
 
                         $em->persist($media);
-                        $em->flush($media);
+                        $em->flush();
                         $files_affected++;
                     }
                 } catch (Exception $e) {
@@ -274,7 +274,7 @@ class BatchAction
 
                         $newRequest = new Entity\StationRequest($station, $media, true);
                         $em->persist($newRequest);
-                        $em->flush($newRequest);
+                        $em->flush();
                         $files_affected++;
                     } catch (Exception $e) {
                         $errors[] = $e->getMessage();

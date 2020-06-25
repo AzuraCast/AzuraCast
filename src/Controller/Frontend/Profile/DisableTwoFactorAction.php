@@ -19,7 +19,7 @@ class DisableTwoFactorAction
         $user->setTwoFactorSecret(null);
 
         $em->persist($user);
-        $em->flush($user);
+        $em->flush();
 
         $request->getFlash()->addMessage(__('Two-factor authentication disabled.'), Flash::SUCCESS);
 

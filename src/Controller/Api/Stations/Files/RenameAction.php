@@ -67,7 +67,7 @@ class RenameAction
             if ($record instanceof Entity\StationMedia) {
                 $record->setPath($newPath);
                 $em->persist($record);
-                $em->flush($record);
+                $em->flush();
             }
         }
 

@@ -100,7 +100,7 @@ class StationForm extends EntityForm
             }
 
             $this->em->persist($record);
-            $this->em->flush($record);
+            $this->em->flush();
 
             if ($create_mode) {
                 return $this->station_repo->create($record);

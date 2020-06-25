@@ -2,10 +2,10 @@
 namespace App\Controller\Frontend\Profile;
 
 use App\Auth;
+use App\Config;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Config;
 use App\Session\Flash;
 use AzuraForms\Field\AbstractField;
 use BaconQrCode;
@@ -51,7 +51,7 @@ class EnableTwoFactorAction
             $user->setTwoFactorSecret($totp->getProvisioningUri());
 
             $em->persist($user);
-            $em->flush($user);
+            $em->flush();
 
             $request->getFlash()->addMessage(__('Two-factor authentication enabled.'), Flash::SUCCESS);
 

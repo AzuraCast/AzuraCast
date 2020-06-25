@@ -37,16 +37,16 @@ abstract class CestAbstract
         $auth = $this->di->get(\App\Auth::class);
         $auth->logout();
 
+        $this->em->clear();
+
         if ($this->test_station instanceof Entity\Station) {
-            if (!$this->em->contains($this->test_station)) {
-                $this->test_station = $this->em->find(Entity\Station::class, $this->test_station->getId());
-            }
+            $this->test_station = $this->em->find(Entity\Station::class, $this->test_station->getId());
 
             $this->stationRepo->destroy($this->test_station);
             $this->test_station = null;
-        }
 
-        $this->em->clear();
+            $this->em->clear();
+        }
     }
 
     protected $login_username = 'azuracast@azuracast.com';

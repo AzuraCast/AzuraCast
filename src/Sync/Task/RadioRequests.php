@@ -83,7 +83,7 @@ class RadioRequests extends AbstractTask
             $sh->sentToAutodj();
 
             $this->em->persist($sh);
-            $this->em->flush($sh);
+            $this->em->flush();
         }
 
         // Generate full Liquidsoap annotations

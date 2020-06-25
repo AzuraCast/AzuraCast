@@ -522,7 +522,7 @@ class AutoDJ implements EventSubscriberInterface
                 break;
         }
 
-        $this->em->flush($playlist);
+        $this->em->flush();
 
         if (!$mediaId) {
             $this->logger->warning(sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()), [
@@ -564,7 +564,7 @@ class AutoDJ implements EventSubscriberInterface
         // Save the modified cache, sans the now-missing entry.
         $playlist->setQueue($media_queue);
         $this->em->persist($playlist);
-        $this->em->flush($playlist);
+        $this->em->flush();
 
         return ($media_id)
             ? [$media_id, 0]

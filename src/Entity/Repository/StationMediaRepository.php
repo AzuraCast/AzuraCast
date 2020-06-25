@@ -310,7 +310,7 @@ class StationMediaRepository extends Repository
 
         $media->setArtUpdatedAt(time());
         $this->em->persist($media);
-        $this->em->flush($media);
+        $this->em->flush();
 
         return $fs->put($albumArtPath, $albumArt);
     }
@@ -325,7 +325,7 @@ class StationMediaRepository extends Repository
 
         $media->setArtUpdatedAt(0);
         $this->em->persist($media);
-        $this->em->flush($media);
+        $this->em->flush();
     }
 
     /**

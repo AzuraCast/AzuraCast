@@ -237,7 +237,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         $mount->setListenersTotal($np['listeners']['total']);
         $mount->setListenersUnique($np['listeners']['unique']);
         $this->em->persist($mount);
-        $this->em->flush($mount);
+        $this->em->flush();
 
         if ($mount->getIsDefault()) {
             $np_aggregate['current_song'] = $np['current_song'];

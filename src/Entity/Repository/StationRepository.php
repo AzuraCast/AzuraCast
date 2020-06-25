@@ -165,7 +165,6 @@ class StationRepository extends Repository
         }
 
         $this->em->flush();
-        $this->em->refresh($station);
     }
 
     /**
@@ -233,8 +232,9 @@ class StationRepository extends Repository
         Utilities::rmdirRecursive($radio_dir);
 
         // Save changes and continue to the last setup step.
+        $this->em->flush();
         $this->em->remove($station);
-        $this->em->flush($station);
+        $this->em->flush();
 
         $this->cache->delete('stations');
     }

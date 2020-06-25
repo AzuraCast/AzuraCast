@@ -105,9 +105,7 @@ class ProfileController
         }
 
         $this->em->persist($station);
-        $this->em->flush($station);
-
-        $this->em->refresh($station);
+        $this->em->flush();
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
     }

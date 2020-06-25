@@ -23,35 +23,28 @@ return function (\App\EventDispatcher $dispatcher) {
             Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
 
             // Add Doctrine Migrations
-            $defaults = [
-                'table_name' => 'app_migrations',
-                'directory' => $settings[Settings::BASE_DIR] . '/src/Entity/Migration',
-                'namespace' => 'App\Entity\Migration',
-            ];
-
-            $user_options = $settings[Settings::DOCTRINE_OPTIONS]['migrations'] ?? [];
-            $options = array_merge($defaults, $user_options);
-
             /** @var Doctrine\ORM\EntityManager $em */
             $em = $di->get(Doctrine\ORM\EntityManager::class);
-            $connection = $em->getConnection();
 
             $helper_set = $console->getHelperSet();
             $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
-
             $helper_set->set($doctrine_helpers->get('db'), 'db');
             $helper_set->set($doctrine_helpers->get('em'), 'em');
 
-            $migrate_config = new Doctrine\Migrations\Configuration\Configuration($connection);
-            $migrate_config->setMigrationsTableName($options['table_name']);
-            $migrate_config->setMigrationsDirectory($options['directory']);
-            $migrate_config->setMigrationsNamespace($options['namespace']);
+            $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray([
+                'migrations_paths' => [
+                    'App\Entity\Migration' => $settings[Settings::BASE_DIR] . '/src/Entity/Migration',
+                ],
+                'table_storage' => [
+                    'table_name' => 'app_migrations',
+                ],
+            ]);
 
-            $migrate_config_helper = new Doctrine\Migrations\Tools\Console\Helper\ConfigurationHelper($connection,
-                $migrate_config);
-            $helper_set->set($migrate_config_helper, 'configuration');
-
-            Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console);
+            $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
+                $migrateConfig,
+                new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
+            );
+            Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
         }
 
         call_user_func(include(__DIR__ . '/cli.php'), $console);

@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App\Sync\Task\Backup;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -16,7 +16,7 @@ class RestoreCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         OutputInterface $output,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Database $influxdb,
         string $path
     ) {

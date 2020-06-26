@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\MessageQueue;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
@@ -19,7 +19,7 @@ class FolderPlaylists extends AbstractTask
     protected MessageQueue $messageQueue;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
@@ -96,9 +96,8 @@ class FolderPlaylists extends AbstractTask
                 ->execute();
 
             foreach ($mediaInFolder as $media) {
-                /** @var Entity\StationMedia $media */
-
                 foreach ($playlists as $playlist) {
+                    /** @var Entity\StationMedia $media */
                     /** @var Entity\StationPlaylist $playlist */
 
                     if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()

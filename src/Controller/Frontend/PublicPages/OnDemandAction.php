@@ -5,7 +5,7 @@ use App\Exception\StationNotFoundException;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class OnDemandAction
@@ -13,7 +13,7 @@ class OnDemandAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         bool $embed = false
     ): ResponseInterface {
         // Override system-wide iframe refusal

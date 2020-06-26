@@ -11,7 +11,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
 use App\Session\Flash;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class LoginAction
@@ -21,7 +21,7 @@ class LoginAction
         Response $response,
         Acl $acl,
         Auth $auth,
-        EntityManager $em,
+        EntityManagerInterface $em,
         RateLimit $rateLimit,
         SettingsRepository $settingsRepo
     ): ResponseInterface {
@@ -65,7 +65,7 @@ class LoginAction
                 if (!$auth->isLoginComplete()) {
                     return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
                 }
-                
+
                 // Redirect to complete setup if it's not completed yet.
                 if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
                     $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . __('Complete the setup process to get started.'),

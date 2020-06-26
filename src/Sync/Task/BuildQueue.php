@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Lock\LockManager;
 use App\Radio\AutoDJ;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class BuildQueue extends AbstractTask
@@ -14,7 +14,7 @@ class BuildQueue extends AbstractTask
     protected LockManager $lockManager;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         AutoDJ $autoDJ,

@@ -4,7 +4,6 @@
  */
 
 use App\Settings;
-use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -49,13 +48,12 @@ return [
     },
 
     // DBAL
-    Doctrine\DBAL\Connection::class => function (Doctrine\ORM\EntityManager $em) {
+    Doctrine\DBAL\Connection::class => function (Doctrine\ORM\EntityManagerInterface $em) {
         return $em->getConnection();
     },
-    'db' => DI\Get(Doctrine\DBAL\Connection::class),
 
     // Doctrine Entity Manager
-    Doctrine\ORM\EntityManager::class => function (
+    App\Doctrine\DecoratedEntityManager::class => function (
         Doctrine\Common\Cache\Cache $doctrineCache,
         Doctrine\Common\Annotations\Reader $reader,
         App\Settings $settings,
@@ -112,12 +110,18 @@ return [
             $eventManager->addEventSubscriber($eventRequiresRestart);
             $eventManager->addEventSubscriber($eventAuditLog);
 
-            return Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager);
+            return new App\Doctrine\DecoratedEntityManager(function () use (
+                $connectionOptions,
+                $config,
+                $eventManager
+            ) {
+                return Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager);
+            });
         } catch (Exception $e) {
             throw new App\Exception\BootstrapException($e->getMessage());
         }
     },
-    'em' => DI\Get(Doctrine\ORM\EntityManager::class),
+    Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Cache
     Psr\Cache\CacheItemPoolInterface::class => function (App\Settings $settings, Psr\Container\ContainerInterface $di) {
@@ -284,7 +288,7 @@ return [
     // Symfony Serializer
     Symfony\Component\Serializer\Serializer::class => function (
         Doctrine\Common\Annotations\Reader $annotation_reader,
-        Doctrine\ORM\EntityManager $em
+        Doctrine\ORM\EntityManagerInterface $em
     ) {
         $meta_factory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
             new Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($annotation_reader)
@@ -316,7 +320,7 @@ return [
         Redis $redis,
         ContainerInterface $di,
         Monolog\Logger $logger,
-        EntityManager $em
+        Doctrine\ORM\EntityManagerInterface $em
     ) {
         // Build QueueFactory
         $driver = new Bernard\Driver\PhpRedis\Driver($redis);

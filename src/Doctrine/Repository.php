@@ -5,6 +5,7 @@ use App\Normalizer\DoctrineEntityNormalizer;
 use App\Settings;
 use Closure;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -30,13 +31,17 @@ class Repository
     protected $logger;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param Serializer $serializer
      * @param Settings $settings
      * @param LoggerInterface $logger
      */
-    public function __construct(EntityManager $em, Serializer $serializer, Settings $settings, LoggerInterface $logger)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger
+    ) {
         $this->em = $em;
         $this->serializer = $serializer;
         $this->settings = $settings;

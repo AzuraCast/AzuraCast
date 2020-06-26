@@ -6,19 +6,19 @@ use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class DuplicatesController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
     protected Filesystem $filesystem;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Filesystem $filesystem
     ) {

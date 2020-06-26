@@ -13,7 +13,7 @@ use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
 use InfluxDB\Database;
@@ -52,7 +52,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     protected string $analytics_level = Entity\Analytics::LEVEL_ALL;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Adapters $adapters,
         ApiUtilities $api_utils,
         AutoDJ $autodj,

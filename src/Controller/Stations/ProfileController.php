@@ -5,12 +5,12 @@ use App\Entity;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class ProfileController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\StationRepository $station_repo;
 
@@ -19,7 +19,7 @@ class ProfileController
     protected string $csrf_namespace = 'stations_profile';
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationRepository $station_repo,
         StationForm $station_form
     ) {

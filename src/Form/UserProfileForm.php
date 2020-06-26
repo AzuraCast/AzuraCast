@@ -6,14 +6,14 @@ use App\Entity;
 use App\Http\ServerRequest;
 use App\Settings;
 use AzuraForms\Field\AbstractField;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserProfileForm extends EntityForm
 {
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config,

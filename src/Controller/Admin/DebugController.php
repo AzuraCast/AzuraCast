@@ -7,7 +7,7 @@ use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Runner;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
@@ -75,7 +75,7 @@ class DebugController
     public function nextsongAction(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         AutoDJ $autoDJ
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
@@ -92,7 +92,7 @@ class DebugController
         $this->logger->debug('Current queue cleared.');
 
         $autoDJ->buildQueue($station);
-        
+
         $this->logger->popHandler();
 
         return $request->getView()->renderToResponse($response, 'system/log_view', [

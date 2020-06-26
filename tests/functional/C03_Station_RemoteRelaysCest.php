@@ -1,4 +1,5 @@
 <?php
+
 class C03_Station_RemoteRelaysCest extends CestAbstract
 {
     /**
@@ -9,8 +10,10 @@ class C03_Station_RemoteRelaysCest extends CestAbstract
     {
         $I->wantTo('Create a station remote relay.');
 
-        $station_id = $this->test_station->getId();
-        $I->amOnPage('/station/'.$station_id.'/remotes');
+        $testStation = $this->getTestStation();
+        $station_id = $testStation->getId();
+        
+        $I->amOnPage('/station/' . $station_id . '/remotes');
 
         $I->see('Remote Relays');
         $I->click('add', '#content');
@@ -18,16 +21,16 @@ class C03_Station_RemoteRelaysCest extends CestAbstract
         $I->submitForm('.form', [
             'type' => 'shoutcast1',
             'url' => 'http://test.local',
-            'display_name' => 'Test Relay'
+            'display_name' => 'Test Relay',
         ]);
 
-        $I->seeCurrentUrlEquals('/station/'.$station_id.'/remotes');
+        $I->seeCurrentUrlEquals('/station/' . $station_id . '/remotes');
 
         $I->see('Test Relay');
 
         $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
 
-        $I->seeCurrentUrlEquals('/station/'.$station_id.'/remotes');
+        $I->seeCurrentUrlEquals('/station/' . $station_id . '/remotes');
 
         $I->dontSee('Test Relay');
     }

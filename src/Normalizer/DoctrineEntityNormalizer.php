@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Proxy\Proxy;
 use InvalidArgumentException;
@@ -40,21 +40,14 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /** @var SerializerInterface|NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Reader $annotationReader;
 
     protected Inflector $inflector;
 
-    /**
-     * @param EntityManager $em
-     * @param Reader|null $annotationReader
-     * @param ClassMetadataFactoryInterface|null $classMetadataFactory
-     * @param NameConverterInterface|null $nameConverter
-     * @param array $defaultContext
-     */
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Reader $annotationReader = null,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
@@ -397,7 +390,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         $first_param = $method->getParameters()[0];
 
         if ($first_param->hasType()) {
-            $first_param_type = $first_param->getType()->getName();
+            /** @var \ReflectionNamedType $firstParamTypeObj */
+            $firstParamTypeObj = $first_param->getType();
+            $first_param_type = $firstParamTypeObj->getName();
 
             switch ($first_param_type) {
                 case 'DateTime':

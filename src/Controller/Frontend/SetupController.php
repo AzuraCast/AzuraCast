@@ -9,14 +9,14 @@ use App\Form\SettingsForm;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Settings;
 use App\Session\Flash;
-use Doctrine\ORM\EntityManager;
+use App\Settings;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class SetupController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
@@ -27,7 +27,7 @@ class SetupController
     protected Settings $settings;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepository,
         Auth $auth,
         Acl $acl,

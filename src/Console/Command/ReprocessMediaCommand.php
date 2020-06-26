@@ -4,8 +4,7 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -13,7 +12,7 @@ class ReprocessMediaCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         StationRepository $stationRepo,
         Entity\Repository\StationMediaRepository $media_repo,
         ?string $stationName = null

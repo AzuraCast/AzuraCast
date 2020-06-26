@@ -6,7 +6,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
@@ -15,14 +15,17 @@ use function array_slice;
 
 class OverviewController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Database $influx;
 
-    public function __construct(EntityManager $em, Entity\Repository\SettingsRepository $settingsRepo, Database $influx)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Database $influx
+    ) {
         $this->em = $em;
         $this->settingsRepo = $settingsRepo;
         $this->influx = $influx;

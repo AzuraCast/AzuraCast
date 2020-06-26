@@ -9,7 +9,7 @@ use App\Flysystem\Filesystem;
 use App\Lock\LockManager;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -17,7 +17,7 @@ class AutoDJ implements EventSubscriberInterface
 {
     protected Adapters $adapters;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SongRepository $songRepo;
 
@@ -39,7 +39,7 @@ class AutoDJ implements EventSubscriberInterface
 
     public function __construct(
         Adapters $adapters,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SongRepository $songRepo,
         Entity\Repository\SongHistoryRepository $songHistoryRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,

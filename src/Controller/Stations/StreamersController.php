@@ -7,19 +7,19 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use App\Session\Flash;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class StreamersController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected AzuraCastCentral $ac_central;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         AzuraCastCentral $ac_central,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {

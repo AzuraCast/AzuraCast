@@ -4,7 +4,6 @@ namespace App;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
-use App\Exception;
 use Mezzio\Session\SessionInterface;
 
 class Auth
@@ -170,7 +169,7 @@ class Auth
         }
 
         return ($this->user instanceof User)
-            ? $this->user
+            ? $this->userRepo->getRepository()->find($this->user->getId())
             : null;
     }
 

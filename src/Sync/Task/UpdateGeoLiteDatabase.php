@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Service\IpGeolocation;
 use App\Service\IpGeolocator\GeoLite;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
@@ -19,7 +19,7 @@ class UpdateGeoLiteDatabase extends AbstractTask
     protected IpGeolocation $geoLite;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Client $httpClient,

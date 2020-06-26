@@ -6,7 +6,7 @@ use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Message;
 use App\MessageQueue;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -14,7 +14,7 @@ class SftpUploadCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationRepository $stationRepo,
         LoggerInterface $logger,
         Filesystem $filesystem,

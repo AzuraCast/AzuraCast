@@ -2,7 +2,7 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use Psr\Log\LoggerInterface;
 
@@ -11,7 +11,7 @@ class Analytics extends AbstractTask
     protected Database $influx;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Database $influx

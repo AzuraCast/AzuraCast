@@ -5,7 +5,7 @@ use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -42,7 +42,7 @@ class ScheduleController extends AbstractStationApiCrudController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param CacheInterface $cache
      * @param StationScheduleRepository $scheduleRepo
      *
@@ -51,7 +51,7 @@ class ScheduleController extends AbstractStationApiCrudController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         CacheInterface $cache,
         StationScheduleRepository $scheduleRepo
     ): ResponseInterface {

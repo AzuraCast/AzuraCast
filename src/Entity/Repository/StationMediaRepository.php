@@ -7,7 +7,7 @@ use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
 use App\Service\AudioWaveform;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Exception;
 use getID3;
@@ -27,7 +27,7 @@ class StationMediaRepository extends Repository
     protected CustomFieldRepository $customFieldRepo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
         LoggerInterface $logger,

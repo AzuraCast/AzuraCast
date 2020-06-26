@@ -6,7 +6,7 @@ use App\Entity;
 use App\Message;
 use App\MessageQueue;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class Backup extends AbstractTask
@@ -18,7 +18,7 @@ class Backup extends AbstractTask
     protected Application $console;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         MessageQueue $message_queue,
@@ -95,7 +95,7 @@ class Backup extends AbstractTask
         if ($last_run <= $threshold) {
             // Check if the backup time matches (if it's set).
             $backupTimecode = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME);
-            
+
             if (0 !== $backupTimecode) {
                 $isWithinTimecode = false;
                 $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $now_utc);

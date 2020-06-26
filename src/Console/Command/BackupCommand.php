@@ -4,8 +4,7 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Sync\Task\Backup;
 use App\Utilities;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use const PATHINFO_EXTENSION;
@@ -16,7 +15,7 @@ class BackupCommand extends CommandAbstract
 
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Database $influxdb,
         ?string $path = '',
         bool $excludeMedia = false

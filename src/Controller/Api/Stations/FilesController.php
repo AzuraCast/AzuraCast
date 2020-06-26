@@ -10,7 +10,7 @@ use App\Message\WritePlaylistFileMessage;
 use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -38,7 +38,7 @@ class FilesController extends AbstractStationApiCrudController
     protected Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Filesystem $filesystem,
@@ -271,7 +271,7 @@ class FilesController extends AbstractStationApiCrudController
             if (null !== $playlists) {
                 $station = $record->getStation();
 
-                /** @var Entity\StationPlaylist[] $playlists */
+                /** @var Entity\StationPlaylist[] $affected_playlists */
                 $affected_playlists = [];
 
                 // Remove existing playlists.
@@ -288,13 +288,13 @@ class FilesController extends AbstractStationApiCrudController
                         $playlist_id = $new_playlist['id'];
                         $playlist_weight = $new_playlist['weight'] ?? 0;
                     } else {
-                        $playlist_id = $new_playlist;
+                        $playlist_id = (int)$new_playlist;
                         $playlist_weight = 0;
                     }
 
                     $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
                         'station_id' => $station->getId(),
-                        'id' => (int)$playlist_id,
+                        'id' => $playlist_id,
                     ]);
 
                     if ($playlist instanceof Entity\StationPlaylist) {
@@ -330,7 +330,7 @@ class FilesController extends AbstractStationApiCrudController
 
         $station = $record->getStation();
 
-        /** @var Entity\StationPlaylist[] $playlists */
+        /** @var Entity\StationPlaylist[] $affected_playlists */
         $affected_playlists = [];
 
         $media_playlists = $this->playlist_media_repo->clearPlaylistsFromMedia($record);

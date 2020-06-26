@@ -4,7 +4,7 @@ namespace App\Http;
 use App\Flysystem\FilesystemGroup;
 use Psr\Http\Message\ResponseInterface;
 
-class Response extends \Slim\Http\Response
+final class Response extends \Slim\Http\Response
 {
     public const CACHE_ONE_MINUTE = 60;
     public const CACHE_ONE_HOUR = 3600;

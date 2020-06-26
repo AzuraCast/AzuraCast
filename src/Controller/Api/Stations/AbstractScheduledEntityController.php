@@ -5,7 +5,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,7 +15,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
     protected Entity\Repository\StationScheduleRepository $scheduleRepo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\StationScheduleRepository $scheduleRepo

@@ -6,7 +6,7 @@ use App\Event\Radio\AnnotateNextSong;
 use App\EventDispatcher;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class RadioRequests extends AbstractTask
@@ -18,7 +18,7 @@ class RadioRequests extends AbstractTask
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationRequestRepository $requestRepo,

@@ -6,8 +6,8 @@ use App\Exception;
 use App\Http\ServerRequest;
 use App\Normalizer\DoctrineEntityNormalizer;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EntityForm extends Form
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Serializer $serializer;
 
@@ -38,7 +38,7 @@ class EntityForm extends Form
     protected ?Station $station = null;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         array $options = [],
@@ -61,12 +61,12 @@ class EntityForm extends Form
         $this->entityClass = $entityClass;
     }
 
-    public function getEntityManager(): EntityManager
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->em;
     }
 
-    public function getEntityRepository(): EntityRepository
+    public function getEntityRepository(): ObjectRepository
     {
         if (null === $this->entityClass) {
             throw new Exception('Entity class name is not specified.');

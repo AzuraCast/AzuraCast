@@ -7,7 +7,7 @@ use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use const SORT_ASC;
 use const SORT_DESC;
@@ -17,7 +17,7 @@ class ListAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Filesystem $filesystem,
         Customization $customization
     ): ResponseInterface {

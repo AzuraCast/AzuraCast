@@ -10,7 +10,8 @@ class C04_Station_ReportsCest extends CestAbstract
     {
         $I->wantTo('View station reports.');
 
-        $station_id = $this->test_station->getId();
+        $testStation = $this->getTestStation();
+        $station_id = $testStation->getId();
 
         $I->amOnPAge('/station/' . $station_id . '/reports/overview');
 

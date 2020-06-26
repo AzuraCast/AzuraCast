@@ -8,7 +8,7 @@ use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class EditLiquidsoapConfigController
@@ -16,7 +16,7 @@ class EditLiquidsoapConfigController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Settings $settings
     ): ResponseInterface {
         $station = $request->getStation();

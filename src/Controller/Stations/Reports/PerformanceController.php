@@ -6,16 +6,16 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Sync\Task\RadioAutomation;
 use App\Utilities\Csv;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class PerformanceController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected RadioAutomation $sync_automation;
 
-    public function __construct(EntityManager $em, RadioAutomation $sync_automation)
+    public function __construct(EntityManagerInterface $em, RadioAutomation $sync_automation)
     {
         $this->em = $em;
         $this->sync_automation = $sync_automation;

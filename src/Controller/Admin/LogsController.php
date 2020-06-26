@@ -7,14 +7,14 @@ use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class LogsController extends AbstractLogViewerController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

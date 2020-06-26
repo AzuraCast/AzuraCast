@@ -10,7 +10,7 @@ use App\Settings;
 use App\Sync\Task\Media;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
@@ -23,7 +23,7 @@ class StationCloneForm extends StationForm
     protected Media $media_sync;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,

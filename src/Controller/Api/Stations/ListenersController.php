@@ -8,18 +8,18 @@ use App\Service\IpGeolocation;
 use App\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Mobile_Detect;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class ListenersController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected IpGeolocation $geoLite;
 
-    public function __construct(EntityManager $em, IpGeolocation $geoLite)
+    public function __construct(EntityManagerInterface $em, IpGeolocation $geoLite)
     {
         $this->em = $em;
         $this->geoLite = $geoLite;

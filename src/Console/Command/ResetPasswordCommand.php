@@ -3,15 +3,14 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Utilities;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ResetPasswordCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         string $email
     ) {
         $io->title('Reset Account Password');

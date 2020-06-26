@@ -9,17 +9,17 @@ use App\Http\ServerRequest;
 use App\Utilities\Csv;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class HistoryController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected App\ApiUtilities $api_utils;
 
-    public function __construct(EntityManager $em, App\ApiUtilities $api_utils)
+    public function __construct(EntityManagerInterface $em, App\ApiUtilities $api_utils)
     {
         $this->em = $em;
         $this->api_utils = $api_utils;

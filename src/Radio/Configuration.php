@@ -4,7 +4,7 @@ namespace App\Radio;
 use App\Entity\Station;
 use App\Exception;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
 use RuntimeException;
@@ -15,7 +15,7 @@ class Configuration
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Adapters $adapters;
 
@@ -24,7 +24,7 @@ class Configuration
     protected Logger $logger;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Adapters $adapters,
         Supervisor $supervisor,
         Logger $logger

@@ -6,7 +6,7 @@ use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractApiCrudController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Serializer $serializer;
 
@@ -30,7 +30,7 @@ abstract class AbstractApiCrudController
     /** @var string The route name used to generate the "self" links for each record. */
     protected string $resourceRouteName;
 
-    public function __construct(EntityManager $em, Serializer $serializer, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $em, Serializer $serializer, ValidatorInterface $validator)
     {
         $this->em = $em;
         $this->serializer = $serializer;

@@ -2,7 +2,7 @@
 namespace App\Service;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB;
 
 class UptimeWait
@@ -13,7 +13,7 @@ class UptimeWait
 
     protected InfluxDB\Client $influx;
 
-    public function __construct(EntityManager $em, \Redis $redis, InfluxDB\Database $influx)
+    public function __construct(EntityManagerInterface $em, \Redis $redis, InfluxDB\Database $influx)
     {
         $this->db = $em->getConnection();
         $this->redis = $redis;

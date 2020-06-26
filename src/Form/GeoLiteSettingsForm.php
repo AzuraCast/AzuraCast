@@ -5,14 +5,14 @@ use App\Config;
 use App\Entity;
 use App\Settings;
 use App\Sync\Task\UpdateGeoLiteDatabase;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class GeoLiteSettingsForm extends AbstractSettingsForm
 {
     protected UpdateGeoLiteDatabase $syncTask;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Settings $settings,
         Config $config,

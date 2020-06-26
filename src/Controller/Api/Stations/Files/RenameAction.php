@@ -5,7 +5,7 @@ use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class RenameAction
@@ -14,7 +14,7 @@ class RenameAction
         ServerRequest $request,
         Response $response,
         Filesystem $filesystem,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationMediaRepository $mediaRepo
     ): ResponseInterface {
         $originalPath = $request->getAttribute('file');

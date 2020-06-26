@@ -1,4 +1,5 @@
 <?php
+
 class A04_Frontend_PublicCest extends CestAbstract
 {
     /**
@@ -8,9 +9,11 @@ class A04_Frontend_PublicCest extends CestAbstract
     {
         $I->wantTo('Verify that the public page displays.');
 
-        $I->amOnPage('/public/'.$this->test_station->getId());
+        $testStation = $this->getTestStation();
 
-        $I->seeCurrentUrlEquals('/public/'.$this->test_station->getId());
-        $I->see($this->test_station->getName());
+        $I->amOnPage('/public/' . $testStation->getId());
+
+        $I->seeCurrentUrlEquals('/public/' . $testStation->getId());
+        $I->see($testStation->getName());
     }
 }

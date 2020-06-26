@@ -9,7 +9,7 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Sync\Task\Media;
 use App\Utilities;
 use Closure;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -29,7 +29,7 @@ class StationRepository extends Repository
     protected CacheInterface $cache;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         \App\Settings $settings,
         LoggerInterface $logger,

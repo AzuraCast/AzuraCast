@@ -5,7 +5,7 @@ use App\ApiUtilities;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
@@ -16,7 +16,7 @@ class SongHistoryRepository extends Repository
     protected ListenerRepository $listenerRepository;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
         LoggerInterface $logger,

@@ -1,21 +1,21 @@
 <?php
 namespace App\Controller\Api\Admin;
 
+use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Doctrine\Paginator;
 use Cake\Chronos\Chronos;
 use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use const JSON_PRETTY_PRINT;
 
 class AuditLogController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

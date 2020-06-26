@@ -10,7 +10,7 @@ use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
 
-class ServerRequest extends \Slim\Http\ServerRequest
+final class ServerRequest extends \Slim\Http\ServerRequest
 {
     public const ATTR_VIEW = 'app_view';
     public const ATTR_SESSION = 'app_session';

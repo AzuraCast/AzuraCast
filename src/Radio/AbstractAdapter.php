@@ -2,28 +2,28 @@
 namespace App\Radio;
 
 use App\Entity;
+use App\EventDispatcher;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\BadNameException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
-use App\Settings;
-use App\EventDispatcher;
 use App\Logger;
-use Doctrine\ORM\EntityManager;
+use App\Settings;
+use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
 use Supervisor\Process;
 use Supervisor\Supervisor;
 
 abstract class AbstractAdapter
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Supervisor $supervisor;
 
     protected EventDispatcher $dispatcher;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher
     ) {

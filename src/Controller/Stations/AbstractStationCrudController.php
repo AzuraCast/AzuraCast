@@ -7,7 +7,7 @@ use App\Exception\CsrfValidationException;
 use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -16,7 +16,7 @@ abstract class AbstractStationCrudController
 {
     protected EntityForm $form;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $entity_class;
 

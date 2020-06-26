@@ -7,7 +7,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class ListAction
@@ -15,7 +15,7 @@ class ListAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         ApiUtilities $apiUtils
     ): ResponseInterface {
         $station = $request->getStation();

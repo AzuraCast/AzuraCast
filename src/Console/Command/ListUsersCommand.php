@@ -2,14 +2,14 @@
 namespace App\Console\Command;
 
 use App\Entity;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ListUsersCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em
+        EntityManagerInterface $em
     ) {
         $io->title('AzuraCast User Accounts');
 

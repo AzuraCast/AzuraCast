@@ -2,7 +2,7 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
@@ -10,7 +10,7 @@ use NowPlaying\Adapter\AdapterAbstract;
 
 abstract class AbstractRemote
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
@@ -19,7 +19,7 @@ abstract class AbstractRemote
     protected Logger $logger;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Client $http_client,
         Logger $logger

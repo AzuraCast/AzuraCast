@@ -23,8 +23,8 @@ return function (\App\EventDispatcher $dispatcher) {
             Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
 
             // Add Doctrine Migrations
-            /** @var Doctrine\ORM\EntityManager $em */
-            $em = $di->get(Doctrine\ORM\EntityManager::class);
+            /** @var Doctrine\ORM\EntityManagerInterface $em */
+            $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
 
             $helper_set = $console->getHelperSet();
             $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
@@ -72,6 +72,9 @@ return function (\App\EventDispatcher $dispatcher) {
         // Request injection middlewares.
         $app->add(Middleware\InjectRouter::class);
         $app->add(Middleware\InjectRateLimit::class);
+
+        // Re-establish database connection if multiple requests are handled by the same stack.
+        $app->add(Middleware\ReopenEntityManagerMiddleware::class);
 
         // System middleware for routing and body parsing.
         $app->addBodyParsingMiddleware();

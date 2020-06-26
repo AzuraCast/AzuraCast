@@ -3,15 +3,14 @@ namespace App\Console\Command;
 
 use App\Acl;
 use App\Entity;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetAdministratorCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\RolePermissionRepository $perms_repo,
         string $email
     ) {

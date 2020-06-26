@@ -5,12 +5,12 @@ use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SettingsForm extends AbstractSettingsForm
 {
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Settings $settings,
         Config $config

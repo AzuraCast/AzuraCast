@@ -8,20 +8,20 @@ use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
     protected ApiUtilities $api_utils;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationRequestRepository $requestRepo,
         ApiUtilities $api_utils
     ) {
@@ -163,7 +163,7 @@ class RequestsController
         } catch (Exception\InvalidRequestAttribute $e) {
             $user = null;
         }
-        
+
         $isAuthenticated = ($user instanceof Entity\User);
 
         try {

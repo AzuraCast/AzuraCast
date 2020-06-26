@@ -8,7 +8,7 @@ use App\Logger;
 use App\Radio\AbstractAdapter;
 use App\Settings;
 use App\Xml\Reader;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Adapter\AdapterAbstract;
@@ -28,7 +28,7 @@ abstract class AbstractFrontend extends AbstractAdapter
     protected Entity\Repository\StationMountRepository $stationMountRepo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\StationMountRepository $stationMountRepo,
         Supervisor $supervisor,

@@ -6,7 +6,7 @@ use App\Entity;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -18,7 +18,7 @@ class StationWebhookForm extends EntityForm
     protected array $forms;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Settings $settings,

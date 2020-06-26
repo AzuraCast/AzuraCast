@@ -1,12 +1,12 @@
 <?php
 namespace App\Form;
 
+use App\Config;
 use App\Entity;
 use App\Entity\Station;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use App\Config;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -15,7 +15,7 @@ class StationMountForm extends EntityForm
     protected array $form_configs;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config

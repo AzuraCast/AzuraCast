@@ -12,7 +12,8 @@ class C02_Station_MediaCest extends CestAbstract
     {
         $I->wantTo('Upload a song to a station.');
 
-        $station_id = $this->test_station->getId();
+        $testStation = $this->getTestStation();
+        $station_id = $testStation->getId();
 
         // Upload test song
         $test_song_orig = $this->settings[Settings::BASE_DIR] . '/resources/error.mp3';

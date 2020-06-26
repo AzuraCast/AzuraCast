@@ -6,7 +6,7 @@ use App\Entity;
 use App\Event\GetNotifications;
 use App\Settings;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,7 +14,7 @@ class Manager implements EventSubscriberInterface
 {
     protected Acl $acl;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Logger $logger;
 
@@ -24,7 +24,7 @@ class Manager implements EventSubscriberInterface
 
     public function __construct(
         Acl $acl,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settings_repo,
         Logger $logger,
         Settings $app_settings

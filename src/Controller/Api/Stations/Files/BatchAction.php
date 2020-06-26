@@ -9,7 +9,7 @@ use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
 use App\MessageQueue;
 use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 
@@ -18,7 +18,7 @@ class BatchAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
@@ -55,7 +55,7 @@ class BatchAction
                 $music_files = $this->getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
-                /** @var Entity\StationPlaylist[] $playlists */
+                /** @var Entity\StationPlaylist[] $affected_playlists */
                 $affected_playlists = [];
 
                 foreach ($music_files as $file) {

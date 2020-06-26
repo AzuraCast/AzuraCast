@@ -7,7 +7,7 @@ use App\EventDispatcher;
 use App\Exception;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
 
@@ -16,7 +16,7 @@ class Liquidsoap extends AbstractBackend
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
         Entity\Repository\StationStreamerRepository $streamerRepo

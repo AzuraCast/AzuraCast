@@ -9,7 +9,7 @@ use App\Message;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ConfigWriter implements EventSubscriberInterface
@@ -24,11 +24,11 @@ class ConfigWriter implements EventSubscriberInterface
     public const CROSSFADE_DISABLED = 'none';
     public const CROSSFADE_SMART = 'smart';
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Liquidsoap $liquidsoap;
 
-    public function __construct(EntityManager $em, Liquidsoap $liquidsoap)
+    public function __construct(EntityManagerInterface $em, Liquidsoap $liquidsoap)
     {
         $this->em = $em;
         $this->liquidsoap = $liquidsoap;
@@ -175,8 +175,7 @@ class ConfigWriter implements EventSubscriberInterface
             // Auto-create an empty default playlist.
             $defaultPlaylist = new Entity\StationPlaylist($station);
             $defaultPlaylist->setName('default');
-
-            /** @var EntityManager $em */
+            
             $this->em->persist($defaultPlaylist);
             $this->em->flush();
 
@@ -482,7 +481,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $mediaBaseDir = $station->getRadioMediaDir() . '/';
         $playlistFile = [];
-        
+
         $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm 
             FROM App\Entity\StationMedia sm 
             JOIN sm.playlists spm  

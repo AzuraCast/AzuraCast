@@ -1,17 +1,17 @@
 <?php
 namespace App\Console\Command\Internal;
 
-use App\Entity\SftpUser;
 use App\Console\Command\CommandAbstract;
+use App\Entity\SftpUser;
 use Brick\Math\BigInteger;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SftpAuthCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em
+        EntityManagerInterface $em
     ) {
         $username = getenv('SFTPGO_AUTHD_USERNAME');
         $password = getenv('SFTPGO_AUTHD_PASSWORD');

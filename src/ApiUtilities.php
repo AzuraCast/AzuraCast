@@ -3,7 +3,7 @@ namespace App;
 
 use App\Entity\Station;
 use App\Http\Router;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
 use Psr\Http\Message\UriInterface;
 
@@ -13,13 +13,13 @@ use Psr\Http\Message\UriInterface;
  */
 class ApiUtilities
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Router $router;
 
     protected Customization $customization;
 
-    public function __construct(EntityManager $em, Router $router, Customization $customization)
+    public function __construct(EntityManagerInterface $em, Router $router, Customization $customization)
     {
         $this->em = $em;
         $this->router = $router;

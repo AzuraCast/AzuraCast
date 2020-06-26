@@ -6,55 +6,47 @@ use Psr\Container\ContainerInterface;
 
 abstract class CestAbstract
 {
-    /** @var ContainerInterface */
-    protected $di;
+    protected ContainerInterface $di;
 
-    /** @var \App\Settings */
-    protected $settings;
+    protected App\Settings $settings;
 
-    /** @var Entity\Repository\SettingsRepository */
-    protected $settingsRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    /** @var Entity\Repository\StationRepository */
-    protected $stationRepo;
+    protected Entity\Repository\StationRepository $stationRepo;
 
-    /** @var EntityManagerInterface */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    protected function _inject(\App\Tests\Module $tests_module)
+    protected function _inject(App\Tests\Module $tests_module)
     {
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
 
         $this->settingsRepo = $this->di->get(Entity\Repository\SettingsRepository::class);
         $this->stationRepo = $this->di->get(Entity\Repository\StationRepository::class);
-        $this->settings = $this->di->get(\App\Settings::class);
+        $this->settings = $this->di->get(App\Settings::class);
     }
 
     public function _after(FunctionalTester $I)
     {
-        /** @var \App\Auth $auth */
-        $auth = $this->di->get(\App\Auth::class);
+        /** @var App\Auth $auth */
+        $auth = $this->di->get(App\Auth::class);
         $auth->logout();
 
         $this->em->clear();
 
-        if ($this->test_station instanceof Entity\Station) {
-            $this->test_station = $this->em->find(Entity\Station::class, $this->test_station->getId());
+        if (null !== $this->test_station) {
+            $testStation = $this->getTestStation();
 
-            $this->stationRepo->destroy($this->test_station);
+            $this->stationRepo->destroy($testStation);
             $this->test_station = null;
 
             $this->em->clear();
         }
     }
 
-    protected $login_username = 'azuracast@azuracast.com';
-    protected $login_password = 'AzuraCastFunctionalTests!';
-    protected $login_cookie = null;
-
-    /** @var Entity\Station|null */
-    protected $test_station = null;
+    protected string $login_username = 'azuracast@azuracast.com';
+    protected string $login_password = 'AzuraCastFunctionalTests!';
+    private ?Entity\Station $test_station = null;
 
     protected function setupIncomplete(FunctionalTester $I)
     {
@@ -71,9 +63,7 @@ abstract class CestAbstract
         // Create administrator account.
         $role = new Entity\Role;
         $role->setName('Super Administrator');
-
         $this->em->persist($role);
-        $this->em->flush();
 
         $rha = new Entity\RolePermission($role);
         $rha->setActionName('administer all');
@@ -84,25 +74,38 @@ abstract class CestAbstract
         $user->setName('AzuraCast Test User');
         $user->setEmail($this->login_username);
         $user->setNewPassword($this->login_password);
-
         $user->getRoles()->add($role);
 
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->di->get(\App\Acl::class)->reload();
+        $this->di->get(App\Acl::class)->reload();
 
         $test_station = new Entity\Station();
         $test_station->setName('Functional Test Radio');
         $test_station->setDescription('Test radio station.');
-        $test_station->setFrontendType(\App\Radio\Adapters::DEFAULT_FRONTEND);
-        $test_station->setBackendType(\App\Radio\Adapters::DEFAULT_BACKEND);
+        $test_station->setFrontendType(App\Radio\Adapters::DEFAULT_FRONTEND);
+        $test_station->setBackendType(App\Radio\Adapters::DEFAULT_BACKEND);
 
         $this->test_station = $this->stationRepo->create($test_station);
 
         // Set settings.
         $this->settingsRepo->setSetting('setup_complete', time());
         $this->settingsRepo->setSetting('base_url', 'localhost');
+    }
+
+    protected function getTestStation(): Entity\Station
+    {
+        if ($this->test_station instanceof Entity\Station) {
+            $testStation = $this->em->find(Entity\Station::class, $this->test_station->getId());
+            if ($testStation instanceof Entity\Station) {
+                return $testStation;
+            }
+
+            $this->test_station = null;
+        }
+
+        throw new RuntimeException('Test station is not established.');
     }
 
     protected function _cleanTables()
@@ -117,8 +120,8 @@ abstract class CestAbstract
             $this->em->createQuery('DELETE FROM ' . $clean_table . ' t')->execute();
         }
 
-        /** @var \App\Auth $auth */
-        $auth = $this->di->get(\App\Auth::class);
+        /** @var App\Auth $auth */
+        $auth = $this->di->get(App\Auth::class);
         $auth->logout();
     }
 
@@ -135,17 +138,5 @@ abstract class CestAbstract
         ]);
 
         $I->seeInSource('Logged in');
-    }
-
-    protected function logout(FunctionalTester $I)
-    {
-        if (!empty($this->login_cookie)) {
-            $I->wantTo('Log out of the application.');
-
-            $I->amOnPage('/logout');
-            $I->seeInCurrentUrl('/login');
-
-            $this->login_cookie = null;
-        }
     }
 }

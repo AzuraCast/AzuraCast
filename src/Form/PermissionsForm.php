@@ -1,10 +1,10 @@
 <?php
 namespace App\Form;
 
+use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
-use App\Config;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -15,7 +15,7 @@ class PermissionsForm extends EntityForm
     protected bool $set_permissions = true;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config,
@@ -61,7 +61,7 @@ class PermissionsForm extends EntityForm
 
         return $record;
     }
-    
+
     protected function _normalizeRecord($record, array $context = []): array
     {
         $data = parent::_normalizeRecord($record, $context);

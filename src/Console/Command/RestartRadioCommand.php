@@ -4,14 +4,14 @@ namespace App\Console\Command;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RestartRadioCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         StationRepository $stationRepo,
         Configuration $configuration,
         ?string $stationName = null

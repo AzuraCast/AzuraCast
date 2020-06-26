@@ -8,17 +8,17 @@ use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class ServicesController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Configuration $configuration;
 
-    public function __construct(EntityManager $em, Configuration $configuration)
+    public function __construct(EntityManagerInterface $em, Configuration $configuration)
     {
         $this->em = $em;
         $this->configuration = $configuration;

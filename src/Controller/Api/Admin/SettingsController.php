@@ -5,7 +5,7 @@ use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SettingsController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Serializer $serializer;
 
@@ -25,7 +25,7 @@ class SettingsController
     protected Entity\Api\Admin\Settings $api_settings;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settings_repo,
         Serializer $serializer,
         ValidatorInterface $validator

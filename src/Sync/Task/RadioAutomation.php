@@ -2,10 +2,10 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Radio\Adapters;
 use App\Exception;
+use App\Radio\Adapters;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
@@ -18,7 +18,7 @@ class RadioAutomation extends AbstractTask
     protected Adapters $adapters;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,

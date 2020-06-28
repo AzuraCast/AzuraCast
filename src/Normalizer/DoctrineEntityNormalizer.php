@@ -86,12 +86,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * Replicates the "toArray" functionality previously present in Doctrine 1.
      *
      * @param mixed $object
-     * @param null $format
+     * @param string|null $format
      * @param array $context
      *
      * @return mixed
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, string $format = null, array $context = [])
     {
         if ($this->isCircularReference($object, $context)) {
             return $this->handleCircularReference($object, $format, $context);
@@ -110,7 +110,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                     $value = $this->getAttributeValue($object, $attribute, $format, $context);
 
                     /** @var callable|null $callback */
-                    $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? $this->callbacks[$attribute] ?? null;
+                    $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? null;
                     if ($callback) {
                         $value = $callback($value, $object, $attribute, $format, $context);
                     }
@@ -135,7 +135,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return object
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, string $format = null, array $context = [])
     {
         $object = $this->instantiateObject($data, $class, $context, new ReflectionClass($class), false, $format);
 
@@ -171,7 +171,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         foreach ((array)$data as $attribute => $value) {
             /** @var callable|null $callback */
-            $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? $this->callbacks[$attribute] ?? null;
+            $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? null;
             if ($callback) {
                 $value = $callback($value, $object, $attribute, $format, $context);
             }
@@ -185,7 +185,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /**
      * @inheritdoc
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, string $format = null)
     {
         return $this->_isEntity($data);
     }
@@ -193,7 +193,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /**
      * @inheritdoc
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, string $format = null)
     {
         return $this->_isEntity($type);
     }
@@ -335,7 +335,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param object $object
      * @param string $field
      * @param mixed $value
-     * @param null $format
+     * @param string|null $format
      * @param array $context
      */
     protected function setAttributeValue($object, $field, $value, $format = null, array $context = []): void

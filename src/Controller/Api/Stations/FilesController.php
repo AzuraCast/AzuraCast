@@ -7,13 +7,13 @@ use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
-use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,7 +27,7 @@ class FilesController extends AbstractStationApiCrudController
 
     protected Adapters $adapters;
 
-    protected MessageQueue $messageQueue;
+    protected MessageBus $messageBus;
 
     protected Entity\Repository\CustomFieldRepository $custom_fields_repo;
 
@@ -43,7 +43,7 @@ class FilesController extends AbstractStationApiCrudController
         ValidatorInterface $validator,
         Filesystem $filesystem,
         Adapters $adapters,
-        MessageQueue $messageQueue,
+        MessageBus $messageBus,
         Entity\Repository\CustomFieldRepository $custom_fields_repo,
         Entity\Repository\SongRepository $song_repo,
         Entity\Repository\StationMediaRepository $media_repo,
@@ -53,7 +53,7 @@ class FilesController extends AbstractStationApiCrudController
 
         $this->filesystem = $filesystem;
         $this->adapters = $adapters;
-        $this->messageQueue = $messageQueue;
+        $this->messageBus = $messageBus;
 
         $this->custom_fields_repo = $custom_fields_repo;
         $this->media_repo = $media_repo;
@@ -310,7 +310,8 @@ class FilesController extends AbstractStationApiCrudController
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage;
                         $message->playlist_id = $playlist_id;
-                        $this->messageQueue->produce($message);
+
+                        $this->messageBus->dispatch($message);
                     }
                 }
             }
@@ -353,7 +354,8 @@ class FilesController extends AbstractStationApiCrudController
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new WritePlaylistFileMessage;
                 $message->playlist_id = $playlist_id;
-                $this->messageQueue->produce($message);
+
+                $this->messageBus->dispatch($message);
             }
         }
 

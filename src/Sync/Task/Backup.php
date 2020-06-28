@@ -4,16 +4,16 @@ namespace App\Sync\Task;
 use App\Console\Application;
 use App\Entity;
 use App\Message;
-use App\MessageQueue;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\MessageBus;
 
 class Backup extends AbstractTask
 {
     public const BASE_DIR = '/var/azuracast/backups';
 
-    protected MessageQueue $messageQueue;
+    protected MessageBus $messageBus;
 
     protected Application $console;
 
@@ -21,12 +21,12 @@ class Backup extends AbstractTask
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
-        MessageQueue $message_queue,
+        MessageBus $messageBus,
         Application $console
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
-        $this->messageQueue = $message_queue;
+        $this->messageBus = $messageBus;
         $this->console = $console;
     }
 
@@ -124,7 +124,8 @@ class Backup extends AbstractTask
             $message = new Message\BackupMessage;
             $message->path = 'automatic_backup.zip';
             $message->excludeMedia = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
-            $this->messageQueue->produce($message);
+
+            $this->messageBus->dispatch($message);
         }
     }
 }

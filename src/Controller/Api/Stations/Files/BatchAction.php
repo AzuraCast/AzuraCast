@@ -7,11 +7,11 @@ use App\Flysystem\StationFilesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
-use App\MessageQueue;
 use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 
 class BatchAction
 {
@@ -23,7 +23,7 @@ class BatchAction
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
         Filesystem $filesystem,
-        MessageQueue $messageQueue
+        MessageBus $messageBus
     ): ResponseInterface {
         $station = $request->getStation();
         $fs = $filesystem->getForStation($station);
@@ -112,7 +112,8 @@ class BatchAction
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage;
                         $message->playlist_id = $playlist_id;
-                        $messageQueue->produce($message);
+
+                        $messageBus->dispatch($message);
                     }
                 }
                 break;
@@ -213,7 +214,8 @@ class BatchAction
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage;
                         $message->playlist_id = $playlist_id;
-                        $messageQueue->produce($message);
+
+                        $messageBus->dispatch($message);
                     }
                 }
                 break;

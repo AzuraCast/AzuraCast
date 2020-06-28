@@ -5,10 +5,10 @@ use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Message;
-use App\MessageQueue;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBus;
 
 class SftpUploadCommand extends CommandAbstract
 {
@@ -18,7 +18,7 @@ class SftpUploadCommand extends CommandAbstract
         Entity\Repository\StationRepository $stationRepo,
         LoggerInterface $logger,
         Filesystem $filesystem,
-        MessageQueue $messageQueue,
+        MessageBus $messageBus,
         string $action = null,
         string $username = null,
         string $path = null,
@@ -49,6 +49,7 @@ class SftpUploadCommand extends CommandAbstract
         $message = new Message\AddNewMediaMessage;
         $message->station_id = $station->getId();
         $message->path = $relative_path;
-        $messageQueue->produce($message);
+
+        $messageBus->dispatch($message);
     }
 }

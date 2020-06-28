@@ -3,7 +3,6 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Flysystem\Filesystem;
-use App\MessageQueue;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
@@ -16,23 +15,19 @@ class FolderPlaylists extends AbstractTask
 
     protected Filesystem $filesystem;
 
-    protected MessageQueue $messageQueue;
-
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationPlaylistFolderRepository $folderRepo,
-        Filesystem $filesystem,
-        MessageQueue $messageQueue
+        Filesystem $filesystem
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
         $this->spmRepo = $spmRepo;
         $this->folderRepo = $folderRepo;
         $this->filesystem = $filesystem;
-        $this->messageQueue = $messageQueue;
     }
 
     /**

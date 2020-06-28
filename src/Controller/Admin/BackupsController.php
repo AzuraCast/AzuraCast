@@ -12,12 +12,12 @@ use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\BackupMessage;
-use App\MessageQueue;
 use App\Session\Flash;
 use App\Sync\Task\Backup;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 
 class BackupsController extends AbstractLogViewerController
 {
@@ -25,7 +25,7 @@ class BackupsController extends AbstractLogViewerController
 
     protected Backup $backupTask;
 
-    protected MessageQueue $messageQueue;
+    protected MessageBus $messageBus;
 
     protected Filesystem $backupFs;
 
@@ -34,12 +34,13 @@ class BackupsController extends AbstractLogViewerController
     public function __construct(
         SettingsRepository $settings_repo,
         Backup $backup_task,
-        MessageQueue $messageQueue
+        MessageBus $messageBus
     ) {
         $this->settingsRepo = $settings_repo;
         $this->backupTask = $backup_task;
         $this->backupFs = new Filesystem(new Local(Backup::BASE_DIR));
-        $this->messageQueue = $messageQueue;
+
+        $this->messageBus = $messageBus;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -89,7 +90,7 @@ class BackupsController extends AbstractLogViewerController
             $message->excludeMedia = $data['exclude_media'];
             $message->outputPath = $tempFile;
 
-            $this->messageQueue->produce($message);
+            $this->messageBus->dispatch($message);
 
             return $request->getView()->renderToResponse($response, 'admin/backups/run', [
                 'title' => __('Run Manual Backup'),

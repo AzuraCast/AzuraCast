@@ -315,47 +315,58 @@ return [
         return $builder->getValidator();
     },
 
-    // Message queue manager class
-    App\MessageQueue::class => function (
-        Redis $redis,
-        ContainerInterface $di,
-        Monolog\Logger $logger,
-        Doctrine\ORM\EntityManagerInterface $em
+    Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport::class => function (
+        Redis $redis
     ) {
-        // Build QueueFactory
-        $driver = new Bernard\Driver\PhpRedis\Driver($redis);
-
-        $normalizer = new Normalt\Normalizer\AggregateNormalizer([
-            new Bernard\Normalizer\EnvelopeNormalizer,
-            new Symfony\Component\Serializer\Normalizer\PropertyNormalizer,
-        ]);
-
-        $serializer = new Bernard\Serializer($normalizer);
-
-        $queue_factory = new Bernard\QueueFactory\PersistentFactory($driver, $serializer);
-
-        // Event dispatcher
-        $dispatcher = new Symfony\Component\EventDispatcher\EventDispatcher;
-
-        // Build Producer
-        $producer = new Bernard\Producer($queue_factory, $dispatcher);
-
-        // Build Consumer
-        $receivers = require __DIR__ . '/messagequeue.php';
-        $router = new Bernard\Router\ReceiverMapRouter($receivers, new Bernard\Router\ContainerReceiverResolver($di));
-
-        $consumer = new Bernard\Consumer($router, $dispatcher);
-
-        $mq = new App\MessageQueue(
-            $queue_factory,
-            $producer,
-            $consumer,
-            $logger,
-            $em
+        // Configure message transport middleware
+        $redisConnection = new Symfony\Component\Messenger\Bridge\Redis\Transport\Connection(
+            [],
+            array_filter([
+                'host' => $redis->getHost(),
+                'port' => $redis->getPort(),
+                'auth' => $redis->getAuth(),
+            ])
         );
 
-        $dispatcher->addSubscriber($mq);
-        return $mq;
+        return new Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport($redisConnection);
+    },
+
+    Symfony\Component\Messenger\MessageBus::class => function (
+        ContainerInterface $di,
+        Monolog\Logger $logger
+    ) {
+        $senders = [
+            'async' => [
+                Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport::class,
+            ],
+        ];
+
+        $sendersLocator = new Symfony\Component\Messenger\Transport\Sender\SendersLocator($senders, $di);
+
+        $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($sendersLocator);
+        $sendMessageMiddleware->setLogger($logger);
+
+        // Configure message handling middleware
+        $handlers = [];
+        $receivers = require __DIR__ . '/messagequeue.php';
+
+        foreach ($receivers as $messageClass => $handlerClass) {
+            $handlers[$messageClass] = function ($message) use ($handlerClass, $di) {
+                $obj = $di->get($handlerClass);
+                return $obj($message);
+            };
+        }
+
+        $handlersLocator = new Symfony\Component\Messenger\Handler\HandlersLocator($handlers);
+
+        $handleMessageMiddleware = new Symfony\Component\Messenger\Middleware\HandleMessageMiddleware($handlersLocator);
+        $handleMessageMiddleware->setLogger($logger);
+
+        // Compile finished message bus.
+        return new Symfony\Component\Messenger\MessageBus([
+            $sendMessageMiddleware,
+            $handleMessageMiddleware,
+        ]);
     },
 
     // InfluxDB

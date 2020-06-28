@@ -9,7 +9,6 @@ use App\Event\SendWebhooks;
 use App\EventDispatcher;
 use App\Lock\LockManager;
 use App\Message;
-use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Settings;
@@ -23,6 +22,8 @@ use NowPlaying\Adapter\AdapterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use function DeepCopy\deep_copy;
 
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
@@ -37,7 +38,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected EventDispatcher $event_dispatcher;
 
-    protected MessageQueue $message_queue;
+    protected MessageBus $messageBus;
 
     protected ApiUtilities $api_utils;
 
@@ -60,7 +61,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Database $influx,
         LoggerInterface $logger,
         EventDispatcher $event_dispatcher,
-        MessageQueue $message_queue,
+        MessageBus $messageBus,
         LockManager $lockManager,
         Entity\Repository\SongHistoryRepository $historyRepository,
         Entity\Repository\SongRepository $songRepository,
@@ -74,7 +75,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->autodj = $autodj;
         $this->cache = $cache;
         $this->event_dispatcher = $event_dispatcher;
-        $this->message_queue = $message_queue;
+        $this->messageBus = $messageBus;
         $this->influx = $influx;
         $this->lockManager = $lockManager;
 
@@ -378,7 +379,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         // Trigger a delayed Now Playing update.
         $message = new Message\UpdateNowPlayingMessage;
         $message->station_id = $station->getId();
-        $this->message_queue->produce($message);
+
+        $this->messageBus->dispatch($message, [
+            new DelayStamp(2000),
+        ]);
     }
 
     /**

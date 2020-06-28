@@ -4,9 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Message;
-use App\MessageQueue;
 use App\Radio\Quota;
-use Bernard\Envelope;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +12,7 @@ use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Messenger\MessageBus;
 
 class Media extends AbstractTask
 {
@@ -23,7 +22,7 @@ class Media extends AbstractTask
 
     protected Filesystem $filesystem;
 
-    protected MessageQueue $messageQueue;
+    protected MessageBus $messageBus;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -32,14 +31,14 @@ class Media extends AbstractTask
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Filesystem $filesystem,
-        MessageQueue $messageQueue
+        MessageBus $messageBus
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
         $this->mediaRepo = $mediaRepo;
         $this->spmRepo = $spmRepo;
         $this->filesystem = $filesystem;
-        $this->messageQueue = $messageQueue;
+        $this->messageBus = $messageBus;
     }
 
     /**
@@ -187,8 +186,7 @@ class Media extends AbstractTask
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
 
-                    $this->messageQueue->produce($message);
-
+                    $this->messageBus->dispatch($message);
                     $stats['updated']++;
                 } else {
                     $stats['unchanged']++;
@@ -214,7 +212,7 @@ class Media extends AbstractTask
                 $message->station_id = $station->getId();
                 $message->path = $new_music_file['path'];
 
-                $this->messageQueue->produce($message);
+                $this->messageBus->dispatch($message);
 
                 $stats['created']++;
             }

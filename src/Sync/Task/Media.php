@@ -6,7 +6,6 @@ use App\Flysystem\Filesystem;
 use App\Message;
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
-use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
@@ -45,28 +44,22 @@ class Media extends AbstractTask
      * Handle event dispatch.
      *
      * @param Message\AbstractMessage $message
-     *
-     * @throws MappingException
      */
     public function __invoke(Message\AbstractMessage $message)
     {
-        try {
-            if ($message instanceof Message\ReprocessMediaMessage) {
-                $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
+        if ($message instanceof Message\ReprocessMediaMessage) {
+            $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
 
-                if ($media_row instanceof Entity\StationMedia) {
-                    $this->mediaRepo->processMedia($media_row, $message->force);
-                    $this->em->flush();
-                }
-            } elseif ($message instanceof Message\AddNewMediaMessage) {
-                $station = $this->em->find(Entity\Station::class, $message->station_id);
-
-                if ($station instanceof Entity\Station) {
-                    $this->mediaRepo->getOrCreate($station, $message->path);
-                }
+            if ($media_row instanceof Entity\StationMedia) {
+                $this->mediaRepo->processMedia($media_row, $message->force);
+                $this->em->flush();
             }
-        } finally {
-            $this->em->clear();
+        } elseif ($message instanceof Message\AddNewMediaMessage) {
+            $station = $this->em->find(Entity\Station::class, $message->station_id);
+
+            if ($station instanceof Entity\Station) {
+                $this->mediaRepo->getOrCreate($station, $message->path);
+            }
         }
     }
 
@@ -127,36 +120,6 @@ class Media extends AbstractTask
         $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
         $stats['total_files'] = count($music_files);
 
-        // Check existing queue.
-        $queued_media_updates = [];
-        $queued_new_files = [];
-
-        $queue = $this->messageQueue->getGlobalQueue();
-
-        $queue_position = 0;
-        $queue_iteration = 20;
-
-        while (true) {
-            $record_subset = $queue->peek($queue_position, $queue_iteration);
-
-            foreach ($record_subset as $envelope) {
-                /** @var Envelope $envelope */
-                $message = $envelope->getMessage();
-
-                if ($message instanceof Message\ReprocessMediaMessage) {
-                    $queued_media_updates[$message->media_id] = true;
-                } elseif ($message instanceof Message\AddNewMediaMessage && $message->station_id === $station->getId()) {
-                    $queued_new_files[$message->path] = true;
-                }
-            }
-
-            if (count($record_subset) < $queue_iteration) {
-                break;
-            }
-
-            $queue_position += $queue_iteration;
-        }
-
         $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm 
             FROM App\Entity\StationMedia sm 
@@ -179,9 +142,7 @@ class Media extends AbstractTask
                 }
 
                 $file_info = $music_files[$path_hash];
-                if (isset($queued_media_updates[$media_row->getId()])) {
-                    $stats['already_queued']++;
-                } elseif ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+                if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
                     $message = new Message\ReprocessMediaMessage;
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
@@ -205,17 +166,13 @@ class Media extends AbstractTask
 
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
-            if (isset($queued_new_files[$new_music_file['path']])) {
-                $stats['already_queued']++;
-            } else {
-                $message = new Message\AddNewMediaMessage;
-                $message->station_id = $station->getId();
-                $message->path = $new_music_file['path'];
+            $message = new Message\AddNewMediaMessage;
+            $message->station_id = $station->getId();
+            $message->path = $new_music_file['path'];
 
-                $this->messageBus->dispatch($message);
+            $this->messageBus->dispatch($message);
 
-                $stats['created']++;
-            }
+            $stats['created']++;
         }
 
         $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);

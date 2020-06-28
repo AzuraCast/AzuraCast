@@ -38,7 +38,6 @@ class Backup extends AbstractTask
     public function __invoke(Message\AbstractMessage $message)
     {
         if ($message instanceof Message\BackupMessage) {
-
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
 
             [$result_code, $result_output] = $this->runBackup(

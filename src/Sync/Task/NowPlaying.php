@@ -392,16 +392,12 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      */
     public function __invoke(Message\AbstractMessage $message): void
     {
-        try {
-            if ($message instanceof Message\UpdateNowPlayingMessage) {
-                $station = $this->em->find(Entity\Station::class, $message->station_id);
+        if ($message instanceof Message\UpdateNowPlayingMessage) {
+            $station = $this->em->find(Entity\Station::class, $message->station_id);
 
-                if ($station instanceof Entity\Station) {
-                    $this->processStation($station, true);
-                }
+            if ($station instanceof Entity\Station) {
+                $this->processStation($station, true);
             }
-        } finally {
-            $this->em->clear();
         }
     }
 

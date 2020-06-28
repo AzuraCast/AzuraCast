@@ -336,7 +336,7 @@ return [
         Monolog\Logger $logger
     ) {
         $senders = [
-            'async' => [
+            App\Message\AbstractMessage::class => [
                 Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport::class,
             ],
         ];
@@ -351,7 +351,7 @@ return [
         $receivers = require __DIR__ . '/messagequeue.php';
 
         foreach ($receivers as $messageClass => $handlerClass) {
-            $handlers[$messageClass] = function ($message) use ($handlerClass, $di) {
+            $handlers[$messageClass][] = function ($message) use ($handlerClass, $di) {
                 $obj = $di->get($handlerClass);
                 return $obj($message);
             };
@@ -359,7 +359,10 @@ return [
 
         $handlersLocator = new Symfony\Component\Messenger\Handler\HandlersLocator($handlers);
 
-        $handleMessageMiddleware = new Symfony\Component\Messenger\Middleware\HandleMessageMiddleware($handlersLocator);
+        $handleMessageMiddleware = new Symfony\Component\Messenger\Middleware\HandleMessageMiddleware(
+            $handlersLocator,
+            true
+        );
         $handleMessageMiddleware->setLogger($logger);
 
         // Compile finished message bus.

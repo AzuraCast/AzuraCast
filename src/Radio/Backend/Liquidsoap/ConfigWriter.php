@@ -41,16 +41,12 @@ class ConfigWriter implements EventSubscriberInterface
      */
     public function __invoke(Message\AbstractMessage $message)
     {
-        try {
-            if ($message instanceof Message\WritePlaylistFileMessage) {
-                $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
+        if ($message instanceof Message\WritePlaylistFileMessage) {
+            $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
 
-                if ($playlist instanceof Entity\StationPlaylist) {
-                    $this->writePlaylistFile($playlist, true);
-                }
+            if ($playlist instanceof Entity\StationPlaylist) {
+                $this->writePlaylistFile($playlist, true);
             }
-        } finally {
-            $this->em->clear();
         }
     }
 
@@ -175,7 +171,7 @@ class ConfigWriter implements EventSubscriberInterface
             // Auto-create an empty default playlist.
             $defaultPlaylist = new Entity\StationPlaylist($station);
             $defaultPlaylist->setName('default');
-            
+
             $this->em->persist($defaultPlaylist);
             $this->em->flush();
 

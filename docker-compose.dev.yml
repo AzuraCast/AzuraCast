@@ -5,13 +5,14 @@ services:
     build:
       context: ../docker-azuracast-nginx-proxy
     volumes:
-      - ./util/local_ssl:/etc/nginx/certs
+      - ./util/local_ssl:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   web:
     build:
       context: .
     volumes:
+      - ./util/local_ssl:/etc/nginx/certs:ro
       - .:/var/azuracast/www
 
   mariadb:
@@ -33,3 +34,5 @@ services:
   stations:
     build:
       context: ../docker-azuracast-radio
+    volumes:
+      - ./util/local_ssl:/etc/nginx/certs:ro

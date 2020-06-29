@@ -3,6 +3,7 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Logger;
+use App\Radio\CertificateLocator;
 use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
@@ -80,12 +81,14 @@ class Icecast extends AbstractFrontend
     {
         $config_dir = $station->getRadioConfigDir();
         $settings = Settings::getInstance();
-        
+
         $settingsBaseUrl = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, 'http://localhost');
         if (strpos($settingsBaseUrl, 'http') !== 0) {
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }
         $baseUrl = new Uri($settingsBaseUrl);
+
+        $certPaths = CertificateLocator::findCertificate();
 
         $defaults = [
             'location' => 'AzuraCast',
@@ -125,8 +128,8 @@ class Icecast extends AbstractFrontend
                     '@source' => '/',
                     '@dest' => '/status.xsl',
                 ],
-                'ssl-private-key' => '/etc/nginx/ssl/ssl.key',
-                'ssl-certificate' => '/etc/nginx/ssl/ssl.crt',
+                'ssl-private-key' => $certPaths->getKeyPath(),
+                'ssl-certificate' => $certPaths->getCertPath(),
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 'deny-ip' => $this->writeIpBansFile($station),
                 'x-forwarded-for' => $settings->isDocker() ? '172.*.*.*' : '127.0.0.1',

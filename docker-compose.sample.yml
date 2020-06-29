@@ -57,14 +57,14 @@ services:
     env_file: azuracast.env
     environment:
       LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 9
+      AZURACAST_DC_REVISION: 10
       AZURACAST_VERSION: ${AZURACAST_VERSION:-latest}
       AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
       VIRTUAL_HOST: ${LETSENCRYPT_HOST:-azuracast.local}
       LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     volumes:
-      - letsencrypt:/etc/letsencrypt
+      - letsencrypt:/etc/nginx/certs:ro
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
@@ -272,7 +272,7 @@ services:
     volumes:
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - letsencrypt:/etc/nginx/ssl:ro
+      - letsencrypt:/etc/nginx/certs:ro
       - tmp_data:/var/azuracast/www_tmp
     networks:
       - frontend

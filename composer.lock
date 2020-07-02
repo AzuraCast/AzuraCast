@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6037fb9847f0d672bd21e03c89be7b6",
+    "content-hash": "7b700975885f74d5c8b0a1f83fd7247f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -6487,16 +6487,16 @@
         },
         {
             "name": "supervisorphp/supervisor",
-            "version": "v4.0.0-alpha",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "72c9428494df6585068a78143239d21c4fd0973c"
+                "reference": "b7bd433a385edd38d2df77b0dfe52dc488608edc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/72c9428494df6585068a78143239d21c4fd0973c",
-                "reference": "72c9428494df6585068a78143239d21c4fd0973c",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/b7bd433a385edd38d2df77b0dfe52dc488608edc",
+                "reference": "b7bd433a385edd38d2df77b0dfe52dc488608edc",
                 "shasum": ""
             },
             "require": {
@@ -6519,16 +6519,7 @@
                 "roave/security-advisories": "dev-master",
                 "supervisorphp/configuration": "^0.2"
             },
-            "suggest": {
-                "laminas/laminas-xmlrpc": "XmlRpc Laminas component",
-                "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4"
-            },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Supervisor\\": "src/"
@@ -6554,7 +6545,7 @@
                 "process manager",
                 "supervisor"
             ],
-            "time": "2020-07-01T23:56:14+00:00"
+            "time": "2020-07-02T00:55:37+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -12217,6 +12208,7 @@
         "azuracast/azuraforms": 20,
         "azuracast/nowplaying": 20,
         "james-heinrich/getid3": 20,
+        "supervisorphp/supervisor": 20,
         "zircote/swagger-php": 20,
         "roave/security-advisories": 20
     },

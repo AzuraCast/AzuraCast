@@ -67,7 +67,7 @@
     "slim/slim": "^4.2",
     "spomky-labs/otphp": "^10.0",
     "studio24/rotate": "^1.0",
-    "supervisorphp/supervisor": "4.0.0-alpha",
+    "supervisorphp/supervisor": "dev-master",
     "symfony/console": "^5",
     "symfony/event-dispatcher": "^5",
     "symfony/finder": "^5",

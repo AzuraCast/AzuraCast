@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "861f8c900783014b8abfe94bf72cf9a0",
+    "content-hash": "f6037fb9847f0d672bd21e03c89be7b6",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -6487,34 +6487,41 @@
         },
         {
             "name": "supervisorphp/supervisor",
-            "version": "v3.0.0",
+            "version": "v4.0.0-alpha",
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "41b52b9e74daffd58c4993b21d59c29515a3493e"
+                "reference": "72c9428494df6585068a78143239d21c4fd0973c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/41b52b9e74daffd58c4993b21d59c29515a3493e",
-                "reference": "41b52b9e74daffd58c4993b21d59c29515a3493e",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/72c9428494df6585068a78143239d21c4fd0973c",
+                "reference": "72c9428494df6585068a78143239d21c4fd0973c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "lstrojny/fxmlrpc": ">=0.12",
+                "php": ">=7.3"
             },
             "require-dev": {
-                "behat/behat": "~3.0.0",
-                "guzzlehttp/guzzle": ">=4.0.0",
-                "henrikbjorn/phpspec-code-coverage": "~1.0.0",
-                "lstrojny/fxmlrpc": "dev-master",
-                "phpspec/phpspec": "~2.1.0",
-                "rhumsaa/array_column": "~1.1.0",
-                "supervisorphp/configuration": "~0.1.0",
-                "zendframework/zend-xmlrpc": ">=2.3.3"
+                "behat/behat": "^3.0",
+                "ext-pcntl": "*",
+                "ext-posix": "*",
+                "guzzlehttp/guzzle": "^6.0",
+                "http-interop/http-factory-guzzle": "^1.0",
+                "overtrue/phplint": "^2.0",
+                "php-http/guzzle6-adapter": "^2.0",
+                "php-http/httplug": "^2.1",
+                "php-http/message": "^1.8",
+                "phpspec/phpspec": "^6.2",
+                "phpstan/phpstan": "^0.12.32",
+                "phpstan/phpstan-strict-rules": "^0.12.2",
+                "roave/security-advisories": "dev-master",
+                "supervisorphp/configuration": "^0.2"
             },
             "suggest": {
-                "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4",
-                "zendframework/zend-xmlrpc": "XmlRpc component from Zend Framework 2"
+                "laminas/laminas-xmlrpc": "XmlRpc Laminas component",
+                "lstrojny/fxmlrpc": "A modern, super fast XML/RPC client for PHP >=5.4"
             },
             "type": "library",
             "extra": {
@@ -6535,15 +6542,19 @@
                 {
                     "name": "Márk Sági-Kazár",
                     "email": "mark.sagikazar@gmail.com"
+                },
+                {
+                    "name": "Buster Neece",
+                    "email": "buster@busterneece.com"
                 }
             ],
             "description": "PHP library for managing Supervisor through XML-RPC API",
-            "homepage": "https://supervisorphp.com",
+            "homepage": "http://supervisorphp.com",
             "keywords": [
                 "process manager",
                 "supervisor"
             ],
-            "time": "2015-01-13T23:06:23+00:00"
+            "time": "2020-07-01T23:56:14+00:00"
         },
         {
             "name": "symfony/amqp-messenger",

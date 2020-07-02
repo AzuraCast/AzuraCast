@@ -10,7 +10,7 @@ use App\Exception\SupervisorException;
 use App\Logger;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
-use fXmlRpc\Exception\FaultException;
+use Supervisor\Exception\Fault;
 use Supervisor\Process;
 use Supervisor\Supervisor;
 
@@ -149,7 +149,7 @@ abstract class AbstractAdapter
                 $this->supervisor->stopProcess($program_name);
                 Logger::getInstance()->info('Adapter "' . static::class . '" stopped.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
-            } catch (FaultException $e) {
+            } catch (Fault $e) {
                 $this->_handleSupervisorException($e, $program_name, $station);
             }
         }
@@ -158,20 +158,21 @@ abstract class AbstractAdapter
     /**
      * Internal handling of any Supervisor-related exception, to add richer data to it.
      *
-     * @param FaultException $e
+     * @param Fault $e
      * @param string $program_name
      * @param Entity\Station $station
      *
-     * @throws SupervisorException
      * @throws AlreadyRunningException
+     * @throws BadNameException
      * @throws NotRunningException
+     * @throws SupervisorException
      */
-    protected function _handleSupervisorException(FaultException $e, $program_name, Entity\Station $station): void
+    protected function _handleSupervisorException(Fault $e, $program_name, Entity\Station $station): void
     {
         $class_parts = explode('\\', static::class);
         $class_name = array_pop($class_parts);
 
-        if (false !== stripos($e->getMessage(), 'BAD_NAME')) {
+        if ($e instanceof Fault\BadName) {
             $e_headline = __('%s is not recognized as a service.', $class_name);
             $e_body = __('It may not be registered with Supervisor yet. Restarting broadcasting may help.');
 
@@ -180,7 +181,7 @@ abstract class AbstractAdapter
                 $e->getCode(),
                 $e
             );
-        } elseif (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
+        } elseif ($e instanceof Fault\AlreadyStarted) {
             $e_headline = __('%s cannot start', $class_name);
             $e_body = __('It is already running.');
 
@@ -189,7 +190,7 @@ abstract class AbstractAdapter
                 $e->getCode(),
                 $e
             );
-        } elseif (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
+        } elseif ($e instanceof Fault\NotRunning) {
             $e_headline = __('%s cannot stop', $class_name);
             $e_body = __('It is not running.');
 
@@ -239,7 +240,7 @@ abstract class AbstractAdapter
                 $this->supervisor->startProcess($program_name);
                 Logger::getInstance()->info('Adapter "' . static::class . '" started.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
-            } catch (FaultException $e) {
+            } catch (Fault $e) {
                 $this->_handleSupervisorException($e, $program_name, $station);
             }
         }

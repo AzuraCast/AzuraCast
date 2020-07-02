@@ -393,9 +393,8 @@ return [
                 new Http\Adapter\Guzzle6\Client($guzzle_client)
             )
         );
-
-        $connector = new Supervisor\Connector\XmlRpc($client);
-        $supervisor = new Supervisor\Supervisor($connector);
+        
+        $supervisor = new Supervisor\Supervisor($client);
 
         if (!$supervisor->isConnected()) {
             throw new \App\Exception(sprintf('Could not connect to supervisord.'));

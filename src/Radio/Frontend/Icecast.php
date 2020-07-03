@@ -9,7 +9,8 @@ use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
 use GuzzleHttp\Psr7\Uri;
-use NowPlaying\Adapter\AdapterAbstract;
+use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 
 class Icecast extends AbstractFrontend
@@ -19,34 +20,48 @@ class Icecast extends AbstractFrontend
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
+    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
-        $fe_config = $station->getFrontendConfig();
-        $radio_port = $fe_config->getPort();
+        $feConfig = $station->getFrontendConfig();
+        $radioPort = $feConfig->getPort();
 
-        $base_url = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radio_port;
+        $baseUrl = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
-        $np_adapter = new \NowPlaying\Adapter\Icecast($base_url, $this->http_client);
-        $np_adapter->setAdminPassword($fe_config->getAdminPassword());
+        $npAdapter = $this->adapterFactory->getAdapter(
+            AdapterFactory::ADAPTER_ICECAST,
+            $baseUrl,
+            $feConfig->getAdminPassword()
+        );
 
-        $np_final = AdapterAbstract::NOWPLAYING_EMPTY;
-        $np_final['listeners']['clients'] = [];
+        $defaultResult = Result::blank();
+        $otherResults = [];
 
         try {
             foreach ($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
-                $np_final = $this->_processNowPlayingForMount(
-                    $mount,
-                    $np_final,
-                    $np_adapter->getNowPlaying($mount->getName()),
-                    $include_clients ? $np_adapter->getClients($mount->getName(), true) : null
-                );
+                $result = $npAdapter->getNowPlaying($mount->getName(), $includeClients);
+
+                $mount->setListenersTotal($result->listeners->total);
+                $mount->setListenersUnique($result->listeners->unique);
+                $this->em->persist($mount);
+
+                if ($mount->getIsDefault()) {
+                    $defaultResult = $result;
+                } else {
+                    $otherResults[] = $result;
+                }
+            }
+
+            $this->em->flush();
+
+            foreach ($otherResults as $otherResult) {
+                $defaultResult = $defaultResult->merge($otherResult);
             }
         } catch (\Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
-        return $np_final;
+        return $defaultResult;
     }
 
     public function read(Entity\Station $station): bool

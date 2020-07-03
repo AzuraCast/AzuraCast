@@ -4,14 +4,14 @@ namespace App\Radio\Frontend;
 use App\Entity;
 use App\EventDispatcher;
 use App\Http\Router;
-use App\Logger;
 use App\Radio\AbstractAdapter;
 use App\Settings;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
-use NowPlaying\Adapter\AdapterAbstract;
+use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\Result\Result;
 use PhpIP\IP;
 use PhpIP\IPBlock;
 use Psr\Http\Message\UriInterface;
@@ -19,6 +19,8 @@ use Supervisor\Supervisor;
 
 abstract class AbstractFrontend extends AbstractAdapter
 {
+    protected AdapterFactory $adapterFactory;
+
     protected Client $http_client;
 
     protected Router $router;
@@ -29,20 +31,22 @@ abstract class AbstractFrontend extends AbstractAdapter
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StationMountRepository $stationMountRepo,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
+        AdapterFactory $adapterFactory,
         Client $client,
-        Router $router
+        Router $router,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\StationMountRepository $stationMountRepo
     ) {
         parent::__construct($em, $supervisor, $dispatcher);
 
-        $this->settingsRepo = $settingsRepo;
-        $this->stationMountRepo = $stationMountRepo;
-
+        $this->adapterFactory = $adapterFactory;
         $this->http_client = $client;
         $this->router = $router;
+
+        $this->settingsRepo = $settingsRepo;
+        $this->stationMountRepo = $stationMountRepo;
     }
 
     /**
@@ -183,74 +187,9 @@ abstract class AbstractFrontend extends AbstractAdapter
 
     abstract public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface;
 
-    /**
-     * @param Entity\Station $station
-     * @param string|null $payload A prepopulated payload (to avoid duplicate web requests)
-     * @param bool $include_clients Whether to try to retrieve detailed listener client info
-     *
-     * @return array Whether the NP update succeeded
-     */
-    public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
+    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
-        return AdapterAbstract::NOWPLAYING_EMPTY;
-    }
-
-    /**
-     * @param Entity\StationMount $mount
-     * @param array $np_aggregate The aggregated nowplaying data for all mounts.
-     * @param array $np The nowplaying data for this specific mount.
-     * @param array|null $clients
-     *
-     * @return array The processed aggregate nowplaying data for all mounts.
-     */
-    protected function _processNowPlayingForMount(
-        Entity\StationMount $mount,
-        array $np_aggregate,
-        array $np,
-        ?array $clients
-    ): array {
-        if (null !== $clients) {
-            $original_num_clients = count($clients);
-
-            $np['listeners']['clients'] = Entity\Listener::filterClients($clients);
-
-            $num_clients = count($np['listeners']['clients']);
-
-            // If clients were filtered out, remove them from the listener count as well.
-            if ($num_clients < $original_num_clients) {
-                $client_diff = $original_num_clients - $num_clients;
-                $np['listeners']['total'] -= $client_diff;
-            }
-
-            $np['listeners']['unique'] = $num_clients;
-            $np['listeners']['current'] = $num_clients;
-
-            if ($np['listeners']['unique'] > $np['listeners']['total']) {
-                $np['listeners']['total'] = $np['listeners']['unique'];
-            }
-        } else {
-            $np['listeners']['clients'] = [];
-        }
-
-        Logger::getInstance()->debug('Response for mount point', ['mount' => $mount->getName(), 'response' => $np]);
-
-        $mount->setListenersTotal($np['listeners']['total']);
-        $mount->setListenersUnique($np['listeners']['unique']);
-        $this->em->persist($mount);
-        $this->em->flush();
-
-        if ($mount->getIsDefault()) {
-            $np_aggregate['current_song'] = $np['current_song'];
-            $np_aggregate['meta'] = $np['meta'];
-        }
-
-        $np_aggregate['listeners']['clients'] = array_merge((array)$np_aggregate['listeners']['clients'],
-            (array)$np['listeners']['clients']);
-        $np_aggregate['listeners']['current'] += $np['listeners']['current'];
-        $np_aggregate['listeners']['unique'] += $np['listeners']['unique'];
-        $np_aggregate['listeners']['total'] += $np['listeners']['total'];
-
-        return $np_aggregate;
+        return Result::blank();
     }
 
     protected function _processCustomConfig($custom_config_raw)

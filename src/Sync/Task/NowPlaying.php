@@ -18,7 +18,7 @@ use GuzzleHttp\Psr7\Uri;
 use InfluxDB\Database;
 use InfluxDB\Point;
 use Monolog\Logger;
-use NowPlaying\Adapter\AdapterAbstract;
+use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -96,7 +96,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             GenerateRawNowPlaying::class => [
                 ['loadRawFromFrontend', 10],
                 ['addToRawFromRemotes', 0],
-                ['cleanUpRawOutput', -10],
             ],
         ];
     }
@@ -199,10 +198,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     $station,
                     $frontend_adapter,
                     $remote_adapters,
-                    null,
                     $include_clients);
                 $this->event_dispatcher->dispatch($event);
-                $np_raw = $event->getRawResponse();
+
+                $npResult = $event->getResult();
             } catch (Exception $e) {
                 $this->logger->log(Logger::ERROR, $e->getMessage(), [
                     'file' => $e->getFile(),
@@ -210,22 +209,27 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     'code' => $e->getCode(),
                 ]);
 
-                $np_raw = AdapterAbstract::NOWPLAYING_EMPTY;
+                $npResult = Result::blank();
             }
 
             $this->logger->debug('Final NowPlaying Response for Station', [
                 'id' => $station->getId(),
                 'name' => $station->getName(),
-                'np' => $np_raw,
+                'np' => $npResult,
             ]);
 
             $np = new Entity\Api\NowPlaying;
             $uri_empty = new Uri('');
 
             $np->station = $station->api($frontend_adapter, $remote_adapters, $uri_empty);
-            $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
+            $np->listeners = new Entity\Api\NowPlayingListeners([
+                    'current' => $npResult->listeners->current,
+                    'unique' => $npResult->listeners->unique,
+                    'total' => $npResult->listeners->total,
+                ]
+            );
 
-            if (empty($np_raw['current_song']['text'])) {
+            if (empty($npResult->currentSong->text)) {
                 $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
 
                 $offline_sh = new Entity\Api\NowPlayingCurrentSong;
@@ -252,7 +256,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $np->live = new Entity\Api\NowPlayingLive(false);
             } else {
                 // Pull from current NP data if song details haven't changed .
-                $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
+                $current_song_hash = Entity\Song::getSongHash($npResult->currentSong);
 
                 if ($np_old instanceof Entity\Api\NowPlaying &&
                     0 === strcmp($current_song_hash, $np_old->now_playing->song->id)) {
@@ -266,7 +270,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 } else {
                     // SongHistory registration must ALWAYS come before the history/nextsong calls
                     // otherwise they will not have up-to-date database info!
-                    $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
+                    $song_obj = $this->song_repo->getOrCreate($npResult->currentSong, true);
                     $sh_obj = $this->history_repo->register($song_obj, $station, $np);
 
                     $np->song_history = $this->history_repo->getHistoryApi(
@@ -283,8 +287,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 }
 
                 // Update detailed listener statistics, if they exist for the station
-                if ($include_clients && isset($np_raw['listeners']['clients'])) {
-                    $this->listener_repo->update($station, $np_raw['listeners']['clients']);
+                if ($include_clients && null !== $npResult->clients) {
+                    $this->listener_repo->update($station, $npResult->clients);
                 }
 
                 // Detect and report live DJ status
@@ -403,39 +407,27 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     public function loadRawFromFrontend(GenerateRawNowPlaying $event): void
     {
-        $np_raw = $event
+        $result = $event
             ->getFrontend()
-            ->getNowPlaying($event->getStation(), $event->getPayload(), $event->includeClients());
+            ->getNowPlaying($event->getStation(), $event->includeClients());
 
-        $event->setRawResponse($np_raw);
+        $event->setResult($result);
     }
 
     public function addToRawFromRemotes(GenerateRawNowPlaying $event): void
     {
-        $np_raw = $event->getRawResponse();
+        $result = $event->getResult();
 
         // Loop through all remotes and update NP data accordingly.
         foreach ($event->getRemotes() as $ra_proxy) {
-            $np_raw = $ra_proxy->getAdapter()->updateNowPlaying(
+            $result = $ra_proxy->getAdapter()->updateNowPlaying(
+                $result,
                 $ra_proxy->getRemote(),
-                $np_raw,
                 $event->includeClients()
             );
         }
 
-        $event->setRawResponse($np_raw);
-    }
-
-    public function cleanUpRawOutput(GenerateRawNowPlaying $event): void
-    {
-        $np_raw = $event->getRawResponse();
-
-        array_walk($np_raw['current_song'], function (&$value) {
-            $value = htmlspecialchars_decode($value);
-            $value = trim($value);
-        });
-
-        $event->setRawResponse($np_raw);
+        $event->setResult($result);
     }
 
     /**

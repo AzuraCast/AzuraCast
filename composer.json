@@ -43,7 +43,7 @@
     "league/flysystem-aws-s3-v3": "^1.0",
     "league/flysystem-cached-adapter": "^1.0",
     "league/plates": "^3.1",
-    "lstrojny/fxmlrpc": "^0.15",
+    "lstrojny/fxmlrpc": "dev-master",
     "malkusch/lock": "^2.1",
     "maxmind-db/reader": "~1.0",
     "mezzio/mezzio-session": "^1.3",

@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use NowPlaying\Result\Client;
 
 /**
  * @ORM\Table(name="listener", indexes={
@@ -72,16 +73,16 @@ class Listener
      */
     protected $timestamp_end;
 
-    public function __construct(Station $station, array $client)
+    public function __construct(Station $station, Client $client)
     {
         $this->station = $station;
 
         $this->timestamp_start = time();
         $this->timestamp_end = 0;
 
-        $this->listener_uid = $client['uid'];
-        $this->listener_user_agent = $this->truncateString($client['user_agent']) ?? '';
-        $this->listener_ip = $client['ip'];
+        $this->listener_uid = $client->uid;
+        $this->listener_user_agent = $this->truncateString($client->userAgent) ?? '';
+        $this->listener_ip = $client->ip;
         $this->listener_hash = self::calculateListenerHash($client);
     }
 
@@ -189,8 +190,17 @@ class Listener
         return $seconds;
     }
 
-    public static function calculateListenerHash(array $client): string
+    /**
+     * @param array|Client $client
+     *
+     * @return string
+     */
+    public static function calculateListenerHash($client): string
     {
+        if ($client instanceof Client) {
+            return md5($client->ip . $client->userAgent);
+        }
+
         return md5($client['ip'] . $client['user_agent']);
     }
 }

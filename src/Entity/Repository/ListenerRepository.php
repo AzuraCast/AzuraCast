@@ -3,6 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use NowPlaying\Result\Client;
 
 class ListenerRepository extends Repository
 {
@@ -33,7 +34,7 @@ class ListenerRepository extends Repository
      * Update listener data for a station.
      *
      * @param Entity\Station $station
-     * @param array $clients
+     * @param Client[] $clients
      */
     public function update(Entity\Station $station, $clients): void
     {
@@ -51,9 +52,9 @@ class ListenerRepository extends Repository
             $existingClients[$identifier] = $client['id'];
         }
 
-        foreach ((array)$clients as $client) {
+        foreach ($clients as $client) {
             $listenerHash = Entity\Listener::calculateListenerHash($client);
-            $identifier = $client['uid'] . '_' . $listenerHash;
+            $identifier = $client->uid . '_' . $listenerHash;
 
             // Check for an existing record for this client.
             if (isset($existingClients[$identifier])) {

@@ -151,7 +151,7 @@ abstract class AbstractAdapter
                 Logger::getInstance()->info('Adapter "' . static::class . '" stopped.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (SupervisorLibException $e) {
-                $this->_handleSupervisorException($e, $program_name, $station);
+                $this->handleSupervisorException($e, $program_name, $station);
             }
         }
     }
@@ -174,7 +174,7 @@ abstract class AbstractAdapter
                 Logger::getInstance()->info('Adapter "' . static::class . '" started.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (SupervisorLibException $e) {
-                $this->_handleSupervisorException($e, $program_name, $station);
+                $this->handleSupervisorException($e, $program_name, $station);
             }
         }
     }
@@ -191,7 +191,7 @@ abstract class AbstractAdapter
      * @throws NotRunningException
      * @throws SupervisorException
      */
-    protected function _handleSupervisorException(
+    protected function handleSupervisorException(
         SupervisorLibException $e,
         $program_name,
         Entity\Station $station

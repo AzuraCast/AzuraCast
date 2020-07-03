@@ -385,15 +385,14 @@ return [
 
     // Supervisor manager
     Supervisor\Supervisor::class => function (Settings $settings) {
-        $guzzle_client = new GuzzleHttp\Client();
         $client = new fXmlRpc\Client(
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
-            new fXmlRpc\Transport\HttpAdapterTransport(
-                new Http\Message\MessageFactory\GuzzleMessageFactory(),
-                new Http\Adapter\Guzzle6\Client($guzzle_client)
+            new fXmlRpc\Transport\PsrTransport(
+                new Http\Factory\Guzzle\RequestFactory,
+                new Http\Adapter\Guzzle6\Client
             )
         );
-        
+
         $supervisor = new Supervisor\Supervisor($client);
 
         if (!$supervisor->isConnected()) {
@@ -401,6 +400,15 @@ return [
         }
 
         return $supervisor;
+    },
+
+    // NowPlaying Adapter factory
+    NowPlaying\Adapter\AdapterFactory::class => function (GuzzleHttp\Client $httpClient) {
+        return new NowPlaying\Adapter\AdapterFactory(
+            new Http\Factory\Guzzle\UriFactory,
+            new Http\Factory\Guzzle\RequestFactory,
+            new Http\Adapter\Guzzle6\Client($httpClient)
+        );
     },
 
     // Asset Management

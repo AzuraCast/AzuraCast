@@ -164,18 +164,6 @@ $config = [
                     ],
                 ],
 
-                Entity\Settings::SEND_ERROR_REPORTS => [
-                    'toggle',
-                    [
-                        'label' => __('Automatically Send Error Reports to AzuraCast'),
-                        'description' => __('If the web application encounters an error, you can choose to automatically send an anonymized report of the error to the AzuraCast team for faster diagnosis and resolution.') . '<br>' . __('Error reports are powered by <a href="%s" target="_blank">%s</a>.',
-                                'https://sentry.io/', 'Sentry'),
-                        'selected_text' => __('Yes'),
-                        'deselected_text' => __('No'),
-                        'default' => false,
-                    ],
-                ],
-
             ],
         ],
 

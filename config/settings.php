@@ -39,9 +39,4 @@ return [
         'en_US.UTF-8' => 'g:i A',
     ],
 
-    // Sentry error reporting DSN,
-    'sentry_io' => [
-        'dsn' => 'https://b07d75fb383743a081308a4e537f6843@sentry.io/1420408',
-    ],
-
 ];

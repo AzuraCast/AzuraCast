@@ -5,7 +5,6 @@ use App\Entity;
 use App\Exception;
 use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
-use App\Service\Sentry;
 use App\Session\Flash;
 use App\Settings;
 use App\View;
@@ -17,7 +16,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use Slim\App;
 use Slim\Exception\HttpException;
-use stdClass;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -33,8 +31,6 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected View $view;
 
-    protected Sentry $sentry;
-
     protected Settings $settings;
 
     public function __construct(
@@ -42,15 +38,13 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         Logger $logger,
         Router $router,
         View $view,
-        Sentry $sentry,
         Settings $settings
     ) {
         parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
-        
+
         $this->settings = $settings;
         $this->router = $router;
         $this->view = $view;
-        $this->sentry = $sentry;
     }
 
     public function __invoke(
@@ -68,49 +62,12 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
         $this->showDetailed = (!$this->settings->isProduction() && !in_array($this->loggerLevel,
                 [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE], true));
-        $this->returnJson = $this->_shouldReturnJson($request);
+        $this->returnJson = $this->shouldReturnJson($request);
 
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
     }
 
-    /**
-     * @return bool
-     */
-    public function returnJson(): bool
-    {
-        return $this->returnJson;
-    }
-
-    /**
-     * @param bool $returnJson
-     */
-    public function setReturnJson(bool $returnJson): void
-    {
-        $this->returnJson = $returnJson;
-    }
-
-    /**
-     * @return bool
-     */
-    public function showDetailed(): bool
-    {
-        return $this->showDetailed;
-    }
-
-    /**
-     * @param bool $showDetailed
-     */
-    public function setShowDetailed(bool $showDetailed): void
-    {
-        $this->showDetailed = $showDetailed;
-    }
-
-    /**
-     * @param ServerRequestInterface $req
-     *
-     * @return bool
-     */
-    protected function _shouldReturnJson(ServerRequestInterface $req): bool
+    protected function shouldReturnJson(ServerRequestInterface $req): bool
     {
         $xhr = $req->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
 
@@ -243,10 +200,6 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->withRedirect((string)$this->router->named('home'));
         }
 
-        if (!in_array($this->loggerLevel, [LogLevel::INFO, LogLevel::DEBUG, LogLevel::NOTICE], true)) {
-            $this->sentry->handleException($this->exception);
-        }
-
         /** @var Response $response */
         $response = $this->responseFactory->createResponse(500);
 
@@ -297,27 +250,9 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         );
     }
 
-    /**
-     * @param int $code
-     * @param string $message
-     * @param array $stack_trace
-     *
-     * @return stdClass
-     */
-    protected function getErrorApiResponse($code = 500, $message = 'General Error', $stack_trace = []): stdClass
-    {
-        $api = new stdClass;
-        $api->success = false;
-        $api->code = (int)$code;
-        $api->message = (string)$message;
-        $api->stack_trace = (array)$stack_trace;
-
-        return $api;
-    }
-
     protected function withJson(ResponseInterface $response, $data): ResponseInterface
     {
-        $json = (string)json_encode($data);
+        $json = (string)json_encode($data, JSON_THROW_ON_ERROR);
         $response->getBody()->write($json);
 
         return $response->withHeader('Content-Type', 'application/json;charset=utf-8');

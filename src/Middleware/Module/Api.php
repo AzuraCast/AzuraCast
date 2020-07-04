@@ -26,9 +26,6 @@ class Api
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // Set "is API call" attribute on the request so error handling responds correctly.
-        $request = $request->withAttribute(ServerRequest::ATTR_IS_API_CALL, true);
-
         // Attempt API key auth if a key exists.
         $api_key = $this->getApiKey($request);
         $api_user = (!empty($api_key)) ? $this->api_repo->authenticate($api_key) : null;
@@ -117,7 +114,7 @@ class Api
         if (!empty($queryApiKey)) {
             return $queryApiKey;
         }
-        
+
         return null;
     }
 }

@@ -97,11 +97,6 @@ final class ServerRequest extends \Slim\Http\ServerRequest
             ?? null;
     }
 
-    public function isApiCall(): bool
-    {
-        return $this->serverRequest->getAttribute(self::ATTR_IS_API_CALL, false);
-    }
-
     public function getAcl(): Acl
     {
         return $this->getAttributeOfClass(self::ATTR_ACL, Acl::class);

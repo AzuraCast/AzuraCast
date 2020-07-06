@@ -1963,7 +1963,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1592724157
+          example: 1594036897
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2060,6 +2060,7 @@ components:
           description: 'The start timestamp of the current broadcast, if one is available.'
           type: integer
           example: '1591548318'
+          nullable: true
       type: object
     Api_QueuedSong:
       allOf:
@@ -2070,7 +2071,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1592724157
+              example: 1594036897
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -2125,7 +2126,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1592724157
+          example: 1594036897
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2275,7 +2276,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1592724157
+          example: 1594036897
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2283,7 +2284,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1592724157
+          example: 1594036897
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2323,7 +2324,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1592724157
+          example: 1594036897
       type: object
     Api_Time:
       properties:
@@ -2380,9 +2381,11 @@ components:
         short_name:
           description: 'The programmatic name for the field. Can be auto-generated from the full name.'
           type: string
+          nullable: true
         auto_assign:
           description: 'An ID3v2 field to automatically assign to this value, if it exists in the media file.'
           type: string
+          nullable: true
       type: object
     Relay:
       properties:
@@ -2395,15 +2398,16 @@ components:
         name:
           type: string
           example: Relay
+          nullable: true
         is_visible_on_public_pages:
           type: boolean
           example: true
         created_at:
           type: integer
-          example: 1592724157
+          example: 1594036897
         updated_at:
           type: integer
-          example: 1592724157
+          example: 1594036897
       type: object
     Role:
       properties:
@@ -2421,14 +2425,17 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         name:
           description: 'The full display name of the station.'
           type: string
           example: 'AzuraTest Radio'
+          nullable: true
         short_name:
           description: 'The URL-friendly name for the station, typically auto-generated from the full station name.'
           type: string
           example: azuratest_radio
+          nullable: true
         is_enabled:
           description: 'If set to "false", prevents the station from broadcasting but leaves it in the database.'
           type: boolean
@@ -2437,36 +2444,46 @@ components:
           description: 'The frontend adapter (icecast,shoutcast,remote,etc)'
           type: string
           example: icecast
+          nullable: true
         frontend_config:
           description: 'An array containing station-specific frontend configuration'
           type: array
           items: {  }
+          nullable: true
         backend_type:
           description: 'The backend adapter (liquidsoap,etc)'
           type: string
           example: liquidsoap
+          nullable: true
         backend_config:
           description: 'An array containing station-specific backend configuration'
           type: array
           items: {  }
+          nullable: true
         description:
           type: string
           example: 'A sample radio station.'
+          nullable: true
         url:
           type: string
           example: 'https://demo.azuracast.com/'
+          nullable: true
         genre:
           type: string
           example: Various
+          nullable: true
         radio_base_dir:
           type: string
           example: /var/azuracast/stations/azuratest_radio
+          nullable: true
         radio_media_dir:
           type: string
           example: /var/azuracast/stations/azuratest_radio/media
+          nullable: true
         automation_settings:
           type: array
           items: {  }
+          nullable: true
         enable_requests:
           description: 'Whether listeners can request songs to play on this station.'
           type: boolean
@@ -2474,9 +2491,11 @@ components:
         request_delay:
           type: integer
           example: 5
+          nullable: true
         request_threshold:
           type: integer
           example: 15
+          nullable: true
         disconnect_deactivate_streamer:
           type: integer
           example: 0
@@ -2500,26 +2519,33 @@ components:
           description: 'The number of "last played" history items to show for a given station in the Now Playing API responses.'
           type: integer
           example: 5
+          nullable: true
         storage_quota:
           type: string
           example: '50 GB'
+          nullable: true
         storage_quota_bytes:
           type: string
           example: '50000000000'
+          nullable: true
         storage_used:
           type: string
           example: '1 GB'
+          nullable: true
         storage_used_bytes:
           type: string
           example: '1000000000'
+          nullable: true
         timezone:
           description: 'The time zone that station operations should take place in.'
           type: string
           example: UTC
+          nullable: true
         default_album_art_url:
           description: 'The station-specific default album artwork URL.'
           type: string
           example: 'https://example.com/image.jpg'
+          nullable: true
       type: object
     StationMedia:
       properties:
@@ -2529,26 +2555,32 @@ components:
         song_id:
           type: string
           example: 098F6BCD4621D373CADE4E832627B4F6
+          nullable: true
         title:
           description: 'The name of the media file''s title.'
           type: string
           example: 'Test Song'
+          nullable: true
         artist:
           description: 'The name of the media file''s artist.'
           type: string
           example: 'Test Artist'
+          nullable: true
         album:
           description: 'The name of the media file''s album.'
           type: string
           example: 'Test Album'
+          nullable: true
         lyrics:
           description: 'Full lyrics of the track, if available.'
           type: string
           example: '...Never gonna give you up...'
+          nullable: true
         isrc:
           description: 'The track ISRC (International Standard Recording Code), used for licensing purposes.'
           type: string
           example: GBARL0600786
+          nullable: true
         length:
           description: 'The song duration in seconds.'
           type: integer
@@ -2557,48 +2589,57 @@ components:
           description: 'The formatted song duration (in mm:ss format)'
           type: string
           example: '4:00'
+          nullable: true
         path:
           description: 'The relative path of the media file.'
           type: string
           example: test.mp3
+          nullable: true
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1592724157
+          example: 1594036897
+          nullable: true
         amplify:
           description: 'The amount of amplification (in dB) to be applied to the radio source;'
           type: number
           format: float
           example: -14
+          nullable: true
         fade_overlap:
           description: 'The length of time (in seconds) before the next song starts in the fade;'
           type: number
           format: float
           example: 2
+          nullable: true
         fade_in:
           description: 'The length of time (in seconds) to fade in the next track;'
           type: number
           format: float
           example: 3
+          nullable: true
         fade_out:
           description: 'The length of time (in seconds) to fade out the previous track;'
           type: number
           format: float
           example: 3
+          nullable: true
         cue_in:
           description: 'The length of time (in seconds) from the start of the track to start playing;'
           type: number
           format: float
           example: 30
+          nullable: true
         cue_out:
           description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing;'
           type: number
           format: float
           example: 30
+          nullable: true
         art_updated_at:
           description: 'The latest time (UNIX timestamp) when album art was updated.'
           type: integer
-          example: 1592724157
+          example: 1594036897
         playlists:
           items: {  }
       type: object
@@ -2613,6 +2654,7 @@ components:
         display_name:
           type: string
           example: '128kbps MP3'
+          nullable: true
         is_visible_on_public_pages:
           type: boolean
           example: true
@@ -2625,27 +2667,34 @@ components:
         fallback_mount:
           type: string
           example: /error.mp3
+          nullable: true
         relay_url:
           type: string
           example: 'http://radio.example.com:8000/radio.mp3'
+          nullable: true
         authhash:
           type: string
           example: ''
+          nullable: true
         enable_autodj:
           type: boolean
           example: true
         autodj_format:
           type: string
           example: mp3
+          nullable: true
         autodj_bitrate:
           type: integer
           example: 128
+          nullable: true
         custom_listen_url:
           type: string
           example: 'https://custom-listen-url.example.com/stream.mp3'
+          nullable: true
         frontend_config:
           type: string
           items: {  }
+          nullable: true
         listeners_unique:
           description: 'The most recent number of unique listeners.'
           type: integer
@@ -2660,6 +2709,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         name:
           type: string
           example: 'Test Playlist'
@@ -2675,9 +2725,11 @@ components:
         remote_url:
           type: string
           example: 'http://remote-url.example.com/stream.mp3'
+          nullable: true
         remote_type:
           type: string
           example: stream
+          nullable: true
         remote_buffer:
           description: 'The total time (in seconds) that Liquidsoap should buffer remote URL streams.'
           type: integer
@@ -2728,6 +2780,7 @@ components:
         display_name:
           type: string
           example: '128kbps MP3'
+          nullable: true
         is_visible_on_public_pages:
           type: boolean
           example: true
@@ -2740,33 +2793,43 @@ components:
         autodj_format:
           type: string
           example: mp3
+          nullable: true
         autodj_bitrate:
           type: integer
           example: 128
+          nullable: true
         custom_listen_url:
           type: string
           example: 'https://custom-listen-url.example.com/stream.mp3'
+          nullable: true
         url:
           type: string
           example: 'http://custom-url.example.com'
+          nullable: true
         mount:
           type: string
           example: /stream.mp3
+          nullable: true
         admin_password:
           type: string
           example: password
+          nullable: true
         source_port:
           type: integer
           example: 8000
+          nullable: true
         source_mount:
           type: string
           example: /
+          nullable: true
         source_username:
           type: string
           example: source
+          nullable: true
         source_password:
           type: string
           example: password
+          nullable: true
         is_public:
           type: boolean
           example: false
@@ -2784,6 +2847,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         start_time:
           type: integer
           example: 900
@@ -2808,9 +2872,11 @@ components:
         display_name:
           type: string
           example: 'Test DJ'
+          nullable: true
         comments:
           type: string
           example: 'This is a test DJ account.'
+          nullable: true
         is_active:
           type: boolean
           example: true
@@ -2819,7 +2885,8 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1592724157
+          example: 1594036897
+          nullable: true
         schedule_items:
           items: {  }
       type: object
@@ -2834,10 +2901,12 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         name:
           description: 'The nickname of the webhook connector.'
           type: string
           example: 'Twitter Post'
+          nullable: true
         type:
           description: 'The type of webhook connector to use.'
           type: string
@@ -2873,27 +2942,33 @@ components:
         email:
           type: string
           example: demo@azuracast.com
+          nullable: true
         new_password:
           type: string
           example: ''
+          nullable: true
         name:
           type: string
           example: 'Demo Account'
+          nullable: true
         locale:
           type: string
           example: en_US
+          nullable: true
         theme:
           type: string
           example: dark
+          nullable: true
         two_factor_secret:
           type: string
           example: A1B2C3D4
+          nullable: true
         created_at:
           type: integer
-          example: 1592724157
+          example: 1594036897
         updated_at:
           type: integer
-          example: 1592724157
+          example: 1594036897
         roles:
           items: {  }
       type: object

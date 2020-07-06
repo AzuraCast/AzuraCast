@@ -5,7 +5,11 @@ on:
       - master
   push:
     paths-ignore:
-      - '.github'
+      - '.github/*.yml'
+      - '.github/ISSUE_TEMPLATE/*.md'
+      - 'install.sh' # Ansible-only scripts and folders
+      - 'update.sh'
+      - 'util/ansible/**'
     branches:
       - ci-testing
       - master
@@ -39,10 +43,13 @@ jobs:
           mkdir -p resources/locale/compiled
           chmod a+x bin/console
 
+      - name: Generate new translations from existing code.
+        uses: ./.github/actions/generate-locales
+
       - name: Pull latest translations.
         uses: crowdin/github-action@1.0.6
         with:
-          upload_translations: false
+          upload_translations: true
           download_translations: true
           export_only_approved: false
           push_translations: false

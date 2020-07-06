@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f561a9d43f3f2f6d599c4e7b87c5dd45",
+    "content-hash": "a5e5cb8c9ac5f01eb0d72ca9129940da",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2348,37 +2348,44 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.5.5",
+            "version": "7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e"
+                "reference": "2d9d3c186a6637a43193e66b097c50e4451eaab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
-                "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/2d9d3c186a6637a43193e66b097c50e4451eaab2",
+                "reference": "2d9d3c186a6637a43193e66b097c50e4451eaab2",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/promises": "^1.0",
                 "guzzlehttp/psr7": "^1.6.1",
-                "php": ">=5.5",
-                "symfony/polyfill-intl-idn": "^1.17.0"
+                "php": "^7.2.5",
+                "psr/http-client": "^1.0"
+            },
+            "provide": {
+                "psr/http-client-implementation": "1.0"
             },
             "require-dev": {
+                "ergebnis/composer-normalize": "^2.0",
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+                "php-http/client-integration-tests": "dev-phpunit8",
+                "phpunit/phpunit": "^8.5.5",
                 "psr/log": "^1.1"
             },
             "suggest": {
+                "ext-curl": "Required for CURL handler support",
+                "ext-intl": "Required for Internationalized Domain Name (IDN) support",
                 "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.5-dev"
+                    "dev-master": "7.0-dev"
                 }
             },
             "autoload": {
@@ -2398,6 +2405,11 @@
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com",
+                    "homepage": "https://sagikazarmark.hu"
                 }
             ],
             "description": "Guzzle is a PHP HTTP client library",
@@ -2408,27 +2420,23 @@
                 "framework",
                 "http",
                 "http client",
+                "psr-18",
+                "psr-7",
                 "rest",
                 "web service"
             ],
-            "time": "2020-06-16T21:01:06+00:00"
+            "time": "2020-06-27T10:33:25+00:00"
         },
         {
             "name": "guzzlehttp/oauth-subscriber",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/guzzle/oauth-subscriber.git",
-                "reference": "04960cdef3cd80ea401d6b0ca8b3e110e9bf12cf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/oauth-subscriber/zipball/04960cdef3cd80ea401d6b0ca8b3e110e9bf12cf",
-                "reference": "04960cdef3cd80ea401d6b0ca8b3e110e9bf12cf",
-                "shasum": ""
+                "url": "https://github.com/guzzle/oauth-subscriber",
+                "reference": "47b4b9cd0b31a6733a3cc500d4285a8363502485"
             },
             "require": {
-                "guzzlehttp/guzzle": "~6.0",
+                "guzzlehttp/guzzle": "^6.0|^7.0",
                 "php": ">=5.5.0"
             },
             "require-dev": {
@@ -2437,7 +2445,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3-dev"
+                    "dev-master": "0.4-dev"
                 }
             },
             "autoload": {
@@ -2445,7 +2453,6 @@
                     "GuzzleHttp\\Subscriber\\Oauth\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2459,10 +2466,10 @@
             "description": "Guzzle OAuth 1.0 subscriber",
             "homepage": "http://guzzlephp.org/",
             "keywords": [
-                "Guzzle",
+                "guzzle",
                 "oauth"
             ],
-            "time": "2015-08-15T19:44:28+00:00"
+            "time": "2020-07-01T06:28:13+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2638,20 +2645,14 @@
         },
         {
             "name": "influxdb/influxdb-php",
-            "version": "1.15.0",
+            "version": "dev-feature/guzzle7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/influxdata/influxdb-php.git",
-                "reference": "bf3415f81962e1ab8c939bc1a08a85f500bead35"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/influxdata/influxdb-php/zipball/bf3415f81962e1ab8c939bc1a08a85f500bead35",
-                "reference": "bf3415f81962e1ab8c939bc1a08a85f500bead35",
-                "shasum": ""
+                "url": "https://github.com/SlvrEagle23/influxdb-php.git",
+                "reference": "288ea1cd018b828fc3dd7f778a10bdf94f6809f9"
             },
             "require": {
-                "guzzlehttp/guzzle": "^6.0",
+                "guzzlehttp/guzzle": "^6.0|^7.0",
                 "php": "^5.5 || ^7.0"
             },
             "require-dev": {
@@ -2667,22 +2668,34 @@
                     "InfluxDB\\": "src/InfluxDB"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "InfluxDB\\Test\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "test-ci": [
+                    "vendor/bin/phpunit -v --coverage-clover=clover.xml"
+                ]
+            },
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Gianluca Arbezzano",
-                    "email": "gianarb92@gmail.com"
+                    "name": "Stephen Hoogendijk",
+                    "email": "stephen@tca0.nl"
                 },
                 {
                     "name": "Daniel Martinez",
                     "email": "danimartcas@hotmail.com"
                 },
                 {
-                    "name": "Stephen Hoogendijk",
-                    "email": "stephen@tca0.nl"
+                    "name": "Gianluca Arbezzano",
+                    "email": "gianarb92@gmail.com"
                 }
             ],
             "description": "InfluxDB client library for PHP",
@@ -2695,7 +2708,7 @@
                 "influxdb library",
                 "time series"
             ],
-            "time": "2019-05-30T00:15:14+00:00"
+            "time": "2020-07-06T01:37:11+00:00"
         },
         {
             "name": "james-heinrich/getid3",
@@ -4743,176 +4756,6 @@
             "time": "2020-07-02T11:43:45+00:00"
         },
         {
-            "name": "php-http/guzzle6-adapter",
-            "version": "v2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/guzzle6-adapter.git",
-                "reference": "6074a4b1f4d5c21061b70bab3b8ad484282fe31f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/guzzle6-adapter/zipball/6074a4b1f4d5c21061b70bab3b8ad484282fe31f",
-                "reference": "6074a4b1f4d5c21061b70bab3b8ad484282fe31f",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0",
-                "php": "^7.1",
-                "php-http/httplug": "^2.0",
-                "psr/http-client": "^1.0"
-            },
-            "provide": {
-                "php-http/async-client-implementation": "1.0",
-                "php-http/client-implementation": "1.0",
-                "psr/http-client-implementation": "1.0"
-            },
-            "require-dev": {
-                "ext-curl": "*",
-                "php-http/client-integration-tests": "^2.0",
-                "phpunit/phpunit": "^7.4"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Http\\Adapter\\Guzzle6\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com"
-                },
-                {
-                    "name": "David de Boer",
-                    "email": "david@ddeboer.nl"
-                }
-            ],
-            "description": "Guzzle 6 HTTP Adapter",
-            "homepage": "http://httplug.io",
-            "keywords": [
-                "Guzzle",
-                "http"
-            ],
-            "time": "2018-12-16T14:44:03+00:00"
-        },
-        {
-            "name": "php-http/httplug",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/httplug.git",
-                "reference": "72d2b129a48f0490d55b7f89be0d6aa0597ffb06"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/httplug/zipball/72d2b129a48f0490d55b7f89be0d6aa0597ffb06",
-                "reference": "72d2b129a48f0490d55b7f89be0d6aa0597ffb06",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0",
-                "php-http/promise": "^1.0",
-                "psr/http-client": "^1.0",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "friends-of-phpspec/phpspec-code-coverage": "^4.1",
-                "phpspec/phpspec": "^4.3.4|^5.0|^6.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Http\\Client\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Eric GELOEN",
-                    "email": "geloen.eric@gmail.com"
-                },
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com"
-                }
-            ],
-            "description": "HTTPlug, the HTTP client abstraction for PHP",
-            "homepage": "http://httplug.io",
-            "keywords": [
-                "client",
-                "http"
-            ],
-            "time": "2019-12-27T10:07:11+00:00"
-        },
-        {
-            "name": "php-http/promise",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-http/promise.git",
-                "reference": "dc494cdc9d7160b9a09bd5573272195242ce7980"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-http/promise/zipball/dc494cdc9d7160b9a09bd5573272195242ce7980",
-                "reference": "dc494cdc9d7160b9a09bd5573272195242ce7980",
-                "shasum": ""
-            },
-            "require-dev": {
-                "henrikbjorn/phpspec-code-coverage": "^1.0",
-                "phpspec/phpspec": "^2.4"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Http\\Promise\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com"
-                },
-                {
-                    "name": "Joel Wurtz",
-                    "email": "joel.wurtz@gmail.com"
-                }
-            ],
-            "description": "Promise used for asynchronous HTTP requests",
-            "homepage": "http://httplug.io",
-            "keywords": [
-                "promise"
-            ],
-            "time": "2016-01-26T13:27:02+00:00"
-        },
-        {
             "name": "psr/cache",
             "version": "1.0.1",
             "source": {
@@ -6750,86 +6593,6 @@
             "time": "2020-06-06T08:46:27+00:00"
         },
         {
-            "name": "symfony/polyfill-intl-idn",
-            "version": "v1.17.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "a57f8161502549a742a63c09f0a604997bf47027"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/a57f8161502549a742a63c09f0a604997bf47027",
-                "reference": "a57f8161502549a742a63c09f0a604997bf47027",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/polyfill-mbstring": "^1.3",
-                "symfony/polyfill-php72": "^1.10"
-            },
-            "suggest": {
-                "ext-intl": "For best performance"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.17-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
-                },
-                "files": [
-                    "bootstrap.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Laurent Bassin",
-                    "email": "laurent@bassin.info"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for intl's idn_to_ascii and idn_to_utf8 functions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "idn",
-                "intl",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-06-06T08:46:27+00:00"
-        },
-        {
             "name": "symfony/polyfill-php73",
             "version": "v1.17.1",
             "source": {
@@ -8265,21 +8028,20 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "dev-master",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "e61cfa2a4f8d7cc4356ba7450647844463ee7407"
+                "reference": "fa47d62c22c95272625624fbf8109fa46ffac43b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/e61cfa2a4f8d7cc4356ba7450647844463ee7407",
-                "reference": "e61cfa2a4f8d7cc4356ba7450647844463ee7407",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/fa47d62c22c95272625624fbf8109fa46ffac43b",
+                "reference": "fa47d62c22c95272625624fbf8109fa46ffac43b",
                 "shasum": ""
             },
             "require": {
                 "doctrine/annotations": "*",
-                "ext-json": "*",
                 "php": ">=7.2",
                 "symfony/finder": ">=2.2",
                 "symfony/yaml": ">=3.3"
@@ -8325,7 +8087,7 @@
                 "rest",
                 "service discovery"
             ],
-            "time": "2020-05-06T20:45:40+00:00"
+            "time": "2020-05-07T09:10:49+00:00"
         }
     ],
     "packages-dev": [
@@ -8526,20 +8288,23 @@
         },
         {
             "name": "codeception/lib-innerbrowser",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/lib-innerbrowser.git",
-                "reference": "2123542b1325cc349ac68868abe74638bcb32ab6"
+                "reference": "7bdcee4cf654cfeeedd00405edd4f06f85255659"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/lib-innerbrowser/zipball/2123542b1325cc349ac68868abe74638bcb32ab6",
-                "reference": "2123542b1325cc349ac68868abe74638bcb32ab6",
+                "url": "https://api.github.com/repos/Codeception/lib-innerbrowser/zipball/7bdcee4cf654cfeeedd00405edd4f06f85255659",
+                "reference": "7bdcee4cf654cfeeedd00405edd4f06f85255659",
                 "shasum": ""
             },
             "require": {
                 "codeception/codeception": "*@dev",
+                "ext-dom": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
                 "php": ">=5.6.0 <8.0",
                 "symfony/browser-kit": ">=2.7 <6.0",
                 "symfony/dom-crawler": ">=2.7 <6.0"
@@ -8575,7 +8340,7 @@
             "keywords": [
                 "codeception"
             ],
-            "time": "2020-02-20T14:46:50+00:00"
+            "time": "2020-07-05T14:21:45+00:00"
         },
         {
             "name": "codeception/module-asserts",
@@ -8728,23 +8493,26 @@
         },
         {
             "name": "codeception/module-phpbrowser",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-phpbrowser.git",
-                "reference": "fbf585c8562e4e4875f351f5392bcb2b1a633cbe"
+                "reference": "c1962657504a2a476b8dbd1f1ee05e0c912e5645"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-phpbrowser/zipball/fbf585c8562e4e4875f351f5392bcb2b1a633cbe",
-                "reference": "fbf585c8562e4e4875f351f5392bcb2b1a633cbe",
+                "url": "https://api.github.com/repos/Codeception/module-phpbrowser/zipball/c1962657504a2a476b8dbd1f1ee05e0c912e5645",
+                "reference": "c1962657504a2a476b8dbd1f1ee05e0c912e5645",
                 "shasum": ""
             },
             "require": {
-                "codeception/codeception": "4.0.x-dev | ^4.0",
-                "codeception/lib-innerbrowser": "^1.0",
-                "guzzlehttp/guzzle": "^6.3.0",
+                "codeception/codeception": "*@dev",
+                "codeception/lib-innerbrowser": "^1.3.2",
+                "guzzlehttp/guzzle": "^6.3.0|^7.0.0",
                 "php": ">=5.6.0 <8.0"
+            },
+            "conflict": {
+                "codeception/codeception": "<4.0"
             },
             "require-dev": {
                 "codeception/module-rest": "dev-master | ^1.0",
@@ -8778,20 +8546,20 @@
                 "functional-testing",
                 "http"
             ],
-            "time": "2019-10-10T14:25:59+00:00"
+            "time": "2020-07-05T15:29:32+00:00"
         },
         {
             "name": "codeception/module-rest",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-rest.git",
-                "reference": "c86417af517bb1fb5b88550455d823a7c9fc167e"
+                "reference": "3664989d35003e182631cd9f4bc055fec009f5be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-rest/zipball/c86417af517bb1fb5b88550455d823a7c9fc167e",
-                "reference": "c86417af517bb1fb5b88550455d823a7c9fc167e",
+                "url": "https://api.github.com/repos/Codeception/module-rest/zipball/3664989d35003e182631cd9f4bc055fec009f5be",
+                "reference": "3664989d35003e182631cd9f4bc055fec009f5be",
                 "shasum": ""
             },
             "require": {
@@ -8829,7 +8597,7 @@
                 "codeception",
                 "rest"
             ],
-            "time": "2020-02-01T19:23:56+00:00"
+            "time": "2020-07-05T15:40:45+00:00"
         },
         {
             "name": "codeception/phpunit-wrapper",
@@ -11045,16 +10813,16 @@
         },
         {
             "name": "sebastian/type",
-            "version": "2.1.1",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/type.git",
-                "reference": "56b3ba194e0cbaaf3de7ccd353c289d7a84ed022"
+                "reference": "86991e2b33446cd96e648c18bcdb1e95afb2c05a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/56b3ba194e0cbaaf3de7ccd353c289d7a84ed022",
-                "reference": "56b3ba194e0cbaaf3de7ccd353c289d7a84ed022",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/86991e2b33446cd96e648c18bcdb1e95afb2c05a",
+                "reference": "86991e2b33446cd96e648c18bcdb1e95afb2c05a",
                 "shasum": ""
             },
             "require": {
@@ -11066,7 +10834,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "2.2-dev"
                 }
             },
             "autoload": {
@@ -11093,7 +10861,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-06-26T12:17:54+00:00"
+            "time": "2020-07-05T08:31:53+00:00"
         },
         {
             "name": "sebastian/version",
@@ -11501,15 +11269,22 @@
             "time": "2020-06-16T10:16:42+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "dev-master",
+            "alias_normalized": "9999999-dev",
+            "version": "dev-feature/guzzle7",
+            "package": "influxdb/influxdb-php"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "azuracast/azuraforms": 20,
         "azuracast/nowplaying": 20,
+        "influxdb/influxdb-php": 20,
         "james-heinrich/getid3": 20,
         "lstrojny/fxmlrpc": 20,
         "supervisorphp/supervisor": 20,
-        "zircote/swagger-php": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

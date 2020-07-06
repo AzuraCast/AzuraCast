@@ -3,6 +3,16 @@
   "description": "The AzuraCast self-hosted web radio station management suite.",
   "license": "Apache-2.0",
   "type": "project",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/SlvrEagle23/influxdb-php.git"
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/guzzle/oauth-subscriber"
+    }
+  ],
   "require": {
     "php": ">=7.4",
     "ext-PDO": "*",
@@ -32,10 +42,10 @@
     "doctrine/migrations": "^3.0",
     "doctrine/orm": "~2.6",
     "gettext/gettext": "^4.4",
-    "guzzlehttp/guzzle": ">6.0",
-    "guzzlehttp/oauth-subscriber": "^0.3.0",
+    "guzzlehttp/guzzle": "^7.0",
+    "guzzlehttp/oauth-subscriber": "^0.4.0",
     "http-interop/http-factory-guzzle": "^1.0",
-    "influxdb/influxdb-php": "^1.14.3",
+    "influxdb/influxdb-php": "dev-feature/guzzle7 as dev-master",
     "james-heinrich/getid3": "dev-master",
     "jhofm/flysystem-iterator": "^2.1",
     "laminas/laminas-config": "^3.3",
@@ -56,7 +66,6 @@
     "overtrue/phplint": "^2.0",
     "php-di/php-di": "^6.0",
     "php-di/slim-bridge": "^3.0",
-    "php-http/guzzle6-adapter": "^2.0",
     "ramsey/uuid": "^4.0",
     "rlanvin/php-ip": "^2.0",
     "slim/http": "^1.0",
@@ -75,7 +84,7 @@
     "symfony/validator": "^5",
     "voku/portable-utf8": "^5.4",
     "wikimedia/composer-merge-plugin": "^1.4",
-    "zircote/swagger-php": "dev-master#e61cfa2a4f8d7cc4356ba7450647844463ee7407"
+    "zircote/swagger-php": "^3.0.4"
   },
   "require-dev": {
     "codeception/codeception": "^4.0",

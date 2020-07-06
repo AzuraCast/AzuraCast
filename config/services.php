@@ -389,7 +389,7 @@ return [
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
             new fXmlRpc\Transport\PsrTransport(
                 new Http\Factory\Guzzle\RequestFactory,
-                new Http\Adapter\Guzzle6\Client
+                new GuzzleHttp\Client
             )
         );
 
@@ -407,7 +407,7 @@ return [
         return new NowPlaying\Adapter\AdapterFactory(
             new Http\Factory\Guzzle\UriFactory,
             new Http\Factory\Guzzle\RequestFactory,
-            new Http\Adapter\Guzzle6\Client($httpClient)
+            $httpClient
         );
     },
 

@@ -1,8 +1,13 @@
 ---
-  - name: Install Redis
-    apt:
-      name: redis-server
-      state: latest
+- name: Add Redis PPA repository
+  apt_repository:
+    repo: "ppa:chris-lea/redis-server"
+    update_cache: yes
 
-  - name: Restart Redis service
-    service: name="redis" state=restarted
+- name: Install Redis
+  apt:
+    name: redis-server
+    state: latest
+
+- name: Restart Redis service
+  service: name="redis" state=restarted

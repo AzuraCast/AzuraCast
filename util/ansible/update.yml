@@ -17,7 +17,7 @@
     - { role: supervisord, when: update_revision|int < 13 }
     - { role: mariadb, when: update_revision|int < 15 }
     - { role: nginx, when: update_revision|int < 55 }
-    - { role: redis, when: update_revision|int < 14 }
+    - { role: redis, when: update_revision|int < 57 }
     - { role: php, when: update_revision|int < 50 }
     - composer
     - { role: influxdb, when: update_revision|int < 56 }

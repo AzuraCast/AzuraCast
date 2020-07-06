@@ -37,7 +37,7 @@ return [
         $stack->push(GuzzleHttp\Middleware::log(
             $logger,
             new GuzzleHttp\MessageFormatter('HTTP client {method} call to {uri} produced response {code}'),
-            Monolog\Logger::DEBUG
+            \Psr\Log\LogLevel::DEBUG
         ));
 
         return new GuzzleHttp\Client([

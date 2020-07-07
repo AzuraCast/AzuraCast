@@ -49,7 +49,7 @@ jobs:
       - name: Pull latest translations.
         uses: crowdin/github-action@1.0.6
         with:
-          upload_translations: true
+          upload_sources: true
           download_translations: true
           export_only_approved: false
           push_translations: false

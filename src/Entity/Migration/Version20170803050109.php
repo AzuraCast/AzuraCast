@@ -15,7 +15,7 @@ final class Version20170803050109 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // Empty migration accidentally committed.
-        $this->addSql('SELECT 1');
+        $this->addSql('-- "Ignore Migration"');
     }
 
     /**
@@ -24,6 +24,6 @@ final class Version20170803050109 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // Empty migration accidentally committed.
-        $this->addSql('SELECT 1');
+        $this->addSql('-- "Ignore Migration"');
     }
 }

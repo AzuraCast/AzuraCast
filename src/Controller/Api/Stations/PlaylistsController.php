@@ -384,7 +384,7 @@ class PlaylistsController extends AbstractScheduledEntityController
         ));
     }
 
-    protected function viewRecord($record, \App\Http\ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

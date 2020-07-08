@@ -141,7 +141,7 @@ class Customization
      */
     public function getVueLocale(): string
     {
-        return json_encode(substr($this->getLocale(), 0, 5));
+        return json_encode(substr($this->getLocale(), 0, 5), JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -149,7 +149,7 @@ class Customization
      *
      * @return string
      */
-    public function getTheme()
+    public function getTheme(): string
     {
         if ($this->user !== null && !empty($this->user->getTheme())) {
             return $this->user->getTheme();
@@ -189,7 +189,7 @@ class Customization
      *
      * @return string
      */
-    public function getCustomPublicCss()
+    public function getCustomPublicCss(): string
     {
         return (string)$this->settingsRepo->getSetting(Entity\Settings::CUSTOM_CSS_PUBLIC, '');
     }
@@ -199,7 +199,7 @@ class Customization
      *
      * @return string
      */
-    public function getCustomPublicJs()
+    public function getCustomPublicJs(): string
     {
         return (string)$this->settingsRepo->getSetting(Entity\Settings::CUSTOM_JS_PUBLIC, '');
     }
@@ -209,7 +209,7 @@ class Customization
      *
      * @return string
      */
-    public function getCustomInternalCss()
+    public function getCustomInternalCss(): string
     {
         return (string)$this->settingsRepo->getSetting(Entity\Settings::CUSTOM_CSS_INTERNAL, '');
     }

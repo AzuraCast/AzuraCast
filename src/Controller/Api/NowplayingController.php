@@ -139,17 +139,17 @@ class NowplayingController implements EventSubscriberInterface
         return $response->withJson($np);
     }
 
-    public function loadFromCache(LoadNowPlaying $event)
+    public function loadFromCache(LoadNowPlaying $event): void
     {
         $event->setNowPlaying((array)$this->cache->get(Entity\Settings::NOWPLAYING), 'redis');
     }
 
-    public function loadFromSettings(LoadNowPlaying $event)
+    public function loadFromSettings(LoadNowPlaying $event): void
     {
         $event->setNowPlaying((array)$this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING), 'settings');
     }
 
-    public function loadFromStations(LoadNowPlaying $event)
+    public function loadFromStations(LoadNowPlaying $event): void
     {
         $nowplaying_db = $this->em->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
             ->getArrayResult();

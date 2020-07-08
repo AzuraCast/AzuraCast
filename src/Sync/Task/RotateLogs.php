@@ -29,7 +29,7 @@ class RotateLogs extends AbstractTask
         $this->supervisor = $supervisor;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         // Rotate logs for individual stations.
         $station_repo = $this->em->getRepository(Entity\Station::class);

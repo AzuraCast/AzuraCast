@@ -116,7 +116,7 @@ class Dispatcher implements EventSubscriberInterface
      * @return TestHandler
      * @throws Exception
      */
-    public function testDispatch(Entity\Station $station, Entity\StationWebhook $webhook)
+    public function testDispatch(Entity\Station $station, Entity\StationWebhook $webhook): TestHandler
     {
         $webhook_type = $webhook->getType();
 

@@ -7,8 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class SettingsRepository extends Repository
 {
-    /** @var array */
-    protected static $cachedSettings;
+    protected static array $cachedSettings;
 
     /**
      * @param array $settings
@@ -111,7 +110,7 @@ class SettingsRepository extends Repository
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
-        if (!self::$cachedSettings || !$cached) {
+        if (!isset(self::$cachedSettings) || !$cached) {
             $settings_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC')
                 ->getArrayResult();
 

@@ -20,7 +20,7 @@ return [
                     ],
                 ],
 
-                \App\Entity\Settings::GEOLITE_LICENSE_KEY => [
+                App\Entity\Settings::GEOLITE_LICENSE_KEY => [
                     'text',
                     [
                         'label' => __('MaxMind License Key'),

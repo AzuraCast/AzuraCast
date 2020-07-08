@@ -16,7 +16,7 @@ return [
                         'label' => __('Name'),
                         'class' => 'half-width',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'email' => [
@@ -27,7 +27,7 @@ return [
                         'required' => true,
                         'autocomplete' => 'off',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
             ],
@@ -45,7 +45,7 @@ return [
                         'label' => __('Current Password'),
                         'autocomplete' => 'off',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
                 'new_password' => [
@@ -56,7 +56,7 @@ return [
                         'class' => 'strength',
                         'confirm' => 'new_password_confirm',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
                 'new_password_confirm' => [
@@ -65,7 +65,7 @@ return [
                         'label' => __('Confirm New Password'),
                         'autocomplete' => 'new-password',
                         'form_group_class' => 'col-md-4',
-                    ]
+                    ],
                 ],
 
             ],
@@ -83,7 +83,7 @@ return [
                         'options' => $locale_select,
                         'default' => 'default',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'theme' => [
@@ -91,12 +91,12 @@ return [
                     [
                         'label' => __('Site Theme'),
                         'choices' => [
-                            'light' => __('Light').' ('.__('Default').')',
+                            'light' => __('Light') . ' (' . __('Default') . ')',
                             'dark' => __('Dark'),
                         ],
-                        'default' => \App\Customization::DEFAULT_THEME,
+                        'default' => App\Customization::DEFAULT_THEME,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
             ],
@@ -110,7 +110,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
-                    ]
+                    ],
                 ],
             ],
         ],

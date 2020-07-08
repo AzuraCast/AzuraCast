@@ -34,7 +34,6 @@ class ReprocessMediaCommand extends CommandAbstract
         }
 
         foreach ($stations as $station) {
-            /** @var Entity\Station $station */
             $io->writeLn('Processing media for station: ' . $station->getName());
 
             foreach ($station->getMedia() as $media) {

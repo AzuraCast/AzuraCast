@@ -14,10 +14,6 @@ final class Version20161006030903 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('DROP TABLE IF EXISTS user_manages_station');
 
         $this->addSql('DELETE FROM role_has_actions WHERE role_id NOT IN (SELECT id FROM role)');
@@ -35,10 +31,6 @@ final class Version20161006030903 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('CREATE TABLE user_manages_station (user_id INT NOT NULL, station_id INT NOT NULL, INDEX IDX_2453B56BA76ED395 (user_id), INDEX IDX_2453B56B21BDB235 (station_id), PRIMARY KEY(user_id, station_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE user_manages_station ADD CONSTRAINT FK_2453B56B21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE user_manages_station ADD CONSTRAINT FK_2453B56BA76ED395 FOREIGN KEY (user_id) REFERENCES users (uid) ON DELETE CASCADE');

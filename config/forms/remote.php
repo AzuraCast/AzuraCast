@@ -26,9 +26,9 @@ return [
                         'label' => __('Remote Station Type'),
                         'required' => true,
                         'choices' => [
-                            \App\Radio\Adapters::REMOTE_SHOUTCAST1 => 'SHOUTcast v1',
-                            \App\Radio\Adapters::REMOTE_SHOUTCAST2 => 'SHOUTcast v2',
-                            \App\Radio\Adapters::REMOTE_ICECAST => 'Icecast v2.4+',
+                            App\Radio\Adapters::REMOTE_SHOUTCAST1 => 'SHOUTcast v1',
+                            App\Radio\Adapters::REMOTE_SHOUTCAST2 => 'SHOUTcast v2',
+                            App\Radio\Adapters::REMOTE_ICECAST => 'Icecast v2.4+',
                         ],
                         'form_group_class' => 'col-sm-12',
                     ],

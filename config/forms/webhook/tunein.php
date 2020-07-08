@@ -1,7 +1,7 @@
 <?php
 /** @var array $app_settings */
 /** @var array $triggers */
-/** @var \App\Http\Router $router */
+/** @var App\Http\Router $router */
 
 return [
     'method' => 'post',
@@ -18,7 +18,7 @@ return [
                         'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'station_id' => [
@@ -29,7 +29,7 @@ return [
                         'belongsTo' => 'config',
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'partner_id' => [
@@ -39,7 +39,7 @@ return [
                         'belongsTo' => 'config',
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'partner_key' => [
@@ -49,7 +49,7 @@ return [
                         'belongsTo' => 'config',
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'submit' => [
@@ -59,10 +59,10 @@ return [
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
-            ]
-        ]
+            ],
+        ],
     ],
 ];

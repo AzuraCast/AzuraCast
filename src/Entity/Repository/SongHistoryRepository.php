@@ -75,7 +75,6 @@ class SongHistoryRepository extends Repository
         $queue = $this->getUpcomingQueue($station);
 
         foreach ($queue as $sh) {
-            /** @var Entity\SongHistory $sh */
             if ($sh->showInApis()) {
                 return $sh->api(new Entity\Api\SongHistory, $apiUtils, $baseUrl);
             }

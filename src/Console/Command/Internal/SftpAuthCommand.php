@@ -6,6 +6,9 @@ use App\Entity\SftpUser;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use const JSON_NUMERIC_CHECK;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_SLASHES;
 
 class SftpAuthCommand extends CommandAbstract
 {
@@ -41,11 +44,11 @@ class SftpAuthCommand extends CommandAbstract
                 ],
             ];
 
-            $io->write(json_encode($row, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_NUMERIC_CHECK));
+            $io->write(json_encode($row, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK));
             return 0;
         }
 
-        $io->write(json_encode(['username' => ''], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES));
+        $io->write(json_encode(['username' => ''], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES));
         return 1;
     }
 }

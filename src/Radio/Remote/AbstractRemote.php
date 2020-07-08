@@ -3,6 +3,7 @@ namespace App\Radio\Remote;
 
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
@@ -66,7 +67,7 @@ abstract class AbstractRemote
             $this->em->flush();
 
             return $np->merge($npRemote);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 

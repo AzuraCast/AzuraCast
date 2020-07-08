@@ -2,7 +2,6 @@
 namespace App\Console\Command;
 
 use App\Entity;
-use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SetSettingCommand extends CommandAbstract
@@ -23,7 +22,7 @@ class SetSettingCommand extends CommandAbstract
         }
 
         if (0 === strpos($settingValue, '{')) {
-            $settingValue = json_decode($settingValue, true);
+            $settingValue = json_decode($settingValue, true, 512, JSON_THROW_ON_ERROR);
         }
 
         $settings_repo->setSetting($settingKey, $settingValue);

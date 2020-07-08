@@ -5,7 +5,7 @@
 
 use App\Acl;
 
-return function (\App\Event\BuildAdminMenu $e) {
+return function (App\Event\BuildAdminMenu $e) {
     $router = $e->getRouter();
 
     $e->merge([

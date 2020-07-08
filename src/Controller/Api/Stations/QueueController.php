@@ -102,11 +102,14 @@ class QueueController extends AbstractStationApiCrudController
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}}
      * )
+     *
+     * @param mixed $record
+     * @param ServerRequest $request
+     *
+     * @return Entity\Api\QueuedSong
+     * @throws App\Exception
      */
 
-    /**
-     * @inheritdoc
-     */
     protected function viewRecord($record, ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {

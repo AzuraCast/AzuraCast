@@ -2,6 +2,9 @@
 namespace App\Service;
 
 use App\Logger;
+use Exception;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class AudioWaveform
@@ -9,7 +12,7 @@ class AudioWaveform
     public static function getWaveformFor(string $path): array
     {
         if (!file_exists($path)) {
-            throw new \InvalidArgumentException(sprintf('File at path "%s" not found.', $path));
+            throw new InvalidArgumentException(sprintf('File at path "%s" not found.', $path));
         }
 
         $jsonOutPath = tempnam(sys_get_temp_dir(), 'awf') . '.json';
@@ -32,9 +35,9 @@ class AudioWaveform
             $process->mustRun();
 
             if (!file_exists($jsonOutPath)) {
-                throw new \RuntimeException('Audio waveform JSON was not generated.');
+                throw new RuntimeException('Audio waveform JSON was not generated.');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $logger = Logger::getInstance();
             $logger->error('Audiowaveform exception: ' . $e->getMessage());
 

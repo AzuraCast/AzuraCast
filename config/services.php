@@ -37,7 +37,7 @@ return [
         $stack->push(GuzzleHttp\Middleware::log(
             $logger,
             new GuzzleHttp\MessageFormatter('HTTP client {method} call to {uri} produced response {code}'),
-            \Psr\Log\LogLevel::DEBUG
+            Psr\Log\LogLevel::DEBUG
         ));
 
         return new GuzzleHttp\Client([
@@ -89,7 +89,7 @@ return [
 
         try {
             // Fetch and store entity manager.
-            $config = \Doctrine\ORM\Tools\Setup::createConfiguration(
+            $config = Doctrine\ORM\Tools\Setup::createConfiguration(
                 Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS,
                 $settings->getTempDirectory() . '/proxies',
                 $doctrineCache
@@ -199,7 +199,9 @@ return [
             if ((int)$num === 1) {
                 return $word;
             }
-            return Doctrine\Common\Inflector\Inflector::pluralize($word);
+
+            $inflector = Doctrine\Inflector\InflectorFactory::create()->build();
+            return $inflector->pluralize($word);
         });
         $view->registerFunction('truncate', function ($text, $length = 80) {
             return App\Utilities::truncateText($text, $length);

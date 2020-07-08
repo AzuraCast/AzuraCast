@@ -12,9 +12,6 @@ final class Version20171214104226 extends AbstractMigration
 {
     public function preup(Schema $schema): void
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         // Deleting duplicate user accounts to avoid constraint errors in subsequent update
         $users = $this->connection->fetchAll('SELECT * FROM users ORDER BY uid ASC');
         $emails = [];
@@ -36,10 +33,6 @@ final class Version20171214104226 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('DROP INDEX email_idx ON users');
     }
 }

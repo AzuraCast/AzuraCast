@@ -1,16 +1,15 @@
 <?php
 namespace App;
 
-use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
-use App\Http\Response;
-use App\Http\ServerRequest;
 use DI;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Invoker;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
+use Slim\App;
+use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\MiddlewareDispatcherInterface;
 use Slim\Interfaces\RouteCollectorInterface;
@@ -18,9 +17,6 @@ use Slim\Interfaces\RouteResolverInterface;
 
 class AppFactory
 {
-    /**
-     * @inheritDoc
-     */
     public static function create($autoloader = null, $appSettings = [], $diDefinitions = []): App
     {
         // Register Annotation autoloader
@@ -54,13 +50,11 @@ class AppFactory
 
         Logger::setInstance($di->get(LoggerInterface::class));
 
-        // Set Response/Request decoratorclasses.
-        ServerRequestFactory::setServerRequestClass(ServerRequest::class);
-        ResponseFactory::setResponseClass(Response::class);
+        ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
+        ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory);
 
         $app = self::createFromContainer($di);
         $di->set(App::class, $app);
-        $di->set(\Slim\App::class, $app);
 
         self::updateRouteHandling($app);
         self::buildRoutes($app);
@@ -127,9 +121,6 @@ class AppFactory
         return $settings;
     }
 
-    /**
-     * @param Settings $settings
-     */
     protected static function applyPhpSettings(Settings $settings): void
     {
         ini_set('display_startup_errors', !$settings->isProduction() ? 1 : 0);
@@ -146,13 +137,6 @@ class AppFactory
         session_cache_limiter('');
     }
 
-    /**
-     * @param Settings $settings
-     * @param array $diDefinitions
-     *
-     * @return DI\Container
-     * @throws \Exception
-     */
     protected static function buildContainer(Settings $settings, array $diDefinitions = []): DI\Container
     {
         $containerBuilder = new DI\ContainerBuilder;
@@ -179,11 +163,6 @@ class AppFactory
         return $containerBuilder->build();
     }
 
-    /**
-     * @param ContainerInterface $container
-     *
-     * @return \App\App
-     */
     protected static function createFromContainer(ContainerInterface $container): App
     {
         $responseFactory = $container->has(ResponseFactoryInterface::class)

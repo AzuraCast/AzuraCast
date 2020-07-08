@@ -75,8 +75,8 @@ return [
                     [
                         'label' => __('Time Zone'),
                         'description' => __('Scheduled playlists and other timed items will be controlled by this time zone.'),
-                        'options' => \App\Timezone::fetchSelect(),
-                        'default' => \App\Customization::DEFAULT_TIMEZONE,
+                        'options' => App\Timezone::fetchSelect(),
+                        'default' => App\Customization::DEFAULT_TIMEZONE,
                         'form_group_class' => 'col-sm-12',
                     ],
                 ],

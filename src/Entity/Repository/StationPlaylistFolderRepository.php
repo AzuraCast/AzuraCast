@@ -17,10 +17,10 @@ class StationPlaylistFolderRepository extends Repository
         string $path
     ): void {
         if (strpos($path, '://') !== false) {
-            [$path_prefix, $path] = explode('://', $path, 2);
+            [, $path] = explode('://', $path, 2);
         }
 
-        $clearExisting = $this->em->createQuery(/** @lang DQL */ 'DELETE
+        $this->em->createQuery(/** @lang DQL */ 'DELETE
             FROM App\Entity\StationPlaylistFolder spf 
             WHERE spf.station = :station AND spf.path = :path')
             ->setParameter('station', $station)

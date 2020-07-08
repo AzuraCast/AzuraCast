@@ -3,6 +3,7 @@ namespace App\Doctrine;
 
 use Closure;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
+use InvalidArgumentException;
 
 class DecoratedEntityManager extends EntityManagerDecorator
 {
@@ -39,7 +40,7 @@ class DecoratedEntityManager extends EntityManagerDecorator
         $freshValue = $this->wrapped->find($metadata->getName(), $metadata->getIdentifierValues($entity));
 
         if (!$freshValue) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Object of class %s cannot be refetched.', get_class($entity))
             );
         }

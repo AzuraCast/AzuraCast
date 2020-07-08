@@ -2,7 +2,6 @@
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -12,12 +11,10 @@ class DeleteArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
         Entity\Repository\StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $fs = $filesystem->getForStation($station);
 
         $media = $mediaRepo->find($media_id, $station);
         if (!($media instanceof Entity\StationMedia)) {

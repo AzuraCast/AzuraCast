@@ -21,7 +21,7 @@ class Analytics extends AbstractTask
         $this->influx = $influx;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $analytics_level = $this->settingsRepo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
 

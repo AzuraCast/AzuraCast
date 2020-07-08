@@ -6,5 +6,5 @@ class StationProfile extends NowPlaying
     public StationServiceStatus $services;
 
     /** @var StationSchedule[] */
-    public $schedule = [];
+    public array $schedule = [];
 }

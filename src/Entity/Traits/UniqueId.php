@@ -2,6 +2,7 @@
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use OpenApi\Annotations as OA;
 
 /**
@@ -31,9 +32,9 @@ trait UniqueId
      *
      * @param bool $force_new
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function generateUniqueId($force_new = false)
+    public function generateUniqueId($force_new = false): void
     {
         if (empty($this->unique_id) || $force_new) {
             $this->unique_id = bin2hex(random_bytes(12));

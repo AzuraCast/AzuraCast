@@ -14,10 +14,6 @@ final class Version20170510082607 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station ADD radio_media_dir VARCHAR(255) DEFAULT NULL, ADD radio_playlists_dir VARCHAR(255) DEFAULT NULL, ADD radio_config_dir VARCHAR(255) DEFAULT NULL');
     }
 
@@ -41,10 +37,6 @@ final class Version20170510082607 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station DROP radio_media_dir, DROP radio_playlists_dir, DROP radio_config_dir');
     }
 }

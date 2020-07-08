@@ -3,6 +3,7 @@ namespace App\Event\Radio;
 
 use App\Entity;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildQueue extends Event
@@ -17,7 +18,7 @@ class BuildQueue extends Event
     {
         $this->station = $station;
 
-        $this->now = $now ?? Chronos::now(new \DateTimeZone($station->getTimezone()));
+        $this->now = $now ?? Chronos::now(new DateTimeZone($station->getTimezone()));
     }
 
     public function getStation(): Entity\Station

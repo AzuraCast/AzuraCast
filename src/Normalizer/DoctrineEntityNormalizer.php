@@ -15,6 +15,7 @@ use InvalidArgumentException;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -187,7 +188,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      */
     public function supportsNormalization($data, string $format = null)
     {
-        return $this->_isEntity($data);
+        return $this->isEntity($data);
     }
 
     /**
@@ -195,7 +196,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      */
     public function supportsDenormalization($data, $type, string $format = null)
     {
-        return $this->_isEntity($type);
+        return $this->isEntity($type);
     }
 
     /**
@@ -263,7 +264,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                     $prop_name));
             }
 
-            $prop_val = $this->_get($object, $prop_name);
+            $prop_val = $this->getProperty($object, $prop_name);
 
             if ($prop_val instanceof Collection) {
                 $return_val = [];
@@ -274,7 +275,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                             $id_field = $obj_meta->identifier;
 
                             if ($id_field && count($id_field) === 1) {
-                                $return_val[] = $this->_get($val_obj, $id_field[0]);
+                                $return_val[] = $this->getProperty($val_obj, $id_field[0]);
                             }
                         } else {
                             $return_val[] = $this->serializer->normalize($val_obj, $format, $context);
@@ -287,7 +288,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
             return $this->serializer->normalize($prop_val, $format, $context);
         }
 
-        $value = $this->_get($object, $prop_name);
+        $value = $this->getProperty($object, $prop_name);
         if ($value instanceof \App\Collection) {
             $value = $value->all();
         }
@@ -301,16 +302,16 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return mixed|null
      */
-    protected function _get($entity, $key)
+    protected function getProperty($entity, $key)
     {
         // Default to "getStatus", "getConfig", etc...
-        $getter_method = $this->_getMethodName($key, 'get');
+        $getter_method = $this->getMethodName($key, 'get');
         if (method_exists($entity, $getter_method)) {
             return $entity->{$getter_method}();
         }
 
         // but also allow "isEnabled" instead of "getIsEnabled"
-        $raw_method = $this->_getMethodName($key);
+        $raw_method = $this->getMethodName($key);
         if (method_exists($entity, $raw_method)) {
             return $entity->{$raw_method}();
         }
@@ -326,7 +327,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return string
      */
-    protected function _getMethodName($var, $prefix = ''): string
+    protected function getMethodName($var, $prefix = ''): string
     {
         return $this->inflector->camelize(($prefix ? $prefix . '_' : '') . $var);
     }
@@ -346,12 +347,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
             if ('one' === $mapping['type']) {
                 if (empty($value)) {
-                    $this->_set($object, $field, null);
+                    $this->setProperty($object, $field, null);
                 } elseif (($field_item = $this->em->find($mapping['entity'], $value)) instanceof $mapping['entity']) {
-                    $this->_set($object, $field, $field_item);
+                    $this->setProperty($object, $field, $field_item);
                 }
             } elseif ($mapping['is_owning_side']) {
-                $collection = $this->_get($object, $field);
+                $collection = $this->getProperty($object, $field);
 
                 if ($collection instanceof Collection) {
                     $collection->clear();
@@ -367,7 +368,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                 }
             }
         } else {
-            $this->_set($object, $field, $value);
+            $this->setProperty($object, $field, $value);
         }
     }
 
@@ -378,9 +379,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return mixed|null
      */
-    protected function _set($entity, $key, $value)
+    protected function setProperty($entity, $key, $value)
     {
-        $method_name = $this->_getMethodName($key, 'set');
+        $method_name = $this->getMethodName($key, 'set');
 
         if (!method_exists($entity, $method_name)) {
             return null;
@@ -390,7 +391,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         $first_param = $method->getParameters()[0];
 
         if ($first_param->hasType()) {
-            /** @var \ReflectionNamedType $firstParamTypeObj */
+            /** @var ReflectionNamedType $firstParamTypeObj */
             $firstParamTypeObj = $first_param->getType();
             $first_param_type = $firstParamTypeObj->getName();
 
@@ -447,7 +448,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return bool
      */
-    protected function _isEntity($class): bool
+    protected function isEntity($class): bool
     {
         if (is_object($class)) {
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)

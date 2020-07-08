@@ -74,11 +74,8 @@ class Backup extends AbstractTask
             $outputPath ?? 'php://temp'
         );
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function run($force = false): void
+    
+    public function run(bool $force = false): void
     {
         $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
         if (!$backup_enabled) {

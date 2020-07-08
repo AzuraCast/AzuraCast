@@ -141,7 +141,10 @@ class StreamersController extends AbstractScheduledEntityController
     }
 
     /**
-     * @inheritDoc
+     * @param mixed $record
+     * @param ServerRequest $request
+     *
+     * @return array|mixed
      */
     protected function viewRecord($record, ServerRequest $request)
     {

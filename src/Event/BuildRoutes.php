@@ -6,10 +6,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildRoutes extends Event
 {
-    /**
-     * @var App
-     */
-    protected $app;
+    protected App $app;
 
     public function __construct(App $app)
     {

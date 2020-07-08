@@ -159,6 +159,7 @@ class ServicesController
      *
      * @param ServerRequest $request
      * @param Response $response
+     * @param AutoDJ $autodj
      * @param string $do
      *
      * @return ResponseInterface

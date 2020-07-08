@@ -12,7 +12,7 @@ class Xml
      *
      * @return array
      */
-    public static function xmlToArray($xml)
+    public static function xmlToArray($xml): array
     {
         $values = $index = $array = [];
         $parser = xml_parser_create();
@@ -22,7 +22,7 @@ class Xml
         xml_parser_free($parser);
         $i = 0;
         $name = $values[$i]['tag'];
-        $array[$name] = isset($values[$i]['attributes']) ? $values[$i]['attributes'] : '';
+        $array[$name] = $values[$i]['attributes'] ?? '';
         $array[$name] = self::_struct_to_array($values, $i);
 
         return $array;
@@ -43,7 +43,7 @@ class Xml
         return $xml_info->asXML();
     }
 
-    protected static function _struct_to_array($values, &$i)
+    protected static function _struct_to_array($values, &$i): array
     {
         $child = [];
         if (isset($values[$i]['value'])) {
@@ -59,10 +59,7 @@ class Xml
                 case 'complete':
                     $name = $values[$i]['tag'];
                     if (!empty($name)) {
-                        $child[$name] = ($values[$i]['value']) ? ($values[$i]['value']) : '';
-                        if (isset($values[$i]['attributes'])) {
-                            $child[$name] = $values[$i]['attributes'];
-                        }
+                        $child[$name] = $values[$i]['attributes'] ?? (($values[$i]['value']) ?: '');
                     }
                     break;
 
@@ -81,17 +78,18 @@ class Xml
         return $child;
     }
 
-    protected static function _arr_to_xml($array, &$xml)
+    /** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
+    protected static function _arr_to_xml($array, &$xml): void
     {
         foreach ((array)$array as $key => $value) {
             if (is_array($value)) {
                 $key = is_numeric($key) ? "item$key" : $key;
-                $subnode = $xml->addChild("$key");
+                $subnode = $xml->addChild((string)$key);
 
                 self::_arr_to_xml($value, $subnode);
             } else {
                 $key = is_numeric($key) ? "item$key" : $key;
-                $xml->addChild("$key", htmlspecialchars($value));
+                $xml->addChild((string)$key, htmlspecialchars($value));
             }
         }
     }

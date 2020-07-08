@@ -9,6 +9,7 @@ use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use App\Session\Flash;
 use App\Sync\Task\UpdateGeoLiteDatabase;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class InstallGeoLiteController
@@ -28,7 +29,7 @@ class InstallGeoLiteController
             try {
                 $syncTask->updateDatabase();
                 $flash->addMessage(__('Changes saved.'), Flash::SUCCESS);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $flash->addMessage(__(
                     'An error occurred while downloading the GeoLite database: %s',
                     $e->getMessage() . ' (' . $e->getFile() . ' L' . $e->getLine() . ')'

@@ -14,8 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class InjectRouter implements MiddlewareInterface
 {
-    /** @var RouterInterface */
-    protected $router;
+    protected RouterInterface $router;
 
     public function __construct(RouterInterface $router)
     {

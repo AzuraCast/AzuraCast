@@ -3,6 +3,7 @@ namespace App\Controller\Stations;
 
 use App\Exception\AdvancedFeatureException;
 use App\Exception\StationUnsupportedException;
+use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Backend\Liquidsoap;
@@ -94,7 +95,7 @@ class EditLiquidsoapConfigController
         }
 
         $settings = $station->getBackendConfig();
-        $form = new \App\Form\Form($formConfig, ['backend_config' => $settings->all()]);
+        $form = new Form($formConfig, ['backend_config' => $settings->all()]);
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             $data = $form->getValues();

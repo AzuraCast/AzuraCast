@@ -4,7 +4,6 @@ namespace App\Doctrine;
 use App\Normalizer\DoctrineEntityNormalizer;
 use App\Settings;
 use Closure;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Log\LoggerInterface;
@@ -12,30 +11,18 @@ use Symfony\Component\Serializer\Serializer;
 
 class Repository
 {
-    /** @var EntityManager */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    /** @var string */
-    protected $entityClass;
+    protected string $entityClass;
 
-    /** @var EntityRepository */
-    protected $repository;
+    protected EntityRepository $repository;
 
-    /** @var Serializer */
-    protected $serializer;
+    protected Serializer $serializer;
 
-    /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param Serializer $serializer
-     * @param Settings $settings
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
@@ -47,10 +34,10 @@ class Repository
         $this->settings = $settings;
         $this->logger = $logger;
 
-        if (!$this->entityClass) {
+        if (!isset($this->entityClass)) {
             $this->entityClass = $this->getEntityClass();
         }
-        if (!$this->repository) {
+        if (!isset($this->repository)) {
             $this->repository = $em->getRepository($this->entityClass);
         }
     }

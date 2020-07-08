@@ -14,26 +14,21 @@ use Psr\Http\Message\ResponseInterface;
 
 class Paginator
 {
-    /** @var Query */
-    protected $query;
+    protected Query $query;
 
-    /** @var Router */
-    protected $router;
+    protected Router $router;
 
-    /** @var int */
-    protected $current_page = 1;
+    protected int $current_page = 1;
 
-    /** @var int */
-    protected $per_page = 15;
+    protected int $per_page = 15;
 
-    /** @var int */
-    protected $max_per_page = 50;
+    protected int $max_per_page = 50;
 
     /** @var bool Whether the current request is from jQuery Bootgrid */
-    protected $is_bootgrid = false;
+    protected bool $is_bootgrid = false;
 
     /** @var bool Whether to show pagination controls. */
-    protected $is_disabled = false;
+    protected bool $is_disabled = false;
 
     /** @var callable|null A callable postprocessor that can be run on each result. */
     protected $postprocessor;
@@ -126,7 +121,7 @@ class Paginator
         $this->setRouter($router);
     }
 
-    public function setPostprocessor(callable $postprocessor)
+    public function setPostprocessor(callable $postprocessor): void
     {
         $this->postprocessor = $postprocessor;
     }
@@ -202,7 +197,7 @@ class Paginator
         ]);
     }
 
-    public function getPaginator()
+    public function getPaginator(): DoctrinePaginator
     {
         static $paginator;
 

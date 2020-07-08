@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity;
 
 return [
@@ -15,12 +16,12 @@ return [
                         'label' => __('Base Theme for Public Pages'),
                         'description' => __('Select a theme to use as a base for station public pages and the login page.'),
                         'choices' => [
-                            'light' => __('Light').' ('.__('Default').')',
+                            'light' => __('Light') . ' (' . __('Default') . ')',
                             'dark' => __('Dark'),
                         ],
-                        'default' => \App\Customization::DEFAULT_THEME,
+                        'default' => App\Customization::DEFAULT_THEME,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::HIDE_ALBUM_ART => [
@@ -32,7 +33,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::HOMEPAGE_REDIRECT_URL => [
@@ -42,7 +43,7 @@ return [
                         'description' => __('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.'),
                         'default' => '',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::DEFAULT_ALBUM_ART_URL => [
@@ -64,7 +65,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::CUSTOM_CSS_PUBLIC => [
@@ -74,9 +75,11 @@ return [
                         'description' => __('This CSS will be applied to the station public pages and login page.'),
                         'spellcheck' => 'false',
                         'class' => 'css-editor',
-                        'filter' => function($val) { return strip_tags($val); },
+                        'filter' => function ($val) {
+                            return strip_tags($val);
+                        },
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::CUSTOM_JS_PUBLIC => [
@@ -86,9 +89,11 @@ return [
                         'description' => __('This javascript code will be applied to the station public pages and login page.'),
                         'spellcheck' => 'false',
                         'class' => 'js-editor',
-                        'filter' => function($val) { return strip_tags($val); },
+                        'filter' => function ($val) {
+                            return strip_tags($val);
+                        },
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::CUSTOM_CSS_INTERNAL => [
@@ -98,7 +103,9 @@ return [
                         'description' => __('This CSS will be applied to the main management pages, like this one.'),
                         'spellcheck' => 'false',
                         'class' => 'css-editor',
-                        'filter' => function($val) { return strip_tags($val); },
+                        'filter' => function ($val) {
+                            return strip_tags($val);
+                        },
                         'form_group_class' => 'col-sm-12',
                     ],
                 ],
@@ -110,10 +117,10 @@ return [
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
-            ]
+            ],
         ],
     ],
 ];

@@ -98,7 +98,7 @@ class FilesController extends AbstractStationApiCrudController
     {
         $station = $this->getStation($request);
 
-        $body = $request->getParsedBody();
+        $request->getParsedBody();
 
         // Convert the body into an UploadFile API entity first.
         /** @var Entity\Api\UploadFile $api_record */

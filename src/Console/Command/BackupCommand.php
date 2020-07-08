@@ -60,7 +60,7 @@ class BackupCommand extends CommandAbstract
         $conn = $em->getConnection();
         $connParams = $conn->getParams();
 
-        $process = $this->passThruProcess(
+        $this->passThruProcess(
             $io,
             'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
             $tmp_dir_mariadb,

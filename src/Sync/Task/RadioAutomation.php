@@ -35,7 +35,7 @@ class RadioAutomation extends AbstractTask
      *
      * @param bool $force
      */
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         // Check all stations for automation settings.
         // Use this to avoid detached entity errors.

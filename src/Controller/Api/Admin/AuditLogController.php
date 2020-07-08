@@ -65,8 +65,8 @@ class AuditLogController
             foreach ($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
                 $changes[] = [
                     'field' => $fieldName,
-                    'from' => json_encode($fieldPrevious, JSON_PRETTY_PRINT),
-                    'to' => json_encode($fieldNew, JSON_PRETTY_PRINT),
+                    'from' => json_encode($fieldPrevious, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
+                    'to' => json_encode($fieldNew, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
                 ];
             }
 

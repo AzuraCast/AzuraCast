@@ -3,7 +3,6 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Utilities;
-use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ListSettingsCommand extends CommandAbstract

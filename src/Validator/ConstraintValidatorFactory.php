@@ -8,19 +8,10 @@ use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 
 class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
 {
-    /**
-     * @var array
-     */
-    protected $validators = [];
+    protected array $validators = [];
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ContainerInterface $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;

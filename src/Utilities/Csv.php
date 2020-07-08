@@ -11,20 +11,17 @@ class Csv
      *
      * @return string
      */
-    public static function arrayToCsv($table_data, $headers_first_row = true)
+    public static function arrayToCsv($table_data, $headers_first_row = true): string
     {
         $final_display = [];
         $row_count = 0;
         foreach ($table_data as $table_row) {
             $row_count++;
-            $col_count = 0;
-
             $header_row = [];
             $body_row = [];
 
             foreach ($table_row as $table_col => $table_val) {
-                $col_count++;
-                if (!$headers_first_row && $row_count == 1) {
+                if (!$headers_first_row && $row_count === 1) {
                     $header_row[] = '"' . str_replace('"', '""', $table_col) . '"';
                 }
 

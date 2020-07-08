@@ -227,7 +227,7 @@ class DashboardController
         }
 
         return [
-            'station' => json_encode($station_metrics),
+            'station' => json_encode($station_metrics, JSON_THROW_ON_ERROR),
             'station_alt' => implode('', $station_metrics_alt),
         ];
     }

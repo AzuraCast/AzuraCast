@@ -4,6 +4,8 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
+use InvalidArgumentException;
 
 class StationScheduleRepository extends Repository
 {
@@ -58,7 +60,7 @@ class StationScheduleRepository extends Repository
             return $this->repository->findBy(['streamer' => $relation]);
         }
 
-        throw new \InvalidArgumentException('Related entity must be a Playlist or Streamer.');
+        throw new InvalidArgumentException('Related entity must be a Playlist or Streamer.');
     }
 
     /**
@@ -70,7 +72,7 @@ class StationScheduleRepository extends Repository
     public function getUpcomingSchedule(Entity\Station $station, Chronos $now = null): array
     {
         if (null === $now) {
-            $now = Chronos::now(new \DateTimeZone($station->getTimezone()));
+            $now = Chronos::now(new DateTimeZone($station->getTimezone()));
         }
 
         $startDate = $now->subDay();

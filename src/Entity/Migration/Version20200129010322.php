@@ -6,6 +6,7 @@ namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use const PASSWORD_ARGON2ID;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -19,9 +20,6 @@ final class Version20200129010322 extends AbstractMigration
 
     public function preUp(Schema $schema): void
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         // Deleting duplicate streamers to avoid constraint errors in subsequent update
         $streamers = $this->connection->fetchAll('SELECT * FROM station_streamers ORDER BY station_id, id ASC');
         $accounts = [];
@@ -51,17 +49,13 @@ final class Version20200129010322 extends AbstractMigration
 
         foreach ($streamers as $row) {
             $this->connection->update('station_streamers', [
-                'streamer_password' => password_hash($row['streamer_password'], \PASSWORD_ARGON2ID),
+                'streamer_password' => password_hash($row['streamer_password'], PASSWORD_ARGON2ID),
             ], ['id' => $row['id']]);
         }
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('DROP INDEX username_unique_idx ON station_streamers');
         $this->addSql('ALTER TABLE station_streamers CHANGE streamer_password streamer_password VARCHAR(50) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_general_ci`');
     }

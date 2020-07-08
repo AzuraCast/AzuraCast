@@ -23,5 +23,5 @@ abstract class AbstractTask
         $this->logger = $logger;
     }
 
-    abstract public function run($force = false): void;
+    abstract public function run(bool $force = false): void;
 }

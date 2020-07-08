@@ -2,6 +2,7 @@
 namespace App\Console\Command;
 
 use App;
+use Exception;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UptimeWaitCommand extends CommandAbstract
@@ -22,7 +23,7 @@ class UptimeWaitCommand extends CommandAbstract
 
             $uptimeWait->waitForRedis();
             $io->progressAdvance();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->error('Error encountered: ' . $e->getMessage() . ' (' . $e->getFile() . ' L' . $e->getLine() . ')');
             return 1;
         }

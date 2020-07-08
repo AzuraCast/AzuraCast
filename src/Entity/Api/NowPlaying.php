@@ -53,7 +53,7 @@ class NowPlaying implements ResolvableUrlInterface
      * @OA\Property
      * @var SongHistory[]
      */
-    public $song_history = [];
+    public array $song_history = [];
 
     /**
      * Debugging information about where the now playing data comes from.
@@ -78,7 +78,7 @@ class NowPlaying implements ResolvableUrlInterface
      */
     public function toArray(): array
     {
-        return json_decode(json_encode($this), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode(json_encode($this, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

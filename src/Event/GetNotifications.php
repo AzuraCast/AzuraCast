@@ -37,7 +37,7 @@ class GetNotifications extends Event
      *
      * @param Notification $notification
      */
-    public function addNotification(Notification $notification)
+    public function addNotification(Notification $notification): void
     {
         $this->notifications[] = $notification;
     }

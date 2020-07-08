@@ -1,7 +1,7 @@
 <?php
 /** @var array $all_stations */
 
-$actions = \App\Acl::listPermissions();
+$actions = App\Acl::listPermissions();
 
 $form_config = [
     'method' => 'post',
@@ -13,7 +13,7 @@ $form_config = [
                 'label' => __('Role Name'),
                 'class' => 'half-width',
                 'required' => true,
-            ]
+            ],
         ],
 
         'actions_global' => [
@@ -22,7 +22,7 @@ $form_config = [
                 'label' => __('System-Wide Permissions'),
                 'choices' => $actions['global'],
                 'class' => 'permission-select',
-            ]
+            ],
         ],
 
     ],
@@ -35,7 +35,7 @@ foreach ($all_stations as $station) {
             'label' => __('Permissions for %s', $station['name']),
             'choices' => $actions['station'],
             'class' => 'permission-select',
-        ]
+        ],
     ];
 }
 
@@ -45,7 +45,7 @@ $form_config['elements']['submit'] = [
         'type' => 'submit',
         'label' => __('Save Changes'),
         'class' => 'btn btn-lg btn-primary',
-    ]
+    ],
 ];
 
 return $form_config;

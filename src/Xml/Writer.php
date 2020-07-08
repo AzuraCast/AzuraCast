@@ -121,7 +121,7 @@ class Writer extends Xml
         }
     }
 
-    protected function _attributesFirst($a, $b)
+    protected function _attributesFirst($a, $b): int
     {
         if (strpos($a, '@') === 0) {
             return -1;

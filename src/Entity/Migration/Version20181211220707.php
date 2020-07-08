@@ -12,19 +12,11 @@ final class Version20181211220707 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE song_history ADD autodj_custom_uri VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE song_history DROP autodj_custom_uri');
     }
 }

@@ -37,7 +37,7 @@ class RadioRequests extends AbstractTask
      *
      * @param bool $force
      */
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         /** @var Entity\Repository\StationRepository $stations */
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();

@@ -6,6 +6,7 @@ use AzuraForms\Field\Time;
 
 class PlaylistTime extends Time
 {
+    /** @noinspection PhpExpressionAlwaysNullInspection */
     public function __construct(AzuraForms\Form $form, $element_name, array $config = [], $group = null)
     {
         parent::__construct($form, $element_name, $config, $group);

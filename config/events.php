@@ -5,7 +5,7 @@ use App\Event;
 use App\Middleware;
 use App\Settings;
 
-return function (\App\EventDispatcher $dispatcher) {
+return function (App\EventDispatcher $dispatcher) {
     $dispatcher->addListener(Event\BuildConsoleCommands::class, function (Event\BuildConsoleCommands $event) {
         $console = $event->getConsole();
         $di = $console->getContainer();
@@ -93,11 +93,11 @@ return function (\App\EventDispatcher $dispatcher) {
     });
 
     // Build default menus
-    $dispatcher->addListener(App\Event\BuildAdminMenu::class, function (\App\Event\BuildAdminMenu $e) {
+    $dispatcher->addListener(App\Event\BuildAdminMenu::class, function (App\Event\BuildAdminMenu $e) {
         call_user_func(include(__DIR__ . '/menus/admin.php'), $e);
     });
 
-    $dispatcher->addListener(App\Event\BuildStationMenu::class, function (\App\Event\BuildStationMenu $e) {
+    $dispatcher->addListener(App\Event\BuildStationMenu::class, function (App\Event\BuildStationMenu $e) {
         call_user_func(include(__DIR__ . '/menus/station.php'), $e);
     });
 

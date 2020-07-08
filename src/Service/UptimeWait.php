@@ -3,17 +3,19 @@ namespace App\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use InfluxDB;
+use Redis;
 
 class UptimeWait
 {
     protected Connection $db;
 
-    protected \Redis $redis;
+    protected Redis $redis;
 
     protected InfluxDB\Client $influx;
 
-    public function __construct(EntityManagerInterface $em, \Redis $redis, InfluxDB\Database $influx)
+    public function __construct(EntityManagerInterface $em, Redis $redis, InfluxDB\Database $influx)
     {
         $this->db = $em->getConnection();
         $this->redis = $redis;
@@ -63,7 +65,7 @@ class UptimeWait
 
             try {
                 return $run();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $lastException = $e;
             }
         }

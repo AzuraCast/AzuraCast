@@ -5,6 +5,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -32,7 +33,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         callable $rowRender
     ): ResponseInterface {
         $station = $request->getStation();
-        $tz = new \DateTimeZone($station->getTimezone());
+        $tz = new DateTimeZone($station->getTimezone());
 
         $params = $request->getQueryParams();
 

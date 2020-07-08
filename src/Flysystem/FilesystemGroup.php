@@ -12,6 +12,7 @@ use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\AbstractCache;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
+use RuntimeException;
 
 class FilesystemGroup extends MountManager
 {
@@ -27,7 +28,7 @@ class FilesystemGroup extends MountManager
     public function upload($local_path, $to, array $config = []): bool
     {
         if (!file_exists($local_path)) {
-            throw new \RuntimeException(sprintf('Source upload file not found at path: %s', $local_path));
+            throw new RuntimeException(sprintf('Source upload file not found at path: %s', $local_path));
         }
 
         $stream = fopen($local_path, 'rb+');

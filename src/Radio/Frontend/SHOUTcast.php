@@ -5,6 +5,7 @@ use App\Entity;
 use App\Logger;
 use App\Settings;
 use App\Utilities;
+use Exception;
 use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
@@ -87,7 +88,7 @@ class SHOUTcast extends AbstractFrontend
             foreach ($otherResults as $otherResult) {
                 $defaultResult = $defaultResult->merge($otherResult);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 

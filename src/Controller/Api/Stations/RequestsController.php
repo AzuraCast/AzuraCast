@@ -47,7 +47,12 @@ class RequestsController
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
      *
-     * @inheritDoc
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     * @throws Exception\InvalidRequestAttribute
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -145,7 +150,12 @@ class RequestsController
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
      *
-     * @inheritDoc
+     * @param ServerRequest $request
+     * @param Response $response
+     * @param mixed $media_id
+     *
+     * @return ResponseInterface
+     * @throws Exception\InvalidRequestAttribute
      */
     public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface
     {

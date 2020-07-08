@@ -16,6 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use Slim\App;
 use Slim\Exception\HttpException;
+use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -49,12 +50,12 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     public function __invoke(
         ServerRequestInterface $request,
-        \Throwable $exception,
+        Throwable $exception,
         bool $displayErrorDetails,
         bool $logErrors,
         bool $logErrorDetails
     ): ResponseInterface {
-        if ($exception instanceof \App\Exception) {
+        if ($exception instanceof Exception) {
             $this->loggerLevel = $exception->getLoggerLevel();
         } elseif ($exception instanceof HttpException) {
             $this->loggerLevel = LogLevel::WARNING;
@@ -223,7 +224,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->withJson($api_response);
         }
 
-        if ($this->showDetailed && class_exists('\Whoops\Run')) {
+        if ($this->showDetailed && class_exists(Run::class)) {
             // Register error-handler.
             $handler = new PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');

@@ -6,7 +6,7 @@ use Cake\Chronos\Chronos;
 
 class HistoryCleanup extends AbstractTask
 {
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $days_to_keep = (int)$this->settingsRepo->getSetting(Entity\Settings::HISTORY_KEEP_DAYS,
             Entity\SongHistory::DEFAULT_DAYS_TO_KEEP);

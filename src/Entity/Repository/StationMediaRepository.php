@@ -17,6 +17,9 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use voku\helper\UTF8;
+use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_SLASHES;
 
 class StationMediaRepository extends Repository
 {
@@ -100,7 +103,7 @@ class StationMediaRepository extends Repository
      */
     public function uploadFile(Entity\Station $station, $tmp_path, $dest): Entity\StationMedia
     {
-        [$dest_prefix, $dest_path] = explode('://', $dest, 2);
+        [, $dest_path] = explode('://', $dest, 2);
 
         $record = $this->repository->findOneBy([
             'station_id' => $station->getId(),
@@ -149,7 +152,7 @@ class StationMediaRepository extends Repository
         // Report any errors found by the file analysis to the logs
         if (!empty($file_info['error'])) {
             $media_warning = 'Warning for uploaded media file "' . pathinfo($media->getPath(),
-                    PATHINFO_FILENAME) . '": ' . json_encode($file_info['error']);
+                    PATHINFO_FILENAME) . '": ' . json_encode($file_info['error'], JSON_THROW_ON_ERROR);
             $this->logger->error($media_warning);
         }
 
@@ -338,7 +341,7 @@ class StationMediaRepository extends Repository
     public function getOrCreate(Entity\Station $station, $path): Entity\StationMedia
     {
         if (strpos($path, '://') !== false) {
-            [$path_prefix, $path] = explode('://', $path, 2);
+            [, $path] = explode('://', $path, 2);
         }
 
         $record = $this->repository->findOneBy([
@@ -352,7 +355,7 @@ class StationMediaRepository extends Repository
             $created = true;
         }
 
-        $processed = $this->processMedia($record);
+        $this->processMedia($record);
 
         if ($created) {
             $this->em->persist($record);
@@ -516,7 +519,7 @@ class StationMediaRepository extends Repository
         $fs = $this->filesystem->getForStation($media->getStation());
         return $fs->put(
             $waveformPath,
-            json_encode($waveform, \JSON_UNESCAPED_SLASHES | \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR)
+            json_encode($waveform, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
         );
     }
 

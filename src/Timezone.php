@@ -6,12 +6,12 @@ use DateTimeZone;
 
 class Timezone
 {
-    public static function l(DateTime $date_time)
+    public static function l(DateTime $date_time): DateTime
     {
         return self::localize($date_time);
     }
 
-    public static function localize(DateTime $date_time)
+    public static function localize(DateTime $date_time): DateTime
     {
         $tz_name = date_default_timezone_get();
         $tz = new DateTimeZone($tz_name);
@@ -82,7 +82,7 @@ class Timezone
         return 'UTC ' . $sign . str_pad($hour, 2, '0', STR_PAD_LEFT) . ':' . str_pad($minutes, 2, '0');
     }
 
-    public static function fetchSelect()
+    public static function fetchSelect(): array
     {
         static $tz_select;
 

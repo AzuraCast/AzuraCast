@@ -25,7 +25,7 @@ class CheckForUpdates extends AbstractTask
         $this->azuracastCentral = $azuracastCentral;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         if (!$force) {
             $update_last_run = (int)$this->settingsRepo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);

@@ -1,15 +1,15 @@
 <?php
 namespace App\Middleware;
 
+use App\Assets;
 use App\Entity;
 use App\Http\Response;
-use App\App;
-use App\Assets;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\App;
 
 /**
  * Remove trailing slash from all URLs when routing.

@@ -3,7 +3,6 @@ namespace App\Console\Command;
 
 use App\Settings;
 use App\Version;
-use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use function OpenApi\scan;
 

@@ -172,8 +172,8 @@ class SoundExchangeController
     protected function _findISRC($song_row): string
     {
         // Temporarily disable this feature, as the Spotify API now requires authentication for all requests.
-        return '';
 
+        /*
         $query_parts = [];
         if (!empty($song_row['artist'])) {
             $query_parts[] = 'artist:"' . $song_row['artist'] . '"';
@@ -198,6 +198,7 @@ class SoundExchangeController
             $track = $search_result['tracks']['items'][0];
             return str_replace('-', '', $track['external_ids']['isrc']);
         }
+        */
 
         return '';
     }

@@ -63,10 +63,7 @@ class Media extends AbstractTask
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $stations = SimpleBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
@@ -84,7 +81,7 @@ class Media extends AbstractTask
         }
     }
 
-    public function importMusic(Entity\Station $station)
+    public function importMusic(Entity\Station $station): void
     {
         $fs = $this->filesystem->getForStation($station, false);
 
@@ -178,7 +175,7 @@ class Media extends AbstractTask
         $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }
 
-    public function importPlaylists(Entity\Station $station)
+    public function importPlaylists(Entity\Station $station): void
     {
         $fs = $this->filesystem->getForStation($station);
 
@@ -236,9 +233,8 @@ class Media extends AbstractTask
         $this->em->flush();
     }
 
-    public function globDirectory($base_dir, $regex_pattern = null)
+    public function globDirectory($base_dir, $regex_pattern = null): array
     {
-        /** @var Finder $finder */
         $finder = new Finder();
         $finder = $finder->files()->in($base_dir);
 

@@ -7,6 +7,7 @@ use App\Exception;
 use App\Radio\AutoDJ;
 use App\Utilities;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 
 class StationRequestRepository extends Repository
 {
@@ -115,7 +116,7 @@ class StationRequestRepository extends Repository
         Entity\Station $station,
         ?Chronos $now = null
     ): ?Entity\StationRequest {
-        $now ??= Chronos::now(new \DateTimeZone($station->getTimezone()));
+        $now ??= Chronos::now(new DateTimeZone($station->getTimezone()));
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 

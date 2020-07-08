@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Service\IpGeolocator;
+use Exception;
 use MaxMind\Db\Reader;
 
 class IpGeolocation
@@ -62,7 +63,7 @@ class IpGeolocation
 
         try {
             $ipInfo = $this->reader->get($ip);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [
                 'status' => 'error',
                 'message' => $e->getMessage(),

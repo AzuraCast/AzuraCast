@@ -40,7 +40,7 @@ class AuditLog implements EventSubscriber
         ];
     }
 
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $newAuditLogs = [];
 

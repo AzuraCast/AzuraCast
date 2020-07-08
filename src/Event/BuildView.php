@@ -6,7 +6,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildView extends Event
 {
-    protected $view;
+    protected View $view;
 
     public function __construct(View $view)
     {

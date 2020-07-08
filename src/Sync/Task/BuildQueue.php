@@ -26,7 +26,7 @@ class BuildQueue extends AbstractTask
         $this->lockManager = $lockManager;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $stations = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);

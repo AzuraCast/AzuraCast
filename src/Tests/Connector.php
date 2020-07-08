@@ -12,14 +12,8 @@ class Connector extends AbstractBrowser
 {
     use PhpSuperGlobalsConverter;
 
-    /**
-     * @var App
-     */
-    protected $app;
+    protected App $app;
 
-    /**
-     * @param App $app
-     */
     public function setApp(App $app): void
     {
         $this->app = $app;

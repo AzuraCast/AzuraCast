@@ -8,6 +8,7 @@ use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
+use Exception;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
@@ -57,7 +58,7 @@ class Icecast extends AbstractFrontend
             foreach ($otherResults as $otherResult) {
                 $defaultResult = $defaultResult->merge($otherResult);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
@@ -92,7 +93,7 @@ class Icecast extends AbstractFrontend
      * Process Management
      */
 
-    protected function _getDefaults(Entity\Station $station)
+    protected function _getDefaults(Entity\Station $station): array
     {
         $config_dir = $station->getRadioConfigDir();
         $settings = Settings::getInstance();
@@ -230,6 +231,7 @@ class Icecast extends AbstractFrontend
      * @return array
      * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
      * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
      */
     public static function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
     {

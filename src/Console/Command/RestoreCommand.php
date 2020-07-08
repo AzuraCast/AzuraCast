@@ -42,7 +42,7 @@ class RestoreCommand extends CommandAbstract
         switch ($file_ext) {
             case 'gz':
             case 'tgz':
-                $process = $this->passThruProcess($io, [
+                $this->passThruProcess($io, [
                     'tar',
                     'zxvf',
                     $path,
@@ -51,7 +51,7 @@ class RestoreCommand extends CommandAbstract
 
             case 'zip':
             default:
-                $process = $this->passThruProcess($io, [
+                $this->passThruProcess($io, [
                     'unzip',
                     $path,
                 ], '/');
@@ -74,7 +74,7 @@ class RestoreCommand extends CommandAbstract
         $conn = $em->getConnection();
         $connParams = $conn->getParams();
 
-        $process = $this->passThruProcess(
+        $this->passThruProcess(
             $io,
             'mysql --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD $DB_DATABASE < $DB_DUMP',
             $tmp_dir_mariadb,
@@ -100,7 +100,7 @@ class RestoreCommand extends CommandAbstract
 
         $influxdb_client = $influxdb->getClient();
 
-        $process = $this->passThruProcess($io, [
+        $this->passThruProcess($io, [
             'influxd',
             'restore',
             '-portable',

@@ -2,6 +2,7 @@
 namespace App\Http;
 
 use App\Flysystem\FilesystemGroup;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 final class Response extends \Slim\Http\Response
@@ -141,7 +142,7 @@ final class Response extends \Slim\Http\Response
 
         try {
             $mime = $fs->getMimetype($path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $mime = 'application/octet-stream';
         }
 
@@ -178,7 +179,7 @@ final class Response extends \Slim\Http\Response
                         ->write(' '); // Temporary work around, see SlimPHP/Slim#2924
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Stream via PHP instead
         }
 

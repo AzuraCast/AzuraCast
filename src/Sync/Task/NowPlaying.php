@@ -100,7 +100,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         ];
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $nowplaying = $this->_loadNowPlaying($force);
 
@@ -437,7 +437,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      *
      * @return Entity\StationStreamerBroadcast
      */
-    public function getLatestBroadcast(Station $station)
+    public function getLatestBroadcast(Station $station): Entity\StationStreamerBroadcast
     {
         $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb 
             FROM App\Entity\StationStreamerBroadcast ssb
@@ -447,8 +447,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             ->setMaxResults(1)
             ->setParameter('station', $station)
             ->setParameter('streamer', $station->getCurrentStreamer());
-        $result = $query->getSingleResult();
 
-        return $result;
+        return $query->getSingleResult();
     }
 }

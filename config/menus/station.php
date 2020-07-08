@@ -5,7 +5,7 @@
 
 use App\Acl;
 
-return function (\App\Event\BuildStationMenu $e) {
+return function (App\Event\BuildStationMenu $e) {
     $router = $e->getRouter();
     $station = $e->getStation();
     $backend = $e->getStationBackend();
@@ -148,7 +148,7 @@ return function (\App\Event\BuildStationMenu $e) {
                 'sftp_users' => [
                     'label' => __('SFTP Users'),
                     'url' => $router->fromHere('stations:sftp_users:index'),
-                    'visible' => \App\Service\SftpGo::isSupported(),
+                    'visible' => App\Service\SftpGo::isSupported(),
                     'permission' => Acl::STATION_MEDIA,
                 ],
                 'automation' => [

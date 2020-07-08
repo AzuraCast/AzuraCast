@@ -6,6 +6,7 @@ use App\Entity;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
+use App\Settings;
 use App\Sync\Task\Media;
 use App\Utilities;
 use Closure;
@@ -31,7 +32,7 @@ class StationRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        \App\Settings $settings,
+        Settings $settings,
         LoggerInterface $logger,
         Media $media_sync,
         Adapters $adapters,
@@ -198,7 +199,6 @@ class StationRepository extends Repository
 
         // Load adapters.
         $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-        $backend_adapter = $this->adapters->getBackendAdapter($station);
 
         // Create default mountpoints if station supports them.
         $this->resetMounts($station, $frontend_adapter);

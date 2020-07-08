@@ -5,6 +5,7 @@ use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Cake\Chronos\Chronos;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -56,7 +57,7 @@ class ScheduleController extends AbstractStationApiCrudController
         StationScheduleRepository $scheduleRepo
     ): ResponseInterface {
         $station = $request->getStation();
-        $tz = new \DateTimeZone($station->getTimezone());
+        $tz = new DateTimeZone($station->getTimezone());
 
         $now = $request->getQueryParam('now');
         if (!empty($now)) {

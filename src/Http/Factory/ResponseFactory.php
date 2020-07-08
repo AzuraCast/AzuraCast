@@ -2,17 +2,19 @@
 namespace App\Http\Factory;
 
 use App\Http\Response;
+use Http\Factory\Guzzle\ResponseFactory as GuzzleResponseFactory;
 use Http\Factory\Guzzle\StreamFactory;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Factory\DecoratedResponseFactory;
 
-class ResponseFactory implements ResponseFactoryInterface
+class ResponseFactory extends DecoratedResponseFactory
 {
-    protected static $responseClass = Response::class;
-
-    public static function setResponseClass(string $responseClass): void
+    public function __construct()
     {
-        self::$responseClass = $responseClass;
+        $responseFactory = new GuzzleResponseFactory();
+        $streamFactory = new StreamFactory();
+
+        parent::__construct($responseFactory, $streamFactory);
     }
 
     /**
@@ -27,10 +29,7 @@ class ResponseFactory implements ResponseFactoryInterface
      */
     public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {
-        $responseFactory = new \Http\Factory\Guzzle\ResponseFactory();
-
-        $response = $responseFactory->createResponse($code, $reasonPhrase);
-
-        return new self::$responseClass($response, new StreamFactory);
+        $response = $this->responseFactory->createResponse($code, $reasonPhrase);
+        return new Response($response, $this->streamFactory);
     }
 }

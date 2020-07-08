@@ -135,15 +135,10 @@ class OverviewController
         ]);
 
         $hourly_stats = $resultset->getPoints();
-
-        $hourly_averages = [];
-        $hourly_ranges = [];
+        
         $totals_by_hour = [];
 
         foreach ($hourly_stats as $stat) {
-            $hourly_ranges[] = [$stat['time'], $stat['min'], $stat['max']];
-            $hourly_averages[] = [$stat['time'], round($stat['value'], 2)];
-
             $dt = Chronos::createFromTimestamp($stat['time'] / 1000, $station_tz);
 
             $hour = (int)$dt->format('G');
@@ -257,11 +252,11 @@ class OverviewController
 
         return $request->getView()->renderToResponse($response, 'stations/reports/overview', [
             'charts' => [
-                'daily' => json_encode($daily_data),
+                'daily' => json_encode($daily_data, JSON_THROW_ON_ERROR),
                 'daily_alt' => implode('', $daily_alt),
-                'hourly' => json_encode($hourly_data),
+                'hourly' => json_encode($hourly_data, JSON_THROW_ON_ERROR),
                 'hourly_alt' => implode('', $hourly_alt),
-                'day_of_week' => json_encode($day_of_week_data),
+                'day_of_week' => json_encode($day_of_week_data, JSON_THROW_ON_ERROR),
                 'day_of_week_alt' => implode('', $day_of_week_alt),
             ],
             'song_totals' => $song_totals,

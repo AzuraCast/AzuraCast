@@ -1,9 +1,9 @@
 <?php
-/** @var \App\Settings $settings */
+/** @var App\Settings $settings */
 
 use App\Entity;
 
-$config = [
+return [
     'groups' => [
 
         'system' => [
@@ -182,5 +182,3 @@ $config = [
         ],
     ],
 ];
-
-return $config;

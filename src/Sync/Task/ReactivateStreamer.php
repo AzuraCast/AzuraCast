@@ -20,7 +20,7 @@ class ReactivateStreamer extends AbstractTask
         $this->streamerRepo = $streamerRepo;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $deactivated_streamers = $this->streamerRepo->getStreamersDueForReactivation();
 

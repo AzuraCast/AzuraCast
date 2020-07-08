@@ -13,8 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class EnableView implements MiddlewareInterface
 {
-    /** @var View */
-    protected $view;
+    protected View $view;
 
     public function __construct(View $view)
     {

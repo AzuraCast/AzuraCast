@@ -1,22 +1,20 @@
 <?php
 namespace App\Http\Factory;
 
-use GuzzleHttp\Psr7\ServerRequest;
+use App\Http\ServerRequest;
+use GuzzleHttp\Psr7\ServerRequest as GuzzleServerRequest;
+use Http\Factory\Guzzle\ServerRequestFactory as GuzzleServerRequestFactory;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\ServerRequestCreatorInterface;
 
-class ServerRequestFactory extends \Http\Factory\Guzzle\ServerRequestFactory implements ServerRequestCreatorInterface
+class ServerRequestFactory implements ServerRequestFactoryInterface, ServerRequestCreatorInterface
 {
-    protected static $serverRequestClass = \App\Http\ServerRequest::class;
-
-    public static function setServerRequestClass(string $class): void
-    {
-        self::$serverRequestClass = $class;
-    }
-
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        $serverRequest = parent::createServerRequest($method, $uri, $serverParams);
+        $serverRequestFactory = new GuzzleServerRequestFactory;
+
+        $serverRequest = $serverRequestFactory->createServerRequest($method, $uri, $serverParams);
         return $this->decorateServerRequest($serverRequest);
     }
 
@@ -27,7 +25,7 @@ class ServerRequestFactory extends \Http\Factory\Guzzle\ServerRequestFactory imp
      */
     public function decorateServerRequest(ServerRequestInterface $request): ServerRequestInterface
     {
-        return new self::$serverRequestClass($request);
+        return new ServerRequest($request);
     }
 
     /**
@@ -35,6 +33,6 @@ class ServerRequestFactory extends \Http\Factory\Guzzle\ServerRequestFactory imp
      */
     public function createServerRequestFromGlobals(): ServerRequestInterface
     {
-        return $this->decorateServerRequest(ServerRequest::fromGlobals());
+        return $this->decorateServerRequest(GuzzleServerRequest::fromGlobals());
     }
 }

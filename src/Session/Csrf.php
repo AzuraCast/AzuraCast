@@ -10,14 +10,12 @@ class Csrf
 {
     use AvailableStaticallyTrait;
 
-    public const CODE_LENGTH=10;
-    public const DEFAULT_NAMESPACE='general';
+    public const CODE_LENGTH = 10;
+    public const DEFAULT_NAMESPACE = 'general';
 
-    /** @var SessionInterface */
-    protected $session;
+    protected SessionInterface $session;
 
-    /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
     public function __construct(SessionInterface $session, Settings $settings)
     {
@@ -87,9 +85,10 @@ class Csrf
      * Generates a random string of given $length.
      *
      * @param int $length The string length.
+     *
      * @return string The randomly generated string.
      */
-    protected function randomString(int $length = self::CODE_LENGTH)
+    protected function randomString(int $length = self::CODE_LENGTH): string
     {
         $seed = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijqlmnopqrtsuvwxyz0123456789';
         $max = strlen($seed) - 1;
@@ -104,6 +103,6 @@ class Csrf
 
     protected function getSessionIdentifier(string $namespace): string
     {
-        return 'csrf_'.$namespace;
+        return 'csrf_' . $namespace;
     }
 }

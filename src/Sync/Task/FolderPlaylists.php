@@ -29,11 +29,8 @@ class FolderPlaylists extends AbstractTask
         $this->folderRepo = $folderRepo;
         $this->filesystem = $filesystem;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function run($force = false): void
+    
+    public function run(bool $force = false): void
     {
         $stations = SimpleBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),

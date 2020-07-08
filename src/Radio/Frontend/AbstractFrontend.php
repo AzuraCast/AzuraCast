@@ -10,6 +10,7 @@ use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
+use InvalidArgumentException;
 use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
 use PhpIP\IP;
@@ -197,7 +198,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         $custom_config = [];
 
         if (strpos($custom_config_raw, '{') === 0) {
-            $custom_config = @json_decode($custom_config_raw, true);
+            $custom_config = @json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
         } elseif (strpos($custom_config_raw, '<') === 0) {
             $reader = new Reader;
             $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
@@ -233,7 +234,7 @@ abstract class AbstractFrontend extends AbstractAdapter
                             $ips[] = (string)$ipObj;
                         }
                     }
-                } catch (\InvalidArgumentException $e) {
+                } catch (InvalidArgumentException $e) {
                     continue;
                 }
             }

@@ -84,7 +84,7 @@ class Relay implements Entity\Api\ResolvableUrlInterface
      * @OA\Property()
      * @var Entity\Api\StationMount[]
      */
-    public $mounts;
+    public array $mounts = [];
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

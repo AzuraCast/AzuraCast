@@ -16,10 +16,6 @@ final class Version20191024185005 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station_media ADD art_updated_at INT NOT NULL');
     }
 
@@ -63,10 +59,6 @@ final class Version20191024185005 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station_media DROP art_updated_at');
     }
 }

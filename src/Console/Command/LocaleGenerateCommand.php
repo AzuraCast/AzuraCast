@@ -2,7 +2,6 @@
 namespace App\Console\Command;
 
 use App\Settings;
-use App\Console\Command\CommandAbstract;
 use Gettext\Translations;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

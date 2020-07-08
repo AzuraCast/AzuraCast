@@ -15,12 +15,12 @@ class ClearEntityManagerSubscriber implements EventSubscriberInterface
         $this->em = $em;
     }
 
-    public function onWorkerMessageHandled()
+    public function onWorkerMessageHandled(): void
     {
         $this->clearEntityManagers();
     }
 
-    public function onWorkerMessageFailed()
+    public function onWorkerMessageFailed(): void
     {
         $this->clearEntityManagers();
     }
@@ -31,7 +31,7 @@ class ClearEntityManagerSubscriber implements EventSubscriberInterface
         yield WorkerMessageFailedEvent::class => 'onWorkerMessageFailed';
     }
 
-    protected function clearEntityManagers()
+    protected function clearEntityManagers(): void
     {
         $this->em->clear();
         gc_collect_cycles();

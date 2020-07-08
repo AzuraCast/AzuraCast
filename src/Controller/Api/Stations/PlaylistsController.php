@@ -7,7 +7,7 @@ use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\PlaylistParser;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -151,7 +151,10 @@ class PlaylistsController extends AbstractScheduledEntityController
             $request,
             $response,
             $scheduleItems,
-            function (Entity\StationSchedule $scheduleItem, Chronos $start, Chronos $end) use ($request, $station) {
+            function (Entity\StationSchedule $scheduleItem, CarbonInterface $start, CarbonInterface $end) use (
+                $request,
+                $station
+            ) {
                 /** @var Entity\StationPlaylist $playlist */
                 $playlist = $scheduleItem->getPlaylist();
 

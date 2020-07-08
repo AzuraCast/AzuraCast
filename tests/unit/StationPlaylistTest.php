@@ -25,8 +25,8 @@ class StationPlaylistTest extends \Codeception\Test\Unit
         $playlist->getScheduleItems()->add($scheduleEntry);
 
         $utc = new \DateTimeZone('UTC');
-        $test_monday = \Cake\Chronos\Chronos::create(2018, 1, 15, 0, 0, 0, null, $utc);
-        $test_thursday = \Cake\Chronos\Chronos::create(2018, 1, 18, 0, 0, 0, null, $utc);
+        $test_monday = \Carbon\CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
+        $test_thursday = \Carbon\CarbonImmutable::create(2018, 1, 18, 0, 0, 0, $utc);
 
         // Sanity check: Jan 15, 2018 is a Monday, and Jan 18, 2018 is a Thursday.
         $this->assertTrue($test_monday->isMonday());
@@ -59,7 +59,7 @@ class StationPlaylistTest extends \Codeception\Test\Unit
         $playlist->setPlayPerMinutes(30);
 
         $utc = new \DateTimeZone('UTC');
-        $test_day = \Cake\Chronos\Chronos::create(2018, 1, 15, 0, 0, 0, null, $utc);
+        $test_day = \Carbon\CarbonImmutable::create(2018, 1, 15, 0, 0, 0, $utc);
 
         // Last played 20 minutes ago, SHOULD NOT play again.
         $last_played = $test_day->addMinutes(0 - 20);
@@ -84,7 +84,7 @@ class StationPlaylistTest extends \Codeception\Test\Unit
         $playlist->setPlayPerHourMinute(50);
 
         $utc = new \DateTimeZone('UTC');
-        $test_day = \Cake\Chronos\Chronos::create(2018, 1, 15, 0, 0, 0, null, $utc);
+        $test_day = \Carbon\CarbonImmutable::create(2018, 1, 15, 0, 0, 0, null, $utc);
 
         // Playlist SHOULD try to play at 11:59 PM.
         $test_time = $test_day->setTime(23, 59);

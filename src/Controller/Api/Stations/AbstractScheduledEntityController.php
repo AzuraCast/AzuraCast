@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -38,10 +38,10 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         $params = $request->getQueryParams();
 
         $startDateStr = substr($params['start'], 0, 10);
-        $startDate = Chronos::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
+        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
 
         $endDateStr = substr($params['end'], 0, 10);
-        $endDate = Chronos::createFromFormat('Y-m-d', $endDateStr, $tz);
+        $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);
 
         $events = [];
 

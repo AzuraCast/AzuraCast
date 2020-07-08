@@ -3,7 +3,7 @@ namespace App\Console\Command;
 
 use App\Entity\Station;
 use App\Settings;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -53,7 +53,7 @@ class SetupFixturesCommand extends CommandAbstract
         // Preload sample data.
         $stations = $em->getRepository(Station::class)->findAll();
 
-        $midnight_utc = Chronos::now('UTC')->setTime(0, 0);
+        $midnight_utc = CarbonImmutable::now('UTC')->setTime(0, 0);
         $influx_points = [];
 
         for ($i = 1; $i <= 14; $i++) {

@@ -5,7 +5,7 @@ use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
 use App\Settings;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -139,7 +139,7 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        $threshold = Chronos::now()->subWeeks(2)->getTimestamp();
+        $threshold = CarbonImmutable::now()->subWeeks(2)->getTimestamp();
         $backupLastRun = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
 
         if ($backupLastRun < $threshold) {

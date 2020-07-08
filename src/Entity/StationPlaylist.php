@@ -3,7 +3,8 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Normalizer\Annotation\DeepNormalize;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -409,7 +410,7 @@ class StationPlaylist
     public function getScheduleDuration(): int
     {
         if ($this->schedule_items->count() > 0) {
-            $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
+            $now = CarbonImmutable::now(new DateTimeZone($this->getStation()->getTimezone()));
 
             foreach ($this->schedule_items as $scheduleItem) {
                 /** @var StationSchedule $scheduleItem */
@@ -587,15 +588,15 @@ class StationPlaylist
     /**
      * Parent function for determining whether a playlist of any type can be played by the AutoDJ.
      *
-     * @param Chronos|null $now
+     * @param CarbonInterface|null $now
      * @param array $recentSongHistory
      *
      * @return bool
      */
-    public function shouldPlayNow(Chronos $now = null, array $recentSongHistory = []): bool
+    public function shouldPlayNow(CarbonInterface $now = null, array $recentSongHistory = []): bool
     {
         if (null === $now) {
-            $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
+            $now = CarbonImmutable::now(new DateTimeZone($this->getStation()->getTimezone()));
         }
 
         if (!$this->isScheduledToPlayNow($now)) {
@@ -626,7 +627,7 @@ class StationPlaylist
         }
     }
 
-    protected function isScheduledToPlayNow(Chronos $now): bool
+    protected function isScheduledToPlayNow(CarbonInterface $now): bool
     {
         if (0 === $this->schedule_items->count()) {
             return true;
@@ -650,7 +651,7 @@ class StationPlaylist
         return false;
     }
 
-    protected function shouldPlayNowPerHour(Chronos $now): bool
+    protected function shouldPlayNowPerHour(CarbonInterface $now): bool
     {
         $current_minute = (int)$now->minute;
         $target_minute = $this->getPlayPerHourMinute();
@@ -684,7 +685,7 @@ class StationPlaylist
         $this->play_per_hour_minute = $play_per_hour_minute;
     }
 
-    public function wasPlayedInLastXMinutes(Chronos $now, int $minutes): bool
+    public function wasPlayedInLastXMinutes(CarbonInterface $now, int $minutes): bool
     {
         if (0 === $this->played_at) {
             return false;
@@ -725,7 +726,7 @@ class StationPlaylist
         $this->play_per_songs = $play_per_songs;
     }
 
-    protected function shouldPlayNowPerMinute(Chronos $now): bool
+    protected function shouldPlayNowPerMinute(CarbonInterface $now): bool
     {
         return !$this->wasPlayedInLastXMinutes($now, $this->getPlayPerMinutes());
     }

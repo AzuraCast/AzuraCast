@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
@@ -61,10 +61,10 @@ class ScheduleController extends AbstractStationApiCrudController
 
         $now = $request->getQueryParam('now');
         if (!empty($now)) {
-            $now = Chronos::parse($now, $tz);
+            $now = CarbonImmutable::parse($now, $tz);
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_' . $now->format('Ymd_gia');
         } else {
-            $now = Chronos::now($tz);
+            $now = CarbonImmutable::now($tz);
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
         }
 

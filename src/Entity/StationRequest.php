@@ -1,7 +1,8 @@
 <?php
 namespace App\Entity;
 
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -124,7 +125,7 @@ class StationRequest
         return $this->ip;
     }
 
-    public function shouldPlayNow(Chronos $now = null): bool
+    public function shouldPlayNow(CarbonInterface $now = null): bool
     {
         if ($this->skip_delay) {
             return true;
@@ -134,13 +135,13 @@ class StationRequest
         $stationTz = new \DateTimeZone($station->getTimezone());
 
         if (null === $now) {
-            $now = Chronos::now($stationTz);
+            $now = CarbonImmutable::now($stationTz);
         }
 
         $thresholdMins = (int)$station->getRequestDelay();
         $thresholdMins += random_int(0, $thresholdMins);
 
-        $cued = Chronos::createFromTimestamp($this->timestamp);
+        $cued = CarbonImmutable::createFromTimestamp($this->timestamp);
         $threshold = $now->subMinutes($thresholdMins);
 
         return $threshold->gt($cued);

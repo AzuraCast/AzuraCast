@@ -4,7 +4,7 @@ namespace App\Controller\Stations\Reports;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
@@ -47,7 +47,7 @@ class OverviewController
         }
 
         /* Statistics */
-        $statisticsThreshold = Chronos::parse('-1 month', $station_tz)->getTimestamp();
+        $statisticsThreshold = CarbonImmutable::parse('-1 month', $station_tz)->getTimestamp();
 
         // Statistics by day.
         $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d',
@@ -74,7 +74,7 @@ class OverviewController
             $avg_row->y = round($stat['value'], 2);
             $daily_averages[] = $avg_row;
 
-            $dt = Chronos::createFromTimestamp($avg_row->t / 1000, $station_tz);
+            $dt = CarbonImmutable::createFromTimestamp($avg_row->t / 1000, $station_tz);
 
             $row_date = $dt->format('Y-m-d');
             $daily_alt[] = '<dt><time data-original="' . $avg_row->t . '">' . $row_date . '</time></dt>';
@@ -135,11 +135,11 @@ class OverviewController
         ]);
 
         $hourly_stats = $resultset->getPoints();
-        
+
         $totals_by_hour = [];
 
         foreach ($hourly_stats as $stat) {
-            $dt = Chronos::createFromTimestamp($stat['time'] / 1000, $station_tz);
+            $dt = CarbonImmutable::createFromTimestamp($stat['time'] / 1000, $station_tz);
 
             $hour = (int)$dt->format('G');
             $totals_by_hour[$hour][] = $stat['value'];
@@ -209,7 +209,7 @@ class OverviewController
         }
 
         /* Song "Deltas" (Changes in Listener Count) */
-        $songPerformanceThreshold = Chronos::parse('-2 days', $station_tz)->getTimestamp();
+        $songPerformanceThreshold = CarbonImmutable::parse('-2 days', $station_tz)->getTimestamp();
 
         // Get all songs played in timeline.
         $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s

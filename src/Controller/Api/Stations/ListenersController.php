@@ -6,7 +6,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocation;
 use App\Utilities\Csv;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Mobile_Detect;
@@ -53,10 +53,10 @@ class ListenersController
         $params = $request->getQueryParams();
 
         if (!empty($params['start'])) {
-            $start = Chronos::parse($params['start'] . ' 00:00:00', $station_tz);
+            $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $station_tz);
             $start_timestamp = $start->getTimestamp();
 
-            $end = Chronos::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
+            $end = CarbonImmutable::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
             $end_timestamp = $end->getTimestamp();
 
             $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');

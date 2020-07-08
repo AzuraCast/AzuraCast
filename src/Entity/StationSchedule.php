@@ -2,7 +2,8 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
@@ -194,11 +195,11 @@ class StationSchedule
     /**
      * Parent function for determining whether a playlist of any type can be played by the AutoDJ.
      *
-     * @param Chronos $now
+     * @param CarbonInterface $now
      *
      * @return bool
      */
-    public function shouldPlayNow(Chronos $now): bool
+    public function shouldPlayNow(CarbonInterface $now): bool
     {
         if (!$this->shouldPlayOnCurrentDate($now)) {
             return false;
@@ -209,7 +210,7 @@ class StationSchedule
 
         $comparePeriods = [];
 
-        if ($startTime->equals($endTime)) {
+        if ($startTime->equalTo($endTime)) {
             // Create intervals for "play once" type dates.
             $endTime = $endTime->addMinutes(15);
 
@@ -225,8 +226,8 @@ class StationSchedule
         }
 
         foreach ($comparePeriods as [$start, $end]) {
-            /** @var Chronos $start */
-            /** @var Chronos $end */
+            /** @var CarbonInterface $start */
+            /** @var CarbonInterface $end */
             if ($now->between($start, $end)) {
                 $dayToCheck = (int)$start->format('N');
 
@@ -239,10 +240,10 @@ class StationSchedule
         return false;
     }
 
-    public function shouldPlayOnCurrentDate(Chronos $now): bool
+    public function shouldPlayOnCurrentDate(CarbonInterface $now): bool
     {
         if (!empty($this->start_date)) {
-            $startDate = Chronos::createFromFormat('Y-m-d', $this->start_date, $now->getTimezone())
+            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $this->start_date, $now->getTimezone())
                 ->setTime(0, 0, 0);
 
             if ($now->lt($startDate)) {
@@ -251,7 +252,7 @@ class StationSchedule
         }
 
         if (!empty($this->end_date)) {
-            $endDate = Chronos::createFromFormat('Y-m-d', $this->end_date, $now->getTimezone())
+            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $this->end_date, $now->getTimezone())
                 ->setTime(23, 59, 59);
 
             if ($now->gt($endDate)) {
@@ -280,14 +281,14 @@ class StationSchedule
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
      * @param string|int $timeCode
-     * @param Chronos|null $now
+     * @param CarbonInterface|null $now
      *
-     * @return Chronos
+     * @return CarbonInterface
      */
-    public static function getDateTime($timeCode, Chronos $now = null): Chronos
+    public static function getDateTime($timeCode, CarbonInterface $now = null): CarbonInterface
     {
         if (null === $now) {
-            $now = Chronos::now(new DateTimeZone('UTC'));
+            $now = CarbonImmutable::now(new DateTimeZone('UTC'));
         }
 
         $timeCode = str_pad($timeCode, 4, '0', STR_PAD_LEFT);

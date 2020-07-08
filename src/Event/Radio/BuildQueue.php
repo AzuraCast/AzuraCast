@@ -2,7 +2,8 @@
 namespace App\Event\Radio;
 
 use App\Entity;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeZone;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -12,13 +13,13 @@ class BuildQueue extends Event
 
     protected Entity\Station $station;
 
-    protected Chronos $now;
+    protected CarbonInterface $now;
 
-    public function __construct(Entity\Station $station, ?Chronos $now = null)
+    public function __construct(Entity\Station $station, ?CarbonInterface $now = null)
     {
         $this->station = $station;
 
-        $this->now = $now ?? Chronos::now(new DateTimeZone($station->getTimezone()));
+        $this->now = $now ?? CarbonImmutable::now(new DateTimeZone($station->getTimezone()));
     }
 
     public function getStation(): Entity\Station
@@ -26,7 +27,7 @@ class BuildQueue extends Event
         return $this->station;
     }
 
-    public function getNow(): Chronos
+    public function getNow(): CarbonInterface
     {
         return $this->now;
     }

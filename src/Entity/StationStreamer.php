@@ -3,7 +3,8 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Normalizer\Annotation\DeepNormalize;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -248,14 +249,14 @@ class StationStreamer
         return $this->schedule_items;
     }
 
-    public function canStreamNow(Chronos $now = null): bool
+    public function canStreamNow(CarbonInterface $now = null): bool
     {
         if (!$this->enforceSchedule()) {
             return true;
         }
 
         if (null === $now) {
-            $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
+            $now = CarbonImmutable::now(new DateTimeZone($this->getStation()->getTimezone()));
         }
 
         if ($this->schedule_items->count() > 0) {

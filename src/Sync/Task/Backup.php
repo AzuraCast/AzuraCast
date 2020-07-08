@@ -4,7 +4,8 @@ namespace App\Sync\Task;
 use App\Console\Application;
 use App\Entity;
 use App\Message;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
@@ -74,7 +75,7 @@ class Backup extends AbstractTask
             $outputPath ?? 'php://temp'
         );
     }
-    
+
     public function run(bool $force = false): void
     {
         $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
@@ -83,7 +84,7 @@ class Backup extends AbstractTask
             return;
         }
 
-        $now_utc = Chronos::now('UTC');
+        $now_utc = CarbonImmutable::now('UTC');
 
         $threshold = $now_utc->subDay()->getTimestamp();
         $last_run = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
@@ -96,7 +97,7 @@ class Backup extends AbstractTask
                 $isWithinTimecode = false;
                 $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $now_utc);
 
-                /** @var Chronos[] $backupTimesToCheck */
+                /** @var CarbonInterface[] $backupTimesToCheck */
                 $backupTimesToCheck = [
                     $backupDt->subDay(),
                     $backupDt,

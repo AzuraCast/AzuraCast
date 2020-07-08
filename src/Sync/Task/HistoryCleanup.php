@@ -2,7 +2,7 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 
 class HistoryCleanup extends AbstractTask
 {
@@ -12,7 +12,7 @@ class HistoryCleanup extends AbstractTask
             Entity\SongHistory::DEFAULT_DAYS_TO_KEEP);
 
         if ($days_to_keep !== 0) {
-            $threshold = (new Chronos())
+            $threshold = (new CarbonImmutable())
                 ->subDays($days_to_keep)
                 ->getTimestamp();
 

@@ -5,7 +5,7 @@ use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -26,11 +26,11 @@ class AuditLogController
 
         $params = $request->getParams();
         if (!empty($params['start'])) {
-            $start = Chronos::parse($params['start'] . ' 00:00:00', $tz);
-            $end = Chronos::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $tz);
+            $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $tz);
+            $end = CarbonImmutable::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $tz);
         } else {
-            $start = Chronos::parse('-2 weeks', $tz);
-            $end = Chronos::now($tz);
+            $start = CarbonImmutable::parse('-2 weeks', $tz);
+            $end = CarbonImmutable::now($tz);
         }
 
         $qb = $this->em->createQueryBuilder();

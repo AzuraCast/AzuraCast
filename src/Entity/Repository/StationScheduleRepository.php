@@ -3,7 +3,8 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeZone;
 use InvalidArgumentException;
 
@@ -65,14 +66,14 @@ class StationScheduleRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     * @param Chronos|null $now
+     * @param CarbonInterface|null $now
      *
      * @return Entity\Api\StationSchedule[]
      */
-    public function getUpcomingSchedule(Entity\Station $station, Chronos $now = null): array
+    public function getUpcomingSchedule(Entity\Station $station, CarbonInterface $now = null): array
     {
         if (null === $now) {
-            $now = Chronos::now(new DateTimeZone($station->getTimezone()));
+            $now = CarbonImmutable::now(new DateTimeZone($station->getTimezone()));
         }
 
         $startDate = $now->subDay();
@@ -119,7 +120,7 @@ class StationScheduleRepository extends Repository
                     $row->start = $start->toIso8601String();
                     $row->end_timestamp = $end->getTimestamp();
                     $row->end = $end->toIso8601String();
-                    $row->is_now = $start->lessThanOrEquals($startDate);
+                    $row->is_now = $start->lessThanOrEqualTo($startDate);
 
                     if ($scheduleItem->getPlaylist() instanceof Entity\StationPlaylist) {
                         $playlist = $scheduleItem->getPlaylist();

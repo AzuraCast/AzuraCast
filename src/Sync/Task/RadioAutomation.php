@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Exception;
 use App\Radio\Adapters;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
@@ -68,7 +68,7 @@ class RadioAutomation extends AbstractTask
 
         // Check whether assignment needs to be run.
         $threshold_days = (int)$settings['threshold_days'];
-        $threshold = Chronos::now('UTC')
+        $threshold = CarbonImmutable::now('UTC')
             ->subDays($threshold_days)
             ->getTimestamp();
 
@@ -188,7 +188,7 @@ class RadioAutomation extends AbstractTask
         Entity\Station $station,
         int $threshold_days = self::DEFAULT_THRESHOLD_DAYS
     ): array {
-        $threshold = Chronos::now()
+        $threshold = CarbonImmutable::now()
             ->subDays($threshold_days)
             ->getTimestamp();
 

@@ -7,7 +7,8 @@ use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
 use App\Flysystem\Filesystem;
 use App\Lock\LockManager;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
@@ -176,9 +177,9 @@ class AutoDJ implements EventSubscriberInterface
         $currentSong = $this->songHistoryRepo->getCurrent($station);
         if ($currentSong instanceof Entity\SongHistory) {
             $nowTimestamp = $currentSong->getTimestampStart() + ($currentSong->getDuration() ?? 1);
-            $now = Chronos::createFromTimestamp($nowTimestamp, $stationTz);
+            $now = CarbonImmutable::createFromTimestamp($nowTimestamp, $stationTz);
         } else {
-            $now = Chronos::now($stationTz);
+            $now = CarbonImmutable::now($stationTz);
         }
 
         // Adjust "now" time from current queue.
@@ -279,7 +280,8 @@ class AutoDJ implements EventSubscriberInterface
         foreach ($cued_song_history as $row) {
             $logSongHistory[] = [
                 'song' => $row['song']['text'],
-                'cued_at' => (string)(Chronos::createFromTimestamp($row['timestamp_cued'], $now->getTimezone())),
+                'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'],
+                    $now->getTimezone())),
                 'duration' => $row['duration'],
                 'sent_to_autodj' => $row['sent_to_autodj'],
             ];
@@ -386,7 +388,7 @@ class AutoDJ implements EventSubscriberInterface
      *
      * @param Entity\StationPlaylist $playlist
      * @param array $recentSongHistory
-     * @param Chronos $now
+     * @param CarbonInterface $now
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
      * @return Entity\SongHistory|null
@@ -394,7 +396,7 @@ class AutoDJ implements EventSubscriberInterface
     protected function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
-        Chronos $now,
+        CarbonInterface $now,
         bool $allowDuplicates = false
     ): ?Entity\SongHistory {
         $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $allowDuplicates);

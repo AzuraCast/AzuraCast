@@ -6,7 +6,8 @@ use App\Entity;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Utilities;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeZone;
 
 class StationRequestRepository extends Repository
@@ -114,9 +115,9 @@ class StationRequestRepository extends Repository
 
     public function getNextPlayableRequest(
         Entity\Station $station,
-        ?Chronos $now = null
+        ?CarbonInterface $now = null
     ): ?Entity\StationRequest {
-        $now ??= Chronos::now(new DateTimeZone($station->getTimezone()));
+        $now ??= CarbonImmutable::now(new DateTimeZone($station->getTimezone()));
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 

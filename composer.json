@@ -144,6 +144,7 @@
   ],
   "config": {
     "preferred-install": "dist",
+    "discard-changes": true,
     "sort-packages": true
   },
   "prefer-stable": true,

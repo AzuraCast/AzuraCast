@@ -924,13 +924,14 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $password = self::cleanUpString($mount->getAutodjPassword());
-        if ($mount->getAutodjShoutcastMode()) {
+        if (Adapters::REMOTE_SHOUTCAST2 === $mount->getAutodjAdapterType()) {
             $password .= ':#' . $id;
         }
         $output_params[] = 'password = "' . $password . '"';
 
+        $isShoutcastMode = Adapters::REMOTE_ICECAST !== $mount->getAutodjAdapterType();
         if (!empty($mount->getAutodjMount())) {
-            if ($mount->getAutodjShoutcastMode()) {
+            if ($isShoutcastMode) {
                 $output_params[] = 'icy_id = ' . $id;
             } else {
                 $output_params[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
@@ -948,7 +949,7 @@ class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
         $output_params[] = 'encoding = "' . $charset . '"';
 
-        if ($mount->getAutodjShoutcastMode()) {
+        if ($isShoutcastMode) {
             $output_params[] = 'protocol="icy"';
         }
 

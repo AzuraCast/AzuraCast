@@ -24,7 +24,7 @@ interface StationMountInterface
 
     public function getAutodjMount(): ?string;
 
-    public function getAutodjShoutcastMode(): bool;
+    public function getAutodjAdapterType(): string;
 
     public function getIsPublic(): bool;
 }

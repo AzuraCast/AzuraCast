@@ -375,10 +375,15 @@ class StationMount implements StationMountInterface
         $this->name = $this->truncateString('/' . ltrim($new_name, '/'), 100);
     }
 
-    /** @inheritdoc */
-    public function getAutodjShoutcastMode(): bool
+    public function getAutodjAdapterType(): string
     {
-        return (Adapters::FRONTEND_SHOUTCAST === $this->getStation()->getFrontendType());
+        $adapterLookup = [
+            Adapters::FRONTEND_ICECAST => Adapters::REMOTE_ICECAST,
+            Adapters::FRONTEND_SHOUTCAST => Adapters::REMOTE_SHOUTCAST2,
+        ];
+
+        $frontendType = $this->getStation()->getFrontendType();
+        return $adapterLookup[$frontendType];
     }
 
     /**

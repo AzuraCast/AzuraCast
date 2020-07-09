@@ -49,6 +49,10 @@
 
 <style lang="scss">
     #station_on_demand_table {
+        .datatable-main {
+            overflow-y: auto;
+        }
+
         table.b-table {
             thead tr th:nth-child(1),
             tbody tr td:nth-child(1) {

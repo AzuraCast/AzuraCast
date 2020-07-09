@@ -1,5 +1,7 @@
 $(function () {
-  styleForm($('form.form'));
+  $('form.form').each(function () {
+    styleForm(this);
+  });
 });
 
 function styleForm (form) {

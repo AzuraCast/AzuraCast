@@ -1,7 +1,7 @@
 FROM library/node:lts-alpine
 
 RUN apk update \
-    && apk add bash python3 build-base
+    && apk add bash python make g++
 
 RUN mkdir -p /data/frontend/node_modules /data/resources/locale /data/web/static \
     && chown -R node:node /data

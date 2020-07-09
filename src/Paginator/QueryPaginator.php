@@ -14,7 +14,11 @@ class QueryPaginator extends AbstractPaginator
 
     protected Paginator $paginator;
 
-    public function __construct(ServerRequest $request, $query)
+    /**
+     * @param Query|QueryBuilder $query
+     * @param ServerRequest|null $request
+     */
+    public function __construct($query, ?ServerRequest $request = null)
     {
         if ($query instanceof QueryBuilder) {
             $query = $query->getQuery();

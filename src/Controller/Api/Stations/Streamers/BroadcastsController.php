@@ -2,12 +2,12 @@
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\File;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator\QueryPaginator;
 use App\Utilities;
 use Psr\Http\Message\ResponseInterface;
 
@@ -46,8 +46,7 @@ class BroadcastsController extends AbstractApiCrudController
             ->setParameter('station', $station)
             ->setParameter('streamer', $streamer);
 
-        $paginator = new Paginator($query);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($query, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();

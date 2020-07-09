@@ -2,10 +2,10 @@
 namespace App\Controller\Api\Stations;
 
 use App;
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator\QueryPaginator;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
@@ -137,8 +137,7 @@ class HistoryController
 
         $qb->orderBy('sh.timestamp_start', 'DESC');
 
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($qb, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();

@@ -27,7 +27,14 @@ abstract class AbstractPaginator
     /** @var callable|null A callable postprocessor that can be run on each result. */
     protected $postprocessor;
 
-    public function __construct(ServerRequest $request)
+    public function __construct(?ServerRequest $request = null)
+    {
+        if (null !== $request) {
+            $this->setFromRequest($request);
+        }
+    }
+
+    public function setFromRequest(ServerRequest $request): void
     {
         $params = $request->getQueryParams();
 

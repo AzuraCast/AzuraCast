@@ -1,10 +1,10 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Doctrine\Paginator;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator\QueryPaginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
@@ -43,8 +43,7 @@ abstract class AbstractApiCrudController
         Query $query,
         callable $postProcessor = null
     ): ResponseInterface {
-        $paginator = new Paginator($query);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($query, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $is_internal = ('true' === $request->getParam('internal', 'false'));

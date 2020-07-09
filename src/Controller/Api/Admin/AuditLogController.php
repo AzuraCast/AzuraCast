@@ -1,10 +1,10 @@
 <?php
 namespace App\Controller\Api\Admin;
 
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator\QueryPaginator;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,8 +49,7 @@ class AuditLogController
 
         $qb->orderBy('a.timestamp', 'DESC');
 
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($qb, $request);
 
         $paginator->setPostprocessor(function (Entity\AuditLog $row) {
             $operations = [

@@ -86,7 +86,7 @@ class ListAction
             $trackList = $trackList->matching($criteria);
         }
 
-        $paginator = new ArrayPaginator($request, $trackList);
+        $paginator = new ArrayPaginator($trackList, $request);
         return $paginator->write($response);
     }
 

@@ -16,7 +16,7 @@ class ArrayPaginator extends AbstractPaginator
 
     protected Paginator $paginator;
 
-    public function __construct(ServerRequest $request, $array)
+    public function __construct($array, ?ServerRequest $request = null)
     {
         if ($array instanceof ArrayCollection) {
             $this->collection = $array;

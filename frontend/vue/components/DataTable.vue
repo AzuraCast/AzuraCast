@@ -56,6 +56,7 @@
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                      :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
+                     :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide" :no-provider-filtering="handleClientSide"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
                 <template v-slot:head(selected)="data">
@@ -160,6 +161,10 @@
                 default: false
             },
             selectFields: {
+                type: Boolean,
+                default: false
+            },
+            handleClientSide: {
                 type: Boolean,
                 default: false
             },
@@ -320,24 +325,28 @@
                     internal: true
                 };
 
-                if (this.paginated) {
-                    queryParams.rowCount = ctx.perPage;
-                    queryParams.current = ctx.currentPage;
-                } else {
+                if (this.handleClientSide) {
                     queryParams.rowCount = 0;
-                }
+                } else {
+                    if (this.paginated) {
+                        queryParams.rowCount = ctx.perPage;
+                        queryParams.current = ctx.currentPage;
+                    } else {
+                        queryParams.rowCount = 0;
+                    }
 
-                if (this.flushCache) {
-                    queryParams.flushCache = true;
-                }
+                    if (this.flushCache) {
+                        queryParams.flushCache = true;
+                    }
 
-                if (typeof ctx.filter === 'string') {
-                    queryParams.searchPhrase = ctx.filter;
-                }
+                    if (typeof ctx.filter === 'string') {
+                        queryParams.searchPhrase = ctx.filter;
+                    }
 
-                if ('' !== ctx.sortBy) {
-                    queryParams.sort = ctx.sortBy;
-                    queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC';
+                    if ('' !== ctx.sortBy) {
+                        queryParams.sort = ctx.sortBy;
+                        queryParams.sortOrder = (ctx.sortDesc) ? 'DESC' : 'ASC';
+                    }
                 }
 
                 let requestConfig = { params: queryParams };

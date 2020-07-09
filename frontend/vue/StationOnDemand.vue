@@ -19,7 +19,7 @@
         </div>
 
         <data-table ref="datatable" id="station_on_demand_table" paginated select-fields
-                    :fields="fields" :api-url="listUrl">
+                    :handle-client-side="true" :fields="fields" :api-url="listUrl">
             <template v-slot:cell(download_url)="row">
                 <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
                    @click.prevent="playAudio(row.item.download_url)" :title="langPlayPause">

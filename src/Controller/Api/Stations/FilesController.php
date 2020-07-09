@@ -98,6 +98,11 @@ class FilesController extends AbstractStationApiCrudController
     {
         $station = $this->getStation($request);
 
+        if ($station->isStorageFull()) {
+            return $response->withStatus(500)
+                ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
+        }
+
         $request->getParsedBody();
 
         // Convert the body into an UploadFile API entity first.

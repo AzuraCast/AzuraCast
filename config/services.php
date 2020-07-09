@@ -104,7 +104,7 @@ return [
             // Debug mode:
             // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
 
-            $config->addCustomNumericFunction('RAND', App\Doctrine\Functions\Rand::class);
+            $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
 
             $eventManager = new Doctrine\Common\EventManager;
             $eventManager->addEventSubscriber($eventRequiresRestart);

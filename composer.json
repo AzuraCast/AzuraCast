@@ -29,6 +29,7 @@
     "azuracast/azuraforms": "dev-master",
     "azuracast/nowplaying": "dev-master",
     "bacon/bacon-qr-code": "^2.0",
+    "beberlei/doctrineextensions": "^1.2",
     "brick/math": "^0.8.4",
     "cache/array-adapter": "^1.0",
     "cache/prefixed-cache": "^1.0",

@@ -58,6 +58,7 @@ class ListAction
                 'media_title',
                 'media_artist',
                 'media_album',
+                'playlist',
             ];
 
             $customFields = array_keys($this->apiUtils->getCustomFields());

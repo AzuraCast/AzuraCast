@@ -109,7 +109,7 @@
                 fields.push({
                     key: field.display_key,
                     label: field.label,
-                    sortable: false,
+                    sortable: true,
                     selectable: true,
                     visible: false
                 });

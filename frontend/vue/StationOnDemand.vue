@@ -102,7 +102,8 @@
                 { key: 'media_art', label: this.$gettext('Art') },
                 { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
                 { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true },
-                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false }
+                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
+                { key: 'playlist', label: this.$gettext('Playlist'), sortable: true, selectable: true, visible: false }
             ];
 
             _.forEach(this.customFields.slice(), (field) => {

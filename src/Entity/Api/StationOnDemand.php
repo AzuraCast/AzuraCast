@@ -34,6 +34,12 @@ class StationOnDemand implements ResolvableUrlInterface
     public Song $media;
 
     /**
+     * @OA\Property
+     * @var string
+     */
+    public string $playlist;
+
+    /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
      * @param UriInterface $base

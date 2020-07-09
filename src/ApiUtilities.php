@@ -76,7 +76,7 @@ class ApiUtilities
     /**
      * Return all custom fields, either with a null value or with the custom value assigned to the given Media ID.
      *
-     * @param null $media_id
+     * @param int|null $media_id
      *
      * @return array
      */

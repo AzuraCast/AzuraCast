@@ -2,21 +2,35 @@
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\ApiUtilities;
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
+use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use App\Paginator\ArrayPaginator;
 use App\Utilities;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Http\Message\ResponseInterface;
+use Psr\SimpleCache\CacheInterface;
 
 class ListAction
 {
+    protected EntityManagerInterface $em;
+
+    protected ApiUtilities $apiUtils;
+
+    public function __construct(EntityManagerInterface $em, ApiUtilities $apiUtils)
+    {
+        $this->em = $em;
+        $this->apiUtils = $apiUtils;
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em,
-        ApiUtilities $apiUtils
+        CacheInterface $cache
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -26,56 +40,88 @@ class ListAction
                 ->withJson(new Entity\Api\Error(403, __('This station does not support on-demand streaming.')));
         }
 
-        $qb = $em->createQueryBuilder();
+        $cacheKey = 'ondemand_' . $station->getId();
+        if ($cache->has($cacheKey)) {
+            $trackList = $cache->get($cacheKey, []);
+        } else {
+            $trackList = $this->buildTrackList($station, $request->getRouter());
+            $cache->set($cacheKey, $trackList, 300);
+        }
 
-        $qb->select('sm, s, spm, sp')
-            ->from(Entity\StationMedia::class, 'sm')
-            ->join('sm.song', 's')
-            ->leftJoin('sm.playlists', 'spm')
-            ->leftJoin('spm.playlist', 'sp')
-            ->where('sm.station_id = :station_id')
-            ->andWhere('sp.id IS NOT NULL')
-            ->andWhere('sp.is_enabled = 1')
-            ->andWhere('sp.include_in_on_demand = 1')
-            ->setParameter('station_id', $station->getId());
+        $trackList = new ArrayCollection($trackList);
 
         $params = $request->getQueryParams();
 
-        if (!empty($params['sort'])) {
-            $sortFields = [
-                'media_title' => 'sm.title',
-                'media_artist' => 'sm.artist',
-                'media_album' => 'sm.album',
+        $searchPhrase = trim($params['searchPhrase']);
+        if (!empty($searchPhrase)) {
+            $searchFields = [
+                'media_title',
+                'media_artist',
+                'media_album',
             ];
 
-            if (isset($sortFields[$params['sort']])) {
-                $sortField = $sortFields[$params['sort']];
-                $sortDirection = $params['sortOrder'] ?? 'ASC';
-                $qb->addOrderBy($sortField, $sortDirection);
+            $customFields = array_keys($this->apiUtils->getCustomFields());
+            foreach ($customFields as $customField) {
+                $searchFields[] = 'media_custom_fields_' . $customField;
             }
-        } else {
-            $qb->orderBy('sm.artist', 'ASC')
-                ->addOrderBy('sm.title', 'ASC');
+
+            $trackList = $trackList->filter(function ($row) use ($searchFields, $searchPhrase) {
+                foreach ($searchFields as $searchField) {
+                    if (false !== stripos($row[$searchField], $searchPhrase)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
         }
 
-        $search_phrase = trim($params['searchPhrase']);
-        if (!empty($search_phrase)) {
-            $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
-                ->setParameter('query', '%' . $search_phrase . '%');
+        if (!empty($params['sort'])) {
+            $sortField = $params['sort'];
+            $sortDirection = $params['sortOrder'] ?? Criteria::ASC;
+
+            $criteria = new Criteria;
+            $criteria->orderBy([$sortField => $sortDirection]);
+
+            $trackList = $trackList->matching($criteria);
         }
 
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
+        $paginator = new ArrayPaginator($request, $trackList);
+        return $paginator->write($response);
+    }
 
-        $isBootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
+    protected function buildTrackList(Entity\Station $station, RouterInterface $router): array
+    {
+        $query = $this->em->createQuery(/** @lang DQL */ '
+            SELECT sm.id FROM App\Entity\StationMedia sm
+            LEFT JOIN sm.playlists spm
+            LEFT JOIN spm.playlist sp
+            WHERE sm.station = :station
+            AND sp.id IS NOT NULL
+            AND sp.is_enabled = 1
+            AND sp.include_in_on_demand = 1
+            ORDER BY sm.artist ASC, sm.title ASC')
+            ->setParameter('station', $station);
 
-        $paginator->setPostprocessor(function ($media) use ($station, $isBootgrid, $router, $apiUtils) {
+        $mediaRefs = [];
+        foreach ($query->getArrayResult() as $row) {
+            $mediaRefs[] = $this->em->getReference(Entity\StationMedia::class, $row['id']);
+        }
+
+        $iterator = SimpleBatchIteratorAggregate::fromArrayResult(
+            $mediaRefs,
+            $this->em,
+            50
+        );
+
+        $list = [];
+
+        foreach ($iterator as $media) {
             /** @var Entity\StationMedia $media */
             $row = new Entity\Api\StationOnDemand();
 
             $row->track_id = $media->getUniqueId();
-            $row->media = $media->api($apiUtils);
+            $row->media = $media->api($this->apiUtils);
             $row->download_url = (string)$router->named('api:stations:ondemand:download', [
                 'station_id' => $station->getId(),
                 'media_id' => $media->getUniqueId(),
@@ -83,13 +129,9 @@ class ListAction
 
             $row->resolveUrls($router->getBaseUrl());
 
-            if ($isBootgrid) {
-                return Utilities::flattenArray($row, '_');
-            }
+            $list[] = Utilities::flattenArray($row, '_');;
+        }
 
-            return $row;
-        });
-
-        return $paginator->write($response);
+        return $list;
     }
 }

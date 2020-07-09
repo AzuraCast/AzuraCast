@@ -1,9 +1,7 @@
 <?php
 namespace App\Doctrine;
 
-use App\Http\RequestHelper;
 use App\Http\Response;
-use App\Http\ResponseHelper;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use Doctrine\ORM\Query;

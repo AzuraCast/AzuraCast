@@ -11,7 +11,7 @@ class Logger
     {
         return self::$instance;
     }
-    
+
     public static function setInstance(LoggerInterface $instance): void
     {
         self::$instance = $instance;

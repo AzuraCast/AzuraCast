@@ -2,8 +2,8 @@
 namespace App\Middleware\Module;
 
 use App\Event;
-use App\Http\ServerRequest;
 use App\EventDispatcher;
+use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;

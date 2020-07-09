@@ -38,7 +38,7 @@ class WriteLiquidsoapConfiguration extends Event
     {
         $this->configLines = array_merge($this->configLines, [''], $lines);
     }
-    
+
     public function appendBlock(string $lines): void
     {
         $this->appendLines(explode("\n", $lines));

@@ -79,7 +79,7 @@ class SendWebhooks extends Event
     {
         return count($this->triggers) > 1;
     }
-    
+
     public function isStandalone(): bool
     {
         return $this->is_standalone;

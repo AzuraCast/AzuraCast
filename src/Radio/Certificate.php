@@ -12,7 +12,7 @@ class Certificate
         $this->keyPath = $keyPath;
         $this->certPath = $certPath;
     }
-    
+
     public function getKeyPath(): string
     {
         return $this->keyPath;

@@ -19,7 +19,7 @@ class InjectAcl implements MiddlewareInterface
     {
         $this->acl = $acl;
     }
-    
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $request = $request->withAttribute(ServerRequest::ATTR_ACL, $this->acl);

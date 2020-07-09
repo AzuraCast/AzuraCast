@@ -18,7 +18,7 @@ class DeferredCallable
      * @var callable|string
      */
     protected $callable;
-    
+
     protected ?CallableResolverInterface $callableResolver;
 
     /**

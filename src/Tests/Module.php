@@ -59,7 +59,7 @@ class Module extends Framework implements DoctrineProvider
 
         parent::_after($test);
     }
-    
+
     public function _getEntityManager(): EntityManagerInterface
     {
         return $this->em;

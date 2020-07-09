@@ -28,7 +28,7 @@ class NowPlayingListeners
      * @var int
      */
     public int $total = 0;
-    
+
     public function __construct(?array $listeners = [])
     {
         if (isset($listeners['current'])) {

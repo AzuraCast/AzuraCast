@@ -23,7 +23,7 @@ class ValidationException extends Exception
     {
         return $this->detailedErrors;
     }
-    
+
     public function setDetailedErrors(ConstraintViolationListInterface $detailedErrors): void
     {
         $this->detailedErrors = $detailedErrors;

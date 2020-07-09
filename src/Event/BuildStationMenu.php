@@ -4,9 +4,9 @@ namespace App\Event;
 use App\Acl;
 use App\Entity\Station;
 use App\Entity\User;
+use App\Http\RouterInterface;
 use App\Radio\Backend\AbstractBackend;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Http\RouterInterface;
 
 class BuildStationMenu extends AbstractBuildMenu
 {

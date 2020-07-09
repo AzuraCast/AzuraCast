@@ -29,7 +29,7 @@ class FolderPlaylists extends AbstractTask
         $this->folderRepo = $folderRepo;
         $this->filesystem = $filesystem;
     }
-    
+
     public function run(bool $force = false): void
     {
         $stations = SimpleBatchIteratorAggregate::fromQuery(

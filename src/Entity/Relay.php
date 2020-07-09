@@ -159,7 +159,7 @@ class Relay
     {
         $this->updated_at = $updated_at;
     }
-    
+
     public function getRemotes(): Collection
     {
         return $this->remotes;

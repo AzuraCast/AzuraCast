@@ -289,8 +289,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         }
 
         $value = $this->getProperty($object, $prop_name);
-        if ($value instanceof \App\Collection) {
-            $value = $value->all();
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
         }
 
         return $value;

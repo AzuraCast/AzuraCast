@@ -19,18 +19,32 @@ class Customization
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected ?string $locale = null;
+    protected string $locale = self::DEFAULT_LOCALE;
+
+    protected string $theme = self::DEFAULT_THEME;
+
+    protected string $instanceName = '';
 
     public function __construct(
         Entity\Repository\SettingsRepository $settingsRepo,
         ServerRequestInterface $request
     ) {
         $this->settingsRepo = $settingsRepo;
+        $this->instanceName = (string)$this->settingsRepo->getSetting(Entity\Settings::INSTANCE_NAME, '');
 
         $this->locale = $this->initLocale($request);
 
         // Register current user
         $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
+
+        // Register current theme
+        $queryParams = $request->getQueryParams();
+
+        if (!empty($queryParams['theme'])) {
+            $this->theme = $queryParams['theme'];
+        } elseif (null !== $this->user && !empty($this->user->getTheme())) {
+            $this->theme = (string)$this->user->getTheme();
+        }
 
         // Set up the PHP translator
         $translator = new Translator();
@@ -54,9 +68,9 @@ class Customization
      *
      * @param Request|null $request
      *
-     * @return string|null
+     * @return string
      */
-    protected function initLocale(?Request $request = null): ?string
+    protected function initLocale(?Request $request = null): string
     {
         $settings = Settings::getInstance();
         if ($settings->isTesting()) {
@@ -110,7 +124,7 @@ class Customization
      */
     public function getLocale(): string
     {
-        return $this->locale ?? self::DEFAULT_LOCALE;
+        return $this->locale;
     }
 
     /**
@@ -128,27 +142,17 @@ class Customization
      */
     public function getTheme(): string
     {
-        if ($this->user !== null && !empty($this->user->getTheme())) {
-            return $this->user->getTheme();
-        }
-
-        return self::DEFAULT_THEME;
+        return $this->theme;
     }
 
     /**
      * Get the instance name for this AzuraCast instance.
      *
-     * @return string|null
+     * @return string
      */
-    public function getInstanceName(): ?string
+    public function getInstanceName(): string
     {
-        static $instance_name;
-
-        if ($instance_name === null) {
-            $instance_name = $this->settingsRepo->getSetting(Entity\Settings::INSTANCE_NAME, '');
-        }
-
-        return $instance_name;
+        return $this->instanceName;
     }
 
     /**

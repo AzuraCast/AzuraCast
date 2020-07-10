@@ -28,10 +28,6 @@ abstract class CestAbstract
 
     public function _after(FunctionalTester $I)
     {
-        /** @var App\Auth $auth */
-        $auth = $this->di->get(App\Auth::class);
-        $auth->logout();
-
         $this->em->clear();
 
         if (null !== $this->test_station) {
@@ -119,10 +115,6 @@ abstract class CestAbstract
         foreach ($clean_tables as $clean_table) {
             $this->em->createQuery('DELETE FROM ' . $clean_table . ' t')->execute();
         }
-
-        /** @var App\Auth $auth */
-        $auth = $this->di->get(App\Auth::class);
-        $auth->logout();
     }
 
     protected function login(FunctionalTester $I)

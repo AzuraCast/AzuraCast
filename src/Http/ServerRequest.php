@@ -2,6 +2,8 @@
 namespace App\Http;
 
 use App\Acl;
+use App\Auth;
+use App\Customization;
 use App\Entity;
 use App\Exception;
 use App\Radio;
@@ -18,83 +20,53 @@ final class ServerRequest extends \Slim\Http\ServerRequest
     public const ATTR_SESSION_FLASH = 'app_session_flash';
     public const ATTR_ROUTER = 'app_router';
     public const ATTR_RATE_LIMIT = 'app_rate_limit';
-    public const ATTR_IS_API_CALL = 'is_api_call';
     public const ATTR_ACL = 'acl';
+    public const ATTR_CUSTOMIZATION = 'customization';
+    public const ATTR_AUTH = 'auth';
     public const ATTR_STATION = 'station';
     public const ATTR_STATION_BACKEND = 'station_backend';
     public const ATTR_STATION_FRONTEND = 'station_frontend';
     public const ATTR_STATION_REMOTES = 'station_remotes';
     public const ATTR_USER = 'user';
 
-    /**
-     * @return View
-     * @throws Exception
-     */
     public function getView(): View
     {
         return $this->getAttributeOfClass(self::ATTR_VIEW, View::class);
     }
 
-    /**
-     * @return SessionInterface
-     * @throws Exception
-     */
     public function getSession(): SessionInterface
     {
         return $this->getAttributeOfClass(self::ATTR_SESSION, SessionInterface::class);
     }
 
-    /**
-     * @return Session\Csrf
-     * @throws Exception
-     */
     public function getCsrf(): Session\Csrf
     {
         return $this->getAttributeOfClass(self::ATTR_SESSION_CSRF, Session\Csrf::class);
     }
 
-    /**
-     * @return Session\Flash
-     * @throws Exception
-     */
     public function getFlash(): Session\Flash
     {
         return $this->getAttributeOfClass(self::ATTR_SESSION_FLASH, Session\Flash::class);
     }
 
-    /**
-     * @return RouterInterface
-     * @throws Exception
-     */
     public function getRouter(): RouterInterface
     {
         return $this->getAttributeOfClass(self::ATTR_ROUTER, RouterInterface::class);
     }
 
-    /**
-     * @return RateLimit
-     * @throws Exception
-     */
     public function getRateLimit(): RateLimit
     {
         return $this->getAttributeOfClass(self::ATTR_RATE_LIMIT, RateLimit::class);
     }
 
-    /**
-     * Get the remote user's IP address as indicated by HTTP headers.
-     * @return string|null
-     */
-    public function getIp(): ?string
+    public function getCustomization(): Customization
     {
-        $params = $this->serverRequest->getServerParams();
+        return $this->getAttributeOfClass(self::ATTR_CUSTOMIZATION, Customization::class);
+    }
 
-        return $params['HTTP_CLIENT_IP']
-            ?? $params['HTTP_X_FORWARDED_FOR']
-            ?? $params['HTTP_X_FORWARDED']
-            ?? $params['HTTP_FORWARDED_FOR']
-            ?? $params['HTTP_FORWARDED']
-            ?? $params['REMOTE_ADDR']
-            ?? null;
+    public function getAuth(): Auth
+    {
+        return $this->getAttributeOfClass(self::ATTR_AUTH, Auth::class);
     }
 
     public function getAcl(): Acl
@@ -102,45 +74,21 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         return $this->getAttributeOfClass(self::ATTR_ACL, Acl::class);
     }
 
-    /**
-     * Get the current logged-in user.
-     *
-     * @return Entity\User
-     * @throws Exception\InvalidRequestAttribute
-     */
     public function getUser(): Entity\User
     {
         return $this->getAttributeOfClass(self::ATTR_USER, Entity\User::class);
     }
 
-    /**
-     * Get the current station associated with the request, if it's set.
-     *
-     * @return Entity\Station
-     * @throws Exception\InvalidRequestAttribute
-     */
     public function getStation(): Entity\Station
     {
         return $this->getAttributeOfClass(self::ATTR_STATION, Entity\Station::class);
     }
 
-    /**
-     * Get the current station frontend associated with the request, if it's set.
-     *
-     * @return Radio\Frontend\AbstractFrontend
-     * @throws Exception\InvalidRequestAttribute
-     */
     public function getStationFrontend(): Radio\Frontend\AbstractFrontend
     {
         return $this->getAttributeOfClass(self::ATTR_STATION_FRONTEND, Radio\Frontend\AbstractFrontend::class);
     }
 
-    /**
-     * Get the current station backend associated with the request, if it's set.
-     *
-     * @return Radio\Backend\AbstractBackend
-     * @throws Exception\InvalidRequestAttribute
-     */
     public function getStationBackend(): Radio\Backend\AbstractBackend
     {
         return $this->getAttributeOfClass(self::ATTR_STATION_BACKEND, Radio\Backend\AbstractBackend::class);
@@ -191,5 +139,22 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         }
 
         return $object;
+    }
+
+    /**
+     * Get the remote user's IP address as indicated by HTTP headers.
+     * @return string|null
+     */
+    public function getIp(): ?string
+    {
+        $params = $this->serverRequest->getServerParams();
+
+        return $params['HTTP_CLIENT_IP']
+            ?? $params['HTTP_X_FORWARDED_FOR']
+            ?? $params['HTTP_X_FORWARDED']
+            ?? $params['HTTP_FORWARDED_FOR']
+            ?? $params['HTTP_FORWARDED']
+            ?? $params['REMOTE_ADDR']
+            ?? null;
     }
 }

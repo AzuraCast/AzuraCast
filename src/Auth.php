@@ -25,13 +25,11 @@ class Auth
     /** @var User|bool|null */
     protected $masqueraded_user;
 
-    public function __construct(UserRepository $userRepo)
-    {
+    public function __construct(
+        UserRepository $userRepo,
+        SessionInterface $session
+    ) {
         $this->userRepo = $userRepo;
-    }
-
-    public function setSession(SessionInterface $session): void
-    {
         $this->session = $session;
     }
 

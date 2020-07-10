@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Auth;
 use App\Entity;
 use App\Exception\NotFoundException;
 use App\Form\UserForm;
@@ -13,15 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class UsersController extends AbstractAdminCrudController
 {
-    protected Auth $auth;
-
-    public function __construct(
-        UserForm $form,
-        Auth $auth
-    ) {
+    public function __construct(UserForm $form)
+    {
         parent::__construct($form);
 
-        $this->auth = $auth;
         $this->csrf_namespace = 'admin_users';
     }
 
@@ -81,8 +75,12 @@ class UsersController extends AbstractAdminCrudController
         return $response->withRedirect($request->getRouter()->named('admin:users:index'));
     }
 
-    public function impersonateAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function impersonateAction(
+        ServerRequest $request,
+        Response $response,
+        $id,
+        $csrf
+    ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
@@ -91,7 +89,8 @@ class UsersController extends AbstractAdminCrudController
             throw new NotFoundException(__('User not found.'));
         }
 
-        $this->auth->masqueradeAsUser($user);
+        $auth = $request->getAuth();
+        $auth->masqueradeAsUser($user);
 
         $request->getFlash()->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
             Flash::SUCCESS);

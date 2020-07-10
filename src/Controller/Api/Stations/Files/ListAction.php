@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Api\Stations\Files;
 
-use App\Customization;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
@@ -19,7 +18,7 @@ class ListAction
         Response $response,
         EntityManagerInterface $em,
         Filesystem $filesystem,
-        Customization $customization
+        Entity\Repository\StationRepository $stationRepo
     ): ResponseInterface {
         $station = $request->getStation();
         $router = $request->getRouter();
@@ -92,7 +91,7 @@ class ListAction
             }
 
             $artImgSrc = (0 === $media_row['art_updated_at'])
-                ? (string)$customization->getDefaultAlbumArtUrl($station)
+                ? (string)$stationRepo->getDefaultAlbumArtUrl($station)
                 : (string)$router->named('api:stations:media:art',
                     [
                         'station_id' => $station->getId(),

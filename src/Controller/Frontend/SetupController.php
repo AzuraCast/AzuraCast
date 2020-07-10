@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Frontend;
 
-use App\Acl;
-use App\Auth;
 use App\Entity;
 use App\Exception\NotLoggedInException;
 use App\Form\SettingsForm;
@@ -20,23 +18,15 @@ class SetupController
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected Auth $auth;
-
-    protected Acl $acl;
-
     protected Settings $settings;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepository,
-        Auth $auth,
-        Acl $acl,
         Settings $settings
     ) {
         $this->em = $em;
         $this->settingsRepo = $settingsRepository;
-        $this->auth = $auth;
-        $this->acl = $acl;
         $this->settings = $settings;
     }
 
@@ -50,17 +40,18 @@ class SetupController
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $current_step = $this->_getSetupStep();
+        $current_step = $this->getSetupStep($request);
         return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
     }
 
     /**
      * Determine which step of setup is currently active.
      *
+     * @param ServerRequest $request
+     *
      * @return string
-     * @throws NotLoggedInException
      */
-    protected function _getSetupStep(): string
+    protected function getSetupStep(ServerRequest $request): string
     {
         if (0 !== (int)$this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
             return 'complete';
@@ -73,7 +64,8 @@ class SetupController
         }
 
         // If past "register" step, require login.
-        if (!$this->auth->isLoggedIn()) {
+        $auth = $request->getAuth();
+        if (!$auth->isLoggedIn()) {
             throw new NotLoggedInException;
         }
 
@@ -114,7 +106,7 @@ class SetupController
     public function registerAction(ServerRequest $request, Response $response): ResponseInterface
     {
         // Verify current step.
-        $current_step = $this->_getSetupStep();
+        $current_step = $this->getSetupStep($request);
         if ($current_step !== 'register' && $this->settings->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
@@ -146,8 +138,11 @@ class SetupController
             $this->em->flush();
 
             // Log in the newly created user.
-            $this->auth->authenticate($data['username'], $data['password']);
-            $this->acl->reload();
+            $auth = $request->getAuth();
+            $auth->authenticate($data['username'], $data['password']);
+
+            $acl = $request->getAcl();
+            $acl->reload();
 
             return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
@@ -173,7 +168,7 @@ class SetupController
         StationForm $stationForm
     ): ResponseInterface {
         // Verify current step.
-        $current_step = $this->_getSetupStep();
+        $current_step = $this->getSetupStep($request);
         if ($current_step !== 'station' && $this->settings->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
@@ -204,7 +199,7 @@ class SetupController
         SettingsForm $settingsForm
     ): ResponseInterface {
         // Verify current step.
-        $current_step = $this->_getSetupStep();
+        $current_step = $this->getSetupStep($request);
         if ($current_step !== 'settings' && $this->settings->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }

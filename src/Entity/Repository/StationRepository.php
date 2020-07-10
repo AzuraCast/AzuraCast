@@ -12,6 +12,8 @@ use App\Utilities;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -29,10 +31,13 @@ class StationRepository extends Repository
 
     protected CacheInterface $cache;
 
+    protected SettingsRepository $settingsRepo;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
+        SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Media $media_sync,
         Adapters $adapters,
@@ -45,6 +50,7 @@ class StationRepository extends Repository
         $this->configuration = $configuration;
         $this->validator = $validator;
         $this->cache = $cache;
+        $this->settingsRepo = $settingsRepo;
 
         parent::__construct($em, $serializer, $settings, $logger);
     }
@@ -246,5 +252,31 @@ class StationRepository extends Repository
     {
         $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Station s SET s.nowplaying=null')
             ->execute();
+    }
+
+    /**
+     * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
+     *
+     * @param Entity\Station|null $station
+     *
+     * @return UriInterface
+     */
+    public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
+    {
+        if ($station instanceof Entity\Station) {
+            $stationCustomUrl = trim($station->getDefaultAlbumArtUrl());
+
+            if (!empty($stationCustomUrl)) {
+                return new Uri($stationCustomUrl);
+            }
+        }
+
+        $custom_url = trim($this->settingsRepo->getSetting(Entity\Settings::DEFAULT_ALBUM_ART_URL));
+
+        if (!empty($custom_url)) {
+            return new Uri($custom_url);
+        }
+
+        return new Uri('/static/img/generic_song.jpg');
     }
 }

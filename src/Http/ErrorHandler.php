@@ -7,7 +7,7 @@ use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
 use App\Session\Flash;
 use App\Settings;
-use App\View;
+use App\ViewFactory;
 use Gettext\Translator;
 use Mezzio\Session\SessionInterface;
 use Monolog\Logger;
@@ -30,7 +30,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected Router $router;
 
-    protected View $view;
+    protected ViewFactory $viewFactory;
 
     protected Settings $settings;
 
@@ -38,14 +38,14 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         App $app,
         Logger $logger,
         Router $router,
-        View $view,
+        ViewFactory $viewFactory,
         Settings $settings
     ) {
         parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
 
         $this->settings = $settings;
+        $this->viewFactory = $viewFactory;
         $this->router = $router;
-        $this->view = $view;
     }
 
     public function __invoke(
@@ -132,10 +132,6 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response;
         }
 
-        $this->view->addData([
-            'request' => $this->request,
-        ]);
-
         if ($this->exception instanceof HttpException) {
             /** @var Response $response */
             $response = $this->responseFactory->createResponse($this->exception->getCode());
@@ -147,7 +143,9 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                 ));
             }
 
-            return $this->view->renderToResponse(
+            $view = $this->viewFactory->create($this->request);
+
+            return $view->renderToResponse(
                 $response,
                 'system/error_http',
                 [
@@ -242,7 +240,9 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->write($run->handleException($this->exception));
         }
 
-        return $this->view->renderToResponse(
+        $view = $this->viewFactory->create($this->request);
+
+        return $view->renderToResponse(
             $response,
             'system/error_general',
             [

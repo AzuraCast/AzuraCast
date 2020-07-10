@@ -2,13 +2,12 @@
 namespace App;
 
 use App\Entity;
+use App\Http\ServerRequest;
 use App\Service\NChan;
 use Gettext\Translator;
-use GuzzleHttp\Psr7\Uri;
 use Locale;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\UriInterface;
-use const LC_ALL;
 
 class Customization
 {
@@ -16,38 +15,22 @@ class Customization
     public const DEFAULT_LOCALE = 'en_US.UTF-8';
     public const DEFAULT_THEME = 'light';
 
-    /** @var Entity\User|null */
     protected ?Entity\User $user = null;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected ?string $locale = null;
 
-    public function __construct(Entity\Repository\SettingsRepository $settingsRepo)
-    {
+    public function __construct(
+        Entity\Repository\SettingsRepository $settingsRepo,
+        ServerRequestInterface $request
+    ) {
         $this->settingsRepo = $settingsRepo;
-    }
 
-    /**
-     * Set the currently active/logged in user.
-     *
-     * @param Entity\User $user
-     */
-    public function setUser(Entity\User $user = null): void
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * Initialize timezone and locale settings for the current user, and write them as attributes to the request.
-     *
-     * @param Request|null $request
-     *
-     * @return Request|null
-     */
-    public function init(?Request $request = null): ?Request
-    {
         $this->locale = $this->initLocale($request);
+
+        // Register current user
+        $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
 
         // Set up the PHP translator
         $translator = new Translator();
@@ -64,12 +47,6 @@ class Customization
         // Register translation superglobal functions
         putenv('LANG=' . $this->locale);
         setlocale(LC_ALL, $this->locale);
-
-        if ($request instanceof Request) {
-            $request = $request->withAttribute('locale', $this->locale);
-        }
-
-        return $request;
     }
 
     /**
@@ -222,32 +199,6 @@ class Customization
     public function hideAlbumArt(): bool
     {
         return (bool)$this->settingsRepo->getSetting(Entity\Settings::HIDE_ALBUM_ART, false);
-    }
-
-    /**
-     * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
-     *
-     * @param Entity\Station|null $station
-     *
-     * @return UriInterface
-     */
-    public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
-    {
-        if ($station instanceof Entity\Station) {
-            $stationCustomUrl = trim($station->getDefaultAlbumArtUrl());
-
-            if (!empty($stationCustomUrl)) {
-                return new Uri($stationCustomUrl);
-            }
-        }
-
-        $custom_url = trim($this->settingsRepo->getSetting(Entity\Settings::DEFAULT_ALBUM_ART_URL));
-
-        if (!empty($custom_url)) {
-            return new Uri($custom_url);
-        }
-
-        return new Uri('/static/img/generic_song.jpg');
     }
 
     /**

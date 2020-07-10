@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Frontend\Account;
 
-use App\Acl;
-use App\Auth;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Entity\User;
@@ -19,12 +17,13 @@ class LoginAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Acl $acl,
-        Auth $auth,
         EntityManagerInterface $em,
         RateLimit $rateLimit,
         SettingsRepository $settingsRepo
     ): ResponseInterface {
+        $auth = $request->getAuth();
+        $acl = $request->getAcl();
+
         // Check installation completion progress.
         if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
             $num_users = (int)$em->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')

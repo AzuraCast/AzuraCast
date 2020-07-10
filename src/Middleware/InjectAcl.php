@@ -2,6 +2,7 @@
 namespace App\Middleware;
 
 use App\Acl;
+use App\Entity\Repository\RolePermissionRepository;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,16 +14,18 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class InjectAcl implements MiddlewareInterface
 {
-    protected Acl $acl;
+    protected RolePermissionRepository $rolePermRepo;
 
-    public function __construct(Acl $acl)
+    public function __construct(RolePermissionRepository $rolePermRepo)
     {
-        $this->acl = $acl;
+        $this->rolePermRepo = $rolePermRepo;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute(ServerRequest::ATTR_ACL, $this->acl);
+        $acl = new Acl($this->rolePermRepo);
+
+        $request = $request->withAttribute(ServerRequest::ATTR_ACL, $acl);
 
         return $handler->handle($request);
     }

@@ -8,7 +8,7 @@
  * @var \App\Customization $customization
  * @var \App\Assets $assets
  * @var \App\Version $version
- * @var \App\Http\Request $request
+ * @var \App\Http\ServerRequest $request
  * @var array $app_settings
  */
 
@@ -17,100 +17,101 @@ $user = $request->getUser();
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><?=$customization->getPageTitle($title) ?></title>
+    <title><?=$customization->getPageTitle($title)?></title>
 
-<?=$this->fetch('partials/icons') ?>
+    <?=$this->fetch('partials/icons')?>
 
-<?php
-$assets
-    ->load('main')
-    ->load('theme_'.$customization->getTheme())
-    ->addInlineCss($customization->getCustomInternalCss());
+    <?php
+    $assets
+        ->load('main')
+        ->load('theme_' . $customization->getTheme())
+        ->addInlineCss($customization->getCustomInternalCss());
 
-echo $assets->css();
-echo $assets->js();
-?>
+    echo $assets->css();
+    echo $assets->js();
+    ?>
 </head>
-<body class="page-full <?=$page_class ?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
-<?=$assets->inlineJs($request) ?>
+<body class="page-full <?=$page_class?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
+<?=$assets->inlineJs($request)?>
 
-<a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content') ?></a>
+<a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content')?></a>
 
 <header class="navbar bg-primary-dark shadow-sm fixed-top">
-<?php if (!empty($sidebar)): ?>
-    <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__('Toggle Sidebar') ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-<?php endif; ?>
+    <?php if (!empty($sidebar)): ?>
+        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__('Toggle Sidebar')?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    <?php endif; ?>
 
-    <a class="navbar-brand ml-0 mr-auto" href="<?=$router->named('dashboard') ?>">
-        azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
+    <a class="navbar-brand ml-0 mr-auto" href="<?=$router->named('dashboard')?>">
+        azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?>
+            <small><?=$this->e($customization->getInstanceName())?></small><?php endif; ?>
     </a>
 
     <div id="radio-player-controls"></div>
 
     <div class="dropdown ml-3">
-        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__('Toggle Menu') ?>" data-toggle="dropdown" type="button">
+        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__('Toggle Menu')?>" data-toggle="dropdown" type="button">
             <i class="material-icons" aria-hidden="true">more_vert</i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             <li>
-                <a class="dropdown-item" href="<?=$router->named('dashboard') ?>">
+                <a class="dropdown-item" href="<?=$router->named('dashboard')?>">
                     <i class="material-icons" aria-hidden="true">home</i>
-                    <?=__('Dashboard') ?>
+                    <?=__('Dashboard')?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
             <?php if ($acl->userAllowed($user, \App\Acl::GLOBAL_VIEW)): ?>
                 <li>
-                    <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
+                    <a class="dropdown-item" href="<?=$router->named('admin:index:index')?>">
                         <i class="material-icons" aria-hidden="true">settings</i>
-                        <?=__('System Administration') ?>
+                        <?=__('System Administration')?>
                     </a>
                 </li>
             <?php endif; ?>
             <li>
-                <a class="dropdown-item" href="<?=$router->named('profile:index') ?>">
+                <a class="dropdown-item" href="<?=$router->named('profile:index')?>">
                     <i class="material-icons" aria-hidden="true">account_circle</i>
-                    <?=__('My Account') ?>
+                    <?=__('My Account')?>
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="<?=$router->named('profile:theme') ?>">
+                <a class="dropdown-item" href="<?=$router->named('profile:theme')?>">
                     <i class="material-icons" aria-hidden="true">invert_colors</i>
-                    <?=__('Switch Theme') ?>
+                    <?=__('Switch Theme')?>
                 </a>
             </li>
             <li>
-                <a class="dropdown-item" href="<?=$router->named('api_keys:index') ?>">
+                <a class="dropdown-item" href="<?=$router->named('api_keys:index')?>">
                     <i class="material-icons" aria-hidden="true">vpn_key</i>
-                    <?=__('My API Keys') ?>
+                    <?=__('My API Keys')?>
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="https://www.azuracast.com/help/" target="_blank">
                     <i class="material-icons" aria-hidden="true">help</i>
-                    <?=__('Help') ?>
+                    <?=__('Help')?>
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
-        <?php if ($auth->isMasqueraded()): ?>
-            <li>
-                <a class="dropdown-item" href="<?=$router->named('account:endmasquerade') ?>">
-                    <i class="material-icons" aria-hidden="true">exit_to_app</i>
-                    <?=__('End Session') ?>
-                </a>
-            </li>
-        <?php else: ?>
-            <li>
-                <a class="dropdown-item" href="<?=$router->named('account:logout') ?>">
-                    <i class="material-icons" aria-hidden="true">exit_to_app</i>
-                    <?=__('Sign Out') ?></a></li>
-        <?php endif; ?>
+            <?php if ($auth->isMasqueraded()): ?>
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('account:endmasquerade')?>">
+                        <i class="material-icons" aria-hidden="true">exit_to_app</i>
+                        <?=__('End Session')?>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('account:logout')?>">
+                        <i class="material-icons" aria-hidden="true">exit_to_app</i>
+                        <?=__('Sign Out')?></a></li>
+            <?php endif; ?>
         </ul>
     </div>
 </header>
@@ -118,7 +119,7 @@ echo $assets->js();
 <?php if (!empty($sidebar)): ?>
     <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
         <nav class="navdrawer-content">
-            <?=$sidebar ?>
+            <?=$sidebar?>
         </nav>
     </div>
 <?php endif; ?>
@@ -126,39 +127,43 @@ echo $assets->js();
 <section id="main">
     <section id="content" <?php if (empty($sidebar)): ?>class="content-alt"<?php endif; ?> role="main">
         <div class="container">
-        <?php if ($manual): ?>
-            <?=$this->section('content') ?>
-        <?php else: ?>
-            <?php if ($header): ?>
-                <div class="block-header">
-                    <h2><?=$header ?></h2>
+            <?php if ($manual): ?>
+                <?=$this->section('content')?>
+            <?php else: ?>
+                <?php if ($header): ?>
+                    <div class="block-header">
+                        <h2><?=$header?></h2>
+                    </div>
+                <?php endif; ?>
+                <div class="card mb-3" role="region">
+                    <div class="card-header bg-primary-dark">
+                        <h3 class="card-title"><?=$title?></h3>
+                    </div>
+                    <div class="card-body">
+                        <?=$this->section('content')?>
+                    </div>
                 </div>
             <?php endif; ?>
-            <div class="card mb-3" role="region">
-                <div class="card-header bg-primary-dark">
-                    <h3 class="card-title"><?=$title ?></h3>
-                </div>
-                <div class="card-body">
-                    <?=$this->section('content') ?>
-                </div>
-            </div>
-        <?php endif; ?>
         </div>
     </section>
 </section>
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$settings['name'].'</a> &bull; '.$version->getVersionText().' &bull; '.(\App\Settings::getInstance()->isDocker() ? 'Docker' : 'Ansible').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
-    <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>', 'https://www.azuracast.com/donate.html') ?>
+    <?=__('Powered by %s',
+        '<a href="https://www.azuracast.com/" target="_blank">' . $settings['name'] . '</a> &bull; ' . $version->getVersionText() . ' &bull; ' . (\App\Settings::getInstance()->isDocker() ? 'Docker' : 'Ansible') . ' &bull; PHP ' . \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION)?>
+    <br>
+    <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>',
+        'https://www.azuracast.com/donate.html')?>
 </footer>
 
 <div id="radio-player"></div>
 
 <?php if (null !== $flash && $flash->hasMessages()): ?>
-    <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-        $(function() {
+    <script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
+        $(function () {
             <?php foreach($flash->getMessages() as $message): ?>
-            notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>', false);
+            notify("<?=str_replace(['"', "\n"], ['\'', '<br>'],
+                $message['text']) ?>", '<?=$message['color'] ?>', false);
             <?php endforeach; ?>
         });
     </script>

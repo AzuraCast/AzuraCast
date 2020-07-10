@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Http\Router;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,13 +18,13 @@ class ApiUtilities
 
     protected Router $router;
 
-    protected Customization $customization;
+    protected StationRepository $stationRepo;
 
-    public function __construct(EntityManagerInterface $em, Router $router, Customization $customization)
+    public function __construct(EntityManagerInterface $em, Router $router, StationRepository $stationRepo)
     {
         $this->em = $em;
         $this->router = $router;
-        $this->customization = $customization;
+        $this->stationRepo = $stationRepo;
     }
 
     public function getRouter(): Router
@@ -70,7 +71,7 @@ class ApiUtilities
             $baseUri = $this->router->getBaseUrl();
         }
 
-        return UriResolver::resolve($baseUri, $this->customization->getDefaultAlbumArtUrl($station));
+        return UriResolver::resolve($baseUri, $this->stationRepo->getDefaultAlbumArtUrl($station));
     }
 
     /**

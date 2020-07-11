@@ -162,7 +162,7 @@ return [
 
         return $redis;
     },
-    
+
     // Configuration management
     App\Config::class => function (App\Settings $settings) {
         return new App\Config($settings[App\Settings::CONFIG_DIR]);
@@ -238,7 +238,11 @@ return [
             new App\Normalizer\DoctrineEntityNormalizer($em, $annotation_reader, $meta_factory),
             new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory),
         ];
-        return new Symfony\Component\Serializer\Serializer($normalizers);
+        $encoders = [
+            new Symfony\Component\Serializer\Encoder\JsonEncoder,
+        ];
+
+        return new Symfony\Component\Serializer\Serializer($normalizers, $encoders);
     },
 
     // Symfony Validator
@@ -254,29 +258,32 @@ return [
         return $builder->getValidator();
     },
 
-    Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport::class => function (
-        Redis $redis
+    Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport::class => function (
+        Doctrine\DBAL\Connection $db,
+        Symfony\Component\Serializer\Serializer $serializer
     ) {
-        // Configure message transport middleware
-        $redisConnection = new Symfony\Component\Messenger\Bridge\Redis\Transport\Connection(
-            [],
-            array_filter([
-                'host' => $redis->getHost(),
-                'port' => $redis->getPort(),
-                'auth' => $redis->getAuth(),
-            ])
+        $doctrineConnection = new Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection(
+            [
+                'table_name' => 'messenger_messages',
+                'auto_setup' => false,
+            ],
+            $db
         );
 
-        return new Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport($redisConnection);
+        return new Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport(
+            $doctrineConnection,
+            new Symfony\Component\Messenger\Transport\Serialization\PhpSerializer
+        );
     },
 
     Symfony\Component\Messenger\MessageBus::class => function (
         ContainerInterface $di,
         Monolog\Logger $logger
     ) {
+        // Configure message sending middleware
         $senders = [
             App\Message\AbstractMessage::class => [
-                Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport::class,
+                Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport::class,
             ],
         ];
 

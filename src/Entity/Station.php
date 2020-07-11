@@ -488,11 +488,16 @@ class Station
             $config = new StationFrontendConfiguration(
                 ($force_overwrite) ? [] : (array)$this->frontend_config,
             );
-            $config->replace($frontend_config);
+
+            foreach ($frontend_config as $key => $val) {
+                $config->set($key, $val);
+            }
+
             $frontend_config = $config;
         }
 
-        $config = $frontend_config->all();
+        $config = $frontend_config->toArray();
+        
         if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
@@ -569,12 +574,15 @@ class Station
             $config = new StationBackendConfiguration(
                 ($force_overwrite) ? [] : (array)$this->backend_config
             );
-            $config->replace($backend_config);
+
+            foreach ($backend_config as $key => $val) {
+                $config->set($key, $val);
+            }
 
             $backend_config = $config;
         }
 
-        $config = $backend_config->all();
+        $config = $backend_config->toArray();
 
         if ($this->backend_config != $config) {
             $this->setNeedsRestart(true);

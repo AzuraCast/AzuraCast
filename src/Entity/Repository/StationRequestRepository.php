@@ -70,7 +70,7 @@ class StationRequestRepository extends Repository
         }
 
         // Save request locally.
-        $record = new Entity\StationRequest($station, $media_item);
+        $record = new Entity\StationRequest($station, $media_item, $ip);
         $this->em->persist($record);
         $this->em->flush();
 

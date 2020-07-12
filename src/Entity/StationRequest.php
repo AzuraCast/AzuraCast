@@ -73,8 +73,12 @@ class StationRequest
      */
     protected $ip;
 
-    public function __construct(Station $station, StationMedia $track, bool $skipDelay = false)
-    {
+    public function __construct(
+        Station $station,
+        StationMedia $track,
+        string $ip = null,
+        bool $skipDelay = false
+    ) {
         $this->station = $station;
         $this->track = $track;
 
@@ -82,7 +86,7 @@ class StationRequest
         $this->skip_delay = $skipDelay;
         $this->played_at = 0;
 
-        $this->ip = $_SERVER['REMOTE_ADDR'];
+        $this->ip = $ip ?? $_SERVER['REMOTE_ADDR'];
     }
 
     public function getId(): ?int

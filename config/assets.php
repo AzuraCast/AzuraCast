@@ -359,9 +359,6 @@ return [
                 [
                     'href' => 'dist/lib/codemirror/codemirror.css',
                 ],
-                [
-                    'href' => 'dist/lib/codemirror/material.css',
-                ],
             ],
         ],
     ],

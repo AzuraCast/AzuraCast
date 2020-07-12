@@ -1,8 +1,10 @@
+$theme: 'light';
+
 @import 'common-top';
 
 // Sass option
-$enable-grid-classes:      true !default;
-$enable-print-styles:      true !default;
+$enable-grid-classes: true !default;
+$enable-print-styles: true !default;
 
 // Variables
 @import 'variables/elevation-shadow';

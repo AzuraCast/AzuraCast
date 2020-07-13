@@ -23,6 +23,8 @@ class Customization
 
     protected string $theme = self::DEFAULT_THEME;
 
+    protected string $publicTheme = self::DEFAULT_THEME;
+
     protected string $instanceName = '';
 
     public function __construct(
@@ -41,9 +43,13 @@ class Customization
         $queryParams = $request->getQueryParams();
 
         if (!empty($queryParams['theme'])) {
-            $this->theme = $queryParams['theme'];
-        } elseif (null !== $this->user && !empty($this->user->getTheme())) {
-            $this->theme = (string)$this->user->getTheme();
+            $this->publicTheme = $this->theme = $queryParams['theme'];
+        } else {
+            $this->publicTheme = $this->settingsRepo->getSetting(Entity\Settings::PUBLIC_THEME, $this->publicTheme);
+
+            if (null !== $this->user && !empty($this->user->getTheme())) {
+                $this->theme = (string)$this->user->getTheme();
+            }
         }
 
         // Set up the PHP translator
@@ -162,7 +168,7 @@ class Customization
      */
     public function getPublicTheme(): string
     {
-        return $this->settingsRepo->getSetting(Entity\Settings::PUBLIC_THEME, self::DEFAULT_THEME);
+        return $this->publicTheme;
     }
 
     /**

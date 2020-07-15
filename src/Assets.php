@@ -42,15 +42,48 @@ class Assets
      *
      * @throws \Exception
      */
-    public function __construct(array $libraries = [], array $versioned_files = [])
-    {
+    public function __construct(
+        array $libraries = [],
+        array $versioned_files = [],
+        array $vueComponents = []
+    ) {
         foreach ($libraries as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }
 
         $this->versioned_files = $versioned_files;
+        $this->addVueComponents($vueComponents);
+
         $this->csp_nonce = preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
         $this->csp_domains = [];
+    }
+
+    protected function addVueComponents(array $vueComponents = [])
+    {
+        if (!empty($vueComponents['entrypoints'])) {
+            foreach ($vueComponents['entrypoints'] as $componentName => $componentDeps) {
+
+                $library = $this->libraries[$componentName] ?? [
+                        'order' => 10,
+                        'require' => [],
+                        'files' => [],
+                    ];
+
+                if (!in_array('vue-component-common', $library['require'], true)) {
+                    $library['require'][] = 'vue-component-common';
+                }
+
+                foreach ($componentDeps['js'] as $componentDep) {
+                    if ('dist/vendor.js' !== $componentDep) {
+                        $library['files']['js'][] = [
+                            'src' => $componentDep,
+                        ];
+                    }
+                }
+
+                $this->addLibrary($library, $componentName);
+            }
+        }
     }
 
     /**

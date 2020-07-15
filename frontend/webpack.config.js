@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 module.exports = {
   mode: 'production',
@@ -16,7 +17,7 @@ module.exports = {
     extensions: ['*', '.js', '.vue', '.json']
   },
   output: {
-    publicPath: '/static/dist',
+    publicPath: 'dist/',
     filename: '[name].js',
     sourceMapFilename: '[name].map',
     library: '[name]'
@@ -24,10 +25,24 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
-        vendor: {
-          test: /node_modules/,
+        moment: {
+          test: /[\\/]node_modules[\\/]moment/,
+          name: 'vendor-moment',
+          priority: 2,
           chunks: 'initial',
+          enforce: true
+        },
+        fullcalendar: {
+          test: /[\\/]node_modules[\\/]@fullcalendar/,
+          name: 'vendor-fullcalendar',
+          priority: 2,
+          chunks: 'initial',
+          enforce: true
+        },
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
           name: 'vendor',
+          chunks: 'initial',
           enforce: true
         }
       }
@@ -51,8 +66,12 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.IgnorePlugin({
-      resourceRegExp: /^vue$/
+    new WebpackAssetsManifest({
+      output: '../web/static/webpack.json',
+      writeToDisk: true,
+      merge: true,
+      publicPath: true,
+      entrypoints: true
     })
   ],
   performance: {

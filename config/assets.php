@@ -445,7 +445,7 @@ return [
         ],
     ],
 
-    'webcaster' => [
+    'Webcaster' => [
         'order' => 10,
         'require' => ['vue-component-common'],
         'files' => [
@@ -462,83 +462,32 @@ return [
                 [
                     'src' => 'dist/lib/webcaster/webcast.js',
                 ],
-                [
-                    'src' => 'dist/Webcaster.js',
-                ],
             ],
         ],
     ],
 
-    'radio_player' => [
-        'order' => 10,
-        'require' => ['vue-component-common'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/RadioPlayer.js',
-                ],
-            ],
-        ],
-    ],
-
-    'inline_player' => [
-        'order' => 10,
-        'require' => ['vue-component-common'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/InlinePlayer.js',
-                ],
-            ],
-        ],
-    ],
-
-    'station_media_manager' => [
+    'StationMedia' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/StationMedia.js',
-                ],
-            ],
-        ],
+        // Auto-managed by Assets
     ],
 
-    'station_playlists' => [
+    'StationPlaylists' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
         'replace' => ['moment'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/StationPlaylists.js',
-                ],
-            ],
-        ],
+        // Auto-managed by Assets
     ],
 
-    'station_streamers' => [
+    'StationStreamers' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/StationStreamers.js',
-                ],
-            ],
-        ],
+        // Auto-managed by Assets
     ],
 
-    'station_on_demand' => [
+    'StationOnDemand' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/StationOnDemand.js',
-                ],
-            ],
-        ],
+        // Auto-managed by Assets
     ],
 ];

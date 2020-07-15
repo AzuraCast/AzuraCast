@@ -10,8 +10,8 @@ $assets
     ->load('vue')
     ->load('moment')
     ->load('fancybox')
-    ->load('inline_player')
-    ->load('station_media_manager')
+    ->load('InlinePlayer')
+    ->load('StationMedia')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->addInlineJs($this->fetch('stations/files/index.js', [
         'playlists' => $playlists,

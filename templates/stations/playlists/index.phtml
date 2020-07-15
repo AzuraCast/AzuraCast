@@ -5,7 +5,7 @@ $this->layout('main', [
 ]);
 
 /** @var \App\Assets $assets */
-$assets->load('station_playlists')
+$assets->load('StationPlaylists')
     ->addInlineJs($this->fetch('stations/playlists/index.js', [
         'station_tz' => $station_tz,
     ]));

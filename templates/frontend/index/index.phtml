@@ -12,7 +12,7 @@ $this->layout('main', ['title' => __('Dashboard'), 'manual' => true]);
 
 $assets
     ->load('vue')
-    ->load('inline_player')
+    ->load('InlinePlayer')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->addInlineJs($this->fetch('frontend/index/index.js', ['stations' => $stations]));
 

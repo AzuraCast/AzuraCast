@@ -9,7 +9,7 @@ $this->layout('minimal', [
 $assets
     ->load('vue')
     ->load('fancybox')
-    ->load('station_on_demand')
+    ->load('StationOnDemand')
     ->addInlineJs($this->fetch('frontend/public/ondemand.js', [
         'station' => $station,
         'custom_fields' => $custom_fields,

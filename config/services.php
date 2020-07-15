@@ -367,7 +367,13 @@ return [
             $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }
 
-        return new App\Assets($libraries, $versioned_files);
+        $vueComponents = [];
+        $assets_file = $settings[Settings::BASE_DIR] . '/web/static/webpack.json';
+        if (file_exists($assets_file)) {
+            $vueComponents = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        return new App\Assets($libraries, $versioned_files, $vueComponents);
     },
 
     // Synchronized (Cron) Tasks

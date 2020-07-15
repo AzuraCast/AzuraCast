@@ -36,6 +36,7 @@ tmp/cache/*---*
 /web/static/dist/**/*
 !/web/static/dist/.gitkeep
 /web/static/assets.json
+/web/static/webpack.json
 
 # Ansible deployment files
 /ansible/

@@ -411,8 +411,12 @@ class ConfigWriter implements EventSubscriberInterface
                 if uri == "" or string.match(pattern="Error", uri) then
                     []
                 else 
-                    req = request.create(uri)
-                    [req]                
+                    r = request.create(uri)
+                    if request.resolve(r) then
+                        [r]
+                    else
+                        []
+                   end                
                 end
             end
             EOF
@@ -848,10 +852,15 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(<<<EOF
         # Send metadata changes back to AzuraCast
         def metadata_updated(m) =
-            if (m["song_id"] != "") then
-                ret = {$feedbackCommand}
-                log("AzuraCast Feedback Response: #{ret}")
+            def f() = 
+                if (m["song_id"] != "") then
+                    ret = {$feedbackCommand}
+                    log("AzuraCast Feedback Response: #{ret}")
+                end
+                (-1.)
             end
+            
+            add_timeout(fast=false, 0., f)
         end
         
         radio = on_metadata(metadata_updated,radio)

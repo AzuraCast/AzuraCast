@@ -6,7 +6,7 @@ use Exception;
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema()
+ * @OA\Schema(type="object", schema="Trait_UniqueId")
  */
 trait UniqueId
 {

@@ -652,27 +652,17 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
 
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
-        $crossfade_type = $settings['crossfade_type'] ?? self::CROSSFADE_NORMAL;
-        $crossfade = round($settings['crossfade'] ?? 2, 1);
+        $crossfade_type = $settings->getCrossfadeType();
+        $crossfade = $settings->getCrossfade();
 
-        if (self::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
-            $start_next = round($crossfade * 1.5, 2);
-            $crossfadeIsSmart = (self::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
+        if (Entity\StationBackendConfiguration::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
+            $crossDuration = round($crossfade * 1.5, 2);
+            $crossfadeIsSmart = (Entity\StationBackendConfiguration::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
 
             $event->appendLines([
-                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
+                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($crossDuration) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
-
-        // Write fallback to safety file immediately after crossfade.
-        $error_file = Settings::getInstance()->isDocker()
-            ? '/usr/local/share/icecast/web/error.mp3'
-            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
-
-        $event->appendLines([
-            'radio = fallback(id="' . self::getVarName($station,
-                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
-        ]);
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -779,10 +769,46 @@ class ConfigWriter implements EventSubscriberInterface
             '# Live Broadcasting',
             'live = audio_to_stereo(input.harbor(' . implode(', ', $harbor_params) . '))',
             'ignore(output.dummy(live, fallible=true))',
-            '',
-            'radio = fallback(id="' . self::getVarName($station,
-                'live_fallback') . '", replay_metadata=false, track_sensitive=false, [live, radio])',
         ]);
+
+        $fallbackLine = 'radio = fallback(id="' . self::getVarName($station,
+                'live_fallback') . '", replay_metadata=false, track_sensitive=false, [live, radio])';
+
+        if ($settings->isCrossfadeEnabled()) {
+            $crossfade = $settings->getCrossfade();
+            $fadeBuffer = round($crossfade * 2, 1);
+            $crossDuration = round($crossfade * 1.5, 2);
+
+            $event->appendLines([
+                '# Tag live, used to detect transitions from/to live',
+                'def tag_live(_) =',
+                '  [("type","live")]',
+                'end',
+                'live = map_metadata(tag_live, live)',
+                '',
+                '# Add buffer, the time for fade.in + fade.out',
+                'live = buffer(id="' . self::getVarName($station,
+                    'live_buffer') . '", buffer=' . self::toFloat($fadeBuffer) . ', fallible=true, live)',
+                '',
+                $fallbackLine,
+                '',
+                'def azuracast_live_crossfade(a,b,ma,mb,sa,sb) =',
+                '  if ma["type"] == "live" or mb["type"] == "live" then',
+                '    log("Transition from/to live: crossfading...")',
+                '    add(normalize=false,[fade.in(duration=' . self::toFloat($crossfade) . ',sb), fade.out(duration=' . self::toFloat($crossfade) . ', sa)])',
+                '  else',
+                '    sequence([sa, sb])',
+                '  end',
+                'end',
+                '',
+                'radio = cross(duration=' . self::toFloat($crossDuration) . ', azuracast_live_crossfade, radio)',
+            ]);
+
+        } else {
+            $event->appendLines([
+                $fallbackLine,
+            ]);
+        }
 
         if ($recordLiveStreams) {
             $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\StationMountInterface::FORMAT_MP3;
@@ -842,6 +868,16 @@ class ConfigWriter implements EventSubscriberInterface
                 'enable_replaygain_metadata()',
             ]);
         }
+
+        // Write fallback to safety file to ensure infallible source for the broadcast outputs.
+        $error_file = Settings::getInstance()->isDocker()
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
+
+        $event->appendLines([
+            'radio = fallback(id="' . self::getVarName($station,
+                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
+        ]);
 
         // Custom configuration
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);

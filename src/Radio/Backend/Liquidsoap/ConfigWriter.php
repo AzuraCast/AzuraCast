@@ -769,46 +769,10 @@ class ConfigWriter implements EventSubscriberInterface
             '# Live Broadcasting',
             'live = audio_to_stereo(input.harbor(' . implode(', ', $harbor_params) . '))',
             'ignore(output.dummy(live, fallible=true))',
+            '',
+            'radio = fallback(id="' . self::getVarName($station,
+                'live_fallback') . '", replay_metadata=false, track_sensitive=false, [live, radio])',
         ]);
-
-        $fallbackLine = 'radio = fallback(id="' . self::getVarName($station,
-                'live_fallback') . '", replay_metadata=false, track_sensitive=false, [live, radio])';
-
-        if ($settings->isCrossfadeEnabled()) {
-            $crossfade = $settings->getCrossfade();
-            $fadeBuffer = round($crossfade * 2, 1);
-            $crossDuration = round($crossfade * 1.5, 2);
-
-            $event->appendLines([
-                '# Tag live, used to detect transitions from/to live',
-                'def tag_live(_) =',
-                '  [("type","live")]',
-                'end',
-                'live = map_metadata(tag_live, live)',
-                '',
-                '# Add buffer, the time for fade.in + fade.out',
-                'live = buffer(id="' . self::getVarName($station,
-                    'live_buffer') . '", buffer=' . self::toFloat($fadeBuffer) . ', fallible=true, live)',
-                '',
-                $fallbackLine,
-                '',
-                'def azuracast_live_crossfade(a,b,ma,mb,sa,sb) =',
-                '  if ma["type"] == "live" or mb["type"] == "live" then',
-                '    log("Transition from/to live: crossfading...")',
-                '    add(normalize=false,[fade.in(duration=' . self::toFloat($crossfade) . ',sb), fade.out(duration=' . self::toFloat($crossfade) . ', sa)])',
-                '  else',
-                '    sequence([sa, sb])',
-                '  end',
-                'end',
-                '',
-                'radio = cross(duration=' . self::toFloat($crossDuration) . ', azuracast_live_crossfade, radio)',
-            ]);
-
-        } else {
-            $event->appendLines([
-                $fallbackLine,
-            ]);
-        }
 
         if ($recordLiveStreams) {
             $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\StationMountInterface::FORMAT_MP3;

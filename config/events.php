@@ -65,6 +65,8 @@ return function (App\EventDispatcher $dispatcher) {
             call_user_func(include(__DIR__ . '/routes.dev.php'), $app);
         }
 
+        $app->add(Middleware\WrapExceptionsWithRequestData::class);
+
         $app->add(Middleware\EnforceSecurity::class);
         $app->add(Middleware\InjectAcl::class);
         $app->add(Middleware\GetCurrentUser::class);
@@ -84,12 +86,12 @@ return function (App\EventDispatcher $dispatcher) {
         $app->add(new Middleware\RemoveSlashes);
         $app->add(new Middleware\ApplyXForwardedProto);
 
-        // Error handling, which should always be near the "last" element.
-        $errorMiddleware = $app->addErrorMiddleware(!$settings->isProduction(), true, true);
-        $errorMiddleware->setDefaultErrorHandler(Slim\Interfaces\ErrorHandlerInterface::class);
-
         // Use PSR-7 compatible sessions.
         $app->add(Middleware\InjectSession::class);
+
+        // Add an error handler for most in-controller/task situations.
+        $errorMiddleware = $app->addErrorMiddleware(!$settings->isProduction(), true, true);
+        $errorMiddleware->setDefaultErrorHandler(Slim\Interfaces\ErrorHandlerInterface::class);
     });
 
     // Build default menus

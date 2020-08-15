@@ -122,24 +122,6 @@ class SongHistory
     protected $request;
 
     /**
-     * @ORM\Column(name="autodj_custom_uri", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $autodj_custom_uri;
-
-    /**
-     * @ORM\Column(name="timestamp_cued", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $timestamp_cued;
-
-    /**
-     * @ORM\Column(name="sent_to_autodj", type="boolean")
-     * @var bool
-     */
-    protected $sent_to_autodj;
-
-    /**
      * @ORM\Column(name="timestamp_start", type="integer")
      * @var int
      */
@@ -203,9 +185,6 @@ class SongHistory
     {
         $this->song = $song;
         $this->station = $station;
-
-        $this->sent_to_autodj = false;
-        $this->timestamp_cued = 0;
 
         $this->timestamp_start = 0;
         $this->listeners_start = 0;
@@ -277,41 +256,6 @@ class SongHistory
     public function setRequest($request): void
     {
         $this->request = $request;
-    }
-
-    public function getAutodjCustomUri(): ?string
-    {
-        return $this->autodj_custom_uri;
-    }
-
-    public function setAutodjCustomUri(?string $autodj_custom_uri): void
-    {
-        $this->autodj_custom_uri = $autodj_custom_uri;
-    }
-
-    public function getTimestampCued(): ?int
-    {
-        return $this->timestamp_cued;
-    }
-
-    public function setTimestampCued($timestamp_cued): void
-    {
-        $this->timestamp_cued = $timestamp_cued;
-    }
-
-    public function getSentToAutodj(): bool
-    {
-        return $this->sent_to_autodj;
-    }
-
-    public function sentToAutodj(): void
-    {
-        $cued = $this->getTimestampCued();
-        if (null === $cued || 0 === $cued) {
-            $this->setTimestampCued(time());
-        }
-
-        $this->sent_to_autodj = true;
     }
 
     public function getTimestampStart(): int
@@ -475,11 +419,6 @@ class SongHistory
             $response->listeners_start = (int)$this->listeners_start;
             $response->listeners_end = (int)$this->listeners_end;
             $response->delta_total = (int)$this->delta_total;
-        }
-
-        if ($response instanceof Api\QueuedSong) {
-            $response->cued_at = (int)$this->timestamp_cued;
-            $response->autodj_custom_uri = $this->autodj_custom_uri;
         }
 
         $response->song = ($this->media)

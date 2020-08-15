@@ -16,6 +16,29 @@ class Queue implements EventSubscriberInterface
 
     protected LoggerInterface $logger;
 
+    protected Scheduler $scheduler;
+
+    protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
+
+    protected Entity\Repository\SongRepository $songRepo;
+
+    protected Entity\Repository\StationRequestRepository $requestRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        LoggerInterface $logger,
+        Scheduler $scheduler,
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        Entity\Repository\SongRepository $songRepo,
+        Entity\Repository\StationRequestRepository $requestRepo
+    ) {
+        $this->em = $em;
+        $this->logger = $logger;
+        $this->scheduler = $scheduler;
+        $this->spmRepo = $spmRepo;
+        $this->songRepo = $songRepo;
+        $this->requestRepo = $requestRepo;
+    }
 
     public static function getSubscribedEvents()
     {
@@ -112,7 +135,7 @@ class Queue implements EventSubscriberInterface
             $eligible_playlists = [];
             foreach ($playlists_by_type[$type] as $playlist_id => $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
-                if ($playlist->shouldPlayNow($now, $cued_song_history)) {
+                if ($this->scheduler->shouldPlaylistPlayNow($playlist, $now, $cued_song_history)) {
                     $eligible_playlists[$playlist_id] = $playlist->getWeight();
                     $log_playlists[] = [
                         'id' => $playlist->getId(),
@@ -191,14 +214,14 @@ class Queue implements EventSubscriberInterface
      * @param CarbonInterface $now
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
-     * @return Entity\SongHistory|null
+     * @return Entity\StationQueue|null
      */
     protected function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,
         array $recentSongHistory,
         CarbonInterface $now,
         bool $allowDuplicates = false
-    ): ?Entity\SongHistory {
+    ): ?Entity\StationQueue {
         $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $allowDuplicates);
 
         if ($media_to_play instanceof Entity\StationMedia) {
@@ -206,9 +229,10 @@ class Queue implements EventSubscriberInterface
             $this->em->persist($playlist);
 
             $spm = $media_to_play->getItemForPlaylist($playlist);
-            $spm->played($now->getTimestamp());
-
-            $this->em->persist($spm);
+            if ($spm instanceof Entity\StationPlaylist) {
+                $spm->played($now->getTimestamp());
+                $this->em->persist($spm);
+            }
 
             // Log in history
             $sh = new Entity\StationQueue($playlist->getStation(), $media_to_play->getSong());
@@ -228,9 +252,9 @@ class Queue implements EventSubscriberInterface
             $playlist->setPlayedAt($now->getTimestamp());
             $this->em->persist($playlist);
 
-            $sh = new Entity\SongHistory($this->songRepo->getOrCreate([
+            $sh = new Entity\StationQueue($playlist->getStation(), $this->songRepo->getOrCreate([
                 'text' => 'Remote Playlist URL',
-            ]), $playlist->getStation());
+            ]));
 
             $sh->setPlaylist($playlist);
             $sh->setAutodjCustomUri($media_uri);
@@ -470,20 +494,20 @@ class Queue implements EventSubscriberInterface
         $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
         // Log in history
-        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
-        $sh->setRequest($request);
-        $sh->setMedia($request->getTrack());
+        $sq = new Entity\StationQueue($request->getStation(), $request->getTrack()->getSong());
+        $sq->setRequest($request);
+        $sq->setMedia($request->getTrack());
 
-        $sh->setDuration($request->getTrack()->getCalculatedLength());
-        $sh->setTimestampCued($now->getTimestamp());
-        $this->em->persist($sh);
+        $sq->setDuration($request->getTrack()->getCalculatedLength());
+        $sq->setTimestampCued($now->getTimestamp());
+        $this->em->persist($sq);
 
         $request->setPlayedAt($now->getTimestamp());
         $this->em->persist($request);
 
         $this->em->flush();
 
-        $event->setNextSong($sh);
+        $event->setNextSong($sq);
     }
 
     /**

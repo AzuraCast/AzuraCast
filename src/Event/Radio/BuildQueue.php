@@ -9,7 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildQueue extends Event
 {
-    protected ?Entity\SongHistory $next_song = null;
+    protected ?Entity\StationQueue $next_song = null;
 
     protected Entity\Station $station;
 
@@ -32,12 +32,12 @@ class BuildQueue extends Event
         return $this->now;
     }
 
-    public function getNextSong(): ?Entity\SongHistory
+    public function getNextSong(): ?Entity\StationQueue
     {
         return $this->next_song;
     }
 
-    public function setNextSong(?Entity\SongHistory $next_song): bool
+    public function setNextSong(?Entity\StationQueue $next_song): bool
     {
         $this->next_song = $next_song;
 

@@ -5,6 +5,7 @@ use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
+use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,16 +23,22 @@ class AutoDJ
 
     protected Logger $logger;
 
+    protected Scheduler $scheduler;
+
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SongHistoryRepository $songHistoryRepo,
+        Entity\Repository\StationQueueRepository $queueRepo,
         EventDispatcher $dispatcher,
-        Logger $logger
+        Logger $logger,
+        Scheduler $scheduler
     ) {
         $this->em = $em;
         $this->songHistoryRepo = $songHistoryRepo;
+        $this->queueRepo = $queueRepo;
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
+        $this->scheduler = $scheduler;
     }
 
     /**
@@ -47,6 +54,20 @@ class AutoDJ
         $queueRow = $this->queueRepo->getNextInQueue($station);
         if (!($queueRow instanceof Entity\StationQueue)) {
             return '';
+        }
+
+        $playlist = $queueRow->getPlaylist();
+        if ($playlist instanceof Entity\StationPlaylist) {
+            $now = CarbonImmutable::now($station->getTimezoneObject());
+
+            if (!$this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now)) {
+                $this->logger->warning('Queue item is no longer scheduled to play right now; removing.');
+
+                $this->em->remove($queueRow);
+                $this->em->flush();
+
+                return $this->annotateNextSong($station, $asAutoDj);
+            }
         }
 
         $event = AnnotateNextSong::fromQueue($queueRow, $asAutoDj);

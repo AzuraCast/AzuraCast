@@ -4,7 +4,6 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\Normalizer\Annotation\DeepNormalize;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -585,91 +584,6 @@ class StationPlaylist
         return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backend_options, true);
     }
 
-    /**
-     * Parent function for determining whether a playlist of any type can be played by the AutoDJ.
-     *
-     * @param CarbonInterface|null $now
-     * @param array $recentSongHistory
-     *
-     * @return bool
-     */
-    public function shouldPlayNow(CarbonInterface $now = null, array $recentSongHistory = []): bool
-    {
-        if (null === $now) {
-            $now = CarbonImmutable::now(new DateTimeZone($this->getStation()->getTimezone()));
-        }
-
-        if (!$this->isScheduledToPlayNow($now)) {
-            return false;
-        }
-
-        switch ($this->type) {
-            case self::TYPE_ONCE_PER_HOUR:
-                return $this->shouldPlayNowPerHour($now);
-                break;
-
-            case self::TYPE_ONCE_PER_X_SONGS:
-                return !$this->wasPlayedRecently($recentSongHistory, $this->getPlayPerSongs());
-                break;
-
-            case self::TYPE_ONCE_PER_X_MINUTES:
-                return $this->shouldPlayNowPerMinute($now);
-                break;
-
-            case self::TYPE_ADVANCED:
-                return false;
-                break;
-
-            case self::TYPE_DEFAULT:
-            default:
-                return true;
-                break;
-        }
-    }
-
-    protected function isScheduledToPlayNow(CarbonInterface $now): bool
-    {
-        if (0 === $this->schedule_items->count()) {
-            return true;
-        }
-
-        foreach ($this->schedule_items as $scheduleItem) {
-            /** @var StationSchedule $scheduleItem */
-            if ($scheduleItem->shouldPlayNow($now)) {
-                $startTime = $scheduleItem->getStartTime();
-                $endTime = $scheduleItem->getEndTime();
-
-                if (
-                    $startTime !== $endTime
-                    || ($startTime === $endTime && !$this->wasPlayedInLastXMinutes($now, 30))
-                ) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    protected function shouldPlayNowPerHour(CarbonInterface $now): bool
-    {
-        $current_minute = (int)$now->minute;
-        $target_minute = $this->getPlayPerHourMinute();
-
-        if ($current_minute < $target_minute) {
-            $target_time = $now->subHour()->minute($target_minute);
-        } else {
-            $target_time = $now->minute($target_minute);
-        }
-
-        $playlist_diff = $target_time->diffInMinutes($now, false);
-
-        if ($playlist_diff < 0 || $playlist_diff > 15) {
-            return false;
-        }
-
-        return !$this->wasPlayedInLastXMinutes($now, 30);
-    }
 
     public function getPlayPerHourMinute(): int
     {
@@ -685,36 +599,6 @@ class StationPlaylist
         $this->play_per_hour_minute = $play_per_hour_minute;
     }
 
-    public function wasPlayedInLastXMinutes(CarbonInterface $now, int $minutes): bool
-    {
-        if (0 === $this->played_at) {
-            return false;
-        }
-
-        $threshold = $now->subMinutes($minutes)->getTimestamp();
-        return ($this->played_at > $threshold);
-    }
-
-    protected function wasPlayedRecently(array $songHistoryEntries = [], $length = 15): bool
-    {
-        if (empty($songHistoryEntries)) {
-            return true;
-        }
-
-        // Check if already played
-        $relevant_song_history = array_slice($songHistoryEntries, 0, $length);
-
-        $was_played = false;
-        foreach ($relevant_song_history as $sh_row) {
-            if ((int)$sh_row['playlist_id'] === $this->id) {
-                $was_played = true;
-                break;
-            }
-        }
-
-        reset($songHistoryEntries);
-        return $was_played;
-    }
 
     public function getPlayPerSongs(): int
     {
@@ -724,11 +608,6 @@ class StationPlaylist
     public function setPlayPerSongs(int $play_per_songs): void
     {
         $this->play_per_songs = $play_per_songs;
-    }
-
-    protected function shouldPlayNowPerMinute(CarbonInterface $now): bool
-    {
-        return !$this->wasPlayedInLastXMinutes($now, $this->getPlayPerMinutes());
     }
 
     public function getPlayPerMinutes(): int

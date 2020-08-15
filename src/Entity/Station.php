@@ -497,7 +497,7 @@ class Station
         }
 
         $config = $frontend_config->toArray();
-        
+
         if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
@@ -1044,6 +1044,11 @@ class Station
         }
 
         return Customization::DEFAULT_TIMEZONE;
+    }
+
+    public function getTimezoneObject(): \DateTimeZone
+    {
+        return new \DateTimeZone($this->getTimezone());
     }
 
     public function setTimezone(?string $timezone): void

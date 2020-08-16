@@ -11,15 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class AnnotateNextSong extends Event
 {
-    protected Entity\Station $station;
-
-    protected ?Entity\StationQueue $queue;
-
-    protected ?Entity\StationMedia $media;
-
-    protected ?Entity\StationPlaylist $playlist;
-
-    protected ?Entity\StationRequest $request;
+    protected Entity\StationQueue $queue;
 
     protected ?string $songPath;
 
@@ -30,26 +22,11 @@ class AnnotateNextSong extends Event
     protected array $annotations = [];
 
     public function __construct(
-        Entity\Station $station,
-        ?Entity\StationQueue $queue = null,
-        ?Entity\StationMedia $media = null,
-        ?Entity\StationPlaylist $playlist = null,
-        ?Entity\StationRequest $request = null,
+        Entity\StationQueue $queue,
         bool $asAutoDj = false
     ) {
-        $this->station = $station;
-
         $this->queue = $queue;
-        $this->media = $media;
-        $this->playlist = $playlist;
-        $this->request = $request;
-
         $this->asAutoDj = $asAutoDj;
-    }
-
-    public function getStation(): Entity\Station
-    {
-        return $this->station;
     }
 
     public function getQueue(): ?Entity\StationQueue
@@ -57,19 +34,24 @@ class AnnotateNextSong extends Event
         return $this->queue;
     }
 
+    public function getStation(): Entity\Station
+    {
+        return $this->queue->getStation();
+    }
+
     public function getMedia(): ?Entity\StationMedia
     {
-        return $this->media;
+        return $this->queue->getMedia();
     }
 
     public function getPlaylist(): ?Entity\StationPlaylist
     {
-        return $this->playlist;
+        return $this->queue->getPlaylist();
     }
 
     public function getRequest(): ?Entity\StationRequest
     {
-        return $this->request;
+        return $this->queue->getRequest();
     }
 
     public function setAnnotations(array $annotations): void
@@ -115,33 +97,5 @@ class AnnotateNextSong extends Event
         }
 
         return $this->songPath;
-    }
-
-    public static function fromQueue(
-        Entity\StationQueue $queue,
-        bool $asAutoDj = false
-    ): self {
-        return new self(
-            $queue->getStation(),
-            $queue,
-            $queue->getMedia(),
-            $queue->getPlaylist(),
-            $queue->getRequest(),
-            $asAutoDj
-        );
-    }
-
-    public static function fromRequest(
-        Entity\StationRequest $request,
-        bool $asAutoDj = false
-    ): self {
-        return new self(
-            $request->getStation(),
-            null,
-            $request->getTrack(),
-            null,
-            $request,
-            $asAutoDj
-        );
     }
 }

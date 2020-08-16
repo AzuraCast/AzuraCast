@@ -368,7 +368,7 @@ class Queue implements EventSubscriberInterface
         // Handle a raw stream URL of possibly indeterminate length.
         if (Entity\StationPlaylist::REMOTE_TYPE_STREAM === $remote_type) {
             // Annotate a hard-coded "duration" parameter to avoid infinite play for scheduled playlists.
-            $duration = $playlist->getScheduleDuration();
+            $duration = $this->scheduler->getPlaylistScheduleDuration($playlist);
             return [$playlist->getRemoteUrl(), $duration];
         }
 

@@ -3,8 +3,6 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Normalizer\Annotation\DeepNormalize;
-use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -401,25 +399,6 @@ class StationPlaylist
     public function setIsJingle(bool $is_jingle): void
     {
         $this->is_jingle = $is_jingle;
-    }
-
-    /**
-     * @return int Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
-     */
-    public function getScheduleDuration(): int
-    {
-        if ($this->schedule_items->count() > 0) {
-            $now = CarbonImmutable::now(new DateTimeZone($this->getStation()->getTimezone()));
-
-            foreach ($this->schedule_items as $scheduleItem) {
-                /** @var StationSchedule $scheduleItem */
-                if ($scheduleItem->shouldPlayNow($now)) {
-                    return $scheduleItem->getDuration();
-                }
-            }
-        }
-
-        return 0;
     }
 
     public function getWeight(): int

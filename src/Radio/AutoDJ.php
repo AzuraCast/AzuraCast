@@ -7,7 +7,6 @@ use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 
@@ -70,7 +69,7 @@ class AutoDJ
             }
         }
 
-        $event = AnnotateNextSong::fromQueue($queueRow, $asAutoDj);
+        $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
 
         return $event->buildAnnotations();
@@ -87,8 +86,8 @@ class AutoDJ
         });
 
         // Determine the "now" time for the queue.
-        $stationTz = new DateTimeZone($station->getTimezone());
-
+        $stationTz = $station->getTimezoneObject();
+        
         $currentSong = $this->songHistoryRepo->getCurrent($station);
         if ($currentSong instanceof Entity\SongHistory) {
             $nowTimestamp = $currentSong->getTimestampStart() + ($currentSong->getDuration() ?? 1);

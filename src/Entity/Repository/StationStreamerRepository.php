@@ -4,9 +4,25 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Radio\Adapters;
+use App\Radio\AutoDJ\Scheduler;
+use App\Settings;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class StationStreamerRepository extends Repository
 {
+    protected Scheduler $scheduler;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger
+    ) {
+        parent::__construct($em, $serializer, $settings, $logger);
+    }
+
     /**
      * Attempt to authenticate a streamer.
      *
@@ -31,7 +47,7 @@ class StationStreamerRepository extends Repository
             return false;
         }
 
-        return $streamer->authenticate($password) && $streamer->canStreamNow();
+        return $streamer->authenticate($password) && $this->scheduler->canStreamerStreamNow($streamer);
     }
 
     /**

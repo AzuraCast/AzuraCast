@@ -4,7 +4,6 @@ namespace App\Event\Radio;
 use App\Entity;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use DateTimeZone;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildQueue extends Event
@@ -19,7 +18,7 @@ class BuildQueue extends Event
     {
         $this->station = $station;
 
-        $this->now = $now ?? CarbonImmutable::now(new DateTimeZone($station->getTimezone()));
+        $this->now = $now ?? CarbonImmutable::now($station->getTimezoneObject());
     }
 
     public function getStation(): Entity\Station

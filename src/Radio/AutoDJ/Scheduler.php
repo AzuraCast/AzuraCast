@@ -2,8 +2,10 @@
 namespace App\Radio\AutoDJ;
 
 use App\Entity;
+use App\Entity\StationSchedule;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Doctrine\Common\Collections\Collection;
 use Monolog\Logger;
 
 class Scheduler
@@ -29,7 +31,7 @@ class Scheduler
         });
 
         if (null === $now) {
-            $now = CarbonImmutable::now(new \DateTimeZone($playlist->getStation()->getTimezone()));
+            $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
         }
 
         if (!$this->isPlaylistScheduledToPlayNow($playlist, $now)) {
@@ -93,24 +95,8 @@ class Scheduler
             return true;
         }
 
-        foreach ($scheduleItems as $scheduleItem) {
-            $scheduleName = (string)$scheduleItem;
-
-            if ($scheduleItem->shouldPlayNow($now)) {
-                $this->logger->debug(sprintf(
-                    '%s - Should Play Now',
-                    $scheduleName
-                ));
-                return true;
-            } else {
-                $this->logger->debug(sprintf(
-                    '%s - Not Eligible to Play Now',
-                    $scheduleName
-                ));
-            }
-        }
-
-        return false;
+        $scheduleItem = $this->getActiveScheduleFromCollection($scheduleItems, $now);
+        return null !== $scheduleItem;
     }
 
     protected function shouldPlaylistPlayNowPerHour(
@@ -173,6 +159,72 @@ class Scheduler
         return $was_played;
     }
 
+    /**
+     * Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
+     *
+     * @param Entity\StationPlaylist $playlist
+     *
+     * @return int
+     */
+    public function getPlaylistScheduleDuration(Entity\StationPlaylist $playlist): int
+    {
+        $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
+
+        $scheduleItem = $this->getActiveScheduleFromCollection(
+            $playlist->getScheduleItems(),
+            $now
+        );
+
+        if ($scheduleItem instanceof StationSchedule) {
+            return $scheduleItem->getDuration();
+        }
+        return 0;
+    }
+
+    public function canStreamerStreamNow(
+        Entity\StationStreamer $streamer,
+        CarbonInterface $now = null
+    ): bool {
+        if (!$streamer->enforceSchedule()) {
+            return true;
+        }
+
+        if (null === $now) {
+            $now = CarbonImmutable::now($streamer->getStation()->getTimezoneObject());
+        }
+
+        $scheduleItem = $this->getActiveScheduleFromCollection(
+            $streamer->getScheduleItems(),
+            $now
+        );
+        return null !== $scheduleItem;
+    }
+
+    protected function getActiveScheduleFromCollection(
+        Collection $scheduleItems,
+        CarbonInterface $now
+    ): ?StationSchedule {
+        if ($scheduleItems->count() > 0) {
+            foreach ($scheduleItems as $scheduleItem) {
+                $scheduleName = (string)$scheduleItem;
+
+                if ($this->shouldSchedulePlayNow($scheduleItem, $now)) {
+                    $this->logger->debug(sprintf(
+                        '%s - Should Play Now',
+                        $scheduleName
+                    ));
+                    return $scheduleItem;
+                } else {
+                    $this->logger->debug(sprintf(
+                        '%s - Not Eligible to Play Now',
+                        $scheduleName
+                    ));
+                }
+            }
+        }
+        return null;
+    }
+
     public function shouldSchedulePlayNow(
         Entity\StationSchedule $schedule,
         CarbonInterface $now
@@ -220,7 +272,7 @@ class Scheduler
         return false;
     }
 
-    protected function shouldSchedulePlayOnCurrentDate(
+    public function shouldSchedulePlayOnCurrentDate(
         Entity\StationSchedule $schedule,
         CarbonInterface $now
     ): bool {
@@ -256,7 +308,7 @@ class Scheduler
      *
      * @return bool
      */
-    protected function isScheduleScheduledToPlayToday(
+    public function isScheduleScheduledToPlayToday(
         Entity\StationSchedule $schedule,
         int $dayToCheck
     ): bool {

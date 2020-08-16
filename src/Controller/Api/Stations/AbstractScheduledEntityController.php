@@ -4,8 +4,8 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -15,15 +15,19 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
 {
     protected Entity\Repository\StationScheduleRepository $scheduleRepo;
 
+    protected Scheduler $scheduler;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\StationScheduleRepository $scheduleRepo
+        Entity\Repository\StationScheduleRepository $scheduleRepo,
+        Scheduler $scheduler
     ) {
         parent::__construct($em, $serializer, $validator);
 
         $this->scheduleRepo = $scheduleRepo;
+        $this->scheduler = $scheduler;
     }
 
     protected function renderEvents(
@@ -33,8 +37,8 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         callable $rowRender
     ): ResponseInterface {
         $station = $request->getStation();
-        $tz = new DateTimeZone($station->getTimezone());
-
+        $tz = $station->getTimezoneObject();
+        
         $params = $request->getQueryParams();
 
         $startDateStr = substr($params['start'], 0, 10);
@@ -52,8 +56,8 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
             while ($i <= $endDate) {
                 $dayOfWeek = $i->format('N');
 
-                if ($scheduleItem->shouldPlayOnCurrentDate($i)
-                    && $scheduleItem->isScheduledToPlayToday($dayOfWeek)) {
+                if ($this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
+                    && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)) {
                     $rowStart = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
                     $rowEnd = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
 

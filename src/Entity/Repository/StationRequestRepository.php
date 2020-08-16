@@ -8,7 +8,6 @@ use App\Radio\AutoDJ;
 use App\Utilities;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use DateTimeZone;
 
 class StationRequestRepository extends Repository
 {
@@ -117,7 +116,7 @@ class StationRequestRepository extends Repository
         Entity\Station $station,
         ?CarbonInterface $now = null
     ): ?Entity\StationRequest {
-        $now ??= CarbonImmutable::now(new DateTimeZone($station->getTimezone()));
+        $now ??= CarbonImmutable::now($station->getTimezoneObject());
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
@@ -182,7 +181,7 @@ class StationRequestRepository extends Repository
             ],
         ];
 
-        $isDuplicate = (null === AutoDJ::getDistinctTrack($eligibleTracks, $recentTracks));
+        $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack($eligibleTracks, $recentTracks));
 
         if ($isDuplicate) {
             throw new Exception(__('This song or artist has been played too recently. Wait a while before requesting it again.'));

@@ -128,7 +128,10 @@ class StationStreamerBroadcast
                 break;
         }
 
-        $now = CarbonImmutable::createFromTimestamp($this->timestampStart, $this->station->getTimezone());
+        $now = CarbonImmutable::createFromTimestamp(
+            $this->timestampStart,
+            $this->station->getTimezoneObject()
+        );
         $this->recordingPath = $this->streamer->getStreamerUsername() . '/' . $now->format('Ymd-His') . '.' . $ext;
 
         return $this->recordingPath;

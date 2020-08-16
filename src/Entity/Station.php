@@ -497,7 +497,7 @@ class Station
         }
 
         $config = $frontend_config->toArray();
-        
+
         if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
@@ -1046,6 +1046,11 @@ class Station
         return Customization::DEFAULT_TIMEZONE;
     }
 
+    public function getTimezoneObject(): \DateTimeZone
+    {
+        return new \DateTimeZone($this->getTimezone());
+    }
+
     public function setTimezone(?string $timezone): void
     {
         $this->timezone = $timezone;
@@ -1122,6 +1127,12 @@ class Station
     public function getSftpUsers(): Collection
     {
         return $this->sftp_users;
+    }
+
+    public function clearCache(): void
+    {
+        $this->nowplaying = null;
+        $this->nowplaying_timestamp = 0;
     }
 
     /**

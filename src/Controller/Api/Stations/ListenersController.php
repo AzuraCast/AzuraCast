@@ -7,7 +7,6 @@ use App\Http\ServerRequest;
 use App\Service\IpGeolocation;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Mobile_Detect;
 use OpenApi\Annotations as OA;
@@ -48,7 +47,7 @@ class ListenersController
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $station_tz = new DateTimeZone($station->getTimezone());
+        $station_tz = $station->getTimezoneObject();
 
         $params = $request->getQueryParams();
 

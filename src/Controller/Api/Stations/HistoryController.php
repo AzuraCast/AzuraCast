@@ -8,7 +8,6 @@ use App\Http\ServerRequest;
 use App\Paginator\QueryPaginator;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -66,7 +65,7 @@ class HistoryController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $station_tz = new DateTimeZone($station->getTimezone());
+        $station_tz = $station->getTimezoneObject();
 
         $params = $request->getQueryParams();
         if (!empty($params['start'])) {

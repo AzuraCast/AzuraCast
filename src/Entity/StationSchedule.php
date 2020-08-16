@@ -192,89 +192,51 @@ class StationSchedule
         $this->days = implode(',', (array)$days);
     }
 
-    /**
-     * Parent function for determining whether a playlist of any type can be played by the AutoDJ.
-     *
-     * @param CarbonInterface $now
-     *
-     * @return bool
-     */
-    public function shouldPlayNow(CarbonInterface $now): bool
+    public function __toString(): string
     {
-        if (!$this->shouldPlayOnCurrentDate($now)) {
-            return false;
-        }
+        $parts = [];
 
-        $startTime = self::getDateTime($this->getStartTime(), $now);
-        $endTime = self::getDateTime($this->getEndTime(), $now);
-
-        $comparePeriods = [];
-
-        if ($startTime->equalTo($endTime)) {
-            // Create intervals for "play once" type dates.
-            $endTime = $endTime->addMinutes(15);
-
-            $comparePeriods[] = [$startTime, $endTime];
-            $comparePeriods[] = [$startTime->subDay(), $endTime->subDay()];
-            $comparePeriods[] = [$startTime->addDay(), $endTime->addDay()];
-        } elseif ($startTime->greaterThan($endTime)) {
-            // Create intervals for overnight playlists (one from yesterday to today, one from today to tomorrow).
-            $comparePeriods[] = [$startTime->subDay(), $endTime];
-            $comparePeriods[] = [$startTime, $endTime->addDay()];
+        $startTimeText = self::displayTimeCode($this->start_time);
+        $endTimeText = self::displayTimeCode($this->end_time);
+        if ($this->start_time === $this->end_time) {
+            $parts[] = $startTimeText;
         } else {
-            $comparePeriods[] = [$startTime, $endTime];
+            $parts[] = $startTimeText . ' to ' . $endTimeText;
         }
 
-        foreach ($comparePeriods as [$start, $end]) {
-            /** @var CarbonInterface $start */
-            /** @var CarbonInterface $end */
-            if ($now->between($start, $end)) {
-                $dayToCheck = (int)$start->format('N');
-
-                if ($this->isScheduledToPlayToday($dayToCheck)) {
-                    return true;
-                }
+        if (!empty($this->start_date) || !empty($this->end_date)) {
+            if ($this->start_date === $this->end_date) {
+                $parts[] = $this->start_date;
+            } elseif (empty($this->start_date)) {
+                $parts[] = 'Until ' . $this->end_date;
+            } elseif (empty($this->end_date)) {
+                $parts[] = 'After ' . $this->start_date;
+            } else {
+                $parts[] = $this->start_date . ' to ' . $this->end_date;
             }
         }
 
-        return false;
-    }
+        $days = $this->getDays();
+        $daysOfWeek = [
+            1 => 'Mon',
+            2 => 'Tue',
+            3 => 'Wed',
+            4 => 'Thu',
+            5 => 'Fri',
+            6 => 'Sat',
+            7 => 'Sun',
+        ];
 
-    public function shouldPlayOnCurrentDate(CarbonInterface $now): bool
-    {
-        if (!empty($this->start_date)) {
-            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $this->start_date, $now->getTimezone())
-                ->setTime(0, 0, 0);
-
-            if ($now->lt($startDate)) {
-                return false;
+        if (null !== $days) {
+            $displayDays = [];
+            foreach ($days as $day) {
+                $displayDays[] = $daysOfWeek[$day];
             }
+
+            $parts[] = implode('/', $displayDays);
         }
-
-        if (!empty($this->end_date)) {
-            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $this->end_date, $now->getTimezone())
-                ->setTime(23, 59, 59);
-
-            if ($now->gt($endDate)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
-     *
-     * @param int $dayToCheck
-     *
-     * @return bool
-     */
-    public function isScheduledToPlayToday(int $dayToCheck): bool
-    {
-        $playOnceDays = $this->getDays();
-        return null === $playOnceDays
-            || in_array($dayToCheck, $playOnceDays, true);
+        
+        return implode(', ', $parts);
     }
 
     /**
@@ -293,5 +255,15 @@ class StationSchedule
 
         $timeCode = str_pad($timeCode, 4, '0', STR_PAD_LEFT);
         return $now->setTime(substr($timeCode, 0, 2), substr($timeCode, 2));
+    }
+
+    public static function displayTimeCode($timeCode): string
+    {
+        $timeCode = str_pad($timeCode, 4, '0', STR_PAD_LEFT);
+
+        $hours = (int)substr($timeCode, 0, 2);
+        $mins = substr($timeCode, 2);
+
+        return $hours . ':' . $mins;
     }
 }

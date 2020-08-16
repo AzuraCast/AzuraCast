@@ -15,7 +15,7 @@ class StationQueue implements ResolvableUrlInterface
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
-    public int $cued_for = 0;
+    public int $cued_at = 0;
 
     /**
      * Duration of the song in seconds

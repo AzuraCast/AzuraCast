@@ -17,7 +17,7 @@ class StationQueueRepository extends Repository
         $queue = $this->getUpcomingQueue($station);
 
         foreach ($queue as $sh) {
-            if ($sh->showInApis()) {
+            if (!$sh->isSentToAutoDj() && $sh->showInApis()) {
                 return $sh->api($apiUtils, $baseUrl);
             }
         }
@@ -59,7 +59,7 @@ class StationQueueRepository extends Repository
     public function getNextInQueue(Entity\Station $station): ?Entity\StationQueue
     {
         return $this->getUpcomingBaseQuery($station)
-            ->andWhere('sh.sent_to_autodj = 0')
+            ->andWhere('sq.sent_to_autodj = 0')
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -68,7 +68,7 @@ class StationQueueRepository extends Repository
     public function getUpcomingFromSong(Entity\Station $station, Entity\Song $song): ?Entity\StationQueue
     {
         return $this->getUpcomingBaseQuery($station)
-            ->andWhere('sh.song = :song')
+            ->andWhere('sq.song = :song')
             ->setParameter('song', $song)
             ->getQuery()
             ->setMaxResults(1)
@@ -85,6 +85,6 @@ class StationQueueRepository extends Repository
             ->leftJoin('sq.playlist', 'sp')
             ->where('sq.station = :station')
             ->setParameter('station', $station)
-            ->orderBy('sq.id', 'ASC');
+            ->orderBy('sq.timestamp_cued', 'ASC');
     }
 }

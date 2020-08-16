@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QueueController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = Entity\SongHistory::class;
+    protected string $entityClass = Entity\StationQueue::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
     protected App\ApiUtilities $apiUtils;
@@ -51,16 +51,13 @@ class QueueController extends AbstractStationApiCrudController
     {
         $station = $request->getStation();
 
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, sp, s, sm
-            FROM App\Entity\SongHistory sh 
-            LEFT JOIN sh.song s 
-            LEFT JOIN sh.media sm
-            LEFT JOIN sh.playlist sp 
-            WHERE sh.station = :station
-            AND sh.sent_to_autodj = 0
-            AND sh.timestamp_start = 0
-            AND sh.timestamp_end = 0
-            ORDER BY sh.timestamp_cued ASC')
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, sp, s, sm
+            FROM App\Entity\StationQueue sq 
+            LEFT JOIN sq.song s 
+            LEFT JOIN sq.media sm
+            LEFT JOIN sq.playlist sp 
+            WHERE sq.station = :station
+            ORDER BY sq.timestamp_cued ASC')
             ->setParameter('station', $station);
 
         return $this->listPaginatedFromQuery($request, $response, $query);
@@ -118,9 +115,9 @@ class QueueController extends AbstractStationApiCrudController
 
         $router = $request->getRouter();
 
-        /** @var Entity\SongHistory $record */
+        /** @var Entity\StationQueue $record */
         /** @var Entity\Api\QueuedSong $row */
-        $row = $record->api(new Entity\Api\QueuedSong, $this->apiUtils);
+        $row = $record->api($this->apiUtils);
         $row->resolveUrls($router->getBaseUrl());
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));

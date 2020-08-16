@@ -1129,6 +1129,12 @@ class Station
         return $this->sftp_users;
     }
 
+    public function clearCache(): void
+    {
+        $this->nowplaying = null;
+        $this->nowplaying_timestamp = 0;
+    }
+
     /**
      * Retrieve the API version of the object/array.
      *

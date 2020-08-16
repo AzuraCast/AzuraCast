@@ -105,7 +105,8 @@ return function (App\EventDispatcher $dispatcher) {
 
     // Other event subscribers from across the application.
     $dispatcher->addServiceSubscriber([
-        App\Radio\AutoDJ::class,
+        App\Radio\AutoDJ\Queue::class,
+        App\Radio\AutoDJ\Annotations::class,
         App\Radio\Backend\Liquidsoap\ConfigWriter::class,
         App\Sync\Task\NowPlaying::class,
         App\Webhook\Dispatcher::class,

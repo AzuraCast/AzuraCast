@@ -7,7 +7,6 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="song_history", indexes={
- *     @ORM\Index(name="idx_timestamp_cued", columns={"timestamp_cued"}),
  *     @ORM\Index(name="idx_timestamp_start", columns={"timestamp_start"}),
  *     @ORM\Index(name="idx_timestamp_end", columns={"timestamp_end"})
  * })
@@ -433,5 +432,16 @@ class SongHistory
         return (null !== $this->media)
             ? (string)$this->media
             : (string)$this->song;
+    }
+
+    public static function fromQueue(StationQueue $queue): self
+    {
+        $sh = new self($queue->getSong(), $queue->getStation());
+        $sh->setMedia($queue->getMedia());
+        $sh->setRequest($queue->getRequest());
+        $sh->setPlaylist($queue->getPlaylist());
+        $sh->setDuration($queue->getDuration());
+
+        return $sh;
     }
 }

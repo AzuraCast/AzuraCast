@@ -5,6 +5,7 @@ use App\ApiUtilities;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Settings;
+use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
@@ -70,6 +71,33 @@ class SongHistoryRepository extends Repository
         return $return;
     }
 
+    public function getRecentlyPlayed(
+        Entity\Station $station,
+        CarbonInterface $now,
+        int $rows
+    ): array {
+        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, s
+            FROM App\Entity\StationQueue sq JOIN sq.song s
+            WHERE sq.station = :station
+            ORDER BY sq.timestamp_cued DESC')
+            ->setParameter('station', $station)
+            ->setMaxResults($rows)
+            ->getArrayResult();
+
+        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s 
+            FROM App\Entity\SongHistory sh JOIN sh.song s  
+            WHERE sh.station = :station
+            AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
+            AND sh.timestamp_start >= :threshold
+            ORDER BY sh.timestamp_start DESC')
+            ->setParameter('station', $station)
+            ->setParameter('threshold', $now->subDay()->getTimestamp())
+            ->setMaxResults($rows)
+            ->getArrayResult();
+
+        $recentlyPlayed = array_merge($recentlyPlayed, $recentHistory);
+        return array_slice($recentlyPlayed, 0, $rows);
+    }
 
     public function register(
         Entity\Song $song,
@@ -131,10 +159,14 @@ class SongHistoryRepository extends Repository
         }
 
         // Look for an already cued but unplayed song.
-        $sh = $this->stationQueueRepository->getUpcomingFromSong($station, $song);
+        $sq = $this->stationQueueRepository->getUpcomingFromSong($station, $song);
 
-        // Processing a new SongHistory item.
-        if (!($sh instanceof Entity\SongHistory)) {
+        if ($sq instanceof Entity\StationQueue) {
+            $sh = Entity\SongHistory::fromQueue($sq);
+
+            $this->em->remove($sq);
+        } else {
+            // Processing a new SongHistory item.
             $sh = new Entity\SongHistory($song, $station);
 
             $currentStreamer = $station->getCurrentStreamer();

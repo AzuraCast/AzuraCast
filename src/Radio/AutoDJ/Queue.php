@@ -24,13 +24,16 @@ class Queue implements EventSubscriberInterface
 
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
+    protected Entity\Repository\SongHistoryRepository $historyRepo;
+
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
         Scheduler $scheduler,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\SongRepository $songRepo,
-        Entity\Repository\StationRequestRepository $requestRepo
+        Entity\Repository\StationRequestRepository $requestRepo,
+        Entity\Repository\SongHistoryRepository $historyRepo
     ) {
         $this->em = $em;
         $this->logger = $logger;
@@ -38,6 +41,7 @@ class Queue implements EventSubscriberInterface
         $this->spmRepo = $spmRepo;
         $this->songRepo = $songRepo;
         $this->requestRepo = $requestRepo;
+        $this->historyRepo = $historyRepo;
     }
 
     public static function getSubscribedEvents()
@@ -88,16 +92,11 @@ class Queue implements EventSubscriberInterface
         }
 
         // Pull all recent cued songs for easy referencing below.
-        $cued_song_history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s 
-            FROM App\Entity\SongHistory sh JOIN sh.song s  
-            WHERE sh.station_id = :station_id
-            AND (sh.timestamp_cued != 0 AND sh.timestamp_cued IS NOT NULL)
-            AND sh.timestamp_cued >= :threshold
-            ORDER BY sh.timestamp_cued DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('threshold', $now->subDay()->getTimestamp())
-            ->setMaxResults($song_history_count)
-            ->getArrayResult();
+        $cued_song_history = $this->historyRepo->getRecentlyPlayed(
+            $station,
+            $now,
+            $song_history_count
+        );
 
         $logSongHistory = [];
         foreach ($cued_song_history as $row) {

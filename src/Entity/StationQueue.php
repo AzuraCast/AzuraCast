@@ -212,7 +212,7 @@ class StationQueue
     public function api(ApiUtilities $api, UriInterface $base_url = null): Api\StationQueue
     {
         $response = new Api\StationQueue;
-        $response->cued_for = $this->timestamp_cued;
+        $response->cued_at = $this->timestamp_cued;
 
         $response->duration = (int)$this->duration;
         $response->is_request = $this->request !== null;

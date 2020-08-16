@@ -44,6 +44,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\SongHistoryRepository $history_repo;
 
+    protected Entity\Repository\StationQueueRepository $queueRepo;
+
     protected Entity\Repository\SongRepository $song_repo;
 
     protected Entity\Repository\ListenerRepository $listener_repo;
@@ -66,7 +68,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Repository\SongHistoryRepository $historyRepository,
         Entity\Repository\SongRepository $songRepository,
         Entity\Repository\ListenerRepository $listenerRepository,
-        Entity\Repository\SettingsRepository $settingsRepository
+        Entity\Repository\SettingsRepository $settingsRepository,
+        Entity\Repository\StationQueueRepository $queueRepo
     ) {
         parent::__construct($em, $settingsRepository, $logger);
 
@@ -82,6 +85,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->history_repo = $historyRepository;
         $this->song_repo = $songRepository;
         $this->listener_repo = $listenerRepository;
+        $this->queueRepo = $queueRepo;
 
         $this->analytics_level = $settingsRepository->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
     }
@@ -247,7 +251,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     $uri_empty
                 );
 
-                $np->playing_next = $this->history_repo->getNextSongApi(
+                $np->playing_next = $this->queueRepo->getNextSongApi(
                     $station,
                     $this->api_utils,
                     $uri_empty
@@ -279,7 +283,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                         $uri_empty
                     );
 
-                    $np->playing_next = $this->history_repo->getNextSongApi(
+                    $np->playing_next = $this->queueRepo->getNextSongApi(
                         $station,
                         $this->api_utils,
                         $uri_empty
@@ -353,29 +357,29 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $song = $this->song_repo->getRepository()->find($extra_metadata['song_id']);
 
             if ($song instanceof Entity\Song) {
-                $sh = $this->history_repo->getUpcomingFromSong($station, $song);
-                if (!$sh instanceof Entity\SongHistory) {
-                    $sh = new Entity\SongHistory($song, $station);
-                    $sh->setTimestampCued(time());
+                $sq = $this->queueRepo->getUpcomingFromSong($station, $song);
+                if (!$sq instanceof Entity\StationQueue) {
+                    $sq = new Entity\StationQueue($station, $song);
+                    $sq->setTimestampCued(time());
                 }
 
-                if (!empty($extra_metadata['media_id']) && null === $sh->getMedia()) {
+                if (!empty($extra_metadata['media_id']) && null === $sq->getMedia()) {
                     $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
                     if ($media instanceof Entity\StationMedia) {
-                        $sh->setMedia($media);
+                        $sq->setMedia($media);
                     }
                 }
 
-                if (!empty($extra_metadata['playlist_id']) && null === $sh->getPlaylist()) {
+                if (!empty($extra_metadata['playlist_id']) && null === $sq->getPlaylist()) {
                     $playlist = $this->em->find(Entity\StationPlaylist::class, $extra_metadata['playlist_id']);
                     if ($playlist instanceof Entity\StationPlaylist) {
-                        $sh->setPlaylist($playlist);
+                        $sq->setPlaylist($playlist);
                     }
                 }
 
-                $sh->sentToAutodj();
+                $sq->sentToAutodj();
 
-                $this->em->persist($sh);
+                $this->em->persist($sq);
                 $this->em->flush();
             }
         }

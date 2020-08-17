@@ -18,9 +18,12 @@ class StationStreamerRepository extends Repository
         EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Scheduler $scheduler
     ) {
         parent::__construct($em, $serializer, $settings, $logger);
+
+        $this->scheduler = $scheduler;
     }
 
     /**

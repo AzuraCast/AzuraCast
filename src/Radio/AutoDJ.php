@@ -8,6 +8,7 @@ use App\EventDispatcher;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 
 class AutoDJ
@@ -87,7 +88,7 @@ class AutoDJ
 
         // Determine the "now" time for the queue.
         $stationTz = $station->getTimezoneObject();
-        
+
         $currentSong = $this->songHistoryRepo->getCurrent($station);
         if ($currentSong instanceof Entity\SongHistory) {
             $nowTimestamp = $currentSong->getTimestampStart() + ($currentSong->getDuration() ?? 1);
@@ -126,17 +127,28 @@ class AutoDJ
                 'now' => (string)$now,
             ]);
 
+            // Push another test handler specifically for this one queue task.
+            $testHandler = new TestHandler(Logger::DEBUG, true);
+            $this->logger->pushHandler($testHandler);
+
             $event = new BuildQueue($station, $now);
             $this->dispatcher->dispatch($event);
 
+            $this->logger->popHandler();
+
             $queueRow = $event->getNextSong();
-            if ($queueRow instanceof Entity\SongHistory) {
+            if ($queueRow instanceof Entity\StationQueue) {
+                $queueRow->setLog($testHandler->getRecords());
+                $this->em->persist($queueRow);
+
                 $duration = $queueRow->getDuration() ?? 1;
                 $now = $now->addSeconds($duration);
             }
 
             $queueLength++;
         }
+
+        $this->em->flush();
 
         $this->logger->popProcessor();
     }

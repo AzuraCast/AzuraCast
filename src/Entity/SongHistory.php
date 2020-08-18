@@ -175,7 +175,7 @@ class SongHistory
     protected $delta_negative;
 
     /**
-     * @ORM\Column(name="delta_points", type="json_array", nullable=true)
+     * @ORM\Column(name="delta_points", type="json", nullable=true)
      * @var mixed|null
      */
     protected $delta_points;

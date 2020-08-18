@@ -89,7 +89,7 @@ class Station
     protected $frontend_type = Adapters::FRONTEND_ICECAST;
 
     /**
-     * @ORM\Column(name="frontend_config", type="json_array", nullable=true)
+     * @ORM\Column(name="frontend_config", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      * @var array|null An array containing station-specific frontend configuration
@@ -106,7 +106,7 @@ class Station
     protected $backend_type = Adapters::BACKEND_LIQUIDSOAP;
 
     /**
-     * @ORM\Column(name="backend_config", type="json_array", nullable=true)
+     * @ORM\Column(name="backend_config", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      * @var array|null An array containing station-specific backend configuration
@@ -181,7 +181,7 @@ class Station
     protected $nowplaying_timestamp;
 
     /**
-     * @ORM\Column(name="automation_settings", type="json_array", nullable=true)
+     * @ORM\Column(name="automation_settings", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      * @var array|null

@@ -37,6 +37,12 @@ class StationQueue
     protected $song;
 
     /**
+     * @ORM\Column(name="station_id", type="integer")
+     * @var int
+     */
+    protected $station_id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
@@ -44,6 +50,12 @@ class StationQueue
      * @var Station
      */
     protected $station;
+
+    /**
+     * @ORM\Column(name="playlist_id", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $playlist_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="StationPlaylist")
@@ -55,6 +67,12 @@ class StationQueue
     protected $playlist;
 
     /**
+     * @ORM\Column(name="media_id", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $media_id;
+
+    /**
      * @ORM\ManyToOne(targetEntity="StationMedia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
@@ -62,6 +80,12 @@ class StationQueue
      * @var StationMedia|null
      */
     protected $media;
+
+    /**
+     * @ORM\Column(name="request_id", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $request_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="StationRequest")
@@ -95,6 +119,12 @@ class StationQueue
      * @var int|null
      */
     protected $duration;
+
+    /**
+     * @ORM\Column(name="log", type="json", nullable=true)
+     * @var array|null Any relevant logs regarding how this track was selected.
+     */
+    protected $log;
 
     public function __construct(Station $station, Song $song)
     {
@@ -196,6 +226,16 @@ class StationQueue
         }
 
         $this->sent_to_autodj = true;
+    }
+
+    public function getLog(): ?array
+    {
+        return $this->log;
+    }
+
+    public function setLog(?array $log): void
+    {
+        $this->log = $log;
     }
 
     /**

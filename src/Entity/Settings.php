@@ -77,7 +77,7 @@ class Settings
     protected $setting_key;
 
     /**
-     * @ORM\Column(name="setting_value", type="json_array", nullable=true)
+     * @ORM\Column(name="setting_value", type="json", nullable=true)
      * @var mixed
      */
     protected $setting_value;

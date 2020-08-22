@@ -61,11 +61,15 @@ class Configuration
         // Ensure port configuration exists
         $this->assignRadioPorts($station, false);
 
+        // Clear station caches and generate API adapter key if none exists.
         if ($regen_auth_key || empty($station->getAdapterApiKey())) {
             $station->generateAdapterApiKey();
-            $this->em->persist($station);
-            $this->em->flush();
         }
+
+        $station->clearCache();
+
+        $this->em->persist($station);
+        $this->em->flush();
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);

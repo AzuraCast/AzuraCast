@@ -5,7 +5,6 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
@@ -34,8 +33,7 @@ class OverviewController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-
-        $station_tz = new DateTimeZone($station->getTimezone());
+        $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
         $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,

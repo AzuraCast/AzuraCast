@@ -7,7 +7,6 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="song_history", indexes={
- *     @ORM\Index(name="idx_timestamp_cued", columns={"timestamp_cued"}),
  *     @ORM\Index(name="idx_timestamp_start", columns={"timestamp_start"}),
  *     @ORM\Index(name="idx_timestamp_end", columns={"timestamp_end"})
  * })
@@ -122,24 +121,6 @@ class SongHistory
     protected $request;
 
     /**
-     * @ORM\Column(name="autodj_custom_uri", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $autodj_custom_uri;
-
-    /**
-     * @ORM\Column(name="timestamp_cued", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $timestamp_cued;
-
-    /**
-     * @ORM\Column(name="sent_to_autodj", type="boolean")
-     * @var bool
-     */
-    protected $sent_to_autodj;
-
-    /**
      * @ORM\Column(name="timestamp_start", type="integer")
      * @var int
      */
@@ -194,7 +175,7 @@ class SongHistory
     protected $delta_negative;
 
     /**
-     * @ORM\Column(name="delta_points", type="json_array", nullable=true)
+     * @ORM\Column(name="delta_points", type="json", nullable=true)
      * @var mixed|null
      */
     protected $delta_points;
@@ -203,9 +184,6 @@ class SongHistory
     {
         $this->song = $song;
         $this->station = $station;
-
-        $this->sent_to_autodj = false;
-        $this->timestamp_cued = 0;
 
         $this->timestamp_start = 0;
         $this->listeners_start = 0;
@@ -277,41 +255,6 @@ class SongHistory
     public function setRequest($request): void
     {
         $this->request = $request;
-    }
-
-    public function getAutodjCustomUri(): ?string
-    {
-        return $this->autodj_custom_uri;
-    }
-
-    public function setAutodjCustomUri(?string $autodj_custom_uri): void
-    {
-        $this->autodj_custom_uri = $autodj_custom_uri;
-    }
-
-    public function getTimestampCued(): ?int
-    {
-        return $this->timestamp_cued;
-    }
-
-    public function setTimestampCued($timestamp_cued): void
-    {
-        $this->timestamp_cued = $timestamp_cued;
-    }
-
-    public function getSentToAutodj(): bool
-    {
-        return $this->sent_to_autodj;
-    }
-
-    public function sentToAutodj(): void
-    {
-        $cued = $this->getTimestampCued();
-        if (null === $cued || 0 === $cued) {
-            $this->setTimestampCued(time());
-        }
-
-        $this->sent_to_autodj = true;
     }
 
     public function getTimestampStart(): int
@@ -477,11 +420,6 @@ class SongHistory
             $response->delta_total = (int)$this->delta_total;
         }
 
-        if ($response instanceof Api\QueuedSong) {
-            $response->cued_at = (int)$this->timestamp_cued;
-            $response->autodj_custom_uri = $this->autodj_custom_uri;
-        }
-
         $response->song = ($this->media)
             ? $this->media->api($api, $base_url)
             : $this->song->api($api, $this->station, $base_url);
@@ -494,5 +432,16 @@ class SongHistory
         return (null !== $this->media)
             ? (string)$this->media
             : (string)$this->song;
+    }
+
+    public static function fromQueue(StationQueue $queue): self
+    {
+        $sh = new self($queue->getSong(), $queue->getStation());
+        $sh->setMedia($queue->getMedia());
+        $sh->setRequest($queue->getRequest());
+        $sh->setPlaylist($queue->getPlaylist());
+        $sh->setDuration($queue->getDuration());
+
+        return $sh;
     }
 }

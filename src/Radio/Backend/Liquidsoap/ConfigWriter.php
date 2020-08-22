@@ -411,8 +411,12 @@ class ConfigWriter implements EventSubscriberInterface
                 if uri == "" or string.match(pattern="Error", uri) then
                     []
                 else 
-                    req = request.create(uri)
-                    [req]                
+                    r = request.create(uri)
+                    if request.resolve(r) then
+                        [r]
+                    else
+                        []
+                   end                
                 end
             end
             EOF
@@ -648,27 +652,17 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
 
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
-        $crossfade_type = $settings['crossfade_type'] ?? self::CROSSFADE_NORMAL;
-        $crossfade = round($settings['crossfade'] ?? 2, 1);
+        $crossfade_type = $settings->getCrossfadeType();
+        $crossfade = $settings->getCrossfade();
 
-        if (self::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
-            $start_next = round($crossfade * 1.5, 2);
-            $crossfadeIsSmart = (self::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
+        if (Entity\StationBackendConfiguration::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
+            $crossDuration = round($crossfade * 1.5, 2);
+            $crossfadeIsSmart = (Entity\StationBackendConfiguration::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
 
             $event->appendLines([
-                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
+                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($crossDuration) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
-
-        // Write fallback to safety file immediately after crossfade.
-        $error_file = Settings::getInstance()->isDocker()
-            ? '/usr/local/share/icecast/web/error.mp3'
-            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
-
-        $event->appendLines([
-            'radio = fallback(id="' . self::getVarName($station,
-                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
-        ]);
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -839,6 +833,16 @@ class ConfigWriter implements EventSubscriberInterface
             ]);
         }
 
+        // Write fallback to safety file to ensure infallible source for the broadcast outputs.
+        $error_file = Settings::getInstance()->isDocker()
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
+
+        $event->appendLines([
+            'radio = fallback(id="' . self::getVarName($station,
+                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
+        ]);
+
         // Custom configuration
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
 
@@ -848,10 +852,15 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(<<<EOF
         # Send metadata changes back to AzuraCast
         def metadata_updated(m) =
-            if (m["song_id"] != "") then
-                ret = {$feedbackCommand}
-                log("AzuraCast Feedback Response: #{ret}")
+            def f() = 
+                if (m["song_id"] != "") then
+                    ret = {$feedbackCommand}
+                    log("AzuraCast Feedback Response: #{ret}")
+                end
+                (-1.)
             end
+            
+            add_timeout(fast=false, 0., f)
         end
         
         radio = on_metadata(metadata_updated,radio)

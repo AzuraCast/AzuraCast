@@ -127,4 +127,39 @@ class StationBackendConfiguration extends ArrayCollection
     {
         $this->set(self::USE_REPLAYGAIN, $useReplayGain);
     }
+
+    public const CROSSFADE_TYPE = 'crossfade_type';
+
+    public const CROSSFADE_NORMAL = 'normal';
+    public const CROSSFADE_DISABLED = 'none';
+    public const CROSSFADE_SMART = 'smart';
+
+    public function getCrossfadeType(): string
+    {
+        return $this->get(self::CROSSFADE_TYPE) ?? self::CROSSFADE_NORMAL;
+    }
+
+    public function isCrossfadeEnabled(): bool
+    {
+        return self::CROSSFADE_DISABLED !== $this->getCrossfadeType();
+    }
+
+    public function setCrossfadeType(string $crossfadeType): void
+    {
+        $this->set(self::CROSSFADE_TYPE, $crossfadeType);
+    }
+
+    public const CROSSFADE = 'crossfade';
+
+    public const DEFAULT_CROSSFADE_DURATION = 2;
+
+    public function getCrossfade(): float
+    {
+        return round($this->get(self::CROSSFADE) ?? self::DEFAULT_CROSSFADE_DURATION, 1);
+    }
+
+    public function setCrossfade(?float $crossfade): void
+    {
+        $this->set(self::CROSSFADE, $crossfade);
+    }
 }

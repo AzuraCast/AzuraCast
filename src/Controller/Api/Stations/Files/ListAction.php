@@ -37,6 +37,8 @@ class ListAction
 
         $search_phrase = trim($params['searchPhrase'] ?? '');
 
+        $pathLike = (empty($file)) ? '%' : $file . '/%';
+
         $media_query = $em->createQueryBuilder()
             ->select('partial sm.{id, unique_id, art_updated_at, path, length, length_text, artist, title, album}')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
@@ -47,8 +49,10 @@ class ListAction
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.station_id = :station_id')
             ->andWhere('sm.path LIKE :path')
+            ->andWhere('sm.path NOT LIKE :pathWithSubfolders')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('path', $file . '%');
+            ->setParameter('path', $pathLike)
+            ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
         // Apply searching
         if (!empty($search_phrase)) {

@@ -82,10 +82,8 @@ class DebugController
 
         $station = $request->getStation();
 
-        $em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\SongHistory sh
-            WHERE sh.station = :station
-            AND sh.timestamp_cued != 0
-            AND sh.timestamp_start = 0')
+        $em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
+            WHERE sq.station = :station')
             ->setParameter('station', $station)
             ->execute();
 

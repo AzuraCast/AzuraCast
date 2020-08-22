@@ -55,6 +55,10 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         bool $logErrors,
         bool $logErrorDetails
     ): ResponseInterface {
+        if ($exception instanceof Exception\WrappedException) {
+            $exception = $exception->getPrevious();
+        }
+
         if ($exception instanceof Exception) {
             $this->loggerLevel = $exception->getLoggerLevel();
         } elseif ($exception instanceof HttpException) {
@@ -143,15 +147,19 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                 ));
             }
 
-            $view = $this->viewFactory->create($this->request);
+            try {
+                $view = $this->viewFactory->create($this->request);
 
-            return $view->renderToResponse(
-                $response,
-                'system/error_http',
-                [
-                    'exception' => $this->exception,
-                ]
-            );
+                return $view->renderToResponse(
+                    $response,
+                    'system/error_http',
+                    [
+                        'exception' => $this->exception,
+                    ]
+                );
+            } catch (\Throwable $e) {
+                return parent::respond();
+            }
         }
 
         if ($this->exception instanceof NotLoggedInException) {
@@ -240,15 +248,19 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->write($run->handleException($this->exception));
         }
 
-        $view = $this->viewFactory->create($this->request);
+        try {
+            $view = $this->viewFactory->create($this->request);
 
-        return $view->renderToResponse(
-            $response,
-            'system/error_general',
-            [
-                'exception' => $this->exception,
-            ]
-        );
+            return $view->renderToResponse(
+                $response,
+                'system/error_general',
+                [
+                    'exception' => $this->exception,
+                ]
+            );
+        } catch (\Throwable $e) {
+            return parent::respond();
+        }
     }
 
     protected function withJson(ResponseInterface $response, $data): ResponseInterface

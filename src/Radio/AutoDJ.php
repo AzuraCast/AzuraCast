@@ -196,7 +196,6 @@ class AutoDJ
 
         if ($queueLength >= $maxQueueLength) {
             $this->logger->debug('AutoDJ queue is already at current max length (' . $maxQueueLength . ').');
-            $this->logger->popProcessor();
             return $now;
         }
 

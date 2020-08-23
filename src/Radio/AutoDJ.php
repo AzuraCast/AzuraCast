@@ -177,7 +177,7 @@ class AutoDJ
                 $this->em->remove($queueRow);
             } else {
                 $duration = $queueRow->getDuration() ?? 1;
-                $now = $now->addSeconds($duration);
+                $now = $this->getAdjustedNow($station, $now, $duration);
             }
         }
 
@@ -219,7 +219,7 @@ class AutoDJ
             $this->em->persist($queueRow);
 
             $duration = $queueRow->getDuration() ?? 1;
-            $now = $now->addSeconds($duration);
+            $now = $this->getAdjustedNow($station, $now, $duration);
         }
 
         return $now;

@@ -162,4 +162,16 @@ class StationBackendConfiguration extends ArrayCollection
     {
         $this->set(self::CROSSFADE, $crossfade);
     }
+
+    public function getCrossfadeDuration(): int
+    {
+        $crossfade = $this->getCrossfade();
+        $crossfadeType = $this->getCrossfadeType();
+
+        if (self::CROSSFADE_DISABLED !== $crossfadeType && $crossfade > 0) {
+            return round($crossfade * 1.5, 2);
+        }
+
+        return 0;
+    }
 }

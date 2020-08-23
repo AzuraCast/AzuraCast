@@ -111,28 +111,14 @@ class AutoDJ
         $this->logger->popProcessor();
     }
 
-    protected function getStartNext(Entity\Station $station): float
-    {
-        $backendOptions = $station->getBackendConfig();
-        $startNext = 0;
-
-        $crossfade = $backendOptions->getCrossfade();
-        $crossfadeType = $backendOptions->getCrossfadeType();
-
-        if (Entity\StationBackendConfiguration::CROSSFADE_DISABLED !== $crossfadeType && $crossfade > 0) {
-            $startNext = round($crossfade * 1.5, 2);
-        }
-
-        return $startNext;
-    }
-
     protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, int $duration): CarbonInterface
     {
-        $startNext = $this->getStartNext($station);
-        $now = $now->addSeconds($duration);
+        $backendConfig = $station->getBackendConfig();
+        $startNext = $backendConfig->getCrossfadeDuration();
 
+        $now = $now->addSeconds($duration);
         return ($duration >= $startNext)
-            ? $now->subMicroseconds($startNext * 1000000)
+            ? $now->subMilliseconds($startNext * 1000)
             : $now;
     }
 
@@ -159,7 +145,7 @@ class AutoDJ
 
             // If the currently playing song should've already ended, then use clock time to try to play scheduled events on time.
             // This should only happen if we couldn't get the "real" currently playing song for some reason.
-            // It could also happen after Azuracast has been down for a while.
+            // It could also happen after AzuraCast has been down for a while.
             $difference = $adjustedNow->diffInSeconds($now, false);
             if ($difference > 0) {
                 $this->logger->debug('Current song should\'ve already ended: difference = ' . $difference . '.');

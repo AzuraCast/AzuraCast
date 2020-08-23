@@ -52,7 +52,8 @@ class StationQueueRepository extends Repository
     public function getUpcomingQueue(Entity\Station $station): array
     {
         return $this->getUpcomingBaseQuery($station)
-            ->getQuery()
+        ->andWhere('sq.sent_to_autodj = 0')
+        ->getQuery()
             ->execute();
     }
 

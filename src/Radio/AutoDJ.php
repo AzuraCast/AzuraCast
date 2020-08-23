@@ -176,9 +176,6 @@ class AutoDJ
                 $this->logger->warning('Queue item is no longer scheduled to play right now; removing.');
                 $this->em->remove($queueRow);
             } else {
-                $queueRow->setTimestampCued($now->getTimestamp());
-                $this->em->persist($queueRow);
-
                 $duration = $queueRow->getDuration() ?? 1;
                 $now = $now->addSeconds($duration);
             }

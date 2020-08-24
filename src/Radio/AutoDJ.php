@@ -121,26 +121,26 @@ class AutoDJ
         $now = CarbonImmutable::now($stationTz);
 
         $currentSong = $this->songHistoryRepo->getCurrent($station);
-        if ($currentSong instanceof Entity\SongHistory) {
-            $startTimestamp = $currentSong->getTimestampStart();
-            $started = CarbonImmutable::createFromTimestamp($startTimestamp, $stationTz);
-
-            $currentSongDuration = ($currentSong->getDuration() ?? 1);
-            $adjustedNow = $this->getAdjustedNow($station, $started, $currentSongDuration);
-
-            $this->logger->debug('Got currently playing song. Using start time and duration for initial value of now.',
-                [
-                    'song' => $currentSong->getSong()
-                        ->getText(),
-                    'started' => (string)$started,
-                    'duration' => $currentSongDuration,
-                ]);
-
-            // Return either the current timestamp (if it's later) or the scheduled end time.
-            return max($now, $adjustedNow);
+        if (!($currentSong instanceof Entity\SongHistory)) {
+            return $now;
         }
 
-        return $now;
+        $startTimestamp = $currentSong->getTimestampStart();
+        $started = CarbonImmutable::createFromTimestamp($startTimestamp, $stationTz);
+
+        $currentSongDuration = ($currentSong->getDuration() ?? 1);
+        $adjustedNow = $this->getAdjustedNow($station, $started, $currentSongDuration);
+
+        $this->logger->debug('Got currently playing song. Using start time and duration for initial value of now.',
+            [
+                'song' => $currentSong->getSong()
+                    ->getText(),
+                'started' => (string)$started,
+                'duration' => $currentSongDuration,
+            ]);
+
+        // Return either the current timestamp (if it's later) or the scheduled end time.
+        return max($now, $adjustedNow);
     }
 
     protected function buildQueueFromNow(Entity\Station $station, CarbonInterface $now): CarbonInterface

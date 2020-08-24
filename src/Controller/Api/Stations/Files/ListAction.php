@@ -49,10 +49,8 @@ class ListAction
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.station_id = :station_id')
             ->andWhere('sm.path LIKE :path')
-            ->andWhere('sm.path NOT LIKE :pathWithSubfolders')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('path', $pathLike)
-            ->setParameter('pathWithSubfolders', $pathLike . '/%');
+            ->setParameter('path', $pathLike);
 
         // Apply searching
         if (!empty($search_phrase)) {
@@ -67,6 +65,10 @@ class ListAction
 
             $folders_in_dir_raw = [];
         } else {
+            // Avoid loading subfolder media.
+            $media_query->andWhere('sm.path NOT LIKE :pathWithSubfolders')
+                ->setParameter('pathWithSubfolders', $pathLike . '/%');
+
             $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT 
                 spf, partial sp.{id, name}
                 FROM App\Entity\StationPlaylistFolder spf

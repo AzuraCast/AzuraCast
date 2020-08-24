@@ -52,6 +52,11 @@ class AutoDJ
      */
     public function annotateNextSong(Entity\Station $station, $asAutoDj = false): string
     {
+        $queueRow = $this->queueRepo->getNextInQueue($station);
+        if (!($queueRow instanceof Entity\StationQueue)) {
+            return '';
+        }
+
         $this->logger->pushProcessor(function ($record) use ($station) {
             $record['extra']['station'] = [
                 'id' => $station->getId(),
@@ -59,18 +64,6 @@ class AutoDJ
             ];
             return $record;
         });
-
-        $queueRow = $this->queueRepo->getNextInQueue($station);
-        if (!($queueRow instanceof Entity\StationQueue)) {
-            $this->logger->popProcessor();
-            return '';
-        }
-
-        $playlist = $queueRow->getPlaylist();
-        if (!($playlist instanceof Entity\StationPlaylist)) {
-            $this->logger->popProcessor();
-            return '';
-        }
 
         $duration = $queueRow->getDuration();
         $now = $this->getNowFromCurrentSong($station);
@@ -143,16 +136,8 @@ class AutoDJ
                     'duration' => $currentSongDuration,
                 ]);
 
-            // If the currently playing song should've already ended, then use clock time to try to play scheduled events on time.
-            // This should only happen if we couldn't get the "real" currently playing song for some reason.
-            // It could also happen after AzuraCast has been down for a while.
-            $difference = $adjustedNow->diffInSeconds($now, false);
-            if ($difference > 0) {
-                $this->logger->debug('Current song should\'ve already ended: difference = ' . $difference . '.');
-                return $now;
-            }
-
-            return $adjustedNow;
+            // Return either the current timestamp (if it's later) or the scheduled end time.
+            return max($now, $adjustedNow);
         }
 
         return $now;

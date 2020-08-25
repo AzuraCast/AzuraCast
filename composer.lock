@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e66b5119585762cac4e976483e7ad75",
+    "content-hash": "f962dccbfca4201901ed6acd2e226e18",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -5931,7 +5931,7 @@
         },
         {
             "name": "supervisorphp/supervisor",
-            "version": "dev-master",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
@@ -11529,7 +11529,6 @@
         "influxdb/influxdb-php": 20,
         "james-heinrich/getid3": 20,
         "lstrojny/fxmlrpc": 20,
-        "supervisorphp/supervisor": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

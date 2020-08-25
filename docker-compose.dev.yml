@@ -5,7 +5,7 @@ services:
     build:
       context: ../docker-azuracast-nginx-proxy
     volumes:
-      - ./util/local_ssl:/etc/nginx/certs:ro
+      - ./util/local_ssl:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   web:

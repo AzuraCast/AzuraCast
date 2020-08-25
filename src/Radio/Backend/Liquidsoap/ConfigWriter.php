@@ -655,10 +655,9 @@ class ConfigWriter implements EventSubscriberInterface
         $crossfade_type = $settings->getCrossfadeType();
         $crossfade = $settings->getCrossfade();
 
-        if (Entity\StationBackendConfiguration::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
-            $crossDuration = round($crossfade * 1.5, 2);
+        $crossDuration = $settings->getCrossfadeDuration();
+        if ($crossDuration > 0) {
             $crossfadeIsSmart = (Entity\StationBackendConfiguration::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
-
             $event->appendLines([
                 'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($crossDuration) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);

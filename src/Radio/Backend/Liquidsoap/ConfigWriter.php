@@ -507,10 +507,6 @@ class ConfigWriter implements EventSubscriberInterface
 
             $annotations_str = [];
             foreach ($mediaAnnotations as $annotation_key => $annotation_val) {
-                if ('liq_amplify' === $annotation_key) {
-                    $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
-                    continue;
-                }
                 $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
             }
 

@@ -315,8 +315,8 @@ install() {
     fi
 
     docker-compose pull
-    docker-compose run --user="azuracast" --rm web azuracast_install "$@"
     docker-compose up -d
+    docker-compose exec --user="azuracast" web azuracast_install "$@"
     exit
 }
 
@@ -398,8 +398,8 @@ update() {
         docker volume rm azuracast_tmp_data
         docker volume rm azuracast_redis_data
 
-        docker-compose run --user="azuracast" --rm web azuracast_update "$@"
         docker-compose up -d
+        docker-compose exec --user="azuracast" web azuracast_update "$@"
 
         docker rmi "$(docker images | grep "none" | awk '/ / { print $3 }')" 2>/dev/null
 
@@ -425,7 +425,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-    docker-compose run --user="azuracast" --rm web azuracast_cli "$@"
+    docker-compose exec --user="azuracast" web azuracast_cli "$@"
     exit
 }
 
@@ -538,42 +538,6 @@ static() {
     docker-compose build
     docker-compose run --rm frontend "$@"
     exit
-}
-
-#
-# DEVELOPER TOOL:
-# Run the full test suite.
-#
-dev-tests() {
-    dev-lint
-    dev-phpstan
-    dev-codeception
-    exit
-}
-
-#
-# DEVELOPER TOOL:
-# Run linter across all PHP code in the app.
-#
-dev-lint() {
-    docker-compose exec --user="azuracast" web composer phplint -- "$@"
-}
-
-#
-# DEVELOPER TOOL:
-# Run PHPStan for static analysis.
-#
-dev-phpstan() {
-    docker-compose exec --user="azuracast" web composer phpstan -- "$@"
-}
-
-#
-# DEVELOPER TOOL:
-# Run codeception for unit testing.
-#
-dev-codeception() {
-    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml build web
-    docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --user="azuracast" --rm web composer codeception -- "$@"
 }
 
 #

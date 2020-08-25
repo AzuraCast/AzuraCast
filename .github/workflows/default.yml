@@ -73,12 +73,17 @@ jobs:
           cp docker-compose.testing.yml docker-compose.override.yml
 
           docker-compose build web
-          docker-compose run --rm --user="azuracast" web azuracast_install
+          docker-compose up -d
+          docker-compose exec --user="azuracast" web azuracast_install
 
       - name: Run functional test suite.
         run: |
           chmod 777 tests/_output/
-          docker-compose run --rm --user="azuracast" web composer dev-test
+          docker-compose exec --user="azuracast" web composer dev-test
+
+      - name: Stop all running containers.
+        run: |
+          docker-compose down
 
       - name: Echo test output directory
         if: failure()

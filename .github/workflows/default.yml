@@ -74,12 +74,12 @@ jobs:
 
           docker-compose build web
           docker-compose up -d
-          docker-compose exec -T --user="azuracast" web azuracast_install
+          docker-compose run --rm --user="azuracast" web azuracast_install
 
       - name: Run functional test suite.
         run: |
           chmod 777 tests/_output/
-          docker-compose exec -T --user="azuracast" web composer dev-test
+          docker-compose run --rm --user="azuracast" web composer dev-test
 
       - name: Stop all running containers.
         run: |

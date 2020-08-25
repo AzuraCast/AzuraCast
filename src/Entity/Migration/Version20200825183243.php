@@ -20,7 +20,7 @@ final class Version20200825183243 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE station_media MODIFY `length` NUMERIC(3, 1)');
+        $this->addSql('ALTER TABLE station_media MODIFY `length` NUMERIC(7, 1)');
     }
 
     public function down(Schema $schema) : void

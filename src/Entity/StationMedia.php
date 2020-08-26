@@ -332,7 +332,7 @@ class StationMedia
         $this->isrc = $isrc;
     }
 
-    public function getLength(): int
+    public function getLength(): float
     {
         return $this->length;
     }

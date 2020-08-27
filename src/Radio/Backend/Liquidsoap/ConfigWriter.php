@@ -283,12 +283,12 @@ class ConfigWriter implements EventSubscriberInterface
                 }
             }
 
-            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
-            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
-
             if ($playlist->isJingle()) {
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
+
+            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
+            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';

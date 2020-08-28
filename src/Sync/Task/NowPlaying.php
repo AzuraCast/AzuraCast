@@ -330,7 +330,9 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $np_event->resolveUrls($this->api_utils->getRouter()->getBaseUrl(false));
             $np_event->cache = 'event';
 
-            $webhook_event = new SendWebhooks($station, $np_event, $np_old, $standalone);
+            $webhook_event = new SendWebhooks($station, $np_event, $standalone);
+            $webhook_event->computeTriggers($np_old);
+
             $this->event_dispatcher->dispatch($webhook_event);
 
             $logger->popProcessor();

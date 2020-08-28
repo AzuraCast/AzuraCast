@@ -1,5 +1,5 @@
 <?php
-namespace App\Webhook\Connector;
+namespace App\Webhook;
 
 use App\Entity;
 use App\Event\SendWebhooks;
@@ -13,11 +13,11 @@ use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use const JSON_PRETTY_PRINT;
 
-class Local
+class LocalWebhookHandler
 {
     public const NAME = 'local';
 
-    protected Client $http_client;
+    protected Client $httpClient;
 
     protected Logger $logger;
 
@@ -25,20 +25,20 @@ class Local
 
     protected CacheInterface $cache;
 
-    protected Entity\Repository\SettingsRepository $settings_repo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         Logger $logger,
-        Client $http_client,
+        Client $httpClient,
         Database $influx,
         CacheInterface $cache,
-        Entity\Repository\SettingsRepository $settings_repo
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->logger = $logger;
-        $this->http_client = $http_client;
+        $this->httpClient = $httpClient;
         $this->influx = $influx;
         $this->cache = $cache;
-        $this->settings_repo = $settings_repo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function dispatch(SendWebhooks $event): void
@@ -77,7 +77,7 @@ class Local
                 }
 
                 $this->cache->set('api_nowplaying_data', $np_new, 120);
-                $this->settings_repo->setSetting('nowplaying', $np_new);
+                $this->settingsRepo->setSetting('nowplaying', $np_new);
             }
         }
 
@@ -118,7 +118,7 @@ class Local
         if (NChan::isSupported()) {
             $this->logger->debug('Dispatching Nchan notification...');
 
-            $this->http_client->post('http://localhost:9010/pub/' . urlencode($station->getShortName()), [
+            $this->httpClient->post('http://localhost:9010/pub/' . urlencode($station->getShortName()), [
                 'json' => $np,
             ]);
         }

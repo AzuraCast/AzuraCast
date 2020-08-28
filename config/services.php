@@ -377,47 +377,37 @@ return [
     },
 
     // Synchronized (Cron) Tasks
-    App\Sync\Runner::class => function (
-        ContainerInterface $di,
-        Monolog\Logger $logger,
-        App\Lock\LockManager $lockManager,
-        App\Entity\Repository\SettingsRepository $settingsRepo
-    ) {
-        return new App\Sync\Runner(
-            $settingsRepo,
-            $logger,
-            $lockManager,
-            [ // Every 15 seconds tasks
+    App\Sync\TaskCollection::class => function (ContainerInterface $di) {
+        return new App\Sync\TaskCollection([
+            App\Sync\TaskCollection::SYNC_NOWPLAYING => [
                 $di->get(App\Sync\Task\BuildQueue::class),
                 $di->get(App\Sync\Task\NowPlaying::class),
                 $di->get(App\Sync\Task\ReactivateStreamer::class),
             ],
-            [ // Every minute tasks
+            App\Sync\TaskCollection::SYNC_SHORT => [
                 $di->get(App\Sync\Task\RadioRequests::class),
                 $di->get(App\Sync\Task\Backup::class),
                 $di->get(App\Sync\Task\RelayCleanup::class),
             ],
-            [ // Every 5 minutes tasks
+            App\Sync\TaskCollection::SYNC_MEDIUM => [
                 $di->get(App\Sync\Task\Media::class),
                 $di->get(App\Sync\Task\FolderPlaylists::class),
                 $di->get(App\Sync\Task\CheckForUpdates::class),
             ],
-            [ // Every hour tasks
+            App\Sync\TaskCollection::SYNC_LONG => [
                 $di->get(App\Sync\Task\Analytics::class),
                 $di->get(App\Sync\Task\RadioAutomation::class),
                 $di->get(App\Sync\Task\HistoryCleanup::class),
                 $di->get(App\Sync\Task\RotateLogs::class),
                 $di->get(App\Sync\Task\UpdateGeoLiteDatabase::class),
-            ]
-        );
+            ],
+        ]);
     },
 
     // Web Hooks
-    App\Webhook\Dispatcher::class => function (
+    App\Webhook\ConnectorCollection::class => function (
         ContainerInterface $di,
-        App\Config $config,
-        Monolog\Logger $logger,
-        App\ApiUtilities $apiUtils
+        App\Config $config
     ) {
         $webhooks = $config->get('webhooks');
         $services = [];
@@ -425,6 +415,6 @@ return [
             $services[$webhook_key] = $di->get($webhook_info['class']);
         }
 
-        return new App\Webhook\Dispatcher($logger, $apiUtils, $services);
+        return new App\Webhook\ConnectorCollection($services);
     },
 ];

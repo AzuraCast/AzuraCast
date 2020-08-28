@@ -18,13 +18,13 @@ class Runner
 
     protected LockManager $lockManager;
 
-    protected TaskCollection $taskCollection;
+    protected TaskLocator $taskCollection;
 
     public function __construct(
         SettingsRepository $settingsRepo,
         Logger $logger,
         LockManager $lockManager,
-        TaskCollection $taskCollection
+        TaskLocator $taskCollection
     ) {
         $this->settingsRepo = $settingsRepo;
         $this->logger = $logger;
@@ -41,7 +41,7 @@ class Runner
      */
     public function syncNowplaying($force = false): void
     {
-        $this->runSyncTask(TaskCollection::SYNC_NOWPLAYING);
+        $this->runSyncTask(TaskLocator::SYNC_NOWPLAYING);
     }
 
     /**
@@ -52,7 +52,7 @@ class Runner
      */
     public function syncShort($force = false): void
     {
-        $this->runSyncTask(TaskCollection::SYNC_SHORT);
+        $this->runSyncTask(TaskLocator::SYNC_SHORT);
     }
 
     /**
@@ -63,7 +63,7 @@ class Runner
      */
     public function syncMedium($force = false): void
     {
-        $this->runSyncTask(TaskCollection::SYNC_MEDIUM);
+        $this->runSyncTask(TaskLocator::SYNC_MEDIUM);
     }
 
     /**
@@ -74,7 +74,7 @@ class Runner
      */
     public function syncLong($force = false): void
     {
-        $this->runSyncTask(TaskCollection::SYNC_LONG);
+        $this->runSyncTask(TaskLocator::SYNC_LONG);
     }
 
     public function runSyncTask(string $type, bool $force = false): void
@@ -131,7 +131,7 @@ class Runner
         $this->settingsRepo->clearCache();
 
         $syncs = [
-            TaskCollection::SYNC_NOWPLAYING => [
+            TaskLocator::SYNC_NOWPLAYING => [
                 'name' => __('Now Playing Data'),
                 'contents' => [
                     __('Now Playing Data'),
@@ -139,7 +139,7 @@ class Runner
                 'lastRunSetting' => Entity\Settings::NOWPLAYING_LAST_RUN,
                 'timeout' => 600,
             ],
-            TaskCollection::SYNC_SHORT => [
+            TaskLocator::SYNC_SHORT => [
                 'name' => __('1-Minute Sync'),
                 'contents' => [
                     __('Song Requests Queue'),
@@ -147,7 +147,7 @@ class Runner
                 'lastRunSetting' => Entity\Settings::SHORT_SYNC_LAST_RUN,
                 'timeout' => 600,
             ],
-            TaskCollection::SYNC_MEDIUM => [
+            TaskLocator::SYNC_MEDIUM => [
                 'name' => __('5-Minute Sync'),
                 'contents' => [
                     __('Check Media Folders'),
@@ -155,7 +155,7 @@ class Runner
                 'lastRunSetting' => Entity\Settings::MEDIUM_SYNC_LAST_RUN,
                 'timeout' => 600,
             ],
-            TaskCollection::SYNC_LONG => [
+            TaskLocator::SYNC_LONG => [
                 'name' => __('1-Hour Sync'),
                 'contents' => [
                     __('Analytics/Statistics'),

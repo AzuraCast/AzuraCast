@@ -377,44 +377,44 @@ return [
     },
 
     // Synchronized (Cron) Tasks
-    App\Sync\TaskCollection::class => function (ContainerInterface $di) {
-        return new App\Sync\TaskCollection([
-            App\Sync\TaskCollection::SYNC_NOWPLAYING => [
-                $di->get(App\Sync\Task\BuildQueue::class),
-                $di->get(App\Sync\Task\NowPlaying::class),
-                $di->get(App\Sync\Task\ReactivateStreamer::class),
+    App\Sync\TaskLocator::class => function (ContainerInterface $di) {
+        return new App\Sync\TaskLocator($di, [
+            App\Sync\TaskLocator::SYNC_NOWPLAYING => [
+                App\Sync\Task\BuildQueue::class,
+                App\Sync\Task\NowPlaying::class,
+                App\Sync\Task\ReactivateStreamer::class,
             ],
-            App\Sync\TaskCollection::SYNC_SHORT => [
-                $di->get(App\Sync\Task\RadioRequests::class),
-                $di->get(App\Sync\Task\Backup::class),
-                $di->get(App\Sync\Task\RelayCleanup::class),
+            App\Sync\TaskLocator::SYNC_SHORT => [
+                App\Sync\Task\RadioRequests::class,
+                App\Sync\Task\Backup::class,
+                App\Sync\Task\RelayCleanup::class,
             ],
-            App\Sync\TaskCollection::SYNC_MEDIUM => [
-                $di->get(App\Sync\Task\Media::class),
-                $di->get(App\Sync\Task\FolderPlaylists::class),
-                $di->get(App\Sync\Task\CheckForUpdates::class),
+            App\Sync\TaskLocator::SYNC_MEDIUM => [
+                App\Sync\Task\Media::class,
+                App\Sync\Task\FolderPlaylists::class,
+                App\Sync\Task\CheckForUpdates::class,
             ],
-            App\Sync\TaskCollection::SYNC_LONG => [
-                $di->get(App\Sync\Task\Analytics::class),
-                $di->get(App\Sync\Task\RadioAutomation::class),
-                $di->get(App\Sync\Task\HistoryCleanup::class),
-                $di->get(App\Sync\Task\RotateLogs::class),
-                $di->get(App\Sync\Task\UpdateGeoLiteDatabase::class),
+            App\Sync\TaskLocator::SYNC_LONG => [
+                App\Sync\Task\Analytics::class,
+                App\Sync\Task\RadioAutomation::class,
+                App\Sync\Task\HistoryCleanup::class,
+                App\Sync\Task\RotateLogs::class,
+                App\Sync\Task\UpdateGeoLiteDatabase::class,
             ],
         ]);
     },
 
     // Web Hooks
-    App\Webhook\ConnectorCollection::class => function (
+    App\Webhook\ConnectorLocator::class => function (
         ContainerInterface $di,
         App\Config $config
     ) {
         $webhooks = $config->get('webhooks');
         $services = [];
         foreach ($webhooks['webhooks'] as $webhook_key => $webhook_info) {
-            $services[$webhook_key] = $di->get($webhook_info['class']);
+            $services[$webhook_key] = $webhook_info['class'];
         }
 
-        return new App\Webhook\ConnectorCollection($services);
+        return new App\Webhook\ConnectorLocator($di, $services);
     },
 ];

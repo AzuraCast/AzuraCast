@@ -21,7 +21,7 @@ class Dispatcher implements EventSubscriberInterface
 
     protected LocalWebhookHandler $localHandler;
 
-    protected ConnectorCollection $connectors;
+    protected ConnectorLocator $connectors;
 
     protected ApiUtilities $apiUtils;
 
@@ -33,7 +33,7 @@ class Dispatcher implements EventSubscriberInterface
         MessageBus $messageBus,
         ApiUtilities $apiUtils,
         LocalWebhookHandler $localHandler,
-        ConnectorCollection $connectors
+        ConnectorLocator $connectors
     ) {
         $this->logger = $logger;
         $this->em = $em;

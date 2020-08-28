@@ -316,7 +316,7 @@ install() {
 
     docker-compose pull
     docker-compose up -d
-    docker-compose exec --user="azuracast" web azuracast_install "$@"
+    docker-compose run --rm --user="azuracast" web azuracast_install "$@"
     exit
 }
 
@@ -399,7 +399,7 @@ update() {
         docker volume rm azuracast_redis_data
 
         docker-compose up -d
-        docker-compose exec --user="azuracast" web azuracast_update "$@"
+        docker-compose run --rm --user="azuracast" web azuracast_update "$@"
 
         docker rmi "$(docker images | grep "none" | awk '/ / { print $3 }')" 2>/dev/null
 
@@ -425,7 +425,7 @@ update-self() {
 # Usage: ./docker.sh cli [command]
 #
 cli() {
-    docker-compose exec --user="azuracast" web azuracast_cli "$@"
+    docker-compose run --rm --user="azuracast" web azuracast_cli "$@"
     exit
 }
 

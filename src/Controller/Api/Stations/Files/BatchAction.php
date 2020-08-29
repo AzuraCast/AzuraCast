@@ -72,15 +72,12 @@ class BatchAction
                                 }
                             }
 
+                            $em->flush();
                             $em->remove($media);
                             $em->flush();
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
 
                     $files_affected++;
@@ -179,10 +176,6 @@ class BatchAction
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
 
                     $files_affected++;
@@ -197,10 +190,6 @@ class BatchAction
                         $playlistFolderRepo->setPlaylistsForFolder($station, $playlists, $dir['path']);
                     } catch (Exception $e) {
                         $errors[] = $dir['path'] . ': ' . $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
                 }
 
@@ -257,10 +246,6 @@ class BatchAction
                     }
                 } catch (Exception $e) {
                     $errors[] = $e->getMessage();
-
-                    if (!$em->isOpen()) {
-                        break;
-                    }
                 }
 
                 $em->flush();
@@ -280,10 +265,6 @@ class BatchAction
                         $files_affected++;
                     } catch (Exception $e) {
                         $errors[] = $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
                 }
                 break;

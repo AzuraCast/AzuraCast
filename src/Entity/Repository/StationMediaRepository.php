@@ -5,14 +5,13 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
+use App\Media\AlbumArt;
+use App\Media\Id3;
 use App\Service\AudioWaveform;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use Exception;
-use getID3;
 use getid3_exception;
-use getid3_writetags;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -131,30 +130,15 @@ class StationMediaRepository extends Repository
      * Process metadata information from media file.
      *
      * @param Entity\StationMedia $media
-     * @param null $file_path
-     *
-     * @throws getid3_exception
+     * @param string $file_path
      */
-    public function loadFromFile(Entity\StationMedia $media, $file_path = null): void
+    public function loadFromFile(Entity\StationMedia $media, string $file_path): void
     {
-        // Load metadata from supported files.
-        $id3 = new getID3();
-
-        $id3->option_md5_data = true;
-        $id3->option_md5_data_source = true;
-        $id3->encoding = 'UTF-8';
-
-        $file_info = $id3->analyze($file_path);
-
         // Persist the media record for later custom field operations.
         $this->em->persist($media);
 
-        // Report any errors found by the file analysis to the logs
-        if (!empty($file_info['error'])) {
-            $media_warning = 'Warning for uploaded media file "' . pathinfo($media->getPath(),
-                    PATHINFO_FILENAME) . '": ' . json_encode($file_info['error'], JSON_THROW_ON_ERROR);
-            $this->logger->error($media_warning);
-        }
+        // Load metadata from supported files.
+        $file_info = Id3::read($file_path);
 
         // Set playtime length if the analysis was able to determine it
         if (is_numeric($file_info['playtime_seconds'])) {
@@ -260,53 +244,7 @@ class StationMediaRepository extends Repository
      */
     public function writeAlbumArt(Entity\StationMedia $media, $rawArtString): bool
     {
-        $source_image_info = getimagesizefromstring($rawArtString);
-        $source_image_width = $source_image_info[0] ?? 0;
-        $source_image_height = $source_image_info[1] ?? 0;
-        $source_mime_type = $source_image_info['mime'] ?? 'unknown';
-
-        $dest_max_width = 1200;
-        $dest_max_height = 1200;
-
-        $source_inside_dest = $source_image_width <= $dest_max_width && $source_image_height <= $dest_max_height;
-
-        // Avoid GD entirely if it's already a JPEG within our parameters.
-        if ($source_mime_type === 'image/jpeg' && $source_inside_dest) {
-            $albumArt = $rawArtString;
-        } else {
-            $source_gd_image = imagecreatefromstring($rawArtString);
-
-            if (!is_resource($source_gd_image)) {
-                return false;
-            }
-
-            // Crop the raw art to a 1200x1200 artboard.
-            if ($source_inside_dest) {
-                $thumbnail_gd_image = $source_gd_image;
-            } else {
-                $source_aspect_ratio = $source_image_width / $source_image_height;
-                $thumbnail_aspect_ratio = $dest_max_width / $dest_max_height;
-
-                if ($thumbnail_aspect_ratio > $source_aspect_ratio) {
-                    $thumbnail_image_width = (int)($dest_max_height * $source_aspect_ratio);
-                    $thumbnail_image_height = $dest_max_height;
-                } else {
-                    $thumbnail_image_width = $dest_max_width;
-                    $thumbnail_image_height = (int)($dest_max_width / $source_aspect_ratio);
-                }
-
-                $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
-                imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width,
-                    $thumbnail_image_height, $source_image_width, $source_image_height);
-            }
-
-            ob_start();
-            imagejpeg($thumbnail_gd_image, null, 90);
-            $albumArt = ob_get_clean();
-
-            imagedestroy($source_gd_image);
-            imagedestroy($thumbnail_gd_image);
-        }
+        $albumArt = AlbumArt::resize($rawArtString);
 
         $fs = $this->filesystem->getForStation($media->getStation());
         $albumArtPath = $media->getArtPath();
@@ -372,9 +310,6 @@ class StationMediaRepository extends Repository
      * @param bool $force
      *
      * @return bool Whether reprocessing was required for this file.
-     *
-     * @throws ORMException
-     * @throws getid3_exception
      */
     public function processMedia(Entity\StationMedia $media, $force = false): bool
     {
@@ -426,9 +361,6 @@ class StationMediaRepository extends Repository
     {
         $fs = $this->filesystem->getForStation($media->getStation());
 
-        $getID3 = new getID3;
-        $getID3->setOption(['encoding' => 'UTF8']);
-
         $media_uri = $media->getPathUri();
         $tmp_uri = null;
 
@@ -439,27 +371,11 @@ class StationMediaRepository extends Repository
             $tmp_path = $fs->getFullPath($tmp_uri);
         }
 
-        $tagwriter = new getid3_writetags;
-        $tagwriter->filename = $tmp_path;
-
-        $tagwriter->tagformats = ['id3v1', 'id3v2.3'];
-        $tagwriter->overwrite_tags = true;
-        $tagwriter->tag_encoding = 'UTF8';
-        $tagwriter->remove_other_tags = true;
-
         $tag_data = [
-            'title' => [
-                $media->getTitle(),
-            ],
-            'artist' => [
-                $media->getArtist(),
-            ],
-            'album' => [
-                $media->getAlbum(),
-            ],
-            'unsynchronised_lyric' => [
-                $media->getLyrics(),
-            ],
+            'title' => [$media->getTitle()],
+            'artist' => [$media->getArtist()],
+            'album' => [$media->getAlbum()],
+            'unsynchronised_lyric' => [$media->getLyrics()],
         ];
 
         $art_path = $media->getArtPath();
@@ -475,10 +391,8 @@ class StationMediaRepository extends Repository
             $tag_data['comments']['picture'][0] = $tag_data['attached_picture'][0];
         }
 
-        $tagwriter->tag_data = $tag_data;
-
         // write tags
-        if ($tagwriter->WriteTags()) {
+        if (Id3::write($tmp_path, $tag_data)) {
             $media->setMtime(time() + 5);
 
             if (null !== $tmp_uri) {

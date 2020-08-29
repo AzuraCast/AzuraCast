@@ -31,8 +31,8 @@ class AzuraRelay extends AbstractRemote
             $this->logger->debug('Response for remote relay',
                 ['remote' => $remote->getDisplayName(), 'response' => $npNew]);
 
-            $remote->setListenersTotal($np['listeners']['total']);
-            $remote->setListenersUnique($np['listeners']['unique']);
+            $remote->setListenersTotal($np->listeners->total);
+            $remote->setListenersUnique($np->listeners->unique);
             $this->em->persist($remote);
             $this->em->flush();
 

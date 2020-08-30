@@ -7,10 +7,6 @@
     {
       "type": "git",
       "url": "https://github.com/SlvrEagle23/influxdb-php.git"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/guzzle/oauth-subscriber"
     }
   ],
   "require": {

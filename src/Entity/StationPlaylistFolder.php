@@ -67,4 +67,9 @@ class StationPlaylistFolder
     {
         return $this->path;
     }
+
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
 }

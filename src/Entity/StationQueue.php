@@ -221,7 +221,7 @@ class StationQueue
     public function sentToAutoDj(): void
     {
         $cued = $this->getTimestampCued();
-        if (null === $cued || 0 === $cued) {
+        if (0 === $cued) {
             $this->setTimestampCued(time());
         }
 

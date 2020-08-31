@@ -40,7 +40,7 @@ interface RouterInterface
     /**
      * Return a named route based on the current page and its route arguments.
      *
-     * @param null $route_name
+     * @param string|null $route_name
      * @param array $route_params
      * @param array $query_params
      * @param bool $absolute
@@ -57,7 +57,7 @@ interface RouterInterface
     /**
      * Same as $this->fromHere(), but merging the current GET query parameters into the request as well.
      *
-     * @param null $route_name
+     * @param string|null $route_name
      * @param array $route_params
      * @param array $query_params
      * @param bool $absolute

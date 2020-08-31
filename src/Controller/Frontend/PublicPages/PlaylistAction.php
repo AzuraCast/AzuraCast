@@ -59,7 +59,6 @@ class PlaylistAction
                 return $response
                     ->withHeader('Content-Type', 'audio/x-mpegurl')
                     ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.m3u');
-                break;
 
             // PLS Playlist Format
             case 'pls':
@@ -84,7 +83,6 @@ class PlaylistAction
                 return $response
                     ->withHeader('Content-Type', 'audio/x-scpls')
                     ->withHeader('Content-Disposition', 'attachment; filename=' . $station->getShortName() . '.pls');
-                break;
         }
     }
 }

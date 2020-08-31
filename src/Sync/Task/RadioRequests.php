@@ -39,11 +39,10 @@ class RadioRequests extends AbstractTask
      */
     public function run(bool $force = false): void
     {
-        /** @var Entity\Repository\StationRepository $stations */
+        /** @var Entity\Station[] $stations */
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         foreach ($stations as $station) {
-            /** @var Entity\Station $station */
             if (!$station->useManualAutoDJ()) {
                 continue;
             }

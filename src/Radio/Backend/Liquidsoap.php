@@ -124,7 +124,7 @@ class Liquidsoap extends AbstractBackend
         // Safety checks for cue lengths.
         if ($annotation_types['liq_cue_out'] < 0) {
             $cue_out = abs($annotation_types['liq_cue_out']);
-            if (0 === $cue_out || $cue_out > $annotation_types['duration']) {
+            if (0.0 === $cue_out || $cue_out > $annotation_types['duration']) {
                 $annotation_types['liq_cue_out'] = null;
             } else {
                 $annotation_types['liq_cue_out'] = max(0, $annotation_types['duration'] - $cue_out);

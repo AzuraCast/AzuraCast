@@ -935,10 +935,7 @@ class Station
     public function getStorageUsed(): ?string
     {
         $raw_size = $this->getStorageUsedBytes();
-
-        return ($raw_size instanceof BigInteger)
-            ? Quota::getReadableSize($raw_size)
-            : '';
+        return Quota::getReadableSize($raw_size);
     }
 
     /**
@@ -1025,9 +1022,6 @@ class Station
         }
 
         $used = $this->getStorageUsedBytes();
-        if ($used === null) {
-            return false;
-        }
 
         return ($used->compareTo($available) !== -1);
     }

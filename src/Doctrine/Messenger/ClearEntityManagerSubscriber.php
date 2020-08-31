@@ -15,6 +15,14 @@ class ClearEntityManagerSubscriber implements EventSubscriberInterface
         $this->em = $em;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            WorkerMessageHandledEvent::class => 'onWorkerMessageHandled',
+            WorkerMessageFailedEvent::class => 'onWorkerMessageFailed',
+        ];
+    }
+
     public function onWorkerMessageHandled(): void
     {
         $this->clearEntityManagers();
@@ -23,12 +31,6 @@ class ClearEntityManagerSubscriber implements EventSubscriberInterface
     public function onWorkerMessageFailed(): void
     {
         $this->clearEntityManagers();
-    }
-
-    public static function getSubscribedEvents()
-    {
-        yield WorkerMessageHandledEvent::class => 'onWorkerMessageHandled';
-        yield WorkerMessageFailedEvent::class => 'onWorkerMessageFailed';
     }
 
     protected function clearEntityManagers(): void

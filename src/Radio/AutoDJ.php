@@ -111,7 +111,7 @@ class AutoDJ
 
         $now = $now->addSeconds($duration);
         return ($duration >= $startNext)
-            ? $now->subMilliseconds($startNext * 1000)
+            ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
     }
 

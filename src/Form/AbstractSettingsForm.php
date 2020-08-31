@@ -4,7 +4,6 @@ namespace App\Form;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractSettingsForm extends Form
@@ -28,7 +27,7 @@ abstract class AbstractSettingsForm extends Form
         $this->settingsRepo = $settingsRepo;
     }
 
-    public function getEntityManager(): EntityManager
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->em;
     }

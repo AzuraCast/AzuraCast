@@ -25,7 +25,7 @@ class AlbumArt
             $source_gd_image = imagecreatefromstring($rawArtString);
 
             if (!is_resource($source_gd_image)) {
-                return false;
+                throw new \RuntimeException('Cannot create image from string.');
             }
 
             // Crop the raw art to a 1200x1200 artboard.

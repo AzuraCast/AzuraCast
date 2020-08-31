@@ -114,13 +114,11 @@ class ServicesController
                 $frontend->stop($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend stopped.')));
-                break;
 
             case 'start':
                 $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend started.')));
-                break;
 
             case 'restart':
             default:
@@ -133,7 +131,6 @@ class ServicesController
                 $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend restarted.')));
-                break;
         }
     }
 
@@ -188,7 +185,6 @@ class ServicesController
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
-                break;
 
             case 'disconnect':
                 if ($backend instanceof Liquidsoap) {
@@ -196,19 +192,16 @@ class ServicesController
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
-                break;
 
             case 'stop':
                 $backend->stop($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Backend stopped.')));
-                break;
 
             case 'start':
                 $backend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Backend started.')));
-                break;
 
             case 'restart':
             default:
@@ -221,7 +214,6 @@ class ServicesController
                 $backend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Backend restarted.')));
-                break;
         }
     }
 

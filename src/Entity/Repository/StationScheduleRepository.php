@@ -8,7 +8,6 @@ use App\Settings;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -75,11 +74,8 @@ class StationScheduleRepository extends Repository
         if ($relation instanceof Entity\StationPlaylist) {
             return $this->repository->findBy(['playlist' => $relation]);
         }
-        if ($relation instanceof Entity\StationStreamer) {
-            return $this->repository->findBy(['streamer' => $relation]);
-        }
 
-        throw new InvalidArgumentException('Related entity must be a Playlist or Streamer.');
+        return $this->repository->findBy(['streamer' => $relation]);
     }
 
     /**
@@ -114,7 +110,7 @@ class StationScheduleRepository extends Repository
             $i = $startDate;
 
             while ($i <= $endDate) {
-                $dayOfWeek = $i->format('N');
+                $dayOfWeek = (int)$i->format('N');
 
                 if ($this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
                     && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)) {

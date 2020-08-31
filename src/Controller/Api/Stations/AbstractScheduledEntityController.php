@@ -38,7 +38,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
     ): ResponseInterface {
         $station = $request->getStation();
         $tz = $station->getTimezoneObject();
-        
+
         $params = $request->getQueryParams();
 
         $startDateStr = substr($params['start'], 0, 10);
@@ -54,7 +54,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
             $i = $startDate;
 
             while ($i <= $endDate) {
-                $dayOfWeek = $i->format('N');
+                $dayOfWeek = (int)$i->format('N');
 
                 if ($this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
                     && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)) {

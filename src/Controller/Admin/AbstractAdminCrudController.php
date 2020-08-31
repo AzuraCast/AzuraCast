@@ -5,7 +5,7 @@ use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 abstract class AbstractAdminCrudController
 {
@@ -15,7 +15,7 @@ abstract class AbstractAdminCrudController
 
     protected string $entity_class;
 
-    protected EntityRepository $record_repo;
+    protected ObjectRepository $record_repo;
 
     protected string $csrf_namespace;
 

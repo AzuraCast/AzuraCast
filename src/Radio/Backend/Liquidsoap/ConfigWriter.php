@@ -970,20 +970,16 @@ class ConfigWriter implements EventSubscriberInterface
                 $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
 
                 return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
-                break;
 
             case Entity\StationMountInterface::FORMAT_OGG:
                 return '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
-                break;
 
             case Entity\StationMountInterface::FORMAT_OPUS:
                 return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
-                break;
 
             case Entity\StationMountInterface::FORMAT_MP3:
             default:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
-                break;
         }
     }
 
@@ -1026,18 +1022,14 @@ class ConfigWriter implements EventSubscriberInterface
     /**
      * Convert an integer or float into a Liquidsoap configuration compatible float.
      *
-     * @param float|int $number
+     * @param float|int|string $number
      * @param int $decimals
      *
      * @return string
      */
     public static function toFloat($number, $decimals = 2): string
     {
-        if ((int)$number == $number) {
-            return (int)$number . '.';
-        }
-
-        return number_format($number, $decimals, '.', '');
+        return number_format((float)$number, $decimals, '.', '');
     }
 
     public static function formatTimeCode($time_code): string

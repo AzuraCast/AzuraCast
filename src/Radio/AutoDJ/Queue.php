@@ -228,7 +228,7 @@ class Queue implements EventSubscriberInterface
             $this->em->persist($playlist);
 
             $spm = $media_to_play->getItemForPlaylist($playlist);
-            if ($spm instanceof Entity\StationPlaylist) {
+            if ($spm instanceof Entity\StationPlaylistMedia) {
                 $spm->played($now->getTimestamp());
                 $this->em->persist($spm);
             }

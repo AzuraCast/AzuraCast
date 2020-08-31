@@ -320,7 +320,7 @@ class StationMediaRepository extends Repository
             throw new MediaProcessingException(sprintf('Media path "%s" not found.', $media_uri));
         }
 
-        $media_mtime = $fs->getTimestamp($media_uri);
+        $media_mtime = (int)$fs->getTimestamp($media_uri);
 
         // No need to update if all of these conditions are true.
         if (!$force && !$media->needsReprocessing($media_mtime)) {

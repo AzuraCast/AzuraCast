@@ -123,16 +123,17 @@ class AppFactory
 
     protected static function applyPhpSettings(Settings $settings): void
     {
-        ini_set('display_startup_errors', !$settings->isProduction() ? 1 : 0);
-        ini_set('display_errors', !$settings->isProduction() ? 1 : 0);
-        ini_set('log_errors', 1);
+        error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+
+        ini_set('display_startup_errors', !$settings->isProduction() ? '1' : '0');
+        ini_set('display_errors', !$settings->isProduction() ? '1' : '0');
+        ini_set('log_errors', '1');
         ini_set('error_log',
             $settings[Settings::IS_DOCKER] ? '/dev/stderr' : $settings[Settings::TEMP_DIR] . '/php_errors.log');
-        ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
-        ini_set('session.use_only_cookies', 1);
-        ini_set('session.cookie_httponly', 1);
-        ini_set('session.cookie_lifetime', 86400);
-        ini_set('session.use_strict_mode', 1);
+        ini_set('session.use_only_cookies', '1');
+        ini_set('session.cookie_httponly', '1');
+        ini_set('session.cookie_lifetime', '86400');
+        ini_set('session.use_strict_mode', '1');
 
         session_cache_limiter('');
     }

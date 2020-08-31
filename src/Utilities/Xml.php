@@ -71,7 +71,6 @@ class Xml
 
                 case 'close':
                     return $child;
-                    break;
             }
         }
 

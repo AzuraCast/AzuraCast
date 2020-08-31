@@ -28,7 +28,7 @@ class DecoratedEntityManager extends EntityManagerDecorator
     /**
      * Fetch a new, managed instance of an entity object, even if the EntityManager has been cleared.
      *
-     * @template T
+     * @template T as object The type of the entity being refetched.
      *
      * @param T $entity
      *
@@ -37,6 +37,8 @@ class DecoratedEntityManager extends EntityManagerDecorator
     public function refetch($entity)
     {
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));
+
+        /** @var T $freshValue */
         $freshValue = $this->wrapped->find($metadata->getName(), $metadata->getIdentifierValues($entity));
 
         if (!$freshValue) {

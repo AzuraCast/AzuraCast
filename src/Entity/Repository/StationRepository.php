@@ -77,7 +77,7 @@ class StationRepository extends Repository
     }
 
     /**
-     * @param bool $add_blank
+     * @param bool|string $add_blank
      * @param Closure|NULL $display
      * @param string $pk
      * @param string $order_by
@@ -123,7 +123,6 @@ class StationRepository extends Repository
      */
     public function edit(Entity\Station $record): Entity\Station
     {
-        /** @var Entity\Station $original_record */
         $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($record);
 
         // Get the original values to check for changes.

@@ -385,11 +385,13 @@ class SongHistory
     }
 
     /**
-     * @param Api\SongHistory $response
+     * @template T of Api\SongHistory
+     *
+     * @param T $response
      * @param ApiUtilities $api
      * @param UriInterface|null $base_url
      *
-     * @return Api\SongHistory
+     * @return T
      */
     public function api(Api\SongHistory $response, ApiUtilities $api, UriInterface $base_url = null)
     {

@@ -346,7 +346,7 @@ class StationMedia
         $length_sec = $length % 60;
 
         $this->length = (float)$length;
-        $this->length_text = $length_min . ':' . str_pad($length_sec, 2, '0', STR_PAD_LEFT);
+        $this->length_text = $length_min . ':' . str_pad((string)$length_sec, 2, '0', STR_PAD_LEFT);
     }
 
     public function getLengthText(): ?string
@@ -396,11 +396,7 @@ class StationMedia
 
     public function setAmplify(?float $amplify = null): void
     {
-        if ($amplify === '') {
-            $amplify = null;
-        }
-
-        $this->amplify = (null === $amplify) ? null : (float)$amplify;
+        $this->amplify = $amplify;
     }
 
     public function getFadeOverlap(): ?float
@@ -410,10 +406,6 @@ class StationMedia
 
     public function setFadeOverlap(?float $fade_overlap = null): void
     {
-        if ($fade_overlap === '') {
-            $fade_overlap = null;
-        }
-
         $this->fade_overlap = $fade_overlap;
     }
 

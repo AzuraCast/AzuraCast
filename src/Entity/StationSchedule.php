@@ -235,7 +235,7 @@ class StationSchedule
 
             $parts[] = implode('/', $displayDays);
         }
-        
+
         return implode(', ', $parts);
     }
 
@@ -254,7 +254,7 @@ class StationSchedule
         }
 
         $timeCode = str_pad($timeCode, 4, '0', STR_PAD_LEFT);
-        return $now->setTime(substr($timeCode, 0, 2), substr($timeCode, 2));
+        return $now->setTime((int)substr($timeCode, 0, 2), (int)substr($timeCode, 2));
     }
 
     public static function displayTimeCode($timeCode): string

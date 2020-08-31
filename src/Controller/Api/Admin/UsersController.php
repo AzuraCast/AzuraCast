@@ -96,7 +96,7 @@ class UsersController extends AbstractAdminApiCrudController
      */
     public function deleteAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
-        /** @var Entity\User $record */
+        /** @var Entity\User|null $record */
         $record = $this->_getRecord($id);
 
         if (null === $record) {

@@ -136,7 +136,7 @@ class RadioAutomation extends AbstractTask
         $numSongs = count($mediaReport);
         $numPlaylists = count($playlists);
 
-        $songsPerPlaylist = floor($numSongs / $numPlaylists);
+        $songsPerPlaylist = (int)floor($numSongs / $numPlaylists);
 
         $i = 0;
         foreach ($playlists as $playlistId) {

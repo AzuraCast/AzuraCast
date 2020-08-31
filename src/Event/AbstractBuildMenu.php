@@ -3,7 +3,6 @@ namespace App\Event;
 
 use App\Acl;
 use App\Entity\User;
-use App\Http\Router;
 use App\Http\RouterInterface;
 use App\Settings;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -33,7 +32,7 @@ abstract class AbstractBuildMenu extends Event
         return $this->acl;
     }
 
-    public function getRouter(): Router
+    public function getRouter(): RouterInterface
     {
         return $this->router;
     }

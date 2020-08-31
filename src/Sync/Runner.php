@@ -92,8 +92,8 @@ class Runner
 
         if (Settings::getInstance()->isCli()) {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
-            ini_set('display_errors', 1);
-            ini_set('log_errors', 1);
+            ini_set('display_errors', '1');
+            ini_set('log_errors', '1');
         }
 
         $this->logger->info(sprintf('Running sync task: %s', $syncInfo['name']));

@@ -49,7 +49,7 @@ class EnforceSecurity implements MiddlewareInterface
 
         if ('https' === $request->getUri()->getScheme()) {
             // Enforce secure cookies.
-            ini_set('session.cookie_secure', 1);
+            ini_set('session.cookie_secure', '1');
 
             $csp[] = 'upgrade-insecure-requests';
 

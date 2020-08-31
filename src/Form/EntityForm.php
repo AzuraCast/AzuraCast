@@ -68,7 +68,7 @@ class EntityForm extends Form
 
     public function getEntityRepository(): ObjectRepository
     {
-        if (null === $this->entityClass) {
+        if (!isset($this->entityClass)) {
             throw new Exception('Entity class name is not specified.');
         }
 
@@ -83,7 +83,7 @@ class EntityForm extends Form
      */
     public function process(ServerRequest $request, $record = null)
     {
-        if (null === $this->entityClass) {
+        if (!isset($this->entityClass)) {
             throw new Exception('Entity class name is not specified.');
         }
 

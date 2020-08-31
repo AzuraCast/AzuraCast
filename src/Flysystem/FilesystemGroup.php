@@ -122,6 +122,10 @@ class FilesystemGroup extends MountManager
         [$prefix, $path] = $this->getPrefixAndPath($uri);
 
         $fs = $this->getFilesystem($prefix);
+        if (!($fs instanceof Filesystem)) {
+            throw new \RuntimeException('Filesystem cannot be iterated.');
+        }
+
         $iterator = new FilesystemIterator($fs, $path, $iteratorOptions);
 
         $options = Options::fromArray($iteratorOptions);

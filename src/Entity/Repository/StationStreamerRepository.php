@@ -132,7 +132,7 @@ class StationStreamerRepository extends Repository
     /**
      * Fetch all streamers who are deactivated and have a reactivate at timestamp set
      *
-     * @param int $reactivate_at
+     * @param int|null $reactivate_at
      *
      * @return Entity\StationStreamer[]
      */
@@ -140,7 +140,9 @@ class StationStreamerRepository extends Repository
     {
         $reactivate_at = $reactivate_at ?? time();
 
-        return $this->repository->createQueryBuilder('s')
+        return $this->em->createQueryBuilder()
+            ->select('s')
+            ->from($this->entityClass, 's')
             ->where('s.is_active = 0')
             ->andWhere('s.reactivate_at <= :reactivate_at')
             ->setParameter('reactivate_at', $reactivate_at)

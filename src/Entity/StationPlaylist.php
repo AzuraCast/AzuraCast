@@ -622,7 +622,6 @@ class StationPlaylist
                 }
 
                 return implode("\n", $playlist_file);
-                break;
 
             case 'pls':
             default:
@@ -646,7 +645,6 @@ class StationPlaylist
                 $playlist_file[] = 'Version=2';
 
                 return implode("\n", $playlist_file);
-                break;
         }
     }
 }

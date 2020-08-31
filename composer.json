@@ -119,7 +119,7 @@
       "@codeception-no-coverage"
     ],
     "phplint": "phplint",
-    "phpstan": "phpstan analyze --memory-limit=512M",
+    "phpstan": "phpstan analyze",
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
     "ci-import-locales": [

@@ -33,8 +33,7 @@ RUN composer install \
     --no-dev \
     --no-ansi \
     --no-autoloader \
-    --no-interaction \
-    --no-scripts
+    --no-interaction
 
 COPY --chown=azuracast:azuracast . .
 

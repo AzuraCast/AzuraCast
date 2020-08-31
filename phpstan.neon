@@ -14,3 +14,6 @@ parameters:
     ignoreErrors:
         # Caused by Symfony Validator (perhaps wrongly) returning the interface.
         - '#Cannot cast Symfony\\Component\\Validator\\ConstraintViolationListInterface to string.#'
+
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon

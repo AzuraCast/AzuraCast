@@ -384,7 +384,7 @@ class Assets
     protected function _sort(): void
     {
         if (!$this->is_sorted) {
-            uasort($this->loaded, function ($a, $b) {
+            uasort($this->loaded, function ($a, $b): int {
                 return $a['order'] <=> $b['order']; // SPACESHIP!
             });
 

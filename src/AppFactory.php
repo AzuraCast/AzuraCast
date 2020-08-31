@@ -34,7 +34,7 @@ class AppFactory
 
         // Override DI definitions for settings.
         $diDefinitions[Settings::class] = $settings;
-        $diDefinitions['settings'] = DI\get(Settings::class);
+        $diDefinitions['settings'] = DI\Get(Settings::class);
 
         if ($autoloader) {
             $plugins = new Plugins($settings[Settings::BASE_DIR] . '/plugins');

@@ -163,7 +163,7 @@ class AutoDJ
             if ($resetTimestampCued === true) {
                 $queueRow->setTimestampCued($now->getTimestamp());
             }
-            
+
             $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
             $duration = $queueRow->getDuration() ?? 1;
             $now = $this->getAdjustedNow($station, $timestampCued, $duration);

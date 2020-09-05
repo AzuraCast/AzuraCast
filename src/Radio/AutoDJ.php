@@ -80,7 +80,7 @@ class AutoDJ
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
 
-        $this->buildQueueFromNow($station, $now);
+        $this->buildQueueFromNow($station, $now, true);
 
         $this->logger->popProcessor();
 
@@ -99,7 +99,7 @@ class AutoDJ
 
         $now = $this->getNowFromCurrentSong($station);
 
-        $this->buildQueueFromNow($station, $now);
+        $this->buildQueueFromNow($station, $now, false);
 
         $this->logger->popProcessor();
     }
@@ -143,7 +143,7 @@ class AutoDJ
         return max($now, $adjustedNow);
     }
 
-    protected function buildQueueFromNow(Entity\Station $station, CarbonInterface $now): CarbonInterface
+    protected function buildQueueFromNow(Entity\Station $station, CarbonInterface $now, bool $resetTimestampCued): CarbonInterface
     {
         // Adjust "now" time from current queue.
         $backendOptions = $station->getBackendConfig();
@@ -160,6 +160,10 @@ class AutoDJ
          * If the queue is empty, then we fall back to the value of now passed in by the caller, which may bor may not be accurate but is the best we have.
          */
         foreach ($upcomingQueue as $queueRow) {
+            if ($resetTimestampCued === true) {
+                $queueRow->setTimestampCued($now->getTimestamp());
+            }
+            
             $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
             $duration = $queueRow->getDuration() ?? 1;
             $now = $this->getAdjustedNow($station, $timestampCued, $duration);

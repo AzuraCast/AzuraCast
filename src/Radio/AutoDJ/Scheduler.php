@@ -229,20 +229,23 @@ class Scheduler
         Entity\StationSchedule $schedule,
         CarbonInterface $now
     ): bool {
-        if (!$this->shouldSchedulePlayOnCurrentDate($schedule, $now)) {
-            return false;
-        }
-
         $startTime = Entity\StationSchedule::getDateTime($schedule->getStartTime(), $now);
         $endTime = Entity\StationSchedule::getDateTime($schedule->getEndTime(), $now);
+        $this->logger->debug('Checking to see whether schedule should play now.', [
+            'startTime' => $startTime,
+            'endTime' => $endTime,
+        ]);
+        
+        if (!$this->shouldSchedulePlayOnCurrentDate($schedule, $now)) {
+            $this->logger->debug('Schedule is not scheduled to play today.');
+            return false;
+        }
 
         $comparePeriods = [];
 
         if ($startTime->equalTo($endTime)) {
             // Create intervals for "play once" type dates.
-            $endTime = $endTime->addMinutes(15);
-
-            $comparePeriods[] = [$startTime, $endTime];
+            $comparePeriods[] = [$startTime, $endTime->addMinutes(15)];
             $comparePeriods[] = [$startTime->subDay(), $endTime->subDay()];
             $comparePeriods[] = [$startTime->addDay(), $endTime->addDay()];
         } elseif ($startTime->greaterThan($endTime)) {
@@ -254,15 +257,18 @@ class Scheduler
         }
 
         foreach ($comparePeriods as [$start, $end]) {
+            
             /** @var CarbonInterface $start */
             /** @var CarbonInterface $end */
             if ($now->between($start, $end)) {
                 $dayToCheck = (int)$start->format('N');
 
                 if ($this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
-                    if ($startTime !== $endTime) {
-                        return true;
-                    } elseif (!$this->wasPlaylistPlayedInLastXMinutes($schedule->getPlaylist(), $now, 30)) {
+                    if ($startTime->equalTo($endTime)) {
+                        if (!$this->wasPlaylistPlayedInLastXMinutes($schedule->getPlaylist(), $now, 30))  {
+                            return true;
+                        }
+                    } else {
                         return true;
                     }
                 }

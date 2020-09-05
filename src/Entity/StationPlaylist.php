@@ -509,7 +509,7 @@ class StationPlaylist
     public function isPlayable(): bool
     {
         // Any "advanced" settings are not managed by AzuraCast AutoDJ.
-        if (!$this->is_enabled || $this->backendInterruptOtherSongs() || $this->backendMerge() || $this->backendLoopPlaylistOnce()) {
+        if (!$this->is_enabled || $this->backendInterruptOtherSongs() || $this->backendMerge() || $this->backendLoopPlaylistOnce() || $this->backendPlaySingleTrack()) {
             return false;
         }
 

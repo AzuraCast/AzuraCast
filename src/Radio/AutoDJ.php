@@ -148,22 +148,22 @@ class AutoDJ
         // Adjust "now" time from current queue.
         $backendOptions = $station->getBackendConfig();
         $maxQueueLength = $backendOptions->getAutoDjQueueLength();
+        $stationTz = $station->getTimezoneObject();
+        $adjustedNow = $now;
 
         $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
         $queueLength = count($upcomingQueue);
 
+        /*
+         * Calculate now from the end of the queue if the queue has items. 
+         * This assumes that the queue should always be full if a new row is added every time a row is removed. 
+         * If the queue is empty, then we fall back to the value of now passed in by the caller, which may bor may not be accurate but is the best we have.
+         */
         foreach ($upcomingQueue as $queueRow) {
-            $playlist = $queueRow->getPlaylist();
-            if (!$this->scheduler->isPlaylistScheduledToPlayNow($playlist, $now)) {
-                $this->logger->warning('Queue item is no longer scheduled to play right now; removing.');
-                $this->em->remove($queueRow);
-            } else {
-                $duration = $queueRow->getDuration() ?? 1;
-                $now = $this->getAdjustedNow($station, $now, $duration);
-            }
+            $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
+            $duration = $queueRow->getDuration() ?? 1;
+            $now = $this->getAdjustedNow($station, $timestampCued, $duration);
         }
-
-        $this->em->flush();
 
         if ($queueLength >= $maxQueueLength) {
             $this->logger->debug('AutoDJ queue is already at current max length (' . $maxQueueLength . ').');

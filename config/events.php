@@ -37,6 +37,7 @@ return function (App\EventDispatcher $dispatcher) {
                 ],
                 'table_storage' => [
                     'table_name' => 'app_migrations',
+                    'version_column_length' => 191,
                 ],
             ]);
 

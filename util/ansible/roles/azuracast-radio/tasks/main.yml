@@ -99,10 +99,11 @@
   poll: 0
 
 - name: Check on Liquidsoap Installation
+  become_user: azuracast
   async_status:
     jid: "{{ install_result.ansible_job_id }}"
-  until: check_result.finished
   register: check_result
+  until: check_result.finished
   retries: 1000
 
 - name: Link Liquidsoap binary (Xenial/Bionic)

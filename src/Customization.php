@@ -34,10 +34,10 @@ class Customization
         $this->settingsRepo = $settingsRepo;
         $this->instanceName = (string)$this->settingsRepo->getSetting(Entity\Settings::INSTANCE_NAME, '');
 
-        $this->locale = $this->initLocale($request);
-
         // Register current user
         $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
+
+        $this->locale = $this->initLocale($request);
 
         // Register current theme
         $queryParams = $request->getQueryParams();

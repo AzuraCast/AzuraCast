@@ -86,6 +86,7 @@
   shell: "opam init --disable-sandboxing -a --bare && opam switch create ocaml-system.4.08.1"
   args:
     chdir: "{{ app_base }}"
+    executable: "bash" # Fixes some possible hang issues.
   when:
     - ansible_distribution_release == 'focal'
 

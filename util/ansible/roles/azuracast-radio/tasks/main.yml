@@ -95,7 +95,7 @@
   args:
     chdir: "{{ app_base }}"
   register: install_result
-  async: 3000
+  async: 3600
   poll: 0
 
 - name: Check on Liquidsoap Installation
@@ -104,7 +104,8 @@
     jid: "{{ install_result.ansible_job_id }}"
   register: check_result
   until: check_result.finished
-  retries: 1000
+  retries: 60
+  poll: 60
 
 - name: Link Liquidsoap binary (Xenial/Bionic)
   file:

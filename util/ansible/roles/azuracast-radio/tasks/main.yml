@@ -105,7 +105,7 @@
   register: check_result
   until: check_result.finished
   retries: 60
-  poll: 60
+  delay: 60
 
 - name: Link Liquidsoap binary (Xenial/Bionic)
   file:

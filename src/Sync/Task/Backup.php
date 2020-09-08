@@ -78,7 +78,7 @@ class Backup extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
+        $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, false);
         if (!$backup_enabled) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
@@ -91,9 +91,9 @@ class Backup extends AbstractTask
 
         if ($last_run <= $threshold) {
             // Check if the backup time matches (if it's set).
-            $backupTimecode = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME);
+            $backupTimecode = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME, null);
 
-            if (0 !== $backupTimecode) {
+            if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
                 $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $now_utc);
 

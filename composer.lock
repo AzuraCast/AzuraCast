@@ -148,12 +148,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "de53f543a977626846dab9a5ae427831e9aa0869"
+                "reference": "e968c0fb4ed022b1d5534e252dbc3baa55414e46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/de53f543a977626846dab9a5ae427831e9aa0869",
-                "reference": "de53f543a977626846dab9a5ae427831e9aa0869",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/e968c0fb4ed022b1d5534e252dbc3baa55414e46",
+                "reference": "e968c0fb4ed022b1d5534e252dbc3baa55414e46",
                 "shasum": ""
             },
             "require": {
@@ -191,7 +191,7 @@
                 }
             ],
             "description": "A lightweight PHP adapter for viewing the current now playing data in Icecast and SHOUTcast 1/2. A part of the AzuraCast software suite.",
-            "time": "2020-09-09T03:03:32+00:00"
+            "time": "2020-09-09T21:36:32+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",

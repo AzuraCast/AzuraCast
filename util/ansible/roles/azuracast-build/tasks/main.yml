@@ -32,3 +32,4 @@
     - "chown -R azuracast:www-data {{ www_base }}"
     - "find {{ www_base }} -type d -exec chmod 755 {} \\;"
     - "find {{ www_base }} -type f -exec chmod 644 {} \\;"
+  # Note: Don't add warn: false here, it's incompatible with the earlier Ansibles used in 16.04/18.04.

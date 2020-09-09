@@ -32,4 +32,3 @@
     - "chown -R azuracast:www-data {{ www_base }}"
     - "find {{ www_base }} -type d -exec chmod 755 {} \\;"
     - "find {{ www_base }} -type f -exec chmod 644 {} \\;"
-  warn: false

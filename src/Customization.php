@@ -79,9 +79,6 @@ class Customization
     protected function initLocale(?Request $request = null): string
     {
         $settings = Settings::getInstance();
-        if ($settings->isTesting()) {
-            return self::DEFAULT_LOCALE;
-        }
 
         $supported_locales = $settings['locale']['supported'];
         $try_locales = [];

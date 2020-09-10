@@ -71,6 +71,7 @@ abstract class CestAbstract
         $user->setEmail($this->login_username);
         $user->setNewPassword($this->login_password);
         $user->getRoles()->add($role);
+        $user->setLocale('en_US.UTF-8');
 
         $this->em->persist($user);
         $this->em->flush();

@@ -132,15 +132,18 @@ class Version
         $details = $this->getDetails();
 
         if (isset($details['tag'])) {
+            $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
+            $commitText = '#<a href="' . $commitLink . '" target="_blank">' . $details['commit_short'] . '</a> (' . $details['commit_date'] . ')';
+
             if (isset($_ENV['AZURACAST_VERSION'])) {
-                $dockerVersion = ('latest' === $_ENV['AZURACAST_VERSION'])
-                    ? ' Rolling'
-                    : ' Stable';
-            } else {
-                $dockerVersion = '';
+                if ('latest' === $_ENV['AZURACAST_VERSION']) {
+                    return 'Rolling Release ' . $commitText;
+                }
+
+                return 'v' . $details['tag'] . ' Stable';
             }
 
-            return 'v' . $details['tag'] . ', #' . $details['commit_short'] . ' (' . $details['commit_date'] . ') ' . $dockerVersion;
+            return 'v' . $details['tag'] . ', ' . $commitText;
         }
 
         return 'v' . self::FALLBACK_VERSION . ' Release Build';

@@ -20,20 +20,20 @@ class Manager implements EventSubscriberInterface
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected Settings $app_settings;
+    protected Settings $appSettings;
 
     public function __construct(
         Acl $acl,
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settings_repo,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Logger $logger,
-        Settings $app_settings
+        Settings $appSettings
     ) {
         $this->acl = $acl;
         $this->em = $em;
         $this->logger = $logger;
-        $this->app_settings = $app_settings;
-        $this->settingsRepo = $settings_repo;
+        $this->appSettings = $appSettings;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public static function getSubscribedEvents()
@@ -54,7 +54,7 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        if (!$this->app_settings->isDocker()) {
+        if (!$this->appSettings->isDocker()) {
             return;
         }
 
@@ -136,6 +136,10 @@ class Manager implements EventSubscriberInterface
     public function checkRecentBackup(GetNotifications $event): void
     {
         if (!$this->acl->userAllowed($event->getCurrentUser(), Acl::GLOBAL_BACKUPS)) {
+            return;
+        }
+
+        if (!$this->appSettings->isProduction()) {
             return;
         }
 

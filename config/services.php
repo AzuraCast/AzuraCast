@@ -3,6 +3,7 @@
  * PHP-DI Services
  */
 
+use App\Event;
 use App\Settings;
 use Psr\Container\ContainerInterface;
 
@@ -58,7 +59,8 @@ return [
         Doctrine\Common\Annotations\Reader $reader,
         App\Settings $settings,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
-        App\Doctrine\Event\AuditLog $eventAuditLog
+        App\Doctrine\Event\AuditLog $eventAuditLog,
+        App\EventDispatcher $dispatcher
     ) {
         $connectionOptions = [
             'host' => $_ENV['MYSQL_HOST'] ?? 'mariadb',
@@ -95,9 +97,19 @@ return [
                 $doctrineCache
             );
 
+            $mappingClassesPaths = [$settings->getBaseDirectory() . '/src/Entity'];
+
+            $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
+                $mappingClassesPaths,
+                $settings->getBaseDirectory()
+            );
+            $dispatcher->dispatch($buildDoctrineMappingPathsEvent);
+
+            $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
+
             $annotationDriver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
                 $reader,
-                [$settings->getBaseDirectory() . '/src/Entity']
+                $mappingClassesPaths
             );
             $config->setMetadataDriverImpl($annotationDriver);
 

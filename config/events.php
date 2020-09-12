@@ -6,7 +6,7 @@ use App\Middleware;
 use App\Settings;
 
 return function (App\EventDispatcher $dispatcher) {
-    $dispatcher->addListener(Event\BuildConsoleCommands::class, function (Event\BuildConsoleCommands $event) {
+    $dispatcher->addListener(Event\BuildConsoleCommands::class, function (Event\BuildConsoleCommands $event) use ($dispatcher) {
         $console = $event->getConsole();
         $di = $console->getContainer();
 
@@ -31,7 +31,7 @@ return function (App\EventDispatcher $dispatcher) {
             $helper_set->set($doctrine_helpers->get('db'), 'db');
             $helper_set->set($doctrine_helpers->get('em'), 'em');
 
-            $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray([
+            $migrationConfigurations = [
                 'migrations_paths' => [
                     'App\Entity\Migration' => $settings[Settings::BASE_DIR] . '/src/Entity/Migration',
                 ],
@@ -39,7 +39,17 @@ return function (App\EventDispatcher $dispatcher) {
                     'table_name' => 'app_migrations',
                     'version_column_length' => 191,
                 ],
-            ]);
+            ];
+
+            $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(
+                $migrationConfigurations,
+                $settings[Settings::BASE_DIR]
+            );
+            $dispatcher->dispatch($buildMigrationConfigurationsEvent);
+
+            $migrationConfigurations = $buildMigrationConfigurationsEvent->getMigrationConfigurations();
+
+            $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationConfigurations);
 
             $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
                 $migrateConfig,

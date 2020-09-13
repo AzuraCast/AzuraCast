@@ -107,7 +107,7 @@ class Queue implements EventSubscriberInterface
         foreach ($recentSongHistoryForOncePerXSongs as $row) {
             $logOncePerXSongsSongHistory[] = [
                 'song' => $row['song']['text'],
-                'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'],
+                'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
                     $now->getTimezone())),
                 'duration' => $row['duration'],
                 'sent_to_autodj' => $row['sent_to_autodj'],
@@ -118,7 +118,7 @@ class Queue implements EventSubscriberInterface
         foreach ($recentSongHistoryForDuplicatePrevention as $row) {
             $logDuplicatePreventionSongHistory[] = [
                 'song' => $row['song']['text'],
-                'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'],
+                'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
                     $now->getTimezone())),
                 'duration' => $row['duration'],
                 'sent_to_autodj' => $row['sent_to_autodj'],
@@ -442,7 +442,7 @@ class Queue implements EventSubscriberInterface
             $songId = $history['song']['id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $history['timestamp_cued'];
+                $latestSongIdsPlayed[$songId] = $history['timestamp_cued'] ?? $history['timestamp_start'];
             }
         }
 

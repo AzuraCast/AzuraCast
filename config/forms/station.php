@@ -519,6 +519,7 @@ return [
                     [
                         'label' => __('Duplicate Prevention Time Range (Minutes)'),
                         'description' => __('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.'),
+                        'belongsTo' => 'backend_config',
                         'default' => StationBackendConfiguration::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE,
                         'min' => '0',
                         'max' => '1440',

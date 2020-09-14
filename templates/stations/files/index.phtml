@@ -45,12 +45,14 @@ $assets
                     </div>
                     <div class="flex-fill">
                         <p class="mb-0">
-                            <?=__('You can also upload files in bulk via SFTP.')?><br>
-                            <a class="btn btn-link p-0" target="_blank"
-                               href="<?=$router->fromHere('stations:sftp_users:index')?>">
-                                <?=__('Manage SFTP Accounts')?>
-                            </a>
+                            <?=__('You can also upload files in bulk via SFTP.')?>
                         </p>
+                    </div>
+                    <div class="flex-shrink-0 ml-2">
+                        <a class="btn btn-sm btn-light" target="_blank"
+                           href="<?=$router->fromHere('stations:sftp_users:index')?>">
+                            <?=__('Manage SFTP Accounts')?>
+                        </a>
                     </div>
                 </div>
             <?php endif; ?>

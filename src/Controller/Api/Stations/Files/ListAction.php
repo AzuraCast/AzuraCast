@@ -130,10 +130,8 @@ class ListAction
                         ['station_id' => $station->getId(), 'id' => $media_row['id']]
                     ),
                     'play_url' => (string)$router->named(
-                        'api:stations:files:download',
-                        ['station_id' => $station->getId()],
-                        ['file' => $media_row['path']],
-                        true
+                        'api:stations:file:download',
+                        ['station_id' => $station->getId(), 'id' => $media_row['id']]
                     ),
                     'playlists' => $playlists,
                 ] + $custom_fields;

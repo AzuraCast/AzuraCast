@@ -224,12 +224,12 @@ return function (App $app) {
 
                 $group->map(['GET', 'POST'], '/upload', Controller\Api\Stations\Files\FlowUploadAction::class)
                     ->setName('api:stations:files:upload');
-
-                $group->get('/download', Controller\Api\Stations\Files\DownloadAction::class)
-                    ->setName('api:stations:files:download');
-
             })
                 ->add(Middleware\Module\StationFiles::class)
+                ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
+
+            $group->get('/download/{id}', Controller\Api\Stations\Files\DownloadAction::class)
+                ->setName('api:stations:file:download')
                 ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
             $group->get('/playlists/schedule', Controller\Api\Stations\PlaylistsController::class . ':scheduleAction')

@@ -49,11 +49,11 @@ class SongHistoryRepository extends Repository
             return [];
         }
 
-        $history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s 
-            FROM App\Entity\SongHistory sh 
-            JOIN sh.song s 
-            LEFT JOIN sh.media sm  
-            WHERE sh.station_id = :station_id 
+        $history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
+            FROM App\Entity\SongHistory sh
+            JOIN sh.song s
+            LEFT JOIN sh.media sm
+            WHERE sh.station_id = :station_id
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')
             ->setParameter('station_id', $station->getId())
@@ -84,8 +84,8 @@ class SongHistoryRepository extends Repository
             ->setMaxResults($rows)
             ->getArrayResult();
 
-        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s 
-            FROM App\Entity\SongHistory sh JOIN sh.song s  
+        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
+            FROM App\Entity\SongHistory sh JOIN sh.song s
             WHERE sh.station = :station
             AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
             AND sh.timestamp_start >= :threshold
@@ -97,6 +97,36 @@ class SongHistoryRepository extends Repository
 
         $recentlyPlayed = array_merge($recentlyPlayed, $recentHistory);
         return array_slice($recentlyPlayed, 0, $rows);
+    }
+
+    public function getRecentlyPlayedByTimeRange(
+        Entity\Station $station,
+        CarbonInterface $now,
+        int $minutes
+    ): array {
+        $timeRangeInSeconds = $minutes * 60;
+        $threshold = $now->getTimestamp() - $timeRangeInSeconds;
+
+        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, s
+            FROM App\Entity\StationQueue sq JOIN sq.song s
+            WHERE sq.station = :station
+            AND sq.timestamp_cued >= :threshold
+            ORDER BY sq.timestamp_cued DESC')
+            ->setParameter('station', $station)
+            ->setParameter('threshold', $threshold)
+            ->getArrayResult();
+
+        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
+            FROM App\Entity\SongHistory sh JOIN sh.song s
+            WHERE sh.station = :station
+            AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
+            AND sh.timestamp_start >= :threshold
+            ORDER BY sh.timestamp_start DESC')
+            ->setParameter('station', $station)
+            ->setParameter('threshold', $threshold)
+            ->getArrayResult();
+
+        return array_merge($recentlyPlayed, $recentHistory);
     }
 
     public function register(
@@ -187,7 +217,7 @@ class SongHistoryRepository extends Repository
 
     public function getCurrent(Entity\Station $station): ?Entity\SongHistory
     {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT sh 
+        return $this->em->createQuery(/** @lang DQL */ 'SELECT sh
             FROM App\Entity\SongHistory sh
             WHERE sh.station = :station
             AND sh.timestamp_start != 0

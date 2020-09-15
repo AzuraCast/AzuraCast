@@ -259,13 +259,13 @@ return [
     },
 
     Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport::class => function (
-        Doctrine\DBAL\Connection $db,
-        Symfony\Component\Serializer\Serializer $serializer
+        Doctrine\DBAL\Connection $db
     ) {
         $doctrineConnection = new Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection(
             [
                 'table_name' => 'messenger_messages',
                 'auto_setup' => false,
+                'redeliver_timeout' => 86400,
             ],
             $db
         );

@@ -39,7 +39,7 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
 </head>
 
 <body class="page-minimal <?=$page_class?>">
-<?=$assets->inlineJs($request)?>
+<?=$assets->inlineJs()?>
 
 <?=$this->section('content')?>
 

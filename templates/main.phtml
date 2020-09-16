@@ -39,7 +39,7 @@ $user = $request->getUser();
     ?>
 </head>
 <body class="page-full <?=$page_class?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
-<?=$assets->inlineJs($request)?>
+<?=$assets->inlineJs()?>
 
 <a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content')?></a>
 

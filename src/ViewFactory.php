@@ -5,6 +5,8 @@ use App\Http\ServerRequest;
 use Doctrine\Inflector\InflectorFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 class ViewFactory
 {
@@ -32,28 +34,28 @@ class ViewFactory
         $this->assets = $assets;
     }
 
-    public function create(?ServerRequestInterface $request = null): View
+    public function create(ServerRequestInterface $request): View
     {
         $view = new View($this->settings[Settings::VIEWS_DIR], 'phtml');
 
         // Add non-request-dependent content.
         $view->addData([
             'settings' => $this->settings,
-            'assets' => $this->assets,
             'version' => $this->version,
         ]);
 
         // Add request-dependent content.
-        if (null !== $request) {
-            $view->addData([
-                'request' => $request,
-                'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
-                'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
-                'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
-                'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
-                'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-            ]);
-        }
+        $assets = $this->assets->withRequest($request);
+
+        $view->addData([
+            'request' => $request,
+            'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
+            'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
+            'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
+            'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
+            'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
+            'assets' => $assets,
+        ]);
 
         $view->registerFunction('service', function ($service) {
             return $this->di->get($service);
@@ -61,6 +63,19 @@ class ViewFactory
 
         $view->registerFunction('escapeJs', function ($string) {
             return json_encode($string, JSON_THROW_ON_ERROR, 512);
+        });
+
+        $view->registerFunction('dump', function ($value) {
+            if (class_exists(VarCloner::class)) {
+                $varCloner = new VarCloner();
+
+                $dumper = new CliDumper;
+                $dumpedValue = $dumper->dump($varCloner->cloneVar($value), true);
+            } else {
+                $dumpedValue = json_encode($value, \JSON_PRETTY_PRINT);
+            }
+
+            return '<pre>' . htmlspecialchars($dumpedValue) . '</pre>';
         });
 
         $view->registerFunction('mailto', function ($address, $link_text = null) {

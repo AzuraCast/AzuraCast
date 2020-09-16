@@ -92,14 +92,14 @@
     "codeception/module-rest": "^1.0",
     "filp/whoops": "^2",
     "flow/jsonpath": "^0.5",
-    "kint-php/kint": "^3.3",
     "mockery/mockery": "^1.0",
     "phpstan/phpstan": "^0.12",
     "phpstan/phpstan-doctrine": "^0.12",
     "phpunit/php-timer": "^5.0",
     "phpunit/phpunit": "^9.2",
     "roave/security-advisories": "dev-master",
-    "squizlabs/php_codesniffer": "3.*"
+    "squizlabs/php_codesniffer": "3.*",
+    "symfony/var-dumper": "^5.1"
   },
   "replace": {
     "symfony/polyfill-php71": "1.99",

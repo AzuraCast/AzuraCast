@@ -37,11 +37,11 @@ $this->layout('main', ['title' => $title, 'manual' => true]);
                 <div class="card-body">
                     <?php foreach ($row['context'] as $context_header => $context_value): ?>
                         <h4 class="card-subtitle"><?=$context_header?></h4>
-                        <pre><?=json_encode($context_value, \JSON_PRETTY_PRINT)?></pre>
+                        <?=$this->dump($context_value)?>
                     <?php endforeach; ?>
                     <?php foreach ($row['extra'] as $context_header => $context_value): ?>
                         <h4 class="card-subtitle"><?=$context_header?></h4>
-                        <pre><?=json_encode($context_value, \JSON_PRETTY_PRINT)?></pre>
+                        <?=$this->dump($context_value)?>
                     <?php endforeach; ?>
                 </div>
             </div>

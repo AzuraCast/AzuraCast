@@ -34,6 +34,9 @@ class Assets
     /** @var array The loaded domains that should be included in the CSP header. */
     protected array $csp_domains;
 
+    /** @var ServerRequestInterface|null The current request (if it's available) */
+    protected ?ServerRequestInterface $request = null;
+
     /**
      * Assets constructor.
      *
@@ -56,6 +59,26 @@ class Assets
 
         $this->csp_nonce = preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
         $this->csp_domains = [];
+    }
+
+    /**
+     * Create a new copy of this object for a specific request.
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return $this
+     */
+    public function withRequest(ServerRequestInterface $request): self
+    {
+        $newAssets = clone $this;
+        $newAssets->setRequest($request);
+
+        return $newAssets;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     protected function addVueComponents(array $vueComponents = [])
@@ -352,11 +375,9 @@ class Assets
     /**
      * Return any inline JavaScript.
      *
-     * @param ServerRequestInterface $request
-     *
      * @return string
      */
-    public function inlineJs(ServerRequestInterface $request): string
+    public function inlineJs(): string
     {
         $this->_sort();
 
@@ -365,7 +386,7 @@ class Assets
             if (!empty($item['inline']['js'])) {
                 foreach ($item['inline']['js'] as $inline) {
                     if (is_callable($inline)) {
-                        $inline = $inline($request);
+                        $inline = $inline($this->request);
                     }
 
                     if (!empty($inline)) {

@@ -30,9 +30,10 @@ class Icecast extends AbstractFrontend
 
         $npAdapter = $this->adapterFactory->getAdapter(
             AdapterFactory::ADAPTER_ICECAST,
-            $baseUrl,
-            $feConfig->getAdminPassword()
+            $baseUrl
         );
+
+        $npAdapter->setAdminPassword($feConfig->getAdminPassword());
 
         $defaultResult = Result::blank();
         $otherResults = [];

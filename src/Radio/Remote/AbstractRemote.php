@@ -52,9 +52,10 @@ abstract class AbstractRemote
 
         $npAdapter = $this->adapterFactory->getAdapter(
             $adapterType,
-            $remote->getUrl(),
-            $remote->getAdminPassword()
+            $remote->getUrl()
         );
+
+        $npAdapter->setAdminPassword($remote->getAdminPassword());
 
         try {
             $npRemote = $npAdapter->getNowPlaying($remote->getMount(), $includeClients);

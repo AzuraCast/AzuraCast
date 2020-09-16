@@ -57,9 +57,9 @@ class SHOUTcast extends AbstractFrontend
 
         $npAdapter = $this->adapterFactory->getAdapter(
             AdapterFactory::ADAPTER_SHOUTCAST2,
-            $baseUrl,
-            $feConfig->getAdminPassword()
+            $baseUrl
         );
+        $npAdapter->setAdminPassword($feConfig->getAdminPassword());
 
         $defaultResult = Result::blank();
         $otherResults = [];

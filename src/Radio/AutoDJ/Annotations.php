@@ -38,10 +38,10 @@ class Annotations implements EventSubscriberInterface
     {
         return [
             AnnotateNextSong::class => [
-                ['annotateSongPath', -15],
-                ['annotatePlaylist', -10],
-                ['annotateRequest', -5],
-                ['postAnnotation', 10],
+                ['annotateSongPath', 15],
+                ['annotatePlaylist', 10],
+                ['annotateRequest', 5],
+                ['postAnnotation', -10],
             ],
         ];
     }
@@ -74,6 +74,10 @@ class Annotations implements EventSubscriberInterface
         if ($playlist instanceof Entity\StationPlaylist) {
             // Handle "Jingle mode" by sending the same metadata as the previous song.
             if ($playlist->isJingle()) {
+                $event->addAnnotations([
+                    'jingle_mode' => 'true',
+                ]);
+
                 $np = $event->getStation()->getNowplaying();
                 if ($np instanceof Entity\Api\NowPlaying) {
                     $event->addAnnotations([
@@ -81,7 +85,6 @@ class Annotations implements EventSubscriberInterface
                         'artist' => $np->now_playing->song->artist,
                         'playlist_id' => null,
                         'media_id' => null,
-                        'jingle_mode' => 'true',
                     ]);
                 }
             } else {

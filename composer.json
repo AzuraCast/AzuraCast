@@ -3,12 +3,6 @@
   "description": "The AzuraCast self-hosted web radio station management suite.",
   "license": "Apache-2.0",
   "type": "project",
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/SlvrEagle23/influxdb-php.git"
-    }
-  ],
   "require": {
     "php": ">=7.4",
     "ext-PDO": "*",
@@ -41,7 +35,7 @@
     "guzzlehttp/guzzle": "^7.0",
     "guzzlehttp/oauth-subscriber": "^0.4.0",
     "http-interop/http-factory-guzzle": "^1.0",
-    "influxdb/influxdb-php": "dev-feature/guzzle7 as dev-master",
+    "influxdb/influxdb-php": "1.15.1",
     "james-heinrich/getid3": "dev-master",
     "jhofm/flysystem-iterator": "^2.1",
     "laminas/laminas-config": "^3.3",

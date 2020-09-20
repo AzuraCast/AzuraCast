@@ -45,6 +45,7 @@ jobs:
 
       - name: Generate new translations from existing code.
         uses: ./.github/actions/generate-locales
+        if: github.event_name == 'push' || github.event_name == 'schedule'
 
       - name: Pull latest translations.
         uses: crowdin/github-action@1.0.6
@@ -55,6 +56,7 @@ jobs:
           push_translations: false
           crowdin_branch_name: master
           config: crowdin.yaml
+        if: github.event_name == 'push' || github.event_name == 'schedule'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}

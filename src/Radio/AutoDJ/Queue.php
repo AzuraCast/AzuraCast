@@ -305,7 +305,12 @@ class Queue implements EventSubscriberInterface
         switch ($playlist->getOrder()) {
             case Entity\StationPlaylist::ORDER_RANDOM:
                 $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
-                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+
+                if ($playlist->getAvoidDuplicates()) {
+                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
+                } else {
+                    $mediaId = array_key_first($mediaQueue);
+                }
                 break;
 
             case Entity\StationPlaylist::ORDER_SEQUENTIAL:

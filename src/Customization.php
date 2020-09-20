@@ -65,7 +65,6 @@ class Customization
         $translator->register();
 
         // Register translation superglobal functions
-        putenv('LANG=' . $this->locale);
         setlocale(LC_ALL, $this->locale);
     }
 
@@ -79,9 +78,6 @@ class Customization
     protected function initLocale(?Request $request = null): string
     {
         $settings = Settings::getInstance();
-        if ($settings->isTesting()) {
-            return self::DEFAULT_LOCALE;
-        }
 
         $supported_locales = $settings['locale']['supported'];
         $try_locales = [];
@@ -106,6 +102,8 @@ class Customization
         if (!empty($env_locale)) {
             $try_locales[] = substr($env_locale, 0, 5) . '.UTF-8';
         }
+
+        Logger::getInstance()->debug('Locales', ['locales' => $try_locales]);
 
         foreach ($try_locales as $exact_locale) {
             // Prefer exact match.

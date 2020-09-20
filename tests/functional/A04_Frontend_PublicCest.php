@@ -5,7 +5,7 @@ class A04_Frontend_PublicCest extends CestAbstract
     /**
      * @before setupComplete
      */
-    public function seePublicPage(FunctionalTester $I)
+    public function seePublicPage(FunctionalTester $I): void
     {
         $I->wantTo('Verify that the public page displays.');
 

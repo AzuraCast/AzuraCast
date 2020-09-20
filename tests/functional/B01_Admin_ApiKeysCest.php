@@ -1,11 +1,12 @@
 <?php
+
 class B01_Admin_ApiKeysCest extends CestAbstract
 {
     /**
      * @before setupComplete
      * @before login
      */
-    public function manageApiKeys(FunctionalTester $I)
+    public function manageApiKeys(FunctionalTester $I): void
     {
         $I->wantTo('Create and administer API keys.');
 

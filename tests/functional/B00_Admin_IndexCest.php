@@ -6,7 +6,7 @@ class B00_Admin_IndexCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function seeAdminHomepage(FunctionalTester $I)
+    public function seeAdminHomepage(FunctionalTester $I): void
     {
         $I->wantTo('See the administration homepage.');
 

@@ -6,13 +6,13 @@ class C03_Station_RemoteRelaysCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function editRemoteRelays(FunctionalTester $I)
+    public function editRemoteRelays(FunctionalTester $I): void
     {
         $I->wantTo('Create a station remote relay.');
 
         $testStation = $this->getTestStation();
         $station_id = $testStation->getId();
-        
+
         $I->amOnPage('/station/' . $station_id . '/remotes');
 
         $I->see('Remote Relays');

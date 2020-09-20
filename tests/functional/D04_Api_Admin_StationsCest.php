@@ -1,11 +1,12 @@
 <?php
+
 class D04_Api_Admin_StationsCest extends CestAbstract
 {
     /**
      * @before setupComplete
      * @before login
      */
-    public function manageStations(FunctionalTester $I)
+    public function manageStations(FunctionalTester $I): void
     {
         $I->wantTo('Manage stations via API.');
 
@@ -20,7 +21,7 @@ class D04_Api_Admin_StationsCest extends CestAbstract
         $newRecordId = $newRecord[0];
 
         // Get single record.
-        $I->sendGET('/api/admin/station/'.$newRecordId);
+        $I->sendGET('/api/admin/station/' . $newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,
@@ -29,12 +30,12 @@ class D04_Api_Admin_StationsCest extends CestAbstract
         ]);
 
         // Modify record.
-        $I->sendPUT('/api/admin/station/'.$newRecordId, [
+        $I->sendPUT('/api/admin/station/' . $newRecordId, [
             'name' => 'Test Station Renamed',
         ]);
 
         // List all records.
-        $I->sendGET('/api/admin/station/'.$newRecordId);
+        $I->sendGET('/api/admin/station/' . $newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,
@@ -43,9 +44,9 @@ class D04_Api_Admin_StationsCest extends CestAbstract
         ]);
 
         // Delete Record
-        $I->sendDELETE('/api/admin/station/'.$newRecordId);
+        $I->sendDELETE('/api/admin/station/' . $newRecordId);
 
-        $I->sendGET('/api/admin/station/'.$newRecordId);
+        $I->sendGET('/api/admin/station/' . $newRecordId);
         $I->seeResponseCodeIs(404);
     }
 }

@@ -383,22 +383,22 @@ return [
     // Synchronized (Cron) Tasks
     App\Sync\TaskLocator::class => function (ContainerInterface $di) {
         return new App\Sync\TaskLocator($di, [
-            App\Sync\TaskLocator::SYNC_NOWPLAYING => [
+            App\Event\GetSyncTasks::SYNC_NOWPLAYING => [
                 App\Sync\Task\BuildQueue::class,
                 App\Sync\Task\NowPlaying::class,
                 App\Sync\Task\ReactivateStreamer::class,
             ],
-            App\Sync\TaskLocator::SYNC_SHORT => [
+            App\Event\GetSyncTasks::SYNC_SHORT => [
                 App\Sync\Task\RadioRequests::class,
                 App\Sync\Task\Backup::class,
                 App\Sync\Task\RelayCleanup::class,
             ],
-            App\Sync\TaskLocator::SYNC_MEDIUM => [
+            App\Event\GetSyncTasks::SYNC_MEDIUM => [
                 App\Sync\Task\Media::class,
                 App\Sync\Task\FolderPlaylists::class,
                 App\Sync\Task\CheckForUpdates::class,
             ],
-            App\Sync\TaskLocator::SYNC_LONG => [
+            App\Event\GetSyncTasks::SYNC_LONG => [
                 App\Sync\Task\Analytics::class,
                 App\Sync\Task\RadioAutomation::class,
                 App\Sync\Task\HistoryCleanup::class,

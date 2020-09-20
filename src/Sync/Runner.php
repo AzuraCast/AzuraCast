@@ -3,6 +3,8 @@ namespace App\Sync;
 
 use App\Entity;
 use App\Entity\Repository\SettingsRepository;
+use App\Event\GetSyncTasks;
+use App\EventDispatcher;
 use App\Lock\LockManager;
 use App\Settings;
 use Monolog\Logger;
@@ -18,18 +20,18 @@ class Runner
 
     protected LockManager $lockManager;
 
-    protected TaskLocator $taskCollection;
+    protected EventDispatcher $eventDispatcher;
 
     public function __construct(
         SettingsRepository $settingsRepo,
         Logger $logger,
         LockManager $lockManager,
-        TaskLocator $taskCollection
+        EventDispatcher $eventDispatcher
     ) {
         $this->settingsRepo = $settingsRepo;
         $this->logger = $logger;
         $this->lockManager = $lockManager;
-        $this->taskCollection = $taskCollection;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -41,7 +43,7 @@ class Runner
      */
     public function syncNowplaying($force = false): void
     {
-        $this->runSyncTask(TaskLocator::SYNC_NOWPLAYING);
+        $this->runSyncTask(GetSyncTasks::SYNC_NOWPLAYING, $force);
     }
 
     /**
@@ -52,7 +54,7 @@ class Runner
      */
     public function syncShort($force = false): void
     {
-        $this->runSyncTask(TaskLocator::SYNC_SHORT);
+        $this->runSyncTask(GetSyncTasks::SYNC_SHORT, $force);
     }
 
     /**
@@ -63,7 +65,7 @@ class Runner
      */
     public function syncMedium($force = false): void
     {
-        $this->runSyncTask(TaskLocator::SYNC_MEDIUM);
+        $this->runSyncTask(GetSyncTasks::SYNC_MEDIUM, $force);
     }
 
     /**
@@ -74,7 +76,7 @@ class Runner
      */
     public function syncLong($force = false): void
     {
-        $this->runSyncTask(TaskLocator::SYNC_LONG);
+        $this->runSyncTask(GetSyncTasks::SYNC_LONG, $force);
     }
 
     public function runSyncTask(string $type, bool $force = false): void
@@ -101,13 +103,13 @@ class Runner
         $lock = $this->lockManager->getLock('sync_' . $type, $syncInfo['timeout'], $force);
 
         $lock->run(function () use ($syncInfo, $type, $force) {
-            $tasks = $this->taskCollection->getTasks($type);
 
-            foreach ($tasks as $task) {
-                // Filter namespace name
-                $timer_description_parts = explode("\\", get_class($task));
-                $timer_description = array_pop($timer_description_parts);
+            $event = new GetSyncTasks($type);
+            $this->eventDispatcher->dispatch($event);
 
+            $tasks = $event->getTasks();
+
+            foreach ($tasks as $taskClass => $task) {
                 $start_time = microtime(true);
 
                 $task->run($force);
@@ -117,7 +119,7 @@ class Runner
 
                 $this->logger->debug(sprintf(
                     'Timer "%s" completed in %01.3f second(s).',
-                    $timer_description,
+                    $taskClass,
                     round($time_diff, 3)
                 ));
             }
@@ -131,7 +133,7 @@ class Runner
         $this->settingsRepo->clearCache();
 
         $syncs = [
-            TaskLocator::SYNC_NOWPLAYING => [
+            GetSyncTasks::SYNC_NOWPLAYING => [
                 'name' => __('Now Playing Data'),
                 'contents' => [
                     __('Now Playing Data'),
@@ -139,7 +141,7 @@ class Runner
                 'lastRunSetting' => Entity\Settings::NOWPLAYING_LAST_RUN,
                 'timeout' => 600,
             ],
-            TaskLocator::SYNC_SHORT => [
+            GetSyncTasks::SYNC_SHORT => [
                 'name' => __('1-Minute Sync'),
                 'contents' => [
                     __('Song Requests Queue'),
@@ -147,7 +149,7 @@ class Runner
                 'lastRunSetting' => Entity\Settings::SHORT_SYNC_LAST_RUN,
                 'timeout' => 600,
             ],
-            TaskLocator::SYNC_MEDIUM => [
+            GetSyncTasks::SYNC_MEDIUM => [
                 'name' => __('5-Minute Sync'),
                 'contents' => [
                     __('Check Media Folders'),
@@ -155,7 +157,7 @@ class Runner
                 'lastRunSetting' => Entity\Settings::MEDIUM_SYNC_LAST_RUN,
                 'timeout' => 600,
             ],
-            TaskLocator::SYNC_LONG => [
+            GetSyncTasks::SYNC_LONG => [
                 'name' => __('1-Hour Sync'),
                 'contents' => [
                     __('Analytics/Statistics'),

@@ -1,19 +1,12 @@
 <?php
 namespace App\Sync;
 
-use App\Sync\Task\AbstractTask;
+use App\Event\GetSyncTasks;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class TaskLocator
+class TaskLocator implements EventSubscriberInterface
 {
-    public const SYNC_NOWPLAYING = 'nowplaying';
-
-    public const SYNC_SHORT = 'short';
-
-    public const SYNC_MEDIUM = 'medium';
-
-    public const SYNC_LONG = 'long';
-
     protected ContainerInterface $di;
 
     protected array $tasks;
@@ -24,23 +17,25 @@ class TaskLocator
         $this->tasks = $tasks;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return AbstractTask[]
-     */
-    public function getTasks(string $type): array
+    public static function getSubscribedEvents()
     {
+        return [
+            GetSyncTasks::class => [
+                ['assignTasks', 0],
+            ],
+        ];
+    }
+
+    public function assignTasks(GetSyncTasks $event): void
+    {
+        $type = $event->getType();
         if (!isset($this->tasks[$type])) {
-            throw new \InvalidArgumentException('Invalid task type specified.');
+            return;
         }
 
         $taskClasses = $this->tasks[$type];
-        $tasks = [];
         foreach ($taskClasses as $taskClass) {
-            $tasks[] = $this->di->get($taskClass);
+            $event->addTask($this->di->get($taskClass));
         }
-
-        return $tasks;
     }
 }

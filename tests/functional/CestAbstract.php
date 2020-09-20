@@ -130,6 +130,6 @@ abstract class CestAbstract
             'password' => $this->login_password,
         ]);
 
-        $I->seeInSource('Logged in');
+        $I->seeInSource($this->login_username);
     }
 }

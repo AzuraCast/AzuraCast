@@ -5,6 +5,7 @@ php bin/console locale:import
 
 # Install NPM dependencies
 cd frontend
+npm ci
 
 # Import locales on frontend
 npm run import-locales

@@ -8,7 +8,7 @@ class C02_Station_MediaCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function editMedia(FunctionalTester $I)
+    public function editMedia(FunctionalTester $I): void
     {
         $I->wantTo('Upload a song to a station.');
 

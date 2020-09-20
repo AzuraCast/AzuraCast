@@ -5,7 +5,7 @@ class D01_Api_StationsCest extends CestAbstract
     /**
      * @before setupComplete
      */
-    public function checkApiStation(FunctionalTester $I)
+    public function checkApiStation(FunctionalTester $I): void
     {
         $I->wantTo('Check station API endpoints.');
 

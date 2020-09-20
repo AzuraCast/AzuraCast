@@ -6,7 +6,7 @@ class C04_Station_ReportsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function viewReports(FunctionalTester $I)
+    public function viewReports(FunctionalTester $I): void
     {
         $I->wantTo('View station reports.');
 

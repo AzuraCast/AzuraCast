@@ -6,7 +6,7 @@ class C00_Station_ProfileCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function editStationProfile(FunctionalTester $I)
+    public function editStationProfile(FunctionalTester $I): void
     {
         $I->wantTo('View and edit a station profile.');
 

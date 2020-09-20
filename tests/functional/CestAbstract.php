@@ -16,7 +16,11 @@ abstract class CestAbstract
 
     protected EntityManagerInterface $em;
 
-    protected function _inject(App\Tests\Module $tests_module)
+    protected string $login_username = 'azuracast@azuracast.com';
+    protected string $login_password = 'AzuraCastFunctionalTests!';
+    private ?Entity\Station $test_station = null;
+
+    protected function _inject(App\Tests\Module $tests_module): void
     {
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
@@ -26,7 +30,7 @@ abstract class CestAbstract
         $this->settings = $this->di->get(App\Settings::class);
     }
 
-    public function _after(FunctionalTester $I)
+    public function _after(FunctionalTester $I): void
     {
         $this->em->clear();
 
@@ -40,17 +44,15 @@ abstract class CestAbstract
         }
     }
 
-    protected string $login_username = 'azuracast@azuracast.com';
-    protected string $login_password = 'AzuraCastFunctionalTests!';
-    private ?Entity\Station $test_station = null;
-
-    protected function setupIncomplete(FunctionalTester $I)
+    protected function setupIncomplete(FunctionalTester $I): void
     {
+        $I->wantTo('Start with an incomplete setup.');
+
         $this->settingsRepo->setSetting('setup_complete', 0);
         $this->_cleanTables();
     }
 
-    protected function setupComplete(FunctionalTester $I)
+    protected function setupComplete(FunctionalTester $I): void
     {
         $this->_cleanTables();
 
@@ -62,7 +64,7 @@ abstract class CestAbstract
         $this->em->persist($role);
 
         $rha = new Entity\RolePermission($role);
-        $rha->setActionName('administer all');
+        $rha->setActionName(App\Acl::GLOBAL_ALL);
         $this->em->persist($rha);
 
         // Create user account.
@@ -105,7 +107,7 @@ abstract class CestAbstract
         throw new RuntimeException('Test station is not established.');
     }
 
-    protected function _cleanTables()
+    protected function _cleanTables(): void
     {
         $clean_tables = [
             Entity\User::class,
@@ -118,9 +120,9 @@ abstract class CestAbstract
         }
     }
 
-    protected function login(FunctionalTester $I)
+    protected function login(FunctionalTester $I): void
     {
-        $I->wantTo('Log in to the application.');
+        $this->setupComplete($I);
 
         $I->amOnPage('/');
         $I->seeInCurrentUrl('/login');
@@ -130,6 +132,6 @@ abstract class CestAbstract
             'password' => $this->login_password,
         ]);
 
-        $I->seeInSource($this->login_username);
+        $I->seeInSource('Logged In');
     }
 }

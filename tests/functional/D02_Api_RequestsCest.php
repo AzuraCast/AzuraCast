@@ -7,7 +7,7 @@ class D02_Api_RequestsCest extends CestAbstract
     /**
      * @before setupComplete
      */
-    public function checkRequestsAPI(FunctionalTester $I)
+    public function checkRequestsAPI(FunctionalTester $I): void
     {
         $I->wantTo('Check request API endpoints.');
 

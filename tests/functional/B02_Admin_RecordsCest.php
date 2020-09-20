@@ -1,11 +1,12 @@
 <?php
+
 class B02_Admin_RecordsCest extends CestAbstract
 {
     /**
      * @before setupComplete
      * @before login
      */
-    public function manageUsers(FunctionalTester $I)
+    public function manageUsers(FunctionalTester $I): void
     {
         $I->wantTo('Manage users.');
 
@@ -44,7 +45,7 @@ class B02_Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageRoles(FunctionalTester $I)
+    public function manageRoles(FunctionalTester $I): void
     {
         $I->wantTo('Manage roles.');
 
@@ -73,7 +74,7 @@ class B02_Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageStations(FunctionalTester $I)
+    public function manageStations(FunctionalTester $I): void
     {
         $I->wantTo('Manage stations.');
 
@@ -95,7 +96,7 @@ class B02_Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function manageSettings(FunctionalTester $I)
+    public function manageSettings(FunctionalTester $I): void
     {
         $I->wantTo('Manage settings.');
 

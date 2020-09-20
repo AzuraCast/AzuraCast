@@ -1,11 +1,11 @@
 <?php
+
 class A01_Frontend_ProfileCest extends CestAbstract
 {
     /**
-     * @before setupComplete
      * @before login
      */
-    public function setProfileInfo(FunctionalTester $I)
+    public function setProfileInfo(FunctionalTester $I): void
     {
         $I->wantTo('Set a user profile.');
 
@@ -27,10 +27,9 @@ class A01_Frontend_ProfileCest extends CestAbstract
     }
 
     /**
-     * @before setupComplete
      * @before login
      */
-    public function changeProfileLocale(FunctionalTester $I)
+    public function changeProfileLocale(FunctionalTester $I): void
     {
         $I->wantTo('Use a specific locale for a user.');
 

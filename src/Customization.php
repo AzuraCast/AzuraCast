@@ -103,8 +103,6 @@ class Customization
             $try_locales[] = substr($env_locale, 0, 5) . '.UTF-8';
         }
 
-        Logger::getInstance()->debug('Locales', ['locales' => $try_locales]);
-
         foreach ($try_locales as $exact_locale) {
             // Prefer exact match.
             if (isset($supported_locales[$exact_locale])) {

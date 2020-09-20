@@ -8,7 +8,7 @@ class C05_Station_AutomationCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function viewAutomation(FunctionalTester $I)
+    public function viewAutomation(FunctionalTester $I): void
     {
         $I->wantTo('Test station automation.');
 

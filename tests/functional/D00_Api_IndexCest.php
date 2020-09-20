@@ -1,10 +1,11 @@
 <?php
+
 class D00_Api_IndexCest extends CestAbstract
 {
     /**
      * @before setupComplete
      */
-    public function checkApiIndex(FunctionalTester $I)
+    public function checkApiIndex(FunctionalTester $I): void
     {
         $I->wantTo('Check basic API functions.');
 

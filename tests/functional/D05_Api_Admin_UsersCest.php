@@ -1,11 +1,12 @@
 <?php
+
 class D05_Api_Admin_UsersCest extends CestAbstract
 {
     /**
      * @before setupComplete
      * @before login
      */
-    public function manageUsers(FunctionalTester $I)
+    public function manageUsers(FunctionalTester $I): void
     {
         $I->wantTo('Manage users via API.');
 
@@ -21,7 +22,7 @@ class D05_Api_Admin_UsersCest extends CestAbstract
         $newRecordId = $newRecord[0];
 
         // Get single record.
-        $I->sendGET('/api/admin/user/'.$newRecordId);
+        $I->sendGET('/api/admin/user/' . $newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,
@@ -29,12 +30,12 @@ class D05_Api_Admin_UsersCest extends CestAbstract
         ]);
 
         // Modify record.
-        $I->sendPUT('/api/admin/user/'.$newRecordId, [
+        $I->sendPUT('/api/admin/user/' . $newRecordId, [
             'name' => 'Test User Renamed',
         ]);
 
         // List all records.
-        $I->sendGET('/api/admin/user/'.$newRecordId);
+        $I->sendGET('/api/admin/user/' . $newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,
@@ -43,9 +44,9 @@ class D05_Api_Admin_UsersCest extends CestAbstract
         ]);
 
         // Delete Record
-        $I->sendDELETE('/api/admin/user/'.$newRecordId);
+        $I->sendDELETE('/api/admin/user/' . $newRecordId);
 
-        $I->sendGET('/api/admin/user/'.$newRecordId);
+        $I->sendGET('/api/admin/user/' . $newRecordId);
         $I->seeResponseCodeIs(404);
     }
 }

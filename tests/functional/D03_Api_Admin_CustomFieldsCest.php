@@ -1,11 +1,12 @@
 <?php
+
 class D03_Api_Admin_CustomFieldsCest extends CestAbstract
 {
     /**
      * @before setupComplete
      * @before login
      */
-    public function manageCustomFields(FunctionalTester $I)
+    public function manageCustomFields(FunctionalTester $I): void
     {
         $I->wantTo('Manage custom fields via API.');
 
@@ -20,7 +21,7 @@ class D03_Api_Admin_CustomFieldsCest extends CestAbstract
         $newRecordId = $newRecord[0];
 
         // Get single record.
-        $I->sendGET('/api/admin/custom_field/'.$newRecordId);
+        $I->sendGET('/api/admin/custom_field/' . $newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,
@@ -28,12 +29,12 @@ class D03_Api_Admin_CustomFieldsCest extends CestAbstract
         ]);
 
         // Modify record.
-        $I->sendPUT('/api/admin/custom_field/'.$newRecordId, [
+        $I->sendPUT('/api/admin/custom_field/' . $newRecordId, [
             'name' => 'Test Field Renamed',
         ]);
 
         // List all records.
-        $I->sendGET('/api/admin/custom_field/'.$newRecordId);
+        $I->sendGET('/api/admin/custom_field/' . $newRecordId);
 
         $I->seeResponseContainsJson([
             'id' => $newRecordId,
@@ -41,9 +42,9 @@ class D03_Api_Admin_CustomFieldsCest extends CestAbstract
         ]);
 
         // Delete Record
-        $I->sendDELETE('/api/admin/custom_field/'.$newRecordId);
+        $I->sendDELETE('/api/admin/custom_field/' . $newRecordId);
 
-        $I->sendGET('/api/admin/custom_field/'.$newRecordId);
+        $I->sendGET('/api/admin/custom_field/' . $newRecordId);
         $I->seeResponseCodeIs(404);
     }
 }

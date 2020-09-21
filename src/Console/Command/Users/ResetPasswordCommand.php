@@ -1,6 +1,7 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Users;
 
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;

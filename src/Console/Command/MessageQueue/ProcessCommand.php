@@ -1,6 +1,7 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\MessageQueue;
 
+use App\Console\Command\CommandAbstract;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\EventDispatcher;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,7 +11,7 @@ use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Worker;
 
-class ProcessMessageQueueCommand extends CommandAbstract
+class ProcessCommand extends CommandAbstract
 {
     public function __invoke(
         MessageBus $messageBus,

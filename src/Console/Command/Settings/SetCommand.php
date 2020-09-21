@@ -1,10 +1,11 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Settings;
 
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SetSettingCommand extends CommandAbstract
+class SetCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,

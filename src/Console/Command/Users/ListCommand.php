@@ -1,11 +1,12 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Users;
 
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ListUsersCommand extends CommandAbstract
+class ListCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,

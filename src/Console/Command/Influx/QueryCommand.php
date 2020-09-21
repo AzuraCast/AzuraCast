@@ -1,10 +1,11 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Influx;
 
+use App\Console\Command\CommandAbstract;
 use InfluxDB\Database;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class InfluxQueryCommand extends CommandAbstract
+class QueryCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,

@@ -76,6 +76,8 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'cache:clear');
 
+        $this->runCommand($output, 'queue:clear');
+
         $settingsRepo->deleteSetting(Entity\Settings::NOWPLAYING);
         $stationRepo->clearNowPlaying();
 

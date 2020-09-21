@@ -1,11 +1,12 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Locale;
 
+use App\Console\Command\CommandAbstract;
 use App\Settings;
 use Gettext\Translations;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LocaleImportCommand extends CommandAbstract
+class ImportCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,

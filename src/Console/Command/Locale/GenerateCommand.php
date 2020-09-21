@@ -1,6 +1,7 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Locale;
 
+use App\Console\Command\CommandAbstract;
 use App\Settings;
 use Gettext\Translations;
 use RecursiveDirectoryIterator;
@@ -9,7 +10,7 @@ use RecursiveRegexIterator;
 use RegexIterator;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class LocaleGenerateCommand extends CommandAbstract
+class GenerateCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,

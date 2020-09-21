@@ -1,7 +1,8 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Users;
 
 use App\Acl;
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;

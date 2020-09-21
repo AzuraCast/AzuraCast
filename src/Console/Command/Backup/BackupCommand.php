@@ -1,6 +1,8 @@
 <?php
-namespace App\Console\Command;
+namespace App\Console\Command\Backup;
 
+use App\Console\Command\CommandAbstract;
+use App\Console\Command\Traits;
 use App\Entity;
 use App\Sync\Task\Backup;
 use App\Utilities;

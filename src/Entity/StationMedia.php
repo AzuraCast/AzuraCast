@@ -118,7 +118,7 @@ class StationMedia
     protected $isrc;
 
     /**
-     * @ORM\Column(name="length", type="decimal", precision=7, scale=2)
+     * @ORM\Column(name="length", type="decimal", precision=7, scale=2, nullable=true)
      *
      * @OA\Property(example=240.00)
      *

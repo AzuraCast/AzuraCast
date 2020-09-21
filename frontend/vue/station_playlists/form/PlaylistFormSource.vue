@@ -8,12 +8,12 @@
                     </template>
                     <b-form-radio-group stacked id="edit_form_source" v-model="form.source.$model">
                         <b-form-radio value="songs">
-                            <span class="font-weight-bold"><translate key="lang_edit_form_source_songs">Song-Based Playlist</translate>: </span>
-                            <translate key="lang_edit_form_source_songs_desc">A playlist containing media files hosted on this server.</translate>
+                            <translate key="lang_edit_form_source_songs">Song-Based Playlist</translate>
+                            <translate class="form-text mt-0" key="lang_edit_form_source_songs_desc">A playlist containing media files hosted on this server.</translate>
                         </b-form-radio>
                         <b-form-radio value="remote_url">
-                            <span class="font-weight-bold"><translate key="lang_edit_form_source_remote_url">Remote URL Playlist</translate>: </span>
-                            <translate key="lang_edit_form_source_remote_url_desc">A playlist that instructs the station to play from a remote URL.</translate>
+                            <translate key="lang_edit_form_source_remote_url">Remote URL Playlist</translate>
+                            <translate class="form-text mt-0" key="lang_edit_form_source_remote_url_desc">A playlist that instructs the station to play from a remote URL.</translate>
                         </b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>
@@ -35,16 +35,16 @@
                             </template>
                             <b-form-radio-group stacked id="edit_form_order" v-model="form.order.$model">
                                 <b-form-radio value="shuffle">
-                                    <span class="font-weight-bold"><translate key="lang_edit_form_order_shuffle">Shuffled</translate>: </span>
-                                    <translate key="lang_edit_form_order_shuffle_info">The full playlist is shuffled and then played through in the shuffled order.</translate>
+                                    <translate key="lang_edit_form_order_shuffle">Shuffled</translate>
+                                    <translate class="form-text mt-0" key="lang_edit_form_order_shuffle_info">The full playlist is shuffled and then played through in the shuffled order.</translate>
                                 </b-form-radio>
                                 <b-form-radio value="random">
-                                    <span class="font-weight-bold"><translate key="lang_edit_form_order_random">Random</translate>: </span>
-                                    <translate key="lang_edit_form_order_random_info">A completely random track is picked for playback every time the queue is populated.</translate>
+                                    <translate key="lang_edit_form_order_random">Random</translate>
+                                    <translate class="form-text mt-0" key="lang_edit_form_order_random_info">A completely random track is picked for playback every time the queue is populated.</translate>
                                 </b-form-radio>
                                 <b-form-radio value="sequential">
-                                    <span class="font-weight-bold"><translate key="lang_edit_form_order_sequential">Sequential</translate>: </span>
-                                    <translate key="lang_edit_form_order_sequential_info">The order of the playlist is manually specified and followed by the AutoDJ.</translate>
+                                    <translate key="lang_edit_form_order_sequential">Sequential</translate>
+                                    <translate class="form-text mt-0" key="lang_edit_form_order_sequential_info">The order of the playlist is manually specified and followed by the AutoDJ.</translate>
                                 </b-form-radio>
                             </b-form-radio-group>
                         </b-form-group>

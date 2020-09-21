@@ -60,27 +60,29 @@
                     </template>
                     <b-form-radio-group stacked id="edit_form_type" v-model="form.type.$model">
                         <b-form-radio value="default">
-                            <span class="font-weight-bold"><translate key="lang_form_type_default">General Rotation</translate>: </span>
-                            <translate key="lang_form_type_default_desc">Standard playlist, shuffles with other standard playlists based on weight.</translate>
+                            <translate key="lang_form_type_default">General Rotation</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_default_desc">Standard playlist, shuffles with other standard playlists based on weight.</translate>
                         </b-form-radio>
                         <b-form-radio value="once_per_x_songs">
-                            <span class="font-weight-bold"><translate key="lang_form_type_once_per_x_songs">Once per x Songs</translate>: </span>
-                            <translate key="lang_form_type_once_per_x_songs_desc">Play exactly once every $x songs.</translate>
+                            <translate key="lang_form_type_once_per_x_songs">Once per x Songs</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_once_per_x_songs_desc">Play exactly once every $x songs.</translate>
                         </b-form-radio>
                         <b-form-radio value="once_per_x_minutes">
-                            <span class="font-weight-bold"><translate key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>: </span>
-                            <translate key="lang_form_type_once_per_x_minutes_desc">Play exactly once every $x minutes.</translate>
+                            <translate key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_once_per_x_minutes_desc">Play exactly once every $x minutes.</translate>
                         </b-form-radio>
                         <b-form-radio value="once_per_hour">
-                            <span class="font-weight-bold"><translate key="lang_form_type_once_per_hour">Once per Hour</translate>: </span>
-                            <translate key="lang_form_type_once_per_hour_desc">Play once per hour at the specified minute.</translate>
+                            <translate key="lang_form_type_once_per_hour">Once per Hour</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_once_per_hour_desc">Play once per hour at the specified minute.</translate>
                         </b-form-radio>
                         <b-form-radio value="custom">
-                            <span class="font-weight-bold"><translate key="lang_form_type_custom">Advanced</translate>: </span>
-                            <translate key="lang_form_type_custom_desc">Manually define how this playlist is used in Liquidsoap configuration.</translate>
-                            <a href="https://www.azuracast.com/station-management/playlists/#advanced-playlists" target="_blank">
-                                <translate key="lang_form_type_custom_more">Learn about Advanced Playlists</translate>
-                            </a>
+                            <translate key="lang_form_type_custom">Advanced</translate>
+                            <span class="form-text mt-0">
+                                <translate key="lang_form_type_custom_desc">Manually define how this playlist is used in Liquidsoap configuration.</translate>
+                                <a href="https://www.azuracast.com/station-management/playlists/#advanced-playlists" target="_blank">
+                                    <translate key="lang_form_type_custom_more">Learn about Advanced Playlists</translate>
+                                </a>
+                            </span>
                         </b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>

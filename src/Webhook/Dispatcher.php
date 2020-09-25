@@ -149,7 +149,7 @@ class Dispatcher implements EventSubscriberInterface
         $np->resolveUrls($this->apiUtils->getRouter()->getBaseUrl(false));
         $np->cache = 'event';
 
-        $event = new SendWebhooks($station, $np);
+        $event = new SendWebhooks($station, $np, true, $webhook->getTriggers());
         $this->dispatchWebhook($event, $webhook);
 
         $this->logger->popHandler();

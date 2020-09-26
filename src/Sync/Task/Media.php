@@ -4,6 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Message;
+use App\MessageQueue\QueueManager;
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +12,6 @@ use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
 use Symfony\Component\Messenger\MessageBus;
 
 class Media extends AbstractTask
@@ -24,7 +24,7 @@ class Media extends AbstractTask
 
     protected MessageBus $messageBus;
 
-    protected DoctrineTransport $doctrineTransport;
+    protected QueueManager $queueManager;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -34,7 +34,7 @@ class Media extends AbstractTask
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Filesystem $filesystem,
         MessageBus $messageBus,
-        DoctrineTransport $doctrineTransport
+        QueueManager $queueManager
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
@@ -42,7 +42,7 @@ class Media extends AbstractTask
         $this->spmRepo = $spmRepo;
         $this->filesystem = $filesystem;
         $this->messageBus = $messageBus;
-        $this->doctrineTransport = $doctrineTransport;
+        $this->queueManager = $queueManager;
     }
 
     /**
@@ -122,22 +122,11 @@ class Media extends AbstractTask
         $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
         $stats['total_files'] = count($music_files);
 
+        // Clear existing queue.
+        $mediaConnection = $this->queueManager->getConnection(QueueManager::QUEUE_MEDIA);
+        $mediaConnection->cleanup();
+
         // Check queue for existing pending processing entries.
-        $queued_media_updates = [];
-        $queued_new_files = [];
-
-        $queue = $this->doctrineTransport->all();
-
-        foreach ($queue as $envelope) {
-            $message = $envelope->getMessage();
-
-            if ($message instanceof Message\ReprocessMediaMessage) {
-                $queued_media_updates[$message->media_id] = true;
-            } elseif ($message instanceof Message\AddNewMediaMessage && $message->station_id === $station->getId()) {
-                $queued_new_files[$message->path] = true;
-            }
-        }
-
         $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm 
             FROM App\Entity\StationMedia sm 
@@ -160,9 +149,7 @@ class Media extends AbstractTask
                 }
 
                 $file_info = $music_files[$path_hash];
-                if (isset($queued_media_updates[$media_row->getId()])) {
-                    $stats['already_queued']++;
-                } elseif ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+                if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
                     $message = new Message\ReprocessMediaMessage;
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
@@ -186,17 +173,13 @@ class Media extends AbstractTask
 
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
-            if (isset($queued_new_files[$new_music_file['path']])) {
-                $stats['already_queued']++;
-            } else {
-                $message = new Message\AddNewMediaMessage;
-                $message->station_id = $station->getId();
-                $message->path = $new_music_file['path'];
+            $message = new Message\AddNewMediaMessage;
+            $message->station_id = $station->getId();
+            $message->path = $new_music_file['path'];
 
-                $this->messageBus->dispatch($message);
+            $this->messageBus->dispatch($message);
 
-                $stats['created']++;
-            }
+            $stats['created']++;
         }
 
         $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);

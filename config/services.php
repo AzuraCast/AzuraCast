@@ -258,24 +258,6 @@ return [
         return $builder->getValidator();
     },
 
-    Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport::class => function (
-        Doctrine\DBAL\Connection $db
-    ) {
-        $doctrineConnection = new Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection(
-            [
-                'table_name' => 'messenger_messages',
-                'auto_setup' => false,
-                'redeliver_timeout' => 86400,
-            ],
-            $db
-        );
-
-        return new Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport(
-            $doctrineConnection,
-            new Symfony\Component\Messenger\Transport\Serialization\PhpSerializer
-        );
-    },
-
     Symfony\Component\Lock\LockFactory::class => function (
         Redis $redis,
         Psr\Log\LoggerInterface $logger
@@ -290,19 +272,13 @@ return [
     },
 
     Symfony\Component\Messenger\MessageBus::class => function (
-        ContainerInterface $di,
-        Monolog\Logger $logger
+        App\MessageQueue\QueueManager $queueManager,
+        Symfony\Component\Lock\LockFactory $lockFactory,
+        Monolog\Logger $logger,
+        ContainerInterface $di
     ) {
         // Configure message sending middleware
-        $senders = [
-            App\Message\AbstractMessage::class => [
-                Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport::class,
-            ],
-        ];
-
-        $sendersLocator = new Symfony\Component\Messenger\Transport\Sender\SendersLocator($senders, $di);
-
-        $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($sendersLocator);
+        $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
         $sendMessageMiddleware->setLogger($logger);
 
         // Configure message handling middleware
@@ -324,9 +300,13 @@ return [
         );
         $handleMessageMiddleware->setLogger($logger);
 
+        // Add unique protection middleware
+        $uniqueMiddleware = new App\MessageQueue\HandleUniqueMiddleware($lockFactory);
+
         // Compile finished message bus.
         return new Symfony\Component\Messenger\MessageBus([
             $sendMessageMiddleware,
+            $uniqueMiddleware,
             $handleMessageMiddleware,
         ]);
     },

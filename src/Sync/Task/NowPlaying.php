@@ -7,7 +7,6 @@ use App\Entity\Station;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
 use App\EventDispatcher;
-use App\Lock\LockManager;
 use App\Message;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
@@ -22,6 +21,7 @@ use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use function DeepCopy\deep_copy;
@@ -50,7 +50,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\ListenerRepository $listener_repo;
 
-    protected LockManager $lockManager;
+    protected LockFactory $lockFactory;
 
     protected string $analytics_level = Entity\Analytics::LEVEL_ALL;
 
@@ -64,7 +64,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         LoggerInterface $logger,
         EventDispatcher $event_dispatcher,
         MessageBus $messageBus,
-        LockManager $lockManager,
+        LockFactory $lockFactory,
         Entity\Repository\SongHistoryRepository $historyRepository,
         Entity\Repository\SongRepository $songRepository,
         Entity\Repository\ListenerRepository $listenerRepository,
@@ -80,7 +80,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->event_dispatcher = $event_dispatcher;
         $this->messageBus = $messageBus;
         $this->influx = $influx;
-        $this->lockManager = $lockManager;
+        $this->lockFactory = $lockFactory;
 
         $this->history_repo = $historyRepository;
         $this->song_repo = $songRepository;
@@ -174,9 +174,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Station $station,
         $standalone = false
     ): Entity\Api\NowPlaying {
-        $lock = $this->lockManager->getLock('nowplaying_station_' . $station->getId(), 600, true, 30);
+        $lock = $this->lockFactory->createLock('nowplaying_station_' . $station->getId(), 600);
 
-        return $lock->run(function () use ($station, $standalone) {
+        $lock->acquire(true);
+
+        try {
             /** @var Logger $logger */
             $logger = $this->logger;
 
@@ -338,7 +340,9 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $logger->popProcessor();
 
             return $np;
-        });
+        } finally {
+            $lock->release();
+        }
     }
 
     /**

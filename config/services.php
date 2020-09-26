@@ -276,6 +276,19 @@ return [
         );
     },
 
+    Symfony\Component\Lock\LockFactory::class => function (
+        Redis $redis,
+        Psr\Log\LoggerInterface $logger
+    ) {
+        $redisStore = new Symfony\Component\Lock\Store\RedisStore($redis);
+        $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 60);
+
+        $lockFactory = new Symfony\Component\Lock\LockFactory($retryStore);
+        $lockFactory->setLogger($logger);
+
+        return $lockFactory;
+    },
+
     Symfony\Component\Messenger\MessageBus::class => function (
         ContainerInterface $di,
         Monolog\Logger $logger

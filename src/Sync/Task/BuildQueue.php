@@ -2,28 +2,28 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Lock\LockManager;
 use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Lock\LockFactory;
 
 class BuildQueue extends AbstractTask
 {
     protected AutoDJ $autoDJ;
 
-    protected LockManager $lockManager;
+    protected LockFactory $lockFactory;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         AutoDJ $autoDJ,
-        LockManager $lockManager
+        LockFactory $lockFactory
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
         $this->autoDJ = $autoDJ;
-        $this->lockManager = $lockManager;
+        $this->lockFactory = $lockFactory;
     }
 
     public function run(bool $force = false): void
@@ -44,9 +44,16 @@ class BuildQueue extends AbstractTask
             return;
         }
 
-        $lock = $this->lockManager->getLock('autodj_queue_' . $station->getId(), 60, $force);
-        $lock->run(function () use ($station) {
+        $lock = $this->lockFactory->createLock('autodj_queue_' . $station->getId(), 60);
+
+        if (!$lock->acquire($force)) {
+            return;
+        }
+
+        try {
             $this->autoDJ->buildQueue($station);
-        });
+        } finally {
+            $lock->release();
+        }
     }
 }

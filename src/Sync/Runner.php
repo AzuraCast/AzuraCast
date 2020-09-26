@@ -5,9 +5,9 @@ use App\Entity;
 use App\Entity\Repository\SettingsRepository;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
-use App\Lock\LockManager;
 use App\Settings;
 use Monolog\Logger;
+use Symfony\Component\Lock\LockFactory;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -18,19 +18,19 @@ class Runner
 
     protected SettingsRepository $settingsRepo;
 
-    protected LockManager $lockManager;
+    protected LockFactory $lockFactory;
 
     protected EventDispatcher $eventDispatcher;
 
     public function __construct(
         SettingsRepository $settingsRepo,
         Logger $logger,
-        LockManager $lockManager,
+        LockFactory $lockFactory,
         EventDispatcher $eventDispatcher
     ) {
         $this->settingsRepo = $settingsRepo;
         $this->logger = $logger;
-        $this->lockManager = $lockManager;
+        $this->lockFactory = $lockFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -100,10 +100,13 @@ class Runner
 
         $this->logger->info(sprintf('Running sync task: %s', $syncInfo['name']));
 
-        $lock = $this->lockManager->getLock('sync_' . $type, $syncInfo['timeout'], $force);
+        $lock = $this->lockFactory->createLock('sync_' . $type, $syncInfo['timeout']);
 
-        $lock->run(function () use ($syncInfo, $type, $force) {
+        if (!$lock->acquire($force)) {
+            return;
+        }
 
+        try {
             $event = new GetSyncTasks($type);
             $this->eventDispatcher->dispatch($event);
 
@@ -125,7 +128,9 @@ class Runner
             }
 
             $this->settingsRepo->setSetting($syncInfo['lastRunSetting'], time());
-        });
+        } finally {
+            $lock->release();
+        }
     }
 
     public function getSyncTimes(): array

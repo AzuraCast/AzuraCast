@@ -38,7 +38,6 @@ class AppFactory
 
         if ($autoloader) {
             $plugins = new Plugins($settings[Settings::BASE_DIR] . '/plugins');
-            $plugins->registerAutoloaders($autoloader);
 
             $diDefinitions[Plugins::class] = $plugins;
             $diDefinitions = $plugins->registerServices($diDefinitions);

@@ -64,6 +64,11 @@ class BatchAction
                         $media = $mediaRepo->findByPath($file['path'], $station);
 
                         if ($media instanceof Entity\StationMedia) {
+                            // Remove album art and waveforms
+                            $fs->delete($media->getArtPath());
+                            $fs->delete($media->getWaveformPath());
+
+                            // Clear playlists from media
                             $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
 
                             foreach ($media_playlists as $playlist_id => $playlist) {

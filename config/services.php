@@ -395,6 +395,7 @@ return [
                 App\Sync\Task\Analytics::class,
                 App\Sync\Task\RadioAutomation::class,
                 App\Sync\Task\HistoryCleanup::class,
+                App\Sync\Task\StorageCleanupTask::class,
                 App\Sync\Task\RotateLogs::class,
                 App\Sync\Task\UpdateGeoLiteDatabase::class,
             ],

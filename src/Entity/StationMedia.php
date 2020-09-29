@@ -322,6 +322,14 @@ class StationMedia
         return Filesystem::PREFIX_WAVEFORMS . '://' . $this->unique_id . '.json';
     }
 
+    public function getRelatedFilePaths(): array
+    {
+        return [
+            $this->getArtPath(),
+            $this->getWaveformPath(),
+        ];
+    }
+
     public function getIsrc(): ?string
     {
         return $this->isrc;

@@ -162,6 +162,12 @@ class Media extends AbstractTask
 
                 unset($music_files[$path_hash]);
             } else {
+                // Remove album art, waveforms, etc.
+                foreach ($media_row->getRelatedFilePaths() as $filePath) {
+                    $fs->delete($filePath);
+                }
+
+                // Clear the media row from playlists.
                 $this->spmRepo->clearPlaylistsFromMedia($media_row);
 
                 // Delete the now-nonexistent media item.

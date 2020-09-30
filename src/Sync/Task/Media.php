@@ -163,7 +163,9 @@ class Media extends AbstractTask
             } else {
                 // Remove album art, waveforms, etc.
                 foreach ($media_row->getRelatedFilePaths() as $filePath) {
-                    $fs->delete($filePath);
+                    if ($fs->has($filePath)) {
+                        $fs->delete($filePath);
+                    }
                 }
 
                 // Clear the media row from playlists.

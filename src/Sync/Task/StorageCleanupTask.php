@@ -39,7 +39,7 @@ class StorageCleanupTask extends AbstractTask
 
     protected function runStation(Entity\Station $station): void
     {
-        $fs = $this->filesystem->getForStation($station);
+        $fs = $this->filesystem->getForStation($station, false);
 
         $allUniqueIdsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT sm.unique_id FROM App\Entity\StationMedia sm WHERE sm.station = :station')
             ->setParameter('station', $station)

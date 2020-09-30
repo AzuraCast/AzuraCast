@@ -26,7 +26,8 @@ class BatchAction
         MessageBus $messageBus
     ): ResponseInterface {
         $station = $request->getStation();
-        $fs = $filesystem->getForStation($station);
+
+        $fs = $filesystem->getForStation($station, false);
 
         // Convert from pipe-separated files parameter into actual paths.
         $files_raw = $request->getParam('files');

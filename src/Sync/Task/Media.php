@@ -123,8 +123,7 @@ class Media extends AbstractTask
         $stats['total_files'] = count($music_files);
 
         // Clear existing queue.
-        $mediaConnection = $this->queueManager->getConnection(QueueManager::QUEUE_MEDIA);
-        $mediaConnection->cleanup();
+        $this->queueManager->clearQueue(QueueManager::QUEUE_MEDIA);
 
         // Check queue for existing pending processing entries.
         $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 

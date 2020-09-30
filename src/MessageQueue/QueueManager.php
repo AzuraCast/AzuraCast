@@ -93,6 +93,14 @@ class QueueManager implements SendersLocatorInterface
         return $connections;
     }
 
+    public function clearQueue(string $queueName): void
+    {
+        $connection = $this->getConnection($queueName);
+
+        $connection->cleanup();
+        $connection->setup();
+    }
+
     public static function getAllQueues(): array
     {
         return [

@@ -106,7 +106,7 @@ class InternalController
             $station = $request->getStation();
             $user = $request->getParam('dj-user', '');
 
-            $this->logger->info('Received "DJ connected" ping from Liquidsoap.', [
+            $this->logger->notice('Received "DJ connected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
                 'station_name' => $station->getName(),
                 'dj' => $user,
@@ -129,7 +129,7 @@ class InternalController
             $station = $request->getStation();
             $user = $request->getParam('dj-user', '');
 
-            $this->logger->info('Received "DJ disconnected" ping from Liquidsoap.', [
+            $this->logger->notice('Received "DJ disconnected" ping from Liquidsoap.', [
                 'station_id' => $station->getId(),
                 'station_name' => $station->getName(),
                 'dj' => $user,

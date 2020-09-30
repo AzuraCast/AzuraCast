@@ -25,7 +25,7 @@ class SftpUploadCommand extends CommandAbstract
         string $targetPath = null,
         string $sshCmd = null
     ) {
-        $logger->info('SFTP file uploaded', ['path' => $path]);
+        $logger->notice('SFTP file uploaded', ['path' => $path]);
 
         // Determine which station the username belongs to.
         $userRepo = $em->getRepository(Entity\SftpUser::class);

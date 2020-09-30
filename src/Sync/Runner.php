@@ -98,7 +98,7 @@ class Runner
             ini_set('log_errors', '1');
         }
 
-        $this->logger->info(sprintf('Running sync task: %s', $syncInfo['name']));
+        $this->logger->notice(sprintf('Running sync task: %s', $syncInfo['name']));
 
         $lock = $this->lockFactory->createLock('sync_' . $type, $syncInfo['timeout']);
 

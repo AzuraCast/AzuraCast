@@ -197,7 +197,7 @@ return [
     // Monolog Logger
     Monolog\Logger::class => function (App\Settings $settings) {
         $logger = new Monolog\Logger($settings[App\Settings::APP_NAME] ?? 'app');
-        $logging_level = $settings->isProduction() ? Psr\Log\LogLevel::INFO : Psr\Log\LogLevel::DEBUG;
+        $logging_level = $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
 
         if ($settings[App\Settings::IS_DOCKER] || $settings[App\Settings::IS_CLI]) {
             $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);

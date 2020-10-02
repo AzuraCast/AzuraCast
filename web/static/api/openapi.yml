@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.10.3
+  version: 0.10.4
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -1966,7 +1966,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1596303157
+          example: 1601642062
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2005,7 +2005,7 @@ components:
           nullable: true
           oneOf:
             -
-              $ref: '#/components/schemas/Api_SongHistory'
+              $ref: '#/components/schemas/Api_StationQueue'
         song_history:
           type: array
           items:
@@ -2074,7 +2074,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1596303157
+              example: 1601642062
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -2129,7 +2129,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1596303157
+          example: 1601642062
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2222,6 +2222,27 @@ components:
         playlist:
           type: string
       type: object
+    Api_StationQueue:
+      properties:
+        cued_at:
+          description: 'UNIX timestamp when playback is expected to start.'
+          type: integer
+          example: 1601642062
+        duration:
+          description: 'Duration of the song in seconds'
+          type: integer
+          example: 180
+        playlist:
+          description: 'Indicates the playlist that the song was played from, if available, or empty string if not.'
+          type: string
+          example: 'Top 100'
+          nullable: true
+        is_request:
+          description: 'Indicates whether the song is a listener request.'
+          type: boolean
+        song:
+          $ref: '#/components/schemas/Api_Song'
+      type: object
     Api_StationRemote:
       properties:
         id:
@@ -2281,7 +2302,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1596303157
+          example: 1601642062
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2289,7 +2310,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1596303157
+          example: 1601642062
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2329,7 +2350,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1596303157
+          example: 1601642062
       type: object
     Api_Time:
       properties:
@@ -2409,10 +2430,10 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1596303157
+          example: 1601642062
         updated_at:
           type: integer
-          example: 1596303157
+          example: 1601642062
       type: object
     Role:
       properties:
@@ -2588,7 +2609,8 @@ components:
           nullable: true
         length:
           description: 'The song duration in seconds.'
-          type: integer
+          type: number
+          format: float
           example: 240
         length_text:
           description: 'The formatted song duration (in mm:ss format)'
@@ -2603,7 +2625,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1596303157
+          example: 1601642062
           nullable: true
         amplify:
           description: 'The amount of amplification (in dB) to be applied to the radio source;'
@@ -2644,7 +2666,7 @@ components:
         art_updated_at:
           description: 'The latest time (UNIX timestamp) when album art was updated.'
           type: integer
-          example: 1596303157
+          example: 1601642062
         playlists:
           items: {  }
       type: object
@@ -2890,7 +2912,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1596303157
+          example: 1601642062
           nullable: true
         schedule_items:
           items: {  }
@@ -2970,10 +2992,10 @@ components:
           nullable: true
         created_at:
           type: integer
-          example: 1596303157
+          example: 1601642062
         updated_at:
           type: integer
-          example: 1596303157
+          example: 1601642062
         roles:
           items: {  }
       type: object

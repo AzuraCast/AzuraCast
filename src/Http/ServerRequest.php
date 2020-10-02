@@ -149,12 +149,18 @@ final class ServerRequest extends \Slim\Http\ServerRequest
     {
         $params = $this->serverRequest->getServerParams();
 
-        return $params['HTTP_CLIENT_IP']
+        $ip = $params['HTTP_CLIENT_IP']
             ?? $params['HTTP_X_FORWARDED_FOR']
             ?? $params['HTTP_X_FORWARDED']
             ?? $params['HTTP_FORWARDED_FOR']
             ?? $params['HTTP_FORWARDED']
             ?? $params['REMOTE_ADDR']
-            ?? null;
+            ?? '';
+
+        // Handle the IP being separated by commas.
+        $ipParts = explode(',', $ip);
+        $ip = array_shift($ipParts);
+
+        return trim($ip);
     }
 }

@@ -1,11 +1,11 @@
 <?php
+
 class A01_Frontend_ProfileCest extends CestAbstract
 {
     /**
-     * @before setupComplete
      * @before login
      */
-    public function setProfileInfo(FunctionalTester $I)
+    public function setProfileInfo(FunctionalTester $I): void
     {
         $I->wantTo('Set a user profile.');
 
@@ -24,5 +24,24 @@ class A01_Frontend_ProfileCest extends CestAbstract
 
         $I->seeCurrentUrlEquals('/profile');
         $I->see('Français');
+    }
+
+    /**
+     * @before login
+     */
+    public function changeProfileLocale(FunctionalTester $I): void
+    {
+        $I->wantTo('Use a specific locale for a user.');
+
+        $I->amOnPage('/profile/edit');
+        $I->see('Edit Profile', '.card-title');
+
+        $I->submitForm('.form', [
+            'locale' => 'de_DE.UTF-8',
+        ]);
+
+        $I->seeCurrentUrlEquals('/profile');
+        $I->see('Deutsch');
+        $I->seeInTitle('Mein Account');
     }
 }

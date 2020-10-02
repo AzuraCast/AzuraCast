@@ -441,10 +441,9 @@ class StationRemote implements StationMountInterface
         $this->source_port = $source_port;
     }
 
-    /** @inheritdoc */
-    public function getAutodjShoutcastMode(): bool
+    public function getAutodjAdapterType(): string
     {
-        return (Adapters::REMOTE_ICECAST !== $this->getType());
+        return $this->getType();
     }
 
     public function getIsPublic(): bool

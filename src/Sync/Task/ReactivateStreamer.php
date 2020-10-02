@@ -2,7 +2,7 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class ReactivateStreamer extends AbstractTask
@@ -10,7 +10,7 @@ class ReactivateStreamer extends AbstractTask
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationStreamerRepository $streamerRepo
@@ -20,7 +20,7 @@ class ReactivateStreamer extends AbstractTask
         $this->streamerRepo = $streamerRepo;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $deactivated_streamers = $this->streamerRepo->getStreamersDueForReactivation();
 

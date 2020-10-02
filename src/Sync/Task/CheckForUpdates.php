@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Service\AzuraCastCentral;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 
@@ -15,7 +15,7 @@ class CheckForUpdates extends AbstractTask
     protected AzuraCastCentral $azuracastCentral;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         AzuraCastCentral $azuracastCentral
@@ -25,7 +25,7 @@ class CheckForUpdates extends AbstractTask
         $this->azuracastCentral = $azuracastCentral;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         if (!$force) {
             $update_last_run = (int)$this->settingsRepo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);

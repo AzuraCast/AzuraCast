@@ -1,12 +1,14 @@
 <?php
 namespace App\Message;
 
-class UpdateNowPlayingMessage extends AbstractDelayedMessage
+use App\MessageQueue\QueueManager;
+
+class UpdateNowPlayingMessage extends AbstractMessage
 {
     public int $station_id;
 
-    public function __construct()
+    public function getQueue(): string
     {
-        $this->delay = self::ONE_SEC * 2;
+        return QueueManager::QUEUE_HIGH_PRIORITY;
     }
 }

@@ -3,8 +3,7 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Flysystem\Filesystem;
-use App\MessageQueue;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
@@ -16,29 +15,22 @@ class FolderPlaylists extends AbstractTask
 
     protected Filesystem $filesystem;
 
-    protected MessageQueue $messageQueue;
-
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationPlaylistFolderRepository $folderRepo,
-        Filesystem $filesystem,
-        MessageQueue $messageQueue
+        Filesystem $filesystem
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
         $this->spmRepo = $spmRepo;
         $this->folderRepo = $folderRepo;
         $this->filesystem = $filesystem;
-        $this->messageQueue = $messageQueue;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $stations = SimpleBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
@@ -96,9 +88,8 @@ class FolderPlaylists extends AbstractTask
                 ->execute();
 
             foreach ($mediaInFolder as $media) {
-                /** @var Entity\StationMedia $media */
-
                 foreach ($playlists as $playlist) {
+                    /** @var Entity\StationMedia $media */
                     /** @var Entity\StationPlaylist $playlist */
 
                     if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()

@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-# Install Composer dependencies
-composer install --no-interaction
-
 # Import locales on backend
 php bin/console locale:import
 

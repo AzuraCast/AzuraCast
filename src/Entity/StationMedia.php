@@ -118,13 +118,13 @@ class StationMedia
     protected $isrc;
 
     /**
-     * @ORM\Column(name="length", type="integer")
+     * @ORM\Column(name="length", type="decimal", precision=7, scale=2, nullable=true)
      *
-     * @OA\Property(example=240)
+     * @OA\Property(example=240.00)
      *
-     * @var int The song duration in seconds.
+     * @var float The song duration in seconds.
      */
-    protected $length = 0;
+    protected $length = 0.00;
 
     /**
      * @ORM\Column(name="length_text", type="string", length=10, nullable=true)
@@ -322,6 +322,14 @@ class StationMedia
         return Filesystem::PREFIX_WAVEFORMS . '://' . $this->unique_id . '.json';
     }
 
+    public function getRelatedFilePaths(): array
+    {
+        return [
+            $this->getArtPath(),
+            $this->getWaveformPath(),
+        ];
+    }
+
     public function getIsrc(): ?string
     {
         return $this->isrc;
@@ -332,7 +340,7 @@ class StationMedia
         $this->isrc = $isrc;
     }
 
-    public function getLength(): int
+    public function getLength(): float
     {
         return $this->length;
     }
@@ -345,8 +353,8 @@ class StationMedia
         $length_min = floor($length / 60);
         $length_sec = $length % 60;
 
-        $this->length = (int)round($length);
-        $this->length_text = $length_min . ':' . str_pad($length_sec, 2, '0', STR_PAD_LEFT);
+        $this->length = (float)$length;
+        $this->length_text = $length_min . ':' . str_pad((string)$length_sec, 2, '0', STR_PAD_LEFT);
     }
 
     public function getLengthText(): ?string
@@ -396,11 +404,7 @@ class StationMedia
 
     public function setAmplify(?float $amplify = null): void
     {
-        if ($amplify === '') {
-            $amplify = null;
-        }
-
-        $this->amplify = (null === $amplify) ? null : (float)$amplify;
+        $this->amplify = $amplify;
     }
 
     public function getFadeOverlap(): ?float
@@ -410,10 +414,6 @@ class StationMedia
 
     public function setFadeOverlap(?float $fade_overlap = null): void
     {
-        if ($fade_overlap === '') {
-            $fade_overlap = null;
-        }
-
         $this->fade_overlap = $fade_overlap;
     }
 

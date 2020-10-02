@@ -1,10 +1,10 @@
 <?php
 namespace App\Console\Command\Internal;
 
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Sync\Task\NowPlaying;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -12,7 +12,7 @@ class FeedbackCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         NowPlaying $nowPlaying,
         int $stationId,
         string $song = null,

@@ -1,13 +1,12 @@
 <?php
 namespace App\Controller\Api\Stations\Files;
 
-use App\Customization;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use const SORT_ASC;
 use const SORT_DESC;
@@ -17,9 +16,9 @@ class ListAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Filesystem $filesystem,
-        Customization $customization
+        Entity\Repository\StationRepository $stationRepo
     ): ResponseInterface {
         $station = $request->getStation();
         $router = $request->getRouter();
@@ -38,6 +37,8 @@ class ListAction
 
         $search_phrase = trim($params['searchPhrase'] ?? '');
 
+        $pathLike = (empty($file)) ? '%' : $file . '/%';
+
         $media_query = $em->createQueryBuilder()
             ->select('partial sm.{id, unique_id, art_updated_at, path, length, length_text, artist, title, album}')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
@@ -49,7 +50,7 @@ class ListAction
             ->where('sm.station_id = :station_id')
             ->andWhere('sm.path LIKE :path')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('path', $file . '%');
+            ->setParameter('path', $pathLike);
 
         // Apply searching
         if (!empty($search_phrase)) {
@@ -64,6 +65,10 @@ class ListAction
 
             $folders_in_dir_raw = [];
         } else {
+            // Avoid loading subfolder media.
+            $media_query->andWhere('sm.path NOT LIKE :pathWithSubfolders')
+                ->setParameter('pathWithSubfolders', $pathLike . '/%');
+
             $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT 
                 spf, partial sp.{id, name}
                 FROM App\Entity\StationPlaylistFolder spf
@@ -92,7 +97,7 @@ class ListAction
             }
 
             $artImgSrc = (0 === $media_row['art_updated_at'])
-                ? (string)$customization->getDefaultAlbumArtUrl($station)
+                ? (string)$stationRepo->getDefaultAlbumArtUrl($station)
                 : (string)$router->named('api:stations:media:art',
                     [
                         'station_id' => $station->getId(),
@@ -125,9 +130,9 @@ class ListAction
                         ['station_id' => $station->getId(), 'id' => $media_row['id']]
                     ),
                     'play_url' => (string)$router->named(
-                        'api:stations:files:download',
-                        ['station_id' => $station->getId()],
-                        ['file' => $media_row['path']],
+                        'api:stations:file:download',
+                        ['station_id' => $station->getId(), 'id' => $media_row['id']],
+                        [],
                         true
                     ),
                     'playlists' => $playlists,

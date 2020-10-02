@@ -2,24 +2,23 @@
 namespace App\Controller\Api\Stations;
 
 use App;
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator\QueryPaginator;
 use App\Utilities\Csv;
-use Cake\Chronos\Chronos;
-use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class HistoryController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected App\ApiUtilities $api_utils;
 
-    public function __construct(EntityManager $em, App\ApiUtilities $api_utils)
+    public function __construct(EntityManagerInterface $em, App\ApiUtilities $api_utils)
     {
         $this->em = $em;
         $this->api_utils = $api_utils;
@@ -66,15 +65,15 @@ class HistoryController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $station_tz = new DateTimeZone($station->getTimezone());
+        $station_tz = $station->getTimezoneObject();
 
         $params = $request->getQueryParams();
         if (!empty($params['start'])) {
-            $start = Chronos::parse($params['start'] . ' 00:00:00', $station_tz);
-            $end = Chronos::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
+            $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $station_tz);
+            $end = CarbonImmutable::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
         } else {
-            $start = Chronos::parse('-2 weeks', $station_tz);
-            $end = Chronos::now($station_tz);
+            $start = CarbonImmutable::parse('-2 weeks', $station_tz);
+            $end = CarbonImmutable::now($station_tz);
         }
 
         $qb = $this->em->createQueryBuilder();
@@ -108,7 +107,7 @@ class HistoryController
             ];
 
             foreach ($qb->getQuery()->getArrayResult() as $song_row) {
-                $datetime = Chronos::createFromTimestamp($song_row['timestamp_start'], $station_tz);
+                $datetime = CarbonImmutable::createFromTimestamp($song_row['timestamp_start'], $station_tz);
                 $export_row = [
                     $datetime->format('Y-m-d'),
                     $datetime->format('g:ia'),
@@ -137,8 +136,7 @@ class HistoryController
 
         $qb->orderBy('sh.timestamp_start', 'DESC');
 
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($qb, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();

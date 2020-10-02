@@ -1,16 +1,19 @@
 <?php
+
 class C03_Station_MountPointsCest extends CestAbstract
 {
     /**
      * @before setupComplete
      * @before login
      */
-    public function editMountPoints(FunctionalTester $I)
+    public function editMountPoints(FunctionalTester $I): void
     {
         $I->wantTo('Create a station mount point.');
 
-        $station_id = $this->test_station->getId();
-        $I->amOnPage('/station/'.$station_id.'/mounts');
+        $testStation = $this->getTestStation();
+        $station_id = $testStation->getId();
+
+        $I->amOnPage('/station/' . $station_id . '/mounts');
 
         $I->see('Mount Points');
         $I->click('add', '#content');
@@ -20,13 +23,13 @@ class C03_Station_MountPointsCest extends CestAbstract
             'display_name' => 'Test MP3',
         ]);
 
-        $I->seeCurrentUrlEquals('/station/'.$station_id.'/mounts');
+        $I->seeCurrentUrlEquals('/station/' . $station_id . '/mounts');
 
         $I->see('Test MP3');
 
         $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
 
-        $I->seeCurrentUrlEquals('/station/'.$station_id.'/mounts');
+        $I->seeCurrentUrlEquals('/station/' . $station_id . '/mounts');
 
         $I->dontSee('Test MP3');
     }

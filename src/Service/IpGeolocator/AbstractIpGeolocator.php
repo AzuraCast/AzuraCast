@@ -1,7 +1,7 @@
 <?php
 namespace App\Service\IpGeolocator;
 
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use MaxMind\Db\Reader;
 
 abstract class AbstractIpGeolocator implements IpGeolocatorInterface
@@ -31,7 +31,7 @@ abstract class AbstractIpGeolocator implements IpGeolocatorInterface
 
         $metadata = $reader->metadata();
 
-        $buildDate = Chronos::createFromTimestampUTC($metadata->buildEpoch);
+        $buildDate = CarbonImmutable::createFromTimestampUTC($metadata->buildEpoch);
         return $metadata->databaseType . ' (' . $buildDate->format('Y-m-d') . ')';
     }
 }

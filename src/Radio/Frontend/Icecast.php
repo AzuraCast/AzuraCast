@@ -3,12 +3,15 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Logger;
+use App\Radio\CertificateLocator;
 use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
+use Exception;
 use GuzzleHttp\Psr7\Uri;
-use NowPlaying\Adapter\AdapterAbstract;
+use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 
 class Icecast extends AbstractFrontend
@@ -18,34 +21,49 @@ class Icecast extends AbstractFrontend
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
+    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
-        $fe_config = $station->getFrontendConfig();
-        $radio_port = $fe_config->getPort();
+        $feConfig = $station->getFrontendConfig();
+        $radioPort = $feConfig->getPort();
 
-        $base_url = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radio_port;
+        $baseUrl = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
-        $np_adapter = new \NowPlaying\Adapter\Icecast($base_url, $this->http_client);
-        $np_adapter->setAdminPassword($fe_config->getAdminPassword());
+        $npAdapter = $this->adapterFactory->getAdapter(
+            AdapterFactory::ADAPTER_ICECAST,
+            $baseUrl
+        );
 
-        $np_final = AdapterAbstract::NOWPLAYING_EMPTY;
-        $np_final['listeners']['clients'] = [];
+        $npAdapter->setAdminPassword($feConfig->getAdminPassword());
+
+        $defaultResult = Result::blank();
+        $otherResults = [];
 
         try {
             foreach ($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
-                $np_final = $this->_processNowPlayingForMount(
-                    $mount,
-                    $np_final,
-                    $np_adapter->getNowPlaying($mount->getName()),
-                    $include_clients ? $np_adapter->getClients($mount->getName(), true) : null
-                );
+                $result = $npAdapter->getNowPlaying($mount->getName(), $includeClients);
+
+                $mount->setListenersTotal($result->listeners->total);
+                $mount->setListenersUnique($result->listeners->unique);
+                $this->em->persist($mount);
+
+                if ($mount->getIsDefault()) {
+                    $defaultResult = $result;
+                } else {
+                    $otherResults[] = $result;
+                }
             }
-        } catch (\Exception $e) {
+
+            $this->em->flush();
+
+            foreach ($otherResults as $otherResult) {
+                $defaultResult = $defaultResult->merge($otherResult);
+            }
+        } catch (Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
-        return $np_final;
+        return $defaultResult;
     }
 
     public function read(Entity\Station $station): bool
@@ -76,16 +94,18 @@ class Icecast extends AbstractFrontend
      * Process Management
      */
 
-    protected function _getDefaults(Entity\Station $station)
+    protected function _getDefaults(Entity\Station $station): array
     {
         $config_dir = $station->getRadioConfigDir();
         $settings = Settings::getInstance();
-        
+
         $settingsBaseUrl = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, 'http://localhost');
         if (strpos($settingsBaseUrl, 'http') !== 0) {
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }
         $baseUrl = new Uri($settingsBaseUrl);
+
+        $certPaths = CertificateLocator::findCertificate();
 
         $defaults = [
             'location' => 'AzuraCast',
@@ -125,8 +145,8 @@ class Icecast extends AbstractFrontend
                     '@source' => '/',
                     '@dest' => '/status.xsl',
                 ],
-                'ssl-private-key' => '/etc/nginx/ssl/ssl.key',
-                'ssl-certificate' => '/etc/nginx/ssl/ssl.crt',
+                'ssl-private-key' => $certPaths->getKeyPath(),
+                'ssl-certificate' => $certPaths->getCertPath(),
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 'deny-ip' => $this->writeIpBansFile($station),
                 'x-forwarded-for' => $settings->isDocker() ? '172.*.*.*' : '127.0.0.1',
@@ -212,6 +232,7 @@ class Icecast extends AbstractFrontend
      * @return array
      * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
      * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
      */
     public static function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
     {

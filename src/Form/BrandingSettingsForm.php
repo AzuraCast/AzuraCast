@@ -1,15 +1,15 @@
 <?php
 namespace App\Form;
 
+use App\Config;
 use App\Entity;
 use App\Settings;
-use App\Config;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class BrandingSettingsForm extends AbstractSettingsForm
 {
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Settings $settings,
         Config $config

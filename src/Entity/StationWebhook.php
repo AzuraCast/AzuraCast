@@ -74,7 +74,7 @@ class StationWebhook
     protected $is_enabled = true;
 
     /**
-     * @ORM\Column(name="triggers", type="json_array", nullable=true)
+     * @ORM\Column(name="triggers", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      *
@@ -83,7 +83,7 @@ class StationWebhook
     protected $triggers;
 
     /**
-     * @ORM\Column(name="config", type="json_array", nullable=true)
+     * @ORM\Column(name="config", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      *
@@ -92,7 +92,7 @@ class StationWebhook
     protected $config;
 
     /**
-     * @ORM\Column(name="metadata", type="json_array", nullable=true)
+     * @ORM\Column(name="metadata", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      *

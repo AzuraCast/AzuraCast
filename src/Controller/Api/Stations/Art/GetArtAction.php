@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller\Api\Stations\Art;
 
-use App\Customization;
 use App\Entity\Repository\StationMediaRepository;
+use App\Entity\Repository\StationRepository;
 use App\Entity\StationMedia;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
@@ -32,8 +32,8 @@ class GetArtAction
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param Customization $customization
      * @param Filesystem $filesystem
+     * @param StationRepository $stationRepo
      * @param StationMediaRepository $mediaRepo
      * @param string $media_id
      *
@@ -42,14 +42,14 @@ class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Customization $customization,
         Filesystem $filesystem,
+        StationRepository $stationRepo,
         StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $defaultArtRedirect = $response->withRedirect($customization->getDefaultAlbumArtUrl($station), 302);
+        $defaultArtRedirect = $response->withRedirect($stationRepo->getDefaultAlbumArtUrl($station), 302);
         $fs = $filesystem->getForStation($station);
 
         // If a timestamp delimiter is added, strip it automatically.

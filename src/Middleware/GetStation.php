@@ -27,7 +27,7 @@ class GetStation implements MiddlewareInterface
         $this->station_repo = $station_repo;
         $this->adapters = $adapters;
     }
-    
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeContext = RouteContext::fromRequest($request);

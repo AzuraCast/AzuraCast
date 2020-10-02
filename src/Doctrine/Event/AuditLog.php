@@ -7,7 +7,7 @@ use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -40,7 +40,7 @@ class AuditLog implements EventSubscriber
         ];
     }
 
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $newAuditLogs = [];
 
@@ -219,12 +219,12 @@ class AuditLog implements EventSubscriber
     }
 
     /**
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param object|string $class
      *
      * @return bool
      */
-    protected function isEntity(EntityManager $em, $class): bool
+    protected function isEntity(EntityManagerInterface $em, $class): bool
     {
         if (is_object($class)) {
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)

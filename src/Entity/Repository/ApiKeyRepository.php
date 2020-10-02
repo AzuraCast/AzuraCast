@@ -3,6 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use InvalidArgumentException;
 
 class ApiKeyRepository extends Repository
 {
@@ -18,7 +19,7 @@ class ApiKeyRepository extends Repository
         [$key_identifier, $key_verifier] = explode(':', $key_string);
 
         if (empty($key_identifier) || empty($key_verifier)) {
-            throw new \InvalidArgumentException('API key is not in a valid format.');
+            throw new InvalidArgumentException('API key is not in a valid format.');
         }
 
         $api_key = $this->repository->find($key_identifier);

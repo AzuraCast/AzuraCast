@@ -38,7 +38,7 @@ class Error
      * @OA\Property(@OA\Items)
      * @var array
      */
-    public $extra_data;
+    public array $extra_data;
 
     /**
      * Used for API calls that expect an \Entity\Api\Status type response.

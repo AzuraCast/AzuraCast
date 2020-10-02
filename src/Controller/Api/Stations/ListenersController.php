@@ -6,20 +6,19 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocation;
 use App\Utilities\Csv;
-use Cake\Chronos\Chronos;
-use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Mobile_Detect;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class ListenersController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected IpGeolocation $geoLite;
 
-    public function __construct(EntityManager $em, IpGeolocation $geoLite)
+    public function __construct(EntityManagerInterface $em, IpGeolocation $geoLite)
     {
         $this->em = $em;
         $this->geoLite = $geoLite;
@@ -48,15 +47,15 @@ class ListenersController
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $station_tz = new DateTimeZone($station->getTimezone());
+        $station_tz = $station->getTimezoneObject();
 
         $params = $request->getQueryParams();
 
         if (!empty($params['start'])) {
-            $start = Chronos::parse($params['start'] . ' 00:00:00', $station_tz);
+            $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $station_tz);
             $start_timestamp = $start->getTimestamp();
 
-            $end = Chronos::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
+            $end = CarbonImmutable::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $station_tz);
             $end_timestamp = $end->getTimestamp();
 
             $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');

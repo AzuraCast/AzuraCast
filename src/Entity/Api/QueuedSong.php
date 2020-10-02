@@ -33,5 +33,5 @@ class QueuedSong extends SongHistory
      * )
      * @var array
      */
-    public $links = [];
+    public array $links = [];
 }

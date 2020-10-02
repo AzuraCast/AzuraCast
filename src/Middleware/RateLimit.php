@@ -10,14 +10,11 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class RateLimit
 {
-    /** @var string */
-    protected $rl_group;
+    protected string $rl_group;
 
-    /** @var int */
-    protected $rl_timeout;
+    protected int $rl_timeout;
 
-    /** @var int */
-    protected $rl_interval;
+    protected int $rl_interval;
 
     public function __construct(
         string $rl_group = 'default',

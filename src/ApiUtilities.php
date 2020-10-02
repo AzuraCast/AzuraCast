@@ -1,9 +1,10 @@
 <?php
 namespace App;
 
+use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use App\Http\Router;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
 use Psr\Http\Message\UriInterface;
 
@@ -13,17 +14,17 @@ use Psr\Http\Message\UriInterface;
  */
 class ApiUtilities
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Router $router;
 
-    protected Customization $customization;
+    protected StationRepository $stationRepo;
 
-    public function __construct(EntityManager $em, Router $router, Customization $customization)
+    public function __construct(EntityManagerInterface $em, Router $router, StationRepository $stationRepo)
     {
         $this->em = $em;
         $this->router = $router;
-        $this->customization = $customization;
+        $this->stationRepo = $stationRepo;
     }
 
     public function getRouter(): Router
@@ -70,13 +71,13 @@ class ApiUtilities
             $baseUri = $this->router->getBaseUrl();
         }
 
-        return UriResolver::resolve($baseUri, $this->customization->getDefaultAlbumArtUrl($station));
+        return UriResolver::resolve($baseUri, $this->stationRepo->getDefaultAlbumArtUrl($station));
     }
 
     /**
      * Return all custom fields, either with a null value or with the custom value assigned to the given Media ID.
      *
-     * @param null $media_id
+     * @param int|null $media_id
      *
      * @return array
      */

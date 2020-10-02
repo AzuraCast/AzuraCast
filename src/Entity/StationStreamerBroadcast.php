@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity;
 
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
@@ -128,7 +128,10 @@ class StationStreamerBroadcast
                 break;
         }
 
-        $now = Chronos::createFromTimestamp($this->timestampStart, $this->station->getTimezone());
+        $now = CarbonImmutable::createFromTimestamp(
+            $this->timestampStart,
+            $this->station->getTimezoneObject()
+        );
         $this->recordingPath = $this->streamer->getStreamerUsername() . '/' . $now->format('Ymd-His') . '.' . $ext;
 
         return $this->recordingPath;

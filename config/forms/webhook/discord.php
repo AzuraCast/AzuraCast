@@ -1,7 +1,7 @@
 <?php
 /** @var array $app_settings */
 /** @var array $triggers */
-/** @var \App\Http\Router $router */
+/** @var App\Http\Router $router */
 
 return [
     'method' => 'post',
@@ -19,7 +19,7 @@ return [
                         'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'webhook_url' => [
@@ -30,7 +30,7 @@ return [
                         'belongsTo' => 'config',
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'triggers' => [
@@ -40,7 +40,7 @@ return [
                         'options' => array_diff_key($triggers, ['listener_lost' => 1, 'listener_gained' => 1]),
                         'required' => true,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
             ],
@@ -50,7 +50,8 @@ return [
             'use_grid' => true,
             'legend' => __('Customize Message'),
             'legend_class' => 'd-none',
-            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $router->named('api:nowplaying:index')),
+            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'),
+                $router->named('api:nowplaying:index')),
 
             'elements' => [
 
@@ -61,7 +62,7 @@ return [
                         'belongsTo' => 'config',
                         'default' => sprintf(__('Now playing on %s:'), '{{ station.name }}'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'title' => [
@@ -71,7 +72,7 @@ return [
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.title }}',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'description' => [
@@ -81,7 +82,7 @@ return [
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.artist }}',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'url' => [
@@ -91,7 +92,7 @@ return [
                         'belongsTo' => 'config',
                         'default' => '{{ station.listen_url }}',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'author' => [
@@ -101,7 +102,7 @@ return [
                         'belongsTo' => 'config',
                         'default' => '{{ live.streamer_name }}',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'thumbnail' => [
@@ -111,7 +112,7 @@ return [
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.art }}',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'footer' => [
@@ -121,7 +122,7 @@ return [
                         'belongsTo' => 'config',
                         'default' => sprintf(__('Powered by %s'), $app_settings['name']),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
             ],
@@ -136,10 +137,10 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
-                    ]
+                    ],
                 ],
 
-            ]
-        ]
+            ],
+        ],
     ],
 ];

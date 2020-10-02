@@ -9,7 +9,7 @@ use App\Message;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ConfigWriter implements EventSubscriberInterface
@@ -24,11 +24,11 @@ class ConfigWriter implements EventSubscriberInterface
     public const CROSSFADE_DISABLED = 'none';
     public const CROSSFADE_SMART = 'smart';
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Liquidsoap $liquidsoap;
 
-    public function __construct(EntityManager $em, Liquidsoap $liquidsoap)
+    public function __construct(EntityManagerInterface $em, Liquidsoap $liquidsoap)
     {
         $this->em = $em;
         $this->liquidsoap = $liquidsoap;
@@ -41,16 +41,12 @@ class ConfigWriter implements EventSubscriberInterface
      */
     public function __invoke(Message\AbstractMessage $message)
     {
-        try {
-            if ($message instanceof Message\WritePlaylistFileMessage) {
-                $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
+        if ($message instanceof Message\WritePlaylistFileMessage) {
+            $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
 
-                if ($playlist instanceof Entity\StationPlaylist) {
-                    $this->writePlaylistFile($playlist, true);
-                }
+            if ($playlist instanceof Entity\StationPlaylist) {
+                $this->writePlaylistFile($playlist, true);
             }
-        } finally {
-            $this->em->clear();
         }
     }
 
@@ -176,7 +172,6 @@ class ConfigWriter implements EventSubscriberInterface
             $defaultPlaylist = new Entity\StationPlaylist($station);
             $defaultPlaylist->setName('default');
 
-            /** @var EntityManager $em */
             $this->em->persist($defaultPlaylist);
             $this->em->flush();
 
@@ -288,12 +283,12 @@ class ConfigWriter implements EventSubscriberInterface
                 }
             }
 
-            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
-            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
-
             if ($playlist->isJingle()) {
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
+
+            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
+            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
@@ -416,8 +411,12 @@ class ConfigWriter implements EventSubscriberInterface
                 if uri == "" or string.match(pattern="Error", uri) then
                     []
                 else 
-                    req = request.create(uri)
-                    [req]                
+                    r = request.create(uri)
+                    if request.resolve(r) then
+                        [r]
+                    else
+                        []
+                   end                
                 end
             end
             EOF
@@ -508,10 +507,6 @@ class ConfigWriter implements EventSubscriberInterface
 
             $annotations_str = [];
             foreach ($mediaAnnotations as $annotation_key => $annotation_val) {
-                if ('liq_amplify' === $annotation_key) {
-                    $annotations_str[] = $annotation_key . '="' . $annotation_val . 'dB"';
-                    continue;
-                }
                 $annotations_str[] = $annotation_key . '="' . $annotation_val . '"';
             }
 
@@ -653,27 +648,16 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
 
         // Crossfading happens before the live broadcast is mixed in, because of buffer issues.
-        $crossfade_type = $settings['crossfade_type'] ?? self::CROSSFADE_NORMAL;
-        $crossfade = round($settings['crossfade'] ?? 2, 1);
+        $crossfade_type = $settings->getCrossfadeType();
+        $crossfade = $settings->getCrossfade();
 
-        if (self::CROSSFADE_DISABLED !== $crossfade_type && $crossfade > 0) {
-            $start_next = round($crossfade * 1.5, 2);
-            $crossfadeIsSmart = (self::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
-
+        $crossDuration = $settings->getCrossfadeDuration();
+        if ($crossDuration > 0) {
+            $crossfadeIsSmart = (Entity\StationBackendConfiguration::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
             $event->appendLines([
-                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
+                'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat($crossDuration) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
-
-        // Write fallback to safety file immediately after crossfade.
-        $error_file = Settings::getInstance()->isDocker()
-            ? '/usr/local/share/icecast/web/error.mp3'
-            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
-
-        $event->appendLines([
-            'radio = fallback(id="' . self::getVarName($station,
-                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
-        ]);
     }
 
     public function writeHarborConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -844,6 +828,16 @@ class ConfigWriter implements EventSubscriberInterface
             ]);
         }
 
+        // Write fallback to safety file to ensure infallible source for the broadcast outputs.
+        $error_file = Settings::getInstance()->isDocker()
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
+
+        $event->appendLines([
+            'radio = fallback(id="' . self::getVarName($station,
+                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
+        ]);
+
         // Custom configuration
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
 
@@ -853,10 +847,15 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(<<<EOF
         # Send metadata changes back to AzuraCast
         def metadata_updated(m) =
-            if (m["song_id"] != "") then
-                ret = {$feedbackCommand}
-                log("AzuraCast Feedback Response: #{ret}")
+            def f() = 
+                if (m["song_id"] != "") then
+                    ret = {$feedbackCommand}
+                    log("AzuraCast Feedback Response: #{ret}")
+                end
+                (-1.)
             end
+            
+            add_timeout(fast=false, 0., f)
         end
         
         radio = on_metadata(metadata_updated,radio)
@@ -929,13 +928,14 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $password = self::cleanUpString($mount->getAutodjPassword());
-        if ($mount->getAutodjShoutcastMode()) {
+        if (Adapters::REMOTE_SHOUTCAST2 === $mount->getAutodjAdapterType()) {
             $password .= ':#' . $id;
         }
         $output_params[] = 'password = "' . $password . '"';
 
+        $isShoutcastMode = Adapters::REMOTE_ICECAST !== $mount->getAutodjAdapterType();
         if (!empty($mount->getAutodjMount())) {
-            if ($mount->getAutodjShoutcastMode()) {
+            if ($isShoutcastMode) {
                 $output_params[] = 'icy_id = ' . $id;
             } else {
                 $output_params[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
@@ -953,7 +953,7 @@ class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
         $output_params[] = 'encoding = "' . $charset . '"';
 
-        if ($mount->getAutodjShoutcastMode()) {
+        if ($isShoutcastMode) {
             $output_params[] = 'protocol="icy"';
         }
 
@@ -970,20 +970,16 @@ class ConfigWriter implements EventSubscriberInterface
                 $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
 
                 return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
-                break;
 
             case Entity\StationMountInterface::FORMAT_OGG:
                 return '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
-                break;
 
             case Entity\StationMountInterface::FORMAT_OPUS:
                 return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
-                break;
 
             case Entity\StationMountInterface::FORMAT_MP3:
             default:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
-                break;
         }
     }
 
@@ -1026,18 +1022,14 @@ class ConfigWriter implements EventSubscriberInterface
     /**
      * Convert an integer or float into a Liquidsoap configuration compatible float.
      *
-     * @param float|int $number
+     * @param float|int|string $number
      * @param int $decimals
      *
      * @return string
      */
     public static function toFloat($number, $decimals = 2): string
     {
-        if ((int)$number == $number) {
-            return (int)$number . '.';
-        }
-
-        return number_format($number, $decimals, '.', '');
+        return number_format((float)$number, $decimals, '.', '');
     }
 
     public static function formatTimeCode($time_code): string

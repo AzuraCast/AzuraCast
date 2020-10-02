@@ -4,29 +4,30 @@ namespace App\Sync\Task;
 use App\Console\Application;
 use App\Entity;
 use App\Message;
-use App\MessageQueue;
-use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\MessageBus;
 
 class Backup extends AbstractTask
 {
     public const BASE_DIR = '/var/azuracast/backups';
 
-    protected MessageQueue $messageQueue;
+    protected MessageBus $messageBus;
 
     protected Application $console;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
-        MessageQueue $message_queue,
+        MessageBus $messageBus,
         Application $console
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
-        $this->messageQueue = $message_queue;
+        $this->messageBus = $messageBus;
         $this->console = $console;
     }
 
@@ -38,7 +39,6 @@ class Backup extends AbstractTask
     public function __invoke(Message\AbstractMessage $message)
     {
         if ($message instanceof Message\BackupMessage) {
-
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
 
             [$result_code, $result_output] = $this->runBackup(
@@ -76,31 +76,28 @@ class Backup extends AbstractTask
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
-        $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, 0);
+        $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, false);
         if (!$backup_enabled) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
         }
 
-        $now_utc = Chronos::now('UTC');
+        $now_utc = CarbonImmutable::now('UTC');
 
         $threshold = $now_utc->subDay()->getTimestamp();
         $last_run = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
 
         if ($last_run <= $threshold) {
             // Check if the backup time matches (if it's set).
-            $backupTimecode = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME);
-            
-            if (0 !== $backupTimecode) {
+            $backupTimecode = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME, null);
+
+            if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
                 $backupDt = Entity\StationSchedule::getDateTime($backupTimecode, $now_utc);
 
-                /** @var Chronos[] $backupTimesToCheck */
+                /** @var CarbonInterface[] $backupTimesToCheck */
                 $backupTimesToCheck = [
                     $backupDt->subDay(),
                     $backupDt,
@@ -124,7 +121,8 @@ class Backup extends AbstractTask
             $message = new Message\BackupMessage;
             $message->path = 'automatic_backup.zip';
             $message->excludeMedia = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
-            $this->messageQueue->produce($message);
+
+            $this->messageBus->dispatch($message);
         }
     }
 }

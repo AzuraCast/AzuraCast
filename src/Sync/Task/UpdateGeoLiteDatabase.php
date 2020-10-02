@@ -4,10 +4,12 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Service\IpGeolocation;
 use App\Service\IpGeolocator\GeoLite;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class UpdateGeoLiteDatabase extends AbstractTask
@@ -19,7 +21,7 @@ class UpdateGeoLiteDatabase extends AbstractTask
     protected IpGeolocation $geoLite;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Client $httpClient,
@@ -31,7 +33,7 @@ class UpdateGeoLiteDatabase extends AbstractTask
         $this->geoLite = $geoLite;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         if (!$force) {
             $lastRun = (int)$this->settingsRepo->getSetting(Entity\Settings::GEOLITE_LAST_RUN, 0);
@@ -44,7 +46,7 @@ class UpdateGeoLiteDatabase extends AbstractTask
 
         try {
             $this->updateDatabase();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('Error updating GeoLite database.', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -82,7 +84,7 @@ class UpdateGeoLiteDatabase extends AbstractTask
         ]);
 
         if (!file_exists($downloadPath)) {
-            throw new \RuntimeException('New GeoLite database .tar.gz file not found.');
+            throw new RuntimeException('New GeoLite database .tar.gz file not found.');
         }
 
         $process = new Process([

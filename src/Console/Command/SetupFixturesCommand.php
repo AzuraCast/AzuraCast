@@ -3,12 +3,11 @@ namespace App\Console\Command;
 
 use App\Entity\Station;
 use App\Settings;
-use App\Console\Command\CommandAbstract;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use InfluxDB\Point;
 use Psr\Container\ContainerInterface;
@@ -20,7 +19,7 @@ class SetupFixturesCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         ContainerInterface $di,
         Database $influx,
         Settings $settings
@@ -54,7 +53,7 @@ class SetupFixturesCommand extends CommandAbstract
         // Preload sample data.
         $stations = $em->getRepository(Station::class)->findAll();
 
-        $midnight_utc = Chronos::now('UTC')->setTime(0, 0);
+        $midnight_utc = CarbonImmutable::now('UTC')->setTime(0, 0);
         $influx_points = [];
 
         for ($i = 1; $i <= 14; $i++) {

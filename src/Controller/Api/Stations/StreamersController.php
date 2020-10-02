@@ -5,7 +5,7 @@ use App\Entity;
 use App\Exception\StationUnsupportedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -122,7 +122,10 @@ class StreamersController extends AbstractScheduledEntityController
             $request,
             $response,
             $scheduleItems,
-            function (Entity\StationSchedule $scheduleItem, Chronos $start, Chronos $end) use ($request, $station) {
+            function (Entity\StationSchedule $scheduleItem, CarbonInterface $start, CarbonInterface $end) use (
+                $request,
+                $station
+            ) {
                 /** @var Entity\StationStreamer $streamer */
                 $streamer = $scheduleItem->getStreamer();
 
@@ -141,7 +144,10 @@ class StreamersController extends AbstractScheduledEntityController
     }
 
     /**
-     * @inheritDoc
+     * @param mixed $record
+     * @param ServerRequest $request
+     *
+     * @return array|mixed
      */
     protected function viewRecord($record, ServerRequest $request)
     {

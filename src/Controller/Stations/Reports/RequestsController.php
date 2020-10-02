@@ -5,16 +5,16 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $csrf_namespace = 'stations_requests';
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

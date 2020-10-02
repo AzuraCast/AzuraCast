@@ -2,7 +2,7 @@
 namespace App\Middleware;
 
 use App\Http\ServerRequest;
-use App\View;
+use App\ViewFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -13,28 +13,18 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class EnableView implements MiddlewareInterface
 {
-    /** @var View */
-    protected $view;
+    protected ViewFactory $viewFactory;
 
-    public function __construct(View $view)
+    public function __construct(ViewFactory $viewFactory)
     {
-        $this->view = $view;
+        $this->viewFactory = $viewFactory;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $this->view->addData([
-            'request' => $request,
-            'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-        ]);
+        $view = $this->viewFactory->create($request);
 
-        $request = $request->withAttribute(ServerRequest::ATTR_VIEW, $this->view);
+        $request = $request->withAttribute(ServerRequest::ATTR_VIEW, $view);
         return $handler->handle($request);
     }
 }

@@ -49,6 +49,10 @@
 
 <style lang="scss">
     #station_on_demand_table {
+        .datatable-main {
+            overflow-y: auto;
+        }
+
         table.b-table {
             thead tr th:nth-child(1),
             tbody tr td:nth-child(1) {
@@ -98,14 +102,15 @@
                 { key: 'media_art', label: this.$gettext('Art') },
                 { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
                 { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true },
-                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false }
+                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
+                { key: 'playlist', label: this.$gettext('Playlist'), sortable: true, selectable: true, visible: false }
             ];
 
             _.forEach(this.customFields.slice(), (field) => {
                 fields.push({
                     key: field.display_key,
                     label: field.label,
-                    sortable: false,
+                    sortable: true,
                     selectable: true,
                     visible: false
                 });

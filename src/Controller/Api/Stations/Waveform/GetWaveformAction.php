@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Api\Stations\Waveform;
 
-use App\Customization;
 use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
@@ -15,7 +14,6 @@ class GetWaveformAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Customization $customization,
         Filesystem $filesystem,
         StationMediaRepository $mediaRepo,
         $media_id

@@ -4,9 +4,8 @@ namespace App\Controller\Stations\Reports;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
-use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
@@ -15,14 +14,17 @@ use function array_slice;
 
 class OverviewController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Database $influx;
 
-    public function __construct(EntityManager $em, Entity\Repository\SettingsRepository $settingsRepo, Database $influx)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Database $influx
+    ) {
         $this->em = $em;
         $this->settingsRepo = $settingsRepo;
         $this->influx = $influx;
@@ -31,8 +33,7 @@ class OverviewController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-
-        $station_tz = new DateTimeZone($station->getTimezone());
+        $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
         $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
@@ -44,7 +45,7 @@ class OverviewController
         }
 
         /* Statistics */
-        $statisticsThreshold = Chronos::parse('-1 month', $station_tz)->getTimestamp();
+        $statisticsThreshold = CarbonImmutable::parse('-1 month', $station_tz)->getTimestamp();
 
         // Statistics by day.
         $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d',
@@ -71,7 +72,7 @@ class OverviewController
             $avg_row->y = round($stat['value'], 2);
             $daily_averages[] = $avg_row;
 
-            $dt = Chronos::createFromTimestamp($avg_row->t / 1000, $station_tz);
+            $dt = CarbonImmutable::createFromTimestamp($avg_row->t / 1000, $station_tz);
 
             $row_date = $dt->format('Y-m-d');
             $daily_alt[] = '<dt><time data-original="' . $avg_row->t . '">' . $row_date . '</time></dt>';
@@ -133,15 +134,10 @@ class OverviewController
 
         $hourly_stats = $resultset->getPoints();
 
-        $hourly_averages = [];
-        $hourly_ranges = [];
         $totals_by_hour = [];
 
         foreach ($hourly_stats as $stat) {
-            $hourly_ranges[] = [$stat['time'], $stat['min'], $stat['max']];
-            $hourly_averages[] = [$stat['time'], round($stat['value'], 2)];
-
-            $dt = Chronos::createFromTimestamp($stat['time'] / 1000, $station_tz);
+            $dt = CarbonImmutable::createFromTimestamp($stat['time'] / 1000, $station_tz);
 
             $hour = (int)$dt->format('G');
             $totals_by_hour[$hour][] = $stat['value'];
@@ -211,7 +207,7 @@ class OverviewController
         }
 
         /* Song "Deltas" (Changes in Listener Count) */
-        $songPerformanceThreshold = Chronos::parse('-2 days', $station_tz)->getTimestamp();
+        $songPerformanceThreshold = CarbonImmutable::parse('-2 days', $station_tz)->getTimestamp();
 
         // Get all songs played in timeline.
         $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
@@ -254,11 +250,11 @@ class OverviewController
 
         return $request->getView()->renderToResponse($response, 'stations/reports/overview', [
             'charts' => [
-                'daily' => json_encode($daily_data),
+                'daily' => json_encode($daily_data, JSON_THROW_ON_ERROR),
                 'daily_alt' => implode('', $daily_alt),
-                'hourly' => json_encode($hourly_data),
+                'hourly' => json_encode($hourly_data, JSON_THROW_ON_ERROR),
                 'hourly_alt' => implode('', $hourly_alt),
-                'day_of_week' => json_encode($day_of_week_data),
+                'day_of_week' => json_encode($day_of_week_data, JSON_THROW_ON_ERROR),
                 'day_of_week_alt' => implode('', $day_of_week_alt),
             ],
             'song_totals' => $song_totals,

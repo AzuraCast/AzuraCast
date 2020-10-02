@@ -1,8 +1,8 @@
 <?php
 namespace App\Entity\Repository;
 
-use App\Entity;
 use App\Doctrine\Repository;
+use App\Entity;
 use Doctrine\ORM\NoResultException;
 use RuntimeException;
 
@@ -142,7 +142,7 @@ class StationPlaylistMediaRepository extends Repository
         // Clear the playback queue.
         $playlist->setQueue(null);
         $this->em->persist($playlist);
-        $this->em->flush($playlist);
+        $this->em->flush();
     }
 
     public function getPlayableMedia(Entity\StationPlaylist $playlist): array

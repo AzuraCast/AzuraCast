@@ -4,7 +4,6 @@ namespace App;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Exception\NotLoggedInException;
-use App\Exception;
 use Mezzio\Session\SessionInterface;
 
 class Auth
@@ -26,13 +25,11 @@ class Auth
     /** @var User|bool|null */
     protected $masqueraded_user;
 
-    public function __construct(UserRepository $userRepo)
-    {
+    public function __construct(
+        UserRepository $userRepo,
+        SessionInterface $session
+    ) {
         $this->userRepo = $userRepo;
-    }
-
-    public function setSession(SessionInterface $session): void
-    {
         $this->session = $session;
     }
 
@@ -170,7 +167,7 @@ class Auth
         }
 
         return ($this->user instanceof User)
-            ? $this->user
+            ? $this->userRepo->getRepository()->find($this->user->getId())
             : null;
     }
 

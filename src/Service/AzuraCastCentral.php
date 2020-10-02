@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Entity;
 use App\Settings;
 use App\Version;
+use Exception;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 
@@ -68,7 +69,7 @@ class AzuraCastCentral
 
             $update_data = json_decode($update_data_raw, true, 512, JSON_THROW_ON_ERROR);
             return $update_data['updates'] ?? null;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('Error checking for updates: ' . $e->getMessage());
         }
 
@@ -99,7 +100,7 @@ class AzuraCastCentral
                 $body = json_decode($body_raw, true, 512, JSON_THROW_ON_ERROR);
 
                 $ip = $body['ip'] ?? null;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error('Could not fetch remote IP: ' . $e->getMessage());
                 $ip = null;
             }

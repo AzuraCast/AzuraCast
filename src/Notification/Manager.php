@@ -5,8 +5,8 @@ use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
 use App\Settings;
-use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,26 +14,26 @@ class Manager implements EventSubscriberInterface
 {
     protected Acl $acl;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Logger $logger;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected Settings $app_settings;
+    protected Settings $appSettings;
 
     public function __construct(
         Acl $acl,
-        EntityManager $em,
-        Entity\Repository\SettingsRepository $settings_repo,
+        EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Logger $logger,
-        Settings $app_settings
+        Settings $appSettings
     ) {
         $this->acl = $acl;
         $this->em = $em;
         $this->logger = $logger;
-        $this->app_settings = $app_settings;
-        $this->settingsRepo = $settings_repo;
+        $this->appSettings = $appSettings;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public static function getSubscribedEvents()
@@ -54,7 +54,7 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        if (!$this->app_settings->isDocker()) {
+        if (!$this->appSettings->isDocker()) {
             return;
         }
 
@@ -139,7 +139,11 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        $threshold = Chronos::now()->subWeeks(2)->getTimestamp();
+        if (!$this->appSettings->isProduction()) {
+            return;
+        }
+
+        $threshold = CarbonImmutable::now()->subWeeks(2)->getTimestamp();
         $backupLastRun = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
 
         if ($backupLastRun < $threshold) {

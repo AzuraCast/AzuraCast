@@ -89,7 +89,7 @@ class Station
     protected $frontend_type = Adapters::FRONTEND_ICECAST;
 
     /**
-     * @ORM\Column(name="frontend_config", type="json_array", nullable=true)
+     * @ORM\Column(name="frontend_config", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      * @var array|null An array containing station-specific frontend configuration
@@ -106,7 +106,7 @@ class Station
     protected $backend_type = Adapters::BACKEND_LIQUIDSOAP;
 
     /**
-     * @ORM\Column(name="backend_config", type="json_array", nullable=true)
+     * @ORM\Column(name="backend_config", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      * @var array|null An array containing station-specific backend configuration
@@ -181,7 +181,7 @@ class Station
     protected $nowplaying_timestamp;
 
     /**
-     * @ORM\Column(name="automation_settings", type="json_array", nullable=true)
+     * @ORM\Column(name="automation_settings", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
      * @var array|null
@@ -488,11 +488,16 @@ class Station
             $config = new StationFrontendConfiguration(
                 ($force_overwrite) ? [] : (array)$this->frontend_config,
             );
-            $config->replace($frontend_config);
+
+            foreach ($frontend_config as $key => $val) {
+                $config->set($key, $val);
+            }
+
             $frontend_config = $config;
         }
 
-        $config = $frontend_config->all();
+        $config = $frontend_config->toArray();
+
         if ($this->frontend_config != $config) {
             $this->setNeedsRestart(true);
         }
@@ -569,12 +574,15 @@ class Station
             $config = new StationBackendConfiguration(
                 ($force_overwrite) ? [] : (array)$this->backend_config
             );
-            $config->replace($backend_config);
+
+            foreach ($backend_config as $key => $val) {
+                $config->set($key, $val);
+            }
 
             $backend_config = $config;
         }
 
-        $config = $backend_config->all();
+        $config = $backend_config->toArray();
 
         if ($this->backend_config != $config) {
             $this->setNeedsRestart(true);
@@ -927,10 +935,7 @@ class Station
     public function getStorageUsed(): ?string
     {
         $raw_size = $this->getStorageUsedBytes();
-
-        return ($raw_size instanceof BigInteger)
-            ? Quota::getReadableSize($raw_size)
-            : '';
+        return Quota::getReadableSize($raw_size);
     }
 
     /**
@@ -1017,9 +1022,6 @@ class Station
         }
 
         $used = $this->getStorageUsedBytes();
-        if ($used === null) {
-            return false;
-        }
 
         return ($used->compareTo($available) !== -1);
     }
@@ -1036,6 +1038,11 @@ class Station
         }
 
         return Customization::DEFAULT_TIMEZONE;
+    }
+
+    public function getTimezoneObject(): \DateTimeZone
+    {
+        return new \DateTimeZone($this->getTimezone());
     }
 
     public function setTimezone(?string $timezone): void
@@ -1114,6 +1121,12 @@ class Station
     public function getSftpUsers(): Collection
     {
         return $this->sftp_users;
+    }
+
+    public function clearCache(): void
+    {
+        $this->nowplaying = null;
+        $this->nowplaying_timestamp = 0;
     }
 
     /**

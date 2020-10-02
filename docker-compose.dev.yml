@@ -12,6 +12,7 @@ services:
     build:
       context: .
     volumes:
+      - ./util/local_ssl:/etc/nginx/certs:ro
       - .:/var/azuracast/www
 
   mariadb:
@@ -33,3 +34,5 @@ services:
   stations:
     build:
       context: ../docker-azuracast-radio
+    volumes:
+      - ./util/local_ssl:/etc/nginx/certs:ro

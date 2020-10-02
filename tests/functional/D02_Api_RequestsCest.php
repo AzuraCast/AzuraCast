@@ -7,21 +7,24 @@ class D02_Api_RequestsCest extends CestAbstract
     /**
      * @before setupComplete
      */
-    public function checkRequestsAPI(FunctionalTester $I)
+    public function checkRequestsAPI(FunctionalTester $I): void
     {
         $I->wantTo('Check request API endpoints.');
 
         // Enable requests on station.
-        $this->test_station->setEnableRequests(true);
-        $this->em->persist($this->test_station);
+        $testStation = $this->getTestStation();
+        $station_id = $testStation->getId();
+
+        $testStation->setEnableRequests(true);
+        $this->em->persist($testStation);
         $this->em->flush();
 
         // Upload a test song.
         $song_src = '/var/azuracast/www/resources/error.mp3';
-        $song_dest = $this->test_station->getRadioMediaDir() . '/test.mp3';
+        $song_dest = $testStation->getRadioMediaDir() . '/test.mp3';
         copy($song_src, $song_dest);
 
-        $playlist = new Entity\StationPlaylist($this->test_station);
+        $playlist = new Entity\StationPlaylist($testStation);
         $playlist->setName('Test Playlist');
 
         $this->em->persist($playlist);
@@ -29,7 +32,7 @@ class D02_Api_RequestsCest extends CestAbstract
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->di->get(Entity\Repository\StationMediaRepository::class);
 
-        $media = new Entity\StationMedia($this->test_station, 'test.mp3');
+        $media = new Entity\StationMedia($testStation, 'test.mp3');
         $media_repo->loadFromFile($media, $song_dest);
 
         $this->em->persist($media);
@@ -38,11 +41,7 @@ class D02_Api_RequestsCest extends CestAbstract
         $this->em->persist($spm);
 
         $this->em->flush();
-
-        $this->em->refresh($media);
-        $this->em->refresh($playlist);
-
-        $station_id = $this->test_station->getId();
+        $this->em->clear();
 
         $I->sendGET('/api/station/' . $station_id . '/requests');
 

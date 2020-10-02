@@ -7,6 +7,39 @@ $this->layout('main', [
 
 <h2 class="outside-card-header mb-1"><?=__('System Debugger')?></h2>
 
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title"><?=__('Clear Cache')?></h2>
+            </div>
+            <div class="card-body">
+                <p><?=__('Clearing the application cache may log you out of your session.')?></p>
+                <div class="buttons">
+                    <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:clear-cache')?>">
+                        <?=__('Clear Cache')?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title"><?=__('Clear Message Queue')?></h2>
+            </div>
+            <div class="card-body">
+                <p><?=__('This will clear any pending unprocessed messages in the message queue.')?></p>
+                <div class="buttons">
+                    <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:clear-queue')?>">
+                        <?=__('Clear Message Queue')?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card mb-3">
     <div class="card-header bg-primary-dark">
         <h2 class="card-title"><?=__('Synchronization Tasks')?></h2>

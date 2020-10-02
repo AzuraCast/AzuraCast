@@ -1,10 +1,11 @@
 parameters:
-    level: 2
+    level: 3
 
     paths:
         - src
 
-    bootstrap: %rootDir%/../../../util/phpstan.php
+    bootstrapFiles:
+        - %rootDir%/../../../util/phpstan.php
 
     universalObjectCratesClasses:
         - App\Session\NamespaceInterface
@@ -13,9 +14,6 @@ parameters:
     ignoreErrors:
         # Caused by Symfony Validator (perhaps wrongly) returning the interface.
         - '#Cannot cast Symfony\\Component\\Validator\\ConstraintViolationListInterface to string.#'
-
-        # Supervisor functions that do exist but aren't annotated properly in the connector lib.
-        - '#Call to an undefined method Supervisor\\Supervisor::reloadConfig().#'
 
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon

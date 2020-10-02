@@ -2,10 +2,10 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Radio\Adapters;
 use App\Exception;
-use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use App\Radio\Adapters;
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
@@ -18,7 +18,7 @@ class RadioAutomation extends AbstractTask
     protected Adapters $adapters;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
@@ -35,7 +35,7 @@ class RadioAutomation extends AbstractTask
      *
      * @param bool $force
      */
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         // Check all stations for automation settings.
         // Use this to avoid detached entity errors.
@@ -68,7 +68,7 @@ class RadioAutomation extends AbstractTask
 
         // Check whether assignment needs to be run.
         $threshold_days = (int)$settings['threshold_days'];
-        $threshold = Chronos::now('UTC')
+        $threshold = CarbonImmutable::now('UTC')
             ->subDays($threshold_days)
             ->getTimestamp();
 
@@ -136,7 +136,7 @@ class RadioAutomation extends AbstractTask
         $numSongs = count($mediaReport);
         $numPlaylists = count($playlists);
 
-        $songsPerPlaylist = floor($numSongs / $numPlaylists);
+        $songsPerPlaylist = (int)floor($numSongs / $numPlaylists);
 
         $i = 0;
         foreach ($playlists as $playlistId) {
@@ -188,7 +188,7 @@ class RadioAutomation extends AbstractTask
         Entity\Station $station,
         int $threshold_days = self::DEFAULT_THRESHOLD_DAYS
     ): array {
-        $threshold = Chronos::now()
+        $threshold = CarbonImmutable::now()
             ->subDays($threshold_days)
             ->getTimestamp();
 

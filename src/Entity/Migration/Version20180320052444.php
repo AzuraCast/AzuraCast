@@ -12,9 +12,6 @@ final class Version20180320052444 extends AbstractMigration
 {
     public function preup(Schema $schema): void
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         // Avoid FK errors with station art
         $this->connection->exec('DELETE FROM station_media_art WHERE media_id NOT IN (SELECT id FROM station_media)');
     }
@@ -26,10 +23,6 @@ final class Version20180320052444 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station_media_art DROP FOREIGN KEY FK_35E0CAB2EA9FDD75');
     }
 }

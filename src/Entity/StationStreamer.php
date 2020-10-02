@@ -3,8 +3,6 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Normalizer\Annotation\DeepNormalize;
-use Cake\Chronos\Chronos;
-use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -246,27 +244,5 @@ class StationStreamer
     public function getScheduleItems(): Collection
     {
         return $this->schedule_items;
-    }
-
-    public function canStreamNow(Chronos $now = null): bool
-    {
-        if (!$this->enforceSchedule()) {
-            return true;
-        }
-
-        if (null === $now) {
-            $now = Chronos::now(new DateTimeZone($this->getStation()->getTimezone()));
-        }
-
-        if ($this->schedule_items->count() > 0) {
-            foreach ($this->schedule_items as $scheduleItem) {
-                /** @var StationSchedule $scheduleItem */
-                if ($scheduleItem->shouldPlayNow($now)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

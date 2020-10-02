@@ -19,10 +19,6 @@ final class Version20200417082209 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('DROP INDEX update_idx ON listener');
         $this->addSql('DROP INDEX search_idx ON listener');
         $this->addSql('CREATE INDEX idx_timestamps ON listener (timestamp_end, timestamp_start)');
@@ -37,10 +33,6 @@ final class Version20200417082209 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('DROP INDEX idx_timestamps ON listener');
         $this->addSql('CREATE INDEX update_idx ON listener (listener_hash)');
         $this->addSql('CREATE INDEX search_idx ON listener (listener_uid, timestamp_end)');

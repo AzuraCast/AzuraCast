@@ -1,18 +1,18 @@
 <?php
 namespace App\Console\Command\Internal;
 
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class DjOnCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Adapters $adapters,
         int $stationId,
         string $djUser = ''

@@ -13,7 +13,7 @@ class StationServiceStatus
      * @var bool
      */
     public bool $backend_running;
-    
+
     /**
      * @OA\Property(example=true)
      * @var bool

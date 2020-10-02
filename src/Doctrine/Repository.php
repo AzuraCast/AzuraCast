@@ -4,64 +4,50 @@ namespace App\Doctrine;
 use App\Normalizer\DoctrineEntityNormalizer;
 use App\Settings;
 use Closure;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class Repository
 {
-    /** @var EntityManager */
-    protected $em;
+    protected EntityManagerInterface $em;
 
-    /** @var string */
-    protected $entityClass;
+    protected string $entityClass;
 
-    /** @var EntityRepository */
-    protected $repository;
+    protected ObjectRepository $repository;
 
-    /** @var Serializer */
-    protected $serializer;
+    protected Serializer $serializer;
 
-    /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
 
-    /**
-     * @param EntityManager $em
-     * @param Serializer $serializer
-     * @param Settings $settings
-     * @param LoggerInterface $logger
-     */
-    public function __construct(EntityManager $em, Serializer $serializer, Settings $settings, LoggerInterface $logger)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger
+    ) {
         $this->em = $em;
         $this->serializer = $serializer;
         $this->settings = $settings;
         $this->logger = $logger;
 
-        if (!$this->entityClass) {
+        if (!isset($this->entityClass)) {
             $this->entityClass = $this->getEntityClass();
         }
-        if (!$this->repository) {
+        if (!isset($this->repository)) {
             $this->repository = $em->getRepository($this->entityClass);
         }
     }
 
-    /**
-     * @return string The extrapolated likely entity name, based on this repository's class name.
-     */
     protected function getEntityClass(): string
     {
         return str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
     }
 
-    /**
-     * @return EntityRepository
-     */
-    public function getRepository(): EntityRepository
+    public function getRepository(): ObjectRepository
     {
         return $this->repository;
     }
@@ -70,7 +56,7 @@ class Repository
      * Generate an array result of all records.
      *
      * @param bool $cached
-     * @param null $order_by
+     * @param string|null $order_by
      * @param string $order_dir
      *
      * @return array
@@ -91,7 +77,7 @@ class Repository
     /**
      * Generic dropdown builder function (can be overridden for specialized use cases).
      *
-     * @param bool $add_blank
+     * @param bool|string $add_blank
      * @param Closure|NULL $display
      * @param string $pk
      * @param string $order_by

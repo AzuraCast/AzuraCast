@@ -1,9 +1,9 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class PlaylistsController

@@ -5,11 +5,15 @@ use App\Entity;
 use App\Settings;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
+use NowPlaying\Result\Result;
 
 class AzuraRelay extends AbstractRemote
 {
-    public function updateNowPlaying(Entity\StationRemote $remote, $np_aggregate, bool $include_clients = false): array
-    {
+    public function updateNowPlaying(
+        Result $np,
+        Entity\StationRemote $remote,
+        bool $includeClients = false
+    ): Result {
         $station = $remote->getStation();
         $relay = $remote->getRelay();
 
@@ -17,24 +21,30 @@ class AzuraRelay extends AbstractRemote
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
-        $relay_np = $relay->getNowplaying();
+        $npRawRelay = $relay->getNowplaying();
 
-        if (isset($relay_np[$station->getId()][$remote->getMount()])) {
-            $np_new = $relay_np[$station->getId()][$remote->getMount()];
+        if (isset($npRawRelay[$station->getId()][$remote->getMount()])) {
+            $npRaw = $npRawRelay[$station->getId()][$remote->getMount()];
 
-            $clients = ($include_clients)
-                ? $np_new['listeners']['clients']
-                : null;
+            $npNew = Result::fromArray($npRaw);
 
-            $np_aggregate = $this->_mergeNowPlaying(
-                $remote,
-                $np_aggregate,
-                $np_new,
-                $clients
-            );
+            $this->logger->debug('Response for remote relay',
+                ['remote' => $remote->getDisplayName(), 'response' => $npNew]);
+
+            $remote->setListenersTotal($np->listeners->total);
+            $remote->setListenersUnique($np->listeners->unique);
+            $this->em->persist($remote);
+            $this->em->flush();
+
+            return $np->merge($npNew);
         }
 
-        return $np_aggregate;
+        return $np;
+    }
+
+    protected function getAdapterType(): string
+    {
+        return '';
     }
 
     /**

@@ -29,7 +29,7 @@ class StationRequiresRestart implements EventSubscriber
         ];
     }
 
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
@@ -65,7 +65,6 @@ class StationRequiresRestart implements EventSubscriber
                         }
                     }
 
-                    /** @var Entity\Station $station */
                     $station = $entity->getStation();
                     $stations_to_restart[$station->getId()] = $station;
                 }

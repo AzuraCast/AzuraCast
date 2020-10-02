@@ -14,10 +14,6 @@ final class Version20170619171323 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station_media CHANGE cue_in cue_in NUMERIC(5, 1) DEFAULT NULL, CHANGE cue_out cue_out NUMERIC(5, 1) DEFAULT NULL');
     }
 
@@ -26,10 +22,6 @@ final class Version20170619171323 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station_media CHANGE cue_in cue_in NUMERIC(3, 1) DEFAULT NULL, CHANGE cue_out cue_out NUMERIC(3, 1) DEFAULT NULL');
     }
 }

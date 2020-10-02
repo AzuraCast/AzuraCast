@@ -2,25 +2,25 @@
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
+use App\Exception;
+use App\Exception\CsrfValidationException;
 use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
-use App\Exception;
-use App\Exception\CsrfValidationException;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\ObjectRepository;
 
 abstract class AbstractStationCrudController
 {
     protected EntityForm $form;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $entity_class;
 
-    protected EntityRepository $record_repo;
+    protected ObjectRepository $record_repo;
 
     protected string $csrf_namespace;
 
@@ -45,13 +45,7 @@ abstract class AbstractStationCrudController
         $this->form->setStation($station);
 
         $record = $this->_getRecord($station, $id);
-        $result = $this->form->process($request, $record);
-
-        if (false !== $result) {
-            $this->em->refresh($station);
-        }
-
-        return $result;
+        return $this->form->process($request, $record);
     }
 
     /**

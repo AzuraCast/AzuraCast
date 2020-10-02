@@ -13,7 +13,7 @@ final class Version20180830003036 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('SELECT 1');
+        $this->addSql('-- "Ignore Migration"');
     }
 
     public function postup(Schema $schema): void
@@ -28,7 +28,7 @@ final class Version20180830003036 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('SELECT 1');
+        $this->addSql('-- "Ignore Migration"');
     }
 
     public function postdown(Schema $schema): void

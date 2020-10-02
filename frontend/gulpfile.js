@@ -7,10 +7,11 @@ const rev = require('gulp-rev');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
-const sass = require('gulp-sass');
+const sass = require('gulp-dart-sass');
 const clean_css = require('gulp-clean-css');
 const revdel = require('gulp-rev-delete-original');
 const webpackStream = require('webpack-stream');
+const gulpIgnore = require('gulp-ignore');
 
 var jsFiles = {
   // Core Libraries
@@ -132,8 +133,7 @@ var jsFiles = {
     base: null,
     files: [
       'node_modules/codemirror/lib/codemirror.*',
-      'node_modules/codemirror/mode/css/css.js',
-      'node_modules/codemirror/theme/material.css'
+      'node_modules/codemirror/mode/css/css.js'
     ]
   },
   'clipboard': {
@@ -217,7 +217,8 @@ gulp.task('bundle_deps', gulp.parallel(
 gulp.task('clean', function () {
   return del([
     '../web/static/dist/**/*',
-    '../web/static/assets.json'
+    '../web/static/assets.json',
+    '../web/static/webpack.json'
   ], { force: true });
 });
 
@@ -235,13 +236,12 @@ gulp.task('concat-js', function () {
 
 gulp.task('build-vue', function () {
   return gulp.src(['vue/*.js', 'vue/*.vue'])
-    .pipe(sourcemaps.init())
     .pipe(webpackStream(require('./webpack.config.js')))
+    .pipe(gulpIgnore.exclude('webpack.json'))
     .pipe(babel({
       presets: ['@babel/env']
     }))
     .pipe(uglify())
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest('../web/static/dist'));
 });
 

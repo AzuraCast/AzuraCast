@@ -7,16 +7,16 @@ use Throwable;
 class Exception extends \Exception
 {
     /** @var string The logging severity of the exception. */
-    protected $loggerLevel;
+    protected string $loggerLevel;
 
     /** @var array Any additional data that can be displayed in debugging. */
-    protected $extraData = [];
+    protected array $extraData = [];
 
     /** @var array Additional data supplied to the logger class when handling the exception. */
-    protected $loggingContext = [];
+    protected array $loggingContext = [];
 
     /** @var string|null */
-    protected $formattedMessage;
+    protected ?string $formattedMessage;
 
     public function __construct(
         string $message = '',

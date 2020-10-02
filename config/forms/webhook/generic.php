@@ -1,7 +1,7 @@
 <?php
 /** @var array $app_settings */
 /** @var array $triggers */
-/** @var \App\Http\Router $router */
+/** @var App\Http\Router $router */
 
 return [
     'method' => 'post',
@@ -28,7 +28,7 @@ return [
                         'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'webhook_url' => [
@@ -40,7 +40,7 @@ return [
                         'required' => true,
                         'label_class' => 'mb-2',
                         'form_group_class' => 'col-md-6 mt-1',
-                    ]
+                    ],
                 ],
 
                 'basic_auth_username' => [
@@ -50,7 +50,7 @@ return [
                         'description' => __('If your web hook requires HTTP basic authentication, provide the username here.'),
                         'belongsTo' => 'config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'basic_auth_password' => [
@@ -60,7 +60,7 @@ return [
                         'description' => __('If your web hook requires HTTP basic authentication, provide the password here.'),
                         'belongsTo' => 'config',
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 'triggers' => [
@@ -70,7 +70,7 @@ return [
                         'options' => $triggers,
                         'required' => true,
                         'form_group_class' => 'col-sm-12',
-                    ]
+                    ],
                 ],
 
             ],
@@ -85,10 +85,10 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
-                    ]
+                    ],
                 ],
 
-            ]
-        ]
+            ],
+        ],
     ],
 ];

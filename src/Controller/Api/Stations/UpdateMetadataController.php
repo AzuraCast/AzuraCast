@@ -5,6 +5,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use const ARRAY_FILTER_USE_KEY;
 
 class UpdateMetadataController
 {
@@ -34,7 +35,7 @@ class UpdateMetadataController
 
         $metadata = array_filter($request->getParams(), function ($key) use ($allowedMetaFields) {
             return in_array($key, $allowedMetaFields, true);
-        }, \ARRAY_FILTER_USE_KEY);
+        }, ARRAY_FILTER_USE_KEY);
 
         $output = $backend->updateMetadata($station, $metadata);
 

@@ -1,17 +1,15 @@
 <?php
 namespace App\Controller\Frontend\Account;
 
-use App\Acl;
-use App\Auth;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Entity\User;
+use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Exception\RateLimitExceededException;
 use App\RateLimit;
 use App\Session\Flash;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class LoginAction
@@ -19,12 +17,13 @@ class LoginAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Acl $acl,
-        Auth $auth,
-        EntityManager $em,
+        EntityManagerInterface $em,
         RateLimit $rateLimit,
         SettingsRepository $settingsRepo
     ): ResponseInterface {
+        $auth = $request->getAuth();
+        $acl = $request->getAcl();
+
         // Check installation completion progress.
         if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
             $num_users = (int)$em->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')
@@ -64,6 +63,13 @@ class LoginAction
                 // Redirect for 2FA.
                 if (!$auth->isLoginComplete()) {
                     return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
+                }
+
+                // Redirect to complete setup if it's not completed yet.
+                if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
+                    $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . __('Complete the setup process to get started.'),
+                        Flash::SUCCESS);
+                    return $response->withRedirect($request->getRouter()->named('setup:index'));
                 }
 
                 $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),

@@ -1,12 +1,12 @@
 <?php
 namespace App\Message;
 
-use Bernard\Message;
+use App\MessageQueue\QueueManager;
 
-abstract class AbstractMessage implements Message
+abstract class AbstractMessage
 {
-    public function getName(): string
+    public function getQueue(): string
     {
-        return static::class;
+        return QueueManager::QUEUE_NORMAL_PRIORITY;
     }
 }

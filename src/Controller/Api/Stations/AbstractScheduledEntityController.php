@@ -4,8 +4,9 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use App\Radio\AutoDJ\Scheduler;
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -14,15 +15,19 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
 {
     protected Entity\Repository\StationScheduleRepository $scheduleRepo;
 
+    protected Scheduler $scheduler;
+
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\StationScheduleRepository $scheduleRepo
+        Entity\Repository\StationScheduleRepository $scheduleRepo,
+        Scheduler $scheduler
     ) {
         parent::__construct($em, $serializer, $validator);
 
         $this->scheduleRepo = $scheduleRepo;
+        $this->scheduler = $scheduler;
     }
 
     protected function renderEvents(
@@ -32,15 +37,15 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         callable $rowRender
     ): ResponseInterface {
         $station = $request->getStation();
-        $tz = new \DateTimeZone($station->getTimezone());
+        $tz = $station->getTimezoneObject();
 
         $params = $request->getQueryParams();
 
         $startDateStr = substr($params['start'], 0, 10);
-        $startDate = Chronos::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
+        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
 
         $endDateStr = substr($params['end'], 0, 10);
-        $endDate = Chronos::createFromFormat('Y-m-d', $endDateStr, $tz);
+        $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);
 
         $events = [];
 
@@ -49,10 +54,10 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
             $i = $startDate;
 
             while ($i <= $endDate) {
-                $dayOfWeek = $i->format('N');
+                $dayOfWeek = (int)$i->format('N');
 
-                if ($scheduleItem->shouldPlayOnCurrentDate($i)
-                    && $scheduleItem->isScheduledToPlayToday($dayOfWeek)) {
+                if ($this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
+                    && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)) {
                     $rowStart = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
                     $rowEnd = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
 
@@ -83,7 +88,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
 
         if ($record instanceof $this->entityClass) {
             $this->em->persist($record);
-            $this->em->flush($record);
+            $this->em->flush();
 
             if (null !== $scheduleItems) {
                 $this->scheduleRepo->setScheduleItems($record, $scheduleItems);

@@ -2,12 +2,12 @@
 namespace App\Form;
 
 use App\Entity\Station;
-use App\Http\ServerRequest;
-use App\Settings;
 use App\Exception;
+use App\Http\ServerRequest;
 use App\Normalizer\DoctrineEntityNormalizer;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use App\Settings;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EntityForm extends Form
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Serializer $serializer;
 
@@ -38,7 +38,7 @@ class EntityForm extends Form
     protected ?Station $station = null;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         array $options = [],
@@ -61,14 +61,14 @@ class EntityForm extends Form
         $this->entityClass = $entityClass;
     }
 
-    public function getEntityManager(): EntityManager
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->em;
     }
 
-    public function getEntityRepository(): EntityRepository
+    public function getEntityRepository(): ObjectRepository
     {
-        if (null === $this->entityClass) {
+        if (!isset($this->entityClass)) {
             throw new Exception('Entity class name is not specified.');
         }
 
@@ -83,7 +83,7 @@ class EntityForm extends Form
      */
     public function process(ServerRequest $request, $record = null)
     {
-        if (null === $this->entityClass) {
+        if (!isset($this->entityClass)) {
             throw new Exception('Entity class name is not specified.');
         }
 
@@ -118,7 +118,7 @@ class EntityForm extends Form
             }
 
             $this->em->persist($record);
-            $this->em->flush($record);
+            $this->em->flush();
 
             // Intentionally refresh the station entity in case it didn't refresh elsewhere.
             if ($this->station instanceof Station && Settings::getInstance()->isTesting()) {

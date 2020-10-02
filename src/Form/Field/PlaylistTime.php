@@ -28,7 +28,7 @@ class PlaylistTime extends Time
     public function getValue()
     {
         if (empty($this->value)) {
-            return null;
+            return '';
         }
 
         [$hours, $minutes] = explode(':', $this->value);

@@ -1,7 +1,6 @@
 <?php
 namespace App\Session;
 
-use App\Session;
 use App\Traits\AvailableStaticallyTrait;
 use Mezzio\Session\SessionInterface;
 
@@ -19,11 +18,9 @@ class Flash
     public const ERROR = 'danger';
     public const INFO = 'info';
 
-    /** @var array|null */
-    protected $messages;
+    protected ?array $messages = null;
 
-    /** @var SessionInterface */
-    protected $session;
+    protected SessionInterface $session;
 
     public function __construct(SessionInterface $session)
     {

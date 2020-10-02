@@ -13,4 +13,6 @@ return [
     Message\UpdateNowPlayingMessage::class => Task\NowPlaying::class,
 
     Message\BackupMessage::class => Task\Backup::class,
+
+    Message\DispatchWebhookMessage::class => App\Webhook\Dispatcher::class,
 ];

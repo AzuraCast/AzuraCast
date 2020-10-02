@@ -1,8 +1,17 @@
 ---
-  - name: Install Redis
-    apt:
-      name: redis-server
-      state: latest
+- name: Add Redis PPA repository
+  apt_repository:
+    repo: "ppa:chris-lea/redis-server"
+    update_cache: yes
 
-  - name: Restart Redis service
-    service: name="redis" state=restarted
+- name: Install Redis
+  apt:
+    name: redis-server
+    state: latest
+
+- name: Set Redis service name
+  set_fact:
+    redis_service_name: "{{ 'redis-server' if ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal' else 'redis' }}"
+
+- name: Restart Redis service
+  service: name="{{ redis_service_name }}" state=restarted

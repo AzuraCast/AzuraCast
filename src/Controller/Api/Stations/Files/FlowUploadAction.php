@@ -5,7 +5,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Error;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -15,7 +15,7 @@ class FlowUploadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo
     ): ResponseInterface {

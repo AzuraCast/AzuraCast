@@ -5,6 +5,7 @@ use App\Entity;
 use App\Settings;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Slim\Interfaces\RouteInterface;
@@ -129,7 +130,7 @@ class Router implements RouterInterface
             if ($route instanceof RouteInterface) {
                 $route_name = $route->getName();
             } else {
-                throw new \InvalidArgumentException('Cannot specify a null route name if no existing route is configured.');
+                throw new InvalidArgumentException('Cannot specify a null route name if no existing route is configured.');
             }
         }
 

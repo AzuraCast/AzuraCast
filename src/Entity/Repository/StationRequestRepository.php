@@ -6,7 +6,8 @@ use App\Entity;
 use App\Exception;
 use App\Radio\AutoDJ;
 use App\Utilities;
-use Cake\Chronos\Chronos;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 
 class StationRequestRepository extends Repository
 {
@@ -68,7 +69,7 @@ class StationRequestRepository extends Repository
         }
 
         // Save request locally.
-        $record = new Entity\StationRequest($station, $media_item);
+        $record = new Entity\StationRequest($station, $media_item, $ip);
         $this->em->persist($record);
         $this->em->flush();
 
@@ -113,9 +114,9 @@ class StationRequestRepository extends Repository
 
     public function getNextPlayableRequest(
         Entity\Station $station,
-        ?Chronos $now = null
+        ?CarbonInterface $now = null
     ): ?Entity\StationRequest {
-        $now ??= Chronos::now(new \DateTimeZone($station->getTimezone()));
+        $now ??= CarbonImmutable::now($station->getTimezoneObject());
 
         // Look up all requests that have at least waited as long as the threshold.
         $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
@@ -180,7 +181,7 @@ class StationRequestRepository extends Repository
             ],
         ];
 
-        $isDuplicate = (null === AutoDJ::getDistinctTrack($eligibleTracks, $recentTracks));
+        $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack($eligibleTracks, $recentTracks));
 
         if ($isDuplicate) {
             throw new Exception(__('This song or artist has been played too recently. Wait a while before requesting it again.'));

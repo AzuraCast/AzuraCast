@@ -5,27 +5,27 @@ use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Message;
-use App\MessageQueue;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBus;
 
 class SftpUploadCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationRepository $stationRepo,
         LoggerInterface $logger,
         Filesystem $filesystem,
-        MessageQueue $messageQueue,
+        MessageBus $messageBus,
         string $action = null,
         string $username = null,
         string $path = null,
         string $targetPath = null,
         string $sshCmd = null
     ) {
-        $logger->info('SFTP file uploaded', ['path' => $path]);
+        $logger->notice('SFTP file uploaded', ['path' => $path]);
 
         // Determine which station the username belongs to.
         $userRepo = $em->getRepository(Entity\SftpUser::class);
@@ -49,6 +49,7 @@ class SftpUploadCommand extends CommandAbstract
         $message = new Message\AddNewMediaMessage;
         $message->station_id = $station->getId();
         $message->path = $relative_path;
-        $messageQueue->produce($message);
+
+        $messageBus->dispatch($message);
     }
 }

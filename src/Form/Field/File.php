@@ -13,7 +13,7 @@ class File extends \AzuraForms\Field\File
 
     public function getField($form_name): ?string
     {
-        [$attribute_string, $class] = $this->_attributeString();
+        [, $class] = $this->_attributeString();
 
         $button_text = $this->options['button_text'];
 

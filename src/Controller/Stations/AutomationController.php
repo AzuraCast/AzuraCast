@@ -1,20 +1,20 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Config;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Session\Flash;
 use App\Settings;
 use App\Sync\Task\RadioAutomation;
-use App\Config;
-use App\Session\Flash;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class AutomationController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected RadioAutomation $sync_task;
 
@@ -23,7 +23,7 @@ class AutomationController
     protected array $form_config;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         RadioAutomation $sync_task,
         Settings $app_settings,
         Config $config

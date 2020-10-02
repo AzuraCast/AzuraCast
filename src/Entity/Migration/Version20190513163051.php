@@ -14,10 +14,6 @@ final class Version20190513163051 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         // Move "play once per day" playlists to be standard scheduled ones with the same start/end time.
         $this->addSql('UPDATE station_playlists SET type="scheduled", schedule_start_time=play_once_time, schedule_end_time=play_once_time, schedule_days=play_once_days WHERE type = "once_per_day"');
 
@@ -32,7 +28,7 @@ final class Version20190513163051 extends AbstractMigration
         $global_tz = $this->connection->fetchColumn('SELECT setting_value FROM settings WHERE setting_key="timezone"');
 
         if (!empty($global_tz)) {
-            $global_tz = json_decode($global_tz, true);
+            $global_tz = json_decode($global_tz, true, 512, JSON_THROW_ON_ERROR);
         } else {
             $global_tz = 'UTC';
         }
@@ -96,10 +92,6 @@ final class Version20190513163051 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE station DROP timezone');
         $this->addSql('ALTER TABLE station_playlists ADD play_once_time SMALLINT NOT NULL, ADD play_once_days VARCHAR(50) DEFAULT NULL COLLATE utf8mb4_general_ci');
         $this->addSql('ALTER TABLE users ADD timezone VARCHAR(100) DEFAULT NULL COLLATE utf8mb4_general_ci');

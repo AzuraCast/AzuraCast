@@ -21,6 +21,8 @@ class Config
      * @param array $inject_vars Variables to pass into the scope of the configuration.
      *
      * @return array
+     * @noinspection PhpIncludeInspection
+     * @noinspection UselessUnsetInspection
      */
     public function get($name, $inject_vars = []): array
     {
@@ -44,7 +46,7 @@ class Config
      *
      * @return string
      */
-    public function _getPath($name)
+    public function _getPath($name): string
     {
         return $this->_base_folder . DIRECTORY_SEPARATOR . str_replace(['.', '..'], ['', ''], $name) . '.php';
     }

@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Doctrine\Paginator;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator\QueryPaginator;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractApiCrudController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Serializer $serializer;
 
@@ -30,7 +30,7 @@ abstract class AbstractApiCrudController
     /** @var string The route name used to generate the "self" links for each record. */
     protected string $resourceRouteName;
 
-    public function __construct(EntityManager $em, Serializer $serializer, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $em, Serializer $serializer, ValidatorInterface $validator)
     {
         $this->em = $em;
         $this->serializer = $serializer;
@@ -43,8 +43,7 @@ abstract class AbstractApiCrudController
         Query $query,
         callable $postProcessor = null
     ): ResponseInterface {
-        $paginator = new Paginator($query);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($query, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $is_internal = ('true' === $request->getParam('internal', 'false'));
@@ -125,7 +124,7 @@ abstract class AbstractApiCrudController
     }
 
     /**
-     * @param array $data
+     * @param array|null $data
      * @param object|null $record
      * @param array $context
      *
@@ -147,7 +146,7 @@ abstract class AbstractApiCrudController
         }
 
         $this->em->persist($record);
-        $this->em->flush($record);
+        $this->em->flush();
 
         return $record;
     }
@@ -181,6 +180,6 @@ abstract class AbstractApiCrudController
         }
 
         $this->em->remove($record);
-        $this->em->flush($record);
+        $this->em->flush();
     }
 }

@@ -1,12 +1,12 @@
 <?php
 namespace App\Controller\Stations\Reports;
 
+use App\Config;
 use App\Entity;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Config;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,21 +15,13 @@ use Psr\Http\Message\ResponseInterface;
  */
 class SoundExchangeController
 {
-    /** @var EntityManager */
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
-    /** @var Client */
     protected Client $http_client;
 
-    /** @var array */
     protected array $form_config;
 
-    /**
-     * @param EntityManager $em
-     * @param Client $http_client
-     * @param Config $config
-     */
-    public function __construct(EntityManager $em, Client $http_client, Config $config)
+    public function __construct(EntityManagerInterface $em, Client $http_client, Config $config)
     {
         $this->em = $em;
         $this->form_config = $config->get('forms/report/soundexchange');
@@ -180,8 +172,8 @@ class SoundExchangeController
     protected function _findISRC($song_row): string
     {
         // Temporarily disable this feature, as the Spotify API now requires authentication for all requests.
-        return '';
 
+        /*
         $query_parts = [];
         if (!empty($song_row['artist'])) {
             $query_parts[] = 'artist:"' . $song_row['artist'] . '"';
@@ -206,6 +198,7 @@ class SoundExchangeController
             $track = $search_result['tracks']['items'][0];
             return str_replace('-', '', $track['external_ids']['isrc']);
         }
+        */
 
         return '';
     }

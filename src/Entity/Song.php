@@ -6,6 +6,7 @@ use App\Exception;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use NowPlaying\Result\CurrentSong;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -119,6 +120,12 @@ class Song
                 'text' => $song_info->getText(),
                 'artist' => $song_info->getArtist(),
                 'title' => $song_info->getTitle(),
+            ];
+        } elseif ($song_info instanceof CurrentSong) {
+            $song_info = [
+                'text' => $song_info->text,
+                'artist' => $song_info->artist,
+                'title' => $song_info->title,
             ];
         } elseif (!is_array($song_info)) {
             $song_info = [

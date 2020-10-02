@@ -44,7 +44,7 @@ class StationPortCheckerValidator extends ConstraintValidator
             $port = (int)$value;
             if (isset($used_ports[$port])) {
                 $this->context->buildViolation($constraint->message)
-                    ->setParameter('{{ port }}', $port)
+                    ->setParameter('{{ port }}', (string)$port)
                     ->addViolation();
             }
 

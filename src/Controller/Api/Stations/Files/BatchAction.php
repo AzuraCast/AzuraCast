@@ -7,26 +7,27 @@ use App\Flysystem\StationFilesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
-use App\MessageQueue;
 use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 
 class BatchAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
         Filesystem $filesystem,
-        MessageQueue $messageQueue
+        MessageBus $messageBus
     ): ResponseInterface {
         $station = $request->getStation();
-        $fs = $filesystem->getForStation($station);
+
+        $fs = $filesystem->getForStation($station, false);
 
         // Convert from pipe-separated files parameter into actual paths.
         $files_raw = $request->getParam('files');
@@ -55,7 +56,7 @@ class BatchAction
                 $music_files = $this->getMusicFiles($fs, $files);
                 $files_found = count($music_files);
 
-                /** @var Entity\StationPlaylist[] $playlists */
+                /** @var Entity\StationPlaylist[] $affected_playlists */
                 $affected_playlists = [];
 
                 foreach ($music_files as $file) {
@@ -64,6 +65,14 @@ class BatchAction
                         $media = $mediaRepo->findByPath($file['path'], $station);
 
                         if ($media instanceof Entity\StationMedia) {
+                            // Remove album art and waveforms
+                            foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
+                                if ($fs->has($relatedFilePath)) {
+                                    $fs->delete($relatedFilePath);
+                                }
+                            }
+
+                            // Clear playlists from media
                             $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
 
                             foreach ($media_playlists as $playlist_id => $playlist) {
@@ -72,15 +81,12 @@ class BatchAction
                                 }
                             }
 
+                            $em->flush();
                             $em->remove($media);
-                            $em->flush($media);
+                            $em->flush();
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
 
                     $files_affected++;
@@ -102,7 +108,7 @@ class BatchAction
                 }
 
                 $em->persist($station);
-                $em->flush($station);
+                $em->flush();
 
                 // Write new PLS playlist configuration.
                 $backend = $request->getStationBackend();
@@ -112,7 +118,8 @@ class BatchAction
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage;
                         $message->playlist_id = $playlist_id;
-                        $messageQueue->produce($message);
+
+                        $messageBus->dispatch($message);
                     }
                 }
                 break;
@@ -178,10 +185,6 @@ class BatchAction
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
 
                     $files_affected++;
@@ -196,10 +199,6 @@ class BatchAction
                         $playlistFolderRepo->setPlaylistsForFolder($station, $playlists, $dir['path']);
                     } catch (Exception $e) {
                         $errors[] = $dir['path'] . ': ' . $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
                 }
 
@@ -213,7 +212,8 @@ class BatchAction
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage;
                         $message->playlist_id = $playlist_id;
-                        $messageQueue->produce($message);
+
+                        $messageBus->dispatch($message);
                     }
                 }
                 break;
@@ -250,15 +250,11 @@ class BatchAction
                         }
 
                         $em->persist($media);
-                        $em->flush($media);
+                        $em->flush();
                         $files_affected++;
                     }
                 } catch (Exception $e) {
                     $errors[] = $e->getMessage();
-
-                    if (!$em->isOpen()) {
-                        break;
-                    }
                 }
 
                 $em->flush();
@@ -272,16 +268,12 @@ class BatchAction
                     try {
                         $media = $mediaRepo->getOrCreate($station, $file['path']);
 
-                        $newRequest = new Entity\StationRequest($station, $media, true);
+                        $newRequest = new Entity\StationRequest($station, $media, $request->getIp(), true);
                         $em->persist($newRequest);
-                        $em->flush($newRequest);
+                        $em->flush();
                         $files_affected++;
                     } catch (Exception $e) {
                         $errors[] = $e->getMessage();
-
-                        if (!$em->isOpen()) {
-                            break 2;
-                        }
                     }
                 }
                 break;

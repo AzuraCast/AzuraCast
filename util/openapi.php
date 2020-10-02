@@ -31,7 +31,7 @@ use OpenApi\Annotations as OA;
  *     in="path",
  *     required=true,
  *     @OA\Schema(
- *         type="int64"
+ *         type="integer", format="int64"
  *     )
  * )
  *

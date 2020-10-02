@@ -8,11 +8,9 @@ class RateLimit
 {
     public const NAMESPACE_SEPARATOR = '|';
 
-    /** @var Redis */
-    protected $redis;
+    protected Redis $redis;
 
-    /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
     public function __construct(Redis $redis, Settings $settings)
     {
@@ -40,7 +38,8 @@ class RateLimit
         }
 
         $ip = $request->getIp();
-        $cache_name = 'rate_limit' . self::NAMESPACE_SEPARATOR . $group_name . self::NAMESPACE_SEPARATOR . str_replace(':', '.', $ip);
+        $cache_name = 'rate_limit' . self::NAMESPACE_SEPARATOR . $group_name . self::NAMESPACE_SEPARATOR . str_replace(':',
+                '.', $ip);
 
         $result = $this->redis->get($cache_name);
 

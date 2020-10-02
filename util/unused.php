@@ -1,4 +1,12 @@
 <?php
+/*
+ * Install unused checker with:
+ * composer global require insolita/unused-scanner
+ *
+ * Invoke with:
+ * php ~/.composer/vendor/bin/unused_scanner util/unused.php
+ */
+
 /**
  *  Set $projectPath = getcwd(); if your put it under project root
  **/
@@ -12,9 +20,8 @@ $projectPath = dirname(__DIR__);
  **/
 $scanDirectories = [
     $projectPath . '/config/',
-    $projectPath . '/bootstrap/',
     $projectPath . '/src/',
-    $projectPath . '/resources/templates',
+    $projectPath . '/templates',
 ];
 
 $scanFiles = [
@@ -58,7 +65,7 @@ return [
      *         return $isPresent;
      * }
      **/
-    'customMatch'=> null,
+    'customMatch' => null,
 
     /**
      * Report mode options
@@ -85,6 +92,6 @@ return [
      *     return print_r($report, true);
      * }
      **/
-    'reportFormatter'=>null,
-    'reportExtension'=>null, //by default - json, set own, if use custom formatter
+    'reportFormatter' => null,
+    'reportExtension' => null, //by default - json, set own, if use custom formatter
 ];

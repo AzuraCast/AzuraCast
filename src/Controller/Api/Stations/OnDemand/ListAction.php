@@ -2,21 +2,35 @@
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\ApiUtilities;
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\Http\Response;
+use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use App\Paginator\ArrayPaginator;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManagerInterface;
+use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Http\Message\ResponseInterface;
+use Psr\SimpleCache\CacheInterface;
 
 class ListAction
 {
+    protected EntityManagerInterface $em;
+
+    protected ApiUtilities $apiUtils;
+
+    public function __construct(EntityManagerInterface $em, ApiUtilities $apiUtils)
+    {
+        $this->em = $em;
+        $this->apiUtils = $apiUtils;
+    }
+
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
-        ApiUtilities $apiUtils
+        CacheInterface $cache
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -26,70 +40,101 @@ class ListAction
                 ->withJson(new Entity\Api\Error(403, __('This station does not support on-demand streaming.')));
         }
 
-        $qb = $em->createQueryBuilder();
+        $cacheKey = 'ondemand_' . $station->getId();
+        if ($cache->has($cacheKey)) {
+            $trackList = $cache->get($cacheKey, []);
+        } else {
+            $trackList = $this->buildTrackList($station, $request->getRouter());
+            $cache->set($cacheKey, $trackList, 300);
+        }
 
-        $qb->select('sm, s, spm, sp')
-            ->from(Entity\StationMedia::class, 'sm')
-            ->join('sm.song', 's')
-            ->leftJoin('sm.playlists', 'spm')
-            ->leftJoin('spm.playlist', 'sp')
-            ->where('sm.station_id = :station_id')
-            ->andWhere('sp.id IS NOT NULL')
-            ->andWhere('sp.is_enabled = 1')
-            ->andWhere('sp.include_in_on_demand = 1')
-            ->setParameter('station_id', $station->getId());
+        $trackList = new ArrayCollection($trackList);
 
         $params = $request->getQueryParams();
 
-        if (!empty($params['sort'])) {
-            $sortFields = [
-                'media_title' => 'sm.title',
-                'media_artist' => 'sm.artist',
-                'media_album' => 'sm.album',
+        $searchPhrase = trim($params['searchPhrase']);
+        if (!empty($searchPhrase)) {
+            $searchFields = [
+                'media_title',
+                'media_artist',
+                'media_album',
+                'playlist',
             ];
 
-            if (isset($sortFields[$params['sort']])) {
-                $sortField = $sortFields[$params['sort']];
-                $sortDirection = $params['sortOrder'] ?? 'ASC';
-                $qb->addOrderBy($sortField, $sortDirection);
-            }
-        } else {
-            $qb->orderBy('sm.artist', 'ASC')
-                ->addOrderBy('sm.title', 'ASC');
-        }
-
-        $search_phrase = trim($params['searchPhrase']);
-        if (!empty($search_phrase)) {
-            $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
-                ->setParameter('query', '%' . $search_phrase . '%');
-        }
-
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
-
-        $isBootgrid = $paginator->isFromBootgrid();
-        $router = $request->getRouter();
-
-        $paginator->setPostprocessor(function ($media) use ($station, $isBootgrid, $router, $apiUtils) {
-            /** @var Entity\StationMedia $media */
-            $row = new Entity\Api\StationOnDemand();
-
-            $row->track_id = $media->getUniqueId();
-            $row->media = $media->api($apiUtils);
-            $row->download_url = (string)$router->named('api:stations:ondemand:download', [
-                'station_id' => $station->getId(),
-                'media_id' => $media->getUniqueId(),
-            ]);
-
-            $row->resolveUrls($router->getBaseUrl());
-
-            if ($isBootgrid) {
-                return Utilities::flattenArray($row, '_');
+            $customFields = array_keys($this->apiUtils->getCustomFields());
+            foreach ($customFields as $customField) {
+                $searchFields[] = 'media_custom_fields_' . $customField;
             }
 
-            return $row;
-        });
+            $trackList = $trackList->filter(function ($row) use ($searchFields, $searchPhrase) {
+                foreach ($searchFields as $searchField) {
+                    if (false !== stripos($row[$searchField], $searchPhrase)) {
+                        return true;
+                    }
+                }
 
+                return false;
+            });
+        }
+
+        if (!empty($params['sort'])) {
+            $sortField = $params['sort'];
+            $sortDirection = $params['sortOrder'] ?? Criteria::ASC;
+
+            $criteria = new Criteria;
+            $criteria->orderBy([$sortField => $sortDirection]);
+
+            $trackList = $trackList->matching($criteria);
+        }
+
+        $paginator = new ArrayPaginator($trackList, $request);
         return $paginator->write($response);
+    }
+
+    protected function buildTrackList(Entity\Station $station, RouterInterface $router): array
+    {
+        $list = [];
+
+        $playlists = $this->em->createQuery(/** @lang DQL */ '
+            SELECT sp FROM App\Entity\StationPlaylist sp
+            WHERE sp.station = :station
+            AND sp.id IS NOT NULL
+            AND sp.is_enabled = 1
+            AND sp.include_in_on_demand = 1')
+            ->setParameter('station', $station)
+            ->getArrayResult();
+
+        foreach ($playlists as $playlist) {
+            $query = $this->em->createQuery(/** @lang DQL */ '
+                SELECT sm FROM App\Entity\StationMedia sm
+                WHERE sm.id IN (
+                    SELECT spm.media_id 
+                    FROM App\Entity\StationPlaylistMedia spm
+                    WHERE spm.playlist_id = :playlist_id
+                )
+                ORDER BY sm.artist ASC, sm.title ASC')
+                ->setParameter('playlist_id', $playlist['id']);
+
+            $iterator = SimpleBatchIteratorAggregate::fromQuery($query, 50);
+
+            foreach ($iterator as $media) {
+                /** @var Entity\StationMedia $media */
+                $row = new Entity\Api\StationOnDemand();
+
+                $row->track_id = $media->getUniqueId();
+                $row->media = $media->api($this->apiUtils);
+                $row->playlist = $playlist['name'];
+                $row->download_url = (string)$router->named('api:stations:ondemand:download', [
+                    'station_id' => $station->getId(),
+                    'media_id' => $media->getUniqueId(),
+                ]);
+
+                $row->resolveUrls($router->getBaseUrl());
+
+                $list[] = Utilities::flattenArray($row, '_');;
+            }
+        }
+
+        return $list;
     }
 }

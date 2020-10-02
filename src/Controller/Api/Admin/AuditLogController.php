@@ -4,18 +4,18 @@ namespace App\Controller\Api\Admin;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Doctrine\Paginator;
-use Cake\Chronos\Chronos;
+use App\Paginator\QueryPaginator;
+use Carbon\CarbonImmutable;
 use DateTimeZone;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use const JSON_PRETTY_PRINT;
 
 class AuditLogController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -26,11 +26,11 @@ class AuditLogController
 
         $params = $request->getParams();
         if (!empty($params['start'])) {
-            $start = Chronos::parse($params['start'] . ' 00:00:00', $tz);
-            $end = Chronos::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $tz);
+            $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $tz);
+            $end = CarbonImmutable::parse(($params['end'] ?? $params['start']) . ' 23:59:59', $tz);
         } else {
-            $start = Chronos::parse('-2 weeks', $tz);
-            $end = Chronos::now($tz);
+            $start = CarbonImmutable::parse('-2 weeks', $tz);
+            $end = CarbonImmutable::now($tz);
         }
 
         $qb = $this->em->createQueryBuilder();
@@ -49,8 +49,7 @@ class AuditLogController
 
         $qb->orderBy('a.timestamp', 'DESC');
 
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($qb, $request);
 
         $paginator->setPostprocessor(function (Entity\AuditLog $row) {
             $operations = [
@@ -65,8 +64,8 @@ class AuditLogController
             foreach ($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
                 $changes[] = [
                     'field' => $fieldName,
-                    'from' => json_encode($fieldPrevious, JSON_PRETTY_PRINT),
-                    'to' => json_encode($fieldNew, JSON_PRETTY_PRINT),
+                    'from' => json_encode($fieldPrevious, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
+                    'to' => json_encode($fieldNew, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
                 ];
             }
 

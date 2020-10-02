@@ -4,7 +4,7 @@ namespace App\Radio;
 use App\Entity\Station;
 use App\Exception;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
 use RuntimeException;
@@ -15,7 +15,7 @@ class Configuration
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Adapters $adapters;
 
@@ -24,7 +24,7 @@ class Configuration
     protected Logger $logger;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Adapters $adapters,
         Supervisor $supervisor,
         Logger $logger
@@ -61,11 +61,15 @@ class Configuration
         // Ensure port configuration exists
         $this->assignRadioPorts($station, false);
 
+        // Clear station caches and generate API adapter key if none exists.
         if ($regen_auth_key || empty($station->getAdapterApiKey())) {
             $station->generateAdapterApiKey();
-            $this->em->persist($station);
-            $this->em->flush($station);
         }
+
+        $station->clearCache();
+
+        $this->em->persist($station);
+        $this->em->flush();
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
@@ -162,7 +166,7 @@ class Configuration
             $station->setNeedsRestart(false);
 
             $this->em->persist($station);
-            $this->em->flush($station);
+            $this->em->flush();
         }
     }
 

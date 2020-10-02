@@ -1,17 +1,17 @@
 <?php
 namespace App\Console\Command\Internal;
 
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Radio\AutoDJ;
-use App\Console\Command\CommandAbstract;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class NextSongCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        EntityManager $em,
+        EntityManagerInterface $em,
         AutoDJ $autoDJ,
         int $stationId,
         bool $asAutodj = false

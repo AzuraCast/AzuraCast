@@ -5,8 +5,9 @@ use App\Entity;
 use App\Logger;
 use App\Settings;
 use App\Utilities;
-use NowPlaying\Adapter\AdapterAbstract;
-use NowPlaying\Adapter\SHOUTcast2;
+use Exception;
+use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
 
@@ -48,37 +49,50 @@ class SHOUTcast extends AbstractFrontend
             : false;
     }
 
-    public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
+    public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
-        $fe_config = $station->getFrontendConfig();
-        $radio_port = $fe_config->getPort();
+        $feConfig = $station->getFrontendConfig();
+        $radioPort = $feConfig->getPort();
+        $baseUrl = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
-        $base_url = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radio_port;
+        $npAdapter = $this->adapterFactory->getAdapter(
+            AdapterFactory::ADAPTER_SHOUTCAST2,
+            $baseUrl
+        );
+        $npAdapter->setAdminPassword($feConfig->getAdminPassword());
 
-        $np_adapter = new SHOUTcast2($base_url, $this->http_client);
-        $np_adapter->setAdminPassword($fe_config->getAdminPassword());
-
-        $np_final = AdapterAbstract::NOWPLAYING_EMPTY;
-        $np_final['listeners']['clients'] = [];
+        $defaultResult = Result::blank();
+        $otherResults = [];
 
         try {
             $sid = 0;
-
             foreach ($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
                 $sid++;
-                $np_final = $this->_processNowPlayingForMount(
-                    $mount,
-                    $np_final,
-                    $np_adapter->getNowPlaying($sid),
-                    $include_clients ? $np_adapter->getClients($sid, true) : null
-                );
+
+                $result = $npAdapter->getNowPlaying((string)$sid, $includeClients);
+
+                $mount->setListenersTotal($result->listeners->total);
+                $mount->setListenersUnique($result->listeners->unique);
+                $this->em->persist($mount);
+
+                if ($mount->getIsDefault()) {
+                    $defaultResult = $result;
+                } else {
+                    $otherResults[] = $result;
+                }
             }
-        } catch (\Exception $e) {
+
+            $this->em->flush();
+
+            foreach ($otherResults as $otherResult) {
+                $defaultResult = $defaultResult->merge($otherResult);
+            }
+        } catch (Exception $e) {
             Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
-        return $np_final;
+        return $defaultResult;
     }
 
     /*

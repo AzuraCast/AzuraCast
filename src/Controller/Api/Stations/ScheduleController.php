@@ -4,8 +4,8 @@ namespace App\Controller\Api\Stations;
 use App\Entity\Repository\StationScheduleRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManager;
+use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -42,7 +42,7 @@ class ScheduleController extends AbstractStationApiCrudController
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param CacheInterface $cache
      * @param StationScheduleRepository $scheduleRepo
      *
@@ -51,19 +51,19 @@ class ScheduleController extends AbstractStationApiCrudController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em,
+        EntityManagerInterface $em,
         CacheInterface $cache,
         StationScheduleRepository $scheduleRepo
     ): ResponseInterface {
         $station = $request->getStation();
-        $tz = new \DateTimeZone($station->getTimezone());
+        $tz = $station->getTimezoneObject();
 
         $now = $request->getQueryParam('now');
         if (!empty($now)) {
-            $now = Chronos::parse($now, $tz);
+            $now = CarbonImmutable::parse($now, $tz);
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_' . $now->format('Ymd_gia');
         } else {
-            $now = Chronos::now($tz);
+            $now = CarbonImmutable::now($tz);
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
         }
 

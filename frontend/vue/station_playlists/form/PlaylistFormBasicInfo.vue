@@ -60,165 +60,173 @@
                     </template>
                     <b-form-radio-group stacked id="edit_form_type" v-model="form.type.$model">
                         <b-form-radio value="default">
-                            <b>
-                                <translate key="lang_form_type_default">General Rotation</translate>
-                                :</b>
-                            <translate key="lang_form_type_default_desc">Standard playlist, shuffles with other standard playlists based on weight.</translate>
+                            <translate key="lang_form_type_default">General Rotation</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_default_desc">Standard playlist, shuffles with other standard playlists based on weight.</translate>
                         </b-form-radio>
                         <b-form-radio value="once_per_x_songs">
-                            <b>
-                                <translate key="lang_form_type_once_per_x_songs">Once per x Songs</translate>
-                                :
-                            </b>
-                            <translate key="lang_form_type_once_per_x_songs_desc">Play exactly once every $x songs.</translate>
+                            <translate key="lang_form_type_once_per_x_songs">Once per x Songs</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_once_per_x_songs_desc">Play exactly once every $x songs.</translate>
                         </b-form-radio>
                         <b-form-radio value="once_per_x_minutes">
-                            <b>
-                                <translate key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>
-                                :
-                            </b>
-                            <translate key="lang_form_type_once_per_x_minutes_desc">Play exactly once every $x minutes.</translate>
+                            <translate key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_once_per_x_minutes_desc">Play exactly once every $x minutes.</translate>
                         </b-form-radio>
                         <b-form-radio value="once_per_hour">
-                            <b>
-                                <translate key="lang_form_type_once_per_hour">Once per Hour</translate>
-                                :
-                            </b>
-                            <translate key="lang_form_type_once_per_hour_desc">Play once per hour at the specified minute.</translate>
+                            <translate key="lang_form_type_once_per_hour">Once per Hour</translate>
+                            <translate class="form-text mt-0" key="lang_form_type_once_per_hour_desc">Play once per hour at the specified minute.</translate>
                         </b-form-radio>
                         <b-form-radio value="custom">
-                            <b>
-                                <translate key="lang_form_type_custom">Advanced</translate>
-                                :
-                            </b>
-                            <translate key="lang_form_type_custom_desc">Manually define how this playlist is used in Liquidsoap configuration.</translate>
-                            <a href="https://www.azuracast.com/station-management/playlists/#advanced-playlists" target="_blank">
-                                <translate key="lang_form_type_custom_more">Learn about Advanced Playlists</translate>
-                            </a>
+                            <translate key="lang_form_type_custom">Advanced</translate>
+                            <span class="form-text mt-0">
+                                <translate key="lang_form_type_custom_desc">Manually define how this playlist is used in Liquidsoap configuration.</translate>
+                                <a href="https://www.azuracast.com/station-management/playlists/#advanced-playlists" target="_blank">
+                                    <translate key="lang_form_type_custom_more">Learn about Advanced Playlists</translate>
+                                </a>
+                            </span>
                         </b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>
             </b-row>
         </b-form-group>
 
-        <b-form-group v-show="form.type.$model === 'default'">
-            <template v-slot:label>
-                <translate key="lang_type_default">General Rotation</translate>
-            </template>
-            <b-row>
-
-                <b-form-group class="col-md-6" label-for="form_edit_include_in_automation">
-                    <template v-slot:description>
-                        <translate key="lang_form_edit_include_in_automation_desc">If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.</translate>
-                    </template>
-                    <b-form-checkbox id="form_edit_include_in_automation" v-model="form.include_in_automation.$model">
-                        <translate key="lang_form_edit_include_in_automation">Include in Automated Assignment</translate>
-                    </b-form-checkbox>
+        <b-card v-show="form.type.$model === 'default'" class="mb-3" no-body>
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_type_default">General Rotation</translate>
+                </h2>
+            </div>
+            <b-card-body>
+                <b-form-group>
+                    <b-row>
+                        <b-form-group class="col-md-6" label-for="form_edit_include_in_automation">
+                            <template v-slot:description>
+                                <translate key="lang_form_edit_include_in_automation_desc">If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.</translate>
+                            </template>
+                            <b-form-checkbox id="form_edit_include_in_automation" v-model="form.include_in_automation.$model">
+                                <translate key="lang_form_edit_include_in_automation">Include in Automated Assignment</translate>
+                            </b-form-checkbox>
+                        </b-form-group>
+                    </b-row>
                 </b-form-group>
+            </b-card-body>
+        </b-card>
 
-            </b-row>
-        </b-form-group>
-
-        <b-form-group v-show="form.type.$model === 'once_per_x_songs'">
-            <template v-slot:label>
-                <translate key="lang_type_once_per_x_songs">Once per x Songs</translate>
-            </template>
-            <b-row>
-
-                <b-form-group class="col-md-6" label-for="form_edit_play_per_songs">
-                    <template v-slot:label>
-                        <translate key="lang_form_edit_play_per_songs">Number of Songs Between Plays</translate>
-                    </template>
-                    <template v-slot:description>
-                        <translate key="lang_form_edit_play_per_songs_desc">This playlist will play every $x songs, where $x is specified below.</translate>
-                    </template>
-                    <b-form-input id="form_edit_play_per_songs" type="number" min="0" max="150"
-                                  v-model="form.play_per_songs.$model"
-                                  :state="form.play_per_songs.$dirty ? !form.play_per_songs.$error : null"></b-form-input>
-                    <b-form-invalid-feedback>
-                        <translate key="lang_error_required">This field is required.</translate>
-                    </b-form-invalid-feedback>
+        <b-card v-show="form.type.$model === 'once_per_x_songs'" class="mb-3" no-body>
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_type_once_per_x_songs">Once per x Songs</translate>
+                </h2>
+            </div>
+            <b-card-body>
+                <b-form-group>
+                    <b-row>
+                        <b-form-group class="col-md-6" label-for="form_edit_play_per_songs">
+                            <template v-slot:label>
+                                <translate key="lang_form_edit_play_per_songs">Number of Songs Between Plays</translate>
+                            </template>
+                            <template v-slot:description>
+                                <translate key="lang_form_edit_play_per_songs_desc">This playlist will play every $x songs, where $x is specified below.</translate>
+                            </template>
+                            <b-form-input id="form_edit_play_per_songs" type="number" min="0" max="150"
+                                          v-model="form.play_per_songs.$model"
+                                          :state="form.play_per_songs.$dirty ? !form.play_per_songs.$error : null"></b-form-input>
+                            <b-form-invalid-feedback>
+                                <translate key="lang_error_required">This field is required.</translate>
+                            </b-form-invalid-feedback>
+                        </b-form-group>
+                    </b-row>
                 </b-form-group>
+            </b-card-body>
+        </b-card>
 
-            </b-row>
-        </b-form-group>
+        <b-card v-show="form.type.$model === 'once_per_x_minutes'" class="mb-3" no-body>
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>
+                </h2>
+            </div>
+            <b-card-body>
+                <b-form-group>
+                    <b-row>
 
-        <b-form-group v-show="form.type.$model === 'once_per_x_minutes'">
-            <template v-slot:label>
-                <translate key="lang_form_type_once_per_x_minutes">Once per x Minutes</translate>
-            </template>
-            <b-row>
+                        <b-form-group class="col-md-6" label-for="form_edit_play_per_minutes">
+                            <template v-slot:label>
+                                <translate key="form_edit_play_per_minutes">Number of Minutes Between Plays</translate>
+                            </template>
+                            <template v-slot:description>
+                                <translate key="form_edit_play_per_minutes_desc">This playlist will play every $x minutes, where $x is specified below.</translate>
+                            </template>
+                            <b-form-input id="form_edit_play_per_minutes" type="number" min="0" max="360"
+                                          v-model="form.play_per_minutes.$model"
+                                          :state="form.play_per_minutes.$dirty ? !form.play_per_minutes.$error : null"></b-form-input>
+                            <b-form-invalid-feedback>
+                                <translate key="lang_error_required">This field is required.</translate>
+                            </b-form-invalid-feedback>
+                        </b-form-group>
 
-                <b-form-group class="col-md-6" label-for="form_edit_play_per_minutes">
-                    <template v-slot:label>
-                        <translate key="form_edit_play_per_minutes">Number of Minutes Between Plays</translate>
-                    </template>
-                    <template v-slot:description>
-                        <translate key="form_edit_play_per_minutes_desc">This playlist will play every $x minutes, where $x is specified below.</translate>
-                    </template>
-                    <b-form-input id="form_edit_play_per_minutes" type="number" min="0" max="360"
-                                  v-model="form.play_per_minutes.$model"
-                                  :state="form.play_per_minutes.$dirty ? !form.play_per_minutes.$error : null"></b-form-input>
-                    <b-form-invalid-feedback>
-                        <translate key="lang_error_required">This field is required.</translate>
-                    </b-form-invalid-feedback>
+                    </b-row>
                 </b-form-group>
+            </b-card-body>
+        </b-card>
 
-            </b-row>
-        </b-form-group>
+        <b-card v-show="form.type.$model === 'once_per_hour'" class="mb-3" no-body>
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_type_once_per_hour">Once per Hour</translate>
+                </h2>
+            </div>
+            <b-card-body>
+                <b-form-group>
+                    <b-row>
 
-        <b-form-group v-show="form.type.$model === 'once_per_hour'">
-            <template v-slot:label>
-                <translate key="lang_type_once_per_hour">Once per Hour</translate>
-            </template>
-            <b-row>
+                        <b-form-group class="col-md-6" label-for="form_edit_play_per_hour_minute">
+                            <template v-slot:label>
+                                <translate key="lang_form_edit_play_per_hour_minute">Minute of Hour to Play</translate>
+                            </template>
+                            <template v-slot:description>
+                                <translate key="lang_form_edit_play_per_hour_minute_desc">Specify the minute of every hour that this playlist should play.</translate>
+                            </template>
+                            <b-form-input id="form_edit_play_per_hour_minute" type="number" min="0" max="59"
+                                          v-model="form.play_per_hour_minute.$model"
+                                          :state="form.play_per_hour_minute.$dirty ? !form.play_per_hour_minute.$error : null"></b-form-input>
+                            <b-form-invalid-feedback>
+                                <translate key="lang_error_required">This field is required.</translate>
+                            </b-form-invalid-feedback>
+                        </b-form-group>
 
-                <b-form-group class="col-md-6" label-for="form_edit_play_per_hour_minute">
-                    <template v-slot:label>
-                        <translate key="lang_form_edit_play_per_hour_minute">Minute of Hour to Play</translate>
-                    </template>
-                    <template v-slot:description>
-                        <translate key="lang_form_edit_play_per_hour_minute_desc">Specify the minute of every hour that this playlist should play.</translate>
-                    </template>
-                    <b-form-input id="form_edit_play_per_hour_minute" type="number" min="0" max="59"
-                                  v-model="form.play_per_hour_minute.$model"
-                                  :state="form.play_per_hour_minute.$dirty ? !form.play_per_hour_minute.$error : null"></b-form-input>
-                    <b-form-invalid-feedback>
-                        <translate key="lang_error_required">This field is required.</translate>
-                    </b-form-invalid-feedback>
+                    </b-row>
                 </b-form-group>
-
-            </b-row>
-        </b-form-group>
+            </b-card-body>
+        </b-card>
     </b-tab>
 </template>
 
 <script>
-    export default {
-        name: 'PlaylistEditBasicInfo',
-        props: {
-            form: Object
-        },
-        data () {
-            let weightOptions = [
-                { value: 1, text: '1 - ' + this.$gettext('Low') },
-                { value: 2, text: '2' },
-                { value: 3, text: '3 - ' + this.$gettext('Default') },
-                { value: 4, text: '4' },
-                { value: 5, text: '5 - ' + this.$gettext('High') }
-            ];
-            for (var i = 6; i <= 25; i++) {
-                weightOptions.push({ value: i, text: i });
-            }
-
-            return {
-                weightOptions: weightOptions
-            };
-        },
-        computed: {
-            langTabTitle () {
-                return this.$gettext('Basic Info');
-            }
+export default {
+    name: 'PlaylistEditBasicInfo',
+    props: {
+        form: Object
+    },
+    data () {
+        let weightOptions = [
+            { value: 1, text: '1 - ' + this.$gettext('Low') },
+            { value: 2, text: '2' },
+            { value: 3, text: '3 - ' + this.$gettext('Default') },
+            { value: 4, text: '4' },
+            { value: 5, text: '5 - ' + this.$gettext('High') }
+        ];
+        for (var i = 6; i <= 25; i++) {
+            weightOptions.push({ value: i, text: i });
         }
-    };
+
+        return {
+            weightOptions: weightOptions
+        };
+    },
+    computed: {
+        langTabTitle () {
+            return this.$gettext('Basic Info');
+        }
+    }
+};
 </script>

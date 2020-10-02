@@ -6,7 +6,7 @@ use App\Event\Radio\LoadNowPlaying;
 use App\EventDispatcher;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NowplayingController implements EventSubscriberInterface
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
@@ -23,7 +23,7 @@ class NowplayingController implements EventSubscriberInterface
     protected EventDispatcher $dispatcher;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         CacheInterface $cache,
         EventDispatcher $dispatcher
@@ -139,17 +139,17 @@ class NowplayingController implements EventSubscriberInterface
         return $response->withJson($np);
     }
 
-    public function loadFromCache(LoadNowPlaying $event)
+    public function loadFromCache(LoadNowPlaying $event): void
     {
         $event->setNowPlaying((array)$this->cache->get(Entity\Settings::NOWPLAYING), 'redis');
     }
 
-    public function loadFromSettings(LoadNowPlaying $event)
+    public function loadFromSettings(LoadNowPlaying $event): void
     {
         $event->setNowPlaying((array)$this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING), 'settings');
     }
 
-    public function loadFromStations(LoadNowPlaying $event)
+    public function loadFromStations(LoadNowPlaying $event): void
     {
         $nowplaying_db = $this->em->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
             ->getArrayResult();

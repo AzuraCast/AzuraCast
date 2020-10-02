@@ -245,7 +245,7 @@ class Utilities
         if (!is_array($array)) {
             if (is_object($array)) {
                 // Quick and dirty conversion from object to array.
-                $array = json_decode(json_encode($array), true);
+                $array = json_decode(json_encode($array, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
             } else {
                 return $array;
             }

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Frontend\Account;
 
-use App\Auth;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
@@ -11,9 +10,10 @@ class TwoFactorAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Auth $auth
+        Response $response
     ): ResponseInterface {
+        $auth = $request->getAuth();
+
         if ($request->isPost()) {
             $flash = $request->getFlash();
             $otp = $request->getParam('otp');

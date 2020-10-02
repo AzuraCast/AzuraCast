@@ -1,16 +1,10 @@
-$(function() {
+$(function () {
 
-    $('textarea.css-editor').each(function() {
+    $('textarea.css-editor,textarea.js-editor').each(function () {
         CodeMirror.fromTextArea($(this)[0], {
             lineNumbers: true,
-            theme: '<?=(($customization->getTheme() === 'light') ? 'default' : 'material') ?>'
+            theme: 'default'
         });
     });
-
-    $('textarea.js-editor').each(function() {
-        CodeMirror.fromTextArea($(this)[0], {
-            lineNumbers: true,
-            theme: '<?=(($customization->getTheme() === 'light') ? 'default' : 'material') ?>'
-        });
-    });
+    
 });

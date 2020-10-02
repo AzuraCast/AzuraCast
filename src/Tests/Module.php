@@ -11,21 +11,17 @@ use Codeception\Configuration;
 use Codeception\Lib\Framework;
 use Codeception\Lib\Interfaces\DoctrineProvider;
 use Codeception\TestInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Slim\App;
 
 class Module extends Framework implements DoctrineProvider
 {
-    /** @var ContainerInterface */
-    public $container;
+    public ContainerInterface $container;
 
-    /** @var App */
-    public $app;
+    public App $app;
 
-    /** @var EntityManagerInterface */
-    public $em;
+    public EntityManagerInterface $em;
 
     protected $requiredFields = ['container'];
 
@@ -42,7 +38,7 @@ class Module extends Framework implements DoctrineProvider
         ]);
 
         $this->container = $this->app->getContainer();
-        $this->em = $this->container->get(EntityManager::class);
+        $this->em = $this->container->get(EntityManagerInterface::class);
 
         parent::_initialize();
     }
@@ -64,10 +60,7 @@ class Module extends Framework implements DoctrineProvider
         parent::_after($test);
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
-    public function _getEntityManager()
+    public function _getEntityManager(): EntityManagerInterface
     {
         return $this->em;
     }

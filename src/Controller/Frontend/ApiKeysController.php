@@ -1,18 +1,18 @@
 <?php
 namespace App\Controller\Frontend;
 
+use App\Config;
 use App\Entity;
 use App\Exception\NotFoundException;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Config;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class ApiKeysController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $csrf_namespace = 'frontend_api_keys';
 
@@ -20,8 +20,11 @@ class ApiKeysController
 
     protected array $form_config;
 
-    public function __construct(EntityManager $em, Entity\Repository\ApiKeyRepository $apiKeyRepository, Config $config)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\ApiKeyRepository $apiKeyRepository,
+        Config $config
+    ) {
         $this->em = $em;
         $this->record_repo = $apiKeyRepository;
 

@@ -29,9 +29,12 @@ use App\Exception;
 use App\File;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Normalizer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
+use const PATHINFO_EXTENSION;
+use const PATHINFO_FILENAME;
 use const SCANDIR_SORT_NONE;
 
 class Flow
@@ -161,13 +164,13 @@ class Flow
         int $numChunks
     ): array {
         $originalFileName = basename($originalFileName);
-        $originalFileName = \Normalizer::normalize($originalFileName, \Normalizer::FORM_KD);
+        $originalFileName = Normalizer::normalize($originalFileName, Normalizer::FORM_KD);
         $originalFileName = File::sanitizeFileName($originalFileName);
 
         // Truncate filenames whose lengths are longer than 255 characters, while preserving extension.
         if (strlen($originalFileName) > 255) {
-            $ext = pathinfo($originalFileName, \PATHINFO_EXTENSION);
-            $fileName = pathinfo($originalFileName, \PATHINFO_FILENAME);
+            $ext = pathinfo($originalFileName, PATHINFO_EXTENSION);
+            $fileName = pathinfo($originalFileName, PATHINFO_FILENAME);
             $fileName = substr($fileName, 0, 255 - 1 - strlen($ext));
             $originalFileName = $fileName . '.' . $ext;
         }

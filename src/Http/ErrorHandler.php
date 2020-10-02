@@ -5,10 +5,9 @@ use App\Entity;
 use App\Exception;
 use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
-use App\Service\Sentry;
 use App\Session\Flash;
 use App\Settings;
-use App\View;
+use App\ViewFactory;
 use Gettext\Translator;
 use Mezzio\Session\SessionInterface;
 use Monolog\Logger;
@@ -17,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LogLevel;
 use Slim\App;
 use Slim\Exception\HttpException;
-use stdClass;
+use Throwable;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -31,9 +30,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected Router $router;
 
-    protected View $view;
-
-    protected Sentry $sentry;
+    protected ViewFactory $viewFactory;
 
     protected Settings $settings;
 
@@ -41,26 +38,28 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         App $app,
         Logger $logger,
         Router $router,
-        View $view,
-        Sentry $sentry,
+        ViewFactory $viewFactory,
         Settings $settings
     ) {
         parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
-        
+
         $this->settings = $settings;
+        $this->viewFactory = $viewFactory;
         $this->router = $router;
-        $this->view = $view;
-        $this->sentry = $sentry;
     }
 
     public function __invoke(
         ServerRequestInterface $request,
-        \Throwable $exception,
+        Throwable $exception,
         bool $displayErrorDetails,
         bool $logErrors,
         bool $logErrorDetails
     ): ResponseInterface {
-        if ($exception instanceof \App\Exception) {
+        if ($exception instanceof Exception\WrappedException) {
+            $exception = $exception->getPrevious();
+        }
+
+        if ($exception instanceof Exception) {
             $this->loggerLevel = $exception->getLoggerLevel();
         } elseif ($exception instanceof HttpException) {
             $this->loggerLevel = LogLevel::WARNING;
@@ -68,49 +67,12 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
         $this->showDetailed = (!$this->settings->isProduction() && !in_array($this->loggerLevel,
                 [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE], true));
-        $this->returnJson = $this->_shouldReturnJson($request);
+        $this->returnJson = $this->shouldReturnJson($request);
 
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
     }
 
-    /**
-     * @return bool
-     */
-    public function returnJson(): bool
-    {
-        return $this->returnJson;
-    }
-
-    /**
-     * @param bool $returnJson
-     */
-    public function setReturnJson(bool $returnJson): void
-    {
-        $this->returnJson = $returnJson;
-    }
-
-    /**
-     * @return bool
-     */
-    public function showDetailed(): bool
-    {
-        return $this->showDetailed;
-    }
-
-    /**
-     * @param bool $showDetailed
-     */
-    public function setShowDetailed(bool $showDetailed): void
-    {
-        $this->showDetailed = $showDetailed;
-    }
-
-    /**
-     * @param ServerRequestInterface $req
-     *
-     * @return bool
-     */
-    protected function _shouldReturnJson(ServerRequestInterface $req): bool
+    protected function shouldReturnJson(ServerRequestInterface $req): bool
     {
         $xhr = $req->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
 
@@ -174,10 +136,6 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response;
         }
 
-        $this->view->addData([
-            'request' => $this->request,
-        ]);
-
         if ($this->exception instanceof HttpException) {
             /** @var Response $response */
             $response = $this->responseFactory->createResponse($this->exception->getCode());
@@ -189,13 +147,19 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                 ));
             }
 
-            return $this->view->renderToResponse(
-                $response,
-                'system/error_http',
-                [
-                    'exception' => $this->exception,
-                ]
-            );
+            try {
+                $view = $this->viewFactory->create($this->request);
+
+                return $view->renderToResponse(
+                    $response,
+                    'system/error_http',
+                    [
+                        'exception' => $this->exception,
+                    ]
+                );
+            } catch (\Throwable $e) {
+                return parent::respond();
+            }
         }
 
         if ($this->exception instanceof NotLoggedInException) {
@@ -243,10 +207,6 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->withRedirect((string)$this->router->named('home'));
         }
 
-        if (!in_array($this->loggerLevel, [LogLevel::INFO, LogLevel::DEBUG, LogLevel::NOTICE], true)) {
-            $this->sentry->handleException($this->exception);
-        }
-
         /** @var Response $response */
         $response = $this->responseFactory->createResponse(500);
 
@@ -270,7 +230,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->withJson($api_response);
         }
 
-        if ($this->showDetailed && class_exists('\Whoops\Run')) {
+        if ($this->showDetailed && class_exists(Run::class)) {
             // Register error-handler.
             $handler = new PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');
@@ -288,36 +248,24 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return $response->write($run->handleException($this->exception));
         }
 
-        return $this->view->renderToResponse(
-            $response,
-            'system/error_general',
-            [
-                'exception' => $this->exception,
-            ]
-        );
-    }
+        try {
+            $view = $this->viewFactory->create($this->request);
 
-    /**
-     * @param int $code
-     * @param string $message
-     * @param array $stack_trace
-     *
-     * @return stdClass
-     */
-    protected function getErrorApiResponse($code = 500, $message = 'General Error', $stack_trace = []): stdClass
-    {
-        $api = new stdClass;
-        $api->success = false;
-        $api->code = (int)$code;
-        $api->message = (string)$message;
-        $api->stack_trace = (array)$stack_trace;
-
-        return $api;
+            return $view->renderToResponse(
+                $response,
+                'system/error_general',
+                [
+                    'exception' => $this->exception,
+                ]
+            );
+        } catch (\Throwable $e) {
+            return parent::respond();
+        }
     }
 
     protected function withJson(ResponseInterface $response, $data): ResponseInterface
     {
-        $json = (string)json_encode($data);
+        $json = (string)json_encode($data, JSON_THROW_ON_ERROR);
         $response->getBody()->write($json);
 
         return $response->withHeader('Content-Type', 'application/json;charset=utf-8');

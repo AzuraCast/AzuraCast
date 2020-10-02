@@ -4,18 +4,18 @@ namespace App\Controller\Admin;
 use App\Exception\NotFoundException;
 use App\Form\EntityForm;
 use App\Http\ServerRequest;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 
 abstract class AbstractAdminCrudController
 {
     protected EntityForm $form;
 
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected string $entity_class;
 
-    protected EntityRepository $record_repo;
+    protected ObjectRepository $record_repo;
 
     protected string $csrf_namespace;
 

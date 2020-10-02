@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Radio\Adapters;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use studio24\Rotate;
 use Supervisor\Supervisor;
@@ -17,7 +17,7 @@ class RotateLogs extends AbstractTask
     protected Supervisor $supervisor;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Adapters $adapters,
@@ -29,7 +29,7 @@ class RotateLogs extends AbstractTask
         $this->supervisor = $supervisor;
     }
 
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         // Rotate logs for individual stations.
         $station_repo = $this->em->getRepository(Entity\Station::class);

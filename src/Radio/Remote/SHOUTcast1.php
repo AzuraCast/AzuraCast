@@ -2,25 +2,18 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
+use NowPlaying\Adapter\AdapterFactory;
 
 class SHOUTcast1 extends AbstractRemote
 {
+    protected function getAdapterType(): string
+    {
+        return AdapterFactory::ADAPTER_SHOUTCAST1;
+    }
+
     /** @inheritDoc */
     public function getPublicUrl(Entity\StationRemote $remote): string
     {
-        return $this->_getRemoteUrl($remote, '/;stream.nsv');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function updateNowPlaying(Entity\StationRemote $remote, $np_aggregate, bool $include_clients = false): array
-    {
-        return $this->_updateNowPlayingFromAdapter(
-            $remote,
-            $np_aggregate,
-            \NowPlaying\Adapter\SHOUTcast1::class,
-            $include_clients
-        );
+        return $this->getRemoteUrl($remote, '/;stream.nsv');
     }
 }

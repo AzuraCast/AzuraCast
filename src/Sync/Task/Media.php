@@ -4,16 +4,15 @@ namespace App\Sync\Task;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Message;
-use App\MessageQueue;
+use App\MessageQueue\QueueManager;
 use App\Radio\Quota;
-use Bernard\Envelope;
 use Brick\Math\BigInteger;
-use Doctrine\Common\Persistence\Mapping\MappingException;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Messenger\MessageBus;
 
 class Media extends AbstractTask
 {
@@ -23,58 +22,53 @@ class Media extends AbstractTask
 
     protected Filesystem $filesystem;
 
-    protected MessageQueue $messageQueue;
+    protected MessageBus $messageBus;
+
+    protected QueueManager $queueManager;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Filesystem $filesystem,
-        MessageQueue $messageQueue
+        MessageBus $messageBus,
+        QueueManager $queueManager
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
         $this->mediaRepo = $mediaRepo;
         $this->spmRepo = $spmRepo;
         $this->filesystem = $filesystem;
-        $this->messageQueue = $messageQueue;
+        $this->messageBus = $messageBus;
+        $this->queueManager = $queueManager;
     }
 
     /**
      * Handle event dispatch.
      *
      * @param Message\AbstractMessage $message
-     *
-     * @throws MappingException
      */
     public function __invoke(Message\AbstractMessage $message)
     {
-        try {
-            if ($message instanceof Message\ReprocessMediaMessage) {
-                $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
+        if ($message instanceof Message\ReprocessMediaMessage) {
+            $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
 
-                if ($media_row instanceof Entity\StationMedia) {
-                    $this->mediaRepo->processMedia($media_row, $message->force);
-                    $this->em->flush();
-                }
-            } elseif ($message instanceof Message\AddNewMediaMessage) {
-                $station = $this->em->find(Entity\Station::class, $message->station_id);
-
-                if ($station instanceof Entity\Station) {
-                    $this->mediaRepo->getOrCreate($station, $message->path);
-                }
+            if ($media_row instanceof Entity\StationMedia) {
+                $this->mediaRepo->processMedia($media_row, $message->force);
+                $this->em->flush();
             }
-        } finally {
-            $this->em->clear();
+        } elseif ($message instanceof Message\AddNewMediaMessage) {
+            $station = $this->em->find(Entity\Station::class, $message->station_id);
+
+            if ($station instanceof Entity\Station) {
+                $this->mediaRepo->getOrCreate($station, $message->path);
+            }
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function run($force = false): void
+    public function run(bool $force = false): void
     {
         $stations = SimpleBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
@@ -92,7 +86,7 @@ class Media extends AbstractTask
         }
     }
 
-    public function importMusic(Entity\Station $station)
+    public function importMusic(Entity\Station $station): void
     {
         $fs = $this->filesystem->getForStation($station, false);
 
@@ -128,36 +122,10 @@ class Media extends AbstractTask
         $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
         $stats['total_files'] = count($music_files);
 
-        // Check existing queue.
-        $queued_media_updates = [];
-        $queued_new_files = [];
+        // Clear existing queue.
+        $this->queueManager->clearQueue(QueueManager::QUEUE_MEDIA);
 
-        $queue = $this->messageQueue->getGlobalQueue();
-
-        $queue_position = 0;
-        $queue_iteration = 20;
-
-        while (true) {
-            $record_subset = $queue->peek($queue_position, $queue_iteration);
-
-            foreach ($record_subset as $envelope) {
-                /** @var Envelope $envelope */
-                $message = $envelope->getMessage();
-
-                if ($message instanceof Message\ReprocessMediaMessage) {
-                    $queued_media_updates[$message->media_id] = true;
-                } elseif ($message instanceof Message\AddNewMediaMessage && $message->station_id === $station->getId()) {
-                    $queued_new_files[$message->path] = true;
-                }
-            }
-
-            if (count($record_subset) < $queue_iteration) {
-                break;
-            }
-
-            $queue_position += $queue_iteration;
-        }
-
+        // Check queue for existing pending processing entries.
         $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 
             sm 
             FROM App\Entity\StationMedia sm 
@@ -180,15 +148,12 @@ class Media extends AbstractTask
                 }
 
                 $file_info = $music_files[$path_hash];
-                if (isset($queued_media_updates[$media_row->getId()])) {
-                    $stats['already_queued']++;
-                } elseif ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+                if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
                     $message = new Message\ReprocessMediaMessage;
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
 
-                    $this->messageQueue->produce($message);
-
+                    $this->messageBus->dispatch($message);
                     $stats['updated']++;
                 } else {
                     $stats['unchanged']++;
@@ -196,6 +161,14 @@ class Media extends AbstractTask
 
                 unset($music_files[$path_hash]);
             } else {
+                // Remove album art, waveforms, etc.
+                foreach ($media_row->getRelatedFilePaths() as $filePath) {
+                    if ($fs->has($filePath)) {
+                        $fs->delete($filePath);
+                    }
+                }
+
+                // Clear the media row from playlists.
                 $this->spmRepo->clearPlaylistsFromMedia($media_row);
 
                 // Delete the now-nonexistent media item.
@@ -207,23 +180,19 @@ class Media extends AbstractTask
 
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
-            if (isset($queued_new_files[$new_music_file['path']])) {
-                $stats['already_queued']++;
-            } else {
-                $message = new Message\AddNewMediaMessage;
-                $message->station_id = $station->getId();
-                $message->path = $new_music_file['path'];
+            $message = new Message\AddNewMediaMessage;
+            $message->station_id = $station->getId();
+            $message->path = $new_music_file['path'];
 
-                $this->messageQueue->produce($message);
+            $this->messageBus->dispatch($message);
 
-                $stats['created']++;
-            }
+            $stats['created']++;
         }
 
         $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
     }
 
-    public function importPlaylists(Entity\Station $station)
+    public function importPlaylists(Entity\Station $station): void
     {
         $fs = $this->filesystem->getForStation($station);
 
@@ -281,9 +250,8 @@ class Media extends AbstractTask
         $this->em->flush();
     }
 
-    public function globDirectory($base_dir, $regex_pattern = null)
+    public function globDirectory($base_dir, $regex_pattern = null): array
     {
-        /** @var Finder $finder */
         $finder = new Finder();
         $finder = $finder->files()->in($base_dir);
 

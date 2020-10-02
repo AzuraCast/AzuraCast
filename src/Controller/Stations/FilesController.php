@@ -5,7 +5,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\SftpGo;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class FilesController
@@ -13,7 +13,7 @@ class FilesController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManager $em
+        EntityManagerInterface $em
     ): ResponseInterface {
         $station = $request->getStation();
 

@@ -1,14 +1,13 @@
 <?php
 namespace App\Entity\Repository;
 
-use App\Entity;
 use App\Doctrine\Repository;
+use App\Entity;
 use Ramsey\Uuid\Uuid;
 
 class SettingsRepository extends Repository
 {
-    /** @var array */
-    protected static $cachedSettings;
+    protected static array $cachedSettings;
 
     /**
      * @param array $settings
@@ -71,7 +70,7 @@ class SettingsRepository extends Repository
 
         if ($record instanceof Entity\Settings) {
             $this->em->remove($record);
-            $this->em->flush($record);
+            $this->em->flush();
         }
 
         unset(self::$cachedSettings[$key]);
@@ -111,7 +110,7 @@ class SettingsRepository extends Repository
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
-        if (!self::$cachedSettings || !$cached) {
+        if (!isset(self::$cachedSettings) || !$cached) {
             $settings_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC')
                 ->getArrayResult();
 
@@ -168,7 +167,7 @@ class SettingsRepository extends Repository
 
         $record->setSettingValue($value);
         $this->em->persist($record);
-        $this->em->flush($record);
+        $this->em->flush();
 
         // Update cached value
         self::$cachedSettings[$key] = $value;

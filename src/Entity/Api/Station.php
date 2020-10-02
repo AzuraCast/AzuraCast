@@ -63,13 +63,13 @@ class Station implements ResolvableUrlInterface
      * @OA\Property()
      * @var StationMount[]
      */
-    public $mounts = [];
+    public array $mounts = [];
 
     /**
      * @OA\Property()
      * @var StationRemote[]
      */
-    public $remotes = [];
+    public array $remotes = [];
 
     /**
      * Re-resolve any Uri instances to reflect base URL changes.

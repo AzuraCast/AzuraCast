@@ -1,9 +1,9 @@
 <?php
 namespace App\Console\Command\Internal;
 
+use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Service\AzuraCastCentral;
-use App\Console\Command\CommandAbstract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GetIpCommand extends CommandAbstract

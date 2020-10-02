@@ -1,14 +1,14 @@
 <?php
 $this->layout('minimal', [
-    'page_class' => 'dj station-'.$station->getShortName(),
-    'title' => 'Web DJ - '.$this->e($station->getName()),
-    'hide_footer' => true
+    'page_class' => 'dj station-' . $station->getShortName(),
+    'title' => 'Web DJ - ' . $this->e($station->getName()),
+    'hide_footer' => true,
 ]);
 
 /** @var \App\Assets $assets */
 $assets
     ->load('vue')
-    ->load('webcaster')
+    ->load('Webcaster')
     ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station, 'base_uri' => $base_uri]));
 ?>
 <section id="content" role="main" style="height: 100vh;">

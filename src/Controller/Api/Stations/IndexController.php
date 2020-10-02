@@ -7,17 +7,17 @@ use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Adapters $adapters;
 
-    public function __construct(EntityManager $em, Adapters $adapters)
+    public function __construct(EntityManagerInterface $em, Adapters $adapters)
     {
         $this->em = $em;
         $this->adapters = $adapters;

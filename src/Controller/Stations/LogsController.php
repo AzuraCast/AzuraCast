@@ -42,7 +42,6 @@ class LogsController extends AbstractLogViewerController
         // Filter out passwords, API keys, etc.
         $station = $request->getStation();
 
-        $backendConfig = $station->getBackendConfig();
         $frontendConfig = $station->getFrontendConfig();
 
         $passwords = [

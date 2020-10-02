@@ -12,7 +12,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.10.3';
+    public const FALLBACK_VERSION = '0.10.4';
 
     protected CacheInterface $cache;
 
@@ -131,9 +131,22 @@ class Version
     {
         $details = $this->getDetails();
 
-        return (isset($details['tag']))
-            ? 'v' . $details['tag'] . ', #' . $details['commit_short'] . ' (' . $details['commit_date'] . ')'
-            : 'v' . self::FALLBACK_VERSION . ' Release Build';
+        if (isset($details['tag'])) {
+            $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
+            $commitText = '#<a href="' . $commitLink . '" target="_blank">' . $details['commit_short'] . '</a> (' . $details['commit_date'] . ')';
+
+            if (isset($_ENV['AZURACAST_VERSION'])) {
+                if ('latest' === $_ENV['AZURACAST_VERSION']) {
+                    return 'Rolling Release ' . $commitText;
+                }
+
+                return 'v' . $details['tag'] . ' Stable';
+            }
+
+            return 'v' . $details['tag'] . ', ' . $commitText;
+        }
+
+        return 'v' . self::FALLBACK_VERSION . ' Release Build';
     }
 
     /**

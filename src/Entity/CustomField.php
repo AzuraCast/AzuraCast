@@ -103,7 +103,7 @@ class CustomField
     {
         return !empty($this->auto_assign);
     }
-    
+
     public function setAutoAssign(?string $auto_assign): void
     {
         $this->auto_assign = $auto_assign;

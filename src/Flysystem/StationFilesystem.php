@@ -15,7 +15,7 @@ class StationFilesystem extends FilesystemGroup
      */
     public function copyToTemp($from, $to = null): string
     {
-        [$prefix_from, $path_from] = $this->getPrefixAndPath($from);
+        [, $path_from] = $this->getPrefixAndPath($from);
 
         if (null === $to) {
             $random_prefix = substr(md5(random_bytes(8)), 0, 5);

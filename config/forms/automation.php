@@ -14,7 +14,7 @@ return [
                     0 => __('Disabled'),
                     1 => __('Enabled'),
                 ],
-            ]
+            ],
         ],
 
         'threshold_days' => [
@@ -23,14 +23,14 @@ return [
                 'label' => __('Days Between Automated Assignments'),
                 'description' => __('Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.'),
                 'class' => 'inline',
-                'default' => \App\Sync\Task\RadioAutomation::DEFAULT_THRESHOLD_DAYS,
+                'default' => App\Sync\Task\RadioAutomation::DEFAULT_THRESHOLD_DAYS,
                 'choices' => [
                     7 => sprintf(__('%d days'), 7),
                     14 => sprintf(__('%d days'), 14),
                     30 => sprintf(__('%d days'), 30),
                     60 => sprintf(__('%d days'), 60),
                 ],
-            ]
+            ],
         ],
 
         'submit' => [
@@ -39,7 +39,7 @@ return [
                 'type' => 'submit',
                 'label' => __('Save Changes'),
                 'class' => 'btn btn-lg btn-primary',
-            ]
+            ],
         ],
 
     ],

@@ -2,15 +2,21 @@
 
 <div class="card">
     <div class="card-header bg-primary-dark">
-        <h2 class="card-title"><?=__('Mount Points') ?></h2>
+        <h2 class="card-title"><?=__('Mount Points')?></h2>
     </div>
-    <div class="card-body">
-        <p><?=__('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.') ?></p>
+    <div class="card-body alert-info d-flex align-items-center" role="alert">
+        <div class="flex-shrink-0 mr-2">
+            <i class="material-icons" aria-hidden="true">info</i>
+        </div>
+        <div class="flex-fill">
+            <p class="card-text"><?=__('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.')?></p>
+        </div>
     </div>
+
     <div class="card-actions">
-        <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:mounts:add') ?>">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:mounts:add')?>">
             <i class="material-icons" aria-hidden="true">add</i>
-            <?=__('Add Mount Point') ?>
+            <?=__('Add Mount Point')?>
         </a>
     </div>
     <table class="table table-responsive-md table-striped mb-0">
@@ -21,35 +27,39 @@
         </colgroup>
         <thead>
         <tr>
-            <th><?=__('Actions') ?></th>
-            <th><?=__('Mount Point') ?></th>
-            <th><?=__('AutoDJ') ?></th>
+            <th><?=__('Actions')?></th>
+            <th><?=__('Mount Point')?></th>
+            <th><?=__('AutoDJ')?></th>
         </tr>
         </thead>
         <tbody>
-        <?php foreach($mounts as $row): ?>
+        <?php foreach ($mounts as $row): ?>
             <?php /** @var App\Entity\StationMount $row */ ?>
             <tr class="align-middle">
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:mounts:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?', $row->getName())) ?>" href="<?=$router->fromHere('stations:mounts:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:mounts:edit',
+                            ['id' => $row->getId()])?>"><?=__('Edit')?></a>
+                        <a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete mount point "%s"?',
+                            $row->getName()))?>" href="<?=$router->fromHere('stations:mounts:delete',
+                            ['id' => $row->getId(), 'csrf' => $csrf])?>"><?=__('Delete')?></a>
                     </div>
                 </td>
                 <td>
-                    <h5 class="m-0"><a href="<?=$this->e($frontend->getUrlForMount($station, $row)) ?>" target="_blank"><?=$this->e($row->getDisplayName()) ?></a></h5>
+                    <h5 class="m-0"><a href="<?=$this->e($frontend->getUrlForMount($station,
+                            $row))?>" target="_blank"><?=$this->e($row->getDisplayName())?></a></h5>
                     <div>
-                    <?php if ($row->getIsDefault()): ?>
-                        <span class="badge badge-success"><?=__('Default Mount') ?></span>
-                    <?php endif; ?>
+                        <?php if ($row->getIsDefault()): ?>
+                            <span class="badge badge-success"><?=__('Default Mount')?></span>
+                        <?php endif; ?>
                     </div>
                 </td>
                 <td>
-                <?php if ($row->getEnableAutodj()): ?>
-                    <?=__('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
-                <?php else: ?>
-                    <?=__('Disabled') ?>
-                <?php endif; ?>
+                    <?php if ($row->getEnableAutodj()): ?>
+                        <?=__('Enabled')?> - <?=(int)$row->getAutodjBitrate()?>kbps <?=strtoupper($this->e($row->getAutodjFormat()))?>
+                    <?php else: ?>
+                        <?=__('Disabled')?>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>

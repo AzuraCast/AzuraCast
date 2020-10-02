@@ -5,7 +5,6 @@ use App\Entity\StationBackendConfiguration;
 use App\Entity\StationFrontendConfiguration;
 use App\Entity\StationMountInterface;
 use App\Radio\Adapters;
-use App\Radio\Backend\Liquidsoap\ConfigWriter;
 
 $frontends = Adapters::listFrontendAdapters(true);
 $frontend_types = [];
@@ -75,8 +74,8 @@ return [
                     [
                         'label' => __('Time Zone'),
                         'description' => __('Scheduled playlists and other timed items will be controlled by this time zone.'),
-                        'options' => \App\Timezone::fetchSelect(),
-                        'default' => \App\Customization::DEFAULT_TIMEZONE,
+                        'options' => App\Timezone::fetchSelect(),
+                        'default' => App\Customization::DEFAULT_TIMEZONE,
                         'form_group_class' => 'col-sm-12',
                     ],
                 ],
@@ -258,18 +257,18 @@ return [
 
             'elements' => [
 
-                'crossfade_type' => [
+                StationBackendConfiguration::CROSSFADE_TYPE => [
                     'radio',
                     [
                         'label' => __('Crossfade Method'),
                         'belongsTo' => 'backend_config',
                         'description' => __('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.'),
                         'choices' => [
-                            ConfigWriter::CROSSFADE_SMART => __('Smart Mode'),
-                            ConfigWriter::CROSSFADE_NORMAL => __('Normal Mode'),
-                            ConfigWriter::CROSSFADE_DISABLED => __('Disable Crossfading'),
+                            StationBackendConfiguration::CROSSFADE_SMART => __('Smart Mode'),
+                            StationBackendConfiguration::CROSSFADE_NORMAL => __('Normal Mode'),
+                            StationBackendConfiguration::CROSSFADE_DISABLED => __('Disable Crossfading'),
                         ],
-                        'default' => ConfigWriter::CROSSFADE_NORMAL,
+                        'default' => StationBackendConfiguration::CROSSFADE_NORMAL,
                         'form_group_class' => 'col-md-8',
                     ],
                 ],
@@ -372,6 +371,7 @@ return [
                             StationMountInterface::FORMAT_OPUS => 'OGG Opus',
                             StationMountInterface::FORMAT_AAC => 'AAC+ (MPEG4 HE-AAC v2)',
                         ],
+                        'default' => StationMountInterface::FORMAT_MP3,
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-4',
                     ],
@@ -510,6 +510,19 @@ return [
                             'UTF-8' => 'UTF-8',
                             'ISO-8859-1' => 'ISO-8859-1',
                         ],
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                StationBackendConfiguration::DUPLICATE_PREVENTION_TIME_RANGE => [
+                    'number',
+                    [
+                        'label' => __('Duplicate Prevention Time Range (Minutes)'),
+                        'description' => __('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.'),
+                        'belongsTo' => 'backend_config',
+                        'default' => StationBackendConfiguration::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE,
+                        'min' => '0',
+                        'max' => '1440',
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

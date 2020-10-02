@@ -2,26 +2,26 @@
 namespace App\Controller\Api\Stations;
 
 use App\ApiUtilities;
-use App\Doctrine\Paginator;
 use App\Entity;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator\QueryPaginator;
 use App\Utilities;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
     protected ApiUtilities $api_utils;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\StationRequestRepository $requestRepo,
         ApiUtilities $api_utils
     ) {
@@ -47,7 +47,12 @@ class RequestsController
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
      *
-     * @inheritDoc
+     * @param ServerRequest $request
+     * @param Response $response
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     * @throws Exception\InvalidRequestAttribute
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -98,8 +103,7 @@ class RequestsController
                 ->setParameter('query', '%' . $search_phrase . '%');
         }
 
-        $paginator = new Paginator($qb);
-        $paginator->setFromRequest($request);
+        $paginator = new QueryPaginator($qb, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
@@ -137,7 +141,7 @@ class RequestsController
      *     in="path",
      *     required=true,
      *     @OA\Schema(
-     *         type="int64"
+     *         type="integer", format="int64"
      *     )
      *   ),
      *   @OA\Response(response=200, description="Success"),
@@ -145,7 +149,12 @@ class RequestsController
      *   @OA\Response(response=403, description="Station does not support requests")
      * )
      *
-     * @inheritDoc
+     * @param ServerRequest $request
+     * @param Response $response
+     * @param mixed $media_id
+     *
+     * @return ResponseInterface
+     * @throws Exception\InvalidRequestAttribute
      */
     public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface
     {
@@ -163,7 +172,7 @@ class RequestsController
         } catch (Exception\InvalidRequestAttribute $e) {
             $user = null;
         }
-        
+
         $isAuthenticated = ($user instanceof Entity\User);
 
         try {

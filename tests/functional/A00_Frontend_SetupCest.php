@@ -8,7 +8,7 @@ class A00_Frontend_SetupCest extends CestAbstract
      * @after setupStation
      * @after setupSettings
      */
-    public function setupStart(FunctionalTester $I)
+    public function setupStart(FunctionalTester $I): void
     {
         $I->wantTo('Complete the initial setup process.');
 
@@ -21,7 +21,7 @@ class A00_Frontend_SetupCest extends CestAbstract
         $I->comment('Setup redirect found.');
     }
 
-    protected function setupRegister(FunctionalTester $I)
+    protected function setupRegister(FunctionalTester $I): void
     {
         $I->submitForm('#login-form', [
             'username' => $this->login_username,
@@ -36,7 +36,7 @@ class A00_Frontend_SetupCest extends CestAbstract
         // $this->login_cookie = $I->grabCookie('PHPSESSID');
     }
 
-    protected function setupStation(FunctionalTester $I)
+    protected function setupStation(FunctionalTester $I): void
     {
         $I->seeCurrentUrlEquals('/setup/station');
 
@@ -52,7 +52,7 @@ class A00_Frontend_SetupCest extends CestAbstract
         $I->seeCurrentUrlEquals('/setup/settings');
     }
 
-    protected function setupSettings(FunctionalTester $I)
+    protected function setupSettings(FunctionalTester $I): void
     {
         $I->submitForm('.form', [
             'base_url' => 'http://localhost',

@@ -30,7 +30,7 @@ class NowPlayingLive
      * @OA\Property(example="1591548318")
      * @var int|null
      */
-    public $broadcast_start = null;
+    public ?int $broadcast_start = null;
 
     public function __construct($is_live = false, $streamer_name = '', $broadcast_start = null)
     {

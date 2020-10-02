@@ -6,13 +6,16 @@ use App\Normalizer\Annotation\DeepNormalize;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Proxy\Proxy;
 use InvalidArgumentException;
+use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionProperty;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -35,24 +38,17 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     public const CLASS_METADATA = 'class_metadata';
     public const ASSOCIATION_MAPPINGS = 'association_mappings';
 
-    /** @var EntityManager */
-    protected $em;
-
     /** @var SerializerInterface|NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
-    /** @var Reader */
-    protected $annotationReader;
+    protected EntityManagerInterface $em;
 
-    /**
-     * @param EntityManager $em
-     * @param Reader|null $annotationReader
-     * @param ClassMetadataFactoryInterface|null $classMetadataFactory
-     * @param NameConverterInterface|null $nameConverter
-     * @param array $defaultContext
-     */
+    protected Reader $annotationReader;
+
+    protected Inflector $inflector;
+
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Reader $annotationReader = null,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
@@ -72,6 +68,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         $this->em = $em;
         $this->annotationReader = $annotationReader;
+        $this->inflector = InflectorFactory::create()->build();
     }
 
     /**
@@ -90,12 +87,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * Replicates the "toArray" functionality previously present in Doctrine 1.
      *
      * @param mixed $object
-     * @param null $format
+     * @param string|null $format
      * @param array $context
      *
      * @return mixed
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, string $format = null, array $context = [])
     {
         if ($this->isCircularReference($object, $context)) {
             return $this->handleCircularReference($object, $format, $context);
@@ -114,7 +111,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                     $value = $this->getAttributeValue($object, $attribute, $format, $context);
 
                     /** @var callable|null $callback */
-                    $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? $this->callbacks[$attribute] ?? null;
+                    $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? null;
                     if ($callback) {
                         $value = $callback($value, $object, $attribute, $format, $context);
                     }
@@ -139,7 +136,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return object
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, string $format = null, array $context = [])
     {
         $object = $this->instantiateObject($data, $class, $context, new ReflectionClass($class), false, $format);
 
@@ -175,7 +172,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         foreach ((array)$data as $attribute => $value) {
             /** @var callable|null $callback */
-            $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? $this->callbacks[$attribute] ?? null;
+            $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? null;
             if ($callback) {
                 $value = $callback($value, $object, $attribute, $format, $context);
             }
@@ -189,17 +186,17 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /**
      * @inheritdoc
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, string $format = null)
     {
-        return $this->_isEntity($data);
+        return $this->isEntity($data);
     }
 
     /**
      * @inheritdoc
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, string $format = null)
     {
-        return $this->_isEntity($type);
+        return $this->isEntity($type);
     }
 
     /**
@@ -267,7 +264,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                     $prop_name));
             }
 
-            $prop_val = $this->_get($object, $prop_name);
+            $prop_val = $this->getProperty($object, $prop_name);
 
             if ($prop_val instanceof Collection) {
                 $return_val = [];
@@ -278,7 +275,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                             $id_field = $obj_meta->identifier;
 
                             if ($id_field && count($id_field) === 1) {
-                                $return_val[] = $this->_get($val_obj, $id_field[0]);
+                                $return_val[] = $this->getProperty($val_obj, $id_field[0]);
                             }
                         } else {
                             $return_val[] = $this->serializer->normalize($val_obj, $format, $context);
@@ -291,9 +288,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
             return $this->serializer->normalize($prop_val, $format, $context);
         }
 
-        $value = $this->_get($object, $prop_name);
-        if ($value instanceof \App\Collection) {
-            $value = $value->all();
+        $value = $this->getProperty($object, $prop_name);
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
         }
 
         return $value;
@@ -305,16 +302,16 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return mixed|null
      */
-    protected function _get($entity, $key)
+    protected function getProperty($entity, $key)
     {
         // Default to "getStatus", "getConfig", etc...
-        $getter_method = $this->_getMethodName($key, 'get');
+        $getter_method = $this->getMethodName($key, 'get');
         if (method_exists($entity, $getter_method)) {
             return $entity->{$getter_method}();
         }
 
         // but also allow "isEnabled" instead of "getIsEnabled"
-        $raw_method = $this->_getMethodName($key);
+        $raw_method = $this->getMethodName($key);
         if (method_exists($entity, $raw_method)) {
             return $entity->{$raw_method}();
         }
@@ -330,16 +327,16 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return string
      */
-    protected function _getMethodName($var, $prefix = ''): string
+    protected function getMethodName($var, $prefix = ''): string
     {
-        return Inflector::camelize(($prefix ? $prefix . '_' : '') . $var);
+        return $this->inflector->camelize(($prefix ? $prefix . '_' : '') . $var);
     }
 
     /**
      * @param object $object
      * @param string $field
      * @param mixed $value
-     * @param null $format
+     * @param string|null $format
      * @param array $context
      */
     protected function setAttributeValue($object, $field, $value, $format = null, array $context = []): void
@@ -350,12 +347,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
             if ('one' === $mapping['type']) {
                 if (empty($value)) {
-                    $this->_set($object, $field, null);
+                    $this->setProperty($object, $field, null);
                 } elseif (($field_item = $this->em->find($mapping['entity'], $value)) instanceof $mapping['entity']) {
-                    $this->_set($object, $field, $field_item);
+                    $this->setProperty($object, $field, $field_item);
                 }
             } elseif ($mapping['is_owning_side']) {
-                $collection = $this->_get($object, $field);
+                $collection = $this->getProperty($object, $field);
 
                 if ($collection instanceof Collection) {
                     $collection->clear();
@@ -371,7 +368,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                 }
             }
         } else {
-            $this->_set($object, $field, $value);
+            $this->setProperty($object, $field, $value);
         }
     }
 
@@ -382,9 +379,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return mixed|null
      */
-    protected function _set($entity, $key, $value)
+    protected function setProperty($entity, $key, $value)
     {
-        $method_name = $this->_getMethodName($key, 'set');
+        $method_name = $this->getMethodName($key, 'set');
 
         if (!method_exists($entity, $method_name)) {
             return null;
@@ -394,7 +391,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         $first_param = $method->getParameters()[0];
 
         if ($first_param->hasType()) {
-            $first_param_type = $first_param->getType()->getName();
+            /** @var ReflectionNamedType $firstParamTypeObj */
+            $firstParamTypeObj = $first_param->getType();
+            $first_param_type = $firstParamTypeObj->getName();
 
             switch ($first_param_type) {
                 case 'DateTime':
@@ -449,10 +448,10 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return bool
      */
-    protected function _isEntity($class): bool
+    protected function isEntity($class): bool
     {
         if (is_object($class)) {
-            $class = ($class instanceof Proxy)
+            $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
                 ? get_parent_class($class)
                 : get_class($class);
         } elseif (!is_string($class)) {

@@ -7,7 +7,7 @@ use App\Entity;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -21,7 +21,7 @@ class StationForm extends EntityForm
     protected Settings $settings;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
@@ -100,7 +100,7 @@ class StationForm extends EntityForm
             }
 
             $this->em->persist($record);
-            $this->em->flush($record);
+            $this->em->flush();
 
             if ($create_mode) {
                 return $this->station_repo->create($record);

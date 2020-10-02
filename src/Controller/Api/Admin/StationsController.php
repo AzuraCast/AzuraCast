@@ -4,7 +4,7 @@ namespace App\Controller\Api\Admin;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Normalizer\DoctrineEntityNormalizer;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Serializer;
@@ -18,7 +18,7 @@ class StationsController extends AbstractAdminApiCrudController
     protected Entity\Repository\StationRepository $station_repo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo
@@ -141,7 +141,7 @@ class StationsController extends AbstractAdminApiCrudController
         }
 
         $this->em->persist($record);
-        $this->em->flush($record);
+        $this->em->flush();
 
         if ($create_mode) {
             return $this->station_repo->create($record);

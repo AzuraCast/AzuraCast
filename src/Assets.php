@@ -17,22 +17,25 @@ use function random_bytes;
 class Assets
 {
     /** @var array Known libraries loaded in initialization. */
-    protected $libraries = [];
+    protected array $libraries = [];
 
     /** @var array An optional array lookup for versioned files. */
-    protected $versioned_files = [];
+    protected array $versioned_files = [];
 
     /** @var array Loaded libraries. */
-    protected $loaded = [];
+    protected array $loaded = [];
 
     /** @var bool Whether the current loaded libraries have been sorted by order. */
-    protected $is_sorted = true;
+    protected bool $is_sorted = true;
 
     /** @var string A randomly generated number-used-once (nonce) for inline CSP. */
     protected $csp_nonce;
 
     /** @var array The loaded domains that should be included in the CSP header. */
-    protected $csp_domains;
+    protected array $csp_domains;
+
+    /** @var ServerRequestInterface|null The current request (if it's available) */
+    protected ?ServerRequestInterface $request = null;
 
     /**
      * Assets constructor.
@@ -42,15 +45,68 @@ class Assets
      *
      * @throws \Exception
      */
-    public function __construct(array $libraries = [], array $versioned_files = [])
-    {
+    public function __construct(
+        array $libraries = [],
+        array $versioned_files = [],
+        array $vueComponents = []
+    ) {
         foreach ($libraries as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }
 
         $this->versioned_files = $versioned_files;
+        $this->addVueComponents($vueComponents);
+
         $this->csp_nonce = preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
         $this->csp_domains = [];
+    }
+
+    /**
+     * Create a new copy of this object for a specific request.
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return $this
+     */
+    public function withRequest(ServerRequestInterface $request): self
+    {
+        $newAssets = clone $this;
+        $newAssets->setRequest($request);
+
+        return $newAssets;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
+    protected function addVueComponents(array $vueComponents = [])
+    {
+        if (!empty($vueComponents['entrypoints'])) {
+            foreach ($vueComponents['entrypoints'] as $componentName => $componentDeps) {
+
+                $library = $this->libraries[$componentName] ?? [
+                        'order' => 10,
+                        'require' => [],
+                        'files' => [],
+                    ];
+
+                if (!in_array('vue-component-common', $library['require'], true)) {
+                    $library['require'][] = 'vue-component-common';
+                }
+
+                foreach ($componentDeps['js'] as $componentDep) {
+                    if ('dist/vendor.js' !== $componentDep) {
+                        $library['files']['js'][] = [
+                            'src' => $componentDep,
+                        ];
+                    }
+                }
+
+                $this->addLibrary($library, $componentName);
+            }
+        }
     }
 
     /**
@@ -202,10 +258,11 @@ class Assets
      * Add a single javascript inline script.
      *
      * @param string|array $js_script
+     * @param int $order
      *
      * @return $this
      */
-    public function addInlineJs($js_script, $order = 100): self
+    public function addInlineJs($js_script, int $order = 100): self
     {
         $this->load([
             'order' => $order,
@@ -221,10 +278,11 @@ class Assets
      * Add a single CSS file.
      *
      * @param string|array $css_script
+     * @param int $order
      *
      * @return $this
      */
-    public function addCss($css_script, $order = 100): self
+    public function addCss($css_script, int $order = 100): self
     {
         $this->load([
             'order' => $order,
@@ -261,7 +319,7 @@ class Assets
      * Returns all CSS includes and inline styles.
      * @return string HTML tags as string.
      */
-    public function css()
+    public function css(): string
     {
         $this->_sort();
 
@@ -294,7 +352,7 @@ class Assets
      * Returns all script include tags.
      * @return string HTML tags as string.
      */
-    public function js()
+    public function js(): string
     {
         $this->_sort();
 
@@ -317,11 +375,9 @@ class Assets
     /**
      * Return any inline JavaScript.
      *
-     * @param ServerRequestInterface $request
-     *
      * @return string
      */
-    public function inlineJs(ServerRequestInterface $request): string
+    public function inlineJs(): string
     {
         $this->_sort();
 
@@ -330,7 +386,7 @@ class Assets
             if (!empty($item['inline']['js'])) {
                 foreach ($item['inline']['js'] as $inline) {
                     if (is_callable($inline)) {
-                        $inline = $inline($request);
+                        $inline = $inline($this->request);
                     }
 
                     if (!empty($inline)) {
@@ -346,10 +402,10 @@ class Assets
     /**
      * Sort the list of loaded libraries.
      */
-    protected function _sort()
+    protected function _sort(): void
     {
         if (!$this->is_sorted) {
-            uasort($this->loaded, function ($a, $b) {
+            uasort($this->loaded, function ($a, $b): int {
                 return $a['order'] <=> $b['order']; // SPACESHIP!
             });
 

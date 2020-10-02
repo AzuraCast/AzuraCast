@@ -1,57 +1,62 @@
 <!DOCTYPE html>
 <?php
 /**
- * @var \League\Plates\Template\Template $this
- * @var \App\Auth $auth
- * @var \App\Acl $acl
- * @var \App\Http\Router $router
- * @var \App\Session\Flash $flash
- * @var \App\Customization $customization
- * @var \App\Assets $assets
- * @var \App\Version $version
- * @var \App\Http\Request $request
+ * @var League\Plates\Template\Template $this
+ * @var App\Auth $auth
+ * @var App\Acl $acl
+ * @var App\Http\Router $router
+ * @var App\Session\Flash $flash
+ * @var App\Customization $customization
+ * @var App\Assets $assets
+ * @var App\Version $version
+ * @var App\Http\ServerRequest $request
  * @var array $app_settings
  */
+
+$page_class ??= '';
+$page_class .= ' theme-' . $customization->getPublicTheme();
 ?>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title><?=$customization->getPageTitle($title) ?></title>
+    <title><?=$customization->getPageTitle($title)?></title>
 
-<?=$this->fetch('partials/icons') ?>
+    <?=$this->fetch('partials/icons')?>
 
-<?php
-$assets
-    ->load('minimal')
-    ->load('theme_'.$customization->getPublicTheme())
-    ->addInlineCss($customization->getCustomPublicCss())
-    ->addInlineJs($customization->getCustomPublicJs());
+    <?php
+    $assets
+        ->load('minimal')
+        ->load('theme_' . $customization->getPublicTheme())
+        ->addInlineCss($customization->getCustomPublicCss())
+        ->addInlineJs($customization->getCustomPublicJs());
 
-echo $assets->css();
-echo $assets->js();
-?>
+    echo $assets->css();
+    echo $assets->js();
+    ?>
 </head>
 
-<body class="page-minimal <?=$page_class ?>">
-<?=$assets->inlineJs($request) ?>
+<body class="page-minimal <?=$page_class?>">
+<?=$assets->inlineJs()?>
 
-<?=$this->section('content') ?>
+<?=$this->section('content')?>
 
 <?php if (!$customization->hideProductName() && !$hide_footer): ?>
     <footer id="footer" class="footer-alt" role="contentinfo">
-        <?=sprintf(__('Powered by %s'), '<a href="https://azuracast.com/" target="_blank">'.$settings['name'].'</a>'.' ') ?><br>
-        <?=sprintf(__('Mascot designed by %s'), '<a href="https://tysontan.deviantart.com/" target="_blank">Tyson Tan</a>') ?>
+        <?=sprintf(__('Powered by %s'),
+            '<a href="https://azuracast.com/" target="_blank">' . $settings['name'] . '</a>' . ' ')?><br>
+        <?=sprintf(__('Mascot designed by %s'),
+            '<a href="https://tysontan.deviantart.com/" target="_blank">Tyson Tan</a>')?>
     </footer>
 <?php endif; ?>
 
 <?php if (null !== $flash && $flash->hasMessages()): ?>
-    <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-        $(function() {
+    <script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
+        $(function () {
             <?php foreach($flash->getMessages() as $message): ?>
-            notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>', true);
+            notify("<?=str_replace(['"', "\n"], ['\'', '<br>'], $message['text']) ?>", '<?=$message['color'] ?>', true);
             <?php endforeach; ?>
         });
     </script>

@@ -72,7 +72,7 @@
       - unzip
       - bubblewrap
 
-- name: Initialize OPAM - This takes a while...
+- name: Initialize OPAM (Bionic)
   become_user: azuracast
   shell: "opam init -a --disable-sandboxing --bare && opam switch create 4.08.0"
   args:
@@ -86,15 +86,27 @@
   shell: "opam init --disable-sandboxing -a --bare && opam switch create ocaml-system.4.08.1"
   args:
     chdir: "{{ app_base }}"
+    executable: "bash" # Fixes some possible hang issues.
   when:
     - ansible_distribution_release == 'focal'
 
-- name: Build and Install Liquidsoap
+- name: Build and Install Liquidsoap and Dependencies
   become_user: azuracast
   shell: "opam install -y samplerate.0.1.4 taglib.0.3.3 mad.0.4.5 faad.0.4.0 fdkaac.0.3.1 lame.0.3.3 vorbis.0.7.1 cry.0.6.1 flac.0.1.5 opus.0.1.3 duppy.0.8.0 ssl liquidsoap.1.4.2"
   args:
     chdir: "{{ app_base }}"
-    executable: "bash" # Fixes some possible hang issues.
+  register: install_result
+  async: 3600
+  poll: 0
+
+- name: Check on Liquidsoap Installation
+  become_user: azuracast
+  async_status:
+    jid: "{{ install_result.ansible_job_id }}"
+  register: check_result
+  until: check_result.finished
+  retries: 60
+  delay: 60
 
 - name: Link Liquidsoap binary (Xenial/Bionic)
   file:

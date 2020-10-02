@@ -2,14 +2,14 @@
 namespace App\Controller\Frontend\Profile;
 
 use App\Auth;
+use App\Config;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Config;
 use App\Session\Flash;
 use AzuraForms\Field\AbstractField;
 use BaconQrCode;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OTPHP\TOTP;
 use ParagonIE\ConstantTime\Base32;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ class EnableTwoFactorAction
         ServerRequest $request,
         Response $response,
         Config $config,
-        EntityManager $em
+        EntityManagerInterface $em
     ): ResponseInterface {
         $twoFactorFormConfig = $config->get('forms/profile_two_factor');
 
@@ -51,7 +51,7 @@ class EnableTwoFactorAction
             $user->setTwoFactorSecret($totp->getProvisioningUri());
 
             $em->persist($user);
-            $em->flush($user);
+            $em->flush();
 
             $request->getFlash()->addMessage(__('Two-factor authentication enabled.'), Flash::SUCCESS);
 

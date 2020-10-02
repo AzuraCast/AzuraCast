@@ -7,13 +7,13 @@ use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
-use App\MessageQueue;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,7 +27,7 @@ class FilesController extends AbstractStationApiCrudController
 
     protected Adapters $adapters;
 
-    protected MessageQueue $messageQueue;
+    protected MessageBus $messageBus;
 
     protected Entity\Repository\CustomFieldRepository $custom_fields_repo;
 
@@ -38,12 +38,12 @@ class FilesController extends AbstractStationApiCrudController
     protected Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Filesystem $filesystem,
         Adapters $adapters,
-        MessageQueue $messageQueue,
+        MessageBus $messageBus,
         Entity\Repository\CustomFieldRepository $custom_fields_repo,
         Entity\Repository\SongRepository $song_repo,
         Entity\Repository\StationMediaRepository $media_repo,
@@ -53,7 +53,7 @@ class FilesController extends AbstractStationApiCrudController
 
         $this->filesystem = $filesystem;
         $this->adapters = $adapters;
-        $this->messageQueue = $messageQueue;
+        $this->messageBus = $messageBus;
 
         $this->custom_fields_repo = $custom_fields_repo;
         $this->media_repo = $media_repo;
@@ -98,7 +98,12 @@ class FilesController extends AbstractStationApiCrudController
     {
         $station = $this->getStation($request);
 
-        $body = $request->getParsedBody();
+        if ($station->isStorageFull()) {
+            return $response->withStatus(500)
+                ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
+        }
+
+        $request->getParsedBody();
 
         // Convert the body into an UploadFile API entity first.
         /** @var Entity\Api\UploadFile $api_record */
@@ -249,7 +254,7 @@ class FilesController extends AbstractStationApiCrudController
 
         if ($record instanceof Entity\StationMedia) {
             $this->em->persist($record);
-            $this->em->flush($record);
+            $this->em->flush();
 
             if ($this->media_repo->writeToFile($record)) {
                 $song_info = [
@@ -271,7 +276,7 @@ class FilesController extends AbstractStationApiCrudController
             if (null !== $playlists) {
                 $station = $record->getStation();
 
-                /** @var Entity\StationPlaylist[] $playlists */
+                /** @var Entity\StationPlaylist[] $affected_playlists */
                 $affected_playlists = [];
 
                 // Remove existing playlists.
@@ -288,13 +293,13 @@ class FilesController extends AbstractStationApiCrudController
                         $playlist_id = $new_playlist['id'];
                         $playlist_weight = $new_playlist['weight'] ?? 0;
                     } else {
-                        $playlist_id = $new_playlist;
+                        $playlist_id = (int)$new_playlist;
                         $playlist_weight = 0;
                     }
 
                     $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
                         'station_id' => $station->getId(),
-                        'id' => (int)$playlist_id,
+                        'id' => $playlist_id,
                     ]);
 
                     if ($playlist instanceof Entity\StationPlaylist) {
@@ -310,7 +315,8 @@ class FilesController extends AbstractStationApiCrudController
                         // Instruct the message queue to start a new "write playlist to file" task.
                         $message = new WritePlaylistFileMessage;
                         $message->playlist_id = $playlist_id;
-                        $this->messageQueue->produce($message);
+
+                        $this->messageBus->dispatch($message);
                     }
                 }
             }
@@ -330,7 +336,7 @@ class FilesController extends AbstractStationApiCrudController
 
         $station = $record->getStation();
 
-        /** @var Entity\StationPlaylist[] $playlists */
+        /** @var Entity\StationPlaylist[] $affected_playlists */
         $affected_playlists = [];
 
         $media_playlists = $this->playlist_media_repo->clearPlaylistsFromMedia($record);
@@ -353,7 +359,8 @@ class FilesController extends AbstractStationApiCrudController
                 // Instruct the message queue to start a new "write playlist to file" task.
                 $message = new WritePlaylistFileMessage;
                 $message->playlist_id = $playlist_id;
-                $this->messageQueue->produce($message);
+
+                $this->messageBus->dispatch($message);
             }
         }
 

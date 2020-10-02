@@ -12,10 +12,6 @@ final class Version20180909035413 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('CREATE TABLE station_remotes (id INT AUTO_INCREMENT NOT NULL, station_id INT NOT NULL, type VARCHAR(50) NOT NULL, enable_autodj TINYINT(1) NOT NULL, autodj_format VARCHAR(10) DEFAULT NULL, autodj_bitrate SMALLINT DEFAULT NULL, custom_listen_url VARCHAR(255) DEFAULT NULL, url VARCHAR(255) DEFAULT NULL, mount VARCHAR(150) DEFAULT NULL, source_username VARCHAR(100) DEFAULT NULL, source_password VARCHAR(100) DEFAULT NULL, INDEX IDX_779D0E8A21BDB235 (station_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE station_remotes ADD CONSTRAINT FK_779D0E8A21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE');
     }
@@ -29,7 +25,7 @@ final class Version20180909035413 extends AbstractMigration
             $mounts = $this->connection->fetchAll('SELECT * FROM station_mounts WHERE station_id = ' . $station['id']);
 
             if (count($mounts) === 0) {
-                $settings = json_decode($station['frontend_config'], true);
+                $settings = json_decode($station['frontend_config'], true, 512, JSON_THROW_ON_ERROR);
 
                 if (isset($settings['remote_type'])) {
                     $this->connection->insert('station_remotes', [
@@ -61,10 +57,6 @@ final class Version20180909035413 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('DROP TABLE station_remotes');
     }
 }

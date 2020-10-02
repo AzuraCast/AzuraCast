@@ -14,14 +14,10 @@ final class Version20170829030442 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->changeCharset('utf8mb4', 'utf8mb4_unicode_ci');
     }
 
-    protected function changeCharset($charset, $collate)
+    protected function changeCharset($charset, $collate): void
     {
         $db_name = $this->connection->getDatabase();
 
@@ -31,7 +27,7 @@ final class Version20170829030442 extends AbstractMigration
             'ALTER TABLE station_media CHANGE path path VARCHAR(255) DEFAULT NULL',
             'ALTER TABLE station_mounts CHANGE relay_url relay_url VARCHAR(255) DEFAULT NULL, CHANGE authhash authhash VARCHAR(255) DEFAULT NULL',
             'ALTER TABLE users CHANGE auth_password auth_password VARCHAR(255) DEFAULT NULL',
-            'ALTER TABLE app_migrations CHANGE version version VARCHAR(255) NOT NULL',
+            'ALTER TABLE app_migrations CHANGE version version VARCHAR(191) NOT NULL',
             'ALTER DATABASE ' . $this->connection->quoteIdentifier($db_name) . ' CHARACTER SET = ' . $charset . ' COLLATE = ' . $collate,
             'ALTER TABLE `song_history` DROP FOREIGN KEY FK_2AD16164A0BDB2F3',
             'ALTER TABLE `station_media` DROP FOREIGN KEY FK_32AADE3AA0BDB2F3',
@@ -67,10 +63,6 @@ final class Version20170829030442 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
-
         $this->changeCharset('utf8', 'utf8_unicode_ci');
     }
 }

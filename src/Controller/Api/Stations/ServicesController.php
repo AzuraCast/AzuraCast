@@ -8,17 +8,17 @@ use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Radio\Configuration;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 class ServicesController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Configuration $configuration;
 
-    public function __construct(EntityManager $em, Configuration $configuration)
+    public function __construct(EntityManagerInterface $em, Configuration $configuration)
     {
         $this->em = $em;
         $this->configuration = $configuration;
@@ -114,13 +114,11 @@ class ServicesController
                 $frontend->stop($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend stopped.')));
-                break;
 
             case 'start':
                 $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend started.')));
-                break;
 
             case 'restart':
             default:
@@ -133,7 +131,6 @@ class ServicesController
                 $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Frontend restarted.')));
-                break;
         }
     }
 
@@ -159,6 +156,7 @@ class ServicesController
      *
      * @param ServerRequest $request
      * @param Response $response
+     * @param AutoDJ $autodj
      * @param string $do
      *
      * @return ResponseInterface
@@ -187,7 +185,6 @@ class ServicesController
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
-                break;
 
             case 'disconnect':
                 if ($backend instanceof Liquidsoap) {
@@ -195,19 +192,16 @@ class ServicesController
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
-                break;
 
             case 'stop':
                 $backend->stop($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Backend stopped.')));
-                break;
 
             case 'start':
                 $backend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Backend started.')));
-                break;
 
             case 'restart':
             default:
@@ -220,7 +214,6 @@ class ServicesController
                 $backend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('Backend restarted.')));
-                break;
         }
     }
 

@@ -4,18 +4,18 @@ namespace App\Form;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Settings;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractSettingsForm extends Form
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Settings $settings;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Settings $settings,
         array $formConfig
@@ -27,7 +27,7 @@ abstract class AbstractSettingsForm extends Form
         $this->settingsRepo = $settingsRepo;
     }
 
-    public function getEntityManager(): EntityManager
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->em;
     }

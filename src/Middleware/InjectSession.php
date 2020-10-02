@@ -17,11 +17,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class InjectSession implements MiddlewareInterface
 {
-    /** @var SessionPersistenceInterface */
-    protected $sessionPersistence;
+    protected SessionPersistenceInterface $sessionPersistence;
 
-    /** @var Settings */
-    protected $settings;
+    protected Settings $settings;
 
     public function __construct(
         SessionPersistenceInterface $sessionPersistence,

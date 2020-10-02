@@ -3,6 +3,8 @@ version: '2.2'
 services:
   web:
     image: azuracast_cli:latest
+    environment:
+      APPLICATION_ENV: 'testing'
     build:
       context: ./util/docker/testing
     volumes:

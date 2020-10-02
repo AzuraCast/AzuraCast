@@ -7,9 +7,6 @@ use App\Webhook\Connector;
 
 return [
     'webhooks' => [
-        Connector\Local::NAME => [
-            'class' => Connector\Local::class,
-        ],
         Connector\Generic::NAME => [
             'class' => Connector\Generic::class,
             'name' => __('Generic Web Hook'),

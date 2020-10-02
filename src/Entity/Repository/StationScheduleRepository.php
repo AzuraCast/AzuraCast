@@ -3,10 +3,30 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
-use Cake\Chronos\Chronos;
+use App\Radio\AutoDJ\Scheduler;
+use App\Settings;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class StationScheduleRepository extends Repository
 {
+    protected Scheduler $scheduler;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger,
+        Scheduler $scheduler
+    ) {
+        parent::__construct($em, $serializer, $settings, $logger);
+
+        $this->scheduler = $scheduler;
+    }
+
     /**
      * @param Entity\StationPlaylist|Entity\StationStreamer $relation
      * @param array|null $items
@@ -54,23 +74,20 @@ class StationScheduleRepository extends Repository
         if ($relation instanceof Entity\StationPlaylist) {
             return $this->repository->findBy(['playlist' => $relation]);
         }
-        if ($relation instanceof Entity\StationStreamer) {
-            return $this->repository->findBy(['streamer' => $relation]);
-        }
 
-        throw new \InvalidArgumentException('Related entity must be a Playlist or Streamer.');
+        return $this->repository->findBy(['streamer' => $relation]);
     }
 
     /**
      * @param Entity\Station $station
-     * @param Chronos|null $now
+     * @param CarbonInterface|null $now
      *
      * @return Entity\Api\StationSchedule[]
      */
-    public function getUpcomingSchedule(Entity\Station $station, Chronos $now = null): array
+    public function getUpcomingSchedule(Entity\Station $station, CarbonInterface $now = null): array
     {
         if (null === $now) {
-            $now = Chronos::now(new \DateTimeZone($station->getTimezone()));
+            $now = CarbonImmutable::now($station->getTimezoneObject());
         }
 
         $startDate = $now->subDay();
@@ -93,10 +110,10 @@ class StationScheduleRepository extends Repository
             $i = $startDate;
 
             while ($i <= $endDate) {
-                $dayOfWeek = $i->format('N');
+                $dayOfWeek = (int)$i->format('N');
 
-                if ($scheduleItem->shouldPlayOnCurrentDate($i)
-                    && $scheduleItem->isScheduledToPlayToday($dayOfWeek)) {
+                if ($this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
+                    && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)) {
                     $start = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
                     $end = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
 
@@ -117,7 +134,7 @@ class StationScheduleRepository extends Repository
                     $row->start = $start->toIso8601String();
                     $row->end_timestamp = $end->getTimestamp();
                     $row->end = $end->toIso8601String();
-                    $row->is_now = $start->lessThanOrEquals($startDate);
+                    $row->is_now = $start->lessThanOrEqualTo($startDate);
 
                     if ($scheduleItem->getPlaylist() instanceof Entity\StationPlaylist) {
                         $playlist = $scheduleItem->getPlaylist();

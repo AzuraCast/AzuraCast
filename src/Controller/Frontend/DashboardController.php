@@ -9,7 +9,7 @@ use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
@@ -17,7 +17,7 @@ use stdClass;
 
 class DashboardController
 {
-    protected EntityManager $em;
+    protected EntityManagerInterface $em;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
@@ -34,7 +34,7 @@ class DashboardController
     protected EventDispatcher $dispatcher;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Acl $acl,
         CacheInterface $cache,
@@ -227,7 +227,7 @@ class DashboardController
         }
 
         return [
-            'station' => json_encode($station_metrics),
+            'station' => json_encode($station_metrics, JSON_THROW_ON_ERROR),
             'station_alt' => implode('', $station_metrics_alt),
         ];
     }

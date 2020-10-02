@@ -9,12 +9,8 @@ use Symfony\Component\Finder\Finder;
 
 class StationMedia extends AbstractFixture implements DependentFixtureInterface
 {
-    /** @var Entity\Repository\StationMediaRepository */
-    protected $mediaRepo;
+    protected Entity\Repository\StationMediaRepository $mediaRepo;
 
-    /**
-     * @param Entity\Repository\StationMediaRepository $mediaRepo
-     */
     public function __construct(Entity\Repository\StationMediaRepository $mediaRepo)
     {
         $this->mediaRepo = $mediaRepo;

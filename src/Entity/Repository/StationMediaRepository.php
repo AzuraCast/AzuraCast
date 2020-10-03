@@ -24,8 +24,6 @@ class StationMediaRepository extends Repository
 {
     protected Filesystem $filesystem;
 
-    protected SongRepository $songRepo;
-
     protected CustomFieldRepository $customFieldRepo;
 
     public function __construct(
@@ -34,11 +32,9 @@ class StationMediaRepository extends Repository
         Settings $settings,
         LoggerInterface $logger,
         Filesystem $filesystem,
-        SongRepository $songRepo,
         CustomFieldRepository $customFieldRepo
     ) {
         $this->filesystem = $filesystem;
-        $this->songRepo = $songRepo;
         $this->customFieldRepo = $customFieldRepo;
 
         parent::__construct($em, $serializer, $settings, $logger);
@@ -198,7 +194,7 @@ class StationMediaRepository extends Repository
         }
 
         // Attempt to derive title and artist from filename.
-        if (empty($media->getTitle())) {
+        if (null === $media->getSongId()) {
             $filename = pathinfo($media->getPath(), PATHINFO_FILENAME);
             $filename = str_replace('_', ' ', $filename);
 
@@ -214,10 +210,7 @@ class StationMediaRepository extends Repository
             }
         }
 
-        $media->setSong($this->songRepo->getOrCreate([
-            'artist' => $media->getArtist(),
-            'title' => $media->getTitle(),
-        ]));
+        $media->updateSongId();
     }
 
     protected function cleanUpString(string $original): string

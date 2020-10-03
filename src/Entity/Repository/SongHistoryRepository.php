@@ -140,7 +140,7 @@ class SongHistoryRepository extends Repository
         $listeners = (int)$np->listeners->current;
 
         if ($last_sh instanceof Entity\SongHistory) {
-            if ($last_sh->getSong() === $song) {
+            if ($last_sh->getSongId() === $song->getSongId()) {
                 // Updating the existing SongHistory item with a new data point.
                 $last_sh->addDeltaPoint($listeners);
 
@@ -197,7 +197,7 @@ class SongHistoryRepository extends Repository
             $this->em->remove($sq);
         } else {
             // Processing a new SongHistory item.
-            $sh = new Entity\SongHistory($song, $station);
+            $sh = new Entity\SongHistory($station, $song);
 
             $currentStreamer = $station->getCurrentStreamer();
             if ($currentStreamer instanceof Entity\StationStreamer) {

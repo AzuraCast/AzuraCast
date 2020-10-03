@@ -22,6 +22,7 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use function DeepCopy\deep_copy;
@@ -46,8 +47,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\StationQueueRepository $queueRepo;
 
-    protected Entity\Repository\SongRepository $song_repo;
-
     protected Entity\Repository\ListenerRepository $listener_repo;
 
     protected LockFactory $lockFactory;
@@ -66,7 +65,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         MessageBus $messageBus,
         LockFactory $lockFactory,
         Entity\Repository\SongHistoryRepository $historyRepository,
-        Entity\Repository\SongRepository $songRepository,
         Entity\Repository\ListenerRepository $listenerRepository,
         Entity\Repository\SettingsRepository $settingsRepository,
         Entity\Repository\StationQueueRepository $queueRepo
@@ -83,7 +81,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->lockFactory = $lockFactory;
 
         $this->history_repo = $historyRepository;
-        $this->song_repo = $songRepository;
         $this->listener_repo = $listenerRepository;
         $this->queueRepo = $queueRepo;
 
@@ -174,8 +171,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         Entity\Station $station,
         $standalone = false
     ): Entity\Api\NowPlaying {
-        $lock = $this->lockFactory->createLock('nowplaying_station_' . $station->getId(), 600);
-
+        $lock = $this->getLockForStation($station);
         $lock->acquire(true);
 
         try {
@@ -236,11 +232,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             );
 
             if (empty($npResult->currentSong->text)) {
-                $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
+                $song_obj = new Entity\Song('Stream Offline');
 
                 $offline_sh = new Entity\Api\NowPlayingCurrentSong;
                 $offline_sh->sh_id = 0;
-                $offline_sh->song = $song_obj->api(
+                $offline_sh->song = $song_obj->getSongApi(
                     $this->api_utils,
                     $station,
                     $uri_empty
@@ -266,18 +262,16 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
                 if ($np_old instanceof Entity\Api\NowPlaying &&
                     0 === strcmp($current_song_hash, $np_old->now_playing->song->id)) {
-                    /** @var Entity\Song $song_obj */
-                    $song_obj = $this->song_repo->getRepository()->find($current_song_hash);
+                    $previousHistory = $this->history_repo->getCurrent($station);
 
-                    $sh_obj = $this->history_repo->register($song_obj, $station, $np);
+                    $sh_obj = $this->history_repo->register($previousHistory, $station, $np);
 
                     $np->song_history = $np_old->song_history;
                     $np->playing_next = $np_old->playing_next;
                 } else {
                     // SongHistory registration must ALWAYS come before the history/nextsong calls
                     // otherwise they will not have up-to-date database info!
-                    $song_obj = $this->song_repo->getOrCreate($npResult->currentSong, true);
-                    $sh_obj = $this->history_repo->register($song_obj, $station, $np);
+                    $sh_obj = $this->history_repo->register(new Entity\Song($npResult->currentSong), $station, $np);
 
                     $np->song_history = $this->history_repo->getHistoryApi(
                         $station,
@@ -316,7 +310,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 }
 
                 // Register a new item in song history.
-                $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils, $uri_empty);
+                $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils,
+                    $uri_empty);
             }
 
             $np->update();
@@ -353,27 +348,27 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      */
     public function queueStation(Entity\Station $station, array $extra_metadata = []): void
     {
-        // Stop Now Playing from processing while doing the steps below.
-        $station->setNowPlayingTimestamp(time());
-        $this->em->persist($station);
-        $this->em->flush();
+        $lock = $this->getLockForStation($station);
 
-        // Process extra metadata sent by Liquidsoap (if it exists).
-        if (!empty($extra_metadata['song_id'])) {
-            $song = $this->song_repo->getRepository()->find($extra_metadata['song_id']);
+        if (!$lock->acquire(false)) {
+            return;
+        }
 
-            if ($song instanceof Entity\Song) {
-                $sq = $this->queueRepo->getUpcomingFromSong($station, $song);
-                if (!$sq instanceof Entity\StationQueue) {
-                    $sq = new Entity\StationQueue($station, $song);
-                    $sq->setTimestampCued(time());
+        try {
+            // Process extra metadata sent by Liquidsoap (if it exists).
+            if (!empty($extra_metadata['media_id'])) {
+                $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
+                if (!$media instanceof Entity\StationMedia) {
+                    return;
                 }
 
-                if (!empty($extra_metadata['media_id']) && null === $sq->getMedia()) {
-                    $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
-                    if ($media instanceof Entity\StationMedia) {
-                        $sq->setMedia($media);
-                    }
+                $sq = $this->queueRepo->getUpcomingFromSong($station, $media->getSong());
+
+                if (!$sq instanceof Entity\StationQueue) {
+                    $sq = new Entity\StationQueue($station, $media->getSong());
+                    $sq->setTimestampCued(time());
+                } elseif (null === $sq->getMedia()) {
+                    $sq->setMedia($media);
                 }
 
                 if (!empty($extra_metadata['playlist_id']) && null === $sq->getPlaylist()) {
@@ -388,15 +383,17 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $this->em->persist($sq);
                 $this->em->flush();
             }
+
+            // Trigger a delayed Now Playing update.
+            $message = new Message\UpdateNowPlayingMessage;
+            $message->station_id = $station->getId();
+
+            $this->messageBus->dispatch($message, [
+                new DelayStamp(2000),
+            ]);
+        } finally {
+            $lock->release();
         }
-
-        // Trigger a delayed Now Playing update.
-        $message = new Message\UpdateNowPlayingMessage;
-        $message->station_id = $station->getId();
-
-        $this->messageBus->dispatch($message, [
-            new DelayStamp(2000),
-        ]);
     }
 
     /**
@@ -459,5 +456,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             ->setParameter('streamer', $station->getCurrentStreamer());
 
         return $query->getSingleResult();
+    }
+
+    protected function getLockForStation(Station $station): LockInterface
+    {
+        return $this->lockFactory->createLock('nowplaying_station_' . $station->getId(), 600);
     }
 }

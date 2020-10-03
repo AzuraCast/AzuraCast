@@ -20,8 +20,6 @@ class Queue implements EventSubscriberInterface
 
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
-    protected Entity\Repository\SongRepository $songRepo;
-
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
     protected Entity\Repository\SongHistoryRepository $historyRepo;
@@ -31,7 +29,6 @@ class Queue implements EventSubscriberInterface
         LoggerInterface $logger,
         Scheduler $scheduler,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        Entity\Repository\SongRepository $songRepo,
         Entity\Repository\StationRequestRepository $requestRepo,
         Entity\Repository\SongHistoryRepository $historyRepo
     ) {
@@ -39,7 +36,6 @@ class Queue implements EventSubscriberInterface
         $this->logger = $logger;
         $this->scheduler = $scheduler;
         $this->spmRepo = $spmRepo;
-        $this->songRepo = $songRepo;
         $this->requestRepo = $requestRepo;
         $this->historyRepo = $historyRepo;
     }
@@ -268,9 +264,10 @@ class Queue implements EventSubscriberInterface
             $playlist->setPlayedAt($now->getTimestamp());
             $this->em->persist($playlist);
 
-            $sh = new Entity\StationQueue($playlist->getStation(), $this->songRepo->getOrCreate([
-                'text' => 'Remote Playlist URL',
-            ]));
+            $sh = new Entity\StationQueue(
+                $playlist->getStation(),
+                new Entity\Song('Remote Playlist URL')
+            );
 
             $sh->setPlaylist($playlist);
             $sh->setAutodjCustomUri($media_uri);

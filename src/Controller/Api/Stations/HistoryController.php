@@ -144,7 +144,7 @@ class HistoryController
         $paginator->setPostprocessor(function ($sh_row) use ($is_bootgrid, $router) {
 
             /** @var Entity\SongHistory $sh_row */
-            $row = $sh_row->api(new Entity\Api\DetailedSongHistory, $this->api_utils);
+            $row = $sh_row->getSongApi(new Entity\Api\DetailedSongHistory, $this->api_utils);
             $row->resolveUrls($router->getBaseUrl());
 
             if ($is_bootgrid) {

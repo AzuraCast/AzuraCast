@@ -12,7 +12,7 @@ use Psr\Http\Message\UriInterface;
  * })
  * @ORM\Entity()
  */
-class SongHistory
+class SongHistory extends Song
 {
     use Traits\TruncateInts;
 
@@ -29,21 +29,6 @@ class SongHistory
      * @var int
      */
     protected $id;
-
-    /**
-     * @ORM\Column(name="song_id", type="string", length=50)
-     * @var string
-     */
-    protected $song_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Song", inversedBy="history")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Song
-     */
-    protected $song;
 
     /**
      * @ORM\Column(name="station_id", type="integer")
@@ -180,9 +165,12 @@ class SongHistory
      */
     protected $delta_points;
 
-    public function __construct(Song $song, Station $station)
-    {
-        $this->song = $song;
+    public function __construct(
+        Station $station,
+        Song $song
+    ) {
+        parent::__construct($song);
+
         $this->station = $station;
 
         $this->timestamp_start = 0;
@@ -201,11 +189,6 @@ class SongHistory
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getSong(): Song
-    {
-        return $this->song;
     }
 
     public function getStation(): Station
@@ -424,21 +407,23 @@ class SongHistory
 
         $response->song = ($this->media)
             ? $this->media->api($api, $base_url)
-            : $this->song->api($api, $this->station, $base_url);
+            : $this->getSongApi($api, $this->station, $base_url);
 
         return $response;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return (null !== $this->media)
-            ? (string)$this->media
-            : (string)$this->song;
+        if ($this->media instanceof StationMedia) {
+            return (string)$this->media;
+        }
+
+        return parent::__toString();
     }
 
     public static function fromQueue(StationQueue $queue): self
     {
-        $sh = new self($queue->getSong(), $queue->getStation());
+        $sh = new self($queue->getStation(), $queue->getSong());
         $sh->setMedia($queue->getMedia());
         $sh->setRequest($queue->getRequest());
         $sh->setPlaylist($queue->getPlaylist());

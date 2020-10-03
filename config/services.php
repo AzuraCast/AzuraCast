@@ -136,14 +136,7 @@ return [
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Cache
-    Psr\Cache\CacheItemPoolInterface::class => function (App\Settings $settings, Psr\Container\ContainerInterface $di) {
-        // Never use the Redis cache for CLI commands, as the CLI commands are where
-        // the Redis cache gets flushed, so this will lead to a race condition that can't
-        // be solved within the application.
-        return $settings->enableRedis() && !$settings->isCli()
-            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
-            : new Cache\Adapter\PHPArray\ArrayCachePool;
-    },
+    Psr\Cache\CacheItemPoolInterface::class => DI\autowire(Cache\Adapter\Redis\RedisCachePool::class),
     Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
 
     // Doctrine cache
@@ -276,6 +269,7 @@ return [
     ) {
         $redisStore = new Symfony\Component\Lock\Store\RedisStore($redis);
         $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 60);
+        $retryStore->setLogger($logger);
 
         $lockFactory = new Symfony\Component\Lock\LockFactory($retryStore);
         $lockFactory->setLogger($logger);

@@ -136,14 +136,7 @@ return [
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Cache
-    Psr\Cache\CacheItemPoolInterface::class => function (App\Settings $settings, Psr\Container\ContainerInterface $di) {
-        // Never use the Redis cache for CLI commands, as the CLI commands are where
-        // the Redis cache gets flushed, so this will lead to a race condition that can't
-        // be solved within the application.
-        return $settings->enableRedis() && !$settings->isCli()
-            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
-            : new Cache\Adapter\PHPArray\ArrayCachePool;
-    },
+    Psr\Cache\CacheItemPoolInterface::class => DI\autowire(Cache\Adapter\Redis\RedisCachePool::class),
     Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
 
     // Doctrine cache
@@ -209,15 +202,35 @@ return [
     // Monolog Logger
     Monolog\Logger::class => function (App\Settings $settings) {
         $logger = new Monolog\Logger($settings[App\Settings::APP_NAME] ?? 'app');
-        $logging_level = $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+
+        $loggingLevel = null;
+        if (!empty($_ENV['LOG_LEVEL'])) {
+            $allowedLogLevels = [
+                Psr\Log\LogLevel::DEBUG,
+                Psr\Log\LogLevel::INFO,
+                Psr\Log\LogLevel::NOTICE,
+                Psr\Log\LogLevel::WARNING,
+                Psr\Log\LogLevel::ERROR,
+                Psr\Log\LogLevel::CRITICAL,
+                Psr\Log\LogLevel::ALERT,
+                Psr\Log\LogLevel::EMERGENCY,
+            ];
+
+            $loggingLevel = strtolower($_ENV['LOG_LEVEL']);
+            if (!in_array($loggingLevel, $allowedLogLevels, true)) {
+                $loggingLevel = null;
+            }
+        }
+
+        $loggingLevel ??= $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
 
         if ($settings[App\Settings::IS_DOCKER] || $settings[App\Settings::IS_CLI]) {
-            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
+            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
 
         $log_file = new Monolog\Handler\StreamHandler($settings[App\Settings::TEMP_DIR] . '/app.log',
-            $logging_level, true);
+            $loggingLevel, true);
         $logger->pushHandler($log_file);
 
         return $logger;
@@ -275,7 +288,9 @@ return [
         Psr\Log\LoggerInterface $logger
     ) {
         $redisStore = new Symfony\Component\Lock\Store\RedisStore($redis);
-        $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 60);
+
+        $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 30);
+        $retryStore->setLogger($logger);
 
         $lockFactory = new Symfony\Component\Lock\LockFactory($retryStore);
         $lockFactory->setLogger($logger);

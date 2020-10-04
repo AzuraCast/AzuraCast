@@ -2,14 +2,14 @@
 
 <div class="card">
     <div class="card-header bg-primary-dark">
-        <h2 class="card-title"><?=__('Song Duplicates') ?></h2>
+        <h2 class="card-title"><?=__('Song Duplicates')?></h2>
     </div>
     <?php if (empty($dupes)): ?>
-    <div class="card-body">
-        <p><?=__('No duplicates were found. Nice work!') ?></p>
-    </div>
+        <div class="card-body">
+            <p><?=__('No duplicates were found. Nice work!')?></p>
+        </div>
     <?php else: ?>
-        <?php foreach($dupes as $dupe_row): ?>
+        <?php foreach ($dupes as $dupe_row): ?>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <colgroup>
@@ -20,21 +20,22 @@
                     </colgroup>
                     <thead>
                     <tr>
-                        <th><?=__('Actions') ?></th>
-                        <th><?=__('Title / File Path') ?></th>
-                        <th class="text-right"><?=__('Playlists') ?></th>
-                        <th class="text-right"><?=__('Length') ?></th>
+                        <th><?=__('Actions')?></th>
+                        <th><?=__('Title / File Path')?></th>
+                        <th class="text-right"><?=__('Playlists')?></th>
+                        <th class="text-right"><?=__('Length')?></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($dupe_row as $media_row): ?>
+                    <?php foreach ($dupe_row as $media_row): ?>
                         <tr class="align-middle">
                             <td>
-                                <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('stations:reports:duplicates:delete', ['media_id' => $media_row['id']]) ?>"><?=__('Delete') ?></a>
+                                <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('stations:reports:duplicates:delete',
+                                    ['media_id' => $media_row['id']])?>"><?=__('Delete')?></a>
                             </td>
                             <td>
-                                <big><?=$media_row['song']['artist'] ?> - <?=$media_row['song']['title'] ?></big><br>
-                                <?=$media_row['path'] ?>
+                                <big><?=$media_row['artist']?> - <?=$media_row['title']?></big><br>
+                                <?=$media_row['path']?>
                             </td>
                             <td class="text-right">
                                 <?php if (count($media_row['playlists']) == 0): ?>
@@ -42,14 +43,14 @@
                                 <?php else: ?>
                                     <?php
                                     $playlists = [];
-                                    foreach($media_row['playlists'] as $playlist) {
+                                    foreach ($media_row['playlists'] as $playlist) {
                                         $playlists[] = $playlist['name'];
                                     }
                                     ?>
-                                    <abbr title="<?=implode(', ', $playlists) ?>"><?=count($playlists) ?></abbr>
+                                    <abbr title="<?=implode(', ', $playlists)?>"><?=count($playlists)?></abbr>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-right"><?=$media_row['length_text'] ?></td>
+                            <td class="text-right"><?=$media_row['length_text']?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

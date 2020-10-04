@@ -20,8 +20,6 @@ class Queue implements EventSubscriberInterface
 
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
-    protected Entity\Repository\SongRepository $songRepo;
-
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
     protected Entity\Repository\SongHistoryRepository $historyRepo;
@@ -31,7 +29,6 @@ class Queue implements EventSubscriberInterface
         LoggerInterface $logger,
         Scheduler $scheduler,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        Entity\Repository\SongRepository $songRepo,
         Entity\Repository\StationRequestRepository $requestRepo,
         Entity\Repository\SongHistoryRepository $historyRepo
     ) {
@@ -39,7 +36,6 @@ class Queue implements EventSubscriberInterface
         $this->logger = $logger;
         $this->scheduler = $scheduler;
         $this->spmRepo = $spmRepo;
-        $this->songRepo = $songRepo;
         $this->requestRepo = $requestRepo;
         $this->historyRepo = $historyRepo;
     }
@@ -106,7 +102,7 @@ class Queue implements EventSubscriberInterface
         $logOncePerXSongsSongHistory = [];
         foreach ($recentSongHistoryForOncePerXSongs as $row) {
             $logOncePerXSongsSongHistory[] = [
-                'song' => $row['song']['text'],
+                'song' => $row['text'],
                 'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
                     $now->getTimezone())),
                 'duration' => $row['duration'],
@@ -117,7 +113,7 @@ class Queue implements EventSubscriberInterface
         $logDuplicatePreventionSongHistory = [];
         foreach ($recentSongHistoryForDuplicatePrevention as $row) {
             $logDuplicatePreventionSongHistory[] = [
-                'song' => $row['song']['text'],
+                'song' => $row['text'],
                 'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
                     $now->getTimezone())),
                 'duration' => $row['duration'],
@@ -268,9 +264,10 @@ class Queue implements EventSubscriberInterface
             $playlist->setPlayedAt($now->getTimestamp());
             $this->em->persist($playlist);
 
-            $sh = new Entity\StationQueue($playlist->getStation(), $this->songRepo->getOrCreate([
-                'text' => 'Remote Playlist URL',
-            ]));
+            $sh = new Entity\StationQueue(
+                $playlist->getStation(),
+                new Entity\Song('Remote Playlist URL')
+            );
 
             $sh->setPlaylist($playlist);
             $sh->setAutodjCustomUri($media_uri);
@@ -440,11 +437,11 @@ class Queue implements EventSubscriberInterface
 
         foreach ($playedMedia as $history) {
             $playedTracks[] = [
-                'artist' => $history['song']['artist'],
-                'title' => $history['song']['title'],
+                'artist' => $history['artist'],
+                'title' => $history['title'],
             ];
 
-            $songId = $history['song']['id'];
+            $songId = $history['song_id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
                 $latestSongIdsPlayed[$songId] = $history['timestamp_cued'] ?? $history['timestamp_start'];
@@ -460,8 +457,8 @@ class Queue implements EventSubscriberInterface
             }
 
             $eligibleTracks[$media['id']] = [
-                'artist' => $media['song']['artist'],
-                'title' => $media['song']['title'],
+                'artist' => $media['artist'],
+                'title' => $media['title'],
             ];
         }
 

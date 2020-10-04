@@ -49,9 +49,8 @@ class SongHistoryRepository extends Repository
             return [];
         }
 
-        $history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
+        $history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
             FROM App\Entity\SongHistory sh
-            JOIN sh.song s
             LEFT JOIN sh.media sm
             WHERE sh.station_id = :station_id
             AND sh.timestamp_end != 0
@@ -76,16 +75,16 @@ class SongHistoryRepository extends Repository
         CarbonInterface $now,
         int $rows
     ): array {
-        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, s
-            FROM App\Entity\StationQueue sq JOIN sq.song s
+        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq
+            FROM App\Entity\StationQueue sq
             WHERE sq.station = :station
             ORDER BY sq.timestamp_cued DESC')
             ->setParameter('station', $station)
             ->setMaxResults($rows)
             ->getArrayResult();
 
-        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
-            FROM App\Entity\SongHistory sh JOIN sh.song s
+        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
+            FROM App\Entity\SongHistory sh
             WHERE sh.station = :station
             AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
             AND sh.timestamp_start >= :threshold
@@ -107,8 +106,8 @@ class SongHistoryRepository extends Repository
         $timeRangeInSeconds = $minutes * 60;
         $threshold = $now->getTimestamp() - $timeRangeInSeconds;
 
-        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, s
-            FROM App\Entity\StationQueue sq JOIN sq.song s
+        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq
+            FROM App\Entity\StationQueue sq
             WHERE sq.station = :station
             AND sq.timestamp_cued >= :threshold
             ORDER BY sq.timestamp_cued DESC')
@@ -116,8 +115,8 @@ class SongHistoryRepository extends Repository
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
-        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
-            FROM App\Entity\SongHistory sh JOIN sh.song s
+        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
+            FROM App\Entity\SongHistory sh
             WHERE sh.station = :station
             AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
             AND sh.timestamp_start >= :threshold
@@ -140,7 +139,7 @@ class SongHistoryRepository extends Repository
         $listeners = (int)$np->listeners->current;
 
         if ($last_sh instanceof Entity\SongHistory) {
-            if ($last_sh->getSong() === $song) {
+            if ($last_sh->getSongId() === $song->getSongId()) {
                 // Updating the existing SongHistory item with a new data point.
                 $last_sh->addDeltaPoint($listeners);
 
@@ -197,7 +196,7 @@ class SongHistoryRepository extends Repository
             $this->em->remove($sq);
         } else {
             // Processing a new SongHistory item.
-            $sh = new Entity\SongHistory($song, $station);
+            $sh = new Entity\SongHistory($station, $song);
 
             $currentStreamer = $station->getCurrentStreamer();
             if ($currentStreamer instanceof Entity\StationStreamer) {

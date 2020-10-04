@@ -9,7 +9,7 @@ use Psr\Http\Message\UriInterface;
  * @ORM\Table(name="station_queue")
  * @ORM\Entity()
  */
-class StationQueue
+class StationQueue extends Song
 {
     use Traits\TruncateInts;
 
@@ -20,21 +20,6 @@ class StationQueue
      * @var int
      */
     protected $id;
-
-    /**
-     * @ORM\Column(name="song_id", type="string", length=50)
-     * @var string
-     */
-    protected $song_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Song", inversedBy="history")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Song
-     */
-    protected $song;
 
     /**
      * @ORM\Column(name="station_id", type="integer")
@@ -128,20 +113,16 @@ class StationQueue
 
     public function __construct(Station $station, Song $song)
     {
-        $this->song = $song;
-        $this->station = $station;
+        parent::__construct($song);
 
+        $this->station = $station;
+        
         $this->sent_to_autodj = false;
     }
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getSong(): Song
-    {
-        return $this->song;
     }
 
     public function getStation(): Station
@@ -265,15 +246,15 @@ class StationQueue
 
         $response->song = ($this->media)
             ? $this->media->api($api, $base_url)
-            : $this->song->api($api, $this->station, $base_url);
+            : $this->getSongApi($api, $this->station, $base_url);
 
         return $response;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (null !== $this->media)
             ? (string)$this->media
-            : (string)$this->song;
+            : parent::__toString();
     }
 }

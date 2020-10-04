@@ -31,8 +31,6 @@ class FilesController extends AbstractStationApiCrudController
 
     protected Entity\Repository\CustomFieldRepository $custom_fields_repo;
 
-    protected Entity\Repository\SongRepository $song_repo;
-
     protected Entity\Repository\StationMediaRepository $media_repo;
 
     protected Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo;
@@ -45,7 +43,6 @@ class FilesController extends AbstractStationApiCrudController
         Adapters $adapters,
         MessageBus $messageBus,
         Entity\Repository\CustomFieldRepository $custom_fields_repo,
-        Entity\Repository\SongRepository $song_repo,
         Entity\Repository\StationMediaRepository $media_repo,
         Entity\Repository\StationPlaylistMediaRepository $playlist_media_repo
     ) {
@@ -57,7 +54,6 @@ class FilesController extends AbstractStationApiCrudController
 
         $this->custom_fields_repo = $custom_fields_repo;
         $this->media_repo = $media_repo;
-        $this->song_repo = $song_repo;
         $this->playlist_media_repo = $playlist_media_repo;
     }
 
@@ -124,7 +120,7 @@ class FilesController extends AbstractStationApiCrudController
         $sanitized_path = Filesystem::PREFIX_MEDIA . '://' . $api_record->getSanitizedPath();
 
         // Process temp path as regular media record.
-        $record = $this->media_repo->uploadFile($station, $temp_path, $sanitized_path);
+        $record = $this->media_repo->getOrCreate($station, $sanitized_path, $temp_path);
 
         $return = $this->viewRecord($record, $request);
 
@@ -257,16 +253,7 @@ class FilesController extends AbstractStationApiCrudController
             $this->em->flush();
 
             if ($this->media_repo->writeToFile($record)) {
-                $song_info = [
-                    'title' => $record->getTitle(),
-                    'artist' => $record->getArtist(),
-                ];
-
-                $song = $this->song_repo->getOrCreate($song_info);
-                $song->update($song_info);
-                $this->em->persist($song);
-
-                $record->setSong($song);
+                $record->updateSongId();
             }
 
             if (null !== $custom_fields) {

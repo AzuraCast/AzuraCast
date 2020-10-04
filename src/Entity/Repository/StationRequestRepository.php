@@ -162,9 +162,8 @@ class StationRequestRepository extends Repository
 
         $lastPlayThreshold = time() - ($lastPlayThresholdMins * 60);
 
-        $recentTracks = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.id, s.title, s.artist 
+        $recentTracks = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.id, sh.title, sh.artist 
                 FROM App\Entity\SongHistory sh 
-                JOIN sh.song s
                 WHERE sh.station = :station
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
@@ -172,12 +171,11 @@ class StationRequestRepository extends Repository
             ->setParameter('threshold', $lastPlayThreshold)
             ->getArrayResult();
 
-        $song = $media->getSong();
 
         $eligibleTracks = [
             [
-                'title' => $song->getTitle(),
-                'artist' => $song->getArtist(),
+                'title' => $media->getTitle(),
+                'artist' => $media->getArtist(),
             ],
         ];
 

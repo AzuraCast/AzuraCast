@@ -6,8 +6,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
 use Doctrine\ORM\EntityManagerInterface;
-use Error;
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 class FlowUploadAction
@@ -27,51 +25,46 @@ class FlowUploadAction
                 ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
         }
 
-        try {
-            $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
-            if ($flowResponse instanceof ResponseInterface) {
-                return $flowResponse;
-            }
+        $flowResponse = Flow::process($request, $response, $station->getRadioTempDir());
+        if ($flowResponse instanceof ResponseInterface) {
+            return $flowResponse;
+        }
 
-            if (is_array($flowResponse)) {
-                $file = $request->getAttribute('file');
-                $filePath = $request->getAttribute('file_path');
+        if (is_array($flowResponse)) {
+            $file = $request->getAttribute('file');
+            $filePath = $request->getAttribute('file_path');
 
-                $sanitizedName = $flowResponse['filename'];
+            $sanitizedName = $flowResponse['filename'];
 
-                $finalPath = empty($file)
-                    ? $filePath . $sanitizedName
-                    : $filePath . '/' . $sanitizedName;
+            $finalPath = empty($file)
+                ? $filePath . $sanitizedName
+                : $filePath . '/' . $sanitizedName;
 
-                $station_media = $mediaRepo->uploadFile($station, $flowResponse['path'], $finalPath);
+            $station_media = $mediaRepo->getOrCreate($station, $finalPath, $flowResponse['path']);
 
-                // If the user is looking at a playlist's contents, add uploaded media to that playlist.
-                if (!empty($params['searchPhrase'])) {
-                    $search_phrase = $params['searchPhrase'];
+            // If the user is looking at a playlist's contents, add uploaded media to that playlist.
+            if (!empty($params['searchPhrase'])) {
+                $search_phrase = $params['searchPhrase'];
 
-                    if (0 === strpos($search_phrase, 'playlist:')) {
-                        $playlist_name = substr($search_phrase, 9);
+                if (0 === strpos($search_phrase, 'playlist:')) {
+                    $playlist_name = substr($search_phrase, 9);
 
-                        $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                            'station_id' => $station->getId(),
-                            'name' => $playlist_name,
-                        ]);
+                    $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                        'station_id' => $station->getId(),
+                        'name' => $playlist_name,
+                    ]);
 
-                        if ($playlist instanceof Entity\StationPlaylist) {
-                            $spmRepo->addMediaToPlaylist($station_media, $playlist);
-                            $em->flush();
-                        }
+                    if ($playlist instanceof Entity\StationPlaylist) {
+                        $spmRepo->addMediaToPlaylist($station_media, $playlist);
+                        $em->flush();
                     }
                 }
-
-                $station->addStorageUsed($flowResponse['size']);
-                $em->flush();
-
-                return $response->withJson(new Entity\Api\Status);
             }
-        } catch (Exception | Error $e) {
-            return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, $e->getMessage()));
+
+            $station->addStorageUsed($flowResponse['size']);
+            $em->flush();
+
+            return $response->withJson(new Entity\Api\Status);
         }
 
         return $response->withJson(['success' => false]);

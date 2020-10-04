@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use getid3_exception;
 use InvalidArgumentException;
+use NowPlaying\Result\CurrentSong;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use voku\helper\UTF8;
@@ -24,8 +25,6 @@ class StationMediaRepository extends Repository
 {
     protected Filesystem $filesystem;
 
-    protected SongRepository $songRepo;
-
     protected CustomFieldRepository $customFieldRepo;
 
     public function __construct(
@@ -34,11 +33,9 @@ class StationMediaRepository extends Repository
         Settings $settings,
         LoggerInterface $logger,
         Filesystem $filesystem,
-        SongRepository $songRepo,
         CustomFieldRepository $customFieldRepo
     ) {
         $this->filesystem = $filesystem;
-        $this->songRepo = $songRepo;
         $this->customFieldRepo = $customFieldRepo;
 
         parent::__construct($em, $serializer, $settings, $logger);
@@ -95,35 +92,97 @@ class StationMediaRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     * @param string $tmp_path
-     * @param string $dest
+     * @param string $path
+     * @param string|null $uploadedFrom The original uploaded path (if this is a new upload).
      *
      * @return Entity\StationMedia
+     * @throws Exception
      */
-    public function uploadFile(Entity\Station $station, $tmp_path, $dest): Entity\StationMedia
-    {
-        [, $dest_path] = explode('://', $dest, 2);
+    public function getOrCreate(
+        Entity\Station $station,
+        string $path,
+        ?string $uploadedFrom = null
+    ): Entity\StationMedia {
+        if (strpos($path, '://') !== false) {
+            [, $path] = explode('://', $path, 2);
+        }
 
         $record = $this->repository->findOneBy([
             'station_id' => $station->getId(),
-            'path' => $dest_path,
+            'path' => $path,
         ]);
 
+        $created = false;
         if (!($record instanceof Entity\StationMedia)) {
-            $record = new Entity\StationMedia($station, $dest_path);
+            $record = new Entity\StationMedia($station, $path);
+            $created = true;
         }
 
-        $this->loadFromFile($record, $tmp_path);
+        $reprocessed = $this->processMedia($record, $created, $uploadedFrom);
 
-        $fs = $this->filesystem->getForStation($station);
-        $fs->upload($tmp_path, $dest);
-
-        $record->setMtime(time() + 5);
-
-        $this->em->persist($record);
-        $this->em->flush();
+        if ($created || $reprocessed) {
+            $this->em->flush();
+        }
 
         return $record;
+    }
+
+    /**
+     * Run media through the "processing" steps: loading from file and setting up any missing metadata.
+     *
+     * @param Entity\StationMedia $media
+     * @param bool $force
+     * @param string|null $uploadedPath The uploaded path (if this is a new upload).
+     *
+     * @return bool Whether reprocessing was required for this file.
+     */
+    public function processMedia(
+        Entity\StationMedia $media,
+        bool $force = false,
+        ?string $uploadedPath = null
+    ): bool {
+        $fs = $this->filesystem->getForStation($media->getStation(), false);
+
+        $tmp_uri = null;
+        $media_uri = $media->getPathUri();
+
+        if (null !== $uploadedPath) {
+            $tmp_path = $uploadedPath;
+
+            $media_mtime = time();
+        } else {
+            if (!$fs->has($media_uri)) {
+                throw new MediaProcessingException(sprintf('Media path "%s" not found.', $media_uri));
+            }
+
+            $media_mtime = (int)$fs->getTimestamp($media_uri);
+
+            // No need to update if all of these conditions are true.
+            if (!$force && !$media->needsReprocessing($media_mtime)) {
+                return false;
+            }
+
+            try {
+                $tmp_path = $fs->getFullPath($media_uri);
+            } catch (InvalidArgumentException $e) {
+                $tmp_uri = $fs->copyToTemp($media_uri);
+                $tmp_path = $fs->getFullPath($tmp_uri);
+            }
+        }
+
+        $this->loadFromFile($media, $tmp_path);
+        $this->writeWaveform($media, $tmp_path);
+
+        if (null !== $uploadedPath) {
+            $fs->upload($uploadedPath, $media_uri);
+        } elseif (null !== $tmp_uri) {
+            $fs->delete($tmp_uri);
+        }
+
+        $media->setMtime($media_mtime);
+        $this->em->persist($media);
+
+        return true;
     }
 
     /**
@@ -198,26 +257,22 @@ class StationMediaRepository extends Repository
         }
 
         // Attempt to derive title and artist from filename.
-        if (empty($media->getTitle())) {
+        $artist = $media->getArtist();
+        $title = $media->getTitle();
+
+        if (null === $artist || null === $title) {
             $filename = pathinfo($media->getPath(), PATHINFO_FILENAME);
             $filename = str_replace('_', ' ', $filename);
 
-            $string_parts = explode('-', $filename);
-
-            // If not normally delimited, return "text" only.
-            if (1 === count($string_parts)) {
-                $media->setTitle(trim($filename));
-                $media->setArtist('');
-            } else {
-                $media->setTitle(trim(array_pop($string_parts)));
-                $media->setArtist(trim(implode('-', $string_parts)));
-            }
+            $songObj = new CurrentSong($filename);
+            $media->setSong($songObj);
         }
 
-        $media->setSong($this->songRepo->getOrCreate([
-            'artist' => $media->getArtist(),
-            'title' => $media->getTitle(),
-        ]));
+        // Force a text property to auto-generate from artist/title
+        $media->setText($media->getText());
+
+        // Generate a song_id hash based on the track
+        $media->updateSongId();
     }
 
     protected function cleanUpString(string $original): string
@@ -232,6 +287,25 @@ class StationMediaRepository extends Repository
             true,
             true
         );
+    }
+
+    /**
+     * Read the contents of the album art from storage (if it exists).
+     *
+     * @param Entity\StationMedia $media
+     *
+     * @return string|null
+     */
+    public function readAlbumArt(Entity\StationMedia $media): ?string
+    {
+        $album_art_path = $media->getArtPath();
+        $fs = $this->filesystem->getForStation($media->getStation());
+
+        if (!$fs->has($album_art_path)) {
+            return null;
+        }
+
+        return $fs->read($album_art_path);
     }
 
     /**
@@ -251,7 +325,6 @@ class StationMediaRepository extends Repository
 
         $media->setArtUpdatedAt(time());
         $this->em->persist($media);
-        $this->em->flush();
 
         return $fs->put($albumArtPath, $albumArt);
     }
@@ -267,86 +340,6 @@ class StationMediaRepository extends Repository
         $media->setArtUpdatedAt(0);
         $this->em->persist($media);
         $this->em->flush();
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @param string $path
-     *
-     * @return Entity\StationMedia
-     * @throws Exception
-     */
-    public function getOrCreate(Entity\Station $station, $path): Entity\StationMedia
-    {
-        if (strpos($path, '://') !== false) {
-            [, $path] = explode('://', $path, 2);
-        }
-
-        $record = $this->repository->findOneBy([
-            'station_id' => $station->getId(),
-            'path' => $path,
-        ]);
-
-        $created = false;
-        if (!($record instanceof Entity\StationMedia)) {
-            $record = new Entity\StationMedia($station, $path);
-            $created = true;
-        }
-
-        $this->processMedia($record);
-
-        if ($created) {
-            $this->em->persist($record);
-            $this->em->flush();
-        }
-
-        return $record;
-    }
-
-    /**
-     * Run media through the "processing" steps: loading from file and setting up any missing metadata.
-     *
-     * @param Entity\StationMedia $media
-     * @param bool $force
-     *
-     * @return bool Whether reprocessing was required for this file.
-     */
-    public function processMedia(Entity\StationMedia $media, $force = false): bool
-    {
-        $media_uri = $media->getPathUri();
-
-        $fs = $this->filesystem->getForStation($media->getStation());
-        if (!$fs->has($media_uri)) {
-            throw new MediaProcessingException(sprintf('Media path "%s" not found.', $media_uri));
-        }
-
-        $media_mtime = (int)$fs->getTimestamp($media_uri);
-
-        // No need to update if all of these conditions are true.
-        if (!$force && !$media->needsReprocessing($media_mtime)) {
-            return false;
-        }
-
-        $tmp_uri = null;
-
-        try {
-            $tmp_path = $fs->getFullPath($media_uri);
-        } catch (InvalidArgumentException $e) {
-            $tmp_uri = $fs->copyToTemp($media_uri);
-            $tmp_path = $fs->getFullPath($tmp_uri);
-        }
-
-        $this->loadFromFile($media, $tmp_path);
-        $this->writeWaveform($media, $tmp_path);
-
-        if (null !== $tmp_uri) {
-            $fs->delete($tmp_uri);
-        }
-
-        $media->setMtime($media_mtime);
-        $this->em->persist($media);
-
-        return true;
     }
 
     /**
@@ -435,25 +428,6 @@ class StationMediaRepository extends Repository
             $waveformPath,
             json_encode($waveform, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
         );
-    }
-
-    /**
-     * Read the contents of the album art from storage (if it exists).
-     *
-     * @param Entity\StationMedia $media
-     *
-     * @return string|null
-     */
-    public function readAlbumArt(Entity\StationMedia $media): ?string
-    {
-        $album_art_path = $media->getArtPath();
-        $fs = $this->filesystem->getForStation($media->getStation());
-
-        if (!$fs->has($album_art_path)) {
-            return null;
-        }
-
-        return $fs->read($album_art_path);
     }
 
     /**

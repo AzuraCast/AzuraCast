@@ -52,8 +52,8 @@ class StationQueueRepository extends Repository
     public function getUpcomingQueue(Entity\Station $station): array
     {
         return $this->getUpcomingBaseQuery($station)
-        ->andWhere('sq.sent_to_autodj = 0')
-        ->getQuery()
+            ->andWhere('sq.sent_to_autodj = 0')
+            ->getQuery()
             ->execute();
     }
 
@@ -69,8 +69,8 @@ class StationQueueRepository extends Repository
     public function getUpcomingFromSong(Entity\Station $station, Entity\Song $song): ?Entity\StationQueue
     {
         return $this->getUpcomingBaseQuery($station)
-            ->andWhere('sq.song = :song')
-            ->setParameter('song', $song)
+            ->andWhere('sq.song_id = :song_id')
+            ->setParameter('song_id', $song->getSongId())
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -79,10 +79,9 @@ class StationQueueRepository extends Repository
     protected function getUpcomingBaseQuery(Entity\Station $station): QueryBuilder
     {
         return $this->em->createQueryBuilder()
-            ->select('sq, sm, sp, s')
+            ->select('sq, sm, sp')
             ->from(Entity\StationQueue::class, 'sq')
             ->leftJoin('sq.media', 'sm')
-            ->leftJoin('sq.song', 's')
             ->leftJoin('sq.playlist', 'sp')
             ->where('sq.station = :station')
             ->setParameter('station', $station)

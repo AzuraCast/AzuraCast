@@ -78,12 +78,11 @@ class HistoryController
 
         $qb = $this->em->createQueryBuilder();
 
-        $qb->select('sh, sr, sp, ss, s')
+        $qb->select('sh, sr, sp, ss')
             ->from(Entity\SongHistory::class, 'sh')
             ->leftJoin('sh.request', 'sr')
             ->leftJoin('sh.playlist', 'sp')
             ->leftJoin('sh.streamer', 'ss')
-            ->leftJoin('sh.song', 's')
             ->where('sh.station_id = :station_id')
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
@@ -113,8 +112,8 @@ class HistoryController
                     $datetime->format('g:ia'),
                     $song_row['listeners_start'],
                     $song_row['delta_total'],
-                    $song_row['song']['title'] ?: $song_row['song']['text'],
-                    $song_row['song']['artist'],
+                    $song_row['title'] ?: $song_row['text'],
+                    $song_row['artist'],
                     $song_row['playlist']['name'] ?? '',
                     $song_row['streamer']['display_name'] ?? $song_row['streamer']['streamer_username'] ?? '',
                 ];
@@ -130,7 +129,7 @@ class HistoryController
 
         $search_phrase = trim($params['searchPhrase']);
         if (!empty($search_phrase)) {
-            $qb->andWhere('(s.title LIKE :query OR s.artist LIKE :query)')
+            $qb->andWhere('(sh.title LIKE :query OR sh.artist LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');
         }
 

@@ -176,7 +176,7 @@ class OverviewController
 
         $song_totals_raw = [];
         $song_totals_raw['played'] = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-            sh.song_id, COUNT(sh.id) AS records
+            sh.song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS records
             FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
             GROUP BY sh.song_id
@@ -189,17 +189,8 @@ class OverviewController
         // Compile the above data.
         $song_totals = [];
 
-        $get_song_q = $this->em->createQuery(/** @lang DQL */ 'SELECT s 
-            FROM App\Entity\Song s
-            WHERE s.id = :song_id');
-
         foreach ($song_totals_raw as $total_type => $total_records) {
             foreach ($total_records as $total_record) {
-                $song = $get_song_q->setParameter('song_id', $total_record['song_id'])
-                    ->getArrayResult();
-
-                $total_record['song'] = $song[0];
-
                 $song_totals[$total_type][] = $total_record;
             }
 
@@ -210,9 +201,8 @@ class OverviewController
         $songPerformanceThreshold = CarbonImmutable::parse('-2 days', $station_tz)->getTimestamp();
 
         // Get all songs played in timeline.
-        $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh, s
+        $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
             FROM App\Entity\SongHistory sh
-            LEFT JOIN sh.song s
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_start >= :timestamp 
             AND sh.listeners_start IS NOT NULL
@@ -241,11 +231,7 @@ class OverviewController
             $a = $a_arr['stat_delta'];
             $b = $b_arr['stat_delta'];
 
-            if ($a == $b) {
-                return 0;
-            }
-
-            return ($a > $b) ? 1 : -1;
+            return $a <=> $b;
         });
 
         return $request->getView()->renderToResponse($response, 'stations/reports/overview', [

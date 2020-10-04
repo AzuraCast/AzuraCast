@@ -2,31 +2,19 @@
 namespace App\Entity;
 
 use App\ApiUtilities;
-use App\Exception;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\CurrentSong;
 use Psr\Http\Message\UriInterface;
 
-/**
- * @ORM\Table(name="songs", indexes={
- *   @ORM\Index(name="search_idx", columns={"text", "artist", "title"})
- * })
- * @ORM\Entity()
- */
 class Song
 {
     use Traits\TruncateStrings;
 
-    public const SYNC_THRESHOLD = 604800; // 604800 = 1 week
-
     /**
-     * @ORM\Column(name="id", type="string", length=50)
-     * @ORM\Id
+     * @ORM\Column(name="song_id", type="string", length=50)
      * @var string
      */
-    protected $id;
+    protected $song_id;
 
     /**
      * @ORM\Column(name="text", type="string", length=150, nullable=true)
@@ -47,111 +35,80 @@ class Song
     protected $title;
 
     /**
-     * @ORM\Column(name="created", type="integer")
-     * @var int
+     * @param self|Api\Song|CurrentSong|array|string|null $song
      */
-    protected $created;
-
-    /**
-     * @ORM\Column(name="play_count", type="integer")
-     * @var int
-     */
-    protected $play_count = 0;
-
-    /**
-     * @ORM\Column(name="last_played", type="integer")
-     * @var int
-     */
-    protected $last_played = 0;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="song")
-     * @ORM\OrderBy({"timestamp" = "DESC"})
-     * @var Collection
-     */
-    protected $history;
-
-    public function __construct(array $song_info)
+    public function __construct($song)
     {
-        $this->created = time();
-        $this->history = new ArrayCollection;
-        $this->update($song_info);
-    }
-
-    /**
-     * Given an array of song information possibly containing artist, title, text
-     * or any combination of those, update this entity to reflect this metadata.
-     *
-     * @param array $song_info
-     */
-    public function update(array $song_info): void
-    {
-        if (empty($song_info['text'])) {
-            if (!empty($song_info['artist'])) {
-                $song_info['text'] = $song_info['artist'] . ' - ' . $song_info['title'];
-            } else {
-                $song_info['text'] = $song_info['title'];
-            }
-        }
-
-        $this->text = $this->truncateString($song_info['text'], 150);
-        $this->title = $this->truncateString($song_info['title'], 150);
-        $this->artist = $this->truncateString($song_info['artist'], 150);
-
-        $new_song_hash = self::getSongHash($song_info);
-
-        if (null === $this->id) {
-            $this->id = $new_song_hash;
-        } elseif ($this->id !== $new_song_hash) {
-            throw new Exception('New song data supplied would not produce the same song ID.');
+        if (null !== $song) {
+            $this->setSong($song);
         }
     }
 
     /**
-     * @param array|object|string $song_info
-     *
-     * @return string
+     * @param self|Api\Song|CurrentSong|array|string $song
      */
-    public static function getSongHash($song_info): string
+    public function setSong($song): void
     {
-        // Handle various input types.
-        if ($song_info instanceof self) {
-            $song_info = [
-                'text' => $song_info->getText(),
-                'artist' => $song_info->getArtist(),
-                'title' => $song_info->getTitle(),
-            ];
-        } elseif ($song_info instanceof CurrentSong) {
-            $song_info = [
-                'text' => $song_info->text,
-                'artist' => $song_info->artist,
-                'title' => $song_info->title,
-            ];
-        } elseif (!is_array($song_info)) {
-            $song_info = [
-                'text' => $song_info,
-            ];
+        if ($song instanceof self) {
+            $this->setText($song->getText());
+            $this->setTitle($song->getTitle());
+            $this->setArtist($song->getArtist());
+            $this->song_id = $song->getSongId();
+            return;
         }
 
-        // Generate hash.
-        if (!empty($song_info['text'])) {
-            $song_text = $song_info['text'];
-        } elseif (!empty($song_info['artist'])) {
-            $song_text = $song_info['artist'] . ' - ' . $song_info['title'];
-        } else {
-            $song_text = $song_info['title'];
+        if ($song instanceof Api\Song) {
+            $this->setText($song->text);
+            $this->setTitle($song->title);
+            $this->setArtist($song->artist);
+            $this->song_id = $song->id;
+            return;
         }
 
-        // Strip non-alphanumeric characters
-        $song_text = mb_substr($song_text, 0, 150, 'UTF-8');
-        $hash_base = mb_strtolower(str_replace([' ', '-'], ['', ''], $song_text), 'UTF-8');
+        if (is_array($song)) {
+            $song = new CurrentSong(
+                $song['text'] ?? null,
+                $song['title'] ?? null,
+                $song['artist'] ?? null
+            );
+        } elseif (is_string($song)) {
+            $song = new CurrentSong($song);
+        }
 
-        return md5($hash_base);
+        if ($song instanceof CurrentSong) {
+            $this->setText($song->text);
+            $this->setTitle($song->title);
+            $this->setArtist($song->artist);
+            $this->updateSongId();
+            return;
+        }
+
+        throw new \InvalidArgumentException('$song must be an array or an instance of ' . CurrentSong::class . '.');
+    }
+
+    public function getSong(): self
+    {
+        return new self($this);
+    }
+
+    public function getSongId(): string
+    {
+        return $this->song_id;
+    }
+
+    public function updateSongId(): void
+    {
+        $this->song_id = self::getSongHash($this->getText());
     }
 
     public function getText(): ?string
     {
-        return $this->text;
+        return $this->text ?? $this->artist . ' - ' . $this->title;
+    }
+
+    public function setText(?string $text): void
+    {
+        $this->text = $this->truncateString($text, 150);
     }
 
     public function getArtist(): ?string
@@ -159,48 +116,24 @@ class Song
         return $this->artist;
     }
 
+    public function setArtist(?string $artist): void
+    {
+        $this->artist = $this->truncateString($artist, 150);
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function getId(): string
+    public function setTitle(?string $title): void
     {
-        return $this->id;
-    }
-
-    public function getCreated(): int
-    {
-        return $this->created;
-    }
-
-    public function getPlayCount(): int
-    {
-        return $this->play_count;
-    }
-
-    public function getLastPlayed(): int
-    {
-        return $this->last_played;
-    }
-
-    /**
-     * Increment the play counter and last-played items.
-     */
-    public function played(): void
-    {
-        ++$this->play_count;
-        $this->last_played = time();
-    }
-
-    public function getHistory(): Collection
-    {
-        return $this->history;
+        $this->title = $this->truncateString($title, 150);
     }
 
     public function __toString(): string
     {
-        return 'Song ' . $this->id . ': ' . $this->artist . ' - ' . $this->title;
+        return 'Song ' . $this->song_id . ': ' . $this->artist . ' - ' . $this->title;
     }
 
     /**
@@ -212,13 +145,13 @@ class Song
      *
      * @return Api\Song
      */
-    public function api(
+    public function getSongApi(
         ApiUtilities $api_utils,
         ?Station $station = null,
         ?UriInterface $base_url = null
     ): Api\Song {
         $response = new Api\Song;
-        $response->id = (string)$this->id;
+        $response->id = (string)$this->song_id;
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
@@ -227,5 +160,34 @@ class Song
         $response->custom_fields = $api_utils->getCustomFields();
 
         return $response;
+    }
+
+    /**
+     * @param array|CurrentSong|self|string $songText
+     *
+     * @return string
+     */
+    public static function getSongHash($songText): string
+    {
+        // Handle various input types.
+        if ($songText instanceof self) {
+            return self::getSongHash($songText->getText());
+        }
+        if ($songText instanceof CurrentSong) {
+            return self::getSongHash($songText->text);
+        }
+        if (is_array($songText)) {
+            return self::getSongHash($songText['text'] ?? '');
+        }
+
+        if (!is_string($songText)) {
+            throw new \InvalidArgumentException('$songText parameter must be a string, array, or instance of ' . self::class . ' or ' . CurrentSong::class . '.');
+        }
+
+        // Strip non-alphanumeric characters
+        $song_text = mb_substr($songText, 0, 150, 'UTF-8');
+        $hash_base = mb_strtolower(str_replace([' ', '-'], ['', ''], $song_text), 'UTF-8');
+
+        return md5($hash_base);
     }
 }

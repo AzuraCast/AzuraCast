@@ -69,7 +69,7 @@ class SoundExchangeController
             }
 
             $history_rows = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                sh.song_id AS song_id, COUNT(sh.id) AS plays, SUM(sh.unique_listeners) AS unique_listeners
+                sh.song_id AS song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS plays, SUM(sh.unique_listeners) AS unique_listeners
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station_id = :station_id
                 AND sh.timestamp_start <= :time_end
@@ -86,24 +86,8 @@ class SoundExchangeController
             }
 
             // Remove any reference to the "Stream Offline" song.
-            $offline_song_hash = Entity\Song::getSongHash(['text' => 'stream_offline']);
+            $offline_song_hash = Entity\Song::getSongHash('stream_offline');
             unset($history_rows_by_id[$offline_song_hash]);
-
-            // Get all songs not found in the StationMedia library
-            $not_found_songs = array_diff_key($history_rows_by_id, $media_by_id);
-
-            if (!empty($not_found_songs)) {
-
-                $songs_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT s
-                    FROM App\Entity\Song s
-                    WHERE s.id IN (:song_ids)')
-                    ->setParameter('song_ids', array_keys($not_found_songs))
-                    ->getArrayResult();
-
-                foreach ($songs_raw as $song_row) {
-                    $media_by_id[$song_row['id']] = $song_row;
-                }
-            }
 
             // Assemble report items
             $station_name = $station->getName();
@@ -117,7 +101,7 @@ class SoundExchangeController
 
             foreach ($history_rows_by_id as $song_id => $history_row) {
 
-                $song_row = $media_by_id[$song_id];
+                $song_row = $media_by_id[$song_id] ?? $history_row;
 
                 // Try to find the ISRC if it's not already listed.
                 if (array_key_exists('isrc', $song_row) && $song_row['isrc'] === null) {

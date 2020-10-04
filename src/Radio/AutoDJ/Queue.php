@@ -102,7 +102,7 @@ class Queue implements EventSubscriberInterface
         $logOncePerXSongsSongHistory = [];
         foreach ($recentSongHistoryForOncePerXSongs as $row) {
             $logOncePerXSongsSongHistory[] = [
-                'song' => $row['song']['text'],
+                'song' => $row['text'],
                 'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
                     $now->getTimezone())),
                 'duration' => $row['duration'],
@@ -113,7 +113,7 @@ class Queue implements EventSubscriberInterface
         $logDuplicatePreventionSongHistory = [];
         foreach ($recentSongHistoryForDuplicatePrevention as $row) {
             $logDuplicatePreventionSongHistory[] = [
-                'song' => $row['song']['text'],
+                'song' => $row['text'],
                 'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
                     $now->getTimezone())),
                 'duration' => $row['duration'],
@@ -437,11 +437,11 @@ class Queue implements EventSubscriberInterface
 
         foreach ($playedMedia as $history) {
             $playedTracks[] = [
-                'artist' => $history['song']['artist'],
-                'title' => $history['song']['title'],
+                'artist' => $history['artist'],
+                'title' => $history['title'],
             ];
 
-            $songId = $history['song']['id'];
+            $songId = $history['song_id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
                 $latestSongIdsPlayed[$songId] = $history['timestamp_cued'] ?? $history['timestamp_start'];
@@ -457,8 +457,8 @@ class Queue implements EventSubscriberInterface
             }
 
             $eligibleTracks[$media['id']] = [
-                'artist' => $media['song']['artist'],
-                'title' => $media['song']['title'],
+                'artist' => $media['artist'],
+                'title' => $media['title'],
             ];
         }
 

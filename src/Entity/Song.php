@@ -69,7 +69,7 @@ class Song
                 $song['title'] ?? null,
                 $song['artist'] ?? null
             );
-        } else {
+        } elseif (is_string($song)) {
             $song = new CurrentSong($song);
         }
 

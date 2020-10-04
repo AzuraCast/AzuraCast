@@ -268,7 +268,8 @@ return [
         Psr\Log\LoggerInterface $logger
     ) {
         $redisStore = new Symfony\Component\Lock\Store\RedisStore($redis);
-        $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 60);
+
+        $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 30);
         $retryStore->setLogger($logger);
 
         $lockFactory = new Symfony\Component\Lock\LockFactory($retryStore);

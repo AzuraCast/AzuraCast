@@ -350,7 +350,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     {
         $lock = $this->getLockForStation($station);
 
-        if (!$lock->acquire(false)) {
+        if (!$lock->acquire(true)) {
             return;
         }
 

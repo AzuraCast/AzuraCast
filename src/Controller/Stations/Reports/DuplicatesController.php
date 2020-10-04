@@ -32,9 +32,8 @@ class DuplicatesController
         $station = $request->getStation();
 
         $dupesRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sm, s, spm, sp
+            sm, spm, sp
             FROM App\Entity\StationMedia sm
-            JOIN sm.song s
             LEFT JOIN sm.playlists spm
             LEFT JOIN spm.playlist sp
             WHERE sm.station = :station

@@ -202,15 +202,35 @@ return [
     // Monolog Logger
     Monolog\Logger::class => function (App\Settings $settings) {
         $logger = new Monolog\Logger($settings[App\Settings::APP_NAME] ?? 'app');
-        $logging_level = $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+
+        $loggingLevel = null;
+        if (!empty($_ENV['LOG_LEVEL'])) {
+            $allowedLogLevels = [
+                Psr\Log\LogLevel::DEBUG,
+                Psr\Log\LogLevel::INFO,
+                Psr\Log\LogLevel::NOTICE,
+                Psr\Log\LogLevel::WARNING,
+                Psr\Log\LogLevel::ERROR,
+                Psr\Log\LogLevel::CRITICAL,
+                Psr\Log\LogLevel::ALERT,
+                Psr\Log\LogLevel::EMERGENCY,
+            ];
+
+            $loggingLevel = strtolower($_ENV['LOG_LEVEL']);
+            if (!in_array($loggingLevel, $allowedLogLevels, true)) {
+                $loggingLevel = null;
+            }
+        }
+
+        $loggingLevel ??= $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
 
         if ($settings[App\Settings::IS_DOCKER] || $settings[App\Settings::IS_CLI]) {
-            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
+            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
 
         $log_file = new Monolog\Handler\StreamHandler($settings[App\Settings::TEMP_DIR] . '/app.log',
-            $logging_level, true);
+            $loggingLevel, true);
         $logger->pushHandler($log_file);
 
         return $logger;

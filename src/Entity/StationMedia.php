@@ -8,7 +8,6 @@ use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use NowPlaying\Result\CurrentSong;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -208,6 +207,8 @@ class StationMedia extends Song
 
     public function __construct(Station $station, string $path)
     {
+        parent::__construct(null);
+
         $this->station = $station;
 
         $this->playlists = new ArrayCollection;
@@ -225,21 +226,6 @@ class StationMedia extends Song
     public function getStation(): Station
     {
         return $this->station;
-    }
-
-    public function setText(?string $text): void
-    {
-        $this->text = $text;
-    }
-
-    public function setArtist(?string $artist): void
-    {
-        $this->artist = $artist;
-    }
-
-    public function setTitle(?string $title): void
-    {
-        $this->title = $title;
     }
 
     public function getAlbum(): ?string
@@ -504,18 +490,6 @@ class StationMedia extends Song
     public function needsReprocessing($current_mtime = 0): bool
     {
         return $current_mtime > $this->mtime;
-    }
-
-    public function updateSongId(): void
-    {
-        $currentSong = new CurrentSong(
-            $this->text,
-            $this->title,
-            $this->artist
-        );
-
-        $song = new Song($currentSong);
-        $this->song_id = $song->getSongId();
     }
 
     /**

@@ -35,11 +35,13 @@ class Song
     protected $title;
 
     /**
-     * @param self|Api\Song|CurrentSong|array|string $song
+     * @param self|Api\Song|CurrentSong|array|string|null $song
      */
     public function __construct($song)
     {
-        $this->setSong($song);
+        if (null !== $song) {
+            $this->setSong($song);
+        }
     }
 
     /**
@@ -48,17 +50,17 @@ class Song
     public function setSong($song): void
     {
         if ($song instanceof self) {
-            $this->text = $song->getText();
-            $this->title = $song->getTitle();
-            $this->artist = $song->getArtist();
+            $this->setText($song->getText());
+            $this->setTitle($song->getTitle());
+            $this->setArtist($song->getArtist());
             $this->song_id = $song->getSongId();
             return;
         }
 
         if ($song instanceof Api\Song) {
-            $this->text = $song->text;
-            $this->title = $song->title;
-            $this->artist = $song->artist;
+            $this->setText($song->text);
+            $this->setTitle($song->title);
+            $this->setArtist($song->artist);
             $this->song_id = $song->id;
             return;
         }
@@ -74,10 +76,10 @@ class Song
         }
 
         if ($song instanceof CurrentSong) {
-            $this->text = $song->text;
-            $this->title = $song->title;
-            $this->artist = $song->artist;
-            $this->song_id = self::getSongHash($song);
+            $this->setText($song->text);
+            $this->setTitle($song->title);
+            $this->setArtist($song->artist);
+            $this->updateSongId();
             return;
         }
 
@@ -94,9 +96,19 @@ class Song
         return $this->song_id;
     }
 
+    public function updateSongId(): void
+    {
+        $this->song_id = self::getSongHash($this->getText());
+    }
+
     public function getText(): ?string
     {
-        return $this->text;
+        return $this->text ?? $this->artist . ' - ' . $this->title;
+    }
+
+    public function setText(?string $text): void
+    {
+        $this->text = $this->truncateString($text, 150);
     }
 
     public function getArtist(): ?string
@@ -104,9 +116,19 @@ class Song
         return $this->artist;
     }
 
+    public function setArtist(?string $artist): void
+    {
+        $this->artist = $this->truncateString($artist, 150);
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function setTitle(?string $title): void
+    {
+        $this->title = $this->truncateString($title, 150);
     }
 
     public function __toString(): string

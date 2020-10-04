@@ -120,7 +120,7 @@ class FilesController extends AbstractStationApiCrudController
         $sanitized_path = Filesystem::PREFIX_MEDIA . '://' . $api_record->getSanitizedPath();
 
         // Process temp path as regular media record.
-        $record = $this->media_repo->uploadFile($station, $temp_path, $sanitized_path);
+        $record = $this->media_repo->getOrCreate($station, $sanitized_path, $temp_path);
 
         $return = $this->viewRecord($record, $request);
 

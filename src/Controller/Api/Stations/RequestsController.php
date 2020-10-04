@@ -67,9 +67,8 @@ class RequestsController
 
         $qb = $this->em->createQueryBuilder();
 
-        $qb->select('sm, s, spm, sp')
+        $qb->select('sm, spm, sp')
             ->from(Entity\StationMedia::class, 'sm')
-            ->join('sm.song', 's')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.station_id = :station_id')

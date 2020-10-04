@@ -51,9 +51,8 @@ class QueueController extends AbstractStationApiCrudController
     {
         $station = $request->getStation();
 
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, sp, s, sm
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, sp, sm
             FROM App\Entity\StationQueue sq 
-            LEFT JOIN sq.song s 
             LEFT JOIN sq.media sm
             LEFT JOIN sq.playlist sp 
             WHERE sq.station = :station

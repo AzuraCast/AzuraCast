@@ -79,7 +79,6 @@ jobs:
           cp docker-compose.testing.yml docker-compose.override.yml
 
           docker-compose build web
-          docker-compose up -d
           docker-compose run --rm --user="azuracast" web azuracast_install
 
       - name: Run functional test suite.

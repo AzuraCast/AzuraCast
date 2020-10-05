@@ -264,7 +264,7 @@ class StationMediaRepository extends Repository
             $filename = pathinfo($media->getPath(), PATHINFO_FILENAME);
             $filename = str_replace('_', ' ', $filename);
 
-            $songObj = new CurrentSong($filename);
+            $songObj = Entity\Song::createFromText($filename)
             $media->setSong($songObj);
         }
 

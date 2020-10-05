@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 
 /**
@@ -97,7 +98,7 @@ class StationSchedule
         } elseif ($relation instanceof StationStreamer) {
             $this->streamer = $relation;
         } else {
-            throw new \InvalidArgumentException('Schedule must be created with either a playlist or a streamer.');
+            throw new InvalidArgumentException('Schedule must be created with either a playlist or a streamer.');
         }
     }
 

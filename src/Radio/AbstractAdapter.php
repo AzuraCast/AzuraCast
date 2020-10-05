@@ -104,10 +104,7 @@ abstract class AbstractAdapter
      *
      * @return string|null
      */
-    public function getCommand(Entity\Station $station): ?string
-    {
-        return null;
-    }
+    abstract public function getCommand(Entity\Station $station): ?string;
 
     /**
      * Return the program's fully qualified supervisord name.

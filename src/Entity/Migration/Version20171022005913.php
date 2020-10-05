@@ -22,6 +22,6 @@ final class Version20171022005913 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station_mounts DROP remote_type, remote_url, DROP remote_mount, DROP remote_source_username, DROP remote_source_password');
+        $this->addSql('ALTER TABLE station_mounts DROP remote_type, DROP remote_url, DROP remote_mount, DROP remote_source_username, DROP remote_source_password');
     }
 }

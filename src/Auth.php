@@ -166,9 +166,13 @@ class Auth
             }
         }
 
-        return ($this->user instanceof User)
-            ? $this->userRepo->getRepository()->find($this->user->getId())
-            : null;
+        if (!$this->user instanceof User) {
+            return null;
+        }
+
+        /** @var User|null $user */
+        $user = $this->userRepo->getRepository()->find($this->user->getId());
+        return $user;
     }
 
     /**

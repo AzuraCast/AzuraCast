@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\ApiUtilities;
+use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
 use Psr\Http\Message\UriInterface;
 
@@ -66,7 +67,7 @@ class Song implements SongInterface
         }
 
         if (!is_string($songText)) {
-            throw new \InvalidArgumentException('$songText parameter must be a string, array, or instance of ' . self::class . ' or ' . CurrentSong::class . '.');
+            throw new InvalidArgumentException('$songText parameter must be a string, array, or instance of ' . self::class . ' or ' . CurrentSong::class . '.');
         }
 
         // Strip non-alphanumeric characters

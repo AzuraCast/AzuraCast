@@ -11,6 +11,7 @@ use App\Radio\Remote\AdapterProxy;
 use App\Settings;
 use App\Validator\Constraints as AppAssert;
 use Brick\Math\BigInteger;
+use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -1040,9 +1041,9 @@ class Station
         return Customization::DEFAULT_TIMEZONE;
     }
 
-    public function getTimezoneObject(): \DateTimeZone
+    public function getTimezoneObject(): DateTimeZone
     {
-        return new \DateTimeZone($this->getTimezone());
+        return new DateTimeZone($this->getTimezone());
     }
 
     public function setTimezone(?string $timezone): void

@@ -1,6 +1,8 @@
 <?php
 namespace App\Media;
 
+use RuntimeException;
+
 class AlbumArt
 {
     public const MAX_WIDTH = 1200;
@@ -25,7 +27,7 @@ class AlbumArt
             $source_gd_image = imagecreatefromstring($rawArtString);
 
             if (!is_resource($source_gd_image)) {
-                throw new \RuntimeException('Cannot create image from string.');
+                throw new RuntimeException('Cannot create image from string.');
             }
 
             // Crop the raw art to a 1200x1200 artboard.

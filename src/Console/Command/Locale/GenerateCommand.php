@@ -16,6 +16,8 @@ class GenerateCommand extends CommandAbstract
         SymfonyStyle $io,
         Settings $settings
     ) {
+        $io->title('Generate Locales');
+
         $dest_file = $settings[Settings::BASE_DIR] . '/resources/locale/default.pot';
         $translations = new Translations;
 
@@ -39,7 +41,7 @@ class GenerateCommand extends CommandAbstract
 
         $translations->toPoFile($dest_file);
 
-        $io->writeln(__('Locales generated.'));
+        $io->success('Locales generated.');
         return 0;
     }
 }

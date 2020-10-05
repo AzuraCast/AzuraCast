@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+use const JSON_PRETTY_PRINT;
 
 class ViewFactory
 {
@@ -72,7 +73,7 @@ class ViewFactory
                 $dumper = new CliDumper;
                 $dumpedValue = $dumper->dump($varCloner->cloneVar($value), true);
             } else {
-                $dumpedValue = json_encode($value, \JSON_PRETTY_PRINT);
+                $dumpedValue = json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
             }
 
             return '<pre>' . htmlspecialchars($dumpedValue) . '</pre>';

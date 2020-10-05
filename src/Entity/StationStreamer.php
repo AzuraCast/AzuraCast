@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use const PASSWORD_ARGON2ID;
 
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
@@ -162,7 +163,7 @@ class StationStreamer
         $streamer_password = trim($streamer_password);
 
         if (!empty($streamer_password)) {
-            $this->streamer_password = password_hash($streamer_password, \PASSWORD_ARGON2ID);
+            $this->streamer_password = password_hash($streamer_password, PASSWORD_ARGON2ID);
         }
     }
 

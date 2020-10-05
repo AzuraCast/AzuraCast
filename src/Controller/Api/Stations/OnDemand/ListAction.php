@@ -131,7 +131,7 @@ class ListAction
 
                 $row->resolveUrls($router->getBaseUrl());
 
-                $list[] = Utilities::flattenArray($row, '_');;
+                $list[] = Utilities::flattenArray($row, '_');
             }
         }
 

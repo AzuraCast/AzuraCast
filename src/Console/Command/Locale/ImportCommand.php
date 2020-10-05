@@ -12,6 +12,8 @@ class ImportCommand extends CommandAbstract
         SymfonyStyle $io,
         Settings $settings
     ) {
+        $io->title('Import Locales');
+
         $locales = $settings['locale']['supported'];
         $locale_base = $settings[Settings::BASE_DIR] . '/resources/locale';
 
@@ -29,7 +31,7 @@ class ImportCommand extends CommandAbstract
             }
         }
 
-        $io->writeln(__('Locales imported.'));
+        $io->success('Locales imported.');
         return 0;
     }
 }

@@ -4,7 +4,7 @@
 composer install --no-interaction
 
 # Import locales on backend
-php bin/console locale:generate
+bin/console locale:generate
 
 # Install NPM dependencies
 cd frontend

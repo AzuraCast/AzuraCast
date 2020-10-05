@@ -157,7 +157,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                         'exception' => $this->exception,
                     ]
                 );
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 return parent::respond();
             }
         }
@@ -258,7 +258,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                     'exception' => $this->exception,
                 ]
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return parent::respond();
         }
     }

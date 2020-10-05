@@ -128,10 +128,12 @@
                 let buttonText = this.$gettext('Delete');
                 let buttonConfirmText = this.$gettext('Delete broadcast?');
 
-                swal({
+                Swal.fire({
                     title: buttonConfirmText,
-                    buttons: [true, buttonText],
-                    dangerMode: true
+                    confirmButtonText: buttonText,
+                    confirmButtonColor: '#e64942',
+                    showCancelButton: true,
+                    focusCancel: true
                 }).then((value) => {
                     if (value) {
                         axios.delete(url).then((resp) => {

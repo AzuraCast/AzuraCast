@@ -114,10 +114,12 @@
                 let buttonText = this.$gettext('Delete');
                 let buttonConfirmText = this.$gettext('Delete %{ num } media file(s)?');
 
-                swal({
+                Swal.fire({
                     title: this.$gettextInterpolate(buttonConfirmText, { num: this.selectedFiles.length }),
-                    buttons: [true, buttonText],
-                    dangerMode: true
+                    confirmButtonText: buttonText,
+                    confirmButtonColor: '#e64942',
+                    showCancelButton: true,
+                    focusCancel: true
                 }).then((value) => {
                     if (value) {
                         this.doBatch('delete', this.$gettext('Files removed:'));

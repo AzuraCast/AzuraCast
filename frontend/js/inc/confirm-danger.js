@@ -19,10 +19,12 @@ function confirmDangerousAction (el) {
   // https://stackoverflow.com/questions/8624592/how-to-get-only-direct-text-without-tags-with-jquery-in-html
   let buttonText = $el.clone().children().remove().end().text();
 
-  return swal({
+  return Swal.fire({
     title: confirmTitle,
-    buttons: [true, buttonText],
-    dangerMode: dangerMode
+    confirmButtonText: buttonText,
+    confirmButtonColor: dangerMode ? '#e64942' : '#3085d6',
+    showCancelButton: true,
+    focusCancel: dangerMode
   });
 }
 

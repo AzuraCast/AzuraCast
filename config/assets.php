@@ -159,7 +159,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/sweetalert/sweetalert.min.js',
+                    'src' => 'dist/lib/sweetalert2/sweetalert2.all.min.js',
                     'defer' => true,
                 ],
                 [

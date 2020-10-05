@@ -22,9 +22,9 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  *
  * @OA\Schema(type="object")
  */
-class StationMedia extends Song
+class StationMedia implements SongInterface
 {
-    use Traits\UniqueId, Traits\TruncateStrings;
+    use Traits\UniqueId, Traits\TruncateStrings, Traits\HasSongFields;
 
     public const UNIQUE_ID_LENGTH = 24;
 
@@ -207,8 +207,6 @@ class StationMedia extends Song
 
     public function __construct(Station $station, string $path)
     {
-        parent::__construct(null);
-
         $this->station = $station;
 
         $this->playlists = new ArrayCollection;

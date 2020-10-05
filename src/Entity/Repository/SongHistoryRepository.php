@@ -129,7 +129,7 @@ class SongHistoryRepository extends Repository
     }
 
     public function register(
-        Entity\Song $song,
+        Entity\SongInterface $song,
         Entity\Station $station,
         Entity\Api\NowPlaying $np
     ): Entity\SongHistory {

@@ -232,11 +232,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             );
 
             if (empty($npResult->currentSong->text)) {
-                $song_obj = new Entity\Song('Stream Offline');
+                $song_obj = Entity\Song::createFromText('Stream Offline');
 
                 $offline_sh = new Entity\Api\NowPlayingCurrentSong;
                 $offline_sh->sh_id = 0;
-                $offline_sh->song = $song_obj->getSongApi(
+                $offline_sh->song = $song_obj->api(
                     $this->api_utils,
                     $station,
                     $uri_empty
@@ -271,7 +271,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 } else {
                     // SongHistory registration must ALWAYS come before the history/nextsong calls
                     // otherwise they will not have up-to-date database info!
-                    $sh_obj = $this->history_repo->register(new Entity\Song($npResult->currentSong), $station, $np);
+                    $sh_obj = $this->history_repo->register(Entity\Song::createFromNowPlayingSong($npResult->currentSong),
+                        $station, $np);
 
                     $np->song_history = $this->history_repo->getHistoryApi(
                         $station,
@@ -362,10 +363,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     return;
                 }
 
-                $sq = $this->queueRepo->getUpcomingFromSong($station, $media->getSong());
+                $sq = $this->queueRepo->getUpcomingFromSong($station, $media);
 
                 if (!$sq instanceof Entity\StationQueue) {
-                    $sq = new Entity\StationQueue($station, $media->getSong());
+                    $sq = new Entity\StationQueue($station, $media);
                     $sq->setTimestampCued(time());
                 } elseif (null === $sq->getMedia()) {
                     $sq->setMedia($media);

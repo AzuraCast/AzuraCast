@@ -66,7 +66,7 @@ class StationQueueRepository extends Repository
             ->getOneOrNullResult();
     }
 
-    public function getUpcomingFromSong(Entity\Station $station, Entity\Song $song): ?Entity\StationQueue
+    public function getUpcomingFromSong(Entity\Station $station, Entity\SongInterface $song): ?Entity\StationQueue
     {
         return $this->getUpcomingBaseQuery($station)
             ->andWhere('sq.song_id = :song_id')

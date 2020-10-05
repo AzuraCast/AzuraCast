@@ -247,7 +247,7 @@ class Queue implements EventSubscriberInterface
             }
 
             // Log in history
-            $sh = new Entity\StationQueue($playlist->getStation(), $media_to_play->getSong());
+            $sh = new Entity\StationQueue($playlist->getStation(), $media_to_play);
             $sh->setPlaylist($playlist);
             $sh->setMedia($media_to_play);
             $sh->setTimestampCued($now->getTimestamp());
@@ -266,7 +266,7 @@ class Queue implements EventSubscriberInterface
 
             $sh = new Entity\StationQueue(
                 $playlist->getStation(),
-                new Entity\Song('Remote Playlist URL')
+                Entity\Song::createFromText('Remote Playlist URL')
             );
 
             $sh->setPlaylist($playlist);
@@ -512,7 +512,7 @@ class Queue implements EventSubscriberInterface
         $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
         // Log in history
-        $sq = new Entity\StationQueue($request->getStation(), $request->getTrack()->getSong());
+        $sq = new Entity\StationQueue($request->getStation(), $request->getTrack());
         $sq->setRequest($request);
         $sq->setMedia($request->getTrack());
 

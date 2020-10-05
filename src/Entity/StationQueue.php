@@ -9,9 +9,9 @@ use Psr\Http\Message\UriInterface;
  * @ORM\Table(name="station_queue")
  * @ORM\Entity()
  */
-class StationQueue extends Song
+class StationQueue implements SongInterface
 {
-    use Traits\TruncateInts;
+    use Traits\TruncateInts, Traits\HasSongFields;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -111,12 +111,11 @@ class StationQueue extends Song
      */
     protected $log;
 
-    public function __construct(Station $station, Song $song)
+    public function __construct(Station $station, SongInterface $song)
     {
-        parent::__construct($song);
-
+        $this->setSong($song);
         $this->station = $station;
-        
+
         $this->sent_to_autodj = false;
     }
 
@@ -244,9 +243,12 @@ class StationQueue extends Song
             $response->playlist = '';
         }
 
-        $response->song = ($this->media)
-            ? $this->media->api($api, $base_url)
-            : $this->getSongApi($api, $this->station, $base_url);
+        if ($this->media) {
+            $response->song = $this->media->api($api, $base_url);
+        } else {
+            $song = new Song($this);
+            $response->song = $song->api($api, $this->station, $base_url);
+        }
 
         return $response;
     }
@@ -255,6 +257,6 @@ class StationQueue extends Song
     {
         return (null !== $this->media)
             ? (string)$this->media
-            : parent::__toString();
+            : (string)(new Song($this));
     }
 }

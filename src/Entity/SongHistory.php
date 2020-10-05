@@ -12,9 +12,9 @@ use Psr\Http\Message\UriInterface;
  * })
  * @ORM\Entity()
  */
-class SongHistory extends Song
+class SongHistory implements SongInterface
 {
-    use Traits\TruncateInts;
+    use Traits\TruncateInts, Traits\HasSongFields;
 
     /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
     public const PLAYBACK_DELAY_SECONDS = 5;
@@ -167,9 +167,9 @@ class SongHistory extends Song
 
     public function __construct(
         Station $station,
-        Song $song
+        SongInterface $song
     ) {
-        parent::__construct($song);
+        $this->setSong($song);
 
         $this->station = $station;
 
@@ -405,9 +405,12 @@ class SongHistory extends Song
             $response->delta_total = (int)$this->delta_total;
         }
 
-        $response->song = ($this->media)
-            ? $this->media->api($api, $base_url)
-            : $this->getSongApi($api, $this->station, $base_url);
+        if ($this->media) {
+            $response->song = $this->media->api($api, $base_url);
+        } else {
+            $song = new Song($this);
+            $response->song = $song->api($api, $this->station, $base_url);
+        }
 
         return $response;
     }
@@ -418,12 +421,12 @@ class SongHistory extends Song
             return (string)$this->media;
         }
 
-        return parent::__toString();
+        return (string)(new Song($this));
     }
 
     public static function fromQueue(StationQueue $queue): self
     {
-        $sh = new self($queue->getStation(), $queue->getSong());
+        $sh = new self($queue->getStation(), $queue);
         $sh->setMedia($queue->getMedia());
         $sh->setRequest($queue->getRequest());
         $sh->setPlaylist($queue->getPlaylist());

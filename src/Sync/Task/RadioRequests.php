@@ -75,7 +75,7 @@ class RadioRequests extends AbstractTask
             // Log the item in SongHistory.
             $media = $request->getTrack();
 
-            $sq = new Entity\StationQueue($station, $media->getSong());
+            $sq = new Entity\StationQueue($station, $media);
             $sq->setTimestampCued(time());
             $sq->setMedia($media);
             $sq->setRequest($request);

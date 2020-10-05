@@ -22,6 +22,9 @@ final class Version20201003021913 extends AbstractMigration
         // Handling potentially failed updates.
         $this->addSql('ALTER TABLE song_history DROP COLUMN IF EXISTS `text`, DROP COLUMN IF EXISTS `artist`, DROP COLUMN IF EXISTS `title`');
 
+        // Avoid "data truncated" errors with really long titles/artists.
+        $this->addSql('UPDATE station_media SET artist=SUBSTRING(artist, 1, 150), title=SUBSTRING(title, 1, 150)');
+
         $this->addSql('ALTER TABLE song_history ADD `text` VARCHAR(150) DEFAULT NULL, ADD artist VARCHAR(150) DEFAULT NULL, ADD title VARCHAR(150) DEFAULT NULL');
         $this->addSql('ALTER TABLE station_media ADD `text` VARCHAR(150) DEFAULT NULL, CHANGE title title VARCHAR(150) DEFAULT NULL, CHANGE artist artist VARCHAR(150) DEFAULT NULL');
         $this->addSql('ALTER TABLE station_queue ADD `text` VARCHAR(150) DEFAULT NULL, ADD artist VARCHAR(150) DEFAULT NULL, ADD title VARCHAR(150) DEFAULT NULL');

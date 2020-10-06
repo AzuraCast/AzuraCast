@@ -16,10 +16,19 @@ class HistoryCleanup extends AbstractTask
                 ->subDays($days_to_keep)
                 ->getTimestamp();
 
+            // Clear Song History
             $this->em->createQuery(/** @lang DQL */ 'DELETE 
                 FROM App\Entity\SongHistory sh 
                 WHERE sh.timestamp_start != 0 
                 AND sh.timestamp_start <= :threshold')
+                ->setParameter('threshold', $threshold)
+                ->execute();
+
+            // Clear Listeners
+            $this->em->createQuery(/** @lang DQL */ 'DELETE
+                FROM App\Entity\Listener l
+                WHERE l.timestamp_start <= :threshold
+                AND l.timestamp_end IS NOT NULL')
                 ->setParameter('threshold', $threshold)
                 ->execute();
         }

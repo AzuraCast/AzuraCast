@@ -6,8 +6,6 @@ use App\Event\SendWebhooks;
 use App\Service\NChan;
 use App\Settings;
 use GuzzleHttp\Client;
-use InfluxDB\Database;
-use InfluxDB\Point;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
@@ -21,8 +19,6 @@ class LocalWebhookHandler
 
     protected Logger $logger;
 
-    protected Database $influx;
-
     protected CacheInterface $cache;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
@@ -30,13 +26,11 @@ class LocalWebhookHandler
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        Database $influx,
         CacheInterface $cache,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->logger = $logger;
         $this->httpClient = $httpClient;
-        $this->influx = $influx;
         $this->cache = $cache;
         $this->settingsRepo = $settingsRepo;
     }
@@ -47,19 +41,6 @@ class LocalWebhookHandler
         $station = $event->getStation();
 
         if ($event->isStandalone()) {
-            $this->logger->debug('Writing entry to InfluxDB...');
-
-            // Post statistics to InfluxDB.
-            $influx_point = new Point(
-                'station.' . $station->getId() . '.listeners',
-                (int)$np->listeners->current,
-                [],
-                ['station' => $station->getId()],
-                time()
-            );
-
-            $this->influx->writePoints([$influx_point], Database::PRECISION_SECONDS);
-
             // Replace the relevant station information in the cache and database.
             $this->logger->debug('Updating NowPlaying cache...');
 

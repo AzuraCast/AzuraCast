@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -93,7 +94,9 @@ class Analytics
         $number_avg = 0,
         $number_unique = 0
     ) {
-        $this->timestamp = CarbonImmutable::parse($timestamp, 'UTC');
+        $utc = new DateTimeZone('UTC');
+        $timestamp = CarbonImmutable::parse($timestamp, $utc);
+        $this->timestamp = $timestamp->shiftTimezone($utc);
         $this->station = $station;
         $this->type = $type;
 
@@ -125,7 +128,9 @@ class Analytics
 
     public function getTimestampInStationTimeZone(): CarbonImmutable
     {
-        return CarbonImmutable::parse($this->timestamp, $this->station->getTimezoneObject());
+        $tz = $this->station->getTimezoneObject();
+        $timestamp = CarbonImmutable::parse($this->timestamp, $tz);
+        return $timestamp->shiftTimezone($tz);
     }
 
     public function getNumberMin(): int

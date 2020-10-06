@@ -29,8 +29,6 @@ class Stations
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
 
-        date_default_timezone_set($station->getTimezone());
-
         $view->addData([
             'station' => $station,
             'frontend' => $frontend,

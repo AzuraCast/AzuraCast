@@ -134,6 +134,8 @@ class AppFactory
         ini_set('session.cookie_lifetime', '86400');
         ini_set('session.use_strict_mode', '1');
 
+        date_default_timezone_set('UTC');
+
         session_cache_limiter('');
     }
 

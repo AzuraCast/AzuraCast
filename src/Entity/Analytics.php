@@ -74,7 +74,7 @@ class Analytics
     protected $number_max;
 
     /**
-     * @ORM\Column(name="number_avg", type="integer")
+     * @ORM\Column(name="number_avg", type="decimal", precision=10, scale=2)
      * @var int
      */
     protected $number_avg;
@@ -89,10 +89,10 @@ class Analytics
         DateTimeInterface $timestamp,
         Station $station = null,
         $type = self::INTERVAL_DAILY,
-        $number_min = 0,
-        $number_max = 0,
-        $number_avg = 0,
-        $number_unique = 0
+        int $number_min = 0,
+        int $number_max = 0,
+        float $number_avg = 0,
+        ?int $number_unique = null
     ) {
         $utc = new DateTimeZone('UTC');
         $timestamp = CarbonImmutable::parse($timestamp, $utc);
@@ -143,7 +143,7 @@ class Analytics
         return $this->number_max;
     }
 
-    public function getNumberAvg(): int
+    public function getNumberAvg(): float
     {
         return $this->number_avg;
     }

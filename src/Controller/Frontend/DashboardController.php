@@ -169,11 +169,6 @@ class DashboardController
             /** @var CarbonImmutable $timestamp */
             $timestamp = $row['timestamp'];
 
-            $asdf = $timestamp->shiftTimezone('America/New_York');
-            print_r($asdf);
-            exit;
-
-
             $timestamp = $timestamp->getTimestamp() * 1000;
 
             $station_averages[$station_id][$timestamp] = [

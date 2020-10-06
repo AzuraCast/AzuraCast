@@ -75,7 +75,7 @@ class Analytics
 
     /**
      * @ORM\Column(name="number_avg", type="decimal", precision=10, scale=2)
-     * @var int
+     * @var float
      */
     protected $number_avg;
 

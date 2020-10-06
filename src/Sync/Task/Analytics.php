@@ -46,7 +46,7 @@ class Analytics extends AbstractTask
         $stationsRaw = $this->em->getRepository(Entity\Station::class)
             ->findAll();
 
-        /** @var Entity\Station[] $allStations */
+        /** @var Entity\Station[] $stations */
         $stations = [];
         foreach ($stationsRaw as $station) {
             /** @var Entity\Station $station */

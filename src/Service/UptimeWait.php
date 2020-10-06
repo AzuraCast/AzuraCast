@@ -34,7 +34,7 @@ class UptimeWait
     public function waitForRedis(): void
     {
         $this->attempt(function () {
-            $this->redis->ping('PING');
+            $this->redis->ping();
         });
     }
 

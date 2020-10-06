@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +22,9 @@ class Analytics
     /** @var string No analytics data collected of any sort. */
     public const LEVEL_NONE = 'none';
 
+    public const INTERVAL_DAILY = 'day';
+    public const INTERVAL_HOURLY = 'hour';
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -35,14 +40,23 @@ class Analytics
     protected $station_id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Station")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var Station|null
+     */
+    protected $station;
+
+    /**
      * @ORM\Column(name="type", type="string", length=15)
      * @var string
      */
     protected $type;
 
     /**
-     * @ORM\Column(name="timestamp", type="integer")
-     * @var int
+     * @ORM\Column(name="timestamp", type="carbon_immutable", precision=0)
+     * @var CarbonImmutable
      */
     protected $timestamp;
 
@@ -65,28 +79,33 @@ class Analytics
     protected $number_avg;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station|null
+     * @ORM\Column(name="number_unique", type="integer", nullable=true)
+     * @var int|null
      */
-    protected $station;
+    protected $number_unique;
 
     public function __construct(
+        DateTimeInterface $timestamp,
         Station $station = null,
-        $type = 'day',
-        $timestamp = null,
+        $type = self::INTERVAL_DAILY,
         $number_min = 0,
         $number_max = 0,
-        $number_avg = 0
+        $number_avg = 0,
+        $number_unique = 0
     ) {
+        $this->timestamp = CarbonImmutable::parse($timestamp, 'UTC');
         $this->station = $station;
         $this->type = $type;
-        $this->timestamp = $timestamp ?? time();
+
         $this->number_min = $number_min;
         $this->number_max = $number_max;
         $this->number_avg = $number_avg;
+        $this->number_unique = $number_unique;
+    }
+
+    public function getStation(): ?Station
+    {
+        return $this->station;
     }
 
     public function getId(): ?int
@@ -99,9 +118,14 @@ class Analytics
         return $this->type;
     }
 
-    public function getTimestamp(): int
+    public function getTimestamp(): CarbonImmutable
     {
         return $this->timestamp;
+    }
+
+    public function getTimestampInStationTimeZone(): CarbonImmutable
+    {
+        return CarbonImmutable::parse($this->timestamp, $this->station->getTimezoneObject());
     }
 
     public function getNumberMin(): int
@@ -119,8 +143,8 @@ class Analytics
         return $this->number_avg;
     }
 
-    public function getStation(): ?Station
+    public function getNumberUnique(): ?int
     {
-        return $this->station;
+        return $this->number_unique;
     }
 }

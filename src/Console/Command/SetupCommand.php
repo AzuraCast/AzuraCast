@@ -42,10 +42,6 @@ class SetupCommand extends CommandAbstract
             }
         }
 
-        $io->section(__('Setting Up InfluxDB'));
-
-        $this->runCommand($output, 'azuracast:setup:influx');
-
         /** @var EntityManagerInterface $em */
         $em = $di->get(EntityManagerInterface::class);
         $conn = $em->getConnection();

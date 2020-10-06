@@ -18,9 +18,6 @@ class UptimeWaitCommand extends CommandAbstract
             $uptimeWait->waitForDatabase();
             $io->progressAdvance();
 
-            $uptimeWait->waitForInflux();
-            $io->progressAdvance();
-
             $uptimeWait->waitForRedis();
             $io->progressAdvance();
         } catch (Exception $e) {

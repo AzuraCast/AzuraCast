@@ -35,7 +35,6 @@
     "guzzlehttp/guzzle": "^7.0",
     "guzzlehttp/oauth-subscriber": "^0.4.0",
     "http-interop/http-factory-guzzle": "^1.0",
-    "influxdb/influxdb-php": "1.15.1",
     "james-heinrich/getid3": "dev-master",
     "jhofm/flysystem-iterator": "^2.1",
     "laminas/laminas-config": "^3.3",

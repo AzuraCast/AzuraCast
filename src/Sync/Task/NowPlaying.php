@@ -14,8 +14,6 @@ use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
-use InfluxDB\Database;
-use InfluxDB\Point;
 use Monolog\Logger;
 use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
@@ -29,8 +27,6 @@ use function DeepCopy\deep_copy;
 
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
 {
-    protected Database $influx;
-
     protected CacheInterface $cache;
 
     protected Adapters $adapters;
@@ -59,7 +55,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         ApiUtilities $api_utils,
         AutoDJ $autodj,
         CacheInterface $cache,
-        Database $influx,
         LoggerInterface $logger,
         EventDispatcher $event_dispatcher,
         MessageBus $messageBus,
@@ -77,7 +72,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->cache = $cache;
         $this->event_dispatcher = $event_dispatcher;
         $this->messageBus = $messageBus;
-        $this->influx = $influx;
         $this->lockFactory = $lockFactory;
 
         $this->history_repo = $historyRepository;
@@ -104,38 +98,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     public function run(bool $force = false): void
     {
         $nowplaying = $this->_loadNowPlaying($force);
-
-        // Post statistics to InfluxDB.
-        if ($this->analytics_level !== Entity\Analytics::LEVEL_NONE) {
-            $influx_points = [];
-
-            $total_overall = 0;
-
-            foreach ($nowplaying as $info) {
-                $listeners = (int)$info->listeners->current;
-                $total_overall += $listeners;
-
-                $station_id = $info->station->id;
-
-                $influx_points[] = new Point(
-                    'station.' . $station_id . '.listeners',
-                    $listeners,
-                    [],
-                    ['station' => $station_id],
-                    time()
-                );
-            }
-
-            $influx_points[] = new Point(
-                'station.all.listeners',
-                $total_overall,
-                [],
-                ['station' => 0],
-                time()
-            );
-
-            $this->influx->writePoints($influx_points, Database::PRECISION_SECONDS);
-        }
 
         $this->cache->set(Entity\Settings::NOWPLAYING, $nowplaying, 120);
         $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING, $nowplaying);

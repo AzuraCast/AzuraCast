@@ -4,7 +4,6 @@ namespace App\Service;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use InfluxDB;
 use Redis;
 
 class UptimeWait
@@ -13,19 +12,15 @@ class UptimeWait
 
     protected Redis $redis;
 
-    protected InfluxDB\Client $influx;
-
-    public function __construct(EntityManagerInterface $em, Redis $redis, InfluxDB\Database $influx)
+    public function __construct(EntityManagerInterface $em, Redis $redis)
     {
         $this->db = $em->getConnection();
         $this->redis = $redis;
-        $this->influx = $influx->getClient();
     }
 
     public function waitForAll(): void
     {
         $this->waitForRedis();
-        $this->waitForInflux();
         $this->waitForDatabase();
     }
 
@@ -36,17 +31,10 @@ class UptimeWait
         });
     }
 
-    public function waitForInflux(): void
-    {
-        $this->attempt(function () {
-            $this->influx->listDatabases();
-        });
-    }
-
     public function waitForRedis(): void
     {
         $this->attempt(function () {
-            $this->redis->ping();
+            $this->redis->ping('PING');
         });
     }
 

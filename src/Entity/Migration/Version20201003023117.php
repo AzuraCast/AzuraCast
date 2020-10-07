@@ -31,6 +31,7 @@ final class Version20201003023117 extends AbstractMigration
 
         $this->addSql('DROP TABLE songs');
 
+        $this->addSql('DELETE FROM station_media WHERE song_id IS NULL');
         $this->addSql('ALTER TABLE station_media CHANGE song_id song_id VARCHAR(50) NOT NULL');
     }
 

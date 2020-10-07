@@ -130,7 +130,7 @@ class DashboardController
 
             $cache_name = 'homepage_metrics_' . implode(',', $stats_cache_stations);
 
-            // $metrics = $this->cache->get($cache_name);
+            $metrics = $this->cache->get($cache_name);
             if (empty($metrics)) {
                 $metrics = $this->_getMetrics($view_stations, $show_admin);
                 $this->cache->set($cache_name, $metrics, 600);

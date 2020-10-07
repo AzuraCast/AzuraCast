@@ -48,10 +48,10 @@ var jsFiles = {
       'node_modules/bootstrap-notify/bootstrap-notify.min.js'
     ]
   },
-  'sweetalert': {
-    base: 'node_modules/sweetalert/dist',
+  'sweetalert2': {
+    base: 'node_modules/sweetalert2/dist',
     files: [
-      'node_modules/sweetalert/dist/sweetalert.min.js'
+      'node_modules/sweetalert2/dist/sweetalert2.all.min.js'
     ]
   },
   'autosize': {

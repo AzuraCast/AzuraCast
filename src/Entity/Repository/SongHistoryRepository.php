@@ -253,7 +253,7 @@ class SongHistoryRepository extends Repository
             ->setParameter('station', $station)
             ->setParameter('start', $start)
             ->setParameter('end', $end)
-            ->getSingleScalarResult();
+            ->getSingleResult();
 
         $min = (int)$historyTotals['listeners_min'];
         $max = (int)$historyTotals['listeners_max'];

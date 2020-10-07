@@ -56,7 +56,7 @@ class OverviewController
         $daily_chart->fill = false;
 
         $daily_alt = [
-            ' <p>' . $daily_chart->label . ' </p> ',
+            '<p>' . $daily_chart->label . ' </p>',
             '<dl> ',
         ];
         $daily_averages = [];
@@ -65,7 +65,7 @@ class OverviewController
 
         foreach ($dailyStats as $stat) {
             /** @var CarbonImmutable $statTime */
-            $statTime = $stat['timestamp'];
+            $statTime = $stat['moment'];
             $statTime = $statTime->shiftTimezone($station_tz);
 
             $avg_row = new stdClass;
@@ -134,7 +134,7 @@ class OverviewController
 
         foreach ($hourlyStats as $stat) {
             /** @var CarbonImmutable $statTime */
-            $statTime = $stat['timestamp'];
+            $statTime = $stat['moment'];
             $statTime = $statTime->shiftTimezone($station_tz);
 
             $hour = (int)$statTime->format('G');

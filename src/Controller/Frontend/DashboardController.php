@@ -153,11 +153,11 @@ class DashboardController
 
         $threshold = CarbonImmutable::parse('-180 days');
 
-        $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.timestamp, a.number_avg, a.number_unique 
+        $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.moment, a.number_avg, a.number_unique 
             FROM App\Entity\Analytics a
             WHERE a.station_id IS NULL OR a.station_id IN (:stations)
             AND a.type = :type
-            AND a.timestamp >= :threshold')
+            AND a.moment >= :threshold')
             ->setParameter('stations', $view_stations)
             ->setParameter('type', Entity\Analytics::INTERVAL_DAILY)
             ->setParameter('threshold', $threshold)
@@ -166,13 +166,13 @@ class DashboardController
         foreach ($stats as $row) {
             $station_id = $row['station_id'] ?? 'all';
 
-            /** @var CarbonImmutable $timestamp */
-            $timestamp = $row['timestamp'];
+            /** @var CarbonImmutable $moment */
+            $moment = $row['moment'];
 
-            $timestamp = $timestamp->getTimestamp() * 1000;
+            $moment = $moment->getTimestamp() * 1000;
 
-            $station_averages[$station_id][$timestamp] = [
-                $timestamp,
+            $station_averages[$station_id][$moment] = [
+                $moment,
                 round($row['number_avg'], 2),
             ];
         }

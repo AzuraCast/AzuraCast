@@ -57,7 +57,7 @@ class Analytics extends AbstractTask
         $day = $now->subDays(5)->setTime(0, 0);
 
         // Clear existing analytics in this segment
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a WHERE a.timestamp >= :threshold')
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a WHERE a.moment >= :threshold')
             ->setParameter('threshold', $day)
             ->execute();
 

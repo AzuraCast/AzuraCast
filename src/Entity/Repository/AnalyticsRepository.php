@@ -16,11 +16,10 @@ class AnalyticsRepository extends Repository
             FROM App\Entity\Analytics a
             WHERE a.station = :station
             AND a.type = :type
-            AND a.timestamp >= :threshold')
+            AND a.moment >= :threshold')
             ->setParameter('station', $station)
             ->setParameter('type', $type)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
     }
-
 }

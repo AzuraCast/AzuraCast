@@ -56,10 +56,10 @@ class Analytics
     protected $type;
 
     /**
-     * @ORM\Column(name="timestamp", type="carbon_immutable", precision=0)
+     * @ORM\Column(name="moment", type="carbon_immutable", precision=0)
      * @var CarbonImmutable
      */
-    protected $timestamp;
+    protected $moment;
 
     /**
      * @ORM\Column(name="number_min", type="integer")
@@ -75,7 +75,7 @@ class Analytics
 
     /**
      * @ORM\Column(name="number_avg", type="decimal", precision=10, scale=2)
-     * @var float
+     * @var string
      */
     protected $number_avg;
 
@@ -86,7 +86,7 @@ class Analytics
     protected $number_unique;
 
     public function __construct(
-        DateTimeInterface $timestamp,
+        DateTimeInterface $moment,
         Station $station = null,
         $type = self::INTERVAL_DAILY,
         int $number_min = 0,
@@ -95,14 +95,16 @@ class Analytics
         ?int $number_unique = null
     ) {
         $utc = new DateTimeZone('UTC');
-        $timestamp = CarbonImmutable::parse($timestamp, $utc);
-        $this->timestamp = $timestamp->shiftTimezone($utc);
+
+        $moment = CarbonImmutable::parse($moment, $utc);
+        $this->moment = $moment->shiftTimezone($utc);
+
         $this->station = $station;
         $this->type = $type;
 
         $this->number_min = $number_min;
         $this->number_max = $number_max;
-        $this->number_avg = $number_avg;
+        $this->number_avg = (string)round($number_avg, 2);
         $this->number_unique = $number_unique;
     }
 
@@ -121,9 +123,9 @@ class Analytics
         return $this->type;
     }
 
-    public function getTimestamp(): CarbonImmutable
+    public function getMoment(): CarbonImmutable
     {
-        return $this->timestamp;
+        return $this->moment;
     }
 
     public function getTimestampInStationTimeZone(): CarbonImmutable
@@ -145,7 +147,7 @@ class Analytics
 
     public function getNumberAvg(): float
     {
-        return $this->number_avg;
+        return round((float)$this->number_avg, 2);
     }
 
     public function getNumberUnique(): ?int

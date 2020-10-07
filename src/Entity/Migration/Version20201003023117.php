@@ -29,7 +29,7 @@ final class Version20201003023117 extends AbstractMigration
         $this->addSql('ALTER TABLE station_queue DROP FOREIGN KEY IF EXISTS FK_277B0055A0BDB2F3');
         $this->addSql('DROP INDEX IF EXISTS IDX_277B0055A0BDB2F3 ON station_queue');
 
-        $this->addSql('DROP TABLE songs');
+        $this->addSql('DROP TABLE IF EXISTS songs');
 
         $this->addSql('DELETE FROM station_media WHERE song_id IS NULL');
         $this->addSql('ALTER TABLE station_media CHANGE song_id song_id VARCHAR(50) NOT NULL');

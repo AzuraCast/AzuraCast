@@ -30,8 +30,6 @@ class SetupCommand extends CommandAbstract
             __('Installation Method: %s', $settings->isDocker() ? 'Docker' : 'Ansible'),
         ]);
 
-        $this->runCommand($output, 'azuracast:internal:uptime-wait');
-
         if ($update) {
             $io->note(__('Running in update mode.'));
 

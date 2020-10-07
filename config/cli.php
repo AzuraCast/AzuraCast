@@ -122,11 +122,6 @@ return function (Application $console) {
         Command\GenerateApiDocsCommand::class
     )->setDescription('Trigger regeneration of AzuraCast API documentation.');
 
-    $console->command(
-        'azuracast:internal:uptime-wait',
-        Command\UptimeWaitCommand::class
-    )->setDescription('Wait until core services are online and accepting connections before continuing.');
-
     // User-side tools
     $console->command(
         'azuracast:account:list',

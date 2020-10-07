@@ -51,10 +51,10 @@ class UptimeWait
     public function __construct()
     {
         $this->spinner = new Spinner([
-            '🖥️🎶－－－📻',
-            '🖥️－🎶－－📻',
-            '🖥️－－🎶－📻',
-            '🖥️－－－🎶📻',
+            '🖥️🎶－🎵－📻',
+            '🖥️－🎶－🎵📻',
+            '🖥️🎵－🎶－📻',
+            '🖥️－🎵－🎶📻',
         ]);
 
         $_ENV = getenv();

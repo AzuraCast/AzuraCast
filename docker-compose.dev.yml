@@ -21,10 +21,6 @@ services:
     ports:
       - "127.0.0.1:3306:3306"
 
-  influxdb:
-    build:
-      context: ../docker-azuracast-influxdb
-
   redis:
     build:
       context: ../docker-azuracast-redis

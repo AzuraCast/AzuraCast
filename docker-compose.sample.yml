@@ -51,13 +51,12 @@ services:
       - '${AZURACAST_SFTP_PORT:-2022}:2022'
     depends_on:
       - mariadb
-      - influxdb
       - stations
       - redis
     env_file: azuracast.env
     environment:
       LANG: ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION: 10
+      AZURACAST_DC_REVISION: 11
       AZURACAST_VERSION: ${AZURACAST_VERSION:-latest}
       AZURACAST_SFTP_PORT: ${AZURACAST_SFTP_PORT:-2022}
       VIRTUAL_HOST: ${LETSENCRYPT_HOST:-azuracast.local}
@@ -90,15 +89,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     env_file: azuracast.env
-    networks:
-      - backend
-    restart: always
-    logging: *default-logging
-
-  influxdb:
-    image: "azuracast/azuracast_influxdb:${AZURACAST_VERSION:-latest}"
-    volumes:
-      - influx_data:/var/lib/influxdb
     networks:
       - backend
     restart: always
@@ -292,7 +282,6 @@ networks:
 volumes:
   nginx_proxy_vhosts: { }
   db_data: { }
-  influx_data: { }
   letsencrypt: { }
   letsencrypt_html: { }
   shoutcast2_install: { }

@@ -1,0 +1,139 @@
+#!/usr/bin/env php
+<?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set('display_errors', 1);
+
+class Spinner
+{
+    protected array $frames = [];
+
+    protected int $length;
+
+    protected int $current = 0;
+
+    public function __construct(array $frames)
+    {
+        $this->frames = $frames;
+        $this->length = count($this->frames);
+    }
+
+    public function tick(string $message): void
+    {
+        $next = $this->next();
+
+        echo chr(27) . '[0G';
+        echo sprintf('%s %s', $this->frames[$next], $message);
+    }
+
+    private function next(): int
+    {
+        $prev = $this->current;
+        $this->current = $prev + 1;
+
+        if ($this->current >= $this->length) {
+            $this->current = 0;
+        }
+
+        return $prev;
+    }
+}
+
+class UptimeWait
+{
+    protected Spinner $spinner;
+
+    protected int $timeout = 180;
+
+    protected int $retryInterval = 1;
+
+    protected bool $debugMode = false;
+
+    public function __construct()
+    {
+        $this->spinner = new Spinner([
+            '🖥️🎶－🎵－📻',
+            '🖥️－🎶－🎵📻',
+            '🖥️🎵－🎶－📻',
+            '🖥️－🎵－🎶📻',
+        ]);
+
+        $_ENV = getenv();
+
+        $applicationEnv = $_ENV['LOG_LEVEL'] ?? 'notice';
+        $this->debugMode = ('debug' === $applicationEnv);
+    }
+
+    public function run(): void
+    {
+        $this->println('Starting up AzuraCast services...');
+
+        $elapsed = 0;
+        while ($elapsed <= $this->timeout) {
+            if ($this->checkDatabase() && $this->checkRedis()) {
+                $this->println('Services started up and ready!');
+                die(0);
+            }
+
+            sleep($this->retryInterval);
+            $elapsed += $this->retryInterval;
+
+            $this->spinner->tick('Waiting...');
+        }
+
+        $this->println('Timed out waiting for services to start.');
+        die(1);
+    }
+
+    protected function checkDatabase(): bool
+    {
+        try {
+            $dbOptions = [
+                'host' => $_ENV['MYSQL_HOST'] ?? 'mariadb',
+                'port' => $_ENV['MYSQL_PORT'] ?? 3306,
+                'dbname' => $_ENV['MYSQL_DATABASE'],
+                'user' => $_ENV['MYSQL_USER'],
+                'password' => $_ENV['MYSQL_PASSWORD'],
+            ];
+
+            $dbh = new PDO('mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'], $dbOptions['user'],
+                $dbOptions['password']);
+
+            $dbh->exec('SELECT 1');
+
+            return true;
+        } catch (Throwable $e) {
+            if ($this->debugMode) {
+                $this->println($e->getMessage());
+            }
+
+            return false;
+        }
+    }
+
+    protected function checkRedis(): bool
+    {
+        try {
+            $redis = new Redis();
+            $redis->connect('redis', 6379, 15);
+            $redis->select(1);
+
+            $redis->ping();
+
+            return true;
+        } catch (Throwable $e) {
+            if ($this->debugMode) {
+                $this->println($e->getMessage());
+            }
+
+            return false;
+        }
+    }
+
+    protected function println(string $line): void
+    {
+        echo $line . "\n";
+    }
+}
+
+$uptimeWait = new UptimeWait;
+$uptimeWait->run();

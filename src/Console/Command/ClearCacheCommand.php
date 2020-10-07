@@ -11,7 +11,7 @@ class ClearCacheCommand extends CommandAbstract
         // Flush all Redis entries.
         $redis->flushAll();
 
-        $io->writeln('Local cache flushed.');
+        $io->success('Local cache flushed.');
         return 0;
     }
 }

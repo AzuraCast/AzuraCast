@@ -118,6 +118,10 @@ return [
 
             $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
 
+            if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
+                Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
+            }
+
             $eventManager = new Doctrine\Common\EventManager;
             $eventManager->addEventSubscriber($eventRequiresRestart);
             $eventManager->addEventSubscriber($eventAuditLog);
@@ -343,17 +347,6 @@ return [
             $uniqueMiddleware,
             $handleMessageMiddleware,
         ]);
-    },
-
-    // InfluxDB
-    InfluxDB\Database::class => function (Settings $settings) {
-        $opts = [
-            'host' => $settings->isDocker() ? 'influxdb' : 'localhost',
-            'port' => 8086,
-        ];
-
-        $influx = new InfluxDB\Client($opts['host'], $opts['port']);
-        return $influx->selectDB('stations');
     },
 
     // Supervisor manager

@@ -30,8 +30,6 @@ class SetupCommand extends CommandAbstract
             __('Installation Method: %s', $settings->isDocker() ? 'Docker' : 'Ansible'),
         ]);
 
-        $this->runCommand($output, 'azuracast:internal:uptime-wait');
-
         if ($update) {
             $io->note(__('Running in update mode.'));
 
@@ -41,10 +39,6 @@ class SetupCommand extends CommandAbstract
                 $io->newLine();
             }
         }
-
-        $io->section(__('Setting Up InfluxDB'));
-
-        $this->runCommand($output, 'azuracast:setup:influx');
 
         /** @var EntityManagerInterface $em */
         $em = $di->get(EntityManagerInterface::class);

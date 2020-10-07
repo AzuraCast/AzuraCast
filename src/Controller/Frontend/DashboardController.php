@@ -9,8 +9,8 @@ use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use stdClass;
@@ -25,8 +25,6 @@ class DashboardController
 
     protected CacheInterface $cache;
 
-    protected Database $influx;
-
     protected Router $router;
 
     protected Adapters $adapter_manager;
@@ -38,7 +36,6 @@ class DashboardController
         Entity\Repository\SettingsRepository $settingsRepo,
         Acl $acl,
         CacheInterface $cache,
-        Database $influx,
         Adapters $adapter_manager,
         EventDispatcher $dispatcher
     ) {
@@ -46,7 +43,6 @@ class DashboardController
         $this->settingsRepo = $settingsRepo;
         $this->acl = $acl;
         $this->cache = $cache;
-        $this->influx = $influx;
         $this->adapter_manager = $adapter_manager;
         $this->dispatcher = $dispatcher;
     }
@@ -155,32 +151,30 @@ class DashboardController
         // Statistics by day.
         $station_averages = [];
 
-        // Query InfluxDB database.
-        $resultset = $this->influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
-            'epoch' => 'ms',
-        ]);
+        $threshold = CarbonImmutable::parse('-180 days');
 
-        $results_raw = $resultset->getSeries();
-        $results = [];
-        foreach ($results_raw as $serie) {
-            $points = [];
-            foreach ($serie['values'] as $point) {
-                $points[] = array_combine($serie['columns'], $point);
-            }
+        $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.moment, a.number_avg, a.number_unique 
+            FROM App\Entity\Analytics a
+            WHERE a.station_id IS NULL OR a.station_id IN (:stations)
+            AND a.type = :type
+            AND a.moment >= :threshold')
+            ->setParameter('stations', $view_stations)
+            ->setParameter('type', Entity\Analytics::INTERVAL_DAILY)
+            ->setParameter('threshold', $threshold)
+            ->getArrayResult();
 
-            $results[$serie['name']] = $points;
-        }
+        foreach ($stats as $row) {
+            $station_id = $row['station_id'] ?? 'all';
 
-        foreach ($results as $stat_series => $stat_rows) {
-            $series_split = explode('.', $stat_series);
-            $station_id = $series_split[1];
+            /** @var CarbonImmutable $moment */
+            $moment = $row['moment'];
 
-            foreach ($stat_rows as $stat_row) {
-                $station_averages[$station_id][$stat_row['time']] = [
-                    $stat_row['time'],
-                    round($stat_row['value'], 2),
-                ];
-            }
+            $moment = $moment->getTimestamp() * 1000;
+
+            $station_averages[$station_id][$moment] = [
+                $moment,
+                round($row['number_avg'], 2),
+            ];
         }
 
         $metric_stations = [];

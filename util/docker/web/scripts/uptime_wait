@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+if [[ -f /var/azuracast/www/bin/uptime_wait ]]; then
+    if ! php /var/azuracast/www/bin/uptime_wait; then
+        exit 1
+    fi
+fi
+
+exec "$@"

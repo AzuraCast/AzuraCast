@@ -82,11 +82,6 @@ return function (Application $console) {
     )->setDescription(__('Migrate existing configuration to new INI format if any exists.'));
 
     $console->command(
-        'azuracast:setup:influx',
-        Command\Influx\SetupCommand::class
-    )->setDescription(__('Initial setup of InfluxDB.'));
-
-    $console->command(
         'azuracast:setup:fixtures',
         Command\SetupFixturesCommand::class
     )->setDescription(__('Install fixtures for demo / local development.'));
@@ -126,16 +121,6 @@ return function (Application $console) {
         'azuracast:api:docs',
         Command\GenerateApiDocsCommand::class
     )->setDescription('Trigger regeneration of AzuraCast API documentation.');
-
-    $console->command(
-        'azuracast:internal:uptime-wait',
-        Command\UptimeWaitCommand::class
-    )->setDescription('Wait until core services are online and accepting connections before continuing.');
-
-    $console->command(
-        'influxdb:query query',
-        Command\Influx\QueryCommand::class
-    )->setDescription('Execute a query on the InfluxDB database.');
 
     // User-side tools
     $console->command(

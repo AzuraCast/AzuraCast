@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a9cb6e8e6a42a17e3b5bfbaffee22cb",
+    "content-hash": "0d1cc8d8f2f751d6ee6c3515497b56e6",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2671,67 +2671,6 @@
                 "psr-7"
             ],
             "time": "2018-07-31T19:32:56+00:00"
-        },
-        {
-            "name": "influxdb/influxdb-php",
-            "version": "1.15.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/influxdata/influxdb-php.git",
-                "reference": "447acb600969f9510c9f1900a76d442fc3537b0e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/influxdata/influxdb-php/zipball/447acb600969f9510c9f1900a76d442fc3537b0e",
-                "reference": "447acb600969f9510c9f1900a76d442fc3537b0e",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0|^7.0",
-                "php": "^5.5 || ^7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7"
-            },
-            "suggest": {
-                "ext-curl": "Curl extension, needed for Curl driver",
-                "stefanotorresi/influxdb-php-async": "An asyncronous client for InfluxDB, implemented via ReactPHP."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "InfluxDB\\": "src/InfluxDB"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Stephen Hoogendijk",
-                    "email": "stephen@tca0.nl"
-                },
-                {
-                    "name": "Daniel Martinez",
-                    "email": "danimartcas@hotmail.com"
-                },
-                {
-                    "name": "Gianluca Arbezzano",
-                    "email": "gianarb92@gmail.com"
-                }
-            ],
-            "description": "InfluxDB client library for PHP",
-            "keywords": [
-                "client",
-                "influxdata",
-                "influxdb",
-                "influxdb class",
-                "influxdb client",
-                "influxdb library",
-                "time series"
-            ],
-            "time": "2020-09-18T13:24:03+00:00"
         },
         {
             "name": "james-heinrich/getid3",

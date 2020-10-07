@@ -1,41 +1,13 @@
 ---
-- name: Add InfluxDB repo file
-  apt_repository:
-    repo: "deb https://repos.influxdata.com/ubuntu {{ ansible_distribution_release | lower }} stable"
-    filename: "influxdb"
-    update_cache: no
-  register: influxdb_list
+- name: Shut Down InfluxDB
+  service:
+    name: "influxdb"
+    state: stopped
+  ignore_errors: True
 
-- name: Add InfluxDB repo key
-  apt_key:
-    url: https://repos.influxdata.com/influxdb.key
-    state: present
-  register: influxdb_key
-
-- name: Update apt cache
-  apt: update_cache=yes
-  when:
-    - influxdb_list.changed == True or influxdb_key.changed == True
-
-- name: Install InfluxDB
+- name: Remove InfluxDB if Present
   apt:
-    name: influxdb
-    state: latest
-  register: influx_installed
-
-- name: Fix permissions on InfluxDB data folder
-  file: path="/var/lib/influxdb" state=directory owner=influxdb group=influxdb recurse=true
-
-- name: Lock down InfluxDB to localhost requests
-  replace:
-    dest: /etc/influxdb/influxdb.conf
-    regexp: 'bind-address = ":80'
-    replace: 'bind-address = "localhost:80'
-    backup: yes
-  when: app_env == "production"
-
-- name: Start the InfluxDB service
-  service: name=influxdb state=restarted enabled=yes
-
-- name: Pause to allow InfluxDB to spin up
-  wait_for: port=8086 delay=5
+    name: "influxdb"
+    state: absent
+    force: yes
+    purge: yes

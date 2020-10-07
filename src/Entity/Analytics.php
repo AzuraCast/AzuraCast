@@ -128,10 +128,10 @@ class Analytics
         return $this->moment;
     }
 
-    public function getTimestampInStationTimeZone(): CarbonImmutable
+    public function getMomentInStationTimeZone(): CarbonImmutable
     {
         $tz = $this->station->getTimezoneObject();
-        $timestamp = CarbonImmutable::parse($this->timestamp, $tz);
+        $timestamp = CarbonImmutable::parse($this->moment, $tz);
         return $timestamp->shiftTimezone($tz);
     }
 

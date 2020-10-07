@@ -3,9 +3,32 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class Analytics extends AbstractTask
 {
+    protected Entity\Repository\AnalyticsRepository $analyticsRepo;
+
+    protected Entity\Repository\ListenerRepository $listenerRepo;
+
+    protected Entity\Repository\SongHistoryRepository $historyRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
+        Entity\Repository\AnalyticsRepository $analyticsRepo,
+        Entity\Repository\ListenerRepository $listenerRepo,
+        Entity\Repository\SongHistoryRepository $historyRepo
+    ) {
+        parent::__construct($em, $settingsRepo, $logger);
+
+        $this->analyticsRepo = $analyticsRepo;
+        $this->listenerRepo = $listenerRepo;
+        $this->historyRepo = $historyRepo;
+    }
+
     public function run(bool $force = false): void
     {
         $analytics_level = $this->settingsRepo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
@@ -29,20 +52,6 @@ class Analytics extends AbstractTask
 
     protected function updateAnalytics(bool $withListeners = true): void
     {
-        $historyTotalsQuery = $this->em->createQuery(/** @lang DQL */ '
-            SELECT AVG(sh.listeners_end) AS listeners_avg, MAX(sh.listeners_end) AS listeners_max, MIN(sh.listeners_end) AS listeners_min
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station = :station
-            AND sh.timestamp_end >= :start
-            AND sh.timestamp_start <= :end');
-
-        $uniqueListenersQuery = $this->em->createQuery(/** @lang DQL */ '
-            SELECT COUNT(DISTINCT l.listener_hash) AS unique_listeners
-            FROM App\Entity\Listener l
-            WHERE l.station = :station
-            AND l.timestamp_end >= :start
-            AND l.timestamp_start <= :end');
-
         $stationsRaw = $this->em->getRepository(Entity\Station::class)
             ->findAll();
 
@@ -54,12 +63,9 @@ class Analytics extends AbstractTask
         }
 
         $now = CarbonImmutable::now('UTC');
-        $day = $now->subDays(5)->setTime(0, 0);
+        $day = $now->subDays(5)->setTime(0, 0);// Clear existing analytics in this segment
 
-        // Clear existing analytics in this segment
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a WHERE a.moment >= :threshold')
-            ->setParameter('threshold', $day)
-            ->execute();
+        $this->analyticsRepo->clearAllAfterTime($day);
 
         while ($day < $now) {
             $dailyUniqueListeners = null;
@@ -77,27 +83,12 @@ class Analytics extends AbstractTask
                     $stationTz = $station->getTimezoneObject();
 
                     $start = $hourUtc->shiftTimezone($stationTz);
-                    $startTimestamp = $start->getTimestamp();
-
                     $end = $start->addHour();
-                    $endTimestamp = $end->getTimestamp();
 
-                    $historyTotals = $historyTotalsQuery
-                        ->setParameter('station', $station)
-                        ->setParameter('start', $startTimestamp)
-                        ->setParameter('end', $endTimestamp)
-                        ->getSingleResult();
-
-                    $min = (int)$historyTotals['listeners_min'];
-                    $max = (int)$historyTotals['listeners_max'];
-                    $avg = round($historyTotals['listeners_avg'], 2);
+                    [$min, $max, $avg] = $this->historyRepo->getStatsByTimeRange($station, $start, $end);
 
                     if ($withListeners) {
-                        $unique = (int)$uniqueListenersQuery
-                            ->setParameter('station', $station)
-                            ->setParameter('start', $startTimestamp)
-                            ->setParameter('end', $endTimestamp)
-                            ->getSingleScalarResult();
+                        $unique = $this->listenerRepo->getUniqueListeners($station, $start, $end);
 
                         $hourlyUniqueListeners ??= 0;
                         $hourlyUniqueListeners += $unique;
@@ -147,10 +138,8 @@ class Analytics extends AbstractTask
             foreach ($stations as $stationId => $station) {
                 $stationTz = $station->getTimezoneObject();
                 $stationDayStart = $day->shiftTimezone($stationTz);
-                $stationDayStartTimestamp = $stationDayStart->getTimestamp();
 
                 $stationDayEnd = $stationDayStart->addDay();
-                $stationDayEndTimestamp = $stationDayEnd->getTimestamp();
 
                 $dailyStationMin = 0;
                 $dailyStationMax = 0;
@@ -169,11 +158,8 @@ class Analytics extends AbstractTask
                 $dailyMax = max($dailyMax, $dailyStationMax);
 
                 if ($withListeners) {
-                    $dailyStationUnique = (int)$uniqueListenersQuery
-                        ->setParameter('station', $station)
-                        ->setParameter('start', $stationDayStartTimestamp)
-                        ->setParameter('end', $stationDayEndTimestamp)
-                        ->getSingleScalarResult();
+                    $dailyStationUnique = $this->listenerRepo->getUniqueListeners($station, $stationDayStart,
+                        $stationDayEnd);
 
                     $dailyUniqueListeners ??= 0;
                     $dailyUniqueListeners += $dailyStationUnique;
@@ -220,13 +206,11 @@ class Analytics extends AbstractTask
 
     protected function purgeAnalytics(): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a')
-            ->execute();
+        $this->analyticsRepo->clearAll();
     }
 
     protected function purgeListeners(): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Listener l')
-            ->execute();
+        $this->listenerRepo->clearAll();
     }
 }

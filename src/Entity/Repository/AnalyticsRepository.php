@@ -22,4 +22,20 @@ class AnalyticsRepository extends Repository
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
     }
+
+    public function clearAllAfterTime(
+        DateTimeInterface $threshold
+    ): void {
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a WHERE a.moment >= :threshold')
+            ->setParameter('threshold', $threshold)
+            ->execute();
+    }
+
+    public function clearAll(): void
+    {
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a')
+            ->execute();
+    }
+
+
 }

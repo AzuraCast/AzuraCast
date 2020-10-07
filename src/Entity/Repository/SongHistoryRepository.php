@@ -6,6 +6,7 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Settings;
 use Carbon\CarbonInterface;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
@@ -225,5 +226,39 @@ class SongHistoryRepository extends Repository
             ->setParameter('station', $station)
             ->setMaxResults(1)
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param Entity\Station $station
+     * @param int|DateTimeInterface $start
+     * @param int|DateTimeInterface $end
+     *
+     * @return array [$minimumListeners, $maximumListeners, $averageListeners]
+     */
+    public function getStatsByTimeRange(Entity\Station $station, $start, $end): array
+    {
+        if ($start instanceof DateTimeInterface) {
+            $start = $start->getTimestamp();
+        }
+        if ($end instanceof DateTimeInterface) {
+            $end = $end->getTimestamp();
+        }
+
+        $historyTotals = $this->em->createQuery(/** @lang DQL */ '
+            SELECT AVG(sh.listeners_end) AS listeners_avg, MAX(sh.listeners_end) AS listeners_max, MIN(sh.listeners_end) AS listeners_min
+            FROM App\Entity\SongHistory sh
+            WHERE sh.station = :station
+            AND sh.timestamp_end >= :start
+            AND sh.timestamp_start <= :end')
+            ->setParameter('station', $station)
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getSingleScalarResult();
+
+        $min = (int)$historyTotals['listeners_min'];
+        $max = (int)$historyTotals['listeners_max'];
+        $avg = round((float)$historyTotals['listeners_avg'], 2);
+
+        return [$min, $max, $avg];
     }
 }

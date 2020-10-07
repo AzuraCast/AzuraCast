@@ -3,6 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use DateTimeInterface;
 use NowPlaying\Result\Client;
 
 class ListenerRepository extends Repository
@@ -11,22 +12,29 @@ class ListenerRepository extends Repository
      * Get the number of unique listeners for a station during a specified time period.
      *
      * @param Entity\Station $station
-     * @param int $timestamp_start
-     * @param int $timestamp_end
+     * @param DateTimeInterface|int $start
+     * @param DateTimeInterface|int $end
      *
-     * @return mixed
+     * @return int
      */
-    public function getUniqueListeners(Entity\Station $station, $timestamp_start, $timestamp_end)
+    public function getUniqueListeners(Entity\Station $station, $start, $end): int
     {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        if ($start instanceof DateTimeInterface) {
+            $start = $start->getTimestamp();
+        }
+        if ($end instanceof DateTimeInterface) {
+            $end = $end->getTimestamp();
+        }
+
+        return (int)$this->em->createQuery(/** @lang DQL */ 'SELECT 
             COUNT(DISTINCT l.listener_hash)
             FROM App\Entity\Listener l
             WHERE l.station_id = :station_id
             AND l.timestamp_start <= :time_end
             AND l.timestamp_end >= :time_start')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('time_end', $timestamp_end)
-            ->setParameter('time_start', $timestamp_start)
+            ->setParameter('time_end', $end)
+            ->setParameter('time_start', $start)
             ->getSingleScalarResult();
     }
 
@@ -77,5 +85,11 @@ class ListenerRepository extends Repository
                 ->setParameter('ids', array_values($existingClients))
                 ->execute();
         }
+    }
+
+    public function clearAll(): void
+    {
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Listener l')
+            ->execute();
     }
 }

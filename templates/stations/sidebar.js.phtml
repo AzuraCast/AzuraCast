@@ -17,13 +17,13 @@ $(function () {
         var btn_original_text = btn.html();
         var trigger_reload = !btn.hasClass('no-reload');
 
-        confirmDangerousAction(e.target).then(function (value) {
-            if (value) {
+        confirmDangerousAction(e.target).then(function (result) {
+            if (result.value) {
                 btn.text(<?=$this->escapeJs(__('Please wait...')) ?>);
                 btn.addClass('disabled');
 
                 $.ajax({
-                    type: "POST",
+                    type: 'POST',
                     url: btn.attr('href'),
                     success: function (data) {
                         // Only restart if the user isn't on a form page
@@ -42,7 +42,7 @@ $(function () {
 
                         btn.removeClass('disabled').html(btn_original_text);
                     },
-                    dataType: "json"
+                    dataType: 'json'
                 });
             }
         });

@@ -34,8 +34,8 @@ $(function () {
     e.preventDefault();
 
     const linkUrl = $(this).attr('href');
-    confirmDangerousAction(e.target).then((value) => {
-      if (value) {
+    confirmDangerousAction(e.target).then((result) => {
+      if (result.value) {
         window.location.href = linkUrl;
       }
     });

@@ -56,8 +56,8 @@ class OverviewController
         $daily_chart->fill = false;
 
         $daily_alt = [
-            '<p>' . $daily_chart->label . ' </p>',
-            '<dl> ',
+            '<p>' . $daily_chart->label . '</p>',
+            '<dl>',
         ];
         $daily_averages = [];
 

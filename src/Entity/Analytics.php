@@ -87,7 +87,7 @@ class Analytics
 
     public function __construct(
         DateTimeInterface $moment,
-        Station $station = null,
+        ?Station $station = null,
         $type = self::INTERVAL_DAILY,
         int $number_min = 0,
         int $number_max = 0,

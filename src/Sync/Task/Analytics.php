@@ -87,13 +87,12 @@ class Analytics extends AbstractTask
 
                     [$min, $max, $avg] = $this->historyRepo->getStatsByTimeRange($station, $start, $end);
 
+                    $unique = null;
                     if ($withListeners) {
                         $unique = $this->listenerRepo->getUniqueListeners($station, $start, $end);
 
                         $hourlyUniqueListeners ??= 0;
                         $hourlyUniqueListeners += $unique;
-                    } else {
-                        $unique = null;
                     }
 
                     $hourlyRow = new Entity\Analytics(
@@ -157,14 +156,13 @@ class Analytics extends AbstractTask
                 $dailyMin = min($dailyMin, $dailyStationMin);
                 $dailyMax = max($dailyMax, $dailyStationMax);
 
+                $dailyStationUnique = null;
                 if ($withListeners) {
                     $dailyStationUnique = $this->listenerRepo->getUniqueListeners($station, $stationDayStart,
                         $stationDayEnd);
 
                     $dailyUniqueListeners ??= 0;
                     $dailyUniqueListeners += $dailyStationUnique;
-                } else {
-                    $dailyStationUnique = null;
                 }
 
                 $dailyStationAverage = round(array_sum($dailyStationAverages) / count($dailyStationAverages), 2);

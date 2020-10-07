@@ -1,0 +1,13 @@
+---
+- name: Shut Down InfluxDB
+  service:
+    name: "influxdb"
+    state: stopped
+  ignore_errors: True
+
+- name: Remove InfluxDB if Present
+  apt:
+    name: "influxdb"
+    state: absent
+    force: yes
+    purge: yes

@@ -59,8 +59,8 @@ class UptimeWait
 
         $_ENV = getenv();
 
-        $applicationEnv = $_ENV['APPLICATION_ENV'] ?? 'production';
-        $this->debugMode = ('production' !== $applicationEnv);
+        $applicationEnv = $_ENV['LOG_LEVEL'] ?? 'notice';
+        $this->debugMode = ('debug' === $applicationEnv);
     }
 
     public function run(): void

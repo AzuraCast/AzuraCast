@@ -272,12 +272,11 @@ install() {
     if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."
 
-        .env --file azuracast.env get PREFER_RELEASE_BUILDS
+        .env --file .env get AZURACAST_VERSION
+        local AZURACAST_VERSION
+        AZURACAST_VERSION="${reply:-latest}"
 
-        local PREFER_RELEASE_BUILDS
-        PREFER_RELEASE_BUILDS="${REPLY:-false}"
-
-        if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
+        if [[ $AZURACAST_VERSION == "stable" ]]; then
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.yml
         else
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
@@ -346,13 +345,20 @@ update() {
 
         if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
             .env --file .env set AZURACAST_VERSION=stable
+        fi
 
+        .env --file azuracast.env set PREFER_RELEASE_BUILDS
+
+        # Check for new Docker Compose file
+        .env --file .env get AZURACAST_VERSION
+        local AZURACAST_VERSION
+        AZURACAST_VERSION="${reply:-latest}"
+
+        if [[ $AZURACAST_VERSION == "stable" ]]; then
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.new.yml
         else
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
         fi
-
-        .env --file azuracast.env set PREFER_RELEASE_BUILDS
 
         # Check for updated Docker Compose config.
         local COMPOSE_FILES_MATCH

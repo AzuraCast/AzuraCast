@@ -330,12 +330,6 @@ class Queue implements EventSubscriberInterface
 
                 if (empty($media_queue_cached)) {
                     $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
-                } else {
-                    // Rekey the media queue because redis won't always properly store keys.
-                    $mediaQueue = [];
-                    foreach ($media_queue_cached as $media) {
-                        $mediaQueue[$media['id']] = $media;
-                    }
                 }
 
                 if ($playlist->getAvoidDuplicates()) {

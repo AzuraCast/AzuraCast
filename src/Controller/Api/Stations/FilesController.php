@@ -268,6 +268,8 @@ class FilesController extends AbstractStationApiCrudController
 
                 // Remove existing playlists.
                 $media_playlists = $this->playlist_media_repo->clearPlaylistsFromMedia($record);
+                $this->em->flush();
+
                 foreach ($media_playlists as $playlist_id => $playlist) {
                     if (!isset($affected_playlists[$playlist_id])) {
                         $affected_playlists[$playlist_id] = $playlist;

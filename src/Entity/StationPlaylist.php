@@ -477,12 +477,58 @@ class StationPlaylist
 
     public function getQueue(): ?array
     {
-        return $this->queue;
+        if (null === $this->queue) {
+            return null;
+        }
+
+        // Ensure queue is always formatted correctly.
+        $newQueue = [];
+        foreach ($this->queue as $media) {
+            $newQueue[$media['id']] = $media;
+        }
+        return $newQueue;
     }
 
     public function setQueue(?array $queue): void
     {
         $this->queue = $queue;
+    }
+
+    public function removeFromQueue(StationMedia $media): void
+    {
+        $queue = $this->getQueue();
+
+        if (null !== $queue) {
+            unset($queue[$media->getId()]);
+            $this->queue = $queue;
+        }
+    }
+
+    public function addToQueue(StationMedia $media): void
+    {
+        $queue = $this->getQueue();
+        if (null === $queue) {
+            return;
+        }
+
+        $queue[$media->getId()] = [
+            'id' => $media->getId(),
+            'song_id' => $media->getSongId(),
+            'artist' => $media->getArtist(),
+            'title' => $media->getTitle(),
+        ];
+
+        if (self::ORDER_SEQUENTIAL !== $this->getOrder()) {
+            shuffle($queue);
+
+            $newQueue = [];
+            foreach ($queue as $row) {
+                $newQueue[$row['id']] = $row;
+            }
+            $queue = $newQueue;
+        }
+
+        $this->setQueue($queue);
     }
 
     /**
@@ -563,7 +609,6 @@ class StationPlaylist
         return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backend_options, true);
     }
 
-
     public function getPlayPerHourMinute(): int
     {
         return $this->play_per_hour_minute;
@@ -577,7 +622,6 @@ class StationPlaylist
 
         $this->play_per_hour_minute = $play_per_hour_minute;
     }
-
 
     public function getPlayPerSongs(): int
     {
@@ -594,8 +638,9 @@ class StationPlaylist
         return $this->play_per_minutes;
     }
 
-    public function setPlayPerMinutes(int $play_per_minutes): void
-    {
+    public function setPlayPerMinutes(
+        int $play_per_minutes
+    ): void {
         $this->play_per_minutes = $play_per_minutes;
     }
 
@@ -608,8 +653,11 @@ class StationPlaylist
      *
      * @return string
      */
-    public function export($file_format = 'pls', $absolute_paths = false, $with_annotations = false): string
-    {
+    public function export(
+        $file_format = 'pls',
+        $absolute_paths = false,
+        $with_annotations = false
+    ): string {
         $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir() . '/' : '';
 
         switch ($file_format) {

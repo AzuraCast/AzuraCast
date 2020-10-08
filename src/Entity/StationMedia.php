@@ -509,6 +509,9 @@ class StationMedia implements SongInterface
         return false;
     }
 
+    /**
+     * @return StationPLaylistMedia[]|Collection
+     */
     public function getPlaylists(): Collection
     {
         return $this->playlists;

@@ -53,7 +53,7 @@ class StationPlaylistMediaRepository extends Repository
         }
 
         // Add the newly added song into the cached queue.
-        $playlist->setQueue(null);
+        $playlist->addToQueue($media);
         $this->em->persist($playlist);
 
         return $weight;
@@ -84,34 +84,20 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function clearPlaylistsFromMedia(Entity\StationMedia $media): array
     {
-        $affected_playlists = [];
-        $playlists = $this->em->createQuery(/** @lang DQL */ 'SELECT e, p 
-            FROM App\Entity\StationPlaylistMedia e JOIN e.playlist p 
-            WHERE e.media_id = :media_id')
-            ->setParameter('media_id', $media->getId())
-            ->execute();
+        $affectedPlaylists = [];
 
-        foreach ($playlists as $row) {
-            /** @var Entity\StationPlaylistMedia $row */
-            $playlist = $row->getPlaylist();
-            $affected_playlists[$playlist->getId()] = $playlist->getId();
+        foreach ($media->getPlaylists() as $spmRow) {
+            $playlist = $spmRow->getPlaylist();
+
+            $playlist->removeFromQueue($media);
+            $this->em->persist($playlist);
+
+            $affectedPlaylists[$playlist->getId()] = $playlist;
+
+            $this->em->remove($spmRow);
         }
 
-        // Clear the playback queue.
-        if (!empty($affected_playlists)) {
-            $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\StationPlaylist sp
-            SET sp.queue=null WHERE sp.id IN (:ids)')
-                ->setParameter('ids', array_keys($affected_playlists))
-                ->execute();
-        }
-
-        $this->em->createQuery(/** @lang DQL */ 'DELETE 
-            FROM App\Entity\StationPlaylistMedia e
-            WHERE e.media_id = :media_id')
-            ->setParameter('media_id', $media->getId())
-            ->execute();
-
-        return $affected_playlists;
+        return $affectedPlaylists;
     }
 
     /**
@@ -140,7 +126,7 @@ class StationPlaylistMediaRepository extends Repository
         }
 
         // Clear the playback queue.
-        $playlist->setQueue(null);
+        $playlist->setQueue($this->getPlayableMedia($playlist));
         $this->em->persist($playlist);
         $this->em->flush();
     }

@@ -65,25 +65,13 @@ class BatchAction
                         $media = $mediaRepo->findByPath($file['path'], $station);
 
                         if ($media instanceof Entity\StationMedia) {
-                            // Remove album art and waveforms
-                            foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
-                                if ($fs->has($relatedFilePath)) {
-                                    $fs->delete($relatedFilePath);
-                                }
-                            }
+                            $mediaPlaylists = $mediaRepo->remove($media);
 
-                            // Clear playlists from media
-                            $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
-
-                            foreach ($media_playlists as $playlist_id => $playlist) {
+                            foreach ($mediaPlaylists as $playlist_id => $playlist) {
                                 if (!isset($affected_playlists[$playlist_id])) {
                                     $affected_playlists[$playlist_id] = $playlist;
                                 }
                             }
-
-                            $em->flush();
-                            $em->remove($media);
-                            $em->flush();
                         }
                     } catch (Exception $e) {
                         $errors[] = $file . ': ' . $e->getMessage();
@@ -91,8 +79,6 @@ class BatchAction
 
                     $files_affected++;
                 }
-
-                $em->flush();
 
                 // Delete all selected files.
                 foreach ($files as $file) {

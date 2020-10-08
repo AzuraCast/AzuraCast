@@ -18,8 +18,6 @@ class Media extends AbstractTask
 {
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
-    protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
-
     protected Filesystem $filesystem;
 
     protected MessageBus $messageBus;
@@ -31,7 +29,6 @@ class Media extends AbstractTask
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Filesystem $filesystem,
         MessageBus $messageBus,
         QueueManager $queueManager
@@ -39,7 +36,6 @@ class Media extends AbstractTask
         parent::__construct($em, $settingsRepo, $logger);
 
         $this->mediaRepo = $mediaRepo;
-        $this->spmRepo = $spmRepo;
         $this->filesystem = $filesystem;
         $this->messageBus = $messageBus;
         $this->queueManager = $queueManager;
@@ -161,18 +157,7 @@ class Media extends AbstractTask
 
                 unset($music_files[$path_hash]);
             } else {
-                // Remove album art, waveforms, etc.
-                foreach ($media_row->getRelatedFilePaths() as $filePath) {
-                    if ($fs->has($filePath)) {
-                        $fs->delete($filePath);
-                    }
-                }
-
-                // Clear the media row from playlists.
-                $this->spmRepo->clearPlaylistsFromMedia($media_row);
-
-                // Delete the now-nonexistent media item.
-                $this->em->remove($media_row);
+                $this->mediaRepo->remove($media_row);
 
                 $stats['deleted']++;
             }

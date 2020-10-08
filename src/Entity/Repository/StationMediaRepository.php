@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use getid3_exception;
 use InvalidArgumentException;
-use NowPlaying\Result\CurrentSong;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use voku\helper\UTF8;
@@ -27,16 +26,20 @@ class StationMediaRepository extends Repository
 
     protected CustomFieldRepository $customFieldRepo;
 
+    protected StationPlaylistMediaRepository $spmRepo;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
         LoggerInterface $logger,
         Filesystem $filesystem,
-        CustomFieldRepository $customFieldRepo
+        CustomFieldRepository $customFieldRepo,
+        StationPlaylistMediaRepository $spmRepo
     ) {
         $this->filesystem = $filesystem;
         $this->customFieldRepo = $customFieldRepo;
+        $this->spmRepo = $spmRepo;
 
         parent::__construct($em, $serializer, $settings, $logger);
     }
@@ -444,5 +447,29 @@ class StationMediaRepository extends Repository
         $uri = $media->getPathUri();
 
         return $fs->getFullPath($uri);
+    }
+
+    /**
+     * @param Entity\StationMedia $media
+     *
+     * @return array A list of affected playlists (the same as StationPlaylistMediaRepository->clearPlaylistsFromMedia)
+     */
+    public function remove(Entity\StationMedia $media): array
+    {
+        $fs = $this->filesystem->getForStation($media->getStation());
+
+        // Clear related media.
+        foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
+            if ($fs->has($relatedFilePath)) {
+                $fs->delete($relatedFilePath);
+            }
+        }
+
+        $affectedPlaylists = $this->spmRepo->clearPlaylistsFromMedia($media);
+
+        $this->em->remove($media);
+        $this->em->flush();
+
+        return $affectedPlaylists;
     }
 }

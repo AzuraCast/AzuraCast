@@ -271,7 +271,15 @@ install() {
 
     if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
+
+        local PREFER_RELEASE_BUILDS
+        PREFER_RELEASE_BUILDS="${REPLY:-false}"
+
+        if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.yml
+        else
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
+        fi
     fi
 
     setup-release

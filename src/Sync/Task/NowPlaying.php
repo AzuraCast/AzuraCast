@@ -224,7 +224,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
                 if ($np_old instanceof Entity\Api\NowPlaying &&
                     0 === strcmp($current_song_hash, $np_old->now_playing->song->id)) {
-                    $previousHistory = $this->history_repo->getCurrent($station);
+                    $previousHistory = $this->history_repo->getCurrent($station)
+                        ?? Entity\Song::createFromApiSong($np_old->now_playing->song);
 
                     $sh_obj = $this->history_repo->register($previousHistory, $station, $np);
 

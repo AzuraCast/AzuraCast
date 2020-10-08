@@ -337,7 +337,7 @@ update() {
         if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
             .env --file .env set AZURACAST_VERSION=stable
 
-            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.stable.yml -o docker-compose.new.yml
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.new.yml
         else
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
         fi

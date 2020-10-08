@@ -510,7 +510,7 @@ class StationMedia implements SongInterface
     }
 
     /**
-     * @return StationPLaylistMedia[]|Collection
+     * @return StationPlaylistMedia[]|Collection
      */
     public function getPlaylists(): Collection
     {

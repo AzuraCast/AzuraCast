@@ -326,9 +326,8 @@ class Queue implements EventSubscriberInterface
 
             case Entity\StationPlaylist::ORDER_SHUFFLE:
             default:
-                $media_queue_cached = $playlist->getQueue();
-
-                if (empty($media_queue_cached)) {
+                $mediaQueue = $playlist->getQueue();
+                if (empty($mediaQueue)) {
                     $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
                 }
 

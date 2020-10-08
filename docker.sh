@@ -272,6 +272,8 @@ install() {
     if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."
 
+        .env --file azuracast.env get PREFER_RELEASE_BUILDS
+
         local PREFER_RELEASE_BUILDS
         PREFER_RELEASE_BUILDS="${REPLY:-false}"
 

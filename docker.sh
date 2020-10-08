@@ -274,7 +274,7 @@ install() {
 
         .env --file .env get AZURACAST_VERSION
         local AZURACAST_VERSION
-        AZURACAST_VERSION="${reply:-latest}"
+        AZURACAST_VERSION="${REPLY:-latest}"
 
         if [[ $AZURACAST_VERSION == "stable" ]]; then
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.yml
@@ -352,7 +352,7 @@ update() {
         # Check for new Docker Compose file
         .env --file .env get AZURACAST_VERSION
         local AZURACAST_VERSION
-        AZURACAST_VERSION="${reply:-latest}"
+        AZURACAST_VERSION="${REPLY:-latest}"
 
         if [[ $AZURACAST_VERSION == "stable" ]]; then
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.new.yml

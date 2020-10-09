@@ -48,21 +48,32 @@ $assets
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="modal-history-label"><?= __('Song History') ?></h4>
+                <h4 class="modal-title" id="modal-history-label"><?=__('Song History')?></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <ol type="1" id="station-history">
-                    <li v-for="row in history">
-                        <b>{{ row.song.title }}</b><br>
-                        {{ row.song.artist }}
-                    </li>
-                </ol>
+                <div id="station-history">
+                    <div style="  display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; line-height: normal; margin-bottom: 5px" v-for="(row, index) in history">
+                        <div style="display: flex; flex-direction: column; flex: 1; justify-content: center; align-items: center; margin: 0; padding: 0">
+                            <h4>{{ index + 1 }}</h4>
+                        </div>
+                        <div style="  display: flex; flex-direction: column; flex: 2.5; align-items:center; margin: 0; padding: 0">
+                            <img v-bind:src=row.song.art style="width: 40px; border-radius: 4px;">
+                        </div>
+                        <div style="display: flex; flex-direction: column;flex: 15; justify-content: center; margin: 0; padding: 0">
+                            <strong>{{ row.song.title }}</strong>
+                            <small>{{ row.song.artist }}</small>
+                            <small>{{ row }}</small>
+                        </div>
+                        <div style="  display: flex; flex-direction: column; flex: 1; justify-content: center;  margin: 0; padding: 0">
+                            asd
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <div class="modal fade" id="modal-request" tabindex="-1" role="dialog" aria-labelledby="modal-request-label">
     <div class="modal-dialog modal-lg" role="document">

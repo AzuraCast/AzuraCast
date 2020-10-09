@@ -18,6 +18,30 @@ foreach ($backends as $adapter_nickname => $adapter_info) {
     $backend_types[$adapter_nickname] = $adapter_info['name'];
 }
 
+$tzSelect = [
+    'UTC' => [
+        'UTC' => 'UTC',
+    ],
+];
+
+foreach (DateTimeZone::listIdentifiers((DateTimeZone::ALL ^ DateTimeZone::ANTARCTICA ^ DateTimeZone::UTC)) as $tzIdentifier) {
+    $tz = new DateTimeZone($tzIdentifier);
+    $tzRegion = substr($tzIdentifier, 0, strpos($tzIdentifier, '/')) ?: $tzIdentifier;
+    $tzSubregion = str_replace([$tzRegion . '/', '_'], ['', ' '], $tzIdentifier) ?: $tzRegion;
+
+    $offset = $tz->getOffset(new DateTime);
+
+    $offsetPrefix = $offset < 0 ? '-' : '+';
+    $offsetFormatted = gmdate(($offset % 60 === 0) ? 'G' : 'G:i', abs($offset));
+
+    $prettyOffset = ($offset === 0) ? 'UTC' : 'UTC' . $offsetPrefix . $offsetFormatted;
+    if ($tzSubregion !== $tzRegion) {
+        $tzSubregion .= ' (' . $prettyOffset . ')';
+    }
+
+    $tzSelect[$tzRegion][$tzIdentifier] = $tzSubregion;
+}
+
 return [
     'method' => 'post',
     'enctype' => 'multipart/form-data',
@@ -74,8 +98,8 @@ return [
                     [
                         'label' => __('Time Zone'),
                         'description' => __('Scheduled playlists and other timed items will be controlled by this time zone.'),
-                        'options' => App\Timezone::fetchSelect(),
-                        'default' => App\Customization::DEFAULT_TIMEZONE,
+                        'options' => $tzSelect,
+                        'default' => 'UTC',
                         'form_group_class' => 'col-sm-12',
                     ],
                 ],

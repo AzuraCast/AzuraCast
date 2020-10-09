@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity\Api;
 
-use DateTime;
+use Carbon\CarbonImmutable;
 use OpenApi\Annotations as OA;
 
 /**
@@ -21,82 +21,34 @@ class Time
      * @OA\Property(example="2017-06-16 10:33:17")
      * @var string
      */
-    public string $gmt_datetime;
+    public string $utc_datetime;
 
     /**
      * @OA\Property(example="June 16, 2017")
      * @var string
      */
-    public string $gmt_date;
+    public string $utc_date;
 
     /**
      * @OA\Property(example="10:33pm")
      * @var string
      */
-    public string $gmt_time;
+    public string $utc_time;
 
     /**
-     * @OA\Property(example="GMT")
+     * @OA\Property(example="2012-12-25T16:30:00.000000Z")
      * @var string
      */
-    public string $gmt_timezone;
+    public string $utc_json;
 
-    /**
-     * @OA\Property(example="GMT")
-     * @var string
-     */
-    public string $gmt_timezone_abbr;
-
-    /**
-     * @OA\Property(example="2017-06-16 10:33:17")
-     * @var string
-     */
-    public string $local_datetime;
-
-    /**
-     * @OA\Property(example="June 16, 2017")
-     * @var string
-     */
-    public string $local_date;
-
-    /**
-     * @OA\Property(example="10:33pm")
-     * @var string
-     */
-    public string $local_time;
-
-    /**
-     * @OA\Property(example="UTC")
-     * @var string
-     */
-    public $local_timezone;
-
-    /**
-     * @OA\Property(example="UTC")
-     * @var string
-     */
-    public $local_timezone_abbr;
-
-    public function __construct($tz_info)
+    public function __construct()
     {
-        /** @var DateTime $now_utc */
-        $now_utc = $tz_info['now_utc'];
+        $now = CarbonImmutable::now('UTC');
 
-        /** @var DateTime $now */
-        $now = $tz_info['now'];
-
-        $this->timestamp = time();
-
-        $this->gmt_datetime = $now_utc->format('Y-m-d g:i:s');
-        $this->gmt_date = $now_utc->format('F j, Y');
-        $this->gmt_time = $now_utc->format('g:ia');
-        $this->gmt_timezone = 'GMT';
-        $this->gmt_timezone_abbr = 'GMT';
-
-        $this->local_datetime = $now->format('Y-m-d g:i:s');
-        $this->local_date = $now->format('F j, Y');
-        $this->local_time = $now->format('g:ia');
-        $this->local_timezone = $tz_info['code'];
-        $this->local_timezone_abbr = $tz_info['abbr'];
+        $this->timestamp = $now->getTimestamp();
+        $this->utc_datetime = $now->format('Y-m-d g:i:s');
+        $this->utc_date = $now->format('F j, Y');
+        $this->utc_time = $now->format('g:ia');
+        $this->utc_json = $now->toJSON() ?? '';
     }
 }

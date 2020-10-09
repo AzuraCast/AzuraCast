@@ -2,7 +2,6 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Customization;
 use App\File;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
@@ -1038,7 +1037,7 @@ class Station
             return $this->timezone;
         }
 
-        return Customization::DEFAULT_TIMEZONE;
+        return 'UTC';
     }
 
     public function getTimezoneObject(): DateTimeZone

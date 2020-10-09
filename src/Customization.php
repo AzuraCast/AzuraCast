@@ -11,7 +11,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class Customization
 {
-    public const DEFAULT_TIMEZONE = 'UTC';
     public const DEFAULT_LOCALE = 'en_US.UTF-8';
     public const DEFAULT_THEME = 'light';
 

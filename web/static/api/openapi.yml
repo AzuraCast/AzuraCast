@@ -1966,7 +1966,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1601642062
+          example: 1602264526
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2074,7 +2074,7 @@ components:
             cued_at:
               description: 'UNIX timestamp when the item was cued for playback.'
               type: integer
-              example: 1601642062
+              example: 1602264526
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -2129,7 +2129,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1601642062
+          example: 1602264526
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2227,7 +2227,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1601642062
+          example: 1602264526
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2302,7 +2302,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1601642062
+          example: 1602264526
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2310,7 +2310,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1601642062
+          example: 1602264526
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2350,7 +2350,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1601642062
+          example: 1602264526
       type: object
     Api_Time:
       properties:
@@ -2358,36 +2358,18 @@ components:
           description: 'The current UNIX timestamp'
           type: integer
           example: 1497652397
-        gmt_datetime:
+        utc_datetime:
           type: string
           example: '2017-06-16 10:33:17'
-        gmt_date:
+        utc_date:
           type: string
           example: 'June 16, 2017'
-        gmt_time:
+        utc_time:
           type: string
           example: '10:33pm'
-        gmt_timezone:
+        utc_json:
           type: string
-          example: GMT
-        gmt_timezone_abbr:
-          type: string
-          example: GMT
-        local_datetime:
-          type: string
-          example: '2017-06-16 10:33:17'
-        local_date:
-          type: string
-          example: 'June 16, 2017'
-        local_time:
-          type: string
-          example: '10:33pm'
-        local_timezone:
-          type: string
-          example: UTC
-        local_timezone_abbr:
-          type: string
-          example: UTC
+          example: '2012-12-25T16:30:00.000000Z'
       type: object
     Api_UploadFile:
       properties:
@@ -2430,10 +2412,10 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1601642062
+          example: 1602264526
         updated_at:
           type: integer
-          example: 1601642062
+          example: 1602264526
       type: object
     Role:
       properties:
@@ -2578,20 +2560,6 @@ components:
         id:
           type: integer
           example: 1
-        song_id:
-          type: string
-          example: 098F6BCD4621D373CADE4E832627B4F6
-          nullable: true
-        title:
-          description: 'The name of the media file''s title.'
-          type: string
-          example: 'Test Song'
-          nullable: true
-        artist:
-          description: 'The name of the media file''s artist.'
-          type: string
-          example: 'Test Artist'
-          nullable: true
         album:
           description: 'The name of the media file''s album.'
           type: string
@@ -2625,7 +2593,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1601642062
+          example: 1602264526
           nullable: true
         amplify:
           description: 'The amount of amplification (in dB) to be applied to the radio source;'
@@ -2666,7 +2634,7 @@ components:
         art_updated_at:
           description: 'The latest time (UNIX timestamp) when album art was updated.'
           type: integer
-          example: 1601642062
+          example: 1602264526
         playlists:
           items: {  }
       type: object
@@ -2912,7 +2880,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1601642062
+          example: 1602264526
           nullable: true
         schedule_items:
           items: {  }
@@ -2992,10 +2960,10 @@ components:
           nullable: true
         created_at:
           type: integer
-          example: 1601642062
+          example: 1602264526
         updated_at:
           type: integer
-          example: 1601642062
+          example: 1602264526
         roles:
           items: {  }
       type: object

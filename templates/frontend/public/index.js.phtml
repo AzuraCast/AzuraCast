@@ -7,16 +7,37 @@ $(function () {
         {
           song: {
             title: '<?=__('Song Title') ?>',
-            artist: '<?=__('Song Artist') ?>'
+            artist: '<?=__('Song Artist') ?>',
+            album: '<?=__('Album') ?>',
+            played_at: '<?=__('Date Played') ?>'
           }
         }
       ]
     },
     mounted: function () {
       radio_player.$eventHub.$on('np_updated', function (np_new) {
+          console.log(np_new.song_history);
         songHistory.history = np_new.song_history;
       });
-    }
+    },
+      methods: {
+          unixTimestampToDate(timestamp) {
+              if(!timestamp) {
+                  return '';
+              }
+              const date = moment.unix(timestamp);
+              if(moment().diff(date, 'days', true) > 0.5) {
+                  return date.calendar();
+              }
+              return date.fromNow();
+          },
+          albumAndArtist(song) {
+              if(!song) {
+                  return [this.$data.history[0].song.album, this.$data.history[0].song.article].join(', ');
+              }
+              return [song.album, song.artist].filter(str => !!str).join(', ');
+          }
+      }
   });
 
   $('[data-fancybox]').fancybox({

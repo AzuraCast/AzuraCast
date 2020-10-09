@@ -11,6 +11,7 @@ $assets
     ->load('vue')
     ->load('bootgrid')
     ->load('fancybox')
+    ->load('moment')
     ->addInlineJs($this->fetch('frontend/public/index.js', ['station' => $station]));
 ?>
 
@@ -54,20 +55,19 @@ $assets
             </div>
             <div class="modal-body">
                 <div id="station-history">
-                    <div style="  display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; line-height: normal; margin-bottom: 5px" v-for="(row, index) in history">
-                        <div style="display: flex; flex-direction: column; flex: 1; justify-content: center; align-items: center; margin: 0; padding: 0">
-                            <h4>{{ index + 1 }}</h4>
+                    <div style="  display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; line-height: normal; margin-bottom: 15px" v-for="(row, index) in history">
+                        <div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; line-height: normal; ">
+                            <strong style="display: flex; flex-direction: column; width: 26px; justify-content: center; margin-right: 4px;">
+                                {{ history.length - index }}
+                            </strong>
+                            <img v-bind:src=row.song.art style="width: 40px; height: 40px; border-radius: 4px; margin-right: .5rem;">
+                            <div style="display: flex; flex-direction: column; justify-content: center">
+                                <strong>{{ row.song.title }}</strong>
+                                <span v-html="albumAndArtist(row.song)"></span>
+                            </div>
                         </div>
-                        <div style="  display: flex; flex-direction: column; flex: 2.5; align-items:center; margin: 0; padding: 0">
-                            <img v-bind:src=row.song.art style="width: 40px; border-radius: 4px;">
-                        </div>
-                        <div style="display: flex; flex-direction: column;flex: 15; justify-content: center; margin: 0; padding: 0">
-                            <strong>{{ row.song.title }}</strong>
-                            <small>{{ row.song.artist }}</small>
-                            <small>{{ row }}</small>
-                        </div>
-                        <div style="  display: flex; flex-direction: column; flex: 1; justify-content: center;  margin: 0; padding: 0">
-                            asd
+                        <div style="display: flex; justify-content: center; text-align: left; margin: 4px 0 0 30px; padding: 0">
+                            <small class="text-muted"><span v-html="unixTimestampToDate(row.played_at)">{{ row.song.played_at }}</span></small>
                         </div>
                     </div>
                 </div>

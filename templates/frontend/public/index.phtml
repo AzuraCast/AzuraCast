@@ -45,64 +45,6 @@ $assets
     </div>
 </div>
 
-<style lang="scss">
-    #station-history .song {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        width: 100%;
-        line-height: normal;
-        margin-bottom: 15px;
-    }
-
-    #station-history .song:last-child {
-        margin-bottom: 0;
-    }
-
-    #station-history .song .order {
-        display: flex;
-        flex-direction: column;
-        width: 35px;
-        justify-content: center;
-        margin-right: 5px;
-        text-align: center;
-    }
-
-    #station-history .song .art {
-        width: 40px;
-        height: 40px;
-        border-radius: 4px;
-        margin-right: 5px;
-    }
-
-    #station-history .song .name {
-        display: flex;
-        flex-direction: column;
-        justify-content: center
-    }
-
-    #station-history .song .date-played {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 4px 0 0 40px;
-    }
-
-    #station-history .song .break {
-        flex-basis: 100%;
-        height: 0;
-    }
-
-    @media (min-width:576px) {
-        #station-history .song .date-played {
-            margin-left: auto;
-        }
-        #station-history .song .break {
-            display: none;
-        }
-    }
-</style>
-
 <div class="modal fade" id="modal-history" tabindex="-1" role="dialog" aria-labelledby="modal-history-label">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

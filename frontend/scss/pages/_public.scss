@@ -80,6 +80,10 @@ body.page-minimal {
       line-height: normal;
       margin-bottom: 15px;
 
+      &:last-child {
+        margin-bottom: 0;
+      }
+
       .order {
         display: flex;
         flex-direction: column;
@@ -98,8 +102,9 @@ body.page-minimal {
 
       .name {
         display: flex;
+        flex: 1;
         flex-direction: column;
-        justify-content: center
+        justify-content: center;
       }
 
       .date-played {
@@ -122,9 +127,6 @@ body.page-minimal {
           display: none;
         }
       }
-    }
-    .song:last-child {
-      margin-bottom: 0;
     }
   }
 }

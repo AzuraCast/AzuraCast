@@ -19,6 +19,11 @@ $(function () {
         songHistory.history = np_new.song_history;
       });
     },
+    computed: {
+      langNoRecords () {
+        return this.$gettext('No records to display.');
+      }
+    },
     methods: {
       unixTimestampToDate(timestamp) {
         if (!timestamp) {
@@ -31,9 +36,6 @@ $(function () {
         return date.fromNow();
       },
       albumAndArtist(song) {
-        if (!song) {
-          return [this.$data.history[0].song.album, this.$data.history[0].song.article].join(', ');
-        }
         return [song.album, song.artist].filter(str => !!str).join(', ');
       }
     }

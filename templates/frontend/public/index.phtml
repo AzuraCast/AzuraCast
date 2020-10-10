@@ -55,6 +55,7 @@ $assets
             </div>
             <div class="modal-body">
                 <div id="station-history">
+                    <p v-if="history.length <= 0">{{ langNoRecords }}</p>
                     <div class="song" v-for="(row, index) in history">
                         <strong class="order">{{ history.length - index }}</strong>
                         <img class="art" v-bind:src=row.song.art>

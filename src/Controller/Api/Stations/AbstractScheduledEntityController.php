@@ -54,7 +54,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
             $i = $startDate;
 
             while ($i <= $endDate) {
-                $dayOfWeek = (int)$i->format('N');
+                $dayOfWeek = $i->dayOfWeekIso;
 
                 if ($this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
                     && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)) {

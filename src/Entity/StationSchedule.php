@@ -84,7 +84,7 @@ class StationSchedule
      *
      * @OA\Property(example="0,1,2,3")
      *
-     * @var string
+     * @var string Array of ISO-8601 days (1 for Monday, 7 for Sunday)
      */
     protected $days;
 

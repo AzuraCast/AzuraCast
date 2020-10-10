@@ -235,7 +235,7 @@ class Scheduler
             'startTime' => $startTime,
             'endTime' => $endTime,
         ]);
-        
+
         if (!$this->shouldSchedulePlayOnCurrentDate($schedule, $now)) {
             $this->logger->debug('Schedule is not scheduled to play today.');
             return false;
@@ -257,15 +257,14 @@ class Scheduler
         }
 
         foreach ($comparePeriods as [$start, $end]) {
-            
             /** @var CarbonInterface $start */
             /** @var CarbonInterface $end */
             if ($now->between($start, $end)) {
-                $dayToCheck = (int)$start->format('N');
+                $dayToCheck = $start->dayOfWeekIso;
 
                 if ($this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
                     if ($startTime->equalTo($endTime)) {
-                        if (!$this->wasPlaylistPlayedInLastXMinutes($schedule->getPlaylist(), $now, 30))  {
+                        if (!$this->wasPlaylistPlayedInLastXMinutes($schedule->getPlaylist(), $now, 30)) {
                             return true;
                         }
                     } else {
@@ -307,10 +306,10 @@ class Scheduler
     }
 
     /**
-     * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
+     * Given an ISO-8601 date, return if the playlist can be played on that day.
      *
      * @param Entity\StationSchedule $schedule
-     * @param int $dayToCheck
+     * @param int $dayToCheck ISO-8601 date (1 for Monday, 7 for Sunday)
      *
      * @return bool
      */

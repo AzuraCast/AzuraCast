@@ -15,8 +15,6 @@ class D00_Api_IndexCest extends CestAbstract
         ]);
 
         $I->sendGET('/api/time');
-        $I->seeResponseContainsJson([
-            'gmt_timezone' => 'GMT',
-        ]);
+        $I->seeResponseCodeIs(200);
     }
 }

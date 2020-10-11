@@ -252,7 +252,7 @@ class StationMedia implements SongInterface
 
     public function setGenre(?string $genre = null): void
     {
-        $this->genre = $this->truncateString($genre, 30);;
+        $this->genre = $this->truncateString($genre, 30);
     }
 
     public function getLyrics(): ?string

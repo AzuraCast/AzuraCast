@@ -33,11 +33,18 @@ trait HasSongFields
      */
     protected $title;
 
+    /**
+     * @ORM\Column(name="genre", type="string", length=30, nullable=true)
+     * @var string|null
+     */
+    protected $genre;
+
     public function setSong(SongInterface $song): void
     {
         $this->setText($song->getText());
         $this->setTitle($song->getTitle());
         $this->setArtist($song->getArtist());
+        $this->setGenre($song->getGenre());
         $this->updateSongId();
     }
 
@@ -79,5 +86,15 @@ trait HasSongFields
     public function setTitle(?string $title): void
     {
         $this->title = $this->truncateString($title, 150);
+    }
+
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?string $genre): void
+    {
+        $this->genre = $this->truncateString($genre, 150);
     }
 }

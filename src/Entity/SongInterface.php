@@ -18,4 +18,8 @@ interface SongInterface
     public function getTitle(): ?string;
 
     public function setTitle(?string $title): void;
+
+    public function getGenre(): ?string;
+
+    public function setGenre(?string $genre): void;
 }

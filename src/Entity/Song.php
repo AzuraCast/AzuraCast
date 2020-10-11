@@ -41,7 +41,6 @@ class Song implements SongInterface
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
-        $response->genre = (string)$this->genre;
         $response->art = $api_utils->getDefaultAlbumArtUrl($station, $base_url);
 
         $response->custom_fields = $api_utils->getCustomFields();
@@ -105,8 +104,7 @@ class Song implements SongInterface
         $currentSong = new CurrentSong(
             $songRow['text'] ?? null,
             $songRow['title'] ?? null,
-            $songRow['artist'] ?? null,
-            $songRow['genre'] ?? null
+            $songRow['artist'] ?? null
         );
         return self::createFromNowPlayingSong($currentSong);
     }

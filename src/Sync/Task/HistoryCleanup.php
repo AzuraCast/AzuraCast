@@ -2,35 +2,38 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use Carbon\CarbonImmutable;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class HistoryCleanup extends AbstractTask
 {
+    protected Entity\Repository\SongHistoryRepository $historyRepo;
+
+    protected Entity\Repository\ListenerRepository $listenerRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        LoggerInterface $logger,
+        Entity\Repository\SongHistoryRepository $historyRepo,
+        Entity\Repository\ListenerRepository $listenerRepo
+    ) {
+        parent::__construct($em, $settingsRepo, $logger);
+
+        $this->historyRepo = $historyRepo;
+        $this->listenerRepo = $listenerRepo;
+    }
+
     public function run(bool $force = false): void
     {
-        $days_to_keep = (int)$this->settingsRepo->getSetting(Entity\Settings::HISTORY_KEEP_DAYS,
-            Entity\SongHistory::DEFAULT_DAYS_TO_KEEP);
+        $daysToKeep = (int)$this->settingsRepo->getSetting(
+            Entity\Settings::HISTORY_KEEP_DAYS,
+            Entity\SongHistory::DEFAULT_DAYS_TO_KEEP
+        );
 
-        if ($days_to_keep !== 0) {
-            $threshold = (new CarbonImmutable())
-                ->subDays($days_to_keep)
-                ->getTimestamp();
-
-            // Clear Song History
-            $this->em->createQuery(/** @lang DQL */ 'DELETE 
-                FROM App\Entity\SongHistory sh 
-                WHERE sh.timestamp_start != 0 
-                AND sh.timestamp_start <= :threshold')
-                ->setParameter('threshold', $threshold)
-                ->execute();
-
-            // Clear Listeners
-            $this->em->createQuery(/** @lang DQL */ 'DELETE
-                FROM App\Entity\Listener l
-                WHERE l.timestamp_start <= :threshold
-                AND l.timestamp_end IS NOT NULL')
-                ->setParameter('threshold', $threshold)
-                ->execute();
+        if ($daysToKeep !== 0) {
+            $this->historyRepo->cleanup($daysToKeep);
+            $this->listenerRepo->cleanup($daysToKeep);
         }
     }
 }

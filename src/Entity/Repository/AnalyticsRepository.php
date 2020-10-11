@@ -3,6 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use Carbon\CarbonImmutable;
 use DateTimeInterface;
 
 class AnalyticsRepository extends Repository
@@ -34,6 +35,18 @@ class AnalyticsRepository extends Repository
     public function clearAll(): void
     {
         $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a')
+            ->execute();
+    }
+
+    public function cleanup(): void
+    {
+        $hourlyRetention = CarbonImmutable::now()
+            ->subDays(14);
+
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a
+            WHERE a.type = :type AND a.moment <= :threshold')
+            ->setParameter('type', Entity\Analytics::INTERVAL_HOURLY)
+            ->setParameter('threshold', $hourlyRetention)
             ->execute();
     }
 

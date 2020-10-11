@@ -65,6 +65,7 @@ class Analytics extends AbstractTask
         $now = CarbonImmutable::now('UTC');
         $day = $now->subDays(5)->setTime(0, 0);// Clear existing analytics in this segment
 
+        $this->analyticsRepo->cleanup();
         $this->analyticsRepo->clearAllAfterTime($day);
 
         while ($day < $now) {

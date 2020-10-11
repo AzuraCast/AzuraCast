@@ -3,6 +3,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use NowPlaying\Result\Client;
 
@@ -90,6 +91,20 @@ class ListenerRepository extends Repository
     public function clearAll(): void
     {
         $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Listener l')
+            ->execute();
+    }
+
+    public function cleanup(int $daysToKeep): void
+    {
+        $threshold = CarbonImmutable::now()
+            ->subDays($daysToKeep)
+            ->getTimestamp();
+
+        $this->em->createQuery(/** @lang DQL */ 'DELETE 
+                FROM App\Entity\Listener sh 
+                WHERE sh.timestamp_start != 0 
+                AND sh.timestamp_start <= :threshold')
+            ->setParameter('threshold', $threshold)
             ->execute();
     }
 }

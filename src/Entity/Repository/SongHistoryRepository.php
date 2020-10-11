@@ -5,6 +5,7 @@ use App\ApiUtilities;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Settings;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -260,5 +261,19 @@ class SongHistoryRepository extends Repository
         $avg = round((float)$historyTotals['listeners_avg'], 2);
 
         return [$min, $max, $avg];
+    }
+
+    public function cleanup(int $daysToKeep): void
+    {
+        $threshold = CarbonImmutable::now()
+            ->subDays($daysToKeep)
+            ->getTimestamp();
+
+        $this->em->createQuery(/** @lang DQL */ 'DELETE 
+                FROM App\Entity\SongHistory sh 
+                WHERE sh.timestamp_start != 0 
+                AND sh.timestamp_start <= :threshold')
+            ->setParameter('threshold', $threshold)
+            ->execute();
     }
 }

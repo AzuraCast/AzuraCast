@@ -95,6 +95,6 @@ trait HasSongFields
 
     public function setGenre(?string $genre): void
     {
-        $this->genre = $this->truncateString($genre, 150);
+        $this->genre = $this->truncateString($genre, 30);
     }
 }

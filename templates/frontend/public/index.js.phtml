@@ -7,7 +7,9 @@ $(function () {
         {
           song: {
             title: '<?=__('Song Title') ?>',
-            artist: '<?=__('Song Artist') ?>'
+            artist: '<?=__('Song Artist') ?>',
+            album: '<?=__('Album') ?>',
+            played_at: '<?=__('Date Played') ?>'
           }
         }
       ]
@@ -16,6 +18,26 @@ $(function () {
       radio_player.$eventHub.$on('np_updated', function (np_new) {
         songHistory.history = np_new.song_history;
       });
+    },
+    computed: {
+      langNoRecords () {
+        return this.$gettext('No records to display.');
+      }
+    },
+    methods: {
+      unixTimestampToDate(timestamp) {
+        if (!timestamp) {
+          return '';
+        }
+        const date = moment.unix(timestamp);
+        if (moment().diff(date, 'days', true) > 0.5) {
+          return date.calendar();
+        }
+        return date.fromNow();
+      },
+      albumAndArtist(song) {
+        return [song.album, song.artist].filter(str => !!str).join(', ');
+      }
     }
   });
 

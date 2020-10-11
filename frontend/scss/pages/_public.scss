@@ -70,4 +70,63 @@ body.page-minimal {
       word-break: break-all;
     }
   }
+
+  #station-history {
+    .song {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+      line-height: normal;
+      margin-bottom: 15px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .order {
+        display: flex;
+        flex-direction: column;
+        width: 35px;
+        justify-content: center;
+        margin-right: 5px;
+        text-align: center;
+      }
+
+      .art {
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        margin-right: 5px;
+      }
+
+      .name {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .date-played {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 4px 0 0 40px;
+      }
+
+      .break {
+        flex-basis: 100%;
+        height: 0;
+      }
+
+      @media (min-width:576px) {
+        .date-played {
+          margin-left: auto;
+        }
+        .break {
+          display: none;
+        }
+      }
+    }
+  }
 }

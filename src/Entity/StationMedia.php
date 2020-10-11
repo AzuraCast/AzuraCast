@@ -64,6 +64,15 @@ class StationMedia implements SongInterface
     protected $album;
 
     /**
+     * @ORM\Column(name="genre", type="string", length=30, nullable=true)
+     *
+     * @OA\Property(example="Rock")
+     *
+     * @var string|null The genre of the media file.
+     */
+    protected $genre;
+
+    /**
      * @ORM\Column(name="lyrics", type="text", nullable=true)
      *
      * @OA\Property(example="...Never gonna give you up...")
@@ -234,6 +243,16 @@ class StationMedia implements SongInterface
     public function setAlbum(?string $album = null): void
     {
         $this->album = $this->truncateString($album, 200);
+    }
+
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?string $genre = null): void
+    {
+        $this->genre = $genre;
     }
 
     public function getLyrics(): ?string
@@ -539,6 +558,7 @@ class StationMedia implements SongInterface
         $response->title = (string)$this->title;
 
         $response->album = (string)$this->album;
+        $response->genre = (string)$this->genre;
         $response->lyrics = (string)$this->lyrics;
 
         $response->art = $apiUtils->getAlbumArtUrl(

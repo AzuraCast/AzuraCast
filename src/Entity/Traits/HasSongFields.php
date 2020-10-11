@@ -38,7 +38,6 @@ trait HasSongFields
         $this->setText($song->getText());
         $this->setTitle($song->getTitle());
         $this->setArtist($song->getArtist());
-        $this->setGenre($song->getGenre());
         $this->updateSongId();
     }
 

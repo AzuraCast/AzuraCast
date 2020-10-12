@@ -155,7 +155,7 @@ class DashboardController
 
         $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.moment, a.number_avg, a.number_unique 
             FROM App\Entity\Analytics a
-            WHERE a.station_id IS NULL OR a.station_id IN (:stations)
+            WHERE (a.station_id IS NULL OR a.station_id IN (:stations))
             AND a.type = :type
             AND a.moment >= :threshold')
             ->setParameter('stations', $view_stations)

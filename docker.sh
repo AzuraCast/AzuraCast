@@ -394,7 +394,7 @@ update() {
         docker-compose run --rm --user="azuracast" web azuracast_update "$@"
         docker-compose up -d
 
-        docker rmi "$(docker images | grep "none" | awk '/ / { print $3 }')" 2>/dev/null
+        docker system prune -f
 
         echo "Update complete!"
     fi

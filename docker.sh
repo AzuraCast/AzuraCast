@@ -269,6 +269,8 @@ install() {
         sed -i "s/azur4c457/${NEW_PASSWORD}/g" azuracast.env
     fi
 
+    setup-release
+
     if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."
 
@@ -282,8 +284,6 @@ install() {
             curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
         fi
     fi
-
-    setup-release
 
     if ask "Customize AzuraCast ports?" N; then
         setup-ports

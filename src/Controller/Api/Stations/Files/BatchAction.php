@@ -291,10 +291,12 @@ class BatchAction
             $pathMeta = $fs->getMetadata($path);
 
             if ('file' === $pathMeta['type']) {
+                $pathMeta['basename'] = basename($pathMeta['path']);
                 $musicFiles[] = $pathMeta;
             } else {
                 foreach ($fs->listContents($path, true) as $file) {
                     if ('file' === $file['type']) {
+                        $file['basename'] = basename($file['path']);
                         $musicFiles[] = $file;
                     }
                 }

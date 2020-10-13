@@ -36,7 +36,7 @@ class RenameAction
         }
 
         $station = $request->getStation();
-        $fs = $filesystem->getForStation($station);
+        $fs = $filesystem->getForStation($station, false);
 
         $originalPathFull = $request->getAttribute('file_path');
         $newPathFull = Filesystem::PREFIX_MEDIA . '://' . $newPath;
@@ -72,7 +72,7 @@ class RenameAction
                 $row->setPath(substr_replace($row->getPath(), $newPath, 0, strlen($originalPath)));
                 $em->persist($row);
             }
-            
+
             $em->flush();
         } else {
             $record = $mediaRepo->findByPath($originalPath, $station);

@@ -85,7 +85,7 @@ class StationForm extends EntityForm
 
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
-            $record = $this->_denormalizeToRecord($data, $record);
+            $record = $this->denormalizeToRecord($data, $record);
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {

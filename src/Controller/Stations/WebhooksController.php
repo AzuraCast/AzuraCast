@@ -87,7 +87,7 @@ class WebhooksController extends AbstractStationCrudController
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         /** @var Entity\StationWebhook $record */
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->getRecord($request->getStation(), $id);
 
         $new_status = $record->toggleEnabled();
 
@@ -112,7 +112,7 @@ class WebhooksController extends AbstractStationCrudController
         $station = $request->getStation();
 
         /** @var Entity\StationWebhook $record */
-        $record = $this->_getRecord($station, $id);
+        $record = $this->getRecord($station, $id);
 
         $handler_response = $this->dispatcher->testDispatch($station, $record);
         $log_records = $handler_response->getRecords();

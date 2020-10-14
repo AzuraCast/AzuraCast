@@ -30,4 +30,8 @@
     </rule>
 
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude-pattern>src/Entity/Migration/*$</exclude-pattern>
+    </rule>
 </ruleset>

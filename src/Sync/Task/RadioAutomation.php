@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Entity;
@@ -78,7 +79,7 @@ class RadioAutomation extends AbstractTask
 
 
         // Pull songs in current playlists, then clear those playlists.
-        $getSongsInPlaylistQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $getSongsInPlaylistQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm.id
             FROM App\Entity\StationPlaylistMedia spm
             JOIN spm.media sm
@@ -89,9 +90,10 @@ class RadioAutomation extends AbstractTask
 
         foreach ($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            if ($playlist->getIsEnabled() &&
-                $playlist->getType() === Entity\StationPlaylist::TYPE_DEFAULT &&
-                $playlist->getIncludeInAutomation()
+            if (
+                $playlist->getIsEnabled()
+                && $playlist->getType() === Entity\StationPlaylist::TYPE_DEFAULT
+                && $playlist->getIncludeInAutomation()
             ) {
                 $playlists[] = $playlist->getId();
 
@@ -155,7 +157,7 @@ class RadioAutomation extends AbstractTask
         }
 
         // Update media playlist placement.
-        $updateMediaPlaylistQuery = $this->em->createQuery(/** @lang DQL */ 'UPDATE 
+        $updateMediaPlaylistQuery = $this->em->createQuery(/** @lang DQL */ 'UPDATE
             App\Entity\StationPlaylistMedia spm
             SET spm.playlist_id = :new_playlist_id
             WHERE spm.playlist_id = :old_playlist_id
@@ -184,6 +186,9 @@ class RadioAutomation extends AbstractTask
         return true;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function generateReport(
         Entity\Station $station,
         int $threshold_days = self::DEFAULT_THRESHOLD_DAYS
@@ -193,11 +198,11 @@ class RadioAutomation extends AbstractTask
             ->getTimestamp();
 
         // Pull all SongHistory data points.
-        $dataPointsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-            sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
-            FROM App\Entity\SongHistory sh 
-            WHERE sh.station = :station 
-            AND sh.timestamp_end != 0 
+        $dataPointsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
+            sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start
+            FROM App\Entity\SongHistory sh
+            WHERE sh.station = :station
+            AND sh.timestamp_end != 0
             AND sh.timestamp_start >= :threshold')
             ->setParameter('station', $station)
             ->setParameter('threshold', $threshold)
@@ -216,10 +221,10 @@ class RadioAutomation extends AbstractTask
             $data_points[$row['song_id']][] = $row;
         }
 
-        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm
-            FROM App\Entity\StationMedia sm 
-            WHERE sm.station = :station 
+            FROM App\Entity\StationMedia sm
+            WHERE sm.station = :station
             ORDER BY sm.artist ASC, sm.title ASC')
             ->setParameter('station', $station);
 
@@ -271,9 +276,9 @@ class RadioAutomation extends AbstractTask
                     $media['delta_negative'] -= $data_row['delta_negative'];
 
                     /*
-                     * The song ratio is determined by the total impact in listenership the song caused (both up and down)
-                     * over its play time, divided by the number of listeners the song started with. Impacts are weighted
-                     * higher for more significant percentage impacts up or down.
+                     * The song ratio is determined by the total impact in listenership the song caused
+                     * (both up and down) over its play time, divided by the number of listeners the song started
+                     * with. Impacts are weighted higher for more significant percentage impacts up or down.
                      *
                      * i.e.
                      * 1 listener at start, gained 3 listeners => 3/1*100 = 300
@@ -281,7 +286,9 @@ class RadioAutomation extends AbstractTask
                      */
 
                     $delta_total = $data_row['delta_positive'] - $data_row['delta_negative'];
-                    $ratio_points[] = ($data_row['listeners_start'] == 0) ? 0 : ($delta_total / $data_row['listeners_start']) * 100;
+                    $ratio_points[] = ($data_row['listeners_start'] == 0)
+                        ? 0
+                        : ($delta_total / $data_row['listeners_start']) * 100;
                 }
 
                 $media['delta_total'] = $media['delta_positive'] + $media['delta_negative'];
@@ -295,5 +302,4 @@ class RadioAutomation extends AbstractTask
 
         return $report;
     }
-
 }

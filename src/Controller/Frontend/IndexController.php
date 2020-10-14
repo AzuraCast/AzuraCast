@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend;
 
 use App\Entity;

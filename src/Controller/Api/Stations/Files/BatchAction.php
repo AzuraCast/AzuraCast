@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
@@ -102,7 +103,7 @@ class BatchAction
                 if ($backend instanceof Liquidsoap) {
                     foreach ($affected_playlists as $playlist_id => $playlist_row) {
                         // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage;
+                        $message = new WritePlaylistFileMessage();
                         $message->playlist_id = $playlist_id;
 
                         $messageBus->dispatch($message);
@@ -196,7 +197,7 @@ class BatchAction
                 if ($backend instanceof Liquidsoap) {
                     foreach ($affected_playlists as $playlist_id => $playlist_row) {
                         // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage;
+                        $message = new WritePlaylistFileMessage();
                         $message->playlist_id = $playlist_id;
 
                         $messageBus->dispatch($message);
@@ -231,8 +232,11 @@ class BatchAction
                         $media->setPath($newPath);
 
                         if (!$fs->rename($old_full_path, $media->getPath())) {
-                            throw new \App\Exception(__('Could not move "%s" to "%s"', $old_full_path,
-                                $media->getPath()));
+                            throw new \App\Exception(__(
+                                'Could not move "%s" to "%s"',
+                                $old_full_path,
+                                $media->getPath()
+                            ));
                         }
 
                         $em->persist($media);
@@ -283,6 +287,9 @@ class BatchAction
         ]);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getMusicFiles(StationFilesystem $fs, array $files): array
     {
         $musicFiles = [];
@@ -306,6 +313,9 @@ class BatchAction
         return $musicFiles;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getDirectories(StationFilesystem $fs, array $files): array
     {
         $directories = [];

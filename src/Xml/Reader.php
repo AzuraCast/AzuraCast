@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Extends the Zend Config XML library to allow attribute handling.
  */
@@ -15,9 +16,9 @@ class Reader extends Xml
     /**
      * Get all attributes on the current node.
      *
-     * @return array
+     * @return string[]
      */
-    protected function getAttributes()
+    protected function getAttributes(): array
     {
         $attributes = [];
 

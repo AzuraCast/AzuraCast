@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Deferred Callable
  * Used from:
@@ -31,6 +32,9 @@ class DeferredCallable
         $this->callableResolver = $resolver;
     }
 
+    /**
+     * @return mixed
+     */
     public function __invoke(...$args)
     {
         /** @var callable $callable */

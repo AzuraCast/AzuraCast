@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio;
 
 class Certificate

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
@@ -8,6 +9,7 @@ use App\Http\ServerRequest;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
+
 use const SORT_ASC;
 use const SORT_DESC;
 
@@ -69,7 +71,7 @@ class ListAction
             $media_query->andWhere('sm.path NOT LIKE :pathWithSubfolders')
                 ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
-            $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT 
+            $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT
                 spf, partial sp.{id, name}
                 FROM App\Entity\StationPlaylistFolder spf
                 JOIN spf.playlist sp
@@ -98,11 +100,14 @@ class ListAction
 
             $artImgSrc = (0 === $media_row['art_updated_at'])
                 ? (string)$stationRepo->getDefaultAlbumArtUrl($station)
-                : (string)$router->named('api:stations:media:art',
+                : (string)$router->named(
+                    'api:stations:media:art',
                     [
                         'station_id' => $station->getId(),
                         'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
-                    ]);
+                    ]
+                )
+            ;
 
             $media_in_dir[$media_row['path']] = [
                     'is_playable' => ($media_row['length'] !== 0),
@@ -192,8 +197,11 @@ class ListAction
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
                 'can_rename' => true,
-                'rename_url' => (string)$router->named('api:stations:files:rename', ['station_id' => $station->getId()],
-                    ['file' => $short]),
+                'rename_url' => (string)$router->named(
+                    'api:stations:files:rename',
+                    ['station_id' => $station->getId()],
+                    ['file' => $short]
+                ),
             ];
 
             foreach ($media as $media_key => $media_val) {

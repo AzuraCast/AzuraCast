@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Exception\NotFoundException;
@@ -34,18 +35,16 @@ abstract class AbstractAdminCrudController
      *
      * @return object|bool|null
      */
-    protected function _doEdit(ServerRequest $request, $id = null)
+    protected function doEdit(ServerRequest $request, $id = null)
     {
-        $record = $this->_getRecord($id);
+        $record = $this->getRecord($id);
         return $this->form->process($request, $record);
     }
 
     /**
      * @param string|int|null $id
-     *
-     * @return object|null
      */
-    protected function _getRecord($id = null): ?object
+    protected function getRecord($id = null): ?object
     {
         if (null === $id) {
             return null;
@@ -65,11 +64,11 @@ abstract class AbstractAdminCrudController
      * @param string|int $id
      * @param string $csrf
      */
-    protected function _doDelete(ServerRequest $request, $id, $csrf): void
+    protected function doDelete(ServerRequest $request, $id, $csrf): void
     {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $record = $this->_getRecord($id);
+        $record = $this->getRecord($id);
 
         if ($record instanceof $this->entity_class) {
             $this->em->remove($record);

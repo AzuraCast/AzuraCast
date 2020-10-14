@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware;
 
 use App\Exception\PermissionDeniedException;
@@ -27,8 +28,6 @@ class Permissions
     /**
      * @param ServerRequest $request
      * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -42,12 +41,12 @@ class Permissions
         try {
             $user = $request->getUser();
         } catch (Exception $e) {
-            throw new PermissionDeniedException;
+            throw new PermissionDeniedException();
         }
 
         $acl = $request->getAcl();
         if (!$acl->userAllowed($user, $this->action, $station_id)) {
-            throw new PermissionDeniedException;
+            throw new PermissionDeniedException();
         }
 
         return $handler->handle($request);

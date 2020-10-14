@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Config;
@@ -11,6 +12,7 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Process\Process;
+
 use const UPLOAD_ERR_OK;
 
 class InstallShoutcastController
@@ -29,8 +31,10 @@ class InstallShoutcastController
         $version = SHOUTcast::getVersion();
 
         if (null !== $version) {
-            $form_config['groups'][0]['elements']['current_version'][1]['markup'] = '<p class="text-success">' . __('SHOUTcast version "%s" is currently installed.',
-                    $version) . '</p>';
+            $form_config['groups'][0]['elements']['current_version'][1]['markup'] = '<p class="text-success">' . __(
+                'SHOUTcast version "%s" is currently installed.',
+                $version
+            ) . '</p>';
         }
 
         $form = new Form($form_config, []);

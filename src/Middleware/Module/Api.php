@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware\Module;
 
 use App\Entity;
@@ -84,8 +85,6 @@ class Api
 
     /**
      * @param ServerRequest $request
-     *
-     * @return string|null
      */
     protected function getApiKey(ServerRequest $request): ?string
     {

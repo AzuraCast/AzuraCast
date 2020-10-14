@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations\Reports;
 
 use App\Config;
@@ -68,13 +69,21 @@ class SoundExchangeController
                 $media_by_id[$media_row['song_id']] = $media_row;
             }
 
-            $history_rows = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                sh.song_id AS song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS plays, SUM(sh.unique_listeners) AS unique_listeners
-                FROM App\Entity\SongHistory sh
-                WHERE sh.station_id = :station_id
-                AND sh.timestamp_start <= :time_end
-                AND sh.timestamp_end >= :time_start
-                GROUP BY sh.song_id')
+            $history_rows = $this->em
+                ->createQuery(/** @lang DQL */
+                    'SELECT
+                        sh.song_id AS song_id,
+                        sh.text,
+                        sh.artist,
+                        sh.title,
+                        COUNT(sh.id) AS plays,
+                        SUM(sh.unique_listeners) AS unique_listeners
+                    FROM App\Entity\SongHistory sh
+                    WHERE sh.station_id = :station_id
+                    AND sh.timestamp_start <= :time_end
+                    AND sh.timestamp_end >= :time_start
+                    GROUP BY sh.song_id'
+                )
                 ->setParameter('station_id', $station->getId())
                 ->setParameter('time_start', $start_date)
                 ->setParameter('time_end', $end_date)
@@ -92,7 +101,7 @@ class SoundExchangeController
             // Assemble report items
             $station_name = $station->getName();
 
-            $set_isrc_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE 
+            $set_isrc_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE
                 App\Entity\StationMedia sm
                 SET sm.isrc = :isrc
                 WHERE sm.song_id = :song_id
@@ -100,12 +109,11 @@ class SoundExchangeController
                 ->setParameter('station_id', $station->getId());
 
             foreach ($history_rows_by_id as $song_id => $history_row) {
-
                 $song_row = $media_by_id[$song_id] ?? $history_row;
 
                 // Try to find the ISRC if it's not already listed.
                 if (array_key_exists('isrc', $song_row) && $song_row['isrc'] === null) {
-                    $isrc = $this->_findISRC($song_row);
+                    $isrc = $this->findISRC($song_row);
                     $song_row['isrc'] = $isrc;
 
                     $set_isrc_query->setParameter('isrc', $isrc)
@@ -123,7 +131,6 @@ class SoundExchangeController
                     '',
                     $history_row['unique_listeners'],
                 ];
-
             }
 
             // Assemble export into SoundExchange format
@@ -153,7 +160,7 @@ class SoundExchangeController
         ]);
     }
 
-    protected function _findISRC($song_row): string
+    protected function findISRC($song_row): string
     {
         // Temporarily disable this feature, as the Spotify API now requires authentication for all requests.
 

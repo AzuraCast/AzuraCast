@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Entity;
@@ -39,7 +40,7 @@ class AzuraCastCentral
     /**
      * Ping the AzuraCast Central server for updates and return them if there are any.
      *
-     * @return array|null
+     * @return mixed[]|null
      */
     public function checkForUpdates(): ?array
     {
@@ -80,8 +81,6 @@ class AzuraCastCentral
      * Ping the AzuraCast Central server to retrieve this installation's likely public-facing IP.
      *
      * @param bool $cached
-     *
-     * @return string|null
      */
     public function getIp(bool $cached = true): ?string
     {

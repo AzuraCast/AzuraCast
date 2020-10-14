@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -37,6 +38,9 @@ class Remote extends AbstractFrontend
         return new Uri('');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getStreamUrls(Entity\Station $station, UriInterface $base_url = null): array
     {
         return [];

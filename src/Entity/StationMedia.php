@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -24,7 +25,9 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  */
 class StationMedia implements SongInterface
 {
-    use Traits\UniqueId, Traits\TruncateStrings, Traits\HasSongFields;
+    use Traits\UniqueId;
+    use Traits\TruncateStrings;
+    use Traits\HasSongFields;
 
     public const UNIQUE_ID_LENGTH = 24;
 
@@ -209,8 +212,8 @@ class StationMedia implements SongInterface
     {
         $this->station = $station;
 
-        $this->playlists = new ArrayCollection;
-        $this->custom_fields = new ArrayCollection;
+        $this->playlists = new ArrayCollection();
+        $this->custom_fields = new ArrayCollection();
 
         $this->setPath($path);
         $this->generateUniqueId();
@@ -248,8 +251,6 @@ class StationMedia implements SongInterface
 
     /**
      * Get the Flysystem URI for album artwork for this item.
-     *
-     * @return string
      */
     public function getArtPath(): string
     {
@@ -261,6 +262,9 @@ class StationMedia implements SongInterface
         return Filesystem::PREFIX_WAVEFORMS . '://' . $this->unique_id . '.json';
     }
 
+    /**
+     * @return string[]
+     */
     public function getRelatedFilePaths(): array
     {
         return [
@@ -318,8 +322,6 @@ class StationMedia implements SongInterface
 
     /**
      * Return the abstracted "full path" filesystem URI for this record.
-     *
-     * @return string
      */
     public function getPathUri(): string
     {
@@ -410,8 +412,6 @@ class StationMedia implements SongInterface
 
     /**
      * @param string|float|null $seconds
-     *
-     * @return float|null
      */
     protected function parseSeconds($seconds = null): ?float
     {
@@ -433,8 +433,6 @@ class StationMedia implements SongInterface
 
     /**
      * Get the length with cue-in and cue-out points included.
-     *
-     * @return int
      */
     public function getCalculatedLength(): int
     {
@@ -492,8 +490,6 @@ class StationMedia implements SongInterface
 
     /**
      * Indicates whether this media is a part of any "requestable" playlists.
-     *
-     * @return bool
      */
     public function isRequestable(): bool
     {
@@ -527,12 +523,10 @@ class StationMedia implements SongInterface
      *
      * @param ApiUtilities $apiUtils
      * @param UriInterface|null $baseUri
-     *
-     * @return Api\Song
      */
     public function api(ApiUtilities $apiUtils, UriInterface $baseUri = null): Api\Song
     {
-        $response = new Api\Song;
+        $response = new Api\Song();
         $response->id = (string)$this->song_id;
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;

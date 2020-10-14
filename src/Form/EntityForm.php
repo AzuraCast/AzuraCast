@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Entity\Station;
@@ -93,14 +94,14 @@ class EntityForm extends Form
 
         // Populate the form with existing values (if they exist).
         if (null !== $record) {
-            $this->populate($this->_normalizeRecord($record));
+            $this->populate($this->normalizeRecord($record));
         }
 
         // Handle submission.
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
 
-            $record = $this->_denormalizeToRecord($data, $record);
+            $record = $this->denormalizeToRecord($data, $record);
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {
@@ -137,9 +138,9 @@ class EntityForm extends Form
      * @param object $record
      * @param array $context
      *
-     * @return array
+     * @return mixed[]
      */
-    protected function _normalizeRecord($record, array $context = []): array
+    protected function normalizeRecord($record, array $context = []): array
     {
         $context = array_merge($this->defaultContext, $context, [
             DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,
@@ -151,14 +152,14 @@ class EntityForm extends Form
                 string $format = null,
                 array $context = []
             ) {
-                return $this->_displayShortenedObject($innerObject);
+                return $this->displayShortenedObject($innerObject);
             },
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
                 $object,
                 string $format = null,
                 array $context = []
             ) {
-                return $this->_displayShortenedObject($object);
+                return $this->displayShortenedObject($object);
             },
         ]);
 
@@ -170,7 +171,7 @@ class EntityForm extends Form
      *
      * @return mixed
      */
-    protected function _displayShortenedObject($object)
+    protected function displayShortenedObject($object)
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();
@@ -185,10 +186,8 @@ class EntityForm extends Form
      * @param array $data
      * @param object|null $record
      * @param array $context
-     *
-     * @return object
      */
-    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function denormalizeToRecord($data, $record = null, array $context = []): object
     {
         $context = array_merge($this->defaultContext, $context);
 

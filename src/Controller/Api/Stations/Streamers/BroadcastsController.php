@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
@@ -21,8 +22,6 @@ class BroadcastsController extends AbstractApiCrudController
      * @param Filesystem $filesystem
      * @param string|int $station_id
      * @param int $id
-     *
-     * @return ResponseInterface
      */
     public function listAction(
         ServerRequest $request,
@@ -39,7 +38,7 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb 
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb
             FROM App\Entity\StationStreamerBroadcast ssb
             WHERE ssb.station = :station AND ssb.streamer = :streamer
             ORDER BY ssb.timestampStart DESC')
@@ -104,8 +103,6 @@ class BroadcastsController extends AbstractApiCrudController
      * @param string|int $station_id
      * @param int $id
      * @param int $broadcast_id
-     *
-     * @return ResponseInterface
      */
     public function downloadAction(
         ServerRequest $request,
@@ -171,7 +168,7 @@ class BroadcastsController extends AbstractApiCrudController
             $this->em->flush();
         }
 
-        return $response->withJson(new Entity\Api\Status);
+        return $response->withJson(new Entity\Api\Status());
     }
 
     protected function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast

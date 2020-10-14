@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine;
 
 use Closure;
@@ -30,12 +31,14 @@ class DecoratedEntityManager extends EntityManagerDecorator
      *
      * @template T as object The type of the entity being refetched.
      *
+     * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
      * @param T $entity
      *
      * @return T
      */
     public function refetch($entity)
     {
+        // phpcs:enable
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));
 
         /** @var T $freshValue */
@@ -49,6 +52,4 @@ class DecoratedEntityManager extends EntityManagerDecorator
 
         return $freshValue;
     }
-
-
 }

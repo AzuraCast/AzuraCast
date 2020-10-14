@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -9,9 +10,9 @@ use RuntimeException;
 
 class Station extends AbstractFixture
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
-        $station = new Entity\Station;
+        $station = new Entity\Station();
         $station->setName('AzuraTest Radio');
         $station->setDescription('A test radio station.');
         $station->setEnableRequests(true);

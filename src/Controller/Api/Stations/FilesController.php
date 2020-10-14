@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -87,8 +88,6 @@ class FilesController extends AbstractStationApiCrudController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -189,7 +188,7 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function getRecord(Entity\Station $station, $id)
+    protected function getRecord(Entity\Station $station, $id): ?object
     {
         $repo = $this->em->getRepository($this->entityClass);
 
@@ -212,7 +211,7 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function toArray($record, array $context = [])
+    protected function toArray($record, array $context = []): array
     {
         $row = parent::toArray($record, $context);
 
@@ -302,7 +301,7 @@ class FilesController extends AbstractStationApiCrudController
                 if ($backend instanceof Liquidsoap) {
                     foreach ($affected_playlists as $playlist_id => $playlist_row) {
                         // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage;
+                        $message = new WritePlaylistFileMessage();
                         $message->playlist_id = $playlist_id;
 
                         $this->messageBus->dispatch($message);
@@ -346,7 +345,7 @@ class FilesController extends AbstractStationApiCrudController
         if ($backend instanceof Liquidsoap) {
             foreach ($affected_playlists as $playlist_id => $playlist_row) {
                 // Instruct the message queue to start a new "write playlist to file" task.
-                $message = new WritePlaylistFileMessage;
+                $message = new WritePlaylistFileMessage();
                 $message->playlist_id = $playlist_id;
 
                 $this->messageBus->dispatch($message);

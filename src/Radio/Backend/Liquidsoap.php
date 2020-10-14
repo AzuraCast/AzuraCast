@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Backend;
 
 use App\Entity;
@@ -32,8 +33,6 @@ class Liquidsoap extends AbstractBackend
      * Special thanks to the team of PonyvilleFM for assisting with Liquidsoap configuration and debugging.
      *
      * @param Entity\Station $station
-     *
-     * @return bool
      */
     public function write(Entity\Station $station): bool
     {
@@ -102,7 +101,7 @@ class Liquidsoap extends AbstractBackend
      *
      * @param Entity\StationMedia $media
      *
-     * @return array
+     * @return mixed[]
      */
     public function annotateMedia(Entity\StationMedia $media): array
     {
@@ -171,13 +170,19 @@ class Liquidsoap extends AbstractBackend
      * @param Entity\Station $station
      * @param string $command_str
      *
-     * @return array
+     * @return string[]
+     *
      * @throws Exception
      */
     public function command(Entity\Station $station, $command_str): array
     {
-        $fp = stream_socket_client('tcp://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $this->getTelnetPort($station),
-            $errno, $errstr, 20);
+        $hostname = (Settings::getInstance()->isDocker() ? 'stations' : 'localhost');
+        $fp = stream_socket_client(
+            'tcp://' . $hostname . ':' . $this->getTelnetPort($station),
+            $errno,
+            $errstr,
+            20
+        );
 
         if (!$fp) {
             throw new Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
@@ -209,7 +214,7 @@ class Liquidsoap extends AbstractBackend
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public static function getBinary()
     {
@@ -232,6 +237,9 @@ class Liquidsoap extends AbstractBackend
         return empty($queue[0]);
     }
 
+    /**
+     * @return string[]
+     */
     public function enqueue(Entity\Station $station, $music_file): array
     {
         return $this->command(
@@ -240,6 +248,9 @@ class Liquidsoap extends AbstractBackend
         );
     }
 
+    /**
+     * @return string[]
+     */
     public function skip(Entity\Station $station): array
     {
         return $this->command(
@@ -248,6 +259,9 @@ class Liquidsoap extends AbstractBackend
         );
     }
 
+    /**
+     * @return string[]
+     */
     public function updateMetadata(Entity\Station $station, array $newMeta): array
     {
         $metaStr = [];
@@ -266,7 +280,7 @@ class Liquidsoap extends AbstractBackend
      *
      * @param Entity\Station $station
      *
-     * @return array
+     * @return string[]
      */
     public function disconnectStreamer(Entity\Station $station): array
     {

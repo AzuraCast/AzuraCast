@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -8,6 +9,9 @@ use DateTimeInterface;
 
 class AnalyticsRepository extends Repository
 {
+    /**
+     * @return mixed[]
+     */
     public function findForStationAfterTime(
         Entity\Station $station,
         DateTimeInterface $threshold,
@@ -49,6 +53,4 @@ class AnalyticsRepository extends Repository
             ->setParameter('threshold', $hourlyRetention)
             ->execute();
     }
-
-
 }

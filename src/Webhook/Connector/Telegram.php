@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook\Connector;
 
 use App\Entity\StationWebhook;
@@ -37,7 +38,7 @@ class Telegram extends AbstractConnector
             $request_params = [
                 'chat_id' => $chat_id,
                 'text' => $messages['text'],
-                'parse_mode' => $config['parse_mode'] ?? 'Markdown' // Markdown or HTML
+                'parse_mode' => $config['parse_mode'] ?? 'Markdown', // Markdown or HTML
             ];
 
             $response = $this->http_client->request('POST', $webhook_url, [
@@ -56,8 +57,12 @@ class Telegram extends AbstractConnector
                 ]
             );
         } catch (TransferException $e) {
-            $this->logger->error(sprintf('Error from webhook %s (%d): %s', self::NAME, $e->getCode(),
-                $e->getMessage()));
+            $this->logger->error(sprintf(
+                'Error from webhook %s (%d): %s',
+                self::NAME,
+                $e->getCode(),
+                $e->getMessage()
+            ));
         }
     }
 }

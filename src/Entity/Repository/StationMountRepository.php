@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -8,8 +9,6 @@ class StationMountRepository extends Repository
 {
     /**
      * @param Entity\Station $station
-     *
-     * @return Entity\StationMount|null
      */
     public function getDefaultMount(Entity\Station $station): ?Entity\StationMount
     {

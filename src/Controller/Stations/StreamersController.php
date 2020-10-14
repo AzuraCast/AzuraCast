@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Entity;
@@ -34,7 +35,7 @@ class StreamersController
         $backend = $request->getStationBackend();
 
         if (!$backend::supportsStreamers()) {
-            throw new StationUnsupportedException;
+            throw new StationUnsupportedException();
         }
 
         $view = $request->getView();
@@ -46,8 +47,10 @@ class StreamersController
                 $this->em->persist($station);
                 $this->em->flush();
 
-                $request->getFlash()->addMessage('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
-                    Flash::SUCCESS);
+                $request->getFlash()->addMessage(
+                    '<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
+                    Flash::SUCCESS
+                );
 
                 return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
             }

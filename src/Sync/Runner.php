@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync;
 
 use App\Entity;
@@ -133,6 +134,9 @@ class Runner
         }
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getSyncTimes(): array
     {
         $this->settingsRepo->clearCache();

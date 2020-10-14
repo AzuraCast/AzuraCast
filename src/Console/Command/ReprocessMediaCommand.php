@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Entity;
@@ -16,7 +17,7 @@ class ReprocessMediaCommand extends CommandAbstract
         StationRepository $stationRepo,
         Entity\Repository\StationMediaRepository $media_repo,
         ?string $stationName = null
-    ) {
+    ): int {
         if (!empty($stationName)) {
             $station = $stationRepo->findByIdentifier($stationName);
 

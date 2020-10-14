@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App;
@@ -59,8 +60,6 @@ class HistoryController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -122,7 +121,12 @@ class HistoryController
             }
 
             $csv_file = Csv::arrayToCsv($export_all);
-            $csv_filename = $station->getShortName() . '_timeline_' . $start->format('Ymd') . '_to_' . $end->format('Ymd') . '.csv';
+            $csv_filename = sprintf(
+                '%s_timeline_%s_to_%s.csv',
+                $station->getShortName(),
+                $start->format('Ymd'),
+                $end->format('Ymd')
+            );
 
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
@@ -141,9 +145,8 @@ class HistoryController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(function ($sh_row) use ($is_bootgrid, $router) {
-
             /** @var Entity\SongHistory $sh_row */
-            $row = $sh_row->api(new Entity\Api\DetailedSongHistory, $this->api_utils);
+            $row = $sh_row->api(new Entity\Api\DetailedSongHistory(), $this->api_utils);
             $row->resolveUrls($router->getBaseUrl());
 
             if ($is_bootgrid) {

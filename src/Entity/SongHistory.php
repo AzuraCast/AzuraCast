@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\ApiUtilities;
@@ -14,7 +15,8 @@ use Psr\Http\Message\UriInterface;
  */
 class SongHistory implements SongInterface
 {
-    use Traits\TruncateInts, Traits\HasSongFields;
+    use Traits\TruncateInts;
+    use Traits\HasSongFields;
 
     /** @var int The expected delay between when a song history record is registered and when listeners hear it. */
     public const PLAYBACK_DELAY_SECONDS = 5;
@@ -321,7 +323,7 @@ class SongHistory implements SongInterface
 
     public function setDeltaTotal(int $delta_total): void
     {
-        $this->delta_total = $this->_truncateSmallInt($delta_total);
+        $this->delta_total = $this->truncateSmallInt($delta_total);
     }
 
     public function getDeltaPositive(): int
@@ -331,7 +333,7 @@ class SongHistory implements SongInterface
 
     public function setDeltaPositive(int $delta_positive): void
     {
-        $this->delta_positive = $this->_truncateSmallInt($delta_positive);
+        $this->delta_positive = $this->truncateSmallInt($delta_positive);
     }
 
     public function getDeltaNegative(): int
@@ -341,9 +343,12 @@ class SongHistory implements SongInterface
 
     public function setDeltaNegative(int $delta_negative): void
     {
-        $this->delta_negative = $this->_truncateSmallInt($delta_negative);
+        $this->delta_negative = $this->truncateSmallInt($delta_negative);
     }
 
+    /**
+     * @return mixed
+     */
     public function getDeltaPoints()
     {
         return $this->delta_points;
@@ -374,10 +379,12 @@ class SongHistory implements SongInterface
      * @param ApiUtilities $api
      * @param UriInterface|null $base_url
      *
+     * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
      * @return T
      */
     public function api(Api\SongHistory $response, ApiUtilities $api, UriInterface $base_url = null)
     {
+        // phpcs:enable
         $response->sh_id = (int)$this->id;
 
         $response->played_at = (0 === (int)$this->timestamp_start)

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Exception\StationUnsupportedException;
@@ -35,7 +36,7 @@ class MountsController extends AbstractStationCrudController
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
-        if (false !== $this->_doEdit($request, $id)) {
+        if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Changes saved.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
@@ -53,7 +54,7 @@ class MountsController extends AbstractStationCrudController
         $id,
         $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf);
+        $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Mount Point deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));

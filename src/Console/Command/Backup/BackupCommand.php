@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Backup;
 
 use App\Console\Command\CommandAbstract;
@@ -8,6 +9,7 @@ use App\Sync\Task\Backup;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use const PATHINFO_EXTENSION;
 
 class BackupCommand extends CommandAbstract
@@ -19,7 +21,7 @@ class BackupCommand extends CommandAbstract
         EntityManagerInterface $em,
         ?string $path = '',
         bool $excludeMedia = false
-    ) {
+    ): int {
         $start_time = microtime(true);
 
         if (empty($path)) {
@@ -54,6 +56,7 @@ class BackupCommand extends CommandAbstract
         $conn = $em->getConnection();
         $connParams = $conn->getParams();
 
+        // phpcs:disable Generic.Files.LineLength
         $this->passThruProcess(
             $io,
             'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
@@ -66,6 +69,7 @@ class BackupCommand extends CommandAbstract
                 'DB_DEST' => $path_db_dump,
             ]
         );
+        // phpcs:enable
 
         $files_to_backup[] = $path_db_dump;
         $io->newLine();

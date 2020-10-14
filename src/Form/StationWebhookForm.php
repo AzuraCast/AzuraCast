@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Config;
@@ -45,21 +46,32 @@ class StationWebhookForm extends EntityForm
         $this->entityClass = Entity\StationWebhook::class;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getConfig(): array
     {
         return $this->config;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getForms(): array
     {
         return $this->forms;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\StationWebhook) {
-            throw new InvalidArgumentException(sprintf('Record is not an instance of %s',
-                Entity\StationWebhook::class));
+            throw new InvalidArgumentException(sprintf(
+                'Record is not an instance of %s',
+                Entity\StationWebhook::class
+            ));
         }
 
         $this->configure($this->forms[$record->getType()]);

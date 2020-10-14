@@ -1,8 +1,10 @@
 <?php
+
 namespace App;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
+
 use function base64_encode;
 use function is_array;
 use function is_callable;
@@ -65,8 +67,6 @@ class Assets
      * Create a new copy of this object for a specific request.
      *
      * @param ServerRequestInterface $request
-     *
-     * @return $this
      */
     public function withRequest(ServerRequestInterface $request): self
     {
@@ -81,11 +81,10 @@ class Assets
         $this->request = $request;
     }
 
-    protected function addVueComponents(array $vueComponents = [])
+    protected function addVueComponents(array $vueComponents = []): void
     {
         if (!empty($vueComponents['entrypoints'])) {
             foreach ($vueComponents['entrypoints'] as $componentName => $componentDeps) {
-
                 $library = $this->libraries[$componentName] ?? [
                         'order' => 10,
                         'require' => [],
@@ -114,8 +113,6 @@ class Assets
      *
      * @param array $data Array with asset data.
      * @param string|null $library_name
-     *
-     * @return $this
      */
     public function addLibrary(array $data, string $library_name = null): self
     {
@@ -136,7 +133,7 @@ class Assets
     /**
      * @param string $library_name
      *
-     * @return array|null
+     * @return mixed[]|null
      */
     public function getLibrary(string $library_name): ?array
     {
@@ -145,7 +142,6 @@ class Assets
 
     /**
      * Returns the randomly generated nonce for inline CSP for this request.
-     * @return string
      */
     public function getCspNonce(): string
     {
@@ -154,7 +150,8 @@ class Assets
 
     /**
      * Returns the list of approved domains for CSP header inclusion.
-     * @return array
+     *
+     * @return string[]
      */
     public function getCspDomains(): array
     {
@@ -165,8 +162,6 @@ class Assets
      * Add a single javascript file.
      *
      * @param string|array $js_script
-     *
-     * @return $this
      */
     public function addJs($js_script): self
     {
@@ -186,8 +181,6 @@ class Assets
      * Loads assets from given name or array definition.
      *
      * @param mixed $data Name or array definition of library/asset.
-     *
-     * @return self
      */
     public function load($data): self
     {
@@ -241,8 +234,6 @@ class Assets
      * Unload a given library if it's already loaded.
      *
      * @param string $name
-     *
-     * @return self
      */
     public function unload(string $name): self
     {
@@ -259,8 +250,6 @@ class Assets
      *
      * @param string|array $js_script
      * @param int $order
-     *
-     * @return $this
      */
     public function addInlineJs($js_script, int $order = 100): self
     {
@@ -279,8 +268,6 @@ class Assets
      *
      * @param string|array $css_script
      * @param int $order
-     *
-     * @return $this
      */
     public function addCss($css_script, int $order = 100): self
     {
@@ -300,8 +287,6 @@ class Assets
      * Add a single inline CSS file[s].
      *
      * @param string|array $css_script
-     *
-     * @return $this
      */
     public function addInlineCss($css_script): self
     {
@@ -317,11 +302,12 @@ class Assets
 
     /**
      * Returns all CSS includes and inline styles.
+     *
      * @return string HTML tags as string.
      */
     public function css(): string
     {
-        $this->_sort();
+        $this->sort();
 
         $result = [];
         foreach ($this->loaded as $item) {
@@ -339,7 +325,12 @@ class Assets
             if (!empty($item['inline']['css'])) {
                 foreach ($item['inline']['css'] as $inline) {
                     if (!empty($inline)) {
-                        $result[] = '<style type="text/css" nonce="' . $this->csp_nonce . '">' . "\n" . $inline . '</style>';
+                        $result[] = sprintf(
+                            '<style type="text/css" nonce="%s">%s%s</style>',
+                            $this->csp_nonce,
+                            "\n",
+                            $inline
+                        );
                     }
                 }
             }
@@ -350,11 +341,12 @@ class Assets
 
     /**
      * Returns all script include tags.
+     *
      * @return string HTML tags as string.
      */
     public function js(): string
     {
-        $this->_sort();
+        $this->sort();
 
         $result = [];
         foreach ($this->loaded as $item) {
@@ -374,12 +366,10 @@ class Assets
 
     /**
      * Return any inline JavaScript.
-     *
-     * @return string
      */
     public function inlineJs(): string
     {
-        $this->_sort();
+        $this->sort();
 
         $result = [];
         foreach ($this->loaded as $item) {
@@ -390,7 +380,12 @@ class Assets
                     }
 
                     if (!empty($inline)) {
-                        $result[] = '<script type="text/javascript" nonce="' . $this->csp_nonce . '">' . "\n" . $inline . '</script>';
+                        $result[] = sprintf(
+                            '<script type="text/javascript" nonce="%s">%s%s</script>',
+                            $this->csp_nonce,
+                            "\n",
+                            $inline
+                        );
                     }
                 }
             }
@@ -402,7 +397,7 @@ class Assets
     /**
      * Sort the list of loaded libraries.
      */
-    protected function _sort(): void
+    protected function sort(): void
     {
         if (!$this->is_sorted) {
             uasort($this->loaded, function ($a, $b): int {
@@ -419,7 +414,7 @@ class Assets
      * @param array $file
      * @param array $defaults
      *
-     * @return array
+     * @return string[]
      */
     protected function compileAttributes(array $file, array $defaults = []): array
     {

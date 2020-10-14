@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -37,7 +38,6 @@ class IndexController
      * @param ServerRequest $request
      * @param Response $response
      *
-     * @return ResponseInterface
      * @throws NotFoundException
      * @throws Exception
      */
@@ -77,7 +77,6 @@ class IndexController
      * @param ServerRequest $request
      * @param Response $response
      *
-     * @return ResponseInterface
      * @throws Exception
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface

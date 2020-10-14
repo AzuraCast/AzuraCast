@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\ApiUtilities;
@@ -50,7 +51,6 @@ class RequestsController
      * @param ServerRequest $request
      * @param Response $response
      *
-     * @return ResponseInterface
      * @throws Exception
      * @throws Exception\InvalidRequestAttribute
      */
@@ -109,7 +109,7 @@ class RequestsController
 
         $paginator->setPostprocessor(function ($media_row) use ($station, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
-            $row = new Entity\Api\StationRequest;
+            $row = new Entity\Api\StationRequest();
             $row->song = $media_row->api($this->api_utils);
             $row->request_id = $media_row->getUniqueId();
             $row->request_url = (string)$router->named('api:requests:submit', [
@@ -152,7 +152,6 @@ class RequestsController
      * @param Response $response
      * @param mixed $media_id
      *
-     * @return ResponseInterface
      * @throws Exception\InvalidRequestAttribute
      */
     public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface

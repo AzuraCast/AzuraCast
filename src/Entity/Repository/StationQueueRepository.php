@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\ApiUtilities;
@@ -34,7 +35,7 @@ class StationQueueRepository extends Repository
         $station = $queueRow->getStation();
 
         // Remove all existing records that are marked as "sent to AutoDJ".
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq 
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
             WHERE sq.station = :station AND sq.sent_to_autodj = 1')
             ->setParameter('station', $station)
             ->execute();

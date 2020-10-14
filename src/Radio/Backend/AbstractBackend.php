@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Backend;
 
 use App\Entity;
@@ -26,11 +27,14 @@ abstract class AbstractBackend extends AbstractAdapter
         return true;
     }
 
-    public function getStreamPort(Entity\Station $station)
+    public function getStreamPort(Entity\Station $station): ?int
     {
         return null;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function annotateMedia(Entity\StationMedia $media): array
     {
         return [];

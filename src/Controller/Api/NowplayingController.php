@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api;
 
 use App\Entity;
@@ -50,9 +51,9 @@ class NowplayingController implements EventSubscriberInterface
      *  * array('eventName' => array('methodName', $priority))
      *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
      *
-     * @return array The event names to listen to
+     * @return mixed[] The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             LoadNowPlaying::class => [
@@ -90,8 +91,6 @@ class NowplayingController implements EventSubscriberInterface
      * @param ServerRequest $request
      * @param Response $response
      * @param int|string|null $station_id
-     *
-     * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
     {
@@ -151,7 +150,8 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromStations(LoadNowPlaying $event): void
     {
-        $nowplaying_db = $this->em->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
+        $nowplaying_db = $this->em
+            ->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
             ->getArrayResult();
 
         $np = [];

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Flysystem;
 
 use InvalidArgumentException;
@@ -22,8 +23,6 @@ class FilesystemGroup extends MountManager
      * @param string $local_path
      * @param string $to
      * @param array $config
-     *
-     * @return bool
      */
     public function upload($local_path, $to, array $config = []): bool
     {
@@ -54,8 +53,6 @@ class FilesystemGroup extends MountManager
      *       use non-local adapters that will trigger an exception here.
      *
      * @param string $uri
-     *
-     * @return string
      */
     public function getFullPath($uri): string
     {
@@ -64,8 +61,10 @@ class FilesystemGroup extends MountManager
         $fs = $this->getFilesystem($prefix);
 
         if (!($fs instanceof Filesystem)) {
-            throw new InvalidArgumentException(sprintf('Filesystem for "%s" is not an instance of Filesystem.',
-                $prefix));
+            throw new InvalidArgumentException(sprintf(
+                'Filesystem for "%s" is not an instance of Filesystem.',
+                $prefix
+            ));
         }
 
         $adapter = $fs->getAdapter();
@@ -75,8 +74,10 @@ class FilesystemGroup extends MountManager
         }
 
         if (!($adapter instanceof Local)) {
-            throw new InvalidArgumentException(sprintf('Adapter for "%s" is not a Local or cached Local adapter.',
-                $prefix));
+            throw new InvalidArgumentException(sprintf(
+                'Adapter for "%s" is not a Local or cached Local adapter.',
+                $prefix
+            ));
         }
 
         $prefix = $adapter->getPathPrefix();
@@ -114,8 +115,6 @@ class FilesystemGroup extends MountManager
      *
      * @param string $uri
      * @param array $iteratorOptions
-     *
-     * @return Iterator
      */
     public function createIterator(string $uri, array $iteratorOptions = []): Iterator
     {

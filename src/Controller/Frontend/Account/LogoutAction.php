@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend\Account;
 
 use App\Http\Response;

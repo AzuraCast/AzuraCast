@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Event;
 
 use App\Entity\Api\NowPlaying;
@@ -67,6 +68,9 @@ class SendWebhooks extends Event
         return $this->np;
     }
 
+    /**
+     * @return string[]
+     */
     public function getTriggers(): array
     {
         return $this->triggers;

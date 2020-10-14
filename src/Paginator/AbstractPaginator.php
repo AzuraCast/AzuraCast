@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Paginator;
 
 use App\Http\Response;

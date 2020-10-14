@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Console\Application;
@@ -36,7 +37,7 @@ class Backup extends AbstractTask
      *
      * @param Message\AbstractMessage $message
      */
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
@@ -57,7 +58,7 @@ class Backup extends AbstractTask
      * @param bool $excludeMedia
      * @param string|null $outputPath
      *
-     * @return array [$result_code, $result_output]
+     * @return mixed[] [int $result_code, string|false $result_output]
      */
     public function runBackup(?string $path = null, bool $excludeMedia = false, ?string $outputPath = null): array
     {
@@ -118,7 +119,7 @@ class Backup extends AbstractTask
             }
 
             // Trigger a new backup.
-            $message = new Message\BackupMessage;
+            $message = new Message\BackupMessage();
             $message->path = 'automatic_backup.zip';
             $message->excludeMedia = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Entity;
@@ -33,9 +34,11 @@ class CustomFieldsController extends AbstractAdminCrudController
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
-        if (false !== $this->_doEdit($request, $id)) {
-            $request->getFlash()->addMessage(($id ? __('Custom Field updated.') : __('Custom Field added.')),
-                Flash::SUCCESS);
+        if (false !== $this->doEdit($request, $id)) {
+            $request->getFlash()->addMessage(
+                ($id ? __('Custom Field updated.') : __('Custom Field added.')),
+                Flash::SUCCESS
+            );
             return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
         }
 
@@ -48,7 +51,7 @@ class CustomFieldsController extends AbstractAdminCrudController
 
     public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $this->_doDelete($request, $id, $csrf);
+        $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Custom Field deleted.') . '</b>', Flash::SUCCESS);
 

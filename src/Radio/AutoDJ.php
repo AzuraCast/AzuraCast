@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio;
 
 use App\Entity;
@@ -47,8 +48,6 @@ class AutoDJ
      *
      * @param Entity\Station $station
      * @param bool $asAutoDj
-     *
-     * @return string
      */
     public function annotateNextSong(Entity\Station $station, $asAutoDj = false): string
     {
@@ -130,12 +129,14 @@ class AutoDJ
         $currentSongDuration = ($currentSong->getDuration() ?? 1);
         $adjustedNow = $this->getAdjustedNow($station, $started, $currentSongDuration);
 
-        $this->logger->debug('Got currently playing song. Using start time and duration for initial value of now.',
+        $this->logger->debug(
+            'Got currently playing song. Using start time and duration for initial value of now.',
             [
                 'song' => $currentSong->getText(),
                 'started' => (string)$started,
                 'duration' => $currentSongDuration,
-            ]);
+            ]
+        );
 
         // Return either the current timestamp (if it's later) or the scheduled end time.
         return max($now, $adjustedNow);
@@ -157,7 +158,8 @@ class AutoDJ
         /*
          * Calculate now from the end of the queue if the queue has items.
          * This assumes that the queue should always be full if a new row is added every time a row is removed.
-         * If the queue is empty, then we fall back to the value of now passed in by the caller, which may bor may not be accurate but is the best we have.
+         * If the queue is empty, then we fall back to the value of now passed in by the caller, which may bor may
+         * not be accurate but is the best we have.
          */
         foreach ($upcomingQueue as $queueRow) {
             if ($resetTimestampCued === true) {

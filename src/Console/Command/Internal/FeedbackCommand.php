@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
@@ -18,12 +19,12 @@ class FeedbackCommand extends CommandAbstract
         string $song = null,
         string $media = null,
         string $playlist = null
-    ) {
+    ): int {
         $station = $em->find(Entity\Station::class, $stationId);
 
         if (!($station instanceof Entity\Station)) {
             $io->write('false');
-            return null;
+            return 0;
         }
 
         try {
@@ -34,7 +35,7 @@ class FeedbackCommand extends CommandAbstract
             ]);
 
             $io->write('OK');
-            return null;
+            return 0;
         } catch (Exception $e) {
             $io->write('Error: ' . $e->getMessage());
             return 1;

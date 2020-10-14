@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -8,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class StationPlaylist extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
@@ -24,7 +25,7 @@ class StationPlaylist extends AbstractFixture implements DependentFixtureInterfa
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             Station::class,

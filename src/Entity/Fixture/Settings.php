@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -7,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class Settings extends AbstractFixture
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         $settings = [
             Entity\Settings::BASE_URL => getenv('INIT_BASE_URL') ?? 'docker.local',

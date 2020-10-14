@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Normalizer;
 
 use App\Exception\NoGetterAvailableException;
@@ -27,6 +28,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectToPopulateTrait;
 use Symfony\Component\Serializer\SerializerInterface;
+
 use function is_array;
 
 class DoctrineEntityNormalizer extends AbstractNormalizer
@@ -59,8 +61,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         $annotationReader = $annotationReader ?? $metadata_driver->getReader();
         $classMetadataFactory = $classMetadataFactory ?? new ClassMetadataFactory(
-                new AnnotationLoader($annotationReader)
-            );
+            new AnnotationLoader($annotationReader)
+        );
 
         $defaultContext[self::ALLOW_EXTRA_ATTRIBUTES] = false;
 
@@ -77,7 +79,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     public function setSerializer($serializer): void
     {
         if (!$serializer instanceof DenormalizerInterface || !$serializer instanceof NormalizerInterface) {
-            throw new InvalidArgumentException('Expected a serializer that also implements DenormalizerInterface and NormalizerInterface.');
+            throw new InvalidArgumentException(
+                'Expected a serializer that also implements DenormalizerInterface and NormalizerInterface.'
+            );
         }
 
         $this->serializer = $serializer;
@@ -111,7 +115,10 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                     $value = $this->getAttributeValue($object, $attribute, $format, $context);
 
                     /** @var callable|null $callback */
-                    $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? null;
+                    $callback = $context[self::CALLBACKS][$attribute]
+                        ?? $this->defaultContext[self::CALLBACKS][$attribute]
+                        ?? null;
+
                     if ($callback) {
                         $value = $callback($value, $object, $attribute, $format, $context);
                     }
@@ -133,10 +140,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string $class
      * @param string|null $format
      * @param array $context
-     *
-     * @return object
      */
-    public function denormalize($data, $class, string $format = null, array $context = [])
+    public function denormalize($data, $class, string $format = null, array $context = []): object
     {
         $object = $this->instantiateObject($data, $class, $context, new ReflectionClass($class), false, $format);
 
@@ -172,7 +177,10 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         foreach ((array)$data as $attribute => $value) {
             /** @var callable|null $callback */
-            $callback = $context[self::CALLBACKS][$attribute] ?? $this->defaultContext[self::CALLBACKS][$attribute] ?? null;
+            $callback = $context[self::CALLBACKS][$attribute]
+                ?? $this->defaultContext[self::CALLBACKS][$attribute]
+                ?? null;
+
             if ($callback) {
                 $value = $callback($value, $object, $attribute, $format, $context);
             }
@@ -260,8 +268,10 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                 : false;
 
             if (!$deep) {
-                throw new NoGetterAvailableException(sprintf('Deep normalization disabled for property %s.',
-                    $prop_name));
+                throw new NoGetterAvailableException(sprintf(
+                    'Deep normalization disabled for property %s.',
+                    $prop_name
+                ));
             }
 
             $prop_val = $this->getProperty($object, $prop_name);
@@ -324,8 +334,6 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @param string $var
      * @param string $prefix
-     *
-     * @return string
      */
     protected function getMethodName($var, $prefix = ''): string
     {
@@ -359,8 +367,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
                     if ($value) {
                         foreach ((array)$value as $field_id) {
-                            if (($field_item = $this->em->find($mapping['entity'],
-                                    $field_id)) instanceof $mapping['entity']) {
+                            $field_item = $field_item = $this->em->find($mapping['entity'], $field_id);
+                            if ($field_item instanceof $mapping['entity']) {
                                 $collection->add($field_item);
                             }
                         }
@@ -402,7 +410,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                             $value = strtotime($value . ' UTC');
                         }
 
-                        $dt = new DateTime;
+                        $dt = new DateTime();
                         $dt->setTimestamp($value);
                         $value = $dt;
                     }
@@ -445,8 +453,6 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
     /**
      * @param object|string $class
-     *
-     * @return bool
      */
     protected function isEntity($class): bool
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook\Connector;
 
 use App\Entity\StationWebhook;
@@ -12,8 +13,6 @@ interface ConnectorInterface
      *
      * @param SendWebhooks $event The current webhook dispatching event being evaluated.
      * @param StationWebhook $webhook
-     *
-     * @return bool
      */
     public function shouldDispatch(SendWebhooks $event, StationWebhook $webhook): bool;
 

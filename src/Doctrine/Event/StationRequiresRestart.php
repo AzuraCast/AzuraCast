@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine\Event;
 
 use App\Annotations\AuditLog\AuditIgnore;
@@ -22,7 +23,10 @@ class StationRequiresRestart implements EventSubscriber
         $this->reader = $reader;
     }
 
-    public function getSubscribedEvents()
+    /**
+     * @inheritDoc
+     */
+    public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush,
@@ -43,9 +47,11 @@ class StationRequiresRestart implements EventSubscriber
         $stations_to_restart = [];
         foreach ($collections_to_check as $change_type => $collection) {
             foreach ($collection as $entity) {
-                if (($entity instanceof Entity\StationMount)
+                if (
+                    ($entity instanceof Entity\StationMount)
                     || ($entity instanceof Entity\StationRemote && $entity->isEditable())
-                    || ($entity instanceof Entity\StationPlaylist && $entity->getStation()->useManualAutoDJ())) {
+                    || ($entity instanceof Entity\StationPlaylist && $entity->getStation()->useManualAutoDJ())
+                ) {
                     if (Entity\AuditLog::OPER_UPDATE === $change_type) {
                         $changes = $uow->getEntityChangeSet($entity);
 

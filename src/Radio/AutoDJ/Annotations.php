@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\AutoDJ;
 
 use App\Entity;
@@ -34,7 +35,10 @@ class Annotations implements EventSubscriberInterface
         $this->adapters = $adapters;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             AnnotateNextSong::class => [

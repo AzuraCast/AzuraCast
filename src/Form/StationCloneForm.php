@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Acl;
@@ -42,6 +43,9 @@ class StationCloneForm extends StationForm
         $this->media_sync = $media_sync;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\Station) {
@@ -56,27 +60,33 @@ class StationCloneForm extends StationForm
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
 
-            $copier = new DeepCopy\DeepCopy;
-            $copier->addFilter(new DeepCopy\Filter\Doctrine\DoctrineProxyFilter,
-                new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher);
-            $copier->addFilter(new DeepCopy\Filter\KeepFilter,
-                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song'));
-            $copier->addFilter(new DeepCopy\Filter\KeepFilter,
-                new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role'));
-            $copier->addFilter(new DeepCopy\Filter\KeepFilter,
-                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field'));
-
+            $copier = new DeepCopy\DeepCopy();
             $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                new DeepCopy\Filter\Doctrine\DoctrineProxyFilter(),
+                new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher()
+            );
+            $copier->addFilter(
+                new DeepCopy\Filter\KeepFilter(),
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song')
+            );
+            $copier->addFilter(
+                new DeepCopy\Filter\KeepFilter(),
+                new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role')
+            );
+            $copier->addFilter(
+                new DeepCopy\Filter\KeepFilter(),
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field')
+            );
+            $copier->addFilter(
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                 new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'history')
             );
             $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                 new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'sftp_users')
             );
-
             $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                 new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylist::class, 'media_items')
             );
 
@@ -89,7 +99,10 @@ class StationCloneForm extends StationForm
                 'field_id',
             ];
             foreach ($global_unsets as $prop) {
-                $copier->addFilter(new DeepCopy\Filter\SetNullFilter, new DeepCopy\Matcher\PropertyNameMatcher($prop));
+                $copier->addFilter(
+                    new DeepCopy\Filter\SetNullFilter(),
+                    new DeepCopy\Matcher\PropertyNameMatcher($prop)
+                );
             }
 
             // Unset some values only on Station entities.
@@ -105,50 +118,52 @@ class StationCloneForm extends StationForm
             ];
 
             foreach ($unset_values as $prop) {
-                $copier->addFilter(new DeepCopy\Filter\SetNullFilter,
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop));
+                $copier->addFilter(
+                    new DeepCopy\Filter\SetNullFilter(),
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop)
+                );
             }
 
             if (!$data['clone_playlists']) {
                 $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                     new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'playlists')
                 );
                 $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                     new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'playlists')
                 );
             }
 
             if (!$data['clone_streamers']) {
                 $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                     new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'streamers')
                 );
             }
 
             if (!$data['clone_permissions']) {
                 $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                     new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'permissions')
                 );
             }
 
             if ('none' === $data['clone_media']) {
                 $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                     new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'media')
                 );
             } else {
                 $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter,
+                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
                     new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'playlists')
                 );
             }
 
             // Execute the Doctrine entity copy.
             $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineCollectionFilter,
+                new DeepCopy\Filter\Doctrine\DoctrineCollectionFilter(),
                 new DeepCopy\Matcher\PropertyTypeMatcher(Collection::class)
             );
 
@@ -218,7 +233,7 @@ class StationCloneForm extends StationForm
 
             // Copy album art.
             if ('none' !== $data['clone_media']) {
-                $this->_copy(
+                $this->copy(
                     $record->getRadioAlbumArtDir(),
                     $new_record->getRadioAlbumArtDir()
                 );
@@ -226,7 +241,7 @@ class StationCloneForm extends StationForm
 
             // Copy media.
             if ('copy' === $data['clone_media']) {
-                $this->_copy(
+                $this->copy(
                     $record->getRadioMediaDir(),
                     $new_record->getRadioMediaDir()
                 );
@@ -252,7 +267,7 @@ class StationCloneForm extends StationForm
         return false;
     }
 
-    protected function _copy($src, $dest): void
+    protected function copy($src, $dest): void
     {
         foreach (scandir($src) as $file) {
             if (!is_readable($src . '/' . $file)) {
@@ -263,7 +278,7 @@ class StationCloneForm extends StationForm
                 if (!mkdir($concurrentDirectory = $dest . '/' . $file) && !is_dir($concurrentDirectory)) {
                     throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
                 }
-                $this->_copy($src . '/' . $file, $dest . '/' . $file);
+                $this->copy($src . '/' . $file, $dest . '/' . $file);
             } else {
                 copy($src . '/' . $file, $dest . '/' . $file);
             }

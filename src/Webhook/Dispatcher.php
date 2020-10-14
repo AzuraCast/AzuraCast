@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook;
 
 use App\ApiUtilities;
@@ -10,6 +11,7 @@ use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -43,7 +45,10 @@ class Dispatcher implements EventSubscriberInterface
         $this->connectors = $connectors;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         if (Settings::getInstance()->isTesting()) {
             return [];
@@ -62,7 +67,7 @@ class Dispatcher implements EventSubscriberInterface
      *
      * @param Message\AbstractMessage $message
      */
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\DispatchWebhookMessage) {
             $webhook = $this->em->find(Entity\StationWebhook::class, $message->webhook_id);
@@ -120,7 +125,7 @@ class Dispatcher implements EventSubscriberInterface
 
         // Trigger all appropriate webhooks.
         foreach ($enabledWebhooks as $webhook) {
-            $message = new Message\DispatchWebhookMessage;
+            $message = new Message\DispatchWebhookMessage();
             $message->webhook_id = $webhook->getId();
             $message->np = $event->getNowPlaying();
             $message->triggers = $event->getTriggers();
@@ -137,7 +142,6 @@ class Dispatcher implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param Entity\StationWebhook $webhook
      *
-     * @return TestHandler
      * @throws Exception
      */
     public function testDispatch(Entity\Station $station, Entity\StationWebhook $webhook): TestHandler

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
@@ -55,8 +56,6 @@ class SettingsController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -80,15 +79,18 @@ class SettingsController
      * @param ServerRequest $request
      * @param Response $response
      *
-     * @return ResponseInterface
      * @throws ValidationException
      */
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $api_settings_obj = $this->serializer->denormalize($request->getParsedBody(), Entity\Api\Admin\Settings::class,
-            null, [
+        $api_settings_obj = $this->serializer->denormalize(
+            $request->getParsedBody(),
+            Entity\Api\Admin\Settings::class,
+            null,
+            [
                 AbstractNormalizer::OBJECT_TO_POPULATE => $this->api_settings,
-            ]);
+            ]
+        );
 
         $errors = $this->validator->validate($api_settings_obj);
         if (count($errors) > 0) {

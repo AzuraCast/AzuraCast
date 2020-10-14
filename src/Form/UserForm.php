@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Config;
@@ -26,6 +27,9 @@ class UserForm extends EntityForm
         $this->entityClass = Entity\User::class;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.

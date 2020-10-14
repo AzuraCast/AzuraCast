@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Settings;
 
 use App\Console\Command\CommandAbstract;
@@ -11,7 +12,7 @@ class ListCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         Entity\Repository\SettingsRepository $settings_repo
-    ) {
+    ): int {
         $io->title(__('AzuraCast Settings'));
 
         $headers = [
@@ -29,5 +30,7 @@ class ListCommand extends CommandAbstract
         }
 
         $io->table($headers, $rows);
+
+        return 0;
     }
 }

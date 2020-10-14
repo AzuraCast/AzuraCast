@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Gravatar - Globally Recognized Avatars Connector
  */

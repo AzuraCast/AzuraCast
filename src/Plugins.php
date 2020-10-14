@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Doctrine\Inflector\Inflector;
@@ -46,7 +47,7 @@ class Plugins
      *
      * @param array $diDefinitions
      *
-     * @return array
+     * @return mixed[]
      */
     public function registerServices(array $diDefinitions = []): array
     {

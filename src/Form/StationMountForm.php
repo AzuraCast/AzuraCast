@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Config;
@@ -31,6 +32,9 @@ class StationMountForm extends EntityForm
         $this->form_configs = $form_configs;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         $record = parent::process($request, $record);

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Carbon\CarbonImmutable;
@@ -120,7 +121,7 @@ class StationRequest
         return $this->played_at;
     }
 
-    public function setPlayedAt(int $played_at)
+    public function setPlayedAt(int $played_at): void
     {
         $this->played_at = $played_at;
     }

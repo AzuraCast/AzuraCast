@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
@@ -25,8 +27,8 @@ final class Version20181202180617 extends AbstractMigration
                 throw new RuntimeException(sprintf('Directory "%s" was not created', $art_dir));
             }
 
-            $stmt = $this->connection->executeQuery('SELECT sm.unique_id, sma.art 
-                FROM station_media AS sm 
+            $stmt = $this->connection->executeQuery('SELECT sm.unique_id, sma.art
+                FROM station_media AS sm
                 JOIN station_media_art sma on sm.id = sma.media_id
                 WHERE sm.station_id = ?', [$station['id']], [ParameterType::INTEGER]);
 

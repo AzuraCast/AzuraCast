@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Settings;
@@ -9,7 +10,7 @@ class MigrateConfigCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         Settings $settings
-    ) {
+    ): int {
         $env_path = $settings[Settings::BASE_DIR] . '/env.ini';
         $iniSettings = [];
 
@@ -18,7 +19,7 @@ class MigrateConfigCommand extends CommandAbstract
 
             if (!empty($iniSettings['db_password'])) {
                 $io->writeln(__('Configuration already set up.'));
-                return null;
+                return 0;
             }
         }
 
@@ -59,6 +60,6 @@ class MigrateConfigCommand extends CommandAbstract
         file_put_contents($env_path, implode("\n", $ini_data));
 
         $io->writeln(__('Configuration successfully written.'));
-        return null;
+        return 0;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity\Repository\StationMediaRepository;
@@ -36,8 +37,6 @@ class GetArtAction
      * @param StationRepository $stationRepo
      * @param StationMediaRepository $mediaRepo
      * @param string $media_id
-     *
-     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequest $request,

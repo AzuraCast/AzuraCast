@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Api;
 
 use Carbon\CarbonImmutable;

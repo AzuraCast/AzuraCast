@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notification;
 
 use App\Acl;
@@ -36,7 +37,10 @@ class Manager implements EventSubscriberInterface
         $this->settingsRepo = $settingsRepo;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             GetNotifications::class => [
@@ -63,8 +67,12 @@ class Manager implements EventSubscriberInterface
         if ($compose_revision < 5) {
             $event->addNotification(new Notification(
                 __('Your <code>docker-compose.yml</code> file is out of date!'),
-                __('You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href="%s" target="_blank">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file.',
-                    'https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml'),
+                // phpcs:disable Generic.Files.LineLength
+                __(
+                    'You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href="%s" target="_blank">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file.',
+                    'https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml'
+                ),
+                // phpcs:enable
                 Notification::WARNING
             ));
         }
@@ -90,15 +98,22 @@ class Manager implements EventSubscriberInterface
         }
 
         $instructions_url = 'https://www.azuracast.com/administration/system/updating.html';
-        $instructions_string = __('Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.',
-            $instructions_url);
+        $instructions_string = __(
+            'Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.',
+            $instructions_url
+        );
 
         if ($update_data['needs_release_update']) {
             $notification_parts = [
-                '<b>' . __('AzuraCast <a href="%s" target="_blank">version %s</a> is now available.',
-                    'https://github.com/AzuraCast/AzuraCast/releases', $update_data['latest_release']) . '</b>',
-                __('You are currently running version %s. Updating is highly recommended.',
-                    $update_data['current_release']),
+                '<b>' . __(
+                    'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.',
+                    'https://github.com/AzuraCast/AzuraCast/releases',
+                    $update_data['latest_release']
+                ) . '</b>',
+                __(
+                    'You are currently running version %s. Updating is highly recommended.',
+                    $update_data['current_release']
+                ),
                 $instructions_string,
             ];
 
@@ -114,11 +129,15 @@ class Manager implements EventSubscriberInterface
             $notification_parts = [];
             if ($update_data['rolling_updates_available'] < 15 && !empty($update_data['rolling_updates_list'])) {
                 $notification_parts[] = __('The following improvements have been made since your last update:');
-                $notification_parts[] = nl2br('<ul><li>' . implode('</li><li>',
-                        $update_data['rolling_updates_list']) . '</li></ul>');
+                $notification_parts[] = nl2br('<ul><li>' . implode(
+                    '</li><li>',
+                    $update_data['rolling_updates_list']
+                ) . '</li></ul>');
             } else {
-                $notification_parts[] = '<b>' . __('Your installation is currently %d update(s) behind the latest version.',
-                        $update_data['rolling_updates_available']) . '</b>';
+                $notification_parts[] = '<b>' . __(
+                    'Your installation is currently %d update(s) behind the latest version.',
+                    $update_data['rolling_updates_available']
+                ) . '</b>';
                 $notification_parts[] = __('You should update to take advantage of bug and security fixes.');
             }
 
@@ -153,8 +172,12 @@ class Manager implements EventSubscriberInterface
 
             $event->addNotification(new Notification(
                 __('Installation Not Recently Backed Up'),
-                __('This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.',
-                    $backupUrl),
+                // phpcs:disable Generic.Files.LineLength
+                __(
+                    'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.',
+                    $backupUrl
+                ),
+                // phpcs:enable
                 Notification::INFO
             ));
         }

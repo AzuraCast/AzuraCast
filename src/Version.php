@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use DateTime;
@@ -40,7 +41,7 @@ class Version
     /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
-     * @return array
+     * @return mixed[]
      */
     public function getDetails(): array
     {
@@ -50,7 +51,7 @@ class Version
             $details = $this->cache->get('app_version_details');
 
             if (empty($details)) {
-                $details = $this->_getRawDetails();
+                $details = $this->getRawDetails();
                 $ttl = $this->app_settings->isProduction() ? 86400 : 600;
 
                 $this->cache->set('app_version_details', $details, $ttl);
@@ -63,9 +64,9 @@ class Version
     /**
      * Generate new repository details from the underlying Git repository.
      *
-     * @return array
+     * @return mixed[]
      */
-    protected function _getRawDetails(): array
+    protected function getRawDetails(): array
     {
         if (!is_dir($this->repo_dir . '/.git')) {
             return [];
@@ -74,13 +75,13 @@ class Version
         $details = [];
 
         // Get the long form of the latest commit's hash.
-        $latest_commit_hash = $this->_runProcess(['git', 'log', '--pretty=%H', '-n1', 'HEAD']);
+        $latest_commit_hash = $this->runProcess(['git', 'log', '--pretty=%H', '-n1', 'HEAD']);
 
         $details['commit'] = $latest_commit_hash;
         $details['commit_short'] = substr($latest_commit_hash, 0, 7);
 
         // Get the last commit's timestamp.
-        $latest_commit_date = $this->_runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']);
+        $latest_commit_date = $this->runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']);
 
         if (!empty($latest_commit_date)) {
             $commit_date = new DateTime($latest_commit_date);
@@ -93,9 +94,9 @@ class Version
             $details['commit_date'] = 'N/A';
         }
 
-        $last_tagged_commit = $this->_runProcess(['git', 'rev-list', '--tags', '--max-count=1']);
+        $last_tagged_commit = $this->runProcess(['git', 'rev-list', '--tags', '--max-count=1']);
         if (!empty($last_tagged_commit)) {
-            $details['tag'] = $this->_runProcess(['git', 'describe', '--tags', $last_tagged_commit], 'N/A');
+            $details['tag'] = $this->runProcess(['git', 'describe', '--tags', $last_tagged_commit], 'N/A');
         } else {
             $details['tag'] = self::FALLBACK_VERSION;
         }
@@ -108,10 +109,8 @@ class Version
      *
      * @param array $proc
      * @param string $default
-     *
-     * @return string
      */
-    protected function _runProcess($proc, $default = ''): string
+    protected function runProcess($proc, $default = ''): string
     {
         $process = new Process($proc);
         $process->setWorkingDirectory($this->repo_dir);
@@ -133,7 +132,12 @@ class Version
 
         if (isset($details['tag'])) {
             $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
-            $commitText = '#<a href="' . $commitLink . '" target="_blank">' . $details['commit_short'] . '</a> (' . $details['commit_date'] . ')';
+            $commitText = sprintf(
+                '#<a href="%s" target="_blank">%s</a> (%s)',
+                $commitLink,
+                $details['commit_short'],
+                $details['commit_date']
+            );
 
             if (isset($_ENV['AZURACAST_VERSION'])) {
                 if ('latest' === $_ENV['AZURACAST_VERSION']) {
@@ -169,8 +173,6 @@ class Version
 
     /**
      * Check if the installation has been modified by the user from the release build.
-     *
-     * @return bool
      */
     public function isInstallationModified(): bool
     {
@@ -179,7 +181,7 @@ class Version
             return true;
         }
 
-        $changed_files = $this->_runProcess(['git', 'status', '-s']);
+        $changed_files = $this->runProcess(['git', 'status', '-s']);
         return !empty($changed_files);
     }
 }

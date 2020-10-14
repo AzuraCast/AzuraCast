@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http;
 
 use App\Flysystem\FilesystemGroup;
@@ -48,7 +49,6 @@ final class Response extends \Slim\Http\Response
 
     /**
      * Returns whether the request has a "cache lifetime" assigned to it.
-     * @return bool
      */
     public function hasCacheLifetime(): bool
     {
@@ -66,8 +66,6 @@ final class Response extends \Slim\Http\Response
      * @param int|null $status
      * @param int $options
      * @param int $depth
-     *
-     * @return ResponseInterface
      */
     public function withJson($data, ?int $status = null, int $options = 0, int $depth = 512): ResponseInterface
     {
@@ -137,7 +135,7 @@ final class Response extends \Slim\Http\Response
         string $path,
         string $fileName = null,
         string $disposition = 'attachment'
-    ) {
+    ): ResponseInterface {
         $meta = $fs->getMetadata($path);
 
         try {

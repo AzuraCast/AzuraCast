@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use App\Http\ServerRequest;
@@ -7,6 +8,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+
 use const JSON_PRETTY_PRINT;
 
 class ViewFactory
@@ -70,7 +72,7 @@ class ViewFactory
             if (class_exists(VarCloner::class)) {
                 $varCloner = new VarCloner();
 
-                $dumper = new CliDumper;
+                $dumper = new CliDumper();
                 $dumpedValue = $dumper->dump($varCloner->cloneVar($value), true);
             } else {
                 $dumpedValue = json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
@@ -117,6 +119,5 @@ class ViewFactory
         $this->dispatcher->dispatch(new Event\BuildView($view));
 
         return $view;
-
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App;
@@ -52,9 +53,9 @@ class QueueController extends AbstractStationApiCrudController
         $station = $request->getStation();
 
         $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, sp, sm
-            FROM App\Entity\StationQueue sq 
+            FROM App\Entity\StationQueue sq
             LEFT JOIN sq.media sm
-            LEFT JOIN sq.playlist sp 
+            LEFT JOIN sq.playlist sp
             WHERE sq.station = :station
             ORDER BY sq.timestamp_cued ASC')
             ->setParameter('station', $station);
@@ -98,15 +99,15 @@ class QueueController extends AbstractStationApiCrudController
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}}
      * )
-     *
+     */
+
+    /**
      * @param mixed $record
      * @param ServerRequest $request
      *
-     * @return Entity\Api\QueuedSong
      * @throws App\Exception
      */
-
-    protected function viewRecord($record, ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request): Entity\Api\QueuedSong
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

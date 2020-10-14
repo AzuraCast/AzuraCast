@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity\Repository\StationScheduleRepository;
@@ -45,8 +46,6 @@ class ScheduleController extends AbstractStationApiCrudController
      * @param EntityManagerInterface $em
      * @param CacheInterface $cache
      * @param StationScheduleRepository $scheduleRepo
-     *
-     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequest $request,

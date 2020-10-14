@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 /**
@@ -8,8 +9,6 @@ class File
 {
     /**
      * @param string $path
-     *
-     * @return string
      */
     public static function sanitizePathPrefix(string $path): string
     {
@@ -29,8 +28,6 @@ class File
      * Credit to: http://stackoverflow.com/a/19018736
      *
      * @param string $str
-     *
-     * @return string
      */
     public static function sanitizeFileName($str): string
     {

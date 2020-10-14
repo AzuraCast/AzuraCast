@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
@@ -40,7 +42,6 @@ final class Version20190513163051 extends AbstractMigration
 
         // Calculate the offset of any currently scheduled playlists.
         if ('UTC' !== $global_tz) {
-
             $system_tz = new DateTimeZone('UTC');
             $system_dt = new DateTime('now', $system_tz);
             $system_offset = $system_tz->getOffset($system_dt);
@@ -53,18 +54,16 @@ final class Version20190513163051 extends AbstractMigration
             $offset_hours = (int)floor($offset / 3600);
 
             if (0 !== $offset_hours) {
-
                 $playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp WHERE sp.type = "scheduled"');
 
                 foreach ($playlists as $playlist) {
                     $this->connection->update('station_playlists', [
-                        'schedule_start_time' => $this->_applyOffset($playlist['schedule_start_time'], $offset_hours),
-                        'schedule_end_time' => $this->_applyOffset($playlist['schedule_end_time'], $offset_hours),
+                        'schedule_start_time' => $this->applyOffset($playlist['schedule_start_time'], $offset_hours),
+                        'schedule_end_time' => $this->applyOffset($playlist['schedule_end_time'], $offset_hours),
                     ], [
                         'id' => $playlist['id'],
                     ]);
                 }
-
             }
         }
     }
@@ -75,7 +74,7 @@ final class Version20190513163051 extends AbstractMigration
      *
      * @return int
      */
-    protected function _applyOffset($time_code, $offset_hours): int
+    protected function applyOffset($time_code, $offset_hours): int
     {
         $hours = (int)floor($time_code / 100);
         $mins = $time_code % 100;

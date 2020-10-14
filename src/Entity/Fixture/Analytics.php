@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -9,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class Analytics extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         $stations = $em->getRepository(Entity\Station::class)->findAll();
 
@@ -63,7 +64,10 @@ class Analytics extends AbstractFixture implements DependentFixtureInterface
         $em->flush();
     }
 
-    public function getDependencies()
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
     {
         return [
             Station::class,

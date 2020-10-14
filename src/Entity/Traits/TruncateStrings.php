@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Traits;
 
 trait TruncateStrings
@@ -8,8 +9,6 @@ trait TruncateStrings
      *
      * @param null|string $string
      * @param int $length
-     *
-     * @return null|string
      */
     protected function truncateString(?string $string = null, $length = 255): ?string
     {

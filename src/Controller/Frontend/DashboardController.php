@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend;
 
 use App\Acl;
@@ -116,8 +117,10 @@ class DashboardController
         }
 
         // Detect current analytics level.
-        $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
-            Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $this->settingsRepo->getSetting(
+            Entity\Settings::LISTENER_ANALYTICS,
+            Entity\Analytics::LEVEL_ALL
+        );
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $metrics = null;
@@ -132,7 +135,7 @@ class DashboardController
 
             $metrics = $this->cache->get($cache_name);
             if (empty($metrics)) {
-                $metrics = $this->_getMetrics($view_stations, $show_admin);
+                $metrics = $this->getMetrics($view_stations, $show_admin);
                 $this->cache->set($cache_name, $metrics, 600);
             }
         }
@@ -146,14 +149,17 @@ class DashboardController
         ]);
     }
 
-    protected function _getMetrics(array $view_stations, bool $show_admin = false): array
+    /**
+     * @return mixed[]
+     */
+    protected function getMetrics(array $view_stations, bool $show_admin = false): array
     {
         // Statistics by day.
         $station_averages = [];
 
         $threshold = CarbonImmutable::parse('-180 days');
 
-        $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.moment, a.number_avg, a.number_unique 
+        $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.moment, a.number_avg, a.number_unique
             FROM App\Entity\Analytics a
             WHERE (a.station_id IS NULL OR a.station_id IN (:stations))
             AND a.type = :type
@@ -190,7 +196,7 @@ class DashboardController
 
         foreach ($metric_stations as $station_id => $station_name) {
             if (isset($station_averages[$station_id])) {
-                $series_obj = new stdClass;
+                $series_obj = new stdClass();
                 $series_obj->label = $station_name;
                 $series_obj->type = 'line';
                 $series_obj->fill = false;
@@ -202,13 +208,17 @@ class DashboardController
 
                 $series_data = [];
                 foreach ($station_averages[$station_id] as $serie) {
-                    $series_row = new stdClass;
+                    $series_row = new stdClass();
                     $series_row->t = $serie[0];
                     $series_row->y = $serie[1];
                     $series_data[] = $series_row;
 
                     $serie_date = gmdate('Y-m-d', $serie[0] / 1000);
-                    $station_metrics_alt[] = '<dt><time data-original="' . $serie[0] . '">' . $serie_date . '</time></dt>';
+                    $station_metrics_alt[] = sprintf(
+                        '<dt><time data-original="%s">%s</time></dt>',
+                        $serie[0],
+                        $serie_date
+                    );
                     $station_metrics_alt[] = '<dd>' . $serie[1] . ' ' . __('Listeners') . '</dd>';
                 }
 

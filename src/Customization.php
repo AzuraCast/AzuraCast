@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use App\Entity;
@@ -71,8 +72,6 @@ class Customization
      * Return the user-customized, browser-specified or system default locale.
      *
      * @param Request|null $request
-     *
-     * @return string
      */
     protected function initLocale(?Request $request = null): string
     {
@@ -120,9 +119,6 @@ class Customization
         return self::DEFAULT_LOCALE;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
@@ -138,8 +134,6 @@ class Customization
 
     /**
      * Returns the user-customized or system default theme.
-     *
-     * @return string
      */
     public function getTheme(): string
     {
@@ -148,8 +142,6 @@ class Customization
 
     /**
      * Get the instance name for this AzuraCast instance.
-     *
-     * @return string
      */
     public function getInstanceName(): string
     {
@@ -158,8 +150,6 @@ class Customization
 
     /**
      * Get the theme name to be used in public (non-logged-in) pages.
-     *
-     * @return string
      */
     public function getPublicTheme(): string
     {
@@ -168,8 +158,6 @@ class Customization
 
     /**
      * Return the administrator-supplied custom CSS for public (minimal layout) pages, if specified.
-     *
-     * @return string
      */
     public function getCustomPublicCss(): string
     {
@@ -178,8 +166,6 @@ class Customization
 
     /**
      * Return the administrator-supplied custom JS for public (minimal layout) pages, if specified.
-     *
-     * @return string
      */
     public function getCustomPublicJs(): string
     {
@@ -188,8 +174,6 @@ class Customization
 
     /**
      * Return the administrator-supplied custom CSS for internal (full layout) pages, if specified.
-     *
-     * @return string
      */
     public function getCustomInternalCss(): string
     {
@@ -198,8 +182,6 @@ class Customization
 
     /**
      * Return whether to show or hide album art on public pages.
-     *
-     * @return bool
      */
     public function hideAlbumArt(): bool
     {
@@ -210,8 +192,6 @@ class Customization
      * Return the calculated page title given branding settings and the application environment.
      *
      * @param string|null $title
-     *
-     * @return string
      */
     public function getPageTitle($title = null): string
     {
@@ -234,17 +214,12 @@ class Customization
 
     /**
      * Return whether to show or hide the AzuraCast name from public-facing pages.
-     *
-     * @return bool
      */
     public function hideProductName(): bool
     {
         return (bool)$this->settingsRepo->getSetting(Entity\Settings::HIDE_PRODUCT_NAME, false);
     }
 
-    /**
-     * @return bool
-     */
     public function useWebSocketsForNowPlaying(): bool
     {
         if (!NChan::isSupported()) {
@@ -273,5 +248,4 @@ class Customization
 
         $translator->register();
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Field;
 
 class File extends \AzuraForms\Field\File
@@ -18,17 +19,22 @@ class File extends \AzuraForms\Field\File
         $button_text = $this->options['button_text'];
 
         if ($this->options['button_icon'] !== null) {
-            $button_text .= sprintf(' <i class="material-icons" aria-hidden="true">%1$s</i>',
-                $this->options['button_icon']);
+            $button_text .= sprintf(
+                ' <i class="material-icons" aria-hidden="true">%1$s</i>',
+                $this->options['button_icon']
+            );
         }
 
+        // phpcs:disable Generic.Files.LineLength
         $output = '<button name="%1$s_button" id="%2$s_%1$s_button" class="file-upload btn btn-primary btn-block text-center %3$s" type="button">';
         $output .= '%4$s';
         $output .= '</button>';
         $output .= '<small class="file-name"></small>';
         $output .= '<input type="file" name="%1$s" id="%2$s_%1$s" style="visibility: hidden; position: absolute; left: -9999px;">';
+        // phpcs:enable
 
-        return sprintf($output,
+        return sprintf(
+            $output,
             $this->getFullName(),
             $form_name,
             $class,

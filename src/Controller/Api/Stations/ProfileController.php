@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -19,7 +20,7 @@ class ProfileController
         $frontend = $request->getStationFrontend();
         $remotes = $request->getStationRemotes();
 
-        $apiResponse = new Entity\Api\StationProfile;
+        $apiResponse = new Entity\Api\StationProfile();
 
         $apiResponse->cache = 'database';
         $apiResponse->station = $station->api(

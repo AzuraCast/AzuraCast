@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Remote;
 
 use App\Entity;
@@ -28,8 +29,10 @@ class AzuraRelay extends AbstractRemote
 
             $npNew = Result::fromArray($npRaw);
 
-            $this->logger->debug('Response for remote relay',
-                ['remote' => $remote->getDisplayName(), 'response' => $npNew]);
+            $this->logger->debug(
+                'Response for remote relay',
+                ['remote' => $remote->getDisplayName(), 'response' => $npNew]
+            );
 
             $remote->setListenersTotal($np->listeners->total);
             $remote->setListenersUnique($np->listeners->unique);
@@ -66,9 +69,11 @@ class AzuraRelay extends AbstractRemote
 
         $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
 
-        if ($use_radio_proxy
+        if (
+            $use_radio_proxy
             || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
-            || 'https' === $base_url->getScheme()) {
+            || 'https' === $base_url->getScheme()
+        ) {
             // Web proxy support.
             return (string)$base_url
                 ->withPath($base_url->getPath() . '/radio/' . $radio_port . $remote->getMount());

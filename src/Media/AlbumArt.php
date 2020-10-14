@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Media;
 
 use RuntimeException;
@@ -46,8 +47,18 @@ class AlbumArt
                 }
 
                 $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
-                imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width,
-                    $thumbnail_image_height, $source_image_width, $source_image_height);
+                imagecopyresampled(
+                    $thumbnail_gd_image,
+                    $source_gd_image,
+                    0,
+                    0,
+                    0,
+                    0,
+                    $thumbnail_image_width,
+                    $thumbnail_image_height,
+                    $source_image_width,
+                    $source_image_height
+                );
             }
 
             ob_start();

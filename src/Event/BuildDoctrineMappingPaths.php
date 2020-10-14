@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
@@ -14,6 +15,9 @@ class BuildDoctrineMappingPaths extends Event
         $this->baseDir = $baseDir;
     }
 
+    /**
+     * @return string[]
+     */
     public function getMappingClassesPaths(): array
     {
         return $this->mappingClassesPaths;

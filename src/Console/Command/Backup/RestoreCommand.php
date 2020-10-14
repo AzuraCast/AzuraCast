@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Backup;
 
 use App\Console\Command\CommandAbstract;
@@ -8,6 +9,7 @@ use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use const PATHINFO_EXTENSION;
 
 class RestoreCommand extends CommandAbstract
@@ -19,7 +21,7 @@ class RestoreCommand extends CommandAbstract
         OutputInterface $output,
         EntityManagerInterface $em,
         string $path
-    ) {
+    ): int {
         $start_time = microtime(true);
 
         $io->title('AzuraCast Restore');

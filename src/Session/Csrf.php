@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Session;
 
 use App\Exception;
@@ -31,8 +32,6 @@ class Csrf
      * a CSRF token will last the time specified in $this->_csrf_lifetime.
      *
      * @param string $namespace
-     *
-     * @return null|string
      */
     public function generate(string $namespace = self::DEFAULT_NAMESPACE): ?string
     {

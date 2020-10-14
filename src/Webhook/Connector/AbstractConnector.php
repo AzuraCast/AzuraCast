@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook\Connector;
 
 use App\Entity;
@@ -44,7 +45,7 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param array $raw_vars
      * @param Entity\Api\NowPlaying $np
      *
-     * @return array
+     * @return mixed[]
      */
     public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
     {
@@ -53,11 +54,14 @@ abstract class AbstractConnector implements ConnectorInterface
 
         foreach ($raw_vars as $var_key => $var_value) {
             // Replaces {{ var.name }} with the flattened $values['var.name']
-            $vars[$var_key] = preg_replace_callback("/\{\{(\s*)([a-zA-Z0-9\-_\.]+)(\s*)\}\}/",
+            $vars[$var_key] = preg_replace_callback(
+                "/\{\{(\s*)([a-zA-Z0-9\-_\.]+)(\s*)\}\}/",
                 function ($matches) use ($values) {
                     $inner_value = strtolower(trim($matches[2]));
                     return $values[$inner_value] ?? '';
-                }, $var_value);
+                },
+                $var_value
+            );
         }
 
         return $vars;
@@ -67,8 +71,6 @@ abstract class AbstractConnector implements ConnectorInterface
      * Determine if a passed URL is valid and return it if so, or return null otherwise.
      *
      * @param string|null $url_string
-     *
-     * @return string|null
      */
     protected function getValidUrl(?string $url_string = null): ?string
     {

@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Settings;
 use App\Version;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use function OpenApi\scan;
 
 class GenerateApiDocsCommand extends CommandAbstract
@@ -11,7 +13,7 @@ class GenerateApiDocsCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         Settings $settings
-    ) {
+    ): int {
         define('AZURACAST_API_URL', 'https://demo.azuracast.com/api');
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define('AZURACAST_VERSION', Version::FALLBACK_VERSION);
@@ -37,5 +39,3 @@ class GenerateApiDocsCommand extends CommandAbstract
         return 0;
     }
 }
-
-

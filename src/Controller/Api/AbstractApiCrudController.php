@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api;
 
 use App\Exception\ValidationException;
@@ -63,6 +64,9 @@ abstract class AbstractApiCrudController
         return $paginator->write($response);
     }
 
+    /**
+     * @return mixed
+     */
     protected function viewRecord($record, ServerRequest $request)
     {
         if (!($record instanceof $this->entityClass)) {
@@ -84,9 +88,9 @@ abstract class AbstractApiCrudController
      * @param object $record
      * @param array $context
      *
-     * @return array|mixed
+     * @return mixed[]
      */
-    protected function toArray($record, array $context = [])
+    protected function toArray($record, array $context = []): array
     {
         return $this->serializer->normalize($record, null, array_merge($context, [
             ObjectNormalizer::ENABLE_MAX_DEPTH => true,
@@ -127,8 +131,6 @@ abstract class AbstractApiCrudController
      * @param array|null $data
      * @param object|null $record
      * @param array $context
-     *
-     * @return object
      */
     protected function editRecord($data, $record = null, array $context = []): object
     {
@@ -155,8 +157,6 @@ abstract class AbstractApiCrudController
      * @param array $data
      * @param object|null $record
      * @param array $context
-     *
-     * @return object
      */
     protected function fromArray($data, $record = null, array $context = []): object
     {

@@ -1,7 +1,9 @@
 <?php
+
 namespace App;
 
 use App\Entity;
+
 use function in_array;
 use function is_array;
 
@@ -33,7 +35,7 @@ class Acl
 
     protected Entity\Repository\RolePermissionRepository $permission_repo;
 
-    protected ?array $_actions;
+    protected ?array $actions;
 
     public function __construct(Entity\Repository\RolePermissionRepository $rolePermissionRepository)
     {
@@ -46,14 +48,12 @@ class Acl
      */
     public function reload(): void
     {
-        $this->_actions = $this->permission_repo->getActionsForAllRoles();
+        $this->actions = $this->permission_repo->getActionsForAllRoles();
     }
 
     /**
      * @param string $permission_name
      * @param bool $is_global
-     *
-     * @return bool
      */
     public static function isValidPermission($permission_name, $is_global): bool
     {
@@ -65,7 +65,7 @@ class Acl
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public static function listPermissions(): array
     {
@@ -118,11 +118,11 @@ class Acl
     public function checkPermission(?Entity\User $user = null, $action, $station_id = null): void
     {
         if (!($user instanceof Entity\User)) {
-            throw new Exception\NotLoggedInException;
+            throw new Exception\NotLoggedInException();
         }
 
         if (!$this->userAllowed($user, $action, $station_id)) {
-            throw new Exception\PermissionDeniedException;
+            throw new Exception\PermissionDeniedException();
         }
     }
 
@@ -132,8 +132,6 @@ class Acl
      * @param Entity\User|null $user
      * @param string|array $action
      * @param int|Entity\Station|null $station_id
-     *
-     * @return bool
      */
     public function userAllowed(?Entity\User $user = null, $action, $station_id = null): bool
     {
@@ -171,8 +169,6 @@ class Acl
      * @param int|array $role_id
      * @param string|array $action
      * @param int|Entity\Station|null $station_id
-     *
-     * @return bool
      */
     public function roleAllowed($role_id, $action, $station_id = null): bool
     {
@@ -202,8 +198,8 @@ class Acl
             return false;
         }
 
-        if (!empty($this->_actions[$role_id])) {
-            $role_actions = (array)$this->_actions[$role_id];
+        if (!empty($this->actions[$role_id])) {
+            $role_actions = (array)$this->actions[$role_id];
 
             if (in_array(self::GLOBAL_ALL, (array)$role_actions['global'], true)) {
                 return true;

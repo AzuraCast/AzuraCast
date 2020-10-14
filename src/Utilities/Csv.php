@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utilities;
 
 class Csv
@@ -8,8 +9,6 @@ class Csv
      *
      * @param array $table_data
      * @param bool $headers_first_row
-     *
-     * @return string
      */
     public static function arrayToCsv($table_data, $headers_first_row = true): string
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use App\Http\ServerRequest;
@@ -6,8 +7,6 @@ use Redis;
 
 class RateLimit
 {
-    public const NAMESPACE_SEPARATOR = '|';
-
     protected Redis $redis;
 
     protected Settings $settings;
@@ -24,7 +23,6 @@ class RateLimit
      * @param int $timeout
      * @param int $interval
      *
-     * @return bool
      * @throws Exception\RateLimitExceededException
      */
     public function checkRateLimit(
@@ -38,8 +36,11 @@ class RateLimit
         }
 
         $ip = $request->getIp();
-        $cache_name = 'rate_limit' . self::NAMESPACE_SEPARATOR . $group_name . self::NAMESPACE_SEPARATOR . str_replace(':',
-                '.', $ip);
+        $cache_name = sprintf(
+            'rate_limit|%s|%s',
+            $group_name,
+            str_replace(':', '.', $ip)
+        );
 
         $result = $this->redis->get($cache_name);
 

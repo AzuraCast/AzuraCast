@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use App\Http\Factory\ServerRequestFactory;
@@ -50,7 +51,7 @@ class AppFactory
         Logger::setInstance($di->get(LoggerInterface::class));
 
         ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
-        ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory);
+        ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory());
 
         $app = self::createFromContainer($di);
         $di->set(App::class, $app);
@@ -61,6 +62,9 @@ class AppFactory
         return $app;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected static function buildSettings(array $settings): array
     {
         if (!isset($settings[Settings::BASE_DIR])) {
@@ -127,8 +131,12 @@ class AppFactory
         ini_set('display_startup_errors', !$settings->isProduction() ? '1' : '0');
         ini_set('display_errors', !$settings->isProduction() ? '1' : '0');
         ini_set('log_errors', '1');
-        ini_set('error_log',
-            $settings[Settings::IS_DOCKER] ? '/dev/stderr' : $settings[Settings::TEMP_DIR] . '/php_errors.log');
+        ini_set(
+            'error_log',
+            $settings[Settings::IS_DOCKER]
+                ? '/dev/stderr'
+                : $settings[Settings::TEMP_DIR] . '/php_errors.log'
+        );
         ini_set('session.use_only_cookies', '1');
         ini_set('session.cookie_httponly', '1');
         ini_set('session.cookie_lifetime', '86400');
@@ -141,7 +149,7 @@ class AppFactory
 
     protected static function buildContainer(Settings $settings, array $diDefinitions = []): DI\Container
     {
-        $containerBuilder = new DI\ContainerBuilder;
+        $containerBuilder = new DI\ContainerBuilder();
         $containerBuilder->useAnnotations(true);
         $containerBuilder->useAutowiring(true);
 
@@ -169,7 +177,7 @@ class AppFactory
     {
         $responseFactory = $container->has(ResponseFactoryInterface::class)
             ? $container->get(ResponseFactoryInterface::class)
-            : new Http\Factory\ResponseFactory;
+            : new Http\Factory\ResponseFactory();
 
         $callableResolver = $container->has(CallableResolverInterface::class)
             ? $container->get(CallableResolverInterface::class)

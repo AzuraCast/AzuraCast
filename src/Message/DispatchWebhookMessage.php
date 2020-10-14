@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Message;
 
 use App\Entity\Api\NowPlaying;

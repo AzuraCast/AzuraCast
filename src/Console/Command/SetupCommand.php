@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Entity;
@@ -21,7 +22,7 @@ class SetupCommand extends CommandAbstract
         AzuraCastCentral $acCentral,
         bool $update = false,
         bool $loadFixtures = false
-    ) {
+    ): int {
         $io->title(__('AzuraCast Setup'));
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 

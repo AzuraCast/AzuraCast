@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Entity\Repository\StationRepository;
@@ -15,7 +16,7 @@ class RestartRadioCommand extends CommandAbstract
         StationRepository $stationRepo,
         Configuration $configuration,
         ?string $stationName = null
-    ) {
+    ): int {
         if (!empty($stationName)) {
             $station = $stationRepo->findByIdentifier($stationName);
 

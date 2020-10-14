@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command;
 
 use App;
@@ -9,7 +10,7 @@ class SyncCommand extends CommandAbstract
     public function __invoke(
         Runner $sync,
         string $task = 'nowplaying'
-    ) {
+    ): int {
         switch ($task) {
             case 'long':
                 $sync->syncLong();

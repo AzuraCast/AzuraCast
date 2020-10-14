@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware;
 
 use App\Entity;

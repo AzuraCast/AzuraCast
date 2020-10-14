@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\ApiUtilities;
@@ -81,7 +82,7 @@ class ListAction
             $sortField = $params['sort'];
             $sortDirection = $params['sortOrder'] ?? Criteria::ASC;
 
-            $criteria = new Criteria;
+            $criteria = new Criteria();
             $criteria->orderBy([$sortField => $sortDirection]);
 
             $trackList = $trackList->matching($criteria);
@@ -91,6 +92,9 @@ class ListAction
         return $paginator->write($response);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function buildTrackList(Entity\Station $station, RouterInterface $router): array
     {
         $list = [];
@@ -108,7 +112,7 @@ class ListAction
             $query = $this->em->createQuery(/** @lang DQL */ '
                 SELECT sm FROM App\Entity\StationMedia sm
                 WHERE sm.id IN (
-                    SELECT spm.media_id 
+                    SELECT spm.media_id
                     FROM App\Entity\StationPlaylistMedia spm
                     WHERE spm.playlist_id = :playlist_id
                 )

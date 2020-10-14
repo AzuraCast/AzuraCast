@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Entity;
@@ -20,7 +21,7 @@ class PlayerAction
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException;
+            throw new StationNotFoundException();
         }
 
         $np = [

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Controller\AbstractLogViewerController;
@@ -38,6 +39,9 @@ class LogsController extends AbstractLogViewerController
         ]);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getGlobalLogs(): array
     {
         $tempDir = Settings::getInstance()->getTempDirectory();

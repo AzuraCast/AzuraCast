@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations\Waveform;
 
 use App\Entity\Api\Error;

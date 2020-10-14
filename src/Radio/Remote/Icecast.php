@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Remote;
 
 use NowPlaying\Adapter\AdapterFactory;

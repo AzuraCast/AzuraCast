@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\MessageQueue;
 
 use App\Console\Command\CommandAbstract;
@@ -20,7 +21,7 @@ class ProcessCommand extends CommandAbstract
         LoggerInterface $logger,
         EntityManagerInterface $em,
         int $runtime = 0
-    ) {
+    ): int {
         $receivers = $queueManager->getTransports();
 
         $eventDispatcher->addSubscriber(new ClearEntityManagerSubscriber($em));

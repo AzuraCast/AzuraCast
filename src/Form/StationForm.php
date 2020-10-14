@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Acl;
@@ -57,6 +58,9 @@ class StationForm extends EntityForm
         parent::configure($options);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
@@ -71,18 +75,20 @@ class StationForm extends EntityForm
         }
 
         if (!SHOUTcast::isInstalled()) {
-            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
-                $request->getRouter()->named('admin:install_shoutcast:index'));
+            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __(
+                'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
+                $request->getRouter()->named('admin:install_shoutcast:index')
+            );
         }
 
         $create_mode = (null === $record);
         if (!$create_mode) {
-            $this->populate($this->_normalizeRecord($record));
+            $this->populate($this->normalizeRecord($record));
         }
 
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
-            $record = $this->_denormalizeToRecord($data, $record);
+            $record = $this->denormalizeToRecord($data, $record);
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -156,6 +157,9 @@ class AuditLog
         return $this->target;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getChanges(): array
     {
         return $this->changes;

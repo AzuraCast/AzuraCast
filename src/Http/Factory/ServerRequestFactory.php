@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Factory;
 
 use App\Http\ServerRequest;
@@ -12,7 +13,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface, ServerReque
 {
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        $serverRequestFactory = new GuzzleServerRequestFactory;
+        $serverRequestFactory = new GuzzleServerRequestFactory();
 
         $serverRequest = $serverRequestFactory->createServerRequest($method, $uri, $serverParams);
         return $this->decorateServerRequest($serverRequest);
@@ -20,17 +21,12 @@ class ServerRequestFactory implements ServerRequestFactoryInterface, ServerReque
 
     /**
      * @param ServerRequestInterface $request
-     *
-     * @return ServerRequestInterface
      */
     public function decorateServerRequest(ServerRequestInterface $request): ServerRequestInterface
     {
         return new ServerRequest($request);
     }
 
-    /**
-     * @return ServerRequestInterface
-     */
     public function createServerRequestFromGlobals(): ServerRequestInterface
     {
         return $this->decorateServerRequest(GuzzleServerRequest::fromGlobals());

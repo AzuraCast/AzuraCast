@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Entity;
@@ -51,7 +52,7 @@ class FolderPlaylists extends AbstractTask
 
     public function syncPlaylistFolders(Entity\Station $station): void
     {
-        $folderPlaylists = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $folderPlaylists = $this->em->createQuery(/** @lang DQL */ 'SELECT
             spf, sp
             FROM App\Entity\StationPlaylistFolder spf
             JOIN spf.playlist sp
@@ -76,7 +77,7 @@ class FolderPlaylists extends AbstractTask
 
         $this->em->flush();
 
-        $mediaInFolderQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $mediaInFolderQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm
             FROM App\Entity\StationMedia sm
             WHERE sm.station = :station
@@ -92,8 +93,10 @@ class FolderPlaylists extends AbstractTask
                     /** @var Entity\StationMedia $media */
                     /** @var Entity\StationPlaylist $playlist */
 
-                    if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()
-                        && Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
+                    if (
+                        Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()
+                        && Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()
+                    ) {
                         $this->spmRepo->addMediaToPlaylist($media, $playlist);
                     }
                 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
@@ -64,7 +65,7 @@ class FlowUploadAction
             $station->addStorageUsed($flowResponse['size']);
             $em->flush();
 
-            return $response->withJson(new Entity\Api\Status);
+            return $response->withJson(new Entity\Api\Status());
         }
 
         return $response->withJson(['success' => false]);

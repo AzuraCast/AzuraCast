@@ -109,6 +109,7 @@
     "dev-test": [
       "@phplint",
       "@phpstan",
+      "@phpcs",
       "@codeception-no-coverage"
     ],
     "phplint": "phplint",

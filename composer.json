@@ -91,7 +91,8 @@
     "phpunit/php-timer": "^5.0",
     "phpunit/phpunit": "^9.2",
     "roave/security-advisories": "dev-master",
-    "squizlabs/php_codesniffer": "3.*",
+    "slevomat/coding-standard": "^6.4",
+    "squizlabs/php_codesniffer": "^3.5",
     "symfony/var-dumper": "^5.1"
   },
   "replace": {
@@ -112,6 +113,7 @@
     ],
     "phplint": "phplint",
     "phpstan": "phpstan analyze",
+    "phpcs": "phpcs",
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
     "ci-import-locales": [

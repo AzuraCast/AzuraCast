@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Doctrine\Inflector\Inflector;

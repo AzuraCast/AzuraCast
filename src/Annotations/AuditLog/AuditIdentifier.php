@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Annotations\AuditLog;
 
 use Doctrine\Common\Annotations\Annotation;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
@@ -39,12 +40,12 @@ abstract class AbstractStationCrudController
      *
      * @return object|bool|null
      */
-    protected function _doEdit(ServerRequest $request, $id = null)
+    protected function doEdit(ServerRequest $request, $id = null)
     {
         $station = $request->getStation();
         $this->form->setStation($station);
 
-        $record = $this->_getRecord($station, $id);
+        $record = $this->getRecord($station, $id);
         return $this->form->process($request, $record);
     }
 
@@ -54,7 +55,7 @@ abstract class AbstractStationCrudController
      *
      * @return object|null
      */
-    protected function _getRecord(Station $station, $id = null): ?object
+    protected function getRecord(Station $station, $id = null): ?object
     {
         if (null === $id) {
             return null;
@@ -80,11 +81,11 @@ abstract class AbstractStationCrudController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    protected function _doDelete(ServerRequest $request, $id, $csrf): void
+    protected function doDelete(ServerRequest $request, $id, $csrf): void
     {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->getRecord($request->getStation(), $id);
 
         if ($record instanceof $this->entity_class) {
             $this->em->remove($record);

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exception;
 
 use App\Exception;
@@ -7,6 +8,7 @@ use Throwable;
 
 class AdvancedFeatureException extends Exception
 {
+    // phpcs:disable Generic.Files.LineLength
     public function __construct(
         string $message = 'This feature is considered "advanced", and advanced features are not currently enabled on this installation. Update your "azuracast.env" file on your host to enable these features.',
         int $code = 0,
@@ -15,4 +17,5 @@ class AdvancedFeatureException extends Exception
     ) {
         parent::__construct($message, $code, $previous, $loggerLevel);
     }
+    // phpcs:enable
 }

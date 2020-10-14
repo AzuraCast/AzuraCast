@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -27,7 +28,7 @@ class ListenerRepository extends Repository
             $end = $end->getTimestamp();
         }
 
-        return (int)$this->em->createQuery(/** @lang DQL */ 'SELECT 
+        return (int)$this->em->createQuery(/** @lang DQL */ 'SELECT
             COUNT(DISTINCT l.listener_hash)
             FROM App\Entity\Listener l
             WHERE l.station_id = :station_id
@@ -47,8 +48,8 @@ class ListenerRepository extends Repository
      */
     public function update(Entity\Station $station, $clients): void
     {
-        $existingClientsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-            l.id, l.listener_uid, l.listener_hash 
+        $existingClientsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
+            l.id, l.listener_uid, l.listener_hash
             FROM App\Entity\Listener l
             WHERE l.station = :station
             AND l.timestamp_end = 0')
@@ -100,9 +101,9 @@ class ListenerRepository extends Repository
             ->subDays($daysToKeep)
             ->getTimestamp();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE 
-                FROM App\Entity\Listener sh 
-                WHERE sh.timestamp_start != 0 
+        $this->em->createQuery(/** @lang DQL */ 'DELETE
+                FROM App\Entity\Listener sh
+                WHERE sh.timestamp_start != 0
                 AND sh.timestamp_start <= :threshold')
             ->setParameter('threshold', $threshold)
             ->execute();

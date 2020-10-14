@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Traits;
 
 trait TruncateInts
@@ -9,9 +10,9 @@ trait TruncateInts
      *
      * @return int|null
      */
-    protected function _truncateSmallInt(?int $int = null, bool $unsigned = false): ?int
+    protected function truncateSmallInt(?int $int = null, bool $unsigned = false): ?int
     {
-        return $this->_truncateIntToLimit(32767, 65535, $unsigned, $int);
+        return $this->truncateIntToLimit(32767, 65535, $unsigned, $int);
     }
 
     /**
@@ -22,7 +23,7 @@ trait TruncateInts
      *
      * @return int|null
      */
-    protected function _truncateIntToLimit(
+    protected function truncateIntToLimit(
         int $signed_limit,
         int $unsigned_limit,
         bool $unsigned,
@@ -51,8 +52,8 @@ trait TruncateInts
      *
      * @return int|null
      */
-    protected function _truncateTinyInt(?int $int = null, bool $unsigned = false): ?int
+    protected function truncateTinyInt(?int $int = null, bool $unsigned = false): ?int
     {
-        return $this->_truncateIntToLimit(127, 255, $unsigned, $int);
+        return $this->truncateIntToLimit(127, 255, $unsigned, $int);
     }
 }

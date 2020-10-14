@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync;
 
 use App\Event\GetSyncTasks;

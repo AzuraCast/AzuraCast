@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -156,9 +157,11 @@ abstract class AbstractFrontend extends AbstractAdapter
 
         $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
 
-        if ($use_radio_proxy
+        if (
+            $use_radio_proxy
             || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
-            || 'https' === $base_url->getScheme()) {
+            || 'https' === $base_url->getScheme()
+        ) {
             // Web proxy support.
             return $base_url
                 ->withPath($base_url->getPath() . '/radio/' . $radio_port);
@@ -193,21 +196,21 @@ abstract class AbstractFrontend extends AbstractAdapter
         return Result::blank();
     }
 
-    protected function _processCustomConfig($custom_config_raw)
+    protected function processCustomConfig($custom_config_raw)
     {
         $custom_config = [];
 
         if (strpos($custom_config_raw, '{') === 0) {
             $custom_config = @json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
         } elseif (strpos($custom_config_raw, '<') === 0) {
-            $reader = new Reader;
+            $reader = new Reader();
             $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
         }
 
         return $custom_config;
     }
 
-    protected function _getRadioPort(Entity\Station $station)
+    protected function getRadioPort(Entity\Station $station)
     {
         return (8000 + (($station->getId() - 1) * 10));
     }

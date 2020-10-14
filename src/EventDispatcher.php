@@ -1,7 +1,9 @@
 <?php
+
 namespace App;
 
 use Slim\Interfaces\CallableResolverInterface;
+
 use function is_array;
 use function is_string;
 
@@ -29,12 +31,18 @@ class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
             if (is_string($params)) {
                 $this->addListener($eventName, $this->getCallable($class_name, $params));
             } elseif (is_string($params[0])) {
-                $this->addListener($eventName, $this->getCallable($class_name, $params[0]),
-                    $params[1] ?? 0);
+                $this->addListener(
+                    $eventName,
+                    $this->getCallable($class_name, $params[0]),
+                    $params[1] ?? 0
+                );
             } else {
                 foreach ($params as $listener) {
-                    $this->addListener($eventName, $this->getCallable($class_name, $listener[0]),
-                        $listener[1] ?? 0);
+                    $this->addListener(
+                        $eventName,
+                        $this->getCallable($class_name, $listener[0]),
+                        $listener[1] ?? 0
+                    );
                 }
             }
         }
@@ -55,8 +63,10 @@ class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
                     $this->removeListener($eventName, $this->getCallable($class_name, $listener[0]));
                 }
             } else {
-                $this->removeListener($eventName,
-                    $this->getCallable($class_name, is_string($params) ? $params : $params[0]));
+                $this->removeListener(
+                    $eventName,
+                    $this->getCallable($class_name, is_string($params) ? $params : $params[0])
+                );
             }
         }
     }
@@ -65,5 +75,4 @@ class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
     {
         return new DeferredCallable($class_name . ':' . $method, $this->callableResolver);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
@@ -23,7 +24,7 @@ class RequestsController
     {
         $station = $request->getStation();
 
-        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sr, sm
             FROM App\Entity\StationRequest sr
             JOIN sr.track sm

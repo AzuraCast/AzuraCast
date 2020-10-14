@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\ApiUtilities;
@@ -11,7 +12,8 @@ use Psr\Http\Message\UriInterface;
  */
 class StationQueue implements SongInterface
 {
-    use Traits\TruncateInts, Traits\HasSongFields;
+    use Traits\TruncateInts;
+    use Traits\HasSongFields;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -231,7 +233,7 @@ class StationQueue implements SongInterface
 
     public function api(ApiUtilities $api, UriInterface $base_url = null): Api\StationQueue
     {
-        $response = new Api\StationQueue;
+        $response = new Api\StationQueue();
         $response->cued_at = $this->timestamp_cued;
 
         $response->duration = (int)$this->duration;

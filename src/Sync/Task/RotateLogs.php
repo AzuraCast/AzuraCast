@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Entity;
@@ -38,8 +39,10 @@ class RotateLogs extends AbstractTask
         if (!empty($stations)) {
             foreach ($stations as $station) {
                 /** @var Entity\Station $station */
-                $this->logger->info('Processing logs for station.',
-                    ['id' => $station->getId(), 'name' => $station->getName()]);
+                $this->logger->info(
+                    'Processing logs for station.',
+                    ['id' => $station->getId(), 'name' => $station->getName()]
+                );
 
                 $this->rotateStationLogs($station);
             }

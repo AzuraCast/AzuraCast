@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine;
 
 use App\Normalizer\DoctrineEntityNormalizer;

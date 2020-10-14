@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 class RelayCleanup extends AbstractTask

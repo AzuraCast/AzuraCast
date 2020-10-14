@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exception;
 
 use Psr\Http\Message\ServerRequestInterface;

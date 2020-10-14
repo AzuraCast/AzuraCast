@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook;
 
 use App\ApiUtilities;
@@ -120,7 +121,7 @@ class Dispatcher implements EventSubscriberInterface
 
         // Trigger all appropriate webhooks.
         foreach ($enabledWebhooks as $webhook) {
-            $message = new Message\DispatchWebhookMessage;
+            $message = new Message\DispatchWebhookMessage();
             $message->webhook_id = $webhook->getId();
             $message->np = $event->getNowPlaying();
             $message->triggers = $event->getTriggers();

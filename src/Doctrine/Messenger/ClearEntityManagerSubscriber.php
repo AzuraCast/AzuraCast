@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine\Messenger;
 
 use Doctrine\ORM\EntityManagerInterface;

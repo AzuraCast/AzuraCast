@@ -1,6 +1,6 @@
 <?php
-namespace App\Controller\Stations\Reports;
 
+namespace App\Controller\Stations\Reports;
 
 use App\Http\Response;
 use App\Http\ServerRequest;

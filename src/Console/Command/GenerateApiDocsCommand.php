@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Settings;
 use App\Version;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use function OpenApi\scan;
 
 class GenerateApiDocsCommand extends CommandAbstract
@@ -37,5 +39,3 @@ class GenerateApiDocsCommand extends CommandAbstract
         return 0;
     }
 }
-
-

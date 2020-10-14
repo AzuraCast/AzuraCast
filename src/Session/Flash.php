@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Session;
 
 use App\Traits\AvailableStaticallyTrait;

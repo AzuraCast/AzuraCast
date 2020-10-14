@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\AutoDJ;
 
 use App\Entity;

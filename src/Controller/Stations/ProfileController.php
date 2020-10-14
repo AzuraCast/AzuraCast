@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Entity;
@@ -38,17 +39,17 @@ class ProfileController
         }
 
         // Statistics about backend playback.
-        $num_songs = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) 
-            FROM App\Entity\StationMedia sm 
-            LEFT JOIN sm.playlists spm 
-            LEFT JOIN spm.playlist sp 
-            WHERE sp.id IS NOT NULL 
+        $num_songs = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id)
+            FROM App\Entity\StationMedia sm
+            LEFT JOIN sm.playlists spm
+            LEFT JOIN spm.playlist sp
+            WHERE sp.id IS NOT NULL
             AND sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
-        $num_playlists = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sp.id) 
-            FROM App\Entity\StationPlaylist sp 
+        $num_playlists = $this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(sp.id)
+            FROM App\Entity\StationPlaylist sp
             WHERE sp.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();

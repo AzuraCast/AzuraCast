@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -62,9 +63,9 @@ class StationPlaylistMediaRepository extends Repository
     public function getHighestSongWeight(Entity\StationPlaylist $playlist): int
     {
         try {
-            $highest_weight = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-                MAX(e.weight) 
-                FROM App\Entity\StationPlaylistMedia e 
+            $highest_weight = $this->em->createQuery(/** @lang DQL */ 'SELECT
+                MAX(e.weight)
+                FROM App\Entity\StationPlaylistMedia e
                 WHERE e.playlist_id = :playlist_id')
                 ->setParameter('playlist_id', $playlist->getId())
                 ->getSingleScalarResult();
@@ -112,10 +113,10 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping): void
     {
-        $update_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE 
-            App\Entity\StationPlaylistMedia e 
+        $update_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE
+            App\Entity\StationPlaylistMedia e
             SET e.weight = :weight
-            WHERE e.playlist_id = :playlist_id 
+            WHERE e.playlist_id = :playlist_id
             AND e.id = :id')
             ->setParameter('playlist_id', $playlist->getId());
 
@@ -133,7 +134,7 @@ class StationPlaylistMediaRepository extends Repository
 
     public function getPlayableMedia(Entity\StationPlaylist $playlist): array
     {
-        $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm.id, sm.song_id, sm.artist, sm.title
             FROM App\Entity\StationMedia sm
             JOIN sm.playlists spm

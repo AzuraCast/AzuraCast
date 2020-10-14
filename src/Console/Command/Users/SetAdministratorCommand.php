@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Users;
 
 use App\Acl;
@@ -39,8 +40,10 @@ class SetAdministratorCommand extends CommandAbstract
             $em->persist($user);
             $em->flush();
 
-            $io->text(__('The account associated with e-mail address "%s" has been set as an administrator',
-                $user->getEmail()));
+            $io->text(__(
+                'The account associated with e-mail address "%s" has been set as an administrator',
+                $user->getEmail()
+            ));
             $io->newLine();
             return 0;
         }

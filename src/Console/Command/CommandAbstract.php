@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Console\Application;

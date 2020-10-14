@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http;
 
 use App\Entity;
@@ -33,8 +34,8 @@ class Router implements RouterInterface
     }
 
     /**
-     * Compose a URL, returning an absolute URL (including base URL) if the current settings or this function's parameters
-     * indicate an absolute URL is necessary
+     * Compose a URL, returning an absolute URL (including base URL) if the current settings or
+     * this function's parameters indicate an absolute URL is necessary
      *
      * @param UriInterface $base
      * @param UriInterface|string $rel
@@ -130,7 +131,9 @@ class Router implements RouterInterface
             if ($route instanceof RouteInterface) {
                 $route_name = $route->getName();
             } else {
-                throw new InvalidArgumentException('Cannot specify a null route name if no existing route is configured.');
+                throw new InvalidArgumentException(
+                    'Cannot specify a null route name if no existing route is configured.'
+                );
             }
         }
 
@@ -153,8 +156,11 @@ class Router implements RouterInterface
      */
     public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): UriInterface
     {
-        return self::resolveUri($this->getBaseUrl(),
-            $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params), $absolute);
+        return self::resolveUri(
+            $this->getBaseUrl(),
+            $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params),
+            $absolute
+        );
     }
 
     public function getBaseUrl(bool $useRequest = true): UriInterface

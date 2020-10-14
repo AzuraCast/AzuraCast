@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -14,9 +15,9 @@ use JsonSerializable;
  */
 class ApiKey implements JsonSerializable
 {
-    public const SEPARATOR = ':';
-
     use Traits\TruncateStrings;
+
+    public const SEPARATOR = ':';
 
     /**
      * @ORM\Column(name="id", type="string", length=16)

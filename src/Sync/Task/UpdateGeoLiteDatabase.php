@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Entity;
@@ -102,5 +103,3 @@ class UpdateGeoLiteDatabase extends AbstractTask
         $this->logger->info('GeoLite DB updated. New version: ' . $newVersion);
     }
 }
-
-

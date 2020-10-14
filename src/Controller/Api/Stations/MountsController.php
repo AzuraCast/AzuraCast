@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -104,7 +105,7 @@ class MountsController extends AbstractStationApiCrudController
 
         $frontend = $request->getStationFrontend();
         if (!$frontend::supportsMounts()) {
-            throw new StationUnsupportedException;
+            throw new StationUnsupportedException();
         }
 
         return $station;

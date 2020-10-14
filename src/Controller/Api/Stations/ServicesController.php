@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -29,7 +30,11 @@ class ServicesController
      *   tags={"Stations: Service Control"},
      *   description="Retrieve the current status of all serivces associated with the radio broadcast.",
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
-     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_StationServiceStatus")),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\Schema(ref="#/components/schemas/Api_StationServiceStatus")
+     *   ),
      *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Api_Error")),
      *   security={{"api_key": {}}}
      * )
@@ -216,5 +221,4 @@ class ServicesController
                 return $response->withJson(new Entity\Api\Status(true, __('Backend restarted.')));
         }
     }
-
 }

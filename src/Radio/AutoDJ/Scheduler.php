@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\AutoDJ;
 
 use App\Entity;
@@ -321,5 +322,4 @@ class Scheduler
         return null === $playOnceDays
             || in_array($dayToCheck, $playOnceDays, true);
     }
-
 }

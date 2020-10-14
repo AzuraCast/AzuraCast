@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Exception\StationNotFoundException;
@@ -16,7 +17,7 @@ class RequestsAction
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException;
+            throw new StationNotFoundException();
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/public/embedrequests', [

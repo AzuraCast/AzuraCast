@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook\Connector;
 
 use App\Entity\StationWebhook;

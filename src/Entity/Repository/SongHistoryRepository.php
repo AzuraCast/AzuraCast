@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\ApiUtilities;
@@ -65,7 +66,7 @@ class SongHistoryRepository extends Repository
         foreach ($history as $sh) {
             /** @var Entity\SongHistory $sh */
             if ($sh->showInApis()) {
-                $return[] = $sh->api(new Entity\Api\SongHistory, $apiUtils, $baseUrl);
+                $return[] = $sh->api(new Entity\Api\SongHistory(), $apiUtils, $baseUrl);
             }
         }
 
@@ -182,9 +183,13 @@ class SongHistoryRepository extends Repository
             $last_sh->setDeltaNegative($delta_negative);
             $last_sh->setDeltaTotal($delta_total);
 
-            $last_sh->setUniqueListeners($this->listenerRepository->getUniqueListeners($station,
-                $last_sh->getTimestampStart(),
-                time()));
+            $last_sh->setUniqueListeners(
+                $this->listenerRepository->getUniqueListeners(
+                    $station,
+                    $last_sh->getTimestampStart(),
+                    time()
+                )
+            );
 
             $this->em->persist($last_sh);
         }
@@ -246,7 +251,10 @@ class SongHistoryRepository extends Repository
         }
 
         $historyTotals = $this->em->createQuery(/** @lang DQL */ '
-            SELECT AVG(sh.listeners_end) AS listeners_avg, MAX(sh.listeners_end) AS listeners_max, MIN(sh.listeners_end) AS listeners_min
+            SELECT
+                AVG(sh.listeners_end) AS listeners_avg,
+                MAX(sh.listeners_end) AS listeners_max,
+                MIN(sh.listeners_end) AS listeners_min
             FROM App\Entity\SongHistory sh
             WHERE sh.station = :station
             AND sh.timestamp_end >= :start
@@ -269,9 +277,9 @@ class SongHistoryRepository extends Repository
             ->subDays($daysToKeep)
             ->getTimestamp();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE 
-                FROM App\Entity\SongHistory sh 
-                WHERE sh.timestamp_start != 0 
+        $this->em->createQuery(/** @lang DQL */ 'DELETE
+                FROM App\Entity\SongHistory sh
+                WHERE sh.timestamp_start != 0
                 AND sh.timestamp_start <= :threshold')
             ->setParameter('threshold', $threshold)
             ->execute();

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\ApiUtilities;
@@ -23,6 +24,7 @@ use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+
 use function DeepCopy\deep_copy;
 
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
@@ -97,7 +99,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     public function run(bool $force = false): void
     {
-        $nowplaying = $this->_loadNowPlaying($force);
+        $nowplaying = $this->loadNowPlaying($force);
 
         $this->cache->set(Entity\Settings::NOWPLAYING, $nowplaying, 120);
         $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING, $nowplaying);
@@ -108,7 +110,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      *
      * @return Entity\Api\NowPlaying[]
      */
-    protected function _loadNowPlaying($force = false): array
+    protected function loadNowPlaying($force = false): array
     {
         $stations = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);
@@ -162,7 +164,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     $station,
                     $frontend_adapter,
                     $remote_adapters,
-                    $include_clients);
+                    $include_clients
+                );
                 $this->event_dispatcher->dispatch($event);
 
                 $npResult = $event->getResult();
@@ -182,21 +185,20 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 'np' => $npResult,
             ]);
 
-            $np = new Entity\Api\NowPlaying;
+            $np = new Entity\Api\NowPlaying();
             $uri_empty = new Uri('');
 
             $np->station = $station->api($frontend_adapter, $remote_adapters, $uri_empty);
             $np->listeners = new Entity\Api\NowPlayingListeners([
-                    'current' => $npResult->listeners->current,
-                    'unique' => $npResult->listeners->unique,
-                    'total' => $npResult->listeners->total,
-                ]
-            );
+                'current' => $npResult->listeners->current,
+                'unique' => $npResult->listeners->unique,
+                'total' => $npResult->listeners->total,
+            ]);
 
             if (empty($npResult->currentSong->text)) {
                 $song_obj = Entity\Song::createFromText('Stream Offline');
 
-                $offline_sh = new Entity\Api\NowPlayingCurrentSong;
+                $offline_sh = new Entity\Api\NowPlayingCurrentSong();
                 $offline_sh->sh_id = 0;
                 $offline_sh->song = $song_obj->api(
                     $this->api_utils,
@@ -222,8 +224,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 // Pull from current NP data if song details haven't changed .
                 $current_song_hash = Entity\Song::getSongHash($npResult->currentSong);
 
-                if ($np_old instanceof Entity\Api\NowPlaying &&
-                    0 === strcmp($current_song_hash, $np_old->now_playing->song->id)) {
+                if (
+                    $np_old instanceof Entity\Api\NowPlaying
+                    && 0 === strcmp($current_song_hash, $np_old->now_playing->song->id)
+                ) {
                     $previousHistory = $this->history_repo->getCurrent($station)
                         ?? Entity\Song::createFromApiSong($np_old->now_playing->song);
 
@@ -234,8 +238,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 } else {
                     // SongHistory registration must ALWAYS come before the history/nextsong calls
                     // otherwise they will not have up-to-date database info!
-                    $sh_obj = $this->history_repo->register(Entity\Song::createFromNowPlayingSong($npResult->currentSong),
-                        $station, $np);
+                    $sh_obj = $this->history_repo->register(
+                        Entity\Song::createFromNowPlayingSong($npResult->currentSong),
+                        $station,
+                        $np
+                    );
 
                     $np->song_history = $this->history_repo->getHistoryApi(
                         $station,
@@ -274,8 +281,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 }
 
                 // Register a new item in song history.
-                $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils,
-                    $uri_empty);
+                $np->now_playing = $sh_obj->api(
+                    new Entity\Api\NowPlayingCurrentSong(),
+                    $this->api_utils,
+                    $uri_empty
+                );
             }
 
             $np->update();
@@ -349,7 +359,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             }
 
             // Trigger a delayed Now Playing update.
-            $message = new Message\UpdateNowPlayingMessage;
+            $message = new Message\UpdateNowPlayingMessage();
             $message->station_id = $station->getId();
 
             $this->messageBus->dispatch($message, [
@@ -410,7 +420,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      */
     public function getLatestBroadcast(Station $station): Entity\StationStreamerBroadcast
     {
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb 
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb
             FROM App\Entity\StationStreamerBroadcast ssb
             WHERE ssb.station = :station AND ssb.streamer = :streamer
             ORDER BY ssb.timestampStart DESC

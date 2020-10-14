@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio;
 
 use App\Entity;
@@ -148,8 +149,10 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->stopProcess($program_name);
-                Logger::getInstance()->info('Adapter "' . static::class . '" stopped.',
-                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
+                Logger::getInstance()->info(
+                    'Adapter "' . static::class . '" stopped.',
+                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                );
             } catch (SupervisorLibException $e) {
                 $this->handleSupervisorException($e, $program_name, $station);
             }
@@ -171,8 +174,10 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->startProcess($program_name);
-                Logger::getInstance()->info('Adapter "' . static::class . '" started.',
-                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
+                Logger::getInstance()->info(
+                    'Adapter "' . static::class . '" started.',
+                    ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+                );
             } catch (SupervisorLibException $e) {
                 $this->handleSupervisorException($e, $program_name, $station);
             }

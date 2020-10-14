@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Backend\Liquidsoap;
 
 use App\Entity;
@@ -165,8 +166,10 @@ class ConfigWriter implements EventSubscriberInterface
 
         // Create a new default playlist if one doesn't exist.
         if (!$hasDefaultPlaylist) {
-            Logger::getInstance()->info('No default playlist existed for this station; new one was automatically created.',
-                ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
+            Logger::getInstance()->info(
+                'No default playlist existed for this station; new one was automatically created.',
+                ['station_id' => $station->getId(), 'station_name' => $station->getName()]
+            );
 
             // Auto-create an empty default playlist.
             $defaultPlaylist = new Entity\StationPlaylist($station);
@@ -260,8 +263,7 @@ class ConfigWriter implements EventSubscriberInterface
 
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
-                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(',',
-                        $playlistParams) . ')';
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(',', $playlistParams) . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
@@ -377,8 +379,12 @@ class ConfigWriter implements EventSubscriberInterface
         // Build "default" type playlists.
         $event->appendLines([
             '# Standard Playlists',
-            'radio = random(id="' . self::getVarName($station, 'standard_playlists') . '", weights=[' . implode(', ',
-                $genPlaylistWeights) . '], [' . implode(', ', $genPlaylistVars) . '])',
+            sprintf(
+                'radio = random(id="%s", weights=[%s], [%s])',
+                self::getVarName($station, 'standard_playlists'),
+                implode(', ', $genPlaylistWeights),
+                implode(', ', $genPlaylistVars)
+            ),
         ]);
 
         if (!empty($scheduleSwitches)) {
@@ -386,8 +392,11 @@ class ConfigWriter implements EventSubscriberInterface
 
             $event->appendLines([
                 '# Standard Schedule Switches',
-                'radio = switch(id="' . self::getVarName($station,
-                    'schedule_switch') . '", track_sensitive=true, [ ' . implode(', ', $scheduleSwitches) . ' ])',
+                sprintf(
+                    'radio = switch(id="%s", track_sensitive=true, [ %s ])',
+                    self::getVarName($station, 'schedule_switch'),
+                    implode(', ', $scheduleSwitches)
+                ),
             ]);
         }
 
@@ -399,7 +408,6 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         if (!$station->useManualAutoDJ()) {
-
             $nextsongCommand = $this->getApiUrlCommand($station, 'nextsong');
 
             $event->appendBlock(<<< EOF
@@ -407,29 +415,38 @@ class ConfigWriter implements EventSubscriberInterface
             def azuracast_next_song() =
                 uri = {$nextsongCommand}
                 log("AzuraCast Raw Response: #{uri}")
-                
+
                 if uri == "" or string.match(pattern="Error", uri) then
                     []
-                else 
+                else
                     r = request.create(uri)
                     if request.resolve(r) then
                         [r]
                     else
                         []
-                   end                
+                   end
                 end
             end
             EOF
             );
 
             $event->appendLines([
-                'dynamic = request.dynamic.list(id="' . self::getVarName($station,
-                    'next_song') . '", timeout=20., retry_delay=3., azuracast_next_song)',
-                'dynamic = audio_to_stereo(id="' . self::getVarName($station, 'stereo_next_song') . '", dynamic)',
-                'dynamic = cue_cut(id="' . self::getVarName($station, 'cue_next_song') . '", dynamic)',
-
-                'radio = fallback(id="' . self::getVarName($station,
-                    'autodj_fallback') . '", track_sensitive = true, [dynamic, radio])',
+                sprintf(
+                    'dynamic = request.dynamic.list(id="%s", timeout=20., retry_delay=3., azuracast_next_song)',
+                    self::getVarName($station, 'next_song')
+                ),
+                sprintf(
+                    'dynamic = audio_to_stereo(id="%s", dynamic)',
+                    self::getVarName($station, 'stereo_next_song')
+                ),
+                sprintf(
+                    'dynamic = cue_cut(id="%s", dynamic)',
+                    self::getVarName($station, 'cue_next_song')
+                ),
+                sprintf(
+                    'radio = fallback(id="%s", track_sensitive = true, [dynamic, radio])',
+                    self::getVarName($station, 'autodj_fallback')
+                ),
             ]);
         }
 
@@ -438,9 +455,11 @@ class ConfigWriter implements EventSubscriberInterface
 
             $event->appendLines([
                 '# Interrupting Schedule Switches',
-                'radio = switch(id="' . self::getVarName($station,
-                    'interrupt_switch') . '", track_sensitive=false, [ ' . implode(', ',
-                    $scheduleSwitchesInterrupting) . ' ])',
+                sprintf(
+                    'radio = switch(id="%s", track_sensitive=false, [ %s ])',
+                    self::getVarName($station, 'interrupt_switch'),
+                    implode(', ', $scheduleSwitchesInterrupting)
+                ),
             ]);
         }
 
@@ -448,9 +467,10 @@ class ConfigWriter implements EventSubscriberInterface
             'requests = request.queue(id="' . self::getVarName($station, 'requests') . '")',
             'requests = audio_to_stereo(id="' . self::getVarName($station, 'stereo_requests') . '", requests)',
             'requests = cue_cut(id="' . self::getVarName($station, 'cue_requests') . '", requests)',
-
-            'radio = fallback(id="' . self::getVarName($station,
-                'requests_fallback') . '", track_sensitive = true, [requests, radio])',
+            sprintf(
+                'radio = fallback(id="%s", track_sensitive = true, [requests, radio])',
+                self::getVarName($station, 'requests_fallback')
+            ),
             '',
             'add_skip_command(radio)',
             '',
@@ -482,9 +502,9 @@ class ConfigWriter implements EventSubscriberInterface
         $mediaBaseDir = $station->getRadioMediaDir() . '/';
         $playlistFile = [];
 
-        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm 
-            FROM App\Entity\StationMedia sm 
-            JOIN sm.playlists spm  
+        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm
+            FROM App\Entity\StationMedia sm
+            JOIN sm.playlists spm
             WHERE spm.playlist = :playlist
             ORDER BY spm.weight ASC
         ')->setParameter('playlist', $playlist);
@@ -684,57 +704,57 @@ class ConfigWriter implements EventSubscriberInterface
         live_enabled = ref false
         last_authenticated_dj = ref ""
         live_dj = ref ""
-        
+
         def dj_auth(auth_user,auth_pw) =
             user = ref ""
             password = ref ""
-          
+
             if (auth_user == "source" or auth_user == "") and (string.match(pattern="(:|,)+", auth_pw)) then
                 auth_string = string.split(separator="(:|,)", auth_pw)
-                
+
                 user := list.nth(default="", auth_string, 0)
                 password := list.nth(default="", auth_string, 2)
             else
                 user := auth_user
                 password := auth_pw
             end
-            
+
             log("Authenticating DJ: #{!user}")
-            
+
             ret = {$authCommand}
             log("AzuraCast DJ Auth Response: #{ret}")
-            
+
             authed = bool_of_string(ret)
             if (authed) then
                 last_authenticated_dj := !user
             end
-            
+
             authed
         end
-        
+
         def live_connected(header) =
             dj = !last_authenticated_dj
             log("DJ Source connected! Last authenticated DJ: #{dj} - #{header}")
-            
+
             live_enabled := true
             live_dj := dj
-            
+
             ret = {$djonCommand}
             log("AzuraCast Live Connected Response: #{ret}")
         end
-        
-        def live_disconnected() = 
+
+        def live_disconnected() =
             dj = !live_dj
-            
+
             log("DJ Source disconnected! Current live DJ: #{dj}")
-            
+
             ret = {$djoffCommand}
             log("AzuraCast Live Disconnected Response: #{ret}")
-            
+
             live_enabled := false
             last_authenticated_dj := ""
             live_dj := ""
-        end 
+        end
         EOF
         );
 
@@ -765,8 +785,10 @@ class ConfigWriter implements EventSubscriberInterface
             'live = audio_to_stereo(input.harbor(' . implode(', ', $harbor_params) . '))',
             'ignore(output.dummy(live, fallible=true))',
             '',
-            'radio = fallback(id="' . self::getVarName($station,
-                'live_fallback') . '", replay_metadata=false, track_sensitive=false, [live, radio])',
+            sprintf(
+                'radio = fallback(id="%s", replay_metadata=false, track_sensitive=false, [live, radio])',
+                self::getVarName($station, 'live_fallback')
+            ),
         ]);
 
         if ($recordLiveStreams) {
@@ -778,19 +800,19 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(<<< EOF
             # Record Live Broadcasts
             stop_recording_f = ref (fun () -> ())
-            
+
             def start_recording(path) =
                 output_live_recording = output.file({$formatString}, fallible=true, reopen_on_metadata=false, "#{path}", live)
                 stop_recording_f := fun () -> source.shutdown(output_live_recording)
             end
-            
+
             def stop_recording() =
                 f = !stop_recording_f
                 f ()
-                
+
                 stop_recording_f := fun () -> ()
             end
-            
+
             server.register(namespace="recording", description="Start recording.", usage="recording.start filename", "start", fun (s) -> begin start_recording(s) "Done!" end)
             server.register(namespace="recording", description="Stop recording.", usage="recording.stop", "stop", fun (s) -> begin stop_recording() "Done!" end)
             EOF
@@ -834,30 +856,36 @@ class ConfigWriter implements EventSubscriberInterface
             : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
 
         $event->appendLines([
-            'radio = fallback(id="' . self::getVarName($station,
-                'safe_fallback') . '", track_sensitive = false, [radio, single(id="error_jingle", "' . $error_file . '")])',
+            sprintf(
+                'radio = fallback(id="%s", track_sensitive = false, [radio, single(id="error_jingle", "%s")])',
+                self::getVarName($station, 'safe_fallback'),
+                $error_file
+            ),
         ]);
 
         // Custom configuration
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_BROADCAST);
 
-        $feedbackCommand = $this->getApiUrlCommand($station, 'feedback',
-            ['song' => 'm["song_id"]', 'media' => 'm["media_id"]', 'playlist' => 'm["playlist_id"]']);
+        $feedbackCommand = $this->getApiUrlCommand(
+            $station,
+            'feedback',
+            ['song' => 'm["song_id"]', 'media' => 'm["media_id"]', 'playlist' => 'm["playlist_id"]']
+        );
 
         $event->appendBlock(<<<EOF
         # Send metadata changes back to AzuraCast
         def metadata_updated(m) =
-            def f() = 
+            def f() =
                 if (m["song_id"] != "") then
                     ret = {$feedbackCommand}
                     log("AzuraCast Feedback Response: #{ret}")
                 end
                 (-1.)
             end
-            
+
             add_timeout(fast=false, 0., f)
         end
-        
+
         radio = on_metadata(metadata_updated,radio)
         EOF
         );

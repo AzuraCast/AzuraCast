@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use const PASSWORD_ARGON2ID;
 
 /**
@@ -130,7 +132,7 @@ class StationStreamer
     public function __construct(Station $station)
     {
         $this->station = $station;
-        $this->schedule_items = new ArrayCollection;
+        $this->schedule_items = new ArrayCollection();
     }
 
     public function getId(): int

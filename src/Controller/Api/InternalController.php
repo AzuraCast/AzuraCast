@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api;
 
 use App\Acl;
@@ -36,7 +37,7 @@ class InternalController
 
     public function authAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->_checkStationAuth($request);
+        $this->checkStationAuth($request);
 
         $station = $request->getStation();
         if (!$station->getEnableStreamers()) {
@@ -63,7 +64,7 @@ class InternalController
         return $response;
     }
 
-    protected function _checkStationAuth(ServerRequest $request): void
+    protected function checkStationAuth(ServerRequest $request): void
     {
         $station = $request->getStation();
 
@@ -82,13 +83,13 @@ class InternalController
                 'station_name' => $station->getName(),
             ]);
 
-            throw new PermissionDeniedException;
+            throw new PermissionDeniedException();
         }
     }
 
     public function nextsongAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->_checkStationAuth($request);
+        $this->checkStationAuth($request);
 
         $params = $request->getParams();
         $as_autodj = isset($params['api_auth']);
@@ -99,7 +100,7 @@ class InternalController
 
     public function djonAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->_checkStationAuth($request);
+        $this->checkStationAuth($request);
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
@@ -122,7 +123,7 @@ class InternalController
 
     public function djoffAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->_checkStationAuth($request);
+        $this->checkStationAuth($request);
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
@@ -145,7 +146,7 @@ class InternalController
 
     public function feedbackAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->_checkStationAuth($request);
+        $this->checkStationAuth($request);
 
         $station = $request->getStation();
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Backend;
 
 use App\Entity;
@@ -176,8 +177,13 @@ class Liquidsoap extends AbstractBackend
      */
     public function command(Entity\Station $station, $command_str): array
     {
-        $fp = stream_socket_client('tcp://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $this->getTelnetPort($station),
-            $errno, $errstr, 20);
+        $hostname = (Settings::getInstance()->isDocker() ? 'stations' : 'localhost');
+        $fp = stream_socket_client(
+            'tcp://' . $hostname . ':' . $this->getTelnetPort($station),
+            $errno,
+            $errstr,
+            20
+        );
 
         if (!$fp) {
             throw new Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');

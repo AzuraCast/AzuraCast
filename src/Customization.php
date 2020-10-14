@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use App\Entity;
@@ -273,5 +274,4 @@ class Customization
 
         $translator->register();
     }
-
 }

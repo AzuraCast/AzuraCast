@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Entity;
@@ -41,7 +42,10 @@ class StorageCleanupTask extends AbstractTask
     {
         $fs = $this->filesystem->getForStation($station, false);
 
-        $allUniqueIdsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT sm.unique_id FROM App\Entity\StationMedia sm WHERE sm.station = :station')
+        $allUniqueIdsRaw = $this->em
+            ->createQuery(/** @lang DQL */
+                'SELECT sm.unique_id FROM App\Entity\StationMedia sm WHERE sm.station = :station'
+            )
             ->setParameter('station', $station)
             ->getArrayResult();
 

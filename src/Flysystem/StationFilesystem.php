@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Flysystem;
 
 use App\Exception;

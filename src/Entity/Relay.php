@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -89,7 +90,7 @@ class Relay
         $this->created_at = time();
         $this->updated_at = time();
 
-        $this->remotes = new ArrayCollection;
+        $this->remotes = new ArrayCollection();
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Extends the Zend Config XML library to allow attribute handling.
  */
@@ -52,7 +53,7 @@ class Writer extends Xml
         $writer->startElement($base_element);
 
         // Make sure attributes come first
-        uksort($config, [$this, '_attributesFirst']);
+        uksort($config, [$this, 'attributesFirst']);
 
         foreach ($config as $sectionName => $data) {
             if (!is_array($data)) {
@@ -87,7 +88,7 @@ class Writer extends Xml
         $branchType = null;
 
         // Ensure attributes come first.
-        uksort($config, [$this, '_attributesFirst']);
+        uksort($config, [$this, 'attributesFirst']);
 
         foreach ($config as $key => $value) {
             if ($branchType === null) {
@@ -121,7 +122,7 @@ class Writer extends Xml
         }
     }
 
-    protected function _attributesFirst($a, $b): int
+    protected function attributesFirst($a, $b): int
     {
         if (strpos($a, '@') === 0) {
             return -1;

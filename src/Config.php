@@ -1,11 +1,12 @@
 <?php
+
 namespace App;
 
 use const EXTR_OVERWRITE;
 
 class Config
 {
-    protected $_base_folder;
+    protected $base_folder;
 
     public function __construct($base_folder)
     {
@@ -13,7 +14,7 @@ class Config
             throw new Exception("Invalid base folder for configurations.");
         }
 
-        $this->_base_folder = $base_folder;
+        $this->base_folder = $base_folder;
     }
 
     /**
@@ -26,7 +27,7 @@ class Config
      */
     public function get($name, $inject_vars = []): array
     {
-        $path = $this->_getPath($name);
+        $path = $this->getPath($name);
 
         if (file_exists($path)) {
             unset($name);
@@ -46,9 +47,9 @@ class Config
      *
      * @return string
      */
-    public function _getPath($name): string
+    public function getPath($name): string
     {
-        return $this->_base_folder . DIRECTORY_SEPARATOR . str_replace(['.', '..'], ['', ''], $name) . '.php';
+        return $this->base_folder . DIRECTORY_SEPARATOR . str_replace(['.', '..'], ['', ''], $name) . '.php';
     }
 
     /**
@@ -60,6 +61,6 @@ class Config
      */
     public function has($name): bool
     {
-        return file_exists($this->_getPath($name));
+        return file_exists($this->getPath($name));
     }
 }

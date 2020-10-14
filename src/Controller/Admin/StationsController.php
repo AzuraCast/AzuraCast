@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Entity;
@@ -40,7 +41,7 @@ class StationsController extends AbstractAdminCrudController
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
-        if (false !== $this->_doEdit($request, $id)) {
+        if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }

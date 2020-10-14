@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http;
 
 use App\Flysystem\FilesystemGroup;

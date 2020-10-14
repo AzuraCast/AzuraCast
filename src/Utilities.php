@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Miscellaneous Utilities Class
  **/
@@ -8,6 +9,7 @@ namespace App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+
 use function is_array;
 
 class Utilities
@@ -169,7 +171,9 @@ class Utilities
     {
         $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 
+        // phpcs:disable Generic.Files.LineLength
         $crawlers_agents = strtolower('Bloglines subscriber|Dumbot|Sosoimagespider|QihooBot|FAST-WebCrawler|Superdownloads Spiderman|LinkWalker|msnbot|ASPSeek|WebAlta Crawler|Lycos|FeedFetcher-Google|Yahoo|YoudaoBot|AdsBot-Google|Googlebot|Scooter|Gigabot|Charlotte|eStyle|AcioRobot|GeonaBot|msnbot-media|Baidu|CocoCrawler|Google|Charlotte t|Yahoo! Slurp China|Sogou web spider|YodaoBot|MSRBOT|AbachoBOT|Sogou head spider|AltaVista|IDBot|Sosospider|Yahoo! Slurp|Java VM|DotBot|LiteFinder|Yeti|Rambler|Scrubby|Baiduspider|accoona');
+        // phpcs:enable
         $crawlers = explode('|', $crawlers_agents);
 
         foreach ($crawlers as $crawler) {

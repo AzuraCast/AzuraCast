@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -19,9 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Role implements JsonSerializable
 {
-    public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
-
     use Traits\TruncateStrings;
+
+    public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -55,8 +56,8 @@ class Role implements JsonSerializable
 
     public function __construct()
     {
-        $this->users = new ArrayCollection;
-        $this->permissions = new ArrayCollection;
+        $this->users = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
     public function getId(): int

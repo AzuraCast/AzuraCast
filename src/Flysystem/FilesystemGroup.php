@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Flysystem;
 
 use InvalidArgumentException;
@@ -64,8 +65,10 @@ class FilesystemGroup extends MountManager
         $fs = $this->getFilesystem($prefix);
 
         if (!($fs instanceof Filesystem)) {
-            throw new InvalidArgumentException(sprintf('Filesystem for "%s" is not an instance of Filesystem.',
-                $prefix));
+            throw new InvalidArgumentException(sprintf(
+                'Filesystem for "%s" is not an instance of Filesystem.',
+                $prefix
+            ));
         }
 
         $adapter = $fs->getAdapter();
@@ -75,8 +78,10 @@ class FilesystemGroup extends MountManager
         }
 
         if (!($adapter instanceof Local)) {
-            throw new InvalidArgumentException(sprintf('Adapter for "%s" is not a Local or cached Local adapter.',
-                $prefix));
+            throw new InvalidArgumentException(sprintf(
+                'Adapter for "%s" is not a Local or cached Local adapter.',
+                $prefix
+            ));
         }
 
         $prefix = $adapter->getPathPrefix();

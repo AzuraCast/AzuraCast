@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -24,7 +25,9 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  */
 class StationMedia implements SongInterface
 {
-    use Traits\UniqueId, Traits\TruncateStrings, Traits\HasSongFields;
+    use Traits\UniqueId;
+    use Traits\TruncateStrings;
+    use Traits\HasSongFields;
 
     public const UNIQUE_ID_LENGTH = 24;
 
@@ -209,8 +212,8 @@ class StationMedia implements SongInterface
     {
         $this->station = $station;
 
-        $this->playlists = new ArrayCollection;
-        $this->custom_fields = new ArrayCollection;
+        $this->playlists = new ArrayCollection();
+        $this->custom_fields = new ArrayCollection();
 
         $this->setPath($path);
         $this->generateUniqueId();
@@ -532,7 +535,7 @@ class StationMedia implements SongInterface
      */
     public function api(ApiUtilities $apiUtils, UriInterface $baseUri = null): Api\Song
     {
-        $response = new Api\Song;
+        $response = new Api\Song();
         $response->id = (string)$this->song_id;
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;

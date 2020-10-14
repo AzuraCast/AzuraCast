@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog\Auditable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use const PASSWORD_ARGON2ID;
 
 /**

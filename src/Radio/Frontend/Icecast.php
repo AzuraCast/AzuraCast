@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -68,20 +69,20 @@ class Icecast extends AbstractFrontend
 
     public function read(Entity\Station $station): bool
     {
-        $config = $this->_getConfig($station);
-        $station->setFrontendConfigDefaults($this->_loadFromConfig($station, $config));
+        $config = $this->getConfig($station);
+        $station->setFrontendConfigDefaults($this->loadFromConfig($station, $config));
         return true;
     }
 
-    protected function _getConfig(Entity\Station $station)
+    protected function getConfig(Entity\Station $station)
     {
         $config_path = $station->getRadioConfigDir();
         $icecast_path = $config_path . '/icecast.xml';
 
-        $defaults = $this->_getDefaults($station);
+        $defaults = $this->getDefaults($station);
 
         if (file_exists($icecast_path)) {
-            $reader = new Reader;
+            $reader = new Reader();
             $data = $reader->fromFile($icecast_path);
 
             return self::arrayMergeRecursiveDistinct($defaults, $data);
@@ -94,7 +95,7 @@ class Icecast extends AbstractFrontend
      * Process Management
      */
 
-    protected function _getDefaults(Entity\Station $station): array
+    protected function getDefaults(Entity\Station $station): array
     {
         $config_dir = $station->getRadioConfigDir();
         $settings = Settings::getInstance();
@@ -130,7 +131,7 @@ class Icecast extends AbstractFrontend
             ],
 
             'listen-socket' => [
-                'port' => $this->_getRadioPort($station),
+                'port' => $this->getRadioPort($station),
             ],
 
             'mount' => [],
@@ -147,7 +148,9 @@ class Icecast extends AbstractFrontend
                 ],
                 'ssl-private-key' => $certPaths->getKeyPath(),
                 'ssl-certificate' => $certPaths->getCertPath(),
+                // phpcs:disable Generic.Files.LineLength
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
+                // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
                 'x-forwarded-for' => $settings->isDocker() ? '172.*.*.*' : '127.0.0.1',
             ],
@@ -182,8 +185,7 @@ class Icecast extends AbstractFrontend
             }
 
             if ($mount_row->getFrontendConfig()) {
-
-                $mount_conf = $this->_processCustomConfig($mount_row->getFrontendConfig());
+                $mount_conf = $this->processCustomConfig($mount_row->getFrontendConfig());
 
                 if (!empty($mount_conf)) {
                     $mount = self::arrayMergeRecursiveDistinct($mount, $mount_conf);
@@ -252,7 +254,7 @@ class Icecast extends AbstractFrontend
      * Configuration
      */
 
-    protected function _loadFromConfig(Entity\Station $station, $config): array
+    protected function loadFromConfig(Entity\Station $station, $config): array
     {
         $frontend_config = $station->getFrontendConfig();
 
@@ -268,7 +270,7 @@ class Icecast extends AbstractFrontend
 
     public function write(Entity\Station $station): bool
     {
-        $config = $this->_getDefaults($station);
+        $config = $this->getDefaults($station);
 
         $frontend_config = $station->getFrontendConfig();
 
@@ -308,14 +310,14 @@ class Icecast extends AbstractFrontend
 
         $customConfig = $frontend_config->getCustomConfiguration();
         if (!empty($customConfig)) {
-            $custom_conf = $this->_processCustomConfig($customConfig);
+            $custom_conf = $this->processCustomConfig($customConfig);
             if (!empty($custom_conf)) {
                 $config = self::arrayMergeRecursiveDistinct($config, $custom_conf);
             }
         }
 
         // Set any unset values back to the DB config.
-        $station->setFrontendConfigDefaults($this->_loadFromConfig($station, $config));
+        $station->setFrontendConfigDefaults($this->loadFromConfig($station, $config));
 
         $this->em->persist($station);
         $this->em->flush();
@@ -323,7 +325,7 @@ class Icecast extends AbstractFrontend
         $config_path = $station->getRadioConfigDir();
         $icecast_path = $config_path . '/icecast.xml';
 
-        $writer = new Writer;
+        $writer = new Writer();
         $icecast_config_str = $writer->toString($config, 'icecast');
 
         // Strip the first line (the XML charset)

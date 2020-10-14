@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Api;
 
 use OpenApi\Annotations as OA;
@@ -19,8 +20,10 @@ class Listener
     /**
      * The listener's HTTP User-Agent
      *
+     * phpcs:disable Generic.Files.LineLength
      * @OA\Property(example="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36")
      * @var string
+     * phpcs:enable
      */
     public string $user_agent = '';
 

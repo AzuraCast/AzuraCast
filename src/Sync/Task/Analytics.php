@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Entity;
@@ -159,8 +160,11 @@ class Analytics extends AbstractTask
 
                 $dailyStationUnique = null;
                 if ($withListeners) {
-                    $dailyStationUnique = $this->listenerRepo->getUniqueListeners($station, $stationDayStart,
-                        $stationDayEnd);
+                    $dailyStationUnique = $this->listenerRepo->getUniqueListeners(
+                        $station,
+                        $stationDayStart,
+                        $stationDayEnd
+                    );
 
                     $dailyUniqueListeners ??= 0;
                     $dailyUniqueListeners += $dailyStationUnique;

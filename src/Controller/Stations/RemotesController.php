@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
@@ -30,9 +31,11 @@ class RemotesController extends AbstractStationCrudController
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
-        if (false !== $this->_doEdit($request, $id)) {
-            $request->getFlash()->addMessage('<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
-                Flash::SUCCESS);
+        if (false !== $this->doEdit($request, $id)) {
+            $request->getFlash()->addMessage(
+                '<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
+                Flash::SUCCESS
+            );
             return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
         }
 
@@ -49,16 +52,16 @@ class RemotesController extends AbstractStationCrudController
         $id,
         $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf);
+        $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Remote Relay deleted.') . '</b>', Flash::SUCCESS);
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
     }
 
-    protected function _getRecord(Station $station, $id = null): ?object
+    protected function getRecord(Station $station, $id = null): ?object
     {
-        $record = parent::_getRecord($station, $id);
+        $record = parent::getRecord($station, $id);
 
         if ($record instanceof StationRemote && !$record->isEditable()) {
             throw new PermissionDeniedException(__('This record cannot be edited.'));

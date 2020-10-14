@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
@@ -18,16 +20,20 @@ final class Version20181016144143 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $shuffled_playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp WHERE sp.playback_order = :order',
+        $shuffled_playlists = $this->connection->fetchAll(
+            'SELECT sp.* FROM station_playlists AS sp WHERE sp.playback_order = :order',
             [
                 'order' => 'shuffle',
-            ]);
+            ]
+        );
 
         foreach ($shuffled_playlists as $playlist) {
-            $all_media = $this->connection->fetchAll('SELECT spm.* FROM station_playlist_media AS spm WHERE spm.playlist_id = :playlist_id ORDER BY RAND()',
+            $all_media = $this->connection->fetchAll(
+                'SELECT spm.* FROM station_playlist_media AS spm WHERE spm.playlist_id = :playlist_id ORDER BY RAND()',
                 [
                     'playlist_id' => $playlist['id'],
-                ]);
+                ]
+            );
 
             $weight = 1;
             foreach ($all_media as $row) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Entity;
@@ -17,9 +18,9 @@ class FilesController
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $playlists = $em->createQuery(/** @lang DQL */ 'SELECT sp.id, sp.name 
-            FROM App\Entity\StationPlaylist sp 
-            WHERE sp.station_id = :station_id AND sp.source = :source 
+        $playlists = $em->createQuery(/** @lang DQL */ 'SELECT sp.id, sp.name
+            FROM App\Entity\StationPlaylist sp
+            WHERE sp.station_id = :station_id AND sp.source = :source
             ORDER BY sp.name ASC')
             ->setParameter('station_id', $station->getId())
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
@@ -31,7 +32,8 @@ class FilesController
             ->getSingleScalarResult();
 
         // Get list of custom fields.
-        $custom_fields_raw = $em->createQuery(/** @lang DQL */ 'SELECT cf.id, cf.short_name, cf.name FROM App\Entity\CustomField cf ORDER BY cf.name ASC')
+        $custom_fields_raw = $em->createQuery(/** @lang DQL */ 'SELECT cf.id, cf.short_name, cf.name
+            FROM App\Entity\CustomField cf ORDER BY cf.name ASC')
             ->getArrayResult();
 
         $custom_fields = [];
@@ -53,6 +55,4 @@ class FilesController
             'files_count' => $files_count,
         ]);
     }
-
-
 }

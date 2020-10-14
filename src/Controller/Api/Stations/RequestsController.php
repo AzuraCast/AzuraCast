@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\ApiUtilities;
@@ -109,7 +110,7 @@ class RequestsController
 
         $paginator->setPostprocessor(function ($media_row) use ($station, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
-            $row = new Entity\Api\StationRequest;
+            $row = new Entity\Api\StationRequest();
             $row->song = $media_row->api($this->api_utils);
             $row->request_id = $media_row->getUniqueId();
             $row->request_url = (string)$router->named('api:requests:submit', [

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -11,7 +12,7 @@ class Station extends AbstractFixture
 {
     public function load(ObjectManager $em)
     {
-        $station = new Entity\Station;
+        $station = new Entity\Station();
         $station->setName('AzuraTest Radio');
         $station->setDescription('A test radio station.');
         $station->setEnableRequests(true);

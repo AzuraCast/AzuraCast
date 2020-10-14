@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Config;
@@ -78,7 +79,7 @@ class UserProfileForm extends EntityForm
     {
         $user = $request->getUser();
 
-        $viewForm = new Form($this->options['groups']['customization'], $this->_normalizeRecord($user));
+        $viewForm = new Form($this->options['groups']['customization'], $this->normalizeRecord($user));
         return $viewForm->renderView();
     }
 }

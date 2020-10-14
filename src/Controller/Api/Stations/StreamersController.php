@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -122,7 +123,11 @@ class StreamersController extends AbstractScheduledEntityController
             $request,
             $response,
             $scheduleItems,
-            function (Entity\StationSchedule $scheduleItem, CarbonInterface $start, CarbonInterface $end) use (
+            function (
+                Entity\StationSchedule $scheduleItem,
+                CarbonInterface $start,
+                CarbonInterface $end
+            ) use (
                 $request,
                 $station
             ) {
@@ -175,7 +180,7 @@ class StreamersController extends AbstractScheduledEntityController
 
         $backend = $request->getStationBackend();
         if (!$backend::supportsStreamers()) {
-            throw new StationUnsupportedException;
+            throw new StationUnsupportedException();
         }
 
         return $station;

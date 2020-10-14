@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notification;
 
 use App\Session\Flash;

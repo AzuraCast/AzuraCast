@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware;
 
 use GuzzleHttp\Psr7\Response;

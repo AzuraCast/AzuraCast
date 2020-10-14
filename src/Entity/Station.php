@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -33,12 +34,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Station
 {
+    use Traits\TruncateStrings;
+
     public const DEFAULT_REQUEST_DELAY = 5;
     public const DEFAULT_REQUEST_THRESHOLD = 15;
     public const DEFAULT_DISCONNECT_DEACTIVATE_STREAMER = 0;
     public const DEFAULT_API_HISTORY_ITEMS = 5;
-
-    use Traits\TruncateStrings;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -118,7 +119,7 @@ class Station
      *
      * @AuditLog\AuditIgnore()
      *
-     * @var string|null An internal-use API key used for container-to-container communications from Liquidsoap to AzuraCast
+     * @var string|null An internal API key used for container-to-container communications from Liquidsoap to AzuraCast
      */
     protected $adapter_api_key;
 
@@ -285,7 +286,7 @@ class Station
      * @ORM\Column(name="api_history_items", type="smallint")
      *
      * @OA\Property(example=5)
-     * @var int|null The number of "last played" history items to show for a given station in the Now Playing API responses.
+     * @var int|null The number of "last played" history items to show for a station in the Now Playing API responses.
      */
     protected $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
 
@@ -408,14 +409,14 @@ class Station
 
     public function __construct()
     {
-        $this->history = new ArrayCollection;
-        $this->media = new ArrayCollection;
-        $this->playlists = new ArrayCollection;
-        $this->mounts = new ArrayCollection;
-        $this->remotes = new ArrayCollection;
-        $this->webhooks = new ArrayCollection;
-        $this->streamers = new ArrayCollection;
-        $this->sftp_users = new ArrayCollection;
+        $this->history = new ArrayCollection();
+        $this->media = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->mounts = new ArrayCollection();
+        $this->remotes = new ArrayCollection();
+        $this->webhooks = new ArrayCollection();
+        $this->streamers = new ArrayCollection();
+        $this->sftp_users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1145,7 +1146,7 @@ class Station
         UriInterface $baseUrl = null,
         bool $showAllMounts = false
     ): Api\Station {
-        $response = new Api\Station;
+        $response = new Api\Station();
         $response->id = (int)$this->id;
         $response->name = (string)$this->name;
         $response->shortcode = (string)$this->getShortName();

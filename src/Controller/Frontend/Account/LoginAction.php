@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend\Account;
 
 use App\Entity\Repository\SettingsRepository;
@@ -44,8 +45,14 @@ class LoginAction
             try {
                 $rateLimit->checkRateLimit($request, 'login', 30, 5);
             } catch (RateLimitExceededException $e) {
-                $flash->addMessage('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
-                    Flash::ERROR);
+                $flash->addMessage(
+                    sprintf(
+                        '<b>%s</b><br>%s',
+                        __('Too many login attempts'),
+                        __('You have attempted to log in too many times. Please wait 30 seconds and try again.')
+                    ),
+                    Flash::ERROR
+                );
 
                 return $response->withRedirect($request->getUri()->getPath());
             }
@@ -67,13 +74,21 @@ class LoginAction
 
                 // Redirect to complete setup if it's not completed yet.
                 if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
-                    $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . __('Complete the setup process to get started.'),
-                        Flash::SUCCESS);
+                    $flash->addMessage(
+                        sprintf(
+                            '<b>%s</b><br>%s',
+                            __('Logged in successfully.'),
+                            __('Complete the setup process to get started.')
+                        ),
+                        Flash::SUCCESS
+                    );
                     return $response->withRedirect($request->getRouter()->named('setup:index'));
                 }
 
-                $flash->addMessage('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
-                    Flash::SUCCESS);
+                $flash->addMessage(
+                    '<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(),
+                    Flash::SUCCESS
+                );
 
                 $referrer = $request->getSession()->get('login_referrer');
                 if (!empty($referrer)) {
@@ -83,8 +98,10 @@ class LoginAction
                 return $response->withRedirect($request->getRouter()->named('dashboard'));
             }
 
-            $flash->addMessage('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
-                Flash::ERROR);
+            $flash->addMessage(
+                '<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+                Flash::ERROR
+            );
 
             return $response->withRedirect($request->getUri());
         }

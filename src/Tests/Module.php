@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Based on Herloct's Slim 3.0 Connector
  * https://github.com/herloct/codeception-slim-module

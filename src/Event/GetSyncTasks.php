@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Event;
 
 use App\Sync\Task\AbstractTask;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio;
 
 class PlaylistParser
@@ -7,7 +8,6 @@ class PlaylistParser
     {
         // Process as full PLS if the header is present.
         if (strpos($playlist_raw, '[playlist]') === 0) {
-
             $parsed_playlist = (array)parse_ini_string($playlist_raw, true, INI_SCANNER_RAW);
 
             $paths = [];
@@ -16,7 +16,6 @@ class PlaylistParser
                     $paths[] = $playlist_line;
                 }
             }
-
         } else {
             $filter_line = function ($line) {
                 return trim(urldecode($line));

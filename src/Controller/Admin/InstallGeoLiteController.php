@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Entity\Repository\SettingsRepository;
@@ -23,7 +24,6 @@ class InstallGeoLiteController
         UpdateGeoLiteDatabase $syncTask
     ): ResponseInterface {
         if (false !== $form->process($request)) {
-
             $flash = $request->getFlash();
 
             try {

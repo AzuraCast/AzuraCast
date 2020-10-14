@@ -1,8 +1,10 @@
 <?php
+
 namespace App;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
+
 use function base64_encode;
 use function is_array;
 use function is_callable;
@@ -85,7 +87,6 @@ class Assets
     {
         if (!empty($vueComponents['entrypoints'])) {
             foreach ($vueComponents['entrypoints'] as $componentName => $componentDeps) {
-
                 $library = $this->libraries[$componentName] ?? [
                         'order' => 10,
                         'require' => [],
@@ -321,7 +322,7 @@ class Assets
      */
     public function css(): string
     {
-        $this->_sort();
+        $this->sort();
 
         $result = [];
         foreach ($this->loaded as $item) {
@@ -339,7 +340,12 @@ class Assets
             if (!empty($item['inline']['css'])) {
                 foreach ($item['inline']['css'] as $inline) {
                     if (!empty($inline)) {
-                        $result[] = '<style type="text/css" nonce="' . $this->csp_nonce . '">' . "\n" . $inline . '</style>';
+                        $result[] = sprintf(
+                            '<style type="text/css" nonce="%s">%s%s</style>',
+                            $this->csp_nonce,
+                            "\n",
+                            $inline
+                        );
                     }
                 }
             }
@@ -354,7 +360,7 @@ class Assets
      */
     public function js(): string
     {
-        $this->_sort();
+        $this->sort();
 
         $result = [];
         foreach ($this->loaded as $item) {
@@ -379,7 +385,7 @@ class Assets
      */
     public function inlineJs(): string
     {
-        $this->_sort();
+        $this->sort();
 
         $result = [];
         foreach ($this->loaded as $item) {
@@ -390,7 +396,12 @@ class Assets
                     }
 
                     if (!empty($inline)) {
-                        $result[] = '<script type="text/javascript" nonce="' . $this->csp_nonce . '">' . "\n" . $inline . '</script>';
+                        $result[] = sprintf(
+                            '<script type="text/javascript" nonce="%s">%s%s</script>',
+                            $this->csp_nonce,
+                            "\n",
+                            $inline
+                        );
                     }
                 }
             }
@@ -402,7 +413,7 @@ class Assets
     /**
      * Sort the list of loaded libraries.
      */
-    protected function _sort(): void
+    protected function sort(): void
     {
         if (!$this->is_sorted) {
             uasort($this->loaded, function ($a, $b): int {

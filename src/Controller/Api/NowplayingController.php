@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api;
 
 use App\Entity;
@@ -151,7 +152,8 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromStations(LoadNowPlaying $event): void
     {
-        $nowplaying_db = $this->em->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
+        $nowplaying_db = $this->em
+            ->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
             ->getArrayResult();
 
         $np = [];

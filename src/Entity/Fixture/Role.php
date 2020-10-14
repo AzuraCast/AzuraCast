@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -9,10 +10,10 @@ class Role extends AbstractFixture
 {
     public function load(ObjectManager $em)
     {
-        $admin_role = new Entity\Role;
+        $admin_role = new Entity\Role();
         $admin_role->setName('Super Administrator');
 
-        $demo_role = new Entity\Role;
+        $demo_role = new Entity\Role();
         $demo_role->setName('Demo Account');
 
         $em->persist($admin_role);

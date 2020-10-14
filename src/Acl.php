@@ -1,7 +1,9 @@
 <?php
+
 namespace App;
 
 use App\Entity;
+
 use function in_array;
 use function is_array;
 
@@ -33,7 +35,7 @@ class Acl
 
     protected Entity\Repository\RolePermissionRepository $permission_repo;
 
-    protected ?array $_actions;
+    protected ?array $actions;
 
     public function __construct(Entity\Repository\RolePermissionRepository $rolePermissionRepository)
     {
@@ -46,7 +48,7 @@ class Acl
      */
     public function reload(): void
     {
-        $this->_actions = $this->permission_repo->getActionsForAllRoles();
+        $this->actions = $this->permission_repo->getActionsForAllRoles();
     }
 
     /**
@@ -118,11 +120,11 @@ class Acl
     public function checkPermission(?Entity\User $user = null, $action, $station_id = null): void
     {
         if (!($user instanceof Entity\User)) {
-            throw new Exception\NotLoggedInException;
+            throw new Exception\NotLoggedInException();
         }
 
         if (!$this->userAllowed($user, $action, $station_id)) {
-            throw new Exception\PermissionDeniedException;
+            throw new Exception\PermissionDeniedException();
         }
     }
 
@@ -202,8 +204,8 @@ class Acl
             return false;
         }
 
-        if (!empty($this->_actions[$role_id])) {
-            $role_actions = (array)$this->_actions[$role_id];
+        if (!empty($this->actions[$role_id])) {
+            $role_actions = (array)$this->actions[$role_id];
 
             if (in_array(self::GLOBAL_ALL, (array)$role_actions['global'], true)) {
                 return true;

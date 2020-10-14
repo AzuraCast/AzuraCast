@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
@@ -21,8 +22,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     {
         $station = $this->getStation($request);
 
-        $query = $this->em->createQuery('SELECT e 
-            FROM ' . $this->entityClass . ' e 
+        $query = $this->em->createQuery('SELECT e
+            FROM ' . $this->entityClass . ' e
             WHERE e.station = :station')
             ->setParameter('station', $station);
 
@@ -51,7 +52,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->getStation($request);
-        $row = $this->_createRecord($request->getParsedBody(), $station);
+        $row = $this->createRecord($request->getParsedBody(), $station);
 
         $return = $this->viewRecord($row, $request);
 
@@ -64,7 +65,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      *
      * @return object
      */
-    protected function _createRecord($data, Entity\Station $station): object
+    protected function createRecord($data, Entity\Station $station): object
     {
         return $this->editRecord($data, null, [
             AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [

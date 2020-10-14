@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Api;
 
 use Psr\Http\Message\UriInterface;

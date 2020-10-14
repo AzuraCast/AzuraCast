@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api;
 
 use App\Entity;
@@ -41,7 +42,7 @@ class IndexController
      */
     public function statusAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        return $response->withJson(new Entity\Api\SystemStatus);
+        return $response->withJson(new Entity\Api\SystemStatus());
     }
 
     /**
@@ -63,6 +64,6 @@ class IndexController
      */
     public function timeAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        return $response->withJson(new Entity\Api\Time);
+        return $response->withJson(new Entity\Api\Time());
     }
 }

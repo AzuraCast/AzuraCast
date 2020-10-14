@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Extends the Zend Config XML library to allow attribute handling.
  */

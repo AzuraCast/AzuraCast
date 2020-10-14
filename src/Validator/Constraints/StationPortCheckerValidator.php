@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Validator\Constraints;
 
 use App\Entity;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\IpGeolocator;
 
 use Carbon\CarbonImmutable;

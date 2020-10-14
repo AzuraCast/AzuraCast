@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Factory;
 
 use App\Http\Response;

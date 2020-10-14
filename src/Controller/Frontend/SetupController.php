@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend;
 
 use App\Entity;
@@ -58,7 +59,10 @@ class SetupController
         }
 
         // Step 1: Register
-        $num_users = (int)$this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')->getSingleScalarResult();
+        $num_users = (int)$this->em
+            ->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')
+            ->getSingleScalarResult();
+
         if (0 === $num_users) {
             return 'register';
         }
@@ -66,11 +70,14 @@ class SetupController
         // If past "register" step, require login.
         $auth = $request->getAuth();
         if (!$auth->isLoggedIn()) {
-            throw new NotLoggedInException;
+            throw new NotLoggedInException();
         }
 
         // Step 2: Set up Station
-        $num_stations = (int)$this->em->createQuery(/** @lang DQL */ 'SELECT COUNT(s.id) FROM App\Entity\Station s')->getSingleScalarResult();
+        $num_stations = (int)$this->em
+            ->createQuery(/** @lang DQL */ 'SELECT COUNT(s.id) FROM App\Entity\Station s')
+            ->getSingleScalarResult();
+
         if (0 === $num_stations) {
             return 'station';
         }
@@ -116,7 +123,7 @@ class SetupController
 
         if (!empty($data['username']) && !empty($data['password'])) {
             // Create actions and roles supporting Super Admninistrator.
-            $role = new Entity\Role;
+            $role = new Entity\Role();
             $role->setName(__('Super Administrator'));
 
             $this->em->persist($role);
@@ -128,7 +135,7 @@ class SetupController
             $this->em->persist($rha);
 
             // Create user account.
-            $user = new Entity\User;
+            $user = new Entity\User();
             $user->setEmail($data['username']);
             $user->setNewPassword($data['password']);
             $user->getRoles()->add($role);
@@ -208,8 +215,14 @@ class SetupController
             $this->settingsRepo->setSetting(Entity\Settings::SETUP_COMPLETE, time());
 
             // Notify the user and redirect to homepage.
-            $request->getFlash()->addMessage('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
-                Flash::SUCCESS);
+            $request->getFlash()->addMessage(
+                sprintf(
+                    '<b>%s</b><br>%s',
+                    __('Setup is now complete!'),
+                    __('Continue setting up your station in the main AzuraCast app.')
+                ),
+                Flash::SUCCESS
+            );
 
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         }

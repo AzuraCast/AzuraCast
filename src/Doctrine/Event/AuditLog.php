@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine\Event;
 
 use App\Annotations\AuditLog\Auditable;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;

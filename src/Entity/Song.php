@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\ApiUtilities;
@@ -36,7 +37,7 @@ class Song implements SongInterface
         ?Station $station = null,
         ?UriInterface $base_url = null
     ): Api\Song {
-        $response = new Api\Song;
+        $response = new Api\Song();
         $response->id = (string)$this->song_id;
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;
@@ -67,7 +68,11 @@ class Song implements SongInterface
         }
 
         if (!is_string($songText)) {
-            throw new InvalidArgumentException('$songText parameter must be a string, array, or instance of ' . self::class . ' or ' . CurrentSong::class . '.');
+            throw new InvalidArgumentException(sprintf(
+                '$songText parameter must be a string, array, or instance of %s or %s.',
+                self::class,
+                CurrentSong::class
+            ));
         }
 
         // Strip non-alphanumeric characters
@@ -79,7 +84,7 @@ class Song implements SongInterface
 
     public static function createFromApiSong(Api\Song $apiSong): self
     {
-        $song = new self;
+        $song = new self();
         $song->setText($apiSong->text);
         $song->setTitle($apiSong->title);
         $song->setArtist($apiSong->artist);
@@ -90,7 +95,7 @@ class Song implements SongInterface
 
     public static function createFromNowPlayingSong(CurrentSong $currentSong): self
     {
-        $song = new self;
+        $song = new self();
         $song->setText($currentSong->text);
         $song->setTitle($currentSong->title);
         $song->setArtist($currentSong->artist);

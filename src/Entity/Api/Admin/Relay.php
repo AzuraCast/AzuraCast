@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Api\Admin;
 
 use App\Entity;

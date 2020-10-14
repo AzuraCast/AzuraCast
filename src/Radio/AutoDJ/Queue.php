@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\AutoDJ;
 
 use App\Entity;
@@ -103,8 +104,10 @@ class Queue implements EventSubscriberInterface
         foreach ($recentSongHistoryForOncePerXSongs as $row) {
             $logOncePerXSongsSongHistory[] = [
                 'song' => $row['text'],
-                'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
-                    $now->getTimezone())),
+                'cued_at' => (string)(CarbonImmutable::createFromTimestamp(
+                    $row['timestamp_cued'] ?? $row['timestamp_start'],
+                    $now->getTimezone()
+                )),
                 'duration' => $row['duration'],
                 'sent_to_autodj' => $row['sent_to_autodj'],
             ];
@@ -114,8 +117,10 @@ class Queue implements EventSubscriberInterface
         foreach ($recentSongHistoryForDuplicatePrevention as $row) {
             $logDuplicatePreventionSongHistory[] = [
                 'song' => $row['text'],
-                'cued_at' => (string)(CarbonImmutable::createFromTimestamp($row['timestamp_cued'] ?? $row['timestamp_start'],
-                    $now->getTimezone())),
+                'cued_at' => (string)(CarbonImmutable::createFromTimestamp(
+                    $row['timestamp_cued'] ?? $row['timestamp_start'],
+                    $now->getTimezone()
+                )),
                 'duration' => $row['duration'],
                 'sent_to_autodj' => $row['sent_to_autodj'],
             ];
@@ -176,12 +181,14 @@ class Queue implements EventSubscriberInterface
                 foreach ($eligible_playlists as $playlist_id => $weight) {
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
-                    if ($event->setNextSong($this->playSongFromPlaylist(
-                        $playlist,
-                        $recentSongHistoryForDuplicatePrevention,
-                        $now,
-                        $allowDuplicates
-                    ))) {
+                    if (
+                        $event->setNextSong($this->playSongFromPlaylist(
+                            $playlist,
+                            $recentSongHistoryForDuplicatePrevention,
+                            $now,
+                            $allowDuplicates
+                        ))
+                    ) {
                         $this->logger->info('Playable track found and registered.', [
                             'next_song' => (string)$event,
                         ]);
@@ -336,7 +343,9 @@ class Queue implements EventSubscriberInterface
                         $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
 
                         if (null === $mediaId) {
-                            $this->logger->warning('Duplicate prevention yielded no playable song; resetting song queue.');
+                            $this->logger->warning(
+                                'Duplicate prevention yielded no playable song; resetting song queue.'
+                            );
 
                             // Pull the entire shuffled playlist if a duplicate title can't be avoided.
                             $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
@@ -458,14 +467,15 @@ class Queue implements EventSubscriberInterface
         $mediaId = self::getDistinctTrack($eligibleTracks, $playedTracks);
 
         if (null !== $mediaId) {
-            $this->logger->info('Found track that avoids duplicate title and artist.',
-                ['media_id' => $mediaId]);
+            $this->logger->info(
+                'Found track that avoids duplicate title and artist.',
+                ['media_id' => $mediaId]
+            );
 
             return $mediaId;
         }
 
         if ($allowDuplicates) {
-
             // If we reach this point, there's no way to avoid a duplicate title.
             $mediaIdsByTimePlayed = [];
 
@@ -478,10 +488,12 @@ class Queue implements EventSubscriberInterface
             // Pull the lowest value, which corresponds to the least recently played song.
             asort($mediaIdsByTimePlayed);
 
-            // More efficient way of getting first key.
-            foreach ($mediaIdsByTimePlayed as $mediaId => $unused) {
-                $this->logger->warning('No way to avoid same title OR same artist; using least recently played song.',
-                    ['media_id' => $mediaId]);
+            $mediaId = array_key_first($mediaIdsByTimePlayed);
+            if (null !== $mediaId) {
+                $this->logger->warning(
+                    'No way to avoid same title OR same artist; using least recently played song.',
+                    ['media_id' => $mediaId]
+                );
 
                 return $mediaId;
             }

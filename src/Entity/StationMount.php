@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -398,7 +399,7 @@ class StationMount implements StationMountInterface
         AbstractFrontend $fa,
         UriInterface $base_url = null
     ): Api\StationMount {
-        $response = new Api\StationMount;
+        $response = new Api\StationMount();
 
         $response->id = $this->id;
         $response->name = $this->getDisplayName();

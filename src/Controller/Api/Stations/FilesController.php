@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -302,7 +303,7 @@ class FilesController extends AbstractStationApiCrudController
                 if ($backend instanceof Liquidsoap) {
                     foreach ($affected_playlists as $playlist_id => $playlist_row) {
                         // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage;
+                        $message = new WritePlaylistFileMessage();
                         $message->playlist_id = $playlist_id;
 
                         $this->messageBus->dispatch($message);
@@ -346,7 +347,7 @@ class FilesController extends AbstractStationApiCrudController
         if ($backend instanceof Liquidsoap) {
             foreach ($affected_playlists as $playlist_id => $playlist_row) {
                 // Instruct the message queue to start a new "write playlist to file" task.
-                $message = new WritePlaylistFileMessage;
+                $message = new WritePlaylistFileMessage();
                 $message->playlist_id = $playlist_id;
 
                 $this->messageBus->dispatch($message);

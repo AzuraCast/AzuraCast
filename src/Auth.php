@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use App\Entity\Repository\UserRepository;
@@ -254,7 +255,7 @@ class Auth
         $user = $this->getUser();
 
         if (!($user instanceof User)) {
-            throw new NotLoggedInException;
+            throw new NotLoggedInException();
         }
 
         if ($user->verifyTwoFactor($otp)) {

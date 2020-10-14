@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Sync\Task;
 
 use App\Console\Application;
@@ -118,7 +119,7 @@ class Backup extends AbstractTask
             }
 
             // Trigger a new backup.
-            $message = new Message\BackupMessage;
+            $message = new Message\BackupMessage();
             $message->path = 'automatic_backup.zip';
             $message->excludeMedia = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
 

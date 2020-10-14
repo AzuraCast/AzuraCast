@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook\Connector;
 
 use App\Entity\StationWebhook;
@@ -46,6 +47,5 @@ class TuneIn extends AbstractConnector
         } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from TuneIn (%d): %s', $e->getCode(), $e->getMessage()));
         }
-
     }
 }

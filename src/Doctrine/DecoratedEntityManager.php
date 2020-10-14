@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine;
 
 use Closure;
@@ -49,6 +50,4 @@ class DecoratedEntityManager extends EntityManagerDecorator
 
         return $freshValue;
     }
-
-
 }

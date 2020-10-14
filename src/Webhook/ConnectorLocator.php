@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook;
 
 use App\Webhook\Connector\ConnectorInterface;

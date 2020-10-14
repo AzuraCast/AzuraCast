@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http;
 
 use App\Entity;
@@ -65,8 +66,11 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $this->loggerLevel = LogLevel::WARNING;
         }
 
-        $this->showDetailed = (!$this->settings->isProduction() && !in_array($this->loggerLevel,
-                [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE], true));
+        $this->showDetailed = (!$this->settings->isProduction() && !in_array(
+            $this->loggerLevel,
+            [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE],
+            true
+        ));
         $this->returnJson = $this->shouldReturnJson($request);
 
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
@@ -130,8 +134,12 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         if (false !== stripos($ua, 'curl')) {
             $response = $this->responseFactory->createResponse($this->statusCode);
 
-            $response->getBody()
-                ->write('Error: ' . $this->exception->getMessage() . ' on ' . $this->exception->getFile() . ' L' . $this->exception->getLine());
+            $response->getBody()->write(sprintf(
+                'Error: %s on %s L%s',
+                $this->exception->getMessage(),
+                $this->exception->getFile(),
+                $this->exception->getLine()
+            ));
 
             return $response;
         }
@@ -201,8 +209,10 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             }
 
             // Bounce back to homepage for permission-denied users.
-            $flash->addMessage(__('You do not have permission to access this portion of the site.'),
-                Flash::ERROR);
+            $flash->addMessage(
+                __('You do not have permission to access this portion of the site.'),
+                Flash::ERROR
+            );
 
             return $response->withRedirect((string)$this->router->named('home'));
         }
@@ -224,7 +234,9 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $api_response = new Entity\Api\Error(
                 $this->exception->getCode(),
                 $this->exception->getMessage(),
-                ($this->exception instanceof Exception) ? $this->exception->getFormattedMessage() : $this->exception->getMessage()
+                ($this->exception instanceof Exception)
+                    ? $this->exception->getFormattedMessage()
+                    : $this->exception->getMessage()
             );
 
             return $response->withJson($api_response);
@@ -232,7 +244,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
         if ($this->showDetailed && class_exists(Run::class)) {
             // Register error-handler.
-            $handler = new PrettyPageHandler;
+            $handler = new PrettyPageHandler();
             $handler->setPageTitle('An error occurred!');
 
             if ($this->exception instanceof Exception) {
@@ -242,7 +254,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                 }
             }
 
-            $run = new Run;
+            $run = new Run();
             $run->prependHandler($handler);
 
             return $response->write($run->handleException($this->exception));

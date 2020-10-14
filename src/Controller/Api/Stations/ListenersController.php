@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -60,8 +61,8 @@ class ListenersController
 
             $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');
 
-            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-                l 
+            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT
+                l
                 FROM App\Entity\Listener l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_start < :time_end
@@ -73,7 +74,6 @@ class ListenersController
 
             $listeners_raw = [];
             foreach ($listeners_unsorted as $listener) {
-
                 $hash = $listener['listener_hash'];
                 if (!isset($listeners_raw[$hash])) {
                     $listener['intervals'] = [];
@@ -98,8 +98,8 @@ class ListenersController
         } else {
             $range = 'live';
 
-            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-                l 
+            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT
+                l
                 FROM App\Entity\Listener l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_end = 0')
@@ -125,7 +125,7 @@ class ListenersController
             }
         }
 
-        $detect = new Mobile_Detect;
+        $detect = new Mobile_Detect();
         $locale = $request->getAttribute('locale');
 
         $format = $params['format'] ?? 'json';
@@ -177,7 +177,7 @@ class ListenersController
 
         $listeners = [];
         foreach ($listeners_raw as $listener) {
-            $api = new Entity\Api\Listener;
+            $api = new Entity\Api\Listener();
             $api->ip = (string)$listener['listener_ip'];
             $api->user_agent = (string)$listener['listener_user_agent'];
             $api->is_mobile = $detect->isMobile($listener['listener_user_agent']);

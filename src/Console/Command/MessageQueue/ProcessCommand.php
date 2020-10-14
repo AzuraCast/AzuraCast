@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\MessageQueue;
 
 use App\Console\Command\CommandAbstract;

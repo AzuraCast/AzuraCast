@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console;
 
 use Symfony\Component\Console\Input\ArrayInput;

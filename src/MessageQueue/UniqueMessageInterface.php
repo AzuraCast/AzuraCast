@@ -1,4 +1,5 @@
 <?php
+
 namespace App\MessageQueue;
 
 interface UniqueMessageInterface

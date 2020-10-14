@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
@@ -8,6 +9,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
+
 use function array_reverse;
 use function array_slice;
 
@@ -35,8 +37,10 @@ class OverviewController
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
-            Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $this->settingsRepo->getSetting(
+            Entity\Settings::LISTENER_ANALYTICS,
+            Entity\Analytics::LEVEL_ALL
+        );
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
@@ -47,10 +51,13 @@ class OverviewController
         $statisticsThreshold = CarbonImmutable::parse('-1 month', $station_tz);
 
         // Statistics by day.
-        $dailyStats = $this->analyticsRepo->findForStationAfterTime($station, $statisticsThreshold,
-            Entity\Analytics::INTERVAL_DAILY);
+        $dailyStats = $this->analyticsRepo->findForStationAfterTime(
+            $station,
+            $statisticsThreshold,
+            Entity\Analytics::INTERVAL_DAILY
+        );
 
-        $daily_chart = new stdClass;
+        $daily_chart = new stdClass();
         $daily_chart->label = __('Listeners by Day');
         $daily_chart->type = 'line';
         $daily_chart->fill = false;
@@ -68,7 +75,7 @@ class OverviewController
             $statTime = $stat['moment'];
             $statTime = $statTime->shiftTimezone($station_tz);
 
-            $avg_row = new stdClass;
+            $avg_row = new stdClass();
             $avg_row->t = $statTime->getTimestamp() * 1000;
             $avg_row->y = round($stat['number_avg'], 2);
             $daily_averages[] = $avg_row;
@@ -88,7 +95,7 @@ class OverviewController
             'datasets' => [$daily_chart],
         ];
 
-        $day_of_week_chart = new stdClass;
+        $day_of_week_chart = new stdClass();
         $day_of_week_chart->label = __('Listeners by Day of Week');
 
         $day_of_week_alt = [
@@ -127,8 +134,11 @@ class OverviewController
         ];
 
         // Statistics by hour.
-        $hourlyStats = $this->analyticsRepo->findForStationAfterTime($station, $statisticsThreshold,
-            Entity\Analytics::INTERVAL_HOURLY);
+        $hourlyStats = $this->analyticsRepo->findForStationAfterTime(
+            $station,
+            $statisticsThreshold,
+            Entity\Analytics::INTERVAL_HOURLY
+        );
 
         $totals_by_hour = [];
 
@@ -142,7 +152,7 @@ class OverviewController
         }
 
         $hourly_labels = [];
-        $hourly_chart = new stdClass;
+        $hourly_chart = new stdClass();
         $hourly_chart->label = __('Listeners by Hour');
 
         $hourly_rows = [];
@@ -173,7 +183,7 @@ class OverviewController
         /* Play Count Statistics */
 
         $song_totals_raw = [];
-        $song_totals_raw['played'] = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $song_totals_raw['played'] = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sh.song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS records
             FROM App\Entity\SongHistory sh
             WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
@@ -201,8 +211,8 @@ class OverviewController
         // Get all songs played in timeline.
         $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
             FROM App\Entity\SongHistory sh
-            WHERE sh.station_id = :station_id 
-            AND sh.timestamp_start >= :timestamp 
+            WHERE sh.station_id = :station_id
+            AND sh.timestamp_start >= :timestamp
             AND sh.listeners_start IS NOT NULL
             ORDER BY sh.timestamp_start ASC')
             ->setParameter('station_id', $station->getId())

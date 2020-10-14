@@ -287,6 +287,9 @@ class BatchAction
         ]);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getMusicFiles(StationFilesystem $fs, array $files): array
     {
         $musicFiles = [];
@@ -310,6 +313,9 @@ class BatchAction
         return $musicFiles;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getDirectories(StationFilesystem $fs, array $files): array
     {
         $directories = [];

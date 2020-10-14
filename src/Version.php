@@ -41,7 +41,7 @@ class Version
     /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
-     * @return array
+     * @return mixed[]
      */
     public function getDetails(): array
     {
@@ -64,7 +64,7 @@ class Version
     /**
      * Generate new repository details from the underlying Git repository.
      *
-     * @return array
+     * @return mixed[]
      */
     protected function getRawDetails(): array
     {
@@ -109,8 +109,6 @@ class Version
      *
      * @param array $proc
      * @param string $default
-     *
-     * @return string
      */
     protected function runProcess($proc, $default = ''): string
     {
@@ -175,8 +173,6 @@ class Version
 
     /**
      * Check if the installation has been modified by the user from the release build.
-     *
-     * @return bool
      */
     public function isInstallationModified(): bool
     {

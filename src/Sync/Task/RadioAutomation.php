@@ -186,6 +186,9 @@ class RadioAutomation extends AbstractTask
         return true;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function generateReport(
         Entity\Station $station,
         int $threshold_days = self::DEFAULT_THRESHOLD_DAYS

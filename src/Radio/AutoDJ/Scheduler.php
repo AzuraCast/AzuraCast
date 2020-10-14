@@ -164,8 +164,6 @@ class Scheduler
      * Get the duration of scheduled play time in seconds (used for remote URLs of indeterminate length).
      *
      * @param Entity\StationPlaylist $playlist
-     *
-     * @return int
      */
     public function getPlaylistScheduleDuration(Entity\StationPlaylist $playlist): int
     {
@@ -311,8 +309,6 @@ class Scheduler
      *
      * @param Entity\StationSchedule $schedule
      * @param int $dayToCheck ISO-8601 date (1 for Monday, 7 for Sunday)
-     *
-     * @return bool
      */
     public function isScheduleScheduledToPlayToday(
         Entity\StationSchedule $schedule,

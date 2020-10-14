@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class RolePermission extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
@@ -48,7 +48,7 @@ class RolePermission extends AbstractFixture implements DependentFixtureInterfac
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             Role::class,

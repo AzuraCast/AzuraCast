@@ -14,7 +14,7 @@ class ResetPasswordCommand extends CommandAbstract
         SymfonyStyle $io,
         EntityManagerInterface $em,
         string $email
-    ) {
+    ): int {
         $io->title('Reset Account Password');
 
         $user = $em->getRepository(Entity\User::class)

@@ -23,7 +23,6 @@ class RateLimit
      * @param int $timeout
      * @param int $interval
      *
-     * @return bool
      * @throws Exception\RateLimitExceededException
      */
     public function checkRateLimit(

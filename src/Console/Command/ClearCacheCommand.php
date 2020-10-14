@@ -7,7 +7,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ClearCacheCommand extends CommandAbstract
 {
-    public function __invoke(SymfonyStyle $io, Redis $redis)
+    public function __invoke(SymfonyStyle $io, Redis $redis): int
     {
         // Flush all Redis entries.
         $redis->flushAll();

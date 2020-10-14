@@ -64,7 +64,6 @@ class CustomField
 
     /**
      * @AuditLog\AuditIdentifier()
-     * @return string
      */
     public function getName(): string
     {

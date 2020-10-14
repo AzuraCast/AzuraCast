@@ -14,9 +14,6 @@ use Symfony\Component\Process\Process;
 
 class SHOUTcast extends AbstractFrontend
 {
-    /**
-     * @return string|null
-     */
     public static function getVersion(): ?string
     {
         $binary_path = self::getBinary();
@@ -35,6 +32,9 @@ class SHOUTcast extends AbstractFrontend
         return trim($process->getOutput());
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getBinary()
     {
         $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
@@ -110,6 +110,9 @@ class SHOUTcast extends AbstractFrontend
         return true;
     }
 
+    /**
+     * @return string[]|bool Returns either all lines of the config file or false on failure
+     */
     protected function getConfig(Entity\Station $station)
     {
         $config_dir = $station->getRadioConfigDir();
@@ -120,6 +123,9 @@ class SHOUTcast extends AbstractFrontend
      * Configuration
      */
 
+    /**
+     * @return mixed[]
+     */
     protected function loadFromConfig($config): array
     {
         return [
@@ -198,6 +204,9 @@ class SHOUTcast extends AbstractFrontend
         return true;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getDefaults(Entity\Station $station): array
     {
         $config_path = $station->getRadioConfigDir();

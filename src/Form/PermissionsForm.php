@@ -33,6 +33,9 @@ class PermissionsForm extends EntityForm
         $this->permissions_repo = $permissions_repo;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         if ($record instanceof Entity\Role && Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID === $record->getId()) {
@@ -63,6 +66,9 @@ class PermissionsForm extends EntityForm
         return $record;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function normalizeRecord($record, array $context = []): array
     {
         $data = parent::normalizeRecord($record, $context);

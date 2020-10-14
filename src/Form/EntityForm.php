@@ -138,7 +138,7 @@ class EntityForm extends Form
      * @param object $record
      * @param array $context
      *
-     * @return array
+     * @return mixed[]
      */
     protected function normalizeRecord($record, array $context = []): array
     {
@@ -186,8 +186,6 @@ class EntityForm extends Form
      * @param array $data
      * @param object|null $record
      * @param array $context
-     *
-     * @return object
      */
     protected function denormalizeToRecord($data, $record = null, array $context = []): object
     {

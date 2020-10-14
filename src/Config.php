@@ -21,7 +21,7 @@ class Config
      * @param string $name
      * @param array $inject_vars Variables to pass into the scope of the configuration.
      *
-     * @return array
+     * @return mixed[]
      * @noinspection PhpIncludeInspection
      * @noinspection UselessUnsetInspection
      */
@@ -44,8 +44,6 @@ class Config
      * Return the configuration path resolved by the specified name.
      *
      * @param string $name
-     *
-     * @return string
      */
     public function getPath($name): string
     {
@@ -56,8 +54,6 @@ class Config
      * Indicate whether a given configuration file name exists.
      *
      * @param string $name
-     *
-     * @return bool
      */
     public function has($name): bool
     {

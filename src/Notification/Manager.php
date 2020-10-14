@@ -37,7 +37,10 @@ class Manager implements EventSubscriberInterface
         $this->settingsRepo = $settingsRepo;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             GetNotifications::class => [

@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class Role extends AbstractFixture
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         $admin_role = new Entity\Role();
         $admin_role->setName('Super Administrator');

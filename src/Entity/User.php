@@ -167,7 +167,6 @@ class User
 
     /**
      * @AuditLog\AuditIdentifier()
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -211,7 +210,7 @@ class User
     /**
      * Get the most secure available password hashing algorithm.
      *
-     * @return array [algorithm constant, algorithm options array]
+     * @return mixed[] [algorithm constant string, algorithm options array]
      */
     protected function getPasswordAlgorithm(): array
     {

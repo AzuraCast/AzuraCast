@@ -11,7 +11,7 @@ class ClearCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         QueueManager $queueManager
-    ) {
+    ): int {
         $connections = $queueManager->getConnections();
         foreach ($connections as $connection) {
             $connection->cleanup();

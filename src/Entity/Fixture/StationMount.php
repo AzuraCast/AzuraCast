@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class StationMount extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
@@ -30,7 +30,7 @@ class StationMount extends AbstractFixture implements DependentFixtureInterface
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             Station::class,

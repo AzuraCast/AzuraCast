@@ -40,8 +40,6 @@ class Router implements RouterInterface
      * @param UriInterface $base
      * @param UriInterface|string $rel
      * @param bool $absolute
-     *
-     * @return UriInterface
      */
     public static function resolveUri(UriInterface $base, $rel, bool $absolute = false): UriInterface
     {
@@ -65,9 +63,6 @@ class Router implements RouterInterface
         return UriResolver::resolve($base, $rel);
     }
 
-    /**
-     * @return ServerRequestInterface
-     */
     public function getCurrentRequest(): ServerRequestInterface
     {
         return $this->currentRequest;
@@ -88,8 +83,6 @@ class Router implements RouterInterface
      * @param array $route_params
      * @param array $query_params
      * @param bool $absolute
-     *
-     * @return string
      */
     public function fromHereWithQuery(
         $route_name = null,
@@ -111,8 +104,6 @@ class Router implements RouterInterface
      * @param array $route_params
      * @param array $query_params
      * @param bool $absolute
-     *
-     * @return string
      */
     public function fromHere(
         $route_name = null,
@@ -151,8 +142,6 @@ class Router implements RouterInterface
      * @param array $route_params
      * @param array $query_params
      * @param boolean $absolute Whether to include the full URL.
-     *
-     * @return UriInterface
      */
     public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): UriInterface
     {

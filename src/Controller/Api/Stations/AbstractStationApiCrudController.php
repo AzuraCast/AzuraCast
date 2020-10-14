@@ -15,8 +15,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -35,8 +33,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * override to verify that the station can perform the specified task.
      *
      * @param ServerRequest $request
-     *
-     * @return Entity\Station
      */
     protected function getStation(ServerRequest $request): Entity\Station
     {
@@ -46,8 +42,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -62,8 +56,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param array $data
      * @param Entity\Station $station
-     *
-     * @return object
      */
     protected function createRecord($data, Entity\Station $station): object
     {
@@ -90,7 +82,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param int|string $station_id
      * @param int|string $id
      *
-     * @return ResponseInterface
      * @throws Exception
      */
     public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
@@ -110,10 +101,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param Entity\Station $station
      * @param int|string $id
-     *
-     * @return object|null
      */
-    protected function getRecord(Entity\Station $station, $id)
+    protected function getRecord(Entity\Station $station, $id): ?object
     {
         $repo = $this->em->getRepository($this->entityClass);
         return $repo->findOneBy([
@@ -127,8 +116,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param Response $response
      * @param int|string $station_id
      * @param int|string $id
-     *
-     * @return ResponseInterface
      */
     public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
@@ -149,8 +136,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param Response $response
      * @param int|string $station_id
      * @param int|string $id
-     *
-     * @return ResponseInterface
      */
     public function deleteAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {

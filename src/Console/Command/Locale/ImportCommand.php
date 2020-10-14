@@ -12,7 +12,7 @@ class ImportCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         Settings $settings
-    ) {
+    ): int {
         $io->title('Import Locales');
 
         $locales = $settings['locale']['supported'];

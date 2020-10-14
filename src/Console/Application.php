@@ -14,7 +14,7 @@ class Application extends \Silly\Edition\PhpDi\Application
      * @param array $args
      * @param string $outputFile
      *
-     * @return array [$return_code, $return_output]
+     * @return mixed[] [int $return_code, string $return_output]
      */
     public function runCommandWithArgs($command, array $args = [], string $outputFile = 'php://temp'): array
     {

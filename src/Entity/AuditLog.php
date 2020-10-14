@@ -157,6 +157,9 @@ class AuditLog
         return $this->target;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getChanges(): array
     {
         return $this->changes;

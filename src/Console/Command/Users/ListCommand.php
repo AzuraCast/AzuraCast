@@ -12,7 +12,7 @@ class ListCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManagerInterface $em
-    ) {
+    ): int {
         $io->title('AzuraCast User Accounts');
 
         $usersRaw = $em->getRepository(Entity\User::class)

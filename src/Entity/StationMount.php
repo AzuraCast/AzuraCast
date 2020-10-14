@@ -238,7 +238,7 @@ class StationMount implements StationMountInterface
         $this->fallback_mount = $fallback_mount;
     }
 
-    public function getRelayUrl()
+    public function getRelayUrl(): ?string
     {
         return $this->relay_url;
     }
@@ -392,8 +392,6 @@ class StationMount implements StationMountInterface
      *
      * @param AbstractFrontend $fa
      * @param UriInterface|null $base_url
-     *
-     * @return Api\StationMount
      */
     public function api(
         AbstractFrontend $fa,
@@ -422,8 +420,6 @@ class StationMount implements StationMountInterface
 
     /**
      * @AuditLog\AuditIdentifier
-     *
-     * @return string
      */
     public function getDisplayName(): string
     {

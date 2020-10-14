@@ -17,7 +17,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
         $this->mediaRepo = $mediaRepo;
     }
 
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         $music_skeleton_dir = getenv('INIT_MUSIC_PATH');
 
@@ -60,7 +60,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             Station::class,

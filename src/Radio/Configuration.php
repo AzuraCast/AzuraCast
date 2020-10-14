@@ -133,8 +133,6 @@ class Configuration
 
     /**
      * @param Station $station
-     *
-     * @return string
      */
     protected function getSupervisorConfigFile(Station $station): string
     {
@@ -174,7 +172,7 @@ class Configuration
     /**
      * Trigger a supervisord reload and restart all relevant services.
      *
-     * @return array A list of affected service groups (either stopped, removed or
+     * @return mixed[] A list of affected service groups (either stopped, removed or
      */
     protected function reloadSupervisor(): array
     {
@@ -307,7 +305,7 @@ class Configuration
      *
      * @param Station|null $except_station
      *
-     * @return array
+     * @return mixed[]
      */
     public function getUsedPorts(Station $except_station = null): array
     {

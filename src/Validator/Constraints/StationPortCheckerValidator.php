@@ -17,7 +17,7 @@ class StationPortCheckerValidator extends ConstraintValidator
         $this->configuration = $configuration;
     }
 
-    public function validate($station, Constraint $constraint)
+    public function validate($station, Constraint $constraint): void
     {
         if (!$constraint instanceof StationPortChecker) {
             throw new UnexpectedTypeException($constraint, StationPortChecker::class);

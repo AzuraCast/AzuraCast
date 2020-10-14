@@ -51,6 +51,9 @@ class IpGeolocation
         return $this->attribution;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getLocationInfo(string $ip, string $locale): array
     {
         if (!$this->isInitialized) {

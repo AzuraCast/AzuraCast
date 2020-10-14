@@ -36,8 +36,6 @@ abstract class AbstractAdapter
 
     /**
      * Indicate if the adapter in question is installed on the server.
-     *
-     * @return bool
      */
     public static function isInstalled(): bool
     {
@@ -46,6 +44,8 @@ abstract class AbstractAdapter
 
     /**
      * Return the binary executable location for this item.
+     *
+     * @return string|bool Returns either the path to the binary if it exists or a boolean for error/success
      */
     public static function getBinary()
     {
@@ -56,8 +56,6 @@ abstract class AbstractAdapter
      * Write configuration from Station object to the external service.
      *
      * @param Entity\Station $station
-     *
-     * @return bool
      */
     abstract public function write(Entity\Station $station): bool;
 
@@ -65,8 +63,6 @@ abstract class AbstractAdapter
      * Check if the service is running.
      *
      * @param Entity\Station $station
-     *
-     * @return bool
      */
     public function isRunning(Entity\Station $station): bool
     {
@@ -86,8 +82,6 @@ abstract class AbstractAdapter
      * Return a boolean indicating whether the adapter has an executable command associated with it.
      *
      * @param Entity\Station $station
-     *
-     * @return bool
      */
     public function hasCommand(Entity\Station $station): bool
     {
@@ -102,8 +96,6 @@ abstract class AbstractAdapter
      * Return the shell command required to run the program.
      *
      * @param Entity\Station $station
-     *
-     * @return string|null
      */
     public function getCommand(Entity\Station $station): ?string
     {
@@ -114,8 +106,6 @@ abstract class AbstractAdapter
      * Return the program's fully qualified supervisord name.
      *
      * @param Entity\Station $station
-     *
-     * @return string
      */
     abstract public function getProgramName(Entity\Station $station): string;
 
@@ -259,8 +249,6 @@ abstract class AbstractAdapter
      * Return the path where logs are written to.
      *
      * @param Entity\Station $station
-     *
-     * @return string
      */
     public function getLogPath(Entity\Station $station): string
     {

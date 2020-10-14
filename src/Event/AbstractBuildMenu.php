@@ -65,7 +65,7 @@ abstract class AbstractBuildMenu extends Event
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getFilteredMenu(): array
     {
@@ -82,8 +82,6 @@ abstract class AbstractBuildMenu extends Event
 
     /**
      * @param array $item
-     *
-     * @return bool
      */
     protected function filterMenuItem(array $item): bool
     {
@@ -104,8 +102,6 @@ abstract class AbstractBuildMenu extends Event
 
     /**
      * @param string $permission_name
-     *
-     * @return bool
      */
     public function checkPermission(string $permission_name): bool
     {

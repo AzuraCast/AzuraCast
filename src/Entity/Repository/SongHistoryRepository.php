@@ -73,6 +73,9 @@ class SongHistoryRepository extends Repository
         return $return;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getRecentlyPlayed(
         Entity\Station $station,
         CarbonInterface $now,
@@ -101,6 +104,9 @@ class SongHistoryRepository extends Repository
         return array_slice($recentlyPlayed, 0, $rows);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getRecentlyPlayedByTimeRange(
         Entity\Station $station,
         CarbonInterface $now,
@@ -239,7 +245,7 @@ class SongHistoryRepository extends Repository
      * @param int|DateTimeInterface $start
      * @param int|DateTimeInterface $end
      *
-     * @return array [$minimumListeners, $maximumListeners, $averageListeners]
+     * @return mixed[] [int $minimumListeners, int $maximumListeners, float $averageListeners]
      */
     public function getStatsByTimeRange(Entity\Station $station, $start, $end): array
     {

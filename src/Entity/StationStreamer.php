@@ -176,7 +176,6 @@ class StationStreamer
 
     /**
      * @AuditLog\AuditIdentifier()
-     * @return string
      */
     public function getDisplayName(): string
     {

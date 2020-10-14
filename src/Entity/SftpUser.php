@@ -101,6 +101,9 @@ class SftpUser
         return $this->publicKeys;
     }
 
+    /**
+     * @return string[]
+     */
     public function getPublicKeysArray(): array
     {
         $pubKeysRaw = trim($this->publicKeys);

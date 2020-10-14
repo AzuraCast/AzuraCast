@@ -39,6 +39,9 @@ class LogsController extends AbstractLogViewerController
         ]);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getGlobalLogs(): array
     {
         $tempDir = Settings::getInstance()->getTempDirectory();

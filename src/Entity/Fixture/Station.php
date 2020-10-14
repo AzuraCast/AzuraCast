@@ -10,7 +10,7 @@ use RuntimeException;
 
 class Station extends AbstractFixture
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         $station = new Entity\Station();
         $station->setName('AzuraTest Radio');

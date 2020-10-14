@@ -41,7 +41,10 @@ class Queue implements EventSubscriberInterface
         $this->historyRepo = $historyRepo;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             BuildQueue::class => [
@@ -214,11 +217,11 @@ class Queue implements EventSubscriberInterface
         $arr = $array;
 
         $max = 1.0 / mt_getrandmax();
-        array_walk($arr, function (&$v, $k) use ($max) {
+        array_walk($arr, function (&$v, $k) use ($max): void {
             $v = (mt_rand() * $max) ** (1.0 / $v);
         });
         arsort($arr);
-        array_walk($arr, function (&$v, $k) use ($array) {
+        array_walk($arr, function (&$v, $k) use ($array): void {
             $v = $array[$k];
         });
 
@@ -232,8 +235,6 @@ class Queue implements EventSubscriberInterface
      * @param array $recentSongHistory
      * @param CarbonInterface $now
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
-     *
-     * @return Entity\StationQueue|null
      */
     protected function playSongFromPlaylist(
         Entity\StationPlaylist $playlist,
@@ -295,7 +296,7 @@ class Queue implements EventSubscriberInterface
      * @param array $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
-     * @return Entity\StationMedia|array|null
+     * @return Entity\StationMedia|mixed[]|null
      */
     protected function getQueuedSong(
         Entity\StationPlaylist $playlist,
@@ -382,6 +383,9 @@ class Queue implements EventSubscriberInterface
         return $this->em->find(Entity\StationMedia::class, $mediaId);
     }
 
+    /**
+     * @return mixed[]|null
+     */
     protected function playRemoteUrl(Entity\StationPlaylist $playlist): ?array
     {
         $remote_type = $playlist->getRemoteType() ?? Entity\StationPlaylist::REMOTE_TYPE_STREAM;
@@ -421,8 +425,6 @@ class Queue implements EventSubscriberInterface
      * @param array $eligibleMedia
      * @param array $playedMedia
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
-     *
-     * @return int|null
      */
     protected function preventDuplicates(
         array $eligibleMedia = [],

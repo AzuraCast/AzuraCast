@@ -78,7 +78,7 @@ class SettingsRepository extends Repository
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function fetchAll(): array
     {
@@ -107,7 +107,7 @@ class SettingsRepository extends Repository
      * @param null $order_by
      * @param string $order_dir
      *
-     * @return array
+     * @return mixed[]
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {

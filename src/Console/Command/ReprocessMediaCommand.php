@@ -17,7 +17,7 @@ class ReprocessMediaCommand extends CommandAbstract
         StationRepository $stationRepo,
         Entity\Repository\StationMediaRepository $media_repo,
         ?string $stationName = null
-    ) {
+    ): int {
         if (!empty($stationName)) {
             $station = $stationRepo->findByIdentifier($stationName);
 

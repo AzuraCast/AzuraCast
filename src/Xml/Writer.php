@@ -20,10 +20,9 @@ class Writer extends Xml
      * @param mixed $config
      * @param string $base_element
      *
-     * @return string
-     * @see    WriterInterface::toString()
+     * @see WriterInterface::toString()
      */
-    public function toString($config, $base_element = 'zend-config')
+    public function toString($config, $base_element = 'zend-config'): string
     {
         if ($config instanceof Traversable) {
             $config = ArrayUtils::iteratorToArray($config);
@@ -39,10 +38,8 @@ class Writer extends Xml
      *
      * @param array $config
      * @param string $base_element
-     *
-     * @return string
      */
-    public function processConfig(array $config, $base_element = 'zend-config')
+    public function processConfig(array $config, $base_element = 'zend-config'): string
     {
         $writer = new XMLWriter();
         $writer->openMemory();
@@ -80,10 +77,9 @@ class Writer extends Xml
      * @param array $config
      * @param XMLWriter $writer
      *
-     * @return void
      * @throws Exception\RuntimeException
      */
-    protected function addBranch($branchName, array $config, XMLWriter $writer)
+    protected function addBranch($branchName, array $config, XMLWriter $writer): void
     {
         $branchType = null;
 

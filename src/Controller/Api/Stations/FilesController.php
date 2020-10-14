@@ -88,8 +88,6 @@ class FilesController extends AbstractStationApiCrudController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -190,7 +188,7 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function getRecord(Entity\Station $station, $id)
+    protected function getRecord(Entity\Station $station, $id): ?object
     {
         $repo = $this->em->getRepository($this->entityClass);
 
@@ -213,7 +211,7 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function toArray($record, array $context = [])
+    protected function toArray($record, array $context = []): array
     {
         $row = parent::toArray($record, $context);
 

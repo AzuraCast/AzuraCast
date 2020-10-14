@@ -77,8 +77,6 @@ class AnnotateNextSong extends Event
 
     /**
      * Compile the resulting annotations into one string for Liquidsoap to consume.
-     *
-     * @return string
      */
     public function buildAnnotations(): string
     {

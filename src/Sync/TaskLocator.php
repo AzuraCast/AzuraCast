@@ -5,6 +5,7 @@ namespace App\Sync;
 use App\Event\GetSyncTasks;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class TaskLocator implements EventSubscriberInterface
 {
@@ -18,7 +19,10 @@ class TaskLocator implements EventSubscriberInterface
         $this->tasks = $tasks;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             GetSyncTasks::class => [

@@ -33,9 +33,6 @@ class LoadNowPlaying extends Event
         }
     }
 
-    /**
-     * @return bool
-     */
     public function hasNowPlaying(): bool
     {
         return (0 !== count($this->np));

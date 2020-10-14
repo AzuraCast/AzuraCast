@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class User extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         $demo_user = new Entity\User();
         $demo_user->setEmail('demo@azuracast.com');
@@ -48,7 +48,7 @@ class User extends AbstractFixture implements DependentFixtureInterface
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             Role::class,

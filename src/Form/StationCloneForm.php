@@ -43,6 +43,9 @@ class StationCloneForm extends StationForm
         $this->media_sync = $media_sync;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\Station) {

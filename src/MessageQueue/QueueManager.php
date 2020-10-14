@@ -26,6 +26,9 @@ class QueueManager implements SendersLocatorInterface
         $this->redis = $redis;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSenders(Envelope $envelope): iterable
     {
         $message = $envelope->getMessage();
@@ -102,6 +105,9 @@ class QueueManager implements SendersLocatorInterface
         $connection->setup();
     }
 
+    /**
+     * @return string[]
+     */
     public static function getAllQueues(): array
     {
         return [

@@ -131,6 +131,9 @@ class Relay
         $this->is_visible_on_public_pages = $is_visible_on_public_pages;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getNowplaying()
     {
         return $this->nowplaying;

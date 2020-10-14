@@ -26,6 +26,9 @@ class PlaylistTime extends Time
         };
     }
 
+    /**
+     * @return string|int
+     */
     public function getValue()
     {
         if (empty($this->value)) {

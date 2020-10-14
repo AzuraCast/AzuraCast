@@ -13,14 +13,14 @@ class SetCommand extends CommandAbstract
         Entity\Repository\SettingsRepository $settings_repo,
         string $settingKey,
         string $settingValue
-    ) {
+    ): int {
         $io->title('AzuraCast Settings');
 
         if (strtolower($settingValue) === 'null') {
             $settings_repo->deleteSetting($settingKey);
 
             $io->success(sprintf('Setting "%s" removed.', $settingKey));
-            return null;
+            return 0;
         }
 
         if (0 === strpos($settingValue, '{')) {
@@ -30,5 +30,7 @@ class SetCommand extends CommandAbstract
         $settings_repo->setSetting($settingKey, $settingValue);
 
         $io->success(sprintf('Setting "%s" updated.', $settingKey));
+
+        return 0;
     }
 }

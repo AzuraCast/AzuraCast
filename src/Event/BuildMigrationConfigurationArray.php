@@ -15,6 +15,9 @@ class BuildMigrationConfigurationArray extends Event
         $this->baseDir = $baseDir;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getMigrationConfigurations(): array
     {
         return $this->migrationConfigurations;

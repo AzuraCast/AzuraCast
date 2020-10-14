@@ -16,15 +16,15 @@ class NextSongCommand extends CommandAbstract
         AutoDJ $autoDJ,
         int $stationId,
         bool $asAutodj = false
-    ) {
+    ): int {
         $station = $em->find(Entity\Station::class, $stationId);
 
         if (!($station instanceof Entity\Station)) {
             $io->write('false');
-            return null;
+            return 0;
         }
 
         $io->write($autoDJ->annotateNextSong($station, $asAutodj));
-        return null;
+        return 0;
     }
 }

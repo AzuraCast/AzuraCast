@@ -210,6 +210,9 @@ class StationQueue implements SongInterface
         $this->sent_to_autodj = true;
     }
 
+    /**
+     * @return string[]|null
+     */
     public function getLog(): ?array
     {
         return $this->log;

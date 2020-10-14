@@ -24,6 +24,7 @@ use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Contracts\EventDispatcher\Event;
 
 use function DeepCopy\deep_copy;
 
@@ -83,7 +84,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $this->analytics_level = $settingsRepository->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         if (Settings::getInstance()->isTesting()) {
             return [];
@@ -128,8 +132,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param bool $standalone Whether the request is for this station alone or part of the regular sync process.
-     *
-     * @return Entity\Api\NowPlaying
      */
     public function processStation(
         Entity\Station $station,
@@ -415,8 +417,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * Returns the latest live broadcast
      *
      * @param Entity\Station $station
-     *
-     * @return Entity\StationStreamerBroadcast
      */
     public function getLatestBroadcast(Station $station): Entity\StationStreamerBroadcast
     {

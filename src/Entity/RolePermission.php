@@ -92,12 +92,15 @@ class RolePermission implements JsonSerializable
         return $this->action_name;
     }
 
-    public function setActionName(string $action_name)
+    public function setActionName(string $action_name): void
     {
         $this->action_name = $action_name;
     }
 
-    public function jsonSerialize()
+    /**
+     * @return mixed[]
+     */
+    public function jsonSerialize(): array
     {
         return [
             'action' => $this->action_name,

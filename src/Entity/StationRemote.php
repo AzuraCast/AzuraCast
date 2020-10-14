@@ -453,7 +453,7 @@ class StationRemote implements StationMountInterface
         return $this->is_public;
     }
 
-    public function setIsPublic(bool $is_public)
+    public function setIsPublic(bool $is_public): void
     {
         $this->is_public = $is_public;
     }
@@ -490,8 +490,6 @@ class StationRemote implements StationMountInterface
      * Retrieve the API version of the object/array.
      *
      * @param AbstractRemote $adapter
-     *
-     * @return Api\StationRemote
      */
     public function api(
         AbstractRemote $adapter
@@ -517,8 +515,6 @@ class StationRemote implements StationMountInterface
 
     /**
      * @AuditLog\AuditIdentifier
-     *
-     * @return string
      */
     public function getDisplayName(): string
     {

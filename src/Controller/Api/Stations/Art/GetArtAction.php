@@ -37,8 +37,6 @@ class GetArtAction
      * @param StationRepository $stationRepo
      * @param StationMediaRepository $mediaRepo
      * @param string $media_id
-     *
-     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequest $request,

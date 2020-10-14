@@ -90,6 +90,9 @@ abstract class AbstractLogViewerController
         return mb_convert_encoding($log, 'UTF-8', 'UTF-8');
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getStationLogs(Entity\Station $station): array
     {
         $log_paths = [];

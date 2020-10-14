@@ -15,7 +15,7 @@ class SetAdministratorCommand extends CommandAbstract
         EntityManagerInterface $em,
         Entity\Repository\RolePermissionRepository $perms_repo,
         string $email
-    ) {
+    ): int {
         $io->title('Set Administrator');
 
         $user = $em->getRepository(Entity\User::class)

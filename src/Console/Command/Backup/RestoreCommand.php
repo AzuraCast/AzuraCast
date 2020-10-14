@@ -21,7 +21,7 @@ class RestoreCommand extends CommandAbstract
         OutputInterface $output,
         EntityManagerInterface $em,
         string $path
-    ) {
+    ): int {
         $start_time = microtime(true);
 
         $io->title('AzuraCast Restore');

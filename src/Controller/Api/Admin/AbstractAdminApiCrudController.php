@@ -25,7 +25,6 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      *
-     * @return ResponseInterface
      * @throws Exception
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
@@ -38,8 +37,6 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
     /**
      * @param array $data
-     *
-     * @return object
      */
     protected function createRecord($data): object
     {
@@ -50,8 +47,6 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      * @param mixed $id
-     *
-     * @return ResponseInterface
      */
     public function getAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
@@ -69,12 +64,11 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     /**
      * @param mixed $id
      *
-     * @return object|null
      * @throws ORMException
      * @throws OptimisticLockException
      * @throws TransactionRequiredException
      */
-    protected function getRecord($id)
+    protected function getRecord($id): ?object
     {
         return $this->em->find($this->entityClass, $id);
     }
@@ -83,8 +77,6 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      * @param mixed $id
-     *
-     * @return ResponseInterface
      */
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
@@ -104,8 +96,6 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      * @param mixed $id
-     *
-     * @return ResponseInterface
      */
     public function deleteAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {

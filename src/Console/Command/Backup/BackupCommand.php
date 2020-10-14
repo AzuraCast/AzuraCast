@@ -21,7 +21,7 @@ class BackupCommand extends CommandAbstract
         EntityManagerInterface $em,
         ?string $path = '',
         bool $excludeMedia = false
-    ) {
+    ): int {
         $start_time = microtime(true);
 
         if (empty($path)) {

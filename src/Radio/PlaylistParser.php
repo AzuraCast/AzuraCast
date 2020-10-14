@@ -4,6 +4,9 @@ namespace App\Radio;
 
 class PlaylistParser
 {
+    /**
+     * @return string[]
+     */
     public static function getSongs($playlist_raw): array
     {
         // Process as full PLS if the header is present.

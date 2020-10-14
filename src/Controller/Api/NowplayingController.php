@@ -51,9 +51,9 @@ class NowplayingController implements EventSubscriberInterface
      *  * array('eventName' => array('methodName', $priority))
      *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
      *
-     * @return array The event names to listen to
+     * @return mixed[] The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             LoadNowPlaying::class => [
@@ -91,8 +91,6 @@ class NowplayingController implements EventSubscriberInterface
      * @param ServerRequest $request
      * @param Response $response
      * @param int|string|null $station_id
-     *
-     * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
     {

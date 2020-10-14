@@ -67,7 +67,6 @@ class Role implements JsonSerializable
 
     /**
      * @AuditLog\AuditIdentifier()
-     * @return string
      */
     public function getName(): string
     {
@@ -89,7 +88,10 @@ class Role implements JsonSerializable
         return $this->permissions;
     }
 
-    public function jsonSerialize()
+    /**
+     * @return mixed[]
+     */
+    public function jsonSerialize(): array
     {
         $return = [
             'id' => $this->id,

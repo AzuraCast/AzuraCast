@@ -4,6 +4,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Entity\StationPlaylist;
 use Doctrine\ORM\NoResultException;
 use RuntimeException;
 
@@ -81,7 +82,7 @@ class StationPlaylistMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      *
-     * @return array The IDs and records for all affected playlists.
+     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function clearPlaylistsFromMedia(Entity\StationMedia $media): array
     {
@@ -132,6 +133,9 @@ class StationPlaylistMediaRepository extends Repository
         $this->em->flush();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getPlayableMedia(Entity\StationPlaylist $playlist): array
     {
         $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT

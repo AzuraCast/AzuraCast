@@ -61,8 +61,6 @@ class ApiUtilities
     /**
      * @param Station|null $station
      * @param UriInterface|null $baseUri
-     *
-     * @return UriInterface
      */
     public function getDefaultAlbumArtUrl(
         ?Station $station = null,
@@ -80,7 +78,7 @@ class ApiUtilities
      *
      * @param int|null $media_id
      *
-     * @return array
+     * @return mixed[]
      */
     public function getCustomFields($media_id = null): array
     {

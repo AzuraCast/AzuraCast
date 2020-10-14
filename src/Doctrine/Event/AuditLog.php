@@ -34,7 +34,10 @@ class AuditLog implements EventSubscriber
         $this->reader = $reader;
     }
 
-    public function getSubscribedEvents()
+    /**
+     * @return string[]
+     */
+    public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush,
@@ -222,8 +225,6 @@ class AuditLog implements EventSubscriber
     /**
      * @param EntityManagerInterface $em
      * @param object|string $class
-     *
-     * @return bool
      */
     protected function isEntity(EntityManagerInterface $em, $class): bool
     {
@@ -247,8 +248,6 @@ class AuditLog implements EventSubscriber
      *
      * @param ReflectionClass $reflectionClass
      * @param object $entity
-     *
-     * @return string|null
      */
     protected function getIdentifier(ReflectionClass $reflectionClass, $entity): ?string
     {

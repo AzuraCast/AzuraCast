@@ -54,8 +54,6 @@ class Acl
     /**
      * @param string $permission_name
      * @param bool $is_global
-     *
-     * @return bool
      */
     public static function isValidPermission($permission_name, $is_global): bool
     {
@@ -67,7 +65,7 @@ class Acl
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public static function listPermissions(): array
     {
@@ -134,8 +132,6 @@ class Acl
      * @param Entity\User|null $user
      * @param string|array $action
      * @param int|Entity\Station|null $station_id
-     *
-     * @return bool
      */
     public function userAllowed(?Entity\User $user = null, $action, $station_id = null): bool
     {
@@ -173,8 +169,6 @@ class Acl
      * @param int|array $role_id
      * @param string|array $action
      * @param int|Entity\Station|null $station_id
-     *
-     * @return bool
      */
     public function roleAllowed($role_id, $action, $station_id = null): bool
     {

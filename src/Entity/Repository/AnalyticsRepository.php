@@ -9,6 +9,9 @@ use DateTimeInterface;
 
 class AnalyticsRepository extends Repository
 {
+    /**
+     * @return mixed[]
+     */
     public function findForStationAfterTime(
         Entity\Station $station,
         DateTimeInterface $threshold,

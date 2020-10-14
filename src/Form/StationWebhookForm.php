@@ -46,16 +46,25 @@ class StationWebhookForm extends EntityForm
         $this->entityClass = Entity\StationWebhook::class;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getConfig(): array
     {
         return $this->config;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getForms(): array
     {
         return $this->forms;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\StationWebhook) {

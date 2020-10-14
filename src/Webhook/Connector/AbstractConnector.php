@@ -45,7 +45,7 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param array $raw_vars
      * @param Entity\Api\NowPlaying $np
      *
-     * @return array
+     * @return mixed[]
      */
     public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
     {
@@ -71,8 +71,6 @@ abstract class AbstractConnector implements ConnectorInterface
      * Determine if a passed URL is valid and return it if so, or return null otherwise.
      *
      * @param string|null $url_string
-     *
-     * @return string|null
      */
     protected function getValidUrl(?string $url_string = null): ?string
     {

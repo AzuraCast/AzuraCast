@@ -25,8 +25,6 @@ class ResponseFactory extends DecoratedResponseFactory
      * @param string $reasonPhrase Reason phrase to associate with status code
      *     in generated response; if none is provided implementations MAY use
      *     the defaults as suggested in the HTTP specification.
-     *
-     * @return ResponseInterface
      */
     public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {

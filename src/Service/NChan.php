@@ -38,7 +38,7 @@ class NChan
      * Pull operating system details.
      * https://stackoverflow.com/questions/26862978/get-the-linux-distribution-name-in-php
      *
-     * @return array
+     * @return mixed[]
      */
     public static function getOperatingSystemDetails(): array
     {

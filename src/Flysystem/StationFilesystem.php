@@ -38,8 +38,6 @@ class StationFilesystem extends FilesystemGroup
      * @param string $from The temporary path to update from
      * @param string $to The permanent path to update to
      * @param array $config
-     *
-     * @return string
      */
     public function updateFromTemp($from, $to, array $config = []): string
     {

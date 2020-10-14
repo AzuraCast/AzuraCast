@@ -295,7 +295,6 @@ class StationPlaylist
 
     /**
      * @AuditLog\AuditIdentifier
-     * @return string
      */
     public function getName(): string
     {
@@ -438,8 +437,6 @@ class StationPlaylist
 
     /**
      * Indicates whether this playlist can be used as a valid source of requestable media.
-     *
-     * @return bool
      */
     public function isRequestable(): bool
     {
@@ -476,6 +473,9 @@ class StationPlaylist
         $this->played_at = $played_at;
     }
 
+    /**
+     * @return mixed[]|null
+     */
     public function getQueue(): ?array
     {
         if (null === $this->queue) {
@@ -550,8 +550,6 @@ class StationPlaylist
 
     /**
      * Indicates whether a playlist is enabled and has content which can be scheduled by an AutoDJ scheduler.
-     *
-     * @return bool
      */
     public function isPlayable(): bool
     {
@@ -574,6 +572,9 @@ class StationPlaylist
         return self::REMOTE_TYPE_PLAYLIST === $this->remote_type;
     }
 
+    /**
+     * @return string[]
+     */
     public function getBackendOptions(): array
     {
         $settings = \App\Settings::getInstance();
@@ -657,8 +658,6 @@ class StationPlaylist
      * @param string $file_format
      * @param bool $absolute_paths
      * @param bool $with_annotations
-     *
-     * @return string
      */
     public function export(
         $file_format = 'pls',

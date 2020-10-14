@@ -39,8 +39,6 @@ class Auth
      *
      * @param string $username
      * @param string $password
-     *
-     * @return User|null
      */
     public function authenticate($username, $password): ?User
     {
@@ -59,7 +57,6 @@ class Auth
      *
      * @param bool $real_user_only
      *
-     * @return User|null
      * @throws Exception
      */
     public function getLoggedInUser($real_user_only = false): ?User
@@ -77,8 +74,6 @@ class Auth
 
     /**
      * Check if the current user is masquerading as another account.
-     *
-     * @return bool
      */
     public function isMasqueraded(): bool
     {
@@ -112,8 +107,6 @@ class Auth
 
     /**
      * Check if a user account is currently authenticated.
-     *
-     * @return bool
      */
     public function isLoggedIn(): bool
     {
@@ -132,8 +125,6 @@ class Auth
     /**
      * Indicate whether login is "complete", i.e. whether any necessary
      * second-factor authentication steps have been completed.
-     *
-     * @return bool
      */
     public function isLoginComplete(): bool
     {
@@ -143,7 +134,6 @@ class Auth
     /**
      * Get the authenticated user entity.
      *
-     * @return User|null
      * @throws Exception
      */
     public function getUser(): ?User
@@ -207,8 +197,6 @@ class Auth
 
     /**
      * Return the currently masqueraded user, if one is set.
-     *
-     * @return User|null
      */
     public function getMasquerade(): ?User
     {
@@ -247,8 +235,6 @@ class Auth
      * Verify a supplied one-time password.
      *
      * @param string $otp
-     *
-     * @return bool
      */
     public function verifyTwoFactor(string $otp): bool
     {

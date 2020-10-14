@@ -16,8 +16,6 @@ class ListenerRepository extends Repository
      * @param Entity\Station $station
      * @param DateTimeInterface|int $start
      * @param DateTimeInterface|int $end
-     *
-     * @return int
      */
     public function getUniqueListeners(Entity\Station $station, $start, $end): int
     {

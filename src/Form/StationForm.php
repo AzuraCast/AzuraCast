@@ -58,6 +58,9 @@ class StationForm extends EntityForm
         parent::configure($options);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.

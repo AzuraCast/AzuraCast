@@ -133,8 +133,6 @@ class PlaylistsController extends AbstractScheduledEntityController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -396,7 +394,10 @@ class PlaylistsController extends AbstractScheduledEntityController
         ));
     }
 
-    protected function viewRecord($record, ServerRequest $request)
+    /**
+     * @return mixed[]
+     */
+    protected function viewRecord($record, ServerRequest $request): array
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -443,7 +444,10 @@ class PlaylistsController extends AbstractScheduledEntityController
         return $return;
     }
 
-    protected function toArray($record, array $context = [])
+    /**
+     * @return mixed[]
+     */
+    protected function toArray($record, array $context = []): array
     {
         return parent::toArray($record, array_merge($context, [
             AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue'],

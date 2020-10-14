@@ -140,10 +140,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string $class
      * @param string|null $format
      * @param array $context
-     *
-     * @return object
      */
-    public function denormalize($data, $class, string $format = null, array $context = [])
+    public function denormalize($data, $class, string $format = null, array $context = []): object
     {
         $object = $this->instantiateObject($data, $class, $context, new ReflectionClass($class), false, $format);
 
@@ -336,8 +334,6 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @param string $var
      * @param string $prefix
-     *
-     * @return string
      */
     protected function getMethodName($var, $prefix = ''): string
     {
@@ -457,8 +453,6 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
     /**
      * @param object|string $class
-     *
-     * @return bool
      */
     protected function isEntity($class): bool
     {

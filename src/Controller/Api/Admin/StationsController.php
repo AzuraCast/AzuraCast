@@ -109,7 +109,7 @@ class StationsController extends AbstractAdminApiCrudController
      */
 
     /** @inheritDoc */
-    protected function toArray($record, array $context = [])
+    protected function toArray($record, array $context = []): array
     {
         return parent::toArray($record, $context + [
                 DoctrineEntityNormalizer::IGNORED_ATTRIBUTES => [

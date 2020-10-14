@@ -8,6 +8,9 @@ use RuntimeException;
 
 class Id3
 {
+    /**
+     * @return mixed[]
+     */
     public static function read(
         string $path
     ): array {

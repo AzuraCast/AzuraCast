@@ -82,8 +82,6 @@ class Flash
 
     /**
      * Indicate whether messages are currently pending display.
-     *
-     * @return bool
      */
     public function hasMessages(): bool
     {
@@ -94,7 +92,7 @@ class Flash
     /**
      * Return all messages, removing them from the internal storage in the process.
      *
-     * @return array
+     * @return mixed[]
      */
     public function getMessages(): array
     {

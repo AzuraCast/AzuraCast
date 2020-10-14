@@ -175,6 +175,9 @@ class StationSchedule
         $this->end_date = $end_date;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getDays(): ?array
     {
         if (empty($this->days)) {
@@ -246,8 +249,6 @@ class StationSchedule
      *
      * @param string|int $timeCode
      * @param CarbonInterface|null $now
-     *
-     * @return CarbonInterface
      */
     public static function getDateTime($timeCode, CarbonInterface $now = null): CarbonInterface
     {

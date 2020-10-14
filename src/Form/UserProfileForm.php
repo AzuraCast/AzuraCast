@@ -28,6 +28,9 @@ class UserProfileForm extends EntityForm
         $this->entityClass = Entity\User::class;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         $user = $request->getUser();

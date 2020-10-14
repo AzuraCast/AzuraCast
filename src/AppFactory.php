@@ -62,6 +62,9 @@ class AppFactory
         return $app;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected static function buildSettings(array $settings): array
     {
         if (!isset($settings[Settings::BASE_DIR])) {

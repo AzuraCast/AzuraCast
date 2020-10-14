@@ -47,7 +47,7 @@ class Plugins
      *
      * @param array $diDefinitions
      *
-     * @return array
+     * @return mixed[]
      */
     public function registerServices(array $diDefinitions = []): array
     {

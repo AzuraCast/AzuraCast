@@ -8,7 +8,7 @@ use App\Entity;
 class RolePermissionRepository extends Repository
 {
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getActionsForAllRoles(): array
     {
@@ -29,7 +29,7 @@ class RolePermissionRepository extends Repository
     /**
      * @param Entity\Role $role
      *
-     * @return array
+     * @return mixed[]
      */
     public function getActionsForRole(Entity\Role $role): array
     {

@@ -43,8 +43,6 @@ abstract class AbstractAdminCrudController
 
     /**
      * @param string|int|null $id
-     *
-     * @return object|null
      */
     protected function getRecord($id = null): ?object
     {

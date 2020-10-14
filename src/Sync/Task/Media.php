@@ -47,7 +47,7 @@ class Media extends AbstractTask
      *
      * @param Message\AbstractMessage $message
      */
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\ReprocessMediaMessage) {
             $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
@@ -236,6 +236,9 @@ class Media extends AbstractTask
         $this->em->flush();
     }
 
+    /**
+     * @return string[]
+     */
     public function globDirectory($base_dir, $regex_pattern = null): array
     {
         $finder = new Finder();

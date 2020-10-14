@@ -19,7 +19,7 @@ class SetupFixturesCommand extends CommandAbstract
         EntityManagerInterface $em,
         ContainerInterface $di,
         Settings $settings
-    ) {
+    ): int {
         $loader = new Loader();
 
         // Dependency-inject the fixtures and load them.

@@ -31,7 +31,7 @@ class CustomFieldRepository extends Repository
      *
      * @param Entity\StationMedia $media
      *
-     * @return array
+     * @return mixed[]
      */
     public function getCustomFields(Entity\StationMedia $media): array
     {

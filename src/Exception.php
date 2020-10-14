@@ -57,9 +57,6 @@ class Exception extends \Exception
         $this->formattedMessage = $message;
     }
 
-    /**
-     * @return string
-     */
     public function getLoggerLevel(): string
     {
         return $this->loggerLevel;
@@ -85,7 +82,7 @@ class Exception extends \Exception
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getExtraData(): array
     {
@@ -102,7 +99,7 @@ class Exception extends \Exception
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getLoggingContext(): array
     {

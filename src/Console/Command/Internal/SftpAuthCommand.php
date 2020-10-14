@@ -17,7 +17,7 @@ class SftpAuthCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManagerInterface $em
-    ) {
+    ): int {
         $username = getenv('SFTPGO_AUTHD_USERNAME');
         $password = getenv('SFTPGO_AUTHD_PASSWORD');
         $pubKey = getenv('SFTPGO_AUTHD_PUBLIC_KEY');

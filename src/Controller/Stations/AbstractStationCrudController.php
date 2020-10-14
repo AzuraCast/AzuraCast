@@ -52,8 +52,6 @@ abstract class AbstractStationCrudController
     /**
      * @param Station $station
      * @param string|int|null $id
-     *
-     * @return object|null
      */
     protected function getRecord(Station $station, $id = null): ?object
     {

@@ -37,7 +37,7 @@ class Backup extends AbstractTask
      *
      * @param Message\AbstractMessage $message
      */
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
@@ -58,7 +58,7 @@ class Backup extends AbstractTask
      * @param bool $excludeMedia
      * @param string|null $outputPath
      *
-     * @return array [$result_code, $result_output]
+     * @return mixed[] [int $result_code, string|false $result_output]
      */
     public function runBackup(?string $path = null, bool $excludeMedia = false, ?string $outputPath = null): array
     {

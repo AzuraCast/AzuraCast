@@ -47,7 +47,7 @@ class Flow
      * @param Response $response
      * @param string|null $temp_dir
      *
-     * @return array|ResponseInterface|null
+     * @return mixed[]|ResponseInterface|null
      */
     public static function process(
         ServerRequest $request,
@@ -137,8 +137,6 @@ class Flow
      * @param string $chunkBaseDir
      * @param int $targetSize
      * @param int $targetChunkNumber
-     *
-     * @return bool
      */
     protected static function allPartsExist(
         string $chunkBaseDir,
@@ -165,7 +163,7 @@ class Flow
      * @param string $originalFileName
      * @param int $numChunks
      *
-     * @return array
+     * @return mixed[]
      */
     protected static function createFileFromChunks(
         string $tempDir,

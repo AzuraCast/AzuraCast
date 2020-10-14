@@ -149,6 +149,9 @@ class DashboardController
         ]);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getMetrics(array $view_stations, bool $show_admin = false): array
     {
         // Statistics by day.

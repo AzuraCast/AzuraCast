@@ -28,7 +28,7 @@ trait PassThruProcess
         $stdout = [];
         $stderr = [];
 
-        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr) {
+        $process->mustRun(function ($type, $data) use ($process, $io, &$stdout, &$stderr): void {
             if ($process::ERR === $type) {
                 $io->getErrorStyle()->write($data);
                 $stderr[] = $data;

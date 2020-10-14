@@ -17,7 +17,7 @@ class DjOnCommand extends CommandAbstract
         Adapters $adapters,
         int $stationId,
         string $djUser = ''
-    ) {
+    ): int {
         $station = $em->find(Entity\Station::class, $stationId);
 
         if (!($station instanceof Entity\Station) || !$station->getEnableStreamers()) {

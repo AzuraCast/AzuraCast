@@ -51,7 +51,6 @@ class RequestsController
      * @param ServerRequest $request
      * @param Response $response
      *
-     * @return ResponseInterface
      * @throws Exception
      * @throws Exception\InvalidRequestAttribute
      */
@@ -153,7 +152,6 @@ class RequestsController
      * @param Response $response
      * @param mixed $media_id
      *
-     * @return ResponseInterface
      * @throws Exception\InvalidRequestAttribute
      */
     public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface

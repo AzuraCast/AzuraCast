@@ -13,7 +13,7 @@ class GetIpCommand extends CommandAbstract
         SymfonyStyle $io,
         Entity\Repository\SettingsRepository $settings_repo,
         AzuraCastCentral $acCentral
-    ) {
+    ): int {
         $io->write($acCentral->getIp());
         return 0;
     }

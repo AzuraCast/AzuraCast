@@ -251,8 +251,6 @@ class StationMedia implements SongInterface
 
     /**
      * Get the Flysystem URI for album artwork for this item.
-     *
-     * @return string
      */
     public function getArtPath(): string
     {
@@ -264,6 +262,9 @@ class StationMedia implements SongInterface
         return Filesystem::PREFIX_WAVEFORMS . '://' . $this->unique_id . '.json';
     }
 
+    /**
+     * @return string[]
+     */
     public function getRelatedFilePaths(): array
     {
         return [
@@ -321,8 +322,6 @@ class StationMedia implements SongInterface
 
     /**
      * Return the abstracted "full path" filesystem URI for this record.
-     *
-     * @return string
      */
     public function getPathUri(): string
     {
@@ -413,8 +412,6 @@ class StationMedia implements SongInterface
 
     /**
      * @param string|float|null $seconds
-     *
-     * @return float|null
      */
     protected function parseSeconds($seconds = null): ?float
     {
@@ -436,8 +433,6 @@ class StationMedia implements SongInterface
 
     /**
      * Get the length with cue-in and cue-out points included.
-     *
-     * @return int
      */
     public function getCalculatedLength(): int
     {
@@ -495,8 +490,6 @@ class StationMedia implements SongInterface
 
     /**
      * Indicates whether this media is a part of any "requestable" playlists.
-     *
-     * @return bool
      */
     public function isRequestable(): bool
     {
@@ -530,8 +523,6 @@ class StationMedia implements SongInterface
      *
      * @param ApiUtilities $apiUtils
      * @param UriInterface|null $baseUri
-     *
-     * @return Api\Song
      */
     public function api(ApiUtilities $apiUtils, UriInterface $baseUri = null): Api\Song
     {

@@ -104,8 +104,6 @@ class StreamersController extends AbstractScheduledEntityController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function scheduleAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -152,9 +150,9 @@ class StreamersController extends AbstractScheduledEntityController
      * @param mixed $record
      * @param ServerRequest $request
      *
-     * @return array|mixed
+     * @return mixed[]
      */
-    protected function viewRecord($record, ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request): array
     {
         $return = parent::viewRecord($record, $request);
 

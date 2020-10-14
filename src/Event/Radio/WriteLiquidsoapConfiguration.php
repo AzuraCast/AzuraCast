@@ -57,8 +57,6 @@ class WriteLiquidsoapConfiguration extends Event
 
     /**
      * Compile the configuration lines together and return the result.
-     *
-     * @return string
      */
     public function buildConfiguration(): string
     {

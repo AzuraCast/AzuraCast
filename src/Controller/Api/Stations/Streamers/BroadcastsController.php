@@ -22,8 +22,6 @@ class BroadcastsController extends AbstractApiCrudController
      * @param Filesystem $filesystem
      * @param string|int $station_id
      * @param int $id
-     *
-     * @return ResponseInterface
      */
     public function listAction(
         ServerRequest $request,
@@ -105,8 +103,6 @@ class BroadcastsController extends AbstractApiCrudController
      * @param string|int $station_id
      * @param int $id
      * @param int $broadcast_id
-     *
-     * @return ResponseInterface
      */
     public function downloadAction(
         ServerRequest $request,

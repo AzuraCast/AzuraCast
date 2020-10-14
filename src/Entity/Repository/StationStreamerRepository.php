@@ -33,8 +33,6 @@ class StationStreamerRepository extends Repository
      * @param Entity\Station $station
      * @param string $username
      * @param string $password
-     *
-     * @return bool
      */
     public function authenticate(
         Entity\Station $station,

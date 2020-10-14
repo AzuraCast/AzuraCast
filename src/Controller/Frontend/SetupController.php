@@ -36,8 +36,6 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -49,8 +47,6 @@ class SetupController
      * Determine which step of setup is currently active.
      *
      * @param ServerRequest $request
-     *
-     * @return string
      */
     protected function getSetupStep(ServerRequest $request): string
     {
@@ -91,8 +87,6 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function completeAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -107,8 +101,6 @@ class SetupController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function registerAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -166,8 +158,6 @@ class SetupController
      * @param Response $response
      *
      * @param StationForm $stationForm
-     *
-     * @return ResponseInterface
      */
     public function stationAction(
         ServerRequest $request,
@@ -197,8 +187,6 @@ class SetupController
      * @param Response $response
      *
      * @param SettingsForm $settingsForm
-     *
-     * @return ResponseInterface
      */
     public function settingsAction(
         ServerRequest $request,

@@ -40,7 +40,7 @@ class ConfigWriter implements EventSubscriberInterface
      *
      * @param Message\AbstractMessage $message
      */
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\WritePlaylistFileMessage) {
             $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
@@ -51,7 +51,10 @@ class ConfigWriter implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             WriteLiquidsoapConfiguration::class => [
@@ -559,8 +562,6 @@ class ConfigWriter implements EventSubscriberInterface
      * Given a scheduled playlist, return the time criteria that Liquidsoap can use to determine when to play it.
      *
      * @param Entity\StationSchedule $playlistSchedule
-     *
-     * @return string
      */
     protected function getScheduledPlaylistPlayTime(Entity\StationSchedule $playlistSchedule): string
     {
@@ -623,8 +624,6 @@ class ConfigWriter implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param string $endpoint
      * @param array $params
-     *
-     * @return string
      */
     protected function getApiUrlCommand(Entity\Station $station, $endpoint, $params = []): string
     {
@@ -926,8 +925,6 @@ class ConfigWriter implements EventSubscriberInterface
      * @param Entity\StationMountInterface $mount
      * @param string $idPrefix
      * @param int $id
-     *
-     * @return string
      */
     protected function getOutputString(
         Entity\Station $station,
@@ -1052,8 +1049,6 @@ class ConfigWriter implements EventSubscriberInterface
      *
      * @param float|int|string $number
      * @param int $decimals
-     *
-     * @return string
      */
     public static function toFloat($number, $decimals = 2): string
     {
@@ -1073,8 +1068,6 @@ class ConfigWriter implements EventSubscriberInterface
      *
      * @param Entity\Station $station
      * @param string $original_name
-     *
-     * @return string
      */
     public static function getVarName(Entity\Station $station, $original_name): string
     {

@@ -85,7 +85,6 @@ class StationRequestRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      *
-     * @return bool
      * @throws Exception
      */
     public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station): bool
@@ -152,7 +151,6 @@ class StationRequestRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      *
-     * @return bool
      * @throws Exception
      */
     public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool

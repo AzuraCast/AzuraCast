@@ -134,6 +134,9 @@ class Runner
         }
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getSyncTimes(): array
     {
         $this->settingsRepo->clearCache();

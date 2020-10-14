@@ -31,8 +31,6 @@ class UserRepository extends Repository
      * Creates or returns an existing user with the specified e-mail address.
      *
      * @param string $email
-     *
-     * @return Entity\User
      */
     public function getOrCreate($email): Entity\User
     {

@@ -46,8 +46,6 @@ class ScheduleController extends AbstractStationApiCrudController
      * @param EntityManagerInterface $em
      * @param CacheInterface $cache
      * @param StationScheduleRepository $scheduleRepo
-     *
-     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequest $request,

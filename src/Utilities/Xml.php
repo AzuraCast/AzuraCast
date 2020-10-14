@@ -11,7 +11,7 @@ class Xml
      *
      * @param string $xml
      *
-     * @return array
+     * @return mixed[]
      */
     public static function xmlToArray($xml): array
     {
@@ -44,6 +44,9 @@ class Xml
         return $xml_info->asXML();
     }
 
+    /**
+     * @return mixed[]
+     */
     protected static function structToArray($values, &$i): array
     {
         $child = [];

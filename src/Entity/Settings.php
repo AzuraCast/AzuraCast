@@ -93,16 +93,22 @@ class Settings
         return $this->setting_key;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSettingValue()
     {
         return $this->setting_value;
     }
 
-    public function setSettingValue($setting_value)
+    public function setSettingValue($setting_value): void
     {
         $this->setting_value = $setting_value;
     }
 
+    /**
+     * @return mixed
+     */
     public function getValue()
     {
         return $this->setting_value;

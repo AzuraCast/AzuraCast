@@ -48,8 +48,6 @@ class AutoDJ
      *
      * @param Entity\Station $station
      * @param bool $asAutoDj
-     *
-     * @return string
      */
     public function annotateNextSong(Entity\Station $station, $asAutoDj = false): string
     {

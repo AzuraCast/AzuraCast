@@ -42,8 +42,6 @@ class ListenersController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {

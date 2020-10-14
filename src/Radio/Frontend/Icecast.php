@@ -74,7 +74,10 @@ class Icecast extends AbstractFrontend
         return true;
     }
 
-    protected function getConfig(Entity\Station $station)
+    /**
+     * @return mixed[]
+     */
+    protected function getConfig(Entity\Station $station): array
     {
         $config_path = $station->getRadioConfigDir();
         $icecast_path = $config_path . '/icecast.xml';
@@ -95,6 +98,9 @@ class Icecast extends AbstractFrontend
      * Process Management
      */
 
+    /**
+     * @return mixed[]
+     */
     protected function getDefaults(Entity\Station $station): array
     {
         $config_dir = $station->getRadioConfigDir();
@@ -231,7 +237,8 @@ class Icecast extends AbstractFrontend
      * @param array $array1
      * @param array $array2
      *
-     * @return array
+     * @return mixed[]
+     *
      * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
      * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
      * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
@@ -254,6 +261,9 @@ class Icecast extends AbstractFrontend
      * Configuration
      */
 
+    /**
+     * @return mixed[]
+     */
     protected function loadFromConfig(Entity\Station $station, $config): array
     {
         $frontend_config = $station->getFrontendConfig();
@@ -344,6 +354,9 @@ class Icecast extends AbstractFrontend
         return '/bin/false';
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getBinary()
     {
         $new_path = '/usr/local/bin/icecast';

@@ -4,6 +4,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Entity\StationPlaylist;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
 use App\Media\AlbumArt;
@@ -49,8 +50,6 @@ class StationMediaRepository extends Repository
     /**
      * @param mixed $id
      * @param Entity\Station $station
-     *
-     * @return Entity\StationMedia|null
      */
     public function find($id, Entity\Station $station): ?Entity\StationMedia
     {
@@ -70,8 +69,6 @@ class StationMediaRepository extends Repository
     /**
      * @param string $path
      * @param Entity\Station $station
-     *
-     * @return Entity\StationMedia|null
      */
     public function findByPath(string $path, Entity\Station $station): ?Entity\StationMedia
     {
@@ -84,8 +81,6 @@ class StationMediaRepository extends Repository
     /**
      * @param string $uniqueId
      * @param Entity\Station $station
-     *
-     * @return Entity\StationMedia|null
      */
     public function findByUniqueId(string $uniqueId, Entity\Station $station): ?Entity\StationMedia
     {
@@ -100,7 +95,6 @@ class StationMediaRepository extends Repository
      * @param string $path
      * @param string|null $uploadedFrom The original uploaded path (if this is a new upload).
      *
-     * @return Entity\StationMedia
      * @throws Exception
      */
     public function getOrCreate(
@@ -298,8 +292,6 @@ class StationMediaRepository extends Repository
      * Read the contents of the album art from storage (if it exists).
      *
      * @param Entity\StationMedia $media
-     *
-     * @return string|null
      */
     public function readAlbumArt(Entity\StationMedia $media): ?string
     {
@@ -318,8 +310,6 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param string $rawArtString The raw image data, as would be retrieved from file_get_contents.
-     *
-     * @return bool
      */
     public function writeAlbumArt(Entity\StationMedia $media, $rawArtString): bool
     {
@@ -352,7 +342,6 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      *
-     * @return bool
      * @throws getid3_exception
      */
     public function writeToFile(Entity\StationMedia $media): bool
@@ -439,8 +428,6 @@ class StationMediaRepository extends Repository
      * Return the full path associated with a media entity.
      *
      * @param Entity\StationMedia $media
-     *
-     * @return string
      */
     public function getFullPath(Entity\StationMedia $media): string
     {
@@ -454,7 +441,7 @@ class StationMediaRepository extends Repository
     /**
      * @param Entity\StationMedia $media
      *
-     * @return array A list of affected playlists (the same as StationPlaylistMediaRepository->clearPlaylistsFromMedia)
+     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function remove(Entity\StationMedia $media): array
     {

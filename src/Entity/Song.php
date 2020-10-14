@@ -29,8 +29,6 @@ class Song implements SongInterface
      * @param ApiUtilities $api_utils
      * @param Station|null $station
      * @param UriInterface|null $base_url
-     *
-     * @return Api\Song
      */
     public function api(
         ApiUtilities $api_utils,
@@ -51,8 +49,6 @@ class Song implements SongInterface
 
     /**
      * @param array|CurrentSong|self|string $songText
-     *
-     * @return string
      */
     public static function getSongHash($songText): string
     {

@@ -21,17 +21,12 @@ class ServerRequestFactory implements ServerRequestFactoryInterface, ServerReque
 
     /**
      * @param ServerRequestInterface $request
-     *
-     * @return ServerRequestInterface
      */
     public function decorateServerRequest(ServerRequestInterface $request): ServerRequestInterface
     {
         return new ServerRequest($request);
     }
 
-    /**
-     * @return ServerRequestInterface
-     */
     public function createServerRequestFromGlobals(): ServerRequestInterface
     {
         return $this->decorateServerRequest(GuzzleServerRequest::fromGlobals());

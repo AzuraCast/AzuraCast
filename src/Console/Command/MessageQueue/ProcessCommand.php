@@ -21,7 +21,7 @@ class ProcessCommand extends CommandAbstract
         LoggerInterface $logger,
         EntityManagerInterface $em,
         int $runtime = 0
-    ) {
+    ): int {
         $receivers = $queueManager->getTransports();
 
         $eventDispatcher->addSubscriber(new ClearEntityManagerSubscriber($em));

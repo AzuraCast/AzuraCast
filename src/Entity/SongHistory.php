@@ -346,6 +346,9 @@ class SongHistory implements SongInterface
         $this->delta_negative = $this->truncateSmallInt($delta_negative);
     }
 
+    /**
+     * @return mixed
+     */
     public function getDeltaPoints()
     {
         return $this->delta_points;
@@ -376,10 +379,12 @@ class SongHistory implements SongInterface
      * @param ApiUtilities $api
      * @param UriInterface|null $base_url
      *
+     * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
      * @return T
      */
     public function api(Api\SongHistory $response, ApiUtilities $api, UriInterface $base_url = null)
     {
+        // phpcs:enable
         $response->sh_id = (int)$this->id;
 
         $response->played_at = (0 === (int)$this->timestamp_start)

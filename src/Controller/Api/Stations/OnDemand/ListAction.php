@@ -92,6 +92,9 @@ class ListAction
         return $paginator->write($response);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function buildTrackList(Entity\Station $station, RouterInterface $router): array
     {
         $list = [];

@@ -23,7 +23,10 @@ class StationRequiresRestart implements EventSubscriber
         $this->reader = $reader;
     }
 
-    public function getSubscribedEvents()
+    /**
+     * @inheritDoc
+     */
+    public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush,

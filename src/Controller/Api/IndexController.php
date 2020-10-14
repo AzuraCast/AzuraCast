@@ -15,8 +15,6 @@ class IndexController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -37,8 +35,6 @@ class IndexController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function statusAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -59,8 +55,6 @@ class IndexController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function timeAction(ServerRequest $request, Response $response): ResponseInterface
     {

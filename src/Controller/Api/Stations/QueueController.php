@@ -99,15 +99,15 @@ class QueueController extends AbstractStationApiCrudController
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}}
      * )
-     *
+     */
+
+    /**
      * @param mixed $record
      * @param ServerRequest $request
      *
-     * @return Entity\Api\QueuedSong
      * @throws App\Exception
      */
-
-    protected function viewRecord($record, ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request): Entity\Api\QueuedSong
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

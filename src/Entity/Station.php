@@ -551,8 +551,6 @@ class Station
 
     /**
      * Whether the station uses AzuraCast to directly manage the AutoDJ or lets the backend handle it.
-     *
-     * @return bool
      */
     public function useManualAutoDJ(): bool
     {
@@ -609,8 +607,6 @@ class Station
      * Authenticate the supplied adapter API key.
      *
      * @param string $api_key
-     *
-     * @return bool
      */
     public function validateAdapterApiKey($api_key): bool
     {
@@ -688,8 +684,6 @@ class Station
      * Given an absolute path, return a path relative to this station's media directory.
      *
      * @param string $full_path
-     *
-     * @return string
      */
     public function getRelativeMediaPath($full_path): string
     {
@@ -726,6 +720,9 @@ class Station
         return $this->radio_base_dir . '/config';
     }
 
+    /**
+     * @return string[]|null[]
+     */
     public function getAllStationDirectories(): array
     {
         return [
@@ -767,6 +764,9 @@ class Station
         $this->nowplaying_timestamp = $nowplaying_timestamp;
     }
 
+    /**
+     * @return mixed[]|null
+     */
     public function getAutomationSettings(): ?array
     {
         return $this->automation_settings;
@@ -1051,9 +1051,6 @@ class Station
         $this->timezone = $timezone;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDefaultAlbumArtUrl(): ?string
     {
         return $this->default_album_art_url;
@@ -1137,8 +1134,6 @@ class Station
      * @param AdapterProxy[] $remoteAdapters
      * @param UriInterface|null $baseUrl
      * @param bool $showAllMounts
-     *
-     * @return Api\Station
      */
     public function api(
         AbstractFrontend $fa,

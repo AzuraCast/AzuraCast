@@ -75,7 +75,7 @@ class NowPlaying implements ResolvableUrlInterface
     /**
      * Return an array representation of this object.
      *
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {

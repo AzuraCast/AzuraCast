@@ -7,11 +7,6 @@
  */
 
 $props = [
-    'stationName' => $station->getName(),
-    'enableRequests' => $station->getEnableRequests(),
-    'downloadPlaylistUri' => (string)$router->named('public:playlist',
-        ['station_id' => $station->getShortName(), 'format' => 'pls']),
-    'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]),
     'initialNowPlaying' => $nowplaying,
     'showAlbumArt' => !$customization->hideAlbumArt(),
 ];
@@ -25,17 +20,15 @@ if ($customization->useWebSocketsForNowPlaying()) {
 }
 ?>
 
+var radio_player;
+
 $(function () {
-    let publicRadioPlayer = new Vue({
-        el: '#public-radio-player',
+    radio_player = new Vue({
+        el: '#station-nowplaying',
         render: function (createElement) {
-            return createElement(PublicRadioPlayer.default, {
+            return createElement(RadioPlayer.default, {
                 props: <?=json_encode($props) ?>
             });
         }
-    });
-
-    $('[data-fancybox]').fancybox({
-        buttons: ['close']
     });
 });

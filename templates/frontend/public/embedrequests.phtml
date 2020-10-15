@@ -2,26 +2,15 @@
 /** @var App\Entity\Station $station */
 
 $this->layout('minimal', [
-    'page_class' => 'embed station-'.$station->getShortName(),
+    'page_class' => 'embed station-' . $station->getShortName(),
     'title' => $this->e($station->getName()),
-    'hide_footer' => true
+    'hide_footer' => true,
 ]);
 
 /** @var \App\Assets $assets */
 $assets
-    ->load('bootgrid')
+    ->load('SongRequest')
     ->addInlineJs($this->fetch('frontend/public/embedrequests.js', ['station' => $station]));
 ?>
 
-<table class="data-table table table-striped" id="requests-table">
-    <thead>
-    <tr>
-        <th data-column-id="song_id" data-identifier="true" data-visible="false" data-visible-in-selection="false">ID</th>
-        <th data-column-id="song_title"><?=__('Title') ?></th>
-        <th data-column-id="song_artist"><?=__('Artist') ?></th>
-        <th data-column-id="song_album" data-visible="false"><?=__('Album') ?></th>
-        <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=__('Actions') ?></th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div id="song-requests"></div>

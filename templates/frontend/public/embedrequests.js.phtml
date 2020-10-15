@@ -1,36 +1,22 @@
-$(function() {
-    var grid = $("#requests-table").bootgrid({
-        ajax: true,
-        ajaxSettings: {
-            method: "GET",
-            cache: false
-        },
-        rowSelect: false,
-        caseSensitive: false,
-        url: "<?=$router->named('api:requests:list', ['station_id' => $station->getId()]) ?>",
-        formatters: {
-            "commands": function(column, row) {
-                return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'" tabindex="0"><?=__('Request') ?></a>';
-            }
-        }
-    }).on("loaded.rs.jquery.bootgrid", function()
-    {
-        /* Executes after data is loaded and rendered */
-        grid.find(".btn-request").on("click", function(e)
-        {
-            e.preventDefault();
+<?php
+/**
+ * @var \App\Customization $customization
+ * @var \App\Entity\Station $station
+ * @var \App\Http\Router $router
+ */
 
-            $.ajax({
-                dataType: "json",
-                url: $(this).data('url')
-            }).done(function(data) {
-                notify(data.message, 'success');
-            }).fail(function(jqXhr) {
-                var response = jqXhr.responseJSON;
-                notify('Error: ' + response.message, 'danger');
+$props = [
+    'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]),
+];
+?>
+
+$(function () {
+    let songRequest = new Vue({
+        el: '#song-requests',
+        render: function (createElement) {
+            return createElement(SongRequest.default, {
+                props: <?=json_encode($props) ?>
             });
-
-            return false;
-        });
+        }
     });
 });

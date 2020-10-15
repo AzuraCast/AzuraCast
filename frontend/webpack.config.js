@@ -11,7 +11,9 @@ module.exports = {
     StationMedia: './vue/StationMedia.vue',
     StationPlaylists: './vue/StationPlaylists.vue',
     StationStreamers: './vue/StationStreamers.vue',
-    StationOnDemand: './vue/StationOnDemand.vue'
+    StationOnDemand: './vue/StationOnDemand.vue',
+    PublicRadioPlayer: './vue/PublicRadioPlayer.vue',
+    SongRequest: './vue/SongRequest.vue'
   },
   resolve: {
     extensions: ['*', '.js', '.vue', '.json']

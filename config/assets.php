@@ -490,4 +490,16 @@ return [
         'require' => ['vue-component-common', 'bootstrap-vue'],
         // Auto-managed by Assets
     ],
+
+    'PublicRadioPlayer' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'SongRequest' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
 ];

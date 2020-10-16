@@ -31,7 +31,8 @@
                         <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
                         <span class="listeners-total">{{ mount.listeners.total }}</span><br>
                         <small>
-                            <span class="listeners-unique">{{ mount.listeners.unique }}</span> <?=__('Unique')?>
+                            <span class="listeners-unique">{{ mount.listeners.unique }}</span>
+                            <translate key="lang_streams_unique">Unique</translate>
                         </small>
                     </td>
                 </tr>
@@ -60,7 +61,8 @@
                         <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
                         <span class="listeners-total">{{ remote.listeners.total }}</span><br>
                         <small>
-                            <span class="listeners-unique">{{ remote.listeners.unique }}</span> <?=__('Unique')?>
+                            <span class="listeners-unique">{{ remote.listeners.unique }}</span>
+                            <translate key="lang_streams_unique">Unique</translate>
                         </small>
                     </td>
                 </tr>
@@ -81,11 +83,17 @@
 </template>
 
 <script>
-export default {
+export const profileStreamsProps = {
     props: {
-        np: Object,
         playlistPlsUri: String,
         playlistM3uUri: String
+    }
+};
+
+export default {
+    mixins: [profileStreamsProps],
+    props: {
+        np: Object
     },
     methods: {
         toggle (url) {

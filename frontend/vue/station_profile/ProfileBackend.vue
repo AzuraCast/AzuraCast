@@ -39,9 +39,8 @@
 <script>
 import { BACKEND_LIQUIDSOAP } from '../inc/radio_adapters';
 
-export default {
+export const profileBackendProps = {
     props: {
-        np: Object,
         numSongs: Number,
         numPlaylists: Number,
         backendType: String,
@@ -52,6 +51,13 @@ export default {
         backendRestartUri: String,
         backendStartUri: String,
         backendStopUri: String
+    }
+};
+
+export default {
+    mixins: [profileBackendProps],
+    props: {
+        np: Object
     },
     computed: {
         backendName () {

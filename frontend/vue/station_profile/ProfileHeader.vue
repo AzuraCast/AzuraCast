@@ -16,12 +16,16 @@
 </template>
 
 <script>
-export default {
+export const profileHeaderProps = {
     props: {
         stationName: String,
         stationDescription: String,
         userCanManageProfile: Boolean,
         manageProfileUri: String
     }
+};
+
+export default {
+    mixins: [profileHeaderProps]
 };
 </script>

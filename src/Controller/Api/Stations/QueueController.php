@@ -107,7 +107,7 @@ class QueueController extends AbstractStationApiCrudController
      *
      * @throws App\Exception
      */
-    protected function viewRecord($record, ServerRequest $request): Entity\Api\QueuedSong
+    protected function viewRecord($record, ServerRequest $request): Entity\Api\StationQueue
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -116,7 +116,6 @@ class QueueController extends AbstractStationApiCrudController
         $router = $request->getRouter();
 
         /** @var Entity\StationQueue $record */
-        /** @var Entity\Api\QueuedSong $row */
         $row = $record->api($this->apiUtils);
         $row->resolveUrls($router->getBaseUrl());
 

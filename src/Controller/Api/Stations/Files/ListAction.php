@@ -40,7 +40,18 @@ class ListAction
         $pathLike = (empty($file)) ? '%' : $file . '/%';
 
         $media_query = $em->createQueryBuilder()
-            ->select('partial sm.{id, unique_id, art_updated_at, path, length, length_text, artist, title, album, genre}')
+            ->select('partial sm.{
+                id,
+                unique_id,
+                art_updated_at,
+                path,
+                length,
+                length_text,
+                artist,
+                title,
+                album,
+                genre
+            }')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
             ->from(Entity\StationMedia::class, 'sm')

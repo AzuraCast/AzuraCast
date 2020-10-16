@@ -49,7 +49,7 @@
                 </div>
             </template>
             <template v-slot:cell(media_genre)="row">
-                {{ row.item.media_genre_text }}
+                {{ row.item.media_genre }}
             </template>
             <template v-slot:cell(media_length)="row">
                 {{ row.item.media_length_text }}

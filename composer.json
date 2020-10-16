@@ -115,6 +115,7 @@
     "phplint": "phplint",
     "phpstan": "phpstan analyze",
     "phpcs": "phpcs",
+    "phpcbf": "phpcbf",
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
     "ci-import-locales": [

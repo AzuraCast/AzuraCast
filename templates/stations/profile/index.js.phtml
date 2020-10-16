@@ -1,157 +1,100 @@
 <?php
 /**
+ * @var \App\Entity\User $user
  * @var array $nowplaying
  * @var \App\Entity\Station $station
+ * @var \App\Http\Router $router
+ * @var \App\Acl $acl
+ * @var \App\Radio\Frontend\AbstractFrontend $frontend
+ * @var \App\Radio\Backend\AbstractBackend $backend
+ * @var int $num_songs
+ * @var int $num_playlists
+ * @var string $csrf
  */
+
+$frontendConfig = $station->getFrontendConfig();
+
+$props = [
+    // Common
+    'backendType' => $station->getBackendType(),
+    'frontendType' => $station->getFrontendType(),
+    'stationSupportsRequests' => $backend::supportsRequests(),
+    'stationSupportsStreamers' => $backend::supportsStreamers(),
+    'enableRequests' => $station->getEnableRequests(),
+    'enableStreamers' => $station->getEnableStreamers(),
+    'enablePublicPage' => $station->getEnablePublicPage(),
+    'enableOnDemand' => $station->getEnableOnDemand(),
+    'profileApiUri' => $router->fromHere('api:stations:profile'),
+
+    // ACL
+    'userCanManageMedia' => $acl->userAllowed($user, \App\Acl::STATION_MEDIA, $station->getId()),
+    'userCanManageBroadcasting' => $acl->userAllowed($user, \App\Acl::STATION_BROADCASTING, $station->getId()),
+    'userCanManageProfile' => $acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId()),
+    'userCanManageReports' => $acl->userAllowed($user, \App\Acl::STATION_REPORTS, $station->getId()),
+    'userCanManageStreamers' => $acl->userAllowed($user, \App\Acl::STATION_STREAMERS, $station->getId()),
+
+    // Streams
+    'playlistPlsUri' => $router->fromHere('public:playlist', ['format' => 'pls']),
+    'playlistM3uUri' => $router->fromHere('public:playlist', ['format' => 'm3u']),
+
+    // Header
+    'stationName' => $station->getName(),
+    'stationDescription' => $station->getDescription(),
+    'manageProfileUri' => $router->fromHere('stations:profile:edit'),
+
+    // Now Playing
+    'backendSkipSongUri' => $router->fromHere('api:stations:backend', ['do' => 'skip']),
+    'backendDisconnectStreamerUri' => $router->fromHere('api:stations:backend', ['do' => 'disconnect']),
+
+    // Requests
+    'requestsViewUri' => $router->fromHere('stations:reports:requests'),
+    'requestsToggleUri' => $router->fromHere('stations:profile:toggle', ['feature' => 'requests', 'csrf' => $csrf]),
+
+    // Streamers
+    'streamersViewUri' => $router->fromHere('stations:streamers:index'),
+    'streamersToggleUri' => $router->fromHere('stations:profile:toggle', ['feature' => 'streamers', 'csrf' => $csrf]),
+
+    // Public Pages
+    'publicPageUri' => (string)$router->named('public:index', ['station_id' => $station->getShortName()], [], true),
+    'publicPageEmbedUri' => (string)$router->named('public:index',
+        ['station_id' => $station->getShortName(), 'embed' => 'embed'], [], true),
+    'publicWebDjUri' => (string)$router->named('public:dj', ['station_id' => $station->getShortName()], [], true),
+    'publicOnDemandUri' => (string)$router->named('public:ondemand', ['station_id' => $station->getShortName()], [],
+        true),
+    'publicOnDemandEmbedUri' => (string)$router->named('public:ondemand',
+        ['station_id' => $station->getShortName(), 'embed' => 'embed'], [], true),
+    'publicRequestEmbedUri' => (string)$router->named('public:embedrequests',
+        ['station_id' => $station->getShortName()], [], true),
+    'togglePublicPageUri' => $router->fromHere('stations:profile:toggle',
+        ['feature' => 'public', 'csrf' => $csrf]),
+
+    // Frontend
+    'frontendAdminUri' => (string)$frontend->getAdminUrl($station),
+    'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
+    'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
+    'frontendRelayPassword' => $frontendConfig->getRelayPassword(),
+    'frontendRestartUri' => $router->fromHere('api:stations:frontend', ['do' => 'restart']),
+    'frontendStartUri' => $router->fromHere('api:stations:frontend', ['do' => 'start']),
+    'frontendStopUri' => $router->fromHere('api:stations:frontend', ['do' => 'stop']),
+
+    // Backend
+    'numSongs' => (int)$num_songs,
+    'numPlaylists' => (int)$num_playlists,
+    'manageMediaUri' => $router->fromHere('stations:files:index'),
+    'managePlaylistsUri' => $router->fromHere('stations:playlists:index'),
+    'backendRestartUri' => $router->fromHere('api:stations:backend', ['do' => 'restart']),
+    'backendStartUri' => $router->fromHere('api:stations:backend', ['do' => 'start']),
+    'backendStopUri' => $router->fromHere('api:stations:backend', ['do' => 'stop']),
+];
 ?>
 
-var profile;
-
 $(function () {
-    profile = new Vue({
+    let profile = new Vue({
         el: '#profile',
-        data: {
-            np: {
-                station: {
-                    mounts: [],
-                    remotes: []
-                },
-                services: {
-                    backend_running: false,
-                    frontend_running: false
-                },
-                now_playing: {
-                    song: {
-                        title: '',
-                        artist: '',
-                        art: ''
-                    },
-                    playlist: '',
-                    is_request: false,
-                    duration: 0
-                },
-                listeners: {
-                    current: 0,
-                    unique: 0,
-                    total: 0
-                },
-                live: {
-                    is_live: false,
-                    streamer_name: ''
-                },
-                playing_next: {
-                    song: {
-                        title: '',
-                        artist: '',
-                        art: ''
-                    },
-                    playlist: ''
-                },
-                schedule: []
-            },
-            schedule_items: [],
-            np_elapsed: 0,
-            clock_interval: null
-        },
-        created: function () {
-            this.clock_interval = setInterval(this.iterateTimer, 1000);
-        },
-        computed: {
-            'time_display': function () {
-                var time_played = this.np_elapsed;
-                var time_total = this.np.now_playing.duration;
-
-                if (!time_total) {
-                    return null;
-                }
-
-                if (time_played > time_total) {
-                    time_played = time_total;
-                }
-
-                return this.formatTime(time_played) + ' / ' + this.formatTime(time_total);
-            }
-        },
-        methods: {
-            'setNowPlaying': function (np_new) {
-                this.np = np_new;
-                this.setScheduleItems(np_new.schedule);
-            },
-            'setScheduleItems': function (schedule_items) {
-                var now = moment();
-
-                schedule_items.forEach(function (row, index) {
-                    var start_moment = moment.unix(row.start_timestamp);
-                    var end_moment = moment.unix(row.end_timestamp);
-
-                    this[index].time_until = start_moment.fromNow();
-
-                    if (start_moment.isSame(now, 'day')) {
-                        this[index].start_formatted = start_moment.format('LT');
-                    } else {
-                        this[index].start_formatted = start_moment.format('llll');
-                    }
-
-                    if (end_moment.isSame(start_moment, 'day')) {
-                        this[index].end_formatted = end_moment.format('LT');
-                    } else {
-                        this[index].end_formatted = end_moment.format('lll');
-                    }
-                }, schedule_items);
-
-                this.schedule_items = schedule_items;
-            },
-            'formatTime': function (time) {
-                var sec_num = parseInt(time, 10);
-
-                var hours = Math.floor(sec_num / 3600);
-                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-                var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-                if (hours < 10) {
-                    hours = '0' + hours;
-                }
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
-                if (seconds < 10) {
-                    seconds = '0' + seconds;
-                }
-                return (hours !== '00' ? hours + ':' : '') + minutes + ':' + seconds;
-            },
-            'iterateTimer': function () {
-                var current_time = Math.floor(Date.now() / 1000);
-                var np_elapsed = current_time - this.np.now_playing.played_at;
-                if (np_elapsed < 0) {
-                    np_elapsed = 0;
-                } else if (np_elapsed >= this.np.now_playing.duration) {
-                    np_elapsed = this.np.now_playing.duration;
-                }
-
-                this.np_elapsed = np_elapsed;
-            },
-            'toggle': function (url) {
-                this.$eventHub.$emit('player_toggle', url);
-            },
-            'getDataUrl': function (url) {
-                return url.split(/[?#]/)[0];
-            }
+        render: function (createElement) {
+            return createElement(StationProfile.default, {
+                props: <?=json_encode($props) ?>
+            });
         }
     });
-
-    function loadProfileData () {
-        $.ajax({
-            cache: false,
-            dataType: 'json',
-            url: '<?=$router->fromHere('api:stations:profile') ?>',
-            success: function (data) {
-                profile.setNowPlaying(data);
-                setTimeout(loadProfileData, 15000);
-            }
-        }).fail(function () {
-            setTimeout(loadProfileData, 30000);
-        });
-    }
-
-    loadProfileData();
 });

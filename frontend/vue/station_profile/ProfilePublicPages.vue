@@ -1,17 +1,6 @@
-<?php
-/**
- * @var \App\Entity\Station $station
- * @var \App\Acl $acl
- * @var \App\Http\Router $router
- * @var \App\Http\Request $request
- * @var \App\Entity\User $user
- * @var string $backend_type
- * @var string $frontend_type
- */
-?>
-
-<section class="card mb-4" role="region">
-    <?php if ($station->getEnablePublicPage()): ?>
+<template>
+    <section class="card mb-4" role="region">
+        <?php if ($station->getEnablePublicPage()): ?>
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
                 <?=__('Public Pages')?>
@@ -23,7 +12,7 @@
                 <td style="width: 30%;"><?=__('Public Page')?></td>
                 <td style="width: 70%;">
                     <?=$this->link($router->named('public:index', ['station_id' => $station->getShortName()], [],
-                        true))?>
+                    true))?>
                 </td>
             </tr>
             <tr>
@@ -37,57 +26,57 @@
                 </td>
             </tr>
             <?php if ($backend::supportsStreamers() && $station->getEnableStreamers()): ?>
-                <tr>
-                    <td><?=__('Web DJ')?></td>
-                    <td>
-                        <?=$this->link($router->named('public:dj', ['station_id' => $station->getShortName()], [],
-                            true))?>
-                    </td>
-                </tr>
+            <tr>
+                <td><?=__('Web DJ')?></td>
+                <td>
+                    <?=$this->link($router->named('public:dj', ['station_id' => $station->getShortName()], [],
+                    true))?>
+                </td>
+            </tr>
             <?php endif; ?>
             <?php if ($station->getEnableOnDemand()): ?>
-                <tr>
-                    <td><?=__('On-Demand Media')?></td>
-                    <td>
-                        <?=$this->link($router->named('public:ondemand', ['station_id' => $station->getShortName()], [],
-                            true))?>
-                    </td>
-                </tr>
-                <tr>
-                    <td><?=__('On-Demand Embed Code')?></td>
-                    <td>
+            <tr>
+                <td><?=__('On-Demand Media')?></td>
+                <td>
+                    <?=$this->link($router->named('public:ondemand', ['station_id' => $station->getShortName()], [],
+                    true))?>
+                </td>
+            </tr>
+            <tr>
+                <td><?=__('On-Demand Embed Code')?></td>
+                <td>
                     <textarea id="ondemand_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:ondemand',
                             ['station_id' => $station->getShortName(), 'embed' => 'embed'], [],
                             true)?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 400px; border: 0;"></iframe></textarea>
-                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#ondemand_embed_url">
-                            <i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard')?></button>
-                    </td>
-                </tr>
+                    <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#ondemand_embed_url">
+                        <i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard')?></button>
+                </td>
+            </tr>
             <?php endif; ?>
 
             <?php if ($backend::supportsRequests() && $station->getEnableRequests()): ?>
-                <tr>
-                    <td><?=__('Request Embed Code')?></td>
-                    <td class="form-field">
+            <tr>
+                <td><?=__('Request Embed Code')?></td>
+                <td class="form-field">
                         <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests',
                                 ['station_id' => $station->getShortName()], [],
                                 true)?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
-                        <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url">
-                            <i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard')?></button>
-                    </td>
-                </tr>
+                    <button class="btn btn-copy btn-link btn-xs" data-clipboard-target="#request_embed_url">
+                        <i class="material-icons sm">file_copy</i> <?=__('Copy to Clipboard')?></button>
+                </td>
+            </tr>
             <?php endif; ?>
         </table>
         <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-            <div class="card-actions">
-                <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable public pages?'))?> href="<?=$router->fromHere('stations:profile:toggle',
-                    ['feature' => 'public', 'csrf' => $csrf])?>">
-                    <i class="material-icons" aria-hidden="true">close</i>
-                    <?=__('Disable')?>
-                </a>
-            </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-danger" data-confirm-title=<?=$this->escapeJs(__('Disable public pages?'))?> href="<?=$router->fromHere('stations:profile:toggle',
+                ['feature' => 'public', 'csrf' => $csrf])?>">
+                <i class="material-icons" aria-hidden="true">close</i>
+                <?=__('Disable')?>
+            </a>
+        </div>
         <?php endif; ?>
-    <?php else: ?>
+        <?php else: ?>
         <div class="card-header bg-primary-dark">
             <h3 class="card-title">
                 <?=__('Public Pages')?>
@@ -95,13 +84,14 @@
             </h3>
         </div>
         <?php if ($acl->userAllowed($user, \App\Acl::STATION_PROFILE, $station->getId())): ?>
-            <div class="card-actions">
-                <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable public pages?'))?> href="<?=$router->fromHere('stations:profile:toggle',
-                    ['feature' => 'public', 'csrf' => $csrf])?>">
-                    <i class="material-icons" aria-hidden="true">check</i>
-                    <?=__('Enable')?>
-                </a>
-            </div>
+        <div class="card-actions">
+            <a class="btn btn-outline-success" data-confirm-title=<?=$this->escapeJs(__('Enable public pages?'))?> href="<?=$router->fromHere('stations:profile:toggle',
+                ['feature' => 'public', 'csrf' => $csrf])?>">
+                <i class="material-icons" aria-hidden="true">check</i>
+                <?=__('Enable')?>
+            </a>
+        </div>
         <?php endif; ?>
-    <?php endif; ?>
-</section>
+        <?php endif; ?>
+    </section>
+</template>

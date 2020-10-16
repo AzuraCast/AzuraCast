@@ -55,8 +55,8 @@ class ProfileController
             ->getSingleScalarResult();
 
         $view->addData([
-            'num_songs' => $num_songs,
-            'num_playlists' => $num_playlists,
+            'num_songs' => (int)$num_songs,
+            'num_playlists' => (int)$num_playlists,
             'backend_type' => $station->getBackendType(),
             'backend_config' => $station->getBackendConfig(),
             'frontend_type' => $station->getFrontendType(),

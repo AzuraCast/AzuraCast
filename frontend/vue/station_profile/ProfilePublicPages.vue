@@ -12,6 +12,7 @@
                     <col style="width: 30%;">
                     <col style="width: 70%;">
                 </colgroup>
+                <tbody>
                 <tr>
                     <td key="lang_profile_public_page" v-translate>Public Page</td>
                     <td>
@@ -53,6 +54,7 @@
                         <copy-to-clipboard-button target="#request_embed_url"></copy-to-clipboard-button>
                     </td>
                 </tr>
+                </tbody>
             </table>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-danger" :data-confirm-title="langDisablePublicPages" :href="togglePublicPageUri">

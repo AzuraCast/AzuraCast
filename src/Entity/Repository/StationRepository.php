@@ -166,6 +166,7 @@ class StationRepository extends Repository
         }
 
         $this->em->flush();
+        $this->em->refresh($station);
     }
 
     /**

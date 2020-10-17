@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="analytics", indexes={
- *   @ORM\Index(name="search_idx", columns={"type", "timestamp"})
+ *   @ORM\Index(name="search_idx", columns={"type", "moment"})
  * })
  * @ORM\Entity
  */

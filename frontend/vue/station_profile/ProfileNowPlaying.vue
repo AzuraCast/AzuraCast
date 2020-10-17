@@ -5,9 +5,8 @@
                 <h3 class="flex-shrink card-title my-0" key="lang_profile_nowplaying_onair" v-translate>On the Air</h3>
                 <h6 class="card-subtitle text-right flex-fill my-0" style="line-height: 1;">
                     <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
-                    <span>{{ np.listeners.total }}</span>
-                    <span v-if="np.listeners.total === 1" key="lang_profile_nowplaying_listener" v-translate>Listener</span>
-                    <span v-else key="lang_profile_nowplaying_listeners" v-translate>Listeners</span><br>
+                    {{ langListeners }}
+                    <br>
                     <small>
                         <span>{{ np.listeners.unique }}</span>
                         <translate key="lang_profile_nowplaying_unique">Unique</translate>
@@ -15,79 +14,81 @@
                 </h6>
             </div>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="clearfix">
-                        <h6 style="margin-left: 32px;">
-                            <i class="material-icons" aria-hidden="true">music_note</i>
-                            <translate key="lang_profile_nowplaying_title">Now Playing</translate>
-                        </h6>
-                        <div class="media">
-                            <a class="mr-2" v-bind:href="np.now_playing.song.art" data-fancybox target="_blank">
-                                <img class="rounded" v-bind:src="np.now_playing.song.art" alt="Album Art" style="width: 50px;">
-                            </a>
-                            <div class="media-body">
-                                <div v-if="np.now_playing.song.title !== ''">
-                                    <h5 class="media-heading m-0" style="line-height: 1;">
-                                        {{ np.now_playing.song.title }}<br>
-                                        <small>{{ np.now_playing.song.artist }}</small>
-                                    </h5>
-                                </div>
-                                <div v-else>
-                                    <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
-                                </div>
-                                <div v-if="np.now_playing.playlist">
-                                    <small class="text-muted"><translate key="lang_profile_nowplaying_playlist">Playlist</translate>: {{ np.now_playing.playlist }}</small>
-                                </div>
-                                <div class="nowplaying-progress" v-if="timeDisplay">
-                                    <small>{{ timeDisplay }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="clearfix" v-if="!np.live.is_live && np.playing_next">
-                        <h6 style="margin-left: 22px;">
-                            <i class="material-icons" aria-hidden="true">skip_next</i>
-                            <translate key="profile_nowplaying_playing_next">Playing Next</translate>
-                        </h6>
-
-                        <div class="media">
-                            <a class="mr-2" v-bind:href="np.playing_next.song.art" data-fancybox target="_blank">
-                                <img v-bind:src="np.playing_next.song.art" class="rounded" alt="Album Art" style="width: 40px;">
-                            </a>
-                            <div class="media-body">
-                                <div v-if="np.playing_next.song.title !== ''">
-                                    <h5 class="media-heading m-0" style="line-height: 1;">
-                                        {{ np.playing_next.song.title }}<br>
-                                        <small>{{ np.playing_next.song.artist }}</small>
-                                    </h5>
-                                </div>
-                                <div v-else>
-                                    <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
-                                </div>
-
-                                <div v-if="np.playing_next.playlist">
-                                    <small class="text-muted"><translate key="lang_profile_nowplaying_playlist">Playlist</translate>: {{ np.playing_next.playlist }}</small>
+        <b-overlay variant="bg" :show="np.loading">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="clearfix">
+                            <h6 style="margin-left: 32px;">
+                                <i class="material-icons" aria-hidden="true">music_note</i>
+                                <translate key="lang_profile_nowplaying_title">Now Playing</translate>
+                            </h6>
+                            <div class="media">
+                                <a class="mr-2" v-if="np.now_playing.song.art" :href="np.now_playing.song.art" data-fancybox target="_blank">
+                                    <img class="rounded" :src="np.now_playing.song.art" alt="Album Art" style="width: 50px;">
+                                </a>
+                                <div class="media-body">
+                                    <div v-if="np.now_playing.song.title !== ''">
+                                        <h5 class="media-heading m-0" style="line-height: 1;">
+                                            {{ np.now_playing.song.title }}<br>
+                                            <small>{{ np.now_playing.song.artist }}</small>
+                                        </h5>
+                                    </div>
+                                    <div v-else>
+                                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.now_playing.song.text }}</h5>
+                                    </div>
+                                    <div v-if="np.now_playing.playlist">
+                                        <small class="text-muted"><translate key="lang_profile_nowplaying_playlist">Playlist</translate>: {{ np.now_playing.playlist }}</small>
+                                    </div>
+                                    <div class="nowplaying-progress" v-if="timeDisplay">
+                                        <small>{{ timeDisplay }}</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="clearfix" v-else-if="np.live.is_live">
-                        <h6 style="margin-left: 22px;">
-                            <i class="material-icons" aria-hidden="true">mic</i>
-                            <translate key="lang_profile_nowplaying_live">Live</translate>
-                        </h6>
+                    <div class="col-md-6">
+                        <div class="clearfix" v-if="!np.live.is_live && np.playing_next">
+                            <h6 style="margin-left: 22px;">
+                                <i class="material-icons" aria-hidden="true">skip_next</i>
+                                <translate key="profile_nowplaying_playing_next">Playing Next</translate>
+                            </h6>
 
-                        <h4 class="media-heading" style="margin-left: 22px;">
-                            {{ np.live.streamer_name }}
-                        </h4>
+                            <div class="media">
+                                <a class="mr-2" v-if="np.playing_next.song.art" :href="np.playing_next.song.art" data-fancybox target="_blank">
+                                    <img :src="np.playing_next.song.art" class="rounded" alt="Album Art" style="width: 40px;">
+                                </a>
+                                <div class="media-body">
+                                    <div v-if="np.playing_next.song.title !== ''">
+                                        <h5 class="media-heading m-0" style="line-height: 1;">
+                                            {{ np.playing_next.song.title }}<br>
+                                            <small>{{ np.playing_next.song.artist }}</small>
+                                        </h5>
+                                    </div>
+                                    <div v-else>
+                                        <h5 class="media-heading m-0" style="line-height: 1;">{{ np.playing_next.song.text }}</h5>
+                                    </div>
+
+                                    <div v-if="np.playing_next.playlist">
+                                        <small class="text-muted"><translate key="lang_profile_nowplaying_playlist">Playlist</translate>: {{ np.playing_next.playlist }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix" v-else-if="np.live.is_live">
+                            <h6 style="margin-left: 22px;">
+                                <i class="material-icons" aria-hidden="true">mic</i>
+                                <translate key="lang_profile_nowplaying_live">Live</translate>
+                            </h6>
+
+                            <h4 class="media-heading" style="margin-left: 22px;">
+                                {{ np.live.streamer_name }}
+                            </h4>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </b-overlay>
 
         <div class="card-actions flex-shrink" v-if="isLiquidsoap && userCanManageBroadcasting">
             <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" v-if="!np.live.is_live" :href="backendSkipSongUri">
@@ -129,6 +130,10 @@ export default {
         this.clockInterval = setInterval(this.iterateTimer, 1000);
     },
     computed: {
+        langListeners () {
+            let translated = this.$ngettext('%{listeners} Listener', '%{listeners} Listeners', this.np.listeners.total);
+            return this.$gettextInterpolate(translated, { listeners: this.np.listeners.total });
+        },
         isLiquidsoap () {
             return this.backendType === BACKEND_LIQUIDSOAP;
         },

@@ -11,8 +11,9 @@
             </h3>
         </div>
         <div class="card-body">
-            <translate key="lang_profile_backend" :translate-parms="{ numSongs: numSongs, numPlaylists: numPlaylists }">LiquidSoap is currently shuffling from
-            <strong>%{numSongs} uploaded songs</strong> in <strong>%{numPlaylists} playlists</strong>.</translate>
+            <p class="card-text">
+                {{ langTotalTracks }}
+            </p>
 
             <div class="buttons" v-if="userCanManageMedia">
                 <a class="btn btn-primary" :href="manageMediaUri" key="lang_profile_manage_media">Music Files</a>
@@ -60,6 +61,19 @@ export default {
         np: Object
     },
     computed: {
+        langTotalTracks () {
+            let numSongsRaw = this.$ngettext('%{numSongs} uploaded song', '%{numSongs} uploaded songs', this.numSongs);
+            let numSongs = this.$gettextInterpolate(numSongsRaw, { numSongs: this.numSongs });
+
+            let numPlaylistsRaw = this.$ngettext('%{numPlaylists} playlist', '%{numPlaylists} playlists', this.numPlaylists);
+            let numPlaylists = this.$gettextInterpolate(numPlaylistsRaw, { numPlaylists: this.numPlaylists });
+
+            let translated = this.$gettext('LiquidSoap is currently shuffling from %{songs} and %{playlists}.');
+            return this.$gettextInterpolate(translated, {
+                songs: numSongs,
+                playlists: numPlaylists
+            });
+        },
         backendName () {
             if (this.backendType === BACKEND_LIQUIDSOAP) {
                 return 'Liquidsoap';

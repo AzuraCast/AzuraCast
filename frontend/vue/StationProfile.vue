@@ -81,6 +81,7 @@ export default {
     data () {
         return {
             np: {
+                loading: true,
                 station: {
                     mounts: [],
                     remotes: []
@@ -93,7 +94,7 @@ export default {
                     song: {
                         title: '',
                         artist: '',
-                        art: ''
+                        art: false
                     },
                     playlist: '',
                     is_request: false,
@@ -112,7 +113,7 @@ export default {
                     song: {
                         title: '',
                         artist: '',
-                        art: ''
+                        art: false
                     },
                     playlist: ''
                 },
@@ -160,7 +161,10 @@ export default {
     methods: {
         checkNowPlaying () {
             axios.get(this.profileApiUri).then((response) => {
-                this.np = response.data;
+                let np = response.data;
+                np.loading = false;
+
+                this.np = np;
             }).catch((error) => {
                 console.error(error);
                 clearTimeout(this.np_timeout);

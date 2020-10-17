@@ -133,7 +133,7 @@ class Analytics extends AbstractTask
             // Aggregate daily totals.
             $dailyMin = 0;
             $dailyMax = 0;
-            $dailyAverages = [];
+            $dailyAverage = 0;
             $dailyUniqueListeners = null;
 
             foreach ($stations as $stationId => $station) {
@@ -171,7 +171,7 @@ class Analytics extends AbstractTask
                 }
 
                 $dailyStationAverage = round(array_sum($dailyStationAverages) / count($dailyStationAverages), 2);
-                $dailyAverages[] = $dailyStationAverage;
+                $dailyAverage += $dailyStationAverage;
 
                 $dailyStationRow = new Entity\Analytics(
                     $day,
@@ -187,8 +187,6 @@ class Analytics extends AbstractTask
             }
 
             // Post the all-stations daily total.
-            $dailyAverage = round(array_sum($dailyAverages) / count($dailyAverages), 2);
-
             $dailyAllStationsRow = new Entity\Analytics(
                 $day,
                 null,

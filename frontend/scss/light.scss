@@ -1,20 +1,3 @@
 $theme: 'light';
 
-@import 'common-top';
-
-// Sass option
-$enable-grid-classes: true !default;
-$enable-print-styles: true !default;
-
-// Variables
-@import 'variables/elevation-shadow';
-@import 'variables/grid';
-@import 'variables/palette';
-@import 'variables/spacer';
-@import 'variables/transition';
-@import 'variables/typography';
-@import 'variables/variable-bootstrap';
-@import 'variables/variable-material';
-@import 'variables/variable-azuracast';
-
-@import 'common-bottom';
+@import 'material';

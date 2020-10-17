@@ -1,3 +1,23 @@
+@import 'colors';
+@import 'functions';
+@import 'mixins';
+
+// Sass option
+$enable-grid-classes: true !default;
+$enable-print-styles: true !default;
+
+// Variables
+@import 'variables/elevation-shadow';
+@import 'variables/grid';
+@import 'variables/palette';
+@import 'variables/spacer';
+@import 'variables/transition';
+@import 'variables/typography';
+@import 'variables/variable-bootstrap';
+@import 'variables/variable-material';
+
+@import 'azuracast/variables';
+
 // Base CSS
 @import 'base/base';
 @import 'base/grid';
@@ -65,17 +85,17 @@
 @import 'vendors/sweetalert2';
 
 // Overrides for the Daemonite Material theme
-@import 'overrides/body';
-@import 'overrides/card';
-@import 'overrides/footer';
-@import 'overrides/forms';
-@import 'overrides/header';
-@import 'overrides/tables';
+@import 'azuracast/overrides/body';
+@import 'azuracast/overrides/card';
+@import 'azuracast/overrides/footer';
+@import 'azuracast/overrides/forms';
+@import 'azuracast/overrides/header';
+@import 'azuracast/overrides/tables';
 
 // Individual AzuraCast pages
-@import 'pages/admin';
-@import 'pages/embed';
-@import 'pages/files';
-@import 'pages/playlists';
-@import 'pages/public';
-@import 'pages/log_viewer';
+@import 'azuracast/pages/admin';
+@import 'azuracast/pages/embed';
+@import 'azuracast/pages/files';
+@import 'azuracast/pages/playlists';
+@import 'azuracast/pages/public';
+@import 'azuracast/pages/log_viewer';

@@ -1,0 +1,4 @@
+// Default background of public pages
+$public-page-bg: if($theme == 'light', '../img/hexbg.png', '../img/hexbg_dark.png');
+
+$scrollbar-color: if($theme == 'light', $material-color-grey-400, $material-color-grey-800);

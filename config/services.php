@@ -313,7 +313,8 @@ return [
         App\MessageQueue\QueueManager $queueManager,
         Symfony\Component\Lock\LockFactory $lockFactory,
         Monolog\Logger $logger,
-        ContainerInterface $di
+        ContainerInterface $di,
+        App\Plugins $plugins
     ) {
         // Configure message sending middleware
         $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
@@ -322,6 +323,9 @@ return [
         // Configure message handling middleware
         $handlers = [];
         $receivers = require __DIR__ . '/messagequeue.php';
+
+        // Register plugin-provided message queue receivers
+        $receivers = $plugins->registerMessageQueueReceivers($receivers);
 
         foreach ($receivers as $messageClass => $handlerClass) {
             $handlers[$messageClass][] = function ($message) use ($handlerClass, $di) {

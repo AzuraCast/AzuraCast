@@ -78,4 +78,23 @@ class Plugins
             }
         }
     }
+
+    /**
+     * @param mixed[] $receivers
+     *
+     * @return mixed[]
+     */
+    public function registerMessageQueueReceivers(array $receivers): array
+    {
+        foreach ($this->plugins as $plugin) {
+            $pluginPath = $plugin['path'];
+
+            if (file_exists($pluginPath . '/messagequeue.php')) {
+                $pluginReceivers = include $pluginPath . '/messagequeue.php';
+                $receivers = array_merge($receivers, $pluginReceivers);
+            }
+        }
+
+        return $receivers;
+    }
 }

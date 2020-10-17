@@ -244,3 +244,12 @@ $popover-padding-y: 1.25rem !default;
 // Print
 $print-body-min-width: map-get($grid-breakpoints, 'lg') !default;
 $print-page-size: a3 !default;
+
+// Spinner
+$spinner-width: 2rem !default;
+$spinner-height: $spinner-width !default;
+$spinner-border-width: .25em !default;
+
+$spinner-width-sm: 1rem !default;
+$spinner-height-sm: $spinner-width-sm !default;
+$spinner-border-width-sm: .2em !default;

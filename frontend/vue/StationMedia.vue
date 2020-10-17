@@ -48,6 +48,9 @@
                     <small v-else>{{ row.item.text }}</small>
                 </div>
             </template>
+            <template v-slot:cell(media_genre)="row">
+                {{ row.item.media_genre }}
+            </template>
             <template v-slot:cell(media_length)="row">
                 {{ row.item.media_length_text }}
             </template>
@@ -149,6 +152,7 @@
                     visible: false
                 },
                 { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
+                { key: 'media_genre', label: this.$gettext('Genre'), sortable: true, selectable: true, visible: false },
                 { key: 'media_length', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true }
             ];
 

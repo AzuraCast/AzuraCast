@@ -52,6 +52,14 @@ class Song implements ResolvableUrlInterface
     public string $album = '';
 
     /**
+     * The song genre.
+     *
+     * @OA\Property(example="Rock")
+     * @var string
+     */
+    public string $genre = '';
+
+    /**
      * Lyrics to the song.
      *
      * @OA\Property(example="")

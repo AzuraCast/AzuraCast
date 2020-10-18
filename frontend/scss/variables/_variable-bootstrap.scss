@@ -204,13 +204,9 @@ $nav-link-padding-y: 0.5rem !default;
 
 $nav-pills-bg-hover: $black-divider !default;
 $nav-pills-border-radius: $border-radius !default;
-$nav-pills-color: $black-primary !default;
-$nav-pills-color-active: theme-color(secondary) !default;
+$nav-pills-color: $text-secondary !default;
+$nav-pills-color-active: $text-primary !default;
 $nav-pills-link-opacity: 0.7 !default;
-
-@if $theme == 'dark' {
-  $nav-pills-color: $white-secondary;
-}
 
 // Pagination
 $pagination-bg: $material-color-grey-100 !default;

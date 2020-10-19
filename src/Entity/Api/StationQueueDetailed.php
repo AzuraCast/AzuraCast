@@ -2,20 +2,15 @@
 
 namespace App\Entity\Api;
 
+use App\Traits\LoadFromParentObject;
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object", schema="Api_QueuedSong")
+ * @OA\Schema(type="object", schema="Api_StationQueueDetailed")
  */
-class QueuedSong extends SongHistory
+class StationQueueDetailed extends StationQueue
 {
-    /**
-     * UNIX timestamp when the item was cued for playback.
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
-     */
-    public int $cued_at;
+    use LoadFromParentObject;
 
     /**
      * Custom AutoDJ playback URI, if it exists.

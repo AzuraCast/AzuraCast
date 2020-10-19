@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use App\ApiUtilities;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="station_queue")
@@ -232,30 +230,6 @@ class StationQueue implements SongInterface
             return !$this->playlist->isJingle();
         }
         return true;
-    }
-
-    public function api(ApiUtilities $api, UriInterface $base_url = null): Api\StationQueue
-    {
-        $response = new Api\StationQueue();
-        $response->cued_at = $this->timestamp_cued;
-
-        $response->duration = (int)$this->duration;
-        $response->is_request = $this->request !== null;
-
-        if ($this->playlist instanceof StationPlaylist) {
-            $response->playlist = $this->playlist->getName();
-        } else {
-            $response->playlist = '';
-        }
-
-        if ($this->media) {
-            $response->song = $this->media->api($api, $base_url);
-        } else {
-            $song = new Song($this);
-            $response->song = $song->api($api, $this->station, $base_url);
-        }
-
-        return $response;
     }
 
     public function __toString(): string

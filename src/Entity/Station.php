@@ -5,9 +5,7 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\File;
 use App\Radio\Adapters;
-use App\Radio\Frontend\AbstractFrontend;
 use App\Radio\Quota;
-use App\Radio\Remote\AdapterProxy;
 use App\Settings;
 use App\Validator\Constraints as AppAssert;
 use Brick\Math\BigInteger;
@@ -16,7 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use Psr\Http\Message\UriInterface;
 use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -1096,16 +1093,25 @@ class Station
         return $this->permissions;
     }
 
+    /**
+     * @return StationPlaylist[]|Collection
+     */
     public function getPlaylists(): Collection
     {
         return $this->playlists;
     }
 
+    /**
+     * @return StationMount[]|Collection
+     */
     public function getMounts(): Collection
     {
         return $this->mounts;
     }
 
+    /**
+     * @return StationRemote[]|Collection
+     */
     public function getRemotes(): Collection
     {
         return $this->remotes;
@@ -1125,52 +1131,5 @@ class Station
     {
         $this->nowplaying = null;
         $this->nowplaying_timestamp = 0;
-    }
-
-    /**
-     * Retrieve the API version of the object/array.
-     *
-     * @param AbstractFrontend $fa
-     * @param AdapterProxy[] $remoteAdapters
-     * @param UriInterface|null $baseUrl
-     * @param bool $showAllMounts
-     */
-    public function api(
-        AbstractFrontend $fa,
-        array $remoteAdapters = [],
-        UriInterface $baseUrl = null,
-        bool $showAllMounts = false
-    ): Api\Station {
-        $response = new Api\Station();
-        $response->id = (int)$this->id;
-        $response->name = (string)$this->name;
-        $response->shortcode = (string)$this->getShortName();
-        $response->description = (string)$this->description;
-        $response->frontend = (string)$this->frontend_type;
-        $response->backend = (string)$this->backend_type;
-        $response->is_public = (bool)$this->enable_public_page;
-        $response->listen_url = $fa->getStreamUrl($this, $baseUrl);
-
-        $mounts = [];
-        if ($fa::supportsMounts() && $this->mounts->count() > 0) {
-            foreach ($this->mounts as $mount) {
-                /** @var StationMount $mount */
-                if ($showAllMounts || $mount->isVisibleOnPublicPages()) {
-                    $mounts[] = $mount->api($fa, $baseUrl);
-                }
-            }
-        }
-        $response->mounts = $mounts;
-
-        $remotes = [];
-        foreach ($remoteAdapters as $ra_proxy) {
-            $remote = $ra_proxy->getRemote();
-            if ($showAllMounts || $remote->isVisibleOnPublicPages()) {
-                $remotes[] = $remote->api($ra_proxy->getAdapter());
-            }
-        }
-        $response->remotes = $remotes;
-
-        return $response;
     }
 }

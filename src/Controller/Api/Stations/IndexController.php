@@ -7,7 +7,6 @@ use App\Exception;
 use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -16,12 +15,14 @@ class IndexController
 {
     protected EntityManagerInterface $em;
 
-    protected Adapters $adapters;
+    protected Entity\ApiGenerator\StationApiGenerator $stationApiGenerator;
 
-    public function __construct(EntityManagerInterface $em, Adapters $adapters)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
+    ) {
         $this->em = $em;
-        $this->adapters = $adapters;
+        $this->stationApiGenerator = $stationApiGenerator;
     }
 
     /**
@@ -49,11 +50,7 @@ class IndexController
         $stations = [];
         foreach ($stations_raw as $row) {
             /** @var Entity\Station $row */
-            $api_row = $row->api(
-                $this->adapters->getFrontendAdapter($row),
-                $this->adapters->getRemoteAdapters($row)
-            );
-
+            $api_row = ($this->stationApiGenerator)($row);
             $api_row->resolveUrls($request->getRouter()->getBaseUrl());
 
             if ($api_row->is_public) {
@@ -83,11 +80,7 @@ class IndexController
     {
         $station = $request->getStation();
 
-        $apiResponse = $station->api(
-            $request->getStationFrontend(),
-            $request->getStationRemotes(),
-            null
-        );
+        $apiResponse = ($this->stationApiGenerator)($station);
         $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
 
         return $response->withJson($apiResponse);

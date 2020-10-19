@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\ApiUtilities;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Http\Message\UriInterface;
 
 /**
  * @ORM\Table(name="song_history", indexes={
@@ -370,56 +369,6 @@ class SongHistory implements SongInterface
             return !$this->playlist->isJingle();
         }
         return true;
-    }
-
-    /**
-     * @template T of Api\SongHistory
-     *
-     * @param T $response
-     * @param ApiUtilities $api
-     * @param UriInterface|null $base_url
-     *
-     * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
-     * @return T
-     */
-    public function api(Api\SongHistory $response, ApiUtilities $api, UriInterface $base_url = null)
-    {
-        // phpcs:enable
-        $response->sh_id = (int)$this->id;
-
-        $response->played_at = (0 === (int)$this->timestamp_start)
-            ? 0
-            : (int)$this->timestamp_start + self::PLAYBACK_DELAY_SECONDS;
-
-        $response->duration = (int)$this->duration;
-        $response->is_request = $this->request !== null;
-
-        if ($this->playlist instanceof StationPlaylist) {
-            $response->playlist = $this->playlist->getName();
-        } else {
-            $response->playlist = '';
-        }
-
-        if ($this->streamer instanceof StationStreamer) {
-            $response->streamer = $this->streamer->getDisplayName();
-        } else {
-            $response->streamer = '';
-        }
-
-        if ($response instanceof Api\DetailedSongHistory) {
-            $response->listeners_start = (int)$this->listeners_start;
-            $response->listeners_end = (int)$this->listeners_end;
-            $response->delta_total = (int)$this->delta_total;
-        }
-
-        if ($this->media) {
-            $response->song = $this->media->api($api, $base_url);
-        } else {
-            $song = new Song($this);
-            $response->song = $song->api($api, $this->station, $base_url);
-        }
-
-        return $response;
     }
 
     public function __toString(): string

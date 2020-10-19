@@ -2,6 +2,7 @@
 
 namespace App\Entity\Api;
 
+use App\Traits\LoadFromParentObject;
 use OpenApi\Annotations as OA;
 
 /**
@@ -9,6 +10,8 @@ use OpenApi\Annotations as OA;
  */
 class DetailedSongHistory extends SongHistory
 {
+    use LoadFromParentObject;
+
     /**
      * Number of listeners when the song playback started.
      *

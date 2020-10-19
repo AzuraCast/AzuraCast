@@ -27,6 +27,29 @@ class CustomFieldRepository extends Repository
     }
 
     /**
+     * @return string[]
+     */
+    public function getFieldIds(): array
+    {
+        static $fields;
+
+        if (!isset($fields)) {
+            $fields = [];
+            $fieldsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
+                cf.id, cf.name, cf.short_name
+                FROM App\Entity\CustomField cf
+                ORDER BY cf.name ASC')
+                ->getArrayResult();
+
+            foreach ($fieldsRaw as $row) {
+                $fields[$row['id']] = $row['short_name'] ?? Entity\Station::getStationShortName($row['name']);
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
      * Retrieve a key-value representation of all custom metadata for the specified media.
      *
      * @param Entity\StationMedia $media

@@ -3,14 +3,12 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\ApiUtilities;
 use App\Flysystem\Filesystem;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use Psr\Http\Message\UriInterface;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
@@ -535,34 +533,5 @@ class StationMedia implements SongInterface
     public function __toString(): string
     {
         return 'StationMedia ' . $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;
-    }
-
-    /**
-     * Retrieve the API version of the object/array.
-     *
-     * @param ApiUtilities $apiUtils
-     * @param UriInterface|null $baseUri
-     */
-    public function api(ApiUtilities $apiUtils, UriInterface $baseUri = null): Api\Song
-    {
-        $response = new Api\Song();
-        $response->id = (string)$this->song_id;
-        $response->text = (string)$this->text;
-        $response->artist = (string)$this->artist;
-        $response->title = (string)$this->title;
-
-        $response->album = (string)$this->album;
-        $response->genre = (string)$this->genre;
-        $response->lyrics = (string)$this->lyrics;
-
-        $response->art = $apiUtils->getAlbumArtUrl(
-            $this->station,
-            $this->unique_id,
-            $this->art_updated_at,
-            $baseUri
-        );
-        $response->custom_fields = $apiUtils->getCustomFields($this->id);
-
-        return $response;
     }
 }

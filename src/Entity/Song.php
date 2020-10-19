@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\ApiUtilities;
 use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
-use Psr\Http\Message\UriInterface;
 
 class Song implements SongInterface
 {
@@ -21,30 +20,6 @@ class Song implements SongInterface
     public function __toString(): string
     {
         return 'Song ' . $this->song_id . ': ' . $this->artist . ' - ' . $this->title;
-    }
-
-    /**
-     * Retrieve the API version of the object/array.
-     *
-     * @param ApiUtilities $api_utils
-     * @param Station|null $station
-     * @param UriInterface|null $base_url
-     */
-    public function api(
-        ApiUtilities $api_utils,
-        ?Station $station = null,
-        ?UriInterface $base_url = null
-    ): Api\Song {
-        $response = new Api\Song();
-        $response->id = (string)$this->song_id;
-        $response->text = (string)$this->text;
-        $response->artist = (string)$this->artist;
-        $response->title = (string)$this->title;
-        $response->art = $api_utils->getDefaultAlbumArtUrl($station, $base_url);
-
-        $response->custom_fields = $api_utils->getCustomFields();
-
-        return $response;
     }
 
     /**

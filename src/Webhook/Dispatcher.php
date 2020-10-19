@@ -2,16 +2,15 @@
 
 namespace App\Webhook;
 
-use App\ApiUtilities;
 use App\Entity;
 use App\Event\SendWebhooks;
 use App\Exception;
+use App\Http\RouterInterface;
 use App\Message;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -25,7 +24,7 @@ class Dispatcher implements EventSubscriberInterface
 
     protected ConnectorLocator $connectors;
 
-    protected ApiUtilities $apiUtils;
+    protected RouterInterface $router;
 
     protected EntityManagerInterface $em;
 
@@ -33,14 +32,14 @@ class Dispatcher implements EventSubscriberInterface
         Logger $logger,
         EntityManagerInterface $em,
         MessageBus $messageBus,
-        ApiUtilities $apiUtils,
+        RouterInterface $router,
         LocalWebhookHandler $localHandler,
         ConnectorLocator $connectors
     ) {
         $this->logger = $logger;
         $this->em = $em;
         $this->messageBus = $messageBus;
-        $this->apiUtils = $apiUtils;
+        $this->router = $router;
         $this->localHandler = $localHandler;
         $this->connectors = $connectors;
     }
@@ -150,7 +149,7 @@ class Dispatcher implements EventSubscriberInterface
         $this->logger->pushHandler($handler);
 
         $np = $station->getNowplaying();
-        $np->resolveUrls($this->apiUtils->getRouter()->getBaseUrl(false));
+        $np->resolveUrls($this->router->getBaseUrl(false));
         $np->cache = 'event';
 
         $event = new SendWebhooks($station, $np, true, $webhook->getTriggers());

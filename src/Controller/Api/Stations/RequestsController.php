@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api\Stations;
 
-use App\ApiUtilities;
 use App\Entity;
 use App\Exception;
 use App\Http\Response;
@@ -19,16 +18,16 @@ class RequestsController
 
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
-    protected ApiUtilities $api_utils;
+    protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\StationRequestRepository $requestRepo,
-        ApiUtilities $api_utils
+        Entity\ApiGenerator\SongApiGenerator $songApiGenerator
     ) {
         $this->em = $em;
         $this->requestRepo = $requestRepo;
-        $this->api_utils = $api_utils;
+        $this->songApiGenerator = $songApiGenerator;
     }
 
     /**
@@ -110,7 +109,7 @@ class RequestsController
         $paginator->setPostprocessor(function ($media_row) use ($station, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest();
-            $row->song = $media_row->api($this->api_utils);
+            $row->song = ($this->songApiGenerator)($media_row);
             $row->request_id = $media_row->getUniqueId();
             $row->request_url = (string)$router->named('api:requests:submit', [
                 'station_id' => $station->getId(),

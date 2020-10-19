@@ -2,7 +2,6 @@
 
 namespace App\Entity\Repository;
 
-use App\ApiUtilities;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Settings;
@@ -10,7 +9,6 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -36,41 +34,34 @@ class SongHistoryRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     * @param ApiUtilities $apiUtils
-     * @param UriInterface|null $baseUrl
      *
-     * @return Entity\Api\SongHistory[]
+     * @return Entity\SongHistory[]
      */
-    public function getHistoryApi(
-        Entity\Station $station,
-        ApiUtilities $apiUtils,
-        UriInterface $baseUrl = null
-    ): array {
-        $num_entries = $station->getApiHistoryItems();
-
-        if ($num_entries === 0) {
+    public function getVisibleHistory(Entity\Station $station): array
+    {
+        $numEntries = $station->getApiHistoryItems();
+        if (0 === $numEntries) {
             return [];
         }
 
-        $history = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
+        $recordsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
             FROM App\Entity\SongHistory sh
             LEFT JOIN sh.media sm
             WHERE sh.station_id = :station_id
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')
             ->setParameter('station_id', $station->getId())
-            ->setMaxResults($num_entries)
+            ->setMaxResults($numEntries)
             ->execute();
 
-        $return = [];
-        foreach ($history as $sh) {
-            /** @var Entity\SongHistory $sh */
-            if ($sh->showInApis()) {
-                $return[] = $sh->api(new Entity\Api\SongHistory(), $apiUtils, $baseUrl);
+        $records = [];
+        foreach ($recordsRaw as $row) {
+            /** @var Entity\SongHistory $row */
+            if ($row->showInApis()) {
+                $records[] = $row;
             }
         }
-
-        return $return;
+        return $records;
     }
 
     /**

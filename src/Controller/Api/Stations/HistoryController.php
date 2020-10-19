@@ -17,12 +17,14 @@ class HistoryController
 {
     protected EntityManagerInterface $em;
 
-    protected App\ApiUtilities $api_utils;
+    protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator;
 
-    public function __construct(EntityManagerInterface $em, App\ApiUtilities $api_utils)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator
+    ) {
         $this->em = $em;
-        $this->api_utils = $api_utils;
+        $this->songHistoryApiGenerator = $songHistoryApiGenerator;
     }
 
     /**
@@ -146,7 +148,7 @@ class HistoryController
 
         $paginator->setPostprocessor(function ($sh_row) use ($is_bootgrid, $router) {
             /** @var Entity\SongHistory $sh_row */
-            $row = $sh_row->api(new Entity\Api\DetailedSongHistory(), $this->api_utils);
+            $row = $this->songHistoryApiGenerator->detailed($sh_row);
             $row->resolveUrls($router->getBaseUrl());
 
             if ($is_bootgrid) {

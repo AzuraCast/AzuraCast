@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api\Stations\OnDemand;
 
-use App\ApiUtilities;
 use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -20,12 +19,18 @@ class ListAction
 {
     protected EntityManagerInterface $em;
 
-    protected ApiUtilities $apiUtils;
+    protected Entity\Repository\CustomFieldRepository $customFieldRepo;
 
-    public function __construct(EntityManagerInterface $em, ApiUtilities $apiUtils)
-    {
+    protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\CustomFieldRepository $customFieldRepo,
+        Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+    ) {
         $this->em = $em;
-        $this->apiUtils = $apiUtils;
+        $this->customFieldRepo = $customFieldRepo;
+        $this->songApiGenerator = $songApiGenerator;
     }
 
     public function __invoke(
@@ -62,7 +67,7 @@ class ListAction
                 'playlist',
             ];
 
-            $customFields = array_keys($this->apiUtils->getCustomFields());
+            $customFields = array_keys($this->customFieldRepo->getFieldIds());
             foreach ($customFields as $customField) {
                 $searchFields[] = 'media_custom_fields_' . $customField;
             }
@@ -126,7 +131,7 @@ class ListAction
                 $row = new Entity\Api\StationOnDemand();
 
                 $row->track_id = $media->getUniqueId();
-                $row->media = $media->api($this->apiUtils);
+                $row->media = ($this->songApiGenerator)($media);
                 $row->playlist = $playlist['name'];
                 $row->download_url = (string)$router->named('api:stations:ondemand:download', [
                     'station_id' => $station->getId(),

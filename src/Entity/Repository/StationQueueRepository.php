@@ -2,24 +2,19 @@
 
 namespace App\Entity\Repository;
 
-use App\ApiUtilities;
 use App\Doctrine\Repository;
 use App\Entity;
 use Doctrine\ORM\QueryBuilder;
-use Psr\Http\Message\UriInterface;
 
 class StationQueueRepository extends Repository
 {
-    public function getNextSongApi(
-        Entity\Station $station,
-        ApiUtilities $apiUtils,
-        UriInterface $baseUrl = null
-    ): ?Entity\Api\StationQueue {
+    public function getNextVisible(Entity\Station $station): ?Entity\StationQueue
+    {
         $queue = $this->getUpcomingQueue($station);
 
         foreach ($queue as $sh) {
             if (!$sh->isSentToAutoDj() && $sh->showInApis()) {
-                return $sh->api($apiUtils, $baseUrl);
+                return $sh;
             }
         }
 

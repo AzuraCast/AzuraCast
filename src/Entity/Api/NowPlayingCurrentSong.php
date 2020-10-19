@@ -3,6 +3,7 @@
 namespace App\Entity\Api;
 
 use App\Entity;
+use App\Traits\LoadFromParentObject;
 use OpenApi\Annotations as OA;
 
 /**
@@ -10,6 +11,8 @@ use OpenApi\Annotations as OA;
  */
 class NowPlayingCurrentSong extends SongHistory
 {
+    use LoadFromParentObject;
+
     /**
      * Elapsed time of the song's playback since it started.
      *

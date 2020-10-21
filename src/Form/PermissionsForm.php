@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Acl;
 use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
@@ -21,10 +22,12 @@ class PermissionsForm extends EntityForm
         ValidatorInterface $validator,
         Config $config,
         Entity\Repository\StationRepository $stations_repo,
-        Entity\Repository\RolePermissionRepository $permissions_repo
+        Entity\Repository\RolePermissionRepository $permissions_repo,
+        Acl $acl
     ) {
         $form_config = $config->get('forms/role', [
             'all_stations' => $stations_repo->fetchArray(),
+            'actions' => $acl->listPermissions(),
         ]);
 
         parent::__construct($em, $serializer, $validator, $form_config);

@@ -11,10 +11,14 @@ use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController
 {
-    public function __construct(PermissionsForm $form)
+    protected Acl $acl;
+
+    public function __construct(PermissionsForm $form, Acl $acl)
     {
         parent::__construct($form);
+
         $this->csrf_namespace = 'admin_permissions';
+        $this->acl = $acl;
     }
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
@@ -30,7 +34,7 @@ class PermissionsController extends AbstractAdminCrudController
 
         $roles = [];
 
-        $actions = Acl::listPermissions();
+        $actions = $this->acl->listPermissions();
 
         foreach ($all_roles as $role) {
             $role['permissions_global'] = [];

@@ -13,6 +13,7 @@ services:
       context: .
     volumes:
       - ./util/local_ssl:/etc/nginx/certs:ro
+      - ./vendor:/var/azuracast/www/vendor
       - .:/var/azuracast/www
 
   mariadb:

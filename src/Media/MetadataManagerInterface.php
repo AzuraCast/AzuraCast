@@ -7,7 +7,6 @@ interface MetadataManagerInterface
     /**
      * @param string $path
      *
-     * @return Metadata
      */
     public function getMetadata(string $path): Metadata;
 

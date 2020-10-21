@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Media\getID3;
+namespace App\Media\GetId3;
 
 use App\Media\Metadata;
 use App\Media\MetadataManagerInterface;
 use voku\helper\UTF8;
 
-class getID3MetadataManager implements MetadataManagerInterface
+class GetId3MetadataManager implements MetadataManagerInterface
 {
     /**
      * @inheritDoc

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Flysystem\Filesystem;
+use App\Media\Metadata;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -528,6 +529,54 @@ class StationMedia implements SongInterface
     public function getPlaylists(): Collection
     {
         return $this->playlists;
+    }
+
+    public function fromMetadata(Metadata $metadata): void
+    {
+        $this->setLength($metadata->getDuration());
+
+        $tags = $metadata->getTags();
+
+        if (isset($tags['title'])) {
+            $this->setTitle($tags['title']);
+        }
+        if (isset($tags['artist'])) {
+            $this->setArtist($tags['artist']);
+        }
+        if (isset($tags['album'])) {
+            $this->setAlbum($tags['album']);
+        }
+        if (isset($tags['genre'])) {
+            $this->setGenre($tags['genre']);
+        }
+        if (isset($tags['unsynchronised_lyric'])) {
+            $this->setLyrics($tags['unsynchronised_lyric']);
+        }
+        if (isset($tags['isrc'])) {
+            $this->setIsrc($tags['isrc']);
+        }
+    }
+
+    public function toMetadata(): Metadata
+    {
+        $metadata = new Metadata();
+        $metadata->setDuration($this->getLength());
+
+        $tagsToSet = array_filter([
+            'title' => $this->getTitle(),
+            'artist' => $this->getArtist(),
+            'album' => $this->getAlbum(),
+            'genre' => $this->getGenre(),
+            'unsynchronised_lyric' => $this->getLyrics(),
+            'isrc' => $this->getIsrc(),
+        ]);
+
+        $tags = $metadata->getTags();
+        foreach ($tagsToSet as $tagKey => $tagValue) {
+            $tags->set($tagKey, $tagValue);
+        }
+
+        return $metadata;
     }
 
     public function __toString(): string

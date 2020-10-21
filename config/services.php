@@ -385,6 +385,8 @@ return [
         );
     },
 
+    App\Media\MetadataManagerInterface::class => DI\get(App\Media\getID3\getID3MetadataManager::class),
+
     // Asset Management
     App\Assets::class => function (App\Config $config, Settings $settings) {
         $libraries = $config->get('assets');

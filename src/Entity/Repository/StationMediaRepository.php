@@ -8,7 +8,7 @@ use App\Entity\StationPlaylist;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
 use App\Media\AlbumArt;
-use App\Media\Id3;
+use App\Media\MetadataManagerInterface;
 use App\Service\AudioWaveform;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,8 +17,6 @@ use getid3_exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
-use voku\helper\UTF8;
-
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
@@ -31,20 +29,25 @@ class StationMediaRepository extends Repository
 
     protected StationPlaylistMediaRepository $spmRepo;
 
+    protected MetadataManagerInterface $metadataManager;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
         LoggerInterface $logger,
         Filesystem $filesystem,
+        MetadataManagerInterface $metadataManager,
         CustomFieldRepository $customFieldRepo,
         StationPlaylistMediaRepository $spmRepo
     ) {
+        parent::__construct($em, $serializer, $settings, $logger);
+
         $this->filesystem = $filesystem;
+        $this->metadataManager = $metadataManager;
+
         $this->customFieldRepo = $customFieldRepo;
         $this->spmRepo = $spmRepo;
-
-        parent::__construct($em, $serializer, $settings, $logger);
     }
 
     /**
@@ -188,33 +191,20 @@ class StationMediaRepository extends Repository
      * Process metadata information from media file.
      *
      * @param Entity\StationMedia $media
-     * @param string $file_path
+     * @param string $filePath
      */
-    public function loadFromFile(Entity\StationMedia $media, string $file_path): void
+    public function loadFromFile(Entity\StationMedia $media, string $filePath): void
     {
         // Persist the media record for later custom field operations.
         $this->em->persist($media);
 
         // Load metadata from supported files.
-        $file_info = Id3::read($file_path);
+        $metadata = $this->metadataManager->getMetadata($filePath);
 
-        // Set playtime length if the analysis was able to determine it
-        if (is_numeric($file_info['playtime_seconds'])) {
-            $media->setLength($file_info['playtime_seconds']);
-        }
-
-        $tagsToSet = [
-            'title' => 'setTitle',
-            'artist' => 'setArtist',
-            'album' => 'setAlbum',
-            'genre' => 'setGenre',
-            'unsynchronised_lyric' => 'setLyrics',
-            'isrc' => 'setIsrc',
-        ];
+        $media->fromMetadata($metadata);
 
         // Clear existing auto-assigned custom fields.
         $fieldCollection = $media->getCustomFields();
-
         foreach ($fieldCollection as $existingCustomField) {
             /** @var Entity\StationMediaCustomField $existingCustomField */
             if ($existingCustomField->getField()->hasAutoAssign()) {
@@ -224,36 +214,20 @@ class StationMediaRepository extends Repository
         }
 
         $customFieldsToSet = $this->customFieldRepo->getAutoAssignableFields();
+        $tags = $metadata->getTags();
+        foreach ($customFieldsToSet as $tag => $customFieldKey) {
+            if (!empty($tags[$tag])) {
+                $customFieldRow = new Entity\StationMediaCustomField($media, $customFieldKey);
+                $customFieldRow->setValue($tags[$tag]);
+                $this->em->persist($customFieldRow);
 
-        if (!empty($file_info['tags'])) {
-            foreach ($file_info['tags'] as $tag_type => $tag_data) {
-                foreach ($tagsToSet as $tag => $tagMethod) {
-                    if (!empty($tag_data[$tag][0])) {
-                        $tagValue = $this->cleanUpString($tag_data[$tag][0]);
-                        $media->{$tagMethod}($tagValue);
-                    }
-                }
-
-                foreach ($customFieldsToSet as $tag => $customFieldKey) {
-                    if (!empty($tag_data[$tag][0])) {
-                        $tagValue = $this->cleanUpString($tag_data[$tag][0]);
-
-                        $customFieldRow = new Entity\StationMediaCustomField($media, $customFieldKey);
-                        $customFieldRow->setValue($tagValue);
-                        $this->em->persist($customFieldRow);
-
-                        $fieldCollection->add($customFieldRow);
-                    }
-                }
+                $fieldCollection->add($customFieldRow);
             }
         }
 
-        if (!empty($file_info['attached_picture'][0])) {
-            $picture = $file_info['attached_picture'][0];
-            $this->writeAlbumArt($media, $picture['data']);
-        } elseif (!empty($file_info['comments']['picture'][0])) {
-            $picture = $file_info['comments']['picture'][0];
-            $this->writeAlbumArt($media, $picture['data']);
+        $artwork = $metadata->getArtwork();
+        if (!empty($artwork)) {
+            $this->writeAlbumArt($media, $artwork);
         }
 
         // Attempt to derive title and artist from filename.
@@ -273,20 +247,6 @@ class StationMediaRepository extends Repository
 
         // Generate a song_id hash based on the track
         $media->updateSongId();
-    }
-
-    protected function cleanUpString(string $original): string
-    {
-        $string = UTF8::encode('UTF-8', $original);
-        $string = UTF8::fix_simple_utf8($string);
-        return UTF8::clean(
-            $string,
-            true,
-            true,
-            true,
-            true,
-            true
-        );
     }
 
     /**
@@ -359,29 +319,15 @@ class StationMediaRepository extends Repository
             $tmp_path = $fs->getFullPath($tmp_uri);
         }
 
-        $tag_data = [
-            'title' => [$media->getTitle()],
-            'artist' => [$media->getArtist()],
-            'album' => [$media->getAlbum()],
-            'genre' => [$media->getGenre()],
-            'unsynchronised_lyric' => [$media->getLyrics()],
-        ];
+        $metadata = $media->toMetadata();
 
         $art_path = $media->getArtPath();
         if ($fs->has($art_path)) {
-            $tag_data['attached_picture'][0] = [
-                'encodingid' => 0, // ISO-8859-1; 3=UTF8 but only allowed in ID3v2.4
-                'description' => 'cover art',
-                'data' => $fs->read($art_path),
-                'picturetypeid' => 0x03,
-                'mime' => 'image/jpeg',
-            ];
-
-            $tag_data['comments']['picture'][0] = $tag_data['attached_picture'][0];
+            $metadata->setArtwork($fs->read($art_path));
         }
 
         // write tags
-        if (Id3::write($tmp_path, $tag_data)) {
+        if ($this->metadataManager->writeMetadata($metadata, $tmp_path)) {
             $media->setMtime(time() + 5);
 
             if (null !== $tmp_uri) {

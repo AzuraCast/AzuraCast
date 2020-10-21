@@ -18,7 +18,7 @@ class StationStreamerBroadcastRepository extends Repository
         $latestBroadcast = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb
             FROM App\Entity\StationStreamerBroadcast ssb
             WHERE ssb.station = :station AND ssb.streamer = :streamer
-            ORDER BY ssb.timestamp_start DESC')
+            ORDER BY ssb.timestampStart DESC')
             ->setParameter('station', $station)
             ->setParameter('streamer', $currentStreamer)
             ->setMaxResults(1)

@@ -86,8 +86,6 @@ class Acl
                 self::GLOBAL_LOGS => __('View System Logs'),
                 self::GLOBAL_SETTINGS => __('Administer Settings'),
                 self::GLOBAL_API_KEYS => __('Administer API Keys'),
-                self::GLOBAL_USERS => __('Administer Users'),
-                self::GLOBAL_PERMISSIONS => __('Administer Permissions'),
                 self::GLOBAL_STATIONS => __('Administer Stations'),
                 self::GLOBAL_CUSTOM_FIELDS => __('Administer Custom Fields'),
                 self::GLOBAL_BACKUPS => __('Administer Backups'),

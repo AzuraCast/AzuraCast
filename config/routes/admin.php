@@ -136,7 +136,7 @@ return function (App $app) {
             $group->get('/delete/{id}/{csrf}', Controller\Admin\PermissionsController::class . ':deleteAction')
                 ->setName('admin:permissions:delete');
 
-        })->add(new Middleware\Permissions(Acl::GLOBAL_PERMISSIONS));
+        })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
         $group->get('/relays', Controller\Admin\RelaysController::class)
             ->setName('admin:relays:index')
@@ -182,7 +182,7 @@ return function (App $app) {
             $group->get('/login-as/{id}/{csrf}', Controller\Admin\UsersController::class . ':impersonateAction')
                 ->setName('admin:users:impersonate');
 
-        })->add(new Middleware\Permissions(Acl::GLOBAL_USERS));
+        })->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
         // END /admin GROUP
 

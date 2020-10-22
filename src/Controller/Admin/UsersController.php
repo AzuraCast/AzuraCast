@@ -2,10 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Acl;
 use App\Entity;
 use App\Exception\NotFoundException;
-use App\Exception\PermissionDeniedException;
 use App\Form\UserForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -92,14 +90,6 @@ class UsersController extends AbstractAdminCrudController
 
         if (!($user instanceof Entity\User)) {
             throw new NotFoundException(__('User not found.'));
-        }
-
-        $currentUser = $request->getUser();
-        $acl = $request->getAcl();
-        if ($acl->userAllowed($user, Acl::GLOBAL_ALL) && !$acl->userAllowed($currentUser, Acl::GLOBAL_ALL)) {
-            throw new PermissionDeniedException(__(
-                'The user you are attempting to impersonate has higher permissions than your account.'
-            ));
         }
 
         $auth = $request->getAuth();

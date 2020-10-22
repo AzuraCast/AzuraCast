@@ -52,12 +52,12 @@ return function (App\Event\BuildAdminMenu $e) {
                 'manage_users' => [
                     'label' => __('User Accounts'),
                     'url' => $router->named('admin:users:index'),
-                    'permission' => Acl::GLOBAL_USERS,
+                    'permission' => Acl::GLOBAL_ALL,
                 ],
                 'permissions' => [
                     'label' => __('Permissions'),
                     'url' => $router->named('admin:permissions:index'),
-                    'permission' => Acl::GLOBAL_PERMISSIONS,
+                    'permission' => Acl::GLOBAL_ALL,
                 ],
                 'auditlog' => [
                     'label' => __('Audit Log'),

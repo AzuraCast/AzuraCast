@@ -190,11 +190,6 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
             $np = ($this->nowPlayingApiGenerator)($station, $npResult);
 
-            $station->setNowplaying($np);
-
-            $this->em->persist($station);
-            $this->em->flush();
-
             // Trigger the dispatching of webhooks.
 
             /** @var Entity\Api\NowPlaying $np_event */
@@ -205,6 +200,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
             $webhook_event = new SendWebhooks($station, $np_event, $standalone);
 
             $this->eventDispatcher->dispatch($webhook_event);
+
+            $station->setNowplaying($np);
+            $this->em->persist($station);
+            $this->em->flush();
 
             $logger->popProcessor();
 

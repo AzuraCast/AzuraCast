@@ -114,11 +114,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $context['trace'] = array_slice($this->exception->getTrace(), 0, 5);
         }
 
-        $this->logger->log($this->loggerLevel, $this->exception->getMessage(), [
-            'file' => $this->exception->getFile(),
-            'line' => $this->exception->getLine(),
-            'code' => $this->exception->getCode(),
-        ]);
+        $this->logger->log($this->loggerLevel, $this->exception->getMessage(), $context);
     }
 
     protected function respond(): ResponseInterface

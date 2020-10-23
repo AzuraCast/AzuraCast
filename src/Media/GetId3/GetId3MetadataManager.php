@@ -38,7 +38,10 @@ class GetId3MetadataManager implements MetadataManagerInterface
         if (!empty($info['tags'])) {
             $metaTags = $metadata->getTags();
 
-            foreach ($info['tags'] as $tagType => $tagData) {
+            // Reverse array of tags to prefer ID3v2 tags instead of ID3v1
+            $infoTags = array_reverse($info['tags']);
+
+            foreach ($infoTags as $tagType => $tagData) {
                 foreach ($tagData as $tagName => $tagContents) {
                     if (!empty($tagContents[0]) && !$metaTags->containsKey($tagName)) {
                         $metaTags->set($tagName, $this->cleanUpString($tagContents[0]));

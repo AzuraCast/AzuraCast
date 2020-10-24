@@ -15,18 +15,38 @@ class Version
     /** @var string Version that is displayed if no Git repository information is present. */
     public const FALLBACK_VERSION = '0.10.4';
 
+    public const RELEASE_CHANNEL_ROLLING = 'rolling';
+    public const RELEASE_CHANNEL_STABLE = 'stable';
+
     protected CacheInterface $cache;
 
-    protected string $repo_dir;
+    protected string $repoDir;
 
-    protected Settings $app_settings;
+    protected Settings $appSettings;
 
-    public function __construct(CacheInterface $cache, Settings $app_settings)
+    public function __construct(CacheInterface $cache, Settings $appSettings)
     {
         $this->cache = $cache;
-        $this->app_settings = $app_settings;
+        $this->appSettings = $appSettings;
 
-        $this->repo_dir = $app_settings[Settings::BASE_DIR];
+        $this->repoDir = $appSettings[Settings::BASE_DIR];
+    }
+
+    public function getReleaseChannel(): string
+    {
+        if ($this->appSettings->isDocker()) {
+            $channel = $_ENV['AZURACAST_VERSION'] ?? 'latest';
+
+            return ('stable' === $channel)
+                ? self::RELEASE_CHANNEL_STABLE
+                : self::RELEASE_CHANNEL_ROLLING;
+        }
+
+        $details = $this->getDetails();
+
+        return ('stable' === $details['branch'])
+            ? self::RELEASE_CHANNEL_STABLE
+            : self::RELEASE_CHANNEL_ROLLING;
     }
 
     /**
@@ -52,7 +72,7 @@ class Version
 
             if (empty($details)) {
                 $details = $this->getRawDetails();
-                $ttl = $this->app_settings->isProduction() ? 86400 : 600;
+                $ttl = $this->appSettings->isProduction() ? 86400 : 600;
 
                 $this->cache->set('app_version_details', $details, $ttl);
             }
@@ -68,7 +88,7 @@ class Version
      */
     protected function getRawDetails(): array
     {
-        if (!is_dir($this->repo_dir . '/.git')) {
+        if (!is_dir($this->repoDir . '/.git')) {
             return [];
         }
 
@@ -101,6 +121,8 @@ class Version
             $details['tag'] = self::FALLBACK_VERSION;
         }
 
+        $details['branch'] = $this->runProcess(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], 'master');
+
         return $details;
     }
 
@@ -113,7 +135,7 @@ class Version
     protected function runProcess($proc, $default = ''): string
     {
         $process = new Process($proc);
-        $process->setWorkingDirectory($this->repo_dir);
+        $process->setWorkingDirectory($this->repoDir);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -139,15 +161,11 @@ class Version
                 $details['commit_date']
             );
 
-            if (isset($_ENV['AZURACAST_VERSION'])) {
-                if ('latest' === $_ENV['AZURACAST_VERSION']) {
-                    return 'Rolling Release ' . $commitText;
-                }
-
-                return 'v' . $details['tag'] . ' Stable';
+            $releaseChannel = $this->getReleaseChannel();
+            if (self::RELEASE_CHANNEL_ROLLING === $releaseChannel) {
+                return 'Rolling Release ' . $commitText;
             }
-
-            return 'v' . $details['tag'] . ', ' . $commitText;
+            return 'v' . $details['tag'] . ' Stable';
         }
 
         return 'v' . self::FALLBACK_VERSION . ' Release Build';
@@ -177,7 +195,7 @@ class Version
     public function isInstallationModified(): bool
     {
         // We can't detect if release builds are changed, so always return true.
-        if (!is_dir($this->repo_dir . '/.git')) {
+        if (!is_dir($this->repoDir . '/.git')) {
             return true;
         }
 

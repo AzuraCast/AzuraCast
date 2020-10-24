@@ -1,13 +1,31 @@
 <?php
-/** @var App\Settings $settings */
+/**
+ * @var App\Settings $settings
+ * @var App\Version $version
+ */
 
 use App\Entity;
 
+$releaseChannel = $version->getReleaseChannel();
+$releaseChannelNames = [
+    App\Version::RELEASE_CHANNEL_ROLLING => __('Rolling Release'),
+    App\Version::RELEASE_CHANNEL_STABLE => __('Stable'),
+];
+$releaseChannelName = $releaseChannelNames[$releaseChannel];
+
 return [
+    'tabs' => [
+        'system' => __('Settings'),
+        'security' => __('Security'),
+        'privacy' => __('Privacy'),
+        'updates' => __('Updates'),
+    ],
+
     'groups' => [
 
         'system' => [
             'use_grid' => true,
+            'tab' => 'system',
 
             'elements' => [
                 Entity\Settings::BASE_URL => [
@@ -87,8 +105,8 @@ return [
         ],
 
         'security' => [
-            'legend' => __('Security Controls'),
             'use_grid' => true,
+            'tab' => 'security',
 
             'elements' => [
 
@@ -120,9 +138,7 @@ return [
         ],
 
         'privacy' => [
-            'legend' => __('Privacy Controls'),
-            'description' => __('AzuraCast does not send your station or listener data to any external server. You can control how much data AzuraCast logs about your listeners here.'),
-
+            'tab' => 'privacy',
             'elements' => [
 
                 Entity\Settings::LISTENER_ANALYTICS => [
@@ -143,24 +159,27 @@ return [
         ],
 
         'channels' => [
-            'legend' => __('AzuraCast Installation Telemetry'),
-            'description' => __('Choose whether your installation communicates with central AzuraCast servers to check for updates and announcements.<br>AzuraCast respects your privacy; see our <a href="%s" target="_blank">privacy policy</a> for more details.',
-                'https://www.azuracast.com/privacy.html'),
-
+            'tab' => 'updates',
             'elements' => [
 
-                Entity\Settings::CENTRAL_UPDATES => [
-                    'radio',
+                'release_channel' => [
+                    'markup',
                     [
-                        'label' => __('Check for Updates and Announcements'),
-                        'description' => __('Send minimal details about your AzuraCast installation to the AzuraCast central server to check for updated software releases and important announcements.'),
+                        'label' => __('Current Release Channel'),
+                        'markup' => '<strong>' . $releaseChannelName . '</strong>',
+                        'description' => __(
+                            'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.',
+                            'https://www.azuracast.com/administration/system/release-channels.html'
+                        ),
+                    ],
+                ],
 
-                        'choices' => [
-                            Entity\Settings::UPDATES_NONE => __('<b>None:</b> Do not check for updates or announcements.'),
-                            Entity\Settings::UPDATES_RELEASE_ONLY => __('<b>Release Only:</b> Critical announcements and new release versions only.'),
-                            Entity\Settings::UPDATES_ALL => __('<b>All Updates:</b> Include all announcements and minor updates.'),
-                        ],
-                        'default' => Entity\Settings::UPDATES_RELEASE_ONLY,
+                Entity\Settings::CENTRAL_UPDATES => [
+                    'toggle',
+                    [
+                        'label' => __('Show Update Announcements'),
+                        'description' => __('Show new releases within your update channel on the AzuraCast homepage.'),
+                        'default' => true,
                     ],
                 ],
 

@@ -6,6 +6,7 @@ use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
 use App\Settings;
+use App\Version;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
@@ -23,18 +24,22 @@ class Manager implements EventSubscriberInterface
 
     protected Settings $appSettings;
 
+    protected Version $version;
+
     public function __construct(
         Acl $acl,
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Logger $logger,
-        Settings $appSettings
+        Settings $appSettings,
+        Version $version
     ) {
         $this->acl = $acl;
         $this->em = $em;
         $this->logger = $logger;
         $this->appSettings = $appSettings;
         $this->settingsRepo = $settingsRepo;
+        $this->version = $version;
     }
 
     /**
@@ -85,15 +90,13 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        $check_for_updates = (int)$this->settingsRepo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
-
-        if (Entity\Settings::UPDATES_NONE === $check_for_updates) {
+        $checkForUpdates = (bool)$this->settingsRepo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
+        if (!$checkForUpdates) {
             return;
         }
 
-        $update_data = $this->settingsRepo->getSetting(Entity\Settings::UPDATE_RESULTS);
-
-        if (empty($update_data)) {
+        $updateData = $this->settingsRepo->getSetting(Entity\Settings::UPDATE_RESULTS);
+        if (empty($updateData)) {
             return;
         }
 
@@ -103,16 +106,18 @@ class Manager implements EventSubscriberInterface
             $instructions_url
         );
 
-        if ($update_data['needs_release_update']) {
+        $releaseChannel = $this->version->getReleaseChannel();
+
+        if (Version::RELEASE_CHANNEL_STABLE === $releaseChannel && $updateData['needs_release_update']) {
             $notification_parts = [
                 '<b>' . __(
                     'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.',
                     'https://github.com/AzuraCast/AzuraCast/releases',
-                    $update_data['latest_release']
+                    $updateData['latest_release']
                 ) . '</b>',
                 __(
                     'You are currently running version %s. Updating is highly recommended.',
-                    $update_data['current_release']
+                    $updateData['current_release']
                 ),
                 $instructions_string,
             ];
@@ -125,18 +130,18 @@ class Manager implements EventSubscriberInterface
             return;
         }
 
-        if (Entity\Settings::UPDATES_ALL === $check_for_updates && $update_data['needs_rolling_update']) {
+        if (Version::RELEASE_CHANNEL_ROLLING === $releaseChannel && $updateData['needs_rolling_update']) {
             $notification_parts = [];
-            if ($update_data['rolling_updates_available'] < 15 && !empty($update_data['rolling_updates_list'])) {
+            if ($updateData['rolling_updates_available'] < 15 && !empty($updateData['rolling_updates_list'])) {
                 $notification_parts[] = __('The following improvements have been made since your last update:');
                 $notification_parts[] = nl2br('<ul><li>' . implode(
                     '</li><li>',
-                    $update_data['rolling_updates_list']
+                    $updateData['rolling_updates_list']
                 ) . '</li></ul>');
             } else {
                 $notification_parts[] = '<b>' . __(
                     'Your installation is currently %d update(s) behind the latest version.',
-                    $update_data['rolling_updates_available']
+                    $updateData['rolling_updates_available']
                 ) . '</b>';
                 $notification_parts[] = __('You should update to take advantage of bug and security fixes.');
             }

@@ -6,6 +6,7 @@ use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Settings;
+use App\Version;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SettingsForm extends AbstractSettingsForm
@@ -14,10 +15,12 @@ class SettingsForm extends AbstractSettingsForm
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Settings $settings,
+        Version $version,
         Config $config
     ) {
         $formConfig = $config->get('forms/settings', [
             'settings' => $settings,
+            'version' => $version,
         ]);
 
         parent::__construct(

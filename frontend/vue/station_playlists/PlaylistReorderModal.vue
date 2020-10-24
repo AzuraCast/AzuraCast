@@ -1,109 +1,108 @@
 <template>
     <b-modal size="lg" id="reorder_modal" ref="modal" :title="langTitle" :busy="loading" hide-footer>
-        <b-spinner v-if="loading">
-        </b-spinner>
-
-        <b-table-simple striped class="sortable mb-0">
-            <b-thead>
-                <tr>
-                    <th style="width: 30%;" key="lang_col_title" v-translate>Title</th>
-                    <th style="width: 25%;" key="lang_col_artist" v-translate>Artist</th>
-                    <th style="width: 25%;" key="lang_col_album" v-translate>Album</th>
-                    <th style="width: 20%;" key="lang_col_actions" v-translate>Actions</th>
-                </tr>
-            </b-thead>
-            <draggable v-model="media" tag="tbody" @change="save">
-                <tr class="align-middle" v-for="(row,index) in media" :key="media.id">
-                    <td><big>{{ row.media.title }}</big></td>
-                    <td>{{ row.media.artist }}</td>
-                    <td>{{ row.media.album }}</td>
-                    <td>
-                        <b-button-group size="sm">
-                            <b-button size="sm" variant="primary" @click.prevent="moveDown(index)" :title="langDownBtn"
-                                      v-if="index+1 < media.length">
-                                <i class="material-icons" aria-hidden="true">arrow_downward</i>
-                            </b-button>
-                            <b-button size="sm" variant="primary" @click.prevent="moveUp(index)" :title="langUpBtn"
-                                      v-if="index > 0">
-                                <i class="material-icons" aria-hidden="true">arrow_upward</i>
-                            </b-button>
-                        </b-button-group>
-                    </td>
-                </tr>
-            </draggable>
-        </b-table-simple>
+        <b-overlay variant="card" :show="loading">
+            <b-table-simple striped class="sortable mb-0">
+                <b-thead>
+                    <tr>
+                        <th style="width: 30%;" key="lang_col_title" v-translate>Title</th>
+                        <th style="width: 25%;" key="lang_col_artist" v-translate>Artist</th>
+                        <th style="width: 25%;" key="lang_col_album" v-translate>Album</th>
+                        <th style="width: 20%;" key="lang_col_actions" v-translate>Actions</th>
+                    </tr>
+                </b-thead>
+                <draggable v-model="media" tag="tbody" @change="save">
+                    <tr class="align-middle" v-for="(row,index) in media" :key="media.id">
+                        <td><big>{{ row.media.title }}</big></td>
+                        <td>{{ row.media.artist }}</td>
+                        <td>{{ row.media.album }}</td>
+                        <td>
+                            <b-button-group size="sm">
+                                <b-button size="sm" variant="primary" @click.prevent="moveDown(index)" :title="langDownBtn"
+                                          v-if="index+1 < media.length">
+                                    <i class="material-icons" aria-hidden="true">arrow_downward</i>
+                                </b-button>
+                                <b-button size="sm" variant="primary" @click.prevent="moveUp(index)" :title="langUpBtn"
+                                          v-if="index > 0">
+                                    <i class="material-icons" aria-hidden="true">arrow_upward</i>
+                                </b-button>
+                            </b-button-group>
+                        </td>
+                    </tr>
+                </draggable>
+            </b-table-simple>
+        </b-overlay>
     </b-modal>
 </template>
 
 <script>
-    import axios from 'axios';
-    import Draggable from 'vuedraggable';
+import axios from 'axios';
+import Draggable from 'vuedraggable';
 
-    export default {
-        name: 'ReorderModal',
-        components: {
-            Draggable
+export default {
+    name: 'ReorderModal',
+    components: {
+        Draggable
+    },
+    data () {
+        return {
+            loading: true,
+            reorderUrl: null,
+            media: []
+        };
+    },
+    computed: {
+        langTitle () {
+            return this.$gettext('Reorder Playlist');
         },
-        data () {
-            return {
-                loading: true,
-                reorderUrl: null,
-                media: []
-            };
+        langDownBtn () {
+            return this.$gettext('Down');
         },
-        computed: {
-            langTitle () {
-                return this.$gettext('Reorder Playlist');
-            },
-            langDownBtn () {
-                return this.$gettext('Down');
-            },
-            langUpBtn () {
-                return this.$gettext('Up');
-            }
+        langUpBtn () {
+            return this.$gettext('Up');
+        }
+    },
+    methods: {
+        open (reorderUrl) {
+            this.$refs.modal.show();
+            this.reorderUrl = reorderUrl;
+            this.loading = true;
+
+            axios.get(this.reorderUrl).then((resp) => {
+                this.media = resp.data;
+                this.loading = false;
+            }).catch((err) => {
+                this.handleError(err);
+            });
         },
-        methods: {
-            open (reorderUrl) {
-                this.$refs.modal.show();
-                this.reorderUrl = reorderUrl;
-                this.loading = true;
+        moveDown (index) {
+            this.media.splice(index + 1, 0, this.media.splice(index, 1)[0]);
+            this.save();
+        },
+        moveUp (index) {
+            this.media.splice(index - 1, 0, this.media.splice(index, 1)[0]);
+            this.save();
+        },
+        save () {
+            let newOrder = {};
+            let i = 0;
 
-                axios.get(this.reorderUrl).then((resp) => {
-                    this.media = resp.data;
-                    this.loading = false;
-                }).catch((err) => {
-                    this.handleError(err);
-                });
-            },
-            moveDown (index) {
-                this.media.splice(index + 1, 0, this.media.splice(index, 1)[0]);
-                this.save();
-            },
-            moveUp (index) {
-                this.media.splice(index - 1, 0, this.media.splice(index, 1)[0]);
-                this.save();
-            },
-            save () {
-                let newOrder = {};
-                let i = 0;
+            this.media.forEach((row) => {
+                i++;
+                newOrder[row.id] = i;
+            });
 
-                this.media.forEach((row) => {
-                    i++;
-                    newOrder[row.id] = i;
-                });
-
-                axios.put(this.reorderUrl, { 'order': newOrder }).then((resp) => {
-                    notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success', false);
-                }).catch((err) => {
-                    this.handleError(err);
-                });
-            },
-            handleError (err) {
-                console.error(err);
-                if (err.response.message) {
-                    notify('<b>' + err.response.message + '</b>', 'danger');
-                }
+            axios.put(this.reorderUrl, { 'order': newOrder }).then((resp) => {
+                notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success', false);
+            }).catch((err) => {
+                this.handleError(err);
+            });
+        },
+        handleError (err) {
+            console.error(err);
+            if (err.response.message) {
+                notify('<b>' + err.response.message + '</b>', 'danger');
             }
         }
-    };
+    }
+};
 </script>

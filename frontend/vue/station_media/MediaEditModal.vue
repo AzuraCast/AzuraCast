@@ -1,17 +1,17 @@
 <template>
     <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
-        <b-spinner v-if="loading">
-        </b-spinner>
-        <b-form class="form" v-else @submit.prevent="doEdit">
-            <b-tabs content-class="mt-3">
-                <media-form-basic-info :form="$v.form"></media-form-basic-info>
-                <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
-                <media-form-custom-fields v-if="customFields.length > 0" :form="$v.form" :custom-fields="customFields"></media-form-custom-fields>
-                <media-form-waveform-editor :form="form" :audio-url="audioUrl" :waveform-url="waveformUrl"></media-form-waveform-editor>
-                <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
-            </b-tabs>
-            <invisible-submit-button/>
-        </b-form>
+        <b-overlay variant="card" :show="loading">
+            <b-form class="form" @submit.prevent="doEdit">
+                <b-tabs content-class="mt-3">
+                    <media-form-basic-info :form="$v.form"></media-form-basic-info>
+                    <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
+                    <media-form-custom-fields v-if="customFields.length > 0" :form="$v.form" :custom-fields="customFields"></media-form-custom-fields>
+                    <media-form-waveform-editor :form="form" :audio-url="audioUrl" :waveform-url="waveformUrl"></media-form-waveform-editor>
+                    <media-form-advanced-settings :form="$v.form" :song-length="songLength"></media-form-advanced-settings>
+                </b-tabs>
+                <invisible-submit-button/>
+            </b-form>
+        </b-overlay>
         <template v-slot:modal-footer>
             <b-button variant="default" @click="close">
                 <translate key="lang_btn_close">Close</translate>
@@ -48,7 +48,7 @@ export default {
     props: {
         customFields: Array
     },
-    data() {
+    data () {
         return {
             loading: true,
             recordUrl: null,
@@ -59,7 +59,7 @@ export default {
             form: this.getBlankForm()
         };
     },
-    validations() {
+    validations () {
         let validations = {
             form: {
                 path: {
@@ -89,12 +89,12 @@ export default {
         return validations;
     },
     computed: {
-        langTitle() {
+        langTitle () {
             return this.$gettext('Edit Media');
         }
     },
     methods: {
-        getBlankForm() {
+        getBlankForm () {
             let customFields = {};
 
             _.forEach(this.customFields.slice(), (field) => {
@@ -118,7 +118,7 @@ export default {
                 custom_fields: customFields
             };
         },
-        open(recordUrl, albumArtUrl, audioUrl, waveformUrl) {
+        open (recordUrl, albumArtUrl, audioUrl, waveformUrl) {
             this.loading = true;
             this.$refs.modal.show();
 
@@ -158,7 +158,7 @@ export default {
                 this.close();
             });
         },
-        close() {
+        close () {
             this.loading = false;
             this.albumArtUrl = null;
             this.audioUrl = null;
@@ -168,7 +168,7 @@ export default {
             this.$v.form.$reset();
             this.$refs.modal.hide();
         },
-        doEdit() {
+        doEdit () {
             this.$v.form.$touch();
             if (this.$v.form.$anyError) {
                 return;

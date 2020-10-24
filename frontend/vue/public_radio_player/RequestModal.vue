@@ -1,8 +1,5 @@
 <template>
     <b-modal size="lg" id="request_modal" ref="modal" :title="langTitle" hide-footer>
-        <b-spinner v-if="loading">
-        </b-spinner>
-
         <song-request :request-list-uri="requestListUri" @submitted="doClose"></song-request>
     </b-modal>
 </template>

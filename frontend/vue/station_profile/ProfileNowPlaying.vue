@@ -14,7 +14,7 @@
                 </h6>
             </div>
         </div>
-        <b-overlay variant="bg" :show="np.loading">
+        <b-overlay variant="card" :show="np.loading">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">

@@ -9,7 +9,6 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
-
 use function array_reverse;
 use function array_slice;
 
@@ -147,7 +146,7 @@ class OverviewController
             $statTime = $stat['moment'];
             $statTime = $statTime->shiftTimezone($station_tz);
 
-            $hour = (int)$statTime->format('G');
+            $hour = (int)$statTime->hour;
             $totals_by_hour[$hour][] = $stat['number_avg'];
         }
 

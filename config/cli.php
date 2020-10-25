@@ -43,7 +43,7 @@ return function (Application $console) {
     )->setDescription('Send upcoming song feedback from the AutoDJ back to AzuraCast.');
 
     $console->command(
-        'azuracast:internal:sftp-upload action username path target-path ssh-cmd',
+        'azuracast:internal:sftp-upload action username path [target-path] [ssh-cmd]',
         Command\Internal\SftpUploadCommand::class
     )->setDescription('Process a file uploaded via SFTP');
 

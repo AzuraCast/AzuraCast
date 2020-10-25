@@ -140,20 +140,24 @@ return [
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Cache
-    Psr\Cache\CacheItemPoolInterface::class => function (App\Settings $settings, Psr\Container\ContainerInterface $di) {
-        // Never use the Redis cache for CLI commands, as the CLI commands are where
-        // the Redis cache gets flushed, so this will lead to a race condition that can't
-        // be solved within the application.
-        return $settings->enableRedis() && !$settings->isCli()
-            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
-            : new Cache\Adapter\PHPArray\ArrayCachePool;
+    Psr\Cache\CacheItemPoolInterface::class => function (Redis $redis) {
+        return new Cache\Adapter\Redis\RedisCachePool($redis);
     },
     Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
 
     // Doctrine cache
-    Doctrine\Common\Cache\Cache::class => function (Psr\Cache\CacheItemPoolInterface $cachePool) {
-        return new Cache\Bridge\Doctrine\DoctrineCacheBridge(new Cache\Prefixed\PrefixedCachePool($cachePool,
-            'doctrine|'));
+    Doctrine\Common\Cache\Cache::class => function (
+        App\Settings $settings,
+        Psr\Cache\CacheItemPoolInterface $cachePool
+    ) {
+        // Disable Doctrine cache on CLI commands.
+        if ($settings->isCli()) {
+            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+        }
+
+        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'doctrine|');
+
+        return new Cache\Bridge\Doctrine\DoctrineCacheBridge($cachePool);
     },
 
     // Session save handler middleware

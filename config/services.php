@@ -150,20 +150,23 @@ return [
         return $redis;
     },
 
-    Psr\Cache\CacheItemPoolInterface::class => DI\get(Cache\Adapter\Redis\RedisCachePool::class),
+    Psr\Cache\CacheItemPoolInterface::class => function (Settings $settings, ContainerInterface $di) {
+        return !$settings->isTesting()
+            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
+            : new Cache\Adapter\PHPArray\ArrayCachePool;
+    },
     Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
 
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
         Settings $settings,
-        ContainerInterface $di
+        Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($settings->isCli()) {
             $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
-        } else {
-            $cachePool = $di->get(Psr\Cache\CacheItemPoolInterface::class);
-            $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'doctrine|');
         }
+
+        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'doctrine|');
 
         return new Cache\Bridge\Doctrine\DoctrineCacheBridge($cachePool);
     },
@@ -171,14 +174,13 @@ return [
     // Session save handler middleware
     Mezzio\Session\SessionPersistenceInterface::class => function (
         Settings $settings,
-        ContainerInterface $di
+        Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($settings->isCli()) {
             $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
-        } else {
-            $cachePool = $di->get(Psr\Cache\CacheItemPoolInterface::class);
-            $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'session|');
         }
+
+        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'session|');
 
         return new Mezzio\Session\Cache\CacheSessionPersistence(
             $cachePool,

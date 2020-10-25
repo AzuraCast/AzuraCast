@@ -12,15 +12,15 @@
 
                 <invisible-submit-button/>
             </b-form>
-            <template v-slot:modal-footer>
-                <b-button variant="default" type="button" @click="close">
-                    <translate key="lang_btn_close">Close</translate>
-                </b-button>
-                <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                    <translate key="lang_btn_save_changes">Save Changes</translate>
-                </b-button>
-            </template>
         </b-overlay>
+        <template v-slot:modal-footer>
+            <b-button variant="default" type="button" @click="close">
+                <translate key="lang_btn_close">Close</translate>
+            </b-button>
+            <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
+                <translate key="lang_btn_save_changes">Save Changes</translate>
+            </b-button>
+        </template>
     </b-modal>
 </template>
 

@@ -150,9 +150,9 @@ return [
         return $redis;
     },
 
-    Psr\Cache\CacheItemPoolInterface::class => function (Settings $settings, Redis $redis) {
+    Psr\Cache\CacheItemPoolInterface::class => function (Settings $settings, ContainerInterface $di) {
         return !$settings->isTesting()
-            ? new Cache\Adapter\Redis\RedisCachePool($redis)
+            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
             : new Cache\Adapter\PHPArray\ArrayCachePool;
     },
     Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),

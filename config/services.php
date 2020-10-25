@@ -139,18 +139,25 @@ return [
     },
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
-    // Cache
-    Psr\Cache\CacheItemPoolInterface::class => function (Redis $redis) {
-        return new Cache\Adapter\Redis\RedisCachePool($redis);
+    // Redis cache
+    Redis::class => function (App\Settings $settings) {
+        $redis_host = $settings[App\Settings::IS_DOCKER] ? 'redis' : 'localhost';
+
+        $redis = new Redis();
+        $redis->connect($redis_host, 6379, 15);
+        $redis->select(1);
+
+        return $redis;
     },
+
+    Psr\Cache\CacheItemPoolInterface::class => DI\get(Cache\Adapter\Redis\RedisCachePool::class),
     Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
 
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
-        App\Settings $settings,
+        Settings $settings,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
-        // Disable Doctrine cache on CLI commands.
         if ($settings->isCli()) {
             $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
         }
@@ -161,26 +168,24 @@ return [
     },
 
     // Session save handler middleware
-    Mezzio\Session\SessionPersistenceInterface::class => function (Cache\Adapter\Redis\RedisCachePool $redisPool) {
+    Mezzio\Session\SessionPersistenceInterface::class => function (
+        Settings $settings,
+        Psr\Cache\CacheItemPoolInterface $cachePool
+    ) {
+        if ($settings->isCli()) {
+            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+        }
+
+        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'session|');
+
         return new Mezzio\Session\Cache\CacheSessionPersistence(
-            new Cache\Prefixed\PrefixedCachePool($redisPool, 'session|'),
+            $cachePool,
             'app_session',
             '/',
             'nocache',
             43200,
             time()
         );
-    },
-
-    // Redis cache
-    Redis::class => function (App\Settings $settings) {
-        $redis_host = $settings[App\Settings::IS_DOCKER] ? 'redis' : 'localhost';
-
-        $redis = new Redis();
-        $redis->connect($redis_host, 6379, 15);
-        $redis->select(1);
-
-        return $redis;
     },
 
     // Configuration management

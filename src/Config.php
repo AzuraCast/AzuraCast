@@ -6,15 +6,11 @@ use const EXTR_OVERWRITE;
 
 class Config
 {
-    protected $base_folder;
+    protected string $baseFolder;
 
-    public function __construct($base_folder)
+    public function __construct(Settings $settings)
     {
-        if (!is_dir($base_folder)) {
-            throw new Exception("Invalid base folder for configurations.");
-        }
-
-        $this->base_folder = $base_folder;
+        $this->baseFolder = $settings->getConfigDirectory();
     }
 
     /**
@@ -25,7 +21,7 @@ class Config
      * @noinspection PhpIncludeInspection
      * @noinspection UselessUnsetInspection
      */
-    public function get($name, $inject_vars = []): array
+    public function get(string $name, array $inject_vars = []): array
     {
         $path = $this->getPath($name);
 
@@ -45,9 +41,9 @@ class Config
      *
      * @param string $name
      */
-    public function getPath($name): string
+    public function getPath(string $name): string
     {
-        return $this->base_folder . DIRECTORY_SEPARATOR . str_replace(['.', '..'], ['', ''], $name) . '.php';
+        return $this->baseFolder . DIRECTORY_SEPARATOR . str_replace(['.', '..'], ['', ''], $name) . '.php';
     }
 
     /**
@@ -55,7 +51,7 @@ class Config
      *
      * @param string $name
      */
-    public function has($name): bool
+    public function has(string $name): bool
     {
         return file_exists($this->getPath($name));
     }

@@ -57,7 +57,7 @@ return [
     App\Doctrine\DecoratedEntityManager::class => function (
         Doctrine\Common\Cache\Cache $doctrineCache,
         Doctrine\Common\Annotations\Reader $reader,
-        App\Settings $settings,
+        Settings $settings,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
         App\EventDispatcher $dispatcher
@@ -81,7 +81,7 @@ return [
             'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
         ];
 
-        if (!$settings[App\Settings::IS_DOCKER]) {
+        if (!$settings[Settings::IS_DOCKER]) {
             $connectionOptions['host'] = $_ENV['db_host'] ?? 'localhost';
             $connectionOptions['port'] = $_ENV['db_port'] ?? '3306';
             $connectionOptions['dbname'] = $_ENV['db_name'] ?? 'azuracast';
@@ -140,8 +140,8 @@ return [
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Redis cache
-    Redis::class => function (App\Settings $settings) {
-        $redis_host = $settings[App\Settings::IS_DOCKER] ? 'redis' : 'localhost';
+    Redis::class => function (Settings $settings) {
+        $redis_host = $settings->isDocker() ? 'redis' : 'localhost';
 
         $redis = new Redis();
         $redis->connect($redis_host, 6379, 15);
@@ -150,7 +150,11 @@ return [
         return $redis;
     },
 
-    Psr\Cache\CacheItemPoolInterface::class => DI\get(Cache\Adapter\Redis\RedisCachePool::class),
+    Psr\Cache\CacheItemPoolInterface::class => function (Settings $settings, Redis $redis) {
+        return !$settings->isTesting()
+            ? new Cache\Adapter\Redis\RedisCachePool($redis)
+            : new Cache\Adapter\PHPArray\ArrayCachePool;
+    },
     Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
 
     // Doctrine cache
@@ -188,11 +192,6 @@ return [
         );
     },
 
-    // Configuration management
-    App\Config::class => function (App\Settings $settings) {
-        return new App\Config($settings[App\Settings::CONFIG_DIR]);
-    },
-
     // Console
     App\Console\Application::class => function (DI\Container $di, App\EventDispatcher $dispatcher) {
         $console = new App\Console\Application('Command Line Interface', '1.0.0', $di);
@@ -220,8 +219,8 @@ return [
     },
 
     // Monolog Logger
-    Monolog\Logger::class => function (App\Settings $settings) {
-        $logger = new Monolog\Logger($settings[App\Settings::APP_NAME] ?? 'app');
+    Monolog\Logger::class => function (Settings $settings) {
+        $logger = new Monolog\Logger($settings[Settings::APP_NAME] ?? 'app');
 
         $loggingLevel = null;
         if (!empty($_ENV['LOG_LEVEL'])) {
@@ -244,13 +243,16 @@ return [
 
         $loggingLevel ??= $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
 
-        if ($settings[App\Settings::IS_DOCKER] || $settings[App\Settings::IS_CLI]) {
+        if ($settings->isDocker() || $settings->isCli()) {
             $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
 
-        $log_file = new Monolog\Handler\StreamHandler($settings[App\Settings::TEMP_DIR] . '/app.log',
-            $loggingLevel, true);
+        $log_file = new Monolog\Handler\StreamHandler(
+            $settings[Settings::TEMP_DIR] . '/app.log',
+            $loggingLevel,
+            true
+        );
         $logger->pushHandler($log_file);
 
         return $logger;
@@ -260,7 +262,7 @@ return [
     // Doctrine annotations reader
     Doctrine\Common\Annotations\Reader::class => function (
         Doctrine\Common\Cache\Cache $doctrine_cache,
-        App\Settings $settings
+        Settings $settings
     ) {
         return new Doctrine\Common\Annotations\CachedReader(
             new Doctrine\Common\Annotations\AnnotationReader,

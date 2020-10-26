@@ -40,7 +40,7 @@ class AnnotateNextSong extends Event
         return $this->queue->getStation();
     }
 
-    public function getMedia(): ?Entity\StationMedia
+    public function getMedia(): ?Entity\Media
     {
         return $this->queue->getMedia();
     }

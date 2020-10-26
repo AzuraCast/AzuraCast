@@ -23,7 +23,7 @@ class DownloadAction
 
         $media = $mediaRepo->find($id, $station);
 
-        if (!$media instanceof Entity\StationMedia) {
+        if (!$media instanceof Entity\Media) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, 'Not Found'));
         }

@@ -83,11 +83,11 @@ class SongHistory implements SongInterface
     protected $media_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="StationMedia")
+     * @ORM\ManyToOne(targetEntity="Media")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * })
-     * @var StationMedia|null
+     * @var Media|null
      */
     protected $media;
 
@@ -217,16 +217,16 @@ class SongHistory implements SongInterface
         $this->streamer = $streamer;
     }
 
-    public function getMedia(): ?StationMedia
+    public function getMedia(): ?Media
     {
         return $this->media;
     }
 
-    public function setMedia(StationMedia $media = null): void
+    public function setMedia(Media $media = null): void
     {
         $this->media = $media;
 
-        if ($media instanceof StationMedia) {
+        if ($media instanceof Media) {
             $this->setDuration($media->getCalculatedLength());
         }
     }
@@ -373,7 +373,7 @@ class SongHistory implements SongInterface
 
     public function __toString(): string
     {
-        if ($this->media instanceof StationMedia) {
+        if ($this->media instanceof Media) {
             return (string)$this->media;
         }
 

@@ -41,7 +41,7 @@ class SongApiGenerator
         $response->artist = (string)$song->getArtist();
         $response->title = (string)$song->getTitle();
 
-        if ($song instanceof Entity\StationMedia) {
+        if ($song instanceof Entity\Media) {
             $station = $song->getStation();
 
             $response->album = (string)$song->getAlbum();
@@ -115,7 +115,7 @@ class SongApiGenerator
         if ($media_id !== null) {
             $mediaFieldsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
                 smcf.field_id, smcf.value
-                FROM App\Entity\StationMediaCustomField smcf
+                FROM App\Entity\MediaCustomField smcf
                 WHERE smcf.media_id = :media_id')
                 ->setParameter('media_id', $media_id)
                 ->getArrayResult();

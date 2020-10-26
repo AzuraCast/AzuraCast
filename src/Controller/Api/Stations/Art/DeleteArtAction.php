@@ -18,7 +18,7 @@ class DeleteArtAction
         $station = $request->getStation();
 
         $media = $mediaRepo->find($media_id, $station);
-        if (!($media instanceof Entity\StationMedia)) {
+        if (!($media instanceof Entity\Media)) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found.')));
         }

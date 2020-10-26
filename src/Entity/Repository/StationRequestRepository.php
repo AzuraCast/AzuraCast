@@ -29,10 +29,10 @@ class StationRequestRepository extends Repository
         }
 
         // Verify that Track ID exists with station.
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+        $media_repo = $this->em->getRepository(Entity\Media::class);
         $media_item = $media_repo->findOneBy(['unique_id' => $trackId, 'station_id' => $station->getId()]);
 
-        if (!($media_item instanceof Entity\StationMedia)) {
+        if (!($media_item instanceof Entity\Media)) {
             throw new Exception(__('The song ID you specified could not be found in the station.'));
         }
 
@@ -82,12 +82,12 @@ class StationRequestRepository extends Repository
     /**
      * Check if the song is already enqueued as a request.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      * @param Entity\Station $station
      *
      * @throws Exception
      */
-    public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station): bool
+    public function checkPendingRequest(Entity\Media $media, Entity\Station $station): bool
     {
         $pending_request_threshold = time() - (60 * 10);
 
@@ -148,12 +148,12 @@ class StationRequestRepository extends Repository
     /**
      * Check the most recent song history.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      * @param Entity\Station $station
      *
      * @throws Exception
      */
-    public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
+    public function checkRecentPlay(Entity\Media $media, Entity\Station $station): bool
     {
         $lastPlayThresholdMins = ($station->getRequestThreshold() ?? 15);
 

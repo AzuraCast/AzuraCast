@@ -34,13 +34,13 @@ class DuplicatesController
 
         $dupesRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm, spm, sp
-            FROM App\Entity\StationMedia sm
+            FROM App\Entity\Media sm
             LEFT JOIN sm.playlists spm
             LEFT JOIN spm.playlist sp
             WHERE sm.station = :station
             AND sm.song_id IN (
                 SELECT sm2.song_id FROM
-                App\Entity\StationMedia sm2
+                App\Entity\Media sm2
                 WHERE sm2.station = :station
                 GROUP BY sm2.song_id
                 HAVING COUNT(sm2.id) > 1
@@ -67,7 +67,7 @@ class DuplicatesController
 
         $media = $this->mediaRepo->find($media_id, $station);
 
-        if ($media instanceof Entity\StationMedia) {
+        if ($media instanceof Entity\Media) {
             $fs->delete($media->getPathUri());
 
             $this->em->remove($media);

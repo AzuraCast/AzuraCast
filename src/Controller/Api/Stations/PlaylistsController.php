@@ -335,7 +335,7 @@ class PlaylistsController extends AbstractScheduledEntityController
             $media_lookup = [];
 
             $media_info_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sm.id, sm.path
-                FROM App\Entity\StationMedia sm
+                FROM App\Entity\Media sm
                 WHERE sm.station = :station')
                 ->setParameter('station', $station)
                 ->getArrayResult();
@@ -367,16 +367,16 @@ class PlaylistsController extends AbstractScheduledEntityController
             // Assign all matched media to the playlist.
             if (!empty($matches)) {
                 $matchedMediaRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
-                    FROM App\Entity\StationMedia sm
+                    FROM App\Entity\Media sm
                     WHERE sm.station = :station AND sm.id IN (:matched_ids)')
                     ->setParameter('station', $station)
                     ->setParameter('matched_ids', $matches)
                     ->execute();
 
-                /** @var Entity\StationMedia[] $mediaById */
+                /** @var Entity\Media[] $mediaById */
                 $mediaById = [];
                 foreach ($matchedMediaRaw as $row) {
-                    /** @var Entity\StationMedia $row */
+                    /** @var Entity\Media $row */
                     $mediaById[$row->getId()] = $row;
                 }
 
@@ -415,7 +415,7 @@ class PlaylistsController extends AbstractScheduledEntityController
 
         $song_totals = $this->em->createQuery(/** @lang DQL */ '
             SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
-            FROM App\Entity\StationMedia sm
+            FROM App\Entity\Media sm
             JOIN sm.playlists spm
             WHERE spm.playlist = :playlist')
             ->setParameter('playlist', $record)

@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations\Waveform;
 
 use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
-use App\Entity\StationMedia;
+use App\Entity\Media;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -27,7 +27,7 @@ class GetWaveformAction
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id)[0];
 
-        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
+        if (Media::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $waveformPath = Filesystem::PREFIX_WAVEFORMS . '://' . $media_id . '.json';
             if ($fs->has($waveformPath)) {
                 return $response->withFlysystemFile($fs, $waveformPath, null, 'inline');
@@ -35,7 +35,7 @@ class GetWaveformAction
         }
 
         $media = $mediaRepo->findByUniqueId($media_id, $station);
-        if (!($media instanceof StationMedia)) {
+        if (!($media instanceof Media)) {
             return $response->withStatus(500)->withJson(new Error(500, 'Media not found.'));
         }
 

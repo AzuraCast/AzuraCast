@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FilesController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = Entity\StationMedia::class;
+    protected string $entityClass = Entity\Media::class;
     protected string $resourceRouteName = 'api:stations:file';
 
     protected Filesystem $filesystem;
@@ -215,7 +215,7 @@ class FilesController extends AbstractStationApiCrudController
     {
         $row = parent::toArray($record, $context);
 
-        if ($record instanceof Entity\StationMedia) {
+        if ($record instanceof Entity\Media) {
             $row['custom_fields'] = $this->custom_fields_repo->getCustomFields($record);
         }
 
@@ -235,7 +235,7 @@ class FilesController extends AbstractStationApiCrudController
             AbstractNormalizer::CALLBACKS => [
                 'path' => function ($new_value, $record) {
                     // Detect and handle a rename.
-                    if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
+                    if (($record instanceof Entity\Media) && $new_value !== $record->getPath()) {
                         $path_full = Filesystem::PREFIX_MEDIA . '://' . $new_value;
 
                         $fs = $this->filesystem->getForStation($record->getStation());
@@ -247,7 +247,7 @@ class FilesController extends AbstractStationApiCrudController
             ],
         ]));
 
-        if ($record instanceof Entity\StationMedia) {
+        if ($record instanceof Entity\Media) {
             $this->em->persist($record);
             $this->em->flush();
 
@@ -318,7 +318,7 @@ class FilesController extends AbstractStationApiCrudController
      */
     protected function deleteRecord($record): void
     {
-        if (!($record instanceof Entity\StationMedia)) {
+        if (!($record instanceof Entity\Media)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 

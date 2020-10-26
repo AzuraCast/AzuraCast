@@ -53,7 +53,7 @@ class Annotations implements EventSubscriberInterface
     public function annotateSongPath(AnnotateNextSong $event): void
     {
         $media = $event->getMedia();
-        if ($media instanceof Entity\StationMedia) {
+        if ($media instanceof Entity\Media) {
             $fs = $this->filesystem->getForStation($event->getStation());
             $media_path = $fs->getFullPath($media->getPathUri());
 

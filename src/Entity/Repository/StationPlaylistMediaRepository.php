@@ -14,14 +14,14 @@ class StationPlaylistMediaRepository extends Repository
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      * @param Entity\StationPlaylist $playlist
      * @param int $weight
      *
      * @return int The weight assigned to the newly added record.
      */
     public function addMediaToPlaylist(
-        Entity\StationMedia $media,
+        Entity\Media $media,
         Entity\StationPlaylist $playlist,
         int $weight = 0
     ): int {
@@ -80,11 +80,11 @@ class StationPlaylistMediaRepository extends Repository
     /**
      * Remove all playlist associations from the specified media object.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      *
      * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
-    public function clearPlaylistsFromMedia(Entity\StationMedia $media): array
+    public function clearPlaylistsFromMedia(Entity\Media $media): array
     {
         $affectedPlaylists = [];
 
@@ -140,7 +140,7 @@ class StationPlaylistMediaRepository extends Repository
     {
         $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm.id, sm.song_id, sm.artist, sm.title
-            FROM App\Entity\StationMedia sm
+            FROM App\Entity\Media sm
             JOIN sm.playlists spm
             WHERE spm.playlist_id = :playlist_id
             ORDER BY spm.weight ASC')

@@ -44,7 +44,7 @@ class StorageCleanupTask extends AbstractTask
 
         $allUniqueIdsRaw = $this->em
             ->createQuery(/** @lang DQL */
-                'SELECT sm.unique_id FROM App\Entity\StationMedia sm WHERE sm.station = :station'
+                'SELECT sm.unique_id FROM App\Entity\Media sm WHERE sm.station = :station'
             )
             ->setParameter('station', $station)
             ->getArrayResult();

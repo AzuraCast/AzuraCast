@@ -56,7 +56,7 @@ class ListAction
             }')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
-            ->from(Entity\StationMedia::class, 'sm')
+            ->from(Entity\Media::class, 'sm')
             ->leftJoin('sm.custom_fields', 'smcf')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')

@@ -17,7 +17,6 @@ use getid3_exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
-
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
@@ -55,11 +54,11 @@ class StationMediaRepository extends Repository
      * @param mixed $id
      * @param Entity\Station $station
      */
-    public function find($id, Entity\Station $station): ?Entity\StationMedia
+    public function find($id, Entity\Station $station): ?Entity\Media
     {
-        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
+        if (Entity\Media::UNIQUE_ID_LENGTH === strlen($id)) {
             $media = $this->findByUniqueId($id, $station);
-            if ($media instanceof Entity\StationMedia) {
+            if ($media instanceof Entity\Media) {
                 return $media;
             }
         }
@@ -74,7 +73,7 @@ class StationMediaRepository extends Repository
      * @param string $path
      * @param Entity\Station $station
      */
-    public function findByPath(string $path, Entity\Station $station): ?Entity\StationMedia
+    public function findByPath(string $path, Entity\Station $station): ?Entity\Media
     {
         return $this->repository->findOneBy([
             'station' => $station,
@@ -86,7 +85,7 @@ class StationMediaRepository extends Repository
      * @param string $uniqueId
      * @param Entity\Station $station
      */
-    public function findByUniqueId(string $uniqueId, Entity\Station $station): ?Entity\StationMedia
+    public function findByUniqueId(string $uniqueId, Entity\Station $station): ?Entity\Media
     {
         return $this->repository->findOneBy([
             'station' => $station,
@@ -105,7 +104,7 @@ class StationMediaRepository extends Repository
         Entity\Station $station,
         string $path,
         ?string $uploadedFrom = null
-    ): Entity\StationMedia {
+    ): Entity\Media {
         if (strpos($path, '://') !== false) {
             [, $path] = explode('://', $path, 2);
         }
@@ -116,8 +115,8 @@ class StationMediaRepository extends Repository
         ]);
 
         $created = false;
-        if (!($record instanceof Entity\StationMedia)) {
-            $record = new Entity\StationMedia($station, $path);
+        if (!($record instanceof Entity\Media)) {
+            $record = new Entity\Media($station, $path);
             $created = true;
         }
 
@@ -133,14 +132,14 @@ class StationMediaRepository extends Repository
     /**
      * Run media through the "processing" steps: loading from file and setting up any missing metadata.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      * @param bool $force
      * @param string|null $uploadedPath The uploaded path (if this is a new upload).
      *
      * @return bool Whether reprocessing was required for this file.
      */
     public function processMedia(
-        Entity\StationMedia $media,
+        Entity\Media $media,
         bool $force = false,
         ?string $uploadedPath = null
     ): bool {
@@ -191,10 +190,10 @@ class StationMediaRepository extends Repository
     /**
      * Process metadata information from media file.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      * @param string $filePath
      */
-    public function loadFromFile(Entity\StationMedia $media, string $filePath): void
+    public function loadFromFile(Entity\Media $media, string $filePath): void
     {
         // Persist the media record for later custom field operations.
         $this->em->persist($media);
@@ -207,7 +206,7 @@ class StationMediaRepository extends Repository
         // Clear existing auto-assigned custom fields.
         $fieldCollection = $media->getCustomFields();
         foreach ($fieldCollection as $existingCustomField) {
-            /** @var Entity\StationMediaCustomField $existingCustomField */
+            /** @var Entity\MediaCustomField $existingCustomField */
             if ($existingCustomField->getField()->hasAutoAssign()) {
                 $this->em->remove($existingCustomField);
                 $fieldCollection->removeElement($existingCustomField);
@@ -218,7 +217,7 @@ class StationMediaRepository extends Repository
         $tags = $metadata->getTags();
         foreach ($customFieldsToSet as $tag => $customFieldKey) {
             if (!empty($tags[$tag])) {
-                $customFieldRow = new Entity\StationMediaCustomField($media, $customFieldKey);
+                $customFieldRow = new Entity\MediaCustomField($media, $customFieldKey);
                 $customFieldRow->setValue($tags[$tag]);
                 $this->em->persist($customFieldRow);
 
@@ -253,9 +252,9 @@ class StationMediaRepository extends Repository
     /**
      * Read the contents of the album art from storage (if it exists).
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      */
-    public function readAlbumArt(Entity\StationMedia $media): ?string
+    public function readAlbumArt(Entity\Media $media): ?string
     {
         $album_art_path = $media->getArtPath();
         $fs = $this->filesystem->getForStation($media->getStation());
@@ -270,10 +269,10 @@ class StationMediaRepository extends Repository
     /**
      * Crop album art and write the resulting image to storage.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      * @param string $rawArtString The raw image data, as would be retrieved from file_get_contents.
      */
-    public function writeAlbumArt(Entity\StationMedia $media, $rawArtString): bool
+    public function writeAlbumArt(Entity\Media $media, $rawArtString): bool
     {
         $albumArt = AlbumArt::resize($rawArtString);
 
@@ -286,7 +285,7 @@ class StationMediaRepository extends Repository
         return $fs->put($albumArtPath, $albumArt);
     }
 
-    public function removeAlbumArt(Entity\StationMedia $media): void
+    public function removeAlbumArt(Entity\Media $media): void
     {
         // Remove the album art, if it exists.
         $fs = $this->filesystem->getForStation($media->getStation());
@@ -302,11 +301,11 @@ class StationMediaRepository extends Repository
     /**
      * Write modified metadata directly to the file as ID3 information.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      *
      * @throws getid3_exception
      */
-    public function writeToFile(Entity\StationMedia $media): bool
+    public function writeToFile(Entity\Media $media): bool
     {
         $fs = $this->filesystem->getForStation($media->getStation());
 
@@ -340,7 +339,7 @@ class StationMediaRepository extends Repository
         return false;
     }
 
-    public function updateWaveform(Entity\StationMedia $media): void
+    public function updateWaveform(Entity\Media $media): void
     {
         $fs = $this->filesystem->getForStation($media->getStation());
 
@@ -360,7 +359,7 @@ class StationMediaRepository extends Repository
         }
     }
 
-    public function writeWaveform(Entity\StationMedia $media, string $path): bool
+    public function writeWaveform(Entity\Media $media, string $path): bool
     {
         $waveform = AudioWaveform::getWaveformFor($path);
 
@@ -376,9 +375,9 @@ class StationMediaRepository extends Repository
     /**
      * Return the full path associated with a media entity.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      */
-    public function getFullPath(Entity\StationMedia $media): string
+    public function getFullPath(Entity\Media $media): string
     {
         $fs = $this->filesystem->getForStation($media->getStation());
 
@@ -388,11 +387,11 @@ class StationMediaRepository extends Repository
     }
 
     /**
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      *
      * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
-    public function remove(Entity\StationMedia $media): array
+    public function remove(Entity\Media $media): array
     {
         $fs = $this->filesystem->getForStation($media->getStation());
 

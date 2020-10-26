@@ -32,7 +32,7 @@ class D02_Api_RequestsCest extends CestAbstract
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->di->get(Entity\Repository\StationMediaRepository::class);
 
-        $media = new Entity\StationMedia($testStation, 'test.mp3');
+        $media = new Entity\Media($testStation, 'test.mp3');
         $media_repo->loadFromFile($media, $song_dest);
 
         $this->em->persist($media);

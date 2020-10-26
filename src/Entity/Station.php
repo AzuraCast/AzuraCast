@@ -13,8 +13,9 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\AdapterInterface;
 use OpenApi\Annotations as OA;
-use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -151,14 +152,6 @@ class Station
      * @var string|null
      */
     protected $radio_base_dir;
-
-    /**
-     * @ORM\Column(name="radio_media_dir", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="/var/azuracast/stations/azuratest_radio/media")
-     * @var string|null
-     */
-    protected $radio_media_dir;
 
     /**
      * @ORM\Column(name="nowplaying", type="array", nullable=true)
@@ -341,10 +334,22 @@ class Station
     protected $history;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="station")
-     * @var Collection
+     * @ORM\ManyToOne(targetEntity="StorageLocation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     * @var StorageLocation
      */
-    protected $media;
+    protected $media_storage_location;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="StorageLocation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="recordings_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     * @var StorageLocation
+     */
+    protected $recordings_storage_location;
 
     /**
      * @ORM\OneToMany(targetEntity="StationStreamer", mappedBy="station")
@@ -407,7 +412,6 @@ class Station
     public function __construct()
     {
         $this->history = new ArrayCollection();
-        $this->media = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->mounts = new ArrayCollection();
         $this->remotes = new ArrayCollection();
@@ -657,64 +661,45 @@ class Station
         $this->radio_base_dir = $newDir;
     }
 
-    public function getRadioAlbumArtDir(): string
+    public function getRadioBaseDirAdapter(?string $suffix = null): AdapterInterface
     {
-        return $this->radio_base_dir . '/album_art';
+        $path = $this->radio_base_dir . $suffix;
+        return new Local($path);
     }
 
-    public function getRadioWaveformsDir(): string
+    public function getRadioPlaylistsDirAdapter(): AdapterInterface
     {
-        return $this->radio_base_dir . '/waveforms';
+        return $this->getRadioBaseDirAdapter('/playlists');
     }
 
-    public function getRadioTempDir(): string
+    public function getRadioConfigDirAdapter(): AdapterInterface
     {
-        return $this->radio_base_dir . '/temp';
+        return $this->getRadioBaseDirAdapter('/config');
     }
 
-    public function getRadioRecordingsDir(): string
+    public function getRadioTempDirAdapter(): AdapterInterface
     {
-        return $this->radio_base_dir . '/recordings';
+        return $this->getRadioBaseDirAdapter('/temp');
     }
 
-    /**
-     * Given an absolute path, return a path relative to this station's media directory.
-     *
-     * @param string $full_path
-     */
-    public function getRelativeMediaPath($full_path): string
+    public function getRadioMediaDirAdapter(): AdapterInterface
     {
-        return ltrim(str_replace($this->getRadioMediaDir(), '', $full_path), '/');
+        return $this->getMediaStorageLocation()->getStorageAdapter();
     }
 
-    public function getRadioMediaDir(): string
+    public function getRadioAlbumArtDirAdapter(): AdapterInterface
     {
-        return (!empty($this->radio_media_dir))
-            ? $this->radio_media_dir
-            : $this->radio_base_dir . '/media';
+        return $this->getMediaStorageLocation()->getStorageAdapter('/album_art');
     }
 
-    public function setRadioMediaDir(?string $new_dir): void
+    public function getRadioWaveformsDirAdapter(): AdapterInterface
     {
-        $new_dir = $this->truncateString(trim($new_dir));
-
-        if ($new_dir && $new_dir !== $this->radio_media_dir) {
-            if (!empty($new_dir) && !file_exists($new_dir) && !mkdir($new_dir, 0777, true) && !is_dir($new_dir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $new_dir));
-            }
-
-            $this->radio_media_dir = $new_dir;
-        }
+        return $this->getMediaStorageLocation()->getStorageAdapter('/waveforms');
     }
 
-    public function getRadioPlaylistsDir(): string
+    public function getRadioRecordingsDirAdapter(): AdapterInterface
     {
-        return $this->radio_base_dir . '/playlists';
-    }
-
-    public function getRadioConfigDir(): string
-    {
-        return $this->radio_base_dir . '/config';
+        return $this->getRecordingsStorageLocation()->getStorageAdapter();
     }
 
     /**
@@ -1086,6 +1071,26 @@ class Station
         if (null !== $this->current_streamer || null !== $current_streamer) {
             $this->current_streamer = $current_streamer;
         }
+    }
+
+    public function getMediaStorageLocation(): StorageLocation
+    {
+        return $this->media_storage_location;
+    }
+
+    public function setMediaStorageLocation(StorageLocation $media_storage_location): void
+    {
+        $this->media_storage_location = $media_storage_location;
+    }
+
+    public function getRecordingsStorageLocation(): StorageLocation
+    {
+        return $this->recordings_storage_location;
+    }
+
+    public function setRecordingsStorageLocation(StorageLocation $recordings_storage_location): void
+    {
+        $this->recordings_storage_location = $recordings_storage_location;
     }
 
     public function getPermissions(): Collection

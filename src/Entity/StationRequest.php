@@ -43,11 +43,11 @@ class StationRequest
     protected $track_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="StationMedia")
+     * @ORM\ManyToOne(targetEntity="Media")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
      * })
-     * @var StationMedia
+     * @var Media
      */
     protected $track;
 
@@ -77,7 +77,7 @@ class StationRequest
 
     public function __construct(
         Station $station,
-        StationMedia $track,
+        Media $track,
         string $ip = null,
         bool $skipDelay = false
     ) {
@@ -101,7 +101,7 @@ class StationRequest
         return $this->station;
     }
 
-    public function getTrack(): StationMedia
+    public function getTrack(): Media
     {
         return $this->track;
     }

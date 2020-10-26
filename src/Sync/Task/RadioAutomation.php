@@ -223,7 +223,7 @@ class RadioAutomation extends AbstractTask
 
         $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm
-            FROM App\Entity\StationMedia sm
+            FROM App\Entity\Media sm
             WHERE sm.station = :station
             ORDER BY sm.artist ASC, sm.title ASC')
             ->setParameter('station', $station);
@@ -232,7 +232,7 @@ class RadioAutomation extends AbstractTask
         $report = [];
 
         foreach ($iterator as $row) {
-            /** @var Entity\StationMedia $row */
+            /** @var Entity\Media $row */
             $songId = $row->getSongId();
 
             $media = [

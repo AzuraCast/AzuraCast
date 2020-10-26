@@ -266,7 +266,8 @@ class ConfigWriter implements EventSubscriberInterface
 
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
-                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(',', $playlistParams) . ')';
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(',',
+                        $playlistParams) . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
@@ -506,7 +507,7 @@ class ConfigWriter implements EventSubscriberInterface
         $playlistFile = [];
 
         $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm
-            FROM App\Entity\StationMedia sm
+            FROM App\Entity\Media sm
             JOIN sm.playlists spm
             WHERE spm.playlist = :playlist
             ORDER BY spm.weight ASC
@@ -515,7 +516,7 @@ class ConfigWriter implements EventSubscriberInterface
         $mediaIterator = $mediaQuery->iterate();
 
         foreach ($mediaIterator as $row) {
-            /** @var Entity\StationMedia $mediaFile */
+            /** @var Entity\Media $mediaFile */
             $mediaFile = $row[0];
 
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();

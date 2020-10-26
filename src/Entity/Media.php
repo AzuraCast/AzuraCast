@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Table(name="station_media", indexes={
+ * @ORM\Table(name="media", indexes={
  *   @ORM\Index(name="search_idx", columns={"title", "artist", "album"})
  * }, uniqueConstraints={
  *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  *
  * @OA\Schema(type="object")
  */
-class StationMedia implements SongInterface
+class Media implements SongInterface
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -42,19 +42,19 @@ class StationMedia implements SongInterface
     protected $id;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
+     * @ORM\Column(name="storage_location_id", type="integer")
      * @var int
      */
-    protected $station_id;
+    protected $storage_location_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="media")
+     * @ORM\ManyToOne(targetEntity="StorageLocation", inversedBy="media")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
      * })
-     * @var Station
+     * @var StorageLocation
      */
-    protected $station;
+    protected $storage_location;
 
     /**
      * @ORM\Column(name="album", type="string", length=200, nullable=true)
@@ -210,15 +210,15 @@ class StationMedia implements SongInterface
     protected $playlists;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
+     * @ORM\OneToMany(targetEntity="MediaCustomField", mappedBy="media")
      *
      * @var Collection
      */
     protected $custom_fields;
 
-    public function __construct(Station $station, string $path)
+    public function __construct(StorageLocation $storageLocation, string $path)
     {
-        $this->station = $station;
+        $this->storage_location = $storageLocation;
 
         $this->playlists = new ArrayCollection();
         $this->custom_fields = new ArrayCollection();
@@ -232,9 +232,9 @@ class StationMedia implements SongInterface
         return $this->id;
     }
 
-    public function getStation(): Station
+    public function getStorageLocation(): StorageLocation
     {
-        return $this->station;
+        return $this->storage_location;
     }
 
     public function getAlbum(): ?string

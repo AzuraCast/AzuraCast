@@ -52,14 +52,14 @@ class CustomFieldRepository extends Repository
     /**
      * Retrieve a key-value representation of all custom metadata for the specified media.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      *
      * @return mixed[]
      */
-    public function getCustomFields(Entity\StationMedia $media): array
+    public function getCustomFields(Entity\Media $media): array
     {
         $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT cf.short_name, e.value
-            FROM App\Entity\StationMediaCustomField e JOIN e.field cf
+            FROM App\Entity\MediaCustomField e JOIN e.field cf
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->getArrayResult();
@@ -75,14 +75,14 @@ class CustomFieldRepository extends Repository
     /**
      * Set the custom metadata for a specified station based on a provided key-value array.
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      * @param array $custom_fields
      */
-    public function setCustomFields(Entity\StationMedia $media, array $custom_fields): void
+    public function setCustomFields(Entity\Media $media, array $custom_fields): void
     {
         $this->em
             ->createQuery(/** @lang DQL */
-                'DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id'
+                'DELETE FROM App\Entity\MediaCustomField e WHERE e.media_id = :media_id'
             )
             ->setParameter('media_id', $media->getId())
             ->execute();
@@ -93,7 +93,7 @@ class CustomFieldRepository extends Repository
                 : $this->em->getRepository(Entity\CustomField::class)->findOneBy(['short_name' => $field_id]);
 
             if ($field instanceof Entity\CustomField) {
-                $record = new Entity\StationMediaCustomField($media, $field);
+                $record = new Entity\MediaCustomField($media, $field);
                 $record->setValue($field_value);
                 $this->em->persist($record);
             }

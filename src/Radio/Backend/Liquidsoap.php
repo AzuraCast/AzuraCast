@@ -99,11 +99,11 @@ class Liquidsoap extends AbstractBackend
      *     annotate:type="song",album="$ALBUM",display_desc="$FULLSHOWNAME",
      *     liq_start_next="2.5",liq_fade_in="3.5",liq_fade_out="3.5":$SONGPATH
      *
-     * @param Entity\StationMedia $media
+     * @param Entity\Media $media
      *
      * @return mixed[]
      */
-    public function annotateMedia(Entity\StationMedia $media): array
+    public function annotateMedia(Entity\Media $media): array
     {
         $annotations = [];
         $annotation_types = [

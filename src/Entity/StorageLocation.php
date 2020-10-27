@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use Aws\S3\S3Client;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -63,7 +64,7 @@ class StorageLocation
     protected $adapter = self::ADAPTER_LOCAL;
 
     /**
-     * @ORM\Column(name="adapter", type="string", length=255, nullable=true)
+     * @ORM\Column(name="path", type="string", length=255, nullable=true)
      *
      * @OA\Property(example="/var/azuracast/stations/azuratest_radio/media")
      * @var string|null The local path, if the local adapter is used, or path prefix for S3/remote adapters.
@@ -119,8 +120,8 @@ class StorageLocation
     protected $s3Endpoint = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="Media", mappedBy="storage_location")
-     * @var Collection|Media[]
+     * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="storage_location")
+     * @var Collection|StationMedia[]
      */
     protected $media;
 
@@ -226,11 +227,16 @@ class StorageLocation
     }
 
     /**
-     * @return Media[]|Collection
+     * @return StationMedia[]|Collection
      */
     public function getMedia()
     {
         return $this->media;
+    }
+
+    public function isLocal(): bool
+    {
+        return self::ADAPTER_LOCAL === $this->adapter;
     }
 
     public function getStorageAdapter(?string $suffix = null): AdapterInterface

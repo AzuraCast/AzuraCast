@@ -185,12 +185,12 @@ class Queue implements EventSubscriberInterface
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
                     if (
-                        $event->setNextSong($this->playSongFromPlaylist(
-                            $playlist,
-                            $recentSongHistoryForDuplicatePrevention,
-                            $now,
-                            $allowDuplicates
-                        ))
+                    $event->setNextSong($this->playSongFromPlaylist(
+                        $playlist,
+                        $recentSongHistoryForDuplicatePrevention,
+                        $now,
+                        $allowDuplicates
+                    ))
                     ) {
                         $this->logger->info('Playable track found and registered.', [
                             'next_song' => (string)$event,
@@ -244,7 +244,7 @@ class Queue implements EventSubscriberInterface
     ): ?Entity\StationQueue {
         $media_to_play = $this->getQueuedSong($playlist, $recentSongHistory, $allowDuplicates);
 
-        if ($media_to_play instanceof Entity\Media) {
+        if ($media_to_play instanceof Entity\StationMedia) {
             $playlist->setPlayedAt($now->getTimestamp());
             $this->em->persist($playlist);
 
@@ -296,7 +296,7 @@ class Queue implements EventSubscriberInterface
      * @param array $recentSongHistory
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      *
-     * @return Entity\Media|mixed[]|null
+     * @return Entity\StationMedia|mixed[]|null
      */
     protected function getQueuedSong(
         Entity\StationPlaylist $playlist,
@@ -380,7 +380,7 @@ class Queue implements EventSubscriberInterface
             return null;
         }
 
-        return $this->em->find(Entity\Media::class, $mediaId);
+        return $this->em->find(Entity\StationMedia::class, $mediaId);
     }
 
     /**

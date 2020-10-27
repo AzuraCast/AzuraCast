@@ -79,7 +79,7 @@ class FolderPlaylists extends AbstractTask
 
         $mediaInFolderQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm
-            FROM App\Entity\Media sm
+            FROM App\Entity\StationMedia sm
             WHERE sm.station = :station
             AND sm.path LIKE :path')
             ->setParameter('station', $station);
@@ -90,7 +90,7 @@ class FolderPlaylists extends AbstractTask
 
             foreach ($mediaInFolder as $media) {
                 foreach ($playlists as $playlist) {
-                    /** @var Entity\Media $media */
+                    /** @var Entity\StationMedia $media */
                     /** @var Entity\StationPlaylist $playlist */
 
                     if (

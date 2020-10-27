@@ -495,7 +495,7 @@ class StationPlaylist
         $this->queue = $queue;
     }
 
-    public function removeFromQueue(Media $media): void
+    public function removeFromQueue(StationMedia $media): void
     {
         $queue = $this->getQueue();
 
@@ -505,7 +505,7 @@ class StationPlaylist
         }
     }
 
-    public function addToQueue(Media $media): void
+    public function addToQueue(StationMedia $media): void
     {
         $queue = $this->getQueue();
         if (null === $queue) {

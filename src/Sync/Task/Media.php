@@ -50,9 +50,9 @@ class Media extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\ReprocessMediaMessage) {
-            $media_row = $this->em->find(Entity\Media::class, $message->media_id);
+            $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
 
-            if ($media_row instanceof Entity\Media) {
+            if ($media_row instanceof Entity\StationMedia) {
                 $this->mediaRepo->processMedia($media_row, $message->force);
                 $this->em->flush();
             }
@@ -125,14 +125,14 @@ class Media extends AbstractTask
         // Check queue for existing pending processing entries.
         $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm
-            FROM App\Entity\Media sm
+            FROM App\Entity\StationMedia sm
             WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId());
 
         $iterator = SimpleBatchIteratorAggregate::fromQuery($existingMediaQuery, 10);
 
         foreach ($iterator as $media_row) {
-            /** @var Entity\Media $media_row */
+            /** @var Entity\StationMedia $media_row */
 
             // Check if media file still exists.
             $path_hash = md5($media_row->getPath());
@@ -190,7 +190,7 @@ class Media extends AbstractTask
         // Create a lookup cache of all valid imported media.
         $media_lookup = [];
         foreach ($station->getMedia() as $media) {
-            /** @var Entity\Media $media */
+            /** @var Entity\StationMedia $media */
             $media_path = $fs->getFullPath($media->getPathUri());
             $media_hash = md5($media_path);
 
@@ -221,7 +221,7 @@ class Media extends AbstractTask
                 if (file_exists($line)) {
                     $line_hash = md5($line);
                     if (isset($media_lookup[$line_hash])) {
-                        /** @var Entity\Media $media_record */
+                        /** @var Entity\StationMedia $media_record */
                         $media_record = $media_lookup[$line_hash];
 
                         $spm = new Entity\StationPlaylistMedia($record, $media_record);

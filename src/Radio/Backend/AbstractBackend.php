@@ -35,7 +35,7 @@ abstract class AbstractBackend extends AbstractAdapter
     /**
      * @return mixed[]
      */
-    public function annotateMedia(Entity\Media $media): array
+    public function annotateMedia(Entity\StationMedia $media): array
     {
         return [];
     }

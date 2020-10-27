@@ -67,7 +67,7 @@ class StationCloneForm extends StationForm
             );
             $copier->addFilter(
                 new DeepCopy\Filter\KeepFilter(),
-                new DeepCopy\Matcher\PropertyMatcher(Entity\Media::class, 'song')
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song')
             );
             $copier->addFilter(
                 new DeepCopy\Filter\KeepFilter(),
@@ -75,7 +75,7 @@ class StationCloneForm extends StationForm
             );
             $copier->addFilter(
                 new DeepCopy\Filter\KeepFilter(),
-                new DeepCopy\Matcher\PropertyMatcher(Entity\MediaCustomField::class, 'field')
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field')
             );
             $copier->addFilter(
                 new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
@@ -131,7 +131,7 @@ class StationCloneForm extends StationForm
                 );
                 $copier->addFilter(
                     new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Media::class, 'playlists')
+                    new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'playlists')
                 );
             }
 
@@ -189,7 +189,7 @@ class StationCloneForm extends StationForm
             // Persist all newly created records (and relations).
             $this->em->persist($new_record);
             foreach ($new_record->getMedia() as $subrecord) {
-                /** @var Entity\Media $subrecord */
+                /** @var Entity\StationMedia $subrecord */
                 $this->em->persist($subrecord);
 
                 foreach ($subrecord->getCustomFields() as $subrecord_custom_field) {

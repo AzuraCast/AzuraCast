@@ -26,7 +26,7 @@ class FilesController
             ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
 
-        $files_count = $em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) FROM App\Entity\Media sm
+        $files_count = $em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
             WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();

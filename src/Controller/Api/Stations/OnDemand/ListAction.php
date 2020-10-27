@@ -115,7 +115,7 @@ class ListAction
 
         foreach ($playlists as $playlist) {
             $query = $this->em->createQuery(/** @lang DQL */ '
-                SELECT sm FROM App\Entity\Media sm
+                SELECT sm FROM App\Entity\StationMedia sm
                 WHERE sm.id IN (
                     SELECT spm.media_id
                     FROM App\Entity\StationPlaylistMedia spm
@@ -127,7 +127,7 @@ class ListAction
             $iterator = SimpleBatchIteratorAggregate::fromQuery($query, 50);
 
             foreach ($iterator as $media) {
-                /** @var Entity\Media $media */
+                /** @var Entity\StationMedia $media */
                 $row = new Entity\Api\StationOnDemand();
 
                 $row->track_id = $media->getUniqueId();

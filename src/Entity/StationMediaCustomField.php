@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="station_media_custom_field")
  * @ORM\Entity
  */
-class MediaCustomField
+class StationMediaCustomField
 {
     use Traits\TruncateStrings;
 
@@ -27,9 +27,9 @@ class MediaCustomField
     protected $media_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Media", inversedBy="metadata")
+     * @ORM\ManyToOne(targetEntity="StationMedia", inversedBy="metadata")
      * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
-     * @var Media
+     * @var StationMedia
      */
     protected $media;
 
@@ -52,13 +52,13 @@ class MediaCustomField
      */
     protected $value;
 
-    public function __construct(Media $media, CustomField $field)
+    public function __construct(StationMedia $media, CustomField $field)
     {
         $this->media = $media;
         $this->field = $field;
     }
 
-    public function getMedia(): Media
+    public function getMedia(): StationMedia
     {
         return $this->media;
     }

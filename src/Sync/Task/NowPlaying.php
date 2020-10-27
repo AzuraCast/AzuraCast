@@ -230,8 +230,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         try {
             // Process extra metadata sent by Liquidsoap (if it exists).
             if (!empty($extra_metadata['media_id'])) {
-                $media = $this->em->find(Entity\Media::class, $extra_metadata['media_id']);
-                if (!$media instanceof Entity\Media) {
+                $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
+                if (!$media instanceof Entity\StationMedia) {
                     return;
                 }
 

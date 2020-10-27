@@ -507,7 +507,7 @@ class ConfigWriter implements EventSubscriberInterface
         $playlistFile = [];
 
         $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm
-            FROM App\Entity\Media sm
+            FROM App\Entity\StationMedia sm
             JOIN sm.playlists spm
             WHERE spm.playlist = :playlist
             ORDER BY spm.weight ASC
@@ -516,7 +516,7 @@ class ConfigWriter implements EventSubscriberInterface
         $mediaIterator = $mediaQuery->iterate();
 
         foreach ($mediaIterator as $row) {
-            /** @var Entity\Media $mediaFile */
+            /** @var Entity\StationMedia $mediaFile */
             $mediaFile = $row[0];
 
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();

@@ -38,7 +38,7 @@ class ReprocessMediaCommand extends CommandAbstract
             $io->writeln('Processing media for station: ' . $station->getName());
 
             foreach ($station->getMedia() as $media) {
-                /** @var Entity\Media $media */
+                /** @var Entity\StationMedia $media */
                 try {
                     $media_repo->processMedia($media, true);
                     $io->writeln('Processed: ' . $media->getPath());

@@ -58,11 +58,11 @@ class StationQueue implements SongInterface
     protected $media_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Media")
+     * @ORM\ManyToOne(targetEntity="StationMedia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * })
-     * @var Media|null
+     * @var StationMedia|null
      */
     protected $media;
 
@@ -139,16 +139,16 @@ class StationQueue implements SongInterface
         $this->playlist = $playlist;
     }
 
-    public function getMedia(): ?Media
+    public function getMedia(): ?StationMedia
     {
         return $this->media;
     }
 
-    public function setMedia(Media $media = null): void
+    public function setMedia(StationMedia $media = null): void
     {
         $this->media = $media;
 
-        if ($media instanceof Media) {
+        if ($media instanceof StationMedia) {
             $this->setDuration($media->getCalculatedLength());
         }
     }

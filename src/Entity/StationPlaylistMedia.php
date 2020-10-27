@@ -41,11 +41,11 @@ class StationPlaylistMedia implements JsonSerializable
     protected $media_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Media", inversedBy="playlists", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="StationMedia", inversedBy="playlists", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * })
-     * @var Media
+     * @var StationMedia
      */
     protected $media;
 
@@ -61,7 +61,7 @@ class StationPlaylistMedia implements JsonSerializable
      */
     protected $last_played;
 
-    public function __construct(StationPlaylist $playlist, Media $media)
+    public function __construct(StationPlaylist $playlist, StationMedia $media)
     {
         $this->playlist = $playlist;
         $this->media = $media;
@@ -79,7 +79,7 @@ class StationPlaylistMedia implements JsonSerializable
         return $this->playlist;
     }
 
-    public function getMedia(): Media
+    public function getMedia(): StationMedia
     {
         return $this->media;
     }

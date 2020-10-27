@@ -67,7 +67,7 @@ class RequestsController
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('sm, spm, sp')
-            ->from(Entity\Media::class, 'sm')
+            ->from(Entity\StationMedia::class, 'sm')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
             ->where('sm.station_id = :station_id')
@@ -107,7 +107,7 @@ class RequestsController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(function ($media_row) use ($station, $is_bootgrid, $router) {
-            /** @var Entity\Media $media_row */
+            /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest();
             $row->song = ($this->songApiGenerator)($media_row);
             $row->request_id = $media_row->getUniqueId();

@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations\Art;
 
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StationRepository;
-use App\Entity\Media;
+use App\Entity\StationMedia;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -54,12 +54,12 @@ class GetArtAction
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id)[0];
 
-        if (Media::UNIQUE_ID_LENGTH === strlen($media_id)) {
+        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
             $mediaPath = Filesystem::PREFIX_ALBUM_ART . '://' . $media_id . '.jpg';
         } else {
             $media = $mediaRepo->find($media_id, $station);
-            if ($media instanceof Media) {
+            if ($media instanceof StationMedia) {
                 $mediaPath = $media->getArtPath();
             } else {
                 return $defaultArtRedirect;

@@ -23,7 +23,7 @@ class PostArtAction
         $station = $request->getStation();
 
         $media = $mediaRepo->find($media_id, $station);
-        if (!($media instanceof Entity\Media)) {
+        if (!($media instanceof Entity\StationMedia)) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found.')));
         }

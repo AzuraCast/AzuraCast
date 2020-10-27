@@ -9,7 +9,6 @@ use App\Http\ServerRequest;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
-
 use const SORT_ASC;
 use const SORT_DESC;
 
@@ -56,7 +55,7 @@ class ListAction
             }')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
-            ->from(Entity\Media::class, 'sm')
+            ->from(Entity\StationMedia::class, 'sm')
             ->leftJoin('sm.custom_fields', 'smcf')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
@@ -117,8 +116,7 @@ class ListAction
                         'station_id' => $station->getId(),
                         'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
                     ]
-                )
-            ;
+                );
 
             $media_in_dir[$media_row['path']] = [
                     'is_playable' => ($media_row['length'] !== 0),

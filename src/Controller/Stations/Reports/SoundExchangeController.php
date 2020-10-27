@@ -59,7 +59,7 @@ class SoundExchangeController
             ];
 
             $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
-                FROM App\Entity\Media sm
+                FROM App\Entity\StationMedia sm
                 WHERE sm.station_id = :station_id')
                 ->setParameter('station_id', $station->getId())
                 ->getArrayResult();
@@ -102,7 +102,7 @@ class SoundExchangeController
             $station_name = $station->getName();
 
             $set_isrc_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE
-                App\Entity\Media sm
+                App\Entity\StationMedia sm
                 SET sm.isrc = :isrc
                 WHERE sm.song_id = :song_id
                 AND sm.station_id = :station_id')

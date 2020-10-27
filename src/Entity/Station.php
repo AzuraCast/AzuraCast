@@ -359,7 +359,7 @@ class Station
 
     /**
      * @ORM\Column(name="current_streamer_id", type="integer", nullable=true)
-     * @var int
+     * @var int|null
      */
     protected $current_streamer_id;
 
@@ -689,12 +689,12 @@ class Station
 
     public function getRadioAlbumArtDirAdapter(): AdapterInterface
     {
-        return $this->getMediaStorageLocation()->getStorageAdapter('/album_art');
+        return $this->getMediaStorageLocation()->getStorageAdapter('/.albumart');
     }
 
     public function getRadioWaveformsDirAdapter(): AdapterInterface
     {
-        return $this->getMediaStorageLocation()->getStorageAdapter('/waveforms');
+        return $this->getMediaStorageLocation()->getStorageAdapter('/.waveforms');
     }
 
     public function getRadioRecordingsDirAdapter(): AdapterInterface
@@ -988,13 +988,19 @@ class Station
     public function getRawStorageAvailable(): ?BigInteger
     {
         $quota = $this->getStorageQuotaBytes();
-        $total_space = disk_total_space($this->getRadioMediaDir());
 
-        if ($quota === null || $quota->compareTo($total_space) === 1) {
-            return BigInteger::of($total_space);
+        if ($this->media_storage_location->isLocal()) {
+            $localPath = $this->media_storage_location->getPath();
+            $totalSpace = BigInteger::of(disk_total_space($localPath));
+
+            if (null === $quota || $quota->isGreaterThan($totalSpace)) {
+                return $totalSpace;
+            }
+        } elseif (null !== $quota) {
+            return $quota;
         }
 
-        return $quota;
+        return null;
     }
 
     public function isStorageFull(): bool

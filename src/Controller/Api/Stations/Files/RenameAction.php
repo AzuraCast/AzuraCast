@@ -49,14 +49,14 @@ class RenameAction
 
         if ('dir' === $pathMeta['type']) {
             // Update the paths of all media contained within the directory.
-            $media_in_dir = $em->createQuery(/** @lang DQL */ 'SELECT sm FROM App\Entity\Media sm
+            $media_in_dir = $em->createQuery(/** @lang DQL */ 'SELECT sm FROM App\Entity\StationMedia sm
                         WHERE sm.station = :station AND sm.path LIKE :path')
                 ->setParameter('station', $station)
                 ->setParameter('path', $originalPath . '%')
                 ->execute();
 
             foreach ($media_in_dir as $media_row) {
-                /** @var Entity\Media $media_row */
+                /** @var Entity\StationMedia $media_row */
                 $media_row->setPath(substr_replace($media_row->getPath(), $newPath, 0, strlen($originalPath)));
                 $em->persist($media_row);
             }
@@ -78,7 +78,7 @@ class RenameAction
         } else {
             $record = $mediaRepo->findByPath($originalPath, $station);
 
-            if ($record instanceof Entity\Media) {
+            if ($record instanceof Entity\StationMedia) {
                 $record->setPath($newPath);
                 $em->persist($record);
                 $em->flush();

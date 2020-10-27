@@ -13,16 +13,16 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Table(name="media", indexes={
+ * @ORM\Table(name="station_media", indexes={
  *   @ORM\Index(name="search_idx", columns={"title", "artist", "album"})
  * }, uniqueConstraints={
- *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
+ *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "storage_location_id"})
  * })
  * @ORM\Entity()
  *
  * @OA\Schema(type="object")
  */
-class Media implements SongInterface
+class StationMedia implements SongInterface
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -210,7 +210,7 @@ class Media implements SongInterface
     protected $playlists;
 
     /**
-     * @ORM\OneToMany(targetEntity="MediaCustomField", mappedBy="media")
+     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
      *
      * @var Collection
      */

@@ -62,10 +62,10 @@ class BatchAction
 
                 foreach ($music_files as $file) {
                     try {
-                        /** @var Entity\Media $media */
+                        /** @var Entity\StationMedia $media */
                         $media = $mediaRepo->findByPath($file['path'], $station);
 
-                        if ($media instanceof Entity\Media) {
+                        if ($media instanceof Entity\StationMedia) {
                             $mediaPlaylists = $mediaRepo->remove($media);
 
                             foreach ($mediaPlaylists as $playlist_id => $playlist) {
@@ -270,7 +270,7 @@ class BatchAction
         }
 
         if ($em->isOpen()) {
-            $em->clear(Entity\Media::class);
+            $em->clear(Entity\StationMedia::class);
             $em->clear(Entity\StationPlaylist::class);
             $em->clear(Entity\StationPlaylistMedia::class);
             $em->clear(Entity\StationRequest::class);

@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Messenger\MessageBus;
 
 class Media extends AbstractTask
@@ -54,17 +53,17 @@ class Media extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\ReprocessMediaMessage) {
-            $media_row = $this->em->find(Entity\StationMedia::class, $message->media_id);
+            $mediaRow = $this->em->find(Entity\StationMedia::class, $message->media_id);
 
-            if ($media_row instanceof Entity\StationMedia) {
-                $this->mediaRepo->processMedia($media_row, $message->force);
+            if ($mediaRow instanceof Entity\StationMedia) {
+                $this->mediaRepo->processMedia($mediaRow, $message->force);
                 $this->em->flush();
             }
         } elseif ($message instanceof Message\AddNewMediaMessage) {
-            $station = $this->em->find(Entity\Station::class, $message->station_id);
+            $storageLocation = $this->em->find(Entity\StorageLocation::class, $message->storage_location_id);
 
-            if ($station instanceof Entity\Station) {
-                $this->mediaRepo->getOrCreate($station, $message->path);
+            if ($storageLocation instanceof Entity\StorageLocation) {
+                $this->mediaRepo->getOrCreate($storageLocation, $message->path);
             }
         }
     }
@@ -119,8 +118,8 @@ class Media extends AbstractTask
             $music_files[$path_hash] = $file;
         }
 
-        $station->setStorageUsed($total_size);
-        $this->em->persist($station);
+        $storageLocation->setStorageUsed($total_size);
+        $this->em->persist($storageLocation);
 
         $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
         $stats['total_files'] = count($music_files);
@@ -129,11 +128,10 @@ class Media extends AbstractTask
         $this->queueManager->clearQueue(QueueManager::QUEUE_MEDIA);
 
         // Check queue for existing pending processing entries.
-        $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sm
+        $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
             FROM App\Entity\StationMedia sm
-            WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $station->getId());
+            WHERE sm.storage_location = :storageLocation')
+            ->setParameter('storageLocation', $storageLocation);
 
         $iterator = SimpleBatchIteratorAggregate::fromQuery($existingMediaQuery, 10);
 
@@ -173,7 +171,7 @@ class Media extends AbstractTask
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
             $message = new Message\AddNewMediaMessage();
-            $message->station_id = $station->getId();
+            $message->storage_location_id = $storageLocation->getId();
             $message->path = $new_music_file['path'];
 
             $this->messageBus->dispatch($message);
@@ -181,17 +179,12 @@ class Media extends AbstractTask
             $stats['created']++;
         }
 
-        $this->logger->debug(sprintf('Media processed for station "%s".', $station->getName()), $stats);
+        $this->logger->debug(sprintf('Media processed for "%s".', (string)$storageLocation), $stats);
     }
 
     public function importPlaylists(Entity\Station $station): void
     {
         $fs = $this->filesystem->getForStation($station);
-
-        $base_dir = $station->getRadioPlaylistsDir();
-        if (empty($base_dir)) {
-            return;
-        }
 
         // Create a lookup cache of all valid imported media.
         $media_lookup = [];
@@ -204,7 +197,12 @@ class Media extends AbstractTask
         }
 
         // Iterate through playlists.
-        $playlist_files_raw = $this->globDirectory($base_dir, '/^.+\.(m3u|pls)$/i');
+        $playlist_files_raw = $fs->createIterator(
+            FilesystemManager::PREFIX_PLAYLISTS,
+            [
+                'filter' => FilterFactory::pathMatchesRegex('/^.+\.(m3u|pls)$/i'),
+            ]
+        );
 
         foreach ($playlist_files_raw as $playlist_file_path) {
             // Create new StationPlaylist record.
@@ -240,24 +238,5 @@ class Media extends AbstractTask
         }
 
         $this->em->flush();
-    }
-
-    /**
-     * @return string[]
-     */
-    public function globDirectory($base_dir, $regex_pattern = null): array
-    {
-        $finder = new Finder();
-        $finder = $finder->files()->in($base_dir);
-
-        if ($regex_pattern !== null) {
-            $finder = $finder->name($regex_pattern);
-        }
-
-        $files = [];
-        foreach ($finder as $file) {
-            $files[] = $file->getPathname();
-        }
-        return $files;
     }
 }

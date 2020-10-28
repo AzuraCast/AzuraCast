@@ -8,7 +8,6 @@ use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
-use RuntimeException;
 use Supervisor\Supervisor;
 
 class Configuration
@@ -83,12 +82,7 @@ class Configuration
         }
 
         // Ensure all directories exist.
-        $radio_dirs = $station->getAllStationDirectories();
-        foreach ($radio_dirs as $radio_dir) {
-            if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
-            }
-        }
+        $station->checkDirectories();
 
         // Write config files for both backend and frontend.
         $frontend->write($station);

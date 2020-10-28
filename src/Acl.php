@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Entity;
-
 use function in_array;
 use function is_array;
 
@@ -19,6 +18,7 @@ class Acl
     public const GLOBAL_STATIONS = 'administer stations';
     public const GLOBAL_CUSTOM_FIELDS = 'administer custom fields';
     public const GLOBAL_BACKUPS = 'administer backups';
+    public const GLOBAL_STORAGE_LOCATIONS = 'administer storage locations';
 
     public const STATION_ALL = 'administer all';
     public const STATION_VIEW = 'view station management';
@@ -89,6 +89,7 @@ class Acl
                 self::GLOBAL_STATIONS => __('Administer Stations'),
                 self::GLOBAL_CUSTOM_FIELDS => __('Administer Custom Fields'),
                 self::GLOBAL_BACKUPS => __('Administer Backups'),
+                self::GLOBAL_STORAGE_LOCATIONS => __('Administer Storage Locations'),
             ],
             'station' => [
                 self::STATION_ALL => __('All Permissions'),

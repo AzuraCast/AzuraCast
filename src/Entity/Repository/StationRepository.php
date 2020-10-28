@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
-    protected Media $media_sync;
+    protected Media $mediaSync;
 
     protected Adapters $adapters;
 
@@ -34,24 +34,28 @@ class StationRepository extends Repository
 
     protected SettingsRepository $settingsRepo;
 
+    protected StorageLocationRepository $storageLocationRepo;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
         SettingsRepository $settingsRepo,
+        StorageLocationRepository $storageLocationRepo,
         LoggerInterface $logger,
-        Media $media_sync,
+        Media $mediaSync,
         Adapters $adapters,
         Configuration $configuration,
         ValidatorInterface $validator,
         CacheInterface $cache
     ) {
-        $this->media_sync = $media_sync;
+        $this->mediaSync = $mediaSync;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
         $this->validator = $validator;
         $this->cache = $cache;
         $this->settingsRepo = $settingsRepo;
+        $this->storageLocationRepo = $storageLocationRepo;
 
         parent::__construct($em, $serializer, $settings, $logger);
     }
@@ -177,21 +181,23 @@ class StationRepository extends Repository
     public function create(Entity\Station $station): Entity\Station
     {
         // Create path for station.
-        $station->setRadioBaseDir(null);
+        $station->checkDirectories();
 
         $this->em->persist($station);
+        $this->em->persist($station->getMediaStorageLocation());
+        $this->em->persist($station->getRecordingsStorageLocation());
 
         // Generate station ID.
         $this->em->flush();
 
         // Scan directory for any existing files.
         set_time_limit(600);
-        $this->media_sync->importMusic($station);
+        $this->mediaSync->importMusic($station->getMediaStorageLocation());
 
         /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
 
-        $this->media_sync->importPlaylists($station);
+        $this->mediaSync->importPlaylists($station);
 
         /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
@@ -232,6 +238,19 @@ class StationRepository extends Repository
 
         // Save changes and continue to the last setup step.
         $this->em->flush();
+
+        $storageLocations = [
+            $station->getMediaStorageLocation(),
+            $station->getRecordingsStorageLocation(),
+        ];
+
+        foreach($storageLocations as $storageLocation) {
+            $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
+            if (1 === count($stations)) {
+                $this->em->remove($storageLocation);
+            }
+        }
+
         $this->em->remove($station);
         $this->em->flush();
 

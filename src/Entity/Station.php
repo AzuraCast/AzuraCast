@@ -5,10 +5,8 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\File;
 use App\Radio\Adapters;
-use App\Radio\Quota;
 use App\Settings;
 use App\Validator\Constraints as AppAssert;
-use Brick\Math\BigInteger;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -631,6 +629,38 @@ class Station
         $this->radio_base_dir = $newDir;
     }
 
+    public function checkDirectories(): void
+    {
+        // Flysystem adapters will automatically create the main directory.
+        $this->getRadioBaseDirAdapter();
+        $this->getRadioPlaylistsDirAdapter();
+        $this->getRadioConfigDirAdapter();
+        $this->getRadioTempDirAdapter();
+
+        if (null === $this->media_storage_location) {
+            $storageLocation = new StorageLocation(
+                StorageLocation::TYPE_STATION_MEDIA,
+                StorageLocation::ADAPTER_LOCAL
+            );
+            $storageLocation->setPath($this->getRadioBaseDir() . '/media');
+
+            $this->media_storage_location = $storageLocation;
+        }
+
+        if (null === $this->recordings_storage_location) {
+            $storageLocation = new StorageLocation(
+                StorageLocation::TYPE_STATION_RECORDINGS,
+                StorageLocation::ADAPTER_LOCAL
+            );
+            $storageLocation->setPath($this->getRadioBaseDir() . '/recordings');
+
+            $this->recordings_storage_location = $storageLocation;
+        }
+
+        $this->getRadioMediaDirAdapter();
+        $this->getRadioRecordingsDirAdapter();
+    }
+
     public function getRadioBaseDirAdapter(?string $suffix = null): AdapterInterface
     {
         $path = $this->radio_base_dir . $suffix;
@@ -660,23 +690,6 @@ class Station
     public function getRadioRecordingsDirAdapter(): AdapterInterface
     {
         return $this->getRecordingsStorageLocation()->getStorageAdapter();
-    }
-
-    /**
-     * @return string[]|null[]
-     */
-    public function getAllStationDirectories(): array
-    {
-        return [
-            $this->getRadioBaseDir(),
-            $this->getRadioMediaDir(),
-            $this->getRadioAlbumArtDir(),
-            $this->getRadioWaveformsDir(),
-            $this->getRadioPlaylistsDir(),
-            $this->getRadioConfigDir(),
-            $this->getRadioTempDir(),
-            $this->getRadioRecordingsDir(),
-        ];
     }
 
     public function getNowplaying(): ?Api\NowPlaying
@@ -912,9 +925,13 @@ class Station
         return $this->media_storage_location;
     }
 
-    public function setMediaStorageLocation(StorageLocation $media_storage_location): void
+    public function setMediaStorageLocation(StorageLocation $storageLocation): void
     {
-        $this->media_storage_location = $media_storage_location;
+        if (StorageLocation::TYPE_STATION_MEDIA !== $storageLocation->getType()) {
+            throw new \InvalidArgumentException('Storage location must be for station media.');
+        }
+
+        $this->media_storage_location = $storageLocation;
     }
 
     public function getRecordingsStorageLocation(): StorageLocation
@@ -922,9 +939,13 @@ class Station
         return $this->recordings_storage_location;
     }
 
-    public function setRecordingsStorageLocation(StorageLocation $recordings_storage_location): void
+    public function setRecordingsStorageLocation(StorageLocation $storageLocation): void
     {
-        $this->recordings_storage_location = $recordings_storage_location;
+        if (StorageLocation::TYPE_STATION_RECORDINGS !== $storageLocation->getType()) {
+            throw new \InvalidArgumentException('Storage location must be for station live recordings.');
+        }
+
+        $this->recordings_storage_location = $storageLocation;
     }
 
     public function getPermissions(): Collection

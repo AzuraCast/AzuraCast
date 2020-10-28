@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -13,7 +13,7 @@ class MakeDirectoryAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ): ResponseInterface {
         $params = $request->getParams();
 

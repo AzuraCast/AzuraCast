@@ -3,8 +3,8 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
-use App\Flysystem\StationFilesystem;
+use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystemGroup;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
@@ -23,7 +23,7 @@ class BatchAction
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         MessageBus $messageBus
     ): ResponseInterface {
         $station = $request->getStation();
@@ -35,7 +35,7 @@ class BatchAction
         $files = [];
 
         foreach ($files_raw as $file) {
-            $file_path = Filesystem::PREFIX_MEDIA . '://' . $file;
+            $file_path = FilesystemManager::PREFIX_MEDIA . '://' . $file;
 
             if ($fs->has($file_path)) {
                 $files[] = $file_path;
@@ -210,7 +210,7 @@ class BatchAction
                 $files_found = count($music_files);
 
                 $directory_path = $request->getParam('directory');
-                $directory_path_full = Filesystem::PREFIX_MEDIA . '://' . $directory_path;
+                $directory_path_full = FilesystemManager::PREFIX_MEDIA . '://' . $directory_path;
 
                 try {
                     // Verify that you're moving to a directory (if it's not the root dir).
@@ -290,7 +290,7 @@ class BatchAction
     /**
      * @return mixed[]
      */
-    protected function getMusicFiles(StationFilesystem $fs, array $files): array
+    protected function getMusicFiles(StationFilesystemGroup $fs, array $files): array
     {
         $musicFiles = [];
 
@@ -316,7 +316,7 @@ class BatchAction
     /**
      * @return mixed[]
      */
-    protected function getDirectories(StationFilesystem $fs, array $files): array
+    protected function getDirectories(StationFilesystemGroup $fs, array $files): array
     {
         $directories = [];
 

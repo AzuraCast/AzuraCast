@@ -5,7 +5,7 @@ namespace App\Controller\Api\Stations\Waveform;
 use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -15,7 +15,7 @@ class GetWaveformAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
@@ -28,7 +28,7 @@ class GetWaveformAction
         $media_id = explode('-', $media_id)[0];
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $waveformPath = Filesystem::PREFIX_WAVEFORMS . '://' . $media_id . '.json';
+            $waveformPath = FilesystemManager::PREFIX_WAVEFORMS . '://' . $media_id . '.json';
             if ($fs->has($waveformPath)) {
                 return $response->withFlysystemFile($fs, $waveformPath, null, 'inline');
             }

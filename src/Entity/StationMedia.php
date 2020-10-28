@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Media\Metadata;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,6 +29,9 @@ class StationMedia implements SongInterface
     use Traits\HasSongFields;
 
     public const UNIQUE_ID_LENGTH = 24;
+
+    public const DIR_ALBUM_ART = '/.albumart';
+    public const DIR_WAVEFORMS = '/.waveforms';
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -272,12 +275,12 @@ class StationMedia implements SongInterface
      */
     public function getArtPath(): string
     {
-        return Filesystem::PREFIX_ALBUM_ART . '://' . $this->unique_id . '.jpg';
+        return self::DIR_ALBUM_ART . '/' . $this->unique_id . '.jpg';
     }
 
     public function getWaveformPath(): string
     {
-        return Filesystem::PREFIX_WAVEFORMS . '://' . $this->unique_id . '.json';
+        return self::DIR_WAVEFORMS . '/' . $this->unique_id . '.json';
     }
 
     /**
@@ -343,7 +346,7 @@ class StationMedia implements SongInterface
      */
     public function getPathUri(): string
     {
-        return Filesystem::PREFIX_MEDIA . '://' . $this->path;
+        return FilesystemManager::PREFIX_MEDIA . '://' . $this->path;
     }
 
     public function getMtime(): ?int

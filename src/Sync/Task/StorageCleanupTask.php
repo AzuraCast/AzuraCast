@@ -3,20 +3,20 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
 class StorageCleanupTask extends AbstractTask
 {
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
@@ -60,8 +60,8 @@ class StorageCleanupTask extends AbstractTask
         ];
 
         $cleanupDirs = [
-            'albumart' => Filesystem::PREFIX_ALBUM_ART,
-            'waveform' => Filesystem::PREFIX_WAVEFORMS,
+            'albumart' => FilesystemManager::PREFIX_ALBUM_ART,
+            'waveform' => FilesystemManager::PREFIX_WAVEFORMS,
         ];
 
         foreach ($cleanupDirs as $key => $prefix) {

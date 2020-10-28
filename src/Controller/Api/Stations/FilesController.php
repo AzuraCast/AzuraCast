@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Exception\ValidationException;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
@@ -24,7 +24,7 @@ class FilesController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     protected Adapters $adapters;
 
@@ -40,7 +40,7 @@ class FilesController extends AbstractStationApiCrudController
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         Adapters $adapters,
         MessageBus $messageBus,
         Entity\Repository\CustomFieldRepository $custom_fields_repo,
@@ -116,7 +116,7 @@ class FilesController extends AbstractStationApiCrudController
         $temp_path = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
         file_put_contents($temp_path, $api_record->getFileContents());
 
-        $sanitized_path = Filesystem::PREFIX_MEDIA . '://' . $api_record->getSanitizedPath();
+        $sanitized_path = FilesystemManager::PREFIX_MEDIA . '://' . $api_record->getSanitizedPath();
 
         // Process temp path as regular media record.
         $record = $this->media_repo->getOrCreate($station, $sanitized_path, $temp_path);
@@ -236,7 +236,7 @@ class FilesController extends AbstractStationApiCrudController
                 'path' => function ($new_value, $record) {
                     // Detect and handle a rename.
                     if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                        $path_full = Filesystem::PREFIX_MEDIA . '://' . $new_value;
+                        $path_full = FilesystemManager::PREFIX_MEDIA . '://' . $new_value;
 
                         $fs = $this->filesystem->getForStation($record->getStation());
                         $fs->rename($record->getPathUri(), $path_full);

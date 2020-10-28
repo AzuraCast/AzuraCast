@@ -687,16 +687,6 @@ class Station
         return $this->getMediaStorageLocation()->getStorageAdapter();
     }
 
-    public function getRadioAlbumArtDirAdapter(): AdapterInterface
-    {
-        return $this->getMediaStorageLocation()->getStorageAdapter('/.albumart');
-    }
-
-    public function getRadioWaveformsDirAdapter(): AdapterInterface
-    {
-        return $this->getMediaStorageLocation()->getStorageAdapter('/.waveforms');
-    }
-
     public function getRadioRecordingsDirAdapter(): AdapterInterface
     {
         return $this->getRecordingsStorageLocation()->getStorageAdapter();

@@ -3,7 +3,7 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Quota;
@@ -19,7 +19,7 @@ class Media extends AbstractTask
 {
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     protected MessageBus $messageBus;
 
@@ -30,7 +30,7 @@ class Media extends AbstractTask
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         MessageBus $messageBus,
         QueueManager $queueManager
     ) {
@@ -100,7 +100,7 @@ class Media extends AbstractTask
         $music_files = [];
         $total_size = BigInteger::zero();
 
-        $fsIterator = $fs->createIterator(Filesystem::PREFIX_MEDIA . '://', [
+        $fsIterator = $fs->createIterator(FilesystemManager::PREFIX_MEDIA . '://', [
             'filter' => FilterFactory::isFile(),
         ]);
 

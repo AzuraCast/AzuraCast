@@ -3,7 +3,7 @@
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
@@ -16,12 +16,12 @@ class DuplicatesController
 
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ) {
         $this->em = $em;
         $this->mediaRepo = $mediaRepo;

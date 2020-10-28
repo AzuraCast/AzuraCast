@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
@@ -18,7 +18,7 @@ class ListAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         Entity\Repository\StationRepository $stationRepo
     ): ResponseInterface {
         $station = $request->getStation();
@@ -168,7 +168,7 @@ class ListAction
         $files = [];
         if (!empty($search_phrase)) {
             foreach ($media_in_dir as $short_path => $media_row) {
-                $files[] = Filesystem::PREFIX_MEDIA . '://' . $short_path;
+                $files[] = FilesystemManager::PREFIX_MEDIA . '://' . $short_path;
             }
         } else {
             $files_raw = $fs->listContents($filePath);
@@ -178,7 +178,7 @@ class ListAction
         }
 
         foreach ($files as $i) {
-            $short = str_replace(Filesystem::PREFIX_MEDIA . '://', '', $i);
+            $short = str_replace(FilesystemManager::PREFIX_MEDIA . '://', '', $i);
             $meta = $fs->getMetadata($i);
 
             if ('dir' === $meta['type']) {

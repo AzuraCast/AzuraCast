@@ -239,10 +239,8 @@ class StorageLocation
         return self::ADAPTER_LOCAL === $this->adapter;
     }
 
-    public function getStorageAdapter(?string $suffix = null): AdapterInterface
+    public function getStorageAdapter(): AdapterInterface
     {
-        $path = $this->path . $suffix;
-
         switch ($this->adapter) {
             case self::ADAPTER_S3:
                 $s3Options = array_filter([
@@ -256,11 +254,11 @@ class StorageLocation
                 ]);
 
                 $client = new S3Client($s3Options);
-                return new AwsS3Adapter($client, $this->s3Bucket, $path);
+                return new AwsS3Adapter($client, $this->s3Bucket, $this->path);
 
             case self::ADAPTER_LOCAL:
             default:
-                return new Local($path);
+                return new Local($this->path);
         }
     }
 }

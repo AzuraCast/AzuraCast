@@ -5,7 +5,7 @@ namespace App\Console\Command\Internal;
 use App\Console\Application;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -18,13 +18,13 @@ class SftpUploadCommand extends CommandAbstract
 
     protected LoggerInterface $logger;
 
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     public function __construct(
         Application $application,
         MessageBus $messageBus,
         LoggerInterface $logger,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ) {
         parent::__construct($application);
 

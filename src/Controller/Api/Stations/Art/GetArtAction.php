@@ -5,7 +5,7 @@ namespace App\Controller\Api\Stations\Art;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\StationMedia;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
@@ -33,7 +33,7 @@ class GetArtAction
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param Filesystem $filesystem
+     * @param FilesystemManager $filesystem
      * @param StationRepository $stationRepo
      * @param StationMediaRepository $mediaRepo
      * @param string $media_id
@@ -41,7 +41,7 @@ class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         StationRepository $stationRepo,
         StationMediaRepository $mediaRepo,
         $media_id
@@ -56,7 +56,7 @@ class GetArtAction
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
-            $mediaPath = Filesystem::PREFIX_ALBUM_ART . '://' . $media_id . '.jpg';
+            $mediaPath = FilesystemManager::PREFIX_ALBUM_ART . '://' . $media_id . '.jpg';
         } else {
             $media = $mediaRepo->find($media_id, $station);
             if ($media instanceof StationMedia) {

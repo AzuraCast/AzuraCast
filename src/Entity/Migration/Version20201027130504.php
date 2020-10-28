@@ -20,14 +20,14 @@ final class Version20201027130504 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_32AADE3ACDDD8AF ON station_media (storage_location_id)');
         $this->addSql('CREATE UNIQUE INDEX path_unique_idx ON station_media (path, storage_location_id)');
 
-        $this->addSql('ALTER TABLE station DROP radio_media_dir');
+        $this->addSql('ALTER TABLE station DROP radio_media_dir, DROP storage_quota, DROP storage_used');
 
         $this->addSql('ALTER TABLE station_media DROP station_id');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station ADD radio_media_dir VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`');
+        $this->addSql('ALTER TABLE station ADD radio_media_dir VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`, ADD storage_quota BIGINT DEFAULT NULL, ADD storage_used BIGINT DEFAULT NULL');
 
         $this->addSql('ALTER TABLE station_media ADD station_id INT NOT NULL');
 

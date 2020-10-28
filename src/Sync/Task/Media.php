@@ -17,6 +17,8 @@ use Symfony\Component\Messenger\MessageBus;
 
 class Media extends AbstractTask
 {
+    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
+
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
     protected FilesystemManager $filesystem;
@@ -30,12 +32,14 @@ class Media extends AbstractTask
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         FilesystemManager $filesystem,
         MessageBus $messageBus,
         QueueManager $queueManager
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
+        $this->storageLocationRepo = $storageLocationRepo;
         $this->mediaRepo = $mediaRepo;
         $this->filesystem = $filesystem;
         $this->messageBus = $messageBus;
@@ -67,25 +71,27 @@ class Media extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $stations = SimpleBatchIteratorAggregate::fromQuery(
-            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
-            1
-        );
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sl FROM App\Entity\StorageLocation sl WHERE sl.type = :type')
+            ->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
 
-        foreach ($stations as $station) {
-            /** @var Entity\Station $station */
-            $this->logger->info('Processing media for station...', [
-                'station' => $station->getName(),
-            ]);
+        $storageLocations = SimpleBatchIteratorAggregate::fromQuery($query, 1);
 
-            $this->importMusic($station);
+        foreach ($storageLocations as $storageLocation) {
+            /** @var Entity\StorageLocation $storageLocation */
+            $this->logger->info(sprintf(
+                'Processing media for storage location %s...',
+                (string)$storageLocation
+            ));
+
+            $this->importMusic($storageLocation);
             gc_collect_cycles();
         }
     }
 
-    public function importMusic(Entity\Station $station): void
+    public function importMusic(Entity\StorageLocation $storageLocation): void
     {
-        $fs = $this->filesystem->getForStation($station, false);
+        $adapter = $storageLocation->getStorageAdapter();
+        $fs = $this->filesystem->getFilesystemForAdapter($adapter, false);
 
         $stats = [
             'total_size' => '0',
@@ -100,7 +106,7 @@ class Media extends AbstractTask
         $music_files = [];
         $total_size = BigInteger::zero();
 
-        $fsIterator = $fs->createIterator(FilesystemManager::PREFIX_MEDIA . '://', [
+        $fsIterator = $fs->createIterator('/', [
             'filter' => FilterFactory::isFile(),
         ]);
 

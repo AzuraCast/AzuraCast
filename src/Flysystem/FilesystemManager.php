@@ -55,12 +55,7 @@ class FilesystemManager
 
             $filesystems = [];
             foreach ($aliases as $alias => $adapter) {
-                if ($cached) {
-                    $cachedClient = new Psr6Cache($this->cachePool, $this->getCacheKey($adapter), 3600);
-                    $adapter = new CachedAdapter($adapter, $cachedClient);
-                }
-
-                $filesystems[$alias] = new Filesystem($adapter);
+                $filesystems[$alias] = $this->getFilesystemForAdapter($adapter, $cached);
             }
 
             $this->interfaces[$interfaceKey] = new StationFilesystemGroup($filesystems);
@@ -69,10 +64,20 @@ class FilesystemManager
         return $this->interfaces[$interfaceKey];
     }
 
-    public function clearCacheForAdapter(AdapterInterface $adapter): bool
+    public function getFilesystemForAdapter(AdapterInterface $adapter, bool $cached = false): Filesystem
     {
-        $cacheKey = $this->getCacheKey($adapter);
-        return $this->cachePool->deleteItem($cacheKey);
+        if ($cached) {
+            $cachedClient = new Psr6Cache($this->cachePool, $this->getCacheKey($adapter), 3600);
+            $adapter = new CachedAdapter($adapter, $cachedClient);
+        }
+
+        return new Filesystem($adapter);
+    }
+
+    public function flushCacheForAdapter(AdapterInterface $adapter, bool $inMemoryOnly = false): void
+    {
+        $fs = $this->getFilesystemForAdapter($adapter, true);
+        $fs->flushCache($inMemoryOnly);
     }
 
     protected function getCacheKey(AdapterInterface $adapter): string

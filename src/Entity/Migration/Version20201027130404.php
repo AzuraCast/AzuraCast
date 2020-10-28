@@ -18,7 +18,7 @@ final class Version20201027130404 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE storage_location (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(50) NOT NULL, adapter VARCHAR(50) NOT NULL, path VARCHAR(255) DEFAULT NULL, s3_credential_key VARCHAR(255) DEFAULT NULL, s3_credential_secret VARCHAR(255) DEFAULT NULL, s3_region VARCHAR(150) DEFAULT NULL, s3_version VARCHAR(150) DEFAULT NULL, s3_bucket VARCHAR(255) DEFAULT NULL, s3_endpoint VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE storage_location (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(50) NOT NULL, adapter VARCHAR(50) NOT NULL, path VARCHAR(255) DEFAULT NULL, s3_credential_key VARCHAR(255) DEFAULT NULL, s3_credential_secret VARCHAR(255) DEFAULT NULL, s3_region VARCHAR(150) DEFAULT NULL, s3_version VARCHAR(150) DEFAULT NULL, s3_bucket VARCHAR(255) DEFAULT NULL, s3_endpoint VARCHAR(255) DEFAULT NULL, storage_quota BIGINT DEFAULT NULL, storage_used BIGINT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
 
         $this->addSql('ALTER TABLE station ADD media_storage_location_id INT DEFAULT NULL, ADD recordings_storage_location_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE station ADD CONSTRAINT FK_9F39F8B1C896ABC5 FOREIGN KEY (media_storage_location_id) REFERENCES storage_location (id) ON DELETE SET NULL');
@@ -35,7 +35,7 @@ final class Version20201027130404 extends AbstractMigration
     public function postUp(Schema $schema): void
     {
         // Migrate existing directories to new StorageLocation paradigm.
-        $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir FROM station ORDER BY id ASC');
+        $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station ORDER BY id ASC');
 
         $directories = [];
 
@@ -53,6 +53,7 @@ final class Version20201027130404 extends AbstractMigration
             } else {
                 $directories[$mediaDir] = [
                     'stations' => [$stationId],
+                    'storageQuota' => $row['storage_quota'],
                     'albumArtDir' => $baseDir . '/album_art',
                     'waveformsDir' => $baseDir . '/waveforms',
                 ];
@@ -63,6 +64,7 @@ final class Version20201027130404 extends AbstractMigration
                 'type' => 'station_recordings',
                 'adapter' => 'local',
                 'path' => $baseDir . '/recordings',
+                'storage_quota' => $row['storage_quota'],
             ]);
 
             $recordingsStorageLocationId = $this->connection->lastInsertId('storage_location');
@@ -85,6 +87,7 @@ final class Version20201027130404 extends AbstractMigration
                 'type' => 'station_media',
                 'adapter' => 'local',
                 'path' => $path,
+                'storage_quota' => $dirInfo['storageQuota'],
             ]);
 
             $mediaStorageLocationId = $this->connection->lastInsertId('storage_location');

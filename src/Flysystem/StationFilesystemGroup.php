@@ -3,6 +3,7 @@
 namespace App\Flysystem;
 
 use App\Exception;
+use Iterator;
 use Jhofm\FlysystemIterator\FilesystemFilterIterator;
 use Jhofm\FlysystemIterator\FilesystemIterator;
 use Jhofm\FlysystemIterator\Options\Options;
@@ -88,20 +89,8 @@ class StationFilesystemGroup extends MountManager
     {
         [$prefix, $path] = $this->getPrefixAndPath($uri);
 
+        /** @var Filesystem $fs */
         $fs = $this->getFilesystem($prefix);
-        if (!($fs instanceof Filesystem)) {
-            throw new RuntimeException('Filesystem cannot be iterated.');
-        }
-
-        $iterator = new FilesystemIterator($fs, $path, $iteratorOptions);
-
-        $options = Options::fromArray($iteratorOptions);
-        if ($options->{Options::OPTION_IS_RECURSIVE}) {
-            $iterator = new RecursiveFilesystemIteratorIterator($iterator);
-        }
-        if ($options->{Options::OPTION_FILTER} !== null) {
-            $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
-        }
-        return $iterator;
+        return $fs->createIterator($path, $iteratorOptions);
     }
 }

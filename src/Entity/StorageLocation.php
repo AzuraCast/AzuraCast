@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
+use App\Radio\Quota;
 use Aws\S3\S3Client;
+use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -120,6 +122,36 @@ class StorageLocation
     protected $s3Endpoint = null;
 
     /**
+     * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
+     *
+     * @OA\Property(example="50 GB")
+     * @var string|null
+     */
+    protected $storageQuota;
+
+    /**
+     * @OA\Property(example="50000000000")
+     * @var string|null
+     */
+    protected $storageQuotaBytes;
+
+    /**
+     * @ORM\Column(name="storage_used", type="bigint", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
+     *
+     * @OA\Property(example="1 GB")
+     * @var string|null
+     */
+    protected $storageUsed;
+
+    /**
+     * @OA\Property(example="1000000000")
+     * @var string|null
+     */
+    protected $storageUsedBytes;
+
+    /**
      * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="storage_location")
      * @var Collection|StationMedia[]
      */
@@ -218,6 +250,143 @@ class StorageLocation
         $this->s3Endpoint = $this->truncateString($s3Endpoint, 255);
     }
 
+    public function isLocal(): bool
+    {
+        return self::ADAPTER_LOCAL === $this->adapter;
+    }
+
+    public function getStorageQuota(): ?string
+    {
+        $raw_quota = $this->getStorageQuotaBytes();
+
+        return ($raw_quota instanceof BigInteger)
+            ? Quota::getReadableSize($raw_quota)
+            : '';
+    }
+
+    /**
+     * @param BigInteger|string|null $storageQuota
+     */
+    public function setStorageQuota($storageQuota): void
+    {
+        $storageQuota = (string)Quota::convertFromReadableSize($storageQuota);
+        $this->storageQuota = !empty($storageQuota) ? $storageQuota : null;
+    }
+
+    public function getStorageQuotaBytes(): ?BigInteger
+    {
+        $size = $this->storageQuota;
+
+        return (null !== $size)
+            ? BigInteger::of($size)
+            : null;
+    }
+
+    public function getStorageUsed(): ?string
+    {
+        $raw_size = $this->getStorageUsedBytes();
+        return Quota::getReadableSize($raw_size);
+    }
+
+    /**
+     * @param BigInteger|string|null $storageUsed
+     */
+    public function setStorageUsed($storageUsed): void
+    {
+        $storageUsed = (string)Quota::convertFromReadableSize($storageUsed);
+        $this->storageUsed = !empty($storageUsed) ? $storageUsed : null;
+    }
+
+    public function getStorageUsedBytes(): BigInteger
+    {
+        $size = $this->storageUsed;
+
+        if (null === $size) {
+            return BigInteger::zero();
+        }
+
+        return BigInteger::of($size);
+    }
+
+    /**
+     * Increment the current used storage total.
+     *
+     * @param BigInteger|string|int $newStorageAmount
+     */
+    public function addStorageUsed($newStorageAmount): void
+    {
+        if (empty($newStorageAmount)) {
+            return;
+        }
+
+        $currentStorageUsed = $this->getStorageUsedBytes();
+        $this->storageUsed = (string)$currentStorageUsed->plus($newStorageAmount);
+    }
+
+    /**
+     * Decrement the current used storage total.
+     *
+     * @param BigInteger|string|int $amountToRemove
+     */
+    public function removeStorageUsed($amountToRemove): void
+    {
+        if (empty($amountToRemove)) {
+            return;
+        }
+
+        $currentStorageUsed = $this->getStorageUsedBytes();
+        $storageUsed = $currentStorageUsed->minus($amountToRemove);
+        if ($storageUsed->isLessThan(0)) {
+            $storageUsed = BigInteger::zero();
+        }
+
+        $this->storageUsed = (string)$storageUsed;
+    }
+
+    public function getStorageAvailable(): string
+    {
+        $raw_size = $this->getRawStorageAvailable();
+
+        return ($raw_size instanceof BigInteger)
+            ? Quota::getReadableSize($raw_size)
+            : '';
+    }
+
+    public function getRawStorageAvailable(): ?BigInteger
+    {
+        $quota = $this->getStorageQuotaBytes();
+
+        if ($this->isLocal()) {
+            $localPath = $this->getPath();
+            $totalSpace = BigInteger::of(disk_total_space($localPath));
+
+            if (null === $quota || $quota->isGreaterThan($totalSpace)) {
+                return $totalSpace;
+            }
+        } elseif (null !== $quota) {
+            return $quota;
+        }
+
+        return null;
+    }
+
+    public function isStorageFull(): bool
+    {
+        $available = $this->getRawStorageAvailable();
+        if ($available === null) {
+            return true;
+        }
+
+        $used = $this->getStorageUsedBytes();
+
+        return ($used->compareTo($available) !== -1);
+    }
+
+    public function getStorageUsePercentage(): int
+    {
+        return Quota::getPercentage($this->getStorageUsedBytes(), $this->getRawStorageAvailable());
+    }
+
     /**
      * @return Station[]|Collection
      */
@@ -232,11 +401,6 @@ class StorageLocation
     public function getMedia()
     {
         return $this->media;
-    }
-
-    public function isLocal(): bool
-    {
-        return self::ADAPTER_LOCAL === $this->adapter;
     }
 
     public function getStorageAdapter(): AdapterInterface
@@ -260,5 +424,21 @@ class StorageLocation
             default:
                 return new Local($this->path);
         }
+    }
+
+    public function __toString(): string
+    {
+        $typeNames = [
+            self::TYPE_BACKUP => 'Backup',
+            self::TYPE_STATION_MEDIA => 'Station Media',
+            self::TYPE_STATION_RECORDINGS => 'Station Recordings',
+        ];
+
+        $adapterNames = [
+            self::ADAPTER_LOCAL => 'Local',
+            self::ADAPTER_S3 => 'Amazon S3',
+        ];
+
+        return 'StorageLocation ' . $this->id . ' (' . $typeNames[$this->type] . ', ' . $adapterNames[$this->adapter] . ')';
     }
 }

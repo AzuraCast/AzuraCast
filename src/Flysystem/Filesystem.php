@@ -3,6 +3,11 @@
 namespace App\Flysystem;
 
 use InvalidArgumentException;
+use Iterator;
+use Jhofm\FlysystemIterator\FilesystemFilterIterator;
+use Jhofm\FlysystemIterator\FilesystemIterator;
+use Jhofm\FlysystemIterator\Options\Options;
+use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\AbstractCache;
@@ -102,5 +107,28 @@ class Filesystem extends LeagueFilesystem
         }
 
         return $adapter->applyPathPrefix($path);
+    }
+
+    /**
+     * Create an iterator that loops through the entire contents of a given prefix.
+     *
+     * @param string $path
+     * @param array $iteratorOptions
+     *
+     * @return Iterator
+     */
+    public function createIterator(string $path, array $iteratorOptions = []): Iterator
+    {
+        $iterator = new FilesystemIterator($this, $path, $iteratorOptions);
+
+        $options = Options::fromArray($iteratorOptions);
+        if ($options->{Options::OPTION_IS_RECURSIVE}) {
+            $iterator = new RecursiveFilesystemIteratorIterator($iterator);
+        }
+        if ($options->{Options::OPTION_FILTER} !== null) {
+            $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
+        }
+        
+        return $iterator;
     }
 }

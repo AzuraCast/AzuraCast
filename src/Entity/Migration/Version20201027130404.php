@@ -34,7 +34,7 @@ final class Version20201027130404 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
-// Deleting duplicate streamers to avoid constraint errors in subsequent update
+        // Migrate existing directories to new StorageLocation paradigm.
         $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir FROM station ORDER BY id ASC');
 
         $directories = [];
@@ -109,22 +109,23 @@ final class Version20201027130404 extends AbstractMigration
                 ]);
 
             foreach ($dirInfo['stations'] as $stationId) {
-                $media = $this->connection->fetchAllAssociative('SELECT sm1.id AS old_id, sm2.id AS new_id FROM station_media AS sm1 INNER JOIN station_media AS sm2 ON sm1.path = sm2.path WHERE sm2.storage_location_id = ? AND sm1.station_id = ?', [
-                    $mediaStorageLocationId,
-                    $stationId,
-                ], [
-                    ParameterType::INTEGER,
-                    ParameterType::INTEGER,
-                ]);
+                $media = $this->connection->fetchAllAssociative('SELECT sm1.id AS old_id, sm2.id AS new_id FROM station_media AS sm1 INNER JOIN station_media AS sm2 ON sm1.path = sm2.path WHERE sm2.storage_location_id = ? AND sm1.station_id = ?',
+                    [
+                        $mediaStorageLocationId,
+                        $stationId,
+                    ], [
+                        ParameterType::INTEGER,
+                        ParameterType::INTEGER,
+                    ]);
 
                 $tablesToUpdate = ['song_history', 'station_playlist_media', 'station_queue', 'station_requests'];
 
-                foreach($media as [$oldMediaId, $newMediaId]) {
-                    foreach($tablesToUpdate as $table) {
+                foreach ($media as [$oldMediaId, $newMediaId]) {
+                    foreach ($tablesToUpdate as $table) {
                         $this->connection->update($table, [
-                            'media_id' => $newMediaId
+                            'media_id' => $newMediaId,
                         ], [
-                            'media_id' => $oldMediaId
+                            'media_id' => $oldMediaId,
                         ]);
                     }
                 }
@@ -132,7 +133,7 @@ final class Version20201027130404 extends AbstractMigration
                 $this->connection->executeQuery('DELETE FROM station_media WHRE station_id = ?', [
                     $stationId,
                 ], [
-                    ParameterType::INTEGER
+                    ParameterType::INTEGER,
                 ]);
             }
         }

@@ -23,8 +23,7 @@ class SystemStatus
     protected function osNotWindows(): bool
     {
         // ref: https://www.php.net/manual/en/function.php-uname.php
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') 
-        {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             return false;
         }
         return true;
@@ -39,8 +38,7 @@ class SystemStatus
     {
         $freeMemory = "0";
         $usedMemory = "0";
-        if ($this->osNotWindows() == true)
-        {
+        if ($this->osNotWindows() == true) {
             // ref: https://stackoverflow.com/questions/4705759/how-to-get-cpu-usage-and-ram-usage-without-exec
             $memoryExec = explode("\n", trim(shell_exec('free')));
             $memoryProcessed = preg_split("/[\s]+/", $memoryExec[1]);
@@ -66,8 +64,7 @@ class SystemStatus
     protected function systemLoads(): array
     {
         $fetchLoads = [0,0,0];
-        if ($this->osNotWindows() == true)
-        {
+        if ($this->osNotWindows() == true) {
             $fetchLoads = sys_getloadavg();
         }
         return [

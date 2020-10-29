@@ -59,8 +59,8 @@ class SystemStatus
     }
 
     /**
-     * uses unix shell free command to get the current
-     * memory usage
+     * uses php sys_getloadavg to get load avg's
+     * Not supported by windows
      * @return mixed[] [1m mixed, 5m mixed, 15m mixed]
      */
     protected function systemLoads(): array

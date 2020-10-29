@@ -12,24 +12,33 @@ class SystemStatus
     public function __construct()
     {
         $this->timestamp = time();
-        $this->ram = $this->System_Memory();
-        $this->loads = $this->System_Loads();
+        $this->ram = $this->SystemMemory();
+        $this->loads = $this->SystemLoads();
     }
 
-    protected function OSNotWindows() : bool
+    /**
+     * Checks if the value PHP_OS
+     * signals that we are not running in windows
+     */
+    protected function OSNotWindows(): bool
     {
-        // https://www.php.net/manual/en/function.php-uname.php
+        // ref: https://www.php.net/manual/en/function.php-uname.php
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
         {
             return false;
         }
         return true;
     }
-    protected function System_Memory() : array
+
+    /**
+     * uses unix shell free command to get the current
+     * memory usage
+     * @return mixed[] [free string, used string]
+     */
+    protected function SystemMemory(): array
     {
-        // if this works out we m
-        $free_memory = 0;
-        $used_memory = 0;
+        $free_memory = "0";
+        $used_memory = "0";
         if ($this->OSNotWindows() == true)
         {
             // https://stackoverflow.com/questions/4705759/how-to-get-cpu-usage-and-ram-usage-without-exec
@@ -44,11 +53,17 @@ class SystemStatus
             $used_memory = number_format(round($memory_processed[2]/1024, 2), 2);
         }
         return array(
-            "free"=>$free_memory,
-            "used"=>$used_memory
+            "free" => $free_memory,
+            "used" => $used_memory
         );
     }
-    protected function System_Loads() : array
+
+    /**
+     * uses unix shell free command to get the current
+     * memory usage
+     * @return mixed[] [1m mixed, 5m mixed, 15m mixed]
+     */
+    protected function SystemLoads(): array
     {
         $fetch_loads = array(0,0,0);
         if ($this->OSNotWindows() == true)
@@ -56,9 +71,9 @@ class SystemStatus
             $fetch_loads = sys_getloadavg();
         }
         return array(
-            "1m"=>$fetch_loads[0],
-            "5m"=>$fetch_loads[1],
-            "15m"=>$fetch_loads[2]
+            "1m" => $fetch_loads[0],
+            "5m" => $fetch_loads[1],
+            "15m" => $fetch_loads[2]
         );
     }
     /**
@@ -81,23 +96,22 @@ class SystemStatus
     /**
      * The current ram useage of the server
      * [Note: not supported for windows hosts]
+     * @var array
      */
     public array $ram = array(
-        "free"=>0,
-        "used"=>0
+        "free" => "0",
+        "used" => "0"
     );
 
     /**
      * The current load useage of the server
      * over 1m, 5m, 15m
      * [Note: sys_getloadavg is not supported for windows]
+     * @var array
      */
     public array $loads = array(
-        "1m"=>0,
-        "5m"=>0,
-        "15m"=>0
+        "1m" => 0,
+        "5m" => 0,
+        "15m" => 0
     );
-
-
-
 }

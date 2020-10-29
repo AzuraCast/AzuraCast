@@ -79,7 +79,7 @@ class SftpUploadCommand extends CommandAbstract
     {
         $adapter = $storageLocation->getStorageAdapter();
         $fs = $this->filesystem->getFilesystemForAdapter($adapter);
-        $fs->flushCache(false);
+        $fs->clearCache(false);
     }
 
     protected function handleNewUpload(Entity\StorageLocation $storageLocation, $path): int

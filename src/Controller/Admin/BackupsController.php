@@ -7,7 +7,7 @@ use App\Controller\AbstractLogViewerController;
 use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Exception\NotFoundException;
-use App\Flysystem\FilesystemGroup;
+use App\Flysystem\Filesystem;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
 use App\Http\Response;
@@ -16,7 +16,6 @@ use App\Message\BackupMessage;
 use App\Session\Flash;
 use App\Sync\Task\Backup;
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -121,14 +120,7 @@ class BackupsController extends AbstractLogViewerController
         $path
     ): ResponseInterface {
         $path = $this->getFilePath($path);
-        $path = 'backup://' . $path;
-
-        $fsGroup = new FilesystemGroup([
-            'backup' => $this->backupFs,
-        ]);
-
-        return $response->withNoCache()
-            ->withFlysystemFile($fsGroup, $path);
+        return $this->backupFs->streamToResponse($response->withNoCache(), $path);
     }
 
     public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface

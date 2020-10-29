@@ -132,8 +132,8 @@ class BroadcastsController extends AbstractApiCrudController
 
         $recordingPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
 
-        return $response->withFlysystemFile(
-            $fs,
+        return $fs->streamToResponse(
+            $response,
             $recordingPath,
             File::sanitizeFileName($broadcast->getStreamer()->getDisplayName()) . '_' . $filename
         );

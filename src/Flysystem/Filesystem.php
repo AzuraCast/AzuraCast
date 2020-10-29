@@ -90,7 +90,7 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
         return $localPath;
     }
 
-    public function flushCache(bool $inMemoryOnly = false): void
+    public function clearCache(bool $inMemoryOnly = false): void
     {
         $adapter = $this->getAdapter();
         if ($adapter instanceof CachedAdapter) {
@@ -198,7 +198,7 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
             // Stream via PHP instead
         }
 
-        $fh = $fs->readStream($path);
+        $fh = $this->readStream($path);
         return $response->withFile($fh, $mime);
     }
 }

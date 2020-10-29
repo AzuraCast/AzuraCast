@@ -667,19 +667,34 @@ class Station
         return new Local($path);
     }
 
+    public function getRadioPlaylistsDir(): string
+    {
+        return $this->radio_base_dir . '/playlists';
+    }
+
     public function getRadioPlaylistsDirAdapter(): AdapterInterface
     {
-        return $this->getRadioBaseDirAdapter('/playlists');
+        return new Local($this->getRadioPlaylistsDir());
+    }
+
+    public function getRadioConfigDir(): string
+    {
+        return $this->radio_base_dir . '/config';
     }
 
     public function getRadioConfigDirAdapter(): AdapterInterface
     {
-        return $this->getRadioBaseDirAdapter('/config');
+        return new Local($this->getRadioConfigDir());
+    }
+
+    public function getRadioTempDir(): string
+    {
+        return $this->radio_base_dir . '/temp';
     }
 
     public function getRadioTempDirAdapter(): AdapterInterface
     {
-        return $this->getRadioBaseDirAdapter('/temp');
+        return new Local($this->getRadioTempDir());
     }
 
     public function getRadioMediaDirAdapter(): AdapterInterface
@@ -896,11 +911,6 @@ class Station
     public function getHistory(): Collection
     {
         return $this->history;
-    }
-
-    public function getMedia(): Collection
-    {
-        return $this->media;
     }
 
     public function getStreamers(): Collection

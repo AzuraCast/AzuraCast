@@ -664,7 +664,16 @@ class StationPlaylist
         $absolute_paths = false,
         $with_annotations = false
     ): string {
-        $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir() . '/' : '';
+        if ($absolute_paths) {
+            $mediaStorage = $this->station->getMediaStorageLocation();
+            if (!$mediaStorage->isLocal()) {
+                throw new \RuntimeException('Media is not hosted locally on this system.');
+            }
+
+            $media_path = $mediaStorage->getPath() . '/';
+        } else {
+            $media_path = '';
+        }
 
         switch ($file_format) {
             case 'm3u':

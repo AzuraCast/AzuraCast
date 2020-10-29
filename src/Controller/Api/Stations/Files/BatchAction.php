@@ -82,19 +82,22 @@ class BatchAction
                 }
 
                 // Delete all selected files.
+                $mediaStorage = $station->getMediaStorageLocation();
+
                 foreach ($files as $file) {
                     $file_meta = $fs->getMetadata($file);
 
                     if ('dir' === $file_meta['type']) {
                         $fs->deleteDir($file);
                     } else {
-                        $station->removeStorageUsed($file_meta['size']);
+                        $mediaStorage->removeStorageUsed($file_meta['size']);
 
                         $fs->delete($file);
                     }
                 }
 
                 $em->persist($station);
+                $em->persist($mediaStorage);
                 $em->flush();
 
                 // Write new PLS playlist configuration.

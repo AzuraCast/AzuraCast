@@ -93,7 +93,8 @@ class FilesController extends AbstractStationApiCrudController
     {
         $station = $this->getStation($request);
 
-        if ($station->isStorageFull()) {
+        $mediaStorage = $station->getMediaStorageLocation();
+        if ($mediaStorage->isStorageFull()) {
             return $response->withStatus(500)
                 ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
         }
@@ -238,7 +239,7 @@ class FilesController extends AbstractStationApiCrudController
                     if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
                         $path_full = FilesystemManager::PREFIX_MEDIA . '://' . $new_value;
 
-                        $fs = $this->filesystem->getForStation($record->getStation());
+                        $fs = $record->getStorageLocation()->getFilesystem();
                         $fs->rename($record->getPathUri(), $path_full);
                     }
 
@@ -335,10 +336,7 @@ class FilesController extends AbstractStationApiCrudController
         }
 
         // Delete the media file off the filesystem.
-        $fs = $this->filesystem->getForStation($station);
-
-        $fs->delete($record->getPathUri());
-        $fs->delete($record->getArtPath());
+        $this->media_repo->remove($record);
 
         // Write new PLS playlist configuration.
         $backend = $this->adapters->getBackendAdapter($station);
@@ -351,7 +349,5 @@ class FilesController extends AbstractStationApiCrudController
                 $this->messageBus->dispatch($message);
             }
         }
-
-        parent::deleteRecord($record);
     }
 }

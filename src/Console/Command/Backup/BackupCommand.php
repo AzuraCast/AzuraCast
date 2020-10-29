@@ -9,7 +9,6 @@ use App\Sync\Task\Backup;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-
 use const PATHINFO_EXTENSION;
 
 class BackupCommand extends CommandAbstract
@@ -82,14 +81,9 @@ class BackupCommand extends CommandAbstract
             foreach ($stations as $station) {
                 /** @var Entity\Station $station */
 
-                $media_dir = $station->getRadioMediaDir();
-                if (!in_array($media_dir, $files_to_backup, true)) {
-                    $files_to_backup[] = $media_dir;
-                }
-
-                $art_dir = $station->getRadioAlbumArtDir();
-                if (!in_array($art_dir, $files_to_backup, true)) {
-                    $files_to_backup[] = $art_dir;
+                $mediaAdapter = $station->getMediaStorageLocation();
+                if ($mediaAdapter->isLocal()) {
+                    $files_to_backup[] = $mediaAdapter->getPath();
                 }
             }
         }

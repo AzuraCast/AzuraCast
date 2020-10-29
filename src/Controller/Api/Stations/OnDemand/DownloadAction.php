@@ -36,6 +36,6 @@ class DownloadAction
         $fs = $filesystem->getForStation($station);
 
         set_time_limit(600);
-        return $response->withFlysystemFile($fs, $filePath);
+        return $fs->streamToResponse($response, $filePath);
     }
 }

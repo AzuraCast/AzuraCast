@@ -4,7 +4,6 @@ namespace App\Radio;
 
 use App\Entity\Station;
 use App\Exception;
-use App\Flysystem\FilesystemManager;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
@@ -24,20 +23,16 @@ class Configuration
 
     protected Logger $logger;
 
-    protected FilesystemManager $filesystem;
-
     public function __construct(
         EntityManagerInterface $em,
         Adapters $adapters,
         Supervisor $supervisor,
-        Logger $logger,
-        FilesystemManager $filesystem
+        Logger $logger
     ) {
         $this->em = $em;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
         $this->logger = $logger;
-        $this->filesystem = $filesystem;
     }
 
     /**
@@ -135,8 +130,8 @@ class Configuration
      */
     protected function getSupervisorConfigFile(Station $station): string
     {
-        $fs = $this->filesystem->getForStation($station, false);
-        return $fs->getFullPath(FilesystemManager::PREFIX_CONFIG . '://supervisord.conf');
+        $configDir = $station->getRadioConfigDir();
+        return $configDir . '/supervisord.conf';
     }
 
     /**
@@ -362,15 +357,13 @@ class Configuration
         AbstractAdapter $adapter,
         $priority
     ): string {
-        $fs = $this->filesystem->getForStation($station, false);
-
         [, $program_name] = explode(':', $adapter->getProgramName($station));
 
         $config_lines = [
             'user' => 'azuracast',
             'priority' => $priority,
             'command' => $adapter->getCommand($station),
-            'directory' => $fs->getFullPath(FilesystemManager::PREFIX_CONFIG . '://'),
+            'directory' => $station->getRadioConfigDir(),
             'environment' => 'TZ="' . $station->getTimezone() . '"',
             'stdout_logfile' => $adapter->getLogPath($station),
             'stdout_logfile_maxbytes' => '5MB',

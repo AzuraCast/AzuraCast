@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 
 interface FilesystemInterface extends \League\Flysystem\FilesystemInterface
 {
-    public function flushCache(bool $inMemoryOnly = false): void;
+    public function clearCache(bool $inMemoryOnly = false): void;
 
     public function getFullPath(string $uri): string;
 

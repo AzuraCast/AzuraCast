@@ -21,7 +21,9 @@ class FlowUploadAction
         $params = $request->getParams();
         $station = $request->getStation();
 
-        if ($station->isStorageFull()) {
+        $mediaStorage = $station->getMediaStorageLocation();
+
+        if ($mediaStorage->isStorageFull()) {
             return $response->withStatus(500)
                 ->withJson(new Entity\Api\Error(500, __('This station is out of available storage space.')));
         }
@@ -61,8 +63,9 @@ class FlowUploadAction
                     }
                 }
             }
-
-            $station->addStorageUsed($flowResponse['size']);
+            
+            $mediaStorage->addStorageUsed($flowResponse['size']);
+            $em->persist($mediaStorage);
             $em->flush();
 
             return $response->withJson(new Entity\Api\Status());

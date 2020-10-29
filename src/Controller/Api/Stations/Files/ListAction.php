@@ -28,7 +28,7 @@ class ListAction
         $params = $request->getParams();
 
         if ($params['flushCache'] ?? false) {
-            $fs->flushCache();
+            $fs->clearCache();
         }
 
         $result = [];

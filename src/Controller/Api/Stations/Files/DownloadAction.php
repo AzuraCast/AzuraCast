@@ -28,8 +28,8 @@ class DownloadAction
                 ->withJson(new Entity\Api\Error(404, 'Not Found'));
         }
 
-        $fs = $filesystem->getForStation($station);
+        $fs = $filesystem->getForStation($station, false);
 
-        return $response->withFlysystemFile($fs, $media->getPathUri());
+        return $fs->streamToResponse($response, $media->getPathUri());
     }
 }

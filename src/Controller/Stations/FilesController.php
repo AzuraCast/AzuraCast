@@ -45,13 +45,15 @@ class FilesController
             ];
         }
 
+        $mediaStorage = $station->getMediaStorageLocation();
+
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
             'show_sftp' => SftpGo::isSupported(),
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
-            'space_used' => $station->getStorageUsed(),
-            'space_total' => $station->getStorageAvailable(),
-            'space_percent' => $station->getStorageUsePercentage(),
+            'space_used' => $mediaStorage->getStorageUsed(),
+            'space_total' => $mediaStorage->getStorageAvailable(),
+            'space_percent' => $mediaStorage->getStorageUsePercentage(),
             'files_count' => $files_count,
         ]);
     }

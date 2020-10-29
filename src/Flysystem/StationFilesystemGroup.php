@@ -20,11 +20,11 @@ class StationFilesystemGroup extends MountManager implements FilesystemInterface
         return $fs->putFromLocal($localPath, $to);
     }
 
-    public function flushCache(bool $inMemoryOnly = false): void
+    public function clearCache(bool $inMemoryOnly = false): void
     {
         foreach ($this->filesystems as $prefix => $filesystem) {
             /** @var Filesystem $filesystem */
-            $filesystem->flushCache($inMemoryOnly);
+            $filesystem->clearCache($inMemoryOnly);
         }
     }
 

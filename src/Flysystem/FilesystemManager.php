@@ -75,7 +75,7 @@ class FilesystemManager
     public function flushCacheForAdapter(AdapterInterface $adapter, bool $inMemoryOnly = false): void
     {
         $fs = $this->getFilesystemForAdapter($adapter, true);
-        $fs->flushCache($inMemoryOnly);
+        $fs->clearCache($inMemoryOnly);
     }
 
     protected function getCacheKey(AdapterInterface $adapter): string

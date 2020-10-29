@@ -26,7 +26,7 @@ class SystemStatus
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
         {
             return false;
-        } 
+        }
         return true;
     }
 
@@ -37,25 +37,25 @@ class SystemStatus
      */
     protected function systemMemory(): array
     {
-        $free_memory = "0";
-        $used_memory = "0";
+        $freeMemory = "0";
+        $usedMemory = "0";
         if ($this->osNotWindows() == true)
         {
-            // https://stackoverflow.com/questions/4705759/how-to-get-cpu-usage-and-ram-usage-without-exec
-            $memory_exec = explode("\n", trim(shell_exec('free')));
-            $memory_processed = preg_split("/[\s]+/", $memory_exec[1]);
+            // ref: https://stackoverflow.com/questions/4705759/how-to-get-cpu-usage-and-ram-usage-without-exec
+            $memoryExec = explode("\n", trim(shell_exec('free')));
+            $memoryProcessed = preg_split("/[\s]+/", $memoryExec[1]);
             /*
                 $memory_processed
                 [0]=>row_title [1]=>mem_total [2]=>mem_used
                 [3]=>mem_free [4]=>mem_shared [5]=>mem_buffers [6]=>mem_cached
             */
-            $free_memory = number_format(round($memory_processed[3]/1024, 2), 2);
-            $used_memory = number_format(round($memory_processed[2]/1024, 2), 2);
+            $freeMemory = number_format(round($memoryProcessed[3] / 1024, 2), 2);
+            $usedMemory = number_format(round($memoryProcessed[2] / 1024, 2), 2);
         }
-        return array(
-            "free" => $free_memory,
-            "used" => $used_memory
-        );
+        return [
+            "free" => $freeMemory,
+            "used" => $usedMemory
+        ];
     }
 
     /**
@@ -65,16 +65,16 @@ class SystemStatus
      */
     protected function systemLoads(): array
     {
-        $fetch_loads = array(0,0,0);
+        $fetchLoads = [0,0,0];
         if ($this->osNotWindows() == true)
         {
-            $fetch_loads = sys_getloadavg();
+            $fetchLoads = sys_getloadavg();
         }
-        return array(
-            "1m" => $fetch_loads[0],
-            "5m" => $fetch_loads[1],
-            "15m" => $fetch_loads[2]
-        );
+        return [
+            "1m" => $fetchLoads[0],
+            "5m" => $fetchLoads[1],
+            "15m" => $fetchLoads[2]
+        ];
     }
     /**
      * Whether the service is online or not (should always be true)
@@ -98,10 +98,10 @@ class SystemStatus
      * [Note: not supported for windows hosts]
      * @var array
      */
-    public array $ram = array(
+    public array $ram = [
         "free" => "0",
         "used" => "0"
-    );
+    ];
 
     /**
      * The current load useage of the server
@@ -109,9 +109,9 @@ class SystemStatus
      * [Note: sys_getloadavg is not supported for windows]
      * @var array
      */
-    public array $loads = array(
+    public array $loads = [
         "1m" => 0,
         "5m" => 0,
         "15m" => 0
-    );
+    ];
 }

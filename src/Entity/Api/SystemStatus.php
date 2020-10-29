@@ -12,21 +12,21 @@ class SystemStatus
     public function __construct()
     {
         $this->timestamp = time();
-        $this->ram = $this->SystemMemory();
-        $this->loads = $this->SystemLoads();
+        $this->ram = $this->systemMemory();
+        $this->loads = $this->systemLoads();
     }
 
     /**
      * Checks if the value PHP_OS
      * signals that we are not running in windows
      */
-    protected function OSNotWindows(): bool
+    protected function osNotWindows(): bool
     {
         // ref: https://www.php.net/manual/en/function.php-uname.php
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
         {
             return false;
-        }
+        } 
         return true;
     }
 
@@ -35,11 +35,11 @@ class SystemStatus
      * memory usage
      * @return mixed[] [free string, used string]
      */
-    protected function SystemMemory(): array
+    protected function systemMemory(): array
     {
         $free_memory = "0";
         $used_memory = "0";
-        if ($this->OSNotWindows() == true)
+        if ($this->osNotWindows() == true)
         {
             // https://stackoverflow.com/questions/4705759/how-to-get-cpu-usage-and-ram-usage-without-exec
             $memory_exec = explode("\n", trim(shell_exec('free')));
@@ -63,10 +63,10 @@ class SystemStatus
      * memory usage
      * @return mixed[] [1m mixed, 5m mixed, 15m mixed]
      */
-    protected function SystemLoads(): array
+    protected function systemLoads(): array
     {
         $fetch_loads = array(0,0,0);
-        if ($this->OSNotWindows() == true)
+        if ($this->osNotWindows() == true)
         {
             $fetch_loads = sys_getloadavg();
         }

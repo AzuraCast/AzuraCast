@@ -3,15 +3,12 @@
 namespace App\Flysystem;
 
 use App\Exception;
+use App\Http\Response;
 use Iterator;
-use Jhofm\FlysystemIterator\FilesystemFilterIterator;
-use Jhofm\FlysystemIterator\FilesystemIterator;
-use Jhofm\FlysystemIterator\Options\Options;
-use Jhofm\FlysystemIterator\RecursiveFilesystemIteratorIterator;
 use League\Flysystem\MountManager;
-use RuntimeException;
+use Psr\Http\Message\ResponseInterface;
 
-class StationFilesystemGroup extends MountManager
+class StationFilesystemGroup extends MountManager implements FilesystemInterface
 {
     public function upload(string $localPath, string $to): bool
     {
@@ -23,7 +20,7 @@ class StationFilesystemGroup extends MountManager
         return $fs->putFromLocal($localPath, $to);
     }
 
-    public function flushAllCaches(bool $inMemoryOnly = false): void
+    public function flushCache(bool $inMemoryOnly = false): void
     {
         foreach ($this->filesystems as $prefix => $filesystem) {
             /** @var Filesystem $filesystem */
@@ -79,18 +76,27 @@ class StationFilesystemGroup extends MountManager
         return $to;
     }
 
-    /**
-     * Create an iterator that loops through the entire contents of a given prefix.
-     *
-     * @param string $uri
-     * @param array $iteratorOptions
-     */
-    public function createIterator(string $uri, array $iteratorOptions = []): Iterator
+    /** @inheritDoc */
+    public function createIterator(string $path, array $iteratorOptions = []): Iterator
     {
-        [$prefix, $path] = $this->getPrefixAndPath($uri);
+        [$prefix, $path] = $this->getPrefixAndPath($path);
 
-        /** @var Filesystem $fs */
+        /** @var FilesystemInterface $fs */
         $fs = $this->getFilesystem($prefix);
         return $fs->createIterator($path, $iteratorOptions);
+    }
+
+    /** @inheritDoc */
+    public function streamToResponse(
+        Response $response,
+        string $path,
+        string $fileName = null,
+        string $disposition = 'attachment'
+    ): ResponseInterface {
+        [$prefix, $path] = $this->getPrefixAndPath($path);
+
+        /** @var FilesystemInterface $fs */
+        $fs = $this->getFilesystem($prefix);
+        return $fs->streamToResponse($response, $path, $fileName, $disposition);
     }
 }

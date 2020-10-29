@@ -271,26 +271,13 @@ class StationMedia implements SongInterface
     }
 
     /**
-     * Get the Flysystem URI for album artwork for this item.
-     */
-    public function getArtPath(): string
-    {
-        return self::DIR_ALBUM_ART . '/' . $this->unique_id . '.jpg';
-    }
-
-    public function getWaveformPath(): string
-    {
-        return self::DIR_WAVEFORMS . '/' . $this->unique_id . '.json';
-    }
-
-    /**
      * @return string[]
      */
     public function getRelatedFilePaths(): array
     {
         return [
-            $this->getArtPath(),
-            $this->getWaveformPath(),
+            self::getArtPath($this->getUniqueId()),
+            self::getWaveformPath($this->getUniqueId()),
         ];
     }
 
@@ -586,4 +573,26 @@ class StationMedia implements SongInterface
     {
         return 'StationMedia ' . $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;
     }
+
+    public static function getArtPath(string $uniqueId): string
+    {
+        return self::DIR_ALBUM_ART . '/' . $uniqueId . '.jpg';
+    }
+
+    public static function getArtUri(string $uniqueId): string
+    {
+        return FilesystemManager::PREFIX_ALBUM_ART . '://' . ltrim('/', self::getArtPath($uniqueId));
+    }
+
+    public static function getWaveformPath(string $uniqueId): string
+    {
+        return self::DIR_WAVEFORMS . '/' . $uniqueId . '.json';
+    }
+
+    public static function getWaveformUri(string $uniqueId): string
+    {
+        return FilesystemManager::PREFIX_WAVEFORMS . '://' . ltrim('/', self::getWaveformPath($uniqueId));
+    }
+
+
 }

@@ -5,6 +5,7 @@ namespace App\Radio\Backend\Liquidsoap;
 use App\Entity;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
+use App\Flysystem\FilesystemManager;
 use App\Logger;
 use App\Message;
 use App\Radio\Adapters;
@@ -29,10 +30,16 @@ class ConfigWriter implements EventSubscriberInterface
 
     protected Liquidsoap $liquidsoap;
 
-    public function __construct(EntityManagerInterface $em, Liquidsoap $liquidsoap)
-    {
+    protected FilesystemManager $filesystem;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Liquidsoap $liquidsoap,
+        FilesystemManager $filesystem
+    ) {
         $this->em = $em;
         $this->liquidsoap = $liquidsoap;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -118,11 +125,13 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_TOP);
 
         $station = $event->getStation();
-        $config_path = $station->getRadioConfigDir();
+        $fs = $this->filesystem->getForStation($station, false);
+
+        $pidfile = $fs->getFullPath(FilesystemManager::PREFIX_CONFIG . '://liquidsoap.pid');
 
         $event->appendLines([
             'set("init.daemon", false)',
-            'set("init.daemon.pidfile.path","' . $config_path . '/liquidsoap.pid")',
+            'set("init.daemon.pidfile.path","' . $pidfile . ')',
             'set("log.stdout", true)',
             'set("log.file", false)',
             'set("server.telnet",true)',
@@ -145,6 +154,13 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_PLAYLISTS);
 
         // Clear out existing playlists directory.
+        $fs = $this->filesystem->getForStation($station, false);
+
+        foreach ($fs->listContents(FilesystemManager::PREFIX_PLAYLISTS . '://') as $file) {
+            print_r($file);
+            exit;
+        }
+
         $playlistPath = $station->getRadioPlaylistsDir();
         $currentPlaylists = array_diff(scandir($playlistPath, SCANDIR_SORT_NONE), ['..', '.']);
         foreach ($currentPlaylists as $list) {

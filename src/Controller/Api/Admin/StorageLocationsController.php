@@ -3,15 +3,30 @@
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
-use App\Http\Response;
-use App\Http\ServerRequest;
+use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
-use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StorageLocationsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\StorageLocation::class;
     protected string $resourceRouteName = 'api:admin:storage_location';
+
+    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo
+    ) {
+        parent::__construct($em, $serializer, $validator);
+
+        $this->storageLocationRepo = $storageLocationRepo;
+    }
 
     /**
      * @OA\Get(path="/admin/storage_locations",
@@ -91,4 +106,24 @@ class StorageLocationsController extends AbstractAdminApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+    protected function deleteRecord($record): void
+    {
+        if (!($record instanceof Entity\StorageLocation)) {
+            throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
+
+        $stations = $this->storageLocationRepo->getStationsUsingLocation($record);
+
+        if (0 !== count($stations)) {
+            $stationNames = [];
+            foreach ($stations as $station) {
+                $stationNames[] = $station['name'];
+            }
+
+            throw new RuntimeException('This storage location has stations associated with it, and cannot be deleted until these stations are updated: '.implode(', ', $stationNames));
+        }
+
+        parent::deleteRecord($record);
+    }
 }

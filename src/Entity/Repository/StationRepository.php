@@ -181,7 +181,7 @@ class StationRepository extends Repository
     public function create(Entity\Station $station): Entity\Station
     {
         // Create path for station.
-        $station->checkDirectories();
+        $station->ensureDirectoriesExist();
 
         $this->em->persist($station);
         $this->em->persist($station->getMediaStorageLocation());
@@ -244,7 +244,7 @@ class StationRepository extends Repository
             $station->getRecordingsStorageLocation(),
         ];
 
-        foreach($storageLocations as $storageLocation) {
+        foreach ($storageLocations as $storageLocation) {
             $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
             if (1 === count($stations)) {
                 $this->em->remove($storageLocation);

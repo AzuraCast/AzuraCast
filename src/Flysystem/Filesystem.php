@@ -2,6 +2,7 @@
 
 namespace App\Flysystem;
 
+use App\Http\Response;
 use InvalidArgumentException;
 use Iterator;
 use Jhofm\FlysystemIterator\FilesystemFilterIterator;
@@ -12,10 +13,15 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Cached\Storage\AbstractCache;
 use League\Flysystem\Filesystem as LeagueFilesystem;
+use Psr\Http\Message\ResponseInterface;
 
-class Filesystem extends LeagueFilesystem
+class Filesystem extends LeagueFilesystem implements FilesystemInterface
 {
     /**
+     * Call a callable function with a path that is guaranteed to be a local path, even if
+     * this filesystem is a remote one, by copying to a temporary directory first in the
+     * case of remote filesystems.
+     *
      * @param string $path
      * @param callable $function
      *
@@ -37,6 +43,17 @@ class Filesystem extends LeagueFilesystem
 
     public function putFromLocal(string $localPath, string $to): bool
     {
+        $uploaded = $this->copyFromLocal($localPath, $to);
+
+        if ($uploaded) {
+            @unlink($localPath);
+        }
+
+        return $uploaded;
+    }
+
+    public function copyFromLocal(string $localPath, string $to): bool
+    {
         if (!file_exists($localPath)) {
             throw new \RuntimeException(sprintf('Source upload file not found at path: %s', $localPath));
         }
@@ -49,33 +66,28 @@ class Filesystem extends LeagueFilesystem
             fclose($stream);
         }
 
-        if ($uploaded) {
-            @unlink($localPath);
-            return true;
-        }
-
-        return false;
+        return $uploaded;
     }
 
-    public function copyToLocal(string $from, ?string $to = null): string
+    public function copyToLocal(string $from, ?string $localPath = null): string
     {
-        if (null === $to) {
-            $to = tempnam(sys_get_temp_dir(), $from);
+        if (null === $localPath) {
+            $localPath = tempnam(sys_get_temp_dir(), $from);
         }
 
-        if (file_exists($to)) {
-            unlink($to);
+        if (file_exists($localPath)) {
+            unlink($localPath);
         }
 
         $stream = $this->readStream($from);
 
-        file_put_contents($to, $stream);
+        file_put_contents($localPath, $stream);
 
         if (is_resource($stream)) {
             fclose($stream);
         }
 
-        return $to;
+        return $localPath;
     }
 
     public function flushCache(bool $inMemoryOnly = false): void
@@ -128,7 +140,65 @@ class Filesystem extends LeagueFilesystem
         if ($options->{Options::OPTION_FILTER} !== null) {
             $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
         }
-        
+
         return $iterator;
+    }
+
+    /** @inheritDoc */
+    public function streamToResponse(
+        Response $response,
+        string $path,
+        string $fileName = null,
+        string $disposition = 'attachment'
+    ): ResponseInterface {
+        $meta = $this->getMetadata($path);
+
+        try {
+            $mime = $this->getMimetype($path);
+        } catch (\Exception $e) {
+            $mime = 'application/octet-stream';
+        }
+
+        $fileName ??= basename($path);
+
+        if ('attachment' === $disposition) {
+            /*
+             * The regex used below is to ensure that the $fileName contains only
+             * characters ranging from ASCII 128-255 and ASCII 0-31 and 127 are replaced with an empty string
+             */
+            $disposition .= '; filename="' . preg_replace('/[\x00-\x1F\x7F\"]/', ' ', $fileName) . '"';
+            $disposition .= "; filename*=UTF-8''" . rawurlencode($fileName);
+        }
+
+        $response = $response->withHeader('Content-Disposition', $disposition)
+            ->withHeader('Content-Length', $meta['size'])
+            ->withHeader('X-Accel-Buffering', 'no');
+
+        try {
+            $localPath = $this->getFullPath($path);
+
+            // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
+            $specialPaths = [
+                '/var/azuracast/backups' => '/internal/backups',
+                '/var/azuracast/stations' => '/internal/stations',
+            ];
+
+            foreach ($specialPaths as $diskPath => $nginxPath) {
+                if (0 === strpos($localPath, $diskPath)) {
+                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
+
+                    // Temporary work around, see SlimPHP/Slim#2924
+                    $response->getBody()->write(' ');
+
+                    return $response->withHeader('Content-Type', $mime)
+                        ->withHeader('X-Accel-Redirect', $accelPath);
+                }
+            }
+        } catch (\Exception $e) {
+            // Stream via PHP instead
+        }
+
+        $fh = $fs->readStream($path);
+        return $response->withFile($fh, $mime);
     }
 }

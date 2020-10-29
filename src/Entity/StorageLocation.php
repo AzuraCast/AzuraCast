@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
+use App\Flysystem\Filesystem;
 use App\Radio\Quota;
 use Aws\S3\S3Client;
 use Brick\Math\BigInteger;
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\Config;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -424,6 +426,16 @@ class StorageLocation
             default:
                 return new Local($this->path);
         }
+    }
+
+    /**
+     * @param Config|array|null $config
+     *
+     * @return Filesystem
+     */
+    public function getFilesystem($config = null): Filesystem
+    {
+        return new Filesystem($this->getStorageAdapter(), $config);
     }
 
     public function __toString(): string

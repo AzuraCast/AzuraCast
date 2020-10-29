@@ -4,6 +4,7 @@ namespace App\Radio;
 
 use App\Entity\Station;
 use App\Exception;
+use App\Flysystem\FilesystemManager;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
@@ -23,16 +24,20 @@ class Configuration
 
     protected Logger $logger;
 
+    protected FilesystemManager $filesystem;
+
     public function __construct(
         EntityManagerInterface $em,
         Adapters $adapters,
         Supervisor $supervisor,
-        Logger $logger
+        Logger $logger,
+        FilesystemManager $filesystem
     ) {
         $this->em = $em;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
         $this->logger = $logger;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -82,7 +87,7 @@ class Configuration
         }
 
         // Ensure all directories exist.
-        $station->checkDirectories();
+        $station->ensureDirectoriesExist();
 
         // Write config files for both backend and frontend.
         $frontend->write($station);
@@ -130,8 +135,8 @@ class Configuration
      */
     protected function getSupervisorConfigFile(Station $station): string
     {
-        $config_path = $station->getRadioConfigDir();
-        return $config_path . '/supervisord.conf';
+        $fs = $this->filesystem->getForStation($station, false);
+        return $fs->getFullPath(FilesystemManager::PREFIX_CONFIG . '://supervisord.conf');
     }
 
     /**
@@ -357,7 +362,7 @@ class Configuration
         AbstractAdapter $adapter,
         $priority
     ): string {
-        $config_path = $station->getRadioConfigDir();
+        $fs = $this->filesystem->getForStation($station, false);
 
         [, $program_name] = explode(':', $adapter->getProgramName($station));
 
@@ -365,7 +370,7 @@ class Configuration
             'user' => 'azuracast',
             'priority' => $priority,
             'command' => $adapter->getCommand($station),
-            'directory' => $config_path,
+            'directory' => $fs->getFullPath(FilesystemManager::PREFIX_CONFIG . '://'),
             'environment' => 'TZ="' . $station->getTimezone() . '"',
             'stdout_logfile' => $adapter->getLogPath($station),
             'stdout_logfile_maxbytes' => '5MB',

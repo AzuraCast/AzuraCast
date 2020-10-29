@@ -56,18 +56,18 @@ class GetArtAction
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
-            $mediaPath = FilesystemManager::PREFIX_ALBUM_ART . '://' . $media_id . '.jpg';
+            $mediaPath = StationMedia::getArtUri($media_id);
         } else {
             $media = $mediaRepo->find($media_id, $station);
             if ($media instanceof StationMedia) {
-                $mediaPath = $media->getArtPath();
+                $mediaPath = StationMedia::getArtUri($media->getUniqueId());
             } else {
                 return $defaultArtRedirect;
             }
         }
 
         if ($fs->has($mediaPath)) {
-            return $response->withFlysystemFile($fs, $mediaPath, null, 'inline');
+            return $fs->streamToResponse($response, $mediaPath, null, 'inline');
         }
 
         return $defaultArtRedirect;

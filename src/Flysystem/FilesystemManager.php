@@ -45,8 +45,6 @@ class FilesystemManager
             /** @var AdapterInterface[] $aliases */
             $aliases = [
                 self::PREFIX_MEDIA => $station->getRadioMediaDirAdapter(),
-                self::PREFIX_ALBUM_ART => $station->getRadioAlbumArtDirAdapter(),
-                self::PREFIX_WAVEFORMS => $station->getRadioWaveformsDirAdapter(),
                 self::PREFIX_PLAYLISTS => $station->getRadioPlaylistsDirAdapter(),
                 self::PREFIX_CONFIG => $station->getRadioConfigDirAdapter(),
                 self::PREFIX_RECORDINGS => $station->getRadioRecordingsDirAdapter(),

@@ -629,7 +629,7 @@ class Station
         $this->radio_base_dir = $newDir;
     }
 
-    public function checkDirectories(): void
+    public function ensureDirectoriesExist(): void
     {
         // Flysystem adapters will automatically create the main directory.
         $this->getRadioBaseDirAdapter();

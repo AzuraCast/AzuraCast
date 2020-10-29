@@ -23,7 +23,7 @@ class SystemStatus
     protected function osNotWindows(): bool
     {
         // ref: https://www.php.net/manual/en/function.php-uname.php
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') 
         {
             return false;
         }
@@ -54,7 +54,7 @@ class SystemStatus
         }
         return [
             "free" => $freeMemory,
-            "used" => $usedMemory
+            "used" => $usedMemory,
         ];
     }
 
@@ -73,7 +73,7 @@ class SystemStatus
         return [
             "1m" => $fetchLoads[0],
             "5m" => $fetchLoads[1],
-            "15m" => $fetchLoads[2]
+            "15m" => $fetchLoads[2],
         ];
     }
     /**
@@ -100,7 +100,7 @@ class SystemStatus
      */
     public array $ram = [
         "free" => "0",
-        "used" => "0"
+        "used" => "0",
     ];
 
     /**
@@ -112,6 +112,6 @@ class SystemStatus
     public array $loads = [
         "1m" => 0,
         "5m" => 0,
-        "15m" => 0
+        "15m" => 0,
     ];
 }

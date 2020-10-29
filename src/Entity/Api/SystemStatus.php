@@ -33,11 +33,15 @@ class SystemStatus
         if ($this->OSNotWindows() == true)
         {
             // https://stackoverflow.com/questions/4705759/how-to-get-cpu-usage-and-ram-usage-without-exec
-            $free_memory = explode("\n", trim(shell_exec('free')));
-            $total_memory = preg_split("/[\s]+/", $exec_free[1]);
-            $used_memory = $total_memory - $free_memory;
-            $free_memory = number_format(round($free_memory/1024, 2), 2);
-            $used_memory = number_format(round($used_memory/1024, 2), 2);
+            $memory_exec = explode("\n", trim(shell_exec('free')));
+            $memory_processed = preg_split("/[\s]+/", $memory_exec[1]);
+            /*
+                $memory_processed
+                [0]=>row_title [1]=>mem_total [2]=>mem_used
+                [3]=>mem_free [4]=>mem_shared [5]=>mem_buffers [6]=>mem_cached
+            */
+            $free_memory = number_format(round($memory_processed[3]/1024, 2), 2);
+            $used_memory = number_format(round($memory_processed[2]/1024, 2), 2);
         }
         return array(
             "free"=>$free_memory,

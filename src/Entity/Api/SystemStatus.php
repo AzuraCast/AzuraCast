@@ -87,7 +87,7 @@ class SystemStatus
         */
         $free = 0;
         $used = 0;
-        if (array_key_exists("MemFree",$memoryInfo) == true) {
+        if (array_key_exists("MemFree", $memoryInfo) == true) {
             $free = $memoryInfo["MemFree"];
             $used = $memoryInfo["MemTotal"] - $free;
             $free = number_format(round($free / 1024, 2), 2);

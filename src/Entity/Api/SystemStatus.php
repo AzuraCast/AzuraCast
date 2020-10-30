@@ -67,7 +67,7 @@ class SystemStatus
         $memoryInfo = array();
         foreach ($memoryData as $line) {
             list($key, $val) = explode(":", $line);
-            $val = strtr($val,"kB",""); // replace kb at the end with nothing
+            $val = strtr($val, "kB", ""); // replace kb at the end with nothing
             $memoryInfo[$key] = trim($val);
         }
         /*

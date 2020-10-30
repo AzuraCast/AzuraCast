@@ -9,7 +9,7 @@ info:
 servers:
   -
     url: 'https://demo.azuracast.com/api'
-    description: 'AzuraCast Public Demo Server'
+    description: 'This AzuraCast Installation'
 paths:
   /admin/custom_fields:
     get:
@@ -1169,7 +1169,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_QueuedSong'
+                  $ref: '#/components/schemas/Api_StationQueueDetailed'
         '404':
           description: 'Station not found'
         '403':
@@ -1182,7 +1182,6 @@ paths:
       tags:
         - 'Stations: Queue'
       description: 'Retrieve details of a single queued item.'
-      operationId: 'App\Controller\Api\Stations\QueueController::viewRecord'
       parameters:
         -
           name: id
@@ -1198,7 +1197,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_QueuedSong'
+                $ref: '#/components/schemas/Api_StationQueueDetailed'
         '404':
           description: 'Station or Queue ID not found'
         '403':
@@ -1210,7 +1209,6 @@ paths:
       tags:
         - 'Stations: Queue'
       description: 'Delete a single queued item.'
-      operationId: 'App\Controller\Api\Stations\QueueController::viewRecord'
       parameters:
         -
           name: id
@@ -1490,10 +1488,10 @@ paths:
           name: action
           in: path
           description: 'The action to perform (start, stop, restart)'
-          required: false
+          required: true
           schema:
             type: string
-          content: restart
+            default: restart
       responses:
         '200':
           description: Success
@@ -1515,10 +1513,10 @@ paths:
           name: action
           in: path
           description: 'The action to perform (for all: start, stop, restart; for Liquidsoap only: skip, disconnect)'
-          required: false
+          required: true
           schema:
             type: string
-          content: restart
+            default: restart
       responses:
         '200':
           description: Success
@@ -1956,7 +1954,7 @@ components:
           type: string
           example: 127.0.0.1
         user_agent:
-          description: 'The listener''s HTTP User-Agent'
+          description: "The listener's HTTP User-Agent\n\nphpcs:disable Generic.Files.LineLength"
           type: string
           example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36'
         is_mobile:
@@ -1966,7 +1964,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1602264526
+          example: 1604017781
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2065,27 +2063,6 @@ components:
           example: '1591548318'
           nullable: true
       type: object
-    Api_QueuedSong:
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_SongHistory'
-        -
-          properties:
-            cued_at:
-              description: 'UNIX timestamp when the item was cued for playback.'
-              type: integer
-              example: 1602264526
-            autodj_custom_uri:
-              description: 'Custom AutoDJ playback URI, if it exists.'
-              type: string
-              example: ''
-              nullable: true
-            links:
-              type: array
-              items:
-                type: string
-                example: 'http://localhost/api/stations/1/queue/1'
-          type: object
     Api_Song:
       properties:
         id:
@@ -2108,6 +2085,10 @@ components:
           description: 'The song album.'
           type: string
           example: 'Moving Castle'
+        genre:
+          description: 'The song genre.'
+          type: string
+          example: Rock
         lyrics:
           description: 'Lyrics to the song.'
           type: string
@@ -2129,7 +2110,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1602264526
+          example: 1604017781
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2227,7 +2208,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1602264526
+          example: 1604017781
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2243,6 +2224,23 @@ components:
         song:
           $ref: '#/components/schemas/Api_Song'
       type: object
+    Api_StationQueueDetailed:
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_StationQueue'
+        -
+          properties:
+            autodj_custom_uri:
+              description: 'Custom AutoDJ playback URI, if it exists.'
+              type: string
+              example: ''
+              nullable: true
+            links:
+              type: array
+              items:
+                type: string
+                example: 'http://localhost/api/stations/1/queue/1'
+          type: object
     Api_StationRemote:
       properties:
         id:
@@ -2302,7 +2300,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1602264526
+          example: 1604017781
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2310,7 +2308,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1602264526
+          example: 1604017781
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2350,7 +2348,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1602264526
+          example: 1604017781
       type: object
     Api_Time:
       properties:
@@ -2412,10 +2410,10 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1602264526
+          example: 1604017781
         updated_at:
           type: integer
-          example: 1602264526
+          example: 1604017781
       type: object
     Role:
       properties:
@@ -2524,7 +2522,7 @@ components:
           type: boolean
           example: true
         api_history_items:
-          description: 'The number of "last played" history items to show for a given station in the Now Playing API responses.'
+          description: 'The number of "last played" history items to show for a station in the Now Playing API responses.'
           type: integer
           example: 5
           nullable: true
@@ -2565,6 +2563,11 @@ components:
           type: string
           example: 'Test Album'
           nullable: true
+        genre:
+          description: 'The genre of the media file.'
+          type: string
+          example: Rock
+          nullable: true
         lyrics:
           description: 'Full lyrics of the track, if available.'
           type: string
@@ -2593,7 +2596,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1602264526
+          example: 1604017781
           nullable: true
         amplify:
           description: 'The amount of amplification (in dB) to be applied to the radio source;'
@@ -2634,7 +2637,7 @@ components:
         art_updated_at:
           description: 'The latest time (UNIX timestamp) when album art was updated.'
           type: integer
-          example: 1602264526
+          example: 1604017781
         playlists:
           items: {  }
       type: object
@@ -2850,6 +2853,7 @@ components:
           type: integer
           example: 2200
         days:
+          description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
           type: string
           example: '0,1,2,3'
       type: object
@@ -2880,7 +2884,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1602264526
+          example: 1604017781
           nullable: true
         schedule_items:
           items: {  }
@@ -2960,10 +2964,10 @@ components:
           nullable: true
         created_at:
           type: integer
-          example: 1602264526
+          example: 1604017781
         updated_at:
           type: integer
-          example: 1602264526
+          example: 1604017781
         roles:
           items: {  }
       type: object

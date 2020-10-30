@@ -8,6 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
+use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Http\Message\ResponseInterface;
 
 use const SORT_ASC;
@@ -60,9 +61,11 @@ class ListAction
             ->leftJoin('sm.custom_fields', 'smcf')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
-            ->where('sm.station_id = :station_id')
+            ->where('sm.storage_location = :storageLocation')
             ->andWhere('sm.path LIKE :path')
-            ->setParameter('station_id', $station->getId())
+            ->andWhere('(sp.station IS NULL OR sp.station = :station)')
+            ->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->setParameter('station', $station)
             ->setParameter('path', $pathLike);
 
         // Apply searching
@@ -169,18 +172,26 @@ class ListAction
         $files = [];
         if (!empty($search_phrase)) {
             foreach ($media_in_dir as $short_path => $media_row) {
-                $files[] = FilesystemManager::PREFIX_MEDIA . '://' . $short_path;
+                $files[] = $short_path;
             }
         } else {
-            $files_raw = $fs->listContents($filePath);
-            foreach ($files_raw as $file) {
-                $files[] = $file['filesystem'] . '://' . $file['path'];
+            $filesIterator = $fs->createIterator($filePath, [
+                Options::OPTION_IS_RECURSIVE => false,
+            ]);
+
+            $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
+
+            foreach ($filesIterator as $fileRow) {
+                if ($file === '' && in_array($fileRow['path'], $protectedPaths, true)) {
+                    continue;
+                }
+
+                $files[] = $fileRow['path'];
             }
         }
 
-        foreach ($files as $i) {
-            $short = str_replace(FilesystemManager::PREFIX_MEDIA . '://', '', $i);
-            $meta = $fs->getMetadata($i);
+        foreach ($files as $short) {
+            $meta = $fs->getMetadata(FilesystemManager::PREFIX_MEDIA . '://' . $short);
 
             if ('dir' === $meta['type']) {
                 $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];

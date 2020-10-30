@@ -224,9 +224,9 @@ class RadioAutomation extends AbstractTask
         $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm
             FROM App\Entity\StationMedia sm
-            WHERE sm.station = :station
+            WHERE sm.storage_location = :storageLocation
             ORDER BY sm.artist ASC, sm.title ASC')
-            ->setParameter('station', $station);
+            ->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         $iterator = SimpleBatchIteratorAggregate::fromQuery($mediaQuery, 100);
         $report = [];

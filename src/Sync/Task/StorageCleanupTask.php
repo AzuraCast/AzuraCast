@@ -27,26 +27,27 @@ class StorageCleanupTask extends AbstractTask
     {
         // Check all stations for automation settings.
         // Use this to avoid detached entity errors.
-        $stations = SimpleBatchIteratorAggregate::fromQuery(
-            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
-            1
-        );
+        $storageLocationsQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT sl 
+            FROM App\Entity\StorageLocation sl
+            WHERE sl.type = :type')
+            ->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
 
-        foreach ($stations as $station) {
-            /** @var Entity\Station $station */
-            $this->runStation($station);
+        $storageLocations = SimpleBatchIteratorAggregate::fromQuery($storageLocationsQuery, 1);
+        foreach ($storageLocations as $storageLocation) {
+            /** @var Entity\StorageLocation $storageLocation */
+            $this->cleanMediaStorageLocation($storageLocation);
         }
     }
 
-    protected function runStation(Entity\Station $station): void
+    protected function cleanMediaStorageLocation(Entity\StorageLocation $storageLocation): void
     {
-        $fs = $this->filesystem->getForStation($station, false);
+        $fs = $storageLocation->getFilesystem();
 
         $allUniqueIdsRaw = $this->em
-            ->createQuery(/** @lang DQL */
-                'SELECT sm.unique_id FROM App\Entity\StationMedia sm WHERE sm.station = :station'
-            )
-            ->setParameter('station', $station)
+            ->createQuery(/** @lang DQL */ 'SELECT sm.unique_id 
+                FROM App\Entity\StationMedia sm 
+                WHERE sm.storage_location = :storageLocation')
+            ->setParameter('storageLocation', $storageLocation)
             ->getArrayResult();
 
         $allUniqueIds = [];
@@ -60,12 +61,11 @@ class StorageCleanupTask extends AbstractTask
         ];
 
         $cleanupDirs = [
-            'albumart' => FilesystemManager::PREFIX_ALBUM_ART,
-            'waveform' => FilesystemManager::PREFIX_WAVEFORMS,
+            'albumart' => Entity\StationMedia::DIR_ALBUM_ART,
+            'waveform' => Entity\StationMedia::DIR_WAVEFORMS,
         ];
 
-        foreach ($cleanupDirs as $key => $prefix) {
-            $dirBase = $prefix . '://';
+        foreach ($cleanupDirs as $key => $dirBase) {
             $dirContents = $fs->listContents($dirBase, true);
 
             foreach ($dirContents as $row) {

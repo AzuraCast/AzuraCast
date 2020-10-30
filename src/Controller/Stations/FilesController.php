@@ -27,8 +27,8 @@ class FilesController
             ->getArrayResult();
 
         $files_count = $em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
-            WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $station->getId())
+            WHERE sm.storage_location = :storageLocation')
+            ->setParameter('storageLocation', $station->getMediaStorageLocation())
             ->getSingleScalarResult();
 
         // Get list of custom fields.

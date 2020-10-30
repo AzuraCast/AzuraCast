@@ -44,7 +44,7 @@ class ProfileController
             LEFT JOIN sm.playlists spm
             LEFT JOIN spm.playlist sp
             WHERE sp.id IS NOT NULL
-            AND sm.station_id = :station_id')
+            AND sp.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 

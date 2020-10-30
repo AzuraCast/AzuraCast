@@ -11,6 +11,7 @@ use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
+use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -108,10 +109,22 @@ class Media extends AbstractTask
         $total_size = BigInteger::zero();
 
         $fsIterator = $fs->createIterator('/', [
-            'filter' => FilterFactory::isFile(),
+            Options::OPTION_IS_RECURSIVE => true,
+            Options::OPTION_FILTER => FilterFactory::isFile(),
         ]);
 
+        $protectedPaths = [
+            Entity\StationMedia::DIR_ALBUM_ART,
+            Entity\StationMedia::DIR_WAVEFORMS,
+        ];
+
         foreach ($fsIterator as $file) {
+            foreach ($protectedPaths as $protectedPath) {
+                if (0 === strpos($file['path'], $protectedPath)) {
+                    continue 2;
+                }
+            }
+
             if (!empty($file['size'])) {
                 $total_size = $total_size->plus($file['size']);
             }

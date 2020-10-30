@@ -17,8 +17,6 @@ use Psr\Cache\CacheItemPoolInterface;
 class FilesystemManager
 {
     public const PREFIX_MEDIA = 'media';
-    public const PREFIX_ALBUM_ART = 'albumart';
-    public const PREFIX_WAVEFORMS = 'waveforms';
     public const PREFIX_PLAYLISTS = 'playlists';
     public const PREFIX_CONFIG = 'config';
     public const PREFIX_RECORDINGS = 'recordings';

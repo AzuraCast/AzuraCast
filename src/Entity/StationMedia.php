@@ -30,8 +30,8 @@ class StationMedia implements SongInterface
 
     public const UNIQUE_ID_LENGTH = 24;
 
-    public const DIR_ALBUM_ART = '/.albumart';
-    public const DIR_WAVEFORMS = '/.waveforms';
+    public const DIR_ALBUM_ART = '.albumart';
+    public const DIR_WAVEFORMS = '.waveforms';
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -581,7 +581,7 @@ class StationMedia implements SongInterface
 
     public static function getArtUri(string $uniqueId): string
     {
-        return FilesystemManager::PREFIX_ALBUM_ART . '://' . ltrim('/', self::getArtPath($uniqueId));
+        return FilesystemManager::PREFIX_MEDIA . '://' . ltrim('/', self::getArtPath($uniqueId));
     }
 
     public static function getWaveformPath(string $uniqueId): string
@@ -591,6 +591,6 @@ class StationMedia implements SongInterface
 
     public static function getWaveformUri(string $uniqueId): string
     {
-        return FilesystemManager::PREFIX_WAVEFORMS . '://' . ltrim('/', self::getWaveformPath($uniqueId));
+        return FilesystemManager::PREFIX_MEDIA . '://' . ltrim('/', self::getWaveformPath($uniqueId));
     }
 }

@@ -37,15 +37,17 @@ class DuplicatesController
             FROM App\Entity\StationMedia sm
             LEFT JOIN sm.playlists spm
             LEFT JOIN spm.playlist sp
-            WHERE sm.station = :station
+            WHERE sm.storage_location = :storageLocation
+            AND (sp.id IS NULL OR sp.station = :station)
             AND sm.song_id IN (
                 SELECT sm2.song_id FROM
                 App\Entity\StationMedia sm2
-                WHERE sm2.station = :station
+                WHERE sm2.storage_location = :storageLocation
                 GROUP BY sm2.song_id
                 HAVING COUNT(sm2.id) > 1
             )
             ORDER BY sm.song_id ASC, sm.mtime ASC')
+            ->setParameteR('storageLocation', $station->getMediaStorageLocation())
             ->setParameter('station', $station)
             ->getArrayResult();
 

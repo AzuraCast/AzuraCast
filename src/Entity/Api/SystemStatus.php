@@ -68,27 +68,34 @@ class SystemStatus
         foreach ($memoryData as $line) {
             list($key, $val) = explode(":", $line);
             $val = strtr($val, "kB", ""); // replace kb at the end with nothing
-            $memoryInfo[$key] = trim($val);
+            $memoryInfo[$key] = intval(trim($val)); // convert the string to an int so we can do maths.
         }
         /*
             $memoryInfo
             ["MemTotal"]=>
-            string(10) "2060700"
+            int 2060700
             ["MemFree"]=>
-            string(9) "277344"
+            int 277344
             ["Buffers"]=>
-            string(8) "92200"
+            int 92200
             ["Cached"]=>
-            string(9) "650544"
+            int 650544
             ["SwapCached"]=>
-            string(8) "73592"
+            int 73592
             ["Active"]=>
-            string(9) "995988"
+            int 995988
         */
-        $used = $memoryInfo["MemTotal"] - $memoryInfo["MemFree"];
+        $free = 0;
+        $used = 0;
+        if (array_key_exists("MemFree",$memoryInfo) == true) {
+            $free = $memoryInfo["MemFree"];
+            $used = $memoryInfo["MemTotal"] - $free;
+            $free = number_format(round($free / 1024, 2), 2);
+            $used = number_format(round($used / 1024, 2), 2);
+        }
         return [
-            "free" => number_format(round($memoryInfo["MemFree"] / 1024, 2), 2),
-            "used" => number_format(round($used / 1024, 2), 2),
+            "free" => $free,
+            "used" => $used,
         ];
     }
 

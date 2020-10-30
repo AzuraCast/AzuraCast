@@ -58,7 +58,7 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
             throw new \RuntimeException(sprintf('Source upload file not found at path: %s', $localPath));
         }
 
-        $stream = fopen($localPath, 'rb+');
+        $stream = fopen($localPath, 'rb');
 
         $uploaded = $this->putStream($to, $stream);
 

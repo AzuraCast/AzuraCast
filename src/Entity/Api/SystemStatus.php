@@ -28,7 +28,6 @@ class SystemStatus
 
     /**
      * The current ram useage of the server
-     * [Note: not supported for windows hosts]
      * @var array
      */
     public array $ram = array(
@@ -39,7 +38,6 @@ class SystemStatus
     /**
      * The current load useage of the server
      * over 1m, 5m, 15m
-     * [Note: sys_getloadavg is not supported for windows]
      * @var array
      */
     public array $loads = [
@@ -56,7 +54,8 @@ class SystemStatus
     }
 
     /**
-     * uses unix shell free command to get the current
+     * systemMemory
+     * uses /proc/meminfo to get
      * memory usage
      * @return mixed[] [free string, used string]
      */
@@ -100,8 +99,8 @@ class SystemStatus
     }
 
     /**
+     * systemLoads
      * uses php sys_getloadavg to get load avg's
-     * Not supported by windows
      * @return mixed[] [1m mixed, 5m mixed, 15m mixed]
      */
     protected function systemLoads(): array

@@ -9,70 +9,6 @@ use OpenApi\Annotations as OA;
  */
 class SystemStatus
 {
-    public function __construct()
-    {
-        $this->timestamp = time();
-        $this->ram = $this->systemMemory();
-        $this->loads = $this->systemLoads();
-    }
-
-    /**
-     * Checks if the value PHP_OS
-     * signals that we are not running in windows
-     */
-    protected function osNotWindows(): bool
-    {
-        // ref: https://www.php.net/manual/en/function.php-uname.php
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * uses unix shell free command to get the current
-     * memory usage
-     * @return mixed[] [free string, used string]
-     */
-    protected function systemMemory(): array
-    {
-        $freeMemory = "0";
-        $usedMemory = "0";
-        if ($this->osNotWindows() == true) {
-            // ref: https://stackoverflow.com/questions/4705759/how-to-get-cpu-usage-and-ram-usage-without-exec
-            $memoryExec = explode("\n", trim(shell_exec('free')));
-            $memoryProcessed = preg_split("/[\s]+/", $memoryExec[1]);
-            /*
-                $memory_processed
-                [0]=>row_title [1]=>mem_total [2]=>mem_used
-                [3]=>mem_free [4]=>mem_shared [5]=>mem_buffers [6]=>mem_cached
-            */
-            $freeMemory = number_format(round($memoryProcessed[3] / 1024, 2), 2);
-            $usedMemory = number_format(round($memoryProcessed[2] / 1024, 2), 2);
-        }
-        return [
-            "free" => $freeMemory,
-            "used" => $usedMemory,
-        ];
-    }
-
-    /**
-     * uses php sys_getloadavg to get load avg's
-     * Not supported by windows
-     * @return mixed[] [1m mixed, 5m mixed, 15m mixed]
-     */
-    protected function systemLoads(): array
-    {
-        $fetchLoads = [0,0,0];
-        if ($this->osNotWindows() == true) {
-            $fetchLoads = sys_getloadavg();
-        }
-        return [
-            "1m" => $fetchLoads[0],
-            "5m" => $fetchLoads[1],
-            "15m" => $fetchLoads[2],
-        ];
-    }
     /**
      * Whether the service is online or not (should always be true)
      *
@@ -95,10 +31,10 @@ class SystemStatus
      * [Note: not supported for windows hosts]
      * @var array
      */
-    public array $ram = [
+    public array $ram = array(
         "free" => "0",
-        "used" => "0",
-    ];
+        "used" => "0"
+    );
 
     /**
      * The current load useage of the server
@@ -111,4 +47,63 @@ class SystemStatus
         "5m" => 0,
         "15m" => 0,
     ];
+
+    public function __construct()
+    {
+        $this->timestamp = time();
+        $this->ram = $this->systemMemory();
+        $this->loads = $this->systemLoads();
+    }
+
+    /**
+     * uses unix shell free command to get the current
+     * memory usage
+     * @return mixed[] [free string, used string]
+     */
+    protected function systemMemory(): array
+    {
+        // ref: https://stackoverflow.com/questions/1455379/get-server-ram-with-php/1455610#1455610
+        $memoryData = explode("\n", file_get_contents("/proc/meminfo"));
+        $memoryInfo = array();
+        foreach ($memoryData as $line) {
+            list($key, $val) = explode(":", $line);
+            $val = strtr($val,"kB",""); // replace kb at the end with nothing
+            $memoryInfo[$key] = trim($val);
+        }
+        /*
+            $memoryInfo
+            ["MemTotal"]=>
+            string(10) "2060700"
+            ["MemFree"]=>
+            string(9) "277344"
+            ["Buffers"]=>
+            string(8) "92200"
+            ["Cached"]=>
+            string(9) "650544"
+            ["SwapCached"]=>
+            string(8) "73592"
+            ["Active"]=>
+            string(9) "995988"
+        */
+        $used = $memoryInfo["MemTotal"] - $memoryInfo["MemFree"];
+        return [
+            "free" => number_format(round($memoryInfo["MemFree"] / 1024, 2), 2),
+            "used" => number_format(round($used / 1024, 2), 2),
+        ];
+    }
+
+    /**
+     * uses php sys_getloadavg to get load avg's
+     * Not supported by windows
+     * @return mixed[] [1m mixed, 5m mixed, 15m mixed]
+     */
+    protected function systemLoads(): array
+    {
+        $fetchLoads = sys_getloadavg();
+        return [
+            "1m" => $fetchLoads[0],
+            "5m" => $fetchLoads[1],
+            "15m" => $fetchLoads[2],
+        ];
+    }
 }

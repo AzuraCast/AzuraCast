@@ -423,7 +423,6 @@ class StorageLocation
     /**
      * @param Config|array|null $config
      *
-     * @return Filesystem
      */
     public function getFilesystem($config = null): Filesystem
     {
@@ -443,6 +442,7 @@ class StorageLocation
             self::ADAPTER_S3 => 'Amazon S3',
         ];
 
-        return 'StorageLocation ' . $this->id . ' (' . $typeNames[$this->type] . ', ' . $adapterNames[$this->adapter] . ')';
+        return 'StorageLocation ' . $this->id . ' (' . $typeNames[$this->type]
+            . ', ' . $adapterNames[$this->adapter] . ')';
     }
 }

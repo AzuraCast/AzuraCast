@@ -18,7 +18,6 @@ interface FilesystemInterface extends \League\Flysystem\FilesystemInterface
      * @param string $path
      * @param array $iteratorOptions
      *
-     * @return Iterator
      */
     public function createIterator(string $path, array $iteratorOptions = []): Iterator;
 

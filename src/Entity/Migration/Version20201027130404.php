@@ -102,24 +102,30 @@ final class Version20201027130404 extends AbstractMigration
 
             $firstStationId = array_shift($dirInfo['stations']);
 
-            $this->connection->executeQuery('UPDATE station_media SET storage_location_id=? WHERE station_id = ?',
+            $this->connection->executeQuery(
+                'UPDATE station_media SET storage_location_id=? WHERE station_id = ?',
                 [
                     $mediaStorageLocationId,
                     $firstStationId,
-                ], [
+                ],
+                [
                     ParameterType::INTEGER,
                     ParameterType::INTEGER,
-                ]);
+                ]
+            );
 
             foreach ($dirInfo['stations'] as $stationId) {
-                $media = $this->connection->fetchAllAssociative('SELECT sm1.id AS old_id, sm2.id AS new_id FROM station_media AS sm1 INNER JOIN station_media AS sm2 ON sm1.path = sm2.path WHERE sm2.storage_location_id = ? AND sm1.station_id = ?',
+                $media = $this->connection->fetchAllAssociative(
+                    'SELECT sm1.id AS old_id, sm2.id AS new_id FROM station_media AS sm1 INNER JOIN station_media AS sm2 ON sm1.path = sm2.path WHERE sm2.storage_location_id = ? AND sm1.station_id = ?',
                     [
                         $mediaStorageLocationId,
                         $stationId,
-                    ], [
+                    ],
+                    [
                         ParameterType::INTEGER,
                         ParameterType::INTEGER,
-                    ]);
+                    ]
+                );
 
                 $tablesToUpdate = ['song_history', 'station_playlist_media', 'station_queue', 'station_requests'];
 

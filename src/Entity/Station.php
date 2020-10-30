@@ -631,6 +631,10 @@ class Station
 
     public function ensureDirectoriesExist(): void
     {
+        if (null === $this->radio_base_dir) {
+            $this->setRadioBaseDir(null);
+        }
+
         // Flysystem adapters will automatically create the main directory.
         $this->getRadioBaseDirAdapter();
         $this->getRadioPlaylistsDirAdapter();
@@ -961,6 +965,14 @@ class Station
     public function getPermissions(): Collection
     {
         return $this->permissions;
+    }
+
+    /**
+     * @return StationMedia[]|Collection
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media_storage_location->getMedia();
     }
 
     /**

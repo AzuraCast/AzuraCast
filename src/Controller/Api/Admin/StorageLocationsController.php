@@ -118,10 +118,11 @@ class StorageLocationsController extends AbstractAdminApiCrudController
         if (0 !== count($stations)) {
             $stationNames = [];
             foreach ($stations as $station) {
-                $stationNames[] = $station['name'];
+                $stationNames[] = $station->getName();
             }
 
-            throw new RuntimeException('This storage location has stations associated with it, and cannot be deleted until these stations are updated: '.implode(', ', $stationNames));
+            throw new RuntimeException('This storage location has stations associated with it, and cannot be '
+                . ' deleted until these stations are updated: ' . implode(', ', $stationNames));
         }
 
         parent::deleteRecord($record);

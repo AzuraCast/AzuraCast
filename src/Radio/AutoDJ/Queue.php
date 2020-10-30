@@ -185,12 +185,12 @@ class Queue implements EventSubscriberInterface
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
                     if (
-                    $event->setNextSong($this->playSongFromPlaylist(
-                        $playlist,
-                        $recentSongHistoryForDuplicatePrevention,
-                        $now,
-                        $allowDuplicates
-                    ))
+                        $event->setNextSong($this->playSongFromPlaylist(
+                            $playlist,
+                            $recentSongHistoryForDuplicatePrevention,
+                            $now,
+                            $allowDuplicates
+                        ))
                     ) {
                         $this->logger->info('Playable track found and registered.', [
                             'next_song' => (string)$event,

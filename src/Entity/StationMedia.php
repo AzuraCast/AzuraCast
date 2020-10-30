@@ -593,6 +593,4 @@ class StationMedia implements SongInterface
     {
         return FilesystemManager::PREFIX_WAVEFORMS . '://' . ltrim('/', self::getWaveformPath($uniqueId));
     }
-
-
 }

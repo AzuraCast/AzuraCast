@@ -46,6 +46,6 @@ class StorageLocationRepository extends Repository
                 return [];
         }
 
-        return $qb->getQuery()->getArrayResult();
+        return $qb->getQuery()->execute();
     }
 }

@@ -15,6 +15,7 @@ use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
+
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
@@ -98,7 +99,6 @@ class StationMediaRepository extends Repository
     /**
      * @param Entity\Station|Entity\StorageLocation $source
      *
-     * @return Entity\StorageLocation
      */
     protected function getStorageLocation($source): Entity\StorageLocation
     {
@@ -182,7 +182,7 @@ class StationMediaRepository extends Repository
                 return false;
             }
 
-            $fs->withLocalFile($mediaUri, function ($path) use ($media) {
+            $fs->withLocalFile($mediaUri, function ($path) use ($media): void {
                 $this->loadFromFile($media, $path);
                 $this->writeWaveform($media, $path);
             });
@@ -317,7 +317,7 @@ class StationMediaRepository extends Repository
     public function updateWaveform(Entity\StationMedia $media): void
     {
         $fs = $media->getStorageLocation()->getFilesystem();
-        $fs->withLocalFile($media->getPathUri(), function ($path) use ($media) {
+        $fs->withLocalFile($media->getPathUri(), function ($path) use ($media): void {
             $this->writeWaveform($media, $path);
         });
     }

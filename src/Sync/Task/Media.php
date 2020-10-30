@@ -70,7 +70,9 @@ class Media extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sl FROM App\Entity\StorageLocation sl WHERE sl.type = :type')
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sl 
+            FROM App\Entity\StorageLocation sl 
+            WHERE sl.type = :type')
             ->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
 
         $storageLocations = SimpleBatchIteratorAggregate::fromQuery($query, 1);
@@ -184,7 +186,7 @@ class Media extends AbstractTask
 
     public function importPlaylists(Entity\Station $station): void
     {
-        $fs = $this->filesystem->getForStation($station);
+        $fs = $this->filesystem->getForStation($station, false);
 
         // Create a lookup cache of all valid imported media.
         $media_lookup = [];
@@ -198,15 +200,19 @@ class Media extends AbstractTask
 
         // Iterate through playlists.
         $playlist_files_raw = $fs->createIterator(
-            FilesystemManager::PREFIX_PLAYLISTS,
+            FilesystemManager::PREFIX_PLAYLISTS . '://',
             [
                 'filter' => FilterFactory::pathMatchesRegex('/^.+\.(m3u|pls)$/i'),
             ]
         );
 
-        foreach ($playlist_files_raw as $playlist_file_path) {
+        foreach ($playlist_files_raw as $playlist_file) {
             // Create new StationPlaylist record.
             $record = new Entity\StationPlaylist($station);
+
+            $playlist_file_path = $fs->getFullPath(
+                FilesystemManager::PREFIX_PLAYLISTS . '://' . $playlist_file['path']
+            );
 
             $path_parts = pathinfo($playlist_file_path);
             $playlist_name = str_replace('playlist_', '', $path_parts['filename']);

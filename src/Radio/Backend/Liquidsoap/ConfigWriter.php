@@ -156,15 +156,10 @@ class ConfigWriter implements EventSubscriberInterface
         // Clear out existing playlists directory.
         $fs = $this->filesystem->getForStation($station, false);
 
-        foreach ($fs->listContents(FilesystemManager::PREFIX_PLAYLISTS . '://') as $file) {
-            print_r($file);
-            exit;
-        }
-
-        $playlistPath = $station->getRadioPlaylistsDir();
-        $currentPlaylists = array_diff(scandir($playlistPath, SCANDIR_SORT_NONE), ['..', '.']);
-        foreach ($currentPlaylists as $list) {
-            @unlink($playlistPath . '/' . $list);
+        foreach ($fs->listContents(FilesystemManager::PREFIX_PLAYLISTS . '://', true) as $file) {
+            if ('file' === $file['type']) {
+                $fs->delete($file['filesystem'] . '://' . $file['path']);
+            }
         }
 
         // Set up playlists using older format as a fallback.
@@ -246,7 +241,6 @@ class ConfigWriter implements EventSubscriberInterface
 
             if (Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
                 $playlistFilePath = $this->writePlaylistFile($playlist, false);
-
                 if (!$playlistFilePath) {
                     continue;
                 }
@@ -282,8 +276,10 @@ class ConfigWriter implements EventSubscriberInterface
 
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
-                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(',',
-                        $playlistParams) . ')';
+                $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(
+                    ',',
+                    $playlistParams
+                ) . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
@@ -510,6 +506,11 @@ class ConfigWriter implements EventSubscriberInterface
     {
         $station = $playlist->getStation();
 
+        $mediaStorage = $station->getMediaStorageLocation();
+        if (!$mediaStorage->isLocal()) {
+            return null;
+        }
+
         $playlistPath = $station->getRadioPlaylistsDir();
         $playlistVarName = 'playlist_' . $playlist->getShortName();
 
@@ -519,7 +520,7 @@ class ConfigWriter implements EventSubscriberInterface
             'playlist' => $playlist->getName(),
         ]);
 
-        $mediaBaseDir = $station->getRadioMediaDir() . '/';
+        $mediaBaseDir = $mediaStorage->getPath() . '/';
         $playlistFile = [];
 
         $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm

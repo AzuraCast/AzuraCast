@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Acl;
 use App\Config;
 use App\Entity;
+use App\Flysystem\FilesystemManager;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
 use App\Settings;
@@ -13,7 +14,6 @@ use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
-use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -22,6 +22,8 @@ class StationCloneForm extends StationForm
     protected Configuration $configuration;
 
     protected Media $media_sync;
+
+    protected FilesystemManager $filesystem;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -32,7 +34,8 @@ class StationCloneForm extends StationForm
         Configuration $configuration,
         Media $media_sync,
         Config $config,
-        Settings $settings
+        Settings $settings,
+        FilesystemManager $filesystem
     ) {
         parent::__construct($em, $serializer, $validator, $station_repo, $acl, $config, $settings);
 
@@ -41,6 +44,7 @@ class StationCloneForm extends StationForm
 
         $this->configuration = $configuration;
         $this->media_sync = $media_sync;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -179,37 +183,26 @@ class StationCloneForm extends StationForm
             $new_record->setHasStarted(false);
 
             if ('share' === $data['clone_media']) {
-                $new_record->setRadioMediaDir($record->getRadioMediaDir());
+                $new_record->setMediaStorageLocation($record->getMediaStorageLocation());
             }
 
             // Set new radio base directory
             $station_base_dir = Settings::getInstance()->getStationDirectory();
             $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
 
+            $new_record->ensureDirectoriesExist();
+
             // Persist all newly created records (and relations).
             $this->em->persist($new_record);
-            foreach ($new_record->getMedia() as $subrecord) {
-                /** @var Entity\StationMedia $subrecord */
-                $this->em->persist($subrecord);
 
-                foreach ($subrecord->getCustomFields() as $subrecord_custom_field) {
-                    $this->em->persist($subrecord_custom_field);
-                }
-
-                foreach ($subrecord->getPlaylists() as $subrecord_playlist_items) {
-                    /** @var Entity\StationPlaylistMedia $subrecord_playlist_items */
-                    $this->em->persist($subrecord_playlist_items);
-
-                    $playlist = $subrecord_playlist_items->getPlaylist();
-                    $this->em->persist($playlist);
-                }
-            }
             foreach ($new_record->getMounts() as $subrecord) {
                 $this->em->persist($subrecord);
             }
+
             foreach ($new_record->getPermissions() as $subrecord) {
                 $this->em->persist($subrecord);
             }
+
             foreach ($new_record->getPlaylists() as $subrecord) {
                 /** @var Entity\StationPlaylist $subrecord */
                 $this->em->persist($subrecord);
@@ -218,9 +211,11 @@ class StationCloneForm extends StationForm
                     $this->em->persist($playlist_schedule_item);
                 }
             }
+
             foreach ($new_record->getRemotes() as $subrecord) {
                 $this->em->persist($subrecord);
             }
+
             foreach ($new_record->getStreamers() as $subrecord) {
                 /** @var Entity\StationStreamer $subrecord */
                 $this->em->persist($subrecord);
@@ -229,32 +224,12 @@ class StationCloneForm extends StationForm
                     $this->em->persist($playlist_schedule_item);
                 }
             }
+
             $this->em->flush();
-
-            // Copy album art.
-            if ('none' !== $data['clone_media']) {
-                $this->copy(
-                    $record->getRadioAlbumArtDir(),
-                    $new_record->getRadioAlbumArtDir()
-                );
-            }
-
-            // Copy media.
-            if ('copy' === $data['clone_media']) {
-                $this->copy(
-                    $record->getRadioMediaDir(),
-                    $new_record->getRadioMediaDir()
-                );
-            }
 
             // Clear the EntityManager for later functions.
             $new_record_id = $new_record->getId();
             $this->em->clear();
-            $new_record = $this->em->find(Entity\Station::class, $new_record_id);
-
-            // Run normal post-creation steps.
-            $this->media_sync->importMusic($new_record);
-
             $new_record = $this->em->find(Entity\Station::class, $new_record_id);
 
             $this->configuration->assignRadioPorts($new_record, true);
@@ -265,23 +240,5 @@ class StationCloneForm extends StationForm
         }
 
         return false;
-    }
-
-    protected function copy($src, $dest): void
-    {
-        foreach (scandir($src) as $file) {
-            if (!is_readable($src . '/' . $file)) {
-                continue;
-            }
-
-            if (is_dir($src . '/' . $file) && ($file !== '.') && ($file !== '..')) {
-                if (!mkdir($concurrentDirectory = $dest . '/' . $file) && !is_dir($concurrentDirectory)) {
-                    throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
-                }
-                $this->copy($src . '/' . $file, $dest . '/' . $file);
-            } else {
-                copy($src . '/' . $file, $dest . '/' . $file);
-            }
-        }
     }
 }

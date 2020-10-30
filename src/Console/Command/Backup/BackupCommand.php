@@ -9,6 +9,7 @@ use App\Sync\Task\Backup;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use const PATHINFO_EXTENSION;
 
 class BackupCommand extends CommandAbstract

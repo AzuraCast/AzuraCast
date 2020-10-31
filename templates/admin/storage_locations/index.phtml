@@ -1,0 +1,12 @@
+<?php
+$this->layout('main', [
+    'title' => __('Storage Locations'),
+    'manual' => true,
+]);
+
+/** @var \App\Assets $assets */
+$assets->load('AdminStorageLocations')
+    ->addInlineJs($this->fetch('admin/storage_locations/index.js'));
+?>
+
+<div id="admin-storage-locations"></div>

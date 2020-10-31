@@ -33,6 +33,11 @@ return function (App\Event\BuildAdminMenu $e) {
                     'url' => $router->named('admin:logs:index'),
                     'permission' => Acl::GLOBAL_LOGS,
                 ],
+                'storage_locations' => [
+                    'label' => __('Storage Locations'),
+                    'url' => $router->named('admin:storage_locations:index'),
+                    'permission' => Acl::GLOBAL_STORAGE_LOCATIONS,
+                ],
                 'backups' => [
                     'label' => __('Backups'),
                     'url' => $router->named('admin:backups:index'),

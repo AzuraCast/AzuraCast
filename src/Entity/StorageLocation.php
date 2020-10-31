@@ -397,27 +397,52 @@ class StorageLocation
         return $this->media;
     }
 
+    public function getUri(string $suffix = null): string
+    {
+        $suffix = (null !== $suffix)
+            ? '/' . ltrim($suffix, '/')
+            : '';
+
+        switch ($this->adapter) {
+            case self::ADAPTER_S3:
+                $client = $this->getS3Client();
+                return $client->getObjectUrl($this->s3Bucket, $this->path . $suffix);
+
+            case self::ADAPTER_LOCAL:
+            default:
+                return $this->path . $suffix;
+        }
+    }
+
     public function getStorageAdapter(): AdapterInterface
     {
         switch ($this->adapter) {
             case self::ADAPTER_S3:
-                $s3Options = array_filter([
-                    'credentials' => [
-                        'key' => $this->s3CredentialKey,
-                        'secret' => $this->s3CredentialSecret,
-                    ],
-                    'region' => $this->s3Region,
-                    'version' => $this->s3Version,
-                    'endpoint' => $this->s3Endpoint,
-                ]);
-
-                $client = new S3Client($s3Options);
+                $client = $this->getS3Client();
                 return new AwsS3Adapter($client, $this->s3Bucket, $this->path);
 
             case self::ADAPTER_LOCAL:
             default:
                 return new Local($this->path);
         }
+    }
+
+    protected function getS3Client(): S3Client
+    {
+        if (self::ADAPTER_S3 !== $this->adapter) {
+            throw new \InvalidArgumentException('This storage location is not using the S3 adapter.');
+        }
+
+        $s3Options = array_filter([
+            'credentials' => [
+                'key' => $this->s3CredentialKey,
+                'secret' => $this->s3CredentialSecret,
+            ],
+            'region' => $this->s3Region,
+            'version' => $this->s3Version,
+            'endpoint' => $this->s3Endpoint,
+        ]);
+        return new S3Client($s3Options);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Api;
 
+use App\Entity\Api\Traits\HasLinks;
 use App\Traits\LoadFromParentObject;
 use OpenApi\Annotations as OA;
 
@@ -11,6 +12,7 @@ use OpenApi\Annotations as OA;
 class StationQueueDetailed extends StationQueue
 {
     use LoadFromParentObject;
+    use HasLinks;
 
     /**
      * Custom AutoDJ playback URI, if it exists.
@@ -19,15 +21,4 @@ class StationQueueDetailed extends StationQueue
      * @var string|null
      */
     public ?string $autodj_custom_uri = null;
-
-    /**
-     * @OA\Property(
-     *     @OA\Items(
-     *         type="string",
-     *         example="http://localhost/api/stations/1/queue/1"
-     *     )
-     * )
-     * @var array
-     */
-    public array $links = [];
 }

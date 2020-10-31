@@ -16,8 +16,7 @@
                         </b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>
-            </b-row>
-            <b-row>
+
                 <b-form-group class="col-md-6" label-for="form_edit_path">
                     <template v-slot:label>
                         <translate key="lang_form_edit_path">Path/Suffix</translate>
@@ -82,9 +81,7 @@
                                 <translate key="lang_error_required">This field is required.</translate>
                             </b-form-invalid-feedback>
                         </b-form-group>
-                    </b-row>
 
-                    <b-row>
                         <b-form-group class="col-md-6" label-for="form_edit_s3Endpoint">
                             <template v-slot:label>
                                 <translate key="lang_form_edit_s3Endpoint">Endpoint</translate>
@@ -108,9 +105,7 @@
                                 <translate key="lang_error_required">This field is required.</translate>
                             </b-form-invalid-feedback>
                         </b-form-group>
-                    </b-row>
 
-                    <b-row>
                         <b-form-group class="col-md-6" label-for="form_edit_s3Region">
                             <template v-slot:label>
                                 <translate key="lang_form_edit_s3Region">Region</translate>

@@ -34,6 +34,20 @@ final class Version20201027130404 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
+        // Create initial backup directory.
+        $this->connection->insert('storage_location', [
+            'type' => 'backup',
+            'adapter' => 'local',
+            'path' => '/var/azuracast/backup',
+        ]);
+
+        $storageLocationId = $this->connection->lastInsertId('storage_location');
+        $this->connection->update('settings', [
+            'setting_value' => $storageLocationId,
+        ], [
+            'setting_key' => 'backup_storage_location',
+        ]);
+
         // Migrate existing directories to new StorageLocation paradigm.
         $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station ORDER BY id ASC');
 

@@ -49,18 +49,37 @@ export default {
             return this.editUrl !== null;
         }
     },
-    validations: {
-        form: {
-            'adapter': { required },
-            'path': {},
-            's3CredentialKey': {},
-            's3CredentialSecret': {},
-            's3Region': {},
-            's3Version': {},
-            's3Bucket': {},
-            's3Endpoint': {},
-            'storageQuota': {}
+    validations () {
+        let validations = {
+            form: {
+                'adapter': { required },
+                'storageQuota': {}
+            }
+        };
+
+        switch (this.form.adapter) {
+            case 'local':
+                validations.form.path = { required };
+                validations.form.s3CredentialKey = {};
+                validations.form.s3CredentialSecret = {};
+                validations.form.s3Region = {};
+                validations.form.s3Version = {};
+                validations.form.s3Bucket = {};
+                validations.form.s3Endpoint = {};
+                break;
+
+            case 's3':
+                validations.form.path = {};
+                validations.form.s3CredentialKey = { required };
+                validations.form.s3CredentialSecret = { required };
+                validations.form.s3Region = { required };
+                validations.form.s3Version = { required };
+                validations.form.s3Bucket = { required };
+                validations.form.s3Endpoint = { required };
+                break;
         }
+
+        return validations;
     },
     methods: {
         resetForm () {

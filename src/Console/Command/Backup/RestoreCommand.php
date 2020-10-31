@@ -4,12 +4,10 @@ namespace App\Console\Command\Backup;
 
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
-use App\Sync\Task\Backup;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-
 use const PATHINFO_EXTENSION;
 
 class RestoreCommand extends CommandAbstract
@@ -28,7 +26,7 @@ class RestoreCommand extends CommandAbstract
         $io->writeln('Please wait while the backup is restored...');
 
         if ('/' !== $path[0]) {
-            $path = Backup::BASE_DIR . '/' . $path;
+            $path = '/var/azuracast/backups/' . $path;
         }
 
         if (!file_exists($path)) {

@@ -1,4 +1,5 @@
 <?php
+
 use App\Entity;
 
 return [
@@ -18,7 +19,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::BACKUP_TIME => [
@@ -27,7 +28,7 @@ return [
                         'label' => __('Scheduled Backup Time'),
                         'description' => __('The time (in UTC) to run the automated backup, if enabled.'),
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::BACKUP_EXCLUDE_MEDIA => [
@@ -39,7 +40,7 @@ return [
                         'deselected_text' => __('No'),
                         'default' => false,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
                 ],
 
                 Entity\Settings::BACKUP_KEEP_COPIES => [
@@ -51,7 +52,16 @@ return [
                         'max' => 365,
                         'default' => 0,
                         'form_group_class' => 'col-md-6',
-                    ]
+                    ],
+                ],
+
+                Entity\Settings::BACKUP_STORAGE_LOCATION => [
+                    'select',
+                    [
+                        'label' => __('Storage Location'),
+                        'choices' => $storageLocations,
+                        'form_group_class' => 'col-md-12',
+                    ],
                 ],
 
             ],
@@ -65,7 +75,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
-                    ]
+                    ],
                 ],
             ],
         ],

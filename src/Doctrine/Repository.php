@@ -91,7 +91,7 @@ class Repository
 
         // Specify custom text in the $add_blank parameter to override.
         if ($add_blank !== false) {
-            $select[''] = ($add_blank === true) ? 'Select...' : $add_blank;
+            $select[''] = ($add_blank === true) ? __('Select...') : $add_blank;
         }
 
         // Build query for records.

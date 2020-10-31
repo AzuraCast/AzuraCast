@@ -7,6 +7,14 @@ use App\Entity;
 
 class StorageLocationRepository extends Repository
 {
+    public function findByType(string $type, int $id): ?Entity\StorageLocation
+    {
+        return $this->repository->findOneBy([
+            'type' => $type,
+            'id' => $id,
+        ]);
+    }
+
     /**
      * @param string $type
      *
@@ -17,6 +25,26 @@ class StorageLocationRepository extends Repository
         return $this->repository->findBy([
             'type' => $type,
         ]);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string[]
+     */
+    public function fetchSelectByType(string $type, bool $addBlank = false): array
+    {
+        $select = [];
+
+        if ($addBlank) {
+            $select[''] = __('None');
+        }
+
+        foreach ($this->findAllByType($type) as $storageLocation) {
+            $select[$storageLocation->getId()] = (string)$storageLocation;
+        }
+
+        return $select;
     }
 
     /**

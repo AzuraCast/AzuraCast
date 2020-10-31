@@ -1,15 +1,22 @@
 <?php
-use App\Entity;
 
 return [
     'elements' => [
+
+        'storage_location' => [
+            'select',
+            [
+                'label' => __('Storage Location'),
+                'choices' => $storageLocations,
+            ],
+        ],
 
         'path' => [
             'text',
             [
                 'label' => __('Backup Filename'),
-                'description' => __('Optional absolute or relative path where the backup file should be located.'),
-            ]
+                'description' => __('Path where the backup file should be located.'),
+            ],
         ],
 
         'exclude_media' => [
@@ -20,7 +27,7 @@ return [
                 'selected_text' => __('Yes'),
                 'deselected_text' => __('No'),
                 'default' => false,
-            ]
+            ],
         ],
 
         'submit' => [
@@ -29,7 +36,7 @@ return [
                 'type' => 'submit',
                 'label' => __('Save Changes'),
                 'class' => 'btn btn-lg btn-primary',
-            ]
+            ],
         ],
 
     ],

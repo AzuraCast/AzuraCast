@@ -38,13 +38,27 @@ class StationFilesystemGroup extends MountManager implements FilesystemInterface
         return $fs->getFullPath($path);
     }
 
+    public function getLocalPath(string $uri): string
+    {
+        [$prefix, $path] = $this->getPrefixAndPath($uri);
+
+        /** @var Filesystem $fs */
+        $fs = $this->getFilesystem($prefix);
+
+        try {
+            return $fs->getFullPath($path);
+        } catch (\InvalidArgumentException $e) {
+            return $this->copyToTemp($uri);
+        }
+    }
+
     public function copyToTemp(string $from, ?string $to = null): string
     {
-        [, $path_from] = $this->getPrefixAndPath($from);
+        [, $fromPath] = $this->getPrefixAndPath($from);
 
         if (null === $to) {
-            $random_prefix = substr(md5(random_bytes(8)), 0, 5);
-            $to = FilesystemManager::PREFIX_TEMP . '://' . $random_prefix . '_' . $path_from;
+            $randomPrefix = gmdate('Ymdhis') . substr(md5(random_bytes(8)), 0, 5);
+            $to = FilesystemManager::PREFIX_TEMP . '://' . $randomPrefix . '_' . basename($fromPath);
         }
 
         if ($this->has($to)) {

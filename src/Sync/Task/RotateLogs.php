@@ -13,21 +13,29 @@ use Symfony\Component\Finder\Finder;
 
 class RotateLogs extends AbstractTask
 {
+    protected Settings $appSettings;
+
     protected Adapters $adapters;
 
     protected Supervisor $supervisor;
+
+    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Settings $appSettings,
         Adapters $adapters,
-        Supervisor $supervisor
+        Supervisor $supervisor,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
+        $this->appSettings = $appSettings;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
+        $this->storageLocationRepo = $storageLocationRepo;
     }
 
     public function run(bool $force = false): void
@@ -49,7 +57,7 @@ class RotateLogs extends AbstractTask
         }
 
         // Rotate the main AzuraCast log.
-        $rotate = new Rotate\Rotate(Settings::getInstance()->getTempDirectory() . '/app.log');
+        $rotate = new Rotate\Rotate($this->appSettings->getTempDirectory() . '/app.log');
         $rotate->keep(5);
         $rotate->size('5MB');
         $rotate->run();
@@ -58,9 +66,26 @@ class RotateLogs extends AbstractTask
         $backups_to_keep = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_KEEP_COPIES, 0);
 
         if ($backups_to_keep > 0) {
-            $rotate = new Rotate\Rotate(Backup::BASE_DIR . '/automatic_backup.zip');
-            $rotate->keep($backups_to_keep);
-            $rotate->run();
+            $backupStorageId = (int)$this->settingsRepo->getSetting(
+                Entity\Settings::BACKUP_STORAGE_LOCATION,
+                null
+            );
+
+            if ($backupStorageId > 0) {
+                $storageLocation = $this->storageLocationRepo->findByType(
+                    Entity\StorageLocation::TYPE_BACKUP,
+                    $backupStorageId
+                );
+
+                if ($storageLocation instanceof Entity\StorageLocation && $storageLocation->isLocal()) {
+                    $fs = $storageLocation->getFilesystem();
+                    $autoBackupPath = $fs->getFullPath('automatic_backup.zip');
+
+                    $rotate = new Rotate\Rotate($autoBackupPath);
+                    $rotate->keep($backups_to_keep);
+                    $rotate->run();
+                }
+            }
         }
     }
 

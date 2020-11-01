@@ -30,6 +30,7 @@ class StationCloneForm extends StationForm
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Acl $acl,
         Configuration $configuration,
         Media $media_sync,
@@ -37,7 +38,16 @@ class StationCloneForm extends StationForm
         Settings $settings,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $serializer, $validator, $station_repo, $acl, $config, $settings);
+        parent::__construct(
+            $em,
+            $serializer,
+            $validator,
+            $station_repo,
+            $storageLocationRepo,
+            $acl,
+            $config,
+            $settings
+        );
 
         $form_config = $config->get('forms/station_clone');
         $this->configure($form_config);

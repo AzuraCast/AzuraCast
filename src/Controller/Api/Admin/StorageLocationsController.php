@@ -128,6 +128,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $query);
     }
 
+    /** @inheritDoc */
     protected function viewRecord($record, ServerRequest $request)
     {
         /** @var Entity\StorageLocation $record */

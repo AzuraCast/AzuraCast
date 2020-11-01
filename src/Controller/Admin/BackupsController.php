@@ -160,12 +160,12 @@ class BackupsController extends AbstractLogViewerController
     }
 
     /**
-     * @param $rawPath
+     * @param string $rawPath
      *
      * @return array{0: string, 1: Filesystem}
      * @throws NotFoundException
      */
-    protected function getFile($rawPath): array
+    protected function getFile(string $rawPath): array
     {
         $pathStr = base64_decode($rawPath);
         [$storageLocationId, $path] = explode('|', $pathStr);

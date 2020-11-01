@@ -277,9 +277,9 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(
-                        ',',
-                        $playlistParams
-                    ) . ')';
+                    ',',
+                    $playlistParams
+                ) . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:

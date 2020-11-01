@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\File;
+use App\Normalizer\Annotation\DeepNormalize;
 use App\Radio\Adapters;
 use App\Settings;
 use App\Validator\Constraints as AppAssert;
@@ -14,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -306,6 +308,10 @@ class Station
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="media_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
      * })
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     *
      * @var StorageLocation
      */
     protected $media_storage_location;
@@ -315,6 +321,10 @@ class Station
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="recordings_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
      * })
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     *
      * @var StorageLocation
      */
     protected $recordings_storage_location;

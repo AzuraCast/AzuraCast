@@ -467,7 +467,7 @@ class StorageLocation
             self::ADAPTER_S3 => 'Amazon S3',
         ];
 
-        return $typeNames[$this->type] . ' (' . $this->id . '), ' . $adapterNames[$this->adapter]
-            . ', ' . $this->getUri();
+        return $adapterNames[$this->adapter] . ': ' . $this->getUri() .
+            ' (' . $typeNames[$this->type] . ' #' . $this->id . ')';
     }
 }

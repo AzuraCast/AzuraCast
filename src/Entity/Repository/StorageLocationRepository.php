@@ -29,15 +29,21 @@ class StorageLocationRepository extends Repository
 
     /**
      * @param string $type
+     * @param bool $addBlank
+     * @param string|null $emptyString
      *
      * @return string[]
      */
-    public function fetchSelectByType(string $type, bool $addBlank = false): array
-    {
+    public function fetchSelectByType(
+        string $type,
+        bool $addBlank = false,
+        ?string $emptyString = null
+    ): array {
         $select = [];
 
         if ($addBlank) {
-            $select[''] = __('None');
+            $emptyString ??= __('None');
+            $select[''] = $emptyString;
         }
 
         foreach ($this->findAllByType($type) as $storageLocation) {

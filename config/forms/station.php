@@ -571,15 +571,6 @@ return [
                     ],
                 ],
 
-                'storage_quota' => [
-                    'text',
-                    [
-                        'label' => __('Storage Quota'),
-                        'description' => __('Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.'),
-                        'form_group_class' => 'col-md-6 ',
-                    ],
-                ],
-
                 'radio_base_dir' => [
                     'text',
                     [
@@ -590,12 +581,22 @@ return [
                     ],
                 ],
 
-                'radio_media_dir' => [
-                    'text',
+                'media_storage_location_id' => [
+                    'select',
                     [
-                        'label' => __('Custom Media Directory'),
+                        'label' => __('Media Storage Location'),
+                        'choices' => [],
                         'label_class' => 'advanced',
-                        'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'recordings_storage_location_id' => [
+                    'select',
+                    [
+                        'label' => __('Live Recordings Storage Location'),
+                        'choices' => [],
+                        'label_class' => 'advanced',
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

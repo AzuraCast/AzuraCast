@@ -170,7 +170,12 @@ class BackupsController extends AbstractLogViewerController
         $pathStr = base64_decode($rawPath);
         [$storageLocationId, $path] = explode('|', $pathStr);
 
-        $storageLocation = $this->storageLocationRepo->findByType(StorageLocation::TYPE_BACKUP, $storageLocationId);
+        $storageLocation = $this->storageLocationRepo->findByType(
+            StorageLocation::TYPE_BACKUP,
+            (int)$storageLocationId
+        );
+
+
         if (!($storageLocation instanceof StorageLocation)) {
             throw new \InvalidArgumentException('Invalid storage location.');
         }

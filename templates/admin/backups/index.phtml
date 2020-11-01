@@ -110,7 +110,7 @@ $assets
                         <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('admin:backups:download',
                             ['path' => $row['pathEncoded']])?>" download="<?=$this->e($row['basename'])?>"><?=__('Download')?></a>
                         <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('admin:backups:delete', [
-                            'path' => base64_encode($row['path']),
+                            'path' => $row['pathEncoded'],
                             'csrf' => $csrf,
                         ])?>" data-confirm-title="<?=$this->e(__('Delete backup "%s"?',
                             $row['filename']))?>"><?=__('Delete')?></a>

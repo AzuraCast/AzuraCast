@@ -28,13 +28,13 @@ class BackupCommand extends CommandAbstract
             $path = 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
         }
 
+        $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
         if ('/' === $path[0]) {
-            $isAbsolute = true;
             $tmpPath = $path;
             $storageLocation = null;
         } else {
-            $isAbsolute = false;
-            $tmpPath = tempnam(sys_get_temp_dir(), 'backup_');
+            $tmpPath = tempnam(sys_get_temp_dir(), 'backup_') . '.' . $file_ext;
 
             if (null === $storageLocationId) {
                 $io->error('You must specify a storage location when providing a relative path.');
@@ -120,8 +120,6 @@ class BackupCommand extends CommandAbstract
             return $val;
         }, $files_to_backup);
 
-        $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-
         switch ($file_ext) {
             case 'gz':
             case 'tgz':
@@ -150,7 +148,7 @@ class BackupCommand extends CommandAbstract
             $fs = $storageLocation->getFilesystem();
             $fs->putFromLocal($tmpPath, $path);
         }
-
+        
         $io->newLine();
 
         // Cleanup

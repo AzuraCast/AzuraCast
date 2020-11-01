@@ -131,7 +131,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendLines([
             'set("init.daemon", false)',
-            'set("init.daemon.pidfile.path","' . $pidfile . ')',
+            'set("init.daemon.pidfile.path","' . $pidfile . '")',
             'set("log.stdout", true)',
             'set("log.file", false)',
             'set("server.telnet",true)',
@@ -277,9 +277,9 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(
-                    ',',
-                    $playlistParams
-                ) . ')';
+                        ',',
+                        $playlistParams
+                    ) . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:

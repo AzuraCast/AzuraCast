@@ -48,7 +48,8 @@ class StationFilesystemGroup extends MountManager implements FilesystemInterface
         try {
             return $fs->getFullPath($path);
         } catch (\InvalidArgumentException $e) {
-            return $this->copyToTemp($uri);
+            $tempUri = $this->copyToTemp($uri);
+            return $this->getFullPath($tempUri);
         }
     }
 

@@ -187,6 +187,17 @@ class StorageLocation
         return $this->path;
     }
 
+    public function applyPath(?string $suffix = null): string
+    {
+        $path = trim($this->path ?? '', '/');
+
+        $suffix = (null !== $suffix)
+            ? '/' . ltrim($suffix, '/')
+            : '';
+
+        return $path . $suffix;
+    }
+
     public function setPath(?string $path): void
     {
         $this->path = $this->truncateString($path, 255);
@@ -376,7 +387,7 @@ class StorageLocation
     {
         $available = $this->getRawStorageAvailable();
         if ($available === null) {
-            return true;
+            return false;
         }
 
         $used = $this->getStorageUsedBytes();
@@ -386,7 +397,14 @@ class StorageLocation
 
     public function getStorageUsePercentage(): int
     {
-        return Quota::getPercentage($this->getStorageUsedBytes(), $this->getRawStorageAvailable());
+        $storageUsed = $this->getStorageUsedBytes();
+        $storageAvailable = $this->getRawStorageAvailable();
+
+        if (null === $storageAvailable) {
+            return 0;
+        }
+
+        return Quota::getPercentage($storageUsed, $storageAvailable);
     }
 
     /**
@@ -397,20 +415,28 @@ class StorageLocation
         return $this->media;
     }
 
-    public function getUri(string $suffix = null): string
+    public function getUri(?string $suffix = null): string
     {
-        $suffix = (null !== $suffix)
-            ? '/' . ltrim($suffix, '/')
-            : '';
+        $path = $this->applyPath($suffix);
 
         switch ($this->adapter) {
             case self::ADAPTER_S3:
-                $client = $this->getS3Client();
-                return $client->getObjectUrl($this->s3Bucket, $this->path . $suffix);
+                try {
+                    $client = $this->getS3Client();
+                    if (empty($path)) {
+                        $objectUrl = $client->getObjectUrl($this->s3Bucket, '/');
+                        return rtrim($objectUrl, '/');
+                    }
+
+                    return $client->getObjectUrl($this->s3Bucket, $path);
+                } catch (\InvalidArgumentException $e) {
+                    return 'Invalid URI (' . $e->getMessage() . ')';
+                }
+                break;
 
             case self::ADAPTER_LOCAL:
             default:
-                return $this->path . $suffix;
+                return $path;
         }
     }
 

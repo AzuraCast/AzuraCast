@@ -49,7 +49,7 @@ class GetArtAction
         $station = $request->getStation();
 
         $defaultArtRedirect = $response->withRedirect($stationRepo->getDefaultAlbumArtUrl($station), 302);
-        $fs = $filesystem->getForStation($station);
+        $fs = $filesystem->getForStation($station, true);
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id)[0];

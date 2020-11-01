@@ -48,7 +48,7 @@ class FilesController
         $mediaStorage = $station->getMediaStorageLocation();
 
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
-            'show_sftp' => SftpGo::isSupported(),
+            'show_sftp' => SftpGo::isSupportedForStation($station),
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
             'space_used' => $mediaStorage->getStorageUsed(),

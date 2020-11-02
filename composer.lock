@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1e2d0c12af54aaba4150ca526fd3c85",
+    "content-hash": "9589b162fa75cda5e30f9f91a5db6017",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -5035,6 +5035,9 @@
                 "request",
                 "response"
             ],
+            "support": {
+                "source": "https://github.com/php-fig/http-factory/tree/master"
+            },
             "time": "2019-04-30T12:38:16+00:00"
         },
         {
@@ -5526,16 +5529,16 @@
         },
         {
             "name": "slim/http",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim-Http.git",
-                "reference": "c2e67ac1680207aa7863fd4721530b01f3436b2e"
+                "reference": "4b6f81dc44b46ef5881bef865f7d63d84cd5e9c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim-Http/zipball/c2e67ac1680207aa7863fd4721530b01f3436b2e",
-                "reference": "c2e67ac1680207aa7863fd4721530b01f3436b2e",
+                "url": "https://api.github.com/repos/slimphp/Slim-Http/zipball/4b6f81dc44b46ef5881bef865f7d63d84cd5e9c1",
+                "reference": "4b6f81dc44b46ef5881bef865f7d63d84cd5e9c1",
                 "shasum": ""
             },
             "require": {
@@ -5547,15 +5550,12 @@
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.0"
             },
-            "provide": {
-                "psr/http-factory": "^1.0"
-            },
             "require-dev": {
-                "adriansuter/php-autoload-override": "^1.0",
-                "laminas/laminas-diactoros": "^2.0",
-                "nyholm/psr7": "^1.0",
+                "adriansuter/php-autoload-override": "^1.2",
+                "laminas/laminas-diactoros": "^2.3",
+                "nyholm/psr7": "^1.3",
                 "php-http/psr7-integration-tests": "dev-master",
-                "phpstan/phpstan": "^0.10.3",
+                "phpstan/phpstan": "^0.12.40",
                 "phpunit/phpunit": "^8.5",
                 "squizlabs/php_codesniffer": "^3.5"
             },
@@ -5598,7 +5598,11 @@
                 "psr-7",
                 "psr7"
             ],
-            "time": "2020-01-04T23:05:26+00:00"
+            "support": {
+                "issues": "https://github.com/slimphp/Slim-Http/issues",
+                "source": "https://github.com/slimphp/Slim-Http/tree/1.1.0"
+            },
+            "time": "2020-10-29T01:40:31+00:00"
         },
         {
             "name": "slim/slim",
@@ -8076,32 +8080,32 @@
         },
         {
             "name": "wikimedia/composer-merge-plugin",
-            "version": "v1.4.1",
+            "version": "dev-feature/composer-v2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wikimedia/composer-merge-plugin.git",
-                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100"
+                "url": "https://github.com/mcaskill/composer-merge-plugin.git",
+                "reference": "9c465e25d6b8036fb2de003cdce521fc9876e81b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
-                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
+                "url": "https://api.github.com/repos/mcaskill/composer-merge-plugin/zipball/9c465e25d6b8036fb2de003cdce521fc9876e81b",
+                "reference": "9c465e25d6b8036fb2de003cdce521fc9876e81b",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0",
-                "php": ">=5.3.2"
+                "composer-plugin-api": "^1.1||^2.0",
+                "php": ">=7.2.0"
             },
             "require-dev": {
-                "composer/composer": "~1.0.0",
-                "jakub-onderka/php-parallel-lint": "~0.8",
-                "phpunit/phpunit": "~4.8|~5.0",
-                "squizlabs/php_codesniffer": "~2.1.0"
+                "composer/composer": "^1.1",
+                "php-parallel-lint/php-parallel-lint": "~1.1.0",
+                "phpunit/phpunit": "^8.5||^9.0",
+                "squizlabs/php_codesniffer": "~3.5.4"
             },
             "type": "composer-plugin",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "1.5.x-dev"
                 },
                 "class": "Wikimedia\\Composer\\MergePlugin"
             },
@@ -8110,7 +8114,14 @@
                     "Wikimedia\\Composer\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "composer validate --no-interaction",
+                    "parallel-lint src tests",
+                    "phpunit --log-junit=reports/unitreport.xml --coverage-text --coverage-html=reports/coverage --coverage-clover=reports/coverage.xml",
+                    "phpcs --encoding=utf-8 --standard=PSR2 --report-checkstyle=reports/checkstyle-phpcs.xml --report-full --extensions=php src/* tests/phpunit/*"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -8121,7 +8132,10 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2017-04-25T02:31:25+00:00"
+            "support": {
+                "source": "https://github.com/mcaskill/composer-merge-plugin/tree/feature/composer-v2"
+            },
+            "time": "2020-10-27T03:40:15+00:00"
         },
         {
             "name": "zircote/swagger-php",
@@ -11785,6 +11799,7 @@
         "azuracast/nowplaying": 20,
         "james-heinrich/getid3": 20,
         "lstrojny/fxmlrpc": 20,
+        "wikimedia/composer-merge-plugin": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
@@ -11804,5 +11819,5 @@
         "ext-xmlwriter": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

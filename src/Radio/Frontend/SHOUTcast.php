@@ -214,7 +214,7 @@ class SHOUTcast extends AbstractFrontend
         return [
             'password' => Utilities::generatePassword(),
             'adminpassword' => Utilities::generatePassword(),
-            'logfile' => '/tmp/sc_serv.log',
+            'logfile' => $config_path . '/sc_serv.log',
             'w3clog' => $config_path . '/sc_w3c.log',
             'banfile' => $this->writeIpBansFile($station),
             'ripfile' => $config_path . '/sc_serv.rip',

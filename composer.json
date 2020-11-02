@@ -55,9 +55,10 @@
     "overtrue/phplint": "^2.0",
     "php-di/php-di": "^6.0",
     "php-di/slim-bridge": "^3.0",
+    "psr/http-factory": "^1.0",
     "ramsey/uuid": "^4.0",
     "rlanvin/php-ip": "^2.0",
-    "slim/http": "^1.0",
+    "slim/http": "^1.1",
     "slim/slim": "^4.2",
     "spomky-labs/otphp": "^10.0",
     "studio24/rotate": "^1.0",
@@ -73,7 +74,7 @@
     "symfony/serializer": "^5",
     "symfony/validator": "^5",
     "voku/portable-utf8": "^5.4",
-    "wikimedia/composer-merge-plugin": "^1.4",
+    "wikimedia/composer-merge-plugin": "dev-feature/composer-v2",
     "zircote/swagger-php": "3.0.4"
   },
   "require-dev": {
@@ -105,6 +106,12 @@
     "symfony/polyfill-intl-normalizer": "1.99",
     "symfony/polyfill-mbstring": "1.99"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/mcaskill/composer-merge-plugin.git"
+    }
+  ],
   "scripts": {
     "dev-test": [
       "@phplint",

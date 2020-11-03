@@ -8,7 +8,7 @@
  */
 
 $libUrls = [];
-$lib = $assets->getLibrary('webcaster');
+$lib = $assets->getLibrary('Webcaster');
 
 $scripts = array_slice($lib['files']['js'], 0, -1);
 
@@ -24,12 +24,12 @@ $props = [
 ?>
 
 $(function () {
-  const web_dj = new Vue({
-    el: '#web_dj',
-    render: function (createElement) {
-      return createElement(Webcaster.default, {
-        props: <?=json_encode($props) ?>
-      });
-    }
-  });
+    const web_dj = new Vue({
+        el: '#web_dj',
+        render: function (createElement) {
+            return createElement(Webcaster.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
+    });
 });

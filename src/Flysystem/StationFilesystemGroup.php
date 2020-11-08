@@ -58,11 +58,18 @@ class StationFilesystemGroup extends MountManager implements FilesystemInterface
         [, $fromPath] = $this->getPrefixAndPath($from);
 
         if (null === $to) {
-            $randomPrefix = gmdate('Ymdhis') . substr(md5(random_bytes(8)), 0, 5);
-            $to = FilesystemManager::PREFIX_TEMP . '://' . $randomPrefix . '_' . basename($fromPath);
+            $folderPrefix = substr(md5($fromPath), 0, 10);
+            $to = FilesystemManager::PREFIX_TEMP . '://' . $folderPrefix . '_' . basename($fromPath);
         }
 
         if ($this->has($to)) {
+            if ($this->getTimestamp($to) >= $this->getTimestamp($from)) {
+                $tempFullPath = $this->getLocalPath($to);
+                touch($tempFullPath);
+                
+                return $to;
+            }
+
             $this->delete($to);
         }
 

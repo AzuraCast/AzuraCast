@@ -52,7 +52,7 @@
         <b-card v-show="form.adapter.$model === 's3'" class="mb-3" no-body>
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <translate key="lang_form_adapter_s3">Remote: Amazon S3 Compatible</translate>
+                    <translate key="lang_form_adapter_s3">Remote: S3 Compatible</translate>
                 </h2>
             </div>
             <b-card-body>
@@ -60,7 +60,7 @@
                     <b-row>
                         <b-form-group class="col-md-6" label-for="form_edit_s3CredentialKey">
                             <template v-slot:label>
-                                <translate key="lang_form_edit_s3CredentialKey">Credential Key</translate>
+                                <translate key="lang_form_edit_s3CredentialKey">Access Key ID</translate>
                             </template>
 
                             <b-form-input id="form_edit_s3CredentialKey" type="text" v-model="form.s3CredentialKey.$model"
@@ -72,7 +72,7 @@
 
                         <b-form-group class="col-md-6" label-for="form_edit_s3CredentialSecret">
                             <template v-slot:label>
-                                <translate key="lang_form_edit_s3CredentialSecret">Credential Secret</translate>
+                                <translate key="lang_form_edit_s3CredentialSecret">Secret Key</translate>
                             </template>
 
                             <b-form-input id="form_edit_s3CredentialSecret" type="text" v-model="form.s3CredentialSecret.$model"

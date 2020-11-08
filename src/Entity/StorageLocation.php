@@ -482,18 +482,10 @@ class StorageLocation
 
     public function __toString(): string
     {
-        $typeNames = [
-            self::TYPE_BACKUP => 'Backup',
-            self::TYPE_STATION_MEDIA => 'Station Media',
-            self::TYPE_STATION_RECORDINGS => 'Station Recordings',
-        ];
-
         $adapterNames = [
             self::ADAPTER_LOCAL => 'Local',
-            self::ADAPTER_S3 => 'Amazon S3',
+            self::ADAPTER_S3 => 'S3',
         ];
-
-        return $adapterNames[$this->adapter] . ': ' . $this->getUri() .
-            ' (' . $typeNames[$this->type] . ' #' . $this->id . ')';
+        return $adapterNames[$this->adapter] . ': ' . $this->getUri();
     }
 }

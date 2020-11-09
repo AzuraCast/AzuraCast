@@ -1,6 +1,7 @@
 <template>
     <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
         <b-overlay variant="card" :show="loading">
+            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
             <b-form class="form" @submit.prevent="doSubmit">
                 <b-tabs content-class="mt-3">
                     <form-basic-info :form="$v.form"></form-basic-info>
@@ -46,6 +47,7 @@ export default {
     data () {
         return {
             loading: true,
+            error: null,
             editUrl: null,
             form: {}
         };
@@ -118,6 +120,7 @@ export default {
         create () {
             this.resetForm();
             this.loading = false;
+            this.error = null;
             this.editUrl = null;
 
             this.$refs.modal.show();
@@ -125,6 +128,7 @@ export default {
         edit (recordUrl) {
             this.resetForm();
             this.loading = true;
+            this.error = null;
             this.editUrl = recordUrl;
             this.$refs.modal.show();
 
@@ -154,8 +158,22 @@ export default {
                 };
 
                 this.loading = false;
-            }).catch((err) => {
-                console.log(err);
+            }).catch((error) => {
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+
+                if (error.response) {
+                    // Request made and server responded
+                    notifyMessage = error.response.data.message;
+                    console.log(notifyMessage);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+
+                notify('<b>' + notifyMessage + '</b>', 'danger', false);
                 this.close();
             });
         },
@@ -164,6 +182,8 @@ export default {
             if (this.$v.form.$anyError) {
                 return;
             }
+
+            this.error = null;
 
             axios({
                 method: (this.isEditMode)
@@ -179,18 +199,27 @@ export default {
 
                 this.$emit('relist');
                 this.close();
-            }).catch((err) => {
-                console.error(err);
-
+            }).catch((error) => {
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
 
-                this.$emit('relist');
-                this.close();
+                if (error.response) {
+                    // Request made and server responded
+                    notifyMessage = error.response.data.message;
+                    console.log(notifyMessage);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+
+                this.error = notifyMessage;
             });
         },
         close () {
             this.loading = false;
+            this.error = null;
             this.editUrl = null;
             this.resetForm();
 

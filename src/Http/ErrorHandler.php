@@ -67,10 +67,10 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         }
 
         $this->showDetailed = (!$this->settings->isProduction() && !in_array(
-            $this->loggerLevel,
-            [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE],
-            true
-        ));
+                $this->loggerLevel,
+                [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE],
+                true
+            ));
         $this->returnJson = $this->shouldReturnJson($request);
 
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);
@@ -85,8 +85,8 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         }
 
         if ($req->hasHeader('Accept')) {
-            $accept = $req->getHeader('Accept');
-            if (in_array('application/json', $accept)) {
+            $accept = $req->getHeaderLine('Accept');
+            if (false !== stripos($accept, 'application/json')) {
                 return true;
             }
         }

@@ -12,7 +12,7 @@
                             <translate key="lang_form_adapter_local">Local Filesystem</translate>
                         </b-form-radio>
                         <b-form-radio value="s3">
-                            <translate key="lang_form_adapter_s3">Remote: Amazon S3 Compatible</translate>
+                            <translate key="lang_form_adapter_s3">Remote: S3 Compatible</translate>
                         </b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>

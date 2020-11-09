@@ -35,7 +35,7 @@ return [
                     'toggle',
                     [
                         'label' => __('Exclude Media from Backups'),
-                        'description' => __('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere.'),
+                        'description' => __('Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,

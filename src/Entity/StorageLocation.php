@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\Flysystem\Filesystem;
 use App\Radio\Quota;
+use App\Validator\Constraints as AppAssert;
 use Aws\S3\S3Client;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @OA\Schema(type="object", schema="StorageLocation")
  *
  * @AuditLog\Auditable
+ * @AppAssert\StorageLocation()
  */
 class StorageLocation
 {
@@ -438,6 +440,17 @@ class StorageLocation
             default:
                 return $path;
         }
+    }
+
+    public function validate(): void
+    {
+        if (self::ADAPTER_S3 === $this->adapter) {
+            $client = $this->getS3Client();
+            $client->getObjectUrl($this->s3Bucket, '/test');
+        }
+        
+        $adapter = $this->getStorageAdapter();
+        $adapter->has('/test');
     }
 
     public function getStorageAdapter(): AdapterInterface

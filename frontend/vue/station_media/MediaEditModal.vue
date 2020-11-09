@@ -1,6 +1,7 @@
 <template>
     <b-modal size="lg" id="edit_modal" ref="modal" :title="langTitle" :busy="loading">
         <b-overlay variant="card" :show="loading">
+            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
             <b-form class="form" @submit.prevent="doEdit">
                 <b-tabs content-class="mt-3">
                     <media-form-basic-info :form="$v.form"></media-form-basic-info>
@@ -52,6 +53,7 @@ export default {
         return {
             loading: true,
             recordUrl: null,
+            error: null,
             albumArtUrl: null,
             waveformUrl: null,
             audioUrl: null,
@@ -120,6 +122,7 @@ export default {
         },
         open (recordUrl, albumArtUrl, audioUrl, waveformUrl) {
             this.loading = true;
+            this.error = null;
             this.$refs.modal.show();
 
             this.albumArtUrl = albumArtUrl;
@@ -153,13 +156,28 @@ export default {
                 });
 
                 this.loading = false;
-            }).catch((err) => {
-                console.log(err);
+            }).catch((error) => {
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+
+                if (error.response) {
+                    // Request made and server responded
+                    notifyMessage = error.response.data.message;
+                    console.log(notifyMessage);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+
+                notify('<b>' + notifyMessage + '</b>', 'danger', false);
                 this.close();
             });
         },
         close () {
             this.loading = false;
+            this.error = null;
             this.albumArtUrl = null;
             this.audioUrl = null;
 
@@ -174,20 +192,30 @@ export default {
                 return;
             }
 
+            this.error = null;
+
             axios.put(this.recordUrl, this.form).then((resp) => {
                 let notifyMessage = this.$gettext('Changes saved.');
                 notify('<b>' + notifyMessage + '</b>', 'success', false);
 
                 this.$emit('relist');
                 this.close();
-            }).catch((err) => {
-                console.error(err);
-
+            }).catch((error) => {
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
 
-                this.$emit('relist');
-                this.close();
+                if (error.response) {
+                    // Request made and server responded
+                    notifyMessage = error.response.data.message;
+                    console.log(notifyMessage);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+
+                this.error = notifyMessage;
             });
         }
     }

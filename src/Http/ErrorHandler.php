@@ -67,10 +67,10 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         }
 
         $this->showDetailed = (!$this->settings->isProduction() && !in_array(
-            $this->loggerLevel,
-            [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE],
-            true
-        ));
+                $this->loggerLevel,
+                [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE],
+                true
+            ));
         $this->returnJson = $this->shouldReturnJson($request);
 
         return parent::__invoke($request, $exception, $displayErrorDetails, $logErrors, $logErrorDetails);

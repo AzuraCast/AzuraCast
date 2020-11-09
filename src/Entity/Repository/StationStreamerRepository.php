@@ -94,7 +94,7 @@ class StationStreamerRepository extends Repository
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $fs = $this->filesystem->getForStation($station, false);
+                $fs = $this->filesystem->getForStation($station);
                 return $fs->getFullPath(FilesystemManager::PREFIX_TEMP . '://' . $recordingPath);
             }
         }
@@ -105,7 +105,7 @@ class StationStreamerRepository extends Repository
 
     public function onDisconnect(Entity\Station $station): bool
     {
-        $fs = $this->filesystem->getForStation($station, false);
+        $fs = $this->filesystem->getForStation($station);
         $broadcasts = $this->broadcastRepo->getActiveBroadcasts($station);
 
         foreach ($broadcasts as $broadcast) {
@@ -113,7 +113,7 @@ class StationStreamerRepository extends Repository
 
             $tempPath = FilesystemManager::PREFIX_TEMP . '://' . $broadcastPath;
             $destPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $broadcastPath;
-            
+
             if ($fs->has($tempPath)) {
                 $fs->copy($tempPath, $destPath);
             }

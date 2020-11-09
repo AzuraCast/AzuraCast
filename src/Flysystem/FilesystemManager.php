@@ -24,9 +24,6 @@ class FilesystemManager
 
     protected CacheItemPoolInterface $cachePool;
 
-    /** @var StationFilesystemGroup[] All current interfaces managed by this instance. */
-    protected array $interfaces = [];
-
     public function __construct(CacheItemPoolInterface $cachePool)
     {
         $this->cachePool = new PrefixedCachePool($cachePool, 'fs|');
@@ -34,30 +31,30 @@ class FilesystemManager
 
     public function getForStation(Entity\Station $station, bool $cached = true): StationFilesystemGroup
     {
-        $stationId = $station->getId();
-        $interfaceKey = ($cached)
-            ? $stationId . '_cached'
-            : $stationId . '_uncached';
+        /** @var AdapterInterface[] $aliases */
+        $aliases = [
+            self::PREFIX_MEDIA => $station->getRadioMediaDirAdapter(),
+            self::PREFIX_PLAYLISTS => $station->getRadioPlaylistsDirAdapter(),
+            self::PREFIX_CONFIG => $station->getRadioConfigDirAdapter(),
+            self::PREFIX_RECORDINGS => $station->getRadioRecordingsDirAdapter(),
+            self::PREFIX_TEMP => $station->getRadioTempDirAdapter(),
+        ];
 
-        if (!isset($this->interfaces[$interfaceKey])) {
-            /** @var AdapterInterface[] $aliases */
-            $aliases = [
-                self::PREFIX_MEDIA => $station->getRadioMediaDirAdapter(),
-                self::PREFIX_PLAYLISTS => $station->getRadioPlaylistsDirAdapter(),
-                self::PREFIX_CONFIG => $station->getRadioConfigDirAdapter(),
-                self::PREFIX_RECORDINGS => $station->getRadioRecordingsDirAdapter(),
-                self::PREFIX_TEMP => $station->getRadioTempDirAdapter(),
-            ];
+        $cachableFilesystems = [
+            self::PREFIX_MEDIA,
+            self::PREFIX_RECORDINGS,
+        ];
 
-            $filesystems = [];
-            foreach ($aliases as $alias => $adapter) {
-                $filesystems[$alias] = $this->getFilesystemForAdapter($adapter, $cached);
-            }
+        $filesystems = [];
+        foreach ($aliases as $alias => $adapter) {
+            $cacheThisAdapter = (in_array($alias, $cachableFilesystems, true))
+                ? $cached
+                : false;
 
-            $this->interfaces[$interfaceKey] = new StationFilesystemGroup($filesystems);
+            $filesystems[$alias] = $this->getFilesystemForAdapter($adapter, $cacheThisAdapter);
         }
 
-        return $this->interfaces[$interfaceKey];
+        return new StationFilesystemGroup($filesystems);
     }
 
     public function getFilesystemForAdapter(AdapterInterface $adapter, bool $cached = false): Filesystem

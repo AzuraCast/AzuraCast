@@ -191,13 +191,11 @@ class StorageLocation
 
     public function applyPath(?string $suffix = null): string
     {
-        $path = trim($this->path ?? '', '/');
-
         $suffix = (null !== $suffix)
             ? '/' . ltrim($suffix, '/')
             : '';
 
-        return $path . $suffix;
+        return $this->path . $suffix;
     }
 
     public function setPath(?string $path): void
@@ -430,7 +428,7 @@ class StorageLocation
                         return rtrim($objectUrl, '/');
                     }
 
-                    return $client->getObjectUrl($this->s3Bucket, $path);
+                    return $client->getObjectUrl($this->s3Bucket, ltrim($path, '/'));
                 } catch (\InvalidArgumentException $e) {
                     return 'Invalid URI (' . $e->getMessage() . ')';
                 }
@@ -448,7 +446,7 @@ class StorageLocation
             $client = $this->getS3Client();
             $client->getObjectUrl($this->s3Bucket, '/test');
         }
-        
+
         $adapter = $this->getStorageAdapter();
         $adapter->has('/test');
     }

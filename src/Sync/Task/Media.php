@@ -7,6 +7,7 @@ use App\Flysystem\FilesystemManager;
 use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Quota;
+use Aws\S3\Exception\S3Exception;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
@@ -108,10 +109,17 @@ class Media extends AbstractTask
         $music_files = [];
         $total_size = BigInteger::zero();
 
-        $fsIterator = $fs->createIterator('/', [
-            Options::OPTION_IS_RECURSIVE => true,
-            Options::OPTION_FILTER => FilterFactory::isFile(),
-        ]);
+        try {
+            $fsIterator = $fs->createIterator('/', [
+                Options::OPTION_IS_RECURSIVE => true,
+                Options::OPTION_FILTER => FilterFactory::isFile(),
+            ]);
+        } catch (S3Exception $e) {
+            $this->logger->error(sprintf('S3 Error for Storage Space %s', (string)$storageLocation), [
+                'exception' => $e,
+            ]);
+            return;
+        }
 
         $protectedPaths = [
             Entity\StationMedia::DIR_ALBUM_ART,

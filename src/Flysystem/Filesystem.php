@@ -72,8 +72,8 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
     public function copyToLocal(string $from, ?string $localPath = null): string
     {
         if (null === $localPath) {
-            $folderPrefix = substr(md5($localPath), 0, 10);
-            $localPath = sys_get_temp_dir() . '/' . $folderPrefix . '_' . basename($localPath);
+            $folderPrefix = substr(md5($from), 0, 10);
+            $localPath = sys_get_temp_dir() . '/' . $folderPrefix . '_' . basename($from);
         }
 
         if (file_exists($localPath)) {

@@ -72,10 +72,16 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
     public function copyToLocal(string $from, ?string $localPath = null): string
     {
         if (null === $localPath) {
-            $localPath = tempnam(sys_get_temp_dir(), $from);
+            $folderPrefix = substr(md5($localPath), 0, 10);
+            $localPath = sys_get_temp_dir() . '/' . $folderPrefix . '_' . basename($localPath);
         }
 
         if (file_exists($localPath)) {
+            if (filemtime($localPath) >= $this->getTimestamp($from)) {
+                touch($localPath);
+                return $localPath;
+            }
+
             unlink($localPath);
         }
 
@@ -175,29 +181,29 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
 
         try {
             $localPath = $this->getFullPath($path);
-
-            // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
-            $specialPaths = [
-                '/var/azuracast/backups' => '/internal/backups',
-                '/var/azuracast/stations' => '/internal/stations',
-            ];
-
-            foreach ($specialPaths as $diskPath => $nginxPath) {
-                if (0 === strpos($localPath, $diskPath)) {
-                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
-
-                    // Temporary work around, see SlimPHP/Slim#2924
-                    $response->getBody()->write(' ');
-
-                    return $response->withHeader('Content-Type', $mime)
-                        ->withHeader('X-Accel-Redirect', $accelPath);
-                }
-            }
-        } catch (\Exception $e) {
-            // Stream via PHP instead
+        } catch (InvalidArgumentException $e) {
+            $localPath = $this->copyToLocal($path);
         }
 
-        $fh = $this->readStream($path);
-        return $response->withFile($fh, $mime);
+        // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
+        $specialPaths = [
+            '/var/azuracast/backups' => '/internal/backups',
+            '/var/azuracast/stations' => '/internal/stations',
+        ];
+
+        foreach ($specialPaths as $diskPath => $nginxPath) {
+            if (0 === strpos($localPath, $diskPath)) {
+                $accelPath = str_replace($diskPath, $nginxPath, $localPath);
+
+                // Temporary work around, see SlimPHP/Slim#2924
+                $response->getBody()->write(' ');
+
+                return $response->withHeader('Content-Type', $mime)
+                    ->withHeader('X-Accel-Redirect', $accelPath);
+            }
+        }
+
+
+        return $response->withFile($localPath, $mime);
     }
 }

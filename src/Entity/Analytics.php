@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="analytics", indexes={
  *   @ORM\Index(name="search_idx", columns={"type", "moment"})
+ * }, uniqueConstraints={
+ *   @ORM\UniqueConstraint(name="stats_unique_idx", columns={"station_id", "type", "moment"})
  * })
  * @ORM\Entity
  */

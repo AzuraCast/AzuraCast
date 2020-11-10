@@ -444,7 +444,10 @@ class StorageLocation
     {
         if (self::ADAPTER_S3 === $this->adapter) {
             $client = $this->getS3Client();
-            $client->getObjectUrl($this->s3Bucket, '/test');
+            $client->listObjectsV2([
+                'Bucket' => $this->s3Bucket,
+                'max-keys' => 1,
+            ]);
         }
 
         $adapter = $this->getStorageAdapter();

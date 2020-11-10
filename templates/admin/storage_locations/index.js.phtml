@@ -1,0 +1,17 @@
+<?php
+$props = [
+    'listUrl' => $router->fromHere('api:admin:storage_locations'),
+]
+?>
+var adminStorageLocations;
+
+$(function () {
+    adminStorageLocations = new Vue({
+        el: '#admin-storage-locations',
+        render: function (createElement) {
+            return createElement(AdminStorageLocations.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
+    });
+});

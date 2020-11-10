@@ -65,6 +65,9 @@ abstract class AbstractApiCrudController
     }
 
     /**
+     * @param object $record
+     * @param ServerRequest $request
+     *
      * @return mixed
      */
     protected function viewRecord($record, ServerRequest $request)

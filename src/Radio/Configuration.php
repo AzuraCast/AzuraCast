@@ -8,7 +8,6 @@ use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
-use RuntimeException;
 use Supervisor\Supervisor;
 
 class Configuration
@@ -83,12 +82,7 @@ class Configuration
         }
 
         // Ensure all directories exist.
-        $radio_dirs = $station->getAllStationDirectories();
-        foreach ($radio_dirs as $radio_dir) {
-            if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
-            }
-        }
+        $station->ensureDirectoriesExist();
 
         // Write config files for both backend and frontend.
         $frontend->write($station);
@@ -136,8 +130,8 @@ class Configuration
      */
     protected function getSupervisorConfigFile(Station $station): string
     {
-        $config_path = $station->getRadioConfigDir();
-        return $config_path . '/supervisord.conf';
+        $configDir = $station->getRadioConfigDir();
+        return $configDir . '/supervisord.conf';
     }
 
     /**
@@ -363,15 +357,13 @@ class Configuration
         AbstractAdapter $adapter,
         $priority
     ): string {
-        $config_path = $station->getRadioConfigDir();
-
         [, $program_name] = explode(':', $adapter->getProgramName($station));
 
         $config_lines = [
             'user' => 'azuracast',
             'priority' => $priority,
             'command' => $adapter->getCommand($station),
-            'directory' => $config_path,
+            'directory' => $station->getRadioConfigDir(),
             'environment' => 'TZ="' . $station->getTimezone() . '"',
             'stdout_logfile' => $adapter->getLogPath($station),
             'stdout_logfile_maxbytes' => '5MB',

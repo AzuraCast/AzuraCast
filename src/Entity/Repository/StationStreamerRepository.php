@@ -4,6 +4,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Flysystem\FilesystemManager;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Scheduler;
 use App\Settings;
@@ -15,16 +16,24 @@ class StationStreamerRepository extends Repository
 {
     protected Scheduler $scheduler;
 
+    protected StationStreamerBroadcastRepository $broadcastRepo;
+
+    protected FilesystemManager $filesystem;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
         LoggerInterface $logger,
-        Scheduler $scheduler
+        Scheduler $scheduler,
+        StationStreamerBroadcastRepository $broadcastRepo,
+        FilesystemManager $filesystem
     ) {
         parent::__construct($em, $serializer, $settings, $logger);
 
         $this->scheduler = $scheduler;
+        $this->broadcastRepo = $broadcastRepo;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -61,7 +70,7 @@ class StationStreamerRepository extends Repository
     public function onConnect(Entity\Station $station, string $username = '')
     {
         // End all current streamer sessions.
-        $this->clearBroadcastsForStation($station);
+        $this->broadcastRepo->endAllActiveBroadcasts($station);
 
         $streamer = $this->getStreamer($station, $username);
         if (!($streamer instanceof Entity\StationStreamer)) {
@@ -82,11 +91,11 @@ class StationStreamerRepository extends Repository
             if ($recordStreams) {
                 $format = $backendConfig->getRecordStreamsFormat() ?? Entity\StationMountInterface::FORMAT_MP3;
                 $recordingPath = $record->generateRecordingPath($format);
-
                 $this->em->persist($record);
                 $this->em->flush();
 
-                return $station->getRadioRecordingsDir() . '/' . $recordingPath;
+                $fs = $this->filesystem->getForStation($station);
+                return $fs->getFullPath(FilesystemManager::PREFIX_TEMP . '://' . $recordingPath);
             }
         }
 
@@ -96,24 +105,28 @@ class StationStreamerRepository extends Repository
 
     public function onDisconnect(Entity\Station $station): bool
     {
+        $fs = $this->filesystem->getForStation($station);
+        $broadcasts = $this->broadcastRepo->getActiveBroadcasts($station);
+
+        foreach ($broadcasts as $broadcast) {
+            $broadcastPath = $broadcast->getRecordingPath();
+
+            $tempPath = FilesystemManager::PREFIX_TEMP . '://' . $broadcastPath;
+            $destPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $broadcastPath;
+
+            if ($fs->has($tempPath)) {
+                $fs->copy($tempPath, $destPath);
+            }
+
+            $broadcast->setTimestampEnd(time());
+            $this->em->persist($broadcast);
+        }
+
         $station->setIsStreamerLive(false);
         $station->setCurrentStreamer(null);
         $this->em->persist($station);
         $this->em->flush();
-
-        $this->clearBroadcastsForStation($station);
         return true;
-    }
-
-    protected function clearBroadcastsForStation(Entity\Station $station): void
-    {
-        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\StationStreamerBroadcast ssb
-            SET ssb.timestampEnd = :time
-            WHERE ssb.station = :station
-            AND ssb.timestampEnd = 0')
-            ->setParameter('time', time())
-            ->setParameter('station', $station)
-            ->execute();
     }
 
     protected function getStreamer(Entity\Station $station, string $username = ''): ?Entity\StationStreamer

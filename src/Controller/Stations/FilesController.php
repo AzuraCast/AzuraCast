@@ -27,8 +27,8 @@ class FilesController
             ->getArrayResult();
 
         $files_count = $em->createQuery(/** @lang DQL */ 'SELECT COUNT(sm.id) FROM App\Entity\StationMedia sm
-            WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $station->getId())
+            WHERE sm.storage_location = :storageLocation')
+            ->setParameter('storageLocation', $station->getMediaStorageLocation())
             ->getSingleScalarResult();
 
         // Get list of custom fields.
@@ -45,13 +45,15 @@ class FilesController
             ];
         }
 
+        $mediaStorage = $station->getMediaStorageLocation();
+
         return $request->getView()->renderToResponse($response, 'stations/files/index', [
-            'show_sftp' => SftpGo::isSupported(),
+            'show_sftp' => SftpGo::isSupportedForStation($station),
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
-            'space_used' => $station->getStorageUsed(),
-            'space_total' => $station->getStorageAvailable(),
-            'space_percent' => $station->getStorageUsePercentage(),
+            'space_used' => $mediaStorage->getStorageUsed(),
+            'space_total' => $mediaStorage->getStorageAvailable(),
+            'space_percent' => $mediaStorage->getStorageUsePercentage(),
             'files_count' => $files_count,
         ]);
     }

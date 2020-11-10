@@ -70,11 +70,13 @@ class RequestsController
             ->from(Entity\StationMedia::class, 'sm')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
-            ->where('sm.station_id = :station_id')
+            ->where('sm.storage_location = :storageLocation')
             ->andWhere('sp.id IS NOT NULL')
+            ->andWhere('sp.station = :station')
             ->andWhere('sp.is_enabled = 1')
             ->andWhere('sp.include_in_requests = 1')
-            ->setParameter('station_id', $station->getId());
+            ->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->setParameter('station', $station);
 
         $params = $request->getQueryParams();
 

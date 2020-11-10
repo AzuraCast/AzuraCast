@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -13,7 +13,7 @@ class ListDirectoriesAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ): ResponseInterface {
         $station = $request->getStation();
         $fs = $filesystem->getForStation($station);
@@ -29,8 +29,14 @@ class ListDirectoriesAction
             }
         }
 
-        $directories = array_filter(array_map(function ($file) {
+        $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
+
+        $directories = array_filter(array_map(function ($file) use ($protectedPaths) {
             if ('dir' !== $file['type']) {
+                return null;
+            }
+
+            if (in_array($file['path'], $protectedPaths, true)) {
                 return null;
             }
 

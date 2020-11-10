@@ -100,6 +100,12 @@ return function (App $app) {
                 ['role', 'roles', Controller\Api\Admin\RolesController::class, Acl::GLOBAL_ALL],
                 ['station', 'stations', Controller\Api\Admin\StationsController::class, Acl::GLOBAL_STATIONS],
                 ['user', 'users', Controller\Api\Admin\UsersController::class, Acl::GLOBAL_ALL],
+                [
+                    'storage_location',
+                    'storage_locations',
+                    Controller\Api\Admin\StorageLocationsController::class,
+                    Acl::GLOBAL_STORAGE_LOCATIONS,
+                ],
             ];
 
             foreach ($admin_api_endpoints as [$singular, $plural, $class, $permission]) {

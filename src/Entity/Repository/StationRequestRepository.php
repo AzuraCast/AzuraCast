@@ -6,12 +6,30 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception;
 use App\Radio\AutoDJ;
+use App\Settings;
 use App\Utilities;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class StationRequestRepository extends Repository
 {
+    protected StationMediaRepository $mediaRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger,
+        StationMediaRepository $mediaRepo
+    ) {
+        parent::__construct($em, $serializer, $settings, $logger);
+
+        $this->mediaRepo = $mediaRepo;
+    }
+
     public function submit(
         Entity\Station $station,
         string $trackId,
@@ -29,8 +47,7 @@ class StationRequestRepository extends Repository
         }
 
         // Verify that Track ID exists with station.
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-        $media_item = $media_repo->findOneBy(['unique_id' => $trackId, 'station_id' => $station->getId()]);
+        $media_item = $this->mediaRepo->findByUniqueId($trackId, $station);
 
         if (!($media_item instanceof Entity\StationMedia)) {
             throw new Exception(__('The song ID you specified could not be found in the station.'));

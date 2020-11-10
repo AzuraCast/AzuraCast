@@ -149,7 +149,7 @@ return function (Application $console) {
     )->setDescription('Set the value of a setting in the AzuraCast settings database.');
 
     $console->command(
-        'azuracast:backup [path] [--exclude-media]',
+        'azuracast:backup [path] [--storage-location-id=] [--exclude-media]',
         Command\Backup\BackupCommand::class
     )->setDescription(__('Back up the AzuraCast database and statistics (and optionally media).'));
 

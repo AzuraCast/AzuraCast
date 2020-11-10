@@ -8,6 +8,7 @@ use Psr\Http\Message\UriInterface;
 class SongHistoryApiGenerator
 {
     protected SongApiGenerator $songApiGenerator;
+
     public function __construct(SongApiGenerator $songApiGenerator)
     {
         $this->songApiGenerator = $songApiGenerator;
@@ -35,7 +36,7 @@ class SongHistoryApiGenerator
         }
 
         if (null !== $record->getMedia()) {
-            $response->song = ($this->songApiGenerator)($record->getMedia(), null, $baseUri);
+            $response->song = ($this->songApiGenerator)($record->getMedia(), $record->getStation(), $baseUri);
         } else {
             $response->song = ($this->songApiGenerator)($record, $record->getStation(), $baseUri);
         }

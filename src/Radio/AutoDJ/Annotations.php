@@ -4,7 +4,7 @@ namespace App\Radio\AutoDJ;
 
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,7 +17,7 @@ class Annotations implements EventSubscriberInterface
 
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     protected Adapters $adapters;
 
@@ -25,7 +25,7 @@ class Annotations implements EventSubscriberInterface
         EntityManagerInterface $em,
         Entity\Repository\StationQueueRepository $queueRepo,
         Entity\Repository\StationStreamerRepository $streamerRepo,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         Adapters $adapters
     ) {
         $this->em = $em;
@@ -55,9 +55,9 @@ class Annotations implements EventSubscriberInterface
         $media = $event->getMedia();
         if ($media instanceof Entity\StationMedia) {
             $fs = $this->filesystem->getForStation($event->getStation());
-            $media_path = $fs->getFullPath($media->getPathUri());
 
-            $event->setSongPath($media_path);
+            $localMediaPath = $fs->getLocalPath($media->getPathUri());
+            $event->setSongPath($localMediaPath);
 
             $backend = $this->adapters->getBackendAdapter($event->getStation());
             $event->addAnnotations($backend->annotateMedia($media));

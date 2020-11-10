@@ -14,7 +14,7 @@ return [
                         'label' => __('New Station Name'),
                         'class' => 'half-width',
                         'required' => true,
-                    ]
+                    ],
                 ],
 
                 'description' => [
@@ -22,7 +22,7 @@ return [
                     [
                         'label' => __('New Station Description'),
                         'class' => 'full-width full-height',
-                    ]
+                    ],
                 ],
 
             ],
@@ -39,13 +39,12 @@ return [
                         'label' => __('Copy Media?'),
                         'description' => __('Choose how media should be duplicated from the old station.'),
                         'choices' => [
-                            'none' => __('Do not share or copy media between the stations'),
+                            'none' => __('Do not share media between the stations'),
                             'share' => __('Share the same folder on disk between the stations'),
-                            'copy' => __('Copy the existing station\'s media to the new station'),
                         ],
                         'form_group_class' => 'col-sm-12',
                         'default' => 'none',
-                    ]
+                    ],
                 ],
 
                 'clone_playlists' => [
@@ -58,7 +57,7 @@ return [
                         ],
                         'form_group_class' => 'col-sm-4',
                         'default' => 0,
-                    ]
+                    ],
                 ],
 
                 'clone_streamers' => [
@@ -71,7 +70,7 @@ return [
                         ],
                         'default' => 0,
                         'form_group_class' => 'col-sm-4',
-                    ]
+                    ],
                 ],
 
                 'clone_permissions' => [
@@ -85,7 +84,7 @@ return [
                         ],
                         'default' => 0,
                         'form_group_class' => 'col-sm-4',
-                    ]
+                    ],
                 ],
 
             ],
@@ -99,7 +98,7 @@ return [
                         'type' => 'submit',
                         'label' => __('Create New Station'),
                         'class' => 'btn btn-lg btn-primary',
-                    ]
+                    ],
                 ],
             ],
         ],

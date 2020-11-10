@@ -25,12 +25,12 @@ class SftpUsersController extends AbstractStationCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        if (!SftpGo::isSupported()) {
-            throw new StationUnsupportedException(__('This feature is not currently supported on this station.'));
-        }
-
         $station = $request->getStation();
 
+        if (!SftpGo::isSupportedForStation($station)) {
+            throw new StationUnsupportedException(__('This feature is not currently supported on this station.'));
+        }
+        
         $baseUrl = $request->getRouter()->getBaseUrl(false)
             ->withScheme('sftp')
             ->withPort(null);

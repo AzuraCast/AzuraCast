@@ -6,6 +6,12 @@ This release includes many contributions from members of our community as part o
 
 ## New Features/Changes
 
+- **Media storage overhaul**: The way media is stored and managed has been completely changed:
+  - Station media, live recordings, and backups have "Storage Locations" that you can manage via System Administration.
+  - Storage locations can either be local to the server or using a remote storage location that uses the Amazon S3 protocol (S3, DigitalOcean Spaces, Wasabi, etc)
+  - Existing stations have automatically been migrated to Storage Locations.
+  - If more than one station shares a storage location, media is only processed once for all of the stations, instead of being processed separately.
+
 - Statistics now include the total _unique_ listeners for a given station in a given day. On the dashboard, you can switch from the average listener statistics to the unique listener totals from a new tab selector above the charts.
 
 - There is a new, much friendlier animation that displays when Docker installations of AzuraCast are waiting for their dependent services to be fully ready. This avoids showing the previous messages, which often looked like errors, even though they weren't.

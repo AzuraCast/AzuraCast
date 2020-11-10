@@ -40,6 +40,7 @@ class Settings
     public const BACKUP_TIME = 'backup_time';
     public const BACKUP_EXCLUDE_MEDIA = 'backup_exclude_media';
     public const BACKUP_KEEP_COPIES = 'backup_keep_copies';
+    public const BACKUP_STORAGE_LOCATION = 'backup_storage_location';
 
     // Internal settings
     public const SETUP_COMPLETE = 'setup_complete';

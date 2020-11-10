@@ -3,7 +3,7 @@
 namespace App\Sync\Task;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
@@ -14,7 +14,7 @@ class FolderPlaylists extends AbstractTask
 
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -22,7 +22,7 @@ class FolderPlaylists extends AbstractTask
         LoggerInterface $logger,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationPlaylistFolderRepository $folderRepo,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ) {
         parent::__construct($em, $settingsRepo, $logger);
 
@@ -68,7 +68,7 @@ class FolderPlaylists extends AbstractTask
             /** @var Entity\StationPlaylistFolder $row */
             $path = $row->getPath();
 
-            if ($fs->has(Filesystem::PREFIX_MEDIA . '://' . $path)) {
+            if ($fs->has(FilesystemManager::PREFIX_MEDIA . '://' . $path)) {
                 $folders[$path][] = $row->getPlaylist();
             } else {
                 $this->em->remove($row);

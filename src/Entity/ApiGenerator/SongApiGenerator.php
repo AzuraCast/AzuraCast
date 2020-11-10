@@ -42,8 +42,6 @@ class SongApiGenerator
         $response->title = (string)$song->getTitle();
 
         if ($song instanceof Entity\StationMedia) {
-            $station = $song->getStation();
-
             $response->album = (string)$song->getAlbum();
             $response->genre = (string)$song->getGenre();
             $response->lyrics = (string)$song->getLyrics();
@@ -65,12 +63,12 @@ class SongApiGenerator
 
 
     protected function getAlbumArtUrl(
-        Entity\Station $station,
+        ?Entity\Station $station = null,
         string $mediaUniqueId,
         int $mediaUpdatedTimestamp,
         ?UriInterface $baseUri = null
     ): UriInterface {
-        if (0 === $mediaUpdatedTimestamp) {
+        if (null === $station || 0 === $mediaUpdatedTimestamp) {
             return $this->getDefaultAlbumArtUrl($station, $baseUri);
         }
 

@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Media\Metadata;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  * @ORM\Table(name="station_media", indexes={
  *   @ORM\Index(name="search_idx", columns={"title", "artist", "album"})
  * }, uniqueConstraints={
- *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
+ *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "storage_location_id"})
  * })
  * @ORM\Entity()
  *
@@ -30,6 +30,9 @@ class StationMedia implements SongInterface
 
     public const UNIQUE_ID_LENGTH = 24;
 
+    public const DIR_ALBUM_ART = '.albumart';
+    public const DIR_WAVEFORMS = '.waveforms';
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -42,19 +45,19 @@ class StationMedia implements SongInterface
     protected $id;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
+     * @ORM\Column(name="storage_location_id", type="integer")
      * @var int
      */
-    protected $station_id;
+    protected $storage_location_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="media")
+     * @ORM\ManyToOne(targetEntity="StorageLocation", inversedBy="media")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
      * })
-     * @var Station
+     * @var StorageLocation
      */
-    protected $station;
+    protected $storage_location;
 
     /**
      * @ORM\Column(name="album", type="string", length=200, nullable=true)
@@ -216,9 +219,9 @@ class StationMedia implements SongInterface
      */
     protected $custom_fields;
 
-    public function __construct(Station $station, string $path)
+    public function __construct(StorageLocation $storageLocation, string $path)
     {
-        $this->station = $station;
+        $this->storage_location = $storageLocation;
 
         $this->playlists = new ArrayCollection();
         $this->custom_fields = new ArrayCollection();
@@ -232,9 +235,9 @@ class StationMedia implements SongInterface
         return $this->id;
     }
 
-    public function getStation(): Station
+    public function getStorageLocation(): StorageLocation
     {
-        return $this->station;
+        return $this->storage_location;
     }
 
     public function getAlbum(): ?string
@@ -268,26 +271,13 @@ class StationMedia implements SongInterface
     }
 
     /**
-     * Get the Flysystem URI for album artwork for this item.
-     */
-    public function getArtPath(): string
-    {
-        return Filesystem::PREFIX_ALBUM_ART . '://' . $this->unique_id . '.jpg';
-    }
-
-    public function getWaveformPath(): string
-    {
-        return Filesystem::PREFIX_WAVEFORMS . '://' . $this->unique_id . '.json';
-    }
-
-    /**
      * @return string[]
      */
     public function getRelatedFilePaths(): array
     {
         return [
-            $this->getArtPath(),
-            $this->getWaveformPath(),
+            self::getArtPath($this->getUniqueId()),
+            self::getWaveformPath($this->getUniqueId()),
         ];
     }
 
@@ -343,7 +333,7 @@ class StationMedia implements SongInterface
      */
     public function getPathUri(): string
     {
-        return Filesystem::PREFIX_MEDIA . '://' . $this->path;
+        return FilesystemManager::PREFIX_MEDIA . '://' . $this->path;
     }
 
     public function getMtime(): ?int
@@ -582,5 +572,25 @@ class StationMedia implements SongInterface
     public function __toString(): string
     {
         return 'StationMedia ' . $this->unique_id . ': ' . $this->artist . ' - ' . $this->title;
+    }
+
+    public static function getArtPath(string $uniqueId): string
+    {
+        return self::DIR_ALBUM_ART . '/' . $uniqueId . '.jpg';
+    }
+
+    public static function getArtUri(string $uniqueId): string
+    {
+        return FilesystemManager::PREFIX_MEDIA . '://' . ltrim(self::getArtPath($uniqueId), '/');
+    }
+
+    public static function getWaveformPath(string $uniqueId): string
+    {
+        return self::DIR_WAVEFORMS . '/' . $uniqueId . '.json';
+    }
+
+    public static function getWaveformUri(string $uniqueId): string
+    {
+        return FilesystemManager::PREFIX_MEDIA . '://' . ltrim(self::getWaveformPath($uniqueId), '/');
     }
 }

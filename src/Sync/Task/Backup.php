@@ -45,7 +45,8 @@ class Backup extends AbstractTask
             [$result_code, $result_output] = $this->runBackup(
                 $message->path,
                 $message->excludeMedia,
-                $message->outputPath
+                $message->outputPath,
+                $message->storageLocationId
             );
 
             $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RESULT, $result_code);
@@ -57,14 +58,22 @@ class Backup extends AbstractTask
      * @param string|null $path
      * @param bool $excludeMedia
      * @param string|null $outputPath
+     * @param int|null $storageLocationId
      *
      * @return mixed[] [int $result_code, string|false $result_output]
      */
-    public function runBackup(?string $path = null, bool $excludeMedia = false, ?string $outputPath = null): array
-    {
+    public function runBackup(
+        ?string $path = null,
+        bool $excludeMedia = false,
+        ?string $outputPath = null,
+        ?int $storageLocationId = null
+    ): array {
         $input_params = [];
         if (null !== $path) {
             $input_params['path'] = $path;
+        }
+        if (null !== $storageLocationId) {
+            $input_params['--storage-location-id'] = $storageLocationId;
         }
         if ($excludeMedia) {
             $input_params['--exclude-media'] = true;
@@ -119,7 +128,16 @@ class Backup extends AbstractTask
             }
 
             // Trigger a new backup.
+            $storageLocationId = (int)$this->settingsRepo->getSetting(
+                Entity\Settings::BACKUP_STORAGE_LOCATION,
+                0
+            );
+            if ($storageLocationId <= 0) {
+                $storageLocationId = null;
+            }
+
             $message = new Message\BackupMessage();
+            $message->storageLocationId = $storageLocationId;
             $message->path = 'automatic_backup.zip';
             $message->excludeMedia = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
 

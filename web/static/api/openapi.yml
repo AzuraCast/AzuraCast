@@ -449,6 +449,127 @@ paths:
       security:
         -
           api_key: []
+  /admin/storage_locations:
+    get:
+      tags:
+        - 'Administration: Storage Locations'
+      description: 'List all current storage locations in the system.'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StorageLocation'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    post:
+      tags:
+        - 'Administration: Storage Locations'
+      description: 'Create a new storage location.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorageLocation'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageLocation'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+  '/admin/storage_location/{id}':
+    get:
+      tags:
+        - 'Administration: Storage Locations'
+      description: 'Retrieve details for a single storage location.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageLocation'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    put:
+      tags:
+        - 'Administration: Storage Locations'
+      description: 'Update details of a single storage location.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Storage Location ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorageLocation'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
+    delete:
+      tags:
+        - 'Administration: Storage Locations'
+      description: 'Delete a single storage location.'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Storage Location ID'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Api_Status'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key: []
   /admin/users:
     get:
       tags:
@@ -1169,7 +1290,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Api_QueuedSong'
+                  $ref: '#/components/schemas/Api_StationQueueDetailed'
         '404':
           description: 'Station not found'
         '403':
@@ -1182,7 +1303,6 @@ paths:
       tags:
         - 'Stations: Queue'
       description: 'Retrieve details of a single queued item.'
-      operationId: 'App\Controller\Api\Stations\QueueController::viewRecord'
       parameters:
         -
           name: id
@@ -1198,7 +1318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_QueuedSong'
+                $ref: '#/components/schemas/Api_StationQueueDetailed'
         '404':
           description: 'Station or Queue ID not found'
         '403':
@@ -1210,7 +1330,6 @@ paths:
       tags:
         - 'Stations: Queue'
       description: 'Delete a single queued item.'
-      operationId: 'App\Controller\Api\Stations\QueueController::viewRecord'
       parameters:
         -
           name: id
@@ -1956,7 +2075,7 @@ components:
           type: string
           example: 127.0.0.1
         user_agent:
-          description: 'The listener''s HTTP User-Agent'
+          description: "The listener's HTTP User-Agent\n\nphpcs:disable Generic.Files.LineLength"
           type: string
           example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36'
         is_mobile:
@@ -1966,7 +2085,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1602264526
+          example: 1603995457
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2065,27 +2184,6 @@ components:
           example: '1591548318'
           nullable: true
       type: object
-    Api_QueuedSong:
-      allOf:
-        -
-          $ref: '#/components/schemas/Api_SongHistory'
-        -
-          properties:
-            cued_at:
-              description: 'UNIX timestamp when the item was cued for playback.'
-              type: integer
-              example: 1602264526
-            autodj_custom_uri:
-              description: 'Custom AutoDJ playback URI, if it exists.'
-              type: string
-              example: ''
-              nullable: true
-            links:
-              type: array
-              items:
-                type: string
-                example: 'http://localhost/api/stations/1/queue/1'
-          type: object
     Api_Song:
       properties:
         id:
@@ -2108,6 +2206,10 @@ components:
           description: 'The song album.'
           type: string
           example: 'Moving Castle'
+        genre:
+          description: 'The song genre.'
+          type: string
+          example: Rock
         lyrics:
           description: 'Lyrics to the song.'
           type: string
@@ -2129,7 +2231,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1602264526
+          example: 1603995457
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2227,7 +2329,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1602264526
+          example: 1603995457
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2243,6 +2345,23 @@ components:
         song:
           $ref: '#/components/schemas/Api_Song'
       type: object
+    Api_StationQueueDetailed:
+      allOf:
+        -
+          $ref: '#/components/schemas/Api_StationQueue'
+        -
+          properties:
+            autodj_custom_uri:
+              description: 'Custom AutoDJ playback URI, if it exists.'
+              type: string
+              example: ''
+              nullable: true
+            links:
+              type: array
+              items:
+                type: string
+                example: 'http://localhost/api/stations/1/queue/1'
+          type: object
     Api_StationRemote:
       properties:
         id:
@@ -2302,7 +2421,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1602264526
+          example: 1603995457
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2310,7 +2429,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1602264526
+          example: 1603995457
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2350,7 +2469,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1602264526
+          example: 1603995457
       type: object
     Api_Time:
       properties:
@@ -2412,10 +2531,10 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1602264526
+          example: 1603995457
         updated_at:
           type: integer
-          example: 1602264526
+          example: 1603995457
       type: object
     Role:
       properties:
@@ -2484,10 +2603,6 @@ components:
           type: string
           example: /var/azuracast/stations/azuratest_radio
           nullable: true
-        radio_media_dir:
-          type: string
-          example: /var/azuracast/stations/azuratest_radio/media
-          nullable: true
         automation_settings:
           type: array
           items: {  }
@@ -2524,25 +2639,9 @@ components:
           type: boolean
           example: true
         api_history_items:
-          description: 'The number of "last played" history items to show for a given station in the Now Playing API responses.'
+          description: 'The number of "last played" history items to show for a station in the Now Playing API responses.'
           type: integer
           example: 5
-          nullable: true
-        storage_quota:
-          type: string
-          example: '50 GB'
-          nullable: true
-        storage_quota_bytes:
-          type: string
-          example: '50000000000'
-          nullable: true
-        storage_used:
-          type: string
-          example: '1 GB'
-          nullable: true
-        storage_used_bytes:
-          type: string
-          example: '1000000000'
           nullable: true
         timezone:
           description: 'The time zone that station operations should take place in.'
@@ -2564,6 +2663,11 @@ components:
           description: 'The name of the media file''s album.'
           type: string
           example: 'Test Album'
+          nullable: true
+        genre:
+          description: 'The genre of the media file.'
+          type: string
+          example: Rock
           nullable: true
         lyrics:
           description: 'Full lyrics of the track, if available.'
@@ -2593,7 +2697,7 @@ components:
         mtime:
           description: 'The UNIX timestamp when the database was last modified.'
           type: integer
-          example: 1602264526
+          example: 1603995457
           nullable: true
         amplify:
           description: 'The amount of amplification (in dB) to be applied to the radio source;'
@@ -2634,7 +2738,7 @@ components:
         art_updated_at:
           description: 'The latest time (UNIX timestamp) when album art was updated.'
           type: integer
-          example: 1602264526
+          example: 1603995457
         playlists:
           items: {  }
       type: object
@@ -2850,6 +2954,7 @@ components:
           type: integer
           example: 2200
         days:
+          description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
           type: string
           example: '0,1,2,3'
       type: object
@@ -2880,7 +2985,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1602264526
+          example: 1603995457
           nullable: true
         schedule_items:
           items: {  }
@@ -2922,6 +3027,68 @@ components:
           type: array
           items: {  }
       type: object
+    StorageLocation:
+      properties:
+        type:
+          description: 'The type of storage location.'
+          type: string
+          example: station_media
+        adapter:
+          description: 'The storage adapter to use for this location.'
+          type: string
+          example: local
+        path:
+          description: 'The local path, if the local adapter is used, or path prefix for S3/remote adapters.'
+          type: string
+          example: /var/azuracast/stations/azuratest_radio/media
+          nullable: true
+        s3CredentialKey:
+          description: 'The credential key for S3 adapters.'
+          type: string
+          example: your-key-here
+          nullable: true
+        s3CredentialSecret:
+          description: 'The credential secret for S3 adapters.'
+          type: string
+          example: your-secret-here
+          nullable: true
+        s3Region:
+          description: 'The region for S3 adapters.'
+          type: string
+          example: your-region
+          nullable: true
+        s3Version:
+          description: 'The API version for S3 adapters.'
+          type: string
+          example: latest
+          nullable: true
+        s3Bucket:
+          description: 'The S3 bucket name for S3 adapters.'
+          type: string
+          example: your-bucket-name
+          nullable: true
+        s3Endpoint:
+          description: 'The optional custom S3 endpoint S3 adapters.'
+          type: string
+          example: 'https://your-region.digitaloceanspaces.com'
+          nullable: true
+        storageQuota:
+          type: string
+          example: '50 GB'
+          nullable: true
+        storageQuotaBytes:
+          type: string
+          example: '50000000000'
+          nullable: true
+        storageUsed:
+          type: string
+          example: '1 GB'
+          nullable: true
+        storageUsedBytes:
+          type: string
+          example: '1000000000'
+          nullable: true
+      type: object
     Trait_UniqueId:
       properties:
         unique_id:
@@ -2960,10 +3127,10 @@ components:
           nullable: true
         created_at:
           type: integer
-          example: 1602264526
+          example: 1603995457
         updated_at:
           type: integer
-          example: 1602264526
+          example: 1603995457
         roles:
           items: {  }
       type: object

@@ -5,7 +5,7 @@ namespace App\Console\Command\Internal;
 use App\Console\Application;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -18,13 +18,13 @@ class SftpUploadCommand extends CommandAbstract
 
     protected LoggerInterface $logger;
 
-    protected Filesystem $filesystem;
+    protected FilesystemManager $filesystem;
 
     public function __construct(
         Application $application,
         MessageBus $messageBus,
         LoggerInterface $logger,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ) {
         parent::__construct($application);
 
@@ -63,23 +63,36 @@ class SftpUploadCommand extends CommandAbstract
         }
 
         $station = $sftpUser->getStation();
-        return $this->handleNewUpload($station, $path);
+        $storageLocation = $station->getMediaStorageLocation();
+
+        if (!$storageLocation->isLocal()) {
+            $this->logger->error(sprintf('Storage location "%s" is not local.', (string)$storageLocation));
+            return 1;
+        }
+
+        $this->flushCache($storageLocation);
+
+        return $this->handleNewUpload($storageLocation, $path);
     }
 
-    protected function handleNewUpload(Entity\Station $station, $path): int
+    protected function flushCache(Entity\StorageLocation $storageLocation): void
     {
-        $fs = $this->filesystem->getForStation($station);
-        $fs->flushAllCaches();
+        $adapter = $storageLocation->getStorageAdapter();
+        $fs = $this->filesystem->getFilesystemForAdapter($adapter);
+        $fs->clearCache(false);
+    }
 
-        $relativePath = str_replace($station->getRadioMediaDir() . '/', '', $path);
+    protected function handleNewUpload(Entity\StorageLocation $storageLocation, $path): int
+    {
+        $relativePath = str_replace($storageLocation->getPath() . '/', '', $path);
 
-        $this->logger->notice('Processing new SFTP upload for station.', [
-            'station' => $station->getName(),
+        $this->logger->notice('Processing new SFTP upload.', [
+            'storageLocation' => (string)$storageLocation,
             'path' => $relativePath,
         ]);
 
         $message = new Message\AddNewMediaMessage();
-        $message->station_id = $station->getId();
+        $message->storage_location_id = $storageLocation->getId();
         $message->path = $relativePath;
 
         $this->messageBus->dispatch($message);

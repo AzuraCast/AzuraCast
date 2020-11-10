@@ -68,14 +68,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         ]);
     }
 
-    protected function editRecord($data, $record = null, array $context = []): object
-    {
-        // Force an unset of the `station` parameter as it supercedes the default constructor arguments.
-        unset($data['station']);
-
-        return parent::editRecord($data, $record, $context);
-    }
-
     /**
      * @param ServerRequest $request
      * @param Response $response

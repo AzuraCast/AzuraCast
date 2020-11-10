@@ -165,6 +165,10 @@ return function (App $app) {
 
         })->add(new Middleware\Permissions(Acl::GLOBAL_STATIONS));
 
+        $group->get('/storage_locations', Controller\Admin\StorageLocationsController::class)
+            ->setName('admin:storage_locations:index')
+            ->add(new Middleware\Permissions(Acl::GLOBAL_STORAGE_LOCATIONS));
+
         $group->group('/users', function (RouteCollectorProxy $group) {
 
             $group->get('', Controller\Admin\UsersController::class . ':indexAction')

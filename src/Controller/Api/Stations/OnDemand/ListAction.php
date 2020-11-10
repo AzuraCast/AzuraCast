@@ -131,7 +131,7 @@ class ListAction
                 $row = new Entity\Api\StationOnDemand();
 
                 $row->track_id = $media->getUniqueId();
-                $row->media = ($this->songApiGenerator)($media);
+                $row->media = ($this->songApiGenerator)($media, $station);
                 $row->playlist = $playlist['name'];
                 $row->download_url = (string)$router->named('api:stations:ondemand:download', [
                     'station_id' => $station->getId(),

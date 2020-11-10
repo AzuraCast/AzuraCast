@@ -27,8 +27,9 @@ class SftpAuthCommand extends CommandAbstract
 
         if ($sftpUser instanceof SftpUser && $sftpUser->authenticate($password, $pubKey)) {
             $station = $sftpUser->getStation();
+            $storageLocation = $station->getMediaStorageLocation();
 
-            $quotaRaw = $station->getStorageQuotaBytes();
+            $quotaRaw = $storageLocation->getStorageQuotaBytes();
             $quota = ($quotaRaw instanceof BigInteger)
                 ? (string)$quotaRaw
                 : 0;
@@ -37,7 +38,7 @@ class SftpAuthCommand extends CommandAbstract
                 'status' => 1,
                 'username' => $sftpUser->getUsername(),
                 'expiration_date' => 0,
-                'home_dir' => $station->getRadioMediaDir(),
+                'home_dir' => $storageLocation->getPath(),
                 'uid' => 0,
                 'gid' => 0,
                 'quota_size' => $quota,

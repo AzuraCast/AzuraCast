@@ -25,4 +25,28 @@ class StationStreamerBroadcastRepository extends Repository
             ->getSingleResult();
         return $latestBroadcast;
     }
+
+    public function endAllActiveBroadcasts(Entity\Station $station): void
+    {
+        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\StationStreamerBroadcast ssb
+            SET ssb.timestampEnd = :time
+            WHERE ssb.station = :station
+            AND ssb.timestampEnd = 0')
+            ->setParameter('time', time())
+            ->setParameter('station', $station)
+            ->execute();
+    }
+
+    /**
+     * @param Entity\Station $station
+     *
+     * @return Entity\StationStreamerBroadcast[]
+     */
+    public function getActiveBroadcasts(Entity\Station $station): array
+    {
+        return $this->repository->findBy([
+            'station' => $station,
+            'timestampEnd' => 0,
+        ]);
+    }
 }

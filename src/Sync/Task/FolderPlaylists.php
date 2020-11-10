@@ -80,9 +80,9 @@ class FolderPlaylists extends AbstractTask
         $mediaInFolderQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
             sm
             FROM App\Entity\StationMedia sm
-            WHERE sm.station = :station
+            WHERE sm.storage_location = :storageLocation
             AND sm.path LIKE :path')
-            ->setParameter('station', $station);
+            ->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         foreach ($folders as $path => $playlists) {
             $mediaInFolder = $mediaInFolderQuery->setParameter('path', $path . '/%')

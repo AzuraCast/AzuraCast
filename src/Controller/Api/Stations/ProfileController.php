@@ -17,7 +17,7 @@ class ProfileController
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
-        $frontend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
 
         $nowPlayingApi = $nowPlayingApiGenerator->currentOrEmpty($station);
 

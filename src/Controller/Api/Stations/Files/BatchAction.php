@@ -85,14 +85,17 @@ class BatchAction
                 $mediaStorage = $station->getMediaStorageLocation();
 
                 foreach ($files as $file) {
-                    $file_meta = $fs->getMetadata($file);
+                    try {
+                        $file_meta = $fs->getMetadata($file);
 
-                    if ('dir' === $file_meta['type']) {
-                        $fs->deleteDir($file);
-                    } else {
-                        $mediaStorage->removeStorageUsed($file_meta['size']);
-
-                        $fs->delete($file);
+                        if ('file' === $file_meta['type']) {
+                            $mediaStorage->removeStorageUsed($file_meta['size']);
+                            $fs->delete($file);
+                        } else {
+                            $fs->deleteDir($file);
+                        }
+                    } catch (Exception $e) {
+                        $errors[] = $file . ': ' . $e->getMessage();
                     }
                 }
 
@@ -217,13 +220,6 @@ class BatchAction
 
                 try {
                     // Verify that you're moving to a directory (if it's not the root dir).
-                    if ('' !== $directory_path) {
-                        $directory_path_meta = $fs->getMetadata($directory_path_full);
-                        if ('dir' !== $directory_path_meta['type']) {
-                            throw new \App\Exception(__('Path "%s" is not a folder.', $directory_path_full));
-                        }
-                    }
-
                     foreach ($music_files as $file) {
                         $media = $mediaRepo->getOrCreate($station, $file['path']);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -15,6 +16,24 @@ final class Version20201109203951 extends AbstractMigration
     public function getDescription(): string
     {
         return 'Add unique constraint for analytics.';
+    }
+
+    public function preUp(Schema $schema): void
+    {
+        $analytics = $this->connection->fetchAllAssociative('SELECT id, station_id, type, moment FROM analytics ORDER BY id ASC');
+        $rows = [];
+
+        foreach ($analytics as $row) {
+            $rowKey = ($row['station_id'] ?? 'all') . '_' . $row['type'] . '_' . $row['moment'];
+
+            if (isset($rows[$rowKey])) {
+                $this->connection->delete('analytics', [
+                    'id' => $row['id'],
+                ], [
+                    'id' => ParameterType::INTEGER,
+                ]);
+            }
+        }
     }
 
     public function up(Schema $schema): void

@@ -164,6 +164,7 @@ final class Version20201027130504 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('DELETE FROM station_media WHERE storage_location_id IS NULL');
         $this->addSql('ALTER TABLE station_media ADD CONSTRAINT FK_32AADE3ACDDD8AF FOREIGN KEY (storage_location_id) REFERENCES storage_location (id) ON DELETE CASCADE');
         $this->addSql('CREATE INDEX IDX_32AADE3ACDDD8AF ON station_media (storage_location_id)');
         $this->addSql('CREATE UNIQUE INDEX path_unique_idx ON station_media (path, storage_location_id)');

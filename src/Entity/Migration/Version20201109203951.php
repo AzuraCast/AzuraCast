@@ -32,6 +32,8 @@ final class Version20201109203951 extends AbstractMigration
                 ], [
                     'id' => ParameterType::INTEGER,
                 ]);
+            } else {
+                $rows[$rowKey] = $row['id'];
             }
         }
     }

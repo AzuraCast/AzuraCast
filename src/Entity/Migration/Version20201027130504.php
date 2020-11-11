@@ -124,14 +124,19 @@ final class Version20201027130504 extends AbstractMigration
                     ]
                 );
 
-                $tablesToUpdate = ['song_history', 'station_playlist_media', 'station_queue', 'station_requests'];
+                $tablesToUpdate = [
+                    'song_history' => 'media_id',
+                    'station_playlist_media' => 'media_id',
+                    'station_queue' => 'media_id',
+                    'station_requests' => 'track_id',
+                ];
 
                 foreach ($media as [$oldMediaId, $newMediaId]) {
-                    foreach ($tablesToUpdate as $table) {
+                    foreach ($tablesToUpdate as $table => $fieldName) {
                         $this->connection->update($table, [
-                            'media_id' => $newMediaId,
+                            $fieldName => $newMediaId,
                         ], [
-                            'media_id' => $oldMediaId,
+                            $fieldName => $oldMediaId,
                         ]);
                     }
                 }

@@ -153,7 +153,7 @@ final class Version20201027130504 extends AbstractMigration
                     }
                 }
 
-                $this->connection->executeQuery('DELETE FROM station_media WHRE station_id = ?', [
+                $this->connection->executeQuery('DELETE FROM station_media WHERE station_id = ?', [
                     $stationId,
                 ], [
                     ParameterType::INTEGER,

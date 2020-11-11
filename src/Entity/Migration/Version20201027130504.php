@@ -32,7 +32,7 @@ final class Version20201027130504 extends AbstractMigration
         ]);
 
         // Migrate existing directories to new StorageLocation paradigm.
-        $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station ORDER BY id ASC');
+        $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station WHERE media_storage_location_id IS NULL ORDER BY id ASC');
 
         $directories = [];
 
@@ -112,32 +112,38 @@ final class Version20201027130504 extends AbstractMigration
             );
 
             foreach ($dirInfo['stations'] as $stationId) {
-                $media = $this->connection->fetchAllAssociative(
-                    'SELECT sm1.id AS old_id, sm2.id AS new_id FROM station_media AS sm1 INNER JOIN station_media AS sm2 ON sm1.path = sm2.path WHERE sm2.storage_location_id = ? AND sm1.station_id = ?',
+                $media = $this->connection->fetchAllAssociative('SELECT sm.id, sm.path FROM station_media AS sm WHERE sm.station_id = ?',
                     [
-                        $mediaStorageLocationId,
                         $stationId,
-                    ],
-                    [
+                    ], [
                         ParameterType::INTEGER,
-                        ParameterType::INTEGER,
-                    ]
-                );
+                    ]);
 
-                $tablesToUpdate = [
-                    'song_history' => 'media_id',
-                    'station_playlist_media' => 'media_id',
-                    'station_queue' => 'media_id',
-                    'station_requests' => 'track_id',
-                ];
-
-                foreach ($media as [$oldMediaId, $newMediaId]) {
-                    foreach ($tablesToUpdate as $table => $fieldName) {
-                        $this->connection->update($table, [
-                            $fieldName => $newMediaId,
+                foreach ($media as [$oldMediaId, $mediaPath]) {
+                    $newMediaId = $this->connection->fetchOne('SELECT sm.id FROM station_media AS sm WHERE sm.path = ? AND sm.storage_location_id = ?',
+                        [
+                            $mediaPath,
+                            $mediaStorageLocationId,
                         ], [
-                            $fieldName => $oldMediaId,
+                            ParameterType::STRING,
+                            ParameterType::INTEGER,
                         ]);
+
+                    if ($newMediaId) {
+                        $tablesToUpdate = [
+                            'song_history' => 'media_id',
+                            'station_playlist_media' => 'media_id',
+                            'station_queue' => 'media_id',
+                            'station_requests' => 'track_id',
+                        ];
+
+                        foreach ($tablesToUpdate as $table => $fieldName) {
+                            $this->connection->update($table, [
+                                $fieldName => $newMediaId,
+                            ], [
+                                $fieldName => $oldMediaId,
+                            ]);
+                        }
                     }
                 }
 

@@ -112,22 +112,28 @@ final class Version20201027130504 extends AbstractMigration
             );
 
             foreach ($dirInfo['stations'] as $stationId) {
-                $media = $this->connection->fetchAllAssociative('SELECT sm.id, sm.path FROM station_media AS sm WHERE sm.station_id = ?',
+                $media = $this->connection->fetchAllAssociative(
+                    'SELECT sm.id, sm.path FROM station_media AS sm WHERE sm.station_id = ?',
                     [
                         $stationId,
-                    ], [
+                    ],
+                    [
                         ParameterType::INTEGER,
-                    ]);
+                    ]
+                );
 
                 foreach ($media as [$oldMediaId, $mediaPath]) {
-                    $newMediaId = $this->connection->fetchOne('SELECT sm.id FROM station_media AS sm WHERE sm.path = ? AND sm.storage_location_id = ?',
+                    $newMediaId = $this->connection->fetchOne(
+                        'SELECT sm.id FROM station_media AS sm WHERE sm.path = ? AND sm.storage_location_id = ?',
                         [
                             $mediaPath,
                             $mediaStorageLocationId,
-                        ], [
+                        ],
+                        [
                             ParameterType::STRING,
                             ParameterType::INTEGER,
-                        ]);
+                        ]
+                    );
 
                     if ($newMediaId) {
                         $tablesToUpdate = [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -12,6 +13,136 @@ final class Version20201027130504 extends AbstractMigration
     public function getDescription(): string
     {
         return 'Song storage consolidation, part 2.';
+    }
+
+    public function preUp(Schema $schema): void
+    {
+        // Create initial backup directory.
+        $this->connection->insert('storage_location', [
+            'type' => 'backup',
+            'adapter' => 'local',
+            'path' => '/var/azuracast/backup',
+        ]);
+
+        $storageLocationId = $this->connection->lastInsertId('storage_location');
+        $this->connection->update('settings', [
+            'setting_value' => $storageLocationId,
+        ], [
+            'setting_key' => 'backup_storage_location',
+        ]);
+
+        // Migrate existing directories to new StorageLocation paradigm.
+        $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station ORDER BY id ASC');
+
+        $directories = [];
+
+        foreach ($stations as $row) {
+            $stationId = $row['id'];
+
+            $baseDir = $row['radio_base_dir'];
+            $mediaDir = $row['radio_media_dir'];
+            if (empty($mediaDir)) {
+                $mediaDir = $baseDir . '/media';
+            }
+
+            if (isset($directories[$mediaDir])) {
+                $directories[$mediaDir]['stations'][] = $stationId;
+            } else {
+                $directories[$mediaDir] = [
+                    'stations' => [$stationId],
+                    'storageQuota' => $row['storage_quota'],
+                    'albumArtDir' => $baseDir . '/album_art',
+                    'waveformsDir' => $baseDir . '/waveforms',
+                ];
+            }
+
+            // Create recordings dir.
+            $this->connection->insert('storage_location', [
+                'type' => 'station_recordings',
+                'adapter' => 'local',
+                'path' => $baseDir . '/recordings',
+                'storage_quota' => $row['storage_quota'],
+            ]);
+
+            $recordingsStorageLocationId = $this->connection->lastInsertId('storage_location');
+
+            $this->connection->update('station', [
+                'recordings_storage_location_id' => $recordingsStorageLocationId,
+            ], [
+                'id' => $stationId,
+            ]);
+        }
+
+        foreach ($directories as $path => $dirInfo) {
+            $newAlbumArtDir = $path . '/.albumart';
+            rename($dirInfo['albumArtDir'], $newAlbumArtDir);
+
+            $newWaveformsDir = $path . '/.waveforms';
+            rename($dirInfo['waveformsDir'], $newWaveformsDir);
+
+            $this->connection->insert('storage_location', [
+                'type' => 'station_media',
+                'adapter' => 'local',
+                'path' => $path,
+                'storage_quota' => $dirInfo['storageQuota'],
+            ]);
+
+            $mediaStorageLocationId = $this->connection->lastInsertId('storage_location');
+
+            foreach ($dirInfo['stations'] as $stationId) {
+                $this->connection->update('station', [
+                    'media_storage_location_id' => $mediaStorageLocationId,
+                ], [
+                    'id' => $stationId,
+                ]);
+            }
+
+            $firstStationId = array_shift($dirInfo['stations']);
+
+            $this->connection->executeQuery(
+                'UPDATE station_media SET storage_location_id=? WHERE station_id = ?',
+                [
+                    $mediaStorageLocationId,
+                    $firstStationId,
+                ],
+                [
+                    ParameterType::INTEGER,
+                    ParameterType::INTEGER,
+                ]
+            );
+
+            foreach ($dirInfo['stations'] as $stationId) {
+                $media = $this->connection->fetchAllAssociative(
+                    'SELECT sm1.id AS old_id, sm2.id AS new_id FROM station_media AS sm1 INNER JOIN station_media AS sm2 ON sm1.path = sm2.path WHERE sm2.storage_location_id = ? AND sm1.station_id = ?',
+                    [
+                        $mediaStorageLocationId,
+                        $stationId,
+                    ],
+                    [
+                        ParameterType::INTEGER,
+                        ParameterType::INTEGER,
+                    ]
+                );
+
+                $tablesToUpdate = ['song_history', 'station_playlist_media', 'station_queue', 'station_requests'];
+
+                foreach ($media as [$oldMediaId, $newMediaId]) {
+                    foreach ($tablesToUpdate as $table) {
+                        $this->connection->update($table, [
+                            'media_id' => $newMediaId,
+                        ], [
+                            'media_id' => $oldMediaId,
+                        ]);
+                    }
+                }
+
+                $this->connection->executeQuery('DELETE FROM station_media WHRE station_id = ?', [
+                    $stationId,
+                ], [
+                    ParameterType::INTEGER,
+                ]);
+            }
+        }
     }
 
     public function up(Schema $schema): void

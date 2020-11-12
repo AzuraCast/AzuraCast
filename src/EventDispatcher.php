@@ -18,29 +18,38 @@ class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
         $this->callableResolver = $callableResolver;
     }
 
-    public function addServiceSubscriber($class_name): void
+    /**
+     * @param class-string|class-string[] $className
+     */
+    public function addServiceSubscriber($className): void
     {
-        if (is_array($class_name)) {
-            foreach ($class_name as $service) {
+        if (is_array($className)) {
+            foreach ($className as $service) {
                 $this->addServiceSubscriber($service);
             }
             return;
         }
 
-        foreach ($class_name::getSubscribedEvents() as $eventName => $params) {
+        foreach ($className::getSubscribedEvents() as $eventName => $params) {
             if (is_string($params)) {
-                $this->addListener($eventName, $this->getCallable($class_name, $params));
-            } elseif (is_string($params[0])) {
-                $this->addListener(
+                $this->addCallableListener(
                     $eventName,
-                    $this->getCallable($class_name, $params[0]),
+                    $className,
+                    $params
+                );
+            } elseif (is_string($params[0])) {
+                $this->addCallableListener(
+                    $eventName,
+                    $className,
+                    $params[0],
                     $params[1] ?? 0
                 );
             } else {
                 foreach ($params as $listener) {
-                    $this->addListener(
+                    $this->addCallableListener(
                         $eventName,
-                        $this->getCallable($class_name, $listener[0]),
+                        $className,
+                        $listener[0],
                         $listener[1] ?? 0
                     );
                 }
@@ -48,31 +57,65 @@ class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
         }
     }
 
-    public function removeServiceSubscriber($class_name): void
+    /**
+     * @param class-string|class-string[] $className
+     */
+    public function removeServiceSubscriber($className): void
     {
-        if (is_array($class_name)) {
-            foreach ($class_name as $service) {
+        if (is_array($className)) {
+            foreach ($className as $service) {
                 $this->removeServiceSubscriber($service);
             }
             return;
         }
 
-        foreach ($class_name::getSubscribedEvents() as $eventName => $params) {
+        foreach ($className::getSubscribedEvents() as $eventName => $params) {
             if (is_array($params) && is_array($params[0])) {
                 foreach ($params as $listener) {
-                    $this->removeListener($eventName, $this->getCallable($class_name, $listener[0]));
+                    $this->removeCallableListener(
+                        $eventName,
+                        $className,
+                        $listener[0]
+                    );
                 }
             } else {
-                $this->removeListener(
+                $this->removeCallableListener(
                     $eventName,
-                    $this->getCallable($class_name, is_string($params) ? $params : $params[0])
+                    $className,
+                    is_string($params) ? $params : $params[0]
                 );
             }
         }
     }
 
-    protected function getCallable($class_name, $method): DeferredCallable
-    {
-        return new DeferredCallable($class_name . ':' . $method, $this->callableResolver);
+    public function addCallableListener(
+        string $eventName,
+        string $className,
+        ?string $method = '__invoke',
+        int $priority = 0
+    ): void {
+        $this->addListener(
+            $eventName,
+            $this->getCallable($className, $method),
+            $priority
+        );
+    }
+
+    public function removeCallableListener(
+        string $eventName,
+        string $className,
+        ?string $method = '__invoke'
+    ): void {
+        $this->removeListener(
+            $eventName,
+            $this->getCallable($className, $method)
+        );
+    }
+
+    protected function getCallable(
+        string $className,
+        ?string $method = '__invoke'
+    ): DeferredCallable {
+        return new DeferredCallable($className . ':' . $method, $this->callableResolver);
     }
 }

@@ -70,7 +70,7 @@ class DashboardController
         }
 
         // Get administrator notifications.
-        $notification_event = new Event\GetNotifications($user, $request);
+        $notification_event = new Event\GetNotifications($request);
         $this->dispatcher->dispatch($notification_event);
 
         $notifications = $notification_event->getNotifications();

@@ -149,6 +149,7 @@ class Runner
                 ],
                 'lastRunSetting' => Entity\Settings::NOWPLAYING_LAST_RUN,
                 'timeout' => 600,
+                'interval' => 15,
             ],
             GetSyncTasks::SYNC_SHORT => [
                 'name' => __('1-Minute Sync'),
@@ -157,6 +158,7 @@ class Runner
                 ],
                 'lastRunSetting' => Entity\Settings::SHORT_SYNC_LAST_RUN,
                 'timeout' => 600,
+                'interval' => 60,
             ],
             GetSyncTasks::SYNC_MEDIUM => [
                 'name' => __('5-Minute Sync'),
@@ -165,6 +167,7 @@ class Runner
                 ],
                 'lastRunSetting' => Entity\Settings::MEDIUM_SYNC_LAST_RUN,
                 'timeout' => 600,
+                'interval' => 300,
             ],
             GetSyncTasks::SYNC_LONG => [
                 'name' => __('1-Hour Sync'),
@@ -174,6 +177,7 @@ class Runner
                 ],
                 'lastRunSetting' => Entity\Settings::LONG_SYNC_LAST_RUN,
                 'timeout' => 1800,
+                'interval' => 3600,
             ],
         ];
 

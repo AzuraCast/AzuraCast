@@ -222,10 +222,8 @@ class FilesController extends AbstractStationApiCrudController
                 'path' => function ($new_value, $record) {
                     // Detect and handle a rename.
                     if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                        $path_full = FilesystemManager::PREFIX_MEDIA . '://' . $new_value;
-
                         $fs = $record->getStorageLocation()->getFilesystem();
-                        $fs->rename($record->getPathUri(), $path_full);
+                        $fs->rename($record->getPath(), $new_value);
                     }
 
                     return $new_value;

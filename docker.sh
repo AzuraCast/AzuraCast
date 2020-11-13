@@ -432,6 +432,33 @@ bash() {
 }
 
 #
+# Enter the MariaDB database management terminal with the correct credentials.
+#
+db() {
+    local MYSQL_HOST MYSQL_PORT MYSQL_USER MYSQL_PASSWORD MYSQL_DATABASE
+
+    .env --file azuracast.env get MYSQL_HOST
+    MYSQL_HOST="${REPLY:-mariadb}"
+
+    .env --file azuracast.env get MYSQL_PORT
+    MYSQL_PORT="${REPLY:-mariadb}"
+
+    .env --file azuracast.env get MYSQL_USER
+    MYSQL_USER="${REPLY:-azuracast}"
+
+    .env --file azuracast.env get MYSQL_PASSWORD
+    MYSQL_PASSWORD="${REPLY:-azur4c457}"
+
+    .env --file azuracast.env get MYSQL_DATABASE
+    MYSQL_DATABASE="${REPLY:-azuracast}"
+
+    docker-compose run --rm mariadb mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
+        --host=${MYSQL_HOST} --port=${MYSQL_PORT} --database=${MYSQL_DATABASE}
+
+    exit
+}
+
+#
 # Back up the Docker volumes to a .tar.gz file.
 # Usage:
 # ./docker.sh backup [/custom/backup/dir/custombackupname.zip]

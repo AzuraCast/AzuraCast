@@ -441,7 +441,7 @@ db() {
     MYSQL_HOST="${REPLY:-mariadb}"
 
     .env --file azuracast.env get MYSQL_PORT
-    MYSQL_PORT="${REPLY:-mariadb}"
+    MYSQL_PORT="${REPLY:-3306}"
 
     .env --file azuracast.env get MYSQL_USER
     MYSQL_USER="${REPLY:-azuracast}"

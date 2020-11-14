@@ -92,9 +92,9 @@ $enable-print-styles: true !default;
 @import 'azuracast/overrides/forms';
 @import 'azuracast/overrides/header';
 @import 'azuracast/overrides/tables';
+@import 'azuracast/overrides/progressbar';
 
 // Individual AzuraCast pages
-@import 'azuracast/pages/admin';
 @import 'azuracast/pages/embed';
 @import 'azuracast/pages/files';
 @import 'azuracast/pages/playlists';

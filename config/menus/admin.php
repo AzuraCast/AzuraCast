@@ -23,11 +23,6 @@ return function (App\Event\BuildAdminMenu $e) {
                     'url' => $router->named('admin:branding:index'),
                     'permission' => Acl::GLOBAL_SETTINGS,
                 ],
-                'api_keys' => [
-                    'label' => __('API Keys'),
-                    'url' => $router->named('admin:api:index'),
-                    'permission' => Acl::GLOBAL_API_KEYS,
-                ],
                 'logs' => [
                     'label' => __('System Logs'),
                     'url' => $router->named('admin:logs:index'),
@@ -68,6 +63,11 @@ return function (App\Event\BuildAdminMenu $e) {
                     'label' => __('Audit Log'),
                     'url' => $router->named('admin:auditlog:index'),
                     'permission' => Acl::GLOBAL_LOGS,
+                ],
+                'api_keys' => [
+                    'label' => __('API Keys'),
+                    'url' => $router->named('admin:api:index'),
+                    'permission' => Acl::GLOBAL_API_KEYS,
                 ],
             ],
         ],

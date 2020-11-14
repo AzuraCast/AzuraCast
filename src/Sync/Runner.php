@@ -91,7 +91,6 @@ class Runner
         $syncInfo = $allSyncInfo[$type];
 
         set_time_limit($syncInfo['timeout']);
-        ini_set('memory_limit', '256M');
 
         if (Settings::getInstance()->isCli()) {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
@@ -141,6 +140,9 @@ class Runner
     {
         $this->settingsRepo->clearCache();
 
+        $shortTaskTimeout = $_ENV['SYNC_SHORT_EXECUTION_TIME'] ?? 600;
+        $longTaskTimeout = $_ENV['SYNC_LONG_EXECUTION_TIME'] ?? 1800;
+
         $syncs = [
             GetSyncTasks::SYNC_NOWPLAYING => [
                 'name' => __('Now Playing Data'),
@@ -148,7 +150,7 @@ class Runner
                     __('Now Playing Data'),
                 ],
                 'lastRunSetting' => Entity\Settings::NOWPLAYING_LAST_RUN,
-                'timeout' => 600,
+                'timeout' => $shortTaskTimeout,
                 'interval' => 15,
             ],
             GetSyncTasks::SYNC_SHORT => [
@@ -157,7 +159,7 @@ class Runner
                     __('Song Requests Queue'),
                 ],
                 'lastRunSetting' => Entity\Settings::SHORT_SYNC_LAST_RUN,
-                'timeout' => 600,
+                'timeout' => $shortTaskTimeout,
                 'interval' => 60,
             ],
             GetSyncTasks::SYNC_MEDIUM => [
@@ -166,7 +168,7 @@ class Runner
                     __('Check Media Folders'),
                 ],
                 'lastRunSetting' => Entity\Settings::MEDIUM_SYNC_LAST_RUN,
-                'timeout' => 600,
+                'timeout' => $shortTaskTimeout,
                 'interval' => 300,
             ],
             GetSyncTasks::SYNC_LONG => [
@@ -176,7 +178,7 @@ class Runner
                     __('Cleanup'),
                 ],
                 'lastRunSetting' => Entity\Settings::LONG_SYNC_LAST_RUN,
-                'timeout' => 1800,
+                'timeout' => $longTaskTimeout,
                 'interval' => 3600,
             ],
         ];

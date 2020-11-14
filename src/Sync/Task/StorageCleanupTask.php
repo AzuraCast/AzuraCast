@@ -37,7 +37,7 @@ class StorageCleanupTask extends AbstractTask
 
         // Check all stations for automation settings.
         // Use this to avoid detached entity errors.
-        $storageLocationsQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT sl 
+        $storageLocationsQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT sl
             FROM App\Entity\StorageLocation sl
             WHERE sl.type = :type')
             ->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
@@ -70,8 +70,8 @@ class StorageCleanupTask extends AbstractTask
         $fs = $storageLocation->getFilesystem();
 
         $allUniqueIdsRaw = $this->em
-            ->createQuery(/** @lang DQL */ 'SELECT sm.unique_id 
-                FROM App\Entity\StationMedia sm 
+            ->createQuery(/** @lang DQL */ 'SELECT sm.unique_id
+                FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation')
             ->setParameter('storageLocation', $storageLocation)
             ->getArrayResult();
@@ -96,7 +96,7 @@ class StorageCleanupTask extends AbstractTask
 
             foreach ($dirContents as $row) {
                 if (!isset($allUniqueIds[$row['filename']])) {
-                    $fs->delete($dirBase . $row['path']);
+                    $fs->delete($row['path']);
                     $removed[$key]++;
                 }
             }

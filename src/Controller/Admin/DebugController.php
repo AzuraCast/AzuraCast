@@ -4,10 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Console\Application;
 use App\Entity;
-use App\Event\GetSyncTasks;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\LockFactory;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
@@ -49,31 +47,11 @@ class DebugController
         ServerRequest $request,
         Response $response,
         Runner $sync,
-        LockFactory $lockFactory,
         $type
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
-        $lockFactory->clearQueue($type);
-
-        switch ($type) {
-            case GetSyncTasks::SYNC_LONG:
-                $sync->syncLong(true);
-                break;
-
-            case GetSyncTasks::SYNC_MEDIUM:
-                $sync->syncMedium(true);
-                break;
-
-            case GetSyncTasks::SYNC_SHORT:
-                $sync->syncShort(true);
-                break;
-
-            case GetSyncTasks::SYNC_NOWPLAYING:
-            default:
-                $sync->syncNowplaying(true);
-                break;
-        }
+        $sync->runSyncTask($type, true);
 
         $this->logger->popHandler();
 

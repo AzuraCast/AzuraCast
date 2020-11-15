@@ -9,28 +9,9 @@ class SyncCommand extends CommandAbstract
 {
     public function __invoke(
         Runner $sync,
-        string $task = 'nowplaying'
+        string $task = App\Event\GetSyncTasks::SYNC_NOWPLAYING
     ): int {
-        switch ($task) {
-            case 'long':
-                $sync->syncLong();
-                break;
-
-            case 'medium':
-                $sync->syncMedium();
-                break;
-
-            case 'short':
-                $sync->syncShort();
-                break;
-
-            case 'nowplaying':
-            default:
-                define('NOWPLAYING_SEGMENT', 1);
-                $sync->syncNowplaying();
-                break;
-        }
-
+        $sync->runSyncTask($task);
         return 0;
     }
 }

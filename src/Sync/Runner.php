@@ -35,51 +35,6 @@ class Runner
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * Now-Playing Synchronization
-     * The most frequent sync process, which must be optimized for speed,
-     * as it runs approx. every 15 seconds.
-     *
-     * @param bool $force
-     */
-    public function syncNowplaying($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_NOWPLAYING, $force);
-    }
-
-    /**
-     * Short Synchronization
-     * This task runs automatically every minute.
-     *
-     * @param bool $force
-     */
-    public function syncShort($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_SHORT, $force);
-    }
-
-    /**
-     * Medium Synchronization
-     * This task runs automatically every 5 minutes.
-     *
-     * @param bool $force
-     */
-    public function syncMedium($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_MEDIUM, $force);
-    }
-
-    /**
-     * Long Synchronization
-     * This task runs automatically every hour.
-     *
-     * @param bool $force
-     */
-    public function syncLong($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_LONG, $force);
-    }
-
     public function runSyncTask(string $type, bool $force = false): void
     {
         // Immediately halt if setup is not complete.
@@ -88,6 +43,11 @@ class Runner
         }
 
         $allSyncInfo = $this->getSyncTimes();
+
+        if (!isset($allSyncInfo[$type])) {
+            throw new \InvalidArgumentException(sprintf('Invalid sync task: %s', $type));
+        }
+
         $syncInfo = $allSyncInfo[$type];
 
         set_time_limit($syncInfo['timeout']);
@@ -102,7 +62,14 @@ class Runner
 
         $lock = $this->lockFactory->createLock('sync_' . $type, $syncInfo['timeout']);
 
-        if (!$lock->acquire($force)) {
+        if ($force) {
+            $this->lockFactory->clearQueue('sync_' . $type);
+            try {
+                $lock->acquire($force);
+            } catch (\Exception $e) {
+                // Noop
+            }
+        } elseif (!$lock->acquire()) {
             return;
         }
 

@@ -103,7 +103,7 @@ return function (Application $console) {
     )->setDescription(__('Run one or more scheduled synchronization tasks.'));
 
     $console->command(
-        'queue:process [runtime]',
+        'queue:process [runtime] [--worker-name=]',
         Command\MessageQueue\ProcessCommand::class
     )->setDescription(__('Process the message queue.'));
 

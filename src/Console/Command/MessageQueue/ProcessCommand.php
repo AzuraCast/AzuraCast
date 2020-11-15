@@ -19,10 +19,15 @@ class ProcessCommand extends CommandAbstract
         EventDispatcher $eventDispatcher,
         QueueManager $queueManager,
         LoggerInterface $logger,
-        int $runtime = 0
+        int $runtime = 0,
+        ?string $workerName = null
     ): int {
         $logger->notice('Starting new Message Queue worker process.');
 
+        if (null !== $workerName) {
+            $queueManager->setWorkerName($workerName);
+        }
+        
         $receivers = $queueManager->getTransports();
 
         $eventDispatcher->addServiceSubscriber(ClearEntityManagerSubscriber::class);

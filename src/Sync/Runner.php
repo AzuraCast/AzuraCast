@@ -6,9 +6,9 @@ use App\Entity;
 use App\Entity\Repository\SettingsRepository;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
+use App\LockFactory;
 use App\Settings;
 use Monolog\Logger;
-use Symfony\Component\Lock\LockFactory;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -113,6 +113,10 @@ class Runner
             $tasks = $event->getTasks();
 
             foreach ($tasks as $taskClass => $task) {
+                if (!$lock->isAcquired()) {
+                    return;
+                }
+
                 $start_time = microtime(true);
 
                 $task->run($force);

@@ -305,24 +305,9 @@ return [
         return $builder->getValidator();
     },
 
-    Symfony\Component\Lock\LockFactory::class => function (
-        Redis $redis,
-        Psr\Log\LoggerInterface $logger
-    ) {
-        $redisStore = new Symfony\Component\Lock\Store\RedisStore($redis);
-
-        $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 30);
-        $retryStore->setLogger($logger);
-
-        $lockFactory = new Symfony\Component\Lock\LockFactory($retryStore);
-        $lockFactory->setLogger($logger);
-
-        return $lockFactory;
-    },
-
     Symfony\Component\Messenger\MessageBus::class => function (
         App\MessageQueue\QueueManager $queueManager,
-        Symfony\Component\Lock\LockFactory $lockFactory,
+        App\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
         App\Plugins $plugins

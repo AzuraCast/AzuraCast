@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageQueue;
 
-use Symfony\Component\Lock\LockFactory;
+use App\LockFactory;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;

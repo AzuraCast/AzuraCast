@@ -3,10 +3,10 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use App\LockFactory;
 use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Lock\LockFactory;
 
 class BuildQueue extends AbstractTask
 {

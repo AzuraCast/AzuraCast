@@ -7,14 +7,14 @@
   // Font metrics used in the calculation are from Roboro Regular:
   // https://github.com/google/fonts/blob/master/apache/roboto/Roboto-Regular.ttf
 
-  $roboto-fm-ascender:        1946 !default;
-  $roboto-fm-capital-height:  1456 !default;
-  $roboto-fm-descender:       512 !default;
+  $roboto-fm-ascender: 1946 !default;
+  $roboto-fm-capital-height: 1456 !default;
+  $roboto-fm-descender: 512 !default;
 
-  $roboto-capital-height:     (strip-unit($font-size-base) * strip-unit($font-size-root) * strip-unit($line-height-base)) !default;
+  $roboto-capital-height: (strip-unit($font-size-base) * strip-unit($font-size-root) * strip-unit($line-height-base)) !default;
   $roboto-computed-font-size: ($roboto-capital-height / $roboto-fm-capital-height) !default;
-  $roboto-distance-bottom:    $roboto-fm-descender !default;
-  $roboto-distance-top:       ($roboto-fm-ascender - $roboto-fm-capital-height) !default;
+  $roboto-distance-bottom: $roboto-fm-descender !default;
+  $roboto-distance-top: ($roboto-fm-ascender - $roboto-fm-capital-height) !default;
 
   vertical-align: (($roboto-distance-bottom - $roboto-distance-top) * $roboto-computed-font-size * -1em);
 }
@@ -33,4 +33,19 @@
   text-transform: none;
   white-space: nowrap;
   word-wrap: normal;
+}
+
+@mixin setup-material-icons-bg($size: $material-icon-size) {
+  content: "";
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: $size;
+  width: $size;
+  background-size: $size;
+  background-color: $selection-control-color;
+}
+
+@mixin material-icons-bg($icon) {
+  mask-image: url($icon);
+  -webkit-mask-image: url($icon);
 }

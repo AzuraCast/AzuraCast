@@ -34,7 +34,6 @@
     "del": "^3.0.0",
     "dirrty": "^1.0.0",
     "easygettext": "^2.14.0",
-    "fullcalendar": "^3.10.2",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^3.9.2",

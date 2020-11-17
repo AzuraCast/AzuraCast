@@ -41,11 +41,9 @@
   background-repeat: no-repeat;
   height: $size;
   width: $size;
-  background-size: $size;
-  background-color: $selection-control-color;
+  background-size: cover;
 }
 
 @mixin material-icons-bg($icon) {
-  mask-image: url($icon);
-  -webkit-mask-image: url($icon);
+  background-image: $icon;
 }

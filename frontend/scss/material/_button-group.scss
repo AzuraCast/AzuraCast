@@ -146,8 +146,8 @@
 // Split button dropdown
 
 .dropdown-toggle.dropdown-toggle-split {
-  padding-right: $caret-spacer-x;
-  padding-left: $caret-spacer-x;
+  padding-right: $caret-spacing;
+  padding-left: $caret-spacing;
 
   &::after {
     margin-right: 0;

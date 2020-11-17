@@ -10,11 +10,21 @@ $text-secondary: $black-secondary !default;
 $text-hint: $black-hint !default;
 $text-divider: $black-divider !default;
 
+$text-primary-opacity: $black-primary-opacity !default;
+$text-secondary-opacity: $black-secondary-opacity !default;
+$text-hint-opacity: $black-hint-opacity !default;
+$text-divider-opacity: $black-divider-opacity !default;
+
 $text-inverted-color: $white !default;
 $text-inverted-primary: $white-primary !default;
 $text-inverted-secondary: $white-secondary !default;
 $text-inverted-hint: $white-hint !default;
 $text-inverted-divider: $white-divider !default;
+
+$text-inverted-primary-opacity: $white-primary-opacity !default;
+$text-inverted-secondary-opacity: $white-secondary-opacity !default;
+$text-inverted-hint-opacity: $white-hint-opacity !default;
+$text-inverted-divider-opacity: $white-divider-opacity !default;
 
 @if $theme == 'dark' {
   $theme-color-1: $dark-theme-1;
@@ -28,11 +38,21 @@ $text-inverted-divider: $white-divider !default;
   $text-hint: $white-hint;
   $text-divider: $white-divider;
 
+  $text-primary-opacity: $white-primary-opacity !default;
+  $text-secondary-opacity: $white-secondary-opacity !default;
+  $text-hint-opacity: $white-hint-opacity !default;
+  $text-divider-opacity: $white-divider-opacity !default;
+
   $text-inverted-color: $black;
   $text-inverted-primary: $black-primary;
   $text-inverted-secondary: $black-secondary;
   $text-inverted-hint: $black-hint;
   $text-inverted-divider: $black-divider;
+
+  $text-inverted-primary-opacity: $black-primary-opacity !default;
+  $text-inverted-secondary-opacity: $black-secondary-opacity !default;
+  $text-inverted-hint-opacity: $black-hint-opacity !default;
+  $text-inverted-divider-opacity: $black-divider-opacity !default;
 }
 
 // Alert
@@ -62,7 +82,6 @@ $breadcrumb-height: 3.5rem !default;
 $breadcrumb-inner-spacer-x: 0.5rem !default;
 $breadcrumb-item-color: $text-secondary !default;
 $breadcrumb-item-color-hover: $text-primary !default;
-$breadcrumb-item-icon: 'chevron_right' !default;
 $breadcrumb-margin-y: $spacer !default;
 $breadcrumb-padding-x: 1rem !default;
 $breadcrumb-padding-y: 0.625rem !default;
@@ -71,17 +90,13 @@ $breadcrumb-padding-y: 0.625rem !default;
   $breadcrumb-bg: $dark-theme-3;
 }
 
-// Caret
-$caret-bg: str-replace(url('data:image/svg+xml;charset=utf8,%3Csvg fill="#{$black}" fill-opacity="#{$black-secondary-opacity}" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3Cpath d="M0 0h24v24H0z" fill="none"/%3E%3C/svg%3E'), '#', '%23') !default;
-$caret-icon: 'expand_more' !default;
-$caret-icon-left: 'keyboard_arrow_left' !default;
-$caret-icon-right: 'keyboard_arrow_right' !default;
-$caret-icon-up: 'expand_less' !default;
-$caret-spacer-x: 0.2em !default;
+$breadcrumb-item-icon: str-replace(url('data:image/svg+xml;charset=utf8,<svg fill="#{$breadcrumb-item-color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>'), '#', '%23');
 
-@if $theme == 'dark' {
-  $caret-bg: str-replace(url('data:image/svg+xml;charset=utf8,%3Csvg fill="#{$white}" fill-opacity="#{$white-secondary-opacity}" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3Cpath d="M0 0h24v24H0z" fill="none"/%3E%3C/svg%3E'), '#', '%23');
-}
+// Caret
+$caret-bg: str-replace(url('data:image/svg+xml;charset=utf8,%3Csvg fill="#{$text-color}" fill-opacity="#{$text-secondary-opacity}" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3Cpath d="M0 0h24v24H0z" fill="none"/%3E%3C/svg%3E'), '#', '%23') !default;
+$caret-width: .4rem !default;
+$caret-vertical-align: .1rem !default;
+$caret-spacing: $caret-width * 1.5 !default;
 
 // Carousel
 $carousel-caption-color: $white-primary !default;
@@ -92,13 +107,14 @@ $carousel-control-color: $white-primary !default;
 $carousel-control-elevation-shadow: map-get($elevation-shadows, 6) !default;
 $carousel-control-elevation-shadow-active: map-get($elevation-shadows, 12) !default;
 $carousel-control-font-size: 0.8125rem !default;
-$carousel-control-next-icon: 'chevron_right' !default;
-$carousel-control-prev-icon: 'chevron_left' !default;
 $carousel-control-size: 2.5rem !default;
 $carousel-indicator-bg: rgba(204, 204, 204, 0.25) !default;
 $carousel-indicator-border-color: $white-divider !default;
 $carousel-indicator-border-width: $border-width !default;
 $carousel-indicator-size: 0.5rem !default;
+
+$carousel-control-next-icon: str-replace(url('data:image/svg+xml;charset=utf8,<svg fill="#{$carousel-control-color}" xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>'), '#', '%23');
+$carousel-control-prev-icon: str-replace(url('data:image/svg+xml;charset=utf8,<svg fill="#{$carousel-control-color}" xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>'), '#', '%23');
 
 // Close
 $close-color: $text-hint !default;
@@ -127,7 +143,7 @@ $pre-scrollable-max-height: 340px !default;
 }
 
 // Form
-$custom-file-button-icon: 'attachment' !default;
+$custom-file-button-icon: str-replace(url('data:image/svg+xml;charset=utf8,<svg fill="#{$text-hint}" xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M2 12.5C2 9.46 4.46 7 7.5 7H18c2.21 0 4 1.79 4 4s-1.79 4-4 4H9.5C8.12 15 7 13.88 7 12.5S8.12 10 9.5 10H17v2H9.41c-.55 0-.55 1 0 1H18c1.1 0 2-.9 2-2s-.9-2-2-2H7.5C5.57 9 4 10.57 4 12.5S5.57 16 7.5 16H17v2H7.5C4.46 18 2 15.54 2 12.5z"/></svg>'), '#', '%23');
 
 $form-check-inline-margin-x: $spacer-sm !default;
 $form-check-input-gutter: 1.25rem !default;

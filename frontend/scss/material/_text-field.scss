@@ -160,6 +160,7 @@ textarea {
     }
   }
 }
+
 // stylelint-enable
 
 .custom-file {
@@ -202,9 +203,9 @@ textarea {
   left: 0;
 
   &::after {
-    @include set-material-icons;
+    @include setup-material-icons-bg();
+    @include material-icons-bg($custom-file-button-icon);
 
-    content: $custom-file-button-icon;
     position: absolute;
     top: 50%;
     right: 0;

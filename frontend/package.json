@@ -18,7 +18,6 @@
     "@fullcalendar/moment-timezone": "^4.4.2",
     "@fullcalendar/timegrid": "^4.4.2",
     "@fullcalendar/vue": "^4.4.2",
-    "acorn": "^6.4.2",
     "autosize": "^4.0.2",
     "axios": "^0.18.1",
     "bootstrap": "^4.5.2",

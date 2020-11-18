@@ -114,13 +114,15 @@ div.datatable-toolbar-bottom {
 
 table.b-table-selectable {
     thead tr th:nth-child(1),
-    tbody tr td:nth-child(1) {
+    tbody tr td:nth-child(1),
+    tbody tr th:nth-child(1) {
         padding-right: 0.75rem;
         width: 3rem;
     }
 
     thead tr th:nth-child(2),
-    tbody tr td:nth-child(2) {
+    tbody tr td:nth-child(2),
+    tbody tr th:nth-child(2) {
         padding-left: 0.5rem;
     }
 }

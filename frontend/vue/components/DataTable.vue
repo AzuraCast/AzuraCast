@@ -174,6 +174,7 @@ export default {
             allFields.push({
                 key: field.key,
                 label: _.defaultTo(field.label, ''),
+                isRowHeader: _.defaultTo(field.isRowHeader, false),
                 sortable: _.defaultTo(field.sortable, false),
                 selectable: _.defaultTo(field.selectable, false),
                 visible: _.defaultTo(field.visible, true),
@@ -229,6 +230,7 @@ export default {
                 fields.unshift({
                     key: 'selected',
                     label: '',
+                    isRowHeader: false,
                     sortable: false,
                     selectable: false,
                     visible: true

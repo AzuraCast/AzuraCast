@@ -61,10 +61,16 @@
   }
 
   // when open, hide bottom border
-  &.select2-container--open .select2-selection {
-    border-bottom: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  &.select2-container--open {
+    &.select2-container--above .select2-selection {
+      border-top: none;
+      @include border-top-radius(0);
+    }
+
+    &.select2-container--below .select2-selection {
+      border-bottom: none;
+      @include border-bottom-radius(0);
+    }
   }
 
   // disabled input box

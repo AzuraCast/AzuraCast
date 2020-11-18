@@ -60,11 +60,20 @@
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
                 <template v-slot:head(selected)="data">
-                    <b-form-checkbox :aria-label="langSelectAll" v-model="allSelected"
+                    <b-form-checkbox :aria-label="langSelectAll" :checked="allSelected"
                                      @change="toggleSelected"></b-form-checkbox>
                 </template>
                 <template v-slot:cell(selected)="{ rowSelected }">
-                    <b-form-checkbox :aria-label="langSelectRow" v-model="rowSelected"></b-form-checkbox>
+                    <div class="text-muted">
+                        <template v-if="rowSelected">
+                            <span class="sr-only">{{ langDeselectRow }}</span>
+                            <i class="material-icons" aria-hidden="true">check_box</i>
+                        </template>
+                        <template v-else>
+                            <span class="sr-only">{{ langSelectRow }}</span>
+                            <i class="material-icons" aria-hidden="true">check_box_outline_blank</i>
+                        </template>
+                    </div>
                 </template>
                 <template v-slot:table-busy>
                     <div role="alert" aria-live="polite">
@@ -187,7 +196,6 @@ export default {
         return {
             allFields: allFields,
             selected: [],
-            allSelected: false,
             storeKey: 'datatable_' + this.id + '_settings',
             filter: null,
             perPage: (this.paginated) ? this.defaultPerPage : 0,
@@ -214,7 +222,10 @@ export default {
             return this.$gettext('Select all visible rows');
         },
         langSelectRow () {
-            return this.$gettext('Select this row');
+            return this.$gettext('Select');
+        },
+        langDeselectRow () {
+            return this.$gettext('Deselect');
         },
         langSearch () {
             return this.$gettext('Search');
@@ -261,6 +272,11 @@ export default {
         },
         perPageLabel () {
             return this.getPerPageLabel(this.perPage);
+        },
+        allSelected () {
+            return (this.perPage === 0)
+                ? this.selected.length === this.totalRows
+                : this.selected.length === this.perPage;
         }
     },
     methods: {
@@ -374,22 +390,14 @@ export default {
             });
         },
         onRowSelected (items) {
-            if (this.perPage === 0) {
-                this.allSelected = items.length === this.totalRows;
-            } else {
-                this.allSelected = items.length === this.perPage;
-            }
-
             this.selected = items;
             this.$emit('row-selected', items);
         },
         toggleSelected () {
             if (this.allSelected) {
                 this.$refs.table.clearSelected();
-                this.allSelected = false;
             } else {
                 this.$refs.table.selectAllRows();
-                this.allSelected = true;
             }
         },
         onFiltered (filter) {

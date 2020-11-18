@@ -140,6 +140,7 @@ return [
                     $app = [
                         'lang' => [
                             'confirm' => __('Are you sure?'),
+                            'advanced' => __('Advanced'),
                         ],
                         'locale' => $locale,
                         'locale_short' => $localeShort,

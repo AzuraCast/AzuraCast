@@ -98,7 +98,7 @@ class StationForm extends EntityForm
 
         if ($canSeeAdministration) {
             $storageLocationsDesc = __(
-                '<a href="%s" target="_blank">Manage storage locations here</a>.',
+                '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.',
                 $request->getRouter()->named('admin:storage_locations:index')
             );
 

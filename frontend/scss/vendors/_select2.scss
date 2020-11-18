@@ -167,10 +167,12 @@
 
   .select2-selection--single {
     // height of input box
-    height: $textfield-height !important;
+    height: inherit;
+    padding: $textfield-padding-y $textfield-padding-x;
 
     .select2-selection__rendered {
-      line-height: calc(#{$textfield-height} - 2px);
+      padding-left: 0;
+      padding-right: 0;
     }
 
     // placeholder
@@ -210,7 +212,7 @@
       box-sizing: border-box;
       list-style: none;
       margin: 0;
-      padding: 0 8px;
+      padding: 4px 8px;
       width: 100%;
     }
 

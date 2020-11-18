@@ -2166,11 +2166,6 @@
         "upath": "^1.1.1"
       }
     },
-    "chosen-js": {
-      "version": "1.8.7",
-      "resolved": "https://registry.npmjs.org/chosen-js/-/chosen-js-1.8.7.tgz",
-      "integrity": "sha512-eVdrZJ2U5ISdObkgsi0od5vIJdLwq1P1Xa/Vj/mgxkMZf14DlgobfB6nrlFi3kW4kkvKLsKk4NDqZj1MU1DCpw=="
-    },
     "chownr": {
       "version": "1.1.4",
       "resolved": "https://registry.npmjs.org/chownr/-/chownr-1.1.4.tgz",
@@ -6539,6 +6534,11 @@
       "version": "1.1.2",
       "resolved": "https://registry.npmjs.org/select/-/select-1.1.2.tgz",
       "integrity": "sha1-DnNQrN7ICxEIUoeG7B1EGNEbOW0="
+    },
+    "select2": {
+      "version": "4.0.13",
+      "resolved": "https://registry.npmjs.org/select2/-/select2-4.0.13.tgz",
+      "integrity": "sha512-1JeB87s6oN/TDxQQYCvS5EFoQyvV6eYMZZ0AeA4tdFDYWN3BAGZ8npr17UBFddU0lgAt3H0yjX3X6/ekOj1yjw=="
     },
     "semver": {
       "version": "5.7.1",

@@ -102,12 +102,10 @@ var jsFiles = {
       'node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js'
     ]
   },
-  'chosen': {
-    base: 'node_modules/chosen-js',
+  'select2': {
     files: [
-      'node_modules/chosen-js/chosen.jquery.min.js',
-      'node_modules/chosen-js/chosen.min.css',
-      'node_modules/chosen-js/chosen-sprite*.png'
+      'node_modules/select2/dist/css/select2.min.css',
+      'node_modules/select2/dist/js/select2.full.min.js'
     ]
   },
   'moment': {

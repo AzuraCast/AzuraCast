@@ -78,12 +78,12 @@ $enable-print-styles: true !default;
 
 // Overrides for specific third-party products
 @import 'vendors/bootgrid';
-@import 'vendors/chosen';
 @import 'vendors/codemirror';
 @import 'vendors/fullcalendar';
 @import 'vendors/daterangepicker';
 @import 'vendors/waveform';
 @import 'vendors/sweetalert2';
+@import 'vendors/select2';
 
 // Overrides for the Daemonite Material theme
 @import 'azuracast/overrides/body';

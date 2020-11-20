@@ -5,6 +5,7 @@ namespace App\Middleware\Module;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -51,15 +52,25 @@ class Api
             } else {
                 // Return the proper ACAO header matching the origin (if one exists).
                 $origin = $request->getHeaderLine('Origin');
+
                 if (!empty($origin)) {
-                    $origins = array_map('trim', explode(',', $acao_header));
+                    $rawOrigins = array_map('trim', explode(',', $acao_header));
+                    $rawOrigins[] = $this->settings_repo->getSetting(Entity\Settings::BASE_URL);
 
-                    $base_url = $this->settings_repo->getSetting(Entity\Settings::BASE_URL);
-                    $origins[] = 'http://' . $base_url;
-                    $origins[] = 'https://' . $base_url;
+                    $origins = [];
+                    foreach ($rawOrigins as $rawOrigin) {
+                        $uri = new Uri($rawOrigin);
+                        if (empty($uri->getScheme())) {
+                            $origins[] = (string)($uri->withScheme('http'));
+                            $origins[] = (string)($uri->withScheme('https'));
+                        } else {
+                            $origins[] = (string)$uri;
+                        }
+                    }
 
+                    $origins = array_unique($origins);
                     if (in_array($origin, $origins, true)) {
-                        $response
+                        $response = $response
                             ->withHeader('Access-Control-Allow-Origin', $origin)
                             ->withHeader('Vary', 'Origin');
                     }

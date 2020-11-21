@@ -17,6 +17,9 @@ final class Version20201027130504 extends AbstractMigration
 
     public function preUp(Schema $schema): void
     {
+        // Create temp index
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_TEMP_CONVERT ON station_media (path, storage_location_id, station_id)');
+
         // Create initial backup directory.
         $this->connection->insert('storage_location', [
             'type' => 'backup',
@@ -160,6 +163,9 @@ final class Version20201027130504 extends AbstractMigration
                 ]);
             }
         }
+
+        // Drop temp index
+        $this->addSql('DROP INDEX IF EXISTS IDX_TEMP_CONVERT ON station_media');
     }
 
     public function up(Schema $schema): void
@@ -179,7 +185,7 @@ final class Version20201027130504 extends AbstractMigration
 
         $this->addSql('ALTER TABLE station_media ADD station_id INT NOT NULL');
 
-        $this->addSql('ALTER TABLE station DROP FOREIGN KEY FK_32AADE3ACDDD8AF');
+        $this->addSql('ALTER TABLE station_media DROP FOREIGN KEY FK_32AADE3ACDDD8AF');
         $this->addSql('DROP INDEX IDX_32AADE3ACDDD8AF ON station_media');
         $this->addSql('DROP INDEX path_unique_idx ON station_media');
     }

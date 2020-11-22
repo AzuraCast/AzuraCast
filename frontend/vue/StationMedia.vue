@@ -6,8 +6,8 @@
             <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase"
                          :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
 
-            <media-toolbar :selected-files="selectedFiles" :batch-url="batchUrl"
-                           :current-directory="currentDirectory"
+            <media-toolbar :selected-files="selectedFiles" :selected-dirs="selectedDirs"
+                           :batch-url="batchUrl" :current-directory="currentDirectory"
                            :initial-playlists="initialPlaylists" @relist="onTriggerRelist"></media-toolbar>
         </div>
 
@@ -87,7 +87,8 @@
                              @relist="onTriggerRelist">
         </new-directory-modal>
 
-        <move-files-modal :selected-files="selectedFiles" :current-directory="currentDirectory" :batch-url="batchUrl"
+        <move-files-modal :selected-files="selectedFiles" :selected-dirs="selectedDirs"
+                          :current-directory="currentDirectory" :batch-url="batchUrl"
                           :list-directories-url="listDirectoriesUrl" @relist="onTriggerRelist">
         </move-files-modal>
 
@@ -194,6 +195,7 @@ export default {
         return {
             fields: fields,
             selectedFiles: [],
+            selectedDirs: [],
             currentDirectory: '',
             searchPhrase: null
         };
@@ -231,7 +233,12 @@ export default {
             return formatFileSize(size);
         },
         onRowSelected (items) {
-            this.selectedFiles = _.map(items, 'name');
+            this.selectedFiles = _.map(_.filter(items, (row) => {
+                return !row.is_dir;
+            }), 'name');
+            this.selectedDirs = _.map(_.filter(items, (row) => {
+                return row.is_dir;
+            }), 'name');
         },
         onRefreshed () {
             this.$eventHub.$emit('refreshed');

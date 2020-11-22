@@ -70,6 +70,7 @@ export default {
     props: {
         currentDirectory: String,
         selectedFiles: Array,
+        selectedDirs: Array,
         initialPlaylists: Array,
         batchUrl: String
     },
@@ -127,13 +128,14 @@ export default {
             });
         },
         doBatch (action, notifyMessage) {
-            if (this.selectedFiles.length) {
+            if (this.selectedFiles.length || this.selectedDirs.length) {
                 this.notifyPending();
 
                 axios.put(this.batchUrl, {
                     'do': action,
+                    'file': this.currentDirectory,
                     'files': this.selectedFiles,
-                    'file': this.currentDirectory
+                    'dirs': this.selectedDirs
                 }).then((resp) => {
                     if (resp.data.success) {
                         notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false);
@@ -158,15 +160,16 @@ export default {
         setPlaylists () {
             this.$refs.setPlaylistsDropdown.hide();
 
-            if (this.selectedFiles.length) {
+            if (this.selectedFiles.length || this.selectedDirs.length) {
                 this.notifyPending();
 
                 axios.put(this.batchUrl, {
                     'do': 'playlist',
                     'playlists': this.checkedPlaylists,
                     'new_playlist_name': this.newPlaylist,
+                    'file': this.currentDirectory,
                     'files': this.selectedFiles,
-                    'file': this.currentDirectory
+                    'dirs': this.selectedDirs
                 }).then((resp) => {
                     if (resp.data.success) {
                         if (resp.data.record) {

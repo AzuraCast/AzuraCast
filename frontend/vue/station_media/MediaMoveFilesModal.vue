@@ -41,81 +41,84 @@
     </b-modal>
 </template>
 <script>
-    import DataTable from '../components/DataTable.vue';
-    import axios from 'axios';
+import DataTable from '../components/DataTable.vue';
+import axios from 'axios';
 
-    export default {
-        name: 'MoveFilesModal',
-        components: { DataTable },
-        props: {
-            selectedFiles: Array,
-            currentDirectory: String,
-            batchUrl: String,
-            listDirectoriesUrl: String
-        },
-        data () {
-            return {
-                destinationDirectory: '',
-                dirHistory: [],
-                fields: [
-                    { key: 'directory', label: this.$gettext('Directory'), sortable: false }
-                ]
-            };
-        },
-        computed: {
-            langHeader () {
-                let headerText = this.$gettext('Move %{ num } File(s) to');
-                return this.$gettextInterpolate(headerText, { num: this.selectedFiles.length });
-            }
-        },
-        methods: {
-            close () {
-                this.dirHistory = [];
-                this.destinationDirectory = '';
-
-                this.$refs.modal.hide();
-            },
-            doMove () {
-                this.selectedFiles.length && axios.put(this.batchUrl, {
-                    'do': 'move',
-                    'files': this.selectedFiles,
-                    'directory': this.destinationDirectory
-                }).then((resp) => {
-                    let notifyMessage = this.$gettext('Files moved:');
-                    notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false);
-
-                    this.close();
-                    this.$emit('relist');
-                }).catch((err) => {
-                    console.error(err);
-
-                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                    notify('<b>' + notifyMessage + '</b>', 'danger', false);
-
-                    this.close();
-                    this.$emit('relist');
-                });
-            },
-            enterDirectory (path) {
-                this.dirHistory.push(path);
-                this.destinationDirectory = path;
-
-                this.$refs.datatable.refresh();
-            },
-            pageBack: function (e) {
-                e.preventDefault();
-
-                this.dirHistory.pop();
-                this.destinationDirectory = this.dirHistory.slice(-1)[0];
-
-                this.$refs.datatable.refresh();
-            },
-            requestConfig (config) {
-                config.params.file = this.destinationDirectory;
-                config.params.csrf = this.csrf;
-
-                return config;
-            }
+export default {
+    name: 'MoveFilesModal',
+    components: { DataTable },
+    props: {
+        selectedFiles: Array,
+        selectedDirs: Array,
+        currentDirectory: String,
+        batchUrl: String,
+        listDirectoriesUrl: String
+    },
+    data () {
+        return {
+            destinationDirectory: '',
+            dirHistory: [],
+            fields: [
+                { key: 'directory', label: this.$gettext('Directory'), sortable: false }
+            ]
+        };
+    },
+    computed: {
+        langHeader () {
+            let headerText = this.$gettext('Move %{ num } File(s) to');
+            return this.$gettextInterpolate(headerText, { num: this.selectedFiles.length });
         }
-    };
+    },
+    methods: {
+        close () {
+            this.dirHistory = [];
+            this.destinationDirectory = '';
+
+            this.$refs.modal.hide();
+        },
+        doMove () {
+            (this.selectedFiles.length || this.selectedDirs.length) && axios.put(this.batchUrl, {
+                'do': 'move',
+                'file': this.currentDirectory,
+                'directory': this.destinationDirectory,
+                'files': this.selectedFiles,
+                'dirs': this.selectedDirs
+            }).then((resp) => {
+                let notifyMessage = this.$gettext('Files moved:');
+                notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false);
+
+                this.close();
+                this.$emit('relist');
+            }).catch((err) => {
+                console.error(err);
+
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+
+                this.close();
+                this.$emit('relist');
+            });
+        },
+        enterDirectory (path) {
+            this.dirHistory.push(path);
+            this.destinationDirectory = path;
+
+            this.$refs.datatable.refresh();
+        },
+        pageBack: function (e) {
+            e.preventDefault();
+
+            this.dirHistory.pop();
+            this.destinationDirectory = this.dirHistory.slice(-1)[0];
+
+            this.$refs.datatable.refresh();
+        },
+        requestConfig (config) {
+            config.params.file = this.destinationDirectory;
+            config.params.csrf = this.csrf;
+
+            return config;
+        }
+    }
+};
 </script>

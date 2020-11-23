@@ -932,7 +932,7 @@ msgstr "时间表检视"
 #: vue/station_streamers/form/StreamerFormSchedule.vue:83
 #: vue/station_streamers/form/StreamerFormSchedule.vue:1
 msgid "Scheduled Play Days of Week"
-msgstr "每周预定的游戏日"
+msgstr "每周预定的播放日"
 
 #: vue/station_playlists/form/PlaylistFormSchedule.vue:15
 #: vue/station_streamers/form/StreamerFormSchedule.vue:15

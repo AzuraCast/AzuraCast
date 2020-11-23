@@ -167,10 +167,6 @@ class Acl
         }
 
         if ($station_id instanceof Entity\Station) {
-            $station_id = $station_id->getId();
-        }
-
-        if ($station_id !== null) {
             // if there is a user that owns this station
             // and the user is the owner, skip checking
             // of permissions for this user as they
@@ -191,6 +187,8 @@ class Acl
                     }
                 }
             }
+
+            $station_id = $station_id->getId();
         }
 
         $num_roles = $user->getRoles()->count();

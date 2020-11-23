@@ -1,0 +1,5037 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: azuracast\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: Simplified Chinese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-09-20T17:57:28+00:00\n"
+"PO-Revision-Date: 2020-11-23 11:15+0800\n"
+"X-Generator: Poedit 2.4.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_CN\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: /var/azuracast/www/src/Acl.php:77 /var/azuracast/www/src/Acl.php:89
+msgid "All Permissions"
+msgstr "所有权限"
+
+#: /var/azuracast/www/src/Acl.php:78
+msgid "View Administration Page"
+msgstr "查看管理页面"
+
+#: /var/azuracast/www/src/Acl.php:79
+msgid "View System Logs"
+msgstr "查看系统日志"
+
+#: /var/azuracast/www/src/Acl.php:80
+msgid "Administer Settings"
+msgstr "管理设置"
+
+#: /var/azuracast/www/src/Acl.php:81
+msgid "Administer API Keys"
+msgstr "管理API密钥"
+
+#: /var/azuracast/www/src/Acl.php:82
+msgid "Administer Users"
+msgstr "用户管理"
+
+#: /var/azuracast/www/src/Acl.php:83
+msgid "Administer Permissions"
+msgstr "权限管理"
+
+#: /var/azuracast/www/src/Acl.php:84
+msgid "Administer Stations"
+msgstr "管理电台"
+
+#: /var/azuracast/www/src/Acl.php:85
+msgid "Administer Custom Fields"
+msgstr "自定义字段管理"
+
+#: /var/azuracast/www/src/Acl.php:86
+msgid "Administer Backups"
+msgstr "备份管理"
+
+#: /var/azuracast/www/src/Acl.php:90
+msgid "View Station Page"
+msgstr "查看电台页面"
+
+#: /var/azuracast/www/src/Acl.php:91
+msgid "View Station Reports"
+msgstr "查看电台报告"
+
+#: /var/azuracast/www/src/Acl.php:92
+msgid "View Station Logs"
+msgstr "查看电台日志"
+
+#: /var/azuracast/www/src/Acl.php:93
+msgid "Manage Station Profile"
+msgstr "电台资料管理"
+
+#: /var/azuracast/www/src/Acl.php:94
+msgid "Manage Station Broadcasting"
+msgstr "广播电台管理"
+
+#: /var/azuracast/www/src/Acl.php:95
+msgid "Manage Station Streamers"
+msgstr "电台流媒体管理"
+
+#: /var/azuracast/www/src/Acl.php:96
+msgid "Manage Station Mount Points"
+msgstr "电台节点管理"
+
+#: /var/azuracast/www/src/Acl.php:97
+msgid "Manage Station Remote Relays"
+msgstr "管理电台远程中继"
+
+#: /var/azuracast/www/src/Acl.php:98
+msgid "Manage Station Media"
+msgstr "电台媒体管理"
+
+#: /var/azuracast/www/src/Acl.php:99
+msgid "Manage Station Automation"
+msgstr "管理电台自动化"
+
+#: /var/azuracast/www/src/Acl.php:100
+msgid "Manage Station Web Hooks"
+msgstr "管理电台钩子"
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:35
+msgid "AzuraCast Backup"
+msgstr "AzuraCast备份"
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:36
+msgid "Please wait while a backup is generated..."
+msgstr "请稍候，正在生成备份..."
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:39
+msgid "Creating temporary directories..."
+msgstr "创建临时目录..."
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:43
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:49
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:28
+msgid "Directory \"%s\" was not created"
+msgstr "目录\"%s \"没有被创建"
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:56
+msgid "Backing up MariaDB..."
+msgstr "正在备份MariaDB ..."
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:80
+msgid "Backing up InfluxDB..."
+msgstr "备份InfluxDB ..."
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:119
+msgid "Creating backup archive..."
+msgstr "正在创建备份存档..."
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:158
+msgid "Cleaning up temporary files..."
+msgstr "清理临时文件..."
+
+#: /var/azuracast/www/src/Console/Command/BackupCommand.php:169
+msgid "Backup complete in %.2f seconds."
+msgstr "在%.2f秒内完成备份。"
+
+#: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:14
+msgid "AzuraCast Settings"
+msgstr "AzuraCast设置"
+
+#: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:17
+msgid "Setting Key"
+msgstr "设置密钥"
+
+#: /var/azuracast/www/src/Console/Command/ListSettingsCommand.php:18
+msgid "Setting Value"
+msgstr "显示设置"
+
+#: /var/azuracast/www/src/Console/Command/LocaleGenerateCommand.php:41
+msgid "Locales generated."
+msgstr "生成语言环境。"
+
+#: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:27
+msgid "Imported locale: %s"
+msgstr "导入locale： %s"
+
+#: /var/azuracast/www/src/Console/Command/LocaleImportCommand.php:31
+msgid "Locales imported."
+msgstr "导入语言环境。"
+
+#: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:20
+msgid "Configuration already set up."
+msgstr "配置已设置。"
+
+#: /var/azuracast/www/src/Console/Command/MigrateConfigCommand.php:61
+msgid "Configuration successfully written."
+msgstr "成功写入配置。"
+
+#: /var/azuracast/www/src/Console/Command/RestoreCommand.php:33
+msgid "Backup path %s not found!"
+msgstr "没有找到备份路径%s!"
+
+#: /var/azuracast/www/src/Console/Command/SetAdministratorCommand.php:41
+msgid ""
+"The account associated with e-mail address \"%s\" has been set as an "
+"administrator"
+msgstr "与电子邮件地址\"%s \"相关联的账户已被设置为管理员"
+
+#: /var/azuracast/www/src/Console/Command/SetAdministratorCommand.php:47
+msgid "Account not found."
+msgstr "找不到帐户。"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:25
+msgid "AzuraCast Setup"
+msgstr "安装AzuraCast"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:26
+msgid ""
+"Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast "
+"are set up..."
+msgstr ""
+"欢迎来到AzuraCast。请稍等一下，AzuraCast的一些关键的依赖关系已经建立起来了。"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:29
+msgid "Environment: %s"
+msgstr "环境: %s"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:30
+msgid "Installation Method: %s"
+msgstr "安装方法：%s"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:36
+msgid "Running in update mode."
+msgstr "在更新模式下运行。"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:39
+msgid "Migrating Legacy Configuration"
+msgstr "迁移遗留配置"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:45
+msgid "Setting Up InfluxDB"
+msgstr "设置InfluxDB"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:54
+msgid "Running Database Migrations"
+msgstr "运行数据库迁移"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:62
+msgid "Generating Database Proxy Classes"
+msgstr "生成数据库代理类"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:69
+msgid "Installing Data Fixtures"
+msgstr "安装数据装置"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:75
+msgid "Reload System Data"
+msgstr "重新加载系统数据"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:83
+msgid "Refreshing All Stations"
+msgstr "刷新所有电台"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:98
+msgid "AzuraCast is now updated to the latest version!"
+msgstr "AzuraCast现在已更新为最新版本！"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:104
+msgid "AzuraCast installation complete!"
+msgstr "AzuraCast安装完成！"
+
+#: /var/azuracast/www/src/Console/Command/SetupCommand.php:105
+msgid "Visit %s to complete setup."
+msgstr "访问%s完成设置。"
+
+#: /var/azuracast/www/src/Console/Command/SetupFixturesCommand.php:90
+msgid "Fixtures loaded."
+msgstr "Fixtures 已加载。"
+
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:20
+msgid "Database created."
+msgstr "数据库已创建。"
+
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:54
+msgid "Retention policies updated."
+msgstr "保留政策已更新。"
+
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:74
+msgid "Continuous queries created."
+msgstr "已创建连续查询。"
+
+#: /var/azuracast/www/src/Console/Command/SetupInfluxCommand.php:93
+msgid "InfluxDB databases created."
+msgstr "InfluxDB数据库已创建。"
+
+#: /var/azuracast/www/src/Controller/AbstractLogViewerController.php:101
+msgid "Liquidsoap Log"
+msgstr "Liquidsoap 日志"
+
+#: /var/azuracast/www/src/Controller/AbstractLogViewerController.php:106
+msgid "Liquidsoap Configuration"
+msgstr "Liquidsoap 配置"
+
+#: /var/azuracast/www/src/Controller/AbstractLogViewerController.php:116
+msgid "Icecast Access Log"
+msgstr "Icecast访问日志"
+
+#: /var/azuracast/www/src/Controller/AbstractLogViewerController.php:121
+msgid "Icecast Error Log"
+msgstr "Icecast错误日志"
+
+#: /var/azuracast/www/src/Controller/AbstractLogViewerController.php:126
+msgid "Icecast Configuration"
+msgstr "Icecast配置"
+
+#: /var/azuracast/www/src/Controller/AbstractLogViewerController.php:134
+msgid "SHOUTcast Log"
+msgstr "SHOUTcast日志"
+
+#: /var/azuracast/www/src/Controller/AbstractLogViewerController.php:139
+msgid "SHOUTcast Configuration"
+msgstr "SHOUTcast配置"
+
+#: /var/azuracast/www/src/Controller/Admin/AbstractAdminCrudController.php:57
+#: /var/azuracast/www/src/Controller/Api/Stations/Art/DeleteArtAction.php:22
+#: /var/azuracast/www/src/Controller/Api/Stations/Art/PostArtAction.php:25
+#: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:66
+msgid "Record not found."
+msgstr "记录不存在。"
+
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:34
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:91
+msgid "API Key updated."
+msgstr "API密钥已更新。"
+
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:41
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:98
+msgid "Edit API Key"
+msgstr "编辑API密钥"
+
+#: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:118
+msgid "API Key deleted."
+msgstr "API密钥已删除。"
+
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:64
+#: /var/azuracast/www/src/Controller/Admin/BrandingController.php:18
+#: /var/azuracast/www/src/Controller/Admin/InstallGeoLiteController.php:31
+#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:18
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:75
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:54
+#: /var/azuracast/www/src/Controller/Stations/EditLiquidsoapConfigController.php:112
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:39
+#: /var/azuracast/www/src/Controller/Stations/SftpUsersController.php:54
+msgid "Changes saved."
+msgstr "更改已保存。"
+
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:71
+msgid "Configure Backups"
+msgstr "配置备份"
+
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:96
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:105
+#: /var/azuracast/www/templates/admin/backups/index.phtml:87
+#: /var/azuracast/www/templates/admin/backups/run.phtml:8
+#: /var/azuracast/www/templates/admin/backups/run.phtml:15
+msgid "Run Manual Backup"
+msgstr "运行手动备份"
+
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:140
+msgid "Backup deleted."
+msgstr "备份已删除。"
+
+#: /var/azuracast/www/src/Controller/Admin/BackupsController.php:149
+msgid "Backup not found."
+msgstr "找不到备份。"
+
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:37
+msgid "Custom Field updated."
+msgstr "自定义字段已更新。"
+
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:37
+msgid "Custom Field added."
+msgstr "自定义字段已添加。"
+
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
+msgid "Edit Custom Field"
+msgstr "编辑自定义字段"
+
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:45
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:10
+msgid "Add Custom Field"
+msgstr "添加自定义字段"
+
+#: /var/azuracast/www/src/Controller/Admin/CustomFieldsController.php:53
+msgid "Custom Field deleted."
+msgstr "自定义字段已删除。"
+
+#: /var/azuracast/www/src/Controller/Admin/DebugController.php:70
+msgid "Sync Task Output"
+msgstr "同步任务输出"
+
+#: /var/azuracast/www/src/Controller/Admin/DebugController.php:98
+#: /var/azuracast/www/src/Controller/Admin/DebugController.php:125
+#: /var/azuracast/www/config/routes.dev.php:31
+msgid "Debug Output"
+msgstr "调试输出"
+
+#: /var/azuracast/www/src/Controller/Admin/InstallGeoLiteController.php:33
+msgid "An error occurred while downloading the GeoLite database: %s"
+msgstr "下载GeoLite数据库时发生错误：%s"
+
+#: /var/azuracast/www/src/Controller/Admin/InstallGeoLiteController.php:46
+#: /var/azuracast/www/config/menus/admin.php:94
+msgid "Install GeoLite IP Database"
+msgstr "安装GeoLite IP数据库"
+
+#: /var/azuracast/www/src/Controller/Admin/InstallGeoLiteController.php:64
+msgid "GeoLite database uninstalled."
+msgstr "GeoLite数据库已卸载。"
+
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:32
+msgid "SHOUTcast version \"%s\" is currently installed."
+msgstr "目前安装了SHOUTcast版本\"%s\"。"
+
+#: /var/azuracast/www/src/Controller/Admin/InstallShoutcastController.php:76
+#: /var/azuracast/www/config/menus/admin.php:89
+msgid "Install SHOUTcast"
+msgstr "安装SHOUTcast"
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:47
+msgid "AzuraCast Application Log"
+msgstr "AzuraCast应用程序日志"
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:54
+msgid "Nginx Access Log"
+msgstr "Nginx访问日志"
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:59
+msgid "Nginx Error Log"
+msgstr "Nginx错误日志"
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:64
+msgid "PHP Application Log"
+msgstr "PHP应用程序日志"
+
+#: /var/azuracast/www/src/Controller/Admin/LogsController.php:69
+msgid "Supervisord Log"
+msgstr "Supervisord 日志"
+
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:58
+msgid "Permission updated."
+msgstr "权限已更新。"
+
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:58
+msgid "Permission added."
+msgstr "权限已添加。"
+
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:66
+msgid "Edit Permission"
+msgstr "编辑权限"
+
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:66
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:10
+msgid "Add Permission"
+msgstr "添加权限"
+
+#: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:74
+msgid "Permission deleted."
+msgstr "权限已删除。"
+
+#: /var/azuracast/www/src/Controller/Admin/SettingsController.php:25
+#: /var/azuracast/www/config/menus/admin.php:17
+#: /var/azuracast/www/templates/frontend/setup/settings.phtml:25
+#: /var/azuracast/www/templates/frontend/setup/station.phtml:25
+msgid "System Settings"
+msgstr "系统设置"
+
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:44
+msgid "Station updated."
+msgstr "电台已更新。"
+
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:44
+msgid "Station added."
+msgstr "已添加电台。"
+
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:50
+msgid "Edit Station"
+msgstr "编辑电台"
+
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:63
+msgid "Station deleted."
+msgstr "电台已删除。"
+
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:71
+msgid "Station not found."
+msgstr "找不到电台。"
+
+#: /var/azuracast/www/src/Controller/Admin/StationsController.php:82
+msgid "Clone Station: %s"
+msgstr "克隆电台: %s"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:44
+msgid "User updated."
+msgstr "用户已更新。"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:44
+msgid "User added."
+msgstr "用户已添加。"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:49
+msgid ""
+"Another user already exists with this e-mail address. Please update the e-"
+"mail address."
+msgstr "这个电子邮件地址已经有了另一个用户。请使用新的电子邮件。"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:56
+msgid "Edit User"
+msgstr "编辑用户"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:56
+#: /var/azuracast/www/templates/admin/users/index.phtml:10
+msgid "Add User"
+msgstr "添加用户"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:69
+msgid "You cannot delete your own account."
+msgstr "您不能删除自己的账户。"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:74
+msgid "User deleted."
+msgstr "用户已删除。"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:91
+msgid "User not found."
+msgstr "找不到用户。"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:97
+msgid ""
+"The user you are attempting to impersonate has higher permissions than your "
+"account."
+msgstr "您尝试模拟的用户具有比您的帐户更高的权限。"
+
+#: /var/azuracast/www/src/Controller/Admin/UsersController.php:103
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:70
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:75
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:24
+msgid "Logged in successfully."
+msgstr "登录成功。"
+
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:61
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:94
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:115
+#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:104
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:102
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:138
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:160
+#: /var/azuracast/www/src/Controller/Api/Stations/Streamers/BroadcastsController.php:39
+#: /var/azuracast/www/src/Controller/Api/Stations/Streamers/BroadcastsController.php:123
+#: /var/azuracast/www/src/Controller/Api/Stations/Streamers/BroadcastsController.php:158
+msgid "Record not found!"
+msgstr "记录不存在！"
+
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:99
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:143
+msgid "Changes saved successfully."
+msgstr "更改已成功保存。"
+
+#: /var/azuracast/www/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:120
+#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:116
+#: /var/azuracast/www/src/Controller/Api/Stations/AbstractStationApiCrudController.php:165
+msgid "Record deleted successfully."
+msgstr "记录已成功删除。"
+
+#: /var/azuracast/www/src/Controller/Api/Admin/UsersController.php:111
+msgid "You cannot remove yourself."
+msgstr "您无法删除自己。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/BatchAction.php:224
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListDirectoriesAction.php:27
+msgid "Path \"%s\" is not a folder."
+msgstr "路径\"%s \"不是文件夹。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/BatchAction.php:239
+msgid "Could not move \"%s\" to \"%s\""
+msgstr "无法将\"%s \"移至\"%s\"。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/FlowUploadAction.php:27
+#: /var/azuracast/www/src/Controller/Api/Stations/FilesController.php:103
+msgid "This station is out of available storage space."
+msgstr "这个电台已经没有可用的存储空间了。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:170
+msgid "Directory"
+msgstr "目录"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/ListAction.php:178
+msgid "File Not Processed"
+msgstr "文件未处理"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:24
+msgid "File not specified."
+msgstr "未指定文件。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Files/RenameAction.php:30
+msgid "New path not specified."
+msgstr "未指定新路径。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/OnDemand/DownloadAction.php:24
+#: /var/azuracast/www/src/Controller/Api/Stations/OnDemand/ListAction.php:40
+msgid "This station does not support on-demand streaming."
+msgstr "该电台不支持流媒体点播。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/OnDemand/DownloadAction.php:31
+msgid "File not found."
+msgstr "未找到文件。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:183
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:211
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:234
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:259
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:280
+msgid "Playlist not found."
+msgstr "未找到播放列表。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:188
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:216
+msgid "This playlist is not a sequential playlist."
+msgstr "此播放列表不是顺序播放列表。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:243
+msgid "Format not found."
+msgstr "未找到格式。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:269
+msgid "Playlist enabled."
+msgstr "播放列表已启用。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:270
+msgid "Playlist disabled."
+msgstr "播放列表已禁用。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:289
+msgid "Playlist reshuffled."
+msgstr "播放列表已改组。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/PlaylistsController.php:386
+msgid ""
+"Playlist successfully imported; %d of %d files were successfully matched."
+msgstr "播放列表成功导入；%d的%d文件被成功匹配。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:65
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:167
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:27
+msgid "This station does not accept requests currently."
+msgstr "该电台当前不接受请求。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/RequestsController.php:181
+msgid "Request submitted successfully."
+msgstr "请求已成功提交。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:75
+msgid "Station restarted."
+msgstr "电台已重新启动。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:116
+msgid "Frontend stopped."
+msgstr "前端已停止。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:121
+msgid "Frontend started."
+msgstr "前端已启动。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:133
+msgid "Frontend restarted."
+msgstr "前端已重新启动。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:187
+msgid "Song skipped."
+msgstr "已跳过歌曲。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:194
+msgid "Streamer disconnected."
+msgstr "流媒体已断线。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:199
+msgid "Backend stopped."
+msgstr "后端已停止。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:204
+msgid "Backend started."
+msgstr "后端已启动。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:216
+msgid "Backend restarted."
+msgstr "后端已重启。"
+
+#: /var/azuracast/www/src/Controller/Api/Stations/Streamers/BroadcastsController.php:130
+msgid "No recording available."
+msgstr "没有可用的录音。"
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:47
+msgid "Too many login attempts"
+msgstr "尝试登录次数过多"
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:47
+msgid ""
+"You have attempted to log in too many times. Please wait 30 seconds and try "
+"again."
+msgstr "您已尝试登录太多次。请等待30秒后再试。"
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:70
+msgid "Complete the setup process to get started."
+msgstr "完成设置过程即可开始。"
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:86
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:35
+msgid "Login unsuccessful"
+msgstr "登录失败"
+
+#: /var/azuracast/www/src/Controller/Frontend/Account/LoginAction.php:86
+#: /var/azuracast/www/src/Controller/Frontend/Account/TwoFactorAction.php:35
+msgid "Your credentials could not be verified."
+msgstr "无法验证您的凭据。"
+
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:56
+msgid "API Key not found."
+msgstr "找不到API密钥。"
+
+#: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:98
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:20
+msgid "Add API Key"
+msgstr "添加API密钥"
+
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:188
+msgid "All Stations"
+msgstr "所有电台"
+
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:218
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:79
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:119
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:164
+#: /var/azuracast/www/config/menus/station.php:114
+#: /var/azuracast/www/templates/frontend/index/index.phtml:120
+#: /var/azuracast/www/templates/frontend/index/index_metrics.js.phtml:32
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:20
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:28
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:57
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:7
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:22
+#: /var/azuracast/www/templates/stations/reports/overview.js.phtml:30
+#: /var/azuracast/www/templates/stations/reports/overview.js.phtml:74
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:40
+msgid "Listeners"
+msgstr "听众"
+
+#: /var/azuracast/www/src/Controller/Frontend/Profile/DisableTwoFactorAction.php:24
+msgid "Two-factor authentication disabled."
+msgstr "已禁用双重身份验证。"
+
+#: /var/azuracast/www/src/Controller/Frontend/Profile/EditAction.php:18
+msgid "Profile saved!"
+msgstr "个人资料已保存！"
+
+#: /var/azuracast/www/src/Controller/Frontend/Profile/EditAction.php:26
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:32
+#: /var/azuracast/www/templates/stations/profile/edit.phtml:1
+#: /var/azuracast/www/templates/stations/profile/panel_header.phtml:25
+msgid "Edit Profile"
+msgstr "编辑个人资料"
+
+#: /var/azuracast/www/src/Controller/Frontend/Profile/EnableTwoFactorAction.php:47
+msgid "The token you supplied is invalid. Please try again."
+msgstr "您提供的令牌无效。请再试一次。"
+
+#: /var/azuracast/www/src/Controller/Frontend/Profile/EnableTwoFactorAction.php:56
+msgid "Two-factor authentication enabled."
+msgstr "已启用双重身份验证。"
+
+#: /var/azuracast/www/src/Controller/Frontend/PublicPages/PlayerAction.php:34
+#: /var/azuracast/www/config/forms/song.php:37
+#: /var/azuracast/www/templates/frontend/public/index.js.phtml:9
+#: /var/azuracast/www/templates/stations/queue/index.phtml:25
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:27
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:42
+msgid "Song Title"
+msgstr "歌曲标题"
+
+#: /var/azuracast/www/src/Controller/Frontend/PublicPages/PlayerAction.php:35
+#: /var/azuracast/www/templates/frontend/public/index.js.phtml:10
+msgid "Song Artist"
+msgstr "歌曲艺术家"
+
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:92
+msgid "Setup has already been completed!"
+msgstr "设置已经完成!"
+
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:120
+msgid "Super Administrator"
+msgstr "超级管理员"
+
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:211
+msgid "Setup is now complete!"
+msgstr "设置现已完成！"
+
+#: /var/azuracast/www/src/Controller/Frontend/SetupController.php:211
+msgid "Continue setting up your station in the main AzuraCast app."
+msgstr "继续在AzuraCast主应用程序中设置您的电台。"
+
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:71
+msgid "Automated assignment complete!"
+msgstr "自动分配完成！"
+
+#: /var/azuracast/www/src/Controller/Stations/AutomationController.php:74
+msgid "Automated assignment error"
+msgstr "自动分配错误"
+
+#: /var/azuracast/www/src/Controller/Stations/EditLiquidsoapConfigController.php:61
+#: /var/azuracast/www/config/forms/api_key.php:20
+#: /var/azuracast/www/config/forms/automation.php:40
+#: /var/azuracast/www/config/forms/backup.php:66
+#: /var/azuracast/www/config/forms/backup_run.php:30
+#: /var/azuracast/www/config/forms/branding.php:117
+#: /var/azuracast/www/config/forms/custom_field.php:142
+#: /var/azuracast/www/config/forms/install_geolite.php:35
+#: /var/azuracast/www/config/forms/mount/generic.php:152
+#: /var/azuracast/www/config/forms/profile.php:111
+#: /var/azuracast/www/config/forms/remote.php:194
+#: /var/azuracast/www/config/forms/role.php:46
+#: /var/azuracast/www/config/forms/settings.php:177
+#: /var/azuracast/www/config/forms/sftp_user.php:38
+#: /var/azuracast/www/config/forms/song.php:53
+#: /var/azuracast/www/config/forms/station.php:588
+#: /var/azuracast/www/config/forms/user.php:52
+#: /var/azuracast/www/config/forms/webhook/discord.php:138
+#: /var/azuracast/www/config/forms/webhook/generic.php:86
+#: /var/azuracast/www/config/forms/webhook/telegram.php:118
+#: /var/azuracast/www/config/forms/webhook/tunein.php:59
+#: /var/azuracast/www/config/forms/webhook/twitter.php:140
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: /var/azuracast/www/src/Controller/Stations/EditLiquidsoapConfigController.php:119
+#: /var/azuracast/www/config/menus/station.php:161
+msgid "Edit Liquidsoap Configuration"
+msgstr "编辑Liquidsoap配置"
+
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:26
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:17
+#: /var/azuracast/www/src/Controller/Stations/SftpUsersController.php:28
+#: /var/azuracast/www/src/Middleware/Module/StationFiles.php:20
+msgid "This feature is not currently supported on this station."
+msgstr "该电台当前不支持此功能。"
+
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:46
+msgid "Edit Mount Point"
+msgstr "编辑挂载点"
+
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:46
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:19
+msgid "Add Mount Point"
+msgstr "添加挂载点"
+
+#: /var/azuracast/www/src/Controller/Stations/MountsController.php:58
+msgid "Mount Point deleted."
+msgstr "挂载点已删除。"
+
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:34
+msgid "Remote Relay updated."
+msgstr "远程中继已更新。"
+
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:34
+msgid "Remote Relay added."
+msgstr "远程中继已添加。"
+
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:42
+msgid "Edit Remote Relay"
+msgstr "编辑远程中继"
+
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:42
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:20
+msgid "Add Remote Relay"
+msgstr "添加远程中继"
+
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:54
+msgid "Remote Relay deleted."
+msgstr "远程中继已删除。"
+
+#: /var/azuracast/www/src/Controller/Stations/RemotesController.php:64
+msgid "This record cannot be edited."
+msgstr "该记录无法编辑。"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:57
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:20
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:32
+msgid "Listeners by Day"
+msgstr "每天的听众"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:93
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:26
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:42
+msgid "Listeners by Day of Week"
+msgstr "每星期的听众"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:101
+msgid "Monday"
+msgstr "星期一"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:102
+msgid "Tuesday"
+msgstr "星期二"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:103
+msgid "Wednesday"
+msgstr "星期三"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:104
+msgid "Thursday"
+msgstr "星期四"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:105
+msgid "Friday"
+msgstr "星期五"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:106
+msgid "Saturday"
+msgstr "星期六"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:107
+msgid "Sunday"
+msgstr "星期日"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/OverviewController.php:148
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:23
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:37
+msgid "Listeners by Hour"
+msgstr "每小时的听众"
+
+#: /var/azuracast/www/src/Controller/Stations/Reports/SoundExchangeController.php:168
+msgid "SoundExchange Report"
+msgstr "声讯报告"
+
+#: /var/azuracast/www/src/Controller/Stations/SftpUsersController.php:61
+msgid "Edit SFTP User"
+msgstr "编辑SFTP用户"
+
+#: /var/azuracast/www/src/Controller/Stations/SftpUsersController.php:61
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:13
+msgid "Add SFTP User"
+msgstr "添加SFTP用户"
+
+#: /var/azuracast/www/src/Controller/Stations/SftpUsersController.php:73
+msgid "SFTP User deleted."
+msgstr "SFTP用户已删除。"
+
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:49
+msgid "Streamers enabled!"
+msgstr "流媒体已启用！"
+
+#: /var/azuracast/www/src/Controller/Stations/StreamersController.php:49
+msgid "You can now set up streamer (DJ) accounts."
+msgstr "您现在可以设置流媒体（DJ）账户。"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:55
+msgid "Web Hook added."
+msgstr "添加了网络钩子。"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:62
+#: /var/azuracast/www/templates/stations/webhooks/add.phtml:3
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:20
+msgid "Add Web Hook"
+msgstr "添加网络钩子"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:69
+msgid "Web Hook updated."
+msgstr "网络钩子已更新。"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:76
+msgid "Edit Web Hook"
+msgstr "编辑网络钩子"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:96
+msgid "Web hook enabled."
+msgstr "网络钩子已启用。"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:96
+msgid "Web Hook disabled."
+msgstr "网络钩子已禁用。"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:118
+msgid "Web Hook Test Output"
+msgstr "测试网络钩子输出"
+
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:131
+msgid "Web Hook deleted."
+msgstr "网络钩子已删除。"
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:22
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr "搜索引擎爬虫不允许使用此功能。"
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:35
+msgid "The song ID you specified could not be found in the station."
+msgstr "您指定的歌曲ID在电台中找不到。"
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:39
+msgid "The song ID you specified cannot be requested for this station."
+msgstr "您指定的歌曲ID不能被要求使用在这个电台。"
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:67
+msgid ""
+"You have submitted a request too recently! Please wait before submitting "
+"another one."
+msgstr "您最近提交的请求太多了! 请等待后再提交另一个请求。"
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:109
+msgid "Duplicate request: this song was already requested and will play soon."
+msgstr "重复请求：这首歌已经被请求了，很快就会播放。"
+
+#: /var/azuracast/www/src/Entity/Repository/StationRequestRepository.php:187
+msgid ""
+"This song or artist has been played too recently. Wait a while before "
+"requesting it again."
+msgstr "这首歌或艺术家最近被播放的次数太多。在再次请求之前，请稍等片刻。"
+
+#: /var/azuracast/www/src/Form/Field/File.php:10
+#: /var/azuracast/www/config/forms/install_shoutcast.php:36
+msgid "Select File"
+msgstr "选择文件"
+
+#: /var/azuracast/www/src/Form/SettingsForm.php:37
+msgid ""
+"Visit this page from a secure connection to enforce secure URLs on all pages."
+msgstr "从安全连接访问此页面，以在所有页面上使用安全URL。"
+
+#: /var/azuracast/www/src/Form/StationForm.php:74
+msgid ""
+"Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</"
+"a>, then reload this page."
+msgstr ""
+"想要使用SHOUTcast 2？<a href=\"%s\" target=\"_blank\">在这里安装</a>，然后重"
+"新加载这个页面。"
+
+#: /var/azuracast/www/src/Http/ErrorHandler.php:175
+#: /var/azuracast/www/src/Http/ErrorHandler.php:182
+msgid "You must be logged in to access this page."
+msgstr "您必须先登录才能访问本页面。"
+
+#: /var/azuracast/www/src/Http/ErrorHandler.php:197
+#: /var/azuracast/www/src/Http/ErrorHandler.php:204
+msgid "You do not have permission to access this portion of the site."
+msgstr "你没有权限访问这部分网站。"
+
+#: /var/azuracast/www/src/Notification/Manager.php:65
+msgid "Your <code>docker-compose.yml</code> file is out of date!"
+msgstr "你的<code>docker-compose.yml</code>文件已经过期了!"
+
+#: /var/azuracast/www/src/Notification/Manager.php:66
+msgid ""
+"You should update your <code>docker-compose.yml</code> file to reflect the "
+"newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of "
+"the file</a> and update your file accordingly.<br>You can also use the "
+"<code>./docker.sh</code> utility script to automatically update your file."
+msgstr ""
+"您应该更新您的 <code>docker-compose.yml</code> 文件以使用最新的更改。查看<a "
+"href=\"%s\" target=\"_blank\">文件的最新版本</a>，并相应地更新您的文件。<br>"
+"您也可以使用<code>./docker.sh</code>实用程序脚本来自动更新您的文件。"
+
+#: /var/azuracast/www/src/Notification/Manager.php:93
+msgid ""
+"Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to "
+"update your installation."
+msgstr "按照<a href=\"%s\" target=\"_blank\">更新说明</a>来更新您的安装。"
+
+#: /var/azuracast/www/src/Notification/Manager.php:98
+msgid ""
+"AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">版本%s</a>现已发布。"
+
+#: /var/azuracast/www/src/Notification/Manager.php:100
+msgid "You are currently running version %s. Updating is highly recommended."
+msgstr "您目前正在运行的是%s版本。强烈推荐您进行更新。"
+
+#: /var/azuracast/www/src/Notification/Manager.php:106
+msgid "New AzuraCast Release Version Available"
+msgstr "新的AzuraCast发行版已发布"
+
+#: /var/azuracast/www/src/Notification/Manager.php:116
+msgid "The following improvements have been made since your last update:"
+msgstr "自您上次更新以来，我们做了以下改进："
+
+#: /var/azuracast/www/src/Notification/Manager.php:120
+msgid "Your installation is currently %d update(s) behind the latest version."
+msgstr "您的安装目前落后于最新版本的%d更新。"
+
+#: /var/azuracast/www/src/Notification/Manager.php:122
+msgid "You should update to take advantage of bug and security fixes."
+msgstr "您应该更新以利用错误和安全修复。"
+
+#: /var/azuracast/www/src/Notification/Manager.php:128
+msgid "New AzuraCast Updates Available"
+msgstr "新的AzuraCast更新可用"
+
+#: /var/azuracast/www/src/Notification/Manager.php:155
+msgid "Installation Not Recently Backed Up"
+msgstr "最近没有备份的安装"
+
+#: /var/azuracast/www/src/Notification/Manager.php:156
+msgid ""
+"This installation has not been backed up in the last two weeks. Visit the <a "
+"href=\"%s\" target=\"_blank\">Backups</a> page to run a new backup."
+msgstr ""
+"此安装在过去两周内没有进行过备份。访问<a href=\"%s\" target=\"_blank\">备份</"
+"a>页面执行新的备份。"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:203
+msgid "%s is not recognized as a service."
+msgstr "%s不被承认为服务。"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:204
+msgid ""
+"It may not be registered with Supervisor yet. Restarting broadcasting may "
+"help."
+msgstr "它可能还没有在 Supervisor 注册。重新开始广播可能会有帮助。"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:212
+msgid "%s cannot start"
+msgstr "%s无法启动"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:213
+msgid "It is already running."
+msgstr "它已经在运行了。"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:221
+msgid "%s cannot stop"
+msgstr "％s不能停止"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:222
+msgid "It is not running."
+msgstr "它没有运行。"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:230
+msgid "%s encountered an error"
+msgstr "%s遇到了一个错误"
+
+#: /var/azuracast/www/src/Radio/AbstractAdapter.php:239
+msgid "Check the log for details."
+msgstr "检查日志以获取详细信息。"
+
+#: /var/azuracast/www/src/Radio/Adapters.php:72
+#: /var/azuracast/www/src/Radio/Adapters.php:76
+#: /var/azuracast/www/src/Radio/Adapters.php:134
+msgid "Use <b>%s</b> on this server"
+msgstr "在此服务器上使用<b>%s</b>"
+
+#: /var/azuracast/www/src/Radio/Adapters.php:80
+msgid "Connect to a <b>remote radio server</b>"
+msgstr "连接到<b>远程广播服务器</b>"
+
+#: /var/azuracast/www/src/Radio/Adapters.php:138
+msgid "<b>Do not use</b> an AutoDJ service"
+msgstr "<b>请勿使用</b>AutoDJ服务"
+
+#: /var/azuracast/www/src/Radio/Backend/Liquidsoap/ConfigWriter.php:103
+msgid "Welcome to the AzuraCast Liquidsoap configuration editor."
+msgstr "欢迎来到AzuraCast Liquidsoap配置编辑器。"
+
+#: /var/azuracast/www/src/Radio/Backend/Liquidsoap/ConfigWriter.php:104
+msgid ""
+"Using this page, you can customize several sections of the Liquidsoap "
+"configuration."
+msgstr "使用这个页面，您可以自定义Liquidsoap配置的几个部分。"
+
+#: /var/azuracast/www/src/Radio/Backend/Liquidsoap/ConfigWriter.php:105
+msgid "The non-editable sections are automatically generated by AzuraCast."
+msgstr "不可编辑的部分由AzuraCast自动生成。"
+
+#: /var/azuracast/www/src/Service/IpGeolocation.php:39
+msgid ""
+"GeoLite database not configured for this installation. See System "
+"Administration for instructions."
+msgstr "没有为本次安装配置GeoLite数据库。请参阅系统管理以了解相关说明。"
+
+#: /var/azuracast/www/src/Service/IpGeolocator/DbIp.php:21
+msgid "IP Geolocation by DB-IP"
+msgstr "通过DB-IP进行IP地理定位"
+
+#: /var/azuracast/www/src/Service/IpGeolocator/GeoLite.php:21
+msgid ""
+"This product includes GeoLite2 data created by MaxMind, available from %s."
+msgstr "本产品包括MaxMind创建的GeoLite2数据，可从%s。"
+
+#: /var/azuracast/www/src/Sync/Runner.php:137
+#: /var/azuracast/www/src/Sync/Runner.php:139
+msgid "Now Playing Data"
+msgstr "正在播放数据"
+
+#: /var/azuracast/www/src/Sync/Runner.php:145
+msgid "1-Minute Sync"
+msgstr "1分钟同步"
+
+#: /var/azuracast/www/src/Sync/Runner.php:147
+msgid "Song Requests Queue"
+msgstr "歌曲请求队列"
+
+#: /var/azuracast/www/src/Sync/Runner.php:153
+msgid "5-Minute Sync"
+msgstr "5分钟同步"
+
+#: /var/azuracast/www/src/Sync/Runner.php:155
+msgid "Check Media Folders"
+msgstr "检查媒体文件夹"
+
+#: /var/azuracast/www/src/Sync/Runner.php:161
+msgid "1-Hour Sync"
+msgstr "1小时同步"
+
+#: /var/azuracast/www/src/Sync/Runner.php:163
+msgid "Analytics/Statistics"
+msgstr "分析/统计"
+
+#: /var/azuracast/www/src/Sync/Runner.php:164
+msgid "Cleanup"
+msgstr "清理"
+
+#: /var/azuracast/www/src/Validator/Constraints/StationPortChecker.php:15
+msgid "The port %s is in use by another station."
+msgstr "端口%s正在被另一个电台使用。"
+
+#: /var/azuracast/www/config/assets.php:141
+msgid "Are you sure?"
+msgstr "您确定吗？"
+
+#: /var/azuracast/www/config/cli.php:71
+msgid "Generate the translation locale file."
+msgstr "生成翻译的locale文件。"
+
+#: /var/azuracast/www/config/cli.php:76
+msgid "Convert translated locale files into PHP arrays."
+msgstr "将翻译后的locale文件转换为PHP数组。"
+
+#: /var/azuracast/www/config/cli.php:82
+msgid "Migrate existing configuration to new INI format if any exists."
+msgstr "如果有的话，将现有配置迁移到新的INI格式。"
+
+#: /var/azuracast/www/config/cli.php:87
+msgid "Initial setup of InfluxDB."
+msgstr "InfluxDB的初始设置。"
+
+#: /var/azuracast/www/config/cli.php:92
+msgid "Install fixtures for demo / local development."
+msgstr "安装用于演示/本地开发的版本。"
+
+#: /var/azuracast/www/config/cli.php:97
+msgid "Run all general AzuraCast setup steps."
+msgstr "运行所有一般的AzuraCast设置步骤。"
+
+#: /var/azuracast/www/config/cli.php:108
+msgid "Run one or more scheduled synchronization tasks."
+msgstr "运行一个或多个预定的同步任务。"
+
+#: /var/azuracast/www/config/cli.php:113
+msgid "Process the message queue."
+msgstr "处理消息队列。"
+
+#: /var/azuracast/www/config/cli.php:154
+msgid "List all settings in the AzuraCast settings database."
+msgstr "列出AzuraCast设置数据库中的所有设置。"
+
+#: /var/azuracast/www/config/cli.php:164
+msgid "Back up the AzuraCast database and statistics (and optionally media)."
+msgstr "备份AzuraCast数据库和统计资料（也可选择媒体）。"
+
+#: /var/azuracast/www/config/forms/api_key.php:10
+#: /var/azuracast/www/templates/admin/api/index.phtml:18
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:34
+msgid "Comments"
+msgstr "评论"
+
+#: /var/azuracast/www/config/forms/api_key.php:11
+msgid "Describe the use-case for this API key for future reference."
+msgstr "描述该API密钥的用途，供将来参考。"
+
+#: /var/azuracast/www/config/forms/automation.php:10
+msgid "Enable Automated Assignment"
+msgstr "启用自动分配"
+
+#: /var/azuracast/www/config/forms/automation.php:11
+msgid ""
+"Allow the system to periodically automatically assign songs to playlists "
+"based on their performance. This process will run in the background, and "
+"will only run if this option is set to \"Enabled\" and at least one playlist "
+"is set to \"Include in Automated Assignment\"."
+msgstr ""
+"允许系统根据歌曲的表现定期自动分配歌曲到播放列表。该过程将在后台运行，只有当"
+"该选项设置为 \"已启用 \"且至少有一个播放列表被设置为 \"包含在自动分配中 \"时"
+"才会运行。"
+
+#: /var/azuracast/www/config/forms/automation.php:14
+#: /var/azuracast/www/config/forms/station.php:133
+#: /var/azuracast/www/templates/admin/backups/index.phtml:51
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:72
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:61
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:94
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:43
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:43
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:60
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:59
+msgid "Disabled"
+msgstr "禁用"
+
+#: /var/azuracast/www/config/forms/automation.php:15
+#: /var/azuracast/www/templates/admin/backups/index.phtml:23
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:70
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:59
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:18
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:18
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:18
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:58
+msgid "Enabled"
+msgstr "启用"
+
+#: /var/azuracast/www/config/forms/automation.php:23
+msgid "Days Between Automated Assignments"
+msgstr "自动分配的天数"
+
+#: /var/azuracast/www/config/forms/automation.php:24
+msgid ""
+"Based on this setting, the system will automatically reassign songs every "
+"(this) days using data from the previous (this) days."
+msgstr "根据此设置，系统将每隔（此）天利用前（此）天的数据自动重新分配歌曲。"
+
+#: /var/azuracast/www/config/forms/automation.php:28
+#: /var/azuracast/www/config/forms/automation.php:29
+#: /var/azuracast/www/config/forms/automation.php:30
+#: /var/azuracast/www/config/forms/automation.php:31
+msgid "%d days"
+msgstr "%d 天"
+
+#: /var/azuracast/www/config/forms/backup.php:15
+msgid "Run Automatic Nightly Backups"
+msgstr "每晚运行自动备份"
+
+#: /var/azuracast/www/config/forms/backup.php:16
+msgid ""
+"Enable to have AzuraCast automatically run nightly backups at the time "
+"specified."
+msgstr "启用AzuraCast在指定时间自动运行夜间备份。"
+
+#: /var/azuracast/www/config/forms/backup.php:17
+#: /var/azuracast/www/config/forms/backup.php:38
+#: /var/azuracast/www/config/forms/backup_run.php:20
+#: /var/azuracast/www/config/forms/branding.php:32
+#: /var/azuracast/www/config/forms/branding.php:64
+#: /var/azuracast/www/config/forms/mount/generic.php:36
+#: /var/azuracast/www/config/forms/mount/generic.php:48
+#: /var/azuracast/www/config/forms/mount/generic.php:70
+#: /var/azuracast/www/config/forms/mount/generic.php:82
+#: /var/azuracast/www/config/forms/remote.php:16
+#: /var/azuracast/www/config/forms/remote.php:87
+#: /var/azuracast/www/config/forms/remote.php:177
+#: /var/azuracast/www/config/forms/settings.php:37
+#: /var/azuracast/www/config/forms/settings.php:49
+#: /var/azuracast/www/config/forms/settings.php:79
+#: /var/azuracast/www/config/forms/settings.php:100
+#: /var/azuracast/www/config/forms/station.php:88
+#: /var/azuracast/www/config/forms/station.php:100
+#: /var/azuracast/www/config/forms/station.php:296
+#: /var/azuracast/www/config/forms/station.php:308
+#: /var/azuracast/www/config/forms/station.php:344
+#: /var/azuracast/www/config/forms/station.php:356
+#: /var/azuracast/www/config/forms/station.php:467
+#: /var/azuracast/www/config/forms/station.php:493
+#: /var/azuracast/www/config/forms/station.php:543
+#: /var/azuracast/www/config/forms/station_clone.php:57
+#: /var/azuracast/www/config/forms/station_clone.php:70
+#: /var/azuracast/www/config/forms/station_clone.php:84
+#: /var/azuracast/www/templates/admin/relays/index.phtml:35
+msgid "Yes"
+msgstr "是"
+
+#: /var/azuracast/www/config/forms/backup.php:18
+#: /var/azuracast/www/config/forms/backup.php:39
+#: /var/azuracast/www/config/forms/backup_run.php:21
+#: /var/azuracast/www/config/forms/branding.php:33
+#: /var/azuracast/www/config/forms/branding.php:65
+#: /var/azuracast/www/config/forms/mount/generic.php:37
+#: /var/azuracast/www/config/forms/mount/generic.php:49
+#: /var/azuracast/www/config/forms/mount/generic.php:71
+#: /var/azuracast/www/config/forms/mount/generic.php:83
+#: /var/azuracast/www/config/forms/remote.php:17
+#: /var/azuracast/www/config/forms/remote.php:88
+#: /var/azuracast/www/config/forms/remote.php:178
+#: /var/azuracast/www/config/forms/settings.php:38
+#: /var/azuracast/www/config/forms/settings.php:50
+#: /var/azuracast/www/config/forms/settings.php:80
+#: /var/azuracast/www/config/forms/settings.php:101
+#: /var/azuracast/www/config/forms/station.php:89
+#: /var/azuracast/www/config/forms/station.php:101
+#: /var/azuracast/www/config/forms/station.php:297
+#: /var/azuracast/www/config/forms/station.php:309
+#: /var/azuracast/www/config/forms/station.php:345
+#: /var/azuracast/www/config/forms/station.php:357
+#: /var/azuracast/www/config/forms/station.php:468
+#: /var/azuracast/www/config/forms/station.php:494
+#: /var/azuracast/www/config/forms/station.php:544
+#: /var/azuracast/www/config/forms/station_clone.php:56
+#: /var/azuracast/www/config/forms/station_clone.php:69
+#: /var/azuracast/www/config/forms/station_clone.php:83
+#: /var/azuracast/www/templates/admin/relays/index.phtml:35
+msgid "No"
+msgstr "否"
+
+#: /var/azuracast/www/config/forms/backup.php:27
+msgid "Scheduled Backup Time"
+msgstr "预定的备份时间"
+
+#: /var/azuracast/www/config/forms/backup.php:28
+msgid "The time (in UTC) to run the automated backup, if enabled."
+msgstr "如果启用，运行自动备份的时间（UTC）。"
+
+#: /var/azuracast/www/config/forms/backup.php:36
+msgid "Exclude Media from Backups"
+msgstr "从备份中排除媒体"
+
+#: /var/azuracast/www/config/forms/backup.php:37
+msgid ""
+"Excluding media from automated backups will save space, but you should make "
+"sure to back up your media elsewhere."
+msgstr ""
+"从自动备份中排除媒体可以节省空间，但您应该确保在其他地方备份媒体已防数据丢"
+"失。"
+
+#: /var/azuracast/www/config/forms/backup.php:48
+msgid "Number of Backup Copies to Keep"
+msgstr "要保存的备份数量"
+
+#: /var/azuracast/www/config/forms/backup.php:49
+msgid ""
+"Copies older than the specified number of days will automatically be "
+"deleted. Set to zero to disable automatic deletion."
+msgstr "超过指定天数的副本将被自动删除。设置为0可禁用自动删除。"
+
+#: /var/azuracast/www/config/forms/backup_run.php:10
+msgid "Backup Filename"
+msgstr "备份文件名"
+
+#: /var/azuracast/www/config/forms/backup_run.php:11
+msgid ""
+"Optional absolute or relative path where the backup file should be located."
+msgstr "可选择备份文件的绝对或相对路径。"
+
+#: /var/azuracast/www/config/forms/backup_run.php:18
+msgid "Exclude Media from Backup"
+msgstr "从备份中排除媒体"
+
+#: /var/azuracast/www/config/forms/backup_run.php:19
+msgid ""
+"This will produce a significantly smaller backup, but you should make sure "
+"to back up your media elsewhere."
+msgstr ""
+"这将产生一个明显较小的备份，但您应该确保在其他地方备份您的媒体以防数据丢失。"
+
+#: /var/azuracast/www/config/forms/branding.php:16
+msgid "Base Theme for Public Pages"
+msgstr "公共页面的基本主题"
+
+#: /var/azuracast/www/config/forms/branding.php:17
+msgid ""
+"Select a theme to use as a base for station public pages and the login page."
+msgstr "选择一个主题作为站内公共页面和登录页面的基础。"
+
+#: /var/azuracast/www/config/forms/branding.php:19
+#: /var/azuracast/www/config/forms/profile.php:94
+msgid "Light"
+msgstr "光"
+
+#: /var/azuracast/www/config/forms/branding.php:19
+#: /var/azuracast/www/config/forms/profile.php:94
+msgid "Default"
+msgstr "默认"
+
+#: /var/azuracast/www/config/forms/branding.php:20
+#: /var/azuracast/www/config/forms/profile.php:95
+msgid "Dark"
+msgstr "黑暗"
+
+#: /var/azuracast/www/config/forms/branding.php:30
+msgid "Hide Album Art on Public Pages"
+msgstr "在公共页面上隐藏专辑封面"
+
+#: /var/azuracast/www/config/forms/branding.php:31
+msgid "If selected, album art will not display on public-facing radio pages."
+msgstr "如果选择，专辑封面将不会显示在面向公众的广播页面上。"
+
+#: /var/azuracast/www/config/forms/branding.php:42
+msgid "Homepage Redirect URL"
+msgstr "主页重定向网址"
+
+#: /var/azuracast/www/config/forms/branding.php:43
+msgid ""
+"If a visitor is not signed in and visits the AzuraCast homepage, you can "
+"automatically redirect them to the URL specified here. Leave blank to "
+"redirect them to the login screen by default."
+msgstr ""
+"如果访问者没有登录并访问AzuraCast主页，您可以将他们自动重定向到这里指定的"
+"URL。如果留空，则默认将他们重定向到登录页面。"
+
+#: /var/azuracast/www/config/forms/branding.php:52
+#: /var/azuracast/www/config/forms/station.php:110
+msgid "Default Album Art URL"
+msgstr "默认专辑封面URL"
+
+#: /var/azuracast/www/config/forms/branding.php:53
+#: /var/azuracast/www/config/forms/station.php:111
+msgid ""
+"If a song has no album art, this URL will be listed instead. Leave blank to "
+"use the standard placeholder art."
+msgstr "如果一首歌没有专辑封面，这个URL会被列出。留空以使用标准占位图。"
+
+#: /var/azuracast/www/config/forms/branding.php:62
+msgid "Hide AzuraCast Branding on Public Pages"
+msgstr "在公共网页上隐藏AzuraCast品牌信息"
+
+#: /var/azuracast/www/config/forms/branding.php:63
+msgid ""
+"If selected, this will remove the AzuraCast branding from public-facing "
+"pages."
+msgstr "如果选择，这将从面向公众的页面中移除AzuraCast品牌。"
+
+#: /var/azuracast/www/config/forms/branding.php:74
+msgid "Custom CSS for Public Pages"
+msgstr "公共页面的自定义CSS"
+
+#: /var/azuracast/www/config/forms/branding.php:75
+msgid "This CSS will be applied to the station public pages and login page."
+msgstr "该CSS将应用于站内公共页面和登录页面。"
+
+#: /var/azuracast/www/config/forms/branding.php:88
+msgid "Custom JS for Public Pages"
+msgstr "公共页面的自定义JS"
+
+#: /var/azuracast/www/config/forms/branding.php:89
+msgid ""
+"This javascript code will be applied to the station public pages and login "
+"page."
+msgstr "该javascript代码将被应用到站内公共页面和登录页面。"
+
+#: /var/azuracast/www/config/forms/branding.php:102
+msgid "Custom CSS for Internal Pages"
+msgstr "内部页面的自定义CSS"
+
+#: /var/azuracast/www/config/forms/branding.php:103
+msgid "This CSS will be applied to the main management pages, like this one."
+msgstr "这个CSS将被应用到主管理页面，比如这个。"
+
+#: /var/azuracast/www/config/forms/custom_field.php:13
+msgid "Field Name"
+msgstr "字段名称"
+
+#: /var/azuracast/www/config/forms/custom_field.php:14
+msgid ""
+"This will be used as the label when editing individual songs, and will show "
+"in API results."
+msgstr "这将作为编辑单个歌曲时的标签，并将显示在API结果中。"
+
+#: /var/azuracast/www/config/forms/custom_field.php:22
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:23
+msgid "Programmatic Name"
+msgstr "方案名称"
+
+#: /var/azuracast/www/config/forms/custom_field.php:23
+msgid ""
+"Optionally specify an API-friendly name, such as <code>field_name</code>. "
+"Leave this field blank to automatically create one based on the name."
+msgstr ""
+"可选择指定一个API友好的名称，如<code>field_name</code>。将此字段留空，以根据"
+"名称自动创建一个。"
+
+#: /var/azuracast/www/config/forms/custom_field.php:31
+msgid "Automatically Set from ID3v2 Value"
+msgstr "从ID3v2值自动设置"
+
+#: /var/azuracast/www/config/forms/custom_field.php:32
+msgid ""
+"Optionally select an ID3v2 metadata field that, if present, will be used to "
+"set this field's value."
+msgstr "可选择一个ID3v2元数据字段，如果存在，将用于设置该字段的值。"
+
+#: /var/azuracast/www/config/forms/custom_field.php:36
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:86
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:34
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:34
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:47
+msgid "Disable"
+msgstr "禁用"
+
+#: /var/azuracast/www/config/forms/custom_field.php:37
+#: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:22
+#: /var/azuracast/www/templates/frontend/public/index.phtml:85
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:28
+msgid "Album"
+msgstr "专辑"
+
+#: /var/azuracast/www/config/forms/custom_field.php:38
+msgid "Album Artist Sort Order"
+msgstr "专辑艺术家排序顺序"
+
+#: /var/azuracast/www/config/forms/custom_field.php:39
+msgid "Album Sort Order"
+msgstr "专辑排序顺序"
+
+#: /var/azuracast/www/config/forms/custom_field.php:40
+#: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:21
+#: /var/azuracast/www/templates/frontend/public/index.phtml:84
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:27
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:31
+msgid "Artist"
+msgstr "艺术家"
+
+#: /var/azuracast/www/config/forms/custom_field.php:41
+msgid "Attached Picture"
+msgstr "附图片"
+
+#: /var/azuracast/www/config/forms/custom_field.php:42
+msgid "Audio Encryption"
+msgstr "音频加密"
+
+#: /var/azuracast/www/config/forms/custom_field.php:43
+msgid "Audio Seek Point Index"
+msgstr "音频搜寻点索引"
+
+#: /var/azuracast/www/config/forms/custom_field.php:44
+msgid "Band"
+msgstr "带"
+
+#: /var/azuracast/www/config/forms/custom_field.php:45
+msgid "Bpm"
+msgstr "Bpm"
+
+#: /var/azuracast/www/config/forms/custom_field.php:46
+msgid "Comment"
+msgstr "评论"
+
+#: /var/azuracast/www/config/forms/custom_field.php:47
+msgid "Commercial Frame"
+msgstr "商业框架"
+
+#: /var/azuracast/www/config/forms/custom_field.php:48
+msgid "Commercial Information"
+msgstr "商业信息"
+
+#: /var/azuracast/www/config/forms/custom_field.php:49
+msgid "Composer"
+msgstr "作曲家"
+
+#: /var/azuracast/www/config/forms/custom_field.php:50
+msgid "Composer Sort Order"
+msgstr "作曲家排序顺序"
+
+#: /var/azuracast/www/config/forms/custom_field.php:51
+msgid "Conductor"
+msgstr "指挥家"
+
+#: /var/azuracast/www/config/forms/custom_field.php:52
+msgid "Content Group Description"
+msgstr "内容组说明"
+
+#: /var/azuracast/www/config/forms/custom_field.php:53
+msgid "Copyright"
+msgstr "版权"
+
+#: /var/azuracast/www/config/forms/custom_field.php:54
+msgid "Copyright Message"
+msgstr "版权讯息"
+
+#: /var/azuracast/www/config/forms/custom_field.php:55
+msgid "Date"
+msgstr "日期"
+
+#: /var/azuracast/www/config/forms/custom_field.php:56
+msgid "Encoded By"
+msgstr "代码作者"
+
+#: /var/azuracast/www/config/forms/custom_field.php:57
+msgid "Encoder Settings"
+msgstr "设置编码器"
+
+#: /var/azuracast/www/config/forms/custom_field.php:58
+msgid "Encoding Time"
+msgstr "编码时间"
+
+#: /var/azuracast/www/config/forms/custom_field.php:59
+msgid "Encrypted Meta Frame"
+msgstr "加密元框架"
+
+#: /var/azuracast/www/config/forms/custom_field.php:60
+msgid "Encryption Method Registration"
+msgstr "加密方法注册"
+
+#: /var/azuracast/www/config/forms/custom_field.php:61
+msgid "Equalisation"
+msgstr "均衡"
+
+#: /var/azuracast/www/config/forms/custom_field.php:62
+msgid "Event Timing Codes"
+msgstr "事件时间代码"
+
+#: /var/azuracast/www/config/forms/custom_field.php:63
+msgid "Featured Artist"
+msgstr "推荐艺术家"
+
+#: /var/azuracast/www/config/forms/custom_field.php:64
+msgid "File Owner"
+msgstr "文件拥有者"
+
+#: /var/azuracast/www/config/forms/custom_field.php:65
+msgid "File Type"
+msgstr "文件类型"
+
+#: /var/azuracast/www/config/forms/custom_field.php:66
+msgid "General Encapsulated Object"
+msgstr "一般 封装对象"
+
+#: /var/azuracast/www/config/forms/custom_field.php:67
+#: /var/azuracast/www/config/forms/station.php:58
+msgid "Genre"
+msgstr "分类"
+
+#: /var/azuracast/www/config/forms/custom_field.php:68
+msgid "Group Identification Registration"
+msgstr "集团识别注册"
+
+#: /var/azuracast/www/config/forms/custom_field.php:69
+msgid "Initial Key"
+msgstr "初始密钥"
+
+#: /var/azuracast/www/config/forms/custom_field.php:70
+msgid "Internet Radio Station Name"
+msgstr "网络电台名称"
+
+#: /var/azuracast/www/config/forms/custom_field.php:71
+msgid "Internet Radio Station Owner"
+msgstr "网络电台站长"
+
+#: /var/azuracast/www/config/forms/custom_field.php:72
+msgid "Involved People List"
+msgstr "参与人员名单"
+
+#: /var/azuracast/www/config/forms/custom_field.php:73
+msgid "ISRC"
+msgstr "ISRC"
+
+#: /var/azuracast/www/config/forms/custom_field.php:74
+#: /var/azuracast/www/config/forms/profile.php:82
+msgid "Language"
+msgstr "语言"
+
+#: /var/azuracast/www/config/forms/custom_field.php:75
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:26
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:33
+msgid "Length"
+msgstr "长度"
+
+#: /var/azuracast/www/config/forms/custom_field.php:76
+msgid "Linked Information"
+msgstr "链接信息"
+
+#: /var/azuracast/www/config/forms/custom_field.php:77
+msgid "Lyricist"
+msgstr "作词人"
+
+#: /var/azuracast/www/config/forms/custom_field.php:78
+msgid "Media Type"
+msgstr "媒体类型"
+
+#: /var/azuracast/www/config/forms/custom_field.php:79
+msgid "Mood"
+msgstr "心情"
+
+#: /var/azuracast/www/config/forms/custom_field.php:80
+msgid "MPEG Location Lookup Table"
+msgstr "MPEG位置查询表"
+
+#: /var/azuracast/www/config/forms/custom_field.php:81
+msgid "Music CD Identifier"
+msgstr "音乐CD标识符"
+
+#: /var/azuracast/www/config/forms/custom_field.php:82
+msgid "Musician Credits List"
+msgstr "音乐人名单"
+
+#: /var/azuracast/www/config/forms/custom_field.php:83
+msgid "Original Album"
+msgstr "原始专辑"
+
+#: /var/azuracast/www/config/forms/custom_field.php:84
+msgid "Original Artist"
+msgstr "原始艺术家"
+
+#: /var/azuracast/www/config/forms/custom_field.php:85
+msgid "Original Filename"
+msgstr "原始文件名"
+
+#: /var/azuracast/www/config/forms/custom_field.php:86
+msgid "Original Lyricist"
+msgstr "原始作词家"
+
+#: /var/azuracast/www/config/forms/custom_field.php:87
+msgid "Original Release Time"
+msgstr "原始发行时间"
+
+#: /var/azuracast/www/config/forms/custom_field.php:88
+msgid "Original Year"
+msgstr "原始年份"
+
+#: /var/azuracast/www/config/forms/custom_field.php:89
+msgid "Ownership Frame"
+msgstr "所有权框架"
+
+#: /var/azuracast/www/config/forms/custom_field.php:90
+msgid "Part Of A Compilation"
+msgstr "编译的一部分"
+
+#: /var/azuracast/www/config/forms/custom_field.php:91
+msgid "Part Of A Set"
+msgstr "一组的一部分"
+
+#: /var/azuracast/www/config/forms/custom_field.php:92
+msgid "Performer Sort Order"
+msgstr "表演者排序顺序"
+
+#: /var/azuracast/www/config/forms/custom_field.php:93
+msgid "Play Counter"
+msgstr "播放计数器"
+
+#: /var/azuracast/www/config/forms/custom_field.php:94
+msgid "Playlist Delay"
+msgstr "播放列表延迟"
+
+#: /var/azuracast/www/config/forms/custom_field.php:95
+msgid "Popularimeter"
+msgstr "人气表"
+
+#: /var/azuracast/www/config/forms/custom_field.php:96
+msgid "Position Synchronisation Frame"
+msgstr "位置同步框架"
+
+#: /var/azuracast/www/config/forms/custom_field.php:97
+msgid "Private Frame"
+msgstr "私人框架"
+
+#: /var/azuracast/www/config/forms/custom_field.php:98
+msgid "Produced Notice"
+msgstr "制作的通知"
+
+#: /var/azuracast/www/config/forms/custom_field.php:99
+msgid "Publisher"
+msgstr "发行人"
+
+#: /var/azuracast/www/config/forms/custom_field.php:100
+msgid "Recommended Buffer Size"
+msgstr "推荐缓冲区大小"
+
+#: /var/azuracast/www/config/forms/custom_field.php:101
+msgid "Recording Dates"
+msgstr "录制日期"
+
+#: /var/azuracast/www/config/forms/custom_field.php:102
+msgid "Recording Studio"
+msgstr "录音工作室"
+
+#: /var/azuracast/www/config/forms/custom_field.php:103
+msgid "Recording Time"
+msgstr "录制时间"
+
+#: /var/azuracast/www/config/forms/custom_field.php:104
+msgid "Relative Volume Adjustment"
+msgstr "相对音量调整"
+
+#: /var/azuracast/www/config/forms/custom_field.php:105
+msgid "Release Time"
+msgstr "发布日期"
+
+#: /var/azuracast/www/config/forms/custom_field.php:106
+msgid "Remixer"
+msgstr "混音器"
+
+#: /var/azuracast/www/config/forms/custom_field.php:107
+msgid "ReplayGain Adjustment"
+msgstr "重播增益调整"
+
+#: /var/azuracast/www/config/forms/custom_field.php:108
+msgid "Reverb"
+msgstr "混响"
+
+#: /var/azuracast/www/config/forms/custom_field.php:109
+msgid "Seek Frame"
+msgstr "搜索框架"
+
+#: /var/azuracast/www/config/forms/custom_field.php:110
+msgid "Set Subtitle"
+msgstr "设置字幕"
+
+#: /var/azuracast/www/config/forms/custom_field.php:111
+msgid "Signature Frame"
+msgstr "签名框"
+
+#: /var/azuracast/www/config/forms/custom_field.php:112
+#: /var/azuracast/www/templates/admin/backups/index.phtml:102
+msgid "Size"
+msgstr "大小"
+
+#: /var/azuracast/www/config/forms/custom_field.php:113
+msgid "Subtitle"
+msgstr "字幕"
+
+#: /var/azuracast/www/config/forms/custom_field.php:114
+msgid "Synced Tempo Codes"
+msgstr "同步速度代码"
+
+#: /var/azuracast/www/config/forms/custom_field.php:115
+msgid "Synchronised Lyric"
+msgstr "同步歌词"
+
+#: /var/azuracast/www/config/forms/custom_field.php:116
+msgid "Synchronised Tempo Codes"
+msgstr "同步速度代码"
+
+#: /var/azuracast/www/config/forms/custom_field.php:117
+msgid "Tagging Time"
+msgstr "标记时间"
+
+#: /var/azuracast/www/config/forms/custom_field.php:118
+msgid "Terms Of Use"
+msgstr "使用条款"
+
+#: /var/azuracast/www/config/forms/custom_field.php:119
+msgid "Text"
+msgstr "文本"
+
+#: /var/azuracast/www/config/forms/custom_field.php:120
+msgid "Time"
+msgstr "时间"
+
+#: /var/azuracast/www/config/forms/custom_field.php:121
+#: /var/azuracast/www/config/forms/webhook/discord.php:71
+#: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:20
+#: /var/azuracast/www/templates/frontend/public/index.phtml:83
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:26
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:30
+msgid "Title"
+msgstr "标题"
+
+#: /var/azuracast/www/config/forms/custom_field.php:122
+msgid "Title Sort Order"
+msgstr "标题排序顺序"
+
+#: /var/azuracast/www/config/forms/custom_field.php:123
+msgid "Track Number"
+msgstr "轨道编号"
+
+#: /var/azuracast/www/config/forms/custom_field.php:124
+msgid "Unique File Identifier"
+msgstr "唯一文件标识符"
+
+#: /var/azuracast/www/config/forms/custom_field.php:125
+msgid "Unsynchronised Lyric"
+msgstr "不同步的歌词"
+
+#: /var/azuracast/www/config/forms/custom_field.php:126
+msgid "URL Artist"
+msgstr "URL艺术家"
+
+#: /var/azuracast/www/config/forms/custom_field.php:127
+msgid "URL File"
+msgstr "URL文件"
+
+#: /var/azuracast/www/config/forms/custom_field.php:128
+msgid "URL Payment"
+msgstr "URL支付"
+
+#: /var/azuracast/www/config/forms/custom_field.php:129
+msgid "URL Publisher"
+msgstr "网址发布者"
+
+#: /var/azuracast/www/config/forms/custom_field.php:130
+msgid "URL Source"
+msgstr "网址来源"
+
+#: /var/azuracast/www/config/forms/custom_field.php:131
+msgid "URL Station"
+msgstr "URL电台"
+
+#: /var/azuracast/www/config/forms/custom_field.php:132
+msgid "URL User"
+msgstr "URL用户"
+
+#: /var/azuracast/www/config/forms/custom_field.php:133
+msgid "Year"
+msgstr "年"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:10
+#: /var/azuracast/www/config/forms/install_shoutcast.php:13
+msgid "Instructions"
+msgstr "使用说明"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:12
+msgid ""
+"You can upload the MaxMind GeoLite database in order to provide geolocation "
+"of the IP addresses of your listeners. This will allow you to view the "
+"listeners on each station's \"Listeners\" report. To download the GeoLite "
+"database:"
+msgstr ""
+"您可以上传MaxMind GeoLite数据库，以提供听众的IP地址的地理位置。这样您就可以在"
+"每个电台的 \"听众 \"报告中查看听众。下载GeoLite数据库："
+
+#: /var/azuracast/www/config/forms/install_geolite.php:14
+msgid ""
+"Create an account on <a href=\"%s\" target=\"_blank\">the MaxMind developer "
+"site</a>."
+msgstr ""
+"在<a href=\"%s\" target=\"_blank\">MaxMind开发者网站</a>上注册一个帐户。"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:16
+msgid "Visit the \"My License Key\" page under the \"Services\" section."
+msgstr "访问 \"服务 \"部分下的 \"我的许可证密钥 \"页面。"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:17
+msgid "Click \"Generate new license key\"."
+msgstr "点击 \"生成新的许可证密钥\"。"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:18
+msgid "Paste the generated license key into the field on this page."
+msgstr "将生成的许可证密钥粘贴到本页面的字段中。"
+
+#: /var/azuracast/www/config/forms/install_geolite.php:26
+msgid "MaxMind License Key"
+msgstr "MaxMind许可证密钥"
+
+#: /var/azuracast/www/config/forms/install_shoutcast.php:14
+msgid ""
+"<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does "
+"not allow AzuraCast to distribute the SHOUTcast binary. In order to install "
+"SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" "
+"target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the "
+"<code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to "
+"automatically extract it into the proper directory.</p>"
+msgstr ""
+"<p>SHOUTcast 2 DNAS不是自由软件，它的限制性许可证不允许AzuraCast发布SHOUTcast"
+"二进制文件。为了安装SHOUTcast，您应该从<a href=\"%s\" target=\"_blank"
+"\">SHOUTcast Radio Manager</a>网站下载Linux x64二进制文件。將"
+"<code>sc_serv2_linux_x64-latest.tar.gz</code>上傳到下面的编辑框，以自動解壓縮"
+"到適當的目錄"
+
+#: /var/azuracast/www/config/forms/install_shoutcast.php:23
+#: /var/azuracast/www/templates/admin/install_geolite/index.phtml:27
+msgid "Current Installed Version"
+msgstr "当前安装版本"
+
+#: /var/azuracast/www/config/forms/install_shoutcast.php:24
+msgid "SHOUTcast is not currently installed on this installation."
+msgstr "SHOUTcast目前没有安装在这个系统上。"
+
+#: /var/azuracast/www/config/forms/install_shoutcast.php:32
+msgid "Select SHOUTcast 64-bit .tar.gz File"
+msgstr "选择SHOUTcast 64-bit .tar.gz文件"
+
+#: /var/azuracast/www/config/forms/install_shoutcast.php:45
+msgid "Upload"
+msgstr "上传"
+
+#: /var/azuracast/www/config/forms/login.php:9
+#: /var/azuracast/www/config/forms/profile.php:25
+#: /var/azuracast/www/config/forms/register.php:13
+#: /var/azuracast/www/config/forms/user.php:19
+#: /var/azuracast/www/templates/admin/users/index.phtml:22
+#: /var/azuracast/www/templates/frontend/account/login.phtml:32
+#: /var/azuracast/www/templates/frontend/account/login.phtml:34
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:37
+msgid "E-mail Address"
+msgstr "电子邮件地址"
+
+#: /var/azuracast/www/config/forms/login.php:19
+#: /var/azuracast/www/config/forms/register.php:23
+#: /var/azuracast/www/templates/frontend/account/login.phtml:39
+#: /var/azuracast/www/templates/frontend/account/login.phtml:41
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:47
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:50
+msgid "Password"
+msgstr "密码"
+
+#: /var/azuracast/www/config/forms/login.php:29
+msgid "Log in"
+msgstr "登录"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:15
+msgid "Mount Point URL"
+msgstr "挂载点URL"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:16
+msgid ""
+"This name should always begin with a slash (/), and must be a valid URL, "
+"such as /autodj.mp3"
+msgstr ""
+"这个地址应该总是以斜杠(/)开头，并且必须是一个有效的URL，比如/autodj.mp3"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:25
+#: /var/azuracast/www/config/forms/remote.php:40
+#: /var/azuracast/www/config/forms/user.php:10
+msgid "Display Name"
+msgstr "显示名称"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:26
+msgid ""
+"The display name assigned to this mount point when viewing it on "
+"administrative or public pages. Leave blank to automatically generate one."
+msgstr ""
+"在管理页面或公共页面上查看此挂载点分配给挂在URL的显示名称。留空以自动生成显示"
+"名。"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:34
+#: /var/azuracast/www/config/forms/remote.php:14
+msgid "Show on Public Pages"
+msgstr "在公共页面上显示"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:35
+msgid ""
+"Enable to allow listeners to select this mount point on this station's "
+"public pages."
+msgstr "启用允许听众在本台的公共页面上选择这个挂载点。"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:46
+msgid "Set as Default Mount Point"
+msgstr "设置为默认挂在点"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:47
+msgid ""
+"If this mount is the default, it will be played on the radio preview and the "
+"public radio page in this system."
+msgstr "如果这个挂载点是默认的，则会在本系统的电台预览和公共电台页面上播放。"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:58
+msgid "Relay Stream URL"
+msgstr "流媒体中继 URL"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:59
+msgid ""
+"Enter the full URL of another stream to relay its broadcast through this "
+"mount point."
+msgstr "输入另一个流的完整URL，以便通过这个挂载点转发其广播。"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:68
+#: /var/azuracast/www/config/forms/remote.php:175
+msgid "Publish to \"Yellow Pages\" Directories"
+msgstr "发布到 \"黄页 \"目录"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:69
+#: /var/azuracast/www/config/forms/remote.php:176
+msgid ""
+"Enable to advertise this mount point on \"Yellow Pages\" public radio "
+"directories."
+msgstr "启用在 \"黄页 \"公共广播目录中宣传该挂载点。"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:80
+msgid "Enable AutoDJ"
+msgstr "启用自动DJ"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:81
+msgid ""
+"If enabled, the AutoDJ will automatically play music to this mount point."
+msgstr "如果启用，AutoDJ将自动播放音乐到该安装点。"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:99
+#: /var/azuracast/www/config/forms/remote.php:106
+msgid "AutoDJ Format"
+msgstr "AutoDJ格式"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:108
+#: /var/azuracast/www/config/forms/remote.php:120
+msgid "AutoDJ Bitrate (kbps)"
+msgstr "AutoDJ比特率(kbps)"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:135
+msgid "Custom Stream URL"
+msgstr "自定义流媒体网址"
+
+#: /var/azuracast/www/config/forms/mount/generic.php:137
+msgid ""
+"You can set a custom URL for this stream that AzuraCast will use when "
+"referring to it. Leave empty to use the default value."
+msgstr ""
+"你可以为这个流设置一个自定义的URL，当AzuraCast引用它时，将使用它。留空，则使"
+"用默认值。"
+
+#: /var/azuracast/www/config/forms/mount/icecast.php:9
+msgid "Fallback Mount"
+msgstr "回退安装"
+
+#: /var/azuracast/www/config/forms/mount/icecast.php:10
+msgid ""
+"If this mount point is not playing audio, listeners will automatically be "
+"redirected to this mount point. The default is /error.mp3, a repeating error "
+"message."
+msgstr ""
+"如果这个挂载点不播放音频，听众将自动被重定向到这个挂载点。默认是/error.mp3，"
+"一个重复的错误信息的音频。"
+
+#: /var/azuracast/www/config/forms/mount/icecast.php:27
+msgid "Custom Frontend Configuration"
+msgstr "自定义前端配置"
+
+#: /var/azuracast/www/config/forms/mount/icecast.php:29
+msgid ""
+"You can include any special mount point settings here, in either JSON { key: "
+"'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
+msgstr ""
+"你可以在这里包含任何特殊的挂载点设置，可以是JSON { key: 'value' }格式，也可以"
+"是XML &lt;key&gt;value&lt;/key&gt;"
+
+#: /var/azuracast/www/config/forms/mount/shoutcast2.php:12
+msgid "Stream path cannot include reserved keywords: %s"
+msgstr "流路径不能包含保留关键字：%s"
+
+#: /var/azuracast/www/config/forms/mount/shoutcast2.php:22
+msgid "YP Directory Authorization Hash"
+msgstr "YP目录授权哈希"
+
+#: /var/azuracast/www/config/forms/mount/shoutcast2.php:23
+msgid ""
+"If your stream is set to advertise to YP directories above, you must specify "
+"an authorization hash. You can manage authhashes <a href=\"%s\" target="
+"\"_blank\">on the SHOUTcast web site</a>."
+msgstr ""
+"如果您的流媒体被设置为向上面的YP目录做广告，您必须指定一个授权哈希值。您可以"
+"在SHOUTcast网站上<a href=\"%s\" target=\"_blank\">管理authashes</a>。"
+
+#: /var/azuracast/www/config/forms/profile.php:3
+msgid "Use Browser Default"
+msgstr "使用浏览器默认"
+
+#: /var/azuracast/www/config/forms/profile.php:16
+#: /var/azuracast/www/config/forms/station.php:41
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:22
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:32
+msgid "Name"
+msgstr "名称"
+
+#: /var/azuracast/www/config/forms/profile.php:38
+#: /var/azuracast/www/config/forms/user.php:30
+msgid "Reset Password"
+msgstr "重设密码"
+
+#: /var/azuracast/www/config/forms/profile.php:39
+msgid "Leave these fields blank to continue using your current password."
+msgstr "将这些字段留空，以继续使用当前的密码。"
+
+#: /var/azuracast/www/config/forms/profile.php:45
+msgid "Current Password"
+msgstr "当前密码"
+
+#: /var/azuracast/www/config/forms/profile.php:54
+#: /var/azuracast/www/config/forms/sftp_user.php:17
+msgid "New Password"
+msgstr "新密码"
+
+#: /var/azuracast/www/config/forms/profile.php:65
+msgid "Confirm New Password"
+msgstr "确认新密码"
+
+#: /var/azuracast/www/config/forms/profile.php:76
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:50
+msgid "Customization"
+msgstr "定制化"
+
+#: /var/azuracast/www/config/forms/profile.php:92
+msgid "Site Theme"
+msgstr "网站主题"
+
+#: /var/azuracast/www/config/forms/profile_two_factor.php:8
+msgid "Code from Authenticator App"
+msgstr "来自认证器应用程序的代码"
+
+#: /var/azuracast/www/config/forms/profile_two_factor.php:9
+msgid ""
+"Enter the current code provided by your authenticator app to verify that "
+"it's working correctly."
+msgstr "输入你的身份验证器应用程序提供的当前代码，以验证它是否正常工作。"
+
+#: /var/azuracast/www/config/forms/profile_two_factor.php:19
+msgid "Verify Authenticator"
+msgstr "验证身份验证器"
+
+#: /var/azuracast/www/config/forms/register.php:7
+msgid "Account Information"
+msgstr "帐户信息"
+
+#: /var/azuracast/www/config/forms/register.php:37
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:55
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:56
+#: /var/azuracast/www/templates/frontend/setup/settings.phtml:13
+#: /var/azuracast/www/templates/frontend/setup/station.phtml:13
+msgid "Create Account"
+msgstr "创建帐号"
+
+#: /var/azuracast/www/config/forms/remote.php:15
+msgid ""
+"Enable to allow listeners to select this relay on this station's public "
+"pages."
+msgstr "启用，允许听众在本台的公共页面上选择此中继。"
+
+#: /var/azuracast/www/config/forms/remote.php:26
+msgid "Remote Station Type"
+msgstr "远程 电台 类型"
+
+#: /var/azuracast/www/config/forms/remote.php:41
+msgid ""
+"The display name assigned to this relay when viewing it on administrative or "
+"public pages. Leave blank to automatically generate one."
+msgstr ""
+"在管理页面或公共页面上查看此中继时指定的显示名称。留空以自动生成显示名称。"
+
+#: /var/azuracast/www/config/forms/remote.php:49
+msgid "Remote Station Listening URL"
+msgstr "远程电台监听URL"
+
+#: /var/azuracast/www/config/forms/remote.php:50
+msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
+msgstr "例如：如果远程电台网址是%s，输入<code>%s</code>。"
+
+#: /var/azuracast/www/config/forms/remote.php:63
+msgid "Remote Station Listening Mountpoint/SID"
+msgstr "远程电台监听挂载点/SID"
+
+#: /var/azuracast/www/config/forms/remote.php:64
+msgid ""
+"Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>"
+"%s</code>) to specify a specific stream to use for statistics or "
+"broadcasting."
+msgstr ""
+"指定一个挂载点(即<code>%s</code>)或Shoutcast SID(即<code>%s</code>)来指定用于"
+"统计或广播的特定流。"
+
+#: /var/azuracast/www/config/forms/remote.php:76
+msgid "Remote Station Administrator Password"
+msgstr "远程电台管理员密码"
+
+#: /var/azuracast/www/config/forms/remote.php:77
+msgid ""
+"To retrieve detailed unique listeners and client details, an administrator "
+"password is often required."
+msgstr "要检索详细的监听器和客户端的详细信息，通常需要一个管理员密码。"
+
+#: /var/azuracast/www/config/forms/remote.php:85
+msgid "Broadcast AutoDJ to Remote Station"
+msgstr "廣播AutoDJ到遠端電台"
+
+#: /var/azuracast/www/config/forms/remote.php:86
+msgid ""
+"If enabled, the AutoDJ on this installation will automatically play music to "
+"this mount point."
+msgstr "如果启用，此安装的AutoDJ将自动播放音乐到此挂载点。"
+
+#: /var/azuracast/www/config/forms/remote.php:99
+msgid "Configure AutoDJ Broadcasting"
+msgstr "配置AutoDJ广播"
+
+#: /var/azuracast/www/config/forms/remote.php:139
+msgid "Remote Station Source Port"
+msgstr "远程电台源端口"
+
+#: /var/azuracast/www/config/forms/remote.php:140
+msgid ""
+"If the port you broadcast to is different from the one you listed in the URL "
+"above, specify the source port here."
+msgstr "如果您广播的端口与您在上面的URL中列出的端口不同，请在这里指定源端口。"
+
+#: /var/azuracast/www/config/forms/remote.php:148
+msgid "Remote Station Source Mountpoint/SID"
+msgstr "远程站源挂载点/SID"
+
+#: /var/azuracast/www/config/forms/remote.php:149
+msgid ""
+"If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. "
+"<code>2</code>) you broadcast to is different from the one listed above, "
+"specify the source mount point here."
+msgstr ""
+"如果您广播的挂载点（即<code>/radio.mp3</code>）或Shoutcast SID（即<code>2</"
+"code>）与上面列出的挂载点不同，请在此指定源挂载点。"
+
+#: /var/azuracast/www/config/forms/remote.php:157
+msgid "Remote Station Source Username"
+msgstr "远程电台源用户名"
+
+#: /var/azuracast/www/config/forms/remote.php:158
+msgid ""
+"If you are broadcasting using AutoDJ, enter the source username here. This "
+"may be blank."
+msgstr "如果您使用 AutoDJ 进行广播，请在此输入源用户名。这可能是空白的。"
+
+#: /var/azuracast/www/config/forms/remote.php:166
+msgid "Remote Station Source Password"
+msgstr "远程电台源密码"
+
+#: /var/azuracast/www/config/forms/remote.php:167
+msgid "If you are broadcasting using AutoDJ, enter the source password here."
+msgstr "如果您使用的是AutoDJ广播，请在这里输入源密码。"
+
+#: /var/azuracast/www/config/forms/role.php:13
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:22
+msgid "Role Name"
+msgstr "角色名称"
+
+#: /var/azuracast/www/config/forms/role.php:22
+msgid "System-Wide Permissions"
+msgstr "系统范围内的权限"
+
+#: /var/azuracast/www/config/forms/role.php:35
+msgid "Permissions for %s"
+msgstr "%s的权限"
+
+#: /var/azuracast/www/config/forms/settings.php:16
+msgid "Site Base URL"
+msgstr "网站基础网址"
+
+#: /var/azuracast/www/config/forms/settings.php:17
+msgid ""
+"The base URL where this service is located. Use either the external IP "
+"address or fully-qualified domain name (if one exists) pointing to this "
+"server."
+msgstr ""
+"此服务所在的基本 URL。使用指向该服务器的外部IP地址或域名（如果有的话）。"
+
+#: /var/azuracast/www/config/forms/settings.php:26
+msgid "AzuraCast Instance Name"
+msgstr "AzuraCast实例名称"
+
+#: /var/azuracast/www/config/forms/settings.php:27
+msgid ""
+"This name will appear as a sub-header next to the AzuraCast logo, to help "
+"identify this server."
+msgstr "这个名字将出现在AzuraCast标志旁边的小标题中，以帮助识别这个服务器。"
+
+#: /var/azuracast/www/config/forms/settings.php:35
+msgid "Prefer Browser URL (If Available)"
+msgstr "首选浏览器URL（如果可用）"
+
+#: /var/azuracast/www/config/forms/settings.php:36
+msgid ""
+"If this setting is set to \"Yes\", the browser URL will be used instead of "
+"the base URL when it's available. Set to \"No\" to always use the base URL."
+msgstr ""
+"如果将此设置设置为 \"是\"，则在有浏览器URL时，将使用浏览器URL代替基本URL。设"
+"置为 \"否\"，则始终使用基本URL。"
+
+#: /var/azuracast/www/config/forms/settings.php:47
+msgid "Use Web Proxy for Radio"
+msgstr "使用网络代理进行广播"
+
+#: /var/azuracast/www/config/forms/settings.php:48
+msgid ""
+"By default, radio stations broadcast on their own ports (i.e. 8000). If "
+"you're using a service like CloudFlare or accessing your radio station by "
+"SSL, you should enable this feature, which routes all radio through the web "
+"ports (80 and 443)."
+msgstr ""
+"默认情况下，电台在自己的端口上广播（即8000）。如果您正在使用CloudFlare等服务"
+"或通过SSL访问您的广播电台，您应该启用此功能，该功能通过网络端口（80和443）路"
+"由进行广播。"
+
+#: /var/azuracast/www/config/forms/settings.php:59
+msgid "Days of Playback History to Keep"
+msgstr "保留的播放历史记录天数"
+
+#: /var/azuracast/www/config/forms/settings.php:60
+msgid ""
+"Set longer to preserve more playback history for stations. Set shorter to "
+"save disk space."
+msgstr "设置较长的时间是为了保存更多电台的播放历史。设置较短以节省磁盘空间。"
+
+#: /var/azuracast/www/config/forms/settings.php:62
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:86
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:23
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:65
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:22
+msgid "Last 14 Days"
+msgstr "最近14天"
+
+#: /var/azuracast/www/config/forms/settings.php:63
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:87
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:103
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:66
+msgid "Last 30 Days"
+msgstr "最近30天"
+
+#: /var/azuracast/www/config/forms/settings.php:64
+msgid "Last 60 Days"
+msgstr "最近60天"
+
+#: /var/azuracast/www/config/forms/settings.php:65
+msgid "Last Year"
+msgstr "最近一年"
+
+#: /var/azuracast/www/config/forms/settings.php:66
+msgid "Last 2 Years"
+msgstr "最近两年"
+
+#: /var/azuracast/www/config/forms/settings.php:67
+msgid "Indefinitely"
+msgstr "无限期"
+
+#: /var/azuracast/www/config/forms/settings.php:77
+msgid "Use WebSockets for Now Playing Updates"
+msgstr "使用WebSockets立即播放广播"
+
+#: /var/azuracast/www/config/forms/settings.php:78
+msgid ""
+"Enables or disables the use of the newer and faster WebSocket-based system "
+"for receiving live updates on public players. You may need to disable this "
+"if you encounter problems with it."
+msgstr ""
+"启用或禁用基于WebSocket的较新和较快的系统来接收公共广播的实时更新。如果你遇到"
+"問題，你可能需要停用此功能。"
+
+#: /var/azuracast/www/config/forms/settings.php:90
+msgid "Security Controls"
+msgstr "安全控制"
+
+#: /var/azuracast/www/config/forms/settings.php:98
+msgid "Always Use HTTPS"
+msgstr "一律使用HTTPS"
+
+#: /var/azuracast/www/config/forms/settings.php:99
+msgid ""
+"Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically "
+"redirect to the secure URL when an insecure URL is visited."
+msgstr ""
+"设置为 \"是\"，将始终使用 \"https://\"安全URL，并在访问不安全的URL时自动重定"
+"向到安全URL。"
+
+#: /var/azuracast/www/config/forms/settings.php:110
+msgid "API \"Access-Control-Allow-Origin\" header"
+msgstr "API“ Access-Control-Allow-Origin”标头"
+
+#: /var/azuracast/www/config/forms/settings.php:112
+msgid ""
+"<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * "
+"to allow all sources, or specify a list of origins separated by a comma (,)."
+msgstr ""
+"<a href=\"%s\" target=\"_blank\">了解更多关于此标题的信息</a>。设置为*允许所"
+"有来源，或者指定一个由逗号（,）分隔的来源列表。"
+
+#: /var/azuracast/www/config/forms/settings.php:123
+msgid "Privacy Controls"
+msgstr "隐私控制"
+
+#: /var/azuracast/www/config/forms/settings.php:124
+msgid ""
+"AzuraCast does not send your station or listener data to any external "
+"server. You can control how much data AzuraCast logs about your listeners "
+"here."
+msgstr ""
+"AzuraCast不会将您的电台或听众数据发送到任何外部服务器。你可以在这里控制"
+"AzuraCast记录多少关于你的听众的数据。"
+
+#: /var/azuracast/www/config/forms/settings.php:131
+msgid "Listener Analytics Collection"
+msgstr "听众分析系列"
+
+#: /var/azuracast/www/config/forms/settings.php:132
+msgid ""
+"Aggregate listener statistics are used to show station reports across the "
+"system. IP-based listener statistics are used to view live listener tracking "
+"and may be required for royalty reports."
+msgstr ""
+"汇总听众统计数据用于显示整个系统的电台报告。基于IP的听众统计用于查看实时听众"
+"跟踪，可能是版税报告所需。"
+
+#: /var/azuracast/www/config/forms/settings.php:135
+msgid ""
+"<b>Full:</b> Collect aggregate listener statistics and IP-based listener "
+"statistics"
+msgstr "<b>完整：</b>收集总的监听器统计数据和基于 IP 的监听器统计数据"
+
+#: /var/azuracast/www/config/forms/settings.php:136
+msgid "<b>Limited:</b> Only collect aggregate listener statistics"
+msgstr "<b>限制：</b>只收集总的监听器统计信息"
+
+#: /var/azuracast/www/config/forms/settings.php:137
+msgid "<b>None:</b> Do not collect any listener analytics"
+msgstr "<b>无：</b>不收集任何监听者分析"
+
+#: /var/azuracast/www/config/forms/settings.php:146
+msgid "AzuraCast Installation Telemetry"
+msgstr "AzuraCast安装遥测"
+
+#: /var/azuracast/www/config/forms/settings.php:147
+msgid ""
+"Choose whether your installation communicates with central AzuraCast servers "
+"to check for updates and announcements.<br>AzuraCast respects your privacy; "
+"see our <a href=\"%s\" target=\"_blank\">privacy policy</a> for more details."
+msgstr ""
+"选择您的安装是否与中央AzuraCast服务器通信，以检查更新和公告。<br>AzuraCast尊"
+"重您的隐私；请参阅我们的<a href=\"%s\" target=\"_blank\">隐私政策</a>了解更多"
+"细节。"
+
+#: /var/azuracast/www/config/forms/settings.php:155
+msgid "Check for Updates and Announcements"
+msgstr "查看更新和公告"
+
+#: /var/azuracast/www/config/forms/settings.php:156
+msgid ""
+"Send minimal details about your AzuraCast installation to the AzuraCast "
+"central server to check for updated software releases and important "
+"announcements."
+msgstr ""
+"将有关您的AzuraCast安装的最低细节发送到AzuraCast中央服务器，以检查更新的软件"
+"版本和重要公告。"
+
+#: /var/azuracast/www/config/forms/settings.php:159
+msgid "<b>None:</b> Do not check for updates or announcements."
+msgstr "<b>无：</b>不要检查更新或公告。"
+
+#: /var/azuracast/www/config/forms/settings.php:160
+msgid ""
+"<b>Release Only:</b> Critical announcements and new release versions only."
+msgstr "<b>只发布：</b>只发布重要公告和新版本。"
+
+#: /var/azuracast/www/config/forms/settings.php:161
+msgid "<b>All Updates:</b> Include all announcements and minor updates."
+msgstr "<b>所有更新：</b>包括所有公告和次要更新。"
+
+#: /var/azuracast/www/config/forms/sftp_user.php:8
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:24
+msgid "Username"
+msgstr "用户名"
+
+#: /var/azuracast/www/config/forms/sftp_user.php:18
+#: /var/azuracast/www/config/forms/user.php:31
+msgid "Leave blank to use the current password."
+msgstr "留空以使用当前密码。"
+
+#: /var/azuracast/www/config/forms/sftp_user.php:27
+msgid "SSH Public Keys"
+msgstr "SSH公钥"
+
+#: /var/azuracast/www/config/forms/sftp_user.php:29
+msgid ""
+"Optionally supply SSH public keys this user can use to connect instead of a "
+"password. Enter one key per line."
+msgstr "可选择提供SSH公钥，这可以用来代替密码进行连接。每行输入一个密钥。"
+
+#: /var/azuracast/www/config/forms/song.php:8
+msgid "Metadata"
+msgstr "元数据"
+
+#: /var/azuracast/www/config/forms/song.php:14
+msgid "Full Text"
+msgstr "全文"
+
+#: /var/azuracast/www/config/forms/song.php:26
+msgid "Artist Name"
+msgstr "艺术家姓名"
+
+#: /var/azuracast/www/config/forms/station.php:26
+msgid "Station Profile"
+msgstr "电台简介"
+
+#: /var/azuracast/www/config/forms/station.php:27
+msgid "Broadcasting"
+msgstr "广播"
+
+#: /var/azuracast/www/config/forms/station.php:28
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:32
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:33
+msgid "AutoDJ"
+msgstr "自动DJ"
+
+#: /var/azuracast/www/config/forms/station.php:29
+#: /var/azuracast/www/templates/admin/index/index.phtml:18
+#: /var/azuracast/www/templates/admin/sidebar.phtml:3
+#: /var/azuracast/www/templates/frontend/index/index.phtml:55
+msgid "Administration"
+msgstr "管理"
+
+#: /var/azuracast/www/config/forms/station.php:50
+#: /var/azuracast/www/config/forms/webhook/discord.php:81
+msgid "Description"
+msgstr "描述"
+
+#: /var/azuracast/www/config/forms/station.php:66
+msgid "Web Site URL"
+msgstr "网址"
+
+#: /var/azuracast/www/config/forms/station.php:67
+msgid ""
+"Note: This should be the public-facing homepage of the radio station, not "
+"the AzuraCast URL. It will be included in broadcast details."
+msgstr ""
+"注意：这应该是电台面向公众的主页，而不是AzuraCast的URL。它将包含在广播的详细"
+"信息中。"
+
+#: /var/azuracast/www/config/forms/station.php:75
+msgid "Time Zone"
+msgstr "时区"
+
+#: /var/azuracast/www/config/forms/station.php:76
+msgid ""
+"Scheduled playlists and other timed items will be controlled by this time "
+"zone."
+msgstr "预定的播放列表和其他定时项目将由该时区控制。"
+
+#: /var/azuracast/www/config/forms/station.php:86
+msgid "Enable Public Page"
+msgstr "启用公共页面"
+
+#: /var/azuracast/www/config/forms/station.php:87
+msgid "Show the station in public pages and general API results."
+msgstr "在公共页面和普通API结果中显示电台，。"
+
+#: /var/azuracast/www/config/forms/station.php:98
+msgid "Enable On-Demand Streaming and Downloads"
+msgstr "启用按需流媒体和下载"
+
+#: /var/azuracast/www/config/forms/station.php:99
+msgid ""
+"If enabled, music from playlists with on-demand streaming enabled will be "
+"available to stream and download via a specialized public page."
+msgstr ""
+"如果启用，启用点播流媒体的播放列表中的音乐将可通过专门的公共页面进行流媒体和"
+"下载。"
+
+#: /var/azuracast/www/config/forms/station.php:119
+msgid "URL Stub"
+msgstr "URL存根"
+
+#: /var/azuracast/www/config/forms/station.php:121
+msgid ""
+"Optionally specify a short URL-friendly name, such as <code>my_station_name</"
+"code>, that will be used in this station's URLs. Leave this field blank to "
+"automatically create one based on the station name."
+msgstr ""
+"可选择指定一个简短的 URL 友好名称，如 <code>my_station_name</code>，将用于该"
+"站的 URL。将此字段留空，可根据站名自动创建一个。"
+
+#: /var/azuracast/www/config/forms/station.php:129
+msgid "Number of Recently Played Songs"
+msgstr "最近播放的歌曲数量"
+
+#: /var/azuracast/www/config/forms/station.php:131
+msgid ""
+"Customize the number of songs that will appear in the \"Song History\" "
+"section for this station and in all public APIs."
+msgstr "自定义本站和所有公共 API 的 \"歌曲历史 \"部分将出现的歌曲数量。"
+
+#: /var/azuracast/www/config/forms/station.php:153
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:16
+msgid "Broadcasting Service"
+msgstr "广播服务"
+
+#: /var/azuracast/www/config/forms/station.php:154
+msgid "This software delivers your broadcast to the listening audience."
+msgstr "该软件将您的广播传递给听众。"
+
+#: /var/azuracast/www/config/forms/station.php:172
+msgid "Customize Source Password"
+msgstr "自定义源密码"
+
+#: /var/azuracast/www/config/forms/station.php:173
+#: /var/azuracast/www/config/forms/station.php:183
+msgid "Leave blank to automatically generate a new password."
+msgstr "留空以自动生成新密码。"
+
+#: /var/azuracast/www/config/forms/station.php:182
+msgid "Customize Administrator Password"
+msgstr "自定义管理员密码"
+
+#: /var/azuracast/www/config/forms/station.php:192
+msgid "Customize Broadcasting Port"
+msgstr "自定义广播端口"
+
+#: /var/azuracast/www/config/forms/station.php:194
+msgid ""
+"No other program can be using this port. Leave blank to automatically assign "
+"a port."
+msgstr "其他程序不能使用这个端口。留空以自动分配一个端口。"
+
+#: /var/azuracast/www/config/forms/station.php:203
+msgid "Maximum Listeners"
+msgstr "最大听众"
+
+#: /var/azuracast/www/config/forms/station.php:205
+msgid ""
+"Maximum number of total listeners across all streams. Leave blank to use the "
+"default (250)."
+msgstr "所有流的最大听众总数。留空，使用默认值（250）。"
+
+#: /var/azuracast/www/config/forms/station.php:214
+msgid "Custom Configuration"
+msgstr "自定义配置"
+
+#: /var/azuracast/www/config/forms/station.php:218
+msgid ""
+"This code will be included in the frontend configuration. You can use either "
+"JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/"
+"new_key&gt;."
+msgstr ""
+"这段代码将包含在前端配置中。你可以使用JSON {\"new_key\": \"new_value\"}格式或"
+"XML &lt;new_key&gt;new_value&lt;/new_key&gt;。"
+
+#: /var/azuracast/www/config/forms/station.php:226
+msgid "Banned IP Addresses"
+msgstr "被禁止的IP地址"
+
+#: /var/azuracast/www/config/forms/station.php:230
+msgid "List one IP address or group (in CIDR format) per line."
+msgstr "每行列出一个IP地址或组（CIDR格式）。"
+
+#: /var/azuracast/www/config/forms/station.php:244
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:16
+msgid "AutoDJ Service"
+msgstr "自动DJ服务"
+
+#: /var/azuracast/www/config/forms/station.php:245
+msgid ""
+"This software shuffles from playlists of music constantly and plays when no "
+"other radio source is available."
+msgstr "这款软件从音乐的播放列表中不断地洗牌，当没有其他广播源时，就会播放。"
+
+#: /var/azuracast/www/config/forms/station.php:263
+msgid "Crossfade Method"
+msgstr "淡入淡出法"
+
+#: /var/azuracast/www/config/forms/station.php:265
+msgid ""
+"Choose a method to use when transitioning from one song to another. Smart "
+"Mode considers the volume of the two tracks when fading for a smoother "
+"effect, but requires more CPU resources."
+msgstr ""
+"从一首歌曲过渡到另一首歌曲时，选择一种方法。智能模式在渐变时考虑两个音轨的音"
+"量，以获得更平滑的效果，但需要更多的CPU资源。"
+
+#: /var/azuracast/www/config/forms/station.php:267
+msgid "Smart Mode"
+msgstr "智能模式"
+
+#: /var/azuracast/www/config/forms/station.php:268
+msgid "Normal Mode"
+msgstr "正常模式"
+
+#: /var/azuracast/www/config/forms/station.php:269
+msgid "Disable Crossfading"
+msgstr "禁用淡入淡出"
+
+#: /var/azuracast/www/config/forms/station.php:279
+msgid "Crossfade Duration (Seconds)"
+msgstr "淡入淡出持续时间  (Seconds)"
+
+#: /var/azuracast/www/config/forms/station.php:281
+msgid "Number of seconds to overlap songs."
+msgstr "重叠歌曲的秒数。"
+
+#: /var/azuracast/www/config/forms/station.php:293
+msgid "Apply Compression and Normalization"
+msgstr "应用压缩和规范化"
+
+#: /var/azuracast/www/config/forms/station.php:295
+msgid ""
+"Compress and normalize your station's audio, producing a more uniform and "
+"\"full\" sound."
+msgstr "压缩和规范您的电台音频，产生更均匀和 \"完整 \"的声音。"
+
+#: /var/azuracast/www/config/forms/station.php:306
+msgid "Allow Song Requests"
+msgstr "允许歌曲请求"
+
+#: /var/azuracast/www/config/forms/station.php:307
+msgid ""
+"Enable listeners to request a song for play on your station. Only songs that "
+"are already in your playlists are requestable."
+msgstr ""
+"让听众可以请求在您的电台播放歌曲。只有已经在您的播放列表中的歌曲才可以请求。"
+
+#: /var/azuracast/www/config/forms/station.php:318
+msgid "Request Minimum Delay (Minutes)"
+msgstr "请求最小延迟（分钟）"
+
+#: /var/azuracast/www/config/forms/station.php:319
+msgid ""
+"If requests are enabled, this specifies the minimum delay (in minutes) "
+"between a request being submitted and being played. If set to zero, no delay "
+"is applied.<br><b>Important:</b> Some stream licensing rules require a "
+"minimum delay for requests (in the US, this is currently 60 minutes). Check "
+"your local regulations for more information."
+msgstr ""
+"如果启用了请求，则指定从提交请求到播放请求之间的最小延迟（以分钟为单位）。"
+"<br><b>重要的是：</b>一些流媒体许可规则要求请求的最小延迟（在美国，目前是 60 "
+"分钟）。请查看您当地的法规以了解更多信息。"
+
+#: /var/azuracast/www/config/forms/station.php:330
+msgid "Request Last Played Threshold (Minutes)"
+msgstr "请求最后播放的阈值（分钟）"
+
+#: /var/azuracast/www/config/forms/station.php:331
+msgid ""
+"If requests are enabled, this specifies the minimum time (in minutes) "
+"between a song playing on the radio and being available to request again. "
+"Set to 0 for no threshold."
+msgstr ""
+"如果启用了请求，则指定从网络上播放的歌曲到可以再次请求的最短时间（以分钟为单"
+"位）。设置为0表示没有阈值。"
+
+#: /var/azuracast/www/config/forms/station.php:342
+msgid "Allow Streamers / DJs"
+msgstr "允许流媒体/ DJ"
+
+#: /var/azuracast/www/config/forms/station.php:343
+msgid ""
+"If enabled, streamers (or DJs) will be able to connect directly to your "
+"stream and broadcast live music that interrupts the AutoDJ stream."
+msgstr ""
+"如果启用，流媒体主持人（或DJ）将能够直接连接到您的流媒体，并播放AutoDJ流媒体"
+"的现场音乐。"
+
+#: /var/azuracast/www/config/forms/station.php:354
+msgid "Record Live Broadcasts"
+msgstr "录制直播"
+
+#: /var/azuracast/www/config/forms/station.php:355
+msgid ""
+"If enabled, AzuraCast will automatically record any live broadcasts made to "
+"this station to per-broadcast recordings."
+msgstr "如果启用，AzuraCast将自动把该台的任何直播记录到每次广播的录音中。"
+
+#: /var/azuracast/www/config/forms/station.php:367
+msgid "Live Broadcast Recording Format"
+msgstr "直播录音格式"
+
+#: /var/azuracast/www/config/forms/station.php:383
+msgid "Live Broadcast Recording Bitrate (kbps)"
+msgstr "直播广播记录比特率（kbps）"
+
+#: /var/azuracast/www/config/forms/station.php:403
+msgid "Deactivate Streamer on Disconnect (Seconds)"
+msgstr "在断开连接时停用流媒体（秒）"
+
+#: /var/azuracast/www/config/forms/station.php:404
+msgid ""
+"Number of seconds to deactivate station streamer on manual disconnect. Set "
+"to 0 to disable deactivation completely."
+msgstr "在手动断开连接时停用站流的秒数。设置为0可完全停用。"
+
+#: /var/azuracast/www/config/forms/station.php:415
+msgid "Customize DJ/Streamer Port"
+msgstr "自定义DJ /流媒体端口"
+
+#: /var/azuracast/www/config/forms/station.php:417
+msgid ""
+"No other program can be using this port. Leave blank to automatically assign "
+"a port.<br><b>Note:</b> The port after this one (n+1) will automatically be "
+"used for legacy connections."
+msgstr ""
+"任何其他程序都不能使用这个端口。<br><b>注意:</b>此后的端口(n+1)将自动用于传统"
+"的连接。"
+
+#: /var/azuracast/www/config/forms/station.php:426
+msgid "Customize Internal Request Processing Port"
+msgstr "自定义内部请求处理端口"
+
+#: /var/azuracast/www/config/forms/station.php:428
+msgid ""
+"This port is not used by any external process. Only modify this port if the "
+"assigned port is in use. Leave blank to automatically assign a port."
+msgstr ""
+"此端口不被任何外部进程使用。只有当指定的端口正在使用时，才能修改此端口。留空"
+"以自动分配一个端口。"
+
+#: /var/azuracast/www/config/forms/station.php:437
+msgid "DJ/Streamer Buffer Time (Seconds)"
+msgstr "DJ /流媒体缓冲时间（秒）"
+
+#: /var/azuracast/www/config/forms/station.php:438
+msgid ""
+"The number of seconds of signal to store in case of interruption. Set to the "
+"lowest value that your DJs can use without stream interruptions."
+msgstr ""
+"在中断的情况下要存储的信号秒数。设置为您的DJ可以在不中断的情况下使用的最低"
+"值。"
+
+#: /var/azuracast/www/config/forms/station.php:451
+msgid "Customize DJ/Streamer Mount Point"
+msgstr "自定义DJ / Streamer挂载点"
+
+#: /var/azuracast/www/config/forms/station.php:453
+msgid ""
+"If your streaming software requires a specific mount point path, specify it "
+"here. Otherwise, use the default."
+msgstr ""
+"如果你的流媒体软件需要一个特定的挂载点路径，请在这里指定它。否则，使用默认"
+"值。"
+
+#: /var/azuracast/www/config/forms/station.php:463
+msgid "Use Replaygain Metadata"
+msgstr "使用重播元数据"
+
+#: /var/azuracast/www/config/forms/station.php:466
+msgid ""
+"Instruct Liquidsoap to use any replaygain metadata associated with a song to "
+"control its volume level."
+msgstr "指示Liquidsoap使用任何与歌曲相关的重放元数据来控制其音量。"
+
+#: /var/azuracast/www/config/forms/station.php:477
+msgid "AutoDJ Queue Length"
+msgstr "AutoDJ队列长度"
+
+#: /var/azuracast/www/config/forms/station.php:478
+msgid ""
+"If using AzuraCast's AutoDJ, this determines how many songs in advance the "
+"AutoDJ will automatically fill the queue."
+msgstr ""
+"如果使用AzuraCast的AutoDJ，这决定了AutoDJ会提前多少首歌曲自动填充队列。"
+
+#: /var/azuracast/www/config/forms/station.php:490
+msgid "Manual AutoDJ Mode"
+msgstr "手动自动DJ模式"
+
+#: /var/azuracast/www/config/forms/station.php:492
+msgid ""
+"This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to "
+"manage song playback. \"Next Song\" and some other features will not be "
+"available."
+msgstr ""
+"该模式禁用AzuraCast的AutoDJ管理，使用Liquidsoap本身来管理歌曲播放。\"下一首歌"
+"曲 \"和其他一些功能将无法使用。"
+
+#: /var/azuracast/www/config/forms/station.php:504
+msgid "Character Set Encoding"
+msgstr "字符集编码"
+
+#: /var/azuracast/www/config/forms/station.php:506
+msgid ""
+"For most cases, use the default UTF-8 encoding. The older ISO-8859-1 "
+"encoding can be used if accepting connections from SHOUTcast 1 DJs or using "
+"other legacy software."
+msgstr ""
+"对于大多数情况下，使用默认的UTF-8编码，如果接受SHOUTcast 1 DJ的连接或使用其他"
+"传统软件，可以使用旧的ISO-8859-1编码。如果接受来自SHOUTcast 1 DJ的连接或使用"
+"其他传统软件，可以使用旧的ISO-8859-1编码。"
+
+#: /var/azuracast/www/config/forms/station.php:520
+msgid "Duplicate Prevention Time Range (Minutes)"
+msgstr "重复预防时间范围（分钟"
+
+#: /var/azuracast/www/config/forms/station.php:521
+msgid ""
+"This specifies the time range (in minutes) of the song history that the "
+"duplicate song prevention algorithm should take into account."
+msgstr "这指定了重复歌曲防止算法应考虑的歌曲历史的时间范围（分钟）。"
+
+#: /var/azuracast/www/config/forms/station.php:541
+msgid "Enable Broadcasting"
+msgstr "启用广播"
+
+#: /var/azuracast/www/config/forms/station.php:542
+msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
+msgstr "如果禁用，则该台将不会广播或洗牌其 AutoDJ。"
+
+#: /var/azuracast/www/config/forms/station.php:553
+msgid "Storage Quota"
+msgstr "储存配额"
+
+#: /var/azuracast/www/config/forms/station.php:554
+msgid ""
+"Set a maximum disk space that this station can use. Specify the size with "
+"unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to "
+"default to the available space on the disk."
+msgstr ""
+"设置本站可使用的最大磁盘空间。用单位指定大小，如 \"8 GB\"。单位以 1024 字节为"
+"单位。留空则默认为磁盘上的可用空间。"
+
+#: /var/azuracast/www/config/forms/station.php:562
+msgid "Base Station Directory"
+msgstr "电台目录"
+
+#: /var/azuracast/www/config/forms/station.php:564
+msgid ""
+"The parent directory where station playlist and configuration files are "
+"stored. Leave blank to use default directory."
+msgstr "保存电台播放列表和配置文件的父目录。留空，使用默认目录。"
+
+#: /var/azuracast/www/config/forms/station.php:572
+msgid "Custom Media Directory"
+msgstr "自定义媒体目录"
+
+#: /var/azuracast/www/config/forms/station.php:574
+msgid ""
+"The directory where media files are stored. Leave blank to use default "
+"directory."
+msgstr "存储媒体文件的目录。留空，使用默认目录。"
+
+#: /var/azuracast/www/config/forms/station_clone.php:14
+msgid "New Station Name"
+msgstr "新电台名称"
+
+#: /var/azuracast/www/config/forms/station_clone.php:23
+msgid "New Station Description"
+msgstr "新电台简介"
+
+#: /var/azuracast/www/config/forms/station_clone.php:33
+msgid "Customize Station Cloning"
+msgstr "自定义电台克隆"
+
+#: /var/azuracast/www/config/forms/station_clone.php:39
+msgid "Copy Media?"
+msgstr "复制媒体？"
+
+#: /var/azuracast/www/config/forms/station_clone.php:40
+msgid "Choose how media should be duplicated from the old station."
+msgstr "选择媒体应该如何从老站点复制。"
+
+#: /var/azuracast/www/config/forms/station_clone.php:42
+msgid "Do not share or copy media between the stations"
+msgstr "请勿在各电台之间共享或复制媒体"
+
+#: /var/azuracast/www/config/forms/station_clone.php:43
+msgid "Share the same folder on disk between the stations"
+msgstr "各电台之间在磁盘上共享同一文件夹"
+
+#: /var/azuracast/www/config/forms/station_clone.php:44
+msgid "Copy the existing station's media to the new station"
+msgstr "将现有电台的媒体复制到新电台"
+
+#: /var/azuracast/www/config/forms/station_clone.php:54
+msgid "Copy Playlists?"
+msgstr "复制播放列表？"
+
+#: /var/azuracast/www/config/forms/station_clone.php:67
+msgid "Copy Streamer/DJ Accounts?"
+msgstr "复制流媒体/DJ账户？"
+
+#: /var/azuracast/www/config/forms/station_clone.php:80
+msgid "Copy Permissions?"
+msgstr "复制权限？"
+
+#: /var/azuracast/www/config/forms/station_clone.php:81
+msgid ""
+"Selecting \"Yes\" will assign any users with permissions to the current "
+"station to have permissions to the new one."
+msgstr "选择 \"是 \"将把当前站有权限的用户分配到新站。"
+
+#: /var/azuracast/www/config/forms/station_clone.php:100
+msgid "Create New Station"
+msgstr "创建新电台"
+
+#: /var/azuracast/www/config/forms/user.php:42
+#: /var/azuracast/www/templates/admin/users/index.phtml:23
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:38
+msgid "Roles"
+msgstr "角色"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:18
+#: /var/azuracast/www/config/forms/webhook/generic.php:27
+#: /var/azuracast/www/config/forms/webhook/telegram.php:18
+#: /var/azuracast/www/config/forms/webhook/tunein.php:17
+#: /var/azuracast/www/config/forms/webhook/twitter.php:99
+msgid "Web Hook Name"
+msgstr "网络钩子名称"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:19
+#: /var/azuracast/www/config/forms/webhook/generic.php:28
+#: /var/azuracast/www/config/forms/webhook/telegram.php:19
+#: /var/azuracast/www/config/forms/webhook/tunein.php:18
+#: /var/azuracast/www/config/forms/webhook/twitter.php:100
+msgid ""
+"Choose a name for this webhook that will help you distinguish it from "
+"others. This will only be shown on the administration page."
+msgstr ""
+"为这个网络钩子选择一个名称，以帮助你将它与其他网络钩子区分开来。这将只在管理"
+"页面上显示。"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:28
+msgid "Discord Web Hook URL"
+msgstr "Discord网络钩子 URL"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:29
+msgid "This URL is provided within the Discord application."
+msgstr "此 URL 是在 Discord 应用程序中提供的。"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:39
+#: /var/azuracast/www/config/forms/webhook/generic.php:69
+#: /var/azuracast/www/config/forms/webhook/telegram.php:62
+#: /var/azuracast/www/config/forms/webhook/twitter.php:109
+msgid "Web Hook Triggers"
+msgstr "Triggers 网络钩子"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:51
+#: /var/azuracast/www/config/forms/webhook/telegram.php:74
+msgid "Customize Message"
+msgstr "自定义消息"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:53
+#: /var/azuracast/www/config/forms/webhook/telegram.php:76
+#: /var/azuracast/www/config/forms/webhook/twitter.php:124
+msgid ""
+"Variables are in the form of <code>{{ var.name }}</code>. All values in the "
+"<a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable "
+"for use. Any empty fields are ignored."
+msgstr ""
+"变量的形式为<code>{{ var.name }}</code>。<a href=\"%s\" target=\"_blank"
+"\">Now Playing API response</a>中的所有值都可以使用。任何空字段都会被忽略。"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:61
+#: /var/azuracast/www/config/forms/webhook/telegram.php:84
+msgid "Main Message Content"
+msgstr "主要信息内容"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:63
+msgid "Now playing on %s:"
+msgstr "现在播放 %s："
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:91
+msgid "URL"
+msgstr "网址"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:101
+msgid "Author Name"
+msgstr "作者名字"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:111
+msgid "Thumbnail Image URL"
+msgstr "缩略图网址"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:121
+msgid "Footer Text"
+msgstr "页脚文字"
+
+#: /var/azuracast/www/config/forms/webhook/discord.php:123
+#: /var/azuracast/www/templates/main.phtml:155
+#: /var/azuracast/www/templates/minimal.phtml:48
+msgid "Powered by %s"
+msgstr "由%s提供技术支持"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:13
+msgid "Web Hook Details"
+msgstr "网络钩子详细信息"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:15
+msgid ""
+"Web hooks automatically send a HTTP POST request to the URL you specify to \n"
+"                notify it any time one of the triggers you specify occurs on "
+"your station. The body of the POST message\n"
+"                is the exact same as the <a href=\"%s\" target=\"_blank"
+"\">Now Playing API response</a> for your station. \n"
+"                In order to process quickly, web hooks have a short timeout, "
+"so the responding service should be\n"
+"                optimized to handle the request in under 2 seconds."
+msgstr ""
+"网络钩子会自动发送一个HTTP POST请求到您指定的URL，以便 \n"
+"                在您的站点上发生您指定的任何一个触发器时通知它。POST消息的主"
+"体是\n"
+"                与你的站的<a href=\"%s\" target=\"_blank\">Now Playing API "
+"response</a>完全相同。\n"
+"                为了快速处理，网络钩子的超时时间很短，所以响应的服务应该是\n"
+"                经过优化的，可以在2秒内处理该请求。"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:37
+msgid "Web Hook URL"
+msgstr "网络钩子网址"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:38
+msgid ""
+"The URL that will receive the POST messages any time an event is triggered."
+msgstr "当事件被触发时，接收POST消息的URL。"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:49
+msgid "Optional: HTTP Basic Authentication Username"
+msgstr "可选：HTTP基本认证用户名"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:50
+msgid ""
+"If your web hook requires HTTP basic authentication, provide the username "
+"here."
+msgstr "如果你的web钩子需要HTTP基本认证，请在这里提供用户名。"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:59
+msgid "Optional: HTTP Basic Authentication Password"
+msgstr "可选：HTTP基本认证密码"
+
+#: /var/azuracast/www/config/forms/webhook/generic.php:60
+msgid ""
+"If your web hook requires HTTP basic authentication, provide the password "
+"here."
+msgstr "如果你的web钩子需要HTTP基本认证，请在这里提供密码。"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:28
+msgid "Bot Token"
+msgstr "机器人 Token"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:29
+#: /var/azuracast/www/config/forms/webhook/telegram.php:97
+msgid ""
+"See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more "
+"details."
+msgstr "请参阅<a href=\"%s\" target=\"_blank\">Telegram文档</a>了解更多细节。"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:40
+msgid "Chat ID"
+msgstr "聊天 ID"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:41
+msgid ""
+"Unique identifier for the target chat or username of the target channel (in "
+"the format @channelusername)."
+msgstr "目标聊天的唯一标识符或目标频道的用户名（格式为@channelusername）。"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:51
+msgid "Custom API Base URL"
+msgstr "自定义API基本URL"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:53
+msgid ""
+"Leave blank to use the default Telegram API URL (recommended). Specify the "
+"full URL, like <code>https://api.pwrtelegram.xyz/</code>."
+msgstr ""
+"留空以使用默认的Telegram API URL（推荐）。指定完整的URL，比如<code>https://"
+"api.pwrtelegram.xyz/</code>。"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:86
+#: /var/azuracast/www/config/forms/webhook/twitter.php:122
+msgid "Now playing on %s: %s by %s! Tune in now."
+msgstr "现在播放的是%s: %s by %s! 现在请收听。"
+
+#: /var/azuracast/www/config/forms/webhook/telegram.php:96
+msgid "Message parsing mode"
+msgstr "消息解析模式"
+
+#: /var/azuracast/www/config/forms/webhook/tunein.php:27
+msgid "TuneIn Station ID"
+msgstr "TuneIn电台ID"
+
+#: /var/azuracast/www/config/forms/webhook/tunein.php:28
+msgid "The station ID will be a numeric string that starts with the letter S."
+msgstr "站号将是一个以字母S开头的数字字符串。"
+
+#: /var/azuracast/www/config/forms/webhook/tunein.php:38
+msgid "TuneIn Partner ID"
+msgstr "TuneIn合作伙伴ID"
+
+#: /var/azuracast/www/config/forms/webhook/tunein.php:48
+msgid "TuneIn Partner Key"
+msgstr "TuneIn合作伙伴密钥"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:13
+msgid "Twitter Account Details"
+msgstr "Twitter帐户详细信息"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:15
+msgid ""
+"Steps for configuring a Twitter application:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>Create a new app on the <a href=\"%s\" target="
+"\"_blank\">Twitter Applications site</a>. \n"
+"                    Use this installation's base URL as the application URL."
+"</li>\n"
+"                    <li>In the newly created application, click the \"Keys "
+"and Access Tokens\" tab.</li>\n"
+"                    <li>At the bottom of the page, click \"Create my access "
+"token\".</li>\n"
+"                </ol>\n"
+"                <p>Once these steps are completed, enter the information "
+"from the \"Keys and Access Tokens\" page into the fields below.</p>"
+msgstr ""
+"配置Twitter应用程序的步骤：<br><br>。\n"
+"                <ol type=\"1\">\n"
+"                    <li>在 <a href=\"%s\" target=\"_blank\">Twitter 应用程序"
+"站点</a>上创建一个新应用程序。\n"
+"                    使用此安装的基本 URL 作为应用程序的 URL。\n"
+"                    <li>在新创建的应用程序中，单击 \"密钥和访问令牌 \"标"
+"签。\n"
+"                    <li>在页面底部，单击 \"创建我的访问令牌\"</li>。\n"
+"                </ol>\n"
+"                <p>完成这些步骤后，请将 \"密钥和访问令牌 \"页面中的信息输入到"
+"下面的字段中去"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:30
+msgid "Consumer Key (API Key)"
+msgstr "消费者密钥(API密钥)"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:40
+msgid "Consumer Secret (API Secret)"
+msgstr "消费者秘密(API秘密)"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:50
+msgid "Access Token"
+msgstr "访问令牌"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:60
+msgid "Access Token Secret"
+msgstr "访问令牌机密"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:70
+msgid "Only Send One Tweet Every..."
+msgstr "每天只发送一条推文..."
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:74
+msgid "No Limit"
+msgstr "没有限制"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:75
+#: /var/azuracast/www/config/forms/webhook/twitter.php:76
+#: /var/azuracast/www/config/forms/webhook/twitter.php:77
+msgid "%d seconds"
+msgstr "%d秒"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:78
+#: /var/azuracast/www/config/forms/webhook/twitter.php:79
+#: /var/azuracast/www/config/forms/webhook/twitter.php:80
+#: /var/azuracast/www/config/forms/webhook/twitter.php:81
+#: /var/azuracast/www/config/forms/webhook/twitter.php:82
+#: /var/azuracast/www/config/forms/webhook/twitter.php:83
+msgid "%d minutes"
+msgstr "%d分钟"
+
+#: /var/azuracast/www/config/forms/webhook/twitter.php:119
+msgid "Message Body"
+msgstr "邮件正文"
+
+#: /var/azuracast/www/config/menus/admin.php:13
+msgid "System Maintenance"
+msgstr "系统维护"
+
+#: /var/azuracast/www/config/menus/admin.php:22
+#: /var/azuracast/www/templates/admin/branding/index.phtml:12
+msgid "Custom Branding"
+msgstr "定制品牌"
+
+#: /var/azuracast/www/config/menus/admin.php:27
+#: /var/azuracast/www/templates/admin/api/index.phtml:1
+#: /var/azuracast/www/templates/admin/api/index.phtml:5
+msgid "API Keys"
+msgstr "API密钥"
+
+#: /var/azuracast/www/config/menus/admin.php:32
+#: /var/azuracast/www/templates/admin/logs/index.phtml:12
+msgid "System Logs"
+msgstr "系统日志"
+
+#: /var/azuracast/www/config/menus/admin.php:37
+#: /var/azuracast/www/templates/admin/backups/index.phtml:8
+#: /var/azuracast/www/templates/admin/backups/index.phtml:82
+msgid "Backups"
+msgstr "备份"
+
+#: /var/azuracast/www/config/menus/admin.php:42
+#: /var/azuracast/www/templates/admin/debug/index.phtml:3
+#: /var/azuracast/www/templates/admin/debug/index.phtml:8
+msgid "System Debugger"
+msgstr "系统调试器"
+
+#: /var/azuracast/www/config/menus/admin.php:49
+msgid "Users"
+msgstr "用户"
+
+#: /var/azuracast/www/config/menus/admin.php:53
+#: /var/azuracast/www/templates/admin/users/index.phtml:1
+#: /var/azuracast/www/templates/admin/users/index.phtml:5
+msgid "User Accounts"
+msgstr "用户帐号"
+
+#: /var/azuracast/www/config/menus/admin.php:58
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:1
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:5
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:23
+msgid "Permissions"
+msgstr "权限"
+
+#: /var/azuracast/www/config/menus/admin.php:63
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:3
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:19
+msgid "Audit Log"
+msgstr "审核日志"
+
+#: /var/azuracast/www/config/menus/admin.php:70
+#: /var/azuracast/www/config/menus/admin.php:74
+#: /var/azuracast/www/templates/admin/stations/index.phtml:1
+msgid "Stations"
+msgstr "电台"
+
+#: /var/azuracast/www/config/menus/admin.php:79
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:1
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:5
+msgid "Custom Fields"
+msgstr "自定义字段"
+
+#: /var/azuracast/www/config/menus/admin.php:84
+#: /var/azuracast/www/templates/admin/relays/index.phtml:3
+#: /var/azuracast/www/templates/admin/relays/index.phtml:15
+msgid "Connected AzuraRelays"
+msgstr "连接的AzuraRelays"
+
+#: /var/azuracast/www/config/menus/station.php:18
+msgid "Start Station"
+msgstr "开始电台"
+
+#: /var/azuracast/www/config/menus/station.php:19
+msgid "Ready to start broadcasting? Click to start your station."
+msgstr "准备开始广播了吗？单击以启动您的电台。"
+
+#: /var/azuracast/www/config/menus/station.php:23
+#: /var/azuracast/www/config/menus/station.php:33
+#: /var/azuracast/www/config/menus/station.php:180
+msgid "Restart broadcasting? This will disconnect any current listeners."
+msgstr "重新开始播放？这将断开所有当前的侦听器。"
+
+#: /var/azuracast/www/config/menus/station.php:28
+msgid "Restart to Apply Changes"
+msgstr "重新开始应用更改"
+
+#: /var/azuracast/www/config/menus/station.php:29
+msgid "Click to restart your station and apply configuration changes."
+msgstr "单击以重新启动电台并应用配置更改。"
+
+#: /var/azuracast/www/config/menus/station.php:38
+#: /var/azuracast/www/templates/stations/profile/index.phtml:8
+msgid "Profile"
+msgstr "个人资料"
+
+#: /var/azuracast/www/config/menus/station.php:43
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:23
+msgid "Public Page"
+msgstr "公开页面"
+
+#: /var/azuracast/www/config/menus/station.php:50
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:50
+msgid "On-Demand Media"
+msgstr "点播媒体"
+
+#: /var/azuracast/www/config/menus/station.php:57
+#: /var/azuracast/www/templates/stations/files/index.phtml:4
+#: /var/azuracast/www/templates/stations/files/index.phtml:28
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:34
+msgid "Music Files"
+msgstr "音乐文件"
+
+#: /var/azuracast/www/config/menus/station.php:64
+#: /var/azuracast/www/templates/stations/playlists/index.phtml:3
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:35
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:25
+msgid "Playlists"
+msgstr "播放列表"
+
+#: /var/azuracast/www/config/menus/station.php:71
+#: /var/azuracast/www/templates/stations/streamers/disabled.phtml:1
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:2
+msgid "Streamer/DJ Accounts"
+msgstr "流媒体/ DJ帐户"
+
+#: /var/azuracast/www/config/menus/station.php:78
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:41
+msgid "Web DJ"
+msgstr "网络DJ"
+
+#: /var/azuracast/www/config/menus/station.php:86
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:1
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:5
+msgid "Mount Points"
+msgstr "挂载点"
+
+#: /var/azuracast/www/config/menus/station.php:93
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:56
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:1
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:5
+msgid "Remote Relays"
+msgstr "远程继电器"
+
+#: /var/azuracast/www/config/menus/station.php:99
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:1
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:5
+msgid "Web Hooks"
+msgstr "网络钩子"
+
+#: /var/azuracast/www/config/menus/station.php:105
+msgid "Reports"
+msgstr "报告"
+
+#: /var/azuracast/www/config/menus/station.php:110
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:7
+msgid "Statistics Overview"
+msgstr "统计总览"
+
+#: /var/azuracast/www/config/menus/station.php:119
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:17
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:42
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:1
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:13
+msgid "Song Requests"
+msgstr "歌曲请求"
+
+#: /var/azuracast/www/config/menus/station.php:124
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:1
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:15
+msgid "Song Playback Timeline"
+msgstr "歌曲播放时间线"
+
+#: /var/azuracast/www/config/menus/station.php:128
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:2
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:12
+msgid "Song Listener Impact"
+msgstr "歌曲听众影响"
+
+#: /var/azuracast/www/config/menus/station.php:133
+msgid "Duplicate Songs"
+msgstr "重复的歌曲"
+
+#: /var/azuracast/www/config/menus/station.php:138
+msgid "SoundExchange Royalties"
+msgstr "SoundExchange版税"
+
+#: /var/azuracast/www/config/menus/station.php:145
+msgid "Utilities"
+msgstr "实用工具"
+
+#: /var/azuracast/www/config/menus/station.php:149
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:1
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:7
+msgid "SFTP Users"
+msgstr "SFTP用户"
+
+#: /var/azuracast/www/config/menus/station.php:155
+msgid "Automated Assignment"
+msgstr "自动分配"
+
+#: /var/azuracast/www/config/menus/station.php:167
+#: /var/azuracast/www/templates/admin/logs/index.phtml:3
+#: /var/azuracast/www/templates/stations/logs/index.phtml:3
+msgid "Log Viewer"
+msgstr "日志查看器"
+
+#: /var/azuracast/www/config/menus/station.php:172
+#: /var/azuracast/www/templates/stations/queue/index.phtml:2
+#: /var/azuracast/www/templates/stations/queue/index.phtml:13
+msgid "Upcoming Song Queue"
+msgstr "即将到来的歌曲队列"
+
+#: /var/azuracast/www/config/menus/station.php:177
+msgid "Restart Broadcasting"
+msgstr "重新开始广播"
+
+#: /var/azuracast/www/config/webhooks.php:12
+msgid "Generic Web Hook"
+msgstr "通用网络钩子"
+
+#: /var/azuracast/www/config/webhooks.php:13
+msgid "Automatically send a message to any URL when your station data changes."
+msgstr "电台数据更改时，自动将消息发送到任何URL。"
+
+#: /var/azuracast/www/config/webhooks.php:17
+msgid "TuneIn AIR"
+msgstr "调谐空气"
+
+#: /var/azuracast/www/config/webhooks.php:18
+msgid "Send song metadata changes to TuneIn."
+msgstr "将歌曲元数据更改发送到TuneIn。"
+
+#: /var/azuracast/www/config/webhooks.php:22
+msgid "Discord Webhook"
+msgstr "Discord 网络钩子"
+
+#: /var/azuracast/www/config/webhooks.php:23
+msgid "Automatically send a customized message to your Discord server."
+msgstr "自动向您的Discord服务器发送自定义消息。"
+
+#: /var/azuracast/www/config/webhooks.php:27
+msgid "Telegram Chat Message"
+msgstr "电报聊天消息"
+
+#: /var/azuracast/www/config/webhooks.php:28
+msgid "Use the Telegram Bot API to send a message to a channel."
+msgstr "使用Telegram Bot API将消息发送到频道。"
+
+#: /var/azuracast/www/config/webhooks.php:32
+msgid "Twitter Post"
+msgstr "推特帖子"
+
+#: /var/azuracast/www/config/webhooks.php:33
+msgid "Automatically send a tweet."
+msgstr "自动发送推文。"
+
+#: /var/azuracast/www/config/webhooks.php:39
+msgid "Any time the currently playing song changes"
+msgstr "当前播放的歌曲随时改变"
+
+#: /var/azuracast/www/config/webhooks.php:40
+msgid "Any time the listener count increases"
+msgstr "只要听众人数增加"
+
+#: /var/azuracast/www/config/webhooks.php:41
+msgid "Any time the listener count decreases"
+msgstr "任何时候听众人数减少"
+
+#: /var/azuracast/www/config/webhooks.php:42
+msgid "Any time a live streamer/DJ connects to the stream"
+msgstr "直播流媒体/ DJ随时连接到流"
+
+#: /var/azuracast/www/config/webhooks.php:43
+msgid "Any time a live streamer/DJ disconnects from the stream"
+msgstr "每当直播流媒体/ DJ与流断开连接时"
+
+#: /var/azuracast/www/templates/admin/api/index.phtml:17
+msgid "API Key"
+msgstr "API密钥"
+
+#: /var/azuracast/www/templates/admin/api/index.phtml:19
+msgid "Owner"
+msgstr "所有者"
+
+#: /var/azuracast/www/templates/admin/api/index.phtml:27
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:31
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:32
+#: /var/azuracast/www/templates/admin/stations/index.phtml:32
+#: /var/azuracast/www/templates/admin/users/index.phtml:35
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:42
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:42
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:44
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:34
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:42
+msgid "Edit"
+msgstr "编辑"
+
+#: /var/azuracast/www/templates/admin/api/index.phtml:28
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:43
+msgid "Revoke"
+msgstr "撤消"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:38
+msgid "Insert"
+msgstr "插入"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:40
+#: /var/azuracast/www/templates/admin/backups/index.phtml:116
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:38
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:41
+#: /var/azuracast/www/templates/admin/stations/index.phtml:37
+#: /var/azuracast/www/templates/admin/users/index.phtml:37
+#: /var/azuracast/www/templates/admin/users/index.phtml:39
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:45
+#: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:47
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:33
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:61
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:38
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:54
+msgid "Delete"
+msgstr "删除"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:42
+msgid "Update"
+msgstr "更新"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:58
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:59
+msgid "Changes"
+msgstr "更改"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:83
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:97
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:62
+msgid "Today"
+msgstr "今天"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:84
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:99
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:63
+msgid "Yesterday"
+msgstr "昨天"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:85
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:101
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:64
+msgid "Last 7 Days"
+msgstr "最近7天"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:88
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:105
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:67
+msgid "This Month"
+msgstr "这个月"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.js.phtml:89
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:107
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:68
+msgid "Last Month"
+msgstr "上个月"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:41
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:39
+msgid "Date/Time"
+msgstr "日期/时间"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:42
+msgid "User"
+msgstr "用户"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:44
+msgid "Identifier"
+msgstr "识别码"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:45
+msgid "Target"
+msgstr "目标"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:46
+#: /var/azuracast/www/templates/admin/backups/index.phtml:99
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:21
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:21
+#: /var/azuracast/www/templates/admin/stations/index.phtml:20
+#: /var/azuracast/www/templates/admin/users/index.phtml:21
+#: /var/azuracast/www/templates/frontend/public/embedrequests.phtml:23
+#: /var/azuracast/www/templates/frontend/public/index.phtml:87
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:30
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:29
+#: /var/azuracast/www/templates/stations/queue/index.phtml:27
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:31
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:23
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:29
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:23
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:31
+msgid "Actions"
+msgstr "操作"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:71
+msgid "Field"
+msgstr "领域"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:72
+msgid "Previous"
+msgstr "上一条"
+
+#: /var/azuracast/www/templates/admin/audit_log/index.phtml:73
+msgid "Updated"
+msgstr "更新"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:22
+#: /var/azuracast/www/templates/admin/backups/index.phtml:50
+msgid "Automatic Backups"
+msgstr "自动备份"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:29
+#: /var/azuracast/www/templates/admin/index/index.phtml:78
+msgid "Last run: %s"
+msgstr "最后一次运行：%s"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:31
+msgid "Never run"
+msgstr "千万不要跑"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:38
+#: /var/azuracast/www/templates/admin/backups/index.phtml:57
+msgid "Configure"
+msgstr "配置"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:43
+#: /var/azuracast/www/templates/admin/backups/index.phtml:137
+msgid "Most Recent Backup Log"
+msgstr "最新备份日志"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:64
+msgid "Restoring Backups"
+msgstr "恢复备份"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:67
+msgid "To restore a backup from your host computer, run:"
+msgstr "要从主机恢复备份，请运行："
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:75
+msgid ""
+"Note that restoring a backup will clear your existing database. Never "
+"restore backup files from untrusted users."
+msgstr ""
+"请注意，恢复备份将清除您现有的数据库。切勿从不受信任的用户那里恢复备份文件。"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:100
+msgid "Backup"
+msgstr "备份"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:101
+msgid "Last Modified"
+msgstr "最后修改"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:111
+msgid "Download"
+msgstr "下载"
+
+#: /var/azuracast/www/templates/admin/backups/index.phtml:115
+msgid "Delete backup \"%s\"?"
+msgstr "删除备份\"%s\"？"
+
+#: /var/azuracast/www/templates/admin/backups/run.phtml:20
+msgid "Backups Home"
+msgstr "备份首页"
+
+#: /var/azuracast/www/templates/admin/backups/run.phtml:25
+msgid ""
+"The backup process is running in the background. To view the logs, click the "
+"button below."
+msgstr "备份过程正在后台运行。要查看日志，请单击以下按钮。"
+
+#: /var/azuracast/www/templates/admin/backups/run.phtml:31
+msgid "View Backup Log"
+msgstr "查看备份日志"
+
+#: /var/azuracast/www/templates/admin/custom_fields/index.phtml:32
+msgid "Delete custom field \"%s\"?"
+msgstr "删除自定义字段\"%s\"？"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:12
+#: /var/azuracast/www/templates/admin/index/index.phtml:68
+msgid "Synchronization Tasks"
+msgstr "同步任务"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:24
+#: /var/azuracast/www/templates/admin/index/index.phtml:85
+msgid "Run Task"
+msgstr "运行任务"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:35
+msgid "Station-Specific Debugging"
+msgstr "电台专用调试"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:53
+msgid "Rebuild AutoDJ Queue"
+msgstr "重建 AutoDJ 队列"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:58
+msgid "Run Test"
+msgstr "运行测试"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:64
+msgid "Send Liquidsoap Telnet Command"
+msgstr "发送Liquidsoap Telnet命令"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:69
+msgid "Command"
+msgstr "命令"
+
+#: /var/azuracast/www/templates/admin/debug/index.phtml:73
+msgid "Execute Command"
+msgstr "执行命令"
+
+#: /var/azuracast/www/templates/admin/index/index.phtml:37
+msgid "Server Status"
+msgstr "服务器状态"
+
+#: /var/azuracast/www/templates/admin/index/index.phtml:44
+msgid "Current CPU Load"
+msgstr "当前CPU负载"
+
+#: /var/azuracast/www/templates/admin/index/index.phtml:52
+msgid "15-Minute CPU Load Average"
+msgstr "15分钟CPU平均负载"
+
+#: /var/azuracast/www/templates/admin/index/index.phtml:63
+msgid "%s of %s Used"
+msgstr "已使用的%s"
+
+#: /var/azuracast/www/templates/admin/install_geolite/index.phtml:30
+msgid "GeoLite version \"%s\" is currently installed."
+msgstr "目前安装的是GeoLite版本\"%s\"。"
+
+#: /var/azuracast/www/templates/admin/install_geolite/index.phtml:33
+msgid "Uninstall GeoLite database?"
+msgstr "卸载GeoLite数据库？"
+
+#: /var/azuracast/www/templates/admin/install_geolite/index.phtml:35
+msgid "Uninstall GeoLite Database"
+msgstr "卸载GeoLite数据库"
+
+#: /var/azuracast/www/templates/admin/install_geolite/index.phtml:39
+msgid "GeoLite is not currently installed on this installation."
+msgstr "目前在这个装置上还没有安装GeoLite。"
+
+#: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:1
+msgid "SHOUTcast Installed"
+msgstr "已安装的SHOUTcast"
+
+#: /var/azuracast/www/templates/admin/install_shoutcast/installed.phtml:3
+msgid "The SHOUTcast 2 DNAS is installed and ready for use."
+msgstr "SHOUTcast 2 DNAS已经安装完毕，可以使用了。"
+
+#: /var/azuracast/www/templates/admin/logs/index.phtml:16
+msgid ""
+"Because you are running Docker, some system logs can only be accessed from a "
+"shell session on the host computer. You can run <code>%s</code> to access "
+"container logs from the terminal."
+msgstr ""
+"因为您正在运行 Docker，所以一些系统日志只能从主机上的 shell 会话访问。您可以"
+"运行<code>%s</code>从终端访问容器日志。"
+
+#: /var/azuracast/www/templates/admin/logs/index.phtml:31
+msgid "Logs by Station"
+msgstr "电台日志"
+
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:36
+msgid "Delete role \"%s\"?"
+msgstr "删除角色\"%s\"？"
+
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:41
+msgid "This role cannot be deleted."
+msgstr "此角色不能删除。"
+
+#: /var/azuracast/www/templates/admin/permissions/index.phtml:50
+msgid "Global"
+msgstr "全球"
+
+#: /var/azuracast/www/templates/admin/relays/index.phtml:20
+msgid "Relay"
+msgstr "中继"
+
+#: /var/azuracast/www/templates/admin/relays/index.phtml:21
+msgid "Is Public"
+msgstr "是公共的"
+
+#: /var/azuracast/www/templates/admin/relays/index.phtml:22
+msgid "First Connected"
+msgstr "第一连接"
+
+#: /var/azuracast/www/templates/admin/relays/index.phtml:23
+msgid "Latest Update"
+msgstr "最新更新"
+
+#: /var/azuracast/www/templates/admin/stations/index.phtml:5
+msgid "Manage Stations"
+msgstr "管理电台"
+
+#: /var/azuracast/www/templates/admin/stations/index.phtml:10
+#: /var/azuracast/www/templates/frontend/index/index.phtml:104
+msgid "Add Station"
+msgstr "添加电台"
+
+#: /var/azuracast/www/templates/admin/stations/index.phtml:21
+msgid "Station"
+msgstr "电台"
+
+#: /var/azuracast/www/templates/admin/stations/index.phtml:30
+#: /var/azuracast/www/templates/frontend/index/index.phtml:148
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:27
+msgid "Manage"
+msgstr "管理"
+
+#: /var/azuracast/www/templates/admin/stations/index.phtml:34
+msgid "Clone"
+msgstr "克隆"
+
+#: /var/azuracast/www/templates/admin/stations/index.phtml:35
+msgid "Delete station \"%s\"?"
+msgstr "删除电台\"%s\"？"
+
+#: /var/azuracast/www/templates/admin/users/index.phtml:33
+#: /var/azuracast/www/templates/frontend/account/login.phtml:3
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:3
+msgid "Log In"
+msgstr "登录"
+
+#: /var/azuracast/www/templates/admin/users/index.phtml:37
+msgid "Delete user \"%s\"?"
+msgstr "删除用户\"%s\"？"
+
+#: /var/azuracast/www/templates/admin/users/index.phtml:47
+msgid "(You)"
+msgstr "(你)"
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:15
+msgid "Welcome!"
+msgstr "欢迎！"
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:17
+msgid "Welcome to %s!"
+msgstr "欢迎来到%s！"
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:34
+msgid "name@example.com"
+msgstr "name@example.com"
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:41
+msgid "Enter your password"
+msgstr "请输入您的密码"
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:43
+#: /var/azuracast/www/templates/frontend/account/login.phtml:44
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:22
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:23
+msgid "Sign in"
+msgstr "登入"
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:48
+msgid "Please log in to continue."
+msgstr "请登录后继续。"
+
+#: /var/azuracast/www/templates/frontend/account/login.phtml:48
+msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
+msgstr "<a href=\"%s\" target=\"_blank\">忘记密码了吗？</a>"
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:11
+msgid "Enter Two-Factor Code"
+msgstr "输入双因素代码"
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:12
+msgid ""
+"Your account uses a two-factor security code. Enter the code your device is "
+"currently showing below."
+msgstr "您的账户使用双因素安全代码。请输入您的设备目前在下面显示的代码。"
+
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:18
+#: /var/azuracast/www/templates/frontend/account/two_factor.phtml:20
+msgid "Security Code"
+msgstr "安全代码"
+
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:3
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:9
+#: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:3
+#: /var/azuracast/www/templates/main.phtml:95
+msgid "My API Keys"
+msgstr "我的API密钥"
+
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:13
+msgid ""
+"API keys can be used to access some system functionality without needing to "
+"log in. All of the keys \n"
+"            you create share your permissions in the system. For more "
+"information, see the <a href=\"%s\">API documentation</a>."
+msgstr ""
+"API密钥可以用来访问一些系统功能，而不需要登录。所有的密钥 \n"
+"            您在系统中创建的共享权限。更多信息，请参阅<a href=\"%s\">API文档"
+"</a>。"
+
+#: /var/azuracast/www/templates/frontend/api_keys/index.phtml:33
+msgid "Key Identifier"
+msgstr "关键标识符"
+
+#: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:11
+msgid "New Key Generated"
+msgstr "生成新密钥"
+
+#: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:14
+msgid ""
+"<b>Important: copy the key below before continuing!</b> You will not be able "
+"to retrieve it again."
+msgstr ""
+"<b>警告：在继续之前请复制下面的密钥！</b>如果您不复制您的密钥，您将无法再次检"
+"索相关信息。"
+
+#: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:16
+msgid "Your full API key is below:"
+msgstr "您的完整API密钥如下："
+
+#: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:21
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:43
+#: /var/azuracast/www/templates/partials/log_viewer.phtml:28
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:51
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:59
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:69
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:36
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:63
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:76
+msgid "Copy to Clipboard"
+msgstr "复制到剪贴板"
+
+#: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:25
+msgid ""
+"When making API calls, you can pass this value in the \"X-API-Key\" header "
+"to authenticate as yourself. You can only perform the actions your user "
+"account is allowed to perform."
+msgstr ""
+"当进行API调用时，您可以在 \"X-API-Key \"头中传递这个值来验证自己的身份。您只"
+"能执行你的用户账户被允许执行的操作。"
+
+#: /var/azuracast/www/templates/frontend/api_keys/new_key.phtml:28
+msgid "Continue"
+msgstr "继续"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:11
+#: /var/azuracast/www/templates/main.phtml:68
+#: /var/azuracast/www/templates/system/error_general.phtml:17
+#: /var/azuracast/www/templates/system/error_http.phtml:17
+msgid "Dashboard"
+msgstr "控制板"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:40
+msgid "AzuraCast User"
+msgstr "AzuraCast用户"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:50
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:2
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:20
+#: /var/azuracast/www/templates/main.phtml:83
+msgid "My Account"
+msgstr "我的帐户"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:86
+#: /var/azuracast/www/templates/frontend/index/index.phtml:89
+msgid "Listeners Per Station"
+msgstr "每电台的听众"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:98
+msgid "Station Overview"
+msgstr "电台概况"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:119
+msgid "Station Name"
+msgstr "电台名称"
+
+#: /var/azuracast/www/templates/frontend/index/index.phtml:121
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:33
+msgid "Now Playing"
+msgstr "正在播放"
+
+#: /var/azuracast/www/templates/frontend/index/noaccess.phtml:1
+msgid "Error: No Available Stations"
+msgstr "错误。没有可用的电台"
+
+#: /var/azuracast/www/templates/frontend/index/noaccess.phtml:4
+msgid ""
+"Your account is active, but is not currently associated with any stations. "
+"If you believe this is an error, please contact this server's administrator."
+msgstr ""
+"您的帐户当前处于活跃状态，但目前没有与任何电台进行连接。如果您认为这是一个错"
+"误，请联系本服务器的管理员。"
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:2
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:13
+msgid "Enable Two-Factor Authentication"
+msgstr "启用两因素身份验证"
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:16
+msgid "Step 1: Scan QR Code"
+msgstr "第一步：请扫描二维码"
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:18
+msgid ""
+"From your smartphone, scan the code to the right using an authentication app "
+"of your choice (FreeOTP, Authy, etc)."
+msgstr ""
+"请使用您的智能手机，使用您选择的认证应用程序（FreeOTP、Authy等）扫描右边的二"
+"维码。"
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:20
+msgid "Step 2: Verify Generated Code"
+msgstr "第二步：验证生成的代码"
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:22
+msgid ""
+"To verify that the code was set up correctly, enter the 6-digit code the app "
+"shows you."
+msgstr "要验证代码设置是否正确，请输入应用程序显示的6位数代码。"
+
+#: /var/azuracast/www/templates/frontend/profile/enable_two_factor.phtml:31
+msgid "QR-Code"
+msgstr "二维码"
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:58
+msgid "Customize"
+msgstr "自定义"
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:66
+msgid "Two-Factor Authentication"
+msgstr "双因素认证"
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:75
+msgid ""
+"Two-factor authentication improves the security of your account by requiring "
+"a second one-time access code in addition to your password when you log in."
+msgstr ""
+"双因素认证可提高您了账户的安全性，在您登录时，除了密码外，还需要第二个一次性"
+"访问代码。"
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:81
+msgid "Disable Two-Factor"
+msgstr "禁用双因素认证"
+
+#: /var/azuracast/www/templates/frontend/profile/index.phtml:86
+msgid "Enable Two-Factor"
+msgstr "启用双因素认证"
+
+#: /var/azuracast/www/templates/frontend/public/embedrequests.js.phtml:13
+#: /var/azuracast/www/templates/frontend/public/index.js.phtml:43
+msgid "Request"
+msgstr "请求"
+
+#: /var/azuracast/www/templates/frontend/public/index.phtml:31
+#: /var/azuracast/www/templates/frontend/public/index.phtml:51
+msgid "Song History"
+msgstr "歌曲历史"
+
+#: /var/azuracast/www/templates/frontend/public/index.phtml:36
+msgid "Request Song"
+msgstr "请求歌曲"
+
+#: /var/azuracast/www/templates/frontend/public/index.phtml:41
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:50
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:82
+#: /var/azuracast/www/templates/stations/profile/panel_schedule.phtml:25
+msgid "Playlist"
+msgstr "播放列表"
+
+#: /var/azuracast/www/templates/frontend/public/index.phtml:71
+msgid "Request a Song"
+msgstr "索取歌曲"
+
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:17
+msgid "AzuraCast First-Time Setup"
+msgstr "AzuraCast首次设置"
+
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:20
+msgid "Welcome to AzuraCast!"
+msgstr "欢迎来到AzuraCast!"
+
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:27
+msgid "Let's get started by creating your Super Administrator account."
+msgstr "让我们从创建您的超管账户开始。"
+
+#: /var/azuracast/www/templates/frontend/setup/register.phtml:28
+msgid ""
+"This account will have full access to the system, and you'll automatically "
+"be logged in to it for the rest of setup."
+msgstr ""
+"这个账户将拥有对系统的全部访问权限，在接下来的设置过程中，您将自动登录到这个"
+"账户。"
+
+#: /var/azuracast/www/templates/frontend/setup/settings.phtml:19
+#: /var/azuracast/www/templates/frontend/setup/station.phtml:19
+msgid "Create Station"
+msgstr "创建电台"
+
+#: /var/azuracast/www/templates/frontend/setup/settings.phtml:35
+msgid ""
+"Complete the setup process by providing some information about your "
+"broadcast environment. These settings can be changed later from the "
+"administration panel."
+msgstr ""
+"通过提供有关您的广播环境的一些信息来完成设置过程。这些设置可以在以后从管理面"
+"板上进行更改。"
+
+#: /var/azuracast/www/templates/frontend/setup/settings.phtml:42
+msgid "Customize AzuraCast Settings"
+msgstr "自定义AzuraCast设置"
+
+#: /var/azuracast/www/templates/frontend/setup/station.phtml:34
+msgid ""
+"Continue the setup process by creating your first radio station below. You "
+"can edit any of these details later."
+msgstr ""
+"通过在下面创建您的第一个广播电台来继续设置过程。您以后可以编辑这些详细信息。"
+
+#: /var/azuracast/www/templates/frontend/setup/station.phtml:41
+msgid "Create a New Radio Station"
+msgstr "创建一个新的广播电台"
+
+#: /var/azuracast/www/templates/main.phtml:44
+msgid "Skip to main content"
+msgstr "跳到主要内容"
+
+#: /var/azuracast/www/templates/main.phtml:48
+msgid "Toggle Sidebar"
+msgstr "切换侧栏"
+
+#: /var/azuracast/www/templates/main.phtml:61
+msgid "Toggle Menu"
+msgstr "切换菜单"
+
+#: /var/azuracast/www/templates/main.phtml:76
+msgid "System Administration"
+msgstr "系统管理"
+
+#: /var/azuracast/www/templates/main.phtml:89
+msgid "Switch Theme"
+msgstr "切换主题"
+
+#: /var/azuracast/www/templates/main.phtml:101
+msgid "Help"
+msgstr "帮助"
+
+#: /var/azuracast/www/templates/main.phtml:109
+msgid "End Session"
+msgstr "会议结束"
+
+#: /var/azuracast/www/templates/main.phtml:116
+msgid "Sign Out"
+msgstr "退出"
+
+#: /var/azuracast/www/templates/main.phtml:158
+msgid ""
+"Like our software? <a href=\"%s\" target=\"_blank\">Donate to support "
+"AzuraCast!</a>"
+msgstr ""
+"喜欢我们的软件吗？<a href=\"%s\" target=\"_blank\">请捐赠支持AzuraCast！</a>"
+
+#: /var/azuracast/www/templates/minimal.phtml:50
+msgid "Mascot designed by %s"
+msgstr "LOGO设计者：%s"
+
+#: /var/azuracast/www/templates/partials/log_help_card.phtml:3
+msgid "Need Help?"
+msgstr "需要帮助吗？"
+
+#: /var/azuracast/www/templates/partials/log_help_card.phtml:6
+msgid ""
+"You can find answers for many common questions in our <a href=\"%s\" target="
+"\"_blank\">support documents</a>."
+msgstr ""
+"您可以在我们的<a href=\"%s\" target=\"_blank\">支持文档</a>中找到许多常见问题"
+"的答案。"
+
+#: /var/azuracast/www/templates/partials/log_help_card.phtml:8
+msgid ""
+"If you're experiencing a bug or error, you can submit a GitHub issue using "
+"the link below."
+msgstr "如果你遇到bug或错误，你可以使用下面的链接提交一个GitHub问题。"
+
+#: /var/azuracast/www/templates/partials/log_help_card.phtml:10
+msgid ""
+"Your current installation type is <b>%s</b>. Be sure to include this when "
+"creating a new issue."
+msgstr "您当前的安装类型是<b>%s</b>。在创建新的问题时，一定要包含此内容。"
+
+#: /var/azuracast/www/templates/partials/log_help_card.phtml:15
+msgid "Add New GitHub Issue"
+msgstr "添加新的GitHub问题"
+
+#: /var/azuracast/www/templates/partials/log_viewer.phtml:12
+msgid "Log View"
+msgstr "查看日志"
+
+#: /var/azuracast/www/templates/partials/log_viewer.phtml:20
+msgid "Automatically scroll to the bottom of the log"
+msgstr "自动滚动到日志的底部"
+
+#: /var/azuracast/www/templates/partials/radio_controls.js.phtml:7
+msgid "Pause"
+msgstr "暂停"
+
+#: /var/azuracast/www/templates/partials/radio_controls.js.phtml:8
+msgid "Play"
+msgstr "播放"
+
+#: /var/azuracast/www/templates/stations/automation/index.phtml:2
+#: /var/azuracast/www/templates/stations/automation/index.phtml:6
+msgid "Automated Playlist Assignment"
+msgstr "自动播放列表分配"
+
+#: /var/azuracast/www/templates/stations/automation/index.phtml:9
+msgid ""
+"Based on the previous performance of your station's songs, %s can "
+"automatically distribute songs evenly among your playlists, placing the "
+"highest performing songs in the highest-weighted playlists."
+msgstr ""
+"根据您的电台歌曲之前的表现，%s可以自动将歌曲平均分配到您的播放列表中，将表现"
+"最好的歌曲放在权重最高的播放列表位置上。"
+
+#: /var/azuracast/www/templates/stations/automation/index.phtml:11
+msgid ""
+"Once you have configured automated assignment, click the button below to run "
+"the automated assignment process. This process will not run at all unless "
+"you have selected \"Enable\" below."
+msgstr ""
+"一旦您配置了自动分配，请单击下面的按钮来运行自动分配过程。除非您选择了下面的 "
+"\"启用\"，否则该过程根本不会运行。"
+
+#: /var/azuracast/www/templates/stations/automation/index.phtml:13
+msgid "Run Automated Assignment"
+msgstr "运行自动分配"
+
+#: /var/azuracast/www/templates/stations/automation/index.phtml:19
+msgid "Configure Automated Assignment"
+msgstr "配置自动分配"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:37
+msgid "%s of %s Used (%d Files)"
+msgstr "已使用的%s的%s (%d文件)"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:48
+msgid "You can also upload files in bulk via SFTP."
+msgstr "您也可以通过SFTP批量上传文件。"
+
+#: /var/azuracast/www/templates/stations/files/index.phtml:54
+msgid "Manage SFTP Accounts"
+msgstr "管理SFTP帐户"
+
+#: /var/azuracast/www/templates/stations/logs/index.phtml:12
+msgid "Available Logs"
+msgstr "可用日志"
+
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:12
+msgid ""
+"Mount points are how listeners connect and listen to your station. Each "
+"mount point can be a different audio format or quality. Using mount points, "
+"you can set up a high-quality stream for broadband listeners and a mobile "
+"stream for phone users."
+msgstr ""
+"挂载点是听众连接和收听您的电台的方式。每个挂载点可以是不同的音频格式或质量。"
+"使用挂载点，您可以为宽带听众设置一个高质量的流，为移动用户设置一个移动流。"
+
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:31
+msgid "Mount Point"
+msgstr "挂载点"
+
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:43
+msgid "Delete mount point \"%s\"?"
+msgstr "删除挂载点\"%s\"？"
+
+#: /var/azuracast/www/templates/stations/mounts/index.phtml:53
+msgid "Default Mount"
+msgstr "默认挂载点"
+
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:3
+msgid "Reorder Playlist"
+msgstr "重新排序播放列表"
+
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:16
+msgid "Reorder Playlist: %s"
+msgstr "重新排序播放列表：%s"
+
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:40
+msgid "Down"
+msgstr "下"
+
+#: /var/azuracast/www/templates/stations/playlists/reorder.phtml:43
+msgid "Up"
+msgstr "上"
+
+#: /var/azuracast/www/templates/stations/profile/disabled.phtml:4
+msgid "Station Broadcasting Disabled"
+msgstr "电台广播已禁用"
+
+#: /var/azuracast/www/templates/stations/profile/disabled.phtml:8
+msgid ""
+"Your station is currently not enabled for broadcasting. You can still manage "
+"media, playlists, and other station settings. To re-enable broadcasting, <a "
+"href=\"%s\">edit your station profile</a>."
+msgstr ""
+"您的电台目前未启用广播。您仍然可以管理媒体、播放列表和其他电台设置。要重新启"
+"用广播，请<a href=\"%s\">编辑您的电台简介</a>。"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:18
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:18
+msgid "Running"
+msgstr "运行中"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:19
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:19
+msgid "Not Running"
+msgstr "为运行"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:29
+msgid ""
+"LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d "
+"playlists</b>."
+msgstr "LiquidSoap目前正在从<b>%d上传的歌曲</b>中<b>%d播放列表</b>进行洗牌。"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:44
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:81
+msgid "Restart"
+msgstr "重新启动"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:49
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:86
+msgid "Start"
+msgstr "开始"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend.phtml:54
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:92
+msgid "Stop"
+msgstr "停止"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend_none.phtml:15
+msgid "AutoDJ Disabled"
+msgstr "AutoDJ已禁用"
+
+#: /var/azuracast/www/templates/stations/profile/panel_backend_none.phtml:18
+msgid ""
+"AutoDJ has been disabled for this station. No music will automatically be "
+"played when a source is not live."
+msgstr "本台的AutoDJ已被禁用。当音源不在现场时，不会自动播放音乐。"
+
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:40
+msgid "Administration URL"
+msgstr "管理网址"
+
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:46
+msgid "Administrator Password"
+msgstr "管理员密码"
+
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:55
+msgid "Source Password"
+msgstr "源密码"
+
+#: /var/azuracast/www/templates/stations/profile/panel_frontend.phtml:65
+msgid "Relay Password"
+msgstr "中继密码"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:16
+msgid "On the Air"
+msgstr "直播中"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:20
+msgid "Listener"
+msgstr "听众"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:22
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:46
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:75
+msgid "Unique"
+msgstr "独特的"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:37
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:68
+msgid "Album Art"
+msgstr "专辑封面"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:63
+msgid "Playing Next"
+msgstr "播放下一个"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:90
+msgid "Live"
+msgstr "直播"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:107
+msgid "Skip Song"
+msgstr "跳过歌曲"
+
+#: /var/azuracast/www/templates/stations/profile/panel_nowplaying.phtml:112
+msgid "Disconnect Streamer"
+msgstr "断开流媒体连接"
+
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:17
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:93
+msgid "Public Pages"
+msgstr "公共页面"
+
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:30
+msgid "Player Embed Code"
+msgstr "播放器嵌入代码"
+
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:57
+msgid "On-Demand Embed Code"
+msgstr "按需嵌入代码"
+
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:70
+msgid "Request Embed Code"
+msgstr "要求嵌入代码"
+
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:83
+msgid "Disable public pages?"
+msgstr "禁用公共页面？"
+
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:99
+msgid "Enable public pages?"
+msgstr "启用公共页面？"
+
+#: /var/azuracast/www/templates/stations/profile/panel_publicpages.phtml:102
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:51
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:51
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:47
+msgid "Enable"
+msgstr "启用"
+
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:27
+msgid "View"
+msgstr "查看"
+
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:31
+msgid "Disable song requests?"
+msgstr "禁用歌曲请求？"
+
+#: /var/azuracast/www/templates/stations/profile/panel_requests.phtml:48
+msgid "Enable song requests?"
+msgstr "启用歌曲请求？"
+
+#: /var/azuracast/www/templates/stations/profile/panel_schedule.phtml:16
+msgid "Scheduled"
+msgstr "计划中"
+
+#: /var/azuracast/www/templates/stations/profile/panel_schedule.phtml:26
+msgid "Streamer/DJ"
+msgstr "流媒体/ DJ"
+
+#: /var/azuracast/www/templates/stations/profile/panel_schedule.phtml:34
+msgid "Now"
+msgstr "现在"
+
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:17
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:42
+msgid "Streamers/DJs"
+msgstr "流媒体/DJ"
+
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:31
+msgid "Disable streamers?"
+msgstr "禁用流媒体？"
+
+#: /var/azuracast/www/templates/stations/profile/panel_streamers.phtml:48
+msgid "Enable streamers?"
+msgstr "启用流媒体？"
+
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:16
+msgid "Streams"
+msgstr "流媒体"
+
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:27
+msgid "Local Streams"
+msgstr "本地流"
+
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:85
+msgid "Download PLS"
+msgstr "下载 PLS"
+
+#: /var/azuracast/www/templates/stations/profile/panel_streams.phtml:89
+msgid "Download M3U"
+msgstr "下载 M3U"
+
+#: /var/azuracast/www/templates/stations/queue/index.js.phtml:29
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:45
+msgid "Listener Request"
+msgstr "侦听器请求"
+
+#: /var/azuracast/www/templates/stations/queue/index.js.phtml:31
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:47
+msgid "Playlist:"
+msgstr "播放列表："
+
+#: /var/azuracast/www/templates/stations/queue/index.js.phtml:36
+msgid "Delete queue item?"
+msgstr "删除队列项？"
+
+#: /var/azuracast/www/templates/stations/queue/index.phtml:24
+msgid "Cued On"
+msgstr "提示上一个"
+
+#: /var/azuracast/www/templates/stations/queue/index.phtml:26
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:43
+msgid "Source"
+msgstr "源"
+
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:13
+msgid ""
+"Remote relays let you work with broadcasting software outside this server. "
+"Any relay you include here will be included in your station's statistics. "
+"You can also broadcast from this server to remote relays."
+msgstr ""
+"远程中继可以让您与本服务器以外的广播软件合作。您在这里包含的任何中继都会被包"
+"含在您的电台统计中。您也可以从本服务器向远程中继进行广播。"
+
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:32
+msgid "Remote Relay"
+msgstr "远程中继"
+
+#: /var/azuracast/www/templates/stations/remotes/index.phtml:45
+msgid "Delete remote relay \"%s\"?"
+msgstr "删除远程中继\"%s\"？"
+
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:1
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:5
+msgid "Song Duplicates"
+msgstr "重复歌曲"
+
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:9
+msgid "No duplicates were found. Nice work!"
+msgstr "没有找到重复的。非常好！"
+
+#: /var/azuracast/www/templates/stations/reports/duplicates.phtml:24
+msgid "Title / File Path"
+msgstr "标题/文件路径"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:7
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:95
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:31
+msgid "Live Listeners"
+msgstr "现场听众"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.js.phtml:59
+msgid "There are too many data points to map!"
+msgstr "数据点太多了，无法绘制!"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:26
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:27
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:17
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:18
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:19
+msgid "Download CSV"
+msgstr "下载 CSV"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:42
+msgid "Unique Listeners"
+msgstr "特别听众"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:43
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:50
+msgid "for selected period"
+msgstr "选定时期"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:49
+msgid "Total Listener Hours"
+msgstr "听众总时数"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:58
+msgid "IP"
+msgstr "IP"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:59
+msgid "Time (sec)"
+msgstr "时间 (sec)"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:60
+msgid "User Agent"
+msgstr "用户 Agent"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:61
+msgid "Location"
+msgstr "位置"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:71
+msgid "Mobile Device"
+msgstr "移动设备"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:75
+msgid "Desktop Device"
+msgstr "桌面设备"
+
+#: /var/azuracast/www/templates/stations/reports/listeners.phtml:87
+msgid "Unknown"
+msgstr "未知"
+
+#: /var/azuracast/www/templates/stations/reports/overview.js.phtml:68
+msgid "Hour"
+msgstr "小时"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:56
+msgid "Best Performing Songs"
+msgstr "最佳表演歌曲"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:57
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:99
+msgid "in the last 48 hours"
+msgstr "最近48小时内"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:68
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:110
+#: /var/azuracast/www/templates/stations/reports/timeline.phtml:41
+msgid "Change"
+msgstr "更改"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:69
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:111
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:156
+msgid "Song"
+msgstr "歌曲"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:98
+msgid "Worst Performing Songs"
+msgstr "最差歌曲"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:143
+msgid "Most Played Songs"
+msgstr "最流行的歌曲"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:144
+msgid "in the last month"
+msgstr "上个月"
+
+#: /var/azuracast/www/templates/stations/reports/overview.phtml:155
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:39
+msgid "Plays"
+msgstr "播放"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:32
+msgid "Filename"
+msgstr "文件名"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:34
+msgid "Length Text"
+msgstr "文字长度"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:35
+msgid "Playlist(s)"
+msgstr "播放列表"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:36
+msgid "Joins"
+msgstr "加入"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:37
+msgid "Losses"
+msgstr "损失"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:38
+msgid "Total"
+msgstr "总"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:40
+msgid "Play %"
+msgstr "播放 %"
+
+#: /var/azuracast/www/templates/stations/reports/performance.phtml:41
+msgid "Ratio"
+msgstr "比"
+
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:16
+msgid "Clear all pending requests?"
+msgstr "清除所有待处理的请求？"
+
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:19
+msgid "Clear Pending Requests"
+msgstr "清除待处理的请求"
+
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:25
+msgid "Date Requested"
+msgstr "要求日期"
+
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:26
+msgid "Date Played"
+msgstr "播放日期"
+
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:28
+msgid "Requester IP"
+msgstr "请求者IP"
+
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:44
+msgid "Not Played"
+msgstr "未播放"
+
+#: /var/azuracast/www/templates/stations/reports/requests.phtml:58
+msgid "Delete request?"
+msgstr "删除请求？"
+
+#: /var/azuracast/www/templates/stations/reports/restricted.phtml:1
+#: /var/azuracast/www/templates/stations/reports/restricted.phtml:5
+msgid "Report Not Available"
+msgstr "报告不可用"
+
+#: /var/azuracast/www/templates/stations/reports/restricted.phtml:8
+msgid ""
+"This report is not available for this station, because the system "
+"administrator has chosen not to collect detailed IP-based listener "
+"information."
+msgstr "由于系统管理员选择不收集详细的基于IP的听众信息，因此该电台没有该报告。"
+
+#: /var/azuracast/www/templates/stations/reports/timeline.js.phtml:49
+msgid "Live Streamer:"
+msgstr "直播员："
+
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:36
+msgid "Delete SFTP User \"%s\"?"
+msgstr "删除 SFTP 用户 \"%s\"？"
+
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:51
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:18
+msgid "Connection Information"
+msgstr "连接信息"
+
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:55
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:23
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:39
+msgid "Server"
+msgstr "服务器"
+
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:58
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:26
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:42
+msgid ""
+"You may need to connect directly via your IP address, which is <code>%s</"
+"code>."
+msgstr "您可能需要通过您的IP地址进行连接，也就是<code>%s</code>。"
+
+#: /var/azuracast/www/templates/stations/sftp_users/index.phtml:62
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:30
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:46
+msgid "Port"
+msgstr "端口"
+
+#: /var/azuracast/www/templates/stations/sidebar.js.phtml:22
+msgid "Please wait..."
+msgstr "加载中..."
+
+#: /var/azuracast/www/templates/stations/sidebar.phtml:16
+msgid "Station Time"
+msgstr "电台时间"
+
+#: /var/azuracast/www/templates/stations/streamers/disabled.phtml:3
+msgid ""
+"Streamer accounts are currently disabled for this station. To enable "
+"streamer accounts, click the button below."
+msgstr "该电台目前已禁用流媒体账户。要启用流媒体账户，请点击下面的按钮。"
+
+#: /var/azuracast/www/templates/stations/streamers/disabled.phtml:5
+msgid "Enable Streaming"
+msgstr "启用流媒体"
+
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:21
+msgid "IceCast Clients"
+msgstr "IceCast客户"
+
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:33
+msgid "Mount Name"
+msgstr "挂载名称"
+
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:37
+msgid "ShoutCast v1 Clients"
+msgstr "ShoutCast v1客户端"
+
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:47
+msgid "%d (%d for some clients)"
+msgstr "%d (某些客户为%d)"
+
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:53
+msgid "(DJ username and password separated by a colon)"
+msgstr "(DJ用户名和密码需用冒号隔开)"
+
+#: /var/azuracast/www/templates/stations/streamers/index.phtml:57
+msgid ""
+"Setup instructions for broadcasting software are available <a href=\"%s\" "
+"target=\"_blank\">on the AzuraCast Wiki</a>."
+msgstr ""
+"<a href=\"%s\" target=\"_blank\">AzuraCast Wiki</a>上有广播软件的设置说明。"
+
+#: /var/azuracast/www/templates/stations/webhooks/add.phtml:7
+msgid "Select the type of web hook to create."
+msgstr "选择要创建的网络钩子的类型。"
+
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:13
+msgid ""
+"Web hooks let you connect to external web services and broadcast changes to "
+"your station to them."
+msgstr "网络钩子可以让您连接到外部网络服务，并将您的电台的变化广播传输给他们。"
+
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:32
+msgid "Type"
+msgstr "类型"
+
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:33
+msgid "Triggers"
+msgstr "Triggers"
+
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:51
+msgid "Trigger the web hook manually and view the raw response."
+msgstr "手动触发网络钩子并查看原始响应。"
+
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:51
+msgid "Test"
+msgstr "测试"
+
+#: /var/azuracast/www/templates/stations/webhooks/index.phtml:52
+msgid "Delete web hook \"%s\"?"
+msgstr "删除网络钩子 \"%s\"?"
+
+#: /var/azuracast/www/templates/system/form_page.phtml:65
+msgid "Errors were encountered when trying to save changes:"
+msgstr "尝试保存更改时发生错误："
+
+#: /var/azuracast/www/templates/system/form_page.phtml:68
+msgid "General"
+msgstr "常规"
+
+#: /var/azuracast/www/templates/system/log_view.phtml:30
+msgid "Details"
+msgstr "详情"

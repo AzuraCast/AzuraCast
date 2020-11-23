@@ -33,7 +33,7 @@ final class Version20201123163410 extends AbstractMigration
         $this->addSql("ALTER TABLE users ADD reseller_id int(11) unsigned DEFAULT NULL, ADD is_reseller TINYINT(1) NOT NULL DEFAULT 0;");
 
         // add package and user fields to stations table
-        $this->addSql("ALTER TABLE station ADD user_id int(11) unsigned DEFAULT NULL, ADD package_id unsigned DEFAULT NULL;");
+        $this->addSql("ALTER TABLE station ADD user_id int(11) unsigned DEFAULT NULL, ADD package_id int(11) unsigned DEFAULT NULL;");
     }
 
     public function down(Schema $schema): void

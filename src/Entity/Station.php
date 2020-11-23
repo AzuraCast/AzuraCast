@@ -63,7 +63,7 @@ class Station
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="package_id", referencedColumnName="id", onDelete="CASCADE")
      * })
-     * @var Package
+     * @var Package|null
      */
     protected $package;
 
@@ -81,7 +81,7 @@ class Station
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
      * })
-     * @var User
+     * @var User|null
      */
     protected $user;
 

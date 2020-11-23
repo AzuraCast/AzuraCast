@@ -179,6 +179,8 @@ class User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="subaccounts")
      * @ORM\JoinColumn(name="reseller_id", referencedColumnName="uid")
+     *
+     * @var User|null
      */
     protected $reseller;
 
@@ -388,7 +390,7 @@ class User
     /**
      * The reseller that this account belongs to.
      */
-    public function getReseller(): User
+    public function getReseller(): ?User
     {
         return $this->reseller;
     }

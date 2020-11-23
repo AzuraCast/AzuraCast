@@ -34,7 +34,7 @@ class FlowUploadAction
         }
 
         if (is_array($flowResponse)) {
-            $currentDir = $request->getAttribute('currentDirectory');
+            $currentDir = $request->getParam('currentDirectory', '');
 
             $destPath = $flowResponse['filename'];
             if (!empty($currentDir)) {

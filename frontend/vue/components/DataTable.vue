@@ -274,9 +274,8 @@ export default {
             return this.getPerPageLabel(this.perPage);
         },
         allSelected () {
-            return (this.perPage === 0)
-                ? this.selected.length === this.totalRows
-                : this.selected.length === this.perPage;
+            return ((this.selected.length === this.totalRows)
+                || (this.showPagination && this.selected.length === this.perPage));
         }
     },
     methods: {

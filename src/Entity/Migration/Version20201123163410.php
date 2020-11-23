@@ -21,7 +21,7 @@ final class Version20201123163410 extends AbstractMigration
     {
         $this->addSql("CREATE TABLE IF NOT EXISTS `packages`(
             `id` int(11) NOT NULL AUTO_INCREMENT, 
-            `user_id` int(11) UNSIGNED NOT NULL,
+            `user_id` int(11) unsigned NOT NULL,
             `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
             `is_enabled` TINYINT(1) NOT NULL DEFAULT 0,
             `bitrate` integer NOT NULL DEFAULT 320,
@@ -30,10 +30,10 @@ final class Version20201123163410 extends AbstractMigration
             PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
 
         // add reseller fields to users table
-        $this->addSql("ALTER TABLE users ADD reseller_id int(11) UNSIGNED DEFAULT NULL, ADD is_reseller TINYINT(1) NOT NULL DEFAULT 0;");
+        $this->addSql("ALTER TABLE users ADD reseller_id int(11) unsigned DEFAULT NULL, ADD is_reseller TINYINT(1) NOT NULL DEFAULT 0;");
 
         // add package and user fields to stations table
-        $this->addSql("ALTER TABLE station ADD user_id int(11) UNSIGNED DEFAULT NULL, ADD package_id UNSIGNED DEFAULT NULL;");
+        $this->addSql("ALTER TABLE station ADD user_id int(11) unsigned DEFAULT NULL, ADD package_id unsigned DEFAULT NULL;");
     }
 
     public function down(Schema $schema): void

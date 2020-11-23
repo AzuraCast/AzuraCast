@@ -26,21 +26,22 @@ class ListAction
         $station = $request->getStation();
         $router = $request->getRouter();
 
-        $fs = $filesystem->getForStation($station);
-        $params = $request->getParams();
+        $storageLocation = $station->getMediaStorageLocation();
+        $fs = $filesystem->getFilesystemForAdapter($storageLocation->getStorageAdapter(), true);
 
-        if ($params['flushCache'] ?? false) {
+        if ((bool)$request->getParam('flushCache', false)) {
             $fs->clearCache();
         }
 
         $result = [];
 
-        $file = $request->getAttribute('file');
-        $filePath = $request->getAttribute('file_path');
+        $currentDir = $request->getParam('currentDirectory', '');
 
-        $search_phrase = trim($params['searchPhrase'] ?? '');
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
 
-        $pathLike = (empty($file)) ? '%' : $file . '/%';
+        $pathLike = (empty($currentDir))
+            ? '%'
+            : $currentDir . '/%';
 
         $media_query = $em->createQueryBuilder()
             ->select('partial sm.{
@@ -69,14 +70,14 @@ class ListAction
             ->setParameter('path', $pathLike);
 
         // Apply searching
-        if (!empty($search_phrase)) {
-            if (strpos($search_phrase, 'playlist:') === 0) {
-                $playlist_name = substr($search_phrase, 9);
+        if (!empty($searchPhrase)) {
+            if (strpos($searchPhrase, 'playlist:') === 0) {
+                $playlist_name = substr($searchPhrase, 9);
                 $media_query->andWhere('sp.name = :playlist_name')
                     ->setParameter('playlist_name', $playlist_name);
             } else {
                 $media_query->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                    ->setParameter('query', '%' . $search_phrase . '%');
+                    ->setParameter('query', '%' . $searchPhrase . '%');
             }
 
             $folders_in_dir_raw = [];
@@ -92,7 +93,7 @@ class ListAction
                 WHERE spf.station = :station
                 AND spf.path LIKE :path')
                 ->setParameter('station', $station)
-                ->setParameter('path', $file . '%')
+                ->setParameter('path', $currentDir . '%')
                 ->getArrayResult();
         }
 
@@ -170,19 +171,19 @@ class ListAction
         }
 
         $files = [];
-        if (!empty($search_phrase)) {
+        if (!empty($searchPhrase)) {
             foreach ($media_in_dir as $short_path => $media_row) {
                 $files[] = $short_path;
             }
         } else {
-            $filesIterator = $fs->createIterator($filePath, [
+            $filesIterator = $fs->createIterator($currentDir, [
                 Options::OPTION_IS_RECURSIVE => false,
             ]);
 
             $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
 
             foreach ($filesIterator as $fileRow) {
-                if ($file === '' && in_array($fileRow['path'], $protectedPaths, true)) {
+                if ($currentDir === '' && in_array($fileRow['path'], $protectedPaths, true)) {
                     continue;
                 }
 
@@ -191,7 +192,7 @@ class ListAction
         }
 
         foreach ($files as $short) {
-            $meta = $fs->getMetadata(FilesystemManager::PREFIX_MEDIA . '://' . $short);
+            $meta = $fs->getMetadata($short);
 
             if ('dir' === $meta['type']) {
                 $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
@@ -239,9 +240,12 @@ class ListAction
         // Apply sorting and limiting.
         $sort_by = ['is_dir', SORT_DESC];
 
-        if (!empty($params['sort'])) {
-            $sort_by[] = $params['sort'];
-            $sort_by[] = (strtolower($params['sortOrder'] ?? 'asc') === 'desc') ? SORT_DESC : SORT_ASC;
+        $sort = $request->getParam('sort');
+        if (!empty($sort)) {
+            $sort_by[] = $sort;
+            $sort_by[] = ('desc' === strtolower($request->getParam('sortOrder', 'asc')))
+                ? SORT_DESC
+                : SORT_ASC;
         } else {
             $sort_by[] = 'name';
             $sort_by[] = SORT_ASC;
@@ -251,8 +255,8 @@ class ListAction
 
         $num_results = count($result);
 
-        $page = (int)($params['current'] ?? 1);
-        $row_count = (int)($params['rowCount'] ?? 15);
+        $page = (int)($request->getParam('current', 1));
+        $row_count = (int)($request->getParam('rowCount', 15));
 
         if ($row_count === 0) {
             $row_count = $num_results;

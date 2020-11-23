@@ -133,7 +133,7 @@ export default {
 
                 axios.put(this.batchUrl, {
                     'do': action,
-                    'file': this.currentDirectory,
+                    'current_directory': this.currentDirectory,
                     'files': this.selectedFiles,
                     'dirs': this.selectedDirs
                 }).then((resp) => {
@@ -167,7 +167,7 @@ export default {
                     'do': 'playlist',
                     'playlists': this.checkedPlaylists,
                     'new_playlist_name': this.newPlaylist,
-                    'file': this.currentDirectory,
+                    'currentDirectory': this.currentDirectory,
                     'files': this.selectedFiles,
                     'dirs': this.selectedDirs
                 }).then((resp) => {

@@ -228,7 +228,7 @@ class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, false);
 
-        $from = $request->getParam('file', '');
+        $from = $request->getParam('currentDirectory', '');
         $to = $request->getParam('directory', '');
 
         foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {

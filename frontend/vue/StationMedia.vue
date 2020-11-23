@@ -271,7 +271,7 @@ export default {
             this.$refs.editModal.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
         },
         requestConfig (config) {
-            config.params.file = this.currentDirectory;
+            config.params.currentDirectory = this.currentDirectory;
             return config;
         }
     }

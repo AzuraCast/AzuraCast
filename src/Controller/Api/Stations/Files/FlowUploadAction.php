@@ -34,16 +34,14 @@ class FlowUploadAction
         }
 
         if (is_array($flowResponse)) {
-            $file = $request->getAttribute('file');
-            $filePath = $request->getAttribute('file_path');
+            $currentDir = $request->getAttribute('currentDirectory');
 
-            $sanitizedName = $flowResponse['filename'];
+            $destPath = $flowResponse['filename'];
+            if (!empty($currentDir)) {
+                $destPath = $currentDir . '/' . $destPath;
+            }
 
-            $finalPath = empty($file)
-                ? $filePath . $sanitizedName
-                : $filePath . '/' . $sanitizedName;
-
-            $station_media = $mediaRepo->getOrCreate($station, $finalPath, $flowResponse['path']);
+            $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse['path']);
 
             // If the user is looking at a playlist's contents, add uploaded media to that playlist.
             if (!empty($params['searchPhrase'])) {
@@ -58,12 +56,12 @@ class FlowUploadAction
                     ]);
 
                     if ($playlist instanceof Entity\StationPlaylist) {
-                        $spmRepo->addMediaToPlaylist($station_media, $playlist);
+                        $spmRepo->addMediaToPlaylist($stationMedia, $playlist);
                         $em->flush();
                     }
                 }
             }
-            
+
             $mediaStorage->addStorageUsed($flowResponse['size']);
             $em->persist($mediaStorage);
             $em->flush();

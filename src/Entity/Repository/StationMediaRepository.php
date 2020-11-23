@@ -7,6 +7,7 @@ use App\Entity;
 use App\Entity\StationPlaylist;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Media\AlbumArt;
 use App\Media\MetadataManagerInterface;
 use App\Service\AudioWaveform;
@@ -126,9 +127,7 @@ class StationMediaRepository extends Repository
         string $path,
         ?string $uploadedFrom = null
     ): Entity\StationMedia {
-        if (strpos($path, '://') !== false) {
-            [, $path] = explode('://', $path, 2);
-        }
+        $path = FilesystemManager::stripPrefix($path);
 
         $record = $this->findByPath($path, $source);
 

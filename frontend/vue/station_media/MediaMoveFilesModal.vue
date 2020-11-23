@@ -79,7 +79,7 @@ export default {
         doMove () {
             (this.selectedFiles.length || this.selectedDirs.length) && axios.put(this.batchUrl, {
                 'do': 'move',
-                'file': this.currentDirectory,
+                'currentDirectory': this.currentDirectory,
                 'directory': this.destinationDirectory,
                 'files': this.selectedFiles,
                 'dirs': this.selectedDirs
@@ -109,12 +109,17 @@ export default {
             e.preventDefault();
 
             this.dirHistory.pop();
-            this.destinationDirectory = this.dirHistory.slice(-1)[0];
+
+            let newDirectory = this.dirHistory.slice(-1)[0];
+            if (typeof newDirectory === 'undefined' || null === newDirectory) {
+                newDirectory = '';
+            }
+            this.destinationDirectory = newDirectory;
 
             this.$refs.datatable.refresh();
         },
         requestConfig (config) {
-            config.params.file = this.destinationDirectory;
+            config.params.currentDirectory = this.destinationDirectory;
             config.params.csrf = this.csrf;
 
             return config;

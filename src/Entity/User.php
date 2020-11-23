@@ -143,6 +143,52 @@ class User
      */
     protected $api_keys;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Package", mappedBy="user")
+     * @DeepNormalize(true)
+     * @var Collection
+     */
+    protected $packages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Station", mappedBy="user")
+     * @DeepNormalize(true)
+     * @var Collection
+     */
+    protected $stations;
+
+    /**
+     * @ORM\Column(name="is_reseller", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
+     * @var bool If set to true, this account is a reseller account, and subaccounts belong to this account.
+     */
+    protected $is_reseller = false;
+
+    /**
+     * @ORM\Column(name="reseller_id", type="integer", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
+     *
+     * @var int
+     */
+    protected $reseller_id;
+
+    /**
+     * A user belongs to a reseller
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="subaccounts")
+     * @ORM\JoinColumn(name="reseller_id", referencedColumnName="uid")
+     */
+    protected $reseller;
+
+    /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="reseller")
+     * @DeepNormalize(true)
+     * @var Collection
+     */
+    protected $subaccounts;
+
     public function __construct()
     {
         $this->created_at = time();
@@ -150,6 +196,9 @@ class User
 
         $this->roles = new ArrayCollection();
         $this->api_keys = new ArrayCollection();
+        $this->packages = new ArrayCollection();
+        $this->stations = new ArrayCollection();
+        $this->subaccounts = new ArrayCollection();
     }
 
     /**
@@ -303,5 +352,62 @@ class User
     public function getAvatar(int $size = 50): string
     {
         return Gravatar::get($this->email, $size, 'https://www.azuracast.com/img/avatar.png');
+    }
+
+    /**
+     * @return Collection|Package[]
+     */
+    public function getPackages(): Collection
+    {
+        return $this->packages;
+    }
+
+    /**
+     * @return Collection|Station[]
+     */
+    public function getStations(): Collection
+    {
+        return $this->stations;
+    }
+
+    public function isReseller(): bool
+    {
+        return $this->is_reseller;
+    }
+
+    /**
+     * Sets if this account is a reseller account
+     *
+     * @param bool $is_reseller
+     */
+    public function setIsReseller(bool $is_reseller): void
+    {
+        $this->is_reseller = $is_reseller;
+    }
+
+    /**
+     * The reseller that this account belongs to.
+     */
+    public function getReseller(): User
+    {
+        return $this->reseller;
+    }
+
+    /**
+     * Sets the reseller that this account belongs to.
+     *
+     * @param User $user
+     */
+    public function setReseller(User $user): void
+    {
+        $this->reseller = $user;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getSubAccounts(): Collection
+    {
+        return $this->subaccounts;
     }
 }

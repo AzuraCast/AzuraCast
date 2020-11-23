@@ -73,6 +73,14 @@ class Station implements ResolvableUrlInterface
     public array $remotes = [];
 
     /**
+     * Package
+     *
+     * @OA\Property()
+     * @var Package
+     */
+    public Package $package;
+
+    /**
      * Re-resolve any Uri instances to reflect base URL changes.
      *
      * @param UriInterface $base

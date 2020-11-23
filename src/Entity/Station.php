@@ -50,6 +50,42 @@ class Station
     protected $id;
 
     /**
+     * @ORM\Column(name="package_id", type="integer", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
+     *
+     * @var int
+     */
+    protected $package_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Package", inversedBy="stations", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="package_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var Package
+     */
+    protected $package;
+
+    /**
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
+     *
+     * @AuditLog\AuditIgnore()
+     *
+     * @var int
+     */
+    protected $user_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="stations", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
+     * })
+     * @var User
+     */
+    protected $user;
+
+    /**
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      *
      * @OA\Property(example="AzuraTest Radio")
@@ -1023,5 +1059,31 @@ class Station
     {
         $this->nowplaying = null;
         $this->nowplaying_timestamp = 0;
+    }
+
+    /**
+     * The package that this station belongs to.
+     */
+    public function getPackage(): ?Package
+    {
+        return $this->package;
+    }
+
+    public function setPackage(Package $package): void
+    {
+        $this->package = $package;
+    }
+
+    /**
+     * The user that this station belongs to.
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 }

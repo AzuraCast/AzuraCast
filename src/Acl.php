@@ -20,6 +20,7 @@ class Acl
     public const GLOBAL_CUSTOM_FIELDS = 'administer custom fields';
     public const GLOBAL_BACKUPS = 'administer backups';
     public const GLOBAL_STORAGE_LOCATIONS = 'administer storage locations';
+    public const GLOBAL_MANAGE_RESELLERS = 'administer reseller accounts';
 
     public const STATION_ALL = 'administer all';
     public const STATION_VIEW = 'view station management';
@@ -33,6 +34,12 @@ class Acl
     public const STATION_MEDIA = 'manage station media';
     public const STATION_AUTOMATION = 'manage station automation';
     public const STATION_WEB_HOOKS = 'manage station web hooks';
+
+    public const RESELLER_VIEW_STATIONS = 'view subaccount stations';
+    public const RESELLER_SUSPEND_STATION = 'suspend station';
+    public const RESELLER_CREATE_STATION = 'create station';
+    public const RESELLER_TERMINATE_STATION = 'terminate station';
+    public const RESELLER_MANAGE_ACCOUNTS = 'manage subaccounts';
 
     protected Entity\Repository\RolePermissionRepository $permission_repo;
 
@@ -68,7 +75,8 @@ class Acl
     {
         return $is_global
             ? isset($this->permissions['global'][$permission_name])
-            : isset($this->permissions['station'][$permission_name]);
+            : (isset($this->permissions['station'][$permission_name])
+                || isset($this->permissions['reseller'][$permission_name]));
     }
 
     /**
@@ -91,6 +99,7 @@ class Acl
                 self::GLOBAL_CUSTOM_FIELDS => __('Administer Custom Fields'),
                 self::GLOBAL_BACKUPS => __('Administer Backups'),
                 self::GLOBAL_STORAGE_LOCATIONS => __('Administer Storage Locations'),
+                self::GLOBAL_MANAGE_RESELLERS => __('Administer Reseller Accounts'),
             ],
             'station' => [
                 self::STATION_ALL => __('All Permissions'),
@@ -105,6 +114,13 @@ class Acl
                 self::STATION_MEDIA => __('Manage Station Media'),
                 self::STATION_AUTOMATION => __('Manage Station Automation'),
                 self::STATION_WEB_HOOKS => __('Manage Station Web Hooks'),
+            ],
+            'reseller' => [
+                self::RESELLER_VIEW_STATIONS => __('View Subaccount Stations'),
+                self::RESELLER_CREATE_STATION => __('Create Station'),
+                self::RESELLER_SUSPEND_STATION => __('Suspend Station'),
+                self::RESELLER_TERMINATE_STATION => __('Terminate Station'),
+                self::RESELLER_MANAGE_ACCOUNTS => __('Manage Subaccounts'),
             ],
         ];
 
@@ -152,6 +168,29 @@ class Acl
 
         if ($station_id instanceof Entity\Station) {
             $station_id = $station_id->getId();
+        }
+
+        if ($station_id !== null) {
+            // if there is a user that owns this station
+            // and the user is the owner, skip checking
+            // of permissions for this user as they
+            // own the station.
+            if ($station_id->getUser() !== null) {
+                // check user id
+                if ($station_id->getUser()->getId() == $user->getId()) {
+                    // user owns this station
+                    return true;
+                }
+
+                // are we dealing with a reseller account
+                // and has this user as a sub user?
+                if ($user->isReseller()) {
+                    // check if the station owner belongs to this reseller
+                    if ($station_id->getUser()->getReseller()->getId() == $user->getId()) {
+                        return true;
+                    }
+                }
+            }
         }
 
         $num_roles = $user->getRoles()->count();

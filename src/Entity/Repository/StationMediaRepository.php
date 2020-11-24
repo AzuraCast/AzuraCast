@@ -5,11 +5,13 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
+use App\Exception\CannotProcessMediaException;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
 use App\Flysystem\FilesystemManager;
 use App\Media\AlbumArt;
 use App\Media\MetadataManagerInterface;
+use App\Media\MimeType;
 use App\Service\AudioWaveform;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
@@ -166,10 +168,13 @@ class StationMediaRepository extends Repository
         $mediaUri = $media->getPath();
 
         if (null !== $uploadedPath) {
-            $this->loadFromFile($media, $uploadedPath);
-            $this->writeWaveform($media, $uploadedPath);
+            try {
+                $this->loadFromFile($media, $uploadedPath);
+                $this->writeWaveform($media, $uploadedPath);
+            } finally {
+                $fs->putFromLocal($uploadedPath, $mediaUri);
+            }
 
-            $fs->putFromLocal($uploadedPath, $mediaUri);
             $mediaMtime = time();
         } else {
             if (!$fs->has($mediaUri)) {
@@ -203,13 +208,17 @@ class StationMediaRepository extends Repository
      */
     public function loadFromFile(Entity\StationMedia $media, string $filePath): void
     {
-        // Persist the media record for later custom field operations.
-        $this->em->persist($media);
+        if (!MimeType::isFileProcessable($filePath)) {
+            throw CannotProcessMediaException::forPath($filePath);
+        }
 
         // Load metadata from supported files.
         $metadata = $this->metadataManager->getMetadata($filePath);
 
         $media->fromMetadata($metadata);
+
+        // Persist the media record for later custom field operations.
+        $this->em->persist($media);
 
         // Clear existing auto-assigned custom fields.
         $fieldCollection = $media->getCustomFields();

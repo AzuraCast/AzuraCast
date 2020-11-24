@@ -3,7 +3,7 @@
         <div class="card-body">
             <breadcrumb :current-directory="currentDirectory" @change-directory="changeDirectory"></breadcrumb>
 
-            <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase"
+            <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase" :valid-mime-types="validMimeTypes"
                          :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
 
             <media-toolbar :selected-files="selectedFiles" :selected-dirs="selectedDirs"
@@ -131,15 +131,45 @@ export default {
         Breadcrumb
     },
     props: {
-        listUrl: String,
-        batchUrl: String,
-        uploadUrl: String,
-        listDirectoriesUrl: String,
-        mkdirUrl: String,
-        renameUrl: String,
-        editUrl: String,
-        initialPlaylists: Array,
-        customFields: Array
+        listUrl: {
+            type: String,
+            required: true
+        },
+        batchUrl: {
+            type: String,
+            required: true
+        },
+        uploadUrl: {
+            type: String,
+            required: true
+        },
+        listDirectoriesUrl: {
+            type: String,
+            required: true
+        },
+        mkdirUrl: {
+            type: String,
+            required: true
+        },
+        renameUrl: {
+            type: String,
+            required: true
+        },
+        initialPlaylists: {
+            type: Array,
+            required: false,
+            default: () => []
+        },
+        customFields: {
+            type: Array,
+            required: false,
+            default: () => []
+        },
+        validMimeTypes: {
+            type: Array,
+            required: false,
+            default: () => []
+        }
     },
     data () {
         let fields = [

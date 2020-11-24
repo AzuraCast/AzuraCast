@@ -20,8 +20,7 @@
                 <i class="material-icons" aria-hidden="true">cloud_upload</i>
             </button>
             <small class="file-name"></small>
-            <input type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,.flac,audio/*" multiple
-                   style="visibility: hidden; position: absolute;"/>
+            <input type="file" :accept="validMimeTypesList" multiple style="visibility: hidden; position: absolute;"/>
         </div>
     </div>
 </template>
@@ -35,7 +34,8 @@ export default {
     props: {
         uploadUrl: String,
         currentDirectory: String,
-        searchPhrase: String
+        searchPhrase: String,
+        validMimeTypes: Array
     },
     data () {
         return {
@@ -98,6 +98,15 @@ export default {
             this.files = [];
             this.$emit('relist');
         });
+    },
+    computed: {
+        validMimeTypesList () {
+            if (this.validMimeTypes) {
+                return this.validMimeTypes.join(', ');
+            }
+
+            return 'audio/*';
+        }
     },
     methods: {
         formatFileSize (bytes) {

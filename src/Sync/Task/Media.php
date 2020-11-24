@@ -4,6 +4,7 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Flysystem\FilesystemManager;
+use App\Media\MimeType;
 use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Quota;
@@ -104,6 +105,7 @@ class Media extends AbstractTask
             'updated' => 0,
             'created' => 0,
             'deleted' => 0,
+            'not_processable' => 0,
         ];
 
         $music_files = [];
@@ -193,6 +195,11 @@ class Media extends AbstractTask
 
         // Create files that do not currently exist.
         foreach ($music_files as $path_hash => $new_music_file) {
+            if (!MimeType::isPathProcessable($new_music_file['path'])) {
+                $stats['not_processable']++;
+                continue;
+            }
+
             $message = new Message\AddNewMediaMessage();
             $message->storage_location_id = $storageLocation->getId();
             $message->path = $new_music_file['path'];

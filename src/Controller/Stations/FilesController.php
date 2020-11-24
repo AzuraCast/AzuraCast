@@ -5,6 +5,7 @@ namespace App\Controller\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Media\MimeType;
 use App\Service\SftpGo;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -51,6 +52,7 @@ class FilesController
             'show_sftp' => SftpGo::isSupportedForStation($station),
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
+            'mime_types' => MimeType::getProcessableTypes(),
             'space_used' => $mediaStorage->getStorageUsed(),
             'space_total' => $mediaStorage->getStorageAvailable(),
             'space_percent' => $mediaStorage->getStorageUsePercentage(),

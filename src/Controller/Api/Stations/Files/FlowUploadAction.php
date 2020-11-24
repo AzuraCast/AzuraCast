@@ -3,11 +3,13 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
+use App\Exception\CannotProcessMediaException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 class FlowUploadAction
 {
@@ -16,7 +18,8 @@ class FlowUploadAction
         Response $response,
         EntityManagerInterface $em,
         Entity\Repository\StationMediaRepository $mediaRepo,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        LoggerInterface $logger
     ): ResponseInterface {
         $params = $request->getParams();
         $station = $request->getStation();
@@ -41,7 +44,15 @@ class FlowUploadAction
                 $destPath = $currentDir . '/' . $destPath;
             }
 
-            $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse['path']);
+            try {
+                $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse['path']);
+            } catch (CannotProcessMediaException $e) {
+                $logger->error($e->getMessage(), [
+                    'exception' => $e,
+                ]);
+
+                return $response->withJson(new Entity\Api\Status());
+            }
 
             // If the user is looking at a playlist's contents, add uploaded media to that playlist.
             if (!empty($params['searchPhrase'])) {

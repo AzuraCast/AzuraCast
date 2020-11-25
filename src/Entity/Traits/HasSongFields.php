@@ -17,7 +17,7 @@ trait HasSongFields
     protected $song_id;
 
     /**
-     * @ORM\Column(name="text", type="string", length=150, nullable=true)
+     * @ORM\Column(name="text", type="string", length=303, nullable=true)
      * @var string|null
      */
     protected $text;
@@ -36,7 +36,7 @@ trait HasSongFields
 
     public function setSong(SongInterface $song): void
     {
-        $this->title = $this->truncateString($song->getTitle(), 150);
+        $this->title = $this->truncateString($song->getTitle(), 303);
         $this->artist = $this->truncateString($song->getArtist(), 150);
         $this->text = $this->truncateString($song->getText(), 150);
 
@@ -68,7 +68,7 @@ trait HasSongFields
     public function setText(?string $text): void
     {
         $oldText = $this->text;
-        $this->text = $this->truncateString($text, 150);
+        $this->text = $this->truncateString($text, 303);
 
         if (0 !== strcmp($oldText, $this->text)) {
             $this->updateSongId();

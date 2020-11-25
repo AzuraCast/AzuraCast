@@ -16,12 +16,16 @@ final class Version20201125023226 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        // Delete all non-processed media entries
+        $this->addSql('
+            DELETE FROM station_media
+            WHERE artist IS NULL OR title IS NULL
+        ');
+
         $this->addSql('
             UPDATE station_media
-            SET text=CONCAT(artist,\' - \',title),
+            SET text=SUBSTRING(CONCAT(artist, \' - \', title), 1, 150),
                 song_id=MD5(LOWER(REPLACE(REPLACE(CONCAT(artist,\' - \',title),\'-\',\'\'),\' \',\'\')))
-            WHERE artist IS NOT NULL AND title IS NOT NULL
         ');
     }
 

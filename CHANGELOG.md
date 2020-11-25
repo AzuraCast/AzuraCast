@@ -26,6 +26,13 @@ This release includes many contributions from members of our community as part o
 
 - **Songs table overhaul**: A `Songs` table has existed for the entirety of AzuraCast's existence as the authoritative source of spelling and capitalization for all song titles, artists, etc. This solution was not scalable to large stations and there was no effective way to clean up this table once it became vastly oversized. This update removes the `Songs` table entirely and relocates its attributes to the various tables that used it before (song history, request queue, etc). 
 
+- **File Operations API Changes**: In order to clarify the meaning of parameters, the `file` parameter for the following API endpoints has been changed to `current_directory`:
+  - `/api/station/{id}/files/list`
+  - `/api/station/{id}/files/directories`
+  - `/api/station/{id}/files/batch`
+  - `/api/station/{id}/files/mkdir`
+  - `/api/station/{id}/files/upload`
+
 - SweetAlert has been updated to SweetAlert2; alert prompts will now also have the same theme as the current active theme on the page.
 
 - Update checks have been simplified; if you are on the "rolling release" channel you will see rolling release updates, and if you are on the stable channel you will see stable version releases only.
@@ -42,7 +49,9 @@ This release includes many contributions from members of our community as part o
 
 - If the current stable release uses a different `docker-compose.yml` file than the current rolling release, the `docker.sh` utility script will accommodate for this. Make sure to run `./docker.sh update-self` before any updates to ensure the script is up-to-date. 
 
-- The "Move" batch command in the media manager has been fixed to work as expected.
+- The "Move" batch command in the media manager has been fixed to work as expected; if you select to move a folder to another one, it will move the entire folder instead of just moving its contents over.
+
+- Several optimizations have been made to how media is processed (and what media isn't processed by the system), which should improve performance and avoid repeatedly processing files that can't be processed.
 
 - Exceptions thrown when processing items in the Message Queue are now logged appropriately.
 

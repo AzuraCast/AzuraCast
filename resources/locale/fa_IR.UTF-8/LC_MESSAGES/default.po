@@ -3,17 +3,17 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
-"Language-Team: Japanese\n"
+"Language-Team: Persian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2020-11-25T01:26:50+00:00\n"
 "PO-Revision-Date: 2020-11-25 07:46\n"
-"Language: ja_JP\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: azuracast\n"
 "X-Crowdin-Project-ID: 217396\n"
-"X-Crowdin-Language: ja\n"
+"X-Crowdin-Language: fa\n"
 "X-Crowdin-File: /master/resources/locale/default.pot\n"
 "X-Crowdin-File-ID: 4\n"
 
@@ -148,7 +148,7 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Api/Stations/OnDemand/DownloadAction.php:32
 msgid "File not found."
-msgstr ""
+msgstr "فایل پیدا نشد."
 
 #: /github/workspace/src/Controller/Api/Stations/Files/RenameAction.php:19
 msgid "File not specified."
@@ -237,7 +237,7 @@ msgstr ""
 #: /github/workspace/templates/frontend/setup/station.phtml:25
 #: /github/workspace/templates/frontend/setup/settings.phtml:25
 msgid "System Settings"
-msgstr ""
+msgstr "تنظیمات سامانه"
 
 #: /github/workspace/src/Controller/Admin/BackupsController.php:84
 msgid "Configure Backups"
@@ -266,7 +266,7 @@ msgstr ""
 #: /github/workspace/src/Controller/Admin/InstallShoutcastController.php:80
 #: /github/workspace/config/menus/admin.php:94
 msgid "Install SHOUTcast"
-msgstr ""
+msgstr "نصب SHOUTcast"
 
 #: /github/workspace/src/Controller/Admin/PermissionsController.php:66
 msgid "Permission updated."
@@ -278,16 +278,16 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Admin/PermissionsController.php:75
 msgid "Edit Permission"
-msgstr ""
+msgstr "ویرایش دسترسی"
 
 #: /github/workspace/src/Controller/Admin/PermissionsController.php:75
 #: /github/workspace/templates/admin/permissions/index.phtml:10
 msgid "Add Permission"
-msgstr ""
+msgstr "افزودن دسترسی"
 
 #: /github/workspace/src/Controller/Admin/PermissionsController.php:83
 msgid "Permission deleted."
-msgstr ""
+msgstr "دسترسی حذف شد."
 
 #: /github/workspace/src/Controller/Admin/CustomFieldsController.php:39
 msgid "Custom Field updated."
@@ -325,23 +325,23 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Admin/StationsController.php:45
 msgid "Station updated."
-msgstr ""
+msgstr "ایستگاه روزآمد شد."
 
 #: /github/workspace/src/Controller/Admin/StationsController.php:45
 msgid "Station added."
-msgstr ""
+msgstr "ایستگاه اضافه شد."
 
 #: /github/workspace/src/Controller/Admin/StationsController.php:51
 msgid "Edit Station"
-msgstr ""
+msgstr "ویرایش ایستگاه"
 
 #: /github/workspace/src/Controller/Admin/StationsController.php:64
 msgid "Station deleted."
-msgstr ""
+msgstr "ایستگاه حذف شد."
 
 #: /github/workspace/src/Controller/Admin/StationsController.php:72
 msgid "Station not found."
-msgstr ""
+msgstr "ایستگاه پیدا نشد."
 
 #: /github/workspace/src/Controller/Admin/StationsController.php:83
 msgid "Clone Station: %s"
@@ -385,24 +385,24 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Admin/UsersController.php:57
 msgid "Edit User"
-msgstr ""
+msgstr "ویرایش کاربر"
 
 #: /github/workspace/src/Controller/Admin/UsersController.php:57
 #: /github/workspace/templates/admin/users/index.phtml:10
 msgid "Add User"
-msgstr ""
+msgstr "افزودن کاربر"
 
 #: /github/workspace/src/Controller/Admin/UsersController.php:70
 msgid "You cannot delete your own account."
-msgstr ""
+msgstr "شما حساب کاربری خود را نمی‌توانید حذف کنید."
 
 #: /github/workspace/src/Controller/Admin/UsersController.php:75
 msgid "User deleted."
-msgstr ""
+msgstr "کاربر حذف شد."
 
 #: /github/workspace/src/Controller/Admin/UsersController.php:92
 msgid "User not found."
-msgstr ""
+msgstr "کاربر پیدا نشد."
 
 #: /github/workspace/src/Controller/Admin/UsersController.php:99
 #: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:26
@@ -458,7 +458,7 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Frontend/DashboardController.php:226
 msgid "All Stations"
-msgstr ""
+msgstr "همه ایستگاه‌ها"
 
 #: /github/workspace/src/Controller/Frontend/DashboardController.php:272
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:85
@@ -473,7 +473,7 @@ msgstr ""
 #: /github/workspace/templates/stations/reports/overview.js.phtml:30
 #: /github/workspace/templates/stations/reports/overview.js.phtml:74
 msgid "Listeners"
-msgstr ""
+msgstr "شنوندگان"
 
 #: /github/workspace/src/Controller/Frontend/PublicPages/PlayerAction.php:35
 #: /github/workspace/config/forms/song.php:37
@@ -501,13 +501,13 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Frontend/Profile/EditAction.php:19
 msgid "Profile saved!"
-msgstr ""
+msgstr "پروفایل ذخیره شد!"
 
 #: /github/workspace/src/Controller/Frontend/Profile/EditAction.php:27
 #: /github/workspace/templates/frontend/profile/index.phtml:32
 #: /github/workspace/templates/stations/profile/edit.phtml:1
 msgid "Edit Profile"
-msgstr ""
+msgstr "ویرایش پروفایل"
 
 #: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:39
 #: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:102
@@ -541,15 +541,15 @@ msgstr ""
 
 #: /github/workspace/src/Controller/AbstractLogViewerController.php:120
 msgid "Icecast Access Log"
-msgstr ""
+msgstr "لاگ دسترسی Icecast"
 
 #: /github/workspace/src/Controller/AbstractLogViewerController.php:125
 msgid "Icecast Error Log"
-msgstr ""
+msgstr "لاگ خطای Icecast"
 
 #: /github/workspace/src/Controller/AbstractLogViewerController.php:130
 msgid "Icecast Configuration"
-msgstr ""
+msgstr "پیکربندی Icecast"
 
 #: /github/workspace/src/Controller/AbstractLogViewerController.php:138
 msgid "SHOUTcast Log"
@@ -582,7 +582,7 @@ msgstr ""
 #: /github/workspace/config/forms/install_geolite.php:35
 #: /github/workspace/config/forms/song.php:53
 msgid "Save Changes"
-msgstr ""
+msgstr "ذخیره تغییرات"
 
 #: /github/workspace/src/Controller/Stations/EditLiquidsoapConfigController.php:120
 #: /github/workspace/config/menus/station.php:161
@@ -699,7 +699,7 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Stations/Reports/SoundExchangeController.php:159
 msgid "SoundExchange Report"
-msgstr ""
+msgstr "گزارش SoundExchange"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:61
 #: /github/workspace/templates/stations/reports/overview.phtml:20
@@ -715,31 +715,31 @@ msgstr ""
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:107
 msgid "Monday"
-msgstr ""
+msgstr "دوشنبه"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:108
 msgid "Tuesday"
-msgstr ""
+msgstr "سه‌شنبه"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:109
 msgid "Wednesday"
-msgstr ""
+msgstr "چهارشنبه"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:110
 msgid "Thursday"
-msgstr ""
+msgstr "پنج‌شنبه"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:111
 msgid "Friday"
-msgstr ""
+msgstr "جمعه"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:112
 msgid "Saturday"
-msgstr ""
+msgstr "شنبه"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:113
 msgid "Sunday"
-msgstr ""
+msgstr "یک‌شنبه"
 
 #: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:156
 #: /github/workspace/templates/stations/reports/overview.phtml:23
@@ -847,35 +847,35 @@ msgstr ""
 #: /github/workspace/src/Acl.php:85
 #: /github/workspace/src/Acl.php:96
 msgid "All Permissions"
-msgstr ""
+msgstr "همه دسترسی‌ها"
 
 #: /github/workspace/src/Acl.php:86
 msgid "View Administration Page"
-msgstr ""
+msgstr "مشاهده صفحه مدیریت"
 
 #: /github/workspace/src/Acl.php:87
 msgid "View System Logs"
-msgstr ""
+msgstr "مشاهده لاگ‌های سامانه"
 
 #: /github/workspace/src/Acl.php:88
 msgid "Administer Settings"
-msgstr ""
+msgstr "مدیریت تنظیمات"
 
 #: /github/workspace/src/Acl.php:89
 msgid "Administer API Keys"
-msgstr ""
+msgstr "مدیریت کلیدهای API"
 
 #: /github/workspace/src/Acl.php:90
 msgid "Administer Stations"
-msgstr ""
+msgstr "مدیریت ایستگاه‌ها"
 
 #: /github/workspace/src/Acl.php:91
 msgid "Administer Custom Fields"
-msgstr ""
+msgstr "مدیریت فیلدهای سفارشی"
 
 #: /github/workspace/src/Acl.php:92
 msgid "Administer Backups"
-msgstr ""
+msgstr "مدیریت پشتیبان‌گیری‌ها"
 
 #: /github/workspace/src/Acl.php:93
 msgid "Administer Storage Locations"
@@ -883,27 +883,27 @@ msgstr ""
 
 #: /github/workspace/src/Acl.php:97
 msgid "View Station Page"
-msgstr ""
+msgstr "مشاهده صفحه ایستگاه"
 
 #: /github/workspace/src/Acl.php:98
 msgid "View Station Reports"
-msgstr ""
+msgstr "مشاهده گزارشات ایستگاه"
 
 #: /github/workspace/src/Acl.php:99
 msgid "View Station Logs"
-msgstr ""
+msgstr "مشاهده لاگ‌های ایستگاه"
 
 #: /github/workspace/src/Acl.php:100
 msgid "Manage Station Profile"
-msgstr ""
+msgstr "مدیریت پروفایل ایستگاه"
 
 #: /github/workspace/src/Acl.php:101
 msgid "Manage Station Broadcasting"
-msgstr ""
+msgstr "مدیریت پخش ایستگاه"
 
 #: /github/workspace/src/Acl.php:102
 msgid "Manage Station Streamers"
-msgstr ""
+msgstr "مدیریت استریمرهای ایستگاه"
 
 #: /github/workspace/src/Acl.php:103
 msgid "Manage Station Mount Points"
@@ -935,23 +935,23 @@ msgstr ""
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:26
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "نصب آژوراکست"
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:27
 msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
-msgstr ""
+msgstr "به آژوراکست خوش آمدید. لطفا برای نصب وابستگی‌های کلید آژوراکست منتظر باشید..."
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:30
 msgid "Environment: %s"
-msgstr ""
+msgstr "محیط‌ها: %s"
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:31
 msgid "Installation Method: %s"
-msgstr ""
+msgstr "روش نصب: %s"
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:35
 msgid "Running in update mode."
-msgstr ""
+msgstr "درحال اجرا در وضعیت روزآمدی."
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:38
 msgid "Migrating Legacy Configuration"
@@ -971,19 +971,19 @@ msgstr ""
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:70
 msgid "Reload System Data"
-msgstr ""
+msgstr "بارگذاری مجدد داده‌های سامانه"
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:80
 msgid "Refreshing All Stations"
-msgstr ""
+msgstr "بازآوری همه ایستگاه‌ها"
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:95
 msgid "AzuraCast is now updated to the latest version!"
-msgstr ""
+msgstr "آژوراکست به آخرین نسخه روزآمد شد!"
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:101
 msgid "AzuraCast installation complete!"
-msgstr ""
+msgstr "نصب آژوراکست تکمیل شد!"
 
 #: /github/workspace/src/Console/Command/SetupCommand.php:102
 msgid "Visit %s to complete setup."
@@ -995,7 +995,7 @@ msgstr ""
 
 #: /github/workspace/src/Console/Command/Backup/BackupCommand.php:58
 msgid "AzuraCast Backup"
-msgstr ""
+msgstr "پشتیبان‌گیری آژوراکست"
 
 #: /github/workspace/src/Console/Command/Backup/BackupCommand.php:59
 msgid "Please wait while a backup is generated..."
@@ -1142,11 +1142,11 @@ msgstr ""
 #: /github/workspace/src/Form/Field/File.php:11
 #: /github/workspace/config/forms/install_shoutcast.php:36
 msgid "Select File"
-msgstr ""
+msgstr "انتخاب فایل"
 
 #: /github/workspace/config/forms/custom_field.php:13
 msgid "Field Name"
-msgstr ""
+msgstr "نام فیلد"
 
 #: /github/workspace/config/forms/custom_field.php:14
 msgid "This will be used as the label when editing individual songs, and will show in API results."
@@ -1227,11 +1227,11 @@ msgstr ""
 
 #: /github/workspace/config/forms/custom_field.php:49
 msgid "Copyright"
-msgstr ""
+msgstr "حق نشر"
 
 #: /github/workspace/config/forms/custom_field.php:50
 msgid "Copyright Message"
-msgstr ""
+msgstr "پیام حق نشر"
 
 #: /github/workspace/config/forms/custom_field.php:51
 msgid "Encoded By"
@@ -1251,12 +1251,12 @@ msgstr ""
 
 #: /github/workspace/config/forms/custom_field.php:55
 msgid "File Type"
-msgstr ""
+msgstr "نوع فایل"
 
 #: /github/workspace/config/forms/custom_field.php:56
 #: /github/workspace/config/forms/station.php:82
 msgid "Genre"
-msgstr ""
+msgstr "ژانر"
 
 #: /github/workspace/config/forms/custom_field.php:57
 msgid "Initial Key"
@@ -1281,7 +1281,7 @@ msgstr ""
 #: /github/workspace/config/forms/custom_field.php:62
 #: /github/workspace/config/forms/profile.php:82
 msgid "Language"
-msgstr ""
+msgstr "زبان"
 
 #: /github/workspace/config/forms/custom_field.php:63
 #: /github/workspace/templates/stations/reports/performance.phtml:33
@@ -1303,7 +1303,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/custom_field.php:67
 msgid "Mood"
-msgstr ""
+msgstr "حالت"
 
 #: /github/workspace/config/forms/custom_field.php:68
 msgid "Music CD Identifier"
@@ -1379,7 +1379,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/custom_field.php:86
 msgid "Subtitle"
-msgstr ""
+msgstr "زیرنویس"
 
 #: /github/workspace/config/forms/custom_field.php:87
 msgid "Tagging Time"
@@ -1394,7 +1394,7 @@ msgstr ""
 #: /github/workspace/templates/stations/playlists/reorder.phtml:26
 #: /github/workspace/templates/stations/reports/performance.phtml:30
 msgid "Title"
-msgstr ""
+msgstr "عنوان"
 
 #: /github/workspace/config/forms/custom_field.php:90
 msgid "Title Sort Order"
@@ -1438,7 +1438,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/custom_field.php:100
 msgid "Year"
-msgstr ""
+msgstr "سال"
 
 #: /github/workspace/config/forms/register.php:7
 msgid "Account Information"
@@ -1453,7 +1453,7 @@ msgstr ""
 #: /github/workspace/templates/frontend/account/login.phtml:32
 #: /github/workspace/templates/frontend/account/login.phtml:34
 msgid "E-mail Address"
-msgstr "メールアドレス"
+msgstr "آدرس ایمیل"
 
 #: /github/workspace/config/forms/register.php:23
 #: /github/workspace/config/forms/login.php:19
@@ -1462,7 +1462,7 @@ msgstr "メールアドレス"
 #: /github/workspace/templates/frontend/account/login.phtml:41
 #: /github/workspace/templates/stations/streamers/index.phtml:50
 msgid "Password"
-msgstr "パスワード"
+msgstr "اسم رمز"
 
 #: /github/workspace/config/forms/register.php:37
 #: /github/workspace/templates/frontend/setup/register.phtml:55
@@ -1470,7 +1470,7 @@ msgstr "パスワード"
 #: /github/workspace/templates/frontend/setup/station.phtml:13
 #: /github/workspace/templates/frontend/setup/settings.phtml:13
 msgid "Create Account"
-msgstr ""
+msgstr "ایجاد حساب"
 
 #: /github/workspace/config/forms/mount/generic.php:15
 msgid "Mount Point URL"
@@ -1529,7 +1529,7 @@ msgstr ""
 #: /github/workspace/config/forms/station_clone.php:83
 #: /github/workspace/templates/admin/relays/index.phtml:35
 msgid "Yes"
-msgstr "はい"
+msgstr "بله"
 
 #: /github/workspace/config/forms/mount/generic.php:37
 #: /github/workspace/config/forms/mount/generic.php:49
@@ -1561,7 +1561,7 @@ msgstr "はい"
 #: /github/workspace/config/forms/station_clone.php:82
 #: /github/workspace/templates/admin/relays/index.phtml:35
 msgid "No"
-msgstr "いいえ"
+msgstr "خیر"
 
 #: /github/workspace/config/forms/mount/generic.php:46
 msgid "Set as Default Mount Point"
@@ -1647,7 +1647,7 @@ msgstr ""
 #: /github/workspace/templates/admin/api/index.phtml:18
 #: /github/workspace/templates/frontend/api_keys/index.phtml:34
 msgid "Comments"
-msgstr ""
+msgstr "نظرات"
 
 #: /github/workspace/config/forms/api_key.php:11
 msgid "Describe the use-case for this API key for future reference."
@@ -1656,7 +1656,7 @@ msgstr ""
 #: /github/workspace/config/forms/role.php:11
 #: /github/workspace/templates/admin/permissions/index.phtml:22
 msgid "Role Name"
-msgstr ""
+msgstr "نام نقش"
 
 #: /github/workspace/config/forms/role.php:20
 msgid "System-Wide Permissions"
@@ -1692,7 +1692,7 @@ msgstr ""
 #: /github/workspace/templates/admin/custom_fields/index.phtml:22
 #: /github/workspace/templates/stations/webhooks/index.phtml:32
 msgid "Name"
-msgstr ""
+msgstr "نام"
 
 #: /github/workspace/config/forms/station.php:74
 #: /github/workspace/config/forms/webhook/discord.php:81
@@ -1709,7 +1709,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/station.php:99
 msgid "Time Zone"
-msgstr ""
+msgstr "منطقه زمانی"
 
 #: /github/workspace/config/forms/station.php:100
 msgid "Scheduled playlists and other timed items will be controlled by this time zone."
@@ -1765,7 +1765,7 @@ msgstr ""
 #: /github/workspace/templates/stations/mounts/index.phtml:61
 #: /github/workspace/templates/stations/webhooks/index.phtml:59
 msgid "Disabled"
-msgstr ""
+msgstr "غیرفعال"
 
 #: /github/workspace/config/forms/station.php:177
 msgid "Broadcasting Service"
@@ -1838,11 +1838,11 @@ msgstr ""
 
 #: /github/workspace/config/forms/station.php:291
 msgid "Smart Mode"
-msgstr ""
+msgstr "حالت هوشمند"
 
 #: /github/workspace/config/forms/station.php:292
 msgid "Normal Mode"
-msgstr ""
+msgstr "حالت عادی"
 
 #: /github/workspace/config/forms/station.php:293
 msgid "Disable Crossfading"
@@ -2144,17 +2144,17 @@ msgstr ""
 #: /github/workspace/config/forms/branding.php:19
 #: /github/workspace/config/forms/profile.php:94
 msgid "Light"
-msgstr ""
+msgstr "روشن"
 
 #: /github/workspace/config/forms/branding.php:19
 #: /github/workspace/config/forms/profile.php:94
 msgid "Default"
-msgstr ""
+msgstr "پیش‌فرض"
 
 #: /github/workspace/config/forms/branding.php:20
 #: /github/workspace/config/forms/profile.php:95
 msgid "Dark"
-msgstr ""
+msgstr "تاریک"
 
 #: /github/workspace/config/forms/branding.php:30
 msgid "Hide Album Art on Public Pages"
@@ -2207,7 +2207,7 @@ msgstr ""
 #: /github/workspace/config/forms/user.php:30
 #: /github/workspace/config/forms/profile.php:38
 msgid "Reset Password"
-msgstr ""
+msgstr "بازنشانی اسم رمز"
 
 #: /github/workspace/config/forms/user.php:31
 #: /github/workspace/config/forms/sftp_user.php:18
@@ -2218,7 +2218,7 @@ msgstr ""
 #: /github/workspace/templates/admin/users/index.phtml:23
 #: /github/workspace/templates/frontend/profile/index.phtml:38
 msgid "Roles"
-msgstr ""
+msgstr "نقش‌ها"
 
 #: /github/workspace/config/forms/backup_run.php:17
 msgid "Backup Filename"
@@ -2433,7 +2433,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/webhook/discord.php:91
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: /github/workspace/config/forms/webhook/discord.php:101
 msgid "Author Name"
@@ -2523,26 +2523,26 @@ msgstr ""
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:65
 #: /github/workspace/templates/stations/reports/timeline.phtml:22
 msgid "Last 14 Days"
-msgstr ""
+msgstr "14 روز آخر"
 
 #: /github/workspace/config/forms/settings.php:81
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:87
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:66
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:103
 msgid "Last 30 Days"
-msgstr ""
+msgstr "30 روز آخر"
 
 #: /github/workspace/config/forms/settings.php:82
 msgid "Last 60 Days"
-msgstr ""
+msgstr "60 روز آخر"
 
 #: /github/workspace/config/forms/settings.php:83
 msgid "Last Year"
-msgstr ""
+msgstr "سال گذشته"
 
 #: /github/workspace/config/forms/settings.php:84
 msgid "Last 2 Years"
-msgstr ""
+msgstr "2 سال گذشته"
 
 #: /github/workspace/config/forms/settings.php:85
 msgid "Indefinitely"
@@ -2558,7 +2558,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/settings.php:116
 msgid "Always Use HTTPS"
-msgstr ""
+msgstr "استفاده همیشگی از HTTPS"
 
 #: /github/workspace/config/forms/settings.php:117
 msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
@@ -2611,12 +2611,12 @@ msgstr ""
 #: /github/workspace/config/forms/sftp_user.php:8
 #: /github/workspace/templates/stations/sftp_users/index.phtml:24
 msgid "Username"
-msgstr "ユーザー名"
+msgstr "نام‌کاربری"
 
 #: /github/workspace/config/forms/sftp_user.php:17
 #: /github/workspace/config/forms/profile.php:54
 msgid "New Password"
-msgstr ""
+msgstr "اسم رمز جدید"
 
 #: /github/workspace/config/forms/sftp_user.php:27
 msgid "SSH Public Keys"
@@ -2684,16 +2684,16 @@ msgstr ""
 
 #: /github/workspace/config/forms/profile.php:45
 msgid "Current Password"
-msgstr ""
+msgstr "اسم رمز فعلی"
 
 #: /github/workspace/config/forms/profile.php:65
 msgid "Confirm New Password"
-msgstr ""
+msgstr "تایید اسم رمز"
 
 #: /github/workspace/config/forms/profile.php:76
 #: /github/workspace/templates/frontend/profile/index.phtml:50
 msgid "Customization"
-msgstr ""
+msgstr "سفارشی‌سازی"
 
 #: /github/workspace/config/forms/profile.php:92
 msgid "Site Theme"
@@ -2735,7 +2735,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/install_shoutcast.php:45
 msgid "Upload"
-msgstr ""
+msgstr "آپلود"
 
 #: /github/workspace/config/forms/automation.php:10
 msgid "Enable Automated Assignment"
@@ -2751,7 +2751,7 @@ msgstr ""
 #: /github/workspace/templates/stations/remotes/index.phtml:58
 #: /github/workspace/templates/stations/mounts/index.phtml:59
 msgid "Enabled"
-msgstr ""
+msgstr "فعال"
 
 #: /github/workspace/config/forms/automation.php:23
 msgid "Days Between Automated Assignments"
@@ -2794,7 +2794,7 @@ msgstr ""
 
 #: /github/workspace/config/forms/login.php:29
 msgid "Log in"
-msgstr "ログイン"
+msgstr "ورود"
 
 #: /github/workspace/config/forms/song.php:8
 msgid "Metadata"
@@ -2810,11 +2810,11 @@ msgstr ""
 
 #: /github/workspace/config/assets.php:142
 msgid "Are you sure?"
-msgstr ""
+msgstr "مطمئن هستید؟"
 
 #: /github/workspace/config/assets.php:143
 msgid "Advanced"
-msgstr ""
+msgstr "پیشرفته"
 
 #: /github/workspace/config/menus/admin.php:13
 msgid "System Maintenance"
@@ -2849,7 +2849,7 @@ msgstr ""
 
 #: /github/workspace/config/menus/admin.php:49
 msgid "Users"
-msgstr "ユーザー"
+msgstr ""
 
 #: /github/workspace/config/menus/admin.php:53
 #: /github/workspace/templates/admin/users/index.phtml:1
@@ -2880,13 +2880,13 @@ msgstr ""
 #: /github/workspace/config/menus/admin.php:79
 #: /github/workspace/templates/admin/stations/index.phtml:1
 msgid "Stations"
-msgstr ""
+msgstr "ایستگاه‌ها"
 
 #: /github/workspace/config/menus/admin.php:84
 #: /github/workspace/templates/admin/custom_fields/index.phtml:1
 #: /github/workspace/templates/admin/custom_fields/index.phtml:5
 msgid "Custom Fields"
-msgstr ""
+msgstr "فیلدهای سفارشی"
 
 #: /github/workspace/config/menus/admin.php:89
 #: /github/workspace/templates/admin/relays/index.phtml:3
@@ -3068,7 +3068,7 @@ msgstr ""
 
 #: /github/workspace/config/webhooks.php:32
 msgid "Twitter Post"
-msgstr ""
+msgstr "پست توئیتر"
 
 #: /github/workspace/config/webhooks.php:33
 msgid "Automatically send a tweet."
@@ -3154,55 +3154,55 @@ msgstr ""
 #: /github/workspace/templates/stations/reports/requests.phtml:61
 #: /github/workspace/templates/stations/reports/duplicates.phtml:34
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:42
 msgid "Update"
-msgstr ""
+msgstr "روزآمد"
 
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:58
 #: /github/workspace/templates/admin/audit_log/index.phtml:59
 msgid "Changes"
-msgstr ""
+msgstr "تغییرات"
 
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:83
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:62
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:97
 msgid "Today"
-msgstr ""
+msgstr "امروز"
 
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:84
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:63
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:99
 msgid "Yesterday"
-msgstr ""
+msgstr "دیروز"
 
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:85
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:64
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:101
 msgid "Last 7 Days"
-msgstr ""
+msgstr "7 روز گذشته"
 
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:88
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:67
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:105
 msgid "This Month"
-msgstr ""
+msgstr "این ماه"
 
 #: /github/workspace/templates/admin/audit_log/index.js.phtml:89
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:68
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:107
 msgid "Last Month"
-msgstr ""
+msgstr "ماه گذشته"
 
 #: /github/workspace/templates/admin/audit_log/index.phtml:41
 #: /github/workspace/templates/stations/reports/timeline.phtml:39
 msgid "Date/Time"
-msgstr ""
+msgstr "تاریخ/ساعت"
 
 #: /github/workspace/templates/admin/audit_log/index.phtml:42
 msgid "User"
-msgstr ""
+msgstr "کاربر"
 
 #: /github/workspace/templates/admin/audit_log/index.phtml:44
 msgid "Identifier"
@@ -3329,7 +3329,7 @@ msgstr ""
 
 #: /github/workspace/templates/admin/install_shoutcast/installed.phtml:1
 msgid "SHOUTcast Installed"
-msgstr ""
+msgstr "SHOUTcast نصب شد"
 
 #: /github/workspace/templates/admin/install_shoutcast/installed.phtml:3
 msgid "The SHOUTcast 2 DNAS is installed and ready for use."
@@ -3346,7 +3346,7 @@ msgstr ""
 #: /github/workspace/templates/stations/webhooks/index.phtml:42
 #: /github/workspace/templates/stations/sftp_users/index.phtml:34
 msgid "Edit"
-msgstr ""
+msgstr "ویرایش"
 
 #: /github/workspace/templates/admin/permissions/index.phtml:36
 msgid "Delete role \"%s\"?"
@@ -3379,7 +3379,7 @@ msgstr ""
 
 #: /github/workspace/templates/admin/stations/index.phtml:21
 msgid "Station"
-msgstr ""
+msgstr "ایستگاه"
 
 #: /github/workspace/templates/admin/stations/index.phtml:30
 #: /github/workspace/templates/frontend/index/index.phtml:169
@@ -3400,12 +3400,12 @@ msgstr ""
 
 #: /github/workspace/templates/admin/api/index.phtml:19
 msgid "Owner"
-msgstr ""
+msgstr "مالک"
 
 #: /github/workspace/templates/admin/api/index.phtml:28
 #: /github/workspace/templates/frontend/api_keys/index.phtml:43
 msgid "Revoke"
-msgstr ""
+msgstr "ابطال"
 
 #: /github/workspace/templates/admin/backups/index.phtml:22
 #: /github/workspace/templates/admin/backups/index.phtml:50
@@ -3448,11 +3448,11 @@ msgstr ""
 
 #: /github/workspace/templates/admin/backups/index.phtml:102
 msgid "Size"
-msgstr ""
+msgstr "اندازه"
 
 #: /github/workspace/templates/admin/backups/index.phtml:111
 msgid "Download"
-msgstr ""
+msgstr "دانلود"
 
 #: /github/workspace/templates/admin/backups/index.phtml:115
 msgid "Delete backup \"%s\"?"
@@ -3510,7 +3510,7 @@ msgstr ""
 #: /github/workspace/templates/frontend/account/two_factor.phtml:3
 #: /github/workspace/templates/frontend/account/login.phtml:3
 msgid "Log In"
-msgstr ""
+msgstr "ورود"
 
 #: /github/workspace/templates/admin/users/index.phtml:37
 msgid "Delete user \"%s\"?"
@@ -3518,7 +3518,7 @@ msgstr ""
 
 #: /github/workspace/templates/admin/users/index.phtml:47
 msgid "(You)"
-msgstr ""
+msgstr "(شما)"
 
 #: /github/workspace/templates/minimal.phtml:50
 msgid "Mascot designed by %s"
@@ -3541,14 +3541,14 @@ msgstr ""
 
 #: /github/workspace/templates/frontend/index/index.phtml:40
 msgid "AzuraCast User"
-msgstr ""
+msgstr "کاربر آژوراکست"
 
 #: /github/workspace/templates/frontend/index/index.phtml:50
 #: /github/workspace/templates/frontend/profile/index.phtml:2
 #: /github/workspace/templates/frontend/profile/index.phtml:20
 #: /github/workspace/templates/main.phtml:83
 msgid "My Account"
-msgstr ""
+msgstr "حساب کاربری من"
 
 #: /github/workspace/templates/frontend/index/index.phtml:86
 msgid "Listeners Per Station"
@@ -3596,7 +3596,7 @@ msgstr ""
 #: /github/workspace/templates/frontend/setup/station.phtml:19
 #: /github/workspace/templates/frontend/setup/settings.phtml:19
 msgid "Create Station"
-msgstr ""
+msgstr "ایجاد ایستگاه"
 
 #: /github/workspace/templates/frontend/setup/station.phtml:34
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
@@ -3632,11 +3632,11 @@ msgstr ""
 #: /github/workspace/templates/frontend/account/login.phtml:43
 #: /github/workspace/templates/frontend/account/login.phtml:44
 msgid "Sign in"
-msgstr ""
+msgstr "ورود"
 
 #: /github/workspace/templates/frontend/account/login.phtml:15
 msgid "Welcome!"
-msgstr ""
+msgstr "خوش آمدید!"
 
 #: /github/workspace/templates/frontend/account/login.phtml:17
 msgid "Welcome to %s!"
@@ -3691,7 +3691,7 @@ msgstr ""
 
 #: /github/workspace/templates/frontend/profile/index.phtml:58
 msgid "Customize"
-msgstr ""
+msgstr "سفارشی‎سازی"
 
 #: /github/workspace/templates/frontend/profile/index.phtml:66
 msgid "Two-Factor Authentication"
@@ -3747,7 +3747,7 @@ msgstr ""
 
 #: /github/workspace/templates/system/log_view.phtml:33
 msgid "Details"
-msgstr ""
+msgstr "جزئیات"
 
 #: /github/workspace/templates/system/form_page.phtml:65
 msgid "Errors were encountered when trying to save changes:"
@@ -3755,7 +3755,7 @@ msgstr ""
 
 #: /github/workspace/templates/system/form_page.phtml:68
 msgid "General"
-msgstr ""
+msgstr "عمومی"
 
 #: /github/workspace/templates/stations/remotes/index.phtml:13
 msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
@@ -3816,11 +3816,11 @@ msgstr ""
 
 #: /github/workspace/templates/stations/playlists/reorder.phtml:40
 msgid "Down"
-msgstr ""
+msgstr "پایین"
 
 #: /github/workspace/templates/stations/playlists/reorder.phtml:43
 msgid "Up"
-msgstr ""
+msgstr "بالا"
 
 #: /github/workspace/templates/stations/logs/index.phtml:12
 msgid "Available Logs"
@@ -3852,7 +3852,7 @@ msgstr ""
 
 #: /github/workspace/templates/stations/webhooks/index.phtml:51
 msgid "Test"
-msgstr ""
+msgstr "تست"
 
 #: /github/workspace/templates/stations/webhooks/index.phtml:52
 msgid "Delete web hook \"%s\"?"
@@ -4042,13 +4042,13 @@ msgstr ""
 #: /github/workspace/templates/stations/reports/overview.phtml:111
 #: /github/workspace/templates/stations/reports/timeline.phtml:41
 msgid "Change"
-msgstr ""
+msgstr "تغییر"
 
 #: /github/workspace/templates/stations/reports/overview.phtml:69
 #: /github/workspace/templates/stations/reports/overview.phtml:112
 #: /github/workspace/templates/stations/reports/overview.phtml:158
 msgid "Song"
-msgstr ""
+msgstr "ترانه"
 
 #: /github/workspace/templates/stations/reports/overview.phtml:99
 msgid "Worst Performing Songs"
@@ -4066,7 +4066,7 @@ msgstr ""
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:7
 #: /github/workspace/templates/stations/reports/listeners.js.phtml:95
 msgid "Live Listeners"
-msgstr ""
+msgstr "شنوندگان زنده"
 
 #: /github/workspace/templates/stations/reports/listeners.phtml:43
 #: /github/workspace/templates/stations/reports/listeners.phtml:50
@@ -4079,7 +4079,7 @@ msgstr ""
 
 #: /github/workspace/templates/stations/reports/listeners.phtml:58
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
 #: /github/workspace/templates/stations/reports/listeners.phtml:59
 msgid "Time (sec)"
@@ -4091,19 +4091,19 @@ msgstr ""
 
 #: /github/workspace/templates/stations/reports/listeners.phtml:61
 msgid "Location"
-msgstr ""
+msgstr "موقعیت مکانی"
 
 #: /github/workspace/templates/stations/reports/listeners.phtml:71
 msgid "Mobile Device"
-msgstr ""
+msgstr "دستگاه موبایل"
 
 #: /github/workspace/templates/stations/reports/listeners.phtml:75
 msgid "Desktop Device"
-msgstr ""
+msgstr "دستگاه رایانه رومیزی"
 
 #: /github/workspace/templates/stations/reports/listeners.phtml:87
 msgid "Unknown"
-msgstr ""
+msgstr "ناشناخته"
 
 #: /github/workspace/templates/stations/reports/timeline.js.phtml:49
 msgid "Live Streamer:"
@@ -4141,7 +4141,7 @@ msgstr ""
 
 #: /github/workspace/templates/stations/sidebar.js.phtml:22
 msgid "Please wait..."
-msgstr ""
+msgstr "لطفا صبر کنید..."
 
 #: /github/workspace/templates/stations/sidebar.phtml:16
 msgid "Station Time"
@@ -4161,11 +4161,11 @@ msgstr ""
 
 #: /github/workspace/templates/partials/radio_controls.js.phtml:8
 msgid "Play"
-msgstr ""
+msgstr "پخش"
 
 #: /github/workspace/templates/partials/log_viewer.phtml:12
 msgid "Log View"
-msgstr ""
+msgstr "مشاهده لاگ"
 
 #: /github/workspace/templates/partials/log_viewer.phtml:20
 msgid "Automatically scroll to the bottom of the log"
@@ -4213,15 +4213,15 @@ msgstr ""
 
 #: /github/workspace/templates/main.phtml:101
 msgid "Help"
-msgstr ""
+msgstr "راهنما"
 
 #: /github/workspace/templates/main.phtml:109
 msgid "End Session"
-msgstr ""
+msgstr "پایان جلسه"
 
 #: /github/workspace/templates/main.phtml:116
 msgid "Sign Out"
-msgstr ""
+msgstr "خروج"
 
 #: /github/workspace/templates/main.phtml:158
 msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"

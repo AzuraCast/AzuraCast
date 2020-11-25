@@ -281,8 +281,13 @@ class BatchAction
          */
         foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
             try {
-                $newQueue = new Entity\StationQueue($station, $media);
+                /** @var Entity\Station $stationRef */
+                $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
+
+                $newQueue = new Entity\StationQueue($stationRef, $media);
+                $newQueue->setMedia($media);
                 $newQueue->setTimestampCued(time());
+
                 $this->em->persist($newQueue);
             } catch (Throwable $e) {
                 $result->errors[] = $media->getPath() . ': ' . $e->getMessage();

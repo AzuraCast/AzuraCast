@@ -64,7 +64,7 @@ class AutoDJ
             return $record;
         });
 
-        $duration = $queueRow->getDuration();
+        $duration = $queueRow->getDuration() ?? 0;
         $now = $this->getNowFromCurrentSong($station);
 
         $this->logger->debug('Adjusting now based on duration of most recently cued song.', [

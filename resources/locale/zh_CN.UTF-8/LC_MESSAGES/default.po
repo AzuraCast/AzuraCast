@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2020-09-20T17:57:28+00:00\n"
-"PO-Revision-Date: 2020-11-23 11:15+0800\n"
+"PO-Revision-Date: 2020-11-25 13:08+0800\n"
 "X-Generator: Poedit 2.4.1\n"
 "Last-Translator: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -298,7 +298,7 @@ msgstr "SHOUTcast配置"
 #: /var/azuracast/www/src/Controller/Api/Stations/Art/PostArtAction.php:25
 #: /var/azuracast/www/src/Controller/Stations/AbstractStationCrudController.php:66
 msgid "Record not found."
-msgstr "记录不存在。"
+msgstr "没有找到记录。"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:34
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:91

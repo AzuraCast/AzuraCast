@@ -114,6 +114,10 @@
     }
   ],
   "scripts": {
+    "cleanup-and-test": [
+      "@phpcbf",
+      "@dev-test"
+    ],
     "dev-test": [
       "@phplint",
       "@phpstan",

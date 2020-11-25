@@ -36,9 +36,12 @@ trait HasSongFields
 
     public function setSong(SongInterface $song): void
     {
-        $this->setText($song->getText());
-        $this->setTitle($song->getTitle());
-        $this->setArtist($song->getArtist());
+        $this->title = $this->truncateString($song->getTitle(), 150);
+        $this->artist = $this->truncateString($song->getArtist(), 150);
+        $this->text = $this->truncateString($song->getText(), 150);
+
+        // Force setting the text field if it's not otherwise set.
+        $this->setText($this->getText());
         $this->updateSongId();
     }
 
@@ -57,9 +60,19 @@ trait HasSongFields
         return $this->text ?? $this->artist . ' - ' . $this->title;
     }
 
+    protected function setTextFromArtistAndTitle(string $separator = ' - '): void
+    {
+        $this->setText($this->artist . $separator . $this->title);
+    }
+
     public function setText(?string $text): void
     {
+        $oldText = $this->text;
         $this->text = $this->truncateString($text, 150);
+
+        if (0 !== strcmp($oldText, $this->text)) {
+            $this->updateSongId();
+        }
     }
 
     public function getArtist(): ?string
@@ -69,7 +82,12 @@ trait HasSongFields
 
     public function setArtist(?string $artist): void
     {
+        $oldArtist = $this->artist;
         $this->artist = $this->truncateString($artist, 150);
+
+        if (0 !== strcmp($oldArtist, $this->artist)) {
+            $this->setTextFromArtistAndTitle();
+        }
     }
 
     public function getTitle(): ?string
@@ -79,6 +97,11 @@ trait HasSongFields
 
     public function setTitle(?string $title): void
     {
+        $oldTitle = $this->title;
         $this->title = $this->truncateString($title, 150);
+
+        if (0 !== strcmp($oldTitle, $this->title)) {
+            $this->setTextFromArtistAndTitle();
+        }
     }
 }

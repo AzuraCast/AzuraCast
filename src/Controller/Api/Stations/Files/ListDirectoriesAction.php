@@ -16,16 +16,14 @@ class ListDirectoriesAction
         FilesystemManager $filesystem
     ): ResponseInterface {
         $station = $request->getStation();
-        $fs = $filesystem->getForStation($station);
+        $fs = $filesystem->getPrefixedAdapterForStation($station, FilesystemManager::PREFIX_MEDIA, true);
 
-        $file_path = $request->getAttribute('file_path');
-
-        if (!empty($request->getAttribute('file'))) {
-            $file_meta = $fs->getMetadata($file_path);
-
-            if ('dir' !== $file_meta['type']) {
+        $currentDir = $request->getParam('currentDirectory', '');
+        if (!empty($currentDir)) {
+            $dirMeta = $fs->getMetadata($currentDir);
+            if ('dir' !== $dirMeta['type']) {
                 return $response->withStatus(500)
-                    ->withJson(new Entity\Api\Error(500, __('Path "%s" is not a folder.', $file_path)));
+                    ->withJson(new Entity\Api\Error(500, __('Path "%s" is not a folder.', $currentDir)));
             }
         }
 
@@ -44,7 +42,7 @@ class ListDirectoriesAction
                 'name' => $file['basename'],
                 'path' => $file['path'],
             ];
-        }, $fs->listContents($file_path)));
+        }, $fs->listContents($currentDir)));
 
         return $response->withJson([
             'rows' => array_values($directories),

@@ -5,14 +5,19 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
+use App\Exception\CannotProcessMediaException;
 use App\Exception\MediaProcessingException;
+use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Media\AlbumArt;
 use App\Media\MetadataManagerInterface;
+use App\Media\MimeType;
 use App\Service\AudioWaveform;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use League\Flysystem\FileNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -124,9 +129,7 @@ class StationMediaRepository extends Repository
         string $path,
         ?string $uploadedFrom = null
     ): Entity\StationMedia {
-        if (strpos($path, '://') !== false) {
-            [, $path] = explode('://', $path, 2);
-        }
+        $path = FilesystemManager::stripPrefix($path);
 
         $record = $this->findByPath($path, $source);
 
@@ -165,10 +168,13 @@ class StationMediaRepository extends Repository
         $mediaUri = $media->getPath();
 
         if (null !== $uploadedPath) {
-            $this->loadFromFile($media, $uploadedPath);
-            $this->writeWaveform($media, $uploadedPath);
+            try {
+                $this->loadFromFile($media, $uploadedPath);
+                $this->writeWaveform($media, $uploadedPath);
+            } finally {
+                $fs->putFromLocal($uploadedPath, $mediaUri);
+            }
 
-            $fs->putFromLocal($uploadedPath, $mediaUri);
             $mediaMtime = time();
         } else {
             if (!$fs->has($mediaUri)) {
@@ -202,13 +208,17 @@ class StationMediaRepository extends Repository
      */
     public function loadFromFile(Entity\StationMedia $media, string $filePath): void
     {
-        // Persist the media record for later custom field operations.
-        $this->em->persist($media);
+        if (!MimeType::isFileProcessable($filePath)) {
+            throw CannotProcessMediaException::forPath($filePath);
+        }
 
         // Load metadata from supported files.
         $metadata = $this->metadataManager->getMetadata($filePath);
 
         $media->fromMetadata($metadata);
+
+        // Persist the media record for later custom field operations.
+        $this->em->persist($media);
 
         // Clear existing auto-assigned custom fields.
         $fieldCollection = $media->getCustomFields();
@@ -350,17 +360,22 @@ class StationMediaRepository extends Repository
 
     /**
      * @param Entity\StationMedia $media
+     * @param Filesystem|null $fs
      *
      * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
-    public function remove(Entity\StationMedia $media): array
-    {
-        $fs = $media->getStorageLocation()->getFilesystem();
+    public function remove(
+        Entity\StationMedia $media,
+        ?Filesystem $fs = null
+    ): array {
+        $fs ??= $media->getStorageLocation()->getFilesystem();
 
         // Clear related media.
         foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
-            if ($fs->has($relatedFilePath)) {
+            try {
                 $fs->delete($relatedFilePath);
+            } catch (FileNotFoundException $e) {
+                // Skip
             }
         }
 

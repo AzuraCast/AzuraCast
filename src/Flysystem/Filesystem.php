@@ -34,8 +34,12 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
             return $function($localPath);
         } catch (InvalidArgumentException $e) {
             $tempPath = $this->copyToLocal($path);
-            $returnVal = $function($tempPath);
-            unlink($tempPath);
+
+            try {
+                $returnVal = $function($tempPath);
+            } finally {
+                unlink($tempPath);
+            }
 
             return $returnVal;
         }

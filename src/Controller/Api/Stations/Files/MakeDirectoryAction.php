@@ -15,18 +15,21 @@ class MakeDirectoryAction
         Response $response,
         FilesystemManager $filesystem
     ): ResponseInterface {
-        $params = $request->getParams();
+        $currentDir = $request->getParam('currentDirectory', '');
+        $newDirName = $request->getParam('name', '');
 
-        $file_path = $request->getAttribute('file_path');
+        if (empty($newDirName)) {
+            return $response->withStatus(400)
+                ->withJson(new Entity\Api\Error(400, __('No directory specified')));
+        }
 
         $station = $request->getStation();
-        $fs = $filesystem->getForStation($station);
+        $fs = $filesystem->getPrefixedAdapterForStation($station, FilesystemManager::PREFIX_MEDIA, true);
 
-        $new_dir = $file_path . '/' . $params['name'];
-        $dir_created = $fs->createDir($new_dir);
-        if (!$dir_created) {
+        $newDir = $currentDir . '/' . $newDirName;
+        if (!$fs->createDir($newDir)) {
             return $response->withStatus(403)
-                ->withJson(new Entity\Api\Error(403, __('Directory "%s" was not created', $new_dir)));
+                ->withJson(new Entity\Api\Error(403, __('Directory "%s" was not created', $newDir)));
         }
 
         return $response->withJson(new Entity\Api\Status());

@@ -23,63 +23,63 @@
     </b-modal>
 </template>
 <script>
-    import { validationMixin } from 'vuelidate';
-    import { required } from 'vuelidate/lib/validators';
-    import axios from 'axios';
+import { validationMixin } from 'vuelidate';
+import { required } from 'vuelidate/lib/validators';
+import axios from 'axios';
 
-    export default {
-        name: 'NewDirectoryModal',
-        mixins: [validationMixin],
-        props: {
-            currentDirectory: String,
-            mkdirUrl: String
-        },
-        data () {
-            return {
-                newDirectory: null
-            };
-        },
-        validations: {
-            newDirectory: {
-                required
-            }
-        },
-        computed: {
-            langNewDirectory () {
-                return this.$gettext('New Directory');
-            }
-        },
-        methods: {
-            close () {
-                this.newDirectory = null;
-                this.$v.$reset();
-                this.$refs.modal.hide();
-            },
-            doMkdir () {
-                this.$v.$touch();
-                if (this.$v.$anyError) {
-                    return;
-                }
-
-                axios.post(this.mkdirUrl, {
-                    name: this.newDirectory,
-                    file: this.currentDirectory
-                }).then((resp) => {
-                    let notifyMessage = this.$gettext('New directory created.');
-                    notify('<b>' + notifyMessage + '</b>', 'success', false);
-
-                    this.$emit('relist');
-                    this.close();
-                }).catch((err) => {
-                    console.error(err);
-
-                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                    notify('<b>' + notifyMessage + '</b>', 'danger', false);
-
-                    this.$emit('relist');
-                    this.close();
-                });
-            }
+export default {
+    name: 'NewDirectoryModal',
+    mixins: [validationMixin],
+    props: {
+        currentDirectory: String,
+        mkdirUrl: String
+    },
+    data () {
+        return {
+            newDirectory: null
+        };
+    },
+    validations: {
+        newDirectory: {
+            required
         }
-    };
+    },
+    computed: {
+        langNewDirectory () {
+            return this.$gettext('New Directory');
+        }
+    },
+    methods: {
+        close () {
+            this.newDirectory = null;
+            this.$v.$reset();
+            this.$refs.modal.hide();
+        },
+        doMkdir () {
+            this.$v.$touch();
+            if (this.$v.$anyError) {
+                return;
+            }
+
+            axios.post(this.mkdirUrl, {
+                'currentDirectory': this.currentDirectory,
+                'name': this.newDirectory
+            }).then((resp) => {
+                let notifyMessage = this.$gettext('New directory created.');
+                notify('<b>' + notifyMessage + '</b>', 'success', false);
+
+                this.$emit('relist');
+                this.close();
+            }).catch((err) => {
+                console.error(err);
+
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+
+                this.$emit('relist');
+                this.close();
+            });
+        }
+    }
+};
 </script>

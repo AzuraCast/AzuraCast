@@ -3,330 +3,431 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\FilesystemManager;
-use App\Flysystem\StationFilesystemGroup;
+use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
 use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManagerInterface;
+use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Exception;
+use Jhofm\FlysystemIterator\Filter\FilterFactory;
+use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
+use Throwable;
 
 class BatchAction
 {
-    public function __invoke(
-        ServerRequest $request,
-        Response $response,
+    protected EntityManagerInterface $em;
+
+    protected MessageBus $messageBus;
+
+    protected Entity\Repository\StationMediaRepository $mediaRepo;
+
+    protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo;
+
+    protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo;
+
+    public function __construct(
         EntityManagerInterface $em,
+        MessageBus $messageBus,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
-        FilesystemManager $filesystem,
-        MessageBus $messageBus
+        Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo
+    ) {
+        $this->em = $em;
+        $this->messageBus = $messageBus;
+        $this->mediaRepo = $mediaRepo;
+        $this->playlistMediaRepo = $playlistMediaRepo;
+        $this->playlistFolderRepo = $playlistFolderRepo;
+    }
+
+    public function __invoke(
+        ServerRequest $request,
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
-
-        $fs = $filesystem->getForStation($station, false);
-
-        // Convert from pipe-separated files parameter into actual paths.
-        $files_raw = $request->getParam('files');
-        $files = [];
-
-        foreach ($files_raw as $file) {
-            $file_path = FilesystemManager::PREFIX_MEDIA . '://' . $file;
-
-            if ($fs->has($file_path)) {
-                $files[] = $file_path;
-            }
-        }
-
-        $files_found = 0;
-        $files_affected = 0;
-
-        $directories_found = 0;
-        $directories_affected = 0;
-
-        $response_record = null;
-        $errors = [];
+        $storageLocation = $station->getMediaStorageLocation();
+        $fs = $storageLocation->getFilesystem();
 
         switch ($request->getParam('do')) {
             case 'delete':
-                // Remove the database entries of any music being removed.
-                $music_files = $this->getMusicFiles($fs, $files);
-                $files_found = count($music_files);
-
-                /** @var Entity\StationPlaylist[] $affected_playlists */
-                $affected_playlists = [];
-
-                foreach ($music_files as $file) {
-                    try {
-                        /** @var Entity\StationMedia $media */
-                        $media = $mediaRepo->findByPath($file['path'], $station);
-
-                        if ($media instanceof Entity\StationMedia) {
-                            $mediaPlaylists = $mediaRepo->remove($media);
-
-                            foreach ($mediaPlaylists as $playlist_id => $playlist) {
-                                if (!isset($affected_playlists[$playlist_id])) {
-                                    $affected_playlists[$playlist_id] = $playlist;
-                                }
-                            }
-                        }
-                    } catch (Exception $e) {
-                        $errors[] = $file . ': ' . $e->getMessage();
-                    }
-
-                    $files_affected++;
-                }
-
-                // Delete all selected files.
-                $mediaStorage = $station->getMediaStorageLocation();
-
-                foreach ($files as $file) {
-                    try {
-                        $file_meta = $fs->getMetadata($file);
-
-                        if ('file' === $file_meta['type']) {
-                            $mediaStorage->removeStorageUsed($file_meta['size']);
-                            $fs->delete($file);
-                        } else {
-                            $fs->deleteDir($file);
-                        }
-                    } catch (Exception $e) {
-                        $errors[] = $file . ': ' . $e->getMessage();
-                    }
-                }
-
-                $em->persist($station);
-                $em->persist($mediaStorage);
-                $em->flush();
-
-                // Write new PLS playlist configuration.
-                $backend = $request->getStationBackend();
-
-                if ($backend instanceof Liquidsoap) {
-                    foreach ($affected_playlists as $playlist_id => $playlist_row) {
-                        // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage();
-                        $message->playlist_id = $playlist_id;
-
-                        $messageBus->dispatch($message);
-                    }
-                }
+                $result = $this->doDelete($request, $station, $storageLocation, $fs);
                 break;
 
             case 'playlist':
-                // Set playlists for selected files.
-                $response_record = null;
-
-                /** @var Entity\StationPlaylist[] $playlists */
-                $playlists = [];
-                $playlist_weights = [];
-                $affected_playlists = [];
-
-                foreach ($request->getParam('playlists') as $playlist_id) {
-                    if ('new' === $playlist_id) {
-                        $playlist = new Entity\StationPlaylist($station);
-                        $playlist->setName($request->getParam('new_playlist_name'));
-
-                        $em->persist($playlist);
-                        $em->flush();
-
-                        $response_record = [
-                            'id' => $playlist->getId(),
-                            'name' => $playlist->getName(),
-                        ];
-
-                        $affected_playlists[$playlist->getId()] = $playlist->getId();
-                        $playlists[] = $playlist;
-                        $playlist_weights[$playlist->getId()] = 0;
-                    } else {
-                        $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                            'station_id' => $station->getId(),
-                            'id' => (int)$playlist_id,
-                        ]);
-
-                        if ($playlist instanceof Entity\StationPlaylist) {
-                            $affected_playlists[$playlist->getId()] = $playlist->getId();
-                            $playlists[] = $playlist;
-                            $playlist_weights[$playlist->getId()] = $playlistMediaRepo->getHighestSongWeight($playlist);
-                        }
-                    }
-                }
-
-                $music_files = $this->getMusicFiles($fs, $files);
-                $files_found = count($music_files);
-
-                foreach ($music_files as $file) {
-                    try {
-                        $media = $mediaRepo->getOrCreate($station, $file['path']);
-
-                        $media_playlists = $playlistMediaRepo->clearPlaylistsFromMedia($media);
-                        foreach ($media_playlists as $playlist_id => $playlist) {
-                            if (!isset($affected_playlists[$playlist_id])) {
-                                $affected_playlists[$playlist_id] = $playlist;
-                            }
-                        }
-
-                        foreach ($playlists as $playlist) {
-                            $playlist_weights[$playlist->getId()]++;
-                            $weight = $playlist_weights[$playlist->getId()];
-
-                            $playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
-                        }
-                    } catch (Exception $e) {
-                        $errors[] = $file . ': ' . $e->getMessage();
-                    }
-
-                    $files_affected++;
-                }
-
-                // Set the playlist auto-assignment of any selected folders.
-                $directories = $this->getDirectories($fs, $files);
-                $directories_found = count($directories);
-
-                foreach ($directories as $dir) {
-                    try {
-                        $playlistFolderRepo->setPlaylistsForFolder($station, $playlists, $dir['path']);
-                    } catch (Exception $e) {
-                        $errors[] = $dir['path'] . ': ' . $e->getMessage();
-                    }
-                }
-
-                $em->flush();
-
-                // Write new PLS playlist configuration.
-                $backend = $request->getStationBackend();
-
-                if ($backend instanceof Liquidsoap) {
-                    foreach ($affected_playlists as $playlist_id => $playlist_row) {
-                        // Instruct the message queue to start a new "write playlist to file" task.
-                        $message = new WritePlaylistFileMessage();
-                        $message->playlist_id = $playlist_id;
-
-                        $messageBus->dispatch($message);
-                    }
-                }
+                $result = $this->doPlaylist($request, $station, $storageLocation, $fs);
                 break;
 
             case 'move':
-                $music_files = $this->getMusicFiles($fs, $files);
-                $files_found = count($music_files);
-
-                $directory_path = $request->getParam('directory');
-                $directory_path_full = FilesystemManager::PREFIX_MEDIA . '://' . $directory_path;
-
-                try {
-                    // Verify that you're moving to a directory (if it's not the root dir).
-                    foreach ($music_files as $file) {
-                        $media = $mediaRepo->getOrCreate($station, $file['path']);
-
-                        $old_full_path = $media->getPathUri();
-
-                        $newPath = ('' === $directory_path)
-                            ? $file['basename']
-                            : $directory_path . '/' . $file['basename'];
-                        $media->setPath($newPath);
-
-                        if (!$fs->rename($old_full_path, $media->getPath())) {
-                            throw new \App\Exception(__(
-                                'Could not move "%s" to "%s"',
-                                $old_full_path,
-                                $media->getPath()
-                            ));
-                        }
-
-                        $em->persist($media);
-                        $em->flush();
-                        $files_affected++;
-                    }
-                } catch (Exception $e) {
-                    $errors[] = $e->getMessage();
-                }
-
-                $em->flush();
+                $result = $this->doMove($request, $station, $storageLocation, $fs);
                 break;
 
             case 'queue':
-                $music_files = $this->getMusicFiles($fs, $files);
-                $files_found = count($music_files);
-
-                foreach ($music_files as $file) {
-                    try {
-                        $media = $mediaRepo->getOrCreate($station, $file['path']);
-
-                        $newRequest = new Entity\StationRequest($station, $media, $request->getIp(), true);
-                        $em->persist($newRequest);
-                        $em->flush();
-                        $files_affected++;
-                    } catch (Exception $e) {
-                        $errors[] = $e->getMessage();
-                    }
-                }
+                $result = $this->doQueue($request, $station, $storageLocation, $fs);
                 break;
+
+            default:
+                throw new \InvalidArgumentException('Invalid batch action specified.');
         }
 
-        if ($em->isOpen()) {
-            $em->clear(Entity\StationMedia::class);
-            $em->clear(Entity\StationPlaylist::class);
-            $em->clear(Entity\StationPlaylistMedia::class);
-            $em->clear(Entity\StationRequest::class);
+        if ($this->em->isOpen()) {
+            $this->em->clear(Entity\StationMedia::class);
+            $this->em->clear(Entity\StationPlaylist::class);
+            $this->em->clear(Entity\StationPlaylistMedia::class);
+            $this->em->clear(Entity\StationRequest::class);
         }
 
-        return $response->withJson([
-            'success' => empty($errors),
-            'files_found' => $files_found,
-            'files_affected' => $files_affected,
-            'directories_found' => $directories_found,
-            'directories_affected' => $directories_affected,
-            'errors' => $errors,
-            'record' => $response_record,
-        ]);
+        return $response->withJson($result);
     }
 
-    /**
-     * @return mixed[]
-     */
-    protected function getMusicFiles(StationFilesystemGroup $fs, array $files): array
-    {
-        $musicFiles = [];
+    public function doDelete(
+        ServerRequest $request,
+        Entity\Station $station,
+        Entity\StorageLocation $storageLocation,
+        Filesystem $fs
+    ): Entity\Api\BatchResult {
+        $result = $this->parseRequest($request, $fs, true);
 
-        foreach ($files as $path) {
-            $pathMeta = $fs->getMetadata($path);
+        $affectedPlaylists = [];
 
-            if ('file' === $pathMeta['type']) {
-                $pathMeta['basename'] = basename($pathMeta['path']);
-                $musicFiles[] = $pathMeta;
-            } else {
-                foreach ($fs->listContents($path, true) as $file) {
-                    if ('file' === $file['type']) {
-                        $file['basename'] = basename($file['path']);
-                        $musicFiles[] = $file;
+        /*
+         * NOTE: This iteration clears the entity manager.
+         */
+        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+            try {
+                $mediaPlaylists = $this->mediaRepo->remove($media, $fs);
+
+                foreach ($mediaPlaylists as $playlistId => $playlist) {
+                    if (!isset($affectedPlaylists[$playlistId])) {
+                        $affectedPlaylists[$playlistId] = $playlist;
                     }
+                }
+            } catch (Throwable $e) {
+                $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
+            }
+        }
+
+        foreach ($result->files as $file) {
+            try {
+                $fs->delete($file);
+            } catch (Throwable $e) {
+                $errors[] = $file . ': ' . $e->getMessage();
+            }
+        }
+
+        foreach ($result->directories as $dir) {
+            try {
+                $fs->deleteDir($dir);
+            } catch (Throwable $e) {
+                $errors[] = $dir . ': ' . $e->getMessage();
+            }
+        }
+
+        $this->em->flush();
+
+        $this->writePlaylistChanges($request, $affectedPlaylists);
+
+        return $result;
+    }
+
+    public function doPlaylist(
+        ServerRequest $request,
+        Entity\Station $station,
+        Entity\StorageLocation $storageLocation,
+        Filesystem $fs
+    ): Entity\Api\BatchResult {
+        $result = $this->parseRequest($request, $fs, true);
+
+        /** @var Entity\StationPlaylist[] $playlists */
+        $playlists = [];
+        $playlistWeights = [];
+        $affectedPlaylists = [];
+
+        foreach ($request->getParam('playlists') as $playlistId) {
+            if ('new' === $playlistId) {
+                $playlist = new Entity\StationPlaylist($station);
+                $playlist->setName($request->getParam('new_playlist_name'));
+
+                $this->em->persist($playlist);
+                $this->em->flush();
+
+                $result->responseRecord = [
+                    'id' => $playlist->getId(),
+                    'name' => $playlist->getName(),
+                ];
+
+                $affectedPlaylists[$playlist->getId()] = $playlist->getId();
+                $playlists[$playlist->getId()] = $playlist;
+                $playlistWeights[$playlist->getId()] = 0;
+            } else {
+                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                    'station_id' => $station->getId(),
+                    'id' => (int)$playlistId,
+                ]);
+
+                if ($playlist instanceof Entity\StationPlaylist) {
+                    $affectedPlaylists[$playlist->getId()] = $playlist->getId();
+                    $playlists[$playlist->getId()] = $playlist;
+                    $playlistWeights[$playlist->getId()] = $this->playlistMediaRepo->getHighestSongWeight($playlist);
                 }
             }
         }
 
-        return $musicFiles;
-    }
+        /*
+         * NOTE: This iteration clears the entity manager.
+         */
+        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+            try {
+                $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media);
+                foreach ($mediaPlaylists as $playlistId => $playlistRecord) {
+                    if (!isset($affectedPlaylists[$playlistId])) {
+                        $affectedPlaylists[$playlistId] = $playlistRecord;
+                    }
+                }
 
-    /**
-     * @return mixed[]
-     */
-    protected function getDirectories(StationFilesystemGroup $fs, array $files): array
-    {
-        $directories = [];
+                foreach ($playlists as $playlistId => $playlistRecord) {
+                    /** @var Entity\StationPlaylist $playlist */
+                    $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
 
-        foreach ($files as $path) {
-            $pathMeta = $fs->getMetadata($path);
+                    $playlistWeights[$playlist->getId()]++;
+                    $weight = $playlistWeights[$playlist->getId()];
 
-            if ('dir' === $pathMeta['type']) {
-                $directories[] = $pathMeta;
+                    $this->playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
+                }
+            } catch (Exception $e) {
+                $errors[] = $media->getPath() . ': ' . $e->getMessage();
+                throw $e;
             }
         }
 
-        return $directories;
+        /** @var Entity\Station $station */
+        $station = $this->em->find(Entity\Station::class, $station->getId());
+
+        foreach ($result->directories as $dir) {
+            try {
+                $this->playlistFolderRepo->setPlaylistsForFolder($station, $playlists, $dir);
+            } catch (Exception $e) {
+                $errors[] = $dir . ': ' . $e->getMessage();
+            }
+        }
+
+        $this->em->flush();
+
+        $this->writePlaylistChanges($request, $affectedPlaylists);
+
+        return $result;
+    }
+
+    public function doMove(
+        ServerRequest $request,
+        Entity\Station $station,
+        Entity\StorageLocation $storageLocation,
+        Filesystem $fs
+    ): Entity\Api\BatchResult {
+        $result = $this->parseRequest($request, $fs, false);
+
+        $from = $request->getParam('currentDirectory', '');
+        $to = $request->getParam('directory', '');
+
+        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+            $oldPath = $media->getPath();
+            $newPath = $this->renamePath($from, $to, $oldPath);
+
+            try {
+                if ($fs->rename($oldPath, $newPath)) {
+                    $media->setPath($newPath);
+                    $this->em->persist($media);
+                }
+            } catch (Throwable $e) {
+                $result->errors[] = $oldPath . ': ' . $e->getMessage();
+            }
+        }
+
+        foreach ($result->directories as $dirPath) {
+            $newDirPath = $this->renamePath($from, $to, $dirPath);
+
+            try {
+                if ($fs->rename($dirPath, $newDirPath)) {
+                    foreach ($this->iteratePlaylistFoldersInDirectory($station, $dirPath) as $playlistFolder) {
+                        $playlistFolder->setPath($this->renamePath($from, $to, $playlistFolder->getPath()));
+                        $this->em->persist($playlistFolder);
+                    }
+
+                    foreach ($this->iterateMediaInDirectory($storageLocation, $dirPath) as $media) {
+                        $media->setPath($this->renamePath($from, $to, $media->getPath()));
+                        $this->em->persist($media);
+                    }
+                }
+            } catch (Throwable $e) {
+                $result->errors[] = $dirPath . ': ' . $e->getMessage();
+            }
+        }
+
+        return $result;
+    }
+
+    public function doQueue(
+        ServerRequest $request,
+        Entity\Station $station,
+        Entity\StorageLocation $storageLocation,
+        Filesystem $fs
+    ): Entity\Api\BatchResult {
+        $result = $this->parseRequest($request, $fs, true);
+
+        /*
+         * NOTE: This iteration clears the entity manager.
+         */
+        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+            try {
+                $newRequest = new Entity\StationRequest($station, $media, $request->getIp(), true);
+                $this->em->persist($newRequest);
+            } catch (Throwable $e) {
+                $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
+            }
+        }
+
+        return $result;
+    }
+
+    protected function parseRequest(
+        ServerRequest $request,
+        Filesystem $fs,
+        bool $recursive = false
+    ): Entity\Api\BatchResult {
+        $files = array_values((array)$request->getParam('files', []));
+        $directories = array_values((array)$request->getParam('dirs', []));
+
+        if ($recursive) {
+            foreach ($directories as $dir) {
+                $dirIterator = $fs->createIterator($dir, [
+                    Options::OPTION_IS_RECURSIVE => true,
+                    Options::OPTION_FILTER => FilterFactory::isFile(),
+                ]);
+
+                foreach ($dirIterator as $subDirMeta) {
+                    $files[] = $subDirMeta['path'];
+                }
+            }
+        }
+
+        $result = new Entity\Api\BatchResult();
+        $result->files = $files;
+        $result->directories = $directories;
+
+        return $result;
+    }
+
+    /**
+     * Iterate through the found media records, while occasionally flushing and clearing the entity manager.
+     *
+     * @note This function flushes the entity manager.
+     *
+     * @param Entity\StorageLocation $storageLocation
+     * @param array $paths
+     *
+     * @return iterable|Entity\StationMedia[]
+     */
+    protected function iterateMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
+    {
+        $iteration = 0;
+
+        $this->em->beginTransaction();
+
+        try {
+            foreach ($paths as $path) {
+                $iteration++;
+
+                $media = $this->mediaRepo->findByPath($path, $storageLocation);
+                if ($media instanceof Entity\StationMedia) {
+                    yield $path => $media;
+
+                    if (!($iteration % 25)) {
+                        $this->em->flush();
+                        $this->em->clear();
+                    }
+                }
+            }
+        } catch (Throwable $exception) {
+            $this->em->rollback();
+            throw $exception;
+        }
+
+        $this->em->flush();
+        $this->em->clear();
+        $this->em->commit();
+    }
+
+    /**
+     * @param Entity\StorageLocation $storageLocation
+     * @param string $dir
+     *
+     * @return iterable|Entity\StationMedia[]
+     */
+    protected function iterateMediaInDirectory(Entity\StorageLocation $storageLocation, string $dir): iterable
+    {
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sm 
+            FROM App\Entity\StationMedia sm
+            WHERE sm.storage_location = :storageLocation
+            AND sm.path LIKE :path')
+            ->setParameter('storageLocation', $storageLocation)
+            ->setParameter('path', $dir . '/%');
+
+        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+    }
+
+    /**
+     * @param Entity\Station $station
+     * @param string $dir
+     *
+     * @return iterable|Entity\StationPlaylistFolder[]
+     */
+    protected function iteratePlaylistFoldersInDirectory(Entity\Station $station, string $dir): iterable
+    {
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT spf
+            FROM App\Entity\StationPlaylistFolder spf
+            WHERE spf.station = :station
+            AND spf.path LIKE :path')
+            ->setParameter('station', $station)
+            ->setParameter('path', $dir . '%');
+
+        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+    }
+
+    protected function renamePath(string $fromDir, string $toDir, string $path): string
+    {
+        if ('' === $fromDir && '' !== $toDir) {
+            // Just prepend the new directory.
+            return $toDir . '/' . $path;
+        }
+
+        if (0 === \stripos($path, $fromDir)) {
+            $newBasePath = ltrim(substr($path, strlen($fromDir)), '/');
+            if ('' !== $toDir) {
+                return $toDir . '/' . $newBasePath;
+            }
+            return $newBasePath;
+        }
+
+        return $path;
+    }
+
+    protected function writePlaylistChanges(
+        ServerRequest $request,
+        array $playlists
+    ): void {
+        // Write new PLS playlist configuration.
+        $backend = $request->getStationBackend();
+
+        if ($backend instanceof Liquidsoap) {
+            foreach ($playlists as $playlistId => $playlistRow) {
+                // Instruct the message queue to start a new "write playlist to file" task.
+                $message = new WritePlaylistFileMessage();
+                $message->playlist_id = $playlistId;
+
+                $this->messageBus->dispatch($message);
+            }
+        }
     }
 }

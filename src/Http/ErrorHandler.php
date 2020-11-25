@@ -145,10 +145,8 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $response = $this->responseFactory->createResponse($this->exception->getCode());
 
             if ($this->returnJson) {
-                return $response->withJson(new Entity\Api\Error(
-                    $this->exception->getCode(),
-                    $this->exception->getMessage()
-                ));
+                $apiResponse = Entity\Api\Error::fromException($this->exception, $this->showDetailed);
+                return $response->withJson($apiResponse);
             }
 
             try {
@@ -217,25 +215,8 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         $response = $this->responseFactory->createResponse(500);
 
         if ($this->returnJson) {
-            if ($this->showDetailed) {
-                return $response->withJson([
-                    'code' => $this->exception->getCode(),
-                    'message' => $this->exception->getMessage(),
-                    'file' => $this->exception->getFile(),
-                    'line' => $this->exception->getLine(),
-                    'trace' => $this->exception->getTrace(),
-                ]);
-            }
-
-            $api_response = new Entity\Api\Error(
-                $this->exception->getCode(),
-                $this->exception->getMessage(),
-                ($this->exception instanceof Exception)
-                    ? $this->exception->getFormattedMessage()
-                    : $this->exception->getMessage()
-            );
-
-            return $response->withJson($api_response);
+            $apiResponse = Entity\Api\Error::fromException($this->exception, $this->showDetailed);
+            return $response->withJson($apiResponse);
         }
 
         if ($this->showDetailed && class_exists(Run::class)) {

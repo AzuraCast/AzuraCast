@@ -31,30 +31,57 @@ class FilesystemManager
 
     public function getForStation(Entity\Station $station, bool $cached = true): StationFilesystemGroup
     {
-        /** @var AdapterInterface[] $aliases */
         $aliases = [
-            self::PREFIX_MEDIA => $station->getRadioMediaDirAdapter(),
-            self::PREFIX_PLAYLISTS => $station->getRadioPlaylistsDirAdapter(),
-            self::PREFIX_CONFIG => $station->getRadioConfigDirAdapter(),
-            self::PREFIX_RECORDINGS => $station->getRadioRecordingsDirAdapter(),
-            self::PREFIX_TEMP => $station->getRadioTempDirAdapter(),
-        ];
-
-        $cachableFilesystems = [
             self::PREFIX_MEDIA,
+            self::PREFIX_PLAYLISTS,
+            self::PREFIX_CONFIG,
             self::PREFIX_RECORDINGS,
+            self::PREFIX_TEMP,
         ];
 
         $filesystems = [];
-        foreach ($aliases as $alias => $adapter) {
-            $cacheThisAdapter = (in_array($alias, $cachableFilesystems, true))
-                ? $cached
-                : false;
-
-            $filesystems[$alias] = $this->getFilesystemForAdapter($adapter, $cacheThisAdapter);
+        foreach ($aliases as $alias) {
+            $filesystems[$alias] = $this->getPrefixedAdapterForStation($station, $alias, $cached);
         }
 
         return new StationFilesystemGroup($filesystems);
+    }
+
+    public function getPrefixedAdapterForStation(
+        Entity\Station $station,
+        string $prefix,
+        bool $cached = true
+    ): Filesystem {
+        $isCachable = false;
+
+        switch ($prefix) {
+            case self::PREFIX_MEDIA:
+                $adapter = $station->getRadioMediaDirAdapter();
+                $isCachable = true;
+                break;
+
+            case self::PREFIX_RECORDINGS:
+                $adapter = $station->getRadioRecordingsDirAdapter();
+                $isCachable = true;
+                break;
+
+            case self::PREFIX_PLAYLISTS:
+                $adapter = $station->getRadioPlaylistsDirAdapter();
+                break;
+
+            case self::PREFIX_CONFIG:
+                $adapter = $station->getRadioConfigDirAdapter();
+                break;
+
+            case self::PREFIX_TEMP:
+                $adapter = $station->getRadioTempDirAdapter();
+                break;
+
+            default:
+                throw new \InvalidArgumentException(sprintf("Invalid adapter: %s", $prefix));
+        }
+
+        return $this->getFilesystemForAdapter($adapter, $isCachable && $cached);
     }
 
     public function getFilesystemForAdapter(AdapterInterface $adapter, bool $cached = false): Filesystem
@@ -99,5 +126,21 @@ class FilesystemManager
             return preg_replace('|[\{\}\(\)/\\\@\:]|', '_', $cacheKey);
         }
         return $cacheKey;
+    }
+
+    public static function applyPrefix(string $prefix, string $path): string
+    {
+        $path = ltrim(self::stripPrefix($path), '/');
+
+        return $prefix . '://' . $path;
+    }
+
+    public static function stripPrefix(string $path): string
+    {
+        if (strpos($path, '://') !== false) {
+            [, $path] = explode('://', $path, 2);
+        }
+
+        return $path;
     }
 }

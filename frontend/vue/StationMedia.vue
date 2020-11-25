@@ -3,11 +3,11 @@
         <div class="card-body">
             <breadcrumb :current-directory="currentDirectory" @change-directory="changeDirectory"></breadcrumb>
 
-            <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase"
+            <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase" :valid-mime-types="validMimeTypes"
                          :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
 
-            <media-toolbar :selected-files="selectedFiles" :batch-url="batchUrl"
-                           :current-directory="currentDirectory"
+            <media-toolbar :selected-files="selectedFiles" :selected-dirs="selectedDirs"
+                           :batch-url="batchUrl" :current-directory="currentDirectory"
                            :initial-playlists="initialPlaylists" @relist="onTriggerRelist"></media-toolbar>
         </div>
 
@@ -87,7 +87,8 @@
                              @relist="onTriggerRelist">
         </new-directory-modal>
 
-        <move-files-modal :selected-files="selectedFiles" :current-directory="currentDirectory" :batch-url="batchUrl"
+        <move-files-modal :selected-files="selectedFiles" :selected-dirs="selectedDirs"
+                          :current-directory="currentDirectory" :batch-url="batchUrl"
                           :list-directories-url="listDirectoriesUrl" @relist="onTriggerRelist">
         </move-files-modal>
 
@@ -130,15 +131,45 @@ export default {
         Breadcrumb
     },
     props: {
-        listUrl: String,
-        batchUrl: String,
-        uploadUrl: String,
-        listDirectoriesUrl: String,
-        mkdirUrl: String,
-        renameUrl: String,
-        editUrl: String,
-        initialPlaylists: Array,
-        customFields: Array
+        listUrl: {
+            type: String,
+            required: true
+        },
+        batchUrl: {
+            type: String,
+            required: true
+        },
+        uploadUrl: {
+            type: String,
+            required: true
+        },
+        listDirectoriesUrl: {
+            type: String,
+            required: true
+        },
+        mkdirUrl: {
+            type: String,
+            required: true
+        },
+        renameUrl: {
+            type: String,
+            required: true
+        },
+        initialPlaylists: {
+            type: Array,
+            required: false,
+            default: () => []
+        },
+        customFields: {
+            type: Array,
+            required: false,
+            default: () => []
+        },
+        validMimeTypes: {
+            type: Array,
+            required: false,
+            default: () => []
+        }
     },
     data () {
         let fields = [
@@ -194,6 +225,7 @@ export default {
         return {
             fields: fields,
             selectedFiles: [],
+            selectedDirs: [],
             currentDirectory: '',
             searchPhrase: null
         };
@@ -231,7 +263,12 @@ export default {
             return formatFileSize(size);
         },
         onRowSelected (items) {
-            this.selectedFiles = _.map(items, 'name');
+            this.selectedFiles = _.map(_.filter(items, (row) => {
+                return !row.is_dir;
+            }), 'name');
+            this.selectedDirs = _.map(_.filter(items, (row) => {
+                return row.is_dir;
+            }), 'name');
         },
         onRefreshed () {
             this.$eventHub.$emit('refreshed');
@@ -264,7 +301,7 @@ export default {
             this.$refs.editModal.open(recordUrl, albumArtUrl, audioUrl, waveformUrl);
         },
         requestConfig (config) {
-            config.params.file = this.currentDirectory;
+            config.params.currentDirectory = this.currentDirectory;
             return config;
         }
     }

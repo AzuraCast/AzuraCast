@@ -21,6 +21,7 @@ final class Version20201125023226 extends AbstractMigration
             UPDATE station_media
             SET text=CONCAT(artist,\' - \',title),
                 song_id=MD5(LOWER(REPLACE(REPLACE(CONCAT(artist,\' - \',title),\'-\',\'\'),\' \',\'\')))
+            WHERE artist != \'\' OR title != \'\'
         ');
     }
 

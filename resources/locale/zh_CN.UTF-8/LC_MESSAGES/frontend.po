@@ -106,7 +106,7 @@ msgstr "发生错误，您的请求无法完成。"
 
 #: vue/StationPlaylists.vue:233 vue/station_media/MediaToolbar.vue:194
 msgid "Applying changes..."
-msgstr "应用修改中..."
+msgstr "应用更改中..."
 
 #: vue/StationOnDemand.vue:102
 msgid "Art"
@@ -161,7 +161,7 @@ msgstr "广播"
 #: vue/station_playlists/PlaylistEditModal.vue:178
 #: vue/station_streamers/StreamerEditModal.vue:144
 msgid "Changes saved."
-msgstr "修改已保存。"
+msgstr "更改已保存。"
 
 #: vue/station_media/MediaToolbar.vue:32
 msgid "Clear"
@@ -208,7 +208,7 @@ msgstr "创建目录"
 #: vue/webcaster/microphone.vue:17 vue/webcaster/playlist.vue:22
 #: vue/webcaster/settings.vue:133
 msgid "Cue"
-msgstr "提示"
+msgstr "开始"
 
 #: vue/StationPlaylists.vue:206
 msgid "Custom"
@@ -466,7 +466,7 @@ msgstr ""
 msgid ""
 "If disabled, the playlist will not be included in radio playback, but can "
 "still be managed."
-msgstr "如果禁用，播放列表将不包含在广播播放中，但仍可进行管理。"
+msgstr "如果禁用，播放列表将不包含在广播的播放中，但仍可进行管理。"
 
 #: vue/station_streamers/form/StreamerFormBasicInfo.vue:66
 #: vue/station_streamers/form/StreamerFormBasicInfo.vue:1
@@ -486,14 +486,14 @@ msgstr "如果为您的电台启用了请求功能，用户将能够请求该播
 #: vue/station_playlists/form/PlaylistFormSchedule.vue:1
 msgid ""
 "If the end time is before the start time, the playlist will play overnight."
-msgstr "如果结束时间在开始时间之前，则播放列表将通宵播放。"
+msgstr "如果结束时间早于开始时间，则播放列表将隔夜播放。"
 
 #: vue/station_streamers/form/StreamerFormSchedule.vue:42
 #: vue/station_streamers/form/StreamerFormSchedule.vue:1
 msgid ""
 "If the end time is before the start time, the schedule entry will continue "
 "overnight."
-msgstr "如果结束时间在开始时间之前，则计划录入将继续过夜。"
+msgstr "如果结束时间早于开始时间，则计划列表将继续过夜。"
 
 #: vue/station_playlists/form/PlaylistFormBasicInfo.vue:47
 #: vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
@@ -593,7 +593,7 @@ msgstr "麦克风"
 
 #: vue/webcaster/microphone.vue:32
 msgid "Microphone Source"
-msgstr "麦克风源"
+msgstr "麦克风来源"
 
 #: vue/station_playlists/form/PlaylistFormBasicInfo.vue:171
 #: vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
@@ -606,7 +606,7 @@ msgstr "混音器"
 
 #: vue/StationMedia.vue:169
 msgid "Modified"
-msgstr "修改"
+msgstr "更改"
 
 #: vue/station_playlists/form/PlaylistFormSchedule.vue:135
 #: vue/station_streamers/form/StreamerFormSchedule.vue:127
@@ -941,7 +941,7 @@ msgstr "预定时间#%{num}。"
 
 #: vue/StationPlaylists.vue:141
 msgid "Scheduling"
-msgstr "安排"
+msgstr "时间安排"
 
 #: vue/components/DataTable.vue:220
 msgid "Search"
@@ -1116,7 +1116,7 @@ msgstr "开始/结束日期不能用于具有高级设置的播放列表!"
 #: vue/station_playlists/form/PlaylistFormSchedule.vue:54
 #: vue/station_streamers/form/StreamerFormSchedule.vue:51
 msgid "Station Time Zone"
-msgstr "站内时区"
+msgstr "电台时区"
 
 #: vue/station_media/form/MediaFormWaveformEditor.vue:17
 msgid "Stop"
@@ -1280,7 +1280,7 @@ msgstr "星期四"
 #: vue/station_playlists/PlaylistReorderModal.vue:8
 #: vue/webcaster/settings.vue:103
 msgid "Title"
-msgstr "标题标题"
+msgstr "标题"
 
 #: vue/station_playlists/form/PlaylistFormSchedule.vue:33
 #: vue/station_playlists/form/PlaylistFormSchedule.vue:1

@@ -20,6 +20,8 @@ This release includes many contributions from members of our community as part o
 
 - **Security Update:** A possible arbitrary code execution issue with Liquidsoap DJ authentication is resolved by changing the way input is escaped. (#3465)
 
+- Simplified Chinese support is now available in the web interface.
+
 ## Code Quality/Technical Changes
 
 - **Removal of InfluxDB**: Despite the ever-increasing complexity of AzuraCast, sometimes we review our dependencies to ensure if the additional load and maintenance overhead they cause is worth the benefit to our system. In the case of our InfluxDB time series database, we decided that this dependency was no longer needed, and its purposes could be fully handled by our existing MariaDB database. This decision was also motivated by Influxdata releasing a non-backwards-compatible new version of the software, which would present a very challenging migration to our users. Instead, we have removed the dependency entirely. 

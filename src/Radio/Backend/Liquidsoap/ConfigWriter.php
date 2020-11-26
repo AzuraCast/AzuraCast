@@ -144,6 +144,8 @@ class ConfigWriter implements EventSubscriberInterface
             '',
             'setenv("TZ", "' . self::cleanUpString($station->getTimezone()) . '")',
             '',
+            'azuracast_api_auth = ref "' . self::cleanUpString($station->getAdapterApiKey()) . '"',
+            '',
         ]);
     }
 
@@ -277,9 +279,9 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistParams[] = '"' . $playlistFilePath . '"';
 
                 $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFuncName . '(' . implode(
-                    ',',
-                    $playlistParams
-                ) . ')';
+                        ',',
+                        $playlistParams
+                    ) . ')';
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
@@ -650,13 +652,14 @@ class ConfigWriter implements EventSubscriberInterface
         // Docker cURL-based API URL call with API authentication.
         if ($settings->isDocker()) {
             $params = (array)$params;
-            $params['api_auth'] = '"' . $station->getAdapterApiKey() . '"';
+            $params['api_auth'] = '!azuracast_api_auth';
 
             $service_uri = ($settings[Settings::DOCKER_REVISION] >= 5) ? 'web' : 'nginx';
             $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
             $command = 'curl -s --request POST --url ' . $api_url;
-            foreach ($params as $param_key => $param_val) {
-                $command .= ' --form ' . $param_key . '="^string.quote(' . $param_val . ')^"';
+            foreach ($params as $paramKey => $paramVal) {
+                $envVarKey = strtoupper(str_replace('-', '_', $paramKey));
+                $command .= ' --form ' . $paramKey . '="$' . $envVarKey . '"';
             }
         } else {
             // Ansible shell-script call.
@@ -666,14 +669,22 @@ class ConfigWriter implements EventSubscriberInterface
             $shell_args[] = 'azuracast:internal:' . $endpoint;
             $shell_args[] = $station->getId();
 
-            foreach ((array)$params as $param_key => $param_val) {
-                $shell_args [] = '--' . $param_key . '="^string.quote(' . $param_val . ')^"';
+            foreach ((array)$params as $paramKey => $paramVal) {
+                $envVarKey = strtoupper(str_replace('-', '_', $paramKey));
+                $shell_args [] = '--' . $paramKey . '="$' . $envVarKey . '"';
             }
 
             $command = $shell_path . ' ' . implode(' ', $shell_args);
         }
 
-        return 'list.hd(get_process_lines("' . $command . '"), default="")';
+        $envVarsParts = [];
+        foreach ($params as $envVarName => $envVarValue) {
+            $envVarKey = strtoupper(str_replace('-', '_', $envVarName));
+            $envVarsParts[] = '("' . $envVarKey . '", ' . $envVarValue . ')';
+        }
+        $envVarsStr = 'env=[' . implode(', ', $envVarsParts) . ']';
+
+        return 'list.hd(get_process_lines(' . $envVarsStr . ', \'' . $command . '\'), default="")';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void

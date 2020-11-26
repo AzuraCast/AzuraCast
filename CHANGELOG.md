@@ -16,7 +16,9 @@ This release includes many contributions from members of our community as part o
 
 - There is a new, much friendlier animation that displays when Docker installations of AzuraCast are waiting for their dependent services to be fully ready. This avoids showing the previous messages, which often looked like errors, even though they weren't.
 
-- The global "Administer Users" and "Administer Permissions" permissions have been *removed* from the system. In both cases, users who had this permission could effectively make themselves a super administrator user, so user and permission management is now only accessible by users with the "Administer All" permission. 
+- **Security Update:** The global "Administer Users" and "Administer Permissions" permissions have been *removed* from the system. In both cases, users who had this permission could effectively make themselves a super administrator user, so user and permission management is now only accessible by users with the "Administer All" permission. 
+
+- **Security Update:** A possible arbitrary code execution issue with Liquidsoap DJ authentication is resolved by changing the way input is escaped. (#3465)
 
 ## Code Quality/Technical Changes
 

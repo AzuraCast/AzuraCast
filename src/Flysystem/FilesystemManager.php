@@ -3,12 +3,12 @@
 namespace App\Flysystem;
 
 use App\Entity;
+use App\Flysystem\Cache\Psr6Cache;
 use Cache\Prefixed\PrefixedCachePool;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Cached\CachedAdapter;
-use League\Flysystem\Cached\Storage\Psr6Cache;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**

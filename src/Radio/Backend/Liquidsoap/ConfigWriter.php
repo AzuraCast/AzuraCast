@@ -145,6 +145,7 @@ class ConfigWriter implements EventSubscriberInterface
             'setenv("TZ", "' . self::cleanUpString($station->getTimezone()) . '")',
             '',
             'azuracast_api_auth = ref "' . self::cleanUpString($station->getAdapterApiKey()) . '"',
+            'ignore(azuracast_api_auth)',
             '',
         ]);
     }

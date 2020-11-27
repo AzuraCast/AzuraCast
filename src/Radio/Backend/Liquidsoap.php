@@ -129,7 +129,7 @@ class Liquidsoap extends AbstractBackend
                 $annotation_types['liq_cue_out'] = max(0, $annotation_types['duration'] - $cue_out);
             }
         }
-        if (($annotation_types['liq_cue_in'] + $annotation_types['liq_cue_out']) > $annotation_types['duration']) {
+        if ($annotation_types['liq_cue_out'] > $annotation_types['duration']) {
             $annotation_types['liq_cue_out'] = null;
         }
         if ($annotation_types['liq_cue_in'] > $annotation_types['duration']) {

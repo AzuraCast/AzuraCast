@@ -11,7 +11,8 @@ use OpenApi\Annotations as OA;
  */
 class StorageLocation
 {
-    use Entity\Api\Traits\HasLinks, LoadFromParentObject;
+    use Entity\Api\Traits\HasLinks;
+    use LoadFromParentObject;
 
     /**
      * @OA\Property(example=1)

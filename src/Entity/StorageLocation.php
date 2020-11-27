@@ -15,14 +15,11 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Config;
-use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="storage_location")
  * @ORM\Entity()
- *
- * @OA\Schema(type="object", schema="StorageLocation")
  *
  * @AuditLog\Auditable
  * @AppAssert\StorageLocation()
@@ -55,7 +52,6 @@ class StorageLocation
      *     StorageLocation::TYPE_STATION_MEDIA,
      *     StorageLocation::TYPE_STATION_RECORDINGS
      * })
-     * @OA\Property(example="station_media")
      * @var string The type of storage location.
      */
     protected $type;
@@ -64,7 +60,6 @@ class StorageLocation
      * @ORM\Column(name="adapter", type="string", length=50)
      *
      * @Assert\Choice(choices={StorageLocation::ADAPTER_LOCAL, StorageLocation::ADAPTER_S3})
-     * @OA\Property(example="local")
      * @var string The storage adapter to use for this location.
      */
     protected $adapter = self::ADAPTER_LOCAL;
@@ -72,7 +67,6 @@ class StorageLocation
     /**
      * @ORM\Column(name="path", type="string", length=255, nullable=true)
      *
-     * @OA\Property(example="/var/azuracast/stations/azuratest_radio/media")
      * @var string|null The local path, if the local adapter is used, or path prefix for S3/remote adapters.
      */
     protected $path;
@@ -80,7 +74,6 @@ class StorageLocation
     /**
      * @ORM\Column(name="s3_credential_key", type="string", length=255, nullable=true)
      *
-     * @OA\Property(example="your-key-here")
      * @var string|null The credential key for S3 adapters.
      */
     protected $s3CredentialKey;
@@ -88,7 +81,6 @@ class StorageLocation
     /**
      * @ORM\Column(name="s3_credential_secret", type="string", length=255, nullable=true)
      *
-     * @OA\Property(example="your-secret-here")
      * @var string|null The credential secret for S3 adapters.
      */
     protected $s3CredentialSecret;
@@ -96,7 +88,6 @@ class StorageLocation
     /**
      * @ORM\Column(name="s3_region", type="string", length=150, nullable=true)
      *
-     * @OA\Property(example="your-region")
      * @var string|null The region for S3 adapters.
      */
     protected $s3Region;
@@ -104,7 +95,6 @@ class StorageLocation
     /**
      * @ORM\Column(name="s3_version", type="string", length=150, nullable=true)
      *
-     * @OA\Property(example="latest")
      * @var string|null The API version for S3 adapters.
      */
     protected $s3Version = 'latest';
@@ -112,7 +102,6 @@ class StorageLocation
     /**
      * @ORM\Column(name="s3_bucket", type="string", length=255, nullable=true)
      *
-     * @OA\Property(example="your-bucket-name")
      * @var string|null The S3 bucket name for S3 adapters.
      */
     protected $s3Bucket = null;
@@ -120,7 +109,6 @@ class StorageLocation
     /**
      * @ORM\Column(name="s3_endpoint", type="string", length=255, nullable=true)
      *
-     * @OA\Property(example="https://your-region.digitaloceanspaces.com")
      * @var string|null The optional custom S3 endpoint S3 adapters.
      */
     protected $s3Endpoint = null;
@@ -128,13 +116,11 @@ class StorageLocation
     /**
      * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
      *
-     * @OA\Property(example="50 GB")
      * @var string|null
      */
     protected $storageQuota;
 
     /**
-     * @OA\Property(example="50000000000")
      * @var string|null
      */
     protected $storageQuotaBytes;
@@ -144,13 +130,11 @@ class StorageLocation
      *
      * @AuditLog\AuditIgnore()
      *
-     * @OA\Property(example="1 GB")
      * @var string|null
      */
     protected $storageUsed;
 
     /**
-     * @OA\Property(example="1000000000")
      * @var string|null
      */
     protected $storageUsedBytes;

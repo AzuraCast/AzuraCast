@@ -36,7 +36,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
      *   tags={"Administration: Storage Locations"},
      *   description="List all current storage locations in the system.",
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Admin_Api_StorageLocation"))
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Admin_StorageLocation"))
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
@@ -46,10 +46,10 @@ class StorageLocationsController extends AbstractAdminApiCrudController
      *   tags={"Administration: Storage Locations"},
      *   description="Create a new storage location.",
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StorageLocation")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/StorageLocation")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
@@ -66,7 +66,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
      *     @OA\Schema(type="integer", format="int64")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Admin_Api_StorageLocation")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
      *   ),
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
@@ -76,7 +76,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
      *   tags={"Administration: Storage Locations"},
      *   description="Update details of a single storage location.",
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/StorageLocation")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Admin_StorageLocation")
      *   ),
      *   @OA\Parameter(
      *     name="id",
@@ -132,17 +132,19 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     protected function viewRecord($record, ServerRequest $request)
     {
         /** @var Entity\StorageLocation $record */
-        $return = parent::viewRecord($record, $request);
+        $original = parent::viewRecord($record, $request);
 
-        $return['uri'] = $record->getUri();
+        $return = new Entity\Api\Admin\StorageLocation();
+        $return->fromParentObject($original);
+
+        $return->uri = $record->getUri();
 
         $stationsRaw = $this->storageLocationRepo->getStationsUsingLocation($record);
         $stations = [];
-
         foreach ($stationsRaw as $station) {
             $stations[] = $station->getName();
         }
-        $return['stations'] = $stations;
+        $return->stations = $stations;
 
         return $return;
     }

@@ -2,9 +2,7 @@
 
 namespace App\Controller\Api\Stations\Art;
 
-use App\Entity\Repository\StationMediaRepository;
-use App\Entity\Repository\StationRepository;
-use App\Entity\StationMedia;
+use App\Entity;
 use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -34,33 +32,37 @@ class GetArtAction
      * @param ServerRequest $request
      * @param Response $response
      * @param FilesystemManager $filesystem
-     * @param StationRepository $stationRepo
-     * @param StationMediaRepository $mediaRepo
+     * @param Entity\Repository\StationRepository $stationRepo
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
      * @param string $media_id
      */
     public function __invoke(
         ServerRequest $request,
         Response $response,
         FilesystemManager $filesystem,
-        StationRepository $stationRepo,
-        StationMediaRepository $mediaRepo,
-        $media_id
+        Entity\Repository\StationRepository $stationRepo,
+        Entity\Repository\StationMediaRepository $mediaRepo,
+        string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
+        $fs = $filesystem->getPrefixedAdapterForStation(
+            $station,
+            FilesystemManager::PREFIX_MEDIA,
+            true
+        );
 
         $defaultArtRedirect = $response->withRedirect($stationRepo->getDefaultAlbumArtUrl($station), 302);
-        $fs = $filesystem->getForStation($station, true);
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id)[0];
 
-        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
+        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
-            $mediaPath = StationMedia::getArtUri($media_id);
+            $mediaPath = Entity\StationMedia::getArtPath($media_id);
         } else {
             $media = $mediaRepo->find($media_id, $station);
-            if ($media instanceof StationMedia) {
-                $mediaPath = StationMedia::getArtUri($media->getUniqueId());
+            if ($media instanceof Entity\StationMedia) {
+                $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
             } else {
                 return $defaultArtRedirect;
             }

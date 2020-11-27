@@ -333,7 +333,10 @@ class StationMedia implements SongInterface
      */
     public function getPathUri(): string
     {
-        return FilesystemManager::PREFIX_MEDIA . '://' . $this->path;
+        return FilesystemManager::applyPrefix(
+            FilesystemManager::PREFIX_MEDIA,
+            $this->path
+        );
     }
 
     public function getMtime(): ?int
@@ -581,7 +584,10 @@ class StationMedia implements SongInterface
 
     public static function getArtUri(string $uniqueId): string
     {
-        return FilesystemManager::PREFIX_MEDIA . '://' . ltrim(self::getArtPath($uniqueId), '/');
+        return FilesystemManager::applyPrefix(
+            FilesystemManager::PREFIX_MEDIA,
+            self::getArtPath($uniqueId)
+        );
     }
 
     public static function getWaveformPath(string $uniqueId): string
@@ -591,6 +597,9 @@ class StationMedia implements SongInterface
 
     public static function getWaveformUri(string $uniqueId): string
     {
-        return FilesystemManager::PREFIX_MEDIA . '://' . ltrim(self::getWaveformPath($uniqueId), '/');
+        return FilesystemManager::applyPrefix(
+            FilesystemManager::PREFIX_MEDIA,
+            self::getWaveformPath($uniqueId)
+        );
     }
 }

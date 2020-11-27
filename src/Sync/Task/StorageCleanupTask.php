@@ -81,6 +81,13 @@ class StorageCleanupTask extends AbstractTask
             $allUniqueIds[$row['unique_id']] = $row['unique_id'];
         }
 
+        if (0 === count($allUniqueIds)) {
+            $this->logger->notice(
+                sprintf('Skipping storage location %s: no media found.', (string)$storageLocation)
+            );
+            return;
+        }
+
         $removed = [
             'albumart' => 0,
             'waveform' => 0,

@@ -35,6 +35,8 @@ class StationMediaRepository extends Repository
 
     protected MetadataManagerInterface $metadataManager;
 
+    protected FilesystemManager $filesystem;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
@@ -43,7 +45,8 @@ class StationMediaRepository extends Repository
         MetadataManagerInterface $metadataManager,
         CustomFieldRepository $customFieldRepo,
         StationPlaylistMediaRepository $spmRepo,
-        StorageLocationRepository $storageLocationRepo
+        StorageLocationRepository $storageLocationRepo,
+        FilesystemManager $filesystem
     ) {
         parent::__construct($em, $serializer, $settings, $logger);
 
@@ -52,11 +55,13 @@ class StationMediaRepository extends Repository
         $this->storageLocationRepo = $storageLocationRepo;
 
         $this->metadataManager = $metadataManager;
+        $this->filesystem = $filesystem;
     }
 
     /**
      * @param mixed $id
      * @param Entity\Station|Entity\StorageLocation $source
+     *
      */
     public function find($id, $source): ?Entity\StationMedia
     {
@@ -68,37 +73,50 @@ class StationMediaRepository extends Repository
         }
 
         $storageLocation = $this->getStorageLocation($source);
-        return $this->repository->findOneBy([
+
+        /** @var Entity\StationMedia|null $media */
+        $media = $this->repository->findOneBy([
             'storage_location' => $storageLocation,
             'id' => $id,
         ]);
+
+        return $media;
     }
 
     /**
      * @param string $path
      * @param Entity\Station|Entity\StorageLocation $source
+     *
      */
     public function findByPath(string $path, $source): ?Entity\StationMedia
     {
         $storageLocation = $this->getStorageLocation($source);
-        return $this->repository->findOneBy([
+
+        /** @var Entity\StationMedia|null $media */
+        $media = $this->repository->findOneBy([
             'storage_location' => $storageLocation,
             'path' => $path,
         ]);
+
+        return $media;
     }
 
     /**
      * @param string $uniqueId
      * @param Entity\Station|Entity\StorageLocation $source
+     *
      */
     public function findByUniqueId(string $uniqueId, $source): ?Entity\StationMedia
     {
         $storageLocation = $this->getStorageLocation($source);
 
-        return $this->repository->findOneBy([
+        /** @var Entity\StationMedia|null $media */
+        $media = $this->repository->findOneBy([
             'storage_location' => $storageLocation,
             'unique_id' => $uniqueId,
         ]);
+
+        return $media;
     }
 
     /**
@@ -164,7 +182,7 @@ class StationMediaRepository extends Repository
         bool $force = false,
         ?string $uploadedPath = null
     ): bool {
-        $fs = $media->getStorageLocation()->getFilesystem();
+        $fs = $this->getFilesystem($media);
         $mediaUri = $media->getPath();
 
         if (null !== $uploadedPath) {
@@ -268,7 +286,8 @@ class StationMediaRepository extends Repository
 
     public function readAlbumArt(Entity\StationMedia $media): ?string
     {
-        $fs = $media->getStorageLocation()->getFilesystem();
+        $fs = $this->getFilesystem($media);
+
         $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
 
         if (!$fs->has($albumArtPath)) {
@@ -280,9 +299,9 @@ class StationMediaRepository extends Repository
 
     public function writeAlbumArt(Entity\StationMedia $media, string $rawArtString): bool
     {
-        $albumArt = AlbumArt::resize($rawArtString);
+        $fs = $this->getFilesystem($media);
 
-        $fs = $media->getStorageLocation()->getFilesystem();
+        $albumArt = AlbumArt::resize($rawArtString);
         $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
 
         $media->setArtUpdatedAt(time());
@@ -293,9 +312,9 @@ class StationMediaRepository extends Repository
 
     public function removeAlbumArt(Entity\StationMedia $media): void
     {
-        $fs = $media->getStorageLocation()->getFilesystem();
-        $currentAlbumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
+        $fs = $this->getFilesystem($media);
 
+        $currentAlbumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
         $fs->delete($currentAlbumArtPath);
 
         $media->setArtUpdatedAt(0);
@@ -305,7 +324,7 @@ class StationMediaRepository extends Repository
 
     public function writeToFile(Entity\StationMedia $media): bool
     {
-        $fs = $media->getStorageLocation()->getFilesystem();
+        $fs = $this->getFilesystem($media);
 
         $metadata = $media->toMetadata();
 
@@ -326,8 +345,8 @@ class StationMediaRepository extends Repository
 
     public function updateWaveform(Entity\StationMedia $media): void
     {
-        $fs = $media->getStorageLocation()->getFilesystem();
-        $fs->withLocalFile($media->getPathUri(), function ($path) use ($media): void {
+        $fs = $this->getFilesystem($media);
+        $fs->withLocalFile($media->getPath(), function ($path) use ($media): void {
             $this->writeWaveform($media, $path);
         });
     }
@@ -338,7 +357,7 @@ class StationMediaRepository extends Repository
 
         $waveformPath = Entity\StationMedia::getWaveformPath($media->getUniqueId());
 
-        $fs = $media->getStorageLocation()->getFilesystem();
+        $fs = $this->getFilesystem($media);
         return $fs->put(
             $waveformPath,
             json_encode($waveform, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
@@ -352,7 +371,7 @@ class StationMediaRepository extends Repository
      */
     public function getFullPath(Entity\StationMedia $media): string
     {
-        $fs = $media->getStorageLocation()->getFilesystem();
+        $fs = $this->getFilesystem($media);
         $uri = $media->getPathUri();
 
         return $fs->getFullPath($uri);
@@ -368,7 +387,7 @@ class StationMediaRepository extends Repository
         Entity\StationMedia $media,
         ?Filesystem $fs = null
     ): array {
-        $fs ??= $media->getStorageLocation()->getFilesystem();
+        $fs ??= $this->getFilesystem($media);
 
         // Clear related media.
         foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
@@ -385,5 +404,13 @@ class StationMediaRepository extends Repository
         $this->em->flush();
 
         return $affectedPlaylists;
+    }
+
+    protected function getFilesystem(Entity\StationMedia $media, bool $cached = true): Filesystem
+    {
+        return $this->filesystem->getFilesystemForAdapter(
+            $media->getStorageLocation()->getStorageAdapter(),
+            $cached
+        );
     }
 }

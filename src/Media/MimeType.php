@@ -18,6 +18,7 @@ class MimeType
             'audio/ogg', // oga ogg spx
             'audio/x-aac', // aac
             'audio/x-flac', // flac
+            'audio/x-m4a', // alt for m4a/mp4a
             'audio/x-wav', // wav
         ];
     }

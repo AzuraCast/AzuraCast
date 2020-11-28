@@ -2,6 +2,7 @@
 
 namespace App\Media\GetId3;
 
+use App\Exception\CannotProcessMediaException;
 use App\Media\Metadata;
 use App\Media\MetadataManagerInterface;
 use voku\helper\UTF8;
@@ -22,8 +23,8 @@ class GetId3MetadataManager implements MetadataManagerInterface
         $info = $id3->analyze($path);
 
         if (!empty($info['error'])) {
-            throw new \RuntimeException(sprintf(
-                'Warning for uploaded media file "%s": %s',
+            throw new CannotProcessMediaException(sprintf(
+                'Cannot process media file at path "%s": %s',
                 pathinfo($path, PATHINFO_FILENAME),
                 json_encode($info['error'], JSON_THROW_ON_ERROR)
             ));
@@ -59,8 +60,10 @@ class GetId3MetadataManager implements MetadataManagerInterface
         return $metadata;
     }
 
-    protected function cleanUpString(string $original): string
+    protected function cleanUpString(?string $original): string
     {
+        $original ??= '';
+
         $string = UTF8::encode('UTF-8', $original);
         $string = UTF8::fix_simple_utf8($string);
         return UTF8::clean(

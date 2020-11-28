@@ -227,7 +227,11 @@ class StationMediaRepository extends Repository
     public function loadFromFile(Entity\StationMedia $media, string $filePath): void
     {
         if (!MimeType::isFileProcessable($filePath)) {
-            throw CannotProcessMediaException::forPath($filePath);
+            $mimeType = MimeType::getMimeTypeFromFile($filePath);
+            throw CannotProcessMediaException::forPath(
+                $filePath,
+                sprintf('MIME type "%s" is not processable.', $mimeType)
+            );
         }
 
         // Load metadata from supported files.

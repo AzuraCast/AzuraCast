@@ -3,6 +3,7 @@
 namespace App\Media;
 
 use League\MimeTypeDetection\FinfoMimeTypeDetector;
+use League\MimeTypeDetection\GeneratedExtensionToMimeTypeMap;
 
 class MimeType
 {
@@ -25,16 +26,20 @@ class MimeType
     {
         $detector = new FinfoMimeTypeDetector();
 
-        return $detector->detectMimeTypeFromFile($path)
-            ?? self::getMimeTypeFromPath($path);
+        $fileMimeType = $detector->detectMimeTypeFromFile($path);
+        if ('application/octet-stream' === $fileMimeType) {
+            $fileMimeType = null;
+        }
+
+        return $fileMimeType ?? self::getMimeTypeFromPath($path);
     }
 
     public static function getMimeTypeFromPath(string $path): string
     {
-        $detector = new FinfoMimeTypeDetector();
+        $extensionMap = new GeneratedExtensionToMimeTypeMap();
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        return $detector->detectMimeTypeFromPath($path)
-            ?? 'application/octet-stream';
+        return $extensionMap->lookupMimeType($extension) ?? 'application/octet-stream';
     }
 
     public static function isPathProcessable(string $path): bool

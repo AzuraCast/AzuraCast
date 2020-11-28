@@ -21,7 +21,7 @@ class CannotProcessMediaException extends Exception
     {
         return new self(sprintf(
             'Cannot process media file at path "%s": %s',
-            pathinfo($path, PATHINFO_FILENAME),
+            basename($path),
             $error
         ));
     }

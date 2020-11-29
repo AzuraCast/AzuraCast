@@ -35,6 +35,13 @@ class RecentBackupCheck
         }
 
         $threshold = CarbonImmutable::now()->subWeeks(2)->getTimestamp();
+
+        // Don't show backup warning for freshly created installations.
+        $setupComplete = (int)$this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0);
+        if ($setupComplete >= $threshold) {
+            return;
+        }
+
         $backupLastRun = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
 
         if ($backupLastRun < $threshold) {

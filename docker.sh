@@ -269,12 +269,21 @@ install() {
         sed -i "s/azur4c457/${NEW_PASSWORD}/g" azuracast.env
     fi
 
+    setup-release
+
     if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
-    fi
 
-    setup-release
+        .env --file .env get AZURACAST_VERSION
+        local AZURACAST_VERSION
+        AZURACAST_VERSION="${REPLY:-latest}"
+
+        if [[ $AZURACAST_VERSION == "stable" ]]; then
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.yml
+        else
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
+        fi
+    fi
 
     if ask "Customize AzuraCast ports?" N; then
         setup-ports
@@ -340,9 +349,18 @@ update() {
 
         .env --file azuracast.env set PREFER_RELEASE_BUILDS
 
-        # Check for updated Docker Compose config.
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
+        # Check for new Docker Compose file
+        .env --file .env get AZURACAST_VERSION
+        local AZURACAST_VERSION
+        AZURACAST_VERSION="${REPLY:-latest}"
 
+        if [[ $AZURACAST_VERSION == "stable" ]]; then
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.new.yml
+        else
+            curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.new.yml
+        fi
+
+        # Check for updated Docker Compose config.
         local COMPOSE_FILES_MATCH
         COMPOSE_FILES_MATCH="$(
             cmp --silent docker-compose.yml docker-compose.new.yml
@@ -376,7 +394,7 @@ update() {
         docker-compose run --rm --user="azuracast" web azuracast_update "$@"
         docker-compose up -d
 
-        docker rmi "$(docker images | grep "none" | awk '/ / { print $3 }')" 2>/dev/null
+        docker system prune -f
 
         echo "Update complete!"
     fi
@@ -410,6 +428,33 @@ cli() {
 #
 bash() {
     docker-compose exec --user="azuracast" web bash
+    exit
+}
+
+#
+# Enter the MariaDB database management terminal with the correct credentials.
+#
+db() {
+    local MYSQL_HOST MYSQL_PORT MYSQL_USER MYSQL_PASSWORD MYSQL_DATABASE
+
+    .env --file azuracast.env get MYSQL_HOST
+    MYSQL_HOST="${REPLY:-mariadb}"
+
+    .env --file azuracast.env get MYSQL_PORT
+    MYSQL_PORT="${REPLY:-3306}"
+
+    .env --file azuracast.env get MYSQL_USER
+    MYSQL_USER="${REPLY:-azuracast}"
+
+    .env --file azuracast.env get MYSQL_PASSWORD
+    MYSQL_PASSWORD="${REPLY:-azur4c457}"
+
+    .env --file azuracast.env get MYSQL_DATABASE
+    MYSQL_DATABASE="${REPLY:-azuracast}"
+
+    docker-compose run --rm mariadb mysql --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} \
+        --host=${MYSQL_HOST} --port=${MYSQL_PORT} --database=${MYSQL_DATABASE}
+
     exit
 }
 
@@ -455,6 +500,10 @@ restore() {
     if ask "Restoring will remove any existing AzuraCast installation data, replacing it with your backup. Continue?" Y; then
         docker-compose down -v
         docker-compose pull
+
+        # Run the web task to allow for a full system spin-up
+        docker-compose run --rm --user=azuracast web azuracast_cli cache:clear
+
         docker-compose up -d web
         docker cp "${BACKUP_PATH}" "azuracast_web:tmp/cli_backup.${BACKUP_EXT}"
         MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_restore "/tmp/cli_backup.${BACKUP_EXT}" "$@"
@@ -485,14 +534,12 @@ restore-legacy() {
     if [ -f "$BACKUP_PATH" ]; then
         docker-compose down
 
-        docker volume rm azuracast_db_data azuracast_influx_data azuracast_station_data
+        docker volume rm azuracast_db_data azuracast_station_data
         docker volume create azuracast_db_data
-        docker volume create azuracast_influx_data
         docker volume create azuracast_station_data
 
         docker run --rm -v "$BACKUP_DIR:/backup" \
             -v azuracast_db_data:/azuracast/db \
-            -v azuracast_influx_data:/azuracast/influx \
             -v azuracast_station_data:/azuracast/stations \
             busybox tar zxvf "/backup/$BACKUP_FILENAME"
 

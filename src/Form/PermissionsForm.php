@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Form;
 
+use App\Acl;
 use App\Config;
 use App\Entity;
 use App\Http\ServerRequest;
@@ -20,10 +22,12 @@ class PermissionsForm extends EntityForm
         ValidatorInterface $validator,
         Config $config,
         Entity\Repository\StationRepository $stations_repo,
-        Entity\Repository\RolePermissionRepository $permissions_repo
+        Entity\Repository\RolePermissionRepository $permissions_repo,
+        Acl $acl
     ) {
         $form_config = $config->get('forms/role', [
             'all_stations' => $stations_repo->fetchArray(),
+            'actions' => $acl->listPermissions(),
         ]);
 
         parent::__construct($em, $serializer, $validator, $form_config);
@@ -32,6 +36,9 @@ class PermissionsForm extends EntityForm
         $this->permissions_repo = $permissions_repo;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         if ($record instanceof Entity\Role && Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID === $record->getId()) {
@@ -48,9 +55,9 @@ class PermissionsForm extends EntityForm
         return parent::process($request, $record);
     }
 
-    protected function _denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function denormalizeToRecord($data, $record = null, array $context = []): object
     {
-        $record = parent::_denormalizeToRecord($data, $record, $context);
+        $record = parent::denormalizeToRecord($data, $record, $context);
 
         if ($this->set_permissions) {
             $this->em->persist($record);
@@ -62,9 +69,12 @@ class PermissionsForm extends EntityForm
         return $record;
     }
 
-    protected function _normalizeRecord($record, array $context = []): array
+    /**
+     * @inheritDoc
+     */
+    protected function normalizeRecord($record, array $context = []): array
     {
-        $data = parent::_normalizeRecord($record, $context);
+        $data = parent::normalizeRecord($record, $context);
 
         if ($this->set_permissions) {
             $actions = $this->permissions_repo->getActionsForRole($record);

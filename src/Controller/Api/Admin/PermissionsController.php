@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
@@ -9,6 +10,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController
 {
+    protected Acl $acl;
+
+    public function __construct(Acl $acl)
+    {
+        $this->acl = $acl;
+    }
+
     /**
      * @OA\Get(path="/admin/permissions",
      *   tags={"Administration: Roles"},
@@ -23,13 +31,11 @@ class PermissionsController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $permissions = [];
-        foreach (Acl::listPermissions() as $group => $actions) {
+        foreach ($this->acl->listPermissions() as $group => $actions) {
             foreach ($actions as $action_id => $action_name) {
                 $permissions[$group][] = [
                     'id' => $action_id,

@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog\Auditable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use const PASSWORD_ARGON2ID;
 
 /**
  * @ORM\Table(name="sftp_user", uniqueConstraints={
@@ -89,7 +92,7 @@ class SftpUser
     public function setPassword(?string $password): void
     {
         if (!empty($password)) {
-            $this->password = password_hash($password, \PASSWORD_ARGON2ID);
+            $this->password = password_hash($password, PASSWORD_ARGON2ID);
         }
     }
 
@@ -98,6 +101,9 @@ class SftpUser
         return $this->publicKeys;
     }
 
+    /**
+     * @return string[]
+     */
     public function getPublicKeysArray(): array
     {
         $pubKeysRaw = trim($this->publicKeys);

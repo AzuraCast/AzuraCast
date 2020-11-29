@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -146,7 +147,7 @@ class Listener
      *
      * @param array $clients
      *
-     * @return array
+     * @return mixed[]
      */
     public static function filterClients(array $clients): array
     {
@@ -192,8 +193,6 @@ class Listener
 
     /**
      * @param array|Client $client
-     *
-     * @return string
      */
     public static function calculateListenerHash($client): string
     {

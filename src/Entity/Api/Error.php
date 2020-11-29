@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Entity\Api;
 
+use App\Exception;
 use OpenApi\Annotations as OA;
 
 /**
@@ -59,5 +61,30 @@ class Error
         $this->formatted_message = ($formatted_message ?? $message);
         $this->extra_data = (array)$extra_data;
         $this->success = false;
+    }
+
+    public static function fromException(\Throwable $e, bool $includeTrace = false): self
+    {
+        $code = (int)$e->getCode();
+        if (0 === $code) {
+            $code = 500;
+        }
+
+        $errorHeader = get_class($e) . ' at ' . $e->getFile() . ' L' . $e->getLine();
+        $message = $errorHeader . ': ' . $e->getMessage();
+
+        if ($e instanceof Exception) {
+            $messageFormatted = '<b>' . $errorHeader . ':</b> ' . $e->getFormattedMessage();
+            $extraData = $e->getExtraData();
+        } else {
+            $messageFormatted = '<b>' . $errorHeader . ':</b> ' . $e->getMessage();
+            $extraData = [];
+        }
+
+        if ($includeTrace) {
+            $extraData['trace'] = $e->getTrace();
+        }
+
+        return new self($code, $message, $messageFormatted, $extraData);
     }
 }

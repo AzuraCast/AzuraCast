@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -118,7 +119,6 @@ class StationWebhook
 
     /**
      * @AuditLog\AuditIdentifier
-     * @return null|string
      */
     public function getName(): ?string
     {
@@ -151,6 +151,9 @@ class StationWebhook
         $this->is_enabled = $is_enabled;
     }
 
+    /**
+     * @return string[]
+     */
     public function getTriggers(): array
     {
         return (array)$this->triggers;
@@ -161,6 +164,9 @@ class StationWebhook
         $this->triggers = $triggers;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getConfig(): array
     {
         return (array)$this->config;

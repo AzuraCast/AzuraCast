@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
@@ -97,7 +98,7 @@ class UsersController extends AbstractAdminApiCrudController
     public function deleteAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
         /** @var Entity\User|null $record */
-        $record = $this->_getRecord($id);
+        $record = $this->getRecord($id);
 
         if (null === $record) {
             return $response->withStatus(404)

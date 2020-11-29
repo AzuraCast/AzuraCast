@@ -1,14 +1,14 @@
 <?php
+
 namespace App\Console\Command\Backup;
 
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
 use App\Entity;
-use App\Sync\Task\Backup;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
-use InfluxDB\Database;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use const PATHINFO_EXTENSION;
 
 class BackupCommand extends CommandAbstract
@@ -18,17 +18,38 @@ class BackupCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManagerInterface $em,
-        Database $influxdb,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         ?string $path = '',
-        bool $excludeMedia = false
-    ) {
+        bool $excludeMedia = false,
+        ?int $storageLocationId = null
+    ): int {
         $start_time = microtime(true);
 
         if (empty($path)) {
             $path = 'manual_backup_' . gmdate('Ymd_Hi') . '.zip';
         }
-        if ('/' !== $path[0]) {
-            $path = Backup::BASE_DIR . '/' . $path;
+
+        $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        if ('/' === $path[0]) {
+            $tmpPath = $path;
+            $storageLocation = null;
+        } else {
+            $tmpPath = tempnam(sys_get_temp_dir(), 'backup_') . '.' . $file_ext;
+
+            if (null === $storageLocationId) {
+                $io->error('You must specify a storage location when providing a relative path.');
+                return 1;
+            }
+
+            $storageLocation = $storageLocationRepo->findByType(
+                Entity\StorageLocation::TYPE_BACKUP,
+                $storageLocationId
+            );
+            if (!($storageLocation instanceof Entity\StorageLocation)) {
+                $io->error('Invalid storage location specified.');
+                return 1;
+            }
         }
 
         $includeMedia = !$excludeMedia;
@@ -46,12 +67,6 @@ class BackupCommand extends CommandAbstract
             return 1;
         }
 
-        $tmp_dir_influxdb = '/tmp/azuracast_backup_influxdb';
-        if (!mkdir($tmp_dir_influxdb) && !is_dir($tmp_dir_influxdb)) {
-            $io->error(__('Directory "%s" was not created', $tmp_dir_influxdb));
-            return 1;
-        }
-
         $io->newLine();
 
         // Back up MariaDB
@@ -62,6 +77,7 @@ class BackupCommand extends CommandAbstract
         $conn = $em->getConnection();
         $connParams = $conn->getParams();
 
+        // phpcs:disable Generic.Files.LineLength
         $this->passThruProcess(
             $io,
             'mysqldump --host=$DB_HOST --user=$DB_USERNAME --password=$DB_PASSWORD --add-drop-table --default-character-set=UTF8MB4 $DB_DATABASE > $DB_DEST',
@@ -74,27 +90,9 @@ class BackupCommand extends CommandAbstract
                 'DB_DEST' => $path_db_dump,
             ]
         );
+        // phpcs:enable
 
         $files_to_backup[] = $path_db_dump;
-        $io->newLine();
-
-        // Back up InfluxDB
-        $io->section(__('Backing up InfluxDB...'));
-
-        $influxdb_client = $influxdb->getClient();
-
-        $this->passThruProcess($io, [
-            'influxd',
-            'backup',
-            '-database',
-            'stations',
-            '-portable',
-            '-host',
-            $influxdb_client->getHost() . ':8088',
-            $tmp_dir_influxdb,
-        ], $tmp_dir_influxdb);
-
-        $files_to_backup[] = $tmp_dir_influxdb;
         $io->newLine();
 
         // Include station media if specified.
@@ -105,14 +103,9 @@ class BackupCommand extends CommandAbstract
             foreach ($stations as $station) {
                 /** @var Entity\Station $station */
 
-                $media_dir = $station->getRadioMediaDir();
-                if (!in_array($media_dir, $files_to_backup, true)) {
-                    $files_to_backup[] = $media_dir;
-                }
-
-                $art_dir = $station->getRadioAlbumArtDir();
-                if (!in_array($art_dir, $files_to_backup, true)) {
-                    $files_to_backup[] = $art_dir;
+                $mediaAdapter = $station->getMediaStorageLocation();
+                if ($mediaAdapter->isLocal()) {
+                    $files_to_backup[] = $mediaAdapter->getPath();
                 }
             }
         }
@@ -128,15 +121,13 @@ class BackupCommand extends CommandAbstract
             return $val;
         }, $files_to_backup);
 
-        $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-
         switch ($file_ext) {
             case 'gz':
             case 'tgz':
                 $this->passThruProcess($io, array_merge([
                     'tar',
                     'zcvf',
-                    $path,
+                    $tmpPath,
                 ], $files_to_backup), '/');
                 break;
 
@@ -149,18 +140,22 @@ class BackupCommand extends CommandAbstract
                     '-r',
                     '-n',
                     implode(':', $dont_compress),
-                    $path,
+                    $tmpPath,
                 ], $files_to_backup), '/');
                 break;
         }
 
+        if (null !== $storageLocation) {
+            $fs = $storageLocation->getFilesystem();
+            $fs->putFromLocal($tmpPath, $path);
+        }
+        
         $io->newLine();
 
         // Cleanup
         $io->section(__('Cleaning up temporary files...'));
 
         Utilities::rmdirRecursive($tmp_dir_mariadb);
-        Utilities::rmdirRecursive($tmp_dir_influxdb);
 
         $io->newLine();
 

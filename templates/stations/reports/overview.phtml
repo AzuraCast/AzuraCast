@@ -17,30 +17,30 @@ $assets
             <div class="card-header">
                 <ul class="nav nav-pills card-header-pills">
                     <li class="nav-item">
-                        <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="listeners-by-day" href="#listeners-by-day"><?=__('Listeners by Day') ?></a>
+                        <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="listeners-by-day" href="#listeners-by-day"><?=__('Listeners by Day')?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" role="tab" data-toggle="tab" aria-controls="listeners-by-hour" href="#listeners-by-hour"><?=__('Listeners by Hour') ?></a>
+                        <a class="nav-link" role="tab" data-toggle="tab" aria-controls="listeners-by-hour" href="#listeners-by-hour"><?=__('Listeners by Hour')?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" role="tab" data-toggle="tab" aria-controls="listeners-by-day-of-week" href="#listeners-by-day-of-week"><?=__('Listeners by Day of Week') ?></a>
+                        <a class="nav-link" role="tab" data-toggle="tab" aria-controls="listeners-by-day-of-week" href="#listeners-by-day-of-week"><?=__('Listeners by Day of Week')?></a>
                     </li>
                 </ul>
             </div>
             <div class="tab-content">
                 <div class="tab-pane px-0 card-body active" id="listeners-by-day" role="tabpanel">
-                    <canvas id="listeners_by_day" style="width: 100%;" aria-label="<?=__('Listeners by Day') ?>" role="img">
-                        <?=$charts['daily_alt'] ?>
+                    <canvas id="listeners_by_day" style="width: 100%;" aria-label="<?=__('Listeners by Day')?>" role="img">
+                        <?=$charts['daily_alt']?>
                     </canvas>
                 </div>
                 <div class="tab-pane px-0 card-body" id="listeners-by-hour" role="tabpanel">
-                    <canvas id="listeners_by_hour" style="width: 100%;" aria-label="<?=__('Listeners by Hour') ?>" role="img">
-                        <?=$charts['hourly_alt'] ?>
+                    <canvas id="listeners_by_hour" style="width: 100%;" aria-label="<?=__('Listeners by Hour')?>" role="img">
+                        <?=$charts['hourly_alt']?>
                     </canvas>
                 </div>
                 <div class="tab-pane px-0 card-body" id="listeners-by-day-of-week" role="tabpanel">
-                    <canvas id="listeners_by_day_of_week" style="width: 100%;" aria-label="<?=__('Listeners by Day of Week') ?>" role="img">
-                        <?=$charts['day_of_week_alt'] ?>
+                    <canvas id="listeners_by_day_of_week" style="width: 100%;" aria-label="<?=__('Listeners by Day of Week')?>" role="img">
+                        <?=$charts['day_of_week_alt']?>
                     </canvas>
                 </div>
             </div>
@@ -53,8 +53,8 @@ $assets
         <section class="card mb-3" role="region">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <?=__('Best Performing Songs') ?>
-                    <small><?=__('in the last 48 hours') ?></small>
+                    <?=__('Best Performing Songs')?>
+                    <small><?=__('in the last 48 hours')?></small>
                 </h2>
             </div>
             <div class="table-responsive">
@@ -64,24 +64,25 @@ $assets
                         <col width="80%">
                     </colgroup>
                     <thead>
-                        <tr>
-                            <th><?=__('Change') ?></th>
-                            <th><?=__('Song') ?></th>
-                        </tr>
+                    <tr>
+                        <th><?=__('Change')?></th>
+                        <th><?=__('Song')?></th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($best_performing_songs as $song_row): ?>
+                    <?php foreach ($best_performing_songs as $song_row): ?>
                         <tr>
                             <td class="text-center text-success">
-                                <i class="material-icons" aria-hidden="true">keyboard_arrow_up</i> <?=abs($song_row['stat_delta']) ?><br>
-                                <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
+                                <i class="material-icons" aria-hidden="true">keyboard_arrow_up</i> <?=abs($song_row['stat_delta'])?>
+                                <br>
+                                <small><?=$song_row['stat_start']?> to <?=$song_row['stat_end']?>
                             </td>
                             <td>
-                                <?php if ($song_row['song']['title']): ?>
-                                    <b><?=$song_row['song']['title'] ?></b><br>
-                                    <?=$song_row['song']['artist'] ?>
+                                <?php if ($song_row['title']): ?>
+                                    <b><?=$song_row['title']?></b><br>
+                                    <?=$song_row['artist']?>
                                 <?php else: ?>
-                                    <?=$song_row['song']['text'] ?>
+                                    <?=$song_row['text']?>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -95,8 +96,8 @@ $assets
         <section class="card mb-3" role="region">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <?=__('Worst Performing Songs') ?>
-                    <small><?=__('in the last 48 hours') ?></small>
+                    <?=__('Worst Performing Songs')?>
+                    <small><?=__('in the last 48 hours')?></small>
                 </h2>
             </div>
             <div class="table-responsive">
@@ -106,24 +107,25 @@ $assets
                         <col width="80%">
                     </colgroup>
                     <thead>
-                        <tr>
-                            <th><?=__('Change') ?></th>
-                            <th><?=__('Song') ?></th>
-                        </tr>
+                    <tr>
+                        <th><?=__('Change')?></th>
+                        <th><?=__('Song')?></th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($worst_performing_songs as $song_row): ?>
+                    <?php foreach ($worst_performing_songs as $song_row): ?>
                         <tr>
                             <td class="text-center text-danger">
-                                <i class="material-icons" aria-hidden="true">keyboard_arrow_down</i> <?=abs($song_row['stat_delta']) ?><br>
-                                <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
+                                <i class="material-icons" aria-hidden="true">keyboard_arrow_down</i> <?=abs($song_row['stat_delta'])?>
+                                <br>
+                                <small><?=$song_row['stat_start']?> to <?=$song_row['stat_end']?>
                             </td>
                             <td>
-                                <?php if ($song_row['song']['title']): ?>
-                                    <b><?=$song_row['song']['title'] ?></b><br>
-                                    <?=$song_row['song']['artist'] ?>
+                                <?php if ($song_row['title']): ?>
+                                    <b><?=$song_row['title']?></b><br>
+                                    <?=$song_row['artist']?>
                                 <?php else: ?>
-                                    <?=$song_row['song']['text'] ?>
+                                    <?=$song_row['text']?>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -140,8 +142,8 @@ $assets
         <section class="card" role="region">
             <div class="card-header bg-primary-dark">
                 <h2 class="card-title">
-                    <?=__('Most Played Songs') ?>
-                    <small><?=__('in the last month') ?></small>
+                    <?=__('Most Played Songs')?>
+                    <small><?=__('in the last month')?></small>
                 </h2>
             </div>
             <div class="table-responsive">
@@ -151,22 +153,22 @@ $assets
                         <col width="90%">
                     </colgroup>
                     <thead>
-                        <tr>
-                            <th><?=__('Plays') ?></th>
-                            <th><?=__('Song') ?></th>
-                        </tr>
+                    <tr>
+                        <th><?=__('Plays')?></th>
+                        <th><?=__('Song')?></th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($song_totals['played'] as $song_row): ?>
+                    <?php foreach ($song_totals['played'] as $song_row): ?>
                         <tr>
-                            <td class="text-center"><?=$song_row['records'] ?></td>
+                            <td class="text-center"><?=$song_row['records']?></td>
                             <td>
-                            <?php if ($song_row['song']['title']): ?>
-                                <b><?=$song_row['song']['title'] ?></b><br>
-                                <?=$song_row['song']['artist'] ?>
-                            <?php else: ?>
-                                <?=$song_row['song']['text'] ?>
-                            <?php endif; ?>
+                                <?php if ($song_row['title']): ?>
+                                    <b><?=$song_row['title']?></b><br>
+                                    <?=$song_row['artist']?>
+                                <?php else: ?>
+                                    <?=$song_row['text']?>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

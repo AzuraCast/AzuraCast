@@ -29,6 +29,13 @@
                     <b-form-input type="text" id="edit_form_artist" v-model="form.artist.$model"
                                   :state="form.artist.$dirty ? !form.artist.$error : null"></b-form-input>
                 </b-form-group>
+                <b-form-group class="col-md-6" label-for="edit_form_genre">
+                    <template v-slot:label>
+                        <translate key="lang_form_genre">Song Genre</translate>
+                    </template>
+                    <b-form-input type="text" id="edit_form_genre" v-model="form.genre.$model"
+                                  :state="form.genre.$dirty ? !form.genre.$error : null"></b-form-input>
+                </b-form-group>
                 <b-form-group class="col-md-6" label-for="edit_form_album">
                     <template v-slot:label>
                         <translate key="lang_form_album">Song Album</translate>

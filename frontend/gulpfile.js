@@ -48,10 +48,10 @@ var jsFiles = {
       'node_modules/bootstrap-notify/bootstrap-notify.min.js'
     ]
   },
-  'sweetalert': {
-    base: 'node_modules/sweetalert/dist',
+  'sweetalert2': {
+    base: 'node_modules/sweetalert2/dist',
     files: [
-      'node_modules/sweetalert/dist/sweetalert.min.js'
+      'node_modules/sweetalert2/dist/sweetalert2.min.js'
     ]
   },
   'autosize': {
@@ -102,12 +102,10 @@ var jsFiles = {
       'node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js'
     ]
   },
-  'chosen': {
-    base: 'node_modules/chosen-js',
+  'select2': {
     files: [
-      'node_modules/chosen-js/chosen.jquery.min.js',
-      'node_modules/chosen-js/chosen.min.css',
-      'node_modules/chosen-js/chosen-sprite*.png'
+      'node_modules/select2/dist/css/select2.min.css',
+      'node_modules/select2/dist/js/select2.full.min.js'
     ]
   },
   'moment': {

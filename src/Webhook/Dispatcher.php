@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Webhook;
 
-use App\ApiUtilities;
 use App\Entity;
 use App\Event\SendWebhooks;
 use App\Exception;
+use App\Http\RouterInterface;
 use App\Message;
 use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +24,7 @@ class Dispatcher implements EventSubscriberInterface
 
     protected ConnectorLocator $connectors;
 
-    protected ApiUtilities $apiUtils;
+    protected RouterInterface $router;
 
     protected EntityManagerInterface $em;
 
@@ -31,19 +32,22 @@ class Dispatcher implements EventSubscriberInterface
         Logger $logger,
         EntityManagerInterface $em,
         MessageBus $messageBus,
-        ApiUtilities $apiUtils,
+        RouterInterface $router,
         LocalWebhookHandler $localHandler,
         ConnectorLocator $connectors
     ) {
         $this->logger = $logger;
         $this->em = $em;
         $this->messageBus = $messageBus;
-        $this->apiUtils = $apiUtils;
+        $this->router = $router;
         $this->localHandler = $localHandler;
         $this->connectors = $connectors;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         if (Settings::getInstance()->isTesting()) {
             return [];
@@ -62,7 +66,7 @@ class Dispatcher implements EventSubscriberInterface
      *
      * @param Message\AbstractMessage $message
      */
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\DispatchWebhookMessage) {
             $webhook = $this->em->find(Entity\StationWebhook::class, $message->webhook_id);
@@ -120,7 +124,7 @@ class Dispatcher implements EventSubscriberInterface
 
         // Trigger all appropriate webhooks.
         foreach ($enabledWebhooks as $webhook) {
-            $message = new Message\DispatchWebhookMessage;
+            $message = new Message\DispatchWebhookMessage();
             $message->webhook_id = $webhook->getId();
             $message->np = $event->getNowPlaying();
             $message->triggers = $event->getTriggers();
@@ -137,7 +141,6 @@ class Dispatcher implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param Entity\StationWebhook $webhook
      *
-     * @return TestHandler
      * @throws Exception
      */
     public function testDispatch(Entity\Station $station, Entity\StationWebhook $webhook): TestHandler
@@ -146,7 +149,7 @@ class Dispatcher implements EventSubscriberInterface
         $this->logger->pushHandler($handler);
 
         $np = $station->getNowplaying();
-        $np->resolveUrls($this->apiUtils->getRouter()->getBaseUrl(false));
+        $np->resolveUrls($this->router->getBaseUrl(false));
         $np->cache = 'event';
 
         $event = new SendWebhooks($station, $np, true, $webhook->getTriggers());

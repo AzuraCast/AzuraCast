@@ -1,15 +1,32 @@
 <?php
+
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
 use App\Entity;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RolesController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\Role::class;
     protected string $resourceRouteName = 'api:admin:role';
+
+    protected Acl $acl;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        Acl $acl
+    ) {
+        parent::__construct($em, $serializer, $validator);
+
+        $this->acl = $acl;
+    }
 
     /**
      * @OA\Get(path="/admin/roles",
@@ -109,7 +126,7 @@ class RolesController extends AbstractAdminApiCrudController
 
                         if (!empty($value['global'])) {
                             foreach ($value['global'] as $perm_name) {
-                                if (Acl::isValidPermission($perm_name, true)) {
+                                if ($this->acl->isValidPermission($perm_name, true)) {
                                     $perm_record = new Entity\RolePermission($record, null, $perm_name);
                                     $this->em->persist($perm_record);
                                     $perms->add($perm_record);
@@ -123,7 +140,7 @@ class RolesController extends AbstractAdminApiCrudController
 
                                 if ($station instanceof Entity\Station) {
                                     foreach ($station_perms as $perm_name) {
-                                        if (Acl::isValidPermission($perm_name, false)) {
+                                        if ($this->acl->isValidPermission($perm_name, false)) {
                                             $perm_record = new Entity\RolePermission($record, $station, $perm_name);
                                             $this->em->persist($perm_record);
                                             $perms->add($perm_record);

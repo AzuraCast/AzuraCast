@@ -107,6 +107,23 @@ abstract class CestAbstract
         throw new RuntimeException('Test station is not established.');
     }
 
+    protected function uploadTestSong(): Entity\StationMedia
+    {
+        $testStation = $this->getTestStation();
+
+        $songSrc = '/var/azuracast/www/resources/error.mp3';
+
+        $storageLocation = $testStation->getMediaStorageLocation();
+
+        $storageFs = $storageLocation->getFilesystem();
+        $storageFs->copyFromLocal($songSrc, 'test.mp3');
+
+        /** @var Entity\Repository\StationMediaRepository $mediaRepo */
+        $mediaRepo = $this->di->get(Entity\Repository\StationMediaRepository::class);
+
+        return $mediaRepo->getOrCreate($storageLocation, 'test.mp3');
+    }
+
     protected function _cleanTables(): void
     {
         $clean_tables = [

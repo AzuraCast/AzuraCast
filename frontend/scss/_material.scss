@@ -1,0 +1,102 @@
+@import 'colors';
+@import 'functions';
+@import 'mixins';
+
+// Sass option
+$enable-grid-classes: true !default;
+$enable-print-styles: true !default;
+
+// Variables
+@import 'variables/elevation-shadow';
+@import 'variables/grid';
+@import 'variables/palette';
+@import 'variables/spacer';
+@import 'variables/transition';
+@import 'variables/typography';
+@import 'variables/variable-bootstrap';
+@import 'variables/variable-material';
+
+@import 'azuracast/variables';
+
+// Base CSS
+@import 'base/base';
+@import 'base/grid';
+@import 'base/typography';
+
+// Bootstrap components
+// Components covered in Bootstrap's css but not in Material design
+@import 'bootstrap/alert';
+@import 'bootstrap/badge';
+@import 'bootstrap/breadcrumb';
+@import 'bootstrap/carousel';
+@import 'bootstrap/close';
+@import 'bootstrap/code';
+@import 'bootstrap/form';
+@import 'bootstrap/image';
+@import 'bootstrap/jumbotron';
+@import 'bootstrap/media';
+@import 'bootstrap/nav';
+@import 'bootstrap/pagination';
+@import 'bootstrap/popover';
+@import 'bootstrap/responsive-embed';
+@import 'bootstrap/spinner';
+@import 'bootstrap/transition';
+
+// Material components
+// Components covered in Material design (https://material.google.com/components)
+@import 'material/button';
+@import 'material/button-flat';
+@import 'material/button-float';
+@import 'material/button-group';
+@import 'material/card';
+@import 'material/chip';
+@import 'material/data-table';
+@import 'material/dialog';
+@import 'material/expansion-panel';
+@import 'material/menu';
+@import 'material/navdrawer';
+@import 'material/picker';
+@import 'material/progress';
+@import 'material/progress-circular';
+@import 'material/selection-control';
+@import 'material/slider';
+@import 'material/snackbar';
+@import 'material/stepper';
+@import 'material/tab';
+@import 'material/text-field';
+@import 'material/text-field-box';
+@import 'material/text-field-floating-label';
+@import 'material/text-field-input-group';
+@import 'material/toolbar';
+@import 'material/tooltip';
+
+// Utilities
+@import 'utilities';
+
+// Very basic print styles
+@import 'print';
+
+// Overrides for specific third-party products
+@import 'vendors/bootgrid';
+@import 'vendors/codemirror';
+@import 'vendors/fullcalendar';
+@import 'vendors/daterangepicker';
+@import 'vendors/waveform';
+@import 'vendors/sweetalert2';
+@import 'vendors/select2';
+
+// Overrides for the Daemonite Material theme
+@import 'azuracast/overrides/body';
+@import 'azuracast/overrides/card';
+@import 'azuracast/overrides/footer';
+@import 'azuracast/overrides/forms';
+@import 'azuracast/overrides/header';
+@import 'azuracast/overrides/tables';
+@import 'azuracast/overrides/progressbar';
+
+// Individual AzuraCast pages
+@import 'azuracast/pages/embed';
+@import 'azuracast/pages/files';
+@import 'azuracast/pages/playlists';
+@import 'azuracast/pages/public';
+@import 'azuracast/pages/log_viewer';

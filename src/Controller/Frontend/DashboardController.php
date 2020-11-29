@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend;
 
 use App\Acl;
@@ -9,11 +10,10 @@ use App\Http\Response;
 use App\Http\Router;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use InfluxDB\Database;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
-use stdClass;
 
 class DashboardController
 {
@@ -24,8 +24,6 @@ class DashboardController
     protected Acl $acl;
 
     protected CacheInterface $cache;
-
-    protected Database $influx;
 
     protected Router $router;
 
@@ -38,7 +36,6 @@ class DashboardController
         Entity\Repository\SettingsRepository $settingsRepo,
         Acl $acl,
         CacheInterface $cache,
-        Database $influx,
         Adapters $adapter_manager,
         EventDispatcher $dispatcher
     ) {
@@ -46,7 +43,6 @@ class DashboardController
         $this->settingsRepo = $settingsRepo;
         $this->acl = $acl;
         $this->cache = $cache;
-        $this->influx = $influx;
         $this->adapter_manager = $adapter_manager;
         $this->dispatcher = $dispatcher;
     }
@@ -74,7 +70,7 @@ class DashboardController
         }
 
         // Get administrator notifications.
-        $notification_event = new Event\GetNotifications($user, $request);
+        $notification_event = new Event\GetNotifications($request);
         $this->dispatcher->dispatch($notification_event);
 
         $notifications = $notification_event->getNotifications();
@@ -120,8 +116,10 @@ class DashboardController
         }
 
         // Detect current analytics level.
-        $analytics_level = $this->settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
-            Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $this->settingsRepo->getSetting(
+            Entity\Settings::LISTENER_ANALYTICS,
+            Entity\Analytics::LEVEL_ALL
+        );
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $metrics = null;
@@ -136,7 +134,7 @@ class DashboardController
 
             $metrics = $this->cache->get($cache_name);
             if (empty($metrics)) {
-                $metrics = $this->_getMetrics($view_stations, $show_admin);
+                $metrics = $this->getMetrics($view_stations, $show_admin);
                 $this->cache->set($cache_name, $metrics, 600);
             }
         }
@@ -150,85 +148,135 @@ class DashboardController
         ]);
     }
 
-    protected function _getMetrics(array $view_stations, bool $show_admin = false): array
+    /**
+     * @param array $stationsToView
+     * @param bool $showAdmin
+     *
+     * @return mixed[]
+     */
+    protected function getMetrics(array $stationsToView, bool $showAdmin = false): array
     {
         // Statistics by day.
-        $station_averages = [];
+        $threshold = CarbonImmutable::parse('-180 days');
 
-        // Query InfluxDB database.
-        $resultset = $this->influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
-            'epoch' => 'ms',
-        ]);
+        $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.moment, a.number_avg, a.number_unique
+            FROM App\Entity\Analytics a
+            WHERE a.station_id IN (:stations)
+            AND a.type = :type
+            AND a.moment >= :threshold')
+            ->setParameter('stations', $stationsToView)
+            ->setParameter('type', Entity\Analytics::INTERVAL_DAILY)
+            ->setParameter('threshold', $threshold)
+            ->getArrayResult();
 
-        $results_raw = $resultset->getSeries();
-        $results = [];
-        foreach ($results_raw as $serie) {
-            $points = [];
-            foreach ($serie['values'] as $point) {
-                $points[] = array_combine($serie['columns'], $point);
-            }
+        $stationStats = [
+            'average' => [],
+            'unique' => [],
+        ];
 
-            $results[$serie['name']] = $points;
-        }
+        $showAllStations = $showAdmin && count($stationsToView) > 1;
 
-        foreach ($results as $stat_series => $stat_rows) {
-            $series_split = explode('.', $stat_series);
-            $station_id = $series_split[1];
+        foreach ($stats as $row) {
+            $stationId = $row['station_id'];
 
-            foreach ($stat_rows as $stat_row) {
-                $station_averages[$station_id][$stat_row['time']] = [
-                    $stat_row['time'],
-                    round($stat_row['value'], 2),
+            /** @var CarbonImmutable $moment */
+            $moment = $row['moment'];
+
+            $sortableKey = $moment->format('Y-m-d');
+            $jsTimestamp = $moment->getTimestamp() * 1000;
+
+            $average = round($row['number_avg'], 2);
+            $unique = $row['number_unique'];
+
+            $stationStats['average'][$stationId][$sortableKey] = [
+                $jsTimestamp,
+                $average,
+            ];
+
+            if (null !== $unique) {
+                $stationStats['unique'][$stationId][$sortableKey] = [
+                    $jsTimestamp,
+                    $unique,
                 ];
             }
-        }
 
-        $metric_stations = [];
-        if ($show_admin && count($view_stations) > 1) {
-            $metric_stations['all'] = __('All Stations');
-        }
-        foreach ($view_stations as $station_id => $station_info) {
-            $metric_stations[$station_id] = $station_info['station']['name'];
-        }
-
-        $station_metrics = [];
-        $station_metrics_alt = [];
-
-        foreach ($metric_stations as $station_id => $station_name) {
-            if (isset($station_averages[$station_id])) {
-                $series_obj = new stdClass;
-                $series_obj->label = $station_name;
-                $series_obj->type = 'line';
-                $series_obj->fill = false;
-
-                $station_metrics_alt[] = '<p>' . $series_obj->label . '</p>';
-                $station_metrics_alt[] = '<dl>';
-
-                ksort($station_averages[$station_id]);
-
-                $series_data = [];
-                foreach ($station_averages[$station_id] as $serie) {
-                    $series_row = new stdClass;
-                    $series_row->t = $serie[0];
-                    $series_row->y = $serie[1];
-                    $series_data[] = $series_row;
-
-                    $serie_date = gmdate('Y-m-d', $serie[0] / 1000);
-                    $station_metrics_alt[] = '<dt><time data-original="' . $serie[0] . '">' . $serie_date . '</time></dt>';
-                    $station_metrics_alt[] = '<dd>' . $serie[1] . ' ' . __('Listeners') . '</dd>';
+            if ($showAllStations) {
+                if (!isset($stationStats['average']['all'][$sortableKey])) {
+                    $stationStats['average']['all'][$sortableKey] = [
+                        $jsTimestamp,
+                        0,
+                    ];
                 }
+                $stationStats['average']['all'][$sortableKey][1] += $average;
 
-                $station_metrics_alt[] = '</dl>';
-
-                $series_obj->data = $series_data;
-
-                $station_metrics[] = $series_obj;
+                if (null !== $unique) {
+                    if (!isset($stationStats['unique']['all'][$sortableKey])) {
+                        $stationStats['unique']['all'][$sortableKey] = [
+                            $jsTimestamp,
+                            0,
+                        ];
+                    }
+                    $stationStats['unique']['all'][$sortableKey][1] += $unique;
+                }
             }
         }
 
-        return [
-            'station' => json_encode($station_metrics, JSON_THROW_ON_ERROR),
-            'station_alt' => implode('', $station_metrics_alt),
+        $stationsInMetric = [];
+        if ($showAllStations) {
+            $stationsInMetric['all'] = __('All Stations');
+        }
+        foreach ($stationsToView as $stationId => $station_info) {
+            $stationsInMetric[$stationId] = $station_info['station']['name'];
+        }
+
+        $jsStats = [
+            'average' => [
+                'metrics' => [],
+                'alt' => '',
+            ],
+            'unique' => [
+                'metrics' => [],
+                'alt' => '',
+            ],
         ];
+
+        foreach ($stationsInMetric as $stationId => $stationName) {
+            foreach ($stationStats as $statKey => $statRows) {
+                if (!isset($statRows[$stationId])) {
+                    continue;
+                }
+
+                $series = [
+                    'label' => $stationName,
+                    'type' => 'line',
+                    'fill' => false,
+                    'data' => [],
+                ];
+
+                $jsStats[$statKey]['alt'] .= '<p>' . $stationName . '</p>';
+                $jsStats[$statKey]['alt'] .= '<dl>';
+
+                ksort($statRows[$stationId]);
+
+                foreach ($statRows[$stationId] as $sortableKey => [$jsTimestamp, $value]) {
+                    $series['data'][] = [
+                        't' => $jsTimestamp,
+                        'y' => $value,
+                    ];
+
+                    $jsStats[$statKey]['alt'] .= sprintf(
+                        '<dt><time data-original="%s">%s</time></dt>',
+                        $jsTimestamp,
+                        $sortableKey
+                    );
+                    $jsStats[$statKey]['alt'] .= '<dd>' . $value . ' ' . __('Listeners') . '</dd>';
+                }
+
+                $jsStats[$statKey]['alt'] .= '</dl>';
+                $jsStats[$statKey]['metrics'][] = $series;
+            }
+        }
+
+        return $jsStats;
     }
 }

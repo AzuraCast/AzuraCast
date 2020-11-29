@@ -36,31 +36,52 @@ $assets
 
 <h2 class="outside-card-header mb-1"><?=__('Server Status')?></h2>
 
-<div class="card-deck system-statistics">
-    <div class="card cpu-usage-card" role="region">
-        <div class="card-body bg-primary-dark">
-            <h3 class="text-white">
-                <?=round($load[0], 2)?><br>
-                <small><?=__('Current CPU Load')?></small>
-            </h3>
+<div class="card-deck">
+    <div class="card" role="region">
+        <div class="card-header bg-primary-dark">
+            <h2 class="card-title"><?=__('CPU Load')?></h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <p class="card-text mb-0">
+                    <strong><?=round($load[0], 2)?></strong>
+                    <small><?=__('Current')?></small>
+                </p>
+            </li>
+            <li class="list-group-item">
+                <p class="card-text mb-0">
+                    <strong><?=round($load[2], 2)?></strong>
+                    <small><?=__('15-Minute Average')?></small>
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card" role="region">
+        <div class="card-header bg-primary-dark">
+            <h2 class="card-title"><?=__('Memory')?></h2>
+        </div>
+        <div class="card-body">
+            <div class="progress mb-1">
+                <div class="progress-bar h-20" role="progressbar" aria-valuenow="<?=$memory_percent?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$memory_percent?>%;">
+                    <span class="sr-only"><?=$memory_percent?>%</span>
+                </div>
+            </div>
+            <h3><small><?=__('%s of %s Used', $memory_used, $memory_total)?></small></h3>
         </div>
     </div>
-    <div class="card cpu-usage-card" role="region">
-        <div class="card-body bg-primary-dark text-white">
-            <h3 class="text-white">
-                <?=round($load[2], 2)?><br>
-                <small><?=__('15-Minute CPU Load Average')?></small>
-            </h3>
+
+    <div class="card" role="region">
+        <div class="card-header bg-primary-dark">
+            <h2 class="card-title"><?=__('Disk Space')?></h2>
         </div>
-    </div>
-    <div class="card storage-card" role="region">
-        <div class="card-body bg-primary-dark text-white">
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent?>%;">
+        <div class="card-body">
+            <div class="progress mb-1">
+                <div class="progress-bar h-20" role="progressbar" aria-valuenow="<?=$space_percent?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent?>%;">
                     <span class="sr-only"><?=$space_percent?>%</span>
                 </div>
             </div>
-            <h3 class="text-white"><small><?=__('%s of %s Used', $space_used, $space_total)?></small></h3>
+            <h3><small><?=__('%s of %s Used', $space_used, $space_total)?></small></h3>
         </div>
     </div>
 </div>

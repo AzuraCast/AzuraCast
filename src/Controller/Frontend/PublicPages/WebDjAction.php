@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Exception\StationNotFoundException;
@@ -22,17 +23,17 @@ class WebDjAction
         $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
-            throw new StationNotFoundException;
+            throw new StationNotFoundException();
         }
 
         if (!$station->getEnableStreamers()) {
-            throw new StationUnsupportedException;
+            throw new StationUnsupportedException();
         }
 
         $backend = $request->getStationBackend();
 
         if (!($backend instanceof Liquidsoap)) {
-            throw new StationUnsupportedException;
+            throw new StationUnsupportedException();
         }
 
         $wss_url = (string)$backend->getWebStreamingUrl($station, $request->getRouter()->getBaseUrl());

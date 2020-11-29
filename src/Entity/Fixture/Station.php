@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -9,9 +10,9 @@ use RuntimeException;
 
 class Station extends AbstractFixture
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
-        $station = new Entity\Station;
+        $station = new Entity\Station();
         $station->setName('AzuraTest Radio');
         $station->setDescription('A test radio station.');
         $station->setEnableRequests(true);
@@ -19,27 +20,21 @@ class Station extends AbstractFixture
         $station->setBackendType(Adapters::BACKEND_LIQUIDSOAP);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
 
-        // Ensure all directories exist.
-        $radio_dirs = [
-            $station->getRadioBaseDir(),
-            $station->getRadioMediaDir(),
-            $station->getRadioAlbumArtDir(),
-            $station->getRadioPlaylistsDir(),
-            $station->getRadioConfigDir(),
-            $station->getRadioTempDir(),
-        ];
-        foreach ($radio_dirs as $radio_dir) {
-            if (!file_exists($radio_dir) && !mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
-            }
-        }
+        $station->ensureDirectoriesExist();
 
-        $station_quota = getenv('INIT_STATION_QUOTA');
-        if (!empty($station_quota)) {
-            $station->setStorageQuota($station_quota);
+        $mediaStorage = $station->getMediaStorageLocation();
+        $recordingsStorage = $station->getRecordingsStorageLocation();
+
+        $stationQuota = getenv('INIT_STATION_QUOTA');
+        if (!empty($stationQuota)) {
+            $mediaStorage->setStorageQuota($stationQuota);
+            $recordingsStorage->setStorageQuota($stationQuota);
         }
 
         $em->persist($station);
+        $em->persist($mediaStorage);
+        $em->persist($recordingsStorage);
+
         $em->flush();
 
         $this->addReference('station', $station);

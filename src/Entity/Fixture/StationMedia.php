@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -16,41 +17,42 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
         $this->mediaRepo = $mediaRepo;
     }
 
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
-        $music_skeleton_dir = getenv('INIT_MUSIC_PATH');
+        $musicSkeletonDir = getenv('INIT_MUSIC_PATH');
 
-        if (empty($music_skeleton_dir) || !is_dir($music_skeleton_dir)) {
+        if (empty($musicSkeletonDir) || !is_dir($musicSkeletonDir)) {
             return;
         }
 
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
 
-        $station_media_dir = $station->getRadioMediaDir();
+        $mediaStorage = $station->getMediaStorageLocation();
+        $fs = $mediaStorage->getFilesystem();
 
         /** @var Entity\StationPlaylist $playlist */
         $playlist = $this->getReference('station_playlist');
 
         $finder = (new Finder())
             ->files()
-            ->in($music_skeleton_dir)
+            ->in($musicSkeletonDir)
             ->name('/^.+\.(mp3|aac|ogg|flac)$/i');
 
         foreach ($finder as $file) {
-            $file_path = $file->getPathname();
-            $file_base_name = basename($file_path);
+            $filePath = $file->getPathname();
+            $fileBaseName = basename($filePath);
 
             // Copy the file to the station media directory.
-            copy($file_path, $station_media_dir . '/' . $file_base_name);
+            $fs->copyFromLocal($filePath, '/' . $fileBaseName);
 
-            $media_row = $this->mediaRepo->getOrCreate($station, $file_base_name);
-            $em->persist($media_row);
+            $mediaRow = $this->mediaRepo->getOrCreate($mediaStorage, $fileBaseName);
+            $em->persist($mediaRow);
 
             // Add the file to the playlist.
-            $spm_row = new Entity\StationPlaylistMedia($playlist, $media_row);
-            $spm_row->setWeight(1);
-            $em->persist($spm_row);
+            $spmRow = new Entity\StationPlaylistMedia($playlist, $mediaRow);
+            $spmRow->setWeight(1);
+            $em->persist($spmRow);
         }
 
         $em->flush();
@@ -59,7 +61,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             Station::class,

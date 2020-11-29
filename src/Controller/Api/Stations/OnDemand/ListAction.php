@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Controller\Api\Stations\OnDemand;
 
-use App\ApiUtilities;
 use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -19,12 +19,18 @@ class ListAction
 {
     protected EntityManagerInterface $em;
 
-    protected ApiUtilities $apiUtils;
+    protected Entity\Repository\CustomFieldRepository $customFieldRepo;
 
-    public function __construct(EntityManagerInterface $em, ApiUtilities $apiUtils)
-    {
+    protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\Repository\CustomFieldRepository $customFieldRepo,
+        Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+    ) {
         $this->em = $em;
-        $this->apiUtils = $apiUtils;
+        $this->customFieldRepo = $customFieldRepo;
+        $this->songApiGenerator = $songApiGenerator;
     }
 
     public function __invoke(
@@ -61,7 +67,7 @@ class ListAction
                 'playlist',
             ];
 
-            $customFields = array_keys($this->apiUtils->getCustomFields());
+            $customFields = array_keys($this->customFieldRepo->getFieldIds());
             foreach ($customFields as $customField) {
                 $searchFields[] = 'media_custom_fields_' . $customField;
             }
@@ -81,7 +87,7 @@ class ListAction
             $sortField = $params['sort'];
             $sortDirection = $params['sortOrder'] ?? Criteria::ASC;
 
-            $criteria = new Criteria;
+            $criteria = new Criteria();
             $criteria->orderBy([$sortField => $sortDirection]);
 
             $trackList = $trackList->matching($criteria);
@@ -91,6 +97,9 @@ class ListAction
         return $paginator->write($response);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function buildTrackList(Entity\Station $station, RouterInterface $router): array
     {
         $list = [];
@@ -108,7 +117,7 @@ class ListAction
             $query = $this->em->createQuery(/** @lang DQL */ '
                 SELECT sm FROM App\Entity\StationMedia sm
                 WHERE sm.id IN (
-                    SELECT spm.media_id 
+                    SELECT spm.media_id
                     FROM App\Entity\StationPlaylistMedia spm
                     WHERE spm.playlist_id = :playlist_id
                 )
@@ -122,7 +131,7 @@ class ListAction
                 $row = new Entity\Api\StationOnDemand();
 
                 $row->track_id = $media->getUniqueId();
-                $row->media = $media->api($this->apiUtils);
+                $row->media = ($this->songApiGenerator)($media, $station);
                 $row->playlist = $playlist['name'];
                 $row->download_url = (string)$router->named('api:stations:ondemand:download', [
                     'station_id' => $station->getId(),
@@ -131,7 +140,7 @@ class ListAction
 
                 $row->resolveUrls($router->getBaseUrl());
 
-                $list[] = Utilities::flattenArray($row, '_');;
+                $list[] = Utilities::flattenArray($row, '_');
             }
         }
 

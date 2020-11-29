@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Form\ApiKeyForm;
@@ -18,7 +19,7 @@ class ApiController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $records = $this->em->createQuery(/** @lang DQL */ 'SELECT 
+        $records = $this->em->createQuery(/** @lang DQL */ 'SELECT
             a, u FROM App\Entity\ApiKey a JOIN a.user u')
             ->getArrayResult();
 
@@ -30,7 +31,7 @@ class ApiController extends AbstractAdminCrudController
 
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
-        if (false !== $this->_doEdit($request, $id)) {
+        if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(__('API Key updated.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:api:index'));
         }
@@ -44,7 +45,7 @@ class ApiController extends AbstractAdminCrudController
 
     public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $this->_doDelete($request, $id, $csrf);
+        $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage(__('API Key deleted.'), Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:api:index'));

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App;
@@ -17,17 +18,17 @@ class QueueController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationQueue::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
-    protected App\ApiUtilities $apiUtils;
+    protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator;
 
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        App\ApiUtilities $apiUtils
+        Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator
     ) {
         parent::__construct($em, $serializer, $validator);
 
-        $this->apiUtils = $apiUtils;
+        $this->queueApiGenerator = $queueApiGenerator;
     }
 
     /**
@@ -37,7 +38,7 @@ class QueueController extends AbstractStationApiCrudController
      *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Response(response=200, description="Success",
      *     @OA\JsonContent(type="array",
-     *       @OA\Items(ref="#/components/schemas/Api_QueuedSong")
+     *       @OA\Items(ref="#/components/schemas/Api_StationQueueDetailed")
      *     )
      *   ),
      *   @OA\Response(response=404, description="Station not found"),
@@ -51,11 +52,10 @@ class QueueController extends AbstractStationApiCrudController
     {
         $station = $request->getStation();
 
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, sp, s, sm
-            FROM App\Entity\StationQueue sq 
-            LEFT JOIN sq.song s 
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sq, sp, sm
+            FROM App\Entity\StationQueue sq
             LEFT JOIN sq.media sm
-            LEFT JOIN sq.playlist sp 
+            LEFT JOIN sq.playlist sp
             WHERE sq.station = :station
             ORDER BY sq.timestamp_cued ASC')
             ->setParameter('station', $station);
@@ -75,7 +75,7 @@ class QueueController extends AbstractStationApiCrudController
      *     @OA\Schema(type="integer", format="int64")
      *   ),
      *   @OA\Response(response=200, description="Success",
-     *     @OA\JsonContent(ref="#/components/schemas/Api_QueuedSong")
+     *     @OA\JsonContent(ref="#/components/schemas/Api_StationQueueDetailed")
      *   ),
      *   @OA\Response(response=404, description="Station or Queue ID not found"),
      *   @OA\Response(response=403, description="Access denied"),
@@ -99,15 +99,13 @@ class QueueController extends AbstractStationApiCrudController
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}}
      * )
-     *
-     * @param mixed $record
-     * @param ServerRequest $request
-     *
-     * @return Entity\Api\QueuedSong
-     * @throws App\Exception
      */
 
-    protected function viewRecord($record, ServerRequest $request)
+    /**
+     * @param mixed $record
+     * @param ServerRequest $request
+     */
+    protected function viewRecord($record, ServerRequest $request): Entity\Api\StationQueueDetailed
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -116,16 +114,20 @@ class QueueController extends AbstractStationApiCrudController
         $router = $request->getRouter();
 
         /** @var Entity\StationQueue $record */
-        /** @var Entity\Api\QueuedSong $row */
-        $row = $record->api($this->apiUtils);
+        $row = ($this->queueApiGenerator)($record);
         $row->resolveUrls($router->getBaseUrl());
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
 
-        $row->links = [
+        $apiResponse = new Entity\Api\StationQueueDetailed();
+        $apiResponse->fromParentObject($row);
+
+        $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
+
+        $apiResponse->links = [
             'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 
-        return $row;
+        return $apiResponse;
     }
 }

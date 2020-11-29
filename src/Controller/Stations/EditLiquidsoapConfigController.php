@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Exception\AdvancedFeatureException;
@@ -24,11 +25,11 @@ class EditLiquidsoapConfigController
         $backend = $request->getStationBackend();
 
         if (!$settings->enableAdvancedFeatures()) {
-            throw new AdvancedFeatureException;
+            throw new AdvancedFeatureException();
         }
 
         if (!($backend instanceof Liquidsoap)) {
-            throw new StationUnsupportedException;
+            throw new StationUnsupportedException();
         }
 
         $configSections = [

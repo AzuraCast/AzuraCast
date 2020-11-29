@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Logger;
@@ -9,6 +10,9 @@ use Symfony\Component\Process\Process;
 
 class AudioWaveform
 {
+    /**
+     * @return mixed[]
+     */
     public static function getWaveformFor(string $path): array
     {
         if (!file_exists($path)) {

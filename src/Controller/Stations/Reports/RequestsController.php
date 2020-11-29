@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
@@ -23,11 +24,10 @@ class RequestsController
     {
         $station = $request->getStation();
 
-        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-            sr, sm, s 
+        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT
+            sr, sm
             FROM App\Entity\StationRequest sr
             JOIN sr.track sm
-            JOIN sm.song s
             WHERE sr.station_id = :station_id
             ORDER BY sr.timestamp DESC')
             ->setParameter('station_id', $station->getId())

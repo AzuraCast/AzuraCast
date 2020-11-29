@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Config;
@@ -71,8 +72,10 @@ class AutomationController
                 $request->getFlash()->addMessage('<b>' . __('Automated assignment complete!') . '</b>', Flash::SUCCESS);
             }
         } catch (Exception $e) {
-            $request->getFlash()->addMessage('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(),
-                Flash::ERROR);
+            $request->getFlash()->addMessage(
+                '<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(),
+                Flash::ERROR
+            );
         }
 
         return $response->withRedirect($request->getRouter()->fromHere('stations:automation:index'));

@@ -1,0 +1,1782 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: easygettext\n"
+"Project-Id-Version: azuracast\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: azuracast\n"
+"X-Crowdin-Project-ID: 217396\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /master/resources/locale/frontend.pot\n"
+"X-Crowdin-File-ID: 11\n"
+"Language-Team: Chinese Simplified\n"
+"Language: zh_CN\n"
+"PO-Revision-Date: 2020-11-25 07:46\n"
+
+#: ./vue/StationPlaylists.vue:25
+msgid "# Songs"
+msgstr "＃歌曲"
+
+#: ./vue/station_profile/ProfileNowPlaying.vue:28
+msgid "%{listeners} Listener"
+msgid_plural "%{listeners} Listeners"
+msgstr[0] ""
+
+#: ./vue/station_profile/ProfileBackend.vue:28
+msgid "%{numPlaylists} playlist"
+msgid_plural "%{numPlaylists} playlists"
+msgstr[0] ""
+
+#: ./vue/station_profile/ProfileBackend.vue:25
+msgid "%{numSongs} uploaded song"
+msgid_plural "%{numSongs} uploaded songs"
+msgstr[0] ""
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:42
+msgid "A completely random track is picked for playback every time the queue is populated."
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:11
+msgid "A playlist containing media files hosted on this server."
+msgstr "包含该服务器上托管的媒体文件的播放列表。"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:15
+msgid "A playlist that instructs the station to play from a remote URL."
+msgstr "指示电台从远程URL播放的播放列表。"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:60
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Access Key ID"
+msgstr ""
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:61
+msgid "Account is Active"
+msgstr "帐户处于激活状态"
+
+#: ./vue/StationStreamers.vue:29
+msgid "Account List"
+msgstr "帐户列表"
+
+#: ./vue/AdminStorageLocations.vue:15
+#: ./vue/SongRequest.vue:18
+#: ./vue/StationMedia.vue:112
+#: ./vue/StationPlaylists.vue:22
+#: ./vue/StationStreamers.vue:20
+#: ./vue/station_playlists/PlaylistReorderModal.vue:9
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:52
+msgid "Actions"
+msgstr "操作"
+
+#: ./vue/AdminStorageLocations.vue:16
+msgid "Adapter"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:49
+msgid "Add Files to Playlist"
+msgstr "将文件添加到播放列表"
+
+#: ./vue/StationPlaylists.vue:18
+#: ./vue/station_playlists/PlaylistEditModal.vue:31
+msgid "Add Playlist"
+msgstr "添加播放列表"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:105
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:99
+msgid "Add Schedule Item"
+msgstr "增加时间表项目"
+
+#: ./vue/AdminStorageLocations.vue:15
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:27
+msgid "Add Storage Location"
+msgstr ""
+
+#: ./vue/StationStreamers.vue:19
+#: ./vue/station_streamers/StreamerEditModal.vue:55
+msgid "Add Streamer"
+msgstr "添加流媒体"
+
+#: ./vue/station_profile/ProfileFrontend.vue:20
+#: ./vue/station_profile/ProfileFrontend.vue:8
+msgid "Administration URL"
+msgstr ""
+
+#: ./vue/station_profile/ProfileFrontend.vue:26
+#: ./vue/station_profile/ProfileFrontend.vue:14
+msgid "Administrator Password"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:8
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:76
+msgid "Advanced"
+msgstr "高级"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:15
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:1
+msgid "Advanced Manual AutoDJ Scheduling Options"
+msgstr "高级手动AutoDJ调度选项"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:9
+msgid "Advanced Playback Settings"
+msgstr "高级播放设置"
+
+#: ./vue/SongRequest.vue:17
+#: ./vue/StationMedia.vue:75
+#: ./vue/StationOnDemand.vue:18
+#: ./vue/station_playlists/PlaylistReorderModal.vue:8
+msgid "Album"
+msgstr "专辑"
+
+#: ./vue/RadioPlayer.vue:92
+#: ./vue/StationMedia.vue:136
+#: ./vue/StationOnDemand.vue:48
+#: ./vue/station_media/form/MediaFormAlbumArt.vue:16
+msgid "Album Art"
+msgstr "专辑封面"
+
+#: ./vue/StationPlaylists.vue:31
+msgid "All Playlists"
+msgstr "所有播放列表"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:56
+msgid "Allow Requests from This Playlist"
+msgstr "允许该播放列表的请求"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:13
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Amplify: Amplification (dB)"
+msgstr "放大: 放大 (dB)"
+
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:112
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:158
+#: ./vue/station_media/MediaEditModal.vue:134
+#: ./vue/station_media/MediaEditModal.vue:178
+#: ./vue/station_media/MediaMoveFilesModal.vue:52
+#: ./vue/station_media/MediaNewDirectoryModal.vue:51
+#: ./vue/station_playlists/PlaylistEditModal.vue:134
+#: ./vue/station_playlists/PlaylistEditModal.vue:175
+#: ./vue/station_playlists/PlaylistImportModal.vue:41
+#: ./vue/station_streamers/StreamerEditModal.vue:104
+#: ./vue/station_streamers/StreamerEditModal.vue:145
+msgid "An error occurred and your request could not be completed."
+msgstr "发生错误，您的请求无法完成。"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:115
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "API Version"
+msgstr ""
+
+#: ./vue/AdminStorageLocations.vue:59
+#: ./vue/StationPlaylists.vue:116
+#: ./vue/station_media/MediaToolbar.vue:137
+msgid "Applying changes..."
+msgstr "应用更改中..."
+
+#: ./vue/StationOnDemand.vue:15
+msgid "Art"
+msgstr "艺术"
+
+#: ./vue/SongRequest.vue:16
+#: ./vue/StationMedia.vue:70
+#: ./vue/StationOnDemand.vue:17
+#: ./vue/station_playlists/PlaylistReorderModal.vue:7
+#: ./vue/webcaster/settings.vue:109
+msgid "Artist"
+msgstr "艺术家"
+
+#: ./vue/StationPlaylists.vue:76
+#: ./vue/StationPlaylists.vue:21
+msgid "Auto-Assigned"
+msgstr "自动分配"
+
+#: ./vue/station_profile/ProfileBackendNone.vue:3
+msgid "AutoDJ Disabled"
+msgstr ""
+
+#: ./vue/station_profile/ProfileBackendNone.vue:6
+msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
+msgstr ""
+
+#: ./vue/station_profile/ProfileBackend.vue:4
+msgid "AutoDJ Service"
+msgstr "自动DJ服务"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:41
+msgid "Avoid Duplicate Artists/Titles"
+msgstr "避免重复的艺术家/标题"
+
+#: ./vue/station_playlists/PlaylistImportModal.vue:8
+#: ./vue/station_playlists/PlaylistImportModal.vue:1
+msgid "AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed."
+msgstr "AzuraCast将扫描上传的文件，寻找与电台音乐库匹配的文件。在运行这一步之前，媒体应该已经被上传。你可以根据需要多次重新运行这个工具。"
+
+#: ./vue/station_media/MediaMoveFilesModal.vue:6
+msgid "Back"
+msgstr "返回"
+
+#: ./vue/AdminStorageLocations.vue:29
+msgid "Backups"
+msgstr "备份"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:24
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:8
+msgid "Basic Info"
+msgstr "基本信息"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:8
+msgid "Basic Information"
+msgstr "基本信息"
+
+#: ./vue/webcaster/settings.vue:56
+msgid "Bit Rate"
+msgstr "比特率"
+
+#: ./vue/station_profile/ProfileFrontend.vue:4
+msgid "Broadcasting Service"
+msgstr "广播服务"
+
+#: ./vue/StationStreamers.vue:38
+#: ./vue/StationStreamers.vue:6
+msgid "Broadcasts"
+msgstr "广播"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:93
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Bucket Name"
+msgstr ""
+
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:152
+#: ./vue/station_media/MediaEditModal.vue:172
+#: ./vue/station_playlists/PlaylistEditModal.vue:169
+#: ./vue/station_streamers/StreamerEditModal.vue:139
+msgid "Changes saved."
+msgstr "更改已保存。"
+
+#: ./vue/station_media/MediaToolbar.vue:32
+msgid "Clear"
+msgstr "清除"
+
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:12
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:2
+#: ./vue/station_media/MediaEditModal.vue:17
+#: ./vue/station_media/MediaEditModal.vue:2
+#: ./vue/station_media/MediaMoveFilesModal.vue:32
+#: ./vue/station_media/MediaMoveFilesModal.vue:2
+#: ./vue/station_media/MediaNewDirectoryModal.vue:14
+#: ./vue/station_media/MediaNewDirectoryModal.vue:1
+#: ./vue/station_media/MediaRenameModal.vue:15
+#: ./vue/station_media/MediaRenameModal.vue:2
+#: ./vue/station_playlists/PlaylistEditModal.vue:17
+#: ./vue/station_playlists/PlaylistEditModal.vue:2
+#: ./vue/station_playlists/PlaylistImportModal.vue:17
+#: ./vue/station_playlists/PlaylistImportModal.vue:2
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:33
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:2
+#: ./vue/station_streamers/StreamerEditModal.vue:15
+#: ./vue/station_streamers/StreamerEditModal.vue:2
+msgid "Close"
+msgstr "关闭"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:44
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "Comments"
+msgstr "评论"
+
+#: ./vue/webcaster/playlist.vue:58
+msgid "Continuous Play"
+msgstr "连续播放"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:18
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:1
+msgid "Control how this playlist is handled by the AutoDJ software."
+msgstr "控制AutoDJ软件如何处理该播放列表。"
+
+#: ./vue/components/CopyToClipboardButton.vue:3
+msgid "Copy to Clipboard"
+msgstr "复制到剪贴板"
+
+#: ./vue/station_media/MediaNewDirectoryModal.vue:17
+#: ./vue/station_media/MediaNewDirectoryModal.vue:4
+msgid "Create Directory"
+msgstr "创建目录"
+
+#: ./vue/webcaster/microphone.vue:17
+#: ./vue/webcaster/playlist.vue:22
+#: ./vue/webcaster/settings.vue:133
+msgid "Cue"
+msgstr "开始"
+
+#: ./vue/StationPlaylists.vue:89
+msgid "Custom"
+msgstr "自定义"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:49
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Custom Cues: Cue-In Point (seconds)"
+msgstr "自定义提示：插入点 (seconds)"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:58
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Custom Cues: Cue-Out Point (seconds)"
+msgstr "自定义提示：插入点 (seconds)"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:31
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Custom Fading: Fade-In Time (seconds)"
+msgstr "自定义渐变：淡入时间 (seconds)"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:40
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Custom Fading: Fade-Out Time (seconds)"
+msgstr "自定义渐变。淡出时间 (seconds)"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:22
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Custom Fading: Overlap Time (seconds)"
+msgstr "自定义渐变：重叠时间 (seconds)"
+
+#: ./vue/station_media/form/MediaFormCustomFields.vue:9
+msgid "Custom Fields"
+msgstr "自定义字段"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:10
+msgid "Default"
+msgstr "默认"
+
+#: ./vue/AdminStorageLocations.vue:26
+#: ./vue/AdminStorageLocations.vue:6
+#: ./vue/AdminStorageLocations.vue:75
+#: ./vue/StationPlaylists.vue:29
+#: ./vue/StationPlaylists.vue:6
+#: ./vue/StationPlaylists.vue:132
+#: ./vue/StationStreamers.vue:41
+#: ./vue/StationStreamers.vue:9
+#: ./vue/StationStreamers.vue:58
+#: ./vue/station_media/MediaToolbar.vue:47
+#: ./vue/station_media/MediaToolbar.vue:50
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:24
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:22
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:3
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:87
+msgid "Delete"
+msgstr "删除"
+
+#: ./vue/station_media/MediaToolbar.vue:51
+msgid "Delete %{ num } media files?"
+msgstr ""
+
+#: ./vue/station_media/form/MediaFormAlbumArt.vue:8
+msgid "Delete Album Art"
+msgstr "删除专辑封面"
+
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:88
+msgid "Delete broadcast?"
+msgstr "删除广播？"
+
+#: ./vue/StationPlaylists.vue:133
+msgid "Delete playlist?"
+msgstr "删除播放列表？"
+
+#: ./vue/AdminStorageLocations.vue:76
+msgid "Delete storage location?"
+msgstr ""
+
+#: ./vue/StationStreamers.vue:59
+msgid "Delete streamer?"
+msgstr "删除流媒体？"
+
+#: ./vue/components/DataTable.vue:88
+msgid "Deselect"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:99
+msgid "Direct Stream URL"
+msgstr "流媒体直链URL"
+
+#: ./vue/StationMedia.vue:38
+#: ./vue/StationMedia.vue:27
+#: ./vue/station_media/MediaMoveFilesModal.vue:19
+msgid "Directory"
+msgstr "目录"
+
+#: ./vue/station_media/MediaNewDirectoryModal.vue:5
+#: ./vue/station_media/MediaNewDirectoryModal.vue:1
+msgid "Directory Name"
+msgstr "目录名称"
+
+#: ./vue/StationPlaylists.vue:58
+#: ./vue/station_profile/ProfilePublicPages.vue:61
+#: ./vue/station_profile/ProfilePublicPages.vue:59
+#: ./vue/station_profile/ProfileRequests.vue:16
+#: ./vue/station_profile/ProfileRequests.vue:14
+#: ./vue/station_profile/ProfileStreamers.vue:16
+#: ./vue/station_profile/ProfileStreamers.vue:14
+msgid "Disable"
+msgstr "禁用"
+
+#: ./vue/station_profile/ProfilePublicPages.vue:27
+msgid "Disable public pages?"
+msgstr ""
+
+#: ./vue/station_profile/ProfileRequests.vue:15
+msgid "Disable song requests?"
+msgstr ""
+
+#: ./vue/station_profile/ProfileStreamers.vue:15
+msgid "Disable streamers?"
+msgstr ""
+
+#: ./vue/StationPlaylists.vue:79
+#: ./vue/StationPlaylists.vue:24
+#: ./vue/StationPlaylists.vue:69
+#: ./vue/StationStreamers.vue:28
+#: ./vue/StationStreamers.vue:4
+#: ./vue/station_profile/ProfilePublicPages.vue:69
+#: ./vue/station_profile/ProfilePublicPages.vue:4
+#: ./vue/station_profile/ProfileRequests.vue:24
+#: ./vue/station_profile/ProfileRequests.vue:4
+#: ./vue/station_profile/ProfileStreamers.vue:24
+#: ./vue/station_profile/ProfileStreamers.vue:4
+msgid "Disabled"
+msgstr "禁用"
+
+#: ./vue/station_profile/ProfileNowPlaying.vue:99
+msgid "Disconnect Streamer"
+msgstr ""
+
+#: ./vue/StationStreamers.vue:22
+msgid "Display Name"
+msgstr "显示名称"
+
+#: ./vue/webcaster/settings.vue:81
+msgid "DJ Credentials"
+msgstr "DJ凭证"
+
+#: ./vue/station_playlists/PlaylistReorderModal.vue:21
+msgid "Down"
+msgstr "下"
+
+#: ./vue/StationOnDemand.vue:54
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:66
+msgid "Download"
+msgstr "下载"
+
+#: ./vue/station_profile/ProfileStreams.vue:78
+msgid "Download M3U"
+msgstr ""
+
+#: ./vue/station_profile/ProfileStreams.vue:74
+msgid "Download PLS"
+msgstr ""
+
+#: ./vue/station_media/MediaFileUpload.vue:15
+msgid "Drag files here to upload to this folder or"
+msgstr "将文件拖到这里上传到这个文件夹或"
+
+#: ./vue/AdminStorageLocations.vue:23
+#: ./vue/AdminStorageLocations.vue:3
+#: ./vue/StationMedia.vue:142
+#: ./vue/StationPlaylists.vue:26
+#: ./vue/StationPlaylists.vue:3
+#: ./vue/StationStreamers.vue:35
+#: ./vue/StationStreamers.vue:3
+msgid "Edit"
+msgstr "编辑"
+
+#: ./vue/station_media/MediaEditModal.vue:69
+msgid "Edit Media"
+msgstr "编辑媒体"
+
+#: ./vue/station_playlists/PlaylistEditModal.vue:30
+msgid "Edit Playlist"
+msgstr "编辑播放列表"
+
+#: ./vue/station_profile/ProfileHeader.vue:10
+msgid "Edit Profile"
+msgstr "编辑个人资料"
+
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:26
+msgid "Edit Storage Location"
+msgstr ""
+
+#: ./vue/station_streamers/StreamerEditModal.vue:54
+msgid "Edit Streamer"
+msgstr "编辑流媒体"
+
+#: ./vue/StationPlaylists.vue:59
+#: ./vue/station_profile/ProfilePublicPages.vue:75
+#: ./vue/station_profile/ProfilePublicPages.vue:10
+#: ./vue/station_profile/ProfileRequests.vue:30
+#: ./vue/station_profile/ProfileRequests.vue:10
+#: ./vue/station_profile/ProfileStreamers.vue:30
+#: ./vue/station_profile/ProfileStreamers.vue:10
+msgid "Enable"
+msgstr "启用"
+
+#: ./vue/station_profile/ProfilePublicPages.vue:30
+msgid "Enable public pages?"
+msgstr ""
+
+#: ./vue/station_profile/ProfileRequests.vue:18
+msgid "Enable song requests?"
+msgstr ""
+
+#: ./vue/station_profile/ProfileStreamers.vue:18
+msgid "Enable streamers?"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:62
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+msgid "Enable this setting to prevent metadata from being sent to the AutoDJ for files in this playlist. This is useful if the playlist contains jingles or bumpers."
+msgstr "启用此设置可防止将此播放列表中的文件的元数据发送到AutoDJ。如果播放列表包含插曲或碰碰声，这很有用。"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:58
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "Enable to allow this account to log in and stream."
+msgstr "启用以允许该帐户登录和流媒体传输。"
+
+#: ./vue/station_profile/ProfilePublicPages.vue:6
+#: ./vue/station_profile/ProfilePublicPages.vue:4
+#: ./vue/station_profile/ProfileRequests.vue:6
+#: ./vue/station_profile/ProfileRequests.vue:4
+#: ./vue/station_profile/ProfileStreamers.vue:6
+#: ./vue/station_profile/ProfileStreamers.vue:4
+msgid "Enabled"
+msgstr "启用"
+
+#: ./vue/webcaster/settings.vue:27
+msgid "Encoder"
+msgstr "编码器"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:79
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:73
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "End Date"
+msgstr "结束日期"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:42
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:29
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:39
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "End Time"
+msgstr "结束时间"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:82
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Endpoint"
+msgstr ""
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:69
+msgid "Enforce Schedule Times"
+msgstr "执行时间表时间"
+
+#: ./vue/StationPlaylists.vue:47
+#: ./vue/StationPlaylists.vue:24
+#: ./vue/StationPlaylists.vue:2
+msgid "Export %{format}"
+msgstr "输出 %{format}"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:6
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "File Name"
+msgstr "文件名"
+
+#: ./vue/station_media/MediaMoveFilesModal.vue:44
+msgid "Files moved:"
+msgstr "文件移动："
+
+#: ./vue/station_media/MediaToolbar.vue:47
+msgid "Files queued for playback:"
+msgstr "等待排队播放的文件："
+
+#: ./vue/station_media/MediaToolbar.vue:63
+msgid "Files removed:"
+msgstr "文件被删除："
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:24
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:18
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:18
+msgid "Friday"
+msgstr "星期五"
+
+#: ./vue/InlinePlayer.vue:34
+#: ./vue/RadioPlayer.vue:89
+#: ./vue/components/Waveform.vue:37
+msgid "Full Volume"
+msgstr "完全音量"
+
+#: ./vue/StationPlaylists.vue:74
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:60
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:92
+msgid "General Rotation"
+msgstr "常规轮换"
+
+#: ./vue/StationMedia.vue:76
+msgid "Genre"
+msgstr "分类"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:65
+msgid "Hide Metadata from Listeners (\"Jingle Mode\")"
+msgstr "从听众那里隐藏元数据（\"铃声模式\"）。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:12
+msgid "High"
+msgstr "高"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:19
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
+msgstr "与其他低权重的播放列表相比，高权重的播放列表的播放频率更高。"
+
+#: ./vue/station_media/MediaBreadcrumb.vue:2
+msgid "Home"
+msgstr "主页"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:9
+msgid "If any of these options are enabled, this playlist will be managed directly via Liquidsoap instead of via AzuraCast. This can have unintended effects and should only be used when you are comfortable with the results."
+msgstr "如果启用了这些选项中的任何一个，这个播放列表将直接通过Liquidsoap而不是通过AzuraCast来管理。这可能会产生意想不到的效果，只有当你对结果感到满意时才能使用。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:100
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
+msgstr "如果启用了自动分配，则将此播放列表作为要重新分配歌曲的目标之一。这将覆盖该播放列表的现有内容。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:29
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "If disabled, the playlist will not be included in radio playback, but can still be managed."
+msgstr "如果禁用，播放列表将不包含在广播的播放中，但仍可进行管理。"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:66
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "If enabled, this streamer will only be able to connect during their scheduled broadcast times."
+msgstr "如果启用，该流媒体播放器将只能在其预定的广播时间内进行连接。"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:53
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+msgid "If requests are enabled for your station, users will be able to request media that is on this playlist."
+msgstr "如果为您的电台启用了请求功能，用户将能够请求该播放列表中的媒体。"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:45
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+msgid "If the end time is before the start time, the playlist will play overnight."
+msgstr "如果结束时间早于开始时间，则播放列表将隔夜播放。"
+
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:42
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "If the end time is before the start time, the schedule entry will continue overnight."
+msgstr "如果结束时间早于开始时间，则计划列表将继续过夜。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:47
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible."
+msgstr "如果该电台启用了点播流媒体和下载功能，则只有启用此设置的播放列表中的歌曲才会显示。"
+
+#: ./vue/StationPlaylists.vue:46
+#: ./vue/station_playlists/PlaylistImportModal.vue:20
+#: ./vue/station_playlists/PlaylistImportModal.vue:5
+#: ./vue/station_playlists/PlaylistImportModal.vue:15
+msgid "Import from PLS/M3U"
+msgstr "从PLS/M3U导入"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:103
+msgid "Include in Automated Assignment"
+msgstr "包括在自动分配中"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:50
+msgid "Include in On-Demand Player"
+msgstr "包含在点播播放器中"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:47
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "Internal notes or comments about the user, visible only on this control panel."
+msgstr "关于用户的内部备注或评论，仅在此控制面板上可见。"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:51
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "International Standard Recording Code, used for licensing reports."
+msgstr "国际标准录音准则，用于许可证报告。"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:23
+msgid "Interrupt other songs to play at scheduled time."
+msgstr "中断其他歌曲在预定时间播放。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:32
+msgid "Is Enabled"
+msgstr "已启用"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:48
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "ISRC"
+msgstr ""
+
+#: ./vue/StationPlaylists.vue:67
+#: ./vue/StationPlaylists.vue:12
+msgid "Jingle Mode"
+msgstr "铃声模式"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:80
+msgid "Learn about Advanced Playlists"
+msgstr "了解高级播放列表"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:92
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:86
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "Leave blank to play on every day of the week."
+msgstr "留出空白，一周中的每一天都可以播放。"
+
+#: ./vue/StationMedia.vue:77
+msgid "Length"
+msgstr "长度"
+
+#: ./vue/station_profile/ProfileBackend.vue:31
+msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
+msgstr ""
+
+#: ./vue/station_profile/ProfileStreams.vue:15
+#: ./vue/station_profile/ProfileStreams.vue:45
+#: ./vue/station_profile/ProfileStreams.vue:4
+msgid "Listeners"
+msgstr "听众"
+
+#: ./vue/RadioPlayer.vue:12
+#: ./vue/station_profile/ProfileNowPlaying.vue:80
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:33
+msgid "Live"
+msgstr "直播"
+
+#: ./vue/components/DataTable.vue:97
+msgid "Loading..."
+msgstr "加载中..."
+
+#: ./vue/AdminStorageLocations.vue:43
+msgid "Local"
+msgstr ""
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:11
+msgid "Local Filesystem"
+msgstr ""
+
+#: ./vue/station_profile/ProfileStreams.vue:14
+#: ./vue/station_profile/ProfileStreams.vue:3
+msgid "Local Streams"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:8
+msgid "Low"
+msgstr "低"
+
+#: ./vue/station_profile/ProfileStreamers.vue:12
+#: ./vue/station_profile/ProfileStreamers.vue:10
+msgid "Manage"
+msgstr "管理"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:78
+msgid "Manually define how this playlist is used in Liquidsoap configuration."
+msgstr "在Liquidsoap配置中手动定义如何使用这个播放列表。"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:32
+msgid "Merge playlist to play as a single track."
+msgstr "合并播放列表，作为单轨播放。"
+
+#: ./vue/webcaster/settings.vue:16
+msgid "Metadata"
+msgstr "元数据"
+
+#: ./vue/webcaster/microphone.vue:4
+msgid "Microphone"
+msgstr "麦克风"
+
+#: ./vue/webcaster/microphone.vue:32
+msgid "Microphone Source"
+msgstr "麦克风来源"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:177
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Minute of Hour to Play"
+msgstr "播放时间分钟"
+
+#: ./vue/webcaster/mixer.vue:4
+msgid "Mixer"
+msgstr "混音器"
+
+#: ./vue/StationMedia.vue:94
+msgid "Modified"
+msgstr "更改"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:14
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:14
+msgid "Monday"
+msgstr "星期一"
+
+#: ./vue/StationPlaylists.vue:37
+msgid "More"
+msgstr "更多"
+
+#: ./vue/station_media/MediaToolbar.vue:43
+msgid "Move"
+msgstr "移动"
+
+#: ./vue/station_media/MediaMoveFilesModal.vue:25
+msgid "Move %{ num } File(s) to"
+msgstr "移动文件到 %{ num }"
+
+#: ./vue/station_media/MediaMoveFilesModal.vue:35
+#: ./vue/station_media/MediaMoveFilesModal.vue:5
+msgid "Move to Directory"
+msgstr "移动到目录"
+
+#: ./vue/webcaster/settings.vue:31
+msgid "MP3"
+msgstr ""
+
+#: ./vue/InlinePlayer.vue:25
+#: ./vue/RadioPlayer.vue:83
+#: ./vue/components/Waveform.vue:28
+msgid "Mute"
+msgstr "静音"
+
+#: ./vue/StationMedia.vue:66
+msgid "Name"
+msgstr "名称"
+
+#: ./vue/station_media/MediaNewDirectoryModal.vue:24
+msgid "New Directory"
+msgstr "新目录"
+
+#: ./vue/station_media/MediaNewDirectoryModal.vue:43
+msgid "New directory created."
+msgstr "创建新目录。"
+
+#: ./vue/station_media/MediaRenameModal.vue:5
+#: ./vue/station_media/MediaRenameModal.vue:1
+msgid "New File Name"
+msgstr "新文件名"
+
+#: ./vue/station_media/MediaToolbar.vue:53
+msgid "New Folder"
+msgstr "新文件夹"
+
+#: ./vue/station_media/MediaToolbar.vue:33
+msgid "New Playlist"
+msgstr "新播放列表"
+
+#: ./vue/station_media/MediaToolbar.vue:142
+msgid "No files selected."
+msgstr "未选择文件。"
+
+#: ./vue/components/DataTable.vue:94
+#: ./vue/public_radio_player/SongHistoryModal.vue:12
+msgid "No records to display."
+msgstr "没有记录可显示。"
+
+#: ./vue/station_profile/ProfileBackend.vue:7
+msgid "Not Running"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:4
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:4
+msgid "Not Scheduled"
+msgstr "未安排"
+
+#: ./vue/StationStreamers.vue:23
+msgid "Notes"
+msgstr "备注"
+
+#: ./vue/station_profile/ProfileSchedule.vue:27
+#: ./vue/station_profile/ProfileSchedule.vue:1
+msgid "Now"
+msgstr ""
+
+#: ./vue/station_profile/ProfileNowPlaying.vue:23
+msgid "Now Playing"
+msgstr "正在播放"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:149
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Number of Minutes Between Plays"
+msgstr "播放之间的分钟数"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:122
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Number of Songs Between Plays"
+msgstr "播放之间的歌曲数量"
+
+#: ./vue/station_profile/ProfileNowPlaying.vue:4
+msgid "On the Air"
+msgstr ""
+
+#: ./vue/StationPlaylists.vue:73
+#: ./vue/StationPlaylists.vue:18
+msgid "On-Demand"
+msgstr "点播请求"
+
+#: ./vue/station_profile/ProfilePublicPages.vue:42
+#: ./vue/station_profile/ProfilePublicPages.vue:40
+msgid "On-Demand Embed Code"
+msgstr ""
+
+#: ./vue/StationOnDemand.vue:10
+#: ./vue/StationOnDemand.vue:1
+#: ./vue/station_profile/ProfilePublicPages.vue:36
+#: ./vue/station_profile/ProfilePublicPages.vue:34
+msgid "On-Demand Media"
+msgstr "点播媒体"
+
+#: ./vue/StationPlaylists.vue:81
+msgid "Once per %{minutes} Minutes"
+msgstr "每%{minutes}分钟一次"
+
+#: ./vue/StationPlaylists.vue:77
+msgid "Once per %{songs} Songs"
+msgstr "每%{songs}歌曲一次"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:72
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:168
+msgid "Once per Hour"
+msgstr "每小时一次"
+
+#: ./vue/StationPlaylists.vue:85
+msgid "Once per Hour (at %{minute})"
+msgstr "每小时一次(%{分钟})"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:68
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:140
+msgid "Once per x Minutes"
+msgstr "每x分钟一次"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:64
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:114
+msgid "Once per x Songs"
+msgstr "每x首歌曲一次"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:26
+msgid "Only loop through playlist once."
+msgstr "只在播放列表中循环一次。"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:29
+msgid "Only play one track at scheduled time."
+msgstr "在预定时间只能播放一首歌曲。"
+
+#: ./vue/webcaster/settings.vue:24
+msgid "Password"
+msgstr "密码"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:21
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Path/Suffix"
+msgstr ""
+
+#: ./vue/InlinePlayer.vue:19
+#: ./vue/RadioPlayer.vue:80
+msgid "Pause"
+msgstr "暂停"
+
+#: ./vue/RadioPlayer.vue:77
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:13
+msgid "Play"
+msgstr "播放"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:69
+msgid "Play exactly once every $x minutes."
+msgstr "每隔x分钟正好播放一次。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:65
+msgid "Play exactly once every $x songs."
+msgstr "每x首歌曲准确播放一次。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:73
+msgid "Play once per hour at the specified minute."
+msgstr "每小时在指定的分钟播放一次。"
+
+#: ./vue/StationMedia.vue:145
+#: ./vue/StationOnDemand.vue:51
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:63
+msgid "Play/Pause"
+msgstr "播放/暂停"
+
+#: ./vue/station_profile/ProfilePublicPages.vue:22
+#: ./vue/station_profile/ProfilePublicPages.vue:20
+msgid "Player Embed Code"
+msgstr ""
+
+#: ./vue/station_profile/ProfileNowPlaying.vue:53
+msgid "Playing Next"
+msgstr ""
+
+#: ./vue/PublicRadioPlayer.vue:35
+#: ./vue/StationOnDemand.vue:19
+#: ./vue/StationPlaylists.vue:23
+#: ./vue/station_profile/ProfileNowPlaying.vue:40
+#: ./vue/station_profile/ProfileNowPlaying.vue:72
+#: ./vue/station_profile/ProfileSchedule.vue:14
+#: ./vue/station_profile/ProfileSchedule.vue:1
+msgid "Playlist"
+msgstr "播放列表"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:102
+msgid "Playlist (M3U/PLS) URL"
+msgstr "播放列表 (M3U/PLS) 地址"
+
+#: ./vue/webcaster/playlist.vue:24
+msgid "Playlist 1"
+msgstr "播放列表1"
+
+#: ./vue/webcaster/playlist.vue:25
+msgid "Playlist 2"
+msgstr "播放列表2"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:6
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Playlist Name"
+msgstr "播放列表名称"
+
+#: ./vue/station_playlists/PlaylistReorderModal.vue:58
+msgid "Playlist order set."
+msgstr "播放列表顺序设置。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:56
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Playlist Type"
+msgstr "播放列表类型"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:16
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Playlist Weight"
+msgstr "播放列表权重"
+
+#: ./vue/StationMedia.vue:107
+#: ./vue/StationPlaylists.vue:6
+#: ./vue/station_media/MediaToolbar.vue:7
+#: ./vue/station_media/MediaToolbar.vue:2
+#: ./vue/station_profile/ProfileBackend.vue:19
+msgid "Playlists"
+msgstr "播放列表"
+
+#: ./vue/station_media/MediaToolbar.vue:118
+msgid "Playlists cleared for selected files:"
+msgstr "清理所选文件的播放列表："
+
+#: ./vue/station_media/MediaToolbar.vue:117
+msgid "Playlists updated for selected files:"
+msgstr "更新所选文件的播放列表："
+
+#: ./vue/station_profile/ProfilePublicPages.vue:16
+#: ./vue/station_profile/ProfilePublicPages.vue:14
+msgid "Public Page"
+msgstr "公开页面"
+
+#: ./vue/station_profile/ProfilePublicPages.vue:5
+#: ./vue/station_profile/ProfilePublicPages.vue:68
+#: ./vue/station_profile/ProfilePublicPages.vue:3
+msgid "Public Pages"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:39
+msgid "Queue"
+msgstr "队列"
+
+#: ./vue/station_media/MediaToolbar.vue:36
+msgid "Queue the selected media to play next"
+msgstr "将选定的媒体排队等待下一个播放"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:41
+msgid "Random"
+msgstr "随机"
+
+#: ./vue/webcaster/settings.vue:35
+msgid "Raw"
+msgstr "原始"
+
+#: ./vue/components/DataTable.vue:73
+msgid "Refresh rows"
+msgstr "刷新行数"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:104
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Region"
+msgstr ""
+
+#: ./vue/station_profile/ProfileFrontend.vue:40
+#: ./vue/station_profile/ProfileFrontend.vue:28
+msgid "Relay Password"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:109
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+msgid "Remote Playback Buffer (Seconds)"
+msgstr "远程播放缓冲区 (Seconds)"
+
+#: ./vue/station_profile/ProfileStreams.vue:44
+#: ./vue/station_profile/ProfileStreams.vue:3
+msgid "Remote Relays"
+msgstr "远程继电器"
+
+#: ./vue/AdminStorageLocations.vue:46
+msgid "Remote S3"
+msgstr ""
+
+#: ./vue/StationPlaylists.vue:62
+#: ./vue/StationPlaylists.vue:7
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:85
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+msgid "Remote URL"
+msgstr "远端网址"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:14
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:77
+msgid "Remote URL Playlist"
+msgstr "远程URL播放列表"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:95
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+msgid "Remote URL Type"
+msgstr "远程URL类型"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:14
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:52
+msgid "Remote: S3 Compatible"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:21
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:21
+msgid "Remove"
+msgstr "移除"
+
+#: ./vue/StationMedia.vue:139
+#: ./vue/station_media/MediaRenameModal.vue:18
+#: ./vue/station_media/MediaRenameModal.vue:5
+msgid "Rename"
+msgstr "重命名"
+
+#: ./vue/station_media/MediaRenameModal.vue:28
+msgid "Rename File/Directory"
+msgstr "重命名文件/目录"
+
+#: ./vue/StationPlaylists.vue:40
+msgid "Reorder"
+msgstr "重新排序"
+
+#: ./vue/station_playlists/PlaylistReorderModal.vue:18
+msgid "Reorder Playlist"
+msgstr "重新排序播放列表"
+
+#: ./vue/webcaster/playlist.vue:64
+msgid "Repeat Playlist"
+msgstr "重复播放列表"
+
+#: ./vue/station_media/form/MediaFormAlbumArt.vue:14
+#: ./vue/station_media/form/MediaFormAlbumArt.vue:1
+msgid "Replace Album Cover Art"
+msgstr "更换专辑封面"
+
+#: ./vue/SongRequest.vue:5
+#: ./vue/SongRequest.vue:3
+msgid "Request"
+msgstr ""
+
+#: ./vue/public_radio_player/RequestModal.vue:18
+msgid "Request a Song"
+msgstr ""
+
+#: ./vue/station_profile/ProfilePublicPages.vue:50
+#: ./vue/station_profile/ProfilePublicPages.vue:48
+msgid "Request Embed Code"
+msgstr ""
+
+#: ./vue/PublicRadioPlayer.vue:32
+msgid "Request Song"
+msgstr ""
+
+#: ./vue/StationPlaylists.vue:43
+msgid "Reshuffle"
+msgstr "洗牌"
+
+#: ./vue/station_profile/ProfileBackend.vue:25
+#: ./vue/station_profile/ProfileFrontend.vue:52
+#: ./vue/station_profile/ProfileFrontend.vue:40
+msgid "Restart"
+msgstr ""
+
+#: ./vue/components/DataTable.vue:76
+msgid "Rows per page"
+msgstr "每页行数"
+
+#: ./vue/station_profile/ProfileBackend.vue:6
+msgid "Running"
+msgstr ""
+
+#: ./vue/webcaster/settings.vue:40
+msgid "Sample Rate"
+msgstr "采样率"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:19
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:19
+msgid "Saturday"
+msgstr "星期六"
+
+#: ./vue/station_media/MediaToolbar.vue:29
+msgid "Save"
+msgstr "保存"
+
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:15
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:5
+#: ./vue/station_media/MediaEditModal.vue:20
+#: ./vue/station_media/MediaEditModal.vue:5
+#: ./vue/station_playlists/PlaylistEditModal.vue:20
+#: ./vue/station_playlists/PlaylistEditModal.vue:5
+#: ./vue/station_streamers/StreamerEditModal.vue:18
+#: ./vue/station_streamers/StreamerEditModal.vue:5
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:26
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:26
+msgid "Schedule"
+msgstr "时间表"
+
+#: ./vue/StationPlaylists.vue:34
+#: ./vue/StationStreamers.vue:32
+msgid "Schedule View"
+msgstr "时间表检视"
+
+#: ./vue/station_profile/ProfileSchedule.vue:4
+msgid "Scheduled"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:89
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:83
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "Scheduled Play Days of Week"
+msgstr "每周预定的播放日"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:15
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:15
+msgid "Scheduled Time #%{num}"
+msgstr "预定时间#%{num}。"
+
+#: ./vue/StationPlaylists.vue:24
+msgid "Scheduling"
+msgstr "时间安排"
+
+#: ./vue/components/DataTable.vue:91
+msgid "Search"
+msgstr "搜索"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:52
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Seconds from the start of the song that the AutoDJ should start playing."
+msgstr "从歌曲开始到AutoDJ开始播放的秒数。"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:61
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Seconds from the start of the song that the AutoDJ should stop playing."
+msgstr "从歌曲开始到AutoDJ停止播放的秒数。"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:71
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Secret Key"
+msgstr ""
+
+#: ./vue/InlinePlayer.vue:16
+msgid "Seek"
+msgstr "寻求"
+
+#: ./vue/components/DataTable.vue:85
+msgid "Select"
+msgstr ""
+
+#: ./vue/components/DataTable.vue:82
+msgid "Select all visible rows"
+msgstr "选择所有可见行"
+
+#: ./vue/components/DataTable.vue:79
+msgid "Select displayed fields"
+msgstr "选择显示的字段"
+
+#: ./vue/station_media/MediaFileUpload.vue:17
+msgid "Select File"
+msgstr "选择文件"
+
+#: ./vue/station_playlists/PlaylistImportModal.vue:5
+#: ./vue/station_playlists/PlaylistImportModal.vue:1
+msgid "Select PLS/M3U File to Import"
+msgstr "选择要导入的PLS/M3U文件"
+
+#: ./vue/StationPlaylists.vue:70
+#: ./vue/StationPlaylists.vue:15
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:45
+msgid "Sequential"
+msgstr "顺序"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:38
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
+msgstr ""
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:3
+msgid "Set cue and fade points using the visual editor. The timestamps will be saved to the corresponding fields in the advanced playback settings."
+msgstr "使用可视化编辑器设置提示点和渐变点。时间戳将被保存到高级播放设置中的相应字段。"
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:22
+msgid "Set Cue In"
+msgstr "设置提示"
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:26
+msgid "Set Cue Out"
+msgstr "设置提示输出"
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:36
+msgid "Set Fade In"
+msgstr "设置淡入"
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:40
+msgid "Set Fade Out"
+msgstr "设置淡出"
+
+#: ./vue/station_media/MediaToolbar.vue:30
+msgid "Set or clear playlists from the selected media"
+msgstr "设置或清除所选媒体的播放列表"
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:31
+msgid "Set Overlap"
+msgstr "设置重叠"
+
+#: ./vue/webcaster/settings.vue:11
+msgid "Settings"
+msgstr "设置"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:37
+msgid "Shuffled"
+msgstr "洗牌"
+
+#: ./vue/StationMedia.vue:91
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:40
+msgid "Size"
+msgstr "大小"
+
+#: ./vue/station_profile/ProfileNowPlaying.vue:95
+msgid "Skip Song"
+msgstr ""
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:36
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "Song Album"
+msgstr "歌曲专辑"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:24
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "Song Artist"
+msgstr "歌曲艺术家"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:30
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "Song Genre"
+msgstr ""
+
+#: ./vue/PublicRadioPlayer.vue:29
+#: ./vue/public_radio_player/SongHistoryModal.vue:9
+msgid "Song History"
+msgstr ""
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:6
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "Song Length"
+msgstr "歌曲长度"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:42
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "Song Lyrics"
+msgstr "歌词"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:33
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+msgid "Song Playback Order"
+msgstr "歌曲播放顺序"
+
+#: ./vue/station_profile/ProfileRequests.vue:5
+#: ./vue/station_profile/ProfileRequests.vue:23
+#: ./vue/station_profile/ProfileRequests.vue:3
+msgid "Song Requests"
+msgstr "歌曲请求"
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:18
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "Song Title"
+msgstr "歌曲标题"
+
+#: ./vue/StationPlaylists.vue:59
+#: ./vue/StationPlaylists.vue:4
+msgid "Song-based"
+msgstr "基于歌曲"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:10
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:25
+msgid "Song-Based Playlist"
+msgstr "基于歌曲的播放列表"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:6
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:8
+msgid "Source"
+msgstr "源"
+
+#: ./vue/station_profile/ProfileFrontend.vue:33
+#: ./vue/station_profile/ProfileFrontend.vue:21
+msgid "Source Password"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:180
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Specify the minute of every hour that this playlist should play."
+msgstr "指定该播放列表每小时应播放的分钟数。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:61
+msgid "Standard playlist, shuffles with other standard playlists based on weight."
+msgstr "标准播放列表，根据权重与其他标准播放列表进行随机播放。"
+
+#: ./vue/station_profile/ProfileBackend.vue:29
+#: ./vue/station_profile/ProfileFrontend.vue:56
+#: ./vue/station_profile/ProfileFrontend.vue:44
+msgid "Start"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:63
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:60
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "Start Date"
+msgstr "开始日期"
+
+#: ./vue/webcaster/settings.vue:29
+msgid "Start Streaming"
+msgstr "开始流媒体"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:30
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:21
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:30
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "Start Time"
+msgstr "开始时间"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:68
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:3
+msgid "Start/end date cannot be used on playlists with advanced settings!"
+msgstr "开始/结束日期不能用于具有高级设置的播放列表!"
+
+#: ./vue/AdminStorageLocations.vue:23
+msgid "Station Media"
+msgstr ""
+
+#: ./vue/AdminStorageLocations.vue:26
+msgid "Station Recordings"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:54
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:51
+msgid "Station Time Zone"
+msgstr "电台时区"
+
+#: ./vue/AdminStorageLocations.vue:17
+msgid "Station(s)"
+msgstr ""
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:17
+#: ./vue/station_profile/ProfileBackend.vue:33
+#: ./vue/station_profile/ProfileFrontend.vue:60
+#: ./vue/station_profile/ProfileFrontend.vue:48
+msgid "Stop"
+msgstr "停止"
+
+#: ./vue/webcaster/settings.vue:28
+msgid "Stop Streaming"
+msgstr "停止流媒体"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:6
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Storage Adapter"
+msgstr ""
+
+#: ./vue/AdminStorageLocations.vue:4
+msgid "Storage Locations"
+msgstr ""
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:35
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Storage Quota"
+msgstr ""
+
+#: ./vue/station_streamers/StreamerBroadcastsModal.vue:60
+msgid "Streamer Broadcasts"
+msgstr "流媒体广播"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:32
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "Streamer Display Name"
+msgstr "流媒体显示名称"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:18
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "Streamer password"
+msgstr "流媒体密码"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:6
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "Streamer Username"
+msgstr "流媒体用户名"
+
+#: ./vue/station_profile/ProfileSchedule.vue:17
+#: ./vue/station_profile/ProfileSchedule.vue:1
+msgid "Streamer/DJ"
+msgstr ""
+
+#: ./vue/StationStreamers.vue:6
+msgid "Streamer/DJ Accounts"
+msgstr "流媒体/ DJ帐户"
+
+#: ./vue/station_profile/ProfileStreamers.vue:5
+#: ./vue/station_profile/ProfileStreamers.vue:23
+#: ./vue/station_profile/ProfileStreamers.vue:3
+msgid "Streamers/DJs"
+msgstr ""
+
+#: ./vue/station_profile/ProfileStreams.vue:3
+msgid "Streams"
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:20
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:20
+msgid "Sunday"
+msgstr "星期日"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:38
+msgid "The full playlist is shuffled and then played through in the shuffled order."
+msgstr ""
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:112
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:1
+msgid "The length of playback time that Liquidsoap should buffer when playing this remote playlist. Shorter times may lead to intermittent playback on unstable connections."
+msgstr "播放这个远程播放列表时，Liquidsoap应该缓冲的播放时间长度。较短的时间可能会导致在不稳定的连接上出现间歇性播放问题。"
+
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:46
+msgid "The order of the playlist is manually specified and followed by the AutoDJ."
+msgstr ""
+
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:9
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:1
+msgid "The relative path of the file in the station's media directory."
+msgstr "站内媒体目录下文件的相对路径。"
+
+#: ./vue/station_media/MediaToolbar.vue:39
+msgid "The request could not be processed."
+msgstr "无法处理该请求。"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:21
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "The streamer will use this password to connect to the radio server."
+msgstr "流媒体将使用这个密码连接到电台服务器。"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:9
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "The streamer will use this username to connect to the radio server."
+msgstr "流媒体将使用这个用户名连接到电台服务器。"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:34
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "The time period that the song should fade in. Leave blank to use the system default."
+msgstr "歌曲应该淡入的时间段。留空以使用系统默认值。"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:43
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "The time period that the song should fade out. Leave blank to use the system default."
+msgstr "歌曲应该淡出的时间段。留空以使用系统默认值。"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:25
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
+msgstr "渐变时，这首歌曲与周围歌曲重叠的时间。留空以使用系统默认值。"
+
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:16
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:1
+msgid "The volume in decibels to amplify the track with. Leave blank to use the system default."
+msgstr "要放大音轨的音量，单位为分贝。留空以使用系统默认值。"
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:29
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:43
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:65
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:76
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:87
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:98
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:109
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:120
+#: ./vue/station_media/MediaNewDirectoryModal.vue:8
+#: ./vue/station_media/MediaRenameModal.vue:9
+#: ./vue/station_media/form/MediaFormBasicInfo.vue:13
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:10
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:23
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:129
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:156
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:184
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:37
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:49
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:73
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:83
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:89
+#: ./vue/station_playlists/form/PlaylistFormSource.vue:116
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:13
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:25
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:39
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:51
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:34
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:46
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:67
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:77
+msgid "This field is required."
+msgstr "这是必填栏。"
+
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:35
+#: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
+msgid "This is the informal display name that will be shown in API responses if the streamer/DJ is live."
+msgstr "这是非正式的显示名称，如果流媒体/DJ是现场直播，将显示在API响应中。"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:7
+msgid "This playlist currently has no scheduled times. It will play at all times. To add a new scheduled time, click the button below."
+msgstr "该播放列表目前没有安排时间。它将在所有时间播放。要添加新的预定时间，请点击下面的按钮。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:152
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "This playlist will play every $x minutes, where $x is specified below."
+msgstr "该播放列表将每隔$x分钟播放一次，其中$x在下面指定。"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:125
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "This playlist will play every $x songs, where $x is specified below."
+msgstr "此播放列表将每隔$x歌曲播放一次，其中$x在下面指定。"
+
+#: ./vue/StationPlaylists.vue:9
+#: ./vue/StationStreamers.vue:9
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:57
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:54
+msgid "This station's time zone is currently %{tz}."
+msgstr "此电台的时区目前是%{tz}。"
+
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:7
+msgid "This streamer is not scheduled to play at any times."
+msgstr "此流媒体在任何时候都没有安排播放。"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:17
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:17
+msgid "Thursday"
+msgstr "星期四"
+
+#: ./vue/SongRequest.vue:15
+#: ./vue/StationMedia.vue:67
+#: ./vue/StationOnDemand.vue:16
+#: ./vue/station_playlists/PlaylistReorderModal.vue:6
+#: ./vue/webcaster/settings.vue:103
+msgid "Title"
+msgstr "标题"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:33
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+msgid "To play once per day, set the start and end times to the same value."
+msgstr "要想每天播放一次，请将开始和结束时间设置为相同的值。"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:66
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:63
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:1
+msgid "To set this schedule to run only within a certain date range, specify a start and end date."
+msgstr "要将此计划设置为仅在特定日期范围内运行，请指定开始和结束的日期。"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:15
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:15
+msgid "Tuesday"
+msgstr "星期二"
+
+#: ./vue/station_profile/ProfileNowPlaying.vue:11
+#: ./vue/station_profile/ProfileStreams.vue:34
+#: ./vue/station_profile/ProfileStreams.vue:64
+#: ./vue/station_profile/ProfileStreams.vue:23
+msgid "Unique"
+msgstr ""
+
+#: ./vue/webcaster/playlist.vue:31
+msgid "Unknown Artist"
+msgstr "未知艺术家"
+
+#: ./vue/webcaster/playlist.vue:28
+msgid "Unknown Title"
+msgstr "未知标题"
+
+#: ./vue/station_playlists/PlaylistReorderModal.vue:24
+msgid "Up"
+msgstr "上"
+
+#: ./vue/webcaster/settings.vue:116
+msgid "Update Metadata"
+msgstr "更新元数据"
+
+#: ./vue/webcaster/settings.vue:96
+msgid "Use Asynchronous Worker"
+msgstr "使用异步Worker"
+
+#: ./vue/StationStreamers.vue:21
+#: ./vue/webcaster/settings.vue:21
+msgid "Username"
+msgstr "用户名"
+
+#: ./vue/station_profile/ProfileRequests.vue:12
+#: ./vue/station_profile/ProfileRequests.vue:10
+msgid "View"
+msgstr ""
+
+#: ./vue/StationMedia.vue:148
+msgid "View tracks in playlist"
+msgstr "在播放列表中查看曲目"
+
+#: ./vue/station_media/form/MediaFormWaveformEditor.vue:13
+msgid "Visual Cue Editor"
+msgstr "视觉提示编辑器"
+
+#: ./vue/InlinePlayer.vue:19
+#: ./vue/RadioPlayer.vue:86
+#: ./vue/components/Waveform.vue:64
+msgid "Volume"
+msgstr "音量"
+
+#: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:6
+msgid "Warning"
+msgstr "警告"
+
+#: ./vue/components/Waveform.vue:15
+msgid "Waveform Zoom"
+msgstr "波形缩放"
+
+#: ./vue/station_profile/ProfilePublicPages.vue:29
+#: ./vue/station_profile/ProfilePublicPages.vue:27
+msgid "Web DJ"
+msgstr "网络DJ"
+
+#: ./vue/station_playlists/form/PlaylistFormSchedule.vue:16
+#: ./vue/station_streamers/form/StreamerFormSchedule.vue:16
+msgid "Wednesday"
+msgstr "星期三"
+
+#: ./vue/StationPlaylists.vue:74
+msgid "Weight"
+msgstr "重量"
+
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:38
+#: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
+msgid "Whether the AutoDJ should attempt to avoid duplicate artists and track titles when playing media from this playlist."
+msgstr "当播放该播放列表中的媒体时，AutoDJ是否应该尝试避免重复的艺术家和曲目标题。"
+

@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var \App\Customization $customization
+ * @var \App\Entity\Station $station
+ * @var array $nowplaying
+ * @var \App\Http\Router $router
+ */
+
+$props = [
+    'initialNowPlaying' => $nowplaying,
+    'showAlbumArt' => !$customization->hideAlbumArt(),
+];
+
+if ($customization->useWebSocketsForNowPlaying()) {
+    $props['useNchan'] = true;
+    $props['nowPlayingUri'] = '/api/live/nowplaying/' . urlencode($station->getShortName());
+} else {
+    $props['useNchan'] = false;
+    $props['nowPlayingUri'] = (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]);
+}
+?>
+
+var radio_player;
+
+$(function () {
+    radio_player = new Vue({
+        el: '#station-nowplaying',
+        render: function (createElement) {
+            return createElement(RadioPlayer.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
+    });
+});

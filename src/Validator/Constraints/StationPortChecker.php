@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -17,7 +18,7 @@ class StationPortChecker extends Constraint
         parent::__construct($options);
     }
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Event;
 
 use App\Entity\Api\NowPlaying;
@@ -19,21 +20,26 @@ class SendWebhooks extends Event
         Station $station,
         NowPlaying $np,
         bool $is_standalone = true,
-        ?array $triggers = []
+        ?array $triggers = null
     ) {
         $this->station = $station;
 
         $this->np = $np;
         $this->is_standalone = $is_standalone;
 
+        $triggers ??= [];
         if (empty($triggers)) {
-            $triggers = ['all'];
+            $triggers = $this->computeTriggers();
         }
         $this->triggers = $triggers;
     }
 
-    public function computeTriggers($np_old): void
+    /**
+     * @return string[]
+     */
+    protected function computeTriggers(): array
     {
+        $np_old = $this->station->getNowplaying();
         $to_trigger = ['all'];
 
         if ($np_old instanceof NowPlaying) {
@@ -54,7 +60,7 @@ class SendWebhooks extends Event
             }
         }
 
-        $this->triggers = $to_trigger;
+        return $to_trigger;
     }
 
     public function getStation(): Station
@@ -67,6 +73,9 @@ class SendWebhooks extends Event
         return $this->np;
     }
 
+    /**
+     * @return string[]
+     */
     public function getTriggers(): array
     {
         return $this->triggers;

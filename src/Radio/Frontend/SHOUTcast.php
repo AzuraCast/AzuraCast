@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -13,9 +14,6 @@ use Symfony\Component\Process\Process;
 
 class SHOUTcast extends AbstractFrontend
 {
-    /**
-     * @return string|null
-     */
     public static function getVersion(): ?string
     {
         $binary_path = self::getBinary();
@@ -34,6 +32,9 @@ class SHOUTcast extends AbstractFrontend
         return trim($process->getOutput());
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getBinary()
     {
         $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
@@ -104,12 +105,15 @@ class SHOUTcast extends AbstractFrontend
      */
     public function read(Entity\Station $station): bool
     {
-        $config = $this->_getConfig($station);
-        $station->setFrontendConfigDefaults($this->_loadFromConfig($config));
+        $config = $this->getConfig($station);
+        $station->setFrontendConfigDefaults($this->loadFromConfig($config));
         return true;
     }
 
-    protected function _getConfig(Entity\Station $station)
+    /**
+     * @return string[]|bool Returns either all lines of the config file or false on failure
+     */
+    protected function getConfig(Entity\Station $station)
     {
         $config_dir = $station->getRadioConfigDir();
         return @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
@@ -119,7 +123,10 @@ class SHOUTcast extends AbstractFrontend
      * Configuration
      */
 
-    protected function _loadFromConfig($config): array
+    /**
+     * @return mixed[]
+     */
+    protected function loadFromConfig($config): array
     {
         return [
             Entity\StationFrontendConfiguration::PORT => $config['portbase'],
@@ -131,7 +138,7 @@ class SHOUTcast extends AbstractFrontend
 
     public function write(Entity\Station $station): bool
     {
-        $config = $this->_getDefaults($station);
+        $config = $this->getDefaults($station);
 
         $frontend_config = $station->getFrontendConfig();
 
@@ -157,7 +164,7 @@ class SHOUTcast extends AbstractFrontend
 
         $customConfig = $frontend_config->getCustomConfiguration();
         if (!empty($customConfig)) {
-            $custom_conf = $this->_processCustomConfig($customConfig);
+            $custom_conf = $this->processCustomConfig($customConfig);
             if (!empty($custom_conf)) {
                 $config = array_merge($config, $custom_conf);
             }
@@ -180,7 +187,7 @@ class SHOUTcast extends AbstractFrontend
         }
 
         // Set any unset values back to the DB config.
-        $station->setFrontendConfigDefaults($this->_loadFromConfig($config));
+        $station->setFrontendConfigDefaults($this->loadFromConfig($config));
 
         $this->em->persist($station);
         $this->em->flush();
@@ -197,19 +204,22 @@ class SHOUTcast extends AbstractFrontend
         return true;
     }
 
-    protected function _getDefaults(Entity\Station $station): array
+    /**
+     * @return mixed[]
+     */
+    protected function getDefaults(Entity\Station $station): array
     {
         $config_path = $station->getRadioConfigDir();
 
         return [
             'password' => Utilities::generatePassword(),
             'adminpassword' => Utilities::generatePassword(),
-            'logfile' => '/tmp/sc_serv.log',
+            'logfile' => $config_path . '/sc_serv.log',
             'w3clog' => $config_path . '/sc_w3c.log',
             'banfile' => $this->writeIpBansFile($station),
             'ripfile' => $config_path . '/sc_serv.rip',
             'maxuser' => 250,
-            'portbase' => $this->_getRadioPort($station),
+            'portbase' => $this->getRadioPort($station),
             'requirestreamconfigs' => 1,
         ];
     }
@@ -233,7 +243,7 @@ class SHOUTcast extends AbstractFrontend
             ->withPath($public_url->getPath() . '/admin.cgi');
     }
 
-    protected function _getDefaultMountSid(Entity\Station $station): int
+    protected function getDefaultMountSid(Entity\Station $station): int
     {
         $default_sid = null;
         $sid = 0;

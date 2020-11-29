@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Field;
 
 use AzuraForms;
@@ -25,6 +26,9 @@ class PlaylistTime extends Time
         };
     }
 
+    /**
+     * @return string|int
+     */
     public function getValue()
     {
         if (empty($this->value)) {
@@ -34,5 +38,4 @@ class PlaylistTime extends Time
         [$hours, $minutes] = explode(':', $this->value);
         return ((int)$hours * 100) + (int)$minutes;
     }
-
 }

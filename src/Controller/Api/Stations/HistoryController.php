@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App;
@@ -16,12 +17,14 @@ class HistoryController
 {
     protected EntityManagerInterface $em;
 
-    protected App\ApiUtilities $api_utils;
+    protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator;
 
-    public function __construct(EntityManagerInterface $em, App\ApiUtilities $api_utils)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator
+    ) {
         $this->em = $em;
-        $this->api_utils = $api_utils;
+        $this->songHistoryApiGenerator = $songHistoryApiGenerator;
     }
 
     /**
@@ -59,8 +62,6 @@ class HistoryController
      *
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -78,12 +79,11 @@ class HistoryController
 
         $qb = $this->em->createQueryBuilder();
 
-        $qb->select('sh, sr, sp, ss, s')
+        $qb->select('sh, sr, sp, ss')
             ->from(Entity\SongHistory::class, 'sh')
             ->leftJoin('sh.request', 'sr')
             ->leftJoin('sh.playlist', 'sp')
             ->leftJoin('sh.streamer', 'ss')
-            ->leftJoin('sh.song', 's')
             ->where('sh.station_id = :station_id')
             ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
@@ -113,8 +113,8 @@ class HistoryController
                     $datetime->format('g:ia'),
                     $song_row['listeners_start'],
                     $song_row['delta_total'],
-                    $song_row['song']['title'] ?: $song_row['song']['text'],
-                    $song_row['song']['artist'],
+                    $song_row['title'] ?: $song_row['text'],
+                    $song_row['artist'],
                     $song_row['playlist']['name'] ?? '',
                     $song_row['streamer']['display_name'] ?? $song_row['streamer']['streamer_username'] ?? '',
                 ];
@@ -123,14 +123,19 @@ class HistoryController
             }
 
             $csv_file = Csv::arrayToCsv($export_all);
-            $csv_filename = $station->getShortName() . '_timeline_' . $start->format('Ymd') . '_to_' . $end->format('Ymd') . '.csv';
+            $csv_filename = sprintf(
+                '%s_timeline_%s_to_%s.csv',
+                $station->getShortName(),
+                $start->format('Ymd'),
+                $end->format('Ymd')
+            );
 
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
 
         $search_phrase = trim($params['searchPhrase']);
         if (!empty($search_phrase)) {
-            $qb->andWhere('(s.title LIKE :query OR s.artist LIKE :query)')
+            $qb->andWhere('(sh.title LIKE :query OR sh.artist LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');
         }
 
@@ -142,9 +147,8 @@ class HistoryController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(function ($sh_row) use ($is_bootgrid, $router) {
-
             /** @var Entity\SongHistory $sh_row */
-            $row = $sh_row->api(new Entity\Api\DetailedSongHistory, $this->api_utils);
+            $row = $this->songHistoryApiGenerator->detailed($sh_row);
             $row->resolveUrls($router->getBaseUrl());
 
             if ($is_bootgrid) {

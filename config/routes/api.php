@@ -77,7 +77,7 @@ return function (App $app) {
                 ->add(new Middleware\Permissions(Acl::GLOBAL_LOGS));
 
             $group->get('/permissions', Controller\Api\Admin\PermissionsController::class)
-                ->add(new Middleware\Permissions(Acl::GLOBAL_PERMISSIONS));
+                ->add(new Middleware\Permissions(Acl::GLOBAL_ALL));
 
             $group->map(['GET', 'POST'], '/relays', function (ServerRequest $request, Response $response) {
                 return $response->withRedirect((string)$request->getRouter()->fromHere('api:internal:relays'));
@@ -97,9 +97,15 @@ return function (App $app) {
                     Controller\Api\Admin\CustomFieldsController::class,
                     Acl::GLOBAL_CUSTOM_FIELDS,
                 ],
-                ['role', 'roles', Controller\Api\Admin\RolesController::class, Acl::GLOBAL_PERMISSIONS],
+                ['role', 'roles', Controller\Api\Admin\RolesController::class, Acl::GLOBAL_ALL],
                 ['station', 'stations', Controller\Api\Admin\StationsController::class, Acl::GLOBAL_STATIONS],
-                ['user', 'users', Controller\Api\Admin\UsersController::class, Acl::GLOBAL_USERS],
+                ['user', 'users', Controller\Api\Admin\UsersController::class, Acl::GLOBAL_ALL],
+                [
+                    'storage_location',
+                    'storage_locations',
+                    Controller\Api\Admin\StorageLocationsController::class,
+                    Acl::GLOBAL_STORAGE_LOCATIONS,
+                ],
             ];
 
             foreach ($admin_api_endpoints as [$singular, $plural, $class, $permission]) {

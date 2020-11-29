@@ -52,7 +52,7 @@ jobs:
         if: github.event_name == 'push' || github.event_name == 'schedule'
 
       - name: Pull latest translations.
-        uses: crowdin/github-action@1.0.6
+        uses: crowdin/github-action@1.0.10
         with:
           upload_sources: true
           download_translations: true
@@ -79,7 +79,6 @@ jobs:
           cp docker-compose.testing.yml docker-compose.override.yml
 
           docker-compose build web
-          docker-compose up -d
           docker-compose run --rm --user="azuracast" web azuracast_install
 
       - name: Run functional test suite.

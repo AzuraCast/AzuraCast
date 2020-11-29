@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -11,8 +12,6 @@ class ApiKeyRepository extends Repository
      * Given an API key string in the format `identifier:verifier`, find and authenticate an API key.
      *
      * @param string $key_string
-     *
-     * @return Entity\User|null
      */
     public function authenticate(string $key_string): ?Entity\User
     {

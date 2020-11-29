@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity;
@@ -89,22 +90,25 @@ abstract class AbstractLogViewerController
         return mb_convert_encoding($log, 'UTF-8', 'UTF-8');
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getStationLogs(Entity\Station $station): array
     {
         $log_paths = [];
-
-        $station_config_dir = $station->getRadioConfigDir();
+        
+        $stationConfigDir = $station->getRadioConfigDir();
 
         switch ($station->getBackendType()) {
             case Adapters::BACKEND_LIQUIDSOAP:
                 $log_paths['liquidsoap_log'] = [
                     'name' => __('Liquidsoap Log'),
-                    'path' => $station_config_dir . '/liquidsoap.log',
+                    'path' => $stationConfigDir . '/liquidsoap.log',
                     'tail' => true,
                 ];
                 $log_paths['liquidsoap_liq'] = [
                     'name' => __('Liquidsoap Configuration'),
-                    'path' => $station_config_dir . '/liquidsoap.liq',
+                    'path' => $stationConfigDir . '/liquidsoap.liq',
                     'tail' => false,
                 ];
                 break;
@@ -114,17 +118,17 @@ abstract class AbstractLogViewerController
             case Adapters::FRONTEND_ICECAST:
                 $log_paths['icecast_access_log'] = [
                     'name' => __('Icecast Access Log'),
-                    'path' => $station_config_dir . '/icecast_access.log',
+                    'path' => $stationConfigDir . '/icecast_access.log',
                     'tail' => true,
                 ];
                 $log_paths['icecast_error_log'] = [
                     'name' => __('Icecast Error Log'),
-                    'path' => $station_config_dir . '/icecast.log',
+                    'path' => $stationConfigDir . '/icecast.log',
                     'tail' => true,
                 ];
                 $log_paths['icecast_xml'] = [
                     'name' => __('Icecast Configuration'),
-                    'path' => $station_config_dir . '/icecast.xml',
+                    'path' => $stationConfigDir . '/icecast.xml',
                     'tail' => false,
                 ];
                 break;
@@ -132,12 +136,12 @@ abstract class AbstractLogViewerController
             case Adapters::FRONTEND_SHOUTCAST:
                 $log_paths['shoutcast_log'] = [
                     'name' => __('SHOUTcast Log'),
-                    'path' => $station_config_dir . '/shoutcast.log',
+                    'path' => $stationConfigDir . '/shoutcast.log',
                     'tail' => true,
                 ];
                 $log_paths['shoutcast_conf'] = [
                     'name' => __('SHOUTcast Configuration'),
-                    'path' => $station_config_dir . '/sc_serv.conf',
+                    'path' => $stationConfigDir . '/sc_serv.conf',
                     'tail' => false,
                 ];
                 break;

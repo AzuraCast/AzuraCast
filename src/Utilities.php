@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Miscellaneous Utilities Class
  **/
@@ -8,6 +9,7 @@ namespace App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+
 use function is_array;
 
 class Utilities
@@ -16,8 +18,6 @@ class Utilities
      * Generate a randomized password of specified length.
      *
      * @param int $char_length
-     *
-     * @return string
      */
     public static function generatePassword($char_length = 8): string
     {
@@ -42,8 +42,6 @@ class Utilities
      *
      * @param string $url
      * @param int $length
-     *
-     * @return string
      */
     public static function truncateUrl($url, $length = 40): string
     {
@@ -58,8 +56,6 @@ class Utilities
      * @param string $text
      * @param int $limit
      * @param string $pad
-     *
-     * @return string
      */
     public static function truncateText($text, $limit = 80, $pad = '...'): string
     {
@@ -88,8 +84,6 @@ class Utilities
      * @param int $width
      * @param string $break
      * @param bool $cut
-     *
-     * @return string
      */
     public static function mbWordwrap($str, $width = 75, $break = "\n", $cut = false): string
     {
@@ -162,14 +156,14 @@ class Utilities
      * Detect if the User-Agent matches common crawler UAs.
      * Not expected to be 100% accurate or trustworthy, just used to prevent
      * common crawlers from accessing features like API endpoints.
-     *
-     * @return bool
      */
     public static function isCrawler(): bool
     {
         $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 
+        // phpcs:disable Generic.Files.LineLength
         $crawlers_agents = strtolower('Bloglines subscriber|Dumbot|Sosoimagespider|QihooBot|FAST-WebCrawler|Superdownloads Spiderman|LinkWalker|msnbot|ASPSeek|WebAlta Crawler|Lycos|FeedFetcher-Google|Yahoo|YoudaoBot|AdsBot-Google|Googlebot|Scooter|Gigabot|Charlotte|eStyle|AcioRobot|GeonaBot|msnbot-media|Baidu|CocoCrawler|Google|Charlotte t|Yahoo! Slurp China|Sogou web spider|YodaoBot|MSRBOT|AbachoBOT|Sogou head spider|AltaVista|IDBot|Sosospider|Yahoo! Slurp|Java VM|DotBot|LiteFinder|Yeti|Rambler|Scrubby|Baiduspider|accoona');
+        // phpcs:enable
         $crawlers = explode('|', $crawlers_agents);
 
         foreach ($crawlers as $crawler) {
@@ -185,8 +179,6 @@ class Utilities
      * Recursively remove a directory and its contents.
      *
      * @param string $source
-     *
-     * @return bool
      */
     public static function rmdirRecursive(string $source): bool
     {
@@ -238,7 +230,7 @@ class Utilities
      * @param string $separator
      * @param null $prefix
      *
-     * @return array
+     * @return mixed[]
      */
     public static function flattenArray($array, $separator = '.', $prefix = null): array
     {

@@ -1,96 +1,91 @@
 <?php
+
 namespace App\Sync\Task;
 
-use App\ApiUtilities;
 use App\Entity;
 use App\Entity\Station;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
 use App\EventDispatcher;
+use App\Http\RouterInterface;
+use App\LockFactory;
 use App\Message;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use App\Settings;
+use DeepCopy\DeepCopy;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use GuzzleHttp\Psr7\Uri;
-use InfluxDB\Database;
-use InfluxDB\Point;
 use Monolog\Logger;
 use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
-use function DeepCopy\deep_copy;
 
 class NowPlaying extends AbstractTask implements EventSubscriberInterface
 {
-    protected Database $influx;
-
     protected CacheInterface $cache;
 
     protected Adapters $adapters;
 
     protected AutoDJ $autodj;
 
-    protected EventDispatcher $event_dispatcher;
+    protected EventDispatcher $eventDispatcher;
 
     protected MessageBus $messageBus;
 
-    protected ApiUtilities $api_utils;
-
-    protected Entity\Repository\SongHistoryRepository $history_repo;
-
     protected Entity\Repository\StationQueueRepository $queueRepo;
 
-    protected Entity\Repository\SongRepository $song_repo;
-
-    protected Entity\Repository\ListenerRepository $listener_repo;
+    protected Entity\Repository\ListenerRepository $listenerRepo;
 
     protected LockFactory $lockFactory;
 
-    protected string $analytics_level = Entity\Analytics::LEVEL_ALL;
+    protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator;
+
+    protected RouterInterface $router;
+
+    protected string $analyticsLevel = Entity\Analytics::LEVEL_ALL;
 
     public function __construct(
         EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepository,
+        LoggerInterface $logger,
         Adapters $adapters,
-        ApiUtilities $api_utils,
         AutoDJ $autodj,
         CacheInterface $cache,
-        Database $influx,
-        LoggerInterface $logger,
         EventDispatcher $event_dispatcher,
         MessageBus $messageBus,
         LockFactory $lockFactory,
-        Entity\Repository\SongHistoryRepository $historyRepository,
-        Entity\Repository\SongRepository $songRepository,
+        RouterInterface $router,
         Entity\Repository\ListenerRepository $listenerRepository,
-        Entity\Repository\SettingsRepository $settingsRepository,
-        Entity\Repository\StationQueueRepository $queueRepo
+        Entity\Repository\StationQueueRepository $queueRepo,
+        Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator
     ) {
         parent::__construct($em, $settingsRepository, $logger);
 
         $this->adapters = $adapters;
-        $this->api_utils = $api_utils;
         $this->autodj = $autodj;
         $this->cache = $cache;
-        $this->event_dispatcher = $event_dispatcher;
+        $this->eventDispatcher = $event_dispatcher;
         $this->messageBus = $messageBus;
-        $this->influx = $influx;
         $this->lockFactory = $lockFactory;
+        $this->router = $router;
 
-        $this->history_repo = $historyRepository;
-        $this->song_repo = $songRepository;
-        $this->listener_repo = $listenerRepository;
+        $this->listenerRepo = $listenerRepository;
         $this->queueRepo = $queueRepo;
 
-        $this->analytics_level = $settingsRepository->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $this->nowPlayingApiGenerator = $nowPlayingApiGenerator;
+
+        $this->analyticsLevel = (string)$settingsRepository->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         if (Settings::getInstance()->isTesting()) {
             return [];
@@ -106,39 +101,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     public function run(bool $force = false): void
     {
-        $nowplaying = $this->_loadNowPlaying($force);
-
-        // Post statistics to InfluxDB.
-        if ($this->analytics_level !== Entity\Analytics::LEVEL_NONE) {
-            $influx_points = [];
-
-            $total_overall = 0;
-
-            foreach ($nowplaying as $info) {
-                $listeners = (int)$info->listeners->current;
-                $total_overall += $listeners;
-
-                $station_id = $info->station->id;
-
-                $influx_points[] = new Point(
-                    'station.' . $station_id . '.listeners',
-                    $listeners,
-                    [],
-                    ['station' => $station_id],
-                    time()
-                );
-            }
-
-            $influx_points[] = new Point(
-                'station.all.listeners',
-                $total_overall,
-                [],
-                ['station' => 0],
-                time()
-            );
-
-            $this->influx->writePoints($influx_points, Database::PRECISION_SECONDS);
-        }
+        $nowplaying = $this->loadNowPlaying($force);
 
         $this->cache->set(Entity\Settings::NOWPLAYING, $nowplaying, 120);
         $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING, $nowplaying);
@@ -149,7 +112,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      *
      * @return Entity\Api\NowPlaying[]
      */
-    protected function _loadNowPlaying($force = false): array
+    protected function loadNowPlaying($force = false): array
     {
         $stations = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);
@@ -168,14 +131,12 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      * @param Entity\Station $station
      * @param bool $standalone Whether the request is for this station alone or part of the regular sync process.
      *
-     * @return Entity\Api\NowPlaying
      */
     public function processStation(
         Entity\Station $station,
         $standalone = false
     ): Entity\Api\NowPlaying {
-        $lock = $this->lockFactory->createLock('nowplaying_station_' . $station->getId(), 600);
-
+        $lock = $this->getLockForStation($station);
         $lock->acquire(true);
 
         try {
@@ -190,13 +151,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 return $record;
             });
 
-            $include_clients = ($this->analytics_level === Entity\Analytics::LEVEL_ALL);
+            $include_clients = ($this->analyticsLevel === Entity\Analytics::LEVEL_ALL);
 
             $frontend_adapter = $this->adapters->getFrontendAdapter($station);
             $remote_adapters = $this->adapters->getRemoteAdapters($station);
-
-            /** @var Entity\Api\NowPlaying|null $np_old */
-            $np_old = $station->getNowplaying();
 
             // Build the new "raw" NowPlaying data.
             try {
@@ -204,8 +162,9 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                     $station,
                     $frontend_adapter,
                     $remote_adapters,
-                    $include_clients);
-                $this->event_dispatcher->dispatch($event);
+                    $include_clients
+                );
+                $this->eventDispatcher->dispatch($event);
 
                 $npResult = $event->getResult();
             } catch (Exception $e) {
@@ -224,118 +183,27 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 'np' => $npResult,
             ]);
 
-            $np = new Entity\Api\NowPlaying;
-            $uri_empty = new Uri('');
-
-            $np->station = $station->api($frontend_adapter, $remote_adapters, $uri_empty);
-            $np->listeners = new Entity\Api\NowPlayingListeners([
-                    'current' => $npResult->listeners->current,
-                    'unique' => $npResult->listeners->unique,
-                    'total' => $npResult->listeners->total,
-                ]
-            );
-
-            if (empty($npResult->currentSong->text)) {
-                $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
-
-                $offline_sh = new Entity\Api\NowPlayingCurrentSong;
-                $offline_sh->sh_id = 0;
-                $offline_sh->song = $song_obj->api(
-                    $this->api_utils,
-                    $station,
-                    $uri_empty
-                );
-                $np->now_playing = $offline_sh;
-
-                $np->song_history = $this->history_repo->getHistoryApi(
-                    $station,
-                    $this->api_utils,
-                    $uri_empty
-                );
-
-                $np->playing_next = $this->queueRepo->getNextSongApi(
-                    $station,
-                    $this->api_utils,
-                    $uri_empty
-                );
-
-                $np->live = new Entity\Api\NowPlayingLive(false);
-            } else {
-                // Pull from current NP data if song details haven't changed .
-                $current_song_hash = Entity\Song::getSongHash($npResult->currentSong);
-
-                if ($np_old instanceof Entity\Api\NowPlaying &&
-                    0 === strcmp($current_song_hash, $np_old->now_playing->song->id)) {
-                    /** @var Entity\Song $song_obj */
-                    $song_obj = $this->song_repo->getRepository()->find($current_song_hash);
-
-                    $sh_obj = $this->history_repo->register($song_obj, $station, $np);
-
-                    $np->song_history = $np_old->song_history;
-                    $np->playing_next = $np_old->playing_next;
-                } else {
-                    // SongHistory registration must ALWAYS come before the history/nextsong calls
-                    // otherwise they will not have up-to-date database info!
-                    $song_obj = $this->song_repo->getOrCreate($npResult->currentSong, true);
-                    $sh_obj = $this->history_repo->register($song_obj, $station, $np);
-
-                    $np->song_history = $this->history_repo->getHistoryApi(
-                        $station,
-                        $this->api_utils,
-                        $uri_empty
-                    );
-
-                    $np->playing_next = $this->queueRepo->getNextSongApi(
-                        $station,
-                        $this->api_utils,
-                        $uri_empty
-                    );
-                }
-
-                // Update detailed listener statistics, if they exist for the station
-                if ($include_clients && null !== $npResult->clients) {
-                    $this->listener_repo->update($station, $npResult->clients);
-                }
-
-                // Detect and report live DJ status
-                if ($station->getIsStreamerLive()) {
-                    $current_streamer = $station->getCurrentStreamer();
-                    $streamer_name = ($current_streamer instanceof Entity\StationStreamer)
-                        ? $current_streamer->getDisplayName()
-                        : 'Live DJ';
-
-                    $broadcast_start_time = null;
-                    $broadcast = $this->getLatestBroadcast($station);
-                    if (!empty($broadcast)) {
-                        $broadcast_start_time = $broadcast->getTimestampStart();
-                    }
-
-                    $np->live = new Entity\Api\NowPlayingLive(true, $streamer_name, $broadcast_start_time);
-                } else {
-                    $np->live = new Entity\Api\NowPlayingLive(false, '');
-                }
-
-                // Register a new item in song history.
-                $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils, $uri_empty);
+            // Update detailed listener statistics, if they exist for the station
+            if ($include_clients && null !== $npResult->clients) {
+                $this->listenerRepo->update($station, $npResult->clients);
             }
 
-            $np->update();
-
-            $station->setNowplaying($np);
-
-            $this->em->persist($station);
-            $this->em->flush();
+            $np = ($this->nowPlayingApiGenerator)($station, $npResult);
 
             // Trigger the dispatching of webhooks.
+
             /** @var Entity\Api\NowPlaying $np_event */
-            $np_event = deep_copy($np);
-            $np_event->resolveUrls($this->api_utils->getRouter()->getBaseUrl(false));
+            $np_event = (new DeepCopy())->copy($np);
+            $np_event->resolveUrls($this->router->getBaseUrl(false));
             $np_event->cache = 'event';
 
             $webhook_event = new SendWebhooks($station, $np_event, $standalone);
-            $webhook_event->computeTriggers($np_old);
 
-            $this->event_dispatcher->dispatch($webhook_event);
+            $this->eventDispatcher->dispatch($webhook_event);
+
+            $station->setNowplaying($np);
+            $this->em->persist($station);
+            $this->em->flush();
 
             $logger->popProcessor();
 
@@ -353,27 +221,27 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      */
     public function queueStation(Entity\Station $station, array $extra_metadata = []): void
     {
-        // Stop Now Playing from processing while doing the steps below.
-        $station->setNowPlayingTimestamp(time());
-        $this->em->persist($station);
-        $this->em->flush();
+        $lock = $this->getLockForStation($station);
 
-        // Process extra metadata sent by Liquidsoap (if it exists).
-        if (!empty($extra_metadata['song_id'])) {
-            $song = $this->song_repo->getRepository()->find($extra_metadata['song_id']);
+        if (!$lock->acquire(true)) {
+            return;
+        }
 
-            if ($song instanceof Entity\Song) {
-                $sq = $this->queueRepo->getUpcomingFromSong($station, $song);
-                if (!$sq instanceof Entity\StationQueue) {
-                    $sq = new Entity\StationQueue($station, $song);
-                    $sq->setTimestampCued(time());
+        try {
+            // Process extra metadata sent by Liquidsoap (if it exists).
+            if (!empty($extra_metadata['media_id'])) {
+                $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
+                if (!$media instanceof Entity\StationMedia) {
+                    return;
                 }
 
-                if (!empty($extra_metadata['media_id']) && null === $sq->getMedia()) {
-                    $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
-                    if ($media instanceof Entity\StationMedia) {
-                        $sq->setMedia($media);
-                    }
+                $sq = $this->queueRepo->getUpcomingFromSong($station, $media);
+
+                if (!$sq instanceof Entity\StationQueue) {
+                    $sq = new Entity\StationQueue($station, $media);
+                    $sq->setTimestampCued(time());
+                } elseif (null === $sq->getMedia()) {
+                    $sq->setMedia($media);
                 }
 
                 if (!empty($extra_metadata['playlist_id']) && null === $sq->getPlaylist()) {
@@ -388,15 +256,17 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
                 $this->em->persist($sq);
                 $this->em->flush();
             }
+
+            // Trigger a delayed Now Playing update.
+            $message = new Message\UpdateNowPlayingMessage();
+            $message->station_id = $station->getId();
+
+            $this->messageBus->dispatch($message, [
+                new DelayStamp(2000),
+            ]);
+        } finally {
+            $lock->release();
         }
-
-        // Trigger a delayed Now Playing update.
-        $message = new Message\UpdateNowPlayingMessage;
-        $message->station_id = $station->getId();
-
-        $this->messageBus->dispatch($message, [
-            new DelayStamp(2000),
-        ]);
     }
 
     /**
@@ -440,24 +310,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         $event->setResult($result);
     }
 
-    /**
-     * Returns the latest live broadcast
-     *
-     * @param Entity\Station $station
-     *
-     * @return Entity\StationStreamerBroadcast
-     */
-    public function getLatestBroadcast(Station $station): Entity\StationStreamerBroadcast
+    protected function getLockForStation(Station $station): LockInterface
     {
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb 
-            FROM App\Entity\StationStreamerBroadcast ssb
-            WHERE ssb.station = :station AND ssb.streamer = :streamer
-            ORDER BY ssb.timestampStart DESC
-            ')
-            ->setMaxResults(1)
-            ->setParameter('station', $station)
-            ->setParameter('streamer', $station->getCurrentStreamer());
-
-        return $query->getSingleResult();
+        return $this->lockFactory->createLock('nowplaying_station_' . $station->getId(), 600);
     }
 }

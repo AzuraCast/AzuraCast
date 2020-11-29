@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -39,6 +40,7 @@ class Settings
     public const BACKUP_TIME = 'backup_time';
     public const BACKUP_EXCLUDE_MEDIA = 'backup_exclude_media';
     public const BACKUP_KEEP_COPIES = 'backup_keep_copies';
+    public const BACKUP_STORAGE_LOCATION = 'backup_storage_location';
 
     // Internal settings
     public const SETUP_COMPLETE = 'setup_complete';
@@ -92,16 +94,22 @@ class Settings
         return $this->setting_key;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSettingValue()
     {
         return $this->setting_value;
     }
 
-    public function setSettingValue($setting_value)
+    public function setSettingValue($setting_value): void
     {
         $this->setting_value = $setting_value;
     }
 
+    /**
+     * @return mixed
+     */
     public function getValue()
     {
         return $this->setting_value;

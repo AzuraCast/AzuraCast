@@ -85,10 +85,31 @@ $user = $request->getUser();
         <div class="card-header bg-primary-dark">
             <h3 class="card-title"><?=__('Listeners Per Station')?></h3>
         </div>
-        <div class="card-body">
-            <canvas id="station_chart" style="width: 100%;" aria-label="<?=__('Listeners Per Station')?>" role="img">
-                <?=$metrics['station_alt']?>
-            </canvas>
+        <div class="card-body pb-0">
+            <ul class="nav nav-pills nav-pills-scrollable card-header-pills">
+                <li class="nav-item active">
+                    <a class="nav-link active" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="tab_chart_average" href="#tab_chart_average">
+                        <?=__('Average Listeners')?>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" role="tab" data-toggle="tab" aria-expanded="true" aria-controls="tab_chart_unique" href="#tab_chart_unique">
+                        <?=__('Unique Listeners')?>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="card-body tab-pane active" id="tab_chart_average">
+                <canvas id="chart_average" style="width: 100%;" aria-label="<?=__('Average Listeners')?>" role="img">
+                    <?=$metrics['average']['alt']?>
+                </canvas>
+            </div>
+            <div class="card-body tab-pane" id="tab_chart_unique">
+                <canvas id="chart_unique" style="width: 100%;" aria-label="<?=__('Unique Listeners')?>" role="img">
+                    <?=$metrics['unique']['alt']?>
+                </canvas>
+            </div>
         </div>
     </section>
 <?php endif; ?>

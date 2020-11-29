@@ -7,11 +7,15 @@ module.exports = {
     VueTranslations: './vue/VueTranslations.js',
     Webcaster: './vue/Webcaster.vue',
     RadioPlayer: './vue/RadioPlayer.vue',
+    PublicRadioPlayer: './vue/PublicRadioPlayer.vue',
     InlinePlayer: './vue/InlinePlayer.vue',
+    SongRequest: './vue/SongRequest.vue',
+    AdminStorageLocations: './vue/AdminStorageLocations.vue',
     StationMedia: './vue/StationMedia.vue',
     StationPlaylists: './vue/StationPlaylists.vue',
     StationStreamers: './vue/StationStreamers.vue',
-    StationOnDemand: './vue/StationOnDemand.vue'
+    StationOnDemand: './vue/StationOnDemand.vue',
+    StationProfile: './vue/StationProfile.vue'
   },
   resolve: {
     extensions: ['*', '.js', '.vue', '.json']

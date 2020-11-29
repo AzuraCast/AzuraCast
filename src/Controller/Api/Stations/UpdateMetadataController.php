@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+
 use const ARRAY_FILTER_USE_KEY;
 
 class UpdateMetadataController
@@ -43,5 +45,4 @@ class UpdateMetadataController
             new Entity\Api\Status(true, 'Metadata updated successfully: ' . implode(', ', $output))
         );
     }
-
 }

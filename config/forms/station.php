@@ -18,6 +18,30 @@ foreach ($backends as $adapter_nickname => $adapter_info) {
     $backend_types[$adapter_nickname] = $adapter_info['name'];
 }
 
+$tzSelect = [
+    'UTC' => [
+        'UTC' => 'UTC',
+    ],
+];
+
+foreach (DateTimeZone::listIdentifiers((DateTimeZone::ALL ^ DateTimeZone::ANTARCTICA ^ DateTimeZone::UTC)) as $tzIdentifier) {
+    $tz = new DateTimeZone($tzIdentifier);
+    $tzRegion = substr($tzIdentifier, 0, strpos($tzIdentifier, '/')) ?: $tzIdentifier;
+    $tzSubregion = str_replace([$tzRegion . '/', '_'], ['', ' '], $tzIdentifier) ?: $tzRegion;
+
+    $offset = $tz->getOffset(new DateTime);
+
+    $offsetPrefix = $offset < 0 ? '-' : '+';
+    $offsetFormatted = gmdate(($offset % 60 === 0) ? 'G' : 'G:i', abs($offset));
+
+    $prettyOffset = ($offset === 0) ? 'UTC' : 'UTC' . $offsetPrefix . $offsetFormatted;
+    if ($tzSubregion !== $tzRegion) {
+        $tzSubregion .= ' (' . $prettyOffset . ')';
+    }
+
+    $tzSelect[$tzRegion][$tzIdentifier] = $tzSubregion;
+}
+
 return [
     'method' => 'post',
     'enctype' => 'multipart/form-data',
@@ -74,8 +98,8 @@ return [
                     [
                         'label' => __('Time Zone'),
                         'description' => __('Scheduled playlists and other timed items will be controlled by this time zone.'),
-                        'options' => App\Timezone::fetchSelect(),
-                        'default' => App\Customization::DEFAULT_TIMEZONE,
+                        'options' => $tzSelect,
+                        'default' => 'UTC',
                         'form_group_class' => 'col-sm-12',
                     ],
                 ],
@@ -547,15 +571,6 @@ return [
                     ],
                 ],
 
-                'storage_quota' => [
-                    'text',
-                    [
-                        'label' => __('Storage Quota'),
-                        'description' => __('Set a maximum disk space that this station can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.'),
-                        'form_group_class' => 'col-md-6 ',
-                    ],
-                ],
-
                 'radio_base_dir' => [
                     'text',
                     [
@@ -566,12 +581,22 @@ return [
                     ],
                 ],
 
-                'radio_media_dir' => [
-                    'text',
+                'media_storage_location_id' => [
+                    'select',
                     [
-                        'label' => __('Custom Media Directory'),
+                        'label' => __('Media Storage Location'),
+                        'choices' => [],
                         'label_class' => 'advanced',
-                        'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'recordings_storage_location_id' => [
+                    'select',
+                    [
+                        'label' => __('Live Recordings Storage Location'),
+                        'choices' => [],
+                        'label_class' => 'advanced',
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

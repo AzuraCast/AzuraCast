@@ -1,10 +1,10 @@
 const api_url = "<?=$router->fromHere('api:stations:queue') ?>";
 
-$(function() {
-    var grid = $(".data-table").bootgrid({
+$(function () {
+    var grid = $('.data-table').bootgrid({
         ajax: true,
         ajaxSettings: {
-            method: "GET",
+            method: 'GET',
             cache: false
         },
         sorting: false,
@@ -12,43 +12,43 @@ $(function() {
         rowCount: [10, 25, 50],
         url: api_url,
         formatters: {
-            "datetime": function(column, row) {
+            'datetime': function (column, row) {
                 return formatTimestamp(row.cued_at);
             },
-            "song_title": function(column, row) {
+            'song_title': function (column, row) {
                 if (row.autodj_custom_uri) {
                     return row.autodj_custom_uri;
                 } else if (row.song_title) {
-                    return '<b>'+row.song_title+'</b><br>'+row.song_artist;
+                    return '<b>' + row.song_title + '</b><br>' + row.song_artist;
                 } else {
                     return row.song_text;
                 }
             },
-            "source": function(column, row) {
+            'source': function (column, row) {
                 if (row.is_request) {
                     return <?=$this->escapeJs(__('Listener Request')) ?>;
                 } else if (row.playlist) {
-                    return <?=$this->escapeJs(__('Playlist:')) ?>+" "+row.playlist;
+                    return <?=$this->escapeJs(__('Playlist:')) ?> + ' ' + row.playlist;
                 }
             },
-            "commands": function(column, row) {
+            'commands': function (column, row) {
                 if (row.links_self) {
                     return '<a class="btn btn-sm btn-danger" data-confirm-title="<?=$this->e(__('Delete queue item?')) ?>" href="' + row.links_self + '"><?=__('Delete') ?></a>';
                 }
             }
         }
-    }).on("loaded.rs.jquery.bootgrid", function() {
+    }).on('loaded.rs.jquery.bootgrid', function () {
         /* Executes after data is loaded and rendered */
-        grid.find(".btn-danger").on("click", function(e) {
+        grid.find('.btn-danger').on('click', function (e) {
             e.preventDefault();
 
             const linkUrl = $(this).attr('href');
-            confirmDangerousAction(e.target).then(function(value) {
-                if (value) {
+            confirmDangerousAction(e.target).then(function (result) {
+                if (result.value) {
                     $.ajax(linkUrl, {
-                        method: "DELETE",
-                        dataType: "json",
-                        success: function(data) {
+                        method: 'DELETE',
+                        dataType: 'json',
+                        success: function (data) {
                             notify(data.message, 'success', false);
                             grid.bootgrid('reload');
                         }
@@ -60,7 +60,7 @@ $(function() {
         });
     });
 
-    function formatTimestamp(unix_timestamp) {
+    function formatTimestamp (unix_timestamp) {
         return moment.unix(unix_timestamp).format('lll');
     }
 });

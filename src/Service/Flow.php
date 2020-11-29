@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the implementation of the server side part of
  * Flow.js client script, which sends/uploads files
@@ -24,7 +25,6 @@
 
 namespace App\Service;
 
-
 use App\Exception;
 use App\File;
 use App\Http\Response;
@@ -33,6 +33,7 @@ use Normalizer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
+
 use const PATHINFO_EXTENSION;
 use const PATHINFO_FILENAME;
 use const SCANDIR_SORT_NONE;
@@ -46,7 +47,7 @@ class Flow
      * @param Response $response
      * @param string|null $temp_dir
      *
-     * @return array|ResponseInterface|null
+     * @return mixed[]|ResponseInterface|null
      */
     public static function process(
         ServerRequest $request,
@@ -74,11 +75,12 @@ class Flow
 
         // Check if request is GET and the requested chunk exists or not. This makes testChunks work
         if ('GET' === $request->getMethod()) {
-
             // Force a reupload of the last chunk if all chunks are uploaded, to trigger processing below.
-            if ($flowChunkNumber !== $targetChunks
+            if (
+                $flowChunkNumber !== $targetChunks
                 && file_exists($chunkPath)
-                && filesize($chunkPath) === $currentChunkSize) {
+                && filesize($chunkPath) === $currentChunkSize
+            ) {
                 return $response->withStatus(200, 'OK');
             }
 
@@ -102,15 +104,24 @@ class Flow
                 }
 
                 if ($file->getSize() !== $currentChunkSize) {
-                    throw new Exception('File size of ' . $file->getSize() . ' does not match expected size of ' . $currentChunkSize);
+                    throw new Exception(sprintf(
+                        'File size of %s does not match expected size of %s',
+                        $file->getSize(),
+                        $currentChunkSize
+                    ));
                 }
 
                 $file->moveTo($chunkPath);
             }
 
             if (self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
-                return self::createFileFromChunks($temp_dir, $chunkBaseDir, $flowIdentifier, $flowFilename,
-                    $targetChunks);
+                return self::createFileFromChunks(
+                    $temp_dir,
+                    $chunkBaseDir,
+                    $flowIdentifier,
+                    $flowFilename,
+                    $targetChunks
+                );
             }
 
             // Return an OK status to indicate that the chunk upload itself succeeded.
@@ -126,8 +137,6 @@ class Flow
      * @param string $chunkBaseDir
      * @param int $targetSize
      * @param int $targetChunkNumber
-     *
-     * @return bool
      */
     protected static function allPartsExist(
         string $chunkBaseDir,
@@ -154,7 +163,7 @@ class Flow
      * @param string $originalFileName
      * @param int $numChunks
      *
-     * @return array
+     * @return mixed[]
      */
     protected static function createFileFromChunks(
         string $tempDir,

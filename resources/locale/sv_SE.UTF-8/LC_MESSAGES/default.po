@@ -1,0 +1,4229 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: azuracast\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: Swedish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-11-25T01:26:50+00:00\n"
+"PO-Revision-Date: 2020-11-25 07:46\n"
+"Language: sv_SE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: azuracast\n"
+"X-Crowdin-Project-ID: 217396\n"
+"X-Crowdin-Language: sv-SE\n"
+"X-Crowdin-File: /master/resources/locale/default.pot\n"
+"X-Crowdin-File-ID: 4\n"
+
+#: /github/workspace/src/Service/IpGeolocator/DbIp.php:22
+msgid "IP Geolocation by DB-IP"
+msgstr ""
+
+#: /github/workspace/src/Service/IpGeolocator/GeoLite.php:22
+msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
+msgstr ""
+
+#: /github/workspace/src/Service/IpGeolocation.php:40
+msgid "GeoLite database not configured for this installation. See System Administration for instructions."
+msgstr ""
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:41
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr ""
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:46
+#: /github/workspace/src/Controller/Api/Stations/RequestsController.php:64
+#: /github/workspace/src/Controller/Api/Stations/RequestsController.php:166
+msgid "This station does not accept requests currently."
+msgstr "Denna station accepterar inte önskningar för närvarande."
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:53
+msgid "The song ID you specified could not be found in the station."
+msgstr ""
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:57
+msgid "The song ID you specified cannot be requested for this station."
+msgstr ""
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:85
+msgid "You have submitted a request too recently! Please wait before submitting another one."
+msgstr ""
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:128
+msgid "Duplicate request: this song was already requested and will play soon."
+msgstr ""
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:203
+msgid "This song or artist has been played too recently. Wait a while before requesting it again."
+msgstr ""
+
+#: /github/workspace/src/Entity/Repository/StorageLocationRepository.php:45
+msgid "None"
+msgstr ""
+
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:57
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:87
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:106
+#: /github/workspace/src/Controller/Api/Admin/UsersController.php:105
+#: /github/workspace/src/Controller/Api/Stations/FilesController.php:208
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:86
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:118
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:138
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:38
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:120
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:155
+msgid "Record not found!"
+msgstr "Posten hittades inte!"
+
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:92
+#: /github/workspace/src/Controller/Api/Stations/FilesController.php:302
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:123
+msgid "Changes saved successfully."
+msgstr "Ändringar har sparats."
+
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:111
+#: /github/workspace/src/Controller/Api/Admin/UsersController.php:117
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:143
+msgid "Record deleted successfully."
+msgstr "Posten har tagits bort."
+
+#: /github/workspace/src/Controller/Api/Admin/UsersController.php:112
+msgid "You cannot remove yourself."
+msgstr "Du kan inte ta bort dig själv."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:76
+msgid "Station restarted."
+msgstr "Stationen startades om."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:115
+msgid "Frontend stopped."
+msgstr "Frontend stoppad."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:120
+msgid "Frontend started."
+msgstr "Frontend startad."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:132
+msgid "Frontend restarted."
+msgstr "Frontend startades om."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:184
+msgid "Song skipped."
+msgstr "Låten hoppades över."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:191
+msgid "Streamer disconnected."
+msgstr "Streamer/DJ frånkopplad."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:196
+msgid "Backend stopped."
+msgstr "Backend stoppad."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:201
+msgid "Backend started."
+msgstr "Backend startad."
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:213
+msgid "Backend restarted."
+msgstr "Backend startades om."
+
+#: /github/workspace/src/Controller/Api/Stations/FilesController.php:170
+#: /github/workspace/src/Controller/Api/Stations/Files/FlowUploadAction.php:31
+msgid "This station is out of available storage space."
+msgstr "Denna station har slut på tillgängligt lagringsutrymme."
+
+#: /github/workspace/src/Controller/Api/Stations/Art/PostArtAction.php:28
+#: /github/workspace/src/Controller/Api/Stations/Art/DeleteArtAction.php:23
+#: /github/workspace/src/Controller/Admin/AbstractAdminCrudController.php:56
+#: /github/workspace/src/Controller/Stations/AbstractStationCrudController.php:65
+msgid "Record not found."
+msgstr "Posten hittades inte."
+
+#: /github/workspace/src/Controller/Api/Stations/OnDemand/DownloadAction.php:25
+#: /github/workspace/src/Controller/Api/Stations/OnDemand/ListAction.php:46
+msgid "This station does not support on-demand streaming."
+msgstr "Denna station stöder inte on-demand streaming."
+
+#: /github/workspace/src/Controller/Api/Stations/OnDemand/DownloadAction.php:32
+msgid "File not found."
+msgstr "Filen hittades inte."
+
+#: /github/workspace/src/Controller/Api/Stations/Files/RenameAction.php:19
+msgid "File not specified."
+msgstr "Fil ej angiven."
+
+#: /github/workspace/src/Controller/Api/Stations/Files/RenameAction.php:25
+msgid "New path not specified."
+msgstr "Ingen ny sökväg angiven."
+
+#: /github/workspace/src/Controller/Api/Stations/Files/ListDirectoriesAction.php:26
+msgid "Path \"%s\" is not a folder."
+msgstr "Sökväg \"%s\" är inte en mapp."
+
+#: /github/workspace/src/Controller/Api/Stations/Files/ListAction.php:198
+msgid "Directory"
+msgstr "Katalog"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/ListAction.php:206
+msgid "File Not Processed"
+msgstr "Filen är inte bearbetad"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:23
+msgid "No directory specified"
+msgstr ""
+
+#: /github/workspace/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:32
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:66
+msgid "Directory \"%s\" was not created"
+msgstr "Katalog \"%s\" skapades inte"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:186
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:216
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:241
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:266
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:287
+msgid "Playlist not found."
+msgstr "Spellistan hittades inte."
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:193
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:223
+msgid "This playlist is not a sequential playlist."
+msgstr "Denna spellista är inte en sekventiell spellista."
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:250
+msgid "Format not found."
+msgstr "Formatet hittades inte."
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:276
+msgid "Playlist enabled."
+msgstr "Spellista aktiverad."
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:277
+msgid "Playlist disabled."
+msgstr "Spellista inaktiverad."
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:296
+msgid "Playlist reshuffled."
+msgstr "Spellista omfördelad."
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:401
+msgid "Playlist successfully imported; %d of %d files were successfully matched."
+msgstr "Spellistan importerades; %d av %d filer matchades framgångsrikt."
+
+#: /github/workspace/src/Controller/Api/Stations/RequestsController.php:180
+msgid "Request submitted successfully."
+msgstr "Önskning skickad."
+
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:127
+msgid "No recording available."
+msgstr "Ingen inspelning tillgänglig."
+
+#: /github/workspace/src/Controller/Admin/SettingsController.php:19
+#: /github/workspace/src/Controller/Admin/BackupsController.php:77
+#: /github/workspace/src/Controller/Admin/BrandingController.php:19
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:31
+#: /github/workspace/src/Controller/Admin/StationsController.php:76
+#: /github/workspace/src/Controller/Stations/EditLiquidsoapConfigController.php:113
+#: /github/workspace/src/Controller/Stations/MountsController.php:40
+#: /github/workspace/src/Controller/Stations/AutomationController.php:55
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:55
+msgid "Changes saved."
+msgstr "Ändringar sparade."
+
+#: /github/workspace/src/Controller/Admin/SettingsController.php:26
+#: /github/workspace/config/menus/admin.php:17
+#: /github/workspace/templates/frontend/setup/station.phtml:25
+#: /github/workspace/templates/frontend/setup/settings.phtml:25
+msgid "System Settings"
+msgstr "Systeminställningar"
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:84
+msgid "Configure Backups"
+msgstr "Konfigurera säkerhetskopior"
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:117
+#: /github/workspace/src/Controller/Admin/BackupsController.php:126
+#: /github/workspace/templates/admin/backups/index.phtml:87
+#: /github/workspace/templates/admin/backups/run.phtml:8
+#: /github/workspace/templates/admin/backups/run.phtml:15
+msgid "Run Manual Backup"
+msgstr "Kör manuell säkerhetskopiering"
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:158
+msgid "Backup deleted."
+msgstr "Säkerhetskopia borttagen."
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:186
+msgid "Backup not found."
+msgstr "Säkerhetskopian hittades inte."
+
+#: /github/workspace/src/Controller/Admin/InstallShoutcastController.php:34
+msgid "SHOUTcast version \"%s\" is currently installed."
+msgstr "SHOUTcast version \"%s\" är för närvarande installerad."
+
+#: /github/workspace/src/Controller/Admin/InstallShoutcastController.php:80
+#: /github/workspace/config/menus/admin.php:94
+msgid "Install SHOUTcast"
+msgstr "Installera SHOUTcast"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:66
+msgid "Permission updated."
+msgstr "Behörighet uppdaterad."
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:66
+msgid "Permission added."
+msgstr "Behörighet tillagd."
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:75
+msgid "Edit Permission"
+msgstr "Redigera behörighet"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:75
+#: /github/workspace/templates/admin/permissions/index.phtml:10
+msgid "Add Permission"
+msgstr "Lägg till behörighet"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:83
+msgid "Permission deleted."
+msgstr "Behörighet borttagen."
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:39
+msgid "Custom Field updated."
+msgstr "Anpassat fält uppdaterat."
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:39
+msgid "Custom Field added."
+msgstr "Anpassat fält tillagt."
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:48
+msgid "Edit Custom Field"
+msgstr "Redigera anpassat fält"
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:48
+#: /github/workspace/templates/admin/custom_fields/index.phtml:10
+msgid "Add Custom Field"
+msgstr "Lägg till anpassat fält"
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:56
+msgid "Custom Field deleted."
+msgstr "Anpassat fält borttaget."
+
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:33
+msgid "An error occurred while downloading the GeoLite database: %s"
+msgstr "Ett fel inträffade vid nedladdning av GeoLite-databasen: %s"
+
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:46
+#: /github/workspace/config/menus/admin.php:99
+msgid "Install GeoLite IP Database"
+msgstr "Installera GeoLite IP-databas"
+
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:64
+msgid "GeoLite database uninstalled."
+msgstr "GeoLite-databasen avinstallerad."
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:45
+msgid "Station updated."
+msgstr "Station uppdaterad."
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:45
+msgid "Station added."
+msgstr "Station tillagd."
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:51
+msgid "Edit Station"
+msgstr "Redigera station"
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:64
+msgid "Station deleted."
+msgstr "Station borttagen."
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:72
+msgid "Station not found."
+msgstr "Stationen hittades inte."
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:83
+msgid "Clone Station: %s"
+msgstr "Klona Station: %s"
+
+#: /github/workspace/src/Controller/Admin/ApiController.php:35
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:92
+msgid "API Key updated."
+msgstr "API-nyckel uppdaterad."
+
+#: /github/workspace/src/Controller/Admin/ApiController.php:42
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:99
+msgid "Edit API Key"
+msgstr "Redigera API-nyckel"
+
+#: /github/workspace/src/Controller/Admin/ApiController.php:50
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:119
+msgid "API Key deleted."
+msgstr "API-nyckel borttagen."
+
+#: /github/workspace/src/Controller/Admin/DebugController.php:60
+msgid "Sync Task Output"
+msgstr "Synkronisera uppgiftens utdata"
+
+#: /github/workspace/src/Controller/Admin/DebugController.php:88
+#: /github/workspace/src/Controller/Admin/DebugController.php:115
+msgid "Debug Output"
+msgstr "Debug Output"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:43
+msgid "User updated."
+msgstr "Användare uppdaterad."
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:43
+msgid "User added."
+msgstr "Användare tillagd."
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:49
+msgid "Another user already exists with this e-mail address. Please update the e-mail address."
+msgstr "En annan användare finns redan med denna e-postadress. Vänligen uppdatera e-postadressen."
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:57
+msgid "Edit User"
+msgstr "Redigera användare"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:57
+#: /github/workspace/templates/admin/users/index.phtml:10
+msgid "Add User"
+msgstr "Lägg till användare"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:70
+msgid "You cannot delete your own account."
+msgstr "Du kan inte ta bort ditt eget konto."
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:75
+msgid "User deleted."
+msgstr "Användare borttagen."
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:92
+msgid "User not found."
+msgstr "Användaren hittades inte."
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:99
+#: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:26
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:80
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:89
+msgid "Logged in successfully."
+msgstr "Inloggad framgångsrikt."
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:51
+msgid "AzuraCast Application Log"
+msgstr "AzuraCast-applikationslogg"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:58
+msgid "Nginx Access Log"
+msgstr "Nginx åtkomstlogg"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:63
+msgid "Nginx Error Log"
+msgstr "Nginx fellogg"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:68
+msgid "PHP Application Log"
+msgstr "PHP-applikationslogg"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:73
+msgid "Supervisord Log"
+msgstr "Handledningslogg"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:93
+msgid "Setup has already been completed!"
+msgstr "Installationen har redan slutförts!"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:119
+msgid "Super Administrator"
+msgstr "Super administratör"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:209
+msgid "Setup is now complete!"
+msgstr "Installationen är nu klar!"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:210
+msgid "Continue setting up your station in the main AzuraCast app."
+msgstr "Fortsätt konfigurera din station i AzuraCast-appen."
+
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:57
+msgid "API Key not found."
+msgstr "API-nyckel hittades inte."
+
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:99
+#: /github/workspace/templates/frontend/api_keys/index.phtml:20
+msgid "Add API Key"
+msgstr "Lägg till API-nyckel"
+
+#: /github/workspace/src/Controller/Frontend/DashboardController.php:226
+msgid "All Stations"
+msgstr "Alla stationer"
+
+#: /github/workspace/src/Controller/Frontend/DashboardController.php:272
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:85
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:125
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:172
+#: /github/workspace/config/menus/station.php:114
+#: /github/workspace/templates/frontend/index/index.phtml:141
+#: /github/workspace/templates/frontend/index/index_metrics.js.phtml:27
+#: /github/workspace/templates/stations/reports/listeners.phtml:7
+#: /github/workspace/templates/stations/reports/listeners.phtml:22
+#: /github/workspace/templates/stations/reports/timeline.phtml:40
+#: /github/workspace/templates/stations/reports/overview.js.phtml:30
+#: /github/workspace/templates/stations/reports/overview.js.phtml:74
+msgid "Listeners"
+msgstr "Lyssnare"
+
+#: /github/workspace/src/Controller/Frontend/PublicPages/PlayerAction.php:35
+#: /github/workspace/config/forms/song.php:37
+#: /github/workspace/templates/stations/queue/index.phtml:25
+#: /github/workspace/templates/stations/reports/requests.phtml:27
+#: /github/workspace/templates/stations/reports/timeline.phtml:42
+msgid "Song Title"
+msgstr "Låttitel"
+
+#: /github/workspace/src/Controller/Frontend/PublicPages/PlayerAction.php:36
+msgid "Song Artist"
+msgstr "Låtartist"
+
+#: /github/workspace/src/Controller/Frontend/Profile/DisableTwoFactorAction.php:25
+msgid "Two-factor authentication disabled."
+msgstr "Tvåfaktorsautentisering inaktiverad."
+
+#: /github/workspace/src/Controller/Frontend/Profile/EnableTwoFactorAction.php:48
+msgid "The token you supplied is invalid. Please try again."
+msgstr "Den token du angav är ogiltig. Försök igen."
+
+#: /github/workspace/src/Controller/Frontend/Profile/EnableTwoFactorAction.php:57
+msgid "Two-factor authentication enabled."
+msgstr "Tvåfaktorsautentisering aktiverad."
+
+#: /github/workspace/src/Controller/Frontend/Profile/EditAction.php:19
+msgid "Profile saved!"
+msgstr "Profil sparad!"
+
+#: /github/workspace/src/Controller/Frontend/Profile/EditAction.php:27
+#: /github/workspace/templates/frontend/profile/index.phtml:32
+#: /github/workspace/templates/stations/profile/edit.phtml:1
+msgid "Edit Profile"
+msgstr "Redigera profil"
+
+#: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:39
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:102
+msgid "Login unsuccessful"
+msgstr "Inloggningen misslyckades"
+
+#: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:39
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:102
+msgid "Your credentials could not be verified."
+msgstr "Dina uppgifter kunde inte verifieras."
+
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:51
+msgid "Too many login attempts"
+msgstr "För många inloggningsförsök"
+
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:52
+msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
+msgstr "Du har försökt att logga in för många gånger. Vänligen vänta 30 sekunder och försök igen."
+
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:81
+msgid "Complete the setup process to get started."
+msgstr "Slutför installationsprocessen för att komma igång."
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:105
+msgid "Liquidsoap Log"
+msgstr "Liquidsoap Logg"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:110
+msgid "Liquidsoap Configuration"
+msgstr "Liquidsoap konfiguration"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:120
+msgid "Icecast Access Log"
+msgstr "Icecast Access Logg"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:125
+msgid "Icecast Error Log"
+msgstr "Icecast fellogg"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:130
+msgid "Icecast Configuration"
+msgstr "Icecast konfiguration"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:138
+msgid "SHOUTcast Log"
+msgstr "Logg för SHOUTcast"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:143
+msgid "SHOUTcast Configuration"
+msgstr "Konfiguration för SHOUTcast"
+
+#: /github/workspace/src/Controller/Stations/EditLiquidsoapConfigController.php:62
+#: /github/workspace/config/forms/custom_field.php:109
+#: /github/workspace/config/forms/mount/generic.php:152
+#: /github/workspace/config/forms/api_key.php:20
+#: /github/workspace/config/forms/role.php:44
+#: /github/workspace/config/forms/station.php:613
+#: /github/workspace/config/forms/remote.php:194
+#: /github/workspace/config/forms/backup.php:76
+#: /github/workspace/config/forms/branding.php:117
+#: /github/workspace/config/forms/user.php:52
+#: /github/workspace/config/forms/backup_run.php:37
+#: /github/workspace/config/forms/webhook/generic.php:86
+#: /github/workspace/config/forms/webhook/telegram.php:118
+#: /github/workspace/config/forms/webhook/tunein.php:59
+#: /github/workspace/config/forms/webhook/twitter.php:140
+#: /github/workspace/config/forms/webhook/discord.php:138
+#: /github/workspace/config/forms/settings.php:196
+#: /github/workspace/config/forms/sftp_user.php:38
+#: /github/workspace/config/forms/profile.php:111
+#: /github/workspace/config/forms/automation.php:40
+#: /github/workspace/config/forms/install_geolite.php:35
+#: /github/workspace/config/forms/song.php:53
+msgid "Save Changes"
+msgstr "Spara ändringar"
+
+#: /github/workspace/src/Controller/Stations/EditLiquidsoapConfigController.php:120
+#: /github/workspace/config/menus/station.php:161
+msgid "Edit Liquidsoap Configuration"
+msgstr "Redigera Liquidsoap konfiguration"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:56
+msgid "Web Hook added."
+msgstr "Web Hook tillagd."
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:63
+#: /github/workspace/templates/stations/webhooks/add.phtml:3
+#: /github/workspace/templates/stations/webhooks/index.phtml:20
+msgid "Add Web Hook"
+msgstr "Lägg till Web Hook"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:70
+msgid "Web Hook updated."
+msgstr "Web Hook uppdaterad."
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:77
+msgid "Edit Web Hook"
+msgstr "Redigera Web Hook"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:98
+msgid "Web hook enabled."
+msgstr "Web Hook aktiverad."
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:98
+msgid "Web Hook disabled."
+msgstr "Web Hook inaktiverad."
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:121
+msgid "Web Hook Test Output"
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:134
+msgid "Web Hook deleted."
+msgstr "Web Hook borttagen."
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:36
+msgid "Remote Relay updated."
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:36
+msgid "Remote Relay added."
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:45
+msgid "Edit Remote Relay"
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:45
+#: /github/workspace/templates/stations/remotes/index.phtml:20
+msgid "Add Remote Relay"
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:57
+msgid "Remote Relay deleted."
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:67
+msgid "This record cannot be edited."
+msgstr "Denna post kan inte redigeras."
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:27
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:31
+#: /github/workspace/src/Controller/Stations/PlaylistsController.php:18
+#: /github/workspace/src/Middleware/Module/StationFiles.php:19
+msgid "This feature is not currently supported on this station."
+msgstr "Denna funktion stöds för närvarande inte på den här stationen."
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:47
+msgid "Edit Mount Point"
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:47
+#: /github/workspace/templates/stations/mounts/index.phtml:19
+msgid "Add Mount Point"
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:59
+msgid "Mount Point deleted."
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/StreamersController.php:51
+msgid "Streamers enabled!"
+msgstr "Streamare aktiverade!"
+
+#: /github/workspace/src/Controller/Stations/StreamersController.php:51
+msgid "You can now set up streamer (DJ) accounts."
+msgstr "Du kan nu ställa in streamer(DJ)-konton."
+
+#: /github/workspace/src/Controller/Stations/AutomationController.php:72
+msgid "Automated assignment complete!"
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/AutomationController.php:76
+msgid "Automated assignment error"
+msgstr ""
+
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:62
+msgid "Edit SFTP User"
+msgstr "Redigera SFTP-användare"
+
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:62
+#: /github/workspace/templates/stations/sftp_users/index.phtml:13
+msgid "Add SFTP User"
+msgstr "Lägg till SFTP-användare"
+
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:74
+msgid "SFTP User deleted."
+msgstr "SFTP-användare borttagen."
+
+#: /github/workspace/src/Controller/Stations/Reports/SoundExchangeController.php:159
+msgid "SoundExchange Report"
+msgstr "SoundExchange rapport"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:61
+#: /github/workspace/templates/stations/reports/overview.phtml:20
+#: /github/workspace/templates/stations/reports/overview.phtml:32
+msgid "Listeners by Day"
+msgstr "Lyssnare per dag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:99
+#: /github/workspace/templates/stations/reports/overview.phtml:26
+#: /github/workspace/templates/stations/reports/overview.phtml:42
+msgid "Listeners by Day of Week"
+msgstr "Lyssnare per veckodag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:107
+msgid "Monday"
+msgstr "Måndag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:108
+msgid "Tuesday"
+msgstr "Tisdag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:109
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:110
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:111
+msgid "Friday"
+msgstr "Fredag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:112
+msgid "Saturday"
+msgstr "Lördag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:113
+msgid "Sunday"
+msgstr "Söndag"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:156
+#: /github/workspace/templates/stations/reports/overview.phtml:23
+#: /github/workspace/templates/stations/reports/overview.phtml:37
+msgid "Listeners by Hour"
+msgstr "Lyssnare per timme"
+
+#: /github/workspace/src/Sync/Runner.php:119
+#: /github/workspace/src/Sync/Runner.php:121
+msgid "Now Playing Data"
+msgstr "Nu spelas Data"
+
+#: /github/workspace/src/Sync/Runner.php:128
+msgid "1-Minute Sync"
+msgstr "1-minuts synkronisering"
+
+#: /github/workspace/src/Sync/Runner.php:130
+msgid "Song Requests Queue"
+msgstr "Kö för låtönskningar"
+
+#: /github/workspace/src/Sync/Runner.php:137
+msgid "5-Minute Sync"
+msgstr "5-minuters synkronisering"
+
+#: /github/workspace/src/Sync/Runner.php:139
+msgid "Check Media Folders"
+msgstr "Kontrollera mediamappar"
+
+#: /github/workspace/src/Sync/Runner.php:146
+msgid "1-Hour Sync"
+msgstr "1-Timmes synkronisering"
+
+#: /github/workspace/src/Sync/Runner.php:148
+msgid "Analytics/Statistics"
+msgstr "Analytiker/Statistik"
+
+#: /github/workspace/src/Sync/Runner.php:149
+msgid "Cleanup"
+msgstr "Rensa"
+
+#: /github/workspace/src/Validator/Constraints/StationPortChecker.php:16
+msgid "The port %s is in use by another station."
+msgstr "Porten %s används av en annan station."
+
+#: /github/workspace/src/Validator/Constraints/StorageLocation.php:16
+msgid "This storage location could not be validated: %s"
+msgstr ""
+
+#: /github/workspace/src/Notification/Check/SyncTaskCheck.php:39
+msgid "Synchronized Task Not Recently Run"
+msgstr ""
+
+#: /github/workspace/src/Notification/Check/SyncTaskCheck.php:41
+msgid "The \"%s\" synchronization task has not run recently. This may indicate an error with your installation. <a href=\"%s\" target=\"_blank\">Manually run the task</a> to check for errors."
+msgstr ""
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:43
+msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
+msgstr "Följ <a href=\"%s\" target=\"_blank\">instruktionerna</a> för att uppdatera din installation."
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:52
+msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
+msgstr "Azuracast <a href=\"%s\" target=\"_blank\">version%s</a> är nu tillgänglig."
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:57
+msgid "You are currently running version %s. Updating is highly recommended."
+msgstr "Du kör för närvarande version %s. Vi rekommenderar starkt att du uppdaterar."
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:65
+msgid "New AzuraCast Release Version Available"
+msgstr "Ny AzuraCast version tillgänglig"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:75
+msgid "The following improvements have been made since your last update:"
+msgstr "Följande förändringar har skett sedan din senaste uppdatering:"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:81
+msgid "Your installation is currently %d update(s) behind the latest version."
+msgstr "Du ligger för närvarande %d uppdatering(är) bakom den senaste versionen."
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:85
+msgid "You should update to take advantage of bug and security fixes."
+msgstr "Du bör uppdatera för att dra nytta av fel- och säkerhetsrättelser."
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:91
+msgid "New AzuraCast Updates Available"
+msgstr "Nya AzuraCast-uppdateringar tillgängliga"
+
+#: /github/workspace/src/Notification/Check/ComposeVersionCheck.php:36
+msgid "Your <code>docker-compose.yml</code> file is out of date!"
+msgstr "Din <code>docker-compose.yml</code> fil är föråldrad!"
+
+#: /github/workspace/src/Notification/Check/ComposeVersionCheck.php:38
+msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
+msgstr "Du bör uppdatera din <code>docker-compose.yml</code> fil för att återspegla de senaste ändringarna. Visa den <a href=\"%s\" target=\"_blank\">senaste versionen av filen</a> och uppdatera din fil med detta.<br>Du kan också använda verktyget <code>./docker.sh</code> för att automatiskt uppdatera din fil."
+
+#: /github/workspace/src/Notification/Check/RecentBackupCheck.php:45
+msgid "Installation Not Recently Backed Up"
+msgstr "Installationen är inte nyligen säkerhetskopierad"
+
+#: /github/workspace/src/Notification/Check/RecentBackupCheck.php:47
+msgid "This installation has not been backed up in the last two weeks. Visit the <a href=\"%s\" target=\"_blank\">Backups</a> page to run a new backup."
+msgstr "Denna installation har inte säkerhetskopierats under de senaste två veckorna. Besök sidan <a href=\"%s\" target=\"_blank\">Säkerhetskopior</a> för att köra en ny säkerhetskopia."
+
+#: /github/workspace/src/Acl.php:85
+#: /github/workspace/src/Acl.php:96
+msgid "All Permissions"
+msgstr "Alla behörigheter"
+
+#: /github/workspace/src/Acl.php:86
+msgid "View Administration Page"
+msgstr "Visa administrationssida"
+
+#: /github/workspace/src/Acl.php:87
+msgid "View System Logs"
+msgstr "Visa systemloggar"
+
+#: /github/workspace/src/Acl.php:88
+msgid "Administer Settings"
+msgstr "Inställningar för administratör"
+
+#: /github/workspace/src/Acl.php:89
+msgid "Administer API Keys"
+msgstr "Administrera API-Nycklar"
+
+#: /github/workspace/src/Acl.php:90
+msgid "Administer Stations"
+msgstr "Administrera stationer"
+
+#: /github/workspace/src/Acl.php:91
+msgid "Administer Custom Fields"
+msgstr "Administrera anpassade fält"
+
+#: /github/workspace/src/Acl.php:92
+msgid "Administer Backups"
+msgstr "Administrera säkerhetskopior"
+
+#: /github/workspace/src/Acl.php:93
+msgid "Administer Storage Locations"
+msgstr ""
+
+#: /github/workspace/src/Acl.php:97
+msgid "View Station Page"
+msgstr "Visa Stationssida"
+
+#: /github/workspace/src/Acl.php:98
+msgid "View Station Reports"
+msgstr "Visa Station Rapporter"
+
+#: /github/workspace/src/Acl.php:99
+msgid "View Station Logs"
+msgstr "Visa stationsloggar"
+
+#: /github/workspace/src/Acl.php:100
+msgid "Manage Station Profile"
+msgstr "Hantera Station Profil"
+
+#: /github/workspace/src/Acl.php:101
+msgid "Manage Station Broadcasting"
+msgstr "Hantera Stationssändning"
+
+#: /github/workspace/src/Acl.php:102
+msgid "Manage Station Streamers"
+msgstr "Hantera Station Streamers"
+
+#: /github/workspace/src/Acl.php:103
+msgid "Manage Station Mount Points"
+msgstr ""
+
+#: /github/workspace/src/Acl.php:104
+msgid "Manage Station Remote Relays"
+msgstr ""
+
+#: /github/workspace/src/Acl.php:105
+msgid "Manage Station Media"
+msgstr ""
+
+#: /github/workspace/src/Acl.php:106
+msgid "Manage Station Automation"
+msgstr ""
+
+#: /github/workspace/src/Acl.php:107
+msgid "Manage Station Web Hooks"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/MigrateConfigCommand.php:21
+msgid "Configuration already set up."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/MigrateConfigCommand.php:62
+msgid "Configuration successfully written."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:26
+msgid "AzuraCast Setup"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:27
+msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
+msgstr "Välkommen till AzuraCast. Vänta medan några nyckelberoenden för AzuraCast är inställda..."
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:30
+msgid "Environment: %s"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:31
+msgid "Installation Method: %s"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:35
+msgid "Running in update mode."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:38
+msgid "Migrating Legacy Configuration"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:49
+msgid "Running Database Migrations"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:57
+msgid "Generating Database Proxy Classes"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:64
+msgid "Installing Data Fixtures"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:70
+msgid "Reload System Data"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:80
+msgid "Refreshing All Stations"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:95
+msgid "AzuraCast is now updated to the latest version!"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:101
+msgid "AzuraCast installation complete!"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:102
+msgid "Visit %s to complete setup."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/RestoreCommand.php:34
+msgid "Backup path %s not found!"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:58
+msgid "AzuraCast Backup"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:59
+msgid "Please wait while a backup is generated..."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:62
+msgid "Creating temporary directories..."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:73
+msgid "Backing up MariaDB..."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:114
+msgid "Creating backup archive..."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:156
+msgid "Cleaning up temporary files..."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:166
+msgid "Backup complete in %.2f seconds."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/SetupFixturesCommand.php:49
+msgid "Fixtures loaded."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Locale/ImportCommand.php:30
+msgid "Imported locale: %s"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Users/SetAdministratorCommand.php:43
+msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Users/SetAdministratorCommand.php:51
+msgid "Account not found."
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Settings/ListCommand.php:16
+msgid "AzuraCast Settings"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Settings/ListCommand.php:19
+msgid "Setting Key"
+msgstr ""
+
+#: /github/workspace/src/Console/Command/Settings/ListCommand.php:20
+msgid "Setting Value"
+msgstr ""
+
+#: /github/workspace/src/Doctrine/Repository.php:94
+msgid "Select..."
+msgstr ""
+
+#: /github/workspace/src/Http/ErrorHandler.php:177
+#: /github/workspace/src/Http/ErrorHandler.php:184
+msgid "You must be logged in to access this page."
+msgstr ""
+
+#: /github/workspace/src/Http/ErrorHandler.php:199
+#: /github/workspace/src/Http/ErrorHandler.php:207
+msgid "You do not have permission to access this portion of the site."
+msgstr ""
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:198
+msgid "%s is not recognized as a service."
+msgstr "%s känns inte igen som en tjänst."
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:199
+msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
+msgstr ""
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:207
+msgid "%s cannot start"
+msgstr "%s kan inte starta"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:208
+msgid "It is already running."
+msgstr "Den är redan igång."
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:216
+msgid "%s cannot stop"
+msgstr "%s kan inte stoppas"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:217
+msgid "It is not running."
+msgstr "Den körs inte."
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:225
+msgid "%s encountered an error"
+msgstr "%s stötte på ett fel"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:234
+msgid "Check the log for details."
+msgstr ""
+
+#: /github/workspace/src/Radio/Adapters.php:72
+#: /github/workspace/src/Radio/Adapters.php:76
+#: /github/workspace/src/Radio/Adapters.php:133
+msgid "Use <b>%s</b> on this server"
+msgstr "Använd <b>%s</b> på denna server"
+
+#: /github/workspace/src/Radio/Adapters.php:80
+msgid "Connect to a <b>remote radio server</b>"
+msgstr "Anslut till en <b>fjärradioserver</b>"
+
+#: /github/workspace/src/Radio/Adapters.php:137
+msgid "<b>Do not use</b> an AutoDJ service"
+msgstr "<b>Använd inte</b> en AutoDJ-tjänst"
+
+#: /github/workspace/src/Radio/Backend/Liquidsoap/ConfigWriter.php:114
+msgid "Welcome to the AzuraCast Liquidsoap configuration editor."
+msgstr "Välkommen till konfigurationsredigeraren AzuraCast Liquidsoap."
+
+#: /github/workspace/src/Radio/Backend/Liquidsoap/ConfigWriter.php:115
+msgid "Using this page, you can customize several sections of the Liquidsoap configuration."
+msgstr ""
+
+#: /github/workspace/src/Radio/Backend/Liquidsoap/ConfigWriter.php:116
+msgid "The non-editable sections are automatically generated by AzuraCast."
+msgstr "De icke-redigerbara sektionerna genereras automatiskt av AzuraCast."
+
+#: /github/workspace/src/Form/SettingsForm.php:41
+msgid "Visit this page from a secure connection to enforce secure URLs on all pages."
+msgstr ""
+
+#: /github/workspace/src/Form/StationForm.php:82
+msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
+msgstr ""
+
+#: /github/workspace/src/Form/StationForm.php:100
+msgid "<a href=\"%s\" target=\"_blank\">Manage storage locations and storage quota here</a>."
+msgstr ""
+
+#: /github/workspace/src/Form/StationForm.php:112
+#: /github/workspace/src/Form/StationForm.php:123
+#: /github/workspace/src/Form/StationForm.php:131
+msgid "Create a new storage location based on the base directory."
+msgstr ""
+
+#: /github/workspace/src/Form/Field/File.php:11
+#: /github/workspace/config/forms/install_shoutcast.php:36
+msgid "Select File"
+msgstr "Välj fil"
+
+#: /github/workspace/config/forms/custom_field.php:13
+msgid "Field Name"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:14
+msgid "This will be used as the label when editing individual songs, and will show in API results."
+msgstr "Detta kommer att användas som etikett när du redigerar enskilda låtar, och kommer att visa i API-resultat."
+
+#: /github/workspace/config/forms/custom_field.php:22
+#: /github/workspace/templates/admin/custom_fields/index.phtml:23
+msgid "Programmatic Name"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:23
+msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:31
+msgid "Automatically Set from ID3v2 Value"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:32
+msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:36
+#: /github/workspace/templates/stations/webhooks/index.phtml:47
+msgid "Disable"
+msgstr "Inaktivera"
+
+#: /github/workspace/config/forms/custom_field.php:37
+#: /github/workspace/templates/stations/playlists/reorder.phtml:28
+msgid "Album"
+msgstr "Album"
+
+#: /github/workspace/config/forms/custom_field.php:38
+msgid "Album Artist Sort Order"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:39
+msgid "Album Sort Order"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:40
+#: /github/workspace/templates/stations/playlists/reorder.phtml:27
+#: /github/workspace/templates/stations/reports/performance.phtml:31
+msgid "Artist"
+msgstr "Artist"
+
+#: /github/workspace/config/forms/custom_field.php:41
+msgid "Band"
+msgstr "Band"
+
+#: /github/workspace/config/forms/custom_field.php:42
+msgid "Bpm"
+msgstr "Bpm"
+
+#: /github/workspace/config/forms/custom_field.php:43
+msgid "Comment"
+msgstr "Kommentar"
+
+#: /github/workspace/config/forms/custom_field.php:44
+msgid "Commercial Information"
+msgstr "Kommersiell information"
+
+#: /github/workspace/config/forms/custom_field.php:45
+msgid "Composer"
+msgstr "Kompositör"
+
+#: /github/workspace/config/forms/custom_field.php:46
+msgid "Composer Sort Order"
+msgstr "Sorteringsordning för kompositörer"
+
+#: /github/workspace/config/forms/custom_field.php:47
+msgid "Conductor"
+msgstr "Dirigent"
+
+#: /github/workspace/config/forms/custom_field.php:48
+msgid "Content Group Description"
+msgstr "Innehållsgruppens beskrivning"
+
+#: /github/workspace/config/forms/custom_field.php:49
+msgid "Copyright"
+msgstr "Upphovsrätt"
+
+#: /github/workspace/config/forms/custom_field.php:50
+msgid "Copyright Message"
+msgstr "Meddelande om upphovsrätt"
+
+#: /github/workspace/config/forms/custom_field.php:51
+msgid "Encoded By"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:52
+msgid "Encoder Settings"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:53
+msgid "Encoding Time"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:54
+msgid "File Owner"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:55
+msgid "File Type"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:56
+#: /github/workspace/config/forms/station.php:82
+msgid "Genre"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:57
+msgid "Initial Key"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:58
+msgid "Internet Radio Station Name"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:59
+msgid "Internet Radio Station Owner"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:60
+msgid "Involved People List"
+msgstr "Medverkande personlista"
+
+#: /github/workspace/config/forms/custom_field.php:61
+msgid "ISRC"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:62
+#: /github/workspace/config/forms/profile.php:82
+msgid "Language"
+msgstr "Språk"
+
+#: /github/workspace/config/forms/custom_field.php:63
+#: /github/workspace/templates/stations/reports/performance.phtml:33
+#: /github/workspace/templates/stations/reports/duplicates.phtml:26
+msgid "Length"
+msgstr "Längd"
+
+#: /github/workspace/config/forms/custom_field.php:64
+msgid "Linked Information"
+msgstr "Länkad information"
+
+#: /github/workspace/config/forms/custom_field.php:65
+msgid "Lyricist"
+msgstr "Låttext"
+
+#: /github/workspace/config/forms/custom_field.php:66
+msgid "Media Type"
+msgstr "Typ av media"
+
+#: /github/workspace/config/forms/custom_field.php:67
+msgid "Mood"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:68
+msgid "Music CD Identifier"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:69
+msgid "Musician Credits List"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:70
+msgid "Original Album"
+msgstr "Ursprungligt album"
+
+#: /github/workspace/config/forms/custom_field.php:71
+msgid "Original Artist"
+msgstr "Ursprunglig artist"
+
+#: /github/workspace/config/forms/custom_field.php:72
+msgid "Original Filename"
+msgstr "Ursprungligt filnamn"
+
+#: /github/workspace/config/forms/custom_field.php:73
+msgid "Original Lyricist"
+msgstr "Ursprunglig text"
+
+#: /github/workspace/config/forms/custom_field.php:74
+msgid "Original Release Time"
+msgstr "Ursprunglig releasetid"
+
+#: /github/workspace/config/forms/custom_field.php:75
+msgid "Original Year"
+msgstr "Ursprungligt år"
+
+#: /github/workspace/config/forms/custom_field.php:76
+msgid "Part Of A Compilation"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:77
+msgid "Part Of A Set"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:78
+msgid "Performer Sort Order"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:79
+msgid "Playlist Delay"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:80
+msgid "Produced Notice"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:81
+msgid "Publisher"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:82
+msgid "Recording Time"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:83
+msgid "Release Time"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:84
+msgid "Remixer"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:85
+msgid "Set Subtitle"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:86
+msgid "Subtitle"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:87
+msgid "Tagging Time"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:88
+msgid "Terms Of Use"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:89
+#: /github/workspace/config/forms/webhook/discord.php:71
+#: /github/workspace/templates/stations/playlists/reorder.phtml:26
+#: /github/workspace/templates/stations/reports/performance.phtml:30
+msgid "Title"
+msgstr "Titel"
+
+#: /github/workspace/config/forms/custom_field.php:90
+msgid "Title Sort Order"
+msgstr "Sortera efter titel"
+
+#: /github/workspace/config/forms/custom_field.php:91
+msgid "Track Number"
+msgstr "Spårnummer"
+
+#: /github/workspace/config/forms/custom_field.php:92
+msgid "Unsynchronised Lyric"
+msgstr "Osynkroniserad text"
+
+#: /github/workspace/config/forms/custom_field.php:93
+msgid "URL Artist"
+msgstr "URL Artist"
+
+#: /github/workspace/config/forms/custom_field.php:94
+msgid "URL File"
+msgstr "URL fil"
+
+#: /github/workspace/config/forms/custom_field.php:95
+msgid "URL Payment"
+msgstr "URL Betalning"
+
+#: /github/workspace/config/forms/custom_field.php:96
+msgid "URL Publisher"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:97
+msgid "URL Source"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:98
+msgid "URL Station"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:99
+msgid "URL User"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:100
+msgid "Year"
+msgstr "År"
+
+#: /github/workspace/config/forms/register.php:7
+msgid "Account Information"
+msgstr "Kontoinformation"
+
+#: /github/workspace/config/forms/register.php:13
+#: /github/workspace/config/forms/user.php:19
+#: /github/workspace/config/forms/profile.php:25
+#: /github/workspace/config/forms/login.php:9
+#: /github/workspace/templates/admin/users/index.phtml:22
+#: /github/workspace/templates/frontend/setup/register.phtml:37
+#: /github/workspace/templates/frontend/account/login.phtml:32
+#: /github/workspace/templates/frontend/account/login.phtml:34
+msgid "E-mail Address"
+msgstr "E-postadress"
+
+#: /github/workspace/config/forms/register.php:23
+#: /github/workspace/config/forms/login.php:19
+#: /github/workspace/templates/frontend/setup/register.phtml:47
+#: /github/workspace/templates/frontend/account/login.phtml:39
+#: /github/workspace/templates/frontend/account/login.phtml:41
+#: /github/workspace/templates/stations/streamers/index.phtml:50
+msgid "Password"
+msgstr "Lösenord"
+
+#: /github/workspace/config/forms/register.php:37
+#: /github/workspace/templates/frontend/setup/register.phtml:55
+#: /github/workspace/templates/frontend/setup/register.phtml:56
+#: /github/workspace/templates/frontend/setup/station.phtml:13
+#: /github/workspace/templates/frontend/setup/settings.phtml:13
+msgid "Create Account"
+msgstr "Skapa konto"
+
+#: /github/workspace/config/forms/mount/generic.php:15
+msgid "Mount Point URL"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:16
+msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:25
+#: /github/workspace/config/forms/remote.php:40
+#: /github/workspace/config/forms/user.php:10
+msgid "Display Name"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:26
+msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:34
+#: /github/workspace/config/forms/remote.php:14
+msgid "Show on Public Pages"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:35
+msgid "Enable to allow listeners to select this mount point on this station's public pages."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:36
+#: /github/workspace/config/forms/mount/generic.php:48
+#: /github/workspace/config/forms/mount/generic.php:70
+#: /github/workspace/config/forms/mount/generic.php:82
+#: /github/workspace/config/forms/station.php:112
+#: /github/workspace/config/forms/station.php:124
+#: /github/workspace/config/forms/station.php:320
+#: /github/workspace/config/forms/station.php:332
+#: /github/workspace/config/forms/station.php:368
+#: /github/workspace/config/forms/station.php:380
+#: /github/workspace/config/forms/station.php:491
+#: /github/workspace/config/forms/station.php:517
+#: /github/workspace/config/forms/station.php:567
+#: /github/workspace/config/forms/remote.php:16
+#: /github/workspace/config/forms/remote.php:87
+#: /github/workspace/config/forms/remote.php:177
+#: /github/workspace/config/forms/backup.php:18
+#: /github/workspace/config/forms/backup.php:39
+#: /github/workspace/config/forms/branding.php:32
+#: /github/workspace/config/forms/branding.php:64
+#: /github/workspace/config/forms/backup_run.php:27
+#: /github/workspace/config/forms/settings.php:55
+#: /github/workspace/config/forms/settings.php:67
+#: /github/workspace/config/forms/settings.php:97
+#: /github/workspace/config/forms/settings.php:118
+#: /github/workspace/config/forms/station_clone.php:56
+#: /github/workspace/config/forms/station_clone.php:69
+#: /github/workspace/config/forms/station_clone.php:83
+#: /github/workspace/templates/admin/relays/index.phtml:35
+msgid "Yes"
+msgstr "Ja"
+
+#: /github/workspace/config/forms/mount/generic.php:37
+#: /github/workspace/config/forms/mount/generic.php:49
+#: /github/workspace/config/forms/mount/generic.php:71
+#: /github/workspace/config/forms/mount/generic.php:83
+#: /github/workspace/config/forms/station.php:113
+#: /github/workspace/config/forms/station.php:125
+#: /github/workspace/config/forms/station.php:321
+#: /github/workspace/config/forms/station.php:333
+#: /github/workspace/config/forms/station.php:369
+#: /github/workspace/config/forms/station.php:381
+#: /github/workspace/config/forms/station.php:492
+#: /github/workspace/config/forms/station.php:518
+#: /github/workspace/config/forms/station.php:568
+#: /github/workspace/config/forms/remote.php:17
+#: /github/workspace/config/forms/remote.php:88
+#: /github/workspace/config/forms/remote.php:178
+#: /github/workspace/config/forms/backup.php:19
+#: /github/workspace/config/forms/backup.php:40
+#: /github/workspace/config/forms/branding.php:33
+#: /github/workspace/config/forms/branding.php:65
+#: /github/workspace/config/forms/backup_run.php:28
+#: /github/workspace/config/forms/settings.php:56
+#: /github/workspace/config/forms/settings.php:68
+#: /github/workspace/config/forms/settings.php:98
+#: /github/workspace/config/forms/settings.php:119
+#: /github/workspace/config/forms/station_clone.php:55
+#: /github/workspace/config/forms/station_clone.php:68
+#: /github/workspace/config/forms/station_clone.php:82
+#: /github/workspace/templates/admin/relays/index.phtml:35
+msgid "No"
+msgstr "Nej"
+
+#: /github/workspace/config/forms/mount/generic.php:46
+msgid "Set as Default Mount Point"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:47
+msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:58
+msgid "Relay Stream URL"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:59
+msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:68
+#: /github/workspace/config/forms/remote.php:175
+msgid "Publish to \"Yellow Pages\" Directories"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:69
+#: /github/workspace/config/forms/remote.php:176
+msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:80
+msgid "Enable AutoDJ"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:81
+msgid "If enabled, the AutoDJ will automatically play music to this mount point."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:99
+#: /github/workspace/config/forms/remote.php:106
+msgid "AutoDJ Format"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:108
+#: /github/workspace/config/forms/remote.php:120
+msgid "AutoDJ Bitrate (kbps)"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:135
+msgid "Custom Stream URL"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/generic.php:137
+msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/icecast.php:9
+msgid "Fallback Mount"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/icecast.php:10
+msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
+msgstr ""
+
+#: /github/workspace/config/forms/mount/icecast.php:27
+msgid "Custom Frontend Configuration"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/icecast.php:29
+msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/shoutcast2.php:12
+msgid "Stream path cannot include reserved keywords: %s"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/shoutcast2.php:22
+msgid "YP Directory Authorization Hash"
+msgstr ""
+
+#: /github/workspace/config/forms/mount/shoutcast2.php:23
+msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
+msgstr ""
+
+#: /github/workspace/config/forms/api_key.php:10
+#: /github/workspace/templates/admin/api/index.phtml:18
+#: /github/workspace/templates/frontend/api_keys/index.phtml:34
+msgid "Comments"
+msgstr ""
+
+#: /github/workspace/config/forms/api_key.php:11
+msgid "Describe the use-case for this API key for future reference."
+msgstr "Beskriv användningsfallet för denna API-nyckel för framtida referens."
+
+#: /github/workspace/config/forms/role.php:11
+#: /github/workspace/templates/admin/permissions/index.phtml:22
+msgid "Role Name"
+msgstr "Rollens namn"
+
+#: /github/workspace/config/forms/role.php:20
+msgid "System-Wide Permissions"
+msgstr "Systemomfattande behörigheter"
+
+#: /github/workspace/config/forms/role.php:33
+msgid "Permissions for %s"
+msgstr "Behörigheter för %s"
+
+#: /github/workspace/config/forms/station.php:50
+msgid "Station Profile"
+msgstr "Station Profil"
+
+#: /github/workspace/config/forms/station.php:51
+msgid "Broadcasting"
+msgstr "Sändning"
+
+#: /github/workspace/config/forms/station.php:52
+#: /github/workspace/templates/stations/remotes/index.phtml:33
+#: /github/workspace/templates/stations/mounts/index.phtml:32
+msgid "AutoDJ"
+msgstr "AutoDJ"
+
+#: /github/workspace/config/forms/station.php:53
+#: /github/workspace/templates/admin/index/index.phtml:18
+#: /github/workspace/templates/admin/sidebar.phtml:3
+#: /github/workspace/templates/frontend/index/index.phtml:55
+msgid "Administration"
+msgstr "Administration"
+
+#: /github/workspace/config/forms/station.php:65
+#: /github/workspace/config/forms/profile.php:16
+#: /github/workspace/templates/admin/custom_fields/index.phtml:22
+#: /github/workspace/templates/stations/webhooks/index.phtml:32
+msgid "Name"
+msgstr "Namn"
+
+#: /github/workspace/config/forms/station.php:74
+#: /github/workspace/config/forms/webhook/discord.php:81
+msgid "Description"
+msgstr "Beskrivning"
+
+#: /github/workspace/config/forms/station.php:90
+msgid "Web Site URL"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:91
+msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:99
+msgid "Time Zone"
+msgstr "Tidszon"
+
+#: /github/workspace/config/forms/station.php:100
+msgid "Scheduled playlists and other timed items will be controlled by this time zone."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:110
+msgid "Enable Public Page"
+msgstr "Aktivera offentlig sida"
+
+#: /github/workspace/config/forms/station.php:111
+msgid "Show the station in public pages and general API results."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:122
+msgid "Enable On-Demand Streaming and Downloads"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:123
+msgid "If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:134
+#: /github/workspace/config/forms/branding.php:52
+msgid "Default Album Art URL"
+msgstr "Standard-skivomslag URL"
+
+#: /github/workspace/config/forms/station.php:135
+#: /github/workspace/config/forms/branding.php:53
+msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
+msgstr "Om en låt inte har något skivomslag, kommer denna URL att listas istället. Lämna tomt för att använda det förvalda skivomslaget."
+
+#: /github/workspace/config/forms/station.php:143
+msgid "URL Stub"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:145
+msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:153
+msgid "Number of Recently Played Songs"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:155
+msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:157
+#: /github/workspace/config/forms/automation.php:14
+#: /github/workspace/templates/admin/backups/index.phtml:51
+#: /github/workspace/templates/frontend/profile/index.phtml:72
+#: /github/workspace/templates/stations/remotes/index.phtml:60
+#: /github/workspace/templates/stations/mounts/index.phtml:61
+#: /github/workspace/templates/stations/webhooks/index.phtml:59
+msgid "Disabled"
+msgstr "Inaktiverad"
+
+#: /github/workspace/config/forms/station.php:177
+msgid "Broadcasting Service"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:178
+msgid "This software delivers your broadcast to the listening audience."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:196
+msgid "Customize Source Password"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:197
+#: /github/workspace/config/forms/station.php:207
+msgid "Leave blank to automatically generate a new password."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:206
+msgid "Customize Administrator Password"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:216
+msgid "Customize Broadcasting Port"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:218
+msgid "No other program can be using this port. Leave blank to automatically assign a port."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:227
+msgid "Maximum Listeners"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:229
+msgid "Maximum number of total listeners across all streams. Leave blank to use the default (250)."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:238
+msgid "Custom Configuration"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:242
+msgid "This code will be included in the frontend configuration. You can use either JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:250
+msgid "Banned IP Addresses"
+msgstr "Förbjudna IP-adresser"
+
+#: /github/workspace/config/forms/station.php:254
+msgid "List one IP address or group (in CIDR format) per line."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:268
+msgid "AutoDJ Service"
+msgstr "AutoDJ tjänst"
+
+#: /github/workspace/config/forms/station.php:269
+msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:287
+msgid "Crossfade Method"
+msgstr "Övertoningsmetod"
+
+#: /github/workspace/config/forms/station.php:289
+msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
+msgstr "Välj en metod att använda vid övergången från en låt till en annan. Smart läge överväger volymen av de två spåren när övergången sker för en jämnare effekt, men kräver mer CPU-resurser."
+
+#: /github/workspace/config/forms/station.php:291
+msgid "Smart Mode"
+msgstr "Smart läge"
+
+#: /github/workspace/config/forms/station.php:292
+msgid "Normal Mode"
+msgstr "Normalt läge"
+
+#: /github/workspace/config/forms/station.php:293
+msgid "Disable Crossfading"
+msgstr "Inaktivera övertoning"
+
+#: /github/workspace/config/forms/station.php:303
+msgid "Crossfade Duration (Seconds)"
+msgstr "Övertoning varaktighet (sekunder)"
+
+#: /github/workspace/config/forms/station.php:305
+msgid "Number of seconds to overlap songs."
+msgstr "Antal sekunder att överlappa låtar."
+
+#: /github/workspace/config/forms/station.php:317
+msgid "Apply Compression and Normalization"
+msgstr "Tillämpa komprimering och normalisering"
+
+#: /github/workspace/config/forms/station.php:319
+msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
+msgstr "Komprimera och normalisera din stations ljud, vilket ger ett mer enhetligt och \"fullt\" ljud."
+
+#: /github/workspace/config/forms/station.php:330
+msgid "Allow Song Requests"
+msgstr "Tillåt låtönksningar"
+
+#: /github/workspace/config/forms/station.php:331
+msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
+msgstr "Tillåt lyssnare önska låtar på din station. Endast låtar som redan finns i dina spellistor är begärbara."
+
+#: /github/workspace/config/forms/station.php:342
+msgid "Request Minimum Delay (Minutes)"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:343
+msgid "If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:354
+msgid "Request Last Played Threshold (Minutes)"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:355
+msgid "If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:366
+msgid "Allow Streamers / DJs"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:367
+msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:378
+msgid "Record Live Broadcasts"
+msgstr "Spela in direktsändningar"
+
+#: /github/workspace/config/forms/station.php:379
+msgid "If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings."
+msgstr "Om aktiverad, kommer AzuraCast automatiskt spela in alla livesändningar som görs till denna station till inspelningar per sändning."
+
+#: /github/workspace/config/forms/station.php:391
+msgid "Live Broadcast Recording Format"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:407
+msgid "Live Broadcast Recording Bitrate (kbps)"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:427
+msgid "Deactivate Streamer on Disconnect (Seconds)"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:428
+msgid "Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:439
+msgid "Customize DJ/Streamer Port"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:441
+msgid "No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:450
+msgid "Customize Internal Request Processing Port"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:452
+msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:461
+msgid "DJ/Streamer Buffer Time (Seconds)"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:462
+msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:475
+msgid "Customize DJ/Streamer Mount Point"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:477
+msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:487
+msgid "Use Replaygain Metadata"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:490
+msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:501
+msgid "AutoDJ Queue Length"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:502
+msgid "If using AzuraCast's AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:514
+msgid "Manual AutoDJ Mode"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:516
+msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:528
+msgid "Character Set Encoding"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:530
+msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:544
+msgid "Duplicate Prevention Time Range (Minutes)"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:545
+msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:565
+msgid "Enable Broadcasting"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:566
+msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:577
+msgid "Base Station Directory"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:579
+msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:587
+msgid "Media Storage Location"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:597
+msgid "Live Recordings Storage Location"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:15
+msgid "Enable to allow listeners to select this relay on this station's public pages."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:26
+msgid "Remote Station Type"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:41
+msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:49
+msgid "Remote Station Listening URL"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:50
+msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:63
+msgid "Remote Station Listening Mountpoint/SID"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:64
+msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:76
+msgid "Remote Station Administrator Password"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:77
+msgid "To retrieve detailed unique listeners and client details, an administrator password is often required."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:85
+msgid "Broadcast AutoDJ to Remote Station"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:86
+msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:99
+msgid "Configure AutoDJ Broadcasting"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:139
+msgid "Remote Station Source Port"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:140
+msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:148
+msgid "Remote Station Source Mountpoint/SID"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:149
+msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:157
+msgid "Remote Station Source Username"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:158
+msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:166
+msgid "Remote Station Source Password"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:167
+msgid "If you are broadcasting using AutoDJ, enter the source password here."
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:16
+msgid "Run Automatic Nightly Backups"
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:17
+msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:28
+msgid "Scheduled Backup Time"
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:29
+msgid "The time (in UTC) to run the automated backup, if enabled."
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:37
+msgid "Exclude Media from Backups"
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:38
+msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:49
+msgid "Number of Backup Copies to Keep"
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:50
+msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:61
+#: /github/workspace/config/forms/backup_run.php:9
+msgid "Storage Location"
+msgstr ""
+
+#: /github/workspace/config/forms/branding.php:16
+msgid "Base Theme for Public Pages"
+msgstr "Bastema för offentliga sidor"
+
+#: /github/workspace/config/forms/branding.php:17
+msgid "Select a theme to use as a base for station public pages and the login page."
+msgstr "Välj ett tema att använda som bas för offentliga sidor och inloggningssidan."
+
+#: /github/workspace/config/forms/branding.php:19
+#: /github/workspace/config/forms/profile.php:94
+msgid "Light"
+msgstr "Ljus"
+
+#: /github/workspace/config/forms/branding.php:19
+#: /github/workspace/config/forms/profile.php:94
+msgid "Default"
+msgstr "Standard"
+
+#: /github/workspace/config/forms/branding.php:20
+#: /github/workspace/config/forms/profile.php:95
+msgid "Dark"
+msgstr "Mörk"
+
+#: /github/workspace/config/forms/branding.php:30
+msgid "Hide Album Art on Public Pages"
+msgstr "Dölj skivomslag på offentliga sidor"
+
+#: /github/workspace/config/forms/branding.php:31
+msgid "If selected, album art will not display on public-facing radio pages."
+msgstr "Om vald, kommer skivomslag inte visas på offentliga radio sidor."
+
+#: /github/workspace/config/forms/branding.php:42
+msgid "Homepage Redirect URL"
+msgstr "URL för omdirigering"
+
+#: /github/workspace/config/forms/branding.php:43
+msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
+msgstr "Om en besökare inte är inloggad och besöker AzuraCasts hemsida, kan du automatiskt omdirigera dem till den URL som anges här. Lämna tomt för att omdirigera dem till inloggningsskärmen som standard."
+
+#: /github/workspace/config/forms/branding.php:62
+msgid "Hide AzuraCast Branding on Public Pages"
+msgstr "Dölj AzuraCast Branding på offentliga sidor"
+
+#: /github/workspace/config/forms/branding.php:63
+msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
+msgstr "Om vald, kommer detta att ta bort AzuraCast branding från offentliga sidor."
+
+#: /github/workspace/config/forms/branding.php:74
+msgid "Custom CSS for Public Pages"
+msgstr ""
+
+#: /github/workspace/config/forms/branding.php:75
+msgid "This CSS will be applied to the station public pages and login page."
+msgstr ""
+
+#: /github/workspace/config/forms/branding.php:88
+msgid "Custom JS for Public Pages"
+msgstr ""
+
+#: /github/workspace/config/forms/branding.php:89
+msgid "This javascript code will be applied to the station public pages and login page."
+msgstr ""
+
+#: /github/workspace/config/forms/branding.php:102
+msgid "Custom CSS for Internal Pages"
+msgstr ""
+
+#: /github/workspace/config/forms/branding.php:103
+msgid "This CSS will be applied to the main management pages, like this one."
+msgstr ""
+
+#: /github/workspace/config/forms/user.php:30
+#: /github/workspace/config/forms/profile.php:38
+msgid "Reset Password"
+msgstr "Återställ lösenord"
+
+#: /github/workspace/config/forms/user.php:31
+#: /github/workspace/config/forms/sftp_user.php:18
+msgid "Leave blank to use the current password."
+msgstr "Lämna tomt för att använda det aktuella lösenordet."
+
+#: /github/workspace/config/forms/user.php:42
+#: /github/workspace/templates/admin/users/index.phtml:23
+#: /github/workspace/templates/frontend/profile/index.phtml:38
+msgid "Roles"
+msgstr "Roller"
+
+#: /github/workspace/config/forms/backup_run.php:17
+msgid "Backup Filename"
+msgstr ""
+
+#: /github/workspace/config/forms/backup_run.php:18
+msgid "Path where the backup file should be located."
+msgstr ""
+
+#: /github/workspace/config/forms/backup_run.php:25
+msgid "Exclude Media from Backup"
+msgstr ""
+
+#: /github/workspace/config/forms/backup_run.php:26
+msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:13
+msgid "Web Hook Details"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:15
+msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
+"                notify it any time one of the triggers you specify occurs on your station. The body of the POST message\n"
+"                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
+"                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
+"                optimized to handle the request in under 2 seconds."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:27
+#: /github/workspace/config/forms/webhook/telegram.php:18
+#: /github/workspace/config/forms/webhook/tunein.php:17
+#: /github/workspace/config/forms/webhook/twitter.php:99
+#: /github/workspace/config/forms/webhook/discord.php:18
+msgid "Web Hook Name"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:28
+#: /github/workspace/config/forms/webhook/telegram.php:19
+#: /github/workspace/config/forms/webhook/tunein.php:18
+#: /github/workspace/config/forms/webhook/twitter.php:100
+#: /github/workspace/config/forms/webhook/discord.php:19
+msgid "Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:37
+msgid "Web Hook URL"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:38
+msgid "The URL that will receive the POST messages any time an event is triggered."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:49
+msgid "Optional: HTTP Basic Authentication Username"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:50
+msgid "If your web hook requires HTTP basic authentication, provide the username here."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:59
+msgid "Optional: HTTP Basic Authentication Password"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:60
+msgid "If your web hook requires HTTP basic authentication, provide the password here."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:69
+#: /github/workspace/config/forms/webhook/telegram.php:62
+#: /github/workspace/config/forms/webhook/twitter.php:109
+#: /github/workspace/config/forms/webhook/discord.php:39
+msgid "Web Hook Triggers"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:28
+msgid "Bot Token"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:29
+#: /github/workspace/config/forms/webhook/telegram.php:97
+msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:40
+msgid "Chat ID"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:41
+msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:51
+msgid "Custom API Base URL"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:53
+msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:74
+#: /github/workspace/config/forms/webhook/discord.php:51
+msgid "Customize Message"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:76
+#: /github/workspace/config/forms/webhook/twitter.php:124
+#: /github/workspace/config/forms/webhook/discord.php:53
+msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:84
+#: /github/workspace/config/forms/webhook/discord.php:61
+msgid "Main Message Content"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:86
+#: /github/workspace/config/forms/webhook/twitter.php:122
+msgid "Now playing on %s: %s by %s! Tune in now."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/telegram.php:96
+msgid "Message parsing mode"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/tunein.php:27
+msgid "TuneIn Station ID"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/tunein.php:28
+msgid "The station ID will be a numeric string that starts with the letter S."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/tunein.php:38
+msgid "TuneIn Partner ID"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/tunein.php:48
+msgid "TuneIn Partner Key"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:13
+msgid "Twitter Account Details"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:15
+msgid "Steps for configuring a Twitter application:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>Create a new app on the <a href=\"%s\" target=\"_blank\">Twitter Applications site</a>. \n"
+"                    Use this installation's base URL as the application URL.</li>\n"
+"                    <li>In the newly created application, click the \"Keys and Access Tokens\" tab.</li>\n"
+"                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
+"                </ol>\n"
+"                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:30
+msgid "Consumer Key (API Key)"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:40
+msgid "Consumer Secret (API Secret)"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:50
+msgid "Access Token"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:60
+msgid "Access Token Secret"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:70
+msgid "Only Send One Tweet Every..."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:74
+msgid "No Limit"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:75
+#: /github/workspace/config/forms/webhook/twitter.php:76
+#: /github/workspace/config/forms/webhook/twitter.php:77
+msgid "%d seconds"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:78
+#: /github/workspace/config/forms/webhook/twitter.php:79
+#: /github/workspace/config/forms/webhook/twitter.php:80
+#: /github/workspace/config/forms/webhook/twitter.php:81
+#: /github/workspace/config/forms/webhook/twitter.php:82
+#: /github/workspace/config/forms/webhook/twitter.php:83
+msgid "%d minutes"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/twitter.php:119
+msgid "Message Body"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/discord.php:28
+msgid "Discord Web Hook URL"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/discord.php:29
+msgid "This URL is provided within the Discord application."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/discord.php:63
+msgid "Now playing on %s:"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/discord.php:91
+msgid "URL"
+msgstr "URL"
+
+#: /github/workspace/config/forms/webhook/discord.php:101
+msgid "Author Name"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/discord.php:111
+msgid "Thumbnail Image URL"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/discord.php:121
+msgid "Footer Text"
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/discord.php:123
+#: /github/workspace/templates/minimal.phtml:48
+#: /github/workspace/templates/main.phtml:155
+msgid "Powered by %s"
+msgstr "Drivs av %s"
+
+#: /github/workspace/config/forms/settings.php:11
+msgid "Rolling Release"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:12
+msgid "Stable"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:18
+msgid "Settings"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:19
+msgid "Security"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:20
+msgid "Privacy"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:21
+msgid "Updates"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:34
+msgid "Site Base URL"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:35
+msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:44
+msgid "AzuraCast Instance Name"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:45
+msgid "This name will appear as a sub-header next to the AzuraCast logo, to help identify this server."
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:53
+msgid "Prefer Browser URL (If Available)"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:54
+msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
+msgstr "Om denna inställning är inställd på \"Ja\", kommer webbläsarens URL att användas istället för bas-URL när den är tillgänglig. Sätt till \"Nej\" för att alltid använda bas-URL."
+
+#: /github/workspace/config/forms/settings.php:65
+msgid "Use Web Proxy for Radio"
+msgstr "Använd Web Proxy för Radio"
+
+#: /github/workspace/config/forms/settings.php:66
+msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
+msgstr "Som standard sänds radiostationer på sina egna portar (dvs. 8000). Om du använder en tjänst som CloudFlare eller använder din radiostation via SSL, bör du aktivera denna funktion, som leder all radio genom webbportarna (80 och 443)."
+
+#: /github/workspace/config/forms/settings.php:77
+msgid "Days of Playback History to Keep"
+msgstr "Dagar av uppspelningshistorik att behålla"
+
+#: /github/workspace/config/forms/settings.php:78
+msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
+msgstr "Ställ in längre för att bevara mer uppspelningshistorik för stationer. Ange kortare för att spara diskutrymme."
+
+#: /github/workspace/config/forms/settings.php:80
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:86
+#: /github/workspace/templates/admin/audit_log/index.phtml:23
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:65
+#: /github/workspace/templates/stations/reports/timeline.phtml:22
+msgid "Last 14 Days"
+msgstr "Senaste 14 dagarna"
+
+#: /github/workspace/config/forms/settings.php:81
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:87
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:66
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:103
+msgid "Last 30 Days"
+msgstr "Senaste 30 dagarna"
+
+#: /github/workspace/config/forms/settings.php:82
+msgid "Last 60 Days"
+msgstr "Senaste 60 dagarna"
+
+#: /github/workspace/config/forms/settings.php:83
+msgid "Last Year"
+msgstr "Senaste året"
+
+#: /github/workspace/config/forms/settings.php:84
+msgid "Last 2 Years"
+msgstr "Senaste 2 åren"
+
+#: /github/workspace/config/forms/settings.php:85
+msgid "Indefinitely"
+msgstr "Obegränsat"
+
+#: /github/workspace/config/forms/settings.php:95
+msgid "Use WebSockets for Now Playing Updates"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:96
+msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:116
+msgid "Always Use HTTPS"
+msgstr "Använd alltid HTTPS"
+
+#: /github/workspace/config/forms/settings.php:117
+msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
+msgstr "Sätt till \"Ja\" för att alltid använda \"https://\" säkra webbadresser, och att automatiskt omdirigera till den säkra webbadressen när en osäker webbadress besöks."
+
+#: /github/workspace/config/forms/settings.php:128
+msgid "API \"Access-Control-Allow-Origin\" header"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:130
+msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:147
+msgid "Listener Analytics Collection"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:148
+msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:151
+msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:152
+msgid "<b>Limited:</b> Only collect aggregate listener statistics"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:153
+msgid "<b>None:</b> Do not collect any listener analytics"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:168
+msgid "Current Release Channel"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:170
+msgid "For information on how to switch your release channel, visit <a href=\"%s\" target=\"_blank\">this page</a>."
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:180
+msgid "Show Update Announcements"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:181
+msgid "Show new releases within your update channel on the AzuraCast homepage."
+msgstr ""
+
+#: /github/workspace/config/forms/sftp_user.php:8
+#: /github/workspace/templates/stations/sftp_users/index.phtml:24
+msgid "Username"
+msgstr "Användarnamn"
+
+#: /github/workspace/config/forms/sftp_user.php:17
+#: /github/workspace/config/forms/profile.php:54
+msgid "New Password"
+msgstr "Nytt lösenord"
+
+#: /github/workspace/config/forms/sftp_user.php:27
+msgid "SSH Public Keys"
+msgstr "Offentliga SSH-nycklar"
+
+#: /github/workspace/config/forms/sftp_user.php:29
+msgid "Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line."
+msgstr "Som tillval tillhandahåller SSH publika nycklar som användaren kan använda för att ansluta istället för ett lösenord. Ange en nyckel per rad."
+
+#: /github/workspace/config/forms/station_clone.php:14
+msgid "New Station Name"
+msgstr "Nytt Stationsnamn"
+
+#: /github/workspace/config/forms/station_clone.php:23
+msgid "New Station Description"
+msgstr "Ny Stationsbeskrivning"
+
+#: /github/workspace/config/forms/station_clone.php:33
+msgid "Customize Station Cloning"
+msgstr "Anpassa Station kloning"
+
+#: /github/workspace/config/forms/station_clone.php:39
+msgid "Copy Media?"
+msgstr "Kopiera media?"
+
+#: /github/workspace/config/forms/station_clone.php:40
+msgid "Choose how media should be duplicated from the old station."
+msgstr "Välj hur media ska dupliceras från den gamla stationen."
+
+#: /github/workspace/config/forms/station_clone.php:42
+msgid "Do not share media between the stations"
+msgstr ""
+
+#: /github/workspace/config/forms/station_clone.php:43
+msgid "Share the same folder on disk between the stations"
+msgstr "Dela samma mapp på disk mellan stationerna"
+
+#: /github/workspace/config/forms/station_clone.php:53
+msgid "Copy Playlists?"
+msgstr "Kopiera spellistor?"
+
+#: /github/workspace/config/forms/station_clone.php:66
+msgid "Copy Streamer/DJ Accounts?"
+msgstr "Kopiera Streamer/DJ-konton?"
+
+#: /github/workspace/config/forms/station_clone.php:79
+msgid "Copy Permissions?"
+msgstr "Kopiera behörigheter?"
+
+#: /github/workspace/config/forms/station_clone.php:80
+msgid "Selecting \"Yes\" will assign any users with permissions to the current station to have permissions to the new one."
+msgstr "Att välja \"Ja\" kommer att tilldela alla användare med rättigheter till den aktuella stationen för att ha rättigheter till den nya."
+
+#: /github/workspace/config/forms/station_clone.php:99
+msgid "Create New Station"
+msgstr "Skapa ny station"
+
+#: /github/workspace/config/forms/profile.php:3
+msgid "Use Browser Default"
+msgstr "Använd webbläsarens standard"
+
+#: /github/workspace/config/forms/profile.php:39
+msgid "Leave these fields blank to continue using your current password."
+msgstr "Lämna dessa fält tomma för att fortsätta använda ditt nuvarande lösenord."
+
+#: /github/workspace/config/forms/profile.php:45
+msgid "Current Password"
+msgstr "Nuvarande lösenord"
+
+#: /github/workspace/config/forms/profile.php:65
+msgid "Confirm New Password"
+msgstr "Bekräfta nytt lösenord"
+
+#: /github/workspace/config/forms/profile.php:76
+#: /github/workspace/templates/frontend/profile/index.phtml:50
+msgid "Customization"
+msgstr "Anpassning"
+
+#: /github/workspace/config/forms/profile.php:92
+msgid "Site Theme"
+msgstr "Tema för sidan"
+
+#: /github/workspace/config/forms/profile_two_factor.php:8
+msgid "Code from Authenticator App"
+msgstr "Kod från Autentiseringsapp"
+
+#: /github/workspace/config/forms/profile_two_factor.php:9
+msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
+msgstr "Ange den aktuella koden som tillhandahålls av din autentiseringsapp för att verifiera att den fungerar korrekt."
+
+#: /github/workspace/config/forms/profile_two_factor.php:19
+msgid "Verify Authenticator"
+msgstr "Verifiera autentiserare"
+
+#: /github/workspace/config/forms/install_shoutcast.php:13
+#: /github/workspace/config/forms/install_geolite.php:10
+msgid "Instructions"
+msgstr "Instruktioner"
+
+#: /github/workspace/config/forms/install_shoutcast.php:14
+msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
+msgstr ""
+
+#: /github/workspace/config/forms/install_shoutcast.php:23
+#: /github/workspace/templates/admin/install_geolite/index.phtml:27
+msgid "Current Installed Version"
+msgstr "Nuvarande installerad version"
+
+#: /github/workspace/config/forms/install_shoutcast.php:24
+msgid "SHOUTcast is not currently installed on this installation."
+msgstr ""
+
+#: /github/workspace/config/forms/install_shoutcast.php:32
+msgid "Select SHOUTcast 64-bit .tar.gz File"
+msgstr ""
+
+#: /github/workspace/config/forms/install_shoutcast.php:45
+msgid "Upload"
+msgstr "Ladda upp"
+
+#: /github/workspace/config/forms/automation.php:10
+msgid "Enable Automated Assignment"
+msgstr ""
+
+#: /github/workspace/config/forms/automation.php:11
+msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
+msgstr ""
+
+#: /github/workspace/config/forms/automation.php:15
+#: /github/workspace/templates/admin/backups/index.phtml:23
+#: /github/workspace/templates/frontend/profile/index.phtml:70
+#: /github/workspace/templates/stations/remotes/index.phtml:58
+#: /github/workspace/templates/stations/mounts/index.phtml:59
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#: /github/workspace/config/forms/automation.php:23
+msgid "Days Between Automated Assignments"
+msgstr ""
+
+#: /github/workspace/config/forms/automation.php:24
+msgid "Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days."
+msgstr ""
+
+#: /github/workspace/config/forms/automation.php:28
+#: /github/workspace/config/forms/automation.php:29
+#: /github/workspace/config/forms/automation.php:30
+#: /github/workspace/config/forms/automation.php:31
+msgid "%d days"
+msgstr "%d dagar"
+
+#: /github/workspace/config/forms/install_geolite.php:12
+msgid "You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station's \"Listeners\" report. To download the GeoLite database:"
+msgstr ""
+
+#: /github/workspace/config/forms/install_geolite.php:14
+msgid "Create an account on <a href=\"%s\" target=\"_blank\">the MaxMind developer site</a>."
+msgstr ""
+
+#: /github/workspace/config/forms/install_geolite.php:16
+msgid "Visit the \"My License Key\" page under the \"Services\" section."
+msgstr ""
+
+#: /github/workspace/config/forms/install_geolite.php:17
+msgid "Click \"Generate new license key\"."
+msgstr ""
+
+#: /github/workspace/config/forms/install_geolite.php:18
+msgid "Paste the generated license key into the field on this page."
+msgstr ""
+
+#: /github/workspace/config/forms/install_geolite.php:26
+msgid "MaxMind License Key"
+msgstr ""
+
+#: /github/workspace/config/forms/login.php:29
+msgid "Log in"
+msgstr "Logga in"
+
+#: /github/workspace/config/forms/song.php:8
+msgid "Metadata"
+msgstr ""
+
+#: /github/workspace/config/forms/song.php:14
+msgid "Full Text"
+msgstr ""
+
+#: /github/workspace/config/forms/song.php:26
+msgid "Artist Name"
+msgstr ""
+
+#: /github/workspace/config/assets.php:142
+msgid "Are you sure?"
+msgstr ""
+
+#: /github/workspace/config/assets.php:143
+msgid "Advanced"
+msgstr "Avancerat"
+
+#: /github/workspace/config/menus/admin.php:13
+msgid "System Maintenance"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:22
+#: /github/workspace/templates/admin/branding/index.phtml:12
+msgid "Custom Branding"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:27
+#: /github/workspace/templates/admin/logs/index.phtml:12
+msgid "System Logs"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:32
+#: /github/workspace/templates/admin/storage_locations/index.phtml:3
+msgid "Storage Locations"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:37
+#: /github/workspace/templates/admin/backups/index.phtml:8
+#: /github/workspace/templates/admin/backups/index.phtml:82
+msgid "Backups"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:42
+#: /github/workspace/templates/admin/debug/index.phtml:3
+#: /github/workspace/templates/admin/debug/index.phtml:8
+msgid "System Debugger"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:49
+msgid "Users"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:53
+#: /github/workspace/templates/admin/users/index.phtml:1
+#: /github/workspace/templates/admin/users/index.phtml:5
+msgid "User Accounts"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:58
+#: /github/workspace/templates/admin/permissions/index.phtml:1
+#: /github/workspace/templates/admin/permissions/index.phtml:5
+#: /github/workspace/templates/admin/permissions/index.phtml:23
+msgid "Permissions"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:63
+#: /github/workspace/templates/admin/audit_log/index.phtml:3
+#: /github/workspace/templates/admin/audit_log/index.phtml:19
+msgid "Audit Log"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:68
+#: /github/workspace/templates/admin/api/index.phtml:1
+#: /github/workspace/templates/admin/api/index.phtml:5
+msgid "API Keys"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:75
+#: /github/workspace/config/menus/admin.php:79
+#: /github/workspace/templates/admin/stations/index.phtml:1
+msgid "Stations"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:84
+#: /github/workspace/templates/admin/custom_fields/index.phtml:1
+#: /github/workspace/templates/admin/custom_fields/index.phtml:5
+msgid "Custom Fields"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:89
+#: /github/workspace/templates/admin/relays/index.phtml:3
+#: /github/workspace/templates/admin/relays/index.phtml:15
+msgid "Connected AzuraRelays"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:18
+msgid "Start Station"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:19
+msgid "Ready to start broadcasting? Click to start your station."
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:23
+#: /github/workspace/config/menus/station.php:33
+#: /github/workspace/config/menus/station.php:180
+msgid "Restart broadcasting? This will disconnect any current listeners."
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:28
+msgid "Restart to Apply Changes"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:29
+msgid "Click to restart your station and apply configuration changes."
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:38
+#: /github/workspace/templates/stations/profile/index.phtml:8
+msgid "Profile"
+msgstr "Profil"
+
+#: /github/workspace/config/menus/station.php:43
+msgid "Public Page"
+msgstr "Offentlig sida"
+
+#: /github/workspace/config/menus/station.php:50
+msgid "On-Demand Media"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:57
+#: /github/workspace/templates/stations/files/index.phtml:4
+#: /github/workspace/templates/stations/files/index.phtml:29
+msgid "Music Files"
+msgstr "Musikfiler"
+
+#: /github/workspace/config/menus/station.php:64
+#: /github/workspace/templates/stations/playlists/index.phtml:3
+#: /github/workspace/templates/stations/reports/duplicates.phtml:25
+msgid "Playlists"
+msgstr "Spellistor"
+
+#: /github/workspace/config/menus/station.php:71
+#: /github/workspace/templates/stations/streamers/index.phtml:2
+#: /github/workspace/templates/stations/streamers/disabled.phtml:1
+msgid "Streamer/DJ Accounts"
+msgstr "DJ konton"
+
+#: /github/workspace/config/menus/station.php:78
+msgid "Web DJ"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:86
+#: /github/workspace/templates/stations/mounts/index.phtml:1
+#: /github/workspace/templates/stations/mounts/index.phtml:5
+msgid "Mount Points"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:93
+#: /github/workspace/templates/stations/remotes/index.phtml:1
+#: /github/workspace/templates/stations/remotes/index.phtml:5
+msgid "Remote Relays"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:99
+#: /github/workspace/templates/stations/webhooks/index.phtml:1
+#: /github/workspace/templates/stations/webhooks/index.phtml:5
+msgid "Web Hooks"
+msgstr "Web Hookar"
+
+#: /github/workspace/config/menus/station.php:105
+msgid "Reports"
+msgstr "Rapporter"
+
+#: /github/workspace/config/menus/station.php:110
+#: /github/workspace/templates/stations/reports/overview.phtml:7
+msgid "Statistics Overview"
+msgstr "Statistisk översikt"
+
+#: /github/workspace/config/menus/station.php:119
+#: /github/workspace/templates/stations/reports/requests.phtml:1
+#: /github/workspace/templates/stations/reports/requests.phtml:13
+msgid "Song Requests"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:124
+#: /github/workspace/templates/stations/reports/timeline.phtml:1
+#: /github/workspace/templates/stations/reports/timeline.phtml:15
+msgid "Song Playback Timeline"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:128
+#: /github/workspace/templates/stations/reports/performance.phtml:2
+#: /github/workspace/templates/stations/reports/performance.phtml:12
+msgid "Song Listener Impact"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:133
+msgid "Duplicate Songs"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:138
+msgid "SoundExchange Royalties"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:145
+msgid "Utilities"
+msgstr "Verktyg"
+
+#: /github/workspace/config/menus/station.php:149
+#: /github/workspace/templates/stations/sftp_users/index.phtml:1
+#: /github/workspace/templates/stations/sftp_users/index.phtml:7
+msgid "SFTP Users"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:155
+msgid "Automated Assignment"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:167
+#: /github/workspace/templates/admin/logs/index.phtml:3
+#: /github/workspace/templates/stations/logs/index.phtml:3
+msgid "Log Viewer"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:172
+#: /github/workspace/templates/stations/queue/index.phtml:2
+#: /github/workspace/templates/stations/queue/index.phtml:13
+msgid "Upcoming Song Queue"
+msgstr ""
+
+#: /github/workspace/config/menus/station.php:177
+msgid "Restart Broadcasting"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:12
+msgid "Generic Web Hook"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:13
+msgid "Automatically send a message to any URL when your station data changes."
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:17
+msgid "TuneIn AIR"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:18
+msgid "Send song metadata changes to TuneIn."
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:22
+msgid "Discord Webhook"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:23
+msgid "Automatically send a customized message to your Discord server."
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:27
+msgid "Telegram Chat Message"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:28
+msgid "Use the Telegram Bot API to send a message to a channel."
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:32
+msgid "Twitter Post"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:33
+msgid "Automatically send a tweet."
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:39
+msgid "Any time the currently playing song changes"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:40
+msgid "Any time the listener count increases"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:41
+msgid "Any time the listener count decreases"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:42
+msgid "Any time a live streamer/DJ connects to the stream"
+msgstr ""
+
+#: /github/workspace/config/webhooks.php:43
+msgid "Any time a live streamer/DJ disconnects from the stream"
+msgstr ""
+
+#: /github/workspace/config/cli.php:71
+msgid "Generate the translation locale file."
+msgstr ""
+
+#: /github/workspace/config/cli.php:76
+msgid "Convert translated locale files into PHP arrays."
+msgstr ""
+
+#: /github/workspace/config/cli.php:82
+msgid "Migrate existing configuration to new INI format if any exists."
+msgstr ""
+
+#: /github/workspace/config/cli.php:87
+msgid "Install fixtures for demo / local development."
+msgstr ""
+
+#: /github/workspace/config/cli.php:92
+msgid "Run all general AzuraCast setup steps."
+msgstr ""
+
+#: /github/workspace/config/cli.php:103
+msgid "Run one or more scheduled synchronization tasks."
+msgstr ""
+
+#: /github/workspace/config/cli.php:108
+msgid "Process the message queue."
+msgstr ""
+
+#: /github/workspace/config/cli.php:113
+msgid "Clear the contents of the message queue."
+msgstr ""
+
+#: /github/workspace/config/cli.php:144
+msgid "List all settings in the AzuraCast settings database."
+msgstr ""
+
+#: /github/workspace/config/cli.php:154
+msgid "Back up the AzuraCast database and statistics (and optionally media)."
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:38
+msgid "Insert"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:40
+#: /github/workspace/templates/admin/permissions/index.phtml:38
+#: /github/workspace/templates/admin/permissions/index.phtml:41
+#: /github/workspace/templates/admin/stations/index.phtml:37
+#: /github/workspace/templates/admin/backups/index.phtml:116
+#: /github/workspace/templates/admin/custom_fields/index.phtml:32
+#: /github/workspace/templates/admin/users/index.phtml:37
+#: /github/workspace/templates/admin/users/index.phtml:39
+#: /github/workspace/templates/stations/remotes/index.phtml:47
+#: /github/workspace/templates/stations/mounts/index.phtml:45
+#: /github/workspace/templates/stations/webhooks/index.phtml:54
+#: /github/workspace/templates/stations/sftp_users/index.phtml:38
+#: /github/workspace/templates/stations/queue/index.js.phtml:36
+#: /github/workspace/templates/stations/reports/requests.phtml:61
+#: /github/workspace/templates/stations/reports/duplicates.phtml:34
+msgid "Delete"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:42
+msgid "Update"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:58
+#: /github/workspace/templates/admin/audit_log/index.phtml:59
+msgid "Changes"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:83
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:62
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:97
+msgid "Today"
+msgstr "Idag"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:84
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:63
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:99
+msgid "Yesterday"
+msgstr "Igår"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:85
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:64
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:101
+msgid "Last 7 Days"
+msgstr "Senaste 7 dagarna"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:88
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:67
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:105
+msgid "This Month"
+msgstr "Denna månad"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:89
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:68
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:107
+msgid "Last Month"
+msgstr "Förra månaden"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:41
+#: /github/workspace/templates/stations/reports/timeline.phtml:39
+msgid "Date/Time"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:42
+msgid "User"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:44
+msgid "Identifier"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:45
+msgid "Target"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:46
+#: /github/workspace/templates/admin/permissions/index.phtml:21
+#: /github/workspace/templates/admin/stations/index.phtml:20
+#: /github/workspace/templates/admin/backups/index.phtml:99
+#: /github/workspace/templates/admin/custom_fields/index.phtml:21
+#: /github/workspace/templates/admin/users/index.phtml:21
+#: /github/workspace/templates/stations/remotes/index.phtml:31
+#: /github/workspace/templates/stations/mounts/index.phtml:30
+#: /github/workspace/templates/stations/playlists/reorder.phtml:29
+#: /github/workspace/templates/stations/webhooks/index.phtml:31
+#: /github/workspace/templates/stations/sftp_users/index.phtml:23
+#: /github/workspace/templates/stations/queue/index.phtml:27
+#: /github/workspace/templates/stations/reports/requests.phtml:29
+#: /github/workspace/templates/stations/reports/duplicates.phtml:23
+msgid "Actions"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:71
+msgid "Field"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:72
+msgid "Previous"
+msgstr ""
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:73
+msgid "Updated"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:37
+msgid "Server Status"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:42
+msgid "CPU Load"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:48
+msgid "Current"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:54
+msgid "15-Minute Average"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:62
+msgid "Memory"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:70
+#: /github/workspace/templates/admin/index/index.phtml:84
+msgid "%s of %s Used"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:76
+msgid "Disk Space"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:89
+#: /github/workspace/templates/admin/debug/index.phtml:45
+msgid "Synchronization Tasks"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:99
+#: /github/workspace/templates/admin/backups/index.phtml:29
+msgid "Last run: %s"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:106
+#: /github/workspace/templates/admin/debug/index.phtml:57
+msgid "Run Task"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:14
+#: /github/workspace/templates/admin/debug/index.phtml:20
+msgid "Clear Cache"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:17
+msgid "Clearing the application cache may log you out of your session."
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:29
+#: /github/workspace/templates/admin/debug/index.phtml:35
+msgid "Clear Message Queue"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:32
+msgid "This will clear any pending unprocessed messages in the message queue."
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:68
+msgid "Station-Specific Debugging"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:86
+msgid "Rebuild AutoDJ Queue"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:91
+msgid "Run Test"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:97
+msgid "Send Liquidsoap Telnet Command"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:102
+msgid "Command"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:106
+msgid "Execute Command"
+msgstr ""
+
+#: /github/workspace/templates/admin/install_shoutcast/installed.phtml:1
+msgid "SHOUTcast Installed"
+msgstr ""
+
+#: /github/workspace/templates/admin/install_shoutcast/installed.phtml:3
+msgid "The SHOUTcast 2 DNAS is installed and ready for use."
+msgstr ""
+
+#: /github/workspace/templates/admin/permissions/index.phtml:32
+#: /github/workspace/templates/admin/stations/index.phtml:32
+#: /github/workspace/templates/admin/api/index.phtml:27
+#: /github/workspace/templates/admin/custom_fields/index.phtml:31
+#: /github/workspace/templates/admin/users/index.phtml:35
+#: /github/workspace/templates/frontend/api_keys/index.phtml:42
+#: /github/workspace/templates/stations/remotes/index.phtml:44
+#: /github/workspace/templates/stations/mounts/index.phtml:42
+#: /github/workspace/templates/stations/webhooks/index.phtml:42
+#: /github/workspace/templates/stations/sftp_users/index.phtml:34
+msgid "Edit"
+msgstr "Redigera"
+
+#: /github/workspace/templates/admin/permissions/index.phtml:36
+msgid "Delete role \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/admin/permissions/index.phtml:41
+msgid "This role cannot be deleted."
+msgstr ""
+
+#: /github/workspace/templates/admin/permissions/index.phtml:50
+msgid "Global"
+msgstr ""
+
+#: /github/workspace/templates/admin/logs/index.phtml:16
+msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
+msgstr ""
+
+#: /github/workspace/templates/admin/logs/index.phtml:31
+msgid "Logs by Station"
+msgstr ""
+
+#: /github/workspace/templates/admin/stations/index.phtml:5
+msgid "Manage Stations"
+msgstr ""
+
+#: /github/workspace/templates/admin/stations/index.phtml:10
+#: /github/workspace/templates/frontend/index/index.phtml:125
+msgid "Add Station"
+msgstr "Lägg till station"
+
+#: /github/workspace/templates/admin/stations/index.phtml:21
+msgid "Station"
+msgstr ""
+
+#: /github/workspace/templates/admin/stations/index.phtml:30
+#: /github/workspace/templates/frontend/index/index.phtml:169
+msgid "Manage"
+msgstr "Hantera"
+
+#: /github/workspace/templates/admin/stations/index.phtml:34
+msgid "Clone"
+msgstr ""
+
+#: /github/workspace/templates/admin/stations/index.phtml:35
+msgid "Delete station \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/admin/api/index.phtml:17
+msgid "API Key"
+msgstr ""
+
+#: /github/workspace/templates/admin/api/index.phtml:19
+msgid "Owner"
+msgstr ""
+
+#: /github/workspace/templates/admin/api/index.phtml:28
+#: /github/workspace/templates/frontend/api_keys/index.phtml:43
+msgid "Revoke"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:22
+#: /github/workspace/templates/admin/backups/index.phtml:50
+msgid "Automatic Backups"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:31
+msgid "Never run"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:38
+#: /github/workspace/templates/admin/backups/index.phtml:57
+msgid "Configure"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:43
+#: /github/workspace/templates/admin/backups/index.phtml:137
+msgid "Most Recent Backup Log"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:64
+msgid "Restoring Backups"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:67
+msgid "To restore a backup from your host computer, run:"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:75
+msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:100
+msgid "Backup"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:101
+msgid "Last Modified"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/index.phtml:102
+msgid "Size"
+msgstr "Storlek"
+
+#: /github/workspace/templates/admin/backups/index.phtml:111
+msgid "Download"
+msgstr "Hämta"
+
+#: /github/workspace/templates/admin/backups/index.phtml:115
+msgid "Delete backup \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/run.phtml:20
+msgid "Backups Home"
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/run.phtml:25
+msgid "The backup process is running in the background. To view the logs, click the button below."
+msgstr ""
+
+#: /github/workspace/templates/admin/backups/run.phtml:31
+msgid "View Backup Log"
+msgstr ""
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:30
+msgid "GeoLite version \"%s\" is currently installed."
+msgstr ""
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:33
+msgid "Uninstall GeoLite database?"
+msgstr ""
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:35
+msgid "Uninstall GeoLite Database"
+msgstr ""
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:39
+msgid "GeoLite is not currently installed on this installation."
+msgstr ""
+
+#: /github/workspace/templates/admin/custom_fields/index.phtml:32
+msgid "Delete custom field \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/admin/relays/index.phtml:20
+msgid "Relay"
+msgstr ""
+
+#: /github/workspace/templates/admin/relays/index.phtml:21
+msgid "Is Public"
+msgstr ""
+
+#: /github/workspace/templates/admin/relays/index.phtml:22
+msgid "First Connected"
+msgstr ""
+
+#: /github/workspace/templates/admin/relays/index.phtml:23
+msgid "Latest Update"
+msgstr ""
+
+#: /github/workspace/templates/admin/users/index.phtml:33
+#: /github/workspace/templates/frontend/account/two_factor.phtml:3
+#: /github/workspace/templates/frontend/account/login.phtml:3
+msgid "Log In"
+msgstr "Logga in"
+
+#: /github/workspace/templates/admin/users/index.phtml:37
+msgid "Delete user \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/admin/users/index.phtml:47
+msgid "(You)"
+msgstr ""
+
+#: /github/workspace/templates/minimal.phtml:50
+msgid "Mascot designed by %s"
+msgstr ""
+
+#: /github/workspace/templates/frontend/index/noaccess.phtml:1
+msgid "Error: No Available Stations"
+msgstr ""
+
+#: /github/workspace/templates/frontend/index/noaccess.phtml:4
+msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
+msgstr ""
+
+#: /github/workspace/templates/frontend/index/index.phtml:11
+#: /github/workspace/templates/system/error_http.phtml:17
+#: /github/workspace/templates/system/error_general.phtml:17
+#: /github/workspace/templates/main.phtml:68
+msgid "Dashboard"
+msgstr ""
+
+#: /github/workspace/templates/frontend/index/index.phtml:40
+msgid "AzuraCast User"
+msgstr ""
+
+#: /github/workspace/templates/frontend/index/index.phtml:50
+#: /github/workspace/templates/frontend/profile/index.phtml:2
+#: /github/workspace/templates/frontend/profile/index.phtml:20
+#: /github/workspace/templates/main.phtml:83
+msgid "My Account"
+msgstr "Mitt konto"
+
+#: /github/workspace/templates/frontend/index/index.phtml:86
+msgid "Listeners Per Station"
+msgstr "Lyssnare Per Station"
+
+#: /github/workspace/templates/frontend/index/index.phtml:92
+#: /github/workspace/templates/frontend/index/index.phtml:104
+msgid "Average Listeners"
+msgstr "Genomsnittliga lyssnare"
+
+#: /github/workspace/templates/frontend/index/index.phtml:97
+#: /github/workspace/templates/frontend/index/index.phtml:109
+#: /github/workspace/templates/stations/reports/listeners.phtml:42
+msgid "Unique Listeners"
+msgstr "Unika lyssnare"
+
+#: /github/workspace/templates/frontend/index/index.phtml:119
+msgid "Station Overview"
+msgstr "Stationsöversikt"
+
+#: /github/workspace/templates/frontend/index/index.phtml:140
+msgid "Station Name"
+msgstr "Stationens namn"
+
+#: /github/workspace/templates/frontend/index/index.phtml:142
+msgid "Now Playing"
+msgstr "Nu Spelas"
+
+#: /github/workspace/templates/frontend/setup/register.phtml:17
+msgid "AzuraCast First-Time Setup"
+msgstr ""
+
+#: /github/workspace/templates/frontend/setup/register.phtml:20
+msgid "Welcome to AzuraCast!"
+msgstr "Välkommen till AzuraCast!"
+
+#: /github/workspace/templates/frontend/setup/register.phtml:27
+msgid "Let's get started by creating your Super Administrator account."
+msgstr ""
+
+#: /github/workspace/templates/frontend/setup/register.phtml:28
+msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
+msgstr ""
+
+#: /github/workspace/templates/frontend/setup/station.phtml:19
+#: /github/workspace/templates/frontend/setup/settings.phtml:19
+msgid "Create Station"
+msgstr ""
+
+#: /github/workspace/templates/frontend/setup/station.phtml:34
+msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
+msgstr "Fortsätt installationsprocessen genom att skapa din första radiostation nedan. Du kan redigera någon av dessa uppgifter senare."
+
+#: /github/workspace/templates/frontend/setup/station.phtml:41
+msgid "Create a New Radio Station"
+msgstr ""
+
+#: /github/workspace/templates/frontend/setup/settings.phtml:35
+msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
+msgstr ""
+
+#: /github/workspace/templates/frontend/setup/settings.phtml:42
+msgid "Customize AzuraCast Settings"
+msgstr ""
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:11
+msgid "Enter Two-Factor Code"
+msgstr ""
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:12
+msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
+msgstr ""
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:18
+#: /github/workspace/templates/frontend/account/two_factor.phtml:20
+msgid "Security Code"
+msgstr ""
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:22
+#: /github/workspace/templates/frontend/account/two_factor.phtml:23
+#: /github/workspace/templates/frontend/account/login.phtml:43
+#: /github/workspace/templates/frontend/account/login.phtml:44
+msgid "Sign in"
+msgstr "Logga in"
+
+#: /github/workspace/templates/frontend/account/login.phtml:15
+msgid "Welcome!"
+msgstr "Välkommen!"
+
+#: /github/workspace/templates/frontend/account/login.phtml:17
+msgid "Welcome to %s!"
+msgstr "Välkommen till %s!"
+
+#: /github/workspace/templates/frontend/account/login.phtml:34
+msgid "name@example.com"
+msgstr ""
+
+#: /github/workspace/templates/frontend/account/login.phtml:41
+msgid "Enter your password"
+msgstr "Ange ditt lösenord"
+
+#: /github/workspace/templates/frontend/account/login.phtml:48
+msgid "Please log in to continue."
+msgstr "Logga in för att fortsätta."
+
+#: /github/workspace/templates/frontend/account/login.phtml:48
+msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
+msgstr "<a href=\"%s\" target=\"_blank\">Glömt ditt lösenord?</a>"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:2
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:13
+msgid "Enable Two-Factor Authentication"
+msgstr "Aktivera tvåfaktorsautentisering"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:16
+msgid "Step 1: Scan QR Code"
+msgstr "Steg 1: Skanna QR-koden"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:18
+msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
+msgstr "Från din smartphone, skanna koden till höger med hjälp av en autentiseringsapp som du väljer (FreeOTP, Authy, etc)."
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:20
+msgid "Step 2: Verify Generated Code"
+msgstr "Steg 2: Verifiera genererad kod"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:22
+msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
+msgstr "För att verifiera att koden är korrekt inställd, ange den 6-siffriga koden som appen visar dig."
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:31
+msgid "QR-Code"
+msgstr "QR-kod"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:43
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:21
+#: /github/workspace/templates/partials/log_viewer.phtml:28
+msgid "Copy to Clipboard"
+msgstr "Kopiera till urklipp"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:58
+msgid "Customize"
+msgstr "Anpassa"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:66
+msgid "Two-Factor Authentication"
+msgstr "Tvåfaktorsautentisering"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:75
+msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
+msgstr "Tvåfaktorsautentisering förbättrar säkerheten för ditt konto genom att kräva en andra engångskod utöver ditt lösenord när du loggar in."
+
+#: /github/workspace/templates/frontend/profile/index.phtml:81
+msgid "Disable Two-Factor"
+msgstr "Inaktivera tvåfaktorsfaktor"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:86
+msgid "Enable Two-Factor"
+msgstr "Aktivera tvåfaktorsfaktor"
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:3
+#: /github/workspace/templates/frontend/api_keys/index.phtml:3
+#: /github/workspace/templates/frontend/api_keys/index.phtml:9
+#: /github/workspace/templates/main.phtml:95
+msgid "My API Keys"
+msgstr ""
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:11
+msgid "New Key Generated"
+msgstr ""
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:14
+msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
+msgstr ""
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:16
+msgid "Your full API key is below:"
+msgstr ""
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:25
+msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
+msgstr ""
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:28
+msgid "Continue"
+msgstr ""
+
+#: /github/workspace/templates/frontend/api_keys/index.phtml:13
+msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
+"            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
+msgstr ""
+
+#: /github/workspace/templates/frontend/api_keys/index.phtml:33
+msgid "Key Identifier"
+msgstr ""
+
+#: /github/workspace/templates/system/log_view.phtml:33
+msgid "Details"
+msgstr ""
+
+#: /github/workspace/templates/system/form_page.phtml:65
+msgid "Errors were encountered when trying to save changes:"
+msgstr ""
+
+#: /github/workspace/templates/system/form_page.phtml:68
+msgid "General"
+msgstr ""
+
+#: /github/workspace/templates/stations/remotes/index.phtml:13
+msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
+msgstr ""
+
+#: /github/workspace/templates/stations/remotes/index.phtml:32
+msgid "Remote Relay"
+msgstr ""
+
+#: /github/workspace/templates/stations/remotes/index.phtml:45
+msgid "Delete remote relay \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/stations/mounts/index.phtml:12
+msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
+msgstr ""
+
+#: /github/workspace/templates/stations/mounts/index.phtml:31
+msgid "Mount Point"
+msgstr ""
+
+#: /github/workspace/templates/stations/mounts/index.phtml:43
+msgid "Delete mount point \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/stations/mounts/index.phtml:53
+msgid "Default Mount"
+msgstr ""
+
+#: /github/workspace/templates/stations/automation/index.phtml:2
+#: /github/workspace/templates/stations/automation/index.phtml:6
+msgid "Automated Playlist Assignment"
+msgstr ""
+
+#: /github/workspace/templates/stations/automation/index.phtml:9
+msgid "Based on the previous performance of your station's songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists."
+msgstr ""
+
+#: /github/workspace/templates/stations/automation/index.phtml:11
+msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
+msgstr ""
+
+#: /github/workspace/templates/stations/automation/index.phtml:13
+msgid "Run Automated Assignment"
+msgstr ""
+
+#: /github/workspace/templates/stations/automation/index.phtml:19
+msgid "Configure Automated Assignment"
+msgstr ""
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:3
+msgid "Reorder Playlist"
+msgstr ""
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:16
+msgid "Reorder Playlist: %s"
+msgstr ""
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:40
+msgid "Down"
+msgstr "Ner"
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:43
+msgid "Up"
+msgstr "Upp"
+
+#: /github/workspace/templates/stations/logs/index.phtml:12
+msgid "Available Logs"
+msgstr "Tillgängliga loggar"
+
+#: /github/workspace/templates/stations/webhooks/add.phtml:7
+msgid "Select the type of web hook to create."
+msgstr ""
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:13
+msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
+msgstr ""
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:32
+msgid "Type"
+msgstr "Typ"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:33
+msgid "Triggers"
+msgstr ""
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:47
+msgid "Enable"
+msgstr "Aktivera"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:51
+msgid "Trigger the web hook manually and view the raw response."
+msgstr ""
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:51
+msgid "Test"
+msgstr "Testa"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:52
+msgid "Delete web hook \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/stations/streamers/index.phtml:18
+#: /github/workspace/templates/stations/sftp_users/index.phtml:51
+msgid "Connection Information"
+msgstr ""
+
+#: /github/workspace/templates/stations/streamers/index.phtml:21
+msgid "IceCast Clients"
+msgstr ""
+
+#: /github/workspace/templates/stations/streamers/index.phtml:23
+#: /github/workspace/templates/stations/streamers/index.phtml:39
+#: /github/workspace/templates/stations/sftp_users/index.phtml:55
+msgid "Server"
+msgstr "Server"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:26
+#: /github/workspace/templates/stations/streamers/index.phtml:42
+#: /github/workspace/templates/stations/sftp_users/index.phtml:58
+msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
+msgstr "Du kan behöva ansluta direkt via din IP-adress, som är <code>%s</code>."
+
+#: /github/workspace/templates/stations/streamers/index.phtml:30
+#: /github/workspace/templates/stations/streamers/index.phtml:46
+#: /github/workspace/templates/stations/sftp_users/index.phtml:62
+msgid "Port"
+msgstr "Port"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:33
+msgid "Mount Name"
+msgstr ""
+
+#: /github/workspace/templates/stations/streamers/index.phtml:37
+msgid "ShoutCast v1 Clients"
+msgstr "ShoutCast v1 klienter"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:47
+msgid "%d (%d for some clients)"
+msgstr "%d (%d för vissa klienter)"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:53
+msgid "(DJ username and password separated by a colon)"
+msgstr "(DJ användarnamn och lösenord separerade med ett kolon)"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:57
+msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
+msgstr "Installationsinstruktioner för sändningsprogram finns <a href=\"%s\" target=\"_blank\">på AzuraCast Wiki</a>."
+
+#: /github/workspace/templates/stations/streamers/disabled.phtml:3
+msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
+msgstr ""
+
+#: /github/workspace/templates/stations/streamers/disabled.phtml:5
+msgid "Enable Streaming"
+msgstr ""
+
+#: /github/workspace/templates/stations/sftp_users/index.phtml:36
+msgid "Delete SFTP User \"%s\"?"
+msgstr ""
+
+#: /github/workspace/templates/stations/queue/index.js.phtml:29
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:45
+msgid "Listener Request"
+msgstr ""
+
+#: /github/workspace/templates/stations/queue/index.js.phtml:31
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:47
+msgid "Playlist:"
+msgstr ""
+
+#: /github/workspace/templates/stations/queue/index.js.phtml:36
+msgid "Delete queue item?"
+msgstr ""
+
+#: /github/workspace/templates/stations/queue/index.phtml:24
+msgid "Cued On"
+msgstr "Köad på"
+
+#: /github/workspace/templates/stations/queue/index.phtml:26
+#: /github/workspace/templates/stations/reports/timeline.phtml:43
+msgid "Source"
+msgstr "Källa"
+
+#: /github/workspace/templates/stations/files/index.phtml:39
+msgid "%s of %s Used (%d Files)"
+msgstr ""
+
+#: /github/workspace/templates/stations/files/index.phtml:41
+msgid "%s Used (%d Files)"
+msgstr ""
+
+#: /github/workspace/templates/stations/files/index.phtml:53
+msgid "You can also upload files in bulk via SFTP."
+msgstr "Du kan också ladda upp filer i bulk via SFTP."
+
+#: /github/workspace/templates/stations/files/index.phtml:59
+msgid "Manage SFTP Accounts"
+msgstr "Hantera SFTP-konton"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:16
+msgid "Clear all pending requests?"
+msgstr "Rensa alla väntande önskningar?"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:19
+msgid "Clear Pending Requests"
+msgstr "Rensa väntande önskningar"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:25
+msgid "Date Requested"
+msgstr "Önskad"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:26
+msgid "Date Played"
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/requests.phtml:28
+msgid "Requester IP"
+msgstr "Önskarens IP"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:44
+msgid "Not Played"
+msgstr "Inte spelad"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:58
+msgid "Delete request?"
+msgstr "Ta bort önskning?"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:17
+#: /github/workspace/templates/stations/reports/listeners.phtml:26
+#: /github/workspace/templates/stations/reports/listeners.phtml:27
+#: /github/workspace/templates/stations/reports/timeline.phtml:18
+#: /github/workspace/templates/stations/reports/timeline.phtml:19
+msgid "Download CSV"
+msgstr "Ladda ner CSV"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:32
+msgid "Filename"
+msgstr "Filnamn"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:34
+msgid "Length Text"
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/performance.phtml:35
+msgid "Playlist(s)"
+msgstr "Spellistor"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:36
+msgid "Joins"
+msgstr "Anslutningar"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:37
+msgid "Losses"
+msgstr "Förluster"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:38
+msgid "Total"
+msgstr "Totalt"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:39
+#: /github/workspace/templates/stations/reports/overview.phtml:157
+msgid "Plays"
+msgstr "Spelningar"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:40
+msgid "Play %"
+msgstr "Spela %"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:41
+msgid "Ratio"
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/overview.phtml:56
+msgid "Best Performing Songs"
+msgstr "Låtar med bäst utförande"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:57
+#: /github/workspace/templates/stations/reports/overview.phtml:100
+msgid "in the last 48 hours"
+msgstr "under de senaste 48 timmarna"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:68
+#: /github/workspace/templates/stations/reports/overview.phtml:111
+#: /github/workspace/templates/stations/reports/timeline.phtml:41
+msgid "Change"
+msgstr "Ändra"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:69
+#: /github/workspace/templates/stations/reports/overview.phtml:112
+#: /github/workspace/templates/stations/reports/overview.phtml:158
+msgid "Song"
+msgstr "Låt"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:99
+msgid "Worst Performing Songs"
+msgstr "Låtar med sämst utförande"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:145
+msgid "Most Played Songs"
+msgstr "Mest spelade låtar"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:146
+msgid "in the last month"
+msgstr "under den senaste månaden"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:31
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:7
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:95
+msgid "Live Listeners"
+msgstr "Live lyssnare"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:43
+#: /github/workspace/templates/stations/reports/listeners.phtml:50
+msgid "for selected period"
+msgstr "för vald period"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:49
+msgid "Total Listener Hours"
+msgstr "Totalt antal lyssnartimmar"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:58
+msgid "IP"
+msgstr "IP"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:59
+msgid "Time (sec)"
+msgstr "Tid (sek)"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:60
+msgid "User Agent"
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:61
+msgid "Location"
+msgstr "Plats"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:71
+msgid "Mobile Device"
+msgstr "Mobil enhet"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:75
+msgid "Desktop Device"
+msgstr "Skrivbordsenhet"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:87
+msgid "Unknown"
+msgstr "Okänd"
+
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:49
+msgid "Live Streamer:"
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/duplicates.phtml:1
+#: /github/workspace/templates/stations/reports/duplicates.phtml:5
+msgid "Song Duplicates"
+msgstr "Låtdubletter"
+
+#: /github/workspace/templates/stations/reports/duplicates.phtml:9
+msgid "No duplicates were found. Nice work!"
+msgstr "Inga dubbletter hittades. Bra jobbat!"
+
+#: /github/workspace/templates/stations/reports/duplicates.phtml:24
+msgid "Title / File Path"
+msgstr "Titel / sökväg"
+
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:59
+msgid "There are too many data points to map!"
+msgstr "Det finns för många datapunkter att karta!"
+
+#: /github/workspace/templates/stations/reports/restricted.phtml:1
+#: /github/workspace/templates/stations/reports/restricted.phtml:5
+msgid "Report Not Available"
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/restricted.phtml:8
+msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/overview.js.phtml:68
+msgid "Hour"
+msgstr "Timme"
+
+#: /github/workspace/templates/stations/sidebar.js.phtml:22
+msgid "Please wait..."
+msgstr "Vänligen vänta..."
+
+#: /github/workspace/templates/stations/sidebar.phtml:16
+msgid "Station Time"
+msgstr ""
+
+#: /github/workspace/templates/stations/profile/disabled.phtml:4
+msgid "Station Broadcasting Disabled"
+msgstr "Stationssändning inaktiverad"
+
+#: /github/workspace/templates/stations/profile/disabled.phtml:8
+msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
+msgstr "Din station är för närvarande inte aktiverad för sändning. Du kan fortfarande hantera medier, spellistor och andra kanalinställningar. För att återaktivera sändning, <a href=\"%s\">redigera din station profil</a>."
+
+#: /github/workspace/templates/partials/radio_controls.js.phtml:7
+msgid "Pause"
+msgstr ""
+
+#: /github/workspace/templates/partials/radio_controls.js.phtml:8
+msgid "Play"
+msgstr "Spela"
+
+#: /github/workspace/templates/partials/log_viewer.phtml:12
+msgid "Log View"
+msgstr "Logg vy"
+
+#: /github/workspace/templates/partials/log_viewer.phtml:20
+msgid "Automatically scroll to the bottom of the log"
+msgstr ""
+
+#: /github/workspace/templates/partials/log_help_card.phtml:3
+msgid "Need Help?"
+msgstr ""
+
+#: /github/workspace/templates/partials/log_help_card.phtml:6
+msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
+msgstr ""
+
+#: /github/workspace/templates/partials/log_help_card.phtml:8
+msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
+msgstr ""
+
+#: /github/workspace/templates/partials/log_help_card.phtml:10
+msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
+msgstr ""
+
+#: /github/workspace/templates/partials/log_help_card.phtml:15
+msgid "Add New GitHub Issue"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:44
+msgid "Skip to main content"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:48
+msgid "Toggle Sidebar"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:61
+msgid "Toggle Menu"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:76
+msgid "System Administration"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:89
+msgid "Switch Theme"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:101
+msgid "Help"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:109
+msgid "End Session"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:116
+msgid "Sign Out"
+msgstr ""
+
+#: /github/workspace/templates/main.phtml:158
+msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
+msgstr "Gillar du vår programvara? <a href=\"%s\" target=\"_blank\">Donera för att stödja AzuraCast!</a>"
+

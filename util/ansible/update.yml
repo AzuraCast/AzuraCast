@@ -20,7 +20,7 @@
     - { role: redis, when: update_revision|int < 57 }
     - { role: php, when: update_revision|int < 50 }
     - composer
-    - { role: influxdb, when: update_revision|int < 56 }
+    - { role: influxdb, when: update_revision|int < 58 }
     - { role: ufw, when: update_revision|int < 12 }
     - { role: dbip, when: update_revision|int < 51 }
     - { role: services, when: update_revision|int < 13 }

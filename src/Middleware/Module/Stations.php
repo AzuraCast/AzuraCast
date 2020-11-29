@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware\Module;
 
 use App\Event;
@@ -28,8 +29,6 @@ class Stations
         $station = $request->getStation();
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
-
-        date_default_timezone_set($station->getTimezone());
 
         $view->addData([
             'station' => $station,

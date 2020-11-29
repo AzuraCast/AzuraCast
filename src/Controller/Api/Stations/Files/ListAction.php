@@ -1,13 +1,16 @@
 <?php
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
+use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Http\Message\ResponseInterface;
+
 use const SORT_ASC;
 use const SORT_DESC;
 
@@ -17,50 +20,64 @@ class ListAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         Entity\Repository\StationRepository $stationRepo
     ): ResponseInterface {
         $station = $request->getStation();
         $router = $request->getRouter();
 
-        $fs = $filesystem->getForStation($station);
-        $params = $request->getParams();
+        $storageLocation = $station->getMediaStorageLocation();
+        $fs = $filesystem->getFilesystemForAdapter($storageLocation->getStorageAdapter(), true);
 
-        if ($params['flushCache'] ?? false) {
-            $fs->flushAllCaches();
+        if ((bool)$request->getParam('flushCache', false)) {
+            $fs->clearCache();
         }
 
         $result = [];
 
-        $file = $request->getAttribute('file');
-        $filePath = $request->getAttribute('file_path');
+        $currentDir = $request->getParam('currentDirectory', '');
 
-        $search_phrase = trim($params['searchPhrase'] ?? '');
+        $searchPhrase = trim($request->getParam('searchPhrase', ''));
 
-        $pathLike = (empty($file)) ? '%' : $file . '/%';
+        $pathLike = (empty($currentDir))
+            ? '%'
+            : $currentDir . '/%';
 
         $media_query = $em->createQueryBuilder()
-            ->select('partial sm.{id, unique_id, art_updated_at, path, length, length_text, artist, title, album}')
+            ->select('partial sm.{
+                id,
+                unique_id,
+                art_updated_at,
+                path,
+                length,
+                length_text,
+                artist,
+                title,
+                album,
+                genre
+            }')
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
             ->from(Entity\StationMedia::class, 'sm')
             ->leftJoin('sm.custom_fields', 'smcf')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
-            ->where('sm.station_id = :station_id')
+            ->where('sm.storage_location = :storageLocation')
             ->andWhere('sm.path LIKE :path')
-            ->setParameter('station_id', $station->getId())
+            ->andWhere('(sp.station IS NULL OR sp.station = :station)')
+            ->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->setParameter('station', $station)
             ->setParameter('path', $pathLike);
 
         // Apply searching
-        if (!empty($search_phrase)) {
-            if (strpos($search_phrase, 'playlist:') === 0) {
-                $playlist_name = substr($search_phrase, 9);
+        if (!empty($searchPhrase)) {
+            if (strpos($searchPhrase, 'playlist:') === 0) {
+                $playlist_name = substr($searchPhrase, 9);
                 $media_query->andWhere('sp.name = :playlist_name')
                     ->setParameter('playlist_name', $playlist_name);
             } else {
                 $media_query->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
-                    ->setParameter('query', '%' . $search_phrase . '%');
+                    ->setParameter('query', '%' . $searchPhrase . '%');
             }
 
             $folders_in_dir_raw = [];
@@ -69,14 +86,14 @@ class ListAction
             $media_query->andWhere('sm.path NOT LIKE :pathWithSubfolders')
                 ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
-            $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT 
+            $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT
                 spf, partial sp.{id, name}
                 FROM App\Entity\StationPlaylistFolder spf
                 JOIN spf.playlist sp
                 WHERE spf.station = :station
                 AND spf.path LIKE :path')
                 ->setParameter('station', $station)
-                ->setParameter('path', $file . '%')
+                ->setParameter('path', $currentDir . '%')
                 ->getArrayResult();
         }
 
@@ -98,11 +115,13 @@ class ListAction
 
             $artImgSrc = (0 === $media_row['art_updated_at'])
                 ? (string)$stationRepo->getDefaultAlbumArtUrl($station)
-                : (string)$router->named('api:stations:media:art',
+                : (string)$router->named(
+                    'api:stations:media:art',
                     [
                         'station_id' => $station->getId(),
                         'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
-                    ]);
+                    ]
+                );
 
             $media_in_dir[$media_row['path']] = [
                     'is_playable' => ($media_row['length'] !== 0),
@@ -111,6 +130,7 @@ class ListAction
                     'artist' => $media_row['artist'],
                     'title' => $media_row['title'],
                     'album' => $media_row['album'],
+                    'genre' => $media_row['genre'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                     'art' => $artImgSrc,
                     'art_url' => (string)$router->named(
@@ -151,20 +171,28 @@ class ListAction
         }
 
         $files = [];
-        if (!empty($search_phrase)) {
+        if (!empty($searchPhrase)) {
             foreach ($media_in_dir as $short_path => $media_row) {
-                $files[] = Filesystem::PREFIX_MEDIA . '://' . $short_path;
+                $files[] = $short_path;
             }
         } else {
-            $files_raw = $fs->listContents($filePath);
-            foreach ($files_raw as $file) {
-                $files[] = $file['filesystem'] . '://' . $file['path'];
+            $filesIterator = $fs->createIterator($currentDir, [
+                Options::OPTION_IS_RECURSIVE => false,
+            ]);
+
+            $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
+
+            foreach ($filesIterator as $fileRow) {
+                if ($currentDir === '' && in_array($fileRow['path'], $protectedPaths, true)) {
+                    continue;
+                }
+
+                $files[] = $fileRow['path'];
             }
         }
 
-        foreach ($files as $i) {
-            $short = str_replace(Filesystem::PREFIX_MEDIA . '://', '', $i);
-            $meta = $fs->getMetadata($i);
+        foreach ($files as $short) {
+            $meta = $fs->getMetadata($short);
 
             if ('dir' === $meta['type']) {
                 $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
@@ -192,8 +220,11 @@ class ListAction
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
                 'can_rename' => true,
-                'rename_url' => (string)$router->named('api:stations:files:rename', ['station_id' => $station->getId()],
-                    ['file' => $short]),
+                'rename_url' => (string)$router->named(
+                    'api:stations:files:rename',
+                    ['station_id' => $station->getId()],
+                    ['file' => $short]
+                ),
             ];
 
             foreach ($media as $media_key => $media_val) {
@@ -209,9 +240,12 @@ class ListAction
         // Apply sorting and limiting.
         $sort_by = ['is_dir', SORT_DESC];
 
-        if (!empty($params['sort'])) {
-            $sort_by[] = $params['sort'];
-            $sort_by[] = (strtolower($params['sortOrder'] ?? 'asc') === 'desc') ? SORT_DESC : SORT_ASC;
+        $sort = $request->getParam('sort');
+        if (!empty($sort)) {
+            $sort_by[] = $sort;
+            $sort_by[] = ('desc' === strtolower($request->getParam('sortOrder', 'asc')))
+                ? SORT_DESC
+                : SORT_ASC;
         } else {
             $sort_by[] = 'name';
             $sort_by[] = SORT_ASC;
@@ -221,8 +255,8 @@ class ListAction
 
         $num_results = count($result);
 
-        $page = (int)($params['current'] ?? 1);
-        $row_count = (int)($params['rowCount'] ?? 15);
+        $page = (int)($request->getParam('current', 1));
+        $row_count = (int)($request->getParam('rowCount', 15));
 
         if ($row_count === 0) {
             $row_count = $num_results;

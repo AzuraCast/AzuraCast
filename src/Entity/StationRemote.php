@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -8,6 +9,7 @@ use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use const PHP_URL_HOST;
 use const PHP_URL_PORT;
 
@@ -451,7 +453,7 @@ class StationRemote implements StationMountInterface
         return $this->is_public;
     }
 
-    public function setIsPublic(bool $is_public)
+    public function setIsPublic(bool $is_public): void
     {
         $this->is_public = $is_public;
     }
@@ -488,13 +490,11 @@ class StationRemote implements StationMountInterface
      * Retrieve the API version of the object/array.
      *
      * @param AbstractRemote $adapter
-     *
-     * @return Api\StationRemote
      */
     public function api(
         AbstractRemote $adapter
     ): Api\StationRemote {
-        $response = new Api\StationRemote;
+        $response = new Api\StationRemote();
 
         $response->id = $this->id;
         $response->name = $this->getDisplayName();
@@ -515,8 +515,6 @@ class StationRemote implements StationMountInterface
 
     /**
      * @AuditLog\AuditIdentifier
-     *
-     * @return string
      */
     public function getDisplayName(): string
     {

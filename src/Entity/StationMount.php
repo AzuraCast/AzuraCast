@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -237,7 +238,7 @@ class StationMount implements StationMountInterface
         $this->fallback_mount = $fallback_mount;
     }
 
-    public function getRelayUrl()
+    public function getRelayUrl(): ?string
     {
         return $this->relay_url;
     }
@@ -391,14 +392,12 @@ class StationMount implements StationMountInterface
      *
      * @param AbstractFrontend $fa
      * @param UriInterface|null $base_url
-     *
-     * @return Api\StationMount
      */
     public function api(
         AbstractFrontend $fa,
         UriInterface $base_url = null
     ): Api\StationMount {
-        $response = new Api\StationMount;
+        $response = new Api\StationMount();
 
         $response->id = $this->id;
         $response->name = $this->getDisplayName();
@@ -421,8 +420,6 @@ class StationMount implements StationMountInterface
 
     /**
      * @AuditLog\AuditIdentifier
-     *
-     * @return string
      */
     public function getDisplayName(): string
     {

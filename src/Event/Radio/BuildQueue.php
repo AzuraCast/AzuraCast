@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Event\Radio;
 
 use App\Entity;
@@ -53,7 +54,7 @@ class BuildQueue extends Event
         return (null !== $this->next_song);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (null !== $this->next_song)
             ? (string)$this->next_song

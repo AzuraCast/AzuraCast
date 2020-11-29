@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -53,7 +54,7 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * Get the default mounts when resetting or initializing a station.
      *
-     * @return array
+     * @return mixed[]
      */
     public static function getDefaultMounts(): array
     {
@@ -88,8 +89,6 @@ abstract class AbstractFrontend extends AbstractAdapter
      * Read configuration from external service to Station object.
      *
      * @param Entity\Station $station
-     *
-     * @return bool
      */
     abstract public function read(Entity\Station $station): bool;
 
@@ -104,8 +103,6 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * @param Entity\Station $station
      * @param UriInterface|null $base_url
-     *
-     * @return UriInterface
      */
     public function getStreamUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
     {
@@ -119,8 +116,6 @@ abstract class AbstractFrontend extends AbstractAdapter
      * @param Entity\StationMount|null $mount
      * @param UriInterface|null $base_url
      * @param bool $append_timestamp Add the "?12345" timestamp to the end of URLs for "cache-busting".
-     *
-     * @return UriInterface
      */
     public function getUrlForMount(
         Entity\Station $station,
@@ -156,9 +151,11 @@ abstract class AbstractFrontend extends AbstractAdapter
 
         $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
 
-        if ($use_radio_proxy
+        if (
+            $use_radio_proxy
             || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
-            || 'https' === $base_url->getScheme()) {
+            || 'https' === $base_url->getScheme()
+        ) {
             // Web proxy support.
             return $base_url
                 ->withPath($base_url->getPath() . '/radio/' . $radio_port);
@@ -193,21 +190,24 @@ abstract class AbstractFrontend extends AbstractAdapter
         return Result::blank();
     }
 
-    protected function _processCustomConfig($custom_config_raw)
+    /**
+     * @return mixed[]|bool
+     */
+    protected function processCustomConfig($custom_config_raw)
     {
         $custom_config = [];
 
         if (strpos($custom_config_raw, '{') === 0) {
             $custom_config = @json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
         } elseif (strpos($custom_config_raw, '<') === 0) {
-            $reader = new Reader;
+            $reader = new Reader();
             $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
         }
 
         return $custom_config;
     }
 
-    protected function _getRadioPort(Entity\Station $station)
+    protected function getRadioPort(Entity\Station $station): int
     {
         return (8000 + (($station->getId() - 1) * 10));
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Acl;
@@ -10,26 +11,30 @@ use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController
 {
-    public function __construct(PermissionsForm $form)
+    protected Acl $acl;
+
+    public function __construct(PermissionsForm $form, Acl $acl)
     {
         parent::__construct($form);
+
         $this->csrf_namespace = 'admin_permissions';
+        $this->acl = $acl;
     }
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $all_roles = $this->em->createQuery(/** @lang DQL */ 'SELECT 
-            r, rp, s 
-            FROM App\Entity\Role r 
-            LEFT JOIN r.users u 
-            LEFT JOIN r.permissions rp 
-            LEFT JOIN rp.station s 
+        $all_roles = $this->em->createQuery(/** @lang DQL */ 'SELECT
+            r, rp, s
+            FROM App\Entity\Role r
+            LEFT JOIN r.users u
+            LEFT JOIN r.permissions rp
+            LEFT JOIN rp.station s
             ORDER BY r.id ASC')
             ->getArrayResult();
 
         $roles = [];
 
-        $actions = Acl::listPermissions();
+        $actions = $this->acl->listPermissions();
 
         foreach ($all_roles as $role) {
             $role['permissions_global'] = [];
@@ -37,7 +42,9 @@ class PermissionsController extends AbstractAdminCrudController
 
             foreach ($role['permissions'] as $permission) {
                 if ($permission['station']) {
+                    // phpcs:disable Generic.Files.LineLength
                     $role['permissions_station'][$permission['station']['name']][] = $actions['station'][$permission['action_name']];
+                    // phpcs:enable
                 } else {
                     $role['permissions_global'][] = $actions['global'][$permission['action_name']];
                 }
@@ -54,9 +61,11 @@ class PermissionsController extends AbstractAdminCrudController
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
     {
-        if (false !== $this->_doEdit($request, $id)) {
-            $request->getFlash()->addMessage('<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
-                Flash::SUCCESS);
+        if (false !== $this->doEdit($request, $id)) {
+            $request->getFlash()->addMessage(
+                '<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
+                Flash::SUCCESS
+            );
             return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
         }
 
@@ -69,7 +78,7 @@ class PermissionsController extends AbstractAdminCrudController
 
     public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
     {
-        $this->_doDelete($request, $id, $csrf);
+        $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Permission deleted.') . '</b>', Flash::SUCCESS);
         return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));

@@ -16,6 +16,7 @@ $assets
     ->addInlineJs($this->fetch('stations/files/index.js', [
         'playlists' => $playlists,
         'custom_fields' => $custom_fields,
+        'mime_types' => $mime_types,
     ]));
 ?>
 
@@ -28,13 +29,17 @@ $assets
                         <h2 class="card-title"><?=__('Music Files')?></h2>
                     </div>
                     <div class="col-md-5 text-right text-white-50">
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent?>"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent?>%;">
-                                <span class="sr-only"><?=$space_percent?>%</span>
+                        <?php if ($space_total): ?>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent?>"
+                                     aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent?>%;">
+                                    <span class="sr-only"><?=$space_percent?>%</span>
+                                </div>
                             </div>
-                        </div>
-                        <?=__('%s of %s Used (%d Files)', $space_used, $space_total, $files_count)?>
+                            <?=__('%s of %s Used (%d Files)', $space_used, $space_total, $files_count)?>
+                        <?php else: ?>
+                            <?=__('%s Used (%d Files)', $space_used, $files_count)?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

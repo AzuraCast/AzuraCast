@@ -1,0 +1,4241 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: azuracast\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: Chinese Simplified\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-11-25T01:26:50+00:00\n"
+"PO-Revision-Date: 2020-11-25 07:46\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: azuracast\n"
+"X-Crowdin-Project-ID: 217396\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /master/resources/locale/default.pot\n"
+"X-Crowdin-File-ID: 4\n"
+
+#: /github/workspace/src/Service/IpGeolocator/DbIp.php:22
+msgid "IP Geolocation by DB-IP"
+msgstr "通过DB-IP进行IP地理定位"
+
+#: /github/workspace/src/Service/IpGeolocator/GeoLite.php:22
+msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
+msgstr "本产品包括MaxMind创建的GeoLite2数据，可从%s。"
+
+#: /github/workspace/src/Service/IpGeolocation.php:40
+msgid "GeoLite database not configured for this installation. See System Administration for instructions."
+msgstr "没有为本次安装配置GeoLite数据库。请参阅系统管理以了解相关说明。"
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:41
+msgid "Search engine crawlers are not permitted to use this feature."
+msgstr "搜索引擎爬虫不允许使用此功能。"
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:46
+#: /github/workspace/src/Controller/Api/Stations/RequestsController.php:64
+#: /github/workspace/src/Controller/Api/Stations/RequestsController.php:166
+msgid "This station does not accept requests currently."
+msgstr "该电台当前不接受请求。"
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:53
+msgid "The song ID you specified could not be found in the station."
+msgstr "您指定的歌曲ID在电台中找不到。"
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:57
+msgid "The song ID you specified cannot be requested for this station."
+msgstr "您指定的歌曲ID不能被要求使用在这个电台。"
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:85
+msgid "You have submitted a request too recently! Please wait before submitting another one."
+msgstr "您最近提交的请求太多了! 请等待后再提交另一个请求。"
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:128
+msgid "Duplicate request: this song was already requested and will play soon."
+msgstr "重复请求：这首歌已经被请求了，很快就会播放。"
+
+#: /github/workspace/src/Entity/Repository/StationRequestRepository.php:203
+msgid "This song or artist has been played too recently. Wait a while before requesting it again."
+msgstr "这首歌或艺术家最近被播放的次数太多。在再次请求之前，请稍等片刻。"
+
+#: /github/workspace/src/Entity/Repository/StorageLocationRepository.php:45
+msgid "None"
+msgstr ""
+
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:57
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:87
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:106
+#: /github/workspace/src/Controller/Api/Admin/UsersController.php:105
+#: /github/workspace/src/Controller/Api/Stations/FilesController.php:208
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:86
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:118
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:138
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:38
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:120
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:155
+msgid "Record not found!"
+msgstr "记录不存在！"
+
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:92
+#: /github/workspace/src/Controller/Api/Stations/FilesController.php:302
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:123
+msgid "Changes saved successfully."
+msgstr "更改已成功保存。"
+
+#: /github/workspace/src/Controller/Api/Admin/AbstractAdminApiCrudController.php:111
+#: /github/workspace/src/Controller/Api/Admin/UsersController.php:117
+#: /github/workspace/src/Controller/Api/Stations/AbstractStationApiCrudController.php:143
+msgid "Record deleted successfully."
+msgstr "记录已成功删除。"
+
+#: /github/workspace/src/Controller/Api/Admin/UsersController.php:112
+msgid "You cannot remove yourself."
+msgstr "您无法删除自己。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:76
+msgid "Station restarted."
+msgstr "电台已重新启动。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:115
+msgid "Frontend stopped."
+msgstr "前端已停止。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:120
+msgid "Frontend started."
+msgstr "前端已启动。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:132
+msgid "Frontend restarted."
+msgstr "前端已重新启动。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:184
+msgid "Song skipped."
+msgstr "已跳过歌曲。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:191
+msgid "Streamer disconnected."
+msgstr "流媒体已断线。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:196
+msgid "Backend stopped."
+msgstr "后端已停止。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:201
+msgid "Backend started."
+msgstr "后端已启动。"
+
+#: /github/workspace/src/Controller/Api/Stations/ServicesController.php:213
+msgid "Backend restarted."
+msgstr "后端已重启。"
+
+#: /github/workspace/src/Controller/Api/Stations/FilesController.php:170
+#: /github/workspace/src/Controller/Api/Stations/Files/FlowUploadAction.php:31
+msgid "This station is out of available storage space."
+msgstr "这个电台已经没有可用的存储空间了。"
+
+#: /github/workspace/src/Controller/Api/Stations/Art/PostArtAction.php:28
+#: /github/workspace/src/Controller/Api/Stations/Art/DeleteArtAction.php:23
+#: /github/workspace/src/Controller/Admin/AbstractAdminCrudController.php:56
+#: /github/workspace/src/Controller/Stations/AbstractStationCrudController.php:65
+msgid "Record not found."
+msgstr "没有找到记录。"
+
+#: /github/workspace/src/Controller/Api/Stations/OnDemand/DownloadAction.php:25
+#: /github/workspace/src/Controller/Api/Stations/OnDemand/ListAction.php:46
+msgid "This station does not support on-demand streaming."
+msgstr "该电台不支持流媒体点播。"
+
+#: /github/workspace/src/Controller/Api/Stations/OnDemand/DownloadAction.php:32
+msgid "File not found."
+msgstr "未找到文件。"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/RenameAction.php:19
+msgid "File not specified."
+msgstr "未指定文件。"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/RenameAction.php:25
+msgid "New path not specified."
+msgstr "未指定新路径。"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/ListDirectoriesAction.php:26
+msgid "Path \"%s\" is not a folder."
+msgstr "路径\"%s \"不是文件夹。"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/ListAction.php:198
+msgid "Directory"
+msgstr "目录"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/ListAction.php:206
+msgid "File Not Processed"
+msgstr "文件未处理"
+
+#: /github/workspace/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:23
+msgid "No directory specified"
+msgstr ""
+
+#: /github/workspace/src/Controller/Api/Stations/Files/MakeDirectoryAction.php:32
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:66
+msgid "Directory \"%s\" was not created"
+msgstr "目录\"%s \"没有被创建"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:186
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:216
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:241
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:266
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:287
+msgid "Playlist not found."
+msgstr "未找到播放列表。"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:193
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:223
+msgid "This playlist is not a sequential playlist."
+msgstr "此播放列表不是顺序播放列表。"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:250
+msgid "Format not found."
+msgstr "未找到格式。"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:276
+msgid "Playlist enabled."
+msgstr "播放列表已启用。"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:277
+msgid "Playlist disabled."
+msgstr "播放列表已禁用。"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:296
+msgid "Playlist reshuffled."
+msgstr "播放列表已改组。"
+
+#: /github/workspace/src/Controller/Api/Stations/PlaylistsController.php:401
+msgid "Playlist successfully imported; %d of %d files were successfully matched."
+msgstr "播放列表成功导入；%d的%d文件被成功匹配。"
+
+#: /github/workspace/src/Controller/Api/Stations/RequestsController.php:180
+msgid "Request submitted successfully."
+msgstr "请求已成功提交。"
+
+#: /github/workspace/src/Controller/Api/Stations/Streamers/BroadcastsController.php:127
+msgid "No recording available."
+msgstr "没有可用的录音。"
+
+#: /github/workspace/src/Controller/Admin/SettingsController.php:19
+#: /github/workspace/src/Controller/Admin/BackupsController.php:77
+#: /github/workspace/src/Controller/Admin/BrandingController.php:19
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:31
+#: /github/workspace/src/Controller/Admin/StationsController.php:76
+#: /github/workspace/src/Controller/Stations/EditLiquidsoapConfigController.php:113
+#: /github/workspace/src/Controller/Stations/MountsController.php:40
+#: /github/workspace/src/Controller/Stations/AutomationController.php:55
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:55
+msgid "Changes saved."
+msgstr "更改已保存。"
+
+#: /github/workspace/src/Controller/Admin/SettingsController.php:26
+#: /github/workspace/config/menus/admin.php:17
+#: /github/workspace/templates/frontend/setup/station.phtml:25
+#: /github/workspace/templates/frontend/setup/settings.phtml:25
+msgid "System Settings"
+msgstr "系统设置"
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:84
+msgid "Configure Backups"
+msgstr "配置备份"
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:117
+#: /github/workspace/src/Controller/Admin/BackupsController.php:126
+#: /github/workspace/templates/admin/backups/index.phtml:87
+#: /github/workspace/templates/admin/backups/run.phtml:8
+#: /github/workspace/templates/admin/backups/run.phtml:15
+msgid "Run Manual Backup"
+msgstr "运行手动备份"
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:158
+msgid "Backup deleted."
+msgstr "备份已删除。"
+
+#: /github/workspace/src/Controller/Admin/BackupsController.php:186
+msgid "Backup not found."
+msgstr "找不到备份。"
+
+#: /github/workspace/src/Controller/Admin/InstallShoutcastController.php:34
+msgid "SHOUTcast version \"%s\" is currently installed."
+msgstr "目前安装了SHOUTcast版本\"%s\"。"
+
+#: /github/workspace/src/Controller/Admin/InstallShoutcastController.php:80
+#: /github/workspace/config/menus/admin.php:94
+msgid "Install SHOUTcast"
+msgstr "安装SHOUTcast"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:66
+msgid "Permission updated."
+msgstr "权限已更新。"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:66
+msgid "Permission added."
+msgstr "权限已添加。"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:75
+msgid "Edit Permission"
+msgstr "编辑权限"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:75
+#: /github/workspace/templates/admin/permissions/index.phtml:10
+msgid "Add Permission"
+msgstr "添加权限"
+
+#: /github/workspace/src/Controller/Admin/PermissionsController.php:83
+msgid "Permission deleted."
+msgstr "权限已删除。"
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:39
+msgid "Custom Field updated."
+msgstr "自定义字段已更新。"
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:39
+msgid "Custom Field added."
+msgstr "自定义字段已添加。"
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:48
+msgid "Edit Custom Field"
+msgstr "编辑自定义字段"
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:48
+#: /github/workspace/templates/admin/custom_fields/index.phtml:10
+msgid "Add Custom Field"
+msgstr "添加自定义字段"
+
+#: /github/workspace/src/Controller/Admin/CustomFieldsController.php:56
+msgid "Custom Field deleted."
+msgstr "自定义字段已删除。"
+
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:33
+msgid "An error occurred while downloading the GeoLite database: %s"
+msgstr "下载GeoLite数据库时发生错误：%s"
+
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:46
+#: /github/workspace/config/menus/admin.php:99
+msgid "Install GeoLite IP Database"
+msgstr "安装GeoLite IP数据库"
+
+#: /github/workspace/src/Controller/Admin/InstallGeoLiteController.php:64
+msgid "GeoLite database uninstalled."
+msgstr "GeoLite数据库已卸载。"
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:45
+msgid "Station updated."
+msgstr "电台已更新。"
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:45
+msgid "Station added."
+msgstr "已添加电台。"
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:51
+msgid "Edit Station"
+msgstr "编辑电台"
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:64
+msgid "Station deleted."
+msgstr "电台已删除。"
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:72
+msgid "Station not found."
+msgstr "找不到电台。"
+
+#: /github/workspace/src/Controller/Admin/StationsController.php:83
+msgid "Clone Station: %s"
+msgstr "克隆电台: %s"
+
+#: /github/workspace/src/Controller/Admin/ApiController.php:35
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:92
+msgid "API Key updated."
+msgstr "API密钥已更新。"
+
+#: /github/workspace/src/Controller/Admin/ApiController.php:42
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:99
+msgid "Edit API Key"
+msgstr "编辑API密钥"
+
+#: /github/workspace/src/Controller/Admin/ApiController.php:50
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:119
+msgid "API Key deleted."
+msgstr "API密钥已删除。"
+
+#: /github/workspace/src/Controller/Admin/DebugController.php:60
+msgid "Sync Task Output"
+msgstr "同步任务输出"
+
+#: /github/workspace/src/Controller/Admin/DebugController.php:88
+#: /github/workspace/src/Controller/Admin/DebugController.php:115
+msgid "Debug Output"
+msgstr "调试输出"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:43
+msgid "User updated."
+msgstr "用户已更新。"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:43
+msgid "User added."
+msgstr "用户已添加。"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:49
+msgid "Another user already exists with this e-mail address. Please update the e-mail address."
+msgstr "这个电子邮件地址已经有了另一个用户。请使用新的电子邮件。"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:57
+msgid "Edit User"
+msgstr "编辑用户"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:57
+#: /github/workspace/templates/admin/users/index.phtml:10
+msgid "Add User"
+msgstr "添加用户"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:70
+msgid "You cannot delete your own account."
+msgstr "您不能删除自己的账户。"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:75
+msgid "User deleted."
+msgstr "用户已删除。"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:92
+msgid "User not found."
+msgstr "找不到用户。"
+
+#: /github/workspace/src/Controller/Admin/UsersController.php:99
+#: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:26
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:80
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:89
+msgid "Logged in successfully."
+msgstr "登录成功。"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:51
+msgid "AzuraCast Application Log"
+msgstr "AzuraCast应用程序日志"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:58
+msgid "Nginx Access Log"
+msgstr "Nginx访问日志"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:63
+msgid "Nginx Error Log"
+msgstr "Nginx错误日志"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:68
+msgid "PHP Application Log"
+msgstr "PHP应用程序日志"
+
+#: /github/workspace/src/Controller/Admin/LogsController.php:73
+msgid "Supervisord Log"
+msgstr "Supervisord 日志"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:93
+msgid "Setup has already been completed!"
+msgstr "设置已经完成!"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:119
+msgid "Super Administrator"
+msgstr "超级管理员"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:209
+msgid "Setup is now complete!"
+msgstr "设置现已完成！"
+
+#: /github/workspace/src/Controller/Frontend/SetupController.php:210
+msgid "Continue setting up your station in the main AzuraCast app."
+msgstr "继续在AzuraCast主应用程序中设置您的电台。"
+
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:57
+msgid "API Key not found."
+msgstr "找不到API密钥。"
+
+#: /github/workspace/src/Controller/Frontend/ApiKeysController.php:99
+#: /github/workspace/templates/frontend/api_keys/index.phtml:20
+msgid "Add API Key"
+msgstr "添加API密钥"
+
+#: /github/workspace/src/Controller/Frontend/DashboardController.php:226
+msgid "All Stations"
+msgstr "所有电台"
+
+#: /github/workspace/src/Controller/Frontend/DashboardController.php:272
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:85
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:125
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:172
+#: /github/workspace/config/menus/station.php:114
+#: /github/workspace/templates/frontend/index/index.phtml:141
+#: /github/workspace/templates/frontend/index/index_metrics.js.phtml:27
+#: /github/workspace/templates/stations/reports/listeners.phtml:7
+#: /github/workspace/templates/stations/reports/listeners.phtml:22
+#: /github/workspace/templates/stations/reports/timeline.phtml:40
+#: /github/workspace/templates/stations/reports/overview.js.phtml:30
+#: /github/workspace/templates/stations/reports/overview.js.phtml:74
+msgid "Listeners"
+msgstr "听众"
+
+#: /github/workspace/src/Controller/Frontend/PublicPages/PlayerAction.php:35
+#: /github/workspace/config/forms/song.php:37
+#: /github/workspace/templates/stations/queue/index.phtml:25
+#: /github/workspace/templates/stations/reports/requests.phtml:27
+#: /github/workspace/templates/stations/reports/timeline.phtml:42
+msgid "Song Title"
+msgstr "歌曲标题"
+
+#: /github/workspace/src/Controller/Frontend/PublicPages/PlayerAction.php:36
+msgid "Song Artist"
+msgstr "歌曲艺术家"
+
+#: /github/workspace/src/Controller/Frontend/Profile/DisableTwoFactorAction.php:25
+msgid "Two-factor authentication disabled."
+msgstr "已禁用双重身份验证。"
+
+#: /github/workspace/src/Controller/Frontend/Profile/EnableTwoFactorAction.php:48
+msgid "The token you supplied is invalid. Please try again."
+msgstr "您提供的令牌无效。请再试一次。"
+
+#: /github/workspace/src/Controller/Frontend/Profile/EnableTwoFactorAction.php:57
+msgid "Two-factor authentication enabled."
+msgstr "已启用双重身份验证。"
+
+#: /github/workspace/src/Controller/Frontend/Profile/EditAction.php:19
+msgid "Profile saved!"
+msgstr "个人资料已保存！"
+
+#: /github/workspace/src/Controller/Frontend/Profile/EditAction.php:27
+#: /github/workspace/templates/frontend/profile/index.phtml:32
+#: /github/workspace/templates/stations/profile/edit.phtml:1
+msgid "Edit Profile"
+msgstr "编辑个人资料"
+
+#: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:39
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:102
+msgid "Login unsuccessful"
+msgstr "登录失败"
+
+#: /github/workspace/src/Controller/Frontend/Account/TwoFactorAction.php:39
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:102
+msgid "Your credentials could not be verified."
+msgstr "无法验证您的凭据。"
+
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:51
+msgid "Too many login attempts"
+msgstr "尝试登录次数过多"
+
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:52
+msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
+msgstr "您已尝试登录太多次。请等待30秒后再试。"
+
+#: /github/workspace/src/Controller/Frontend/Account/LoginAction.php:81
+msgid "Complete the setup process to get started."
+msgstr "完成设置过程即可开始。"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:105
+msgid "Liquidsoap Log"
+msgstr "Liquidsoap 日志"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:110
+msgid "Liquidsoap Configuration"
+msgstr "Liquidsoap 配置"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:120
+msgid "Icecast Access Log"
+msgstr "Icecast访问日志"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:125
+msgid "Icecast Error Log"
+msgstr "Icecast错误日志"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:130
+msgid "Icecast Configuration"
+msgstr "Icecast配置"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:138
+msgid "SHOUTcast Log"
+msgstr "SHOUTcast日志"
+
+#: /github/workspace/src/Controller/AbstractLogViewerController.php:143
+msgid "SHOUTcast Configuration"
+msgstr "SHOUTcast配置"
+
+#: /github/workspace/src/Controller/Stations/EditLiquidsoapConfigController.php:62
+#: /github/workspace/config/forms/custom_field.php:109
+#: /github/workspace/config/forms/mount/generic.php:152
+#: /github/workspace/config/forms/api_key.php:20
+#: /github/workspace/config/forms/role.php:44
+#: /github/workspace/config/forms/station.php:613
+#: /github/workspace/config/forms/remote.php:194
+#: /github/workspace/config/forms/backup.php:76
+#: /github/workspace/config/forms/branding.php:117
+#: /github/workspace/config/forms/user.php:52
+#: /github/workspace/config/forms/backup_run.php:37
+#: /github/workspace/config/forms/webhook/generic.php:86
+#: /github/workspace/config/forms/webhook/telegram.php:118
+#: /github/workspace/config/forms/webhook/tunein.php:59
+#: /github/workspace/config/forms/webhook/twitter.php:140
+#: /github/workspace/config/forms/webhook/discord.php:138
+#: /github/workspace/config/forms/settings.php:196
+#: /github/workspace/config/forms/sftp_user.php:38
+#: /github/workspace/config/forms/profile.php:111
+#: /github/workspace/config/forms/automation.php:40
+#: /github/workspace/config/forms/install_geolite.php:35
+#: /github/workspace/config/forms/song.php:53
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: /github/workspace/src/Controller/Stations/EditLiquidsoapConfigController.php:120
+#: /github/workspace/config/menus/station.php:161
+msgid "Edit Liquidsoap Configuration"
+msgstr "编辑Liquidsoap配置"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:56
+msgid "Web Hook added."
+msgstr "添加了网络钩子。"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:63
+#: /github/workspace/templates/stations/webhooks/add.phtml:3
+#: /github/workspace/templates/stations/webhooks/index.phtml:20
+msgid "Add Web Hook"
+msgstr "添加网络钩子"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:70
+msgid "Web Hook updated."
+msgstr "网络钩子已更新。"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:77
+msgid "Edit Web Hook"
+msgstr "编辑网络钩子"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:98
+msgid "Web hook enabled."
+msgstr "网络钩子已启用。"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:98
+msgid "Web Hook disabled."
+msgstr "网络钩子已禁用。"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:121
+msgid "Web Hook Test Output"
+msgstr "测试网络钩子输出"
+
+#: /github/workspace/src/Controller/Stations/WebhooksController.php:134
+msgid "Web Hook deleted."
+msgstr "网络钩子已删除。"
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:36
+msgid "Remote Relay updated."
+msgstr "远程中继已更新。"
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:36
+msgid "Remote Relay added."
+msgstr "远程中继已添加。"
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:45
+msgid "Edit Remote Relay"
+msgstr "编辑远程中继"
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:45
+#: /github/workspace/templates/stations/remotes/index.phtml:20
+msgid "Add Remote Relay"
+msgstr "添加远程中继"
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:57
+msgid "Remote Relay deleted."
+msgstr "远程中继已删除。"
+
+#: /github/workspace/src/Controller/Stations/RemotesController.php:67
+msgid "This record cannot be edited."
+msgstr "该记录无法编辑。"
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:27
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:31
+#: /github/workspace/src/Controller/Stations/PlaylistsController.php:18
+#: /github/workspace/src/Middleware/Module/StationFiles.php:19
+msgid "This feature is not currently supported on this station."
+msgstr "该电台当前不支持此功能。"
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:47
+msgid "Edit Mount Point"
+msgstr "编辑挂载点"
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:47
+#: /github/workspace/templates/stations/mounts/index.phtml:19
+msgid "Add Mount Point"
+msgstr "添加挂载点"
+
+#: /github/workspace/src/Controller/Stations/MountsController.php:59
+msgid "Mount Point deleted."
+msgstr "挂载点已删除。"
+
+#: /github/workspace/src/Controller/Stations/StreamersController.php:51
+msgid "Streamers enabled!"
+msgstr "流媒体已启用！"
+
+#: /github/workspace/src/Controller/Stations/StreamersController.php:51
+msgid "You can now set up streamer (DJ) accounts."
+msgstr "您现在可以设置流媒体（DJ）账户。"
+
+#: /github/workspace/src/Controller/Stations/AutomationController.php:72
+msgid "Automated assignment complete!"
+msgstr "自动分配完成！"
+
+#: /github/workspace/src/Controller/Stations/AutomationController.php:76
+msgid "Automated assignment error"
+msgstr "自动分配错误"
+
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:62
+msgid "Edit SFTP User"
+msgstr "编辑SFTP用户"
+
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:62
+#: /github/workspace/templates/stations/sftp_users/index.phtml:13
+msgid "Add SFTP User"
+msgstr "添加SFTP用户"
+
+#: /github/workspace/src/Controller/Stations/SftpUsersController.php:74
+msgid "SFTP User deleted."
+msgstr "SFTP用户已删除。"
+
+#: /github/workspace/src/Controller/Stations/Reports/SoundExchangeController.php:159
+msgid "SoundExchange Report"
+msgstr "声讯报告"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:61
+#: /github/workspace/templates/stations/reports/overview.phtml:20
+#: /github/workspace/templates/stations/reports/overview.phtml:32
+msgid "Listeners by Day"
+msgstr "每天的听众"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:99
+#: /github/workspace/templates/stations/reports/overview.phtml:26
+#: /github/workspace/templates/stations/reports/overview.phtml:42
+msgid "Listeners by Day of Week"
+msgstr "每星期的听众"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:107
+msgid "Monday"
+msgstr "星期一"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:108
+msgid "Tuesday"
+msgstr "星期二"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:109
+msgid "Wednesday"
+msgstr "星期三"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:110
+msgid "Thursday"
+msgstr "星期四"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:111
+msgid "Friday"
+msgstr "星期五"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:112
+msgid "Saturday"
+msgstr "星期六"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:113
+msgid "Sunday"
+msgstr "星期日"
+
+#: /github/workspace/src/Controller/Stations/Reports/OverviewController.php:156
+#: /github/workspace/templates/stations/reports/overview.phtml:23
+#: /github/workspace/templates/stations/reports/overview.phtml:37
+msgid "Listeners by Hour"
+msgstr "每小时的听众"
+
+#: /github/workspace/src/Sync/Runner.php:119
+#: /github/workspace/src/Sync/Runner.php:121
+msgid "Now Playing Data"
+msgstr "正在播放数据"
+
+#: /github/workspace/src/Sync/Runner.php:128
+msgid "1-Minute Sync"
+msgstr "1分钟同步"
+
+#: /github/workspace/src/Sync/Runner.php:130
+msgid "Song Requests Queue"
+msgstr "歌曲请求队列"
+
+#: /github/workspace/src/Sync/Runner.php:137
+msgid "5-Minute Sync"
+msgstr "5分钟同步"
+
+#: /github/workspace/src/Sync/Runner.php:139
+msgid "Check Media Folders"
+msgstr "检查媒体文件夹"
+
+#: /github/workspace/src/Sync/Runner.php:146
+msgid "1-Hour Sync"
+msgstr "1小时同步"
+
+#: /github/workspace/src/Sync/Runner.php:148
+msgid "Analytics/Statistics"
+msgstr "分析/统计"
+
+#: /github/workspace/src/Sync/Runner.php:149
+msgid "Cleanup"
+msgstr "清理"
+
+#: /github/workspace/src/Validator/Constraints/StationPortChecker.php:16
+msgid "The port %s is in use by another station."
+msgstr "端口%s正在被另一个电台使用。"
+
+#: /github/workspace/src/Validator/Constraints/StorageLocation.php:16
+msgid "This storage location could not be validated: %s"
+msgstr ""
+
+#: /github/workspace/src/Notification/Check/SyncTaskCheck.php:39
+msgid "Synchronized Task Not Recently Run"
+msgstr ""
+
+#: /github/workspace/src/Notification/Check/SyncTaskCheck.php:41
+msgid "The \"%s\" synchronization task has not run recently. This may indicate an error with your installation. <a href=\"%s\" target=\"_blank\">Manually run the task</a> to check for errors."
+msgstr ""
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:43
+msgid "Follow the <a href=\"%s\" target=\"_blank\">update instructions</a> to update your installation."
+msgstr "按照<a href=\"%s\" target=\"_blank\">更新说明</a>来更新您的安装。"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:52
+msgid "AzuraCast <a href=\"%s\" target=\"_blank\">version %s</a> is now available."
+msgstr "AzuraCast <a href=\"%s\" target=\"_blank\">版本%s</a>现已发布。"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:57
+msgid "You are currently running version %s. Updating is highly recommended."
+msgstr "您目前正在运行的是%s版本。强烈推荐您进行更新。"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:65
+msgid "New AzuraCast Release Version Available"
+msgstr "新的AzuraCast发行版已发布"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:75
+msgid "The following improvements have been made since your last update:"
+msgstr "自您上次更新以来，我们做了以下改进："
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:81
+msgid "Your installation is currently %d update(s) behind the latest version."
+msgstr "您的安装目前落后于最新版本的%d更新。"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:85
+msgid "You should update to take advantage of bug and security fixes."
+msgstr "您应该更新以利用错误和安全修复。"
+
+#: /github/workspace/src/Notification/Check/UpdateCheck.php:91
+msgid "New AzuraCast Updates Available"
+msgstr "新的AzuraCast更新可用"
+
+#: /github/workspace/src/Notification/Check/ComposeVersionCheck.php:36
+msgid "Your <code>docker-compose.yml</code> file is out of date!"
+msgstr "你的<code>docker-compose.yml</code>文件已经过期了!"
+
+#: /github/workspace/src/Notification/Check/ComposeVersionCheck.php:38
+msgid "You should update your <code>docker-compose.yml</code> file to reflect the newest changes. View the <a href=\"%s\" target=\"_blank\">latest version of the file</a> and update your file accordingly.<br>You can also use the <code>./docker.sh</code> utility script to automatically update your file."
+msgstr "您应该更新您的 <code>docker-compose.yml</code> 文件以使用最新的更改。查看<a href=\"%s\" target=\"_blank\">文件的最新版本</a>，并相应地更新您的文件。<br>您也可以使用<code>./docker.sh</code>实用程序脚本来自动更新您的文件。"
+
+#: /github/workspace/src/Notification/Check/RecentBackupCheck.php:45
+msgid "Installation Not Recently Backed Up"
+msgstr "最近没有备份的安装"
+
+#: /github/workspace/src/Notification/Check/RecentBackupCheck.php:47
+msgid "This installation has not been backed up in the last two weeks. Visit the <a href=\"%s\" target=\"_blank\">Backups</a> page to run a new backup."
+msgstr "此安装在过去两周内没有进行过备份。访问<a href=\"%s\" target=\"_blank\">备份</a>页面执行新的备份。"
+
+#: /github/workspace/src/Acl.php:85
+#: /github/workspace/src/Acl.php:96
+msgid "All Permissions"
+msgstr "所有权限"
+
+#: /github/workspace/src/Acl.php:86
+msgid "View Administration Page"
+msgstr "查看管理页面"
+
+#: /github/workspace/src/Acl.php:87
+msgid "View System Logs"
+msgstr "查看系统日志"
+
+#: /github/workspace/src/Acl.php:88
+msgid "Administer Settings"
+msgstr "管理设置"
+
+#: /github/workspace/src/Acl.php:89
+msgid "Administer API Keys"
+msgstr "管理API密钥"
+
+#: /github/workspace/src/Acl.php:90
+msgid "Administer Stations"
+msgstr "管理电台"
+
+#: /github/workspace/src/Acl.php:91
+msgid "Administer Custom Fields"
+msgstr "自定义字段管理"
+
+#: /github/workspace/src/Acl.php:92
+msgid "Administer Backups"
+msgstr "备份管理"
+
+#: /github/workspace/src/Acl.php:93
+msgid "Administer Storage Locations"
+msgstr ""
+
+#: /github/workspace/src/Acl.php:97
+msgid "View Station Page"
+msgstr "查看电台页面"
+
+#: /github/workspace/src/Acl.php:98
+msgid "View Station Reports"
+msgstr "查看电台报告"
+
+#: /github/workspace/src/Acl.php:99
+msgid "View Station Logs"
+msgstr "查看电台日志"
+
+#: /github/workspace/src/Acl.php:100
+msgid "Manage Station Profile"
+msgstr "电台资料管理"
+
+#: /github/workspace/src/Acl.php:101
+msgid "Manage Station Broadcasting"
+msgstr "广播电台管理"
+
+#: /github/workspace/src/Acl.php:102
+msgid "Manage Station Streamers"
+msgstr "电台流媒体管理"
+
+#: /github/workspace/src/Acl.php:103
+msgid "Manage Station Mount Points"
+msgstr "电台节点管理"
+
+#: /github/workspace/src/Acl.php:104
+msgid "Manage Station Remote Relays"
+msgstr "管理电台远程中继"
+
+#: /github/workspace/src/Acl.php:105
+msgid "Manage Station Media"
+msgstr "电台媒体管理"
+
+#: /github/workspace/src/Acl.php:106
+msgid "Manage Station Automation"
+msgstr "管理电台自动化"
+
+#: /github/workspace/src/Acl.php:107
+msgid "Manage Station Web Hooks"
+msgstr "管理电台钩子"
+
+#: /github/workspace/src/Console/Command/MigrateConfigCommand.php:21
+msgid "Configuration already set up."
+msgstr "配置已设置。"
+
+#: /github/workspace/src/Console/Command/MigrateConfigCommand.php:62
+msgid "Configuration successfully written."
+msgstr "成功写入配置。"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:26
+msgid "AzuraCast Setup"
+msgstr "安装AzuraCast"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:27
+msgid "Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up..."
+msgstr "欢迎来到AzuraCast。请稍等一下，AzuraCast的一些关键的依赖关系已经建立起来了。"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:30
+msgid "Environment: %s"
+msgstr "环境: %s"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:31
+msgid "Installation Method: %s"
+msgstr "安装方法：%s"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:35
+msgid "Running in update mode."
+msgstr "在更新模式下运行。"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:38
+msgid "Migrating Legacy Configuration"
+msgstr "迁移遗留配置"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:49
+msgid "Running Database Migrations"
+msgstr "运行数据库迁移"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:57
+msgid "Generating Database Proxy Classes"
+msgstr "生成数据库代理类"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:64
+msgid "Installing Data Fixtures"
+msgstr "安装数据装置"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:70
+msgid "Reload System Data"
+msgstr "重新加载系统数据"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:80
+msgid "Refreshing All Stations"
+msgstr "刷新所有电台"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:95
+msgid "AzuraCast is now updated to the latest version!"
+msgstr "AzuraCast现在已更新为最新版本！"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:101
+msgid "AzuraCast installation complete!"
+msgstr "AzuraCast安装完成！"
+
+#: /github/workspace/src/Console/Command/SetupCommand.php:102
+msgid "Visit %s to complete setup."
+msgstr "访问%s完成设置。"
+
+#: /github/workspace/src/Console/Command/Backup/RestoreCommand.php:34
+msgid "Backup path %s not found!"
+msgstr "没有找到备份路径%s!"
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:58
+msgid "AzuraCast Backup"
+msgstr "AzuraCast备份"
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:59
+msgid "Please wait while a backup is generated..."
+msgstr "请稍候，正在生成备份..."
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:62
+msgid "Creating temporary directories..."
+msgstr "创建临时目录..."
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:73
+msgid "Backing up MariaDB..."
+msgstr "正在备份MariaDB ..."
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:114
+msgid "Creating backup archive..."
+msgstr "正在创建备份存档..."
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:156
+msgid "Cleaning up temporary files..."
+msgstr "清理临时文件..."
+
+#: /github/workspace/src/Console/Command/Backup/BackupCommand.php:166
+msgid "Backup complete in %.2f seconds."
+msgstr "在%.2f秒内完成备份。"
+
+#: /github/workspace/src/Console/Command/SetupFixturesCommand.php:49
+msgid "Fixtures loaded."
+msgstr "Fixtures 已加载。"
+
+#: /github/workspace/src/Console/Command/Locale/ImportCommand.php:30
+msgid "Imported locale: %s"
+msgstr "导入locale： %s"
+
+#: /github/workspace/src/Console/Command/Users/SetAdministratorCommand.php:43
+msgid "The account associated with e-mail address \"%s\" has been set as an administrator"
+msgstr "与电子邮件地址\"%s \"相关联的账户已被设置为管理员"
+
+#: /github/workspace/src/Console/Command/Users/SetAdministratorCommand.php:51
+msgid "Account not found."
+msgstr "找不到帐户。"
+
+#: /github/workspace/src/Console/Command/Settings/ListCommand.php:16
+msgid "AzuraCast Settings"
+msgstr "AzuraCast设置"
+
+#: /github/workspace/src/Console/Command/Settings/ListCommand.php:19
+msgid "Setting Key"
+msgstr "设置密钥"
+
+#: /github/workspace/src/Console/Command/Settings/ListCommand.php:20
+msgid "Setting Value"
+msgstr "显示设置"
+
+#: /github/workspace/src/Doctrine/Repository.php:94
+msgid "Select..."
+msgstr ""
+
+#: /github/workspace/src/Http/ErrorHandler.php:177
+#: /github/workspace/src/Http/ErrorHandler.php:184
+msgid "You must be logged in to access this page."
+msgstr "您必须先登录才能访问本页面。"
+
+#: /github/workspace/src/Http/ErrorHandler.php:199
+#: /github/workspace/src/Http/ErrorHandler.php:207
+msgid "You do not have permission to access this portion of the site."
+msgstr "你没有权限访问这部分网站。"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:198
+msgid "%s is not recognized as a service."
+msgstr "%s不被承认为服务。"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:199
+msgid "It may not be registered with Supervisor yet. Restarting broadcasting may help."
+msgstr "它可能还没有在 Supervisor 注册。重新开始广播可能会有帮助。"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:207
+msgid "%s cannot start"
+msgstr "%s无法启动"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:208
+msgid "It is already running."
+msgstr "它已经在运行了。"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:216
+msgid "%s cannot stop"
+msgstr "％s不能停止"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:217
+msgid "It is not running."
+msgstr "它没有运行。"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:225
+msgid "%s encountered an error"
+msgstr "%s遇到了一个错误"
+
+#: /github/workspace/src/Radio/AbstractAdapter.php:234
+msgid "Check the log for details."
+msgstr "检查日志以获取详细信息。"
+
+#: /github/workspace/src/Radio/Adapters.php:72
+#: /github/workspace/src/Radio/Adapters.php:76
+#: /github/workspace/src/Radio/Adapters.php:133
+msgid "Use <b>%s</b> on this server"
+msgstr "在此服务器上使用<b>%s</b>"
+
+#: /github/workspace/src/Radio/Adapters.php:80
+msgid "Connect to a <b>remote radio server</b>"
+msgstr "连接到<b>远程广播服务器</b>"
+
+#: /github/workspace/src/Radio/Adapters.php:137
+msgid "<b>Do not use</b> an AutoDJ service"
+msgstr "<b>请勿使用</b>AutoDJ服务"
+
+#: /github/workspace/src/Radio/Backend/Liquidsoap/ConfigWriter.php:114
+msgid "Welcome to the AzuraCast Liquidsoap configuration editor."
+msgstr "欢迎来到AzuraCast Liquidsoap配置编辑器。"
+
+#: /github/workspace/src/Radio/Backend/Liquidsoap/ConfigWriter.php:115
+msgid "Using this page, you can customize several sections of the Liquidsoap configuration."
+msgstr "使用这个页面，您可以自定义Liquidsoap配置的几个部分。"
+
+#: /github/workspace/src/Radio/Backend/Liquidsoap/ConfigWriter.php:116
+msgid "The non-editable sections are automatically generated by AzuraCast."
+msgstr "不可编辑的部分由AzuraCast自动生成。"
+
+#: /github/workspace/src/Form/SettingsForm.php:41
+msgid "Visit this page from a secure connection to enforce secure URLs on all pages."
+msgstr "从安全连接访问此页面，以在所有页面上使用安全URL。"
+
+#: /github/workspace/src/Form/StationForm.php:82
+msgid "Want to use SHOUTcast 2? <a href=\"%s\" target=\"_blank\">Install it here</a>, then reload this page."
+msgstr "想要使用SHOUTcast 2？<a href=\"%s\" target=\"_blank\">在这里安装</a>，然后重新加载这个页面。"
+
+#: /github/workspace/src/Form/StationForm.php:100
+msgid "<a href=\"%s\" target=\"_blank\">Manage storage locations and storage quota here</a>."
+msgstr ""
+
+#: /github/workspace/src/Form/StationForm.php:112
+#: /github/workspace/src/Form/StationForm.php:123
+#: /github/workspace/src/Form/StationForm.php:131
+msgid "Create a new storage location based on the base directory."
+msgstr ""
+
+#: /github/workspace/src/Form/Field/File.php:11
+#: /github/workspace/config/forms/install_shoutcast.php:36
+msgid "Select File"
+msgstr "选择文件"
+
+#: /github/workspace/config/forms/custom_field.php:13
+msgid "Field Name"
+msgstr "字段名称"
+
+#: /github/workspace/config/forms/custom_field.php:14
+msgid "This will be used as the label when editing individual songs, and will show in API results."
+msgstr "这将作为编辑单个歌曲时的标签，并将显示在API结果中。"
+
+#: /github/workspace/config/forms/custom_field.php:22
+#: /github/workspace/templates/admin/custom_fields/index.phtml:23
+msgid "Programmatic Name"
+msgstr "方案名称"
+
+#: /github/workspace/config/forms/custom_field.php:23
+msgid "Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name."
+msgstr "可选择指定一个API友好的名称，如<code>field_name</code>。将此字段留空，以根据名称自动创建一个。"
+
+#: /github/workspace/config/forms/custom_field.php:31
+msgid "Automatically Set from ID3v2 Value"
+msgstr "从ID3v2值自动设置"
+
+#: /github/workspace/config/forms/custom_field.php:32
+msgid "Optionally select an ID3v2 metadata field that, if present, will be used to set this field's value."
+msgstr "可选择一个ID3v2元数据字段，如果存在，将用于设置该字段的值。"
+
+#: /github/workspace/config/forms/custom_field.php:36
+#: /github/workspace/templates/stations/webhooks/index.phtml:47
+msgid "Disable"
+msgstr "禁用"
+
+#: /github/workspace/config/forms/custom_field.php:37
+#: /github/workspace/templates/stations/playlists/reorder.phtml:28
+msgid "Album"
+msgstr "专辑"
+
+#: /github/workspace/config/forms/custom_field.php:38
+msgid "Album Artist Sort Order"
+msgstr "专辑艺术家排序顺序"
+
+#: /github/workspace/config/forms/custom_field.php:39
+msgid "Album Sort Order"
+msgstr "专辑排序顺序"
+
+#: /github/workspace/config/forms/custom_field.php:40
+#: /github/workspace/templates/stations/playlists/reorder.phtml:27
+#: /github/workspace/templates/stations/reports/performance.phtml:31
+msgid "Artist"
+msgstr "艺术家"
+
+#: /github/workspace/config/forms/custom_field.php:41
+msgid "Band"
+msgstr "带"
+
+#: /github/workspace/config/forms/custom_field.php:42
+msgid "Bpm"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:43
+msgid "Comment"
+msgstr "评论"
+
+#: /github/workspace/config/forms/custom_field.php:44
+msgid "Commercial Information"
+msgstr "商业信息"
+
+#: /github/workspace/config/forms/custom_field.php:45
+msgid "Composer"
+msgstr "作曲家"
+
+#: /github/workspace/config/forms/custom_field.php:46
+msgid "Composer Sort Order"
+msgstr "作曲家排序顺序"
+
+#: /github/workspace/config/forms/custom_field.php:47
+msgid "Conductor"
+msgstr "指挥家"
+
+#: /github/workspace/config/forms/custom_field.php:48
+msgid "Content Group Description"
+msgstr "内容组说明"
+
+#: /github/workspace/config/forms/custom_field.php:49
+msgid "Copyright"
+msgstr "版权"
+
+#: /github/workspace/config/forms/custom_field.php:50
+msgid "Copyright Message"
+msgstr "版权讯息"
+
+#: /github/workspace/config/forms/custom_field.php:51
+msgid "Encoded By"
+msgstr "代码作者"
+
+#: /github/workspace/config/forms/custom_field.php:52
+msgid "Encoder Settings"
+msgstr "设置编码器"
+
+#: /github/workspace/config/forms/custom_field.php:53
+msgid "Encoding Time"
+msgstr "编码时间"
+
+#: /github/workspace/config/forms/custom_field.php:54
+msgid "File Owner"
+msgstr "文件拥有者"
+
+#: /github/workspace/config/forms/custom_field.php:55
+msgid "File Type"
+msgstr "文件类型"
+
+#: /github/workspace/config/forms/custom_field.php:56
+#: /github/workspace/config/forms/station.php:82
+msgid "Genre"
+msgstr "分类"
+
+#: /github/workspace/config/forms/custom_field.php:57
+msgid "Initial Key"
+msgstr "初始密钥"
+
+#: /github/workspace/config/forms/custom_field.php:58
+msgid "Internet Radio Station Name"
+msgstr "网络电台名称"
+
+#: /github/workspace/config/forms/custom_field.php:59
+msgid "Internet Radio Station Owner"
+msgstr "网络电台站长"
+
+#: /github/workspace/config/forms/custom_field.php:60
+msgid "Involved People List"
+msgstr "参与人员名单"
+
+#: /github/workspace/config/forms/custom_field.php:61
+msgid "ISRC"
+msgstr ""
+
+#: /github/workspace/config/forms/custom_field.php:62
+#: /github/workspace/config/forms/profile.php:82
+msgid "Language"
+msgstr "语言"
+
+#: /github/workspace/config/forms/custom_field.php:63
+#: /github/workspace/templates/stations/reports/performance.phtml:33
+#: /github/workspace/templates/stations/reports/duplicates.phtml:26
+msgid "Length"
+msgstr "长度"
+
+#: /github/workspace/config/forms/custom_field.php:64
+msgid "Linked Information"
+msgstr "链接信息"
+
+#: /github/workspace/config/forms/custom_field.php:65
+msgid "Lyricist"
+msgstr "作词人"
+
+#: /github/workspace/config/forms/custom_field.php:66
+msgid "Media Type"
+msgstr "媒体类型"
+
+#: /github/workspace/config/forms/custom_field.php:67
+msgid "Mood"
+msgstr "心情"
+
+#: /github/workspace/config/forms/custom_field.php:68
+msgid "Music CD Identifier"
+msgstr "音乐CD标识符"
+
+#: /github/workspace/config/forms/custom_field.php:69
+msgid "Musician Credits List"
+msgstr "音乐人名单"
+
+#: /github/workspace/config/forms/custom_field.php:70
+msgid "Original Album"
+msgstr "原始专辑"
+
+#: /github/workspace/config/forms/custom_field.php:71
+msgid "Original Artist"
+msgstr "原始艺术家"
+
+#: /github/workspace/config/forms/custom_field.php:72
+msgid "Original Filename"
+msgstr "原始文件名"
+
+#: /github/workspace/config/forms/custom_field.php:73
+msgid "Original Lyricist"
+msgstr "原始作词家"
+
+#: /github/workspace/config/forms/custom_field.php:74
+msgid "Original Release Time"
+msgstr "原始发行时间"
+
+#: /github/workspace/config/forms/custom_field.php:75
+msgid "Original Year"
+msgstr "原始年份"
+
+#: /github/workspace/config/forms/custom_field.php:76
+msgid "Part Of A Compilation"
+msgstr "编译的一部分"
+
+#: /github/workspace/config/forms/custom_field.php:77
+msgid "Part Of A Set"
+msgstr "一组的一部分"
+
+#: /github/workspace/config/forms/custom_field.php:78
+msgid "Performer Sort Order"
+msgstr "表演者排序顺序"
+
+#: /github/workspace/config/forms/custom_field.php:79
+msgid "Playlist Delay"
+msgstr "播放列表延迟"
+
+#: /github/workspace/config/forms/custom_field.php:80
+msgid "Produced Notice"
+msgstr "制作的通知"
+
+#: /github/workspace/config/forms/custom_field.php:81
+msgid "Publisher"
+msgstr "发行人"
+
+#: /github/workspace/config/forms/custom_field.php:82
+msgid "Recording Time"
+msgstr "录制时间"
+
+#: /github/workspace/config/forms/custom_field.php:83
+msgid "Release Time"
+msgstr "发布日期"
+
+#: /github/workspace/config/forms/custom_field.php:84
+msgid "Remixer"
+msgstr "混音器"
+
+#: /github/workspace/config/forms/custom_field.php:85
+msgid "Set Subtitle"
+msgstr "设置字幕"
+
+#: /github/workspace/config/forms/custom_field.php:86
+msgid "Subtitle"
+msgstr "字幕"
+
+#: /github/workspace/config/forms/custom_field.php:87
+msgid "Tagging Time"
+msgstr "标记时间"
+
+#: /github/workspace/config/forms/custom_field.php:88
+msgid "Terms Of Use"
+msgstr "使用条款"
+
+#: /github/workspace/config/forms/custom_field.php:89
+#: /github/workspace/config/forms/webhook/discord.php:71
+#: /github/workspace/templates/stations/playlists/reorder.phtml:26
+#: /github/workspace/templates/stations/reports/performance.phtml:30
+msgid "Title"
+msgstr "标题"
+
+#: /github/workspace/config/forms/custom_field.php:90
+msgid "Title Sort Order"
+msgstr "标题排序顺序"
+
+#: /github/workspace/config/forms/custom_field.php:91
+msgid "Track Number"
+msgstr "轨道编号"
+
+#: /github/workspace/config/forms/custom_field.php:92
+msgid "Unsynchronised Lyric"
+msgstr "不同步的歌词"
+
+#: /github/workspace/config/forms/custom_field.php:93
+msgid "URL Artist"
+msgstr "URL艺术家"
+
+#: /github/workspace/config/forms/custom_field.php:94
+msgid "URL File"
+msgstr "URL文件"
+
+#: /github/workspace/config/forms/custom_field.php:95
+msgid "URL Payment"
+msgstr "URL支付"
+
+#: /github/workspace/config/forms/custom_field.php:96
+msgid "URL Publisher"
+msgstr "网址发布者"
+
+#: /github/workspace/config/forms/custom_field.php:97
+msgid "URL Source"
+msgstr "网址来源"
+
+#: /github/workspace/config/forms/custom_field.php:98
+msgid "URL Station"
+msgstr "URL电台"
+
+#: /github/workspace/config/forms/custom_field.php:99
+msgid "URL User"
+msgstr "URL用户"
+
+#: /github/workspace/config/forms/custom_field.php:100
+msgid "Year"
+msgstr "年"
+
+#: /github/workspace/config/forms/register.php:7
+msgid "Account Information"
+msgstr "帐户信息"
+
+#: /github/workspace/config/forms/register.php:13
+#: /github/workspace/config/forms/user.php:19
+#: /github/workspace/config/forms/profile.php:25
+#: /github/workspace/config/forms/login.php:9
+#: /github/workspace/templates/admin/users/index.phtml:22
+#: /github/workspace/templates/frontend/setup/register.phtml:37
+#: /github/workspace/templates/frontend/account/login.phtml:32
+#: /github/workspace/templates/frontend/account/login.phtml:34
+msgid "E-mail Address"
+msgstr "电子邮件地址"
+
+#: /github/workspace/config/forms/register.php:23
+#: /github/workspace/config/forms/login.php:19
+#: /github/workspace/templates/frontend/setup/register.phtml:47
+#: /github/workspace/templates/frontend/account/login.phtml:39
+#: /github/workspace/templates/frontend/account/login.phtml:41
+#: /github/workspace/templates/stations/streamers/index.phtml:50
+msgid "Password"
+msgstr "密码"
+
+#: /github/workspace/config/forms/register.php:37
+#: /github/workspace/templates/frontend/setup/register.phtml:55
+#: /github/workspace/templates/frontend/setup/register.phtml:56
+#: /github/workspace/templates/frontend/setup/station.phtml:13
+#: /github/workspace/templates/frontend/setup/settings.phtml:13
+msgid "Create Account"
+msgstr "创建帐号"
+
+#: /github/workspace/config/forms/mount/generic.php:15
+msgid "Mount Point URL"
+msgstr "挂载点URL"
+
+#: /github/workspace/config/forms/mount/generic.php:16
+msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
+msgstr "这个地址应该总是以斜杠(/)开头，并且必须是一个有效的URL，比如/autodj.mp3"
+
+#: /github/workspace/config/forms/mount/generic.php:25
+#: /github/workspace/config/forms/remote.php:40
+#: /github/workspace/config/forms/user.php:10
+msgid "Display Name"
+msgstr "显示名称"
+
+#: /github/workspace/config/forms/mount/generic.php:26
+msgid "The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr "在管理页面或公共页面上查看此挂载点分配给挂在URL的显示名称。留空以自动生成显示名。"
+
+#: /github/workspace/config/forms/mount/generic.php:34
+#: /github/workspace/config/forms/remote.php:14
+msgid "Show on Public Pages"
+msgstr "在公共页面上显示"
+
+#: /github/workspace/config/forms/mount/generic.php:35
+msgid "Enable to allow listeners to select this mount point on this station's public pages."
+msgstr "启用允许听众在本台的公共页面上选择这个挂载点。"
+
+#: /github/workspace/config/forms/mount/generic.php:36
+#: /github/workspace/config/forms/mount/generic.php:48
+#: /github/workspace/config/forms/mount/generic.php:70
+#: /github/workspace/config/forms/mount/generic.php:82
+#: /github/workspace/config/forms/station.php:112
+#: /github/workspace/config/forms/station.php:124
+#: /github/workspace/config/forms/station.php:320
+#: /github/workspace/config/forms/station.php:332
+#: /github/workspace/config/forms/station.php:368
+#: /github/workspace/config/forms/station.php:380
+#: /github/workspace/config/forms/station.php:491
+#: /github/workspace/config/forms/station.php:517
+#: /github/workspace/config/forms/station.php:567
+#: /github/workspace/config/forms/remote.php:16
+#: /github/workspace/config/forms/remote.php:87
+#: /github/workspace/config/forms/remote.php:177
+#: /github/workspace/config/forms/backup.php:18
+#: /github/workspace/config/forms/backup.php:39
+#: /github/workspace/config/forms/branding.php:32
+#: /github/workspace/config/forms/branding.php:64
+#: /github/workspace/config/forms/backup_run.php:27
+#: /github/workspace/config/forms/settings.php:55
+#: /github/workspace/config/forms/settings.php:67
+#: /github/workspace/config/forms/settings.php:97
+#: /github/workspace/config/forms/settings.php:118
+#: /github/workspace/config/forms/station_clone.php:56
+#: /github/workspace/config/forms/station_clone.php:69
+#: /github/workspace/config/forms/station_clone.php:83
+#: /github/workspace/templates/admin/relays/index.phtml:35
+msgid "Yes"
+msgstr "是"
+
+#: /github/workspace/config/forms/mount/generic.php:37
+#: /github/workspace/config/forms/mount/generic.php:49
+#: /github/workspace/config/forms/mount/generic.php:71
+#: /github/workspace/config/forms/mount/generic.php:83
+#: /github/workspace/config/forms/station.php:113
+#: /github/workspace/config/forms/station.php:125
+#: /github/workspace/config/forms/station.php:321
+#: /github/workspace/config/forms/station.php:333
+#: /github/workspace/config/forms/station.php:369
+#: /github/workspace/config/forms/station.php:381
+#: /github/workspace/config/forms/station.php:492
+#: /github/workspace/config/forms/station.php:518
+#: /github/workspace/config/forms/station.php:568
+#: /github/workspace/config/forms/remote.php:17
+#: /github/workspace/config/forms/remote.php:88
+#: /github/workspace/config/forms/remote.php:178
+#: /github/workspace/config/forms/backup.php:19
+#: /github/workspace/config/forms/backup.php:40
+#: /github/workspace/config/forms/branding.php:33
+#: /github/workspace/config/forms/branding.php:65
+#: /github/workspace/config/forms/backup_run.php:28
+#: /github/workspace/config/forms/settings.php:56
+#: /github/workspace/config/forms/settings.php:68
+#: /github/workspace/config/forms/settings.php:98
+#: /github/workspace/config/forms/settings.php:119
+#: /github/workspace/config/forms/station_clone.php:55
+#: /github/workspace/config/forms/station_clone.php:68
+#: /github/workspace/config/forms/station_clone.php:82
+#: /github/workspace/templates/admin/relays/index.phtml:35
+msgid "No"
+msgstr "否"
+
+#: /github/workspace/config/forms/mount/generic.php:46
+msgid "Set as Default Mount Point"
+msgstr "设置为默认挂在点"
+
+#: /github/workspace/config/forms/mount/generic.php:47
+msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
+msgstr "如果这个挂载点是默认的，则会在本系统的电台预览和公共电台页面上播放。"
+
+#: /github/workspace/config/forms/mount/generic.php:58
+msgid "Relay Stream URL"
+msgstr "流媒体中继 URL"
+
+#: /github/workspace/config/forms/mount/generic.php:59
+msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
+msgstr "输入另一个流的完整URL，以便通过这个挂载点转发其广播。"
+
+#: /github/workspace/config/forms/mount/generic.php:68
+#: /github/workspace/config/forms/remote.php:175
+msgid "Publish to \"Yellow Pages\" Directories"
+msgstr "发布到 \"黄页 \"目录"
+
+#: /github/workspace/config/forms/mount/generic.php:69
+#: /github/workspace/config/forms/remote.php:176
+msgid "Enable to advertise this mount point on \"Yellow Pages\" public radio directories."
+msgstr "启用在 \"黄页 \"公共广播目录中宣传该挂载点。"
+
+#: /github/workspace/config/forms/mount/generic.php:80
+msgid "Enable AutoDJ"
+msgstr "启用自动DJ"
+
+#: /github/workspace/config/forms/mount/generic.php:81
+msgid "If enabled, the AutoDJ will automatically play music to this mount point."
+msgstr "如果启用，AutoDJ将自动播放音乐到该安装点。"
+
+#: /github/workspace/config/forms/mount/generic.php:99
+#: /github/workspace/config/forms/remote.php:106
+msgid "AutoDJ Format"
+msgstr "AutoDJ格式"
+
+#: /github/workspace/config/forms/mount/generic.php:108
+#: /github/workspace/config/forms/remote.php:120
+msgid "AutoDJ Bitrate (kbps)"
+msgstr "AutoDJ比特率(kbps)"
+
+#: /github/workspace/config/forms/mount/generic.php:135
+msgid "Custom Stream URL"
+msgstr "自定义流媒体网址"
+
+#: /github/workspace/config/forms/mount/generic.php:137
+msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
+msgstr "你可以为这个流设置一个自定义的URL，当AzuraCast引用它时，将使用它。留空，则使用默认值。"
+
+#: /github/workspace/config/forms/mount/icecast.php:9
+msgid "Fallback Mount"
+msgstr "回退安装"
+
+#: /github/workspace/config/forms/mount/icecast.php:10
+msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
+msgstr "如果这个挂载点不播放音频，听众将自动被重定向到这个挂载点。默认是/error.mp3，一个重复的错误信息的音频。"
+
+#: /github/workspace/config/forms/mount/icecast.php:27
+msgid "Custom Frontend Configuration"
+msgstr "自定义前端配置"
+
+#: /github/workspace/config/forms/mount/icecast.php:29
+msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
+msgstr "你可以在这里包含任何特殊的挂载点设置，可以是JSON { key: 'value' }格式，也可以是XML &lt;key&gt;value&lt;/key&gt;"
+
+#: /github/workspace/config/forms/mount/shoutcast2.php:12
+msgid "Stream path cannot include reserved keywords: %s"
+msgstr "流路径不能包含保留关键字：%s"
+
+#: /github/workspace/config/forms/mount/shoutcast2.php:22
+msgid "YP Directory Authorization Hash"
+msgstr "YP目录授权哈希"
+
+#: /github/workspace/config/forms/mount/shoutcast2.php:23
+msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
+msgstr "如果您的流媒体被设置为向上面的YP目录做广告，您必须指定一个授权哈希值。您可以在SHOUTcast网站上<a href=\"%s\" target=\"_blank\">管理authashes</a>。"
+
+#: /github/workspace/config/forms/api_key.php:10
+#: /github/workspace/templates/admin/api/index.phtml:18
+#: /github/workspace/templates/frontend/api_keys/index.phtml:34
+msgid "Comments"
+msgstr "评论"
+
+#: /github/workspace/config/forms/api_key.php:11
+msgid "Describe the use-case for this API key for future reference."
+msgstr "描述该API密钥的用途，供将来参考。"
+
+#: /github/workspace/config/forms/role.php:11
+#: /github/workspace/templates/admin/permissions/index.phtml:22
+msgid "Role Name"
+msgstr "角色名称"
+
+#: /github/workspace/config/forms/role.php:20
+msgid "System-Wide Permissions"
+msgstr "系统范围内的权限"
+
+#: /github/workspace/config/forms/role.php:33
+msgid "Permissions for %s"
+msgstr "%s的权限"
+
+#: /github/workspace/config/forms/station.php:50
+msgid "Station Profile"
+msgstr "电台简介"
+
+#: /github/workspace/config/forms/station.php:51
+msgid "Broadcasting"
+msgstr "广播"
+
+#: /github/workspace/config/forms/station.php:52
+#: /github/workspace/templates/stations/remotes/index.phtml:33
+#: /github/workspace/templates/stations/mounts/index.phtml:32
+msgid "AutoDJ"
+msgstr "自动DJ"
+
+#: /github/workspace/config/forms/station.php:53
+#: /github/workspace/templates/admin/index/index.phtml:18
+#: /github/workspace/templates/admin/sidebar.phtml:3
+#: /github/workspace/templates/frontend/index/index.phtml:55
+msgid "Administration"
+msgstr "管理"
+
+#: /github/workspace/config/forms/station.php:65
+#: /github/workspace/config/forms/profile.php:16
+#: /github/workspace/templates/admin/custom_fields/index.phtml:22
+#: /github/workspace/templates/stations/webhooks/index.phtml:32
+msgid "Name"
+msgstr "名称"
+
+#: /github/workspace/config/forms/station.php:74
+#: /github/workspace/config/forms/webhook/discord.php:81
+msgid "Description"
+msgstr "描述"
+
+#: /github/workspace/config/forms/station.php:90
+msgid "Web Site URL"
+msgstr "网址"
+
+#: /github/workspace/config/forms/station.php:91
+msgid "Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details."
+msgstr "注意：这应该是电台面向公众的主页，而不是AzuraCast的URL。它将包含在广播的详细信息中。"
+
+#: /github/workspace/config/forms/station.php:99
+msgid "Time Zone"
+msgstr "时区"
+
+#: /github/workspace/config/forms/station.php:100
+msgid "Scheduled playlists and other timed items will be controlled by this time zone."
+msgstr "预定的播放列表和其他定时项目将由该时区控制。"
+
+#: /github/workspace/config/forms/station.php:110
+msgid "Enable Public Page"
+msgstr "启用公共页面"
+
+#: /github/workspace/config/forms/station.php:111
+msgid "Show the station in public pages and general API results."
+msgstr "在公共页面和普通API结果中显示电台，。"
+
+#: /github/workspace/config/forms/station.php:122
+msgid "Enable On-Demand Streaming and Downloads"
+msgstr "启用按需流媒体和下载"
+
+#: /github/workspace/config/forms/station.php:123
+msgid "If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page."
+msgstr "如果启用，启用点播流媒体的播放列表中的音乐将可通过专门的公共页面进行流媒体和下载。"
+
+#: /github/workspace/config/forms/station.php:134
+#: /github/workspace/config/forms/branding.php:52
+msgid "Default Album Art URL"
+msgstr "默认专辑封面URL"
+
+#: /github/workspace/config/forms/station.php:135
+#: /github/workspace/config/forms/branding.php:53
+msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
+msgstr "如果一首歌没有专辑封面，这个URL会被列出。留空以使用标准占位图。"
+
+#: /github/workspace/config/forms/station.php:143
+msgid "URL Stub"
+msgstr "URL存根"
+
+#: /github/workspace/config/forms/station.php:145
+msgid "Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station's URLs. Leave this field blank to automatically create one based on the station name."
+msgstr "可选择指定一个简短的 URL 友好名称，如 <code>my_station_name</code>，将用于该站的 URL。将此字段留空，可根据站名自动创建一个。"
+
+#: /github/workspace/config/forms/station.php:153
+msgid "Number of Recently Played Songs"
+msgstr "最近播放的歌曲数量"
+
+#: /github/workspace/config/forms/station.php:155
+msgid "Customize the number of songs that will appear in the \"Song History\" section for this station and in all public APIs."
+msgstr "自定义本站和所有公共 API 的 \"歌曲历史 \"部分将出现的歌曲数量。"
+
+#: /github/workspace/config/forms/station.php:157
+#: /github/workspace/config/forms/automation.php:14
+#: /github/workspace/templates/admin/backups/index.phtml:51
+#: /github/workspace/templates/frontend/profile/index.phtml:72
+#: /github/workspace/templates/stations/remotes/index.phtml:60
+#: /github/workspace/templates/stations/mounts/index.phtml:61
+#: /github/workspace/templates/stations/webhooks/index.phtml:59
+msgid "Disabled"
+msgstr "禁用"
+
+#: /github/workspace/config/forms/station.php:177
+msgid "Broadcasting Service"
+msgstr "广播服务"
+
+#: /github/workspace/config/forms/station.php:178
+msgid "This software delivers your broadcast to the listening audience."
+msgstr "该软件将您的广播传递给听众。"
+
+#: /github/workspace/config/forms/station.php:196
+msgid "Customize Source Password"
+msgstr "自定义源密码"
+
+#: /github/workspace/config/forms/station.php:197
+#: /github/workspace/config/forms/station.php:207
+msgid "Leave blank to automatically generate a new password."
+msgstr "留空以自动生成新密码。"
+
+#: /github/workspace/config/forms/station.php:206
+msgid "Customize Administrator Password"
+msgstr "自定义管理员密码"
+
+#: /github/workspace/config/forms/station.php:216
+msgid "Customize Broadcasting Port"
+msgstr "自定义广播端口"
+
+#: /github/workspace/config/forms/station.php:218
+msgid "No other program can be using this port. Leave blank to automatically assign a port."
+msgstr "其他程序不能使用这个端口。留空以自动分配一个端口。"
+
+#: /github/workspace/config/forms/station.php:227
+msgid "Maximum Listeners"
+msgstr "最大听众"
+
+#: /github/workspace/config/forms/station.php:229
+msgid "Maximum number of total listeners across all streams. Leave blank to use the default (250)."
+msgstr "所有流的最大听众总数。留空，使用默认值（250）。"
+
+#: /github/workspace/config/forms/station.php:238
+msgid "Custom Configuration"
+msgstr "自定义配置"
+
+#: /github/workspace/config/forms/station.php:242
+msgid "This code will be included in the frontend configuration. You can use either JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;."
+msgstr "这段代码将包含在前端配置中。你可以使用JSON {\"new_key\": \"new_value\"}格式或XML &lt;new_key&gt;new_value&lt;/new_key&gt;。"
+
+#: /github/workspace/config/forms/station.php:250
+msgid "Banned IP Addresses"
+msgstr "被禁止的IP地址"
+
+#: /github/workspace/config/forms/station.php:254
+msgid "List one IP address or group (in CIDR format) per line."
+msgstr "每行列出一个IP地址或组（CIDR格式）。"
+
+#: /github/workspace/config/forms/station.php:268
+msgid "AutoDJ Service"
+msgstr "自动DJ服务"
+
+#: /github/workspace/config/forms/station.php:269
+msgid "This software shuffles from playlists of music constantly and plays when no other radio source is available."
+msgstr "这款软件从音乐的播放列表中不断地洗牌，当没有其他广播源时，就会播放。"
+
+#: /github/workspace/config/forms/station.php:287
+msgid "Crossfade Method"
+msgstr "淡入淡出法"
+
+#: /github/workspace/config/forms/station.php:289
+msgid "Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources."
+msgstr "从一首歌曲过渡到另一首歌曲时，选择一种方法。智能模式在渐变时考虑两个音轨的音量，以获得更平滑的效果，但需要更多的CPU资源。"
+
+#: /github/workspace/config/forms/station.php:291
+msgid "Smart Mode"
+msgstr "智能模式"
+
+#: /github/workspace/config/forms/station.php:292
+msgid "Normal Mode"
+msgstr "正常模式"
+
+#: /github/workspace/config/forms/station.php:293
+msgid "Disable Crossfading"
+msgstr "禁用淡入淡出"
+
+#: /github/workspace/config/forms/station.php:303
+msgid "Crossfade Duration (Seconds)"
+msgstr "淡入淡出持续时间  (Seconds)"
+
+#: /github/workspace/config/forms/station.php:305
+msgid "Number of seconds to overlap songs."
+msgstr "重叠歌曲的秒数。"
+
+#: /github/workspace/config/forms/station.php:317
+msgid "Apply Compression and Normalization"
+msgstr "应用压缩和规范化"
+
+#: /github/workspace/config/forms/station.php:319
+msgid "Compress and normalize your station's audio, producing a more uniform and \"full\" sound."
+msgstr "压缩和规范您的电台音频，产生更均匀和 \"完整 \"的声音。"
+
+#: /github/workspace/config/forms/station.php:330
+msgid "Allow Song Requests"
+msgstr "允许歌曲请求"
+
+#: /github/workspace/config/forms/station.php:331
+msgid "Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable."
+msgstr "让听众可以请求在您的电台播放歌曲。只有已经在您的播放列表中的歌曲才可以请求。"
+
+#: /github/workspace/config/forms/station.php:342
+msgid "Request Minimum Delay (Minutes)"
+msgstr "请求最小延迟（分钟）"
+
+#: /github/workspace/config/forms/station.php:343
+msgid "If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information."
+msgstr "如果启用了请求，则指定从提交请求到播放请求之间的最小延迟（以分钟为单位）。<br><b>重要的是：</b>一些流媒体许可规则要求请求的最小延迟（在美国，目前是 60 分钟）。请查看您当地的法规以了解更多信息。"
+
+#: /github/workspace/config/forms/station.php:354
+msgid "Request Last Played Threshold (Minutes)"
+msgstr "请求最后播放的阈值（分钟）"
+
+#: /github/workspace/config/forms/station.php:355
+msgid "If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
+msgstr "如果启用了请求，则指定从网络上播放的歌曲到可以再次请求的最短时间（以分钟为单位）。设置为0表示没有阈值。"
+
+#: /github/workspace/config/forms/station.php:366
+msgid "Allow Streamers / DJs"
+msgstr "允许流媒体/ DJ"
+
+#: /github/workspace/config/forms/station.php:367
+msgid "If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream."
+msgstr "如果启用，流媒体主持人（或DJ）将能够直接连接到您的流媒体，并播放AutoDJ流媒体的现场音乐。"
+
+#: /github/workspace/config/forms/station.php:378
+msgid "Record Live Broadcasts"
+msgstr "录制直播"
+
+#: /github/workspace/config/forms/station.php:379
+msgid "If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings."
+msgstr "如果启用，AzuraCast将自动把该台的任何直播记录到每次广播的录音中。"
+
+#: /github/workspace/config/forms/station.php:391
+msgid "Live Broadcast Recording Format"
+msgstr "直播录音格式"
+
+#: /github/workspace/config/forms/station.php:407
+msgid "Live Broadcast Recording Bitrate (kbps)"
+msgstr "直播广播记录比特率（kbps）"
+
+#: /github/workspace/config/forms/station.php:427
+msgid "Deactivate Streamer on Disconnect (Seconds)"
+msgstr "在断开连接时停用流媒体（秒）"
+
+#: /github/workspace/config/forms/station.php:428
+msgid "Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely."
+msgstr "在手动断开连接时停用站流的秒数。设置为0可完全停用。"
+
+#: /github/workspace/config/forms/station.php:439
+msgid "Customize DJ/Streamer Port"
+msgstr "自定义DJ /流媒体端口"
+
+#: /github/workspace/config/forms/station.php:441
+msgid "No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections."
+msgstr "任何其他程序都不能使用这个端口。<br><b>注意:</b>此后的端口(n+1)将自动用于传统的连接。"
+
+#: /github/workspace/config/forms/station.php:450
+msgid "Customize Internal Request Processing Port"
+msgstr "自定义内部请求处理端口"
+
+#: /github/workspace/config/forms/station.php:452
+msgid "This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port."
+msgstr "此端口不被任何外部进程使用。只有当指定的端口正在使用时，才能修改此端口。留空以自动分配一个端口。"
+
+#: /github/workspace/config/forms/station.php:461
+msgid "DJ/Streamer Buffer Time (Seconds)"
+msgstr "DJ /流媒体缓冲时间（秒）"
+
+#: /github/workspace/config/forms/station.php:462
+msgid "The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions."
+msgstr "在中断的情况下要存储的信号秒数。设置为您的DJ可以在不中断的情况下使用的最低值。"
+
+#: /github/workspace/config/forms/station.php:475
+msgid "Customize DJ/Streamer Mount Point"
+msgstr "自定义DJ / Streamer挂载点"
+
+#: /github/workspace/config/forms/station.php:477
+msgid "If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default."
+msgstr "如果你的流媒体软件需要一个特定的挂载点路径，请在这里指定它。否则，使用默认值。"
+
+#: /github/workspace/config/forms/station.php:487
+msgid "Use Replaygain Metadata"
+msgstr "使用重播元数据"
+
+#: /github/workspace/config/forms/station.php:490
+msgid "Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level."
+msgstr "指示Liquidsoap使用任何与歌曲相关的重放元数据来控制其音量。"
+
+#: /github/workspace/config/forms/station.php:501
+msgid "AutoDJ Queue Length"
+msgstr "AutoDJ队列长度"
+
+#: /github/workspace/config/forms/station.php:502
+msgid "If using AzuraCast's AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue."
+msgstr "如果使用AzuraCast的AutoDJ，这决定了AutoDJ会提前多少首歌曲自动填充队列。"
+
+#: /github/workspace/config/forms/station.php:514
+msgid "Manual AutoDJ Mode"
+msgstr "手动自动DJ模式"
+
+#: /github/workspace/config/forms/station.php:516
+msgid "This mode disables AzuraCast's AutoDJ management, using Liquidsoap itself to manage song playback. \"Next Song\" and some other features will not be available."
+msgstr "该模式禁用AzuraCast的AutoDJ管理，使用Liquidsoap本身来管理歌曲播放。\"下一首歌曲 \"和其他一些功能将无法使用。"
+
+#: /github/workspace/config/forms/station.php:528
+msgid "Character Set Encoding"
+msgstr "字符集编码"
+
+#: /github/workspace/config/forms/station.php:530
+msgid "For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software."
+msgstr "对于大多数情况下，使用默认的UTF-8编码，如果接受SHOUTcast 1 DJ的连接或使用其他传统软件，可以使用旧的ISO-8859-1编码。如果接受来自SHOUTcast 1 DJ的连接或使用其他传统软件，可以使用旧的ISO-8859-1编码。"
+
+#: /github/workspace/config/forms/station.php:544
+msgid "Duplicate Prevention Time Range (Minutes)"
+msgstr "重复预防时间范围（分钟"
+
+#: /github/workspace/config/forms/station.php:545
+msgid "This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account."
+msgstr "这指定了重复歌曲防止算法应考虑的歌曲历史的时间范围（分钟）。"
+
+#: /github/workspace/config/forms/station.php:565
+msgid "Enable Broadcasting"
+msgstr "启用广播"
+
+#: /github/workspace/config/forms/station.php:566
+msgid "If disabled, the station will not broadcast or shuffle its AutoDJ."
+msgstr "如果禁用，则该台将不会广播或洗牌其 AutoDJ。"
+
+#: /github/workspace/config/forms/station.php:577
+msgid "Base Station Directory"
+msgstr "电台目录"
+
+#: /github/workspace/config/forms/station.php:579
+msgid "The parent directory where station playlist and configuration files are stored. Leave blank to use default directory."
+msgstr "保存电台播放列表和配置文件的父目录。留空，使用默认目录。"
+
+#: /github/workspace/config/forms/station.php:587
+msgid "Media Storage Location"
+msgstr ""
+
+#: /github/workspace/config/forms/station.php:597
+msgid "Live Recordings Storage Location"
+msgstr ""
+
+#: /github/workspace/config/forms/remote.php:15
+msgid "Enable to allow listeners to select this relay on this station's public pages."
+msgstr "启用，允许听众在本台的公共页面上选择此中继。"
+
+#: /github/workspace/config/forms/remote.php:26
+msgid "Remote Station Type"
+msgstr "远程 电台 类型"
+
+#: /github/workspace/config/forms/remote.php:41
+msgid "The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one."
+msgstr "在管理页面或公共页面上查看此中继时指定的显示名称。留空以自动生成显示名称。"
+
+#: /github/workspace/config/forms/remote.php:49
+msgid "Remote Station Listening URL"
+msgstr "远程电台监听URL"
+
+#: /github/workspace/config/forms/remote.php:50
+msgid "Example: if the remote radio URL is %s, enter <code>%s</code>."
+msgstr "例如：如果远程电台网址是%s，输入<code>%s</code>。"
+
+#: /github/workspace/config/forms/remote.php:63
+msgid "Remote Station Listening Mountpoint/SID"
+msgstr "远程电台监听挂载点/SID"
+
+#: /github/workspace/config/forms/remote.php:64
+msgid "Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting."
+msgstr "指定一个挂载点(即<code>%s</code>)或Shoutcast SID(即<code>%s</code>)来指定用于统计或广播的特定流。"
+
+#: /github/workspace/config/forms/remote.php:76
+msgid "Remote Station Administrator Password"
+msgstr "远程电台管理员密码"
+
+#: /github/workspace/config/forms/remote.php:77
+msgid "To retrieve detailed unique listeners and client details, an administrator password is often required."
+msgstr "要检索详细的监听器和客户端的详细信息，通常需要一个管理员密码。"
+
+#: /github/workspace/config/forms/remote.php:85
+msgid "Broadcast AutoDJ to Remote Station"
+msgstr "廣播AutoDJ到遠端電台"
+
+#: /github/workspace/config/forms/remote.php:86
+msgid "If enabled, the AutoDJ on this installation will automatically play music to this mount point."
+msgstr "如果启用，此安装的AutoDJ将自动播放音乐到此挂载点。"
+
+#: /github/workspace/config/forms/remote.php:99
+msgid "Configure AutoDJ Broadcasting"
+msgstr "配置AutoDJ广播"
+
+#: /github/workspace/config/forms/remote.php:139
+msgid "Remote Station Source Port"
+msgstr "远程电台源端口"
+
+#: /github/workspace/config/forms/remote.php:140
+msgid "If the port you broadcast to is different from the one you listed in the URL above, specify the source port here."
+msgstr "如果您广播的端口与您在上面的URL中列出的端口不同，请在这里指定源端口。"
+
+#: /github/workspace/config/forms/remote.php:148
+msgid "Remote Station Source Mountpoint/SID"
+msgstr "远程站源挂载点/SID"
+
+#: /github/workspace/config/forms/remote.php:149
+msgid "If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here."
+msgstr "如果您广播的挂载点（即<code>/radio.mp3</code>）或Shoutcast SID（即<code>2</code>）与上面列出的挂载点不同，请在此指定源挂载点。"
+
+#: /github/workspace/config/forms/remote.php:157
+msgid "Remote Station Source Username"
+msgstr "远程电台源用户名"
+
+#: /github/workspace/config/forms/remote.php:158
+msgid "If you are broadcasting using AutoDJ, enter the source username here. This may be blank."
+msgstr "如果您使用 AutoDJ 进行广播，请在此输入源用户名。这可能是空白的。"
+
+#: /github/workspace/config/forms/remote.php:166
+msgid "Remote Station Source Password"
+msgstr "远程电台源密码"
+
+#: /github/workspace/config/forms/remote.php:167
+msgid "If you are broadcasting using AutoDJ, enter the source password here."
+msgstr "如果您使用的是AutoDJ广播，请在这里输入源密码。"
+
+#: /github/workspace/config/forms/backup.php:16
+msgid "Run Automatic Nightly Backups"
+msgstr "每晚运行自动备份"
+
+#: /github/workspace/config/forms/backup.php:17
+msgid "Enable to have AzuraCast automatically run nightly backups at the time specified."
+msgstr "启用AzuraCast在指定时间自动运行夜间备份。"
+
+#: /github/workspace/config/forms/backup.php:28
+msgid "Scheduled Backup Time"
+msgstr "预定的备份时间"
+
+#: /github/workspace/config/forms/backup.php:29
+msgid "The time (in UTC) to run the automated backup, if enabled."
+msgstr "如果启用，运行自动备份的时间（UTC）。"
+
+#: /github/workspace/config/forms/backup.php:37
+msgid "Exclude Media from Backups"
+msgstr "从备份中排除媒体"
+
+#: /github/workspace/config/forms/backup.php:38
+msgid "Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
+msgstr ""
+
+#: /github/workspace/config/forms/backup.php:49
+msgid "Number of Backup Copies to Keep"
+msgstr "要保存的备份数量"
+
+#: /github/workspace/config/forms/backup.php:50
+msgid "Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion."
+msgstr "超过指定天数的副本将被自动删除。设置为0可禁用自动删除。"
+
+#: /github/workspace/config/forms/backup.php:61
+#: /github/workspace/config/forms/backup_run.php:9
+msgid "Storage Location"
+msgstr ""
+
+#: /github/workspace/config/forms/branding.php:16
+msgid "Base Theme for Public Pages"
+msgstr "公共页面的基本主题"
+
+#: /github/workspace/config/forms/branding.php:17
+msgid "Select a theme to use as a base for station public pages and the login page."
+msgstr "选择一个主题作为站内公共页面和登录页面的基础。"
+
+#: /github/workspace/config/forms/branding.php:19
+#: /github/workspace/config/forms/profile.php:94
+msgid "Light"
+msgstr "光"
+
+#: /github/workspace/config/forms/branding.php:19
+#: /github/workspace/config/forms/profile.php:94
+msgid "Default"
+msgstr "默认"
+
+#: /github/workspace/config/forms/branding.php:20
+#: /github/workspace/config/forms/profile.php:95
+msgid "Dark"
+msgstr "黑暗"
+
+#: /github/workspace/config/forms/branding.php:30
+msgid "Hide Album Art on Public Pages"
+msgstr "在公共页面上隐藏专辑封面"
+
+#: /github/workspace/config/forms/branding.php:31
+msgid "If selected, album art will not display on public-facing radio pages."
+msgstr "如果选择，专辑封面将不会显示在面向公众的广播页面上。"
+
+#: /github/workspace/config/forms/branding.php:42
+msgid "Homepage Redirect URL"
+msgstr "主页重定向网址"
+
+#: /github/workspace/config/forms/branding.php:43
+msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
+msgstr "如果访问者没有登录并访问AzuraCast主页，您可以将他们自动重定向到这里指定的URL。如果留空，则默认将他们重定向到登录页面。"
+
+#: /github/workspace/config/forms/branding.php:62
+msgid "Hide AzuraCast Branding on Public Pages"
+msgstr "在公共网页上隐藏AzuraCast品牌信息"
+
+#: /github/workspace/config/forms/branding.php:63
+msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
+msgstr "如果选择，这将从面向公众的页面中移除AzuraCast品牌。"
+
+#: /github/workspace/config/forms/branding.php:74
+msgid "Custom CSS for Public Pages"
+msgstr "公共页面的自定义CSS"
+
+#: /github/workspace/config/forms/branding.php:75
+msgid "This CSS will be applied to the station public pages and login page."
+msgstr "该CSS将应用于站内公共页面和登录页面。"
+
+#: /github/workspace/config/forms/branding.php:88
+msgid "Custom JS for Public Pages"
+msgstr "公共页面的自定义JS"
+
+#: /github/workspace/config/forms/branding.php:89
+msgid "This javascript code will be applied to the station public pages and login page."
+msgstr "该javascript代码将被应用到站内公共页面和登录页面。"
+
+#: /github/workspace/config/forms/branding.php:102
+msgid "Custom CSS for Internal Pages"
+msgstr "内部页面的自定义CSS"
+
+#: /github/workspace/config/forms/branding.php:103
+msgid "This CSS will be applied to the main management pages, like this one."
+msgstr "这个CSS将被应用到主管理页面，比如这个。"
+
+#: /github/workspace/config/forms/user.php:30
+#: /github/workspace/config/forms/profile.php:38
+msgid "Reset Password"
+msgstr "重设密码"
+
+#: /github/workspace/config/forms/user.php:31
+#: /github/workspace/config/forms/sftp_user.php:18
+msgid "Leave blank to use the current password."
+msgstr "留空以使用当前密码。"
+
+#: /github/workspace/config/forms/user.php:42
+#: /github/workspace/templates/admin/users/index.phtml:23
+#: /github/workspace/templates/frontend/profile/index.phtml:38
+msgid "Roles"
+msgstr "角色"
+
+#: /github/workspace/config/forms/backup_run.php:17
+msgid "Backup Filename"
+msgstr "备份文件名"
+
+#: /github/workspace/config/forms/backup_run.php:18
+msgid "Path where the backup file should be located."
+msgstr ""
+
+#: /github/workspace/config/forms/backup_run.php:25
+msgid "Exclude Media from Backup"
+msgstr "从备份中排除媒体"
+
+#: /github/workspace/config/forms/backup_run.php:26
+msgid "This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up."
+msgstr ""
+
+#: /github/workspace/config/forms/webhook/generic.php:13
+msgid "Web Hook Details"
+msgstr "网络钩子详细信息"
+
+#: /github/workspace/config/forms/webhook/generic.php:15
+msgid "Web hooks automatically send a HTTP POST request to the URL you specify to \n"
+"                notify it any time one of the triggers you specify occurs on your station. The body of the POST message\n"
+"                is the exact same as the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> for your station. \n"
+"                In order to process quickly, web hooks have a short timeout, so the responding service should be\n"
+"                optimized to handle the request in under 2 seconds."
+msgstr "网络钩子会自动发送一个HTTP POST请求到您指定的URL，以便 \n"
+"                在您的站点上发生您指定的任何一个触发器时通知它。POST消息的主体是\n"
+"                与你的站的<a href=\"%s\" target=\"_blank\">Now Playing API response</a>完全相同。\n"
+"                为了快速处理，网络钩子的超时时间很短，所以响应的服务应该是\n"
+"                经过优化的，可以在2秒内处理该请求。"
+
+#: /github/workspace/config/forms/webhook/generic.php:27
+#: /github/workspace/config/forms/webhook/telegram.php:18
+#: /github/workspace/config/forms/webhook/tunein.php:17
+#: /github/workspace/config/forms/webhook/twitter.php:99
+#: /github/workspace/config/forms/webhook/discord.php:18
+msgid "Web Hook Name"
+msgstr "网络钩子名称"
+
+#: /github/workspace/config/forms/webhook/generic.php:28
+#: /github/workspace/config/forms/webhook/telegram.php:19
+#: /github/workspace/config/forms/webhook/tunein.php:18
+#: /github/workspace/config/forms/webhook/twitter.php:100
+#: /github/workspace/config/forms/webhook/discord.php:19
+msgid "Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page."
+msgstr "为这个网络钩子选择一个名称，以帮助你将它与其他网络钩子区分开来。这将只在管理页面上显示。"
+
+#: /github/workspace/config/forms/webhook/generic.php:37
+msgid "Web Hook URL"
+msgstr "网络钩子网址"
+
+#: /github/workspace/config/forms/webhook/generic.php:38
+msgid "The URL that will receive the POST messages any time an event is triggered."
+msgstr "当事件被触发时，接收POST消息的URL。"
+
+#: /github/workspace/config/forms/webhook/generic.php:49
+msgid "Optional: HTTP Basic Authentication Username"
+msgstr "可选：HTTP基本认证用户名"
+
+#: /github/workspace/config/forms/webhook/generic.php:50
+msgid "If your web hook requires HTTP basic authentication, provide the username here."
+msgstr "如果你的web钩子需要HTTP基本认证，请在这里提供用户名。"
+
+#: /github/workspace/config/forms/webhook/generic.php:59
+msgid "Optional: HTTP Basic Authentication Password"
+msgstr "可选：HTTP基本认证密码"
+
+#: /github/workspace/config/forms/webhook/generic.php:60
+msgid "If your web hook requires HTTP basic authentication, provide the password here."
+msgstr "如果你的web钩子需要HTTP基本认证，请在这里提供密码。"
+
+#: /github/workspace/config/forms/webhook/generic.php:69
+#: /github/workspace/config/forms/webhook/telegram.php:62
+#: /github/workspace/config/forms/webhook/twitter.php:109
+#: /github/workspace/config/forms/webhook/discord.php:39
+msgid "Web Hook Triggers"
+msgstr "Triggers 网络钩子"
+
+#: /github/workspace/config/forms/webhook/telegram.php:28
+msgid "Bot Token"
+msgstr "机器人 Token"
+
+#: /github/workspace/config/forms/webhook/telegram.php:29
+#: /github/workspace/config/forms/webhook/telegram.php:97
+msgid "See the <a href=\"%s\" target=\"_blank\">Telegram Documentation</a> for more details."
+msgstr "请参阅<a href=\"%s\" target=\"_blank\">Telegram文档</a>了解更多细节。"
+
+#: /github/workspace/config/forms/webhook/telegram.php:40
+msgid "Chat ID"
+msgstr "聊天 ID"
+
+#: /github/workspace/config/forms/webhook/telegram.php:41
+msgid "Unique identifier for the target chat or username of the target channel (in the format @channelusername)."
+msgstr "目标聊天的唯一标识符或目标频道的用户名（格式为@channelusername）。"
+
+#: /github/workspace/config/forms/webhook/telegram.php:51
+msgid "Custom API Base URL"
+msgstr "自定义API基本URL"
+
+#: /github/workspace/config/forms/webhook/telegram.php:53
+msgid "Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>."
+msgstr "留空以使用默认的Telegram API URL（推荐）。指定完整的URL，比如<code>https://api.pwrtelegram.xyz/</code>。"
+
+#: /github/workspace/config/forms/webhook/telegram.php:74
+#: /github/workspace/config/forms/webhook/discord.php:51
+msgid "Customize Message"
+msgstr "自定义消息"
+
+#: /github/workspace/config/forms/webhook/telegram.php:76
+#: /github/workspace/config/forms/webhook/twitter.php:124
+#: /github/workspace/config/forms/webhook/discord.php:53
+msgid "Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable for use. Any empty fields are ignored."
+msgstr "变量的形式为<code>{{ var.name }}</code>。<a href=\"%s\" target=\"_blank\">Now Playing API response</a>中的所有值都可以使用。任何空字段都会被忽略。"
+
+#: /github/workspace/config/forms/webhook/telegram.php:84
+#: /github/workspace/config/forms/webhook/discord.php:61
+msgid "Main Message Content"
+msgstr "主要信息内容"
+
+#: /github/workspace/config/forms/webhook/telegram.php:86
+#: /github/workspace/config/forms/webhook/twitter.php:122
+msgid "Now playing on %s: %s by %s! Tune in now."
+msgstr "现在播放的是%s: %s by %s! 现在请收听。"
+
+#: /github/workspace/config/forms/webhook/telegram.php:96
+msgid "Message parsing mode"
+msgstr "消息解析模式"
+
+#: /github/workspace/config/forms/webhook/tunein.php:27
+msgid "TuneIn Station ID"
+msgstr "TuneIn电台ID"
+
+#: /github/workspace/config/forms/webhook/tunein.php:28
+msgid "The station ID will be a numeric string that starts with the letter S."
+msgstr "站号将是一个以字母S开头的数字字符串。"
+
+#: /github/workspace/config/forms/webhook/tunein.php:38
+msgid "TuneIn Partner ID"
+msgstr "TuneIn合作伙伴ID"
+
+#: /github/workspace/config/forms/webhook/tunein.php:48
+msgid "TuneIn Partner Key"
+msgstr "TuneIn合作伙伴密钥"
+
+#: /github/workspace/config/forms/webhook/twitter.php:13
+msgid "Twitter Account Details"
+msgstr "Twitter帐户详细信息"
+
+#: /github/workspace/config/forms/webhook/twitter.php:15
+msgid "Steps for configuring a Twitter application:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>Create a new app on the <a href=\"%s\" target=\"_blank\">Twitter Applications site</a>. \n"
+"                    Use this installation's base URL as the application URL.</li>\n"
+"                    <li>In the newly created application, click the \"Keys and Access Tokens\" tab.</li>\n"
+"                    <li>At the bottom of the page, click \"Create my access token\".</li>\n"
+"                </ol>\n"
+"                <p>Once these steps are completed, enter the information from the \"Keys and Access Tokens\" page into the fields below.</p>"
+msgstr "配置Twitter应用程序的步骤：<br><br>。\n"
+"                <ol type=\"1\">\n"
+"                    <li>在 <a href=\"%s\" target=\"_blank\">Twitter 应用程序站点</a>上创建一个新应用程序。\n"
+"                    使用此安装的基本 URL 作为应用程序的 URL。\n"
+"                    <li>在新创建的应用程序中，单击 \"密钥和访问令牌 \"标签。\n"
+"                    <li>在页面底部，单击 \"创建我的访问令牌\"</li>。\n"
+"                </ol>\n"
+"                <p>完成这些步骤后，请将 \"密钥和访问令牌 \"页面中的信息输入到下面的字段中去"
+
+#: /github/workspace/config/forms/webhook/twitter.php:30
+msgid "Consumer Key (API Key)"
+msgstr "消费者密钥(API密钥)"
+
+#: /github/workspace/config/forms/webhook/twitter.php:40
+msgid "Consumer Secret (API Secret)"
+msgstr "消费者秘密(API秘密)"
+
+#: /github/workspace/config/forms/webhook/twitter.php:50
+msgid "Access Token"
+msgstr "访问令牌"
+
+#: /github/workspace/config/forms/webhook/twitter.php:60
+msgid "Access Token Secret"
+msgstr "访问令牌机密"
+
+#: /github/workspace/config/forms/webhook/twitter.php:70
+msgid "Only Send One Tweet Every..."
+msgstr "每天只发送一条推文..."
+
+#: /github/workspace/config/forms/webhook/twitter.php:74
+msgid "No Limit"
+msgstr "没有限制"
+
+#: /github/workspace/config/forms/webhook/twitter.php:75
+#: /github/workspace/config/forms/webhook/twitter.php:76
+#: /github/workspace/config/forms/webhook/twitter.php:77
+msgid "%d seconds"
+msgstr "%d秒"
+
+#: /github/workspace/config/forms/webhook/twitter.php:78
+#: /github/workspace/config/forms/webhook/twitter.php:79
+#: /github/workspace/config/forms/webhook/twitter.php:80
+#: /github/workspace/config/forms/webhook/twitter.php:81
+#: /github/workspace/config/forms/webhook/twitter.php:82
+#: /github/workspace/config/forms/webhook/twitter.php:83
+msgid "%d minutes"
+msgstr "%d分钟"
+
+#: /github/workspace/config/forms/webhook/twitter.php:119
+msgid "Message Body"
+msgstr "邮件正文"
+
+#: /github/workspace/config/forms/webhook/discord.php:28
+msgid "Discord Web Hook URL"
+msgstr "Discord网络钩子 URL"
+
+#: /github/workspace/config/forms/webhook/discord.php:29
+msgid "This URL is provided within the Discord application."
+msgstr "此 URL 是在 Discord 应用程序中提供的。"
+
+#: /github/workspace/config/forms/webhook/discord.php:63
+msgid "Now playing on %s:"
+msgstr "现在播放 %s："
+
+#: /github/workspace/config/forms/webhook/discord.php:91
+msgid "URL"
+msgstr "网址"
+
+#: /github/workspace/config/forms/webhook/discord.php:101
+msgid "Author Name"
+msgstr "作者名字"
+
+#: /github/workspace/config/forms/webhook/discord.php:111
+msgid "Thumbnail Image URL"
+msgstr "缩略图网址"
+
+#: /github/workspace/config/forms/webhook/discord.php:121
+msgid "Footer Text"
+msgstr "页脚文字"
+
+#: /github/workspace/config/forms/webhook/discord.php:123
+#: /github/workspace/templates/minimal.phtml:48
+#: /github/workspace/templates/main.phtml:155
+msgid "Powered by %s"
+msgstr "由%s提供技术支持"
+
+#: /github/workspace/config/forms/settings.php:11
+msgid "Rolling Release"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:12
+msgid "Stable"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:18
+msgid "Settings"
+msgstr "设置"
+
+#: /github/workspace/config/forms/settings.php:19
+msgid "Security"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:20
+msgid "Privacy"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:21
+msgid "Updates"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:34
+msgid "Site Base URL"
+msgstr "网站基础网址"
+
+#: /github/workspace/config/forms/settings.php:35
+msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."
+msgstr "此服务所在的基本 URL。使用指向该服务器的外部IP地址或域名（如果有的话）。"
+
+#: /github/workspace/config/forms/settings.php:44
+msgid "AzuraCast Instance Name"
+msgstr "AzuraCast实例名称"
+
+#: /github/workspace/config/forms/settings.php:45
+msgid "This name will appear as a sub-header next to the AzuraCast logo, to help identify this server."
+msgstr "这个名字将出现在AzuraCast标志旁边的小标题中，以帮助识别这个服务器。"
+
+#: /github/workspace/config/forms/settings.php:53
+msgid "Prefer Browser URL (If Available)"
+msgstr "首选浏览器URL（如果可用）"
+
+#: /github/workspace/config/forms/settings.php:54
+msgid "If this setting is set to \"Yes\", the browser URL will be used instead of the base URL when it's available. Set to \"No\" to always use the base URL."
+msgstr "如果将此设置设置为 \"是\"，则在有浏览器URL时，将使用浏览器URL代替基本URL。设置为 \"否\"，则始终使用基本URL。"
+
+#: /github/workspace/config/forms/settings.php:65
+msgid "Use Web Proxy for Radio"
+msgstr "使用网络代理进行广播"
+
+#: /github/workspace/config/forms/settings.php:66
+msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
+msgstr "默认情况下，电台在自己的端口上广播（即8000）。如果您正在使用CloudFlare等服务或通过SSL访问您的广播电台，您应该启用此功能，该功能通过网络端口（80和443）路由进行广播。"
+
+#: /github/workspace/config/forms/settings.php:77
+msgid "Days of Playback History to Keep"
+msgstr "保留的播放历史记录天数"
+
+#: /github/workspace/config/forms/settings.php:78
+msgid "Set longer to preserve more playback history for stations. Set shorter to save disk space."
+msgstr "设置较长的时间是为了保存更多电台的播放历史。设置较短以节省磁盘空间。"
+
+#: /github/workspace/config/forms/settings.php:80
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:86
+#: /github/workspace/templates/admin/audit_log/index.phtml:23
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:65
+#: /github/workspace/templates/stations/reports/timeline.phtml:22
+msgid "Last 14 Days"
+msgstr "最近14天"
+
+#: /github/workspace/config/forms/settings.php:81
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:87
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:66
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:103
+msgid "Last 30 Days"
+msgstr "最近30天"
+
+#: /github/workspace/config/forms/settings.php:82
+msgid "Last 60 Days"
+msgstr "最近60天"
+
+#: /github/workspace/config/forms/settings.php:83
+msgid "Last Year"
+msgstr "最近一年"
+
+#: /github/workspace/config/forms/settings.php:84
+msgid "Last 2 Years"
+msgstr "最近两年"
+
+#: /github/workspace/config/forms/settings.php:85
+msgid "Indefinitely"
+msgstr "无限期"
+
+#: /github/workspace/config/forms/settings.php:95
+msgid "Use WebSockets for Now Playing Updates"
+msgstr "使用WebSockets立即播放广播"
+
+#: /github/workspace/config/forms/settings.php:96
+msgid "Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it."
+msgstr "启用或禁用基于WebSocket的较新和较快的系统来接收公共广播的实时更新。如果你遇到問題，你可能需要停用此功能。"
+
+#: /github/workspace/config/forms/settings.php:116
+msgid "Always Use HTTPS"
+msgstr "一律使用HTTPS"
+
+#: /github/workspace/config/forms/settings.php:117
+msgid "Set to \"Yes\" to always use \"https://\" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited."
+msgstr "设置为 \"是\"，将始终使用 \"https://\"安全URL，并在访问不安全的URL时自动重定向到安全URL。"
+
+#: /github/workspace/config/forms/settings.php:128
+msgid "API \"Access-Control-Allow-Origin\" header"
+msgstr "API“ Access-Control-Allow-Origin”标头"
+
+#: /github/workspace/config/forms/settings.php:130
+msgid "<a href=\"%s\" target=\"_blank\">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,)."
+msgstr "<a href=\"%s\" target=\"_blank\">了解更多关于此标题的信息</a>。设置为*允许所有来源，或者指定一个由逗号（,）分隔的来源列表。"
+
+#: /github/workspace/config/forms/settings.php:147
+msgid "Listener Analytics Collection"
+msgstr "听众分析系列"
+
+#: /github/workspace/config/forms/settings.php:148
+msgid "Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports."
+msgstr "汇总听众统计数据用于显示整个系统的电台报告。基于IP的听众统计用于查看实时听众跟踪，可能是版税报告所需。"
+
+#: /github/workspace/config/forms/settings.php:151
+msgid "<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics"
+msgstr "<b>完整：</b>收集总的监听器统计数据和基于 IP 的监听器统计数据"
+
+#: /github/workspace/config/forms/settings.php:152
+msgid "<b>Limited:</b> Only collect aggregate listener statistics"
+msgstr "<b>限制：</b>只收集总的监听器统计信息"
+
+#: /github/workspace/config/forms/settings.php:153
+msgid "<b>None:</b> Do not collect any listener analytics"
+msgstr "<b>无：</b>不收集任何监听者分析"
+
+#: /github/workspace/config/forms/settings.php:168
+msgid "Current Release Channel"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:170
+msgid "For information on how to switch your release channel, visit <a href=\"%s\" target=\"_blank\">this page</a>."
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:180
+msgid "Show Update Announcements"
+msgstr ""
+
+#: /github/workspace/config/forms/settings.php:181
+msgid "Show new releases within your update channel on the AzuraCast homepage."
+msgstr ""
+
+#: /github/workspace/config/forms/sftp_user.php:8
+#: /github/workspace/templates/stations/sftp_users/index.phtml:24
+msgid "Username"
+msgstr "用户名"
+
+#: /github/workspace/config/forms/sftp_user.php:17
+#: /github/workspace/config/forms/profile.php:54
+msgid "New Password"
+msgstr "新密码"
+
+#: /github/workspace/config/forms/sftp_user.php:27
+msgid "SSH Public Keys"
+msgstr "SSH公钥"
+
+#: /github/workspace/config/forms/sftp_user.php:29
+msgid "Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line."
+msgstr "可选择提供SSH公钥，这可以用来代替密码进行连接。每行输入一个密钥。"
+
+#: /github/workspace/config/forms/station_clone.php:14
+msgid "New Station Name"
+msgstr "新电台名称"
+
+#: /github/workspace/config/forms/station_clone.php:23
+msgid "New Station Description"
+msgstr "新电台简介"
+
+#: /github/workspace/config/forms/station_clone.php:33
+msgid "Customize Station Cloning"
+msgstr "自定义电台克隆"
+
+#: /github/workspace/config/forms/station_clone.php:39
+msgid "Copy Media?"
+msgstr "复制媒体？"
+
+#: /github/workspace/config/forms/station_clone.php:40
+msgid "Choose how media should be duplicated from the old station."
+msgstr "选择媒体应该如何从老站点复制。"
+
+#: /github/workspace/config/forms/station_clone.php:42
+msgid "Do not share media between the stations"
+msgstr ""
+
+#: /github/workspace/config/forms/station_clone.php:43
+msgid "Share the same folder on disk between the stations"
+msgstr "各电台之间在磁盘上共享同一文件夹"
+
+#: /github/workspace/config/forms/station_clone.php:53
+msgid "Copy Playlists?"
+msgstr "复制播放列表？"
+
+#: /github/workspace/config/forms/station_clone.php:66
+msgid "Copy Streamer/DJ Accounts?"
+msgstr "复制流媒体/DJ账户？"
+
+#: /github/workspace/config/forms/station_clone.php:79
+msgid "Copy Permissions?"
+msgstr "复制权限？"
+
+#: /github/workspace/config/forms/station_clone.php:80
+msgid "Selecting \"Yes\" will assign any users with permissions to the current station to have permissions to the new one."
+msgstr "选择 \"是 \"将把当前站有权限的用户分配到新站。"
+
+#: /github/workspace/config/forms/station_clone.php:99
+msgid "Create New Station"
+msgstr "创建新电台"
+
+#: /github/workspace/config/forms/profile.php:3
+msgid "Use Browser Default"
+msgstr "使用浏览器默认"
+
+#: /github/workspace/config/forms/profile.php:39
+msgid "Leave these fields blank to continue using your current password."
+msgstr "将这些字段留空，以继续使用当前的密码。"
+
+#: /github/workspace/config/forms/profile.php:45
+msgid "Current Password"
+msgstr "当前密码"
+
+#: /github/workspace/config/forms/profile.php:65
+msgid "Confirm New Password"
+msgstr "确认新密码"
+
+#: /github/workspace/config/forms/profile.php:76
+#: /github/workspace/templates/frontend/profile/index.phtml:50
+msgid "Customization"
+msgstr "定制化"
+
+#: /github/workspace/config/forms/profile.php:92
+msgid "Site Theme"
+msgstr "网站主题"
+
+#: /github/workspace/config/forms/profile_two_factor.php:8
+msgid "Code from Authenticator App"
+msgstr "来自认证器应用程序的代码"
+
+#: /github/workspace/config/forms/profile_two_factor.php:9
+msgid "Enter the current code provided by your authenticator app to verify that it's working correctly."
+msgstr "输入你的身份验证器应用程序提供的当前代码，以验证它是否正常工作。"
+
+#: /github/workspace/config/forms/profile_two_factor.php:19
+msgid "Verify Authenticator"
+msgstr "验证身份验证器"
+
+#: /github/workspace/config/forms/install_shoutcast.php:13
+#: /github/workspace/config/forms/install_geolite.php:10
+msgid "Instructions"
+msgstr "使用说明"
+
+#: /github/workspace/config/forms/install_shoutcast.php:14
+msgid "<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>"
+msgstr "<p>SHOUTcast 2 DNAS不是自由软件，它的限制性许可证不允许AzuraCast发布SHOUTcast二进制文件。为了安装SHOUTcast，您应该从<a href=\"%s\" target=\"_blank\">SHOUTcast Radio Manager</a>网站下载Linux x64二进制文件。將<code>sc_serv2_linux_x64-latest.tar.gz</code>上傳到下面的编辑框，以自動解壓縮到適當的目錄"
+
+#: /github/workspace/config/forms/install_shoutcast.php:23
+#: /github/workspace/templates/admin/install_geolite/index.phtml:27
+msgid "Current Installed Version"
+msgstr "当前安装版本"
+
+#: /github/workspace/config/forms/install_shoutcast.php:24
+msgid "SHOUTcast is not currently installed on this installation."
+msgstr "SHOUTcast目前没有安装在这个系统上。"
+
+#: /github/workspace/config/forms/install_shoutcast.php:32
+msgid "Select SHOUTcast 64-bit .tar.gz File"
+msgstr "选择SHOUTcast 64-bit .tar.gz文件"
+
+#: /github/workspace/config/forms/install_shoutcast.php:45
+msgid "Upload"
+msgstr "上传"
+
+#: /github/workspace/config/forms/automation.php:10
+msgid "Enable Automated Assignment"
+msgstr "启用自动分配"
+
+#: /github/workspace/config/forms/automation.php:11
+msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
+msgstr "允许系统根据歌曲的表现定期自动分配歌曲到播放列表。该过程将在后台运行，只有当该选项设置为 \"已启用 \"且至少有一个播放列表被设置为 \"包含在自动分配中 \"时才会运行。"
+
+#: /github/workspace/config/forms/automation.php:15
+#: /github/workspace/templates/admin/backups/index.phtml:23
+#: /github/workspace/templates/frontend/profile/index.phtml:70
+#: /github/workspace/templates/stations/remotes/index.phtml:58
+#: /github/workspace/templates/stations/mounts/index.phtml:59
+msgid "Enabled"
+msgstr "启用"
+
+#: /github/workspace/config/forms/automation.php:23
+msgid "Days Between Automated Assignments"
+msgstr "自动分配的天数"
+
+#: /github/workspace/config/forms/automation.php:24
+msgid "Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days."
+msgstr "根据此设置，系统将每隔（此）天利用前（此）天的数据自动重新分配歌曲。"
+
+#: /github/workspace/config/forms/automation.php:28
+#: /github/workspace/config/forms/automation.php:29
+#: /github/workspace/config/forms/automation.php:30
+#: /github/workspace/config/forms/automation.php:31
+msgid "%d days"
+msgstr "%d 天"
+
+#: /github/workspace/config/forms/install_geolite.php:12
+msgid "You can upload the MaxMind GeoLite database in order to provide geolocation of the IP addresses of your listeners. This will allow you to view the listeners on each station's \"Listeners\" report. To download the GeoLite database:"
+msgstr "您可以上传MaxMind GeoLite数据库，以提供听众的IP地址的地理位置。这样您就可以在每个电台的 \"听众 \"报告中查看听众。下载GeoLite数据库："
+
+#: /github/workspace/config/forms/install_geolite.php:14
+msgid "Create an account on <a href=\"%s\" target=\"_blank\">the MaxMind developer site</a>."
+msgstr "在<a href=\"%s\" target=\"_blank\">MaxMind开发者网站</a>上注册一个帐户。"
+
+#: /github/workspace/config/forms/install_geolite.php:16
+msgid "Visit the \"My License Key\" page under the \"Services\" section."
+msgstr "访问 \"服务 \"部分下的 \"我的许可证密钥 \"页面。"
+
+#: /github/workspace/config/forms/install_geolite.php:17
+msgid "Click \"Generate new license key\"."
+msgstr "点击 \"生成新的许可证密钥\"。"
+
+#: /github/workspace/config/forms/install_geolite.php:18
+msgid "Paste the generated license key into the field on this page."
+msgstr "将生成的许可证密钥粘贴到本页面的字段中。"
+
+#: /github/workspace/config/forms/install_geolite.php:26
+msgid "MaxMind License Key"
+msgstr "MaxMind许可证密钥"
+
+#: /github/workspace/config/forms/login.php:29
+msgid "Log in"
+msgstr "登录"
+
+#: /github/workspace/config/forms/song.php:8
+msgid "Metadata"
+msgstr "元数据"
+
+#: /github/workspace/config/forms/song.php:14
+msgid "Full Text"
+msgstr "全文"
+
+#: /github/workspace/config/forms/song.php:26
+msgid "Artist Name"
+msgstr "艺术家姓名"
+
+#: /github/workspace/config/assets.php:142
+msgid "Are you sure?"
+msgstr "您确定吗？"
+
+#: /github/workspace/config/assets.php:143
+msgid "Advanced"
+msgstr "高级"
+
+#: /github/workspace/config/menus/admin.php:13
+msgid "System Maintenance"
+msgstr "系统维护"
+
+#: /github/workspace/config/menus/admin.php:22
+#: /github/workspace/templates/admin/branding/index.phtml:12
+msgid "Custom Branding"
+msgstr "定制品牌"
+
+#: /github/workspace/config/menus/admin.php:27
+#: /github/workspace/templates/admin/logs/index.phtml:12
+msgid "System Logs"
+msgstr "系统日志"
+
+#: /github/workspace/config/menus/admin.php:32
+#: /github/workspace/templates/admin/storage_locations/index.phtml:3
+msgid "Storage Locations"
+msgstr ""
+
+#: /github/workspace/config/menus/admin.php:37
+#: /github/workspace/templates/admin/backups/index.phtml:8
+#: /github/workspace/templates/admin/backups/index.phtml:82
+msgid "Backups"
+msgstr "备份"
+
+#: /github/workspace/config/menus/admin.php:42
+#: /github/workspace/templates/admin/debug/index.phtml:3
+#: /github/workspace/templates/admin/debug/index.phtml:8
+msgid "System Debugger"
+msgstr "系统调试器"
+
+#: /github/workspace/config/menus/admin.php:49
+msgid "Users"
+msgstr "用户"
+
+#: /github/workspace/config/menus/admin.php:53
+#: /github/workspace/templates/admin/users/index.phtml:1
+#: /github/workspace/templates/admin/users/index.phtml:5
+msgid "User Accounts"
+msgstr "用户帐号"
+
+#: /github/workspace/config/menus/admin.php:58
+#: /github/workspace/templates/admin/permissions/index.phtml:1
+#: /github/workspace/templates/admin/permissions/index.phtml:5
+#: /github/workspace/templates/admin/permissions/index.phtml:23
+msgid "Permissions"
+msgstr "权限"
+
+#: /github/workspace/config/menus/admin.php:63
+#: /github/workspace/templates/admin/audit_log/index.phtml:3
+#: /github/workspace/templates/admin/audit_log/index.phtml:19
+msgid "Audit Log"
+msgstr "审核日志"
+
+#: /github/workspace/config/menus/admin.php:68
+#: /github/workspace/templates/admin/api/index.phtml:1
+#: /github/workspace/templates/admin/api/index.phtml:5
+msgid "API Keys"
+msgstr "API密钥"
+
+#: /github/workspace/config/menus/admin.php:75
+#: /github/workspace/config/menus/admin.php:79
+#: /github/workspace/templates/admin/stations/index.phtml:1
+msgid "Stations"
+msgstr "电台"
+
+#: /github/workspace/config/menus/admin.php:84
+#: /github/workspace/templates/admin/custom_fields/index.phtml:1
+#: /github/workspace/templates/admin/custom_fields/index.phtml:5
+msgid "Custom Fields"
+msgstr "自定义字段"
+
+#: /github/workspace/config/menus/admin.php:89
+#: /github/workspace/templates/admin/relays/index.phtml:3
+#: /github/workspace/templates/admin/relays/index.phtml:15
+msgid "Connected AzuraRelays"
+msgstr "连接的AzuraRelays"
+
+#: /github/workspace/config/menus/station.php:18
+msgid "Start Station"
+msgstr "开始电台"
+
+#: /github/workspace/config/menus/station.php:19
+msgid "Ready to start broadcasting? Click to start your station."
+msgstr "准备开始广播了吗？单击以启动您的电台。"
+
+#: /github/workspace/config/menus/station.php:23
+#: /github/workspace/config/menus/station.php:33
+#: /github/workspace/config/menus/station.php:180
+msgid "Restart broadcasting? This will disconnect any current listeners."
+msgstr "重新开始播放？这将断开所有当前的侦听器。"
+
+#: /github/workspace/config/menus/station.php:28
+msgid "Restart to Apply Changes"
+msgstr "重新开始应用更改"
+
+#: /github/workspace/config/menus/station.php:29
+msgid "Click to restart your station and apply configuration changes."
+msgstr "单击以重新启动电台并应用配置更改。"
+
+#: /github/workspace/config/menus/station.php:38
+#: /github/workspace/templates/stations/profile/index.phtml:8
+msgid "Profile"
+msgstr "个人资料"
+
+#: /github/workspace/config/menus/station.php:43
+msgid "Public Page"
+msgstr "公开页面"
+
+#: /github/workspace/config/menus/station.php:50
+msgid "On-Demand Media"
+msgstr "点播媒体"
+
+#: /github/workspace/config/menus/station.php:57
+#: /github/workspace/templates/stations/files/index.phtml:4
+#: /github/workspace/templates/stations/files/index.phtml:29
+msgid "Music Files"
+msgstr "音乐文件"
+
+#: /github/workspace/config/menus/station.php:64
+#: /github/workspace/templates/stations/playlists/index.phtml:3
+#: /github/workspace/templates/stations/reports/duplicates.phtml:25
+msgid "Playlists"
+msgstr "播放列表"
+
+#: /github/workspace/config/menus/station.php:71
+#: /github/workspace/templates/stations/streamers/index.phtml:2
+#: /github/workspace/templates/stations/streamers/disabled.phtml:1
+msgid "Streamer/DJ Accounts"
+msgstr "流媒体/ DJ帐户"
+
+#: /github/workspace/config/menus/station.php:78
+msgid "Web DJ"
+msgstr "网络DJ"
+
+#: /github/workspace/config/menus/station.php:86
+#: /github/workspace/templates/stations/mounts/index.phtml:1
+#: /github/workspace/templates/stations/mounts/index.phtml:5
+msgid "Mount Points"
+msgstr "挂载点"
+
+#: /github/workspace/config/menus/station.php:93
+#: /github/workspace/templates/stations/remotes/index.phtml:1
+#: /github/workspace/templates/stations/remotes/index.phtml:5
+msgid "Remote Relays"
+msgstr "远程继电器"
+
+#: /github/workspace/config/menus/station.php:99
+#: /github/workspace/templates/stations/webhooks/index.phtml:1
+#: /github/workspace/templates/stations/webhooks/index.phtml:5
+msgid "Web Hooks"
+msgstr "网络钩子"
+
+#: /github/workspace/config/menus/station.php:105
+msgid "Reports"
+msgstr "报告"
+
+#: /github/workspace/config/menus/station.php:110
+#: /github/workspace/templates/stations/reports/overview.phtml:7
+msgid "Statistics Overview"
+msgstr "统计总览"
+
+#: /github/workspace/config/menus/station.php:119
+#: /github/workspace/templates/stations/reports/requests.phtml:1
+#: /github/workspace/templates/stations/reports/requests.phtml:13
+msgid "Song Requests"
+msgstr "歌曲请求"
+
+#: /github/workspace/config/menus/station.php:124
+#: /github/workspace/templates/stations/reports/timeline.phtml:1
+#: /github/workspace/templates/stations/reports/timeline.phtml:15
+msgid "Song Playback Timeline"
+msgstr "歌曲播放时间线"
+
+#: /github/workspace/config/menus/station.php:128
+#: /github/workspace/templates/stations/reports/performance.phtml:2
+#: /github/workspace/templates/stations/reports/performance.phtml:12
+msgid "Song Listener Impact"
+msgstr "歌曲听众影响"
+
+#: /github/workspace/config/menus/station.php:133
+msgid "Duplicate Songs"
+msgstr "重复的歌曲"
+
+#: /github/workspace/config/menus/station.php:138
+msgid "SoundExchange Royalties"
+msgstr "SoundExchange版税"
+
+#: /github/workspace/config/menus/station.php:145
+msgid "Utilities"
+msgstr "实用工具"
+
+#: /github/workspace/config/menus/station.php:149
+#: /github/workspace/templates/stations/sftp_users/index.phtml:1
+#: /github/workspace/templates/stations/sftp_users/index.phtml:7
+msgid "SFTP Users"
+msgstr "SFTP用户"
+
+#: /github/workspace/config/menus/station.php:155
+msgid "Automated Assignment"
+msgstr "自动分配"
+
+#: /github/workspace/config/menus/station.php:167
+#: /github/workspace/templates/admin/logs/index.phtml:3
+#: /github/workspace/templates/stations/logs/index.phtml:3
+msgid "Log Viewer"
+msgstr "日志查看器"
+
+#: /github/workspace/config/menus/station.php:172
+#: /github/workspace/templates/stations/queue/index.phtml:2
+#: /github/workspace/templates/stations/queue/index.phtml:13
+msgid "Upcoming Song Queue"
+msgstr "即将到来的歌曲队列"
+
+#: /github/workspace/config/menus/station.php:177
+msgid "Restart Broadcasting"
+msgstr "重新开始广播"
+
+#: /github/workspace/config/webhooks.php:12
+msgid "Generic Web Hook"
+msgstr "通用网络钩子"
+
+#: /github/workspace/config/webhooks.php:13
+msgid "Automatically send a message to any URL when your station data changes."
+msgstr "电台数据更改时，自动将消息发送到任何URL。"
+
+#: /github/workspace/config/webhooks.php:17
+msgid "TuneIn AIR"
+msgstr "调谐空气"
+
+#: /github/workspace/config/webhooks.php:18
+msgid "Send song metadata changes to TuneIn."
+msgstr "将歌曲元数据更改发送到TuneIn。"
+
+#: /github/workspace/config/webhooks.php:22
+msgid "Discord Webhook"
+msgstr "Discord 网络钩子"
+
+#: /github/workspace/config/webhooks.php:23
+msgid "Automatically send a customized message to your Discord server."
+msgstr "自动向您的Discord服务器发送自定义消息。"
+
+#: /github/workspace/config/webhooks.php:27
+msgid "Telegram Chat Message"
+msgstr "电报聊天消息"
+
+#: /github/workspace/config/webhooks.php:28
+msgid "Use the Telegram Bot API to send a message to a channel."
+msgstr "使用Telegram Bot API将消息发送到频道。"
+
+#: /github/workspace/config/webhooks.php:32
+msgid "Twitter Post"
+msgstr "推特帖子"
+
+#: /github/workspace/config/webhooks.php:33
+msgid "Automatically send a tweet."
+msgstr "自动发送推文。"
+
+#: /github/workspace/config/webhooks.php:39
+msgid "Any time the currently playing song changes"
+msgstr "当前播放的歌曲随时改变"
+
+#: /github/workspace/config/webhooks.php:40
+msgid "Any time the listener count increases"
+msgstr "只要听众人数增加"
+
+#: /github/workspace/config/webhooks.php:41
+msgid "Any time the listener count decreases"
+msgstr "任何时候听众人数减少"
+
+#: /github/workspace/config/webhooks.php:42
+msgid "Any time a live streamer/DJ connects to the stream"
+msgstr "直播流媒体/ DJ随时连接到流"
+
+#: /github/workspace/config/webhooks.php:43
+msgid "Any time a live streamer/DJ disconnects from the stream"
+msgstr "每当直播流媒体/ DJ与流断开连接时"
+
+#: /github/workspace/config/cli.php:71
+msgid "Generate the translation locale file."
+msgstr "生成翻译的locale文件。"
+
+#: /github/workspace/config/cli.php:76
+msgid "Convert translated locale files into PHP arrays."
+msgstr "将翻译后的locale文件转换为PHP数组。"
+
+#: /github/workspace/config/cli.php:82
+msgid "Migrate existing configuration to new INI format if any exists."
+msgstr "如果有的话，将现有配置迁移到新的INI格式。"
+
+#: /github/workspace/config/cli.php:87
+msgid "Install fixtures for demo / local development."
+msgstr "安装用于演示/本地开发的版本。"
+
+#: /github/workspace/config/cli.php:92
+msgid "Run all general AzuraCast setup steps."
+msgstr "运行所有一般的AzuraCast设置步骤。"
+
+#: /github/workspace/config/cli.php:103
+msgid "Run one or more scheduled synchronization tasks."
+msgstr "运行一个或多个预定的同步任务。"
+
+#: /github/workspace/config/cli.php:108
+msgid "Process the message queue."
+msgstr "处理消息队列。"
+
+#: /github/workspace/config/cli.php:113
+msgid "Clear the contents of the message queue."
+msgstr ""
+
+#: /github/workspace/config/cli.php:144
+msgid "List all settings in the AzuraCast settings database."
+msgstr "列出AzuraCast设置数据库中的所有设置。"
+
+#: /github/workspace/config/cli.php:154
+msgid "Back up the AzuraCast database and statistics (and optionally media)."
+msgstr "备份AzuraCast数据库和统计资料（也可选择媒体）。"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:38
+msgid "Insert"
+msgstr "插入"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:40
+#: /github/workspace/templates/admin/permissions/index.phtml:38
+#: /github/workspace/templates/admin/permissions/index.phtml:41
+#: /github/workspace/templates/admin/stations/index.phtml:37
+#: /github/workspace/templates/admin/backups/index.phtml:116
+#: /github/workspace/templates/admin/custom_fields/index.phtml:32
+#: /github/workspace/templates/admin/users/index.phtml:37
+#: /github/workspace/templates/admin/users/index.phtml:39
+#: /github/workspace/templates/stations/remotes/index.phtml:47
+#: /github/workspace/templates/stations/mounts/index.phtml:45
+#: /github/workspace/templates/stations/webhooks/index.phtml:54
+#: /github/workspace/templates/stations/sftp_users/index.phtml:38
+#: /github/workspace/templates/stations/queue/index.js.phtml:36
+#: /github/workspace/templates/stations/reports/requests.phtml:61
+#: /github/workspace/templates/stations/reports/duplicates.phtml:34
+msgid "Delete"
+msgstr "删除"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:42
+msgid "Update"
+msgstr "更新"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:58
+#: /github/workspace/templates/admin/audit_log/index.phtml:59
+msgid "Changes"
+msgstr "更改"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:83
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:62
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:97
+msgid "Today"
+msgstr "今天"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:84
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:63
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:99
+msgid "Yesterday"
+msgstr "昨天"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:85
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:64
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:101
+msgid "Last 7 Days"
+msgstr "最近7天"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:88
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:67
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:105
+msgid "This Month"
+msgstr "这个月"
+
+#: /github/workspace/templates/admin/audit_log/index.js.phtml:89
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:68
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:107
+msgid "Last Month"
+msgstr "上个月"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:41
+#: /github/workspace/templates/stations/reports/timeline.phtml:39
+msgid "Date/Time"
+msgstr "日期/时间"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:42
+msgid "User"
+msgstr "用户"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:44
+msgid "Identifier"
+msgstr "识别码"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:45
+msgid "Target"
+msgstr "目标"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:46
+#: /github/workspace/templates/admin/permissions/index.phtml:21
+#: /github/workspace/templates/admin/stations/index.phtml:20
+#: /github/workspace/templates/admin/backups/index.phtml:99
+#: /github/workspace/templates/admin/custom_fields/index.phtml:21
+#: /github/workspace/templates/admin/users/index.phtml:21
+#: /github/workspace/templates/stations/remotes/index.phtml:31
+#: /github/workspace/templates/stations/mounts/index.phtml:30
+#: /github/workspace/templates/stations/playlists/reorder.phtml:29
+#: /github/workspace/templates/stations/webhooks/index.phtml:31
+#: /github/workspace/templates/stations/sftp_users/index.phtml:23
+#: /github/workspace/templates/stations/queue/index.phtml:27
+#: /github/workspace/templates/stations/reports/requests.phtml:29
+#: /github/workspace/templates/stations/reports/duplicates.phtml:23
+msgid "Actions"
+msgstr "操作"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:71
+msgid "Field"
+msgstr "领域"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:72
+msgid "Previous"
+msgstr "上一条"
+
+#: /github/workspace/templates/admin/audit_log/index.phtml:73
+msgid "Updated"
+msgstr "更新"
+
+#: /github/workspace/templates/admin/index/index.phtml:37
+msgid "Server Status"
+msgstr "服务器状态"
+
+#: /github/workspace/templates/admin/index/index.phtml:42
+msgid "CPU Load"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:48
+msgid "Current"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:54
+msgid "15-Minute Average"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:62
+msgid "Memory"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:70
+#: /github/workspace/templates/admin/index/index.phtml:84
+msgid "%s of %s Used"
+msgstr "已使用的%s"
+
+#: /github/workspace/templates/admin/index/index.phtml:76
+msgid "Disk Space"
+msgstr ""
+
+#: /github/workspace/templates/admin/index/index.phtml:89
+#: /github/workspace/templates/admin/debug/index.phtml:45
+msgid "Synchronization Tasks"
+msgstr "同步任务"
+
+#: /github/workspace/templates/admin/index/index.phtml:99
+#: /github/workspace/templates/admin/backups/index.phtml:29
+msgid "Last run: %s"
+msgstr "最后一次运行：%s"
+
+#: /github/workspace/templates/admin/index/index.phtml:106
+#: /github/workspace/templates/admin/debug/index.phtml:57
+msgid "Run Task"
+msgstr "运行任务"
+
+#: /github/workspace/templates/admin/debug/index.phtml:14
+#: /github/workspace/templates/admin/debug/index.phtml:20
+msgid "Clear Cache"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:17
+msgid "Clearing the application cache may log you out of your session."
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:29
+#: /github/workspace/templates/admin/debug/index.phtml:35
+msgid "Clear Message Queue"
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:32
+msgid "This will clear any pending unprocessed messages in the message queue."
+msgstr ""
+
+#: /github/workspace/templates/admin/debug/index.phtml:68
+msgid "Station-Specific Debugging"
+msgstr "电台专用调试"
+
+#: /github/workspace/templates/admin/debug/index.phtml:86
+msgid "Rebuild AutoDJ Queue"
+msgstr "重建 AutoDJ 队列"
+
+#: /github/workspace/templates/admin/debug/index.phtml:91
+msgid "Run Test"
+msgstr "运行测试"
+
+#: /github/workspace/templates/admin/debug/index.phtml:97
+msgid "Send Liquidsoap Telnet Command"
+msgstr "发送Liquidsoap Telnet命令"
+
+#: /github/workspace/templates/admin/debug/index.phtml:102
+msgid "Command"
+msgstr "命令"
+
+#: /github/workspace/templates/admin/debug/index.phtml:106
+msgid "Execute Command"
+msgstr "执行命令"
+
+#: /github/workspace/templates/admin/install_shoutcast/installed.phtml:1
+msgid "SHOUTcast Installed"
+msgstr "已安装的SHOUTcast"
+
+#: /github/workspace/templates/admin/install_shoutcast/installed.phtml:3
+msgid "The SHOUTcast 2 DNAS is installed and ready for use."
+msgstr "SHOUTcast 2 DNAS已经安装完毕，可以使用了。"
+
+#: /github/workspace/templates/admin/permissions/index.phtml:32
+#: /github/workspace/templates/admin/stations/index.phtml:32
+#: /github/workspace/templates/admin/api/index.phtml:27
+#: /github/workspace/templates/admin/custom_fields/index.phtml:31
+#: /github/workspace/templates/admin/users/index.phtml:35
+#: /github/workspace/templates/frontend/api_keys/index.phtml:42
+#: /github/workspace/templates/stations/remotes/index.phtml:44
+#: /github/workspace/templates/stations/mounts/index.phtml:42
+#: /github/workspace/templates/stations/webhooks/index.phtml:42
+#: /github/workspace/templates/stations/sftp_users/index.phtml:34
+msgid "Edit"
+msgstr "编辑"
+
+#: /github/workspace/templates/admin/permissions/index.phtml:36
+msgid "Delete role \"%s\"?"
+msgstr "删除角色\"%s\"？"
+
+#: /github/workspace/templates/admin/permissions/index.phtml:41
+msgid "This role cannot be deleted."
+msgstr "此角色不能删除。"
+
+#: /github/workspace/templates/admin/permissions/index.phtml:50
+msgid "Global"
+msgstr "全球"
+
+#: /github/workspace/templates/admin/logs/index.phtml:16
+msgid "Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal."
+msgstr "因为您正在运行 Docker，所以一些系统日志只能从主机上的 shell 会话访问。您可以运行<code>%s</code>从终端访问容器日志。"
+
+#: /github/workspace/templates/admin/logs/index.phtml:31
+msgid "Logs by Station"
+msgstr "电台日志"
+
+#: /github/workspace/templates/admin/stations/index.phtml:5
+msgid "Manage Stations"
+msgstr "管理电台"
+
+#: /github/workspace/templates/admin/stations/index.phtml:10
+#: /github/workspace/templates/frontend/index/index.phtml:125
+msgid "Add Station"
+msgstr "添加电台"
+
+#: /github/workspace/templates/admin/stations/index.phtml:21
+msgid "Station"
+msgstr "电台"
+
+#: /github/workspace/templates/admin/stations/index.phtml:30
+#: /github/workspace/templates/frontend/index/index.phtml:169
+msgid "Manage"
+msgstr "管理"
+
+#: /github/workspace/templates/admin/stations/index.phtml:34
+msgid "Clone"
+msgstr "克隆"
+
+#: /github/workspace/templates/admin/stations/index.phtml:35
+msgid "Delete station \"%s\"?"
+msgstr "删除电台\"%s\"？"
+
+#: /github/workspace/templates/admin/api/index.phtml:17
+msgid "API Key"
+msgstr "API密钥"
+
+#: /github/workspace/templates/admin/api/index.phtml:19
+msgid "Owner"
+msgstr "所有者"
+
+#: /github/workspace/templates/admin/api/index.phtml:28
+#: /github/workspace/templates/frontend/api_keys/index.phtml:43
+msgid "Revoke"
+msgstr "撤消"
+
+#: /github/workspace/templates/admin/backups/index.phtml:22
+#: /github/workspace/templates/admin/backups/index.phtml:50
+msgid "Automatic Backups"
+msgstr "自动备份"
+
+#: /github/workspace/templates/admin/backups/index.phtml:31
+msgid "Never run"
+msgstr "千万不要跑"
+
+#: /github/workspace/templates/admin/backups/index.phtml:38
+#: /github/workspace/templates/admin/backups/index.phtml:57
+msgid "Configure"
+msgstr "配置"
+
+#: /github/workspace/templates/admin/backups/index.phtml:43
+#: /github/workspace/templates/admin/backups/index.phtml:137
+msgid "Most Recent Backup Log"
+msgstr "最新备份日志"
+
+#: /github/workspace/templates/admin/backups/index.phtml:64
+msgid "Restoring Backups"
+msgstr "恢复备份"
+
+#: /github/workspace/templates/admin/backups/index.phtml:67
+msgid "To restore a backup from your host computer, run:"
+msgstr "要从主机恢复备份，请运行："
+
+#: /github/workspace/templates/admin/backups/index.phtml:75
+msgid "Note that restoring a backup will clear your existing database. Never restore backup files from untrusted users."
+msgstr "请注意，恢复备份将清除您现有的数据库。切勿从不受信任的用户那里恢复备份文件。"
+
+#: /github/workspace/templates/admin/backups/index.phtml:100
+msgid "Backup"
+msgstr "备份"
+
+#: /github/workspace/templates/admin/backups/index.phtml:101
+msgid "Last Modified"
+msgstr "最后修改"
+
+#: /github/workspace/templates/admin/backups/index.phtml:102
+msgid "Size"
+msgstr "大小"
+
+#: /github/workspace/templates/admin/backups/index.phtml:111
+msgid "Download"
+msgstr "下载"
+
+#: /github/workspace/templates/admin/backups/index.phtml:115
+msgid "Delete backup \"%s\"?"
+msgstr "删除备份\"%s\"？"
+
+#: /github/workspace/templates/admin/backups/run.phtml:20
+msgid "Backups Home"
+msgstr "备份首页"
+
+#: /github/workspace/templates/admin/backups/run.phtml:25
+msgid "The backup process is running in the background. To view the logs, click the button below."
+msgstr "备份过程正在后台运行。要查看日志，请单击以下按钮。"
+
+#: /github/workspace/templates/admin/backups/run.phtml:31
+msgid "View Backup Log"
+msgstr "查看备份日志"
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:30
+msgid "GeoLite version \"%s\" is currently installed."
+msgstr "目前安装的是GeoLite版本\"%s\"。"
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:33
+msgid "Uninstall GeoLite database?"
+msgstr "卸载GeoLite数据库？"
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:35
+msgid "Uninstall GeoLite Database"
+msgstr "卸载GeoLite数据库"
+
+#: /github/workspace/templates/admin/install_geolite/index.phtml:39
+msgid "GeoLite is not currently installed on this installation."
+msgstr "目前在这个装置上还没有安装GeoLite。"
+
+#: /github/workspace/templates/admin/custom_fields/index.phtml:32
+msgid "Delete custom field \"%s\"?"
+msgstr "删除自定义字段\"%s\"？"
+
+#: /github/workspace/templates/admin/relays/index.phtml:20
+msgid "Relay"
+msgstr "中继"
+
+#: /github/workspace/templates/admin/relays/index.phtml:21
+msgid "Is Public"
+msgstr "是公共的"
+
+#: /github/workspace/templates/admin/relays/index.phtml:22
+msgid "First Connected"
+msgstr "第一连接"
+
+#: /github/workspace/templates/admin/relays/index.phtml:23
+msgid "Latest Update"
+msgstr "最新更新"
+
+#: /github/workspace/templates/admin/users/index.phtml:33
+#: /github/workspace/templates/frontend/account/two_factor.phtml:3
+#: /github/workspace/templates/frontend/account/login.phtml:3
+msgid "Log In"
+msgstr "登录"
+
+#: /github/workspace/templates/admin/users/index.phtml:37
+msgid "Delete user \"%s\"?"
+msgstr "删除用户\"%s\"？"
+
+#: /github/workspace/templates/admin/users/index.phtml:47
+msgid "(You)"
+msgstr "(你)"
+
+#: /github/workspace/templates/minimal.phtml:50
+msgid "Mascot designed by %s"
+msgstr "LOGO设计者：%s"
+
+#: /github/workspace/templates/frontend/index/noaccess.phtml:1
+msgid "Error: No Available Stations"
+msgstr "错误。没有可用的电台"
+
+#: /github/workspace/templates/frontend/index/noaccess.phtml:4
+msgid "Your account is active, but is not currently associated with any stations. If you believe this is an error, please contact this server's administrator."
+msgstr "您的帐户当前处于活跃状态，但目前没有与任何电台进行连接。如果您认为这是一个错误，请联系本服务器的管理员。"
+
+#: /github/workspace/templates/frontend/index/index.phtml:11
+#: /github/workspace/templates/system/error_http.phtml:17
+#: /github/workspace/templates/system/error_general.phtml:17
+#: /github/workspace/templates/main.phtml:68
+msgid "Dashboard"
+msgstr "控制板"
+
+#: /github/workspace/templates/frontend/index/index.phtml:40
+msgid "AzuraCast User"
+msgstr "AzuraCast用户"
+
+#: /github/workspace/templates/frontend/index/index.phtml:50
+#: /github/workspace/templates/frontend/profile/index.phtml:2
+#: /github/workspace/templates/frontend/profile/index.phtml:20
+#: /github/workspace/templates/main.phtml:83
+msgid "My Account"
+msgstr "我的帐户"
+
+#: /github/workspace/templates/frontend/index/index.phtml:86
+msgid "Listeners Per Station"
+msgstr "每电台的听众"
+
+#: /github/workspace/templates/frontend/index/index.phtml:92
+#: /github/workspace/templates/frontend/index/index.phtml:104
+msgid "Average Listeners"
+msgstr ""
+
+#: /github/workspace/templates/frontend/index/index.phtml:97
+#: /github/workspace/templates/frontend/index/index.phtml:109
+#: /github/workspace/templates/stations/reports/listeners.phtml:42
+msgid "Unique Listeners"
+msgstr "特别听众"
+
+#: /github/workspace/templates/frontend/index/index.phtml:119
+msgid "Station Overview"
+msgstr "电台概况"
+
+#: /github/workspace/templates/frontend/index/index.phtml:140
+msgid "Station Name"
+msgstr "电台名称"
+
+#: /github/workspace/templates/frontend/index/index.phtml:142
+msgid "Now Playing"
+msgstr "正在播放"
+
+#: /github/workspace/templates/frontend/setup/register.phtml:17
+msgid "AzuraCast First-Time Setup"
+msgstr "AzuraCast首次设置"
+
+#: /github/workspace/templates/frontend/setup/register.phtml:20
+msgid "Welcome to AzuraCast!"
+msgstr "欢迎来到AzuraCast!"
+
+#: /github/workspace/templates/frontend/setup/register.phtml:27
+msgid "Let's get started by creating your Super Administrator account."
+msgstr "让我们从创建您的超管账户开始。"
+
+#: /github/workspace/templates/frontend/setup/register.phtml:28
+msgid "This account will have full access to the system, and you'll automatically be logged in to it for the rest of setup."
+msgstr "这个账户将拥有对系统的全部访问权限，在接下来的设置过程中，您将自动登录到这个账户。"
+
+#: /github/workspace/templates/frontend/setup/station.phtml:19
+#: /github/workspace/templates/frontend/setup/settings.phtml:19
+msgid "Create Station"
+msgstr "创建电台"
+
+#: /github/workspace/templates/frontend/setup/station.phtml:34
+msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
+msgstr "通过在下面创建您的第一个广播电台来继续设置过程。您以后可以编辑这些详细信息。"
+
+#: /github/workspace/templates/frontend/setup/station.phtml:41
+msgid "Create a New Radio Station"
+msgstr "创建一个新的广播电台"
+
+#: /github/workspace/templates/frontend/setup/settings.phtml:35
+msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
+msgstr "通过提供有关您的广播环境的一些信息来完成设置过程。这些设置可以在以后从管理面板上进行更改。"
+
+#: /github/workspace/templates/frontend/setup/settings.phtml:42
+msgid "Customize AzuraCast Settings"
+msgstr "自定义AzuraCast设置"
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:11
+msgid "Enter Two-Factor Code"
+msgstr "输入双因素代码"
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:12
+msgid "Your account uses a two-factor security code. Enter the code your device is currently showing below."
+msgstr "您的账户使用双因素安全代码。请输入您的设备目前在下面显示的代码。"
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:18
+#: /github/workspace/templates/frontend/account/two_factor.phtml:20
+msgid "Security Code"
+msgstr "安全代码"
+
+#: /github/workspace/templates/frontend/account/two_factor.phtml:22
+#: /github/workspace/templates/frontend/account/two_factor.phtml:23
+#: /github/workspace/templates/frontend/account/login.phtml:43
+#: /github/workspace/templates/frontend/account/login.phtml:44
+msgid "Sign in"
+msgstr "登入"
+
+#: /github/workspace/templates/frontend/account/login.phtml:15
+msgid "Welcome!"
+msgstr "欢迎！"
+
+#: /github/workspace/templates/frontend/account/login.phtml:17
+msgid "Welcome to %s!"
+msgstr "欢迎来到%s！"
+
+#: /github/workspace/templates/frontend/account/login.phtml:34
+msgid "name@example.com"
+msgstr ""
+
+#: /github/workspace/templates/frontend/account/login.phtml:41
+msgid "Enter your password"
+msgstr "请输入您的密码"
+
+#: /github/workspace/templates/frontend/account/login.phtml:48
+msgid "Please log in to continue."
+msgstr "请登录后继续。"
+
+#: /github/workspace/templates/frontend/account/login.phtml:48
+msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
+msgstr "<a href=\"%s\" target=\"_blank\">忘记密码了吗？</a>"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:2
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:13
+msgid "Enable Two-Factor Authentication"
+msgstr "启用两因素身份验证"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:16
+msgid "Step 1: Scan QR Code"
+msgstr "第一步：请扫描二维码"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:18
+msgid "From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc)."
+msgstr "请使用您的智能手机，使用您选择的认证应用程序（FreeOTP、Authy等）扫描右边的二维码。"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:20
+msgid "Step 2: Verify Generated Code"
+msgstr "第二步：验证生成的代码"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:22
+msgid "To verify that the code was set up correctly, enter the 6-digit code the app shows you."
+msgstr "要验证代码设置是否正确，请输入应用程序显示的6位数代码。"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:31
+msgid "QR-Code"
+msgstr "二维码"
+
+#: /github/workspace/templates/frontend/profile/enable_two_factor.phtml:43
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:21
+#: /github/workspace/templates/partials/log_viewer.phtml:28
+msgid "Copy to Clipboard"
+msgstr "复制到剪贴板"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:58
+msgid "Customize"
+msgstr "自定义"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:66
+msgid "Two-Factor Authentication"
+msgstr "双因素认证"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:75
+msgid "Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in."
+msgstr "双因素认证可提高您了账户的安全性，在您登录时，除了密码外，还需要第二个一次性访问代码。"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:81
+msgid "Disable Two-Factor"
+msgstr "禁用双因素认证"
+
+#: /github/workspace/templates/frontend/profile/index.phtml:86
+msgid "Enable Two-Factor"
+msgstr "启用双因素认证"
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:3
+#: /github/workspace/templates/frontend/api_keys/index.phtml:3
+#: /github/workspace/templates/frontend/api_keys/index.phtml:9
+#: /github/workspace/templates/main.phtml:95
+msgid "My API Keys"
+msgstr "我的API密钥"
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:11
+msgid "New Key Generated"
+msgstr "生成新密钥"
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:14
+msgid "<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again."
+msgstr "<b>警告：在继续之前请复制下面的密钥！</b>如果您不复制您的密钥，您将无法再次检索相关信息。"
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:16
+msgid "Your full API key is below:"
+msgstr "您的完整API密钥如下："
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:25
+msgid "When making API calls, you can pass this value in the \"X-API-Key\" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform."
+msgstr "当进行API调用时，您可以在 \"X-API-Key \"头中传递这个值来验证自己的身份。您只能执行你的用户账户被允许执行的操作。"
+
+#: /github/workspace/templates/frontend/api_keys/new_key.phtml:28
+msgid "Continue"
+msgstr "继续"
+
+#: /github/workspace/templates/frontend/api_keys/index.phtml:13
+msgid "API keys can be used to access some system functionality without needing to log in. All of the keys \n"
+"            you create share your permissions in the system. For more information, see the <a href=\"%s\">API documentation</a>."
+msgstr "API密钥可以用来访问一些系统功能，而不需要登录。所有的密钥 \n"
+"            您在系统中创建的共享权限。更多信息，请参阅<a href=\"%s\">API文档</a>。"
+
+#: /github/workspace/templates/frontend/api_keys/index.phtml:33
+msgid "Key Identifier"
+msgstr "关键标识符"
+
+#: /github/workspace/templates/system/log_view.phtml:33
+msgid "Details"
+msgstr "详情"
+
+#: /github/workspace/templates/system/form_page.phtml:65
+msgid "Errors were encountered when trying to save changes:"
+msgstr "尝试保存更改时发生错误："
+
+#: /github/workspace/templates/system/form_page.phtml:68
+msgid "General"
+msgstr "常规"
+
+#: /github/workspace/templates/stations/remotes/index.phtml:13
+msgid "Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station's statistics. You can also broadcast from this server to remote relays."
+msgstr "远程中继可以让您与本服务器以外的广播软件合作。您在这里包含的任何中继都会被包含在您的电台统计中。您也可以从本服务器向远程中继进行广播。"
+
+#: /github/workspace/templates/stations/remotes/index.phtml:32
+msgid "Remote Relay"
+msgstr "远程中继"
+
+#: /github/workspace/templates/stations/remotes/index.phtml:45
+msgid "Delete remote relay \"%s\"?"
+msgstr "删除远程中继\"%s\"？"
+
+#: /github/workspace/templates/stations/mounts/index.phtml:12
+msgid "Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users."
+msgstr "挂载点是听众连接和收听您的电台的方式。每个挂载点可以是不同的音频格式或质量。使用挂载点，您可以为宽带听众设置一个高质量的流，为移动用户设置一个移动流。"
+
+#: /github/workspace/templates/stations/mounts/index.phtml:31
+msgid "Mount Point"
+msgstr "挂载点"
+
+#: /github/workspace/templates/stations/mounts/index.phtml:43
+msgid "Delete mount point \"%s\"?"
+msgstr "删除挂载点\"%s\"？"
+
+#: /github/workspace/templates/stations/mounts/index.phtml:53
+msgid "Default Mount"
+msgstr "默认挂载点"
+
+#: /github/workspace/templates/stations/automation/index.phtml:2
+#: /github/workspace/templates/stations/automation/index.phtml:6
+msgid "Automated Playlist Assignment"
+msgstr "自动播放列表分配"
+
+#: /github/workspace/templates/stations/automation/index.phtml:9
+msgid "Based on the previous performance of your station's songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists."
+msgstr "根据您的电台歌曲之前的表现，%s可以自动将歌曲平均分配到您的播放列表中，将表现最好的歌曲放在权重最高的播放列表位置上。"
+
+#: /github/workspace/templates/stations/automation/index.phtml:11
+msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
+msgstr "一旦您配置了自动分配，请单击下面的按钮来运行自动分配过程。除非您选择了下面的 \"启用\"，否则该过程根本不会运行。"
+
+#: /github/workspace/templates/stations/automation/index.phtml:13
+msgid "Run Automated Assignment"
+msgstr "运行自动分配"
+
+#: /github/workspace/templates/stations/automation/index.phtml:19
+msgid "Configure Automated Assignment"
+msgstr "配置自动分配"
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:3
+msgid "Reorder Playlist"
+msgstr "重新排序播放列表"
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:16
+msgid "Reorder Playlist: %s"
+msgstr "重新排序播放列表：%s"
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:40
+msgid "Down"
+msgstr "下"
+
+#: /github/workspace/templates/stations/playlists/reorder.phtml:43
+msgid "Up"
+msgstr "上"
+
+#: /github/workspace/templates/stations/logs/index.phtml:12
+msgid "Available Logs"
+msgstr "可用日志"
+
+#: /github/workspace/templates/stations/webhooks/add.phtml:7
+msgid "Select the type of web hook to create."
+msgstr "选择要创建的网络钩子的类型。"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:13
+msgid "Web hooks let you connect to external web services and broadcast changes to your station to them."
+msgstr "网络钩子可以让您连接到外部网络服务，并将您的电台的变化广播传输给他们。"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:32
+msgid "Type"
+msgstr "类型"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:33
+msgid "Triggers"
+msgstr ""
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:47
+msgid "Enable"
+msgstr "启用"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:51
+msgid "Trigger the web hook manually and view the raw response."
+msgstr "手动触发网络钩子并查看原始响应。"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:51
+msgid "Test"
+msgstr "测试"
+
+#: /github/workspace/templates/stations/webhooks/index.phtml:52
+msgid "Delete web hook \"%s\"?"
+msgstr "删除网络钩子 \"%s\"?"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:18
+#: /github/workspace/templates/stations/sftp_users/index.phtml:51
+msgid "Connection Information"
+msgstr "连接信息"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:21
+msgid "IceCast Clients"
+msgstr "IceCast客户"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:23
+#: /github/workspace/templates/stations/streamers/index.phtml:39
+#: /github/workspace/templates/stations/sftp_users/index.phtml:55
+msgid "Server"
+msgstr "服务器"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:26
+#: /github/workspace/templates/stations/streamers/index.phtml:42
+#: /github/workspace/templates/stations/sftp_users/index.phtml:58
+msgid "You may need to connect directly via your IP address, which is <code>%s</code>."
+msgstr "您可能需要通过您的IP地址进行连接，也就是<code>%s</code>。"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:30
+#: /github/workspace/templates/stations/streamers/index.phtml:46
+#: /github/workspace/templates/stations/sftp_users/index.phtml:62
+msgid "Port"
+msgstr "端口"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:33
+msgid "Mount Name"
+msgstr "挂载名称"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:37
+msgid "ShoutCast v1 Clients"
+msgstr "ShoutCast v1客户端"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:47
+msgid "%d (%d for some clients)"
+msgstr "%d (某些客户为%d)"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:53
+msgid "(DJ username and password separated by a colon)"
+msgstr "(DJ用户名和密码需用冒号隔开)"
+
+#: /github/workspace/templates/stations/streamers/index.phtml:57
+msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
+msgstr "<a href=\"%s\" target=\"_blank\">AzuraCast Wiki</a>上有广播软件的设置说明。"
+
+#: /github/workspace/templates/stations/streamers/disabled.phtml:3
+msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
+msgstr "该电台目前已禁用流媒体账户。要启用流媒体账户，请点击下面的按钮。"
+
+#: /github/workspace/templates/stations/streamers/disabled.phtml:5
+msgid "Enable Streaming"
+msgstr "启用流媒体"
+
+#: /github/workspace/templates/stations/sftp_users/index.phtml:36
+msgid "Delete SFTP User \"%s\"?"
+msgstr "删除 SFTP 用户 \"%s\"？"
+
+#: /github/workspace/templates/stations/queue/index.js.phtml:29
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:45
+msgid "Listener Request"
+msgstr "侦听器请求"
+
+#: /github/workspace/templates/stations/queue/index.js.phtml:31
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:47
+msgid "Playlist:"
+msgstr "播放列表："
+
+#: /github/workspace/templates/stations/queue/index.js.phtml:36
+msgid "Delete queue item?"
+msgstr "删除队列项？"
+
+#: /github/workspace/templates/stations/queue/index.phtml:24
+msgid "Cued On"
+msgstr "提示上一个"
+
+#: /github/workspace/templates/stations/queue/index.phtml:26
+#: /github/workspace/templates/stations/reports/timeline.phtml:43
+msgid "Source"
+msgstr "源"
+
+#: /github/workspace/templates/stations/files/index.phtml:39
+msgid "%s of %s Used (%d Files)"
+msgstr "已使用的%s的%s (%d文件)"
+
+#: /github/workspace/templates/stations/files/index.phtml:41
+msgid "%s Used (%d Files)"
+msgstr ""
+
+#: /github/workspace/templates/stations/files/index.phtml:53
+msgid "You can also upload files in bulk via SFTP."
+msgstr "您也可以通过SFTP批量上传文件。"
+
+#: /github/workspace/templates/stations/files/index.phtml:59
+msgid "Manage SFTP Accounts"
+msgstr "管理SFTP帐户"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:16
+msgid "Clear all pending requests?"
+msgstr "清除所有待处理的请求？"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:19
+msgid "Clear Pending Requests"
+msgstr "清除待处理的请求"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:25
+msgid "Date Requested"
+msgstr "要求日期"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:26
+msgid "Date Played"
+msgstr "播放日期"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:28
+msgid "Requester IP"
+msgstr "请求者IP"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:44
+msgid "Not Played"
+msgstr "未播放"
+
+#: /github/workspace/templates/stations/reports/requests.phtml:58
+msgid "Delete request?"
+msgstr "删除请求？"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:17
+#: /github/workspace/templates/stations/reports/listeners.phtml:26
+#: /github/workspace/templates/stations/reports/listeners.phtml:27
+#: /github/workspace/templates/stations/reports/timeline.phtml:18
+#: /github/workspace/templates/stations/reports/timeline.phtml:19
+msgid "Download CSV"
+msgstr "下载 CSV"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:32
+msgid "Filename"
+msgstr "文件名"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:34
+msgid "Length Text"
+msgstr "文字长度"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:35
+msgid "Playlist(s)"
+msgstr "播放列表"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:36
+msgid "Joins"
+msgstr "加入"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:37
+msgid "Losses"
+msgstr "损失"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:38
+msgid "Total"
+msgstr "总"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:39
+#: /github/workspace/templates/stations/reports/overview.phtml:157
+msgid "Plays"
+msgstr "播放"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:40
+msgid "Play %"
+msgstr "播放 %"
+
+#: /github/workspace/templates/stations/reports/performance.phtml:41
+msgid "Ratio"
+msgstr "比"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:56
+msgid "Best Performing Songs"
+msgstr "最佳表演歌曲"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:57
+#: /github/workspace/templates/stations/reports/overview.phtml:100
+msgid "in the last 48 hours"
+msgstr "最近48小时内"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:68
+#: /github/workspace/templates/stations/reports/overview.phtml:111
+#: /github/workspace/templates/stations/reports/timeline.phtml:41
+msgid "Change"
+msgstr "更改"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:69
+#: /github/workspace/templates/stations/reports/overview.phtml:112
+#: /github/workspace/templates/stations/reports/overview.phtml:158
+msgid "Song"
+msgstr "歌曲"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:99
+msgid "Worst Performing Songs"
+msgstr "最差歌曲"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:145
+msgid "Most Played Songs"
+msgstr "最流行的歌曲"
+
+#: /github/workspace/templates/stations/reports/overview.phtml:146
+msgid "in the last month"
+msgstr "上个月"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:31
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:7
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:95
+msgid "Live Listeners"
+msgstr "现场听众"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:43
+#: /github/workspace/templates/stations/reports/listeners.phtml:50
+msgid "for selected period"
+msgstr "选定时期"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:49
+msgid "Total Listener Hours"
+msgstr "听众总时数"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:58
+msgid "IP"
+msgstr ""
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:59
+msgid "Time (sec)"
+msgstr "时间 (sec)"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:60
+msgid "User Agent"
+msgstr "用户 Agent"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:61
+msgid "Location"
+msgstr "位置"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:71
+msgid "Mobile Device"
+msgstr "移动设备"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:75
+msgid "Desktop Device"
+msgstr "桌面设备"
+
+#: /github/workspace/templates/stations/reports/listeners.phtml:87
+msgid "Unknown"
+msgstr "未知"
+
+#: /github/workspace/templates/stations/reports/timeline.js.phtml:49
+msgid "Live Streamer:"
+msgstr "直播员："
+
+#: /github/workspace/templates/stations/reports/duplicates.phtml:1
+#: /github/workspace/templates/stations/reports/duplicates.phtml:5
+msgid "Song Duplicates"
+msgstr "重复歌曲"
+
+#: /github/workspace/templates/stations/reports/duplicates.phtml:9
+msgid "No duplicates were found. Nice work!"
+msgstr "没有找到重复的。非常好！"
+
+#: /github/workspace/templates/stations/reports/duplicates.phtml:24
+msgid "Title / File Path"
+msgstr "标题/文件路径"
+
+#: /github/workspace/templates/stations/reports/listeners.js.phtml:59
+msgid "There are too many data points to map!"
+msgstr "数据点太多了，无法绘制!"
+
+#: /github/workspace/templates/stations/reports/restricted.phtml:1
+#: /github/workspace/templates/stations/reports/restricted.phtml:5
+msgid "Report Not Available"
+msgstr "报告不可用"
+
+#: /github/workspace/templates/stations/reports/restricted.phtml:8
+msgid "This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information."
+msgstr "由于系统管理员选择不收集详细的基于IP的听众信息，因此该电台没有该报告。"
+
+#: /github/workspace/templates/stations/reports/overview.js.phtml:68
+msgid "Hour"
+msgstr "小时"
+
+#: /github/workspace/templates/stations/sidebar.js.phtml:22
+msgid "Please wait..."
+msgstr "加载中..."
+
+#: /github/workspace/templates/stations/sidebar.phtml:16
+msgid "Station Time"
+msgstr "电台时间"
+
+#: /github/workspace/templates/stations/profile/disabled.phtml:4
+msgid "Station Broadcasting Disabled"
+msgstr "电台广播已禁用"
+
+#: /github/workspace/templates/stations/profile/disabled.phtml:8
+msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href=\"%s\">edit your station profile</a>."
+msgstr "您的电台目前未启用广播。您仍然可以管理媒体、播放列表和其他电台设置。要重新启用广播，请<a href=\"%s\">编辑您的电台简介</a>。"
+
+#: /github/workspace/templates/partials/radio_controls.js.phtml:7
+msgid "Pause"
+msgstr "暂停"
+
+#: /github/workspace/templates/partials/radio_controls.js.phtml:8
+msgid "Play"
+msgstr "播放"
+
+#: /github/workspace/templates/partials/log_viewer.phtml:12
+msgid "Log View"
+msgstr "查看日志"
+
+#: /github/workspace/templates/partials/log_viewer.phtml:20
+msgid "Automatically scroll to the bottom of the log"
+msgstr "自动滚动到日志的底部"
+
+#: /github/workspace/templates/partials/log_help_card.phtml:3
+msgid "Need Help?"
+msgstr "需要帮助吗？"
+
+#: /github/workspace/templates/partials/log_help_card.phtml:6
+msgid "You can find answers for many common questions in our <a href=\"%s\" target=\"_blank\">support documents</a>."
+msgstr "您可以在我们的<a href=\"%s\" target=\"_blank\">支持文档</a>中找到许多常见问题的答案。"
+
+#: /github/workspace/templates/partials/log_help_card.phtml:8
+msgid "If you're experiencing a bug or error, you can submit a GitHub issue using the link below."
+msgstr "如果你遇到bug或错误，你可以使用下面的链接提交一个GitHub问题。"
+
+#: /github/workspace/templates/partials/log_help_card.phtml:10
+msgid "Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue."
+msgstr "您当前的安装类型是<b>%s</b>。在创建新的问题时，一定要包含此内容。"
+
+#: /github/workspace/templates/partials/log_help_card.phtml:15
+msgid "Add New GitHub Issue"
+msgstr "添加新的GitHub问题"
+
+#: /github/workspace/templates/main.phtml:44
+msgid "Skip to main content"
+msgstr "跳到主要内容"
+
+#: /github/workspace/templates/main.phtml:48
+msgid "Toggle Sidebar"
+msgstr "切换侧栏"
+
+#: /github/workspace/templates/main.phtml:61
+msgid "Toggle Menu"
+msgstr "切换菜单"
+
+#: /github/workspace/templates/main.phtml:76
+msgid "System Administration"
+msgstr "系统管理"
+
+#: /github/workspace/templates/main.phtml:89
+msgid "Switch Theme"
+msgstr "切换主题"
+
+#: /github/workspace/templates/main.phtml:101
+msgid "Help"
+msgstr "帮助"
+
+#: /github/workspace/templates/main.phtml:109
+msgid "End Session"
+msgstr "会议结束"
+
+#: /github/workspace/templates/main.phtml:116
+msgid "Sign Out"
+msgstr "退出"
+
+#: /github/workspace/templates/main.phtml:158
+msgid "Like our software? <a href=\"%s\" target=\"_blank\">Donate to support AzuraCast!</a>"
+msgstr "喜欢我们的软件吗？<a href=\"%s\" target=\"_blank\">请捐赠支持AzuraCast！</a>"
+

@@ -1,7 +1,9 @@
 <?php
+
 namespace App;
 
 use App\Entity;
+
 use function in_array;
 use function is_array;
 
@@ -17,6 +19,7 @@ class Acl
     public const GLOBAL_STATIONS = 'administer stations';
     public const GLOBAL_CUSTOM_FIELDS = 'administer custom fields';
     public const GLOBAL_BACKUPS = 'administer backups';
+    public const GLOBAL_STORAGE_LOCATIONS = 'administer storage locations';
 
     public const STATION_ALL = 'administer all';
     public const STATION_VIEW = 'view station management';
@@ -33,74 +36,82 @@ class Acl
 
     protected Entity\Repository\RolePermissionRepository $permission_repo;
 
-    protected ?array $_actions;
+    protected EventDispatcher $dispatcher;
 
-    public function __construct(Entity\Repository\RolePermissionRepository $rolePermissionRepository)
-    {
+    protected array $permissions;
+    protected ?array $actions;
+
+    public function __construct(
+        Entity\Repository\RolePermissionRepository $rolePermissionRepository,
+        EventDispatcher $dispatcher
+    ) {
         $this->permission_repo = $rolePermissionRepository;
+        $this->dispatcher = $dispatcher;
+
+        $this->permissions = $this->listPermissions();
         $this->reload();
     }
 
     /**
-     * Force a reload of the internal ACL cache (used in the event of a user status change.
+     * Force a reload of the internal ACL cache (used in the event of a user status change).
      */
     public function reload(): void
     {
-        $this->_actions = $this->permission_repo->getActionsForAllRoles();
+        $this->actions = $this->permission_repo->getActionsForAllRoles();
     }
 
     /**
      * @param string $permission_name
      * @param bool $is_global
-     *
-     * @return bool
      */
-    public static function isValidPermission($permission_name, $is_global): bool
+    public function isValidPermission($permission_name, $is_global): bool
     {
-        $permissions = self::listPermissions();
-
         return $is_global
-            ? isset($permissions['global'][$permission_name])
-            : isset($permissions['station'][$permission_name]);
+            ? isset($this->permissions['global'][$permission_name])
+            : isset($this->permissions['station'][$permission_name]);
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
-    public static function listPermissions(): array
+    public function listPermissions(): array
     {
-        static $permissions;
-
-        if (null === $permissions) {
-            $permissions = [
-                'global' => [
-                    self::GLOBAL_ALL => __('All Permissions'),
-                    self::GLOBAL_VIEW => __('View Administration Page'),
-                    self::GLOBAL_LOGS => __('View System Logs'),
-                    self::GLOBAL_SETTINGS => __('Administer Settings'),
-                    self::GLOBAL_API_KEYS => __('Administer API Keys'),
-                    self::GLOBAL_USERS => __('Administer Users'),
-                    self::GLOBAL_PERMISSIONS => __('Administer Permissions'),
-                    self::GLOBAL_STATIONS => __('Administer Stations'),
-                    self::GLOBAL_CUSTOM_FIELDS => __('Administer Custom Fields'),
-                    self::GLOBAL_BACKUPS => __('Administer Backups'),
-                ],
-                'station' => [
-                    self::STATION_ALL => __('All Permissions'),
-                    self::STATION_VIEW => __('View Station Page'),
-                    self::STATION_REPORTS => __('View Station Reports'),
-                    self::STATION_LOGS => __('View Station Logs'),
-                    self::STATION_PROFILE => __('Manage Station Profile'),
-                    self::STATION_BROADCASTING => __('Manage Station Broadcasting'),
-                    self::STATION_STREAMERS => __('Manage Station Streamers'),
-                    self::STATION_MOUNTS => __('Manage Station Mount Points'),
-                    self::STATION_REMOTES => __('Manage Station Remote Relays'),
-                    self::STATION_MEDIA => __('Manage Station Media'),
-                    self::STATION_AUTOMATION => __('Manage Station Automation'),
-                    self::STATION_WEB_HOOKS => __('Manage Station Web Hooks'),
-                ],
-            ];
+        if (isset($this->permissions)) {
+            return $this->permissions;
         }
+
+        $permissions = [
+            'global' => [
+                self::GLOBAL_ALL => __('All Permissions'),
+                self::GLOBAL_VIEW => __('View Administration Page'),
+                self::GLOBAL_LOGS => __('View System Logs'),
+                self::GLOBAL_SETTINGS => __('Administer Settings'),
+                self::GLOBAL_API_KEYS => __('Administer API Keys'),
+                self::GLOBAL_STATIONS => __('Administer Stations'),
+                self::GLOBAL_CUSTOM_FIELDS => __('Administer Custom Fields'),
+                self::GLOBAL_BACKUPS => __('Administer Backups'),
+                self::GLOBAL_STORAGE_LOCATIONS => __('Administer Storage Locations'),
+            ],
+            'station' => [
+                self::STATION_ALL => __('All Permissions'),
+                self::STATION_VIEW => __('View Station Page'),
+                self::STATION_REPORTS => __('View Station Reports'),
+                self::STATION_LOGS => __('View Station Logs'),
+                self::STATION_PROFILE => __('Manage Station Profile'),
+                self::STATION_BROADCASTING => __('Manage Station Broadcasting'),
+                self::STATION_STREAMERS => __('Manage Station Streamers'),
+                self::STATION_MOUNTS => __('Manage Station Mount Points'),
+                self::STATION_REMOTES => __('Manage Station Remote Relays'),
+                self::STATION_MEDIA => __('Manage Station Media'),
+                self::STATION_AUTOMATION => __('Manage Station Automation'),
+                self::STATION_WEB_HOOKS => __('Manage Station Web Hooks'),
+            ],
+        ];
+
+        $buildPermissionsEvent = new Event\BuildPermissions($permissions);
+        $this->dispatcher->dispatch($buildPermissionsEvent);
+
+        $permissions = $buildPermissionsEvent->getPermissions();
 
         return $permissions;
     }
@@ -118,11 +129,11 @@ class Acl
     public function checkPermission(?Entity\User $user = null, $action, $station_id = null): void
     {
         if (!($user instanceof Entity\User)) {
-            throw new Exception\NotLoggedInException;
+            throw new Exception\NotLoggedInException();
         }
 
         if (!$this->userAllowed($user, $action, $station_id)) {
-            throw new Exception\PermissionDeniedException;
+            throw new Exception\PermissionDeniedException();
         }
     }
 
@@ -132,8 +143,6 @@ class Acl
      * @param Entity\User|null $user
      * @param string|array $action
      * @param int|Entity\Station|null $station_id
-     *
-     * @return bool
      */
     public function userAllowed(?Entity\User $user = null, $action, $station_id = null): bool
     {
@@ -171,8 +180,6 @@ class Acl
      * @param int|array $role_id
      * @param string|array $action
      * @param int|Entity\Station|null $station_id
-     *
-     * @return bool
      */
     public function roleAllowed($role_id, $action, $station_id = null): bool
     {
@@ -202,8 +209,8 @@ class Acl
             return false;
         }
 
-        if (!empty($this->_actions[$role_id])) {
-            $role_actions = (array)$this->_actions[$role_id];
+        if (!empty($this->actions[$role_id])) {
+            $role_actions = (array)$this->actions[$role_id];
 
             if (in_array(self::GLOBAL_ALL, (array)$role_actions['global'], true)) {
                 return true;

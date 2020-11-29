@@ -14,12 +14,13 @@ function styleForm (form) {
 
   $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');
 
-  $form.find('select').wrap('<div class="select" />').chosen({
-    width: '100%',
-    placeholder_text_single: App.lang.placeholder,
-    placeholder_text_multiple: App.lang.placeholder,
-    no_results_text: App.lang.no_results
-  });
+  if ($.fn.select2) {
+    $form.find('select').select2({
+      width: '100%',
+      theme: 'bootstrap4',
+      language: App.lang.locale_short
+    });
+  }
 
   autosize($form.find('textarea'));
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Api;
 
 use App\Http\Router;
@@ -49,6 +50,14 @@ class Song implements ResolvableUrlInterface
      * @var string
      */
     public string $album = '';
+
+    /**
+     * The song genre.
+     *
+     * @OA\Property(example="Rock")
+     * @var string
+     */
+    public string $genre = '';
 
     /**
      * Lyrics to the song.

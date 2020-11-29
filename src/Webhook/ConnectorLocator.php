@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Webhook;
 
 use App\Webhook\Connector\ConnectorInterface;
+use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 
 class ConnectorLocator
@@ -19,7 +21,7 @@ class ConnectorLocator
     public function getConnector(string $name): ConnectorInterface
     {
         if (!isset($this->connectors[$name])) {
-            throw new \InvalidArgumentException('Invalid web hook connector type specified.');
+            throw new InvalidArgumentException('Invalid web hook connector type specified.');
         }
 
         $connectorClass = $this->connectors[$name];

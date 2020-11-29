@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\MessageQueue;
 
-use Symfony\Component\Lock\LockFactory;
+use App\LockFactory;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -21,8 +22,10 @@ final class HandleUniqueMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        if ($envelope->last(ConsumedByWorkerStamp::class) === null
-            || !($envelope->getMessage() instanceof UniqueMessageInterface)) {
+        if (
+            $envelope->last(ConsumedByWorkerStamp::class) === null
+            || !($envelope->getMessage() instanceof UniqueMessageInterface)
+        ) {
             return $stack->next()->handle($envelope, $stack);
         }
 
@@ -31,7 +34,9 @@ final class HandleUniqueMiddleware implements MiddlewareInterface
 
         $lock = $this->lockFactory->createLock('message_queue_' . $message->getIdentifier(), $message->getTtl());
         if ($lock->acquire() === false) {
-            throw new UnrecoverableMessageHandlingException('A queued message matching this one is already being handled.');
+            throw new UnrecoverableMessageHandlingException(
+                'A queued message matching this one is already being handled.'
+            );
         }
 
         try {

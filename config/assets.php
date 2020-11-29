@@ -134,16 +134,16 @@ return [
                 function (Request $request) {
                     $locale = $request->getAttribute('locale', Customization::DEFAULT_LOCALE);
                     $locale = explode('.', $locale)[0];
+                    $localeShort = substr($locale, 0, 2);
                     $localeWithDashes = str_replace('_', '-', $locale);
 
                     $app = [
                         'lang' => [
                             'confirm' => __('Are you sure?'),
-                            'placeholder' => 'Select...',
-                            'no_results' => 'No results found!',
-                            'advanced' => 'Advanced',
+                            'advanced' => __('Advanced'),
                         ],
                         'locale' => $locale,
+                        'locale_short' => $localeShort,
                         'locale_with_dashes' => $localeWithDashes,
                     ];
 
@@ -159,7 +159,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/sweetalert/sweetalert.min.js',
+                    'src' => 'dist/lib/sweetalert2/sweetalert2.min.js',
                     'defer' => true,
                 ],
                 [
@@ -198,7 +198,7 @@ return [
      * Asset collections
      */
     'forms_common' => [
-        'require' => ['zxcvbn', 'chosen', 'dirrty'],
+        'require' => ['zxcvbn', 'select2', 'dirrty'],
     ],
 
     /*
@@ -263,18 +263,18 @@ return [
         ],
     ],
 
-    'chosen' => [
+    'select2' => [
         'order' => 10,
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/chosen/chosen.jquery.min.js',
+                    'src' => 'dist/lib/select2/select2.full.min.js',
                     'defer' => true,
                 ],
             ],
             'css' => [
                 [
-                    'href' => 'dist/lib/chosen/chosen.min.css',
+                    'href' => 'dist/lib/select2/select2.min.css',
                 ],
             ],
         ],
@@ -486,6 +486,30 @@ return [
     ],
 
     'StationOnDemand' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
+    'PublicRadioPlayer' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'SongRequest' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
+    'StationProfile' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'AdminStorageLocations' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],
         // Auto-managed by Assets

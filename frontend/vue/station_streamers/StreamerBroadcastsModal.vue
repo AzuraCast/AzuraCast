@@ -39,126 +39,128 @@
     </b-modal>
 </template>
 <script>
-    import DataTable from '../components/DataTable.vue';
-    import axios from 'axios';
-    import { formatFileSize } from '../inc/format_file_size';
-    import InlinePlayer from '../InlinePlayer';
+import DataTable from '../components/DataTable.vue';
+import axios from 'axios';
+import { formatFileSize } from '../inc/format_file_size';
+import InlinePlayer from '../InlinePlayer';
 
-    export default {
-        name: 'StreamerBroadcastsModal',
-        components: { InlinePlayer, DataTable },
-        data () {
-            return {
-                now_playing_url: null,
-                listUrl: null,
-                fields: [
-                    {
-                        key: 'recording_links_download',
-                        label: ' ',
-                        sortable: false
-                    },
-                    {
-                        key: 'timestampStart',
-                        label: this.$gettext('Start Time'),
-                        sortable: false,
-                        formatter: (value, key, item) => {
-                            return moment.unix(value).format('lll');
-                        }
-                    },
-                    {
-                        key: 'timestampEnd',
-                        label: this.$gettext('End Time'),
-                        sortable: false,
-                        formatter: (value, key, item) => {
-                            if (value === 0) {
-                                return this.$gettext('Live');
-                            }
-                            return moment.unix(value).format('lll');
-                        }
-                    },
-                    {
-                        key: 'recording_size',
-                        label: this.$gettext('Size'),
-                        sortable: false,
-                        formatter: (value, key, item) => {
-                            if (!value) {
-                                return '';
-                            }
-
-                            return formatFileSize(value);
-                        }
-                    },
-                    {
-                        key: 'actions',
-                        label: this.$gettext('Actions'),
-                        sortable: false
+export default {
+    name: 'StreamerBroadcastsModal',
+    components: { InlinePlayer, DataTable },
+    data () {
+        return {
+            now_playing_url: null,
+            listUrl: null,
+            fields: [
+                {
+                    key: 'recording_links_download',
+                    label: ' ',
+                    sortable: false
+                },
+                {
+                    key: 'timestampStart',
+                    label: this.$gettext('Start Time'),
+                    sortable: false,
+                    formatter: (value, key, item) => {
+                        return moment.unix(value).format('lll');
                     }
-                ]
-            };
+                },
+                {
+                    key: 'timestampEnd',
+                    label: this.$gettext('End Time'),
+                    sortable: false,
+                    formatter: (value, key, item) => {
+                        if (value === 0) {
+                            return this.$gettext('Live');
+                        }
+                        return moment.unix(value).format('lll');
+                    }
+                },
+                {
+                    key: 'recording_size',
+                    label: this.$gettext('Size'),
+                    sortable: false,
+                    formatter: (value, key, item) => {
+                        if (!value) {
+                            return '';
+                        }
+
+                        return formatFileSize(value);
+                    }
+                },
+                {
+                    key: 'actions',
+                    label: this.$gettext('Actions'),
+                    sortable: false
+                }
+            ]
+        };
+    },
+    computed: {
+        langHeader () {
+            return this.$gettext('Streamer Broadcasts');
         },
-        computed: {
-            langHeader () {
-                return this.$gettext('Streamer Broadcasts');
-            },
-            langPlayPause () {
-                return this.$gettext('Play/Pause');
-            },
-            langDownload () {
-                return this.$gettext('Download');
+        langPlayPause () {
+            return this.$gettext('Play/Pause');
+        },
+        langDownload () {
+            return this.$gettext('Download');
+        }
+    },
+    mounted () {
+        this.$eventHub.$on('player_stopped', () => {
+            this.now_playing_url = null;
+        });
+
+        this.$eventHub.$on('player_playing', (url) => {
+            this.now_playing_url = url;
+        });
+    },
+    methods: {
+        playAudio (url) {
+            if (this.now_playing_url === url) {
+                this.$refs.player.stop();
+            } else {
+                this.$refs.player.play(url);
             }
         },
-        mounted () {
-            this.$eventHub.$on('player_stopped', () => {
-                this.now_playing_url = null;
-            });
+        doDelete (url) {
+            let buttonText = this.$gettext('Delete');
+            let buttonConfirmText = this.$gettext('Delete broadcast?');
 
-            this.$eventHub.$on('player_playing', (url) => {
-                this.now_playing_url = url;
-            });
-        },
-        methods: {
-            playAudio (url) {
-                if (this.now_playing_url === url) {
-                    this.$refs.player.stop();
-                } else {
-                    this.$refs.player.play(url);
-                }
-            },
-            doDelete (url) {
-                let buttonText = this.$gettext('Delete');
-                let buttonConfirmText = this.$gettext('Delete broadcast?');
-
-                swal({
-                    title: buttonConfirmText,
-                    buttons: [true, buttonText],
-                    dangerMode: true
-                }).then((value) => {
-                    if (value) {
-                        axios.delete(url).then((resp) => {
-                            notify('<b>' + resp.data.message + '</b>', 'success');
-
-                            this.$refs.datatable.refresh();
-                        }).catch((err) => {
-                            console.error(err);
-                            if (err.response.message) {
-                                notify('<b>' + err.response.message + '</b>', 'danger');
-                            }
-                        });
+            Swal.fire({
+                title: buttonConfirmText,
+                confirmButtonText: buttonText,
+                confirmButtonColor: '#e64942',
+                showCancelButton: true,
+                focusCancel: true
+            }).then((result) => {
+                if (result.value) {
+                    axios.delete(url).then((resp) => {
+                        notify('<b>' + resp.data.message + '</b>', 'success');
 
                         this.$refs.datatable.refresh();
-                    }
-                });
-            },
-            open (listUrl) {
-                this.listUrl = listUrl;
-                this.$refs.modal.show();
-            },
-            close () {
-                this.$refs.player.stop();
+                    }).catch((err) => {
+                        console.error(err);
+                        if (err.response.message) {
+                            notify('<b>' + err.response.message + '</b>', 'danger');
+                        }
+                    });
 
-                this.listUrl = null;
-                this.$refs.modal.hide();
-            }
+                    this.$refs.datatable.refresh();
+                }
+            });
+        },
+        open (listUrl) {
+            this.listUrl = listUrl;
+            this.$refs.modal.show();
+        },
+        close () {
+            this.$refs.player.stop();
+
+            this.listUrl = null;
+            this.$refs.modal.hide();
         }
-    };
+    }
+};
 </script>

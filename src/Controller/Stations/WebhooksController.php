@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations;
 
 use App\Entity;
@@ -65,7 +66,7 @@ class WebhooksController extends AbstractStationCrudController
 
     public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
-        if (false !== $this->_doEdit($request, $id)) {
+        if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Web Hook updated.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
@@ -86,15 +87,17 @@ class WebhooksController extends AbstractStationCrudController
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         /** @var Entity\StationWebhook $record */
-        $record = $this->_getRecord($request->getStation(), $id);
+        $record = $this->getRecord($request->getStation(), $id);
 
         $new_status = $record->toggleEnabled();
 
         $this->em->persist($record);
         $this->em->flush();
 
-        $request->getFlash()->addMessage('<b>' . ($new_status ? __('Web hook enabled.') : __('Web Hook disabled.')) . '</b>',
-            Flash::SUCCESS);
+        $request->getFlash()->addMessage(
+            '<b>' . ($new_status ? __('Web hook enabled.') : __('Web Hook disabled.')) . '</b>',
+            Flash::SUCCESS
+        );
         return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }
 
@@ -109,7 +112,7 @@ class WebhooksController extends AbstractStationCrudController
         $station = $request->getStation();
 
         /** @var Entity\StationWebhook $record */
-        $record = $this->_getRecord($station, $id);
+        $record = $this->getRecord($station, $id);
 
         $handler_response = $this->dispatcher->testDispatch($station, $record);
         $log_records = $handler_response->getRecords();
@@ -126,7 +129,7 @@ class WebhooksController extends AbstractStationCrudController
         $id,
         $csrf
     ): ResponseInterface {
-        $this->_doDelete($request, $id, $csrf);
+        $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Web Hook deleted.') . '</b>', Flash::SUCCESS);
 

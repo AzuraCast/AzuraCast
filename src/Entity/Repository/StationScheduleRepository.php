@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -110,10 +111,12 @@ class StationScheduleRepository extends Repository
             $i = $startDate;
 
             while ($i <= $endDate) {
-                $dayOfWeek = (int)$i->format('N');
+                $dayOfWeek = $i->dayOfWeekIso;
 
-                if ($this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
-                    && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)) {
+                if (
+                    $this->scheduler->shouldSchedulePlayOnCurrentDate($scheduleItem, $i)
+                    && $this->scheduler->isScheduleScheduledToPlayToday($scheduleItem, $dayOfWeek)
+                ) {
                     $start = Entity\StationSchedule::getDateTime($scheduleItem->getStartTime(), $i);
                     $end = Entity\StationSchedule::getDateTime($scheduleItem->getEndTime(), $i);
 
@@ -128,7 +131,7 @@ class StationScheduleRepository extends Repository
                         continue;
                     }
 
-                    $row = new Entity\Api\StationSchedule;
+                    $row = new Entity\Api\StationSchedule();
                     $row->id = $scheduleItem->getId();
                     $row->start_timestamp = $start->getTimestamp();
                     $row->start = $start->toIso8601String();

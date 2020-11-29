@@ -1,10 +1,9 @@
 <?php
+
 namespace App\Controller\Api\Stations\Art;
 
-use App\Entity\Repository\StationMediaRepository;
-use App\Entity\Repository\StationRepository;
-use App\Entity\StationMedia;
-use App\Flysystem\Filesystem;
+use App\Entity;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
@@ -32,43 +31,45 @@ class GetArtAction
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param Filesystem $filesystem
-     * @param StationRepository $stationRepo
-     * @param StationMediaRepository $mediaRepo
+     * @param FilesystemManager $filesystem
+     * @param Entity\Repository\StationRepository $stationRepo
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
      * @param string $media_id
-     *
-     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
-        StationRepository $stationRepo,
-        StationMediaRepository $mediaRepo,
-        $media_id
+        FilesystemManager $filesystem,
+        Entity\Repository\StationRepository $stationRepo,
+        Entity\Repository\StationMediaRepository $mediaRepo,
+        string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
+        $fs = $filesystem->getPrefixedAdapterForStation(
+            $station,
+            FilesystemManager::PREFIX_MEDIA,
+            true
+        );
 
         $defaultArtRedirect = $response->withRedirect($stationRepo->getDefaultAlbumArtUrl($station), 302);
-        $fs = $filesystem->getForStation($station);
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id)[0];
 
-        if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
+        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
-            $mediaPath = Filesystem::PREFIX_ALBUM_ART . '://' . $media_id . '.jpg';
+            $mediaPath = Entity\StationMedia::getArtPath($media_id);
         } else {
             $media = $mediaRepo->find($media_id, $station);
-            if ($media instanceof StationMedia) {
-                $mediaPath = $media->getArtPath();
+            if ($media instanceof Entity\StationMedia) {
+                $mediaPath = Entity\StationMedia::getArtPath($media->getUniqueId());
             } else {
                 return $defaultArtRedirect;
             }
         }
 
         if ($fs->has($mediaPath)) {
-            return $response->withFlysystemFile($fs, $mediaPath, null, 'inline');
+            return $fs->streamToResponse($response, $mediaPath, null, 'inline');
         }
 
         return $defaultArtRedirect;

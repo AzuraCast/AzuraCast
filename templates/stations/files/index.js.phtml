@@ -8,17 +8,18 @@ $props = [
     'renameUrl' => $router->fromHere('api:stations:files:rename'),
     'initialPlaylists' => $playlists,
     'customFields' => $custom_fields,
+    'validMimeTypes' => $mime_types,
 ]
 ?>
 var station_media_manager;
 
 $(function () {
-  station_media_manager = new Vue({
-    el: '#media-manager',
-    render: function (createElement) {
-      return createElement(StationMedia.default, {
-        props: <?=json_encode($props) ?>
-      });
-    }
-  });
+    station_media_manager = new Vue({
+        el: '#media-manager',
+        render: function (createElement) {
+            return createElement(StationMedia.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
+    });
 });

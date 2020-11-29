@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Entity;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -119,7 +121,7 @@ class StationRequest
         return $this->played_at;
     }
 
-    public function setPlayedAt(int $played_at)
+    public function setPlayedAt(int $played_at): void
     {
         $this->played_at = $played_at;
     }
@@ -136,7 +138,7 @@ class StationRequest
         }
 
         $station = $this->station;
-        $stationTz = new \DateTimeZone($station->getTimezone());
+        $stationTz = new DateTimeZone($station->getTimezone());
 
         if (null === $now) {
             $now = CarbonImmutable::now($stationTz);

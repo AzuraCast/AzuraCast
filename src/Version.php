@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use DateTime;
@@ -12,20 +13,40 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.10.4';
+    public const FALLBACK_VERSION = '0.11';
+
+    public const RELEASE_CHANNEL_ROLLING = 'rolling';
+    public const RELEASE_CHANNEL_STABLE = 'stable';
 
     protected CacheInterface $cache;
 
-    protected string $repo_dir;
+    protected string $repoDir;
 
-    protected Settings $app_settings;
+    protected Settings $appSettings;
 
-    public function __construct(CacheInterface $cache, Settings $app_settings)
+    public function __construct(CacheInterface $cache, Settings $appSettings)
     {
         $this->cache = $cache;
-        $this->app_settings = $app_settings;
+        $this->appSettings = $appSettings;
 
-        $this->repo_dir = $app_settings[Settings::BASE_DIR];
+        $this->repoDir = $appSettings[Settings::BASE_DIR];
+    }
+
+    public function getReleaseChannel(): string
+    {
+        if ($this->appSettings->isDocker()) {
+            $channel = $_ENV['AZURACAST_VERSION'] ?? 'latest';
+
+            return ('stable' === $channel)
+                ? self::RELEASE_CHANNEL_STABLE
+                : self::RELEASE_CHANNEL_ROLLING;
+        }
+
+        $details = $this->getDetails();
+
+        return ('stable' === $details['branch'])
+            ? self::RELEASE_CHANNEL_STABLE
+            : self::RELEASE_CHANNEL_ROLLING;
     }
 
     /**
@@ -40,7 +61,7 @@ class Version
     /**
      * Load cache or generate new repository details from the underlying Git repository.
      *
-     * @return array
+     * @return mixed[]
      */
     public function getDetails(): array
     {
@@ -50,8 +71,8 @@ class Version
             $details = $this->cache->get('app_version_details');
 
             if (empty($details)) {
-                $details = $this->_getRawDetails();
-                $ttl = $this->app_settings->isProduction() ? 86400 : 600;
+                $details = $this->getRawDetails();
+                $ttl = $this->appSettings->isProduction() ? 86400 : 600;
 
                 $this->cache->set('app_version_details', $details, $ttl);
             }
@@ -63,24 +84,24 @@ class Version
     /**
      * Generate new repository details from the underlying Git repository.
      *
-     * @return array
+     * @return mixed[]
      */
-    protected function _getRawDetails(): array
+    protected function getRawDetails(): array
     {
-        if (!is_dir($this->repo_dir . '/.git')) {
+        if (!is_dir($this->repoDir . '/.git')) {
             return [];
         }
 
         $details = [];
 
         // Get the long form of the latest commit's hash.
-        $latest_commit_hash = $this->_runProcess(['git', 'log', '--pretty=%H', '-n1', 'HEAD']);
+        $latest_commit_hash = $this->runProcess(['git', 'log', '--pretty=%H', '-n1', 'HEAD']);
 
         $details['commit'] = $latest_commit_hash;
         $details['commit_short'] = substr($latest_commit_hash, 0, 7);
 
         // Get the last commit's timestamp.
-        $latest_commit_date = $this->_runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']);
+        $latest_commit_date = $this->runProcess(['git', 'log', '-n1', '--pretty=%ci', 'HEAD']);
 
         if (!empty($latest_commit_date)) {
             $commit_date = new DateTime($latest_commit_date);
@@ -93,12 +114,14 @@ class Version
             $details['commit_date'] = 'N/A';
         }
 
-        $last_tagged_commit = $this->_runProcess(['git', 'rev-list', '--tags', '--max-count=1']);
+        $last_tagged_commit = $this->runProcess(['git', 'rev-list', '--tags', '--max-count=1']);
         if (!empty($last_tagged_commit)) {
-            $details['tag'] = $this->_runProcess(['git', 'describe', '--tags', $last_tagged_commit], 'N/A');
+            $details['tag'] = $this->runProcess(['git', 'describe', '--tags', $last_tagged_commit], 'N/A');
         } else {
             $details['tag'] = self::FALLBACK_VERSION;
         }
+
+        $details['branch'] = $this->runProcess(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], 'master');
 
         return $details;
     }
@@ -108,13 +131,11 @@ class Version
      *
      * @param array $proc
      * @param string $default
-     *
-     * @return string
      */
-    protected function _runProcess($proc, $default = ''): string
+    protected function runProcess($proc, $default = ''): string
     {
         $process = new Process($proc);
-        $process->setWorkingDirectory($this->repo_dir);
+        $process->setWorkingDirectory($this->repoDir);
         $process->run();
 
         if (!$process->isSuccessful()) {
@@ -133,17 +154,18 @@ class Version
 
         if (isset($details['tag'])) {
             $commitLink = 'https://github.com/AzuraCast/AzuraCast/commit/' . $details['commit'];
-            $commitText = '#<a href="' . $commitLink . '" target="_blank">' . $details['commit_short'] . '</a> (' . $details['commit_date'] . ')';
+            $commitText = sprintf(
+                '#<a href="%s" target="_blank">%s</a> (%s)',
+                $commitLink,
+                $details['commit_short'],
+                $details['commit_date']
+            );
 
-            if (isset($_ENV['AZURACAST_VERSION'])) {
-                if ('latest' === $_ENV['AZURACAST_VERSION']) {
-                    return 'Rolling Release ' . $commitText;
-                }
-
-                return 'v' . $details['tag'] . ' Stable';
+            $releaseChannel = $this->getReleaseChannel();
+            if (self::RELEASE_CHANNEL_ROLLING === $releaseChannel) {
+                return 'Rolling Release ' . $commitText;
             }
-
-            return 'v' . $details['tag'] . ', ' . $commitText;
+            return 'v' . $details['tag'] . ' Stable';
         }
 
         return 'v' . self::FALLBACK_VERSION . ' Release Build';
@@ -169,17 +191,15 @@ class Version
 
     /**
      * Check if the installation has been modified by the user from the release build.
-     *
-     * @return bool
      */
     public function isInstallationModified(): bool
     {
         // We can't detect if release builds are changed, so always return true.
-        if (!is_dir($this->repo_dir . '/.git')) {
+        if (!is_dir($this->repoDir . '/.git')) {
             return true;
         }
 
-        $changed_files = $this->_runProcess(['git', 'status', '-s']);
+        $changed_files = $this->runProcess(['git', 'status', '-s']);
         return !empty($changed_files);
     }
 }

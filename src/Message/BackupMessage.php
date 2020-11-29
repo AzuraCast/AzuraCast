@@ -1,12 +1,16 @@
 <?php
+
 namespace App\Message;
 
 use App\MessageQueue\QueueManager;
 
 class BackupMessage extends AbstractUniqueMessage
 {
+    /** @var int|null The storage location to back up to. */
+    public ?int $storageLocationId = null;
+
     /** @var string|null The absolute or relative path of the backup file. */
-    public ?string $path;
+    public ?string $path = null;
 
     /** @var string|null The path to log output of the Backup command to. */
     public ?string $outputPath = null;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -8,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class ApiKey extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
         $demo_api_key = getenv('INIT_DEMO_API_KEY');
 
@@ -40,7 +41,7 @@ class ApiKey extends AbstractFixture implements DependentFixtureInterface
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             User::class,

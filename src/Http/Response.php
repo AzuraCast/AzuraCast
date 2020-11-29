@@ -1,8 +1,7 @@
 <?php
+
 namespace App\Http;
 
-use App\Flysystem\FilesystemGroup;
-use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 final class Response extends \Slim\Http\Response
@@ -48,7 +47,6 @@ final class Response extends \Slim\Http\Response
 
     /**
      * Returns whether the request has a "cache lifetime" assigned to it.
-     * @return bool
      */
     public function hasCacheLifetime(): bool
     {
@@ -66,8 +64,6 @@ final class Response extends \Slim\Http\Response
      * @param int|null $status
      * @param int $options
      * @param int $depth
-     *
-     * @return ResponseInterface
      */
     public function withJson($data, ?int $status = null, int $options = 0, int $depth = 512): ResponseInterface
     {
@@ -130,60 +126,5 @@ final class Response extends \Slim\Http\Response
         $response->getBody()->write($file_data);
 
         return new static($response, $this->streamFactory);
-    }
-
-    public function withFlysystemFile(
-        FilesystemGroup $fs,
-        string $path,
-        string $fileName = null,
-        string $disposition = 'attachment'
-    ) {
-        $meta = $fs->getMetadata($path);
-
-        try {
-            $mime = $fs->getMimetype($path);
-        } catch (Exception $e) {
-            $mime = 'application/octet-stream';
-        }
-
-        $fileName ??= basename($path);
-
-        if ('attachment' === $disposition) {
-            /*
-             * The regex used below is to ensure that the $fileName contains only
-             * characters ranging from ASCII 128-255 and ASCII 0-31 and 127 are replaced with an empty string
-             */
-            $disposition .= '; filename="' . preg_replace('/[\x00-\x1F\x7F\"]/', ' ', $fileName) . '"';
-            $disposition .= "; filename*=UTF-8''" . rawurlencode($fileName);
-        }
-
-        $response = $this->withHeader('Content-Disposition', $disposition)
-            ->withHeader('Content-Length', $meta['size'])
-            ->withHeader('X-Accel-Buffering', 'no');
-
-        try {
-            $localPath = $fs->getFullPath($path);
-
-            // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
-            $specialPaths = [
-                '/var/azuracast/backups' => '/internal/backups',
-                '/var/azuracast/stations' => '/internal/stations',
-            ];
-
-            foreach ($specialPaths as $diskPath => $nginxPath) {
-                if (0 === strpos($localPath, $diskPath)) {
-                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
-
-                    return $response->withHeader('Content-Type', $mime)
-                        ->withHeader('X-Accel-Redirect', $accelPath)
-                        ->write(' '); // Temporary work around, see SlimPHP/Slim#2924
-                }
-            }
-        } catch (Exception $e) {
-            // Stream via PHP instead
-        }
-
-        $fh = $fs->readStream($path);
-        return $response->withFile($fh, $mime);
     }
 }

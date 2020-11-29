@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -21,16 +22,21 @@ class StationPlaylistFolderRepository extends Repository
         }
 
         $this->em->createQuery(/** @lang DQL */ 'DELETE
-            FROM App\Entity\StationPlaylistFolder spf 
+            FROM App\Entity\StationPlaylistFolder spf
             WHERE spf.station = :station AND spf.path = :path')
             ->setParameter('station', $station)
             ->setParameter('path', $path)
             ->execute();
 
-        foreach ($playlists as $playlist) {
-            /** @var Entity\StationPlaylist $playlist */
-            if (Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlist->getOrder()
-                && Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
+        foreach ($playlists as $playlistId => $playlistRecord) {
+            /** @var Entity\StationPlaylist $playlistRecord */
+            if (
+                Entity\StationPlaylist::ORDER_SEQUENTIAL !== $playlistRecord->getOrder()
+                && Entity\StationPlaylist::SOURCE_SONGS === $playlistRecord->getSource()
+            ) {
+                /** @var Entity\StationPlaylist $playlist */
+                $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
+                
                 $newRecord = new Entity\StationPlaylistFolder($station, $playlist, $path);
                 $this->em->persist($newRecord);
             }

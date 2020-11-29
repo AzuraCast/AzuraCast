@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Field;
 
 use App\Exception\CsrfValidationException;

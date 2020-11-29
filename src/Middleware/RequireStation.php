@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware;
 
 use App\Exception\StationNotFoundException;
@@ -17,7 +18,7 @@ class RequireStation
         try {
             $request->getStation();
         } catch (Exception $e) {
-            throw new StationNotFoundException;
+            throw new StationNotFoundException();
         }
 
         return $handler->handle($request);

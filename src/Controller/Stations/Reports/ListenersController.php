@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
@@ -17,8 +18,10 @@ class ListenersController
     ): ResponseInterface {
         $view = $request->getView();
 
-        $analytics_level = $settingsRepo->getSetting(Entity\Settings::LISTENER_ANALYTICS,
-            Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $settingsRepo->getSetting(
+            Entity\Settings::LISTENER_ANALYTICS,
+            Entity\Analytics::LEVEL_ALL
+        );
 
         if ($analytics_level !== Entity\Analytics::LEVEL_ALL) {
             return $view->renderToResponse($response, 'stations/reports/restricted');

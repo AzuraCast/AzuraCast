@@ -36,10 +36,9 @@
     margin-left: $breadcrumb-inner-spacer-x;
 
     &::before {
-      @include set-material-icons;
+      @include setup-material-icons-bg;
+      @include material-icons-bg($breadcrumb-item-icon);
 
-      color: $breadcrumb-item-color;
-      content: $breadcrumb-item-icon;
       display: inline-block;
       margin-right: $breadcrumb-inner-spacer-x;
     }

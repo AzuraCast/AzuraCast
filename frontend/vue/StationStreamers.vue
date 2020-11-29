@@ -59,85 +59,87 @@
 </template>
 
 <script>
-    import DataTable from './components/DataTable';
-    import axios from 'axios';
-    import EditModal from './station_streamers/StreamerEditModal';
-    import BroadcastsModal from './station_streamers/StreamerBroadcastsModal';
-    import Schedule from './components/ScheduleView';
+import DataTable from './components/DataTable';
+import axios from 'axios';
+import EditModal from './station_streamers/StreamerEditModal';
+import BroadcastsModal from './station_streamers/StreamerBroadcastsModal';
+import Schedule from './components/ScheduleView';
 
-    export default {
-        name: 'StationStreamers',
-        components: { EditModal, BroadcastsModal, DataTable, Schedule },
-        props: {
-            listUrl: String,
-            scheduleUrl: String,
-            filesUrl: String,
-            locale: String,
-            stationTimeZone: String
+export default {
+    name: 'StationStreamers',
+    components: { EditModal, BroadcastsModal, DataTable, Schedule },
+    props: {
+        listUrl: String,
+        scheduleUrl: String,
+        filesUrl: String,
+        locale: String,
+        stationTimeZone: String
+    },
+    data () {
+        return {
+            fields: [
+                { key: 'actions', label: this.$gettext('Actions'), sortable: false },
+                { key: 'streamer_username', isRowHeader: true, label: this.$gettext('Username'), sortable: false },
+                { key: 'display_name', label: this.$gettext('Display Name'), sortable: false },
+                { key: 'comments', label: this.$gettext('Notes'), sortable: false }
+            ]
+        };
+    },
+    computed: {
+        langAccountListTab () {
+            return this.$gettext('Account List');
         },
-        data () {
-            return {
-                fields: [
-                    { key: 'actions', label: this.$gettext('Actions'), sortable: false },
-                    { key: 'streamer_username', label: this.$gettext('Username'), sortable: false },
-                    { key: 'display_name', label: this.$gettext('Display Name'), sortable: false },
-                    { key: 'comments', label: this.$gettext('Notes'), sortable: false }
-                ]
-            };
-        },
-        computed: {
-            langAccountListTab () {
-                return this.$gettext('Account List');
-            },
-            langScheduleViewTab () {
-                return this.$gettext('Schedule View');
-            }
-        },
-        mounted () {
-            moment.relativeTimeThreshold('ss', 1);
-            moment.relativeTimeRounding(function (value) {
-                return Math.round(value * 10) / 10;
-            });
-        },
-        methods: {
-            relist () {
-                this.$refs.datatable.refresh();
-            },
-            doCreate () {
-                this.$refs.editModal.create();
-            },
-            doCalendarClick (event) {
-                this.doEdit(event.extendedProps.edit_url);
-            },
-            doEdit (url) {
-                this.$refs.editModal.edit(url);
-            },
-            doShowBroadcasts (url) {
-                this.$refs.broadcastsModal.open(url);
-            },
-            doDelete (url) {
-                let buttonText = this.$gettext('Delete');
-                let buttonConfirmText = this.$gettext('Delete streamer?');
-
-                swal({
-                    title: buttonConfirmText,
-                    buttons: [true, buttonText],
-                    dangerMode: true
-                }).then((value) => {
-                    if (value) {
-                        axios.delete(url).then((resp) => {
-                            notify('<b>' + resp.data.message + '</b>', 'success');
-
-                            this.relist();
-                        }).catch((err) => {
-                            console.error(err);
-                            if (err.response.message) {
-                                notify('<b>' + err.response.message + '</b>', 'danger');
-                            }
-                        });
-                    }
-                });
-            }
+        langScheduleViewTab () {
+            return this.$gettext('Schedule View');
         }
-    };
+    },
+    mounted () {
+        moment.relativeTimeThreshold('ss', 1);
+        moment.relativeTimeRounding(function (value) {
+            return Math.round(value * 10) / 10;
+        });
+    },
+    methods: {
+        relist () {
+            this.$refs.datatable.refresh();
+        },
+        doCreate () {
+            this.$refs.editModal.create();
+        },
+        doCalendarClick (event) {
+            this.doEdit(event.extendedProps.edit_url);
+        },
+        doEdit (url) {
+            this.$refs.editModal.edit(url);
+        },
+        doShowBroadcasts (url) {
+            this.$refs.broadcastsModal.open(url);
+        },
+        doDelete (url) {
+            let buttonText = this.$gettext('Delete');
+            let buttonConfirmText = this.$gettext('Delete streamer?');
+
+            Swal.fire({
+                title: buttonConfirmText,
+                confirmButtonText: buttonText,
+                confirmButtonColor: '#e64942',
+                showCancelButton: true,
+                focusCancel: true
+            }).then((result) => {
+                if (result.value) {
+                    axios.delete(url).then((resp) => {
+                        notify('<b>' + resp.data.message + '</b>', 'success');
+
+                        this.relist();
+                    }).catch((err) => {
+                        console.error(err);
+                        if (err.response.message) {
+                            notify('<b>' + err.response.message + '</b>', 'danger');
+                        }
+                    });
+                }
+            });
+        }
+    }
+};
 </script>

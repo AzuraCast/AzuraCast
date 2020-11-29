@@ -144,17 +144,14 @@
   left: ($carousel-control-size / 2);
 }
 
-.carousel-control-next-icon,
-.carousel-control-prev-icon {
-  @include set-material-icons;
-}
-
 .carousel-control-next-icon::before {
-  content: $carousel-control-next-icon;
+  @include setup-material-icons-bg;
+  @include setup-material-icons-bg($carousel-control-next-icon);
 }
 
 .carousel-control-prev-icon::before {
-  content: $carousel-control-prev-icon;
+  @include setup-material-icons-bg;
+  @include setup-material-icons-bg($carousel-control-prev-icon);
 }
 
 // Optional captions

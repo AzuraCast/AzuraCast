@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Webhook\Connector;
 
 use App\Entity\StationWebhook;
@@ -27,10 +28,12 @@ class Twitter extends AbstractConnector
     {
         $config = $webhook->getConfig();
 
-        if (empty($config['consumer_key'])
+        if (
+            empty($config['consumer_key'])
             || empty($config['consumer_secret'])
             || empty($config['token'])
-            || empty($config['token_secret'])) {
+            || empty($config['token_secret'])
+        ) {
             $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
             return;
         }
@@ -39,12 +42,13 @@ class Twitter extends AbstractConnector
 
         $rate_limit_seconds = (int)($config['rate_limit'] ?? 0);
         if (0 !== $rate_limit_seconds) {
-
             $last_tweet = (int)$webhook->getMetadataKey('last_message_sent', 0);
 
             if ($last_tweet > (time() - $rate_limit_seconds)) {
-                $this->logger->info(sprintf('A tweet was sent less than %d seconds ago. Skipping...',
-                    $rate_limit_seconds));
+                $this->logger->info(sprintf(
+                    'A tweet was sent less than %d seconds ago. Skipping...',
+                    $rate_limit_seconds
+                ));
                 return;
             }
         }

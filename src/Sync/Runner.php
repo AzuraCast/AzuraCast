@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Sync;
 
 use App\Entity;
 use App\Entity\Repository\SettingsRepository;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
+use App\LockFactory;
 use App\Settings;
 use Monolog\Logger;
-use Symfony\Component\Lock\LockFactory;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -34,51 +35,6 @@ class Runner
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * Now-Playing Synchronization
-     * The most frequent sync process, which must be optimized for speed,
-     * as it runs approx. every 15 seconds.
-     *
-     * @param bool $force
-     */
-    public function syncNowplaying($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_NOWPLAYING, $force);
-    }
-
-    /**
-     * Short Synchronization
-     * This task runs automatically every minute.
-     *
-     * @param bool $force
-     */
-    public function syncShort($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_SHORT, $force);
-    }
-
-    /**
-     * Medium Synchronization
-     * This task runs automatically every 5 minutes.
-     *
-     * @param bool $force
-     */
-    public function syncMedium($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_MEDIUM, $force);
-    }
-
-    /**
-     * Long Synchronization
-     * This task runs automatically every hour.
-     *
-     * @param bool $force
-     */
-    public function syncLong($force = false): void
-    {
-        $this->runSyncTask(GetSyncTasks::SYNC_LONG, $force);
-    }
-
     public function runSyncTask(string $type, bool $force = false): void
     {
         // Immediately halt if setup is not complete.
@@ -87,10 +43,14 @@ class Runner
         }
 
         $allSyncInfo = $this->getSyncTimes();
+
+        if (!isset($allSyncInfo[$type])) {
+            throw new \InvalidArgumentException(sprintf('Invalid sync task: %s', $type));
+        }
+
         $syncInfo = $allSyncInfo[$type];
 
         set_time_limit($syncInfo['timeout']);
-        ini_set('memory_limit', '256M');
 
         if (Settings::getInstance()->isCli()) {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
@@ -102,7 +62,14 @@ class Runner
 
         $lock = $this->lockFactory->createLock('sync_' . $type, $syncInfo['timeout']);
 
-        if (!$lock->acquire($force)) {
+        if ($force) {
+            $this->lockFactory->clearQueue('sync_' . $type);
+            try {
+                $lock->acquire($force);
+            } catch (\Exception $e) {
+                // Noop
+            }
+        } elseif (!$lock->acquire()) {
             return;
         }
 
@@ -113,6 +80,10 @@ class Runner
             $tasks = $event->getTasks();
 
             foreach ($tasks as $taskClass => $task) {
+                if (!$lock->isAcquired()) {
+                    return;
+                }
+
                 $start_time = microtime(true);
 
                 $task->run($force);
@@ -133,9 +104,15 @@ class Runner
         }
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getSyncTimes(): array
     {
         $this->settingsRepo->clearCache();
+
+        $shortTaskTimeout = $_ENV['SYNC_SHORT_EXECUTION_TIME'] ?? 600;
+        $longTaskTimeout = $_ENV['SYNC_LONG_EXECUTION_TIME'] ?? 1800;
 
         $syncs = [
             GetSyncTasks::SYNC_NOWPLAYING => [
@@ -144,7 +121,8 @@ class Runner
                     __('Now Playing Data'),
                 ],
                 'lastRunSetting' => Entity\Settings::NOWPLAYING_LAST_RUN,
-                'timeout' => 600,
+                'timeout' => $shortTaskTimeout,
+                'interval' => 15,
             ],
             GetSyncTasks::SYNC_SHORT => [
                 'name' => __('1-Minute Sync'),
@@ -152,7 +130,8 @@ class Runner
                     __('Song Requests Queue'),
                 ],
                 'lastRunSetting' => Entity\Settings::SHORT_SYNC_LAST_RUN,
-                'timeout' => 600,
+                'timeout' => $shortTaskTimeout,
+                'interval' => 60,
             ],
             GetSyncTasks::SYNC_MEDIUM => [
                 'name' => __('5-Minute Sync'),
@@ -160,7 +139,8 @@ class Runner
                     __('Check Media Folders'),
                 ],
                 'lastRunSetting' => Entity\Settings::MEDIUM_SYNC_LAST_RUN,
-                'timeout' => 600,
+                'timeout' => $shortTaskTimeout,
+                'interval' => 300,
             ],
             GetSyncTasks::SYNC_LONG => [
                 'name' => __('1-Hour Sync'),
@@ -169,7 +149,8 @@ class Runner
                     __('Cleanup'),
                 ],
                 'lastRunSetting' => Entity\Settings::LONG_SYNC_LAST_RUN,
-                'timeout' => 1800,
+                'timeout' => $longTaskTimeout,
+                'interval' => 3600,
             ],
         ];
 

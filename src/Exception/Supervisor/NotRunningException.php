@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exception\Supervisor;
 
 use App\Exception\SupervisorException;

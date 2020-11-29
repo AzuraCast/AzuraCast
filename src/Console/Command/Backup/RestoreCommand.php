@@ -1,14 +1,14 @@
 <?php
+
 namespace App\Console\Command\Backup;
 
 use App\Console\Command\CommandAbstract;
 use App\Console\Command\Traits;
-use App\Sync\Task\Backup;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
-use InfluxDB\Database;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use const PATHINFO_EXTENSION;
 
 class RestoreCommand extends CommandAbstract
@@ -19,16 +19,15 @@ class RestoreCommand extends CommandAbstract
         SymfonyStyle $io,
         OutputInterface $output,
         EntityManagerInterface $em,
-        Database $influxdb,
         string $path
-    ) {
+    ): int {
         $start_time = microtime(true);
 
         $io->title('AzuraCast Restore');
         $io->writeln('Please wait while the backup is restored...');
 
         if ('/' !== $path[0]) {
-            $path = Backup::BASE_DIR . '/' . $path;
+            $path = '/var/azuracast/backups/' . $path;
         }
 
         if (!file_exists($path)) {
@@ -90,28 +89,6 @@ class RestoreCommand extends CommandAbstract
         );
 
         Utilities::rmdirRecursive($tmp_dir_mariadb);
-        $io->newLine();
-
-        // Handle InfluxDB import
-        $tmp_dir_influxdb = '/tmp/azuracast_backup_influxdb';
-
-        if (!is_dir($tmp_dir_influxdb)) {
-            $io->getErrorStyle()->error('InfluxDB backup file not found!');
-            return 1;
-        }
-
-        $influxdb_client = $influxdb->getClient();
-
-        $this->passThruProcess($io, [
-            'influxd',
-            'restore',
-            '-portable',
-            '-host',
-            $influxdb_client->getHost() . ':8088',
-            $tmp_dir_influxdb,
-        ], $tmp_dir_influxdb);
-
-        Utilities::rmdirRecursive($tmp_dir_influxdb);
         $io->newLine();
 
         // Update from current version to latest.

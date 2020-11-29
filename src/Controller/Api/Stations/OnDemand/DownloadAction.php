@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +15,7 @@ class DownloadAction
         Response $response,
         string $media_id,
         Entity\Repository\StationMediaRepository $mediaRepo,
-        Filesystem $filesystem
+        FilesystemManager $filesystem
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -35,6 +36,6 @@ class DownloadAction
         $fs = $filesystem->getForStation($station);
 
         set_time_limit(600);
-        return $response->withFlysystemFile($fs, $filePath);
+        return $fs->streamToResponse($response, $filePath);
     }
 }

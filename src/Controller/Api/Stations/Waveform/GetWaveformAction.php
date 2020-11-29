@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Controller\Api\Stations\Waveform;
 
 use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +15,7 @@ class GetWaveformAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
@@ -27,9 +28,9 @@ class GetWaveformAction
         $media_id = explode('-', $media_id)[0];
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $waveformPath = Filesystem::PREFIX_WAVEFORMS . '://' . $media_id . '.json';
-            if ($fs->has($waveformPath)) {
-                return $response->withFlysystemFile($fs, $waveformPath, null, 'inline');
+            $waveformUri = StationMedia::getWaveformUri($media_id);
+            if ($fs->has($waveformUri)) {
+                return $fs->streamToResponse($response, $waveformUri, null, 'inline');
             }
         }
 
@@ -38,12 +39,11 @@ class GetWaveformAction
             return $response->withStatus(500)->withJson(new Error(500, 'Media not found.'));
         }
 
-        $waveformPath = $media->getWaveformPath();
-
-        if (!$fs->has($waveformPath)) {
+        $waveformUri = StationMedia::getWaveformUri($media->getUniqueId());
+        if (!$fs->has($waveformUri)) {
             $mediaRepo->updateWaveform($media);
         }
 
-        return $response->withFlysystemFile($fs, $waveformPath, null, 'inline');
+        return $fs->streamToResponse($response, $waveformUri, null, 'inline');
     }
 }

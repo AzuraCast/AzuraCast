@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http;
 
 use App\Acl;
@@ -143,7 +144,6 @@ final class ServerRequest extends \Slim\Http\ServerRequest
 
     /**
      * Get the remote user's IP address as indicated by HTTP headers.
-     * @return string|null
      */
     public function getIp(): ?string
     {

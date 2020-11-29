@@ -49,19 +49,8 @@ $light: (
     light: $material-color-grey-050
 ) !default;
 
-// "-bg" is light for light themes, dark for dark themes.
-$bg: (
-    color: $material-color-grey-100,
-    dark: $material-color-grey-300,
-    light: $material-color-grey-050
-) !default;
-
-// "-inverse" is dark for light themes, light for dark themes.
-$inverse: (
-    color: $material-color-grey-800,
-    dark: $material-color-grey-900,
-    light: $material-color-grey-600
-) !default;
+$bg: if($theme == 'dark', $dark, $light) !default;
+$inverse: if($theme == 'dark', $light, $dark) !default;
 
 $theme-colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default

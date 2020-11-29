@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Users;
 
 use App\Acl;
@@ -14,7 +15,7 @@ class SetAdministratorCommand extends CommandAbstract
         EntityManagerInterface $em,
         Entity\Repository\RolePermissionRepository $perms_repo,
         string $email
-    ) {
+    ): int {
         $io->title('Set Administrator');
 
         $user = $em->getRepository(Entity\User::class)
@@ -39,8 +40,10 @@ class SetAdministratorCommand extends CommandAbstract
             $em->persist($user);
             $em->flush();
 
-            $io->text(__('The account associated with e-mail address "%s" has been set as an administrator',
-                $user->getEmail()));
+            $io->text(__(
+                'The account associated with e-mail address "%s" has been set as an administrator',
+                $user->getEmail()
+            ));
             $io->newLine();
             return 0;
         }

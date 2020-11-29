@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Service\IpGeolocator;
@@ -36,7 +37,9 @@ class IpGeolocation
         }
 
         $this->reader = null;
-        $this->attribution = __('GeoLite database not configured for this installation. See System Administration for instructions.');
+        $this->attribution = __(
+            'GeoLite database not configured for this installation. See System Administration for instructions.'
+        );
     }
 
     public function getAttribution(): string
@@ -48,6 +51,9 @@ class IpGeolocation
         return $this->attribution;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getLocationInfo(string $ip, string $locale): array
     {
         if (!$this->isInitialized) {

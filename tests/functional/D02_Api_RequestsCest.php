@@ -20,22 +20,11 @@ class D02_Api_RequestsCest extends CestAbstract
         $this->em->flush();
 
         // Upload a test song.
-        $song_src = '/var/azuracast/www/resources/error.mp3';
-        $song_dest = $testStation->getRadioMediaDir() . '/test.mp3';
-        copy($song_src, $song_dest);
+        $media = $this->uploadTestSong();
 
         $playlist = new Entity\StationPlaylist($testStation);
         $playlist->setName('Test Playlist');
-
         $this->em->persist($playlist);
-
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->di->get(Entity\Repository\StationMediaRepository::class);
-
-        $media = new Entity\StationMedia($testStation, 'test.mp3');
-        $media_repo->loadFromFile($media, $song_dest);
-
-        $this->em->persist($media);
 
         $spm = new Entity\StationPlaylistMedia($playlist, $media);
         $this->em->persist($spm);

@@ -15,7 +15,7 @@ return function (App $app) {
         $group->get('/embed-requests', Controller\Frontend\PublicPages\RequestsAction::class)
             ->setName('public:embedrequests');
 
-        $group->get('/playlist[/{format}]', Controller\Frontend\PublicPages\PlaylistAction::class)
+        $group->get('/playlist[.{format}]', Controller\Frontend\PublicPages\PlaylistAction::class)
             ->setName('public:playlist');
 
         $group->get('/dj', Controller\Frontend\PublicPages\WebDjAction::class)

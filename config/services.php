@@ -57,7 +57,7 @@ return [
     App\Doctrine\DecoratedEntityManager::class => function (
         Doctrine\Common\Cache\Cache $doctrineCache,
         Doctrine\Common\Annotations\Reader $reader,
-        App\Settings $settings,
+        Settings $settings,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
         App\EventDispatcher $dispatcher
@@ -81,7 +81,7 @@ return [
             'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
         ];
 
-        if (!$settings[App\Settings::IS_DOCKER]) {
+        if (!$settings[Settings::IS_DOCKER]) {
             $connectionOptions['host'] = $_ENV['db_host'] ?? 'localhost';
             $connectionOptions['port'] = $_ENV['db_port'] ?? '3306';
             $connectionOptions['dbname'] = $_ENV['db_name'] ?? 'azuracast';
@@ -118,6 +118,10 @@ return [
 
             $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
 
+            if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
+                Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
+            }
+
             $eventManager = new Doctrine\Common\EventManager;
             $eventManager->addEventSubscriber($eventRequiresRestart);
             $eventManager->addEventSubscriber($eventAuditLog);
@@ -135,38 +139,9 @@ return [
     },
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
-    // Cache
-    Psr\Cache\CacheItemPoolInterface::class => function (App\Settings $settings, Psr\Container\ContainerInterface $di) {
-        // Never use the Redis cache for CLI commands, as the CLI commands are where
-        // the Redis cache gets flushed, so this will lead to a race condition that can't
-        // be solved within the application.
-        return $settings->enableRedis() && !$settings->isCli()
-            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
-            : new Cache\Adapter\PHPArray\ArrayCachePool;
-    },
-    Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
-
-    // Doctrine cache
-    Doctrine\Common\Cache\Cache::class => function (Psr\Cache\CacheItemPoolInterface $cachePool) {
-        return new Cache\Bridge\Doctrine\DoctrineCacheBridge(new Cache\Prefixed\PrefixedCachePool($cachePool,
-            'doctrine|'));
-    },
-
-    // Session save handler middleware
-    Mezzio\Session\SessionPersistenceInterface::class => function (Cache\Adapter\Redis\RedisCachePool $redisPool) {
-        return new Mezzio\Session\Cache\CacheSessionPersistence(
-            new Cache\Prefixed\PrefixedCachePool($redisPool, 'session|'),
-            'app_session',
-            '/',
-            'nocache',
-            43200,
-            time()
-        );
-    },
-
     // Redis cache
-    Redis::class => function (App\Settings $settings) {
-        $redis_host = $settings[App\Settings::IS_DOCKER] ? 'redis' : 'localhost';
+    Redis::class => function (Settings $settings) {
+        $redis_host = $settings->isDocker() ? 'redis' : 'localhost';
 
         $redis = new Redis();
         $redis->connect($redis_host, 6379, 15);
@@ -175,9 +150,46 @@ return [
         return $redis;
     },
 
-    // Configuration management
-    App\Config::class => function (App\Settings $settings) {
-        return new App\Config($settings[App\Settings::CONFIG_DIR]);
+    Psr\Cache\CacheItemPoolInterface::class => function (Settings $settings, ContainerInterface $di) {
+        return !$settings->isTesting()
+            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
+            : new Cache\Adapter\PHPArray\ArrayCachePool;
+    },
+    Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
+
+    // Doctrine cache
+    Doctrine\Common\Cache\Cache::class => function (
+        Settings $settings,
+        Psr\Cache\CacheItemPoolInterface $cachePool
+    ) {
+        if ($settings->isCli()) {
+            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+        }
+
+        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'doctrine|');
+
+        return new Cache\Bridge\Doctrine\DoctrineCacheBridge($cachePool);
+    },
+
+    // Session save handler middleware
+    Mezzio\Session\SessionPersistenceInterface::class => function (
+        Settings $settings,
+        Psr\Cache\CacheItemPoolInterface $cachePool
+    ) {
+        if ($settings->isCli()) {
+            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+        }
+
+        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'session|');
+
+        return new Mezzio\Session\Cache\CacheSessionPersistence(
+            $cachePool,
+            'app_session',
+            '/',
+            'nocache',
+            43200,
+            time()
+        );
     },
 
     // Console
@@ -207,17 +219,40 @@ return [
     },
 
     // Monolog Logger
-    Monolog\Logger::class => function (App\Settings $settings) {
-        $logger = new Monolog\Logger($settings[App\Settings::APP_NAME] ?? 'app');
-        $logging_level = $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+    Monolog\Logger::class => function (Settings $settings) {
+        $logger = new Monolog\Logger($settings[Settings::APP_NAME] ?? 'app');
 
-        if ($settings[App\Settings::IS_DOCKER] || $settings[App\Settings::IS_CLI]) {
-            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
+        $loggingLevel = null;
+        if (!empty($_ENV['LOG_LEVEL'])) {
+            $allowedLogLevels = [
+                Psr\Log\LogLevel::DEBUG,
+                Psr\Log\LogLevel::INFO,
+                Psr\Log\LogLevel::NOTICE,
+                Psr\Log\LogLevel::WARNING,
+                Psr\Log\LogLevel::ERROR,
+                Psr\Log\LogLevel::CRITICAL,
+                Psr\Log\LogLevel::ALERT,
+                Psr\Log\LogLevel::EMERGENCY,
+            ];
+
+            $loggingLevel = strtolower($_ENV['LOG_LEVEL']);
+            if (!in_array($loggingLevel, $allowedLogLevels, true)) {
+                $loggingLevel = null;
+            }
+        }
+
+        $loggingLevel ??= $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+
+        if ($settings->isDocker() || $settings->isCli()) {
+            $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
 
-        $log_file = new Monolog\Handler\StreamHandler($settings[App\Settings::TEMP_DIR] . '/app.log',
-            $logging_level, true);
+        $log_file = new Monolog\Handler\StreamHandler(
+            $settings[Settings::TEMP_DIR] . '/app.log',
+            $loggingLevel,
+            true
+        );
         $logger->pushHandler($log_file);
 
         return $logger;
@@ -227,7 +262,7 @@ return [
     // Doctrine annotations reader
     Doctrine\Common\Annotations\Reader::class => function (
         Doctrine\Common\Cache\Cache $doctrine_cache,
-        App\Settings $settings
+        Settings $settings
     ) {
         return new Doctrine\Common\Annotations\CachedReader(
             new Doctrine\Common\Annotations\AnnotationReader,
@@ -270,24 +305,12 @@ return [
         return $builder->getValidator();
     },
 
-    Symfony\Component\Lock\LockFactory::class => function (
-        Redis $redis,
-        Psr\Log\LoggerInterface $logger
-    ) {
-        $redisStore = new Symfony\Component\Lock\Store\RedisStore($redis);
-        $retryStore = new Symfony\Component\Lock\Store\RetryTillSaveStore($redisStore, 1000, 60);
-
-        $lockFactory = new Symfony\Component\Lock\LockFactory($retryStore);
-        $lockFactory->setLogger($logger);
-
-        return $lockFactory;
-    },
-
     Symfony\Component\Messenger\MessageBus::class => function (
         App\MessageQueue\QueueManager $queueManager,
-        Symfony\Component\Lock\LockFactory $lockFactory,
+        App\LockFactory $lockFactory,
         Monolog\Logger $logger,
-        ContainerInterface $di
+        ContainerInterface $di,
+        App\Plugins $plugins
     ) {
         // Configure message sending middleware
         $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
@@ -296,6 +319,9 @@ return [
         // Configure message handling middleware
         $handlers = [];
         $receivers = require __DIR__ . '/messagequeue.php';
+
+        // Register plugin-provided message queue receivers
+        $receivers = $plugins->registerMessageQueueReceivers($receivers);
 
         foreach ($receivers as $messageClass => $handlerClass) {
             $handlers[$messageClass][] = function ($message) use ($handlerClass, $di) {
@@ -321,17 +347,6 @@ return [
             $uniqueMiddleware,
             $handleMessageMiddleware,
         ]);
-    },
-
-    // InfluxDB
-    InfluxDB\Database::class => function (Settings $settings) {
-        $opts = [
-            'host' => $settings->isDocker() ? 'influxdb' : 'localhost',
-            'port' => 8086,
-        ];
-
-        $influx = new InfluxDB\Client($opts['host'], $opts['port']);
-        return $influx->selectDB('stations');
     },
 
     // Supervisor manager
@@ -365,6 +380,8 @@ return [
             $logger
         );
     },
+
+    App\Media\MetadataManagerInterface::class => DI\get(App\Media\GetId3\GetId3MetadataManager::class),
 
     // Asset Management
     App\Assets::class => function (App\Config $config, Settings $settings) {

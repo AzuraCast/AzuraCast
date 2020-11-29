@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Controller\Api\AbstractApiCrudController;
@@ -14,15 +15,13 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->getStation($request);
 
-        $query = $this->em->createQuery('SELECT e 
-            FROM ' . $this->entityClass . ' e 
+        $query = $this->em->createQuery('SELECT e
+            FROM ' . $this->entityClass . ' e
             WHERE e.station = :station')
             ->setParameter('station', $station);
 
@@ -34,8 +33,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * override to verify that the station can perform the specified task.
      *
      * @param ServerRequest $request
-     *
-     * @return Entity\Station
      */
     protected function getStation(ServerRequest $request): Entity\Station
     {
@@ -45,13 +42,11 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param ServerRequest $request
      * @param Response $response
-     *
-     * @return ResponseInterface
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->getStation($request);
-        $row = $this->_createRecord($request->getParsedBody(), $station);
+        $row = $this->createRecord($request->getParsedBody(), $station);
 
         $return = $this->viewRecord($row, $request);
 
@@ -61,10 +56,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param array $data
      * @param Entity\Station $station
-     *
-     * @return object
      */
-    protected function _createRecord($data, Entity\Station $station): object
+    protected function createRecord($data, Entity\Station $station): object
     {
         return $this->editRecord($data, null, [
             AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
@@ -75,21 +68,12 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
         ]);
     }
 
-    protected function editRecord($data, $record = null, array $context = []): object
-    {
-        // Force an unset of the `station` parameter as it supercedes the default constructor arguments.
-        unset($data['station']);
-
-        return parent::editRecord($data, $record, $context);
-    }
-
     /**
      * @param ServerRequest $request
      * @param Response $response
      * @param int|string $station_id
      * @param int|string $id
      *
-     * @return ResponseInterface
      * @throws Exception
      */
     public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
@@ -109,10 +93,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param Entity\Station $station
      * @param int|string $id
-     *
-     * @return object|null
      */
-    protected function getRecord(Entity\Station $station, $id)
+    protected function getRecord(Entity\Station $station, $id): ?object
     {
         $repo = $this->em->getRepository($this->entityClass);
         return $repo->findOneBy([
@@ -126,8 +108,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param Response $response
      * @param int|string $station_id
      * @param int|string $id
-     *
-     * @return ResponseInterface
      */
     public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
@@ -148,8 +128,6 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param Response $response
      * @param int|string $station_id
      * @param int|string $id
-     *
-     * @return ResponseInterface
      */
     public function deleteAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Acl;
@@ -16,6 +17,8 @@ class StationForm extends EntityForm
 {
     protected Entity\Repository\StationRepository $station_repo;
 
+    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
+
     protected Acl $acl;
 
     protected Settings $settings;
@@ -25,6 +28,7 @@ class StationForm extends EntityForm
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Acl $acl,
         Config $config,
         Settings $settings
@@ -32,6 +36,7 @@ class StationForm extends EntityForm
         $this->acl = $acl;
         $this->entityClass = Entity\Station::class;
         $this->station_repo = $station_repo;
+        $this->storageLocationRepo = $storageLocationRepo;
         $this->settings = $settings;
 
         $form_config = $config->get('forms/station');
@@ -57,6 +62,9 @@ class StationForm extends EntityForm
         parent::configure($options);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
@@ -71,18 +79,83 @@ class StationForm extends EntityForm
         }
 
         if (!SHOUTcast::isInstalled()) {
-            $this->options['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
-                $request->getRouter()->named('admin:install_shoutcast:index'));
+            $frontendDesc = __(
+                'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
+                $request->getRouter()->named('admin:install_shoutcast:index')
+            );
+
+            $this->getField('frontend_type')->setOption('description', $frontendDesc);
         }
 
         $create_mode = (null === $record);
         if (!$create_mode) {
-            $this->populate($this->_normalizeRecord($record));
+            $recordArray = $this->normalizeRecord($record);
+            $recordArray['media_storage_location_id'] = $recordArray['media_storage_location']['id'] ?? null;
+            $recordArray['recordings_storage_location_id'] = $recordArray['recordings_storage_location']['id'] ?? null;
+
+            $this->populate($recordArray);
+        }
+
+        if ($canSeeAdministration) {
+            $storageLocationsDesc = __(
+                '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.',
+                $request->getRouter()->named('admin:storage_locations:index')
+            );
+
+            $mediaStorageField = $this->getField('media_storage_location_id');
+            $mediaStorageField->setOption('description', $storageLocationsDesc);
+            $mediaStorageField->setOption(
+                'choices',
+                $this->storageLocationRepo->fetchSelectByType(
+                    Entity\StorageLocation::TYPE_STATION_MEDIA,
+                    $create_mode,
+                    __('Create a new storage location based on the base directory.'),
+                )
+            );
+
+            $recordingsStorageField = $this->getField('recordings_storage_location_id');
+            $recordingsStorageField->setOption('description', $storageLocationsDesc);
+            $recordingsStorageField->setOption(
+                'choices',
+                $this->storageLocationRepo->fetchSelectByType(
+                    Entity\StorageLocation::TYPE_STATION_RECORDINGS,
+                    $create_mode,
+                    __('Create a new storage location based on the base directory.'),
+                )
+            );
+
+            $this->options['groups']['admin']['elements']['recordings_storage_location_id'][1]['choices'] =
+                $this->storageLocationRepo->fetchSelectByType(
+                    Entity\StorageLocation::TYPE_STATION_RECORDINGS,
+                    $create_mode,
+                    __('Create a new storage location based on the base directory.'),
+                );
         }
 
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
-            $record = $this->_denormalizeToRecord($data, $record);
+
+            /** @var Entity\Station $record */
+            $record = $this->denormalizeToRecord($data, $record);
+
+            if ($canSeeAdministration) {
+                if (!empty($data['media_storage_location_id'])) {
+                    $record->setMediaStorageLocation(
+                        $this->storageLocationRepo->findByType(
+                            Entity\StorageLocation::TYPE_STATION_MEDIA,
+                            $data['media_storage_location_id']
+                        )
+                    );
+                }
+                if (!empty($data['recordings_storage_location_id'])) {
+                    $record->setRecordingsStorageLocation(
+                        $this->storageLocationRepo->findByType(
+                            Entity\StorageLocation::TYPE_STATION_RECORDINGS,
+                            $data['recordings_storage_location_id']
+                        )
+                    );
+                }
+            }
 
             $errors = $this->validator->validate($record);
             if (count($errors) > 0) {
@@ -99,14 +172,9 @@ class StationForm extends EntityForm
                 return false;
             }
 
-            $this->em->persist($record);
-            $this->em->flush();
-
-            if ($create_mode) {
-                return $this->station_repo->create($record);
-            }
-
-            return $this->station_repo->edit($record);
+            return ($create_mode)
+                ? $this->station_repo->create($record)
+                : $this->station_repo->edit($record);
         }
 
         return false;

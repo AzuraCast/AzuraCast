@@ -1,5 +1,8 @@
 <?php
+
 namespace App\Media;
+
+use RuntimeException;
 
 class AlbumArt
 {
@@ -25,7 +28,7 @@ class AlbumArt
             $source_gd_image = imagecreatefromstring($rawArtString);
 
             if (!is_resource($source_gd_image)) {
-                throw new \RuntimeException('Cannot create image from string.');
+                throw new RuntimeException('Cannot create image from string.');
             }
 
             // Crop the raw art to a 1200x1200 artboard.
@@ -44,8 +47,18 @@ class AlbumArt
                 }
 
                 $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
-                imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width,
-                    $thumbnail_image_height, $source_image_width, $source_image_height);
+                imagecopyresampled(
+                    $thumbnail_gd_image,
+                    $source_gd_image,
+                    0,
+                    0,
+                    0,
+                    0,
+                    $thumbnail_image_width,
+                    $thumbnail_image_height,
+                    $source_image_width,
+                    $source_image_height
+                );
             }
 
             ob_start();

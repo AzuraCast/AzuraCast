@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
@@ -15,9 +16,11 @@ class GenerateCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         Settings $settings
-    ) {
+    ): int {
+        $io->title('Generate Locales');
+
         $dest_file = $settings[Settings::BASE_DIR] . '/resources/locale/default.pot';
-        $translations = new Translations;
+        $translations = new Translations();
 
         // Find all PHP/PHTML files in the application's code.
         $translatable_folders = [
@@ -39,7 +42,7 @@ class GenerateCommand extends CommandAbstract
 
         $translations->toPoFile($dest_file);
 
-        $io->writeln(__('Locales generated.'));
+        $io->success('Locales generated.');
         return 0;
     }
 }

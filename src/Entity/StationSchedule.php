@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -6,6 +7,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 
 /**
@@ -83,7 +85,7 @@ class StationSchedule
      *
      * @OA\Property(example="0,1,2,3")
      *
-     * @var string
+     * @var string Array of ISO-8601 days (1 for Monday, 7 for Sunday)
      */
     protected $days;
 
@@ -97,7 +99,7 @@ class StationSchedule
         } elseif ($relation instanceof StationStreamer) {
             $this->streamer = $relation;
         } else {
-            throw new \InvalidArgumentException('Schedule must be created with either a playlist or a streamer.');
+            throw new InvalidArgumentException('Schedule must be created with either a playlist or a streamer.');
         }
     }
 
@@ -173,6 +175,9 @@ class StationSchedule
         $this->end_date = $end_date;
     }
 
+    /**
+     * @return int[]|null
+     */
     public function getDays(): ?array
     {
         if (empty($this->days)) {
@@ -244,8 +249,6 @@ class StationSchedule
      *
      * @param string|int $timeCode
      * @param CarbonInterface|null $now
-     *
-     * @return CarbonInterface
      */
     public static function getDateTime($timeCode, CarbonInterface $now = null): CarbonInterface
     {

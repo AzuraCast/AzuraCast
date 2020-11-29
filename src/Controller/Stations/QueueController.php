@@ -1,6 +1,6 @@
 <?php
-namespace App\Controller\Stations;
 
+namespace App\Controller\Stations;
 
 use App\Http\Response;
 use App\Http\ServerRequest;

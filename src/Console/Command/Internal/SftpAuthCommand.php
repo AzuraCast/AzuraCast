@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
@@ -6,6 +7,7 @@ use App\Entity\SftpUser;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use const JSON_NUMERIC_CHECK;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
@@ -15,7 +17,7 @@ class SftpAuthCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManagerInterface $em
-    ) {
+    ): int {
         $username = getenv('SFTPGO_AUTHD_USERNAME');
         $password = getenv('SFTPGO_AUTHD_PASSWORD');
         $pubKey = getenv('SFTPGO_AUTHD_PUBLIC_KEY');
@@ -25,8 +27,9 @@ class SftpAuthCommand extends CommandAbstract
 
         if ($sftpUser instanceof SftpUser && $sftpUser->authenticate($password, $pubKey)) {
             $station = $sftpUser->getStation();
+            $storageLocation = $station->getMediaStorageLocation();
 
-            $quotaRaw = $station->getStorageQuotaBytes();
+            $quotaRaw = $storageLocation->getStorageQuotaBytes();
             $quota = ($quotaRaw instanceof BigInteger)
                 ? (string)$quotaRaw
                 : 0;
@@ -35,7 +38,7 @@ class SftpAuthCommand extends CommandAbstract
                 'status' => 1,
                 'username' => $sftpUser->getUsername(),
                 'expiration_date' => 0,
-                'home_dir' => $station->getRadioMediaDir(),
+                'home_dir' => $storageLocation->getPath(),
                 'uid' => 0,
                 'gid' => 0,
                 'quota_size' => $quota,

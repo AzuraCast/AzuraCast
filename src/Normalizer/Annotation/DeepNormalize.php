@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Normalizer\Annotation;
 
 /**
@@ -7,19 +8,13 @@ namespace App\Normalizer\Annotation;
  */
 class DeepNormalize
 {
-    /**
-     * @var bool
-     */
-    private $deepNormalize;
+    private bool $deepNormalize;
 
     public function __construct(array $data)
     {
         $this->deepNormalize = (bool)$data['value'];
     }
 
-    /**
-     * @return bool
-     */
     public function getDeepNormalize(): bool
     {
         return $this->deepNormalize;

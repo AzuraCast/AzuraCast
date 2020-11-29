@@ -1,0 +1,41 @@
+@import '../../node_modules/sweetalert2/src/variables';
+
+$swal2-dark-theme-black: #19191a;
+$swal2-dark-theme-white: #e1e1e1;
+$swal2-outline-color: lighten($dialog-content-bg, 10%);
+
+$swal2-background: $theme-color-3;
+$swal2-border: 1px solid $theme-color-4;
+$swal2-title-color: $text-color;
+$swal2-backdrop: rgba($dialog-backdrop-bg, .75);
+
+// FOOTER
+$swal2-footer-border-color: $table-border-color;
+$swal2-footer-color: darken($swal2-content-color, 15%);
+
+// TIMER POGRESS BAR
+$swal2-timer-progress-bar-background: rgba($text-color, .6);
+
+// INPUT
+$swal2-input-color: $textfield-color;
+$swal2-input-background: transparent;
+$swal2-input-border: 1px solid $textfield-border-color;
+
+// VALIDATION MESSAGE
+$swal2-validation-message-background: lighten($swal2-dark-theme-black, 10%);
+$swal2-validation-message-color: $swal2-dark-theme-white;
+
+// QUEUE
+$swal2-progress-step-background: lighten($swal2-dark-theme-black, 25%);
+
+// COMMON VARIABLES FOR CONFIRM AND CANCEL BUTTONS
+$swal2-button-focus-box-shadow: 0 0 0 1px $swal2-background, 0 0 0 3px $swal2-outline-color;
+
+// TOAST
+$swal2-toast-background: $swal2-dark-theme-black;
+$swal2-toast-button-focus-box-shadow: 0 0 0 1px $swal2-background, 0 0 0 3px $swal2-outline-color;
+
+// CANCEL BUTTON
+$swal2-cancel-button-background-color: $material-color-grey-600;
+
+@import '../../node_modules/sweetalert2/src/sweetalert2';

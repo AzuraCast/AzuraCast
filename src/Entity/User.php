@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -12,6 +13,7 @@ use OpenApi\Annotations as OA;
 use OTPHP\Factory;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use const PASSWORD_BCRYPT;
 
 /**
@@ -146,8 +148,8 @@ class User
         $this->created_at = time();
         $this->updated_at = time();
 
-        $this->roles = new ArrayCollection;
-        $this->api_keys = new ArrayCollection;
+        $this->roles = new ArrayCollection();
+        $this->api_keys = new ArrayCollection();
     }
 
     /**
@@ -165,7 +167,6 @@ class User
 
     /**
      * @AuditLog\AuditIdentifier()
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -209,7 +210,7 @@ class User
     /**
      * Get the most secure available password hashing algorithm.
      *
-     * @return array [algorithm constant, algorithm options array]
+     * @return mixed[] [algorithm constant string, algorithm options array]
      */
     protected function getPasswordAlgorithm(): array
     {

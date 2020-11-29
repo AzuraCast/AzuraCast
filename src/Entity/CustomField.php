@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -63,7 +64,6 @@ class CustomField
 
     /**
      * @AuditLog\AuditIdentifier()
-     * @return string
      */
     public function getName(): string
     {

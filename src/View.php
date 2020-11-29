@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use League\Plates\Engine;
@@ -15,8 +16,6 @@ class View extends Engine
     /**
      * @param string $name
      * @param array $data
-     *
-     * @return string
      */
     public function fetch(string $name, array $data = []): string
     {
@@ -29,8 +28,6 @@ class View extends Engine
      * @param ResponseInterface $response
      * @param string $template_name
      * @param array $template_args
-     *
-     * @return ResponseInterface
      */
     public function renderToResponse(
         ResponseInterface $response,

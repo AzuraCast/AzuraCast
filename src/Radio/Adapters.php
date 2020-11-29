@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio;
 
 use App\Entity;
@@ -35,7 +36,6 @@ class Adapters
     /**
      * @param Entity\Station $station
      *
-     * @return Frontend\AbstractFrontend
      * @throws NotFoundException
      */
     public function getFrontendAdapter(Entity\Station $station): Frontend\AbstractFrontend
@@ -60,7 +60,7 @@ class Adapters
     /**
      * @param bool $check_installed
      *
-     * @return array
+     * @return mixed[]
      */
     public static function listFrontendAdapters($check_installed = false): array
     {
@@ -97,7 +97,6 @@ class Adapters
     /**
      * @param Entity\Station $station
      *
-     * @return Backend\AbstractBackend
      * @throws NotFoundException
      */
     public function getBackendAdapter(Entity\Station $station): Backend\AbstractBackend
@@ -122,7 +121,7 @@ class Adapters
     /**
      * @param bool $check_installed
      *
-     * @return array
+     * @return mixed[]
      */
     public static function listBackendAdapters($check_installed = false): array
     {
@@ -175,7 +174,6 @@ class Adapters
      * @param Entity\Station $station
      * @param Entity\StationRemote $remote
      *
-     * @return Remote\AbstractRemote
      * @throws NotFoundException
      */
     public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
@@ -198,7 +196,7 @@ class Adapters
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public static function listRemoteAdapters(): array
     {

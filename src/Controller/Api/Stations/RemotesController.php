@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -98,7 +99,7 @@ class RemotesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function getRecord(Entity\Station $station, $id)
+    protected function getRecord(Entity\Station $station, $id): ?object
     {
         $record = parent::getRecord($station, $id);
 

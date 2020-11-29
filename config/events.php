@@ -6,60 +6,61 @@ use App\Middleware;
 use App\Settings;
 
 return function (App\EventDispatcher $dispatcher) {
-    $dispatcher->addListener(Event\BuildConsoleCommands::class, function (Event\BuildConsoleCommands $event) use ($dispatcher) {
-        $console = $event->getConsole();
-        $di = $console->getContainer();
+    $dispatcher->addListener(Event\BuildConsoleCommands::class,
+        function (Event\BuildConsoleCommands $event) use ($dispatcher) {
+            $console = $event->getConsole();
+            $di = $console->getContainer();
 
-        /** @var Settings $settings */
-        $settings = $di->get(Settings::class);
+            /** @var Settings $settings */
+            $settings = $di->get(Settings::class);
 
-        if ($settings->enableRedis()) {
-            $console->command('cache:clear', Command\ClearCacheCommand::class)
-                ->setDescription('Clear all application caches.');
-        }
+            if ($settings->enableRedis()) {
+                $console->command('cache:clear', Command\ClearCacheCommand::class)
+                    ->setDescription('Clear all application caches.');
+            }
 
-        if ($settings->enableDatabase()) {
-            // Doctrine ORM/DBAL
-            Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
+            if ($settings->enableDatabase()) {
+                // Doctrine ORM/DBAL
+                Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
 
-            // Add Doctrine Migrations
-            /** @var Doctrine\ORM\EntityManagerInterface $em */
-            $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
+                // Add Doctrine Migrations
+                /** @var Doctrine\ORM\EntityManagerInterface $em */
+                $em = $di->get(Doctrine\ORM\EntityManagerInterface::class);
 
-            $helper_set = $console->getHelperSet();
-            $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
-            $helper_set->set($doctrine_helpers->get('db'), 'db');
-            $helper_set->set($doctrine_helpers->get('em'), 'em');
+                $helper_set = $console->getHelperSet();
+                $doctrine_helpers = Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($em);
+                $helper_set->set($doctrine_helpers->get('db'), 'db');
+                $helper_set->set($doctrine_helpers->get('em'), 'em');
 
-            $migrationConfigurations = [
-                'migrations_paths' => [
-                    'App\Entity\Migration' => $settings[Settings::BASE_DIR] . '/src/Entity/Migration',
-                ],
-                'table_storage' => [
-                    'table_name' => 'app_migrations',
-                    'version_column_length' => 191,
-                ],
-            ];
+                $migrationConfigurations = [
+                    'migrations_paths' => [
+                        'App\Entity\Migration' => $settings[Settings::BASE_DIR] . '/src/Entity/Migration',
+                    ],
+                    'table_storage' => [
+                        'table_name' => 'app_migrations',
+                        'version_column_length' => 191,
+                    ],
+                ];
 
-            $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(
-                $migrationConfigurations,
-                $settings[Settings::BASE_DIR]
-            );
-            $dispatcher->dispatch($buildMigrationConfigurationsEvent);
+                $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(
+                    $migrationConfigurations,
+                    $settings[Settings::BASE_DIR]
+                );
+                $dispatcher->dispatch($buildMigrationConfigurationsEvent);
 
-            $migrationConfigurations = $buildMigrationConfigurationsEvent->getMigrationConfigurations();
+                $migrationConfigurations = $buildMigrationConfigurationsEvent->getMigrationConfigurations();
 
-            $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationConfigurations);
+                $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationConfigurations);
 
-            $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
-                $migrateConfig,
-                new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
-            );
-            Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
-        }
+                $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
+                    $migrateConfig,
+                    new Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($em)
+                );
+                Doctrine\Migrations\Tools\Console\ConsoleRunner::addCommands($console, $migrateFactory);
+            }
 
-        call_user_func(include(__DIR__ . '/cli.php'), $console);
-    });
+            call_user_func(include(__DIR__ . '/cli.php'), $console);
+        });
 
     $dispatcher->addListener(Event\BuildRoutes::class, function (Event\BuildRoutes $event) {
         $app = $event->getApp();
@@ -115,15 +116,35 @@ return function (App\EventDispatcher $dispatcher) {
     });
 
     // Other event subscribers from across the application.
+    $dispatcher->addCallableListener(
+        Event\GetSyncTasks::class,
+        App\Sync\TaskLocator::class
+    );
+
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
+        App\Notification\Check\ComposeVersionCheck::class
+    );
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
+        App\Notification\Check\UpdateCheck::class
+    );
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
+        App\Notification\Check\RecentBackupCheck::class
+    );
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
+        App\Notification\Check\SyncTaskCheck::class
+    );
+
     $dispatcher->addServiceSubscriber([
         App\Radio\AutoDJ\Queue::class,
         App\Radio\AutoDJ\Annotations::class,
         App\Radio\Backend\Liquidsoap\ConfigWriter::class,
         App\Sync\Task\NowPlaying::class,
-        App\Sync\TaskLocator::class,
         App\Webhook\Dispatcher::class,
         App\Controller\Api\NowplayingController::class,
-        App\Notification\Manager::class,
     ]);
 
 };

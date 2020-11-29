@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -14,9 +15,9 @@ use JsonSerializable;
  */
 class ApiKey implements JsonSerializable
 {
-    public const SEPARATOR = ':';
-
     use Traits\TruncateStrings;
+
+    public const SEPARATOR = ':';
 
     /**
      * @ORM\Column(name="id", type="string", length=16)
@@ -87,7 +88,7 @@ class ApiKey implements JsonSerializable
     /**
      * Generate a unique identifier and return both the identifier and verifier.
      *
-     * @return array [identifier, verifier]
+     * @return mixed[] [string|bool $identifier, string|bool $verifier]
      * @throws Exception
      */
     public function generate(): array
@@ -112,8 +113,6 @@ class ApiKey implements JsonSerializable
      * Verify an incoming API key against the verifier on this record.
      *
      * @param string $verifier
-     *
-     * @return bool
      */
     public function verify(string $verifier): bool
     {
@@ -127,7 +126,6 @@ class ApiKey implements JsonSerializable
 
     /**
      * @AuditLog\AuditIdentifier
-     * @return string
      */
     public function getComment(): ?string
     {
@@ -139,7 +137,10 @@ class ApiKey implements JsonSerializable
         $this->comment = $this->truncateString($comment);
     }
 
-    public function jsonSerialize()
+    /**
+     * @return mixed[]
+     */
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

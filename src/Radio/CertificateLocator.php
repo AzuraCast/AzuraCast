@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio;
 
 use App\Settings;

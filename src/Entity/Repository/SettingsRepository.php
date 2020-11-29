@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -77,7 +78,7 @@ class SettingsRepository extends Repository
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function fetchAll(): array
     {
@@ -106,12 +107,15 @@ class SettingsRepository extends Repository
      * @param null $order_by
      * @param string $order_dir
      *
-     * @return array
+     * @return mixed[]
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
         if (!isset(self::$cachedSettings) || !$cached) {
-            $settings_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC')
+            $settings_raw = $this->em
+                ->createQuery(/** @lang DQL */
+                    'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC'
+                )
                 ->getArrayResult();
 
             self::$cachedSettings = [];

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -278,8 +279,8 @@ class StationPlaylist
     {
         $this->station = $station;
 
-        $this->media_items = new ArrayCollection;
-        $this->schedule_items = new ArrayCollection;
+        $this->media_items = new ArrayCollection();
+        $this->schedule_items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,7 +295,6 @@ class StationPlaylist
 
     /**
      * @AuditLog\AuditIdentifier
-     * @return string
      */
     public function getName(): string
     {
@@ -437,8 +437,6 @@ class StationPlaylist
 
     /**
      * Indicates whether this playlist can be used as a valid source of requestable media.
-     *
-     * @return bool
      */
     public function isRequestable(): bool
     {
@@ -475,14 +473,63 @@ class StationPlaylist
         $this->played_at = $played_at;
     }
 
+    /**
+     * @return mixed[]|null
+     */
     public function getQueue(): ?array
     {
-        return $this->queue;
+        if (null === $this->queue) {
+            return null;
+        }
+
+        // Ensure queue is always formatted correctly.
+        $newQueue = [];
+        foreach ($this->queue as $media) {
+            $newQueue[$media['id']] = $media;
+        }
+        return $newQueue;
     }
 
     public function setQueue(?array $queue): void
     {
         $this->queue = $queue;
+    }
+
+    public function removeFromQueue(StationMedia $media): void
+    {
+        $queue = $this->getQueue();
+
+        if (null !== $queue) {
+            unset($queue[$media->getId()]);
+            $this->queue = $queue;
+        }
+    }
+
+    public function addToQueue(StationMedia $media): void
+    {
+        $queue = $this->getQueue();
+        if (null === $queue) {
+            return;
+        }
+
+        $queue[$media->getId()] = [
+            'id' => $media->getId(),
+            'song_id' => $media->getSongId(),
+            'artist' => $media->getArtist(),
+            'title' => $media->getTitle(),
+        ];
+
+        if (self::ORDER_SEQUENTIAL !== $this->getOrder()) {
+            shuffle($queue);
+
+            $newQueue = [];
+            foreach ($queue as $row) {
+                $newQueue[$row['id']] = $row;
+            }
+            $queue = $newQueue;
+        }
+
+        $this->setQueue($queue);
     }
 
     /**
@@ -503,13 +550,17 @@ class StationPlaylist
 
     /**
      * Indicates whether a playlist is enabled and has content which can be scheduled by an AutoDJ scheduler.
-     *
-     * @return bool
      */
     public function isPlayable(): bool
     {
         // Any "advanced" settings are not managed by AzuraCast AutoDJ.
-        if (!$this->is_enabled || $this->backendInterruptOtherSongs() || $this->backendMerge() || $this->backendLoopPlaylistOnce() || $this->backendPlaySingleTrack()) {
+        if (
+            !$this->is_enabled
+            || $this->backendInterruptOtherSongs()
+            || $this->backendMerge()
+            || $this->backendLoopPlaylistOnce()
+            || $this->backendPlaySingleTrack()
+        ) {
             return false;
         }
 
@@ -521,6 +572,9 @@ class StationPlaylist
         return self::REMOTE_TYPE_PLAYLIST === $this->remote_type;
     }
 
+    /**
+     * @return string[]
+     */
     public function getBackendOptions(): array
     {
         $settings = \App\Settings::getInstance();
@@ -563,7 +617,6 @@ class StationPlaylist
         return in_array(self::OPTION_PLAY_SINGLE_TRACK, $backend_options, true);
     }
 
-
     public function getPlayPerHourMinute(): int
     {
         return $this->play_per_hour_minute;
@@ -577,7 +630,6 @@ class StationPlaylist
 
         $this->play_per_hour_minute = $play_per_hour_minute;
     }
-
 
     public function getPlayPerSongs(): int
     {
@@ -594,8 +646,9 @@ class StationPlaylist
         return $this->play_per_minutes;
     }
 
-    public function setPlayPerMinutes(int $play_per_minutes): void
-    {
+    public function setPlayPerMinutes(
+        int $play_per_minutes
+    ): void {
         $this->play_per_minutes = $play_per_minutes;
     }
 
@@ -605,12 +658,22 @@ class StationPlaylist
      * @param string $file_format
      * @param bool $absolute_paths
      * @param bool $with_annotations
-     *
-     * @return string
      */
-    public function export($file_format = 'pls', $absolute_paths = false, $with_annotations = false): string
-    {
-        $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir() . '/' : '';
+    public function export(
+        $file_format = 'pls',
+        $absolute_paths = false,
+        $with_annotations = false
+    ): string {
+        if ($absolute_paths) {
+            $mediaStorage = $this->station->getMediaStorageLocation();
+            if (!$mediaStorage->isLocal()) {
+                throw new \RuntimeException('Media is not hosted locally on this system.');
+            }
+
+            $media_path = $mediaStorage->getPath() . '/';
+        } else {
+            $media_path = '';
+        }
 
         switch ($file_format) {
             case 'm3u':

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine;
 
 use App\Normalizer\DoctrineEntityNormalizer;
@@ -59,7 +60,7 @@ class Repository
      * @param string|null $order_by
      * @param string $order_dir
      *
-     * @return array
+     * @return mixed[]
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
@@ -82,7 +83,7 @@ class Repository
      * @param string $pk
      * @param string $order_by
      *
-     * @return array
+     * @return mixed[]
      */
     public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name'): array
     {
@@ -90,7 +91,7 @@ class Repository
 
         // Specify custom text in the $add_blank parameter to override.
         if ($add_blank !== false) {
-            $select[''] = ($add_blank === true) ? 'Select...' : $add_blank;
+            $select[''] = ($add_blank === true) ? __('Select...') : $add_blank;
         }
 
         // Build query for records.
@@ -119,10 +120,8 @@ class Repository
      *
      * @param object $entity
      * @param array $source
-     *
-     * @return object
      */
-    public function fromArray($entity, array $source)
+    public function fromArray($entity, array $source): object
     {
         return $this->serializer->denormalize($source, get_class($entity), null, [
             DoctrineEntityNormalizer::OBJECT_TO_POPULATE => $entity,
@@ -136,7 +135,7 @@ class Repository
      * @param bool $deep Iterate through collections associated with this item.
      * @param bool $form_mode Return values in a format suitable for ZendForm setDefault function.
      *
-     * @return array
+     * @return mixed[]
      */
     public function toArray($entity, $deep = false, $form_mode = false): array
     {

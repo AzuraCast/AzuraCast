@@ -1,4 +1,5 @@
 <?php
+
 namespace App\MessageQueue;
 
 use App\Message\AbstractMessage;
@@ -20,11 +21,21 @@ class QueueManager implements SendersLocatorInterface
     /** @var Connection[] */
     public array $connections = [];
 
+    public string $workerName = 'app';
+
     public function __construct(Redis $redis)
     {
         $this->redis = $redis;
     }
 
+    public function setWorkerName(string $workerName): void
+    {
+        $this->workerName = $workerName;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getSenders(Envelope $envelope): iterable
     {
         $message = $envelope->getMessage();
@@ -41,10 +52,13 @@ class QueueManager implements SendersLocatorInterface
 
     public function getConnection(string $queueName): Connection
     {
-        if (!isset($this->connections[$queueName])) {
-            $this->connections[$queueName] = new Connection(
+        $cacheName = $queueName . '_' . $this->workerName;
+
+        if (!isset($this->connections[$cacheName])) {
+            $this->connections[$cacheName] = new Connection(
                 [
                     'stream' => 'messages_' . $queueName,
+                    'consumer' => $this->workerName,
                     'delete_after_ack' => true,
                     'redeliver_timeout' => 43200,
                     'claim_interval' => 86400,
@@ -57,7 +71,7 @@ class QueueManager implements SendersLocatorInterface
             );
         }
 
-        return $this->connections[$queueName];
+        return $this->connections[$cacheName];
     }
 
     public function getTransport(string $queueName): RedisTransport
@@ -101,6 +115,9 @@ class QueueManager implements SendersLocatorInterface
         $connection->setup();
     }
 
+    /**
+     * @return string[]
+     */
     public static function getAllQueues(): array
     {
         return [

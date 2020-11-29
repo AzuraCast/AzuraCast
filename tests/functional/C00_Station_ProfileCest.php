@@ -18,9 +18,7 @@ class C00_Station_ProfileCest extends CestAbstract
         $I->see('Functional Test Radio');
 
         $I->wantTo('Edit a station profile.');
-        $I->click('Edit Profile', '#content');
-
-        $I->seeCurrentUrlEquals('/station/' . $station_id . '/profile/edit');
+        $I->amOnPage('/station/' . $station_id . '/profile/edit');
 
         $I->submitForm('.form', [
             'name' => 'Profile Update Test Radio',
@@ -30,6 +28,5 @@ class C00_Station_ProfileCest extends CestAbstract
         $I->seeCurrentUrlEquals('/station/' . $station_id . '/profile');
 
         $I->see('Profile Update Test Radio');
-        $I->see('Testing a profile update.');
     }
 }

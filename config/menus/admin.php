@@ -23,15 +23,15 @@ return function (App\Event\BuildAdminMenu $e) {
                     'url' => $router->named('admin:branding:index'),
                     'permission' => Acl::GLOBAL_SETTINGS,
                 ],
-                'api_keys' => [
-                    'label' => __('API Keys'),
-                    'url' => $router->named('admin:api:index'),
-                    'permission' => Acl::GLOBAL_API_KEYS,
-                ],
                 'logs' => [
                     'label' => __('System Logs'),
                     'url' => $router->named('admin:logs:index'),
                     'permission' => Acl::GLOBAL_LOGS,
+                ],
+                'storage_locations' => [
+                    'label' => __('Storage Locations'),
+                    'url' => $router->named('admin:storage_locations:index'),
+                    'permission' => Acl::GLOBAL_STORAGE_LOCATIONS,
                 ],
                 'backups' => [
                     'label' => __('Backups'),
@@ -52,17 +52,22 @@ return function (App\Event\BuildAdminMenu $e) {
                 'manage_users' => [
                     'label' => __('User Accounts'),
                     'url' => $router->named('admin:users:index'),
-                    'permission' => Acl::GLOBAL_USERS,
+                    'permission' => Acl::GLOBAL_ALL,
                 ],
                 'permissions' => [
                     'label' => __('Permissions'),
                     'url' => $router->named('admin:permissions:index'),
-                    'permission' => Acl::GLOBAL_PERMISSIONS,
+                    'permission' => Acl::GLOBAL_ALL,
                 ],
                 'auditlog' => [
                     'label' => __('Audit Log'),
                     'url' => $router->named('admin:auditlog:index'),
                     'permission' => Acl::GLOBAL_LOGS,
+                ],
+                'api_keys' => [
+                    'label' => __('API Keys'),
+                    'url' => $router->named('admin:api:index'),
+                    'permission' => Acl::GLOBAL_API_KEYS,
                 ],
             ],
         ],

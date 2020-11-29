@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Entity\Migration;
 
@@ -21,7 +23,6 @@ final class Version20180909035413 extends AbstractMigration
         $stations = $this->connection->fetchAll("SELECT id, frontend_config FROM station WHERE frontend_type = 'remote'");
 
         foreach ($stations as $station) {
-
             $mounts = $this->connection->fetchAll('SELECT * FROM station_mounts WHERE station_id = ' . $station['id']);
 
             if (count($mounts) === 0) {

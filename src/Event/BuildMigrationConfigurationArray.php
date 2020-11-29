@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
@@ -14,6 +15,9 @@ class BuildMigrationConfigurationArray extends Event
         $this->baseDir = $baseDir;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getMigrationConfigurations(): array
     {
         return $this->migrationConfigurations;

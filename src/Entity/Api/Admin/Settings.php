@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Api\Admin;
 
 use App\Entity;
@@ -86,7 +87,11 @@ class Settings
      * Check for Updates and Announcements
      *
      * @OA\Property()
-     * @Assert\Choice({Entity\Settings::UPDATES_NONE, Entity\Settings::UPDATES_RELEASE_ONLY, Entity\Settings::UPDATES_ALL})
+     * @Assert\Choice({
+     *     Entity\Settings::UPDATES_NONE,
+     *     Entity\Settings::UPDATES_RELEASE_ONLY,
+     *     Entity\Settings::UPDATES_ALL
+     * })
      * @var int
      */
     public int $central_updates_channel = Entity\Settings::UPDATES_RELEASE_ONLY;

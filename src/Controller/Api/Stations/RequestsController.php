@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Controller\Api\Stations;
 
-use App\ApiUtilities;
 use App\Entity;
 use App\Exception;
 use App\Http\Response;
@@ -18,16 +18,16 @@ class RequestsController
 
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
-    protected ApiUtilities $api_utils;
+    protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\StationRequestRepository $requestRepo,
-        ApiUtilities $api_utils
+        Entity\ApiGenerator\SongApiGenerator $songApiGenerator
     ) {
         $this->em = $em;
         $this->requestRepo = $requestRepo;
-        $this->api_utils = $api_utils;
+        $this->songApiGenerator = $songApiGenerator;
     }
 
     /**
@@ -50,7 +50,6 @@ class RequestsController
      * @param ServerRequest $request
      * @param Response $response
      *
-     * @return ResponseInterface
      * @throws Exception
      * @throws Exception\InvalidRequestAttribute
      */
@@ -67,16 +66,17 @@ class RequestsController
 
         $qb = $this->em->createQueryBuilder();
 
-        $qb->select('sm, s, spm, sp')
+        $qb->select('sm, spm, sp')
             ->from(Entity\StationMedia::class, 'sm')
-            ->join('sm.song', 's')
             ->leftJoin('sm.playlists', 'spm')
             ->leftJoin('spm.playlist', 'sp')
-            ->where('sm.station_id = :station_id')
+            ->where('sm.storage_location = :storageLocation')
             ->andWhere('sp.id IS NOT NULL')
+            ->andWhere('sp.station = :station')
             ->andWhere('sp.is_enabled = 1')
             ->andWhere('sp.include_in_requests = 1')
-            ->setParameter('station_id', $station->getId());
+            ->setParameter('storageLocation', $station->getMediaStorageLocation())
+            ->setParameter('station', $station);
 
         $params = $request->getQueryParams();
 
@@ -110,8 +110,8 @@ class RequestsController
 
         $paginator->setPostprocessor(function ($media_row) use ($station, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
-            $row = new Entity\Api\StationRequest;
-            $row->song = $media_row->api($this->api_utils);
+            $row = new Entity\Api\StationRequest();
+            $row->song = ($this->songApiGenerator)($media_row);
             $row->request_id = $media_row->getUniqueId();
             $row->request_url = (string)$router->named('api:requests:submit', [
                 'station_id' => $station->getId(),
@@ -153,7 +153,6 @@ class RequestsController
      * @param Response $response
      * @param mixed $media_id
      *
-     * @return ResponseInterface
      * @throws Exception\InvalidRequestAttribute
      */
     public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface

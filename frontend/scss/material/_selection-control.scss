@@ -27,7 +27,6 @@
   margin-bottom: 0;
 
   &::after {
-    color: $selection-control-color;
     position: absolute;
     top: (($font-size-base * $line-height-base - $selection-control-indicator-size) / 2);
     left: 0;
@@ -68,10 +67,6 @@
 
   &:checked ~ {
     .custom-control-label {
-      &::after {
-        color: $selection-control-color-active;
-      }
-
       &::before {
         background-color: $selection-control-color-active;
       }
@@ -80,11 +75,7 @@
 
   &:disabled ~ {
     .custom-control-label {
-      color: $selection-control-color-disabled;
-
-      &::after {
-        color: $selection-control-color-disabled;
-      }
+      background-color: $selection-control-color-disabled;
 
       &::before {
         display: none;
@@ -97,20 +88,17 @@
 
 .custom-checkbox {
   .custom-control-label::after {
-    @include set-material-icons;
-
-    content: $selection-control-checkbox-icon;
-    line-height: 1;
-    vertical-align: middle;
+    @include setup-material-icons-bg;
+    @include material-icons-bg($selection-control-checkbox-icon);
   }
 
   .custom-control-input {
     &:checked ~ .custom-control-label::after {
-      content: $selection-control-checkbox-icon-checked;
+      @include material-icons-bg($selection-control-checkbox-icon-checked);
     }
 
     &:indeterminate ~ .custom-control-label::after {
-      content: $selection-control-checkbox-icon-indeterminate;
+      @include material-icons-bg($selection-control-checkbox-icon-indeterminate);
     }
   }
 }
@@ -119,16 +107,13 @@
 
 .custom-radio {
   .custom-control-label::after {
-    @include set-material-icons;
-
-    content: $selection-control-radio-icon;
-    line-height: 1;
-    vertical-align: middle;
+    @include setup-material-icons-bg;
+    @include material-icons-bg($selection-control-radio-icon);
   }
 
   .custom-control-input {
     &:checked ~ .custom-control-label::after {
-      content: $selection-control-radio-icon-checked;
+      @include material-icons-bg($selection-control-radio-icon-checked);
     }
   }
 }
@@ -167,6 +152,7 @@
         &::after {
           background-color: $selection-control-color-active;
         }
+
         // scss-lint:enable
       }
 

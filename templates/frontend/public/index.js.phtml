@@ -1,70 +1,41 @@
+<?php
+/**
+ * @var \App\Customization $customization
+ * @var \App\Entity\Station $station
+ * @var array $nowplaying
+ * @var \App\Http\Router $router
+ */
+
+$props = [
+    'stationName' => $station->getName(),
+    'enableRequests' => $station->getEnableRequests(),
+    'downloadPlaylistUri' => (string)$router->named('public:playlist',
+        ['station_id' => $station->getShortName(), 'format' => 'pls']),
+    'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]),
+    'initialNowPlaying' => $nowplaying,
+    'showAlbumArt' => !$customization->hideAlbumArt(),
+];
+
+if ($customization->useWebSocketsForNowPlaying()) {
+    $props['useNchan'] = true;
+    $props['nowPlayingUri'] = '/api/live/nowplaying/' . urlencode($station->getShortName());
+} else {
+    $props['useNchan'] = false;
+    $props['nowPlayingUri'] = (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]);
+}
+?>
+
 $(function () {
-  // Song history Vue component
-  var songHistory = new Vue({
-    el: '#station-history',
-    data: {
-      history: [
-        {
-          song: {
-            title: '<?=__('Song Title') ?>',
-            artist: '<?=__('Song Artist') ?>'
-          }
+    let publicRadioPlayer = new Vue({
+        el: '#public-radio-player',
+        render: function (createElement) {
+            return createElement(PublicRadioPlayer.default, {
+                props: <?=json_encode($props) ?>
+            });
         }
-      ]
-    },
-    mounted: function () {
-      radio_player.$eventHub.$on('np_updated', function (np_new) {
-        songHistory.history = np_new.song_history;
-      });
-    }
-  });
+    });
 
-  $('[data-fancybox]').fancybox({
-    buttons: ['close']
-  });
-
-  // Song request modal dialog component
-  var request_dialog = $('#modal-request');
-
-  request_dialog.on('show.bs.modal', function (event) {
-
-    if (!request_dialog.data('request_loaded')) {
-      var grid = $("#requests-table").bootgrid({
-        ajax: true,
-        ajaxSettings: {
-          method: "GET",
-          cache: false
-        },
-        rowSelect: false,
-        caseSensitive: false,
-        url: "<?=$router->named('api:requests:list', ['station_id' => $station->getId()]) ?>",
-        formatters: {
-          "commands": function (column, row) {
-            return '<a class="btn btn-request btn-sm btn-primary" data-url="' + row.request_url + '" tabindex="0"><?=__('Request') ?></a>';
-          }
-        }
-      }).on("loaded.rs.jquery.bootgrid", function () {
-        /* Executes after data is loaded and rendered */
-        grid.find(".btn-request").on("click", function (e) {
-          e.preventDefault();
-          request_dialog.modal('hide');
-
-          $.ajax({
-            dataType: "json",
-            url: $(this).data('url')
-          }).done(function (data) {
-            notify(data.message, 'success');
-          }).fail(function (jqXhr) {
-            var response = jqXhr.responseJSON;
-            notify('Error: ' + response.message, 'danger');
-          });
-
-          return false;
-        });
-      });
-
-      request_dialog.data('request_loaded', true);
-    }
-
-  });
+    $('[data-fancybox]').fancybox({
+        buttons: ['close']
+    });
 });

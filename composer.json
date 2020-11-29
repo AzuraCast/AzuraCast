@@ -35,13 +35,13 @@
     "guzzlehttp/guzzle": "^7.0",
     "guzzlehttp/oauth-subscriber": "^0.4.0",
     "http-interop/http-factory-guzzle": "^1.0",
-    "influxdb/influxdb-php": "1.15.1",
     "james-heinrich/getid3": "dev-master",
     "jhofm/flysystem-iterator": "^2.1",
     "laminas/laminas-config": "^3.3",
     "league/flysystem": "^1.0",
     "league/flysystem-aws-s3-v3": "^1.0",
     "league/flysystem-cached-adapter": "^1.0",
+    "league/mime-type-detection": "^1.5",
     "league/plates": "^3.1",
     "lstrojny/fxmlrpc": "dev-master",
     "maxmind-db/reader": "~1.0",
@@ -56,9 +56,10 @@
     "overtrue/phplint": "^2.0",
     "php-di/php-di": "^6.0",
     "php-di/slim-bridge": "^3.0",
+    "psr/http-factory": "^1.0",
     "ramsey/uuid": "^4.0",
     "rlanvin/php-ip": "^2.0",
-    "slim/http": "^1.0",
+    "slim/http": "^1.1",
     "slim/slim": "^4.2",
     "spomky-labs/otphp": "^10.0",
     "studio24/rotate": "^1.0",
@@ -74,7 +75,7 @@
     "symfony/serializer": "^5",
     "symfony/validator": "^5",
     "voku/portable-utf8": "^5.4",
-    "wikimedia/composer-merge-plugin": "^1.4",
+    "wikimedia/composer-merge-plugin": "dev-feature/composer-v2",
     "zircote/swagger-php": "3.0.4"
   },
   "require-dev": {
@@ -92,7 +93,8 @@
     "phpunit/php-timer": "^5.0",
     "phpunit/phpunit": "^9.2",
     "roave/security-advisories": "dev-master",
-    "squizlabs/php_codesniffer": "3.*",
+    "slevomat/coding-standard": "^6.4",
+    "squizlabs/php_codesniffer": "^3.5",
     "symfony/var-dumper": "^5.1"
   },
   "replace": {
@@ -105,14 +107,27 @@
     "symfony/polyfill-intl-normalizer": "1.99",
     "symfony/polyfill-mbstring": "1.99"
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/mcaskill/composer-merge-plugin.git"
+    }
+  ],
   "scripts": {
+    "cleanup-and-test": [
+      "@phpcbf",
+      "@dev-test"
+    ],
     "dev-test": [
       "@phplint",
       "@phpstan",
+      "@phpcs",
       "@codeception-no-coverage"
     ],
     "phplint": "phplint",
     "phpstan": "phpstan analyze",
+    "phpcs": "phpcs",
+    "phpcbf": "phpcbf",
     "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
     "codeception-no-coverage": "codecept run --no-interaction",
     "ci-import-locales": [

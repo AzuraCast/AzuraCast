@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
 use App\File;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator\QueryPaginator;
@@ -18,16 +19,14 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param Filesystem $filesystem
+     * @param FilesystemManager $filesystem
      * @param string|int $station_id
      * @param int $id
-     *
-     * @return ResponseInterface
      */
     public function listAction(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         $station_id,
         $id
     ): ResponseInterface {
@@ -39,7 +38,7 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb 
+        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb
             FROM App\Entity\StationStreamerBroadcast ssb
             WHERE ssb.station = :station AND ssb.streamer = :streamer
             ORDER BY ssb.timestampStart DESC')
@@ -60,7 +59,7 @@ class BroadcastsController extends AbstractApiCrudController
             unset($return['recordingPath']);
 
             $recordingPath = $row->getRecordingPath();
-            $recordingUri = Filesystem::PREFIX_RECORDINGS . '://' . $recordingPath;
+            $recordingUri = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
 
             if ($fs->has($recordingUri)) {
                 $recordingMeta = $fs->getMetadata($recordingUri);
@@ -100,17 +99,15 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param Filesystem $filesystem
+     * @param FilesystemManager $filesystem
      * @param string|int $station_id
      * @param int $id
      * @param int $broadcast_id
-     *
-     * @return ResponseInterface
      */
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         $station_id,
         $id,
         $broadcast_id
@@ -133,10 +130,10 @@ class BroadcastsController extends AbstractApiCrudController
         $fs = $filesystem->getForStation($station);
         $filename = basename($recordingPath);
 
-        $recordingPath = Filesystem::PREFIX_RECORDINGS . '://' . $recordingPath;
+        $recordingPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
 
-        return $response->withFlysystemFile(
-            $fs,
+        return $fs->streamToResponse(
+            $response,
             $recordingPath,
             File::sanitizeFileName($broadcast->getStreamer()->getDisplayName()) . '_' . $filename
         );
@@ -145,7 +142,7 @@ class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        Filesystem $filesystem,
+        FilesystemManager $filesystem,
         $station_id,
         $id,
         $broadcast_id
@@ -162,7 +159,7 @@ class BroadcastsController extends AbstractApiCrudController
 
         if (!empty($recordingPath)) {
             $fs = $filesystem->getForStation($station);
-            $recordingPath = Filesystem::PREFIX_RECORDINGS . '://' . $recordingPath;
+            $recordingPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
 
             $fs->delete($recordingPath);
 
@@ -171,7 +168,7 @@ class BroadcastsController extends AbstractApiCrudController
             $this->em->flush();
         }
 
-        return $response->withJson(new Entity\Api\Status);
+        return $response->withJson(new Entity\Api\Status());
     }
 
     protected function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -26,15 +27,38 @@ class CustomFieldRepository extends Repository
     }
 
     /**
+     * @return string[]
+     */
+    public function getFieldIds(): array
+    {
+        static $fields;
+
+        if (!isset($fields)) {
+            $fields = [];
+            $fieldsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
+                cf.id, cf.name, cf.short_name
+                FROM App\Entity\CustomField cf
+                ORDER BY cf.name ASC')
+                ->getArrayResult();
+
+            foreach ($fieldsRaw as $row) {
+                $fields[$row['id']] = $row['short_name'] ?? Entity\Station::getStationShortName($row['name']);
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
      * Retrieve a key-value representation of all custom metadata for the specified media.
      *
      * @param Entity\StationMedia $media
      *
-     * @return array
+     * @return mixed[]
      */
     public function getCustomFields(Entity\StationMedia $media): array
     {
-        $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT cf.short_name, e.value 
+        $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT cf.short_name, e.value
             FROM App\Entity\StationMediaCustomField e JOIN e.field cf
             WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
@@ -56,7 +80,10 @@ class CustomFieldRepository extends Repository
      */
     public function setCustomFields(Entity\StationMedia $media, array $custom_fields): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
+        $this->em
+            ->createQuery(/** @lang DQL */
+                'DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id'
+            )
             ->setParameter('media_id', $media->getId())
             ->execute();
 

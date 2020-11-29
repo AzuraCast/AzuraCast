@@ -375,11 +375,7 @@
 }
 
 .navbar-toggler-icon {
-  @include set-material-icons;
-
   display: block;
-
-  &::before {
-    content: $toolbar-toggler-icon;
-  }
+  @include setup-material-icons-bg();
+  @include material-icons-bg($toolbar-toggler-icon);
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
-    protected Media $media_sync;
+    protected Media $mediaSync;
 
     protected Adapters $adapters;
 
@@ -33,32 +34,34 @@ class StationRepository extends Repository
 
     protected SettingsRepository $settingsRepo;
 
+    protected StorageLocationRepository $storageLocationRepo;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         Settings $settings,
         SettingsRepository $settingsRepo,
+        StorageLocationRepository $storageLocationRepo,
         LoggerInterface $logger,
-        Media $media_sync,
+        Media $mediaSync,
         Adapters $adapters,
         Configuration $configuration,
         ValidatorInterface $validator,
         CacheInterface $cache
     ) {
-        $this->media_sync = $media_sync;
+        $this->mediaSync = $mediaSync;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
         $this->validator = $validator;
         $this->cache = $cache;
         $this->settingsRepo = $settingsRepo;
+        $this->storageLocationRepo = $storageLocationRepo;
 
         parent::__construct($em, $serializer, $settings, $logger);
     }
 
     /**
      * @param string $identifier A numeric or string identifier for a station.
-     *
-     * @return Entity\Station|null
      */
     public function findByIdentifier(string $identifier): ?Entity\Station
     {
@@ -82,7 +85,7 @@ class StationRepository extends Repository
      * @param string $pk
      * @param string $order_by
      *
-     * @return array
+     * @return mixed[]
      */
     public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name'): array
     {
@@ -108,41 +111,56 @@ class StationRepository extends Repository
 
     /**
      * @param string $short_code
-     *
-     * @return null|object
      */
-    public function findByShortCode($short_code)
+    public function findByShortCode($short_code): ?Entity\Station
     {
         return $this->repository->findOneBy(['short_name' => $short_code]);
     }
 
     /**
-     * @param Entity\Station $record
-     *
-     * @return Entity\Station
+     * @param Entity\Station $station
      */
-    public function edit(Entity\Station $record): Entity\Station
+    public function edit(Entity\Station $station): Entity\Station
     {
-        $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($record);
+        // Create path for station.
+        $station->ensureDirectoriesExist();
+
+        $this->em->persist($station);
+        $this->em->persist($station->getMediaStorageLocation());
+        $this->em->persist($station->getRecordingsStorageLocation());
+
+        $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
+
+        // Generate station ID.
+        $this->em->flush();
+
+        // Delete media-related items if the media storage is changed.
+        /** @var Entity\StorageLocation|null $oldMediaStorage */
+        $oldMediaStorage = $original_record['media_storage_location'];
+        $newMediaStorage = $station->getMediaStorageLocation();
+
+        if (null === $oldMediaStorage || $oldMediaStorage->getId() !== $newMediaStorage->getId()) {
+            $this->flushRelatedMedia($station);
+        }
 
         // Get the original values to check for changes.
         $old_frontend = $original_record['frontend_type'];
         $old_backend = $original_record['backend_type'];
 
-        $frontend_changed = ($old_frontend !== $record->getFrontendType());
-        $backend_changed = ($old_backend !== $record->getBackendType());
+        $frontend_changed = ($old_frontend !== $station->getFrontendType());
+        $backend_changed = ($old_backend !== $station->getBackendType());
         $adapter_changed = $frontend_changed || $backend_changed;
 
         if ($frontend_changed) {
-            $frontend = $this->adapters->getFrontendAdapter($record);
-            $this->resetMounts($record, $frontend);
+            $frontend = $this->adapters->getFrontendAdapter($station);
+            $this->resetMounts($station, $frontend);
         }
 
-        $this->configuration->writeConfiguration($record, $adapter_changed);
+        $this->configuration->writeConfiguration($station, $adapter_changed);
 
         $this->cache->delete('stations');
 
-        return $record;
+        return $station;
     }
 
     /**
@@ -171,33 +189,57 @@ class StationRepository extends Repository
         }
 
         $this->em->flush();
+        $this->em->refresh($station);
+    }
+
+    protected function flushRelatedMedia(Entity\Station $station): void
+    {
+        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\SongHistory sh SET sh.media = null
+            WHERE sh.station = :station')
+            ->setParameter('station', $station)
+            ->execute();
+
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationPlaylistMedia spm
+            WHERE spm.playlist_id IN (SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station)')
+            ->setParameter('station', $station)
+            ->execute();
+
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
+            WHERE sq.station = :station')
+            ->setParameter('station', $station)
+            ->execute();
+
+        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationRequest sr
+            WHERE sr.station = :station')
+            ->setParameter('station', $station)
+            ->execute();
     }
 
     /**
      * Handle tasks necessary to a station's creation.
      *
      * @param Entity\Station $station
-     *
-     * @return Entity\Station
      */
     public function create(Entity\Station $station): Entity\Station
     {
         // Create path for station.
-        $station->setRadioBaseDir(null);
+        $station->ensureDirectoriesExist();
 
         $this->em->persist($station);
+        $this->em->persist($station->getMediaStorageLocation());
+        $this->em->persist($station->getRecordingsStorageLocation());
 
         // Generate station ID.
         $this->em->flush();
 
         // Scan directory for any existing files.
         set_time_limit(600);
-        $this->media_sync->importMusic($station);
+        $this->mediaSync->importMusic($station->getMediaStorageLocation());
 
         /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
 
-        $this->media_sync->importPlaylists($station);
+        $this->mediaSync->importPlaylists($station);
 
         /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
@@ -238,6 +280,19 @@ class StationRepository extends Repository
 
         // Save changes and continue to the last setup step.
         $this->em->flush();
+
+        $storageLocations = [
+            $station->getMediaStorageLocation(),
+            $station->getRecordingsStorageLocation(),
+        ];
+
+        foreach ($storageLocations as $storageLocation) {
+            $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
+            if (1 === count($stations)) {
+                $this->em->remove($storageLocation);
+            }
+        }
+
         $this->em->remove($station);
         $this->em->flush();
 
@@ -257,8 +312,6 @@ class StationRepository extends Repository
      * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
      *
      * @param Entity\Station|null $station
-     *
-     * @return UriInterface
      */
     public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {

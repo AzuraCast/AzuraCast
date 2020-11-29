@@ -8,7 +8,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_radio.svg)](https://hub.docker.com/r/azuracast/azuracast_radio/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
 
-**AzuraCast** is a self-hosted, all-in-one web radio management suite. Using its easy installer and powerful but intuitive web interface, you can start up a fully working web radio station in a few quick minutes. 
+**AzuraCast** is a self-hosted, all-in-one web radio management suite. Using its easy installer and powerful but intuitive web interface, you can start up a fully working web radio station in a few quick minutes.
 
 ![](https://www.azuracast.com/img/ScreenshotTour.gif)
 
@@ -47,10 +47,11 @@ Follow our **[installation guide](https://azuracast.com/install/)** for instruct
 #### For Server Administrators
 
 - **Role-based User Management:** Assign global and per-station permissions to a role, then add users to those roles to control access.
-- **Custom Branding:** Modify every aspect of both the internal and public-facing AzuraCast pages by supplying your own custom CSS and JavaScript. 
-- **Authenticated RESTful API:** Individual users in the system can create API keys which have the same permissions they have in the system. The AzuraCast API is a powerful and [well-documented](https://www.azuracast.com/api/index.html) tool for interacting with installations. 
+- **Custom Branding:** Modify every aspect of both the internal and public-facing AzuraCast pages by supplying your own custom CSS and JavaScript.
+- **Authenticated RESTful API:** Individual users in the system can create API keys which have the same permissions they have in the system. The AzuraCast API is a powerful and [well-documented](https://www.azuracast.com/api/index.html) tool for interacting with installations.
 - **Web Log Viewing:** Quickly diagnose problems affecting any part of the AzuraCast system through the system-wide web log viewer.
 - **Automatic Radio Proxies:** Many users can't connect directly to radio station ports (i.e. 8000) by default, so AzuraCast includes an automatic nginx proxy that lets listeners connect via the http (80) and https (443) ports. These proxies are also compatible with services like CloudFlare.
+- **Storage Location Management:** Station media, live recordings and backups can be stored localy or on an S3 compatible storage provider.
 
 ### What's Included
 
@@ -67,9 +68,8 @@ For x86/x64 installations, [SHOUTcast 2 DNAS](http://wiki.shoutcast.com/wiki/SHO
 
 * **[NGINX](https://www.nginx.com)** for serving web pages and the radio proxy
 * **[MariaDB](https://mariadb.org/)** as the primary database
-* **[PHP 7.2](https://secure.php.net/)** powering the web application
-* **[InfluxDB](https://www.influxdata.com/)** for time-series based statistics
-* **[Redis](https://redis.io/)** for sessions, database and general caching 
+* **[PHP 7.4](https://secure.php.net/)** powering the web application
+* **[Redis](https://redis.io/)** for sessions, message queue storage, database and general caching
 
 ## AzuraCast API
 
@@ -96,9 +96,8 @@ We frequently post to social media any time there are significant updates to our
 - On Twitter at [@AzuraCast](https://twitter.com/azuracast), or
 - On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
 
-If you are an AzuraCast user, station owner, developer or other contributor, you can also join our two communities, where you can ask questions, share your station and more:
+If you are an AzuraCast user, station owner, developer or other contributor, you can also join our Discord community, where you can ask questions, share your station and more:
 
-- [Slack](https://azuracast.com/slack)
 - [Discord](https://azuracast.com/discord)
 
 Note that our social media channels aren't the best way to report issues to us; instead, you should use the GitHub issues instructions above, as this allows our whole team to help resolve and track the progress of the issue in one location.

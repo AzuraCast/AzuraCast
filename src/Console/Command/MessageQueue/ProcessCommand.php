@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Console\Command\MessageQueue;
 
 use App\Console\Command\CommandAbstract;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\EventDispatcher;
+use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
@@ -18,12 +19,22 @@ class ProcessCommand extends CommandAbstract
         EventDispatcher $eventDispatcher,
         QueueManager $queueManager,
         LoggerInterface $logger,
-        EntityManagerInterface $em,
-        int $runtime = 0
-    ) {
+        int $runtime = 0,
+        ?string $workerName = null
+    ): int {
+        $logger->notice('Starting new Message Queue worker process.', [
+            'runtime' => $runtime,
+            'workerName' => $workerName,
+        ]);
+
+        if (null !== $workerName) {
+            $queueManager->setWorkerName($workerName);
+        }
+
         $receivers = $queueManager->getTransports();
 
-        $eventDispatcher->addSubscriber(new ClearEntityManagerSubscriber($em));
+        $eventDispatcher->addServiceSubscriber(ClearEntityManagerSubscriber::class);
+        $eventDispatcher->addServiceSubscriber(LogWorkerExceptionSubscriber::class);
 
         if ($runtime > 0) {
             $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $logger));

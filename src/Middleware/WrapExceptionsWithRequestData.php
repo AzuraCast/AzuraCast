@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Middleware;
 
 use App\Exception\WrappedException;
@@ -6,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 
 /**
  * Wrap all exceptions thrown past this point with rich metadata.
@@ -15,14 +17,12 @@ class WrapExceptionsWithRequestData implements MiddlewareInterface
     /**
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
             return $handler->handle($request);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new WrappedException($request, $e);
         }
     }

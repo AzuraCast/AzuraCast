@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -89,7 +90,7 @@ class Relay
         $this->created_at = time();
         $this->updated_at = time();
 
-        $this->remotes = new ArrayCollection;
+        $this->remotes = new ArrayCollection();
     }
 
     /**
@@ -130,6 +131,9 @@ class Relay
         $this->is_visible_on_public_pages = $is_visible_on_public_pages;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getNowplaying()
     {
         return $this->nowplaying;

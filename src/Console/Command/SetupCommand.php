@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command;
 
 use App\Entity;
@@ -21,7 +22,7 @@ class SetupCommand extends CommandAbstract
         AzuraCastCentral $acCentral,
         bool $update = false,
         bool $loadFixtures = false
-    ) {
+    ): int {
         $io->title(__('AzuraCast Setup'));
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
@@ -29,8 +30,6 @@ class SetupCommand extends CommandAbstract
             __('Environment: %s', ucfirst($settings[Settings::APP_ENV])),
             __('Installation Method: %s', $settings->isDocker() ? 'Docker' : 'Ansible'),
         ]);
-
-        $this->runCommand($output, 'azuracast:internal:uptime-wait');
 
         if ($update) {
             $io->note(__('Running in update mode.'));
@@ -41,10 +40,6 @@ class SetupCommand extends CommandAbstract
                 $io->newLine();
             }
         }
-
-        $io->section(__('Setting Up InfluxDB'));
-
-        $this->runCommand($output, 'azuracast:setup:influx');
 
         /** @var EntityManagerInterface $em */
         $em = $di->get(EntityManagerInterface::class);

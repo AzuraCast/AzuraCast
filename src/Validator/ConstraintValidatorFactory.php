@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Validator;
 
 use Psr\Container\ContainerInterface;
@@ -26,7 +27,7 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
 
         if (!isset($this->validators[$className])) {
             if ('validator.expression' === $className) {
-                $this->validators[$className] = new ExpressionValidator;
+                $this->validators[$className] = new ExpressionValidator();
             } elseif ($this->container->has($className)) {
                 $this->validators[$className] = $this->container->get($className);
             } else {

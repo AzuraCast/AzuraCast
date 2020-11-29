@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Radio\Remote;
 
 use App\Entity;
@@ -81,8 +82,6 @@ abstract class AbstractRemote
      * Return the likely "public" listen URL for the remote.
      *
      * @param Entity\StationRemote $remote
-     *
-     * @return string
      */
     public function getPublicUrl(Entity\StationRemote $remote): string
     {
@@ -98,8 +97,6 @@ abstract class AbstractRemote
      *
      * @param Entity\StationRemote $remote
      * @param string|null $custom_path
-     *
-     * @return string
      */
     protected function getRemoteUrl(Entity\StationRemote $remote, $custom_path = null): string
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Doctrine\Messenger;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +16,10 @@ class ClearEntityManagerSubscriber implements EventSubscriberInterface
         $this->em = $em;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return mixed[]
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             WorkerMessageHandledEvent::class => 'onWorkerMessageHandled',

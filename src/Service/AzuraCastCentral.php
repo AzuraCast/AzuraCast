@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use App\Entity;
@@ -12,43 +13,44 @@ class AzuraCastCentral
 {
     protected const BASE_URL = 'https://central.azuracast.com';
 
-    protected Settings $app_settings;
+    protected Settings $appSettings;
 
-    protected Client $http_client;
+    protected Client $httpClient;
 
-    protected Entity\Repository\SettingsRepository $settings_repo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Version $version;
 
     protected LoggerInterface $logger;
 
     public function __construct(
-        Entity\Repository\SettingsRepository $settings_repo,
-        Settings $app_settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Settings $appSettings,
         Version $version,
-        Client $http_client,
+        Client $httpClient,
         LoggerInterface $logger
     ) {
-        $this->settings_repo = $settings_repo;
-        $this->app_settings = $app_settings;
+        $this->settingsRepo = $settingsRepo;
+        $this->appSettings = $appSettings;
         $this->version = $version;
-        $this->http_client = $http_client;
+        $this->httpClient = $httpClient;
         $this->logger = $logger;
     }
 
     /**
      * Ping the AzuraCast Central server for updates and return them if there are any.
      *
-     * @return array|null
+     * @return mixed[]|null
      */
     public function checkForUpdates(): ?array
     {
-        $app_uuid = $this->settings_repo->getUniqueIdentifier();
+        $app_uuid = $this->settingsRepo->getUniqueIdentifier();
 
         $request_body = [
             'id' => $app_uuid,
-            'is_docker' => $this->app_settings->isDocker(),
-            'environment' => $this->app_settings[Settings::APP_ENV],
+            'is_docker' => $this->appSettings->isDocker(),
+            'environment' => $this->appSettings[Settings::APP_ENV],
+            'release_channel' => $this->version->getReleaseChannel(),
         ];
 
         $commit_hash = $this->version->getCommitHash();
@@ -59,7 +61,7 @@ class AzuraCastCentral
         }
 
         try {
-            $response = $this->http_client->request(
+            $response = $this->httpClient->request(
                 'POST',
                 self::BASE_URL . '/api/update',
                 ['json' => $request_body]
@@ -80,18 +82,16 @@ class AzuraCastCentral
      * Ping the AzuraCast Central server to retrieve this installation's likely public-facing IP.
      *
      * @param bool $cached
-     *
-     * @return string|null
      */
     public function getIp(bool $cached = true): ?string
     {
         $ip = ($cached)
-            ? $this->settings_repo->getSetting(Entity\Settings::EXTERNAL_IP)
+            ? $this->settingsRepo->getSetting(Entity\Settings::EXTERNAL_IP)
             : null;
 
         if (empty($ip)) {
             try {
-                $response = $this->http_client->request(
+                $response = $this->httpClient->request(
                     'GET',
                     self::BASE_URL . '/ip'
                 );
@@ -106,7 +106,7 @@ class AzuraCastCentral
             }
 
             if (!empty($ip) && $cached) {
-                $this->settings_repo->setSetting(Entity\Settings::EXTERNAL_IP, $ip);
+                $this->settingsRepo->setSetting(Entity\Settings::EXTERNAL_IP, $ip);
             }
         }
 

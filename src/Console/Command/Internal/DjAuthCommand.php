@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
@@ -17,12 +18,12 @@ class DjAuthCommand extends CommandAbstract
         int $stationId,
         string $djUser = '',
         string $djPassword = ''
-    ) {
+    ): int {
         $station = $em->getRepository(Entity\Station::class)->find($stationId);
 
         if (!($station instanceof Entity\Station) || !$station->getEnableStreamers()) {
             $io->write('false');
-            return null;
+            return 0;
         }
 
         $adapter = $adapters->getBackendAdapter($station);
@@ -30,10 +31,10 @@ class DjAuthCommand extends CommandAbstract
         if ($adapter instanceof Liquidsoap) {
             $response = $adapter->authenticateStreamer($station, $djUser, $djPassword);
             $io->write($response);
-            return null;
+            return 0;
         }
 
         $io->write('false');
-        return null;
+        return 0;
     }
 }

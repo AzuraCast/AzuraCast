@@ -43,7 +43,7 @@ return function (Application $console) {
     )->setDescription('Send upcoming song feedback from the AutoDJ back to AzuraCast.');
 
     $console->command(
-        'azuracast:internal:sftp-upload action username path target-path ssh-cmd',
+        'azuracast:internal:sftp-upload action username path [target-path] [ssh-cmd]',
         Command\Internal\SftpUploadCommand::class
     )->setDescription('Process a file uploaded via SFTP');
 
@@ -82,11 +82,6 @@ return function (Application $console) {
     )->setDescription(__('Migrate existing configuration to new INI format if any exists.'));
 
     $console->command(
-        'azuracast:setup:influx',
-        Command\Influx\SetupCommand::class
-    )->setDescription(__('Initial setup of InfluxDB.'));
-
-    $console->command(
         'azuracast:setup:fixtures',
         Command\SetupFixturesCommand::class
     )->setDescription(__('Install fixtures for demo / local development.'));
@@ -108,7 +103,7 @@ return function (Application $console) {
     )->setDescription(__('Run one or more scheduled synchronization tasks.'));
 
     $console->command(
-        'queue:process [runtime]',
+        'queue:process [runtime] [--worker-name=]',
         Command\MessageQueue\ProcessCommand::class
     )->setDescription(__('Process the message queue.'));
 
@@ -126,16 +121,6 @@ return function (Application $console) {
         'azuracast:api:docs',
         Command\GenerateApiDocsCommand::class
     )->setDescription('Trigger regeneration of AzuraCast API documentation.');
-
-    $console->command(
-        'azuracast:internal:uptime-wait',
-        Command\UptimeWaitCommand::class
-    )->setDescription('Wait until core services are online and accepting connections before continuing.');
-
-    $console->command(
-        'influxdb:query query',
-        Command\Influx\QueryCommand::class
-    )->setDescription('Execute a query on the InfluxDB database.');
 
     // User-side tools
     $console->command(
@@ -164,7 +149,7 @@ return function (Application $console) {
     )->setDescription('Set the value of a setting in the AzuraCast settings database.');
 
     $console->command(
-        'azuracast:backup [path] [--exclude-media]',
+        'azuracast:backup [path] [--storage-location-id=] [--exclude-media]',
         Command\Backup\BackupCommand::class
     )->setDescription(__('Back up the AzuraCast database and statistics (and optionally media).'));
 

@@ -15,7 +15,7 @@ done
 if [[ "$1" == '--' ]]; then shift; fi
 
 APP_ENV="${APP_ENV:-production}"
-UPDATE_REVISION="${UPDATE_REVISION:-57}"
+UPDATE_REVISION="${UPDATE_REVISION:-58}"
 
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' ansible | grep "install ok installed")
 echo "Checking for Ansible: $PKG_OK"

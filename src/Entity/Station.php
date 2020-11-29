@@ -1,22 +1,21 @@
 <?php
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Customization;
 use App\File;
+use App\Normalizer\Annotation\DeepNormalize;
 use App\Radio\Adapters;
-use App\Radio\Frontend\AbstractFrontend;
-use App\Radio\Quota;
-use App\Radio\Remote\AdapterProxy;
 use App\Settings;
 use App\Validator\Constraints as AppAssert;
-use Brick\Math\BigInteger;
+use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\AdapterInterface;
 use OpenApi\Annotations as OA;
-use Psr\Http\Message\UriInterface;
-use RuntimeException;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,12 +32,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Station
 {
+    use Traits\TruncateStrings;
+
     public const DEFAULT_REQUEST_DELAY = 5;
     public const DEFAULT_REQUEST_THRESHOLD = 15;
     public const DEFAULT_DISCONNECT_DEACTIVATE_STREAMER = 0;
     public const DEFAULT_API_HISTORY_ITEMS = 5;
-
-    use Traits\TruncateStrings;
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -118,7 +117,7 @@ class Station
      *
      * @AuditLog\AuditIgnore()
      *
-     * @var string|null An internal-use API key used for container-to-container communications from Liquidsoap to AzuraCast
+     * @var string|null An internal API key used for container-to-container communications from Liquidsoap to AzuraCast
      */
     protected $adapter_api_key;
 
@@ -153,14 +152,6 @@ class Station
      * @var string|null
      */
     protected $radio_base_dir;
-
-    /**
-     * @ORM\Column(name="radio_media_dir", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="/var/azuracast/stations/azuratest_radio/media")
-     * @var string|null
-     */
-    protected $radio_media_dir;
 
     /**
      * @ORM\Column(name="nowplaying", type="array", nullable=true)
@@ -285,39 +276,9 @@ class Station
      * @ORM\Column(name="api_history_items", type="smallint")
      *
      * @OA\Property(example=5)
-     * @var int|null The number of "last played" history items to show for a given station in the Now Playing API responses.
+     * @var int|null The number of "last played" history items to show for a station in the Now Playing API responses.
      */
     protected $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
-
-    /**
-     * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
-     *
-     * @OA\Property(example="50 GB")
-     * @var string|null
-     */
-    protected $storage_quota;
-
-    /**
-     * @OA\Property(example="50000000000")
-     * @var string|null
-     */
-    protected $storage_quota_bytes;
-
-    /**
-     * @ORM\Column(name="storage_used", type="bigint", nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example="1 GB")
-     * @var string|null
-     */
-    protected $storage_used;
-
-    /**
-     * @OA\Property(example="1000000000")
-     * @var string|null
-     */
-    protected $storage_used_bytes;
 
     /**
      * @ORM\Column(name="timezone", type="string", length=100, nullable=true)
@@ -343,10 +304,30 @@ class Station
     protected $history;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="station")
-     * @var Collection
+     * @ORM\ManyToOne(targetEntity="StorageLocation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     *
+     * @var StorageLocation
      */
-    protected $media;
+    protected $media_storage_location;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="StorageLocation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="recordings_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     *
+     * @var StorageLocation
+     */
+    protected $recordings_storage_location;
 
     /**
      * @ORM\OneToMany(targetEntity="StationStreamer", mappedBy="station")
@@ -356,7 +337,7 @@ class Station
 
     /**
      * @ORM\Column(name="current_streamer_id", type="integer", nullable=true)
-     * @var int
+     * @var int|null
      */
     protected $current_streamer_id;
 
@@ -408,14 +389,13 @@ class Station
 
     public function __construct()
     {
-        $this->history = new ArrayCollection;
-        $this->media = new ArrayCollection;
-        $this->playlists = new ArrayCollection;
-        $this->mounts = new ArrayCollection;
-        $this->remotes = new ArrayCollection;
-        $this->webhooks = new ArrayCollection;
-        $this->streamers = new ArrayCollection;
-        $this->sftp_users = new ArrayCollection;
+        $this->history = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->mounts = new ArrayCollection();
+        $this->remotes = new ArrayCollection();
+        $this->webhooks = new ArrayCollection();
+        $this->streamers = new ArrayCollection();
+        $this->sftp_users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -550,8 +530,6 @@ class Station
 
     /**
      * Whether the station uses AzuraCast to directly manage the AutoDJ or lets the backend handle it.
-     *
-     * @return bool
      */
     public function useManualAutoDJ(): bool
     {
@@ -608,8 +586,6 @@ class Station
      * Authenticate the supplied adapter API key.
      *
      * @param string $api_key
-     *
-     * @return bool
      */
     public function validateAdapterApiKey($api_key): bool
     {
@@ -663,56 +639,46 @@ class Station
         $this->radio_base_dir = $newDir;
     }
 
-    public function getRadioAlbumArtDir(): string
+    public function ensureDirectoriesExist(): void
     {
-        return $this->radio_base_dir . '/album_art';
-    }
-
-    public function getRadioWaveformsDir(): string
-    {
-        return $this->radio_base_dir . '/waveforms';
-    }
-
-    public function getRadioTempDir(): string
-    {
-        return $this->radio_base_dir . '/temp';
-    }
-
-    public function getRadioRecordingsDir(): string
-    {
-        return $this->radio_base_dir . '/recordings';
-    }
-
-    /**
-     * Given an absolute path, return a path relative to this station's media directory.
-     *
-     * @param string $full_path
-     *
-     * @return string
-     */
-    public function getRelativeMediaPath($full_path): string
-    {
-        return ltrim(str_replace($this->getRadioMediaDir(), '', $full_path), '/');
-    }
-
-    public function getRadioMediaDir(): string
-    {
-        return (!empty($this->radio_media_dir))
-            ? $this->radio_media_dir
-            : $this->radio_base_dir . '/media';
-    }
-
-    public function setRadioMediaDir(?string $new_dir): void
-    {
-        $new_dir = $this->truncateString(trim($new_dir));
-
-        if ($new_dir && $new_dir !== $this->radio_media_dir) {
-            if (!empty($new_dir) && !file_exists($new_dir) && !mkdir($new_dir, 0777, true) && !is_dir($new_dir)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $new_dir));
-            }
-
-            $this->radio_media_dir = $new_dir;
+        if (null === $this->radio_base_dir) {
+            $this->setRadioBaseDir(null);
         }
+
+        // Flysystem adapters will automatically create the main directory.
+        $this->getRadioBaseDirAdapter();
+        $this->getRadioPlaylistsDirAdapter();
+        $this->getRadioConfigDirAdapter();
+        $this->getRadioTempDirAdapter();
+
+        if (null === $this->media_storage_location) {
+            $storageLocation = new StorageLocation(
+                StorageLocation::TYPE_STATION_MEDIA,
+                StorageLocation::ADAPTER_LOCAL
+            );
+            $storageLocation->setPath($this->getRadioBaseDir() . '/media');
+
+            $this->media_storage_location = $storageLocation;
+        }
+
+        if (null === $this->recordings_storage_location) {
+            $storageLocation = new StorageLocation(
+                StorageLocation::TYPE_STATION_RECORDINGS,
+                StorageLocation::ADAPTER_LOCAL
+            );
+            $storageLocation->setPath($this->getRadioBaseDir() . '/recordings');
+
+            $this->recordings_storage_location = $storageLocation;
+        }
+
+        $this->getRadioMediaDirAdapter();
+        $this->getRadioRecordingsDirAdapter();
+    }
+
+    public function getRadioBaseDirAdapter(?string $suffix = null): AdapterInterface
+    {
+        $path = $this->radio_base_dir . $suffix;
+        return new Local($path);
     }
 
     public function getRadioPlaylistsDir(): string
@@ -720,23 +686,39 @@ class Station
         return $this->radio_base_dir . '/playlists';
     }
 
+    public function getRadioPlaylistsDirAdapter(): AdapterInterface
+    {
+        return new Local($this->getRadioPlaylistsDir());
+    }
+
     public function getRadioConfigDir(): string
     {
         return $this->radio_base_dir . '/config';
     }
 
-    public function getAllStationDirectories(): array
+    public function getRadioConfigDirAdapter(): AdapterInterface
     {
-        return [
-            $this->getRadioBaseDir(),
-            $this->getRadioMediaDir(),
-            $this->getRadioAlbumArtDir(),
-            $this->getRadioWaveformsDir(),
-            $this->getRadioPlaylistsDir(),
-            $this->getRadioConfigDir(),
-            $this->getRadioTempDir(),
-            $this->getRadioRecordingsDir(),
-        ];
+        return new Local($this->getRadioConfigDir());
+    }
+
+    public function getRadioTempDir(): string
+    {
+        return $this->radio_base_dir . '/temp';
+    }
+
+    public function getRadioTempDirAdapter(): AdapterInterface
+    {
+        return new Local($this->getRadioTempDir());
+    }
+
+    public function getRadioMediaDirAdapter(): AdapterInterface
+    {
+        return $this->getMediaStorageLocation()->getStorageAdapter();
+    }
+
+    public function getRadioRecordingsDirAdapter(): AdapterInterface
+    {
+        return $this->getRecordingsStorageLocation()->getStorageAdapter();
     }
 
     public function getNowplaying(): ?Api\NowPlaying
@@ -766,6 +748,9 @@ class Station
         $this->nowplaying_timestamp = $nowplaying_timestamp;
     }
 
+    /**
+     * @return mixed[]|null
+     */
     public function getAutomationSettings(): ?array
     {
         return $this->automation_settings;
@@ -905,144 +890,18 @@ class Station
         $this->api_history_items = $api_history_items;
     }
 
-    public function getStorageQuota(): ?string
-    {
-        $raw_quota = $this->getStorageQuotaBytes();
-
-        return ($raw_quota instanceof BigInteger)
-            ? Quota::getReadableSize($raw_quota)
-            : '';
-    }
-
-    /**
-     * @param BigInteger|string|null $storage_quota
-     */
-    public function setStorageQuota($storage_quota): void
-    {
-        $storage_quota = (string)Quota::convertFromReadableSize($storage_quota);
-        $this->storage_quota = !empty($storage_quota) ? $storage_quota : null;
-    }
-
-    public function getStorageQuotaBytes(): ?BigInteger
-    {
-        $size = $this->storage_quota;
-
-        return (null !== $size)
-            ? BigInteger::of($size)
-            : null;
-    }
-
-    public function getStorageUsed(): ?string
-    {
-        $raw_size = $this->getStorageUsedBytes();
-        return Quota::getReadableSize($raw_size);
-    }
-
-    /**
-     * @param BigInteger|string|null $storage_used
-     */
-    public function setStorageUsed($storage_used): void
-    {
-        $storage_used = (string)Quota::convertFromReadableSize($storage_used);
-        $this->storage_used = !empty($storage_used) ? $storage_used : null;
-    }
-
-    public function getStorageUsedBytes(): BigInteger
-    {
-        $size = $this->storage_used;
-
-        if (null === $size) {
-            return BigInteger::zero();
-        }
-
-        return BigInteger::of($size);
-    }
-
-    /**
-     * Increment the current used storage total.
-     *
-     * @param BigInteger|string|int $new_storage_amount
-     */
-    public function addStorageUsed($new_storage_amount): void
-    {
-        if (empty($new_storage_amount)) {
-            return;
-        }
-
-        $current_storage_used = $this->getStorageUsedBytes();
-        $this->storage_used = (string)$current_storage_used->plus($new_storage_amount);
-    }
-
-    /**
-     * Decrement the current used storage total.
-     *
-     * @param BigInteger|string|int $amount_to_remove
-     */
-    public function removeStorageUsed($amount_to_remove): void
-    {
-        if (empty($amount_to_remove)) {
-            return;
-        }
-
-        $current_storage_used = $this->getStorageUsedBytes();
-        $storage_used = $current_storage_used->minus($amount_to_remove);
-        if ($storage_used->isLessThan(0)) {
-            $storage_used = BigInteger::zero();
-        }
-
-        $this->storage_used = (string)$storage_used;
-    }
-
-    public function getStorageAvailable(): string
-    {
-        $raw_size = $this->getRawStorageAvailable();
-
-        return ($raw_size instanceof BigInteger)
-            ? Quota::getReadableSize($raw_size)
-            : '';
-    }
-
-    public function getRawStorageAvailable(): ?BigInteger
-    {
-        $quota = $this->getStorageQuotaBytes();
-        $total_space = disk_total_space($this->getRadioMediaDir());
-
-        if ($quota === null || $quota->compareTo($total_space) === 1) {
-            return BigInteger::of($total_space);
-        }
-
-        return $quota;
-    }
-
-    public function isStorageFull(): bool
-    {
-        $available = $this->getRawStorageAvailable();
-        if ($available === null) {
-            return true;
-        }
-
-        $used = $this->getStorageUsedBytes();
-
-        return ($used->compareTo($available) !== -1);
-    }
-
-    public function getStorageUsePercentage(): int
-    {
-        return Quota::getPercentage($this->getStorageUsedBytes(), $this->getRawStorageAvailable());
-    }
-
     public function getTimezone(): string
     {
         if (!empty($this->timezone)) {
             return $this->timezone;
         }
 
-        return Customization::DEFAULT_TIMEZONE;
+        return 'UTC';
     }
 
-    public function getTimezoneObject(): \DateTimeZone
+    public function getTimezoneObject(): DateTimeZone
     {
-        return new \DateTimeZone($this->getTimezone());
+        return new DateTimeZone($this->getTimezone());
     }
 
     public function setTimezone(?string $timezone): void
@@ -1050,9 +909,6 @@ class Station
         $this->timezone = $timezone;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDefaultAlbumArtUrl(): ?string
     {
         return $this->default_album_art_url;
@@ -1069,11 +925,6 @@ class Station
     public function getHistory(): Collection
     {
         return $this->history;
-    }
-
-    public function getMedia(): Collection
-    {
-        return $this->media;
     }
 
     public function getStreamers(): Collection
@@ -1093,21 +944,66 @@ class Station
         }
     }
 
+    public function getMediaStorageLocation(): StorageLocation
+    {
+        return $this->media_storage_location;
+    }
+
+    public function setMediaStorageLocation(StorageLocation $storageLocation): void
+    {
+        if (StorageLocation::TYPE_STATION_MEDIA !== $storageLocation->getType()) {
+            throw new \InvalidArgumentException('Storage location must be for station media.');
+        }
+
+        $this->media_storage_location = $storageLocation;
+    }
+
+    public function getRecordingsStorageLocation(): StorageLocation
+    {
+        return $this->recordings_storage_location;
+    }
+
+    public function setRecordingsStorageLocation(StorageLocation $storageLocation): void
+    {
+        if (StorageLocation::TYPE_STATION_RECORDINGS !== $storageLocation->getType()) {
+            throw new \InvalidArgumentException('Storage location must be for station live recordings.');
+        }
+
+        $this->recordings_storage_location = $storageLocation;
+    }
+
     public function getPermissions(): Collection
     {
         return $this->permissions;
     }
 
+    /**
+     * @return StationMedia[]|Collection
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media_storage_location->getMedia();
+    }
+
+    /**
+     * @return StationPlaylist[]|Collection
+     */
     public function getPlaylists(): Collection
     {
         return $this->playlists;
     }
 
+    /**
+     * @return StationMount[]|Collection
+     */
     public function getMounts(): Collection
     {
         return $this->mounts;
     }
 
+    /**
+     * @return StationRemote[]|Collection
+     */
     public function getRemotes(): Collection
     {
         return $this->remotes;
@@ -1127,54 +1023,5 @@ class Station
     {
         $this->nowplaying = null;
         $this->nowplaying_timestamp = 0;
-    }
-
-    /**
-     * Retrieve the API version of the object/array.
-     *
-     * @param AbstractFrontend $fa
-     * @param AdapterProxy[] $remoteAdapters
-     * @param UriInterface|null $baseUrl
-     * @param bool $showAllMounts
-     *
-     * @return Api\Station
-     */
-    public function api(
-        AbstractFrontend $fa,
-        array $remoteAdapters = [],
-        UriInterface $baseUrl = null,
-        bool $showAllMounts = false
-    ): Api\Station {
-        $response = new Api\Station;
-        $response->id = (int)$this->id;
-        $response->name = (string)$this->name;
-        $response->shortcode = (string)$this->getShortName();
-        $response->description = (string)$this->description;
-        $response->frontend = (string)$this->frontend_type;
-        $response->backend = (string)$this->backend_type;
-        $response->is_public = (bool)$this->enable_public_page;
-        $response->listen_url = $fa->getStreamUrl($this, $baseUrl);
-
-        $mounts = [];
-        if ($fa::supportsMounts() && $this->mounts->count() > 0) {
-            foreach ($this->mounts as $mount) {
-                /** @var StationMount $mount */
-                if ($showAllMounts || $mount->isVisibleOnPublicPages()) {
-                    $mounts[] = $mount->api($fa, $baseUrl);
-                }
-            }
-        }
-        $response->mounts = $mounts;
-
-        $remotes = [];
-        foreach ($remoteAdapters as $ra_proxy) {
-            $remote = $ra_proxy->getRemote();
-            if ($showAllMounts || $remote->isVisibleOnPublicPages()) {
-                $remotes[] = $remote->api($ra_proxy->getAdapter());
-            }
-        }
-        $response->remotes = $remotes;
-
-        return $response;
     }
 }

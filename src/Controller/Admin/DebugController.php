@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Console\Application;
@@ -50,24 +51,7 @@ class DebugController
     ): ResponseInterface {
         $this->logger->pushHandler($this->testHandler);
 
-        switch ($type) {
-            case 'long':
-                $sync->syncLong(true);
-                break;
-
-            case 'medium':
-                $sync->syncMedium(true);
-                break;
-
-            case 'short':
-                $sync->syncShort(true);
-                break;
-
-            case 'nowplaying':
-            default:
-                $sync->syncNowplaying(true);
-                break;
-        }
+        $sync->runSyncTask($type, true);
 
         $this->logger->popHandler();
 

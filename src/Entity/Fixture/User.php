@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -8,9 +9,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class User extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em)
+    public function load(ObjectManager $em): void
     {
-        $demo_user = new Entity\User;
+        $demo_user = new Entity\User();
         $demo_user->setEmail('demo@azuracast.com');
         $demo_user->setNewPassword('demo');
         $demo_user->setName('AzuraCast Demo User');
@@ -23,8 +24,7 @@ class User extends AbstractFixture implements DependentFixtureInterface
         $admin_password = getenv('INIT_ADMIN_PASSWORD');
 
         if (!empty($admin_email) && !empty($admin_password)) {
-
-            $admin_user = new Entity\User;
+            $admin_user = new Entity\User();
             $admin_user->setEmail($admin_email);
             $admin_user->setName('System Administrator');
             $admin_user->setNewPassword($admin_password);
@@ -48,7 +48,7 @@ class User extends AbstractFixture implements DependentFixtureInterface
     /**
      * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             Role::class,

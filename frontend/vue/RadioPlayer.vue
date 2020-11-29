@@ -3,7 +3,7 @@
         <audio-player ref="player" v-bind:title="np.now_playing.song.text"></audio-player>
 
         <div class="now-playing-details">
-            <div class="now-playing-art" v-if="show_album_art && np.now_playing.song.art">
+            <div class="now-playing-art" v-if="showAlbumArt && np.now_playing.song.art">
                 <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank">
                     <img v-bind:src="np.now_playing.song.art" :alt="lang_album_art_alt">
                 </a>
@@ -89,143 +89,143 @@
 </template>
 
 <style lang="scss">
-    .radio-player-widget {
-        .now-playing-details {
-            display: flex;
-            align-items: center;
+.radio-player-widget {
+    .now-playing-details {
+        display: flex;
+        align-items: center;
 
-            .now-playing-art {
-                padding-right: .5rem;
+        .now-playing-art {
+            padding-right: .5rem;
 
-                img {
-                    width: 75px;
-                    height: auto;
-                    border-radius: 5px;
+            img {
+                width: 75px;
+                height: auto;
+                border-radius: 5px;
 
-                    @media (max-width: 575px) {
-                        width: 50px;
-                    }
-                }
-            }
-
-            .now-playing-main {
-                flex: 1;
-                min-width: 0;
-            }
-
-            h4, h5, h6 {
-                margin: 0;
-                line-height: 1.3;
-            }
-
-            h4 {
-                font-size: 15px;
-            }
-
-            h5 {
-                font-size: 13px;
-                font-weight: normal;
-            }
-
-            h6 {
-                font-size: 11px;
-                font-weight: normal;
-            }
-
-            .now-playing-title,
-            .now-playing-artist {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-
-                &:hover {
-                    text-overflow: clip;
-                    white-space: normal;
-                    word-break: break-all;
-                }
-            }
-
-            .time-display {
-                font-size: 10px;
-                margin-top: .25rem;
-                flex-direction: row;
-                align-items: center;
-                display: flex;
-
-                .time-display-played {
-                    margin-right: .5rem;
-                }
-
-                .time-display-progress {
-                    flex: 1 1 auto;
-
-                    .progress-bar {
-                        -webkit-transition: width 1s; /* Safari */
-                        transition: width 1s;
-                        transition-timing-function: linear;
-                    }
-                }
-
-                .time-display-total {
-                    margin-left: .5rem;
+                @media (max-width: 575px) {
+                    width: 50px;
                 }
             }
         }
 
-        hr {
-            margin-top: .5rem;
-            margin-bottom: .5rem;
+        .now-playing-main {
+            flex: 1;
+            min-width: 0;
         }
 
-        i.material-icons {
-            line-height: 1;
+        h4, h5, h6 {
+            margin: 0;
+            line-height: 1.3;
         }
 
-        .radio-controls {
-            display: flex;
+        h4 {
+            font-size: 15px;
+        }
+
+        h5 {
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        h6 {
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        .now-playing-title,
+        .now-playing-artist {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
+            &:hover {
+                text-overflow: clip;
+                white-space: normal;
+                word-break: break-all;
+            }
+        }
+
+        .time-display {
+            font-size: 10px;
+            margin-top: .25rem;
             flex-direction: row;
             align-items: center;
+            display: flex;
 
-            .radio-control-play-button {
-                margin-right: .25rem;
+            .time-display-played {
+                margin-right: .5rem;
             }
 
-            .radio-control-select-stream {
+            .time-display-progress {
                 flex: 1 1 auto;
-            }
 
-            .radio-control-mute-button,
-            .radio-control-max-volume-button {
-                flex-shrink: 0;
-            }
-
-            .radio-control-volume-slider {
-                flex: 1 1 auto;
-                max-width: 30%;
-
-                input {
-                    height: 10px;
+                .progress-bar {
+                    -webkit-transition: width 1s; /* Safari */
+                    transition: width 1s;
+                    transition-timing-function: linear;
                 }
+            }
+
+            .time-display-total {
+                margin-left: .5rem;
             }
         }
     }
+
+    hr {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
+
+    i.material-icons {
+        line-height: 1;
+    }
+
+    .radio-controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .radio-control-play-button {
+            margin-right: .25rem;
+        }
+
+        .radio-control-select-stream {
+            flex: 1 1 auto;
+        }
+
+        .radio-control-mute-button,
+        .radio-control-max-volume-button {
+            flex-shrink: 0;
+        }
+
+        .radio-control-volume-slider {
+            flex: 1 1 auto;
+            max-width: 30%;
+
+            input {
+                height: 10px;
+            }
+        }
+    }
+}
 </style>
 
 <script>
-    import axios from 'axios';
-    import NchanSubscriber from 'nchan';
-    import AudioPlayer from './components/AudioPlayer';
+import axios from 'axios';
+import NchanSubscriber from 'nchan';
+import AudioPlayer from './components/AudioPlayer';
 
-    export default {
-        components: { AudioPlayer },
-        props: {
-            now_playing_uri: {
-                type: String,
-                required: true
-            },
-            initial_now_playing: {
-                type: Object,
-                default: {
+export const radioPlayerProps = {
+    props: {
+        nowPlayingUri: {
+            type: String,
+            required: true
+        },
+        initialNowPlaying: {
+            type: Object,
+            default () {
+                return {
                     'station': {
                         'listen_url': '',
                         'mounts': [],
@@ -246,218 +246,225 @@
                         'streamer_name': ''
                     },
                     'song_history': []
-                }
-            },
-            use_nchan: {
-                type: Boolean,
-                default: true
-            },
-            show_album_art: {
-                type: Boolean,
-                default: true
+                };
             }
         },
-        data: function () {
-            return {
-                'is_mounted': false,
-                'np': this.initial_now_playing,
-                'np_elapsed': 0,
-                'current_stream': {
-                    'name': '',
-                    'url': ''
-                },
-                'np_timeout': null,
-                'nchan_subscriber': null,
-                'clock_interval': null
-            };
+        useNchan: {
+            type: Boolean,
+            default: true
         },
-        mounted: function () {
-            this.is_mounted = true;
-            this.clock_interval = setInterval(this.iterateTimer, 1000);
+        showAlbumArt: {
+            type: Boolean,
+            default: true
+        }
+    }
+};
 
-            // Convert initial NP data from prop to data.
-            this.setNowPlaying(this.np);
+export default {
+    components: { AudioPlayer },
+    mixins: [radioPlayerProps],
+    data () {
+        return {
+            'is_mounted': false,
+            'np': this.initialNowPlaying,
+            'np_elapsed': 0,
+            'current_stream': {
+                'name': '',
+                'url': ''
+            },
+            'np_timeout': null,
+            'nchan_subscriber': null,
+            'clock_interval': null
+        };
+    },
+    mounted () {
+        this.is_mounted = true;
+        this.clock_interval = setInterval(this.iterateTimer, 1000);
 
-            this.np_timeout = setTimeout(this.checkNowPlaying, 5000);
+        // Convert initial NP data from prop to data.
+        this.setNowPlaying(this.np);
+
+        this.np_timeout = setTimeout(this.checkNowPlaying, 5000);
+    },
+    computed: {
+        lang_play_btn () {
+            return this.$gettext('Play');
         },
-        computed: {
-            lang_play_btn () {
-                return this.$gettext('Play');
-            },
-            lang_pause_btn () {
-                return this.$gettext('Pause');
-            },
-            lang_mute_btn () {
-                return this.$gettext('Mute');
-            },
-            lang_volume_slider () {
-                return this.$gettext('Volume');
-            },
-            lang_full_volume_btn () {
-                return this.$gettext('Full Volume');
-            },
-            lang_album_art_alt () {
-                return this.$gettext('Album Art');
-            },
-            streams () {
-                let all_streams = [];
-                this.np.station.mounts.forEach(function (mount) {
-                    all_streams.push({
-                        'name': mount.name,
-                        'url': mount.url
-                    });
+        lang_pause_btn () {
+            return this.$gettext('Pause');
+        },
+        lang_mute_btn () {
+            return this.$gettext('Mute');
+        },
+        lang_volume_slider () {
+            return this.$gettext('Volume');
+        },
+        lang_full_volume_btn () {
+            return this.$gettext('Full Volume');
+        },
+        lang_album_art_alt () {
+            return this.$gettext('Album Art');
+        },
+        streams () {
+            let all_streams = [];
+            this.np.station.mounts.forEach(function (mount) {
+                all_streams.push({
+                    'name': mount.name,
+                    'url': mount.url
                 });
-                this.np.station.remotes.forEach(function (remote) {
-                    all_streams.push({
-                        'name': remote.name,
-                        'url': remote.url
-                    });
+            });
+            this.np.station.remotes.forEach(function (remote) {
+                all_streams.push({
+                    'name': remote.name,
+                    'url': remote.url
                 });
-                return all_streams;
-            },
-            time_percent () {
-                let time_played = this.np_elapsed;
-                let time_total = this.np.now_playing.duration;
+            });
+            return all_streams;
+        },
+        time_percent () {
+            let time_played = this.np_elapsed;
+            let time_total = this.np.now_playing.duration;
 
-                if (!time_total) {
-                    return 0;
-                }
-                if (time_played > time_total) {
-                    return 100;
-                }
+            if (!time_total) {
+                return 0;
+            }
+            if (time_played > time_total) {
+                return 100;
+            }
 
-                return (time_played / time_total) * 100;
-            },
-            time_display_played () {
-                let time_played = this.np_elapsed;
-                let time_total = this.np.now_playing.duration;
+            return (time_played / time_total) * 100;
+        },
+        time_display_played () {
+            let time_played = this.np_elapsed;
+            let time_total = this.np.now_playing.duration;
 
-                if (!time_total) {
-                    return null;
-                }
+            if (!time_total) {
+                return null;
+            }
 
-                if (time_played > time_total) {
-                    time_played = time_total;
-                }
+            if (time_played > time_total) {
+                time_played = time_total;
+            }
 
-                return this.formatTime(time_played);
-            },
-            time_display_total () {
-                let time_total = this.np.now_playing.duration;
-                return (time_total) ? this.formatTime(time_total) : null;
-            },
-            is_playing () {
+            return this.formatTime(time_played);
+        },
+        time_display_total () {
+            let time_total = this.np.now_playing.duration;
+            return (time_total) ? this.formatTime(time_total) : null;
+        },
+        is_playing () {
+            if (!this.is_mounted) {
+                return;
+            }
+
+            return this.$refs.player.isPlaying();
+        },
+        volume: {
+            get () {
                 if (!this.is_mounted) {
                     return;
                 }
 
-                return this.$refs.player.isPlaying();
+                return this.$refs.player.getVolume();
             },
-            volume: {
-                get () {
-                    if (!this.is_mounted) {
-                        return;
-                    }
-
-                    return this.$refs.player.getVolume();
-                },
-                set (vol) {
-                    this.$refs.player.setVolume(vol);
-                }
-            }
-        },
-        methods: {
-            play () {
-                this.$refs.player.play(this.current_stream.url);
-            },
-            stop () {
-                this.$refs.player.stop();
-            },
-            toggle () {
-                this.$refs.player.toggle(this.current_stream.url);
-            },
-            switchStream (new_stream) {
-                this.current_stream = new_stream;
-                this.play();
-            },
-            checkNowPlaying () {
-                if (this.use_nchan) {
-                    this.nchan_subscriber = new NchanSubscriber(this.now_playing_uri);
-                    this.nchan_subscriber.on('message', (message, message_metadata) => {
-                        let np_new = JSON.parse(message);
-                        setTimeout(() => {
-                            this.setNowPlaying(np_new);
-                        }, 5000);
-                    });
-                    this.nchan_subscriber.start();
-                } else {
-                    axios.get(this.now_playing_uri).then((response) => {
-                        this.setNowPlaying(response.data);
-                    }).catch((error) => {
-                        console.error(error);
-                    }).then(() => {
-                        clearTimeout(this.np_timeout);
-                        this.np_timeout = setTimeout(this.checkNowPlaying, 15000);
-                    });
-                }
-            },
-            setNowPlaying (np_new) {
-                this.np = np_new;
-
-                // Set a "default" current stream if none exists.
-                if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
-                    let current_stream = null;
-
-                    this.streams.forEach(function (stream) {
-                        if (stream.url === np_new.station.listen_url) {
-                            current_stream = stream;
-                        }
-                    });
-
-                    this.current_stream = current_stream;
-                }
-
-                // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
-                if ('mediaSession' in navigator) {
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: np_new.now_playing.song.title,
-                        artist: np_new.now_playing.song.artist,
-                        artwork: [
-                            { src: np_new.now_playing.song.art }
-                        ]
-                    });
-                }
-
-                this.$eventHub.$emit('np_updated', np_new);
-            },
-            iterateTimer () {
-                let current_time = Math.floor(Date.now() / 1000);
-                let np_elapsed = current_time - this.np.now_playing.played_at;
-                if (np_elapsed < 0) {
-                    np_elapsed = 0;
-                } else if (np_elapsed >= this.np.now_playing.duration) {
-                    np_elapsed = this.np.now_playing.duration;
-                }
-                this.np_elapsed = np_elapsed;
-            },
-            formatTime (time) {
-                let sec_num = parseInt(time, 10);
-
-                let hours = Math.floor(sec_num / 3600);
-                let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-                let seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-                if (hours < 10) {
-                    hours = '0' + hours;
-                }
-                if (minutes < 10) {
-                    minutes = '0' + minutes;
-                }
-                if (seconds < 10) {
-                    seconds = '0' + seconds;
-                }
-                return (hours !== '00' ? hours + ':' : '') + minutes + ':' + seconds;
+            set (vol) {
+                this.$refs.player.setVolume(vol);
             }
         }
-    };
+    },
+    methods: {
+        play () {
+            this.$refs.player.play(this.current_stream.url);
+        },
+        stop () {
+            this.$refs.player.stop();
+        },
+        toggle () {
+            this.$refs.player.toggle(this.current_stream.url);
+        },
+        switchStream (new_stream) {
+            this.current_stream = new_stream;
+            this.play();
+        },
+        checkNowPlaying () {
+            if (this.useNchan) {
+                this.nchan_subscriber = new NchanSubscriber(this.nowPlayingUri);
+                this.nchan_subscriber.on('message', (message, message_metadata) => {
+                    let np_new = JSON.parse(message);
+                    setTimeout(() => {
+                        this.setNowPlaying(np_new);
+                    }, 5000);
+                });
+                this.nchan_subscriber.start();
+            } else {
+                axios.get(this.nowPlayingUri).then((response) => {
+                    this.setNowPlaying(response.data);
+                }).catch((error) => {
+                    console.error(error);
+                }).then(() => {
+                    clearTimeout(this.np_timeout);
+                    this.np_timeout = setTimeout(this.checkNowPlaying, 15000);
+                });
+            }
+        },
+        setNowPlaying (np_new) {
+            this.np = np_new;
+
+            // Set a "default" current stream if none exists.
+            if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
+                let current_stream = null;
+
+                this.streams.forEach(function (stream) {
+                    if (stream.url === np_new.station.listen_url) {
+                        current_stream = stream;
+                    }
+                });
+
+                this.current_stream = current_stream;
+            }
+
+            // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: np_new.now_playing.song.title,
+                    artist: np_new.now_playing.song.artist,
+                    artwork: [
+                        { src: np_new.now_playing.song.art }
+                    ]
+                });
+            }
+
+            this.$emit('np_updated', np_new);
+            this.$eventHub.$emit('np_updated', np_new);
+        },
+        iterateTimer () {
+            let current_time = Math.floor(Date.now() / 1000);
+            let np_elapsed = current_time - this.np.now_playing.played_at;
+            if (np_elapsed < 0) {
+                np_elapsed = 0;
+            } else if (np_elapsed >= this.np.now_playing.duration) {
+                np_elapsed = this.np.now_playing.duration;
+            }
+            this.np_elapsed = np_elapsed;
+        },
+        formatTime (time) {
+            let sec_num = parseInt(time, 10);
+
+            let hours = Math.floor(sec_num / 3600);
+            let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            let seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+            if (hours < 10) {
+                hours = '0' + hours;
+            }
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+            return (hours !== '00' ? hours + ':' : '') + minutes + ':' + seconds;
+        }
+    }
+};
 </script>

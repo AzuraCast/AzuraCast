@@ -1,16 +1,35 @@
 <?php
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Exception;
 use App\Radio\AutoDJ;
+use App\Settings;
 use App\Utilities;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class StationRequestRepository extends Repository
 {
+    protected StationMediaRepository $mediaRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger,
+        StationMediaRepository $mediaRepo
+    ) {
+        parent::__construct($em, $serializer, $settings, $logger);
+
+        $this->mediaRepo = $mediaRepo;
+    }
+
     public function submit(
         Entity\Station $station,
         string $trackId,
@@ -28,8 +47,7 @@ class StationRequestRepository extends Repository
         }
 
         // Verify that Track ID exists with station.
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
-        $media_item = $media_repo->findOneBy(['unique_id' => $trackId, 'station_id' => $station->getId()]);
+        $media_item = $this->mediaRepo->findByUniqueId($trackId, $station);
 
         if (!($media_item instanceof Entity\StationMedia)) {
             throw new Exception(__('The song ID you specified could not be found in the station.'));
@@ -55,16 +73,18 @@ class StationRequestRepository extends Repository
                 $thresholdSeconds = 15;
             }
 
-            $recent_requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr 
-                FROM App\Entity\StationRequest sr 
-                WHERE sr.ip = :user_ip 
+            $recent_requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr
+                FROM App\Entity\StationRequest sr
+                WHERE sr.ip = :user_ip
                 AND sr.timestamp >= :threshold')
                 ->setParameter('user_ip', $ip)
                 ->setParameter('threshold', time() - $thresholdSeconds)
                 ->getArrayResult();
 
             if (count($recent_requests) > 0) {
-                throw new Exception(__('You have submitted a request too recently! Please wait before submitting another one.'));
+                throw new Exception(__(
+                    'You have submitted a request too recently! Please wait before submitting another one.'
+                ));
             }
         }
 
@@ -82,7 +102,6 @@ class StationRequestRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      *
-     * @return bool
      * @throws Exception
      */
     public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station): bool
@@ -90,10 +109,10 @@ class StationRequestRepository extends Repository
         $pending_request_threshold = time() - (60 * 10);
 
         try {
-            $pending_request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr.timestamp 
+            $pending_request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr.timestamp
                 FROM App\Entity\StationRequest sr
-                WHERE sr.track_id = :track_id 
-                AND sr.station_id = :station_id 
+                WHERE sr.track_id = :track_id
+                AND sr.station_id = :station_id
                 AND (sr.timestamp >= :threshold OR sr.played_at = 0)
                 ORDER BY sr.timestamp DESC')
                 ->setParameter('track_id', $media->getId())
@@ -119,9 +138,9 @@ class StationRequestRepository extends Repository
         $now ??= CarbonImmutable::now($station->getTimezoneObject());
 
         // Look up all requests that have at least waited as long as the threshold.
-        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm 
+        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm
             FROM App\Entity\StationRequest sr JOIN sr.track sm
-            WHERE sr.played_at = 0 
+            WHERE sr.played_at = 0
             AND sr.station = :station
             ORDER BY sr.skip_delay DESC, sr.id ASC')
             ->setParameter('station', $station)
@@ -149,7 +168,6 @@ class StationRequestRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\Station $station
      *
-     * @return bool
      * @throws Exception
      */
     public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station): bool
@@ -162,9 +180,8 @@ class StationRequestRepository extends Repository
 
         $lastPlayThreshold = time() - ($lastPlayThresholdMins * 60);
 
-        $recentTracks = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.id, s.title, s.artist 
-                FROM App\Entity\SongHistory sh 
-                JOIN sh.song s
+        $recentTracks = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.id, sh.title, sh.artist
+                FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
@@ -172,19 +189,20 @@ class StationRequestRepository extends Repository
             ->setParameter('threshold', $lastPlayThreshold)
             ->getArrayResult();
 
-        $song = $media->getSong();
 
         $eligibleTracks = [
             [
-                'title' => $song->getTitle(),
-                'artist' => $song->getArtist(),
+                'title' => $media->getTitle(),
+                'artist' => $media->getArtist(),
             ],
         ];
 
         $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack($eligibleTracks, $recentTracks));
 
         if ($isDuplicate) {
-            throw new Exception(__('This song or artist has been played too recently. Wait a while before requesting it again.'));
+            throw new Exception(__(
+                'This song or artist has been played too recently. Wait a while before requesting it again.'
+            ));
         }
 
         return true;

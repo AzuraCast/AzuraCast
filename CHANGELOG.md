@@ -2,6 +2,10 @@
 
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling release channel, you can take advantage of these new features and fixes.
 
+---
+
+# AzuraCast 0.11 (Nov 28, 2020)
+
 This release includes many contributions from members of our community as part of the annual Hacktoberfest event, where we selected a number of items that our core developer team, along with the community submitting pull requests, could work on during the month. 
 
 ## New Features/Changes

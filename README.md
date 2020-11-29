@@ -96,9 +96,8 @@ We frequently post to social media any time there are significant updates to our
 - On Twitter at [@AzuraCast](https://twitter.com/azuracast), or
 - On Mastodon at [@AzuraCast@fosstodon.org](https://fosstodon.org/@AzuraCast)
 
-If you are an AzuraCast user, station owner, developer or other contributor, you can also join our two communities, where you can ask questions, share your station and more:
+If you are an AzuraCast user, station owner, developer or other contributor, you can also join our Discord community, where you can ask questions, share your station and more:
 
-- [Slack](https://azuracast.com/slack)
 - [Discord](https://azuracast.com/discord)
 
 Note that our social media channels aren't the best way to report issues to us; instead, you should use the GitHub issues instructions above, as this allows our whole team to help resolve and track the progress of the issue in one location.

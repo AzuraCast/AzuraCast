@@ -29,7 +29,8 @@ class PerformanceController
         $station = $request->getStation();
 
         $automation_config = (array)$station->getAutomationSettings();
-        $threshold_days = (int)($automation_config['threshold_days'] ?? RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS);
+        $threshold_days = (int)($automation_config['threshold_days']
+            ?? RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS);
 
         $report_data = $this->sync_automation->generateReport($station, $threshold_days);
 

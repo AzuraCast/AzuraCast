@@ -104,7 +104,7 @@ class ApiKeysController
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
 
-        $record = $this->record_repo->getRepository()->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
+        $record = $this->record_repo->getRepository()->findOneBy(['id' => $id, 'user' => $user]);
 
         if ($record instanceof Entity\ApiKey) {
             $this->em->remove($record);

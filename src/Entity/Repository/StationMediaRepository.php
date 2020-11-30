@@ -364,7 +364,10 @@ class StationMediaRepository extends Repository
         $fs = $this->getFilesystem($media);
         return $fs->put(
             $waveformPath,
-            json_encode($waveform, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
+            json_encode(
+                $waveform,
+                JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_PARTIAL_OUTPUT_ON_ERROR
+            )
         );
     }
 

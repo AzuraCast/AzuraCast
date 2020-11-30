@@ -288,7 +288,7 @@ class StationMedia implements SongInterface
 
     public function setIsrc(?string $isrc = null): void
     {
-        $this->isrc = $isrc;
+        $this->isrc = $this->truncateString($isrc, 15);
     }
 
     public function getLength(): float

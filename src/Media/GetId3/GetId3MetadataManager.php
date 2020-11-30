@@ -5,6 +5,7 @@ namespace App\Media\GetId3;
 use App\Exception\CannotProcessMediaException;
 use App\Media\Metadata;
 use App\Media\MetadataManagerInterface;
+use App\Utilities;
 use voku\helper\UTF8;
 
 class GetId3MetadataManager implements MetadataManagerInterface
@@ -45,7 +46,13 @@ class GetId3MetadataManager implements MetadataManagerInterface
             foreach ($infoTags as $tagType => $tagData) {
                 foreach ($tagData as $tagName => $tagContents) {
                     if (!empty($tagContents[0]) && !$metaTags->containsKey($tagName)) {
-                        $metaTags->set($tagName, $this->cleanUpString($tagContents[0]));
+                        $tagValue = $tagContents[0];
+                        if (is_array($tagValue)) {
+                            $flatValue = Utilities::flattenArray($tagValue);
+                            $tagValue = implode(', ', $flatValue);
+                        }
+
+                        $metaTags->set($tagName, $this->cleanUpString($tagValue));
                     }
                 }
             }

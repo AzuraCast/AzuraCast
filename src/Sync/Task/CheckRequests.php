@@ -10,7 +10,7 @@ use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class RadioRequests extends AbstractTask
+class CheckRequests extends AbstractTask
 {
     protected Adapters $adapters;
 

@@ -8,7 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
 use App\Settings;
-use App\Sync\Task\RadioAutomation;
+use App\Sync\Task\RunAutomatedAssignmentTask;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -17,7 +17,7 @@ class AutomationController
 {
     protected EntityManagerInterface $em;
 
-    protected RadioAutomation $sync_task;
+    protected RunAutomatedAssignmentTask $sync_task;
 
     protected Settings $app_settings;
 
@@ -25,7 +25,7 @@ class AutomationController
 
     public function __construct(
         EntityManagerInterface $em,
-        RadioAutomation $sync_task,
+        RunAutomatedAssignmentTask $sync_task,
         Settings $app_settings,
         Config $config
     ) {

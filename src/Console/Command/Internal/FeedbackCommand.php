@@ -4,7 +4,7 @@ namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
 use App\Entity;
-use App\Sync\Task\NowPlaying;
+use App\Sync\Task\NowPlayingTask;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -14,7 +14,7 @@ class FeedbackCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         EntityManagerInterface $em,
-        NowPlaying $nowPlaying,
+        NowPlayingTask $nowPlaying,
         int $stationId,
         string $song = null,
         string $media = null,

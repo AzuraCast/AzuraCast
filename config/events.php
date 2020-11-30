@@ -142,7 +142,7 @@ return function (App\EventDispatcher $dispatcher) {
         App\Radio\AutoDJ\Queue::class,
         App\Radio\AutoDJ\Annotations::class,
         App\Radio\Backend\Liquidsoap\ConfigWriter::class,
-        App\Sync\Task\NowPlaying::class,
+        App\Sync\Task\NowPlayingTask::class,
         App\Webhook\Dispatcher::class,
         App\Controller\Api\NowplayingController::class,
     ]);

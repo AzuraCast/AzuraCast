@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 
-class CheckForUpdates extends AbstractTask
+class CheckUpdatesTask extends AbstractTask
 {
     protected const UPDATE_THRESHOLD = 3780;
 

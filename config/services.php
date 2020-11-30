@@ -406,27 +406,27 @@ return [
     App\Sync\TaskLocator::class => function (ContainerInterface $di) {
         return new App\Sync\TaskLocator($di, [
             App\Event\GetSyncTasks::SYNC_NOWPLAYING => [
-                App\Sync\Task\BuildQueue::class,
-                App\Sync\Task\NowPlaying::class,
-                App\Sync\Task\ReactivateStreamer::class,
+                App\Sync\Task\BuildQueueTask::class,
+                App\Sync\Task\NowPlayingTask::class,
+                App\Sync\Task\ReactivateStreamerTask::class,
             ],
             App\Event\GetSyncTasks::SYNC_SHORT => [
-                App\Sync\Task\RadioRequests::class,
-                App\Sync\Task\Backup::class,
-                App\Sync\Task\RelayCleanup::class,
+                App\Sync\Task\CheckRequests::class,
+                App\Sync\Task\RunBackupTask::class,
+                App\Sync\Task\CleanupRelaysTask::class,
             ],
             App\Event\GetSyncTasks::SYNC_MEDIUM => [
-                App\Sync\Task\Media::class,
-                App\Sync\Task\FolderPlaylists::class,
-                App\Sync\Task\CheckForUpdates::class,
+                App\Sync\Task\CheckMediaTask::class,
+                App\Sync\Task\CheckFolderPlaylistsTask::class,
+                App\Sync\Task\CheckUpdatesTask::class,
             ],
             App\Event\GetSyncTasks::SYNC_LONG => [
-                App\Sync\Task\Analytics::class,
-                App\Sync\Task\RadioAutomation::class,
-                App\Sync\Task\HistoryCleanup::class,
-                App\Sync\Task\StorageCleanupTask::class,
-                App\Sync\Task\RotateLogs::class,
-                App\Sync\Task\UpdateGeoLiteDatabase::class,
+                App\Sync\Task\RunAnalyticsTask::class,
+                App\Sync\Task\RunAutomatedAssignmentTask::class,
+                App\Sync\Task\CleanupHistoryTask::class,
+                App\Sync\Task\CleanupStorageTask::class,
+                App\Sync\Task\RotateLogsTask::class,
+                App\Sync\Task\UpdateGeoLiteTask::class,
             ],
         ]);
     },

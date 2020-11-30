@@ -8,7 +8,7 @@ use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class BuildQueue extends AbstractTask
+class BuildQueueTask extends AbstractTask
 {
     protected AutoDJ $autoDJ;
 

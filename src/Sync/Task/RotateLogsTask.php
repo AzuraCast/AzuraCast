@@ -11,7 +11,7 @@ use studio24\Rotate;
 use Supervisor\Supervisor;
 use Symfony\Component\Finder\Finder;
 
-class RotateLogs extends AbstractTask
+class RotateLogsTask extends AbstractTask
 {
     protected Settings $appSettings;
 

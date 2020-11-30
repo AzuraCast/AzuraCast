@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
-class RadioAutomation extends AbstractTask
+class RunAutomatedAssignmentTask extends AbstractTask
 {
     public const DEFAULT_THRESHOLD_DAYS = 14;
 

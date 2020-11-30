@@ -2,7 +2,7 @@
 
 namespace App\Sync\Task;
 
-class RelayCleanup extends AbstractTask
+class CleanupRelaysTask extends AbstractTask
 {
     public function run(bool $force = false): void
     {

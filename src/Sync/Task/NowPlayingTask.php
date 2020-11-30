@@ -25,7 +25,7 @@ use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
-class NowPlaying extends AbstractTask implements EventSubscriberInterface
+class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 {
     protected CacheInterface $cache;
 

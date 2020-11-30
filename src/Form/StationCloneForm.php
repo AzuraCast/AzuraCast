@@ -9,7 +9,7 @@ use App\Flysystem\FilesystemManager;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
 use App\Settings;
-use App\Sync\Task\Media;
+use App\Sync\Task\CheckMediaTask;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +21,7 @@ class StationCloneForm extends StationForm
 {
     protected Configuration $configuration;
 
-    protected Media $media_sync;
+    protected CheckMediaTask $media_sync;
 
     protected FilesystemManager $filesystem;
 
@@ -33,7 +33,7 @@ class StationCloneForm extends StationForm
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Acl $acl,
         Configuration $configuration,
-        Media $media_sync,
+        CheckMediaTask $media_sync,
         Config $config,
         Settings $settings,
         FilesystemManager $filesystem

@@ -8,7 +8,7 @@ use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
 use App\Settings;
-use App\Sync\Task\Media;
+use App\Sync\Task\CheckMediaTask;
 use App\Utilities;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
-    protected Media $mediaSync;
+    protected CheckMediaTask $mediaSync;
 
     protected Adapters $adapters;
 
@@ -43,7 +43,7 @@ class StationRepository extends Repository
         SettingsRepository $settingsRepo,
         StorageLocationRepository $storageLocationRepo,
         LoggerInterface $logger,
-        Media $mediaSync,
+        CheckMediaTask $mediaSync,
         Adapters $adapters,
         Configuration $configuration,
         ValidatorInterface $validator,

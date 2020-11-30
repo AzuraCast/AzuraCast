@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class Backup extends AbstractTask
+class RunBackupTask extends AbstractTask
 {
     public const BASE_DIR = '/var/azuracast/backups';
 

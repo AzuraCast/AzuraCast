@@ -16,7 +16,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\BackupMessage;
 use App\Session\Flash;
-use App\Sync\Task\Backup;
+use App\Sync\Task\RunBackupTask;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -26,7 +26,7 @@ class BackupsController extends AbstractLogViewerController
 
     protected StorageLocationRepository $storageLocationRepo;
 
-    protected Backup $backupTask;
+    protected RunBackupTask $backupTask;
 
     protected MessageBus $messageBus;
 
@@ -35,7 +35,7 @@ class BackupsController extends AbstractLogViewerController
     public function __construct(
         SettingsRepository $settings_repo,
         StorageLocationRepository $storageLocationRepo,
-        Backup $backup_task,
+        RunBackupTask $backup_task,
         MessageBus $messageBus
     ) {
         $this->settingsRepo = $settings_repo;

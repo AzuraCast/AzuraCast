@@ -6,7 +6,7 @@ use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class ReactivateStreamer extends AbstractTask
+class ReactivateStreamerTask extends AbstractTask
 {
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 

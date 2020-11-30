@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
-class FolderPlaylists extends AbstractTask
+class CheckFolderPlaylistsTask extends AbstractTask
 {
     protected Entity\Repository\StationPlaylistFolderRepository $folderRepo;
 

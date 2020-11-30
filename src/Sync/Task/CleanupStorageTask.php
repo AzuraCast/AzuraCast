@@ -9,7 +9,7 @@ use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 
-class StorageCleanupTask extends AbstractTask
+class CleanupStorageTask extends AbstractTask
 {
     protected FilesystemManager $filesystem;
 

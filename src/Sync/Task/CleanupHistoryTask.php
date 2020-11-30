@@ -6,7 +6,7 @@ use App\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class HistoryCleanup extends AbstractTask
+class CleanupHistoryTask extends AbstractTask
 {
     protected Entity\Repository\SongHistoryRepository $historyRepo;
 

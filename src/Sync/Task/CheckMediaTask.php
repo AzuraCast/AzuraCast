@@ -17,7 +17,7 @@ use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class Media extends AbstractTask
+class CheckMediaTask extends AbstractTask
 {
     protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
 

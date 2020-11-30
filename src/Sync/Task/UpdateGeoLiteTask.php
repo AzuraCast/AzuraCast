@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
-class UpdateGeoLiteDatabase extends AbstractTask
+class UpdateGeoLiteTask extends AbstractTask
 {
     protected const UPDATE_THRESHOLD = 86000;
 

@@ -4,7 +4,7 @@ namespace App\Controller\Stations\Reports;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Sync\Task\RadioAutomation;
+use App\Sync\Task\RunAutomatedAssignmentTask;
 use App\Utilities\Csv;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -13,9 +13,9 @@ class PerformanceController
 {
     protected EntityManagerInterface $em;
 
-    protected RadioAutomation $sync_automation;
+    protected RunAutomatedAssignmentTask $sync_automation;
 
-    public function __construct(EntityManagerInterface $em, RadioAutomation $sync_automation)
+    public function __construct(EntityManagerInterface $em, RunAutomatedAssignmentTask $sync_automation)
     {
         $this->em = $em;
         $this->sync_automation = $sync_automation;
@@ -29,7 +29,7 @@ class PerformanceController
         $station = $request->getStation();
 
         $automation_config = (array)$station->getAutomationSettings();
-        $threshold_days = (int)($automation_config['threshold_days'] ?? RadioAutomation::DEFAULT_THRESHOLD_DAYS);
+        $threshold_days = (int)($automation_config['threshold_days'] ?? RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS);
 
         $report_data = $this->sync_automation->generateReport($station, $threshold_days);
 

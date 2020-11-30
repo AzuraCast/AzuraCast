@@ -7,7 +7,7 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class Analytics extends AbstractTask
+class RunAnalyticsTask extends AbstractTask
 {
     protected Entity\Repository\AnalyticsRepository $analyticsRepo;
 

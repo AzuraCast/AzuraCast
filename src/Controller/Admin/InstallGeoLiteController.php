@@ -9,7 +9,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use App\Session\Flash;
-use App\Sync\Task\UpdateGeoLiteDatabase;
+use App\Sync\Task\UpdateGeoLiteTask;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 
@@ -21,7 +21,7 @@ class InstallGeoLiteController
         ServerRequest $request,
         Response $response,
         GeoLiteSettingsForm $form,
-        UpdateGeoLiteDatabase $syncTask
+        UpdateGeoLiteTask $syncTask
     ): ResponseInterface {
         if (false !== $form->process($request)) {
             $flash = $request->getFlash();

@@ -2,6 +2,14 @@
 
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling release channel, you can take advantage of these new features and fixes.
 
+## New Features/Changes
+
+- **Remember Me**: You can now select the "Remember me" button when logging in to extend your session to two weeks without needing to log in again. 
+
+## Bug Fixes
+
+- New installations won't see warnings about backups and sync tasks immediately after installation.
+
 ---
 
 # AzuraCast 0.11 (Nov 28, 2020)

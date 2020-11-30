@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
+use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use JsonSerializable;
 
 /**
@@ -16,8 +16,6 @@ use JsonSerializable;
 class ApiKey implements JsonSerializable
 {
     use Traits\TruncateStrings;
-
-    public const SEPARATOR = ':';
 
     /**
      * @ORM\Column(name="id", type="string", length=16)
@@ -36,15 +34,6 @@ class ApiKey implements JsonSerializable
     protected $verifier;
 
     /**
-     * @ORM\Column(name="user_id", type="integer")
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var int
-     */
-    protected $user_id;
-
-    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
@@ -59,49 +48,11 @@ class ApiKey implements JsonSerializable
      */
     protected $comment;
 
-    /**
-     * @param User $user
-     * @param string|null $key An existing API key to import (if one exists).
-     */
-    public function __construct(User $user, ?string $key = null)
+    public function __construct(User $user, SplitToken $token)
     {
         $this->user = $user;
-
-        if (null !== $key) {
-            [$identifier, $verifier] = explode(self::SEPARATOR, $key);
-
-            $this->id = $identifier;
-            $this->verifier = $this->hashVerifier($verifier);
-        }
-    }
-
-    /**
-     * @param string $original
-     *
-     * @return string The hashed verifier.
-     */
-    protected function hashVerifier(string $original): string
-    {
-        return hash('sha512', $original);
-    }
-
-    /**
-     * Generate a unique identifier and return both the identifier and verifier.
-     *
-     * @return mixed[] [string|bool $identifier, string|bool $verifier]
-     * @throws Exception
-     */
-    public function generate(): array
-    {
-        $random_str = hash('sha256', random_bytes(32));
-
-        $identifier = substr($random_str, 0, 16);
-        $verifier = substr($random_str, 16, 32);
-
-        $this->id = $identifier;
-        $this->verifier = $this->hashVerifier($verifier);
-
-        return [$identifier, $verifier];
+        $this->id = $token->identifier;
+        $this->verifier = $token->hashVerifier();
     }
 
     public function getId(): string
@@ -109,19 +60,20 @@ class ApiKey implements JsonSerializable
         return $this->id;
     }
 
-    /**
-     * Verify an incoming API key against the verifier on this record.
-     *
-     * @param string $verifier
-     */
-    public function verify(string $verifier): bool
-    {
-        return hash_equals($this->verifier, $this->hashVerifier($verifier));
-    }
-
     public function getUser(): User
     {
         return $this->user;
+    }
+
+    /**
+     * Verify an incoming API key against the verifier on this record.
+     *
+     * @param SplitToken $userSuppliedToken
+     *
+     */
+    public function verify(SplitToken $userSuppliedToken): bool
+    {
+        return $userSuppliedToken->verify($this->verifier);
     }
 
     /**

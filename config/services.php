@@ -188,7 +188,8 @@ return [
             '/',
             'nocache',
             43200,
-            time()
+            time(),
+            true
         );
     },
 

@@ -11,6 +11,7 @@ use App\Http\ServerRequest;
 use App\RateLimit;
 use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
+use Mezzio\Session\SessionCookiePersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class LoginAction
@@ -60,6 +61,13 @@ class LoginAction
             $user = $auth->authenticate($request->getParam('username'), $request->getParam('password'));
 
             if ($user instanceof User) {
+                // If user selects "remember me", extend the cookie/session lifetime.
+                $session = $request->getSession();
+                if ($session instanceof SessionCookiePersistenceInterface) {
+                    $rememberMe = (bool)$request->getParam('remember', 0);
+                    $session->persistSessionFor(($rememberMe) ? 86400 * 14 : 0);
+                }
+
                 // Reload ACL permissions.
                 $acl->reload();
 

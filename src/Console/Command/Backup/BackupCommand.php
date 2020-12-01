@@ -149,7 +149,7 @@ class BackupCommand extends CommandAbstract
             $fs = $storageLocation->getFilesystem();
             $fs->putFromLocal($tmpPath, $path);
         }
-        
+
         $io->newLine();
 
         // Cleanup

@@ -36,7 +36,7 @@ class StationPlaylistFolderRepository extends Repository
             ) {
                 /** @var Entity\StationPlaylist $playlist */
                 $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
-                
+
                 $newRecord = new Entity\StationPlaylistFolder($station, $playlist, $path);
                 $this->em->persist($newRecord);
             }

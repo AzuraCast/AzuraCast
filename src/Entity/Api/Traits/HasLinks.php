@@ -4,6 +4,9 @@ namespace App\Entity\Api\Traits;
 
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(type="object")
+ */
 trait HasLinks
 {
     /**

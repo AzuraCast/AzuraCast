@@ -143,9 +143,13 @@ class Filesystem extends LeagueFilesystem implements FilesystemInterface
         $iterator = new FilesystemIterator($this, $path, $iteratorOptions);
 
         $options = Options::fromArray($iteratorOptions);
+
+        /** @phpstan-ignore-next-line */
         if ($options->{Options::OPTION_IS_RECURSIVE}) {
             $iterator = new RecursiveFilesystemIteratorIterator($iterator);
         }
+
+        /** @phpstan-ignore-next-line */
         if ($options->{Options::OPTION_FILTER} !== null) {
             $iterator = new FilesystemFilterIterator($iterator, $options->{Options::OPTION_FILTER});
         }

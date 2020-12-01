@@ -124,7 +124,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
 
         // Place all songs with 0 plays back in their original playlists.
         foreach ($mediaReport as $song_id => $media) {
-            if ($media['num_plays'] === 0 && isset($original_playlists[$song_id])) {
+            if ($media['num_plays'] === 0) {
                 unset($mediaToUpdate[$media['id']], $mediaReport[$song_id]);
             }
         }

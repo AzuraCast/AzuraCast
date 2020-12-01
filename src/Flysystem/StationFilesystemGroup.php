@@ -66,7 +66,7 @@ class StationFilesystemGroup extends MountManager implements FilesystemInterface
             if ($this->getTimestamp($to) >= $this->getTimestamp($from)) {
                 $tempFullPath = $this->getLocalPath($to);
                 touch($tempFullPath);
-                
+
                 return $to;
             }
 

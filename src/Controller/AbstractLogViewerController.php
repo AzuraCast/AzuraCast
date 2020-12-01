@@ -96,7 +96,7 @@ abstract class AbstractLogViewerController
     protected function getStationLogs(Entity\Station $station): array
     {
         $log_paths = [];
-        
+
         $stationConfigDir = $station->getRadioConfigDir();
 
         switch ($station->getBackendType()) {

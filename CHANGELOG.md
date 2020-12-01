@@ -10,6 +10,8 @@ These changes have not yet been incorporated into a stable release, but if you a
 
 - New installations won't see warnings about backups and sync tasks immediately after installation.
 
+- Various issues with processing some types of media have been resolved.
+
 ---
 
 # AzuraCast 0.11 (Nov 28, 2020)

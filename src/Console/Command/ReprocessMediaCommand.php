@@ -6,7 +6,6 @@ use App\Entity;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ReprocessMediaCommand extends CommandAbstract
@@ -15,43 +14,38 @@ class ReprocessMediaCommand extends CommandAbstract
         SymfonyStyle $io,
         EntityManagerInterface $em,
         StationRepository $stationRepo,
-        Entity\Repository\StationMediaRepository $media_repo,
         ?string $stationName = null
     ): int {
-        if (!empty($stationName)) {
-            $station = $stationRepo->findByIdentifier($stationName);
+        $io->title('Manually Reprocess Media');
 
+        if (empty($stationName)) {
+            $io->section('Reprocessing media for all stations...');
+
+            $storageLocation = null;
+        } else {
+            $station = $stationRepo->findByIdentifier($stationName);
             if (!$station instanceof Station) {
                 $io->error('Station not found.');
                 return 1;
             }
 
-            $stations = [$station];
-        } else {
-            $io->section('Restarting all radio stations...');
+            $storageLocation = $station->getMediaStorageLocation();
 
-            /** @var Station[] $stations */
-            $stations = $stationRepo->fetchAll();
+            $io->writeln(sprintf('Reprocessing media for station: %s', $station->getName()));
         }
 
-        foreach ($stations as $station) {
-            $io->writeln('Processing media for station: ' . $station->getName());
+        $reprocessMediaQueue = $em->createQueryBuilder()
+            ->update(Entity\StationMedia::class, 'sm')
+            ->set('sm.mtime', 'NULL');
 
-            foreach ($station->getMedia() as $media) {
-                /** @var Entity\StationMedia $media */
-                try {
-                    $media_repo->processMedia($media, true);
-                    $io->writeln('Processed: ' . $media->getPath());
-                } catch (Exception $e) {
-                    $io->writeln('Could not read source file for: ' . $media->getPath() . ' - ' . $e->getMessage());
-                    continue;
-                }
-            }
-
-            $em->flush();
-
-            $io->writeln('Station media reprocessed.');
+        if (null !== $storageLocation) {
+            $reprocessMediaQueue = $reprocessMediaQueue->where('sm.storage_location = :storageLocation')
+                ->setParameter('storageLocation', $storageLocation);
         }
+
+        $recordsAffected = $reprocessMediaQueue->getQuery()->getSingleScalarResult();
+
+        $io->writeln(sprintf('Marked %d records for reprocessing.', $recordsAffected));
 
         return 0;
     }

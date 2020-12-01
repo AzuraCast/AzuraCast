@@ -5,11 +5,29 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
+use App\Settings;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\Serializer\Serializer;
 
 class StationPlaylistMediaRepository extends Repository
 {
+    protected StationQueueRepository $queueRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Settings $settings,
+        LoggerInterface $logger,
+        StationQueueRepository $queueRepo
+    ) {
+        parent::__construct($em, $serializer, $settings, $logger);
+
+        $this->queueRepo = $queueRepo;
+    }
+
     /**
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
@@ -95,6 +113,8 @@ class StationPlaylistMediaRepository extends Repository
             $this->em->persist($playlist);
 
             $affectedPlaylists[$playlist->getId()] = $playlist;
+
+            $this->queueRepo->clearForMediaAndPlaylist($media, $playlist);
 
             $this->em->remove($spmRow);
         }

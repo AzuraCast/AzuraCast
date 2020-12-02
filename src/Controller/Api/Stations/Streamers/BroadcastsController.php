@@ -38,11 +38,14 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT ssb
-            FROM App\Entity\StationStreamerBroadcast ssb
-            WHERE ssb.station = :station AND ssb.streamer = :streamer
-            ORDER BY ssb.timestampStart DESC')
-            ->setParameter('station', $station)
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                SELECT ssb
+                FROM App\Entity\StationStreamerBroadcast ssb
+                WHERE ssb.station = :station AND ssb.streamer = :streamer
+                ORDER BY ssb.timestampStart DESC
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('streamer', $streamer);
 
         $paginator = new QueryPaginator($query, $request);

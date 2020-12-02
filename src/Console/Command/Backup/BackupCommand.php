@@ -97,8 +97,11 @@ class BackupCommand extends CommandAbstract
 
         // Include station media if specified.
         if ($includeMedia) {
-            $stations = $em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s')
-                ->execute();
+            $stations = $em->createQuery(
+                <<<'DQL'
+                    SELECT s FROM App\Entity\Station s
+                DQL
+            )->execute();
 
             foreach ($stations as $station) {
                 /** @var Entity\Station $station */

@@ -112,11 +112,11 @@ class SettingsRepository extends Repository
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
     {
         if (!isset(self::$cachedSettings) || !$cached) {
-            $settings_raw = $this->em
-                ->createQuery(/** @lang DQL */
-                    'SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC'
-                )
-                ->getArrayResult();
+            $settings_raw = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT s FROM App\Entity\Settings s ORDER BY s.setting_key ASC
+                DQL
+            )->getArrayResult();
 
             self::$cachedSettings = [];
             foreach ($settings_raw as $setting) {

@@ -24,13 +24,15 @@ class RequestsController
     {
         $station = $request->getStation();
 
-        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sr, sm
-            FROM App\Entity\StationRequest sr
-            JOIN sr.track sm
-            WHERE sr.station_id = :station_id
-            ORDER BY sr.timestamp DESC')
-            ->setParameter('station_id', $station->getId())
+        $requests = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sr, sm
+                FROM App\Entity\StationRequest sr
+                JOIN sr.track sm
+                WHERE sr.station_id = :station_id
+                ORDER BY sr.timestamp DESC
+            DQL
+        )->setParameter('station_id', $station->getId())
             ->getArrayResult();
 
         return $request->getView()->renderToResponse($response, 'stations/reports/requests', [
@@ -74,10 +76,13 @@ class RequestsController
 
         $station = $request->getStation();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationRequest sr
-            WHERE sr.station = :station
-            AND sr.played_at = 0')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationRequest sr
+                WHERE sr.station = :station
+                AND sr.played_at = 0
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         $request->getFlash()->addMessage('<b>All pending requests cleared.</b>', Flash::SUCCESS);

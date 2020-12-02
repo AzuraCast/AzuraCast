@@ -86,13 +86,15 @@ class ListAction
             $media_query->andWhere('sm.path NOT LIKE :pathWithSubfolders')
                 ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
-            $folders_in_dir_raw = $em->createQuery(/** @lang DQL */ 'SELECT
-                spf, partial sp.{id, name}
-                FROM App\Entity\StationPlaylistFolder spf
-                JOIN spf.playlist sp
-                WHERE spf.station = :station
-                AND spf.path LIKE :path')
-                ->setParameter('station', $station)
+            $folders_in_dir_raw = $em->createQuery(
+                <<<'DQL'
+                    SELECT spf, partial sp.{id, name}
+                    FROM App\Entity\StationPlaylistFolder spf
+                    JOIN spf.playlist sp
+                    WHERE spf.station = :station
+                    AND spf.path LIKE :path
+                DQL
+            )->setParameter('station', $station)
                 ->setParameter('path', $currentDir . '%')
                 ->getArrayResult();
         }

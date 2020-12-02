@@ -22,12 +22,14 @@ class UsersController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $users = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            u, r
-            FROM App\Entity\User u
-            LEFT JOIN u.roles r
-            ORDER BY u.name ASC')
-            ->execute();
+        $users = $this->em->createQuery(
+            <<<'DQL'
+                SELECT u, r
+                FROM App\Entity\User u
+                LEFT JOIN u.roles r
+                ORDER BY u.name ASC
+            DQL
+        )->execute();
 
         return $request->getView()->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),

@@ -28,8 +28,11 @@ class LoginAction
 
         // Check installation completion progress.
         if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
-            $num_users = (int)$em->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')
-                ->getSingleScalarResult();
+            $num_users = (int)$em->createQuery(
+                <<<'DQL'
+                    SELECT COUNT(u.id) FROM App\Entity\User u
+                DQL
+            )->getSingleScalarResult();
 
             if (0 === $num_users) {
                 return $response->withRedirect($request->getRouter()->named('setup:index'));

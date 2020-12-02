@@ -72,9 +72,11 @@ class DebugController
 
         $station = $request->getStation();
 
-        $em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
-            WHERE sq.station = :station')
-            ->setParameter('station', $station)
+        $em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         $this->logger->debug('Current queue cleared.');

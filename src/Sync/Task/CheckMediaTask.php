@@ -73,10 +73,13 @@ class CheckMediaTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sl 
-            FROM App\Entity\StorageLocation sl 
-            WHERE sl.type = :type')
-            ->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sl 
+                FROM App\Entity\StorageLocation sl 
+                WHERE sl.type = :type
+            DQL
+        )->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
 
         $storageLocations = SimpleBatchIteratorAggregate::fromQuery($query, 1);
 
@@ -153,10 +156,12 @@ class CheckMediaTask extends AbstractTask
         $this->queueManager->clearQueue(QueueManager::QUEUE_MEDIA);
 
         // Check queue for existing pending processing entries.
-        $existingMediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
-            FROM App\Entity\StationMedia sm
-            WHERE sm.storage_location = :storageLocation')
-            ->setParameter('storageLocation', $storageLocation);
+        $existingMediaQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sm FROM App\Entity\StationMedia sm
+                WHERE sm.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $storageLocation);
 
         $iterator = SimpleBatchIteratorAggregate::fromQuery($existingMediaQuery, 10);
 

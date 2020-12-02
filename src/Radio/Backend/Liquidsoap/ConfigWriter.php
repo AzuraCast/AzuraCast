@@ -524,12 +524,15 @@ class ConfigWriter implements EventSubscriberInterface
         $mediaBaseDir = $mediaStorage->getPath() . '/';
         $playlistFile = [];
 
-        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm
-            FROM App\Entity\StationMedia sm
-            JOIN sm.playlists spm
-            WHERE spm.playlist = :playlist
-            ORDER BY spm.weight ASC
-        ')->setParameter('playlist', $playlist);
+        $mediaQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT DISTINCT sm
+                FROM App\Entity\StationMedia sm
+                JOIN sm.playlists spm
+                WHERE spm.playlist = :playlist
+                ORDER BY spm.weight ASC                
+            DQL
+        )->setParameter('playlist', $playlist);
 
         $mediaIterator = $mediaQuery->iterate();
 

@@ -96,14 +96,16 @@ class StationScheduleRepository extends Repository
 
         $events = [];
 
-        $scheduleItems = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                ssc, sp, sst
+        $scheduleItems = $this->em->createQuery(
+            <<<'DQL'
+                SELECT ssc, sp, sst
                 FROM App\Entity\StationSchedule ssc
                 LEFT JOIN ssc.playlist sp
                 LEFT JOIN ssc.streamer sst
                 WHERE (sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1)
                 OR (sst.station = :station AND sst.is_active = 1)
-            ')->setParameter('station', $station)
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         foreach ($scheduleItems as $scheduleItem) {

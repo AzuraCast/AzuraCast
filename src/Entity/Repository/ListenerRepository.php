@@ -26,13 +26,15 @@ class ListenerRepository extends Repository
             $end = $end->getTimestamp();
         }
 
-        return (int)$this->em->createQuery(/** @lang DQL */ 'SELECT
-            COUNT(DISTINCT l.listener_hash)
-            FROM App\Entity\Listener l
-            WHERE l.station_id = :station_id
-            AND l.timestamp_start <= :time_end
-            AND l.timestamp_end >= :time_start')
-            ->setParameter('station_id', $station->getId())
+        return (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(DISTINCT l.listener_hash)
+                FROM App\Entity\Listener l
+                WHERE l.station_id = :station_id
+                AND l.timestamp_start <= :time_end
+                AND l.timestamp_end >= :time_start
+            DQL
+        )->setParameter('station_id', $station->getId())
             ->setParameter('time_end', $end)
             ->setParameter('time_start', $start)
             ->getSingleScalarResult();
@@ -46,12 +48,14 @@ class ListenerRepository extends Repository
      */
     public function update(Entity\Station $station, $clients): void
     {
-        $existingClientsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            l.id, l.listener_uid, l.listener_hash
-            FROM App\Entity\Listener l
-            WHERE l.station = :station
-            AND l.timestamp_end = 0')
-            ->setParameter('station', $station)
+        $existingClientsRaw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT l.id, l.listener_uid, l.listener_hash
+                FROM App\Entity\Listener l
+                WHERE l.station = :station
+                AND l.timestamp_end = 0                
+            DQL
+        )->setParameter('station', $station)
             ->getArrayResult();
 
         $existingClients = [];
@@ -78,10 +82,13 @@ class ListenerRepository extends Repository
 
         // Mark the end of all other clients on this station.
         if (!empty($existingClients)) {
-            $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Listener l
-                SET l.timestamp_end = :time
-                WHERE l.id IN (:ids)')
-                ->setParameter('time', time())
+            $this->em->createQuery(
+                <<<'DQL'
+                    UPDATE App\Entity\Listener l
+                    SET l.timestamp_end = :time
+                    WHERE l.id IN (:ids)
+                DQL
+            )->setParameter('time', time())
                 ->setParameter('ids', array_values($existingClients))
                 ->execute();
         }
@@ -89,8 +96,11 @@ class ListenerRepository extends Repository
 
     public function clearAll(): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Listener l')
-            ->execute();
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\Listener l
+            DQL
+        )->execute();
     }
 
     public function cleanup(int $daysToKeep): void
@@ -99,11 +109,13 @@ class ListenerRepository extends Repository
             ->subDays($daysToKeep)
             ->getTimestamp();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE
-                FROM App\Entity\Listener sh
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\Listener sh
                 WHERE sh.timestamp_start != 0
-                AND sh.timestamp_start <= :threshold')
-            ->setParameter('threshold', $threshold)
+                AND sh.timestamp_start <= :threshold
+            DQL
+        )->setParameter('threshold', $threshold)
             ->execute();
     }
 }

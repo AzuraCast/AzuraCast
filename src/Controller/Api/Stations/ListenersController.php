@@ -59,13 +59,15 @@ class ListenersController
 
             $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');
 
-            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                l
-                FROM App\Entity\Listener l
-                WHERE l.station_id = :station_id
-                AND l.timestamp_start < :time_end
-                AND (l.timestamp_end = 0 OR l.timestamp_end > :time_start)')
-                ->setParameter('station_id', $station->getId())
+            $listeners_unsorted = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT l
+                    FROM App\Entity\Listener l
+                    WHERE l.station_id = :station_id
+                    AND l.timestamp_start < :time_end
+                    AND (l.timestamp_end = 0 OR l.timestamp_end > :time_start)
+                DQL
+            )->setParameter('station_id', $station->getId())
                 ->setParameter('time_start', $start_timestamp)
                 ->setParameter('time_end', $end_timestamp)
                 ->getArrayResult();
@@ -96,12 +98,14 @@ class ListenersController
         } else {
             $range = 'live';
 
-            $listeners_unsorted = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                l
-                FROM App\Entity\Listener l
-                WHERE l.station_id = :station_id
-                AND l.timestamp_end = 0')
-                ->setParameter('station_id', $station->getId())
+            $listeners_unsorted = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT l
+                    FROM App\Entity\Listener l
+                    WHERE l.station_id = :station_id
+                    AND l.timestamp_end = 0
+                DQL
+            )->setParameter('station_id', $station->getId())
                 ->getArrayResult();
 
             $listeners_raw = [];

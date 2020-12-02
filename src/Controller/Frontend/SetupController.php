@@ -55,9 +55,11 @@ class SetupController
         }
 
         // Step 1: Register
-        $num_users = (int)$this->em
-            ->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')
-            ->getSingleScalarResult();
+        $num_users = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(u.id) FROM App\Entity\User u
+            DQL
+        )->getSingleScalarResult();
 
         if (0 === $num_users) {
             return 'register';
@@ -70,9 +72,11 @@ class SetupController
         }
 
         // Step 2: Set up Station
-        $num_stations = (int)$this->em
-            ->createQuery(/** @lang DQL */ 'SELECT COUNT(s.id) FROM App\Entity\Station s')
-            ->getSingleScalarResult();
+        $num_stations = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(s.id) FROM App\Entity\Station s
+            DQL
+        )->getSingleScalarResult();
 
         if (0 === $num_stations) {
             return 'station';

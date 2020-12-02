@@ -159,12 +159,15 @@ class DashboardController
         // Statistics by day.
         $threshold = CarbonImmutable::parse('-180 days');
 
-        $stats = $this->em->createQuery(/** @lang DQL */ 'SELECT a.station_id, a.moment, a.number_avg, a.number_unique
-            FROM App\Entity\Analytics a
-            WHERE a.station_id IN (:stations)
-            AND a.type = :type
-            AND a.moment >= :threshold')
-            ->setParameter('stations', $stationsToView)
+        $stats = $this->em->createQuery(
+            <<<'DQL'
+                SELECT a.station_id, a.moment, a.number_avg, a.number_unique
+                FROM App\Entity\Analytics a
+                WHERE a.station_id IN (:stations)
+                AND a.type = :type
+                AND a.moment >= :threshold
+            DQL
+        )->setParameter('stations', $stationsToView)
             ->setParameter('type', Entity\Analytics::INTERVAL_DAILY)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();

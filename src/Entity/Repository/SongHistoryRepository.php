@@ -44,13 +44,15 @@ class SongHistoryRepository extends Repository
             return [];
         }
 
-        $recordsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
-            FROM App\Entity\SongHistory sh
-            LEFT JOIN sh.media sm
-            WHERE sh.station_id = :station_id
-            AND sh.timestamp_end != 0
-            ORDER BY sh.id DESC')
-            ->setParameter('station_id', $station->getId())
+        $recordsRaw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh FROM App\Entity\SongHistory sh
+                LEFT JOIN sh.media sm
+                WHERE sh.station_id = :station_id
+                AND sh.timestamp_end != 0
+                ORDER BY sh.id DESC
+            DQL
+        )->setParameter('station_id', $station->getId())
             ->setMaxResults($numEntries)
             ->execute();
 
@@ -72,21 +74,25 @@ class SongHistoryRepository extends Repository
         CarbonInterface $now,
         int $rows
     ): array {
-        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq
-            FROM App\Entity\StationQueue sq
-            WHERE sq.station = :station
-            ORDER BY sq.timestamp_cued DESC')
-            ->setParameter('station', $station)
+        $recentlyPlayed = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sq FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                ORDER BY sq.timestamp_cued DESC
+            DQL
+        )->setParameter('station', $station)
             ->setMaxResults($rows)
             ->getArrayResult();
 
-        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station = :station
-            AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
-            AND sh.timestamp_start >= :threshold
-            ORDER BY sh.timestamp_start DESC')
-            ->setParameter('station', $station)
+        $recentHistory = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh FROM App\Entity\SongHistory sh
+                WHERE sh.station = :station
+                AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
+                AND sh.timestamp_start >= :threshold
+                ORDER BY sh.timestamp_start DESC
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('threshold', $now->subDay()->getTimestamp())
             ->setMaxResults($rows)
             ->getArrayResult();
@@ -106,22 +112,26 @@ class SongHistoryRepository extends Repository
         $timeRangeInSeconds = $minutes * 60;
         $threshold = $now->getTimestamp() - $timeRangeInSeconds;
 
-        $recentlyPlayed = $this->em->createQuery(/** @lang DQL */ 'SELECT sq
-            FROM App\Entity\StationQueue sq
-            WHERE sq.station = :station
-            AND sq.timestamp_cued >= :threshold
-            ORDER BY sq.timestamp_cued DESC')
-            ->setParameter('station', $station)
+        $recentlyPlayed = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sq FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                AND sq.timestamp_cued >= :threshold
+                ORDER BY sq.timestamp_cued DESC
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
-        $recentHistory = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station = :station
-            AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
-            AND sh.timestamp_start >= :threshold
-            ORDER BY sh.timestamp_start DESC')
-            ->setParameter('station', $station)
+        $recentHistory = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh FROM App\Entity\SongHistory sh
+                WHERE sh.station = :station
+                AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
+                AND sh.timestamp_start >= :threshold
+                ORDER BY sh.timestamp_start DESC
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
@@ -220,13 +230,16 @@ class SongHistoryRepository extends Repository
 
     public function getCurrent(Entity\Station $station): ?Entity\SongHistory
     {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT sh
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station = :station
-            AND sh.timestamp_start != 0
-            AND (sh.timestamp_end IS NULL OR sh.timestamp_end = 0)
-            ORDER BY sh.timestamp_start DESC')
-            ->setParameter('station', $station)
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh
+                FROM App\Entity\SongHistory sh
+                WHERE sh.station = :station
+                AND sh.timestamp_start != 0
+                AND (sh.timestamp_end IS NULL OR sh.timestamp_end = 0)
+                ORDER BY sh.timestamp_start DESC
+            DQL
+        )->setParameter('station', $station)
             ->setMaxResults(1)
             ->getOneOrNullResult();
     }
@@ -247,16 +260,16 @@ class SongHistoryRepository extends Repository
             $end = $end->getTimestamp();
         }
 
-        $historyTotals = $this->em->createQuery(/** @lang DQL */ '
-            SELECT
-                AVG(sh.listeners_end) AS listeners_avg,
-                MAX(sh.listeners_end) AS listeners_max,
-                MIN(sh.listeners_end) AS listeners_min
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station = :station
-            AND sh.timestamp_end >= :start
-            AND sh.timestamp_start <= :end')
-            ->setParameter('station', $station)
+        $historyTotals = $this->em->createQuery(
+            <<<'DQL'
+                SELECT AVG(sh.listeners_end) AS listeners_avg, MAX(sh.listeners_end) AS listeners_max,
+                    MIN(sh.listeners_end) AS listeners_min
+                FROM App\Entity\SongHistory sh
+                WHERE sh.station = :station
+                AND sh.timestamp_end >= :start
+                AND sh.timestamp_start <= :end
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->getSingleResult();
@@ -274,11 +287,13 @@ class SongHistoryRepository extends Repository
             ->subDays($daysToKeep)
             ->getTimestamp();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE
-                FROM App\Entity\SongHistory sh
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\SongHistory sh
                 WHERE sh.timestamp_start != 0
-                AND sh.timestamp_start <= :threshold')
-            ->setParameter('threshold', $threshold)
+                AND sh.timestamp_start <= :threshold
+            DQL
+        )->setParameter('threshold', $threshold)
             ->execute();
     }
 }

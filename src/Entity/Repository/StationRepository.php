@@ -75,8 +75,11 @@ class StationRepository extends Repository
      */
     public function fetchAll()
     {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s ORDER BY s.name ASC')
-            ->execute();
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT s FROM App\Entity\Station s ORDER BY s.name ASC
+            DQL
+        )->execute();
     }
 
     /**
@@ -194,24 +197,36 @@ class StationRepository extends Repository
 
     protected function flushRelatedMedia(Entity\Station $station): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\SongHistory sh SET sh.media = null
-            WHERE sh.station = :station')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\SongHistory sh SET sh.media = null
+                WHERE sh.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationPlaylistMedia spm
-            WHERE spm.playlist_id IN (SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station)')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.playlist_id IN (
+                    SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station
+                )
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
-            WHERE sq.station = :station')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationRequest sr
-            WHERE sr.station = :station')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationRequest sr WHERE sr.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
     }
 
@@ -304,8 +319,11 @@ class StationRepository extends Repository
      */
     public function clearNowPlaying(): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Station s SET s.nowplaying=null')
-            ->execute();
+        $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\Station s SET s.nowplaying=null
+            DQL
+        )->execute();
     }
 
     /**

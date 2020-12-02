@@ -150,9 +150,11 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromStations(LoadNowPlaying $event): void
     {
-        $nowplaying_db = $this->em
-            ->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
-            ->getArrayResult();
+        $nowplaying_db = $this->em->createQuery(
+            <<<'DQL'
+                SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1
+            DQL
+        )->getArrayResult();
 
         $np = [];
         foreach ($nowplaying_db as $np_row) {

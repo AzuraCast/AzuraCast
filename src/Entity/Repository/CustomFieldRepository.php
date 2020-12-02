@@ -35,11 +35,13 @@ class CustomFieldRepository extends Repository
 
         if (!isset($fields)) {
             $fields = [];
-            $fieldsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                cf.id, cf.name, cf.short_name
-                FROM App\Entity\CustomField cf
-                ORDER BY cf.name ASC')
-                ->getArrayResult();
+            $fieldsRaw = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT cf.id, cf.name, cf.short_name
+                    FROM App\Entity\CustomField cf
+                    ORDER BY cf.name ASC
+                DQL
+            )->getArrayResult();
 
             foreach ($fieldsRaw as $row) {
                 $fields[$row['id']] = $row['short_name'] ?? Entity\Station::getStationShortName($row['name']);
@@ -58,10 +60,13 @@ class CustomFieldRepository extends Repository
      */
     public function getCustomFields(Entity\StationMedia $media): array
     {
-        $metadata_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT cf.short_name, e.value
-            FROM App\Entity\StationMediaCustomField e JOIN e.field cf
-            WHERE e.media_id = :media_id')
-            ->setParameter('media_id', $media->getId())
+        $metadata_raw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT cf.short_name, e.value
+                FROM App\Entity\StationMediaCustomField e JOIN e.field cf
+                WHERE e.media_id = :media_id
+            DQL
+        )->setParameter('media_id', $media->getId())
             ->getArrayResult();
 
         $result = [];
@@ -80,11 +85,11 @@ class CustomFieldRepository extends Repository
      */
     public function setCustomFields(Entity\StationMedia $media, array $custom_fields): void
     {
-        $this->em
-            ->createQuery(/** @lang DQL */
-                'DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id'
-            )
-            ->setParameter('media_id', $media->getId())
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationMediaCustomField e WHERE e.media_id = :media_id
+            DQL
+        )->setParameter('media_id', $media->getId())
             ->execute();
 
         foreach ($custom_fields as $field_id => $field_value) {

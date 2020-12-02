@@ -89,12 +89,15 @@ class RelaysController
      */
     protected function getManageableStations(ServerRequest $request): array
     {
-        $all_stations = $this->em->createQuery(/** @lang DQL */ 'SELECT s, sm
-            FROM App\Entity\Station s
-            JOIN s.mounts sm
-            WHERE s.is_enabled = 1
-            AND s.frontend_type != :remote_frontend')
-            ->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
+        $all_stations = $this->em->createQuery(
+            <<<'DQL'
+                SELECT s, sm
+                FROM App\Entity\Station s
+                JOIN s.mounts sm
+                WHERE s.is_enabled = 1
+                AND s.frontend_type != :remote_frontend
+            DQL
+        )->setParameter('remote_frontend', Adapters::FRONTEND_REMOTE)
             ->execute();
 
         $acl = $request->getAcl();

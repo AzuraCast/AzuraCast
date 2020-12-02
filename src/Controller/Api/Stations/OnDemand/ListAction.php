@@ -104,25 +104,29 @@ class ListAction
     {
         $list = [];
 
-        $playlists = $this->em->createQuery(/** @lang DQL */ '
-            SELECT sp FROM App\Entity\StationPlaylist sp
-            WHERE sp.station = :station
-            AND sp.id IS NOT NULL
-            AND sp.is_enabled = 1
-            AND sp.include_in_on_demand = 1')
-            ->setParameter('station', $station)
+        $playlists = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sp FROM App\Entity\StationPlaylist sp
+                WHERE sp.station = :station
+                AND sp.id IS NOT NULL
+                AND sp.is_enabled = 1
+                AND sp.include_in_on_demand = 1
+            DQL
+        )->setParameter('station', $station)
             ->getArrayResult();
 
         foreach ($playlists as $playlist) {
-            $query = $this->em->createQuery(/** @lang DQL */ '
-                SELECT sm FROM App\Entity\StationMedia sm
-                WHERE sm.id IN (
-                    SELECT spm.media_id
-                    FROM App\Entity\StationPlaylistMedia spm
-                    WHERE spm.playlist_id = :playlist_id
-                )
-                ORDER BY sm.artist ASC, sm.title ASC')
-                ->setParameter('playlist_id', $playlist['id']);
+            $query = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT sm FROM App\Entity\StationMedia sm
+                    WHERE sm.id IN (
+                        SELECT spm.media_id
+                        FROM App\Entity\StationPlaylistMedia spm
+                        WHERE spm.playlist_id = :playlist_id
+                    )
+                    ORDER BY sm.artist ASC, sm.title ASC
+                DQL
+            )->setParameter('playlist_id', $playlist['id']);
 
             $iterator = SimpleBatchIteratorAggregate::fromQuery($query, 50);
 

@@ -373,11 +373,14 @@ class BatchAction
      */
     protected function iterateMediaInDirectory(Entity\StorageLocation $storageLocation, string $dir): iterable
     {
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT sm 
-            FROM App\Entity\StationMedia sm
-            WHERE sm.storage_location = :storageLocation
-            AND sm.path LIKE :path')
-            ->setParameter('storageLocation', $storageLocation)
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sm 
+                FROM App\Entity\StationMedia sm
+                WHERE sm.storage_location = :storageLocation
+                AND sm.path LIKE :path
+            DQL
+        )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
 
         return SimpleBatchIteratorAggregate::fromQuery($query, 25);
@@ -391,11 +394,14 @@ class BatchAction
      */
     protected function iteratePlaylistFoldersInDirectory(Entity\Station $station, string $dir): iterable
     {
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT spf
-            FROM App\Entity\StationPlaylistFolder spf
-            WHERE spf.station = :station
-            AND spf.path LIKE :path')
-            ->setParameter('station', $station)
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                SELECT spf
+                FROM App\Entity\StationPlaylistFolder spf
+                WHERE spf.station = :station
+                AND spf.path LIKE :path
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('path', $dir . '%');
 
         return SimpleBatchIteratorAggregate::fromQuery($query, 25);

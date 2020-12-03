@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Config;
 use App\Entity;
-use App\Settings;
+use App\Environment;
 use App\Sync\Task\UpdateGeoLiteTask;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,7 +15,7 @@ class GeoLiteSettingsForm extends AbstractSettingsForm
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
-        Settings $settings,
+        Environment $settings,
         Config $config,
         UpdateGeoLiteTask $syncTask
     ) {

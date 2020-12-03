@@ -5,10 +5,10 @@ namespace App\Form;
 use App\Acl;
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Flysystem\FilesystemManager;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
-use App\Settings;
 use App\Sync\Task\CheckMediaTask;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
@@ -35,7 +35,7 @@ class StationCloneForm extends StationForm
         Configuration $configuration,
         CheckMediaTask $media_sync,
         Config $config,
-        Settings $settings,
+        Environment $settings,
         FilesystemManager $filesystem
     ) {
         parent::__construct(
@@ -197,7 +197,7 @@ class StationCloneForm extends StationForm
             }
 
             // Set new radio base directory
-            $station_base_dir = Settings::getInstance()->getStationDirectory();
+            $station_base_dir = Environment::getInstance()->getStationDirectory();
             $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
 
             $new_record->ensureDirectoriesExist();

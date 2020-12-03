@@ -1,9 +1,9 @@
 <?php
 
 use App\Console\Command;
+use App\Environment;
 use App\Event;
 use App\Middleware;
-use App\Settings;
 
 return function (App\EventDispatcher $dispatcher) {
     $dispatcher->addListener(Event\BuildConsoleCommands::class,
@@ -11,15 +11,15 @@ return function (App\EventDispatcher $dispatcher) {
             $console = $event->getConsole();
             $di = $console->getContainer();
 
-            /** @var Settings $settings */
-            $settings = $di->get(Settings::class);
+            /** @var Environment $environment */
+            $environment = $di->get(Environment::class);
 
-            if ($settings->enableRedis()) {
+            if ($environment->enableRedis()) {
                 $console->command('cache:clear', Command\ClearCacheCommand::class)
                     ->setDescription('Clear all application caches.');
             }
 
-            if ($settings->enableDatabase()) {
+            if ($environment->enableDatabase()) {
                 // Doctrine ORM/DBAL
                 Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($console);
 
@@ -34,7 +34,7 @@ return function (App\EventDispatcher $dispatcher) {
 
                 $migrationConfigurations = [
                     'migrations_paths' => [
-                        'App\Entity\Migration' => $settings[Settings::BASE_DIR] . '/src/Entity/Migration',
+                        'App\Entity\Migration' => $environment->getBaseDirectory() . '/src/Entity/Migration',
                     ],
                     'table_storage' => [
                         'table_name' => 'app_migrations',
@@ -44,7 +44,7 @@ return function (App\EventDispatcher $dispatcher) {
 
                 $buildMigrationConfigurationsEvent = new Event\BuildMigrationConfigurationArray(
                     $migrationConfigurations,
-                    $settings[Settings::BASE_DIR]
+                    $environment->getBaseDirectory()
                 );
                 $dispatcher->dispatch($buildMigrationConfigurationsEvent);
 
@@ -68,8 +68,8 @@ return function (App\EventDispatcher $dispatcher) {
         // Load app-specific route configuration.
         $container = $app->getContainer();
 
-        /** @var Settings $settings */
-        $settings = $container->get(Settings::class);
+        /** @var Environment $environment */
+        $environment = $container->get(Environment::class);
 
         call_user_func(include(__DIR__ . '/routes.php'), $app);
 
@@ -102,7 +102,7 @@ return function (App\EventDispatcher $dispatcher) {
         $app->add(Middleware\InjectSession::class);
 
         // Add an error handler for most in-controller/task situations.
-        $errorMiddleware = $app->addErrorMiddleware(!$settings->isProduction(), true, true);
+        $errorMiddleware = $app->addErrorMiddleware(!$environment->isProduction(), true, true);
         $errorMiddleware->setDefaultErrorHandler(Slim\Interfaces\ErrorHandlerInterface::class);
     });
 

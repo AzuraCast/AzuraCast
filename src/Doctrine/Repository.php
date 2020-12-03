@@ -2,8 +2,8 @@
 
 namespace App\Doctrine;
 
+use App\Environment;
 use App\Normalizer\DoctrineEntityNormalizer;
-use App\Settings;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -20,14 +20,14 @@ class Repository
 
     protected Serializer $serializer;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
     protected LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $settings,
         LoggerInterface $logger
     ) {
         $this->em = $em;

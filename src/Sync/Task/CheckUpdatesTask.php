@@ -3,8 +3,8 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use App\Environment;
 use App\Service\AzuraCastCentral;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
@@ -37,7 +37,7 @@ class CheckUpdatesTask extends AbstractTask
             }
         }
 
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             $this->logger->info('Update checks are currently disabled for this AzuraCast instance.');
             return;
         }

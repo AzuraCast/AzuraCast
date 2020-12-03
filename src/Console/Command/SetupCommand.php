@@ -3,8 +3,8 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use App\Environment;
 use App\Service\AzuraCastCentral;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,7 +15,7 @@ class SetupCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         OutputInterface $output,
-        Settings $settings,
+        Environment $environment,
         ContainerInterface $di,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\StationRepository $stationRepo,
@@ -27,14 +27,14 @@ class SetupCommand extends CommandAbstract
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
         $io->listing([
-            __('Environment: %s', ucfirst($settings[Settings::APP_ENV])),
-            __('Installation Method: %s', $settings->isDocker() ? 'Docker' : 'Ansible'),
+            __('Environment: %s', ucfirst($environment[Environment::APP_ENV])),
+            __('Installation Method: %s', $environment->isDocker() ? 'Docker' : 'Ansible'),
         ]);
 
         if ($update) {
             $io->note(__('Running in update mode.'));
 
-            if (!$settings->isDocker()) {
+            if (!$environment->isDocker()) {
                 $io->section(__('Migrating Legacy Configuration'));
                 $this->runCommand($output, 'azuracast:config:migrate');
                 $io->newLine();
@@ -59,7 +59,7 @@ class SetupCommand extends CommandAbstract
         $conn->ping();
         $this->runCommand($output, 'orm:generate-proxies');
 
-        if ($loadFixtures || (!$settings->isProduction() && !$update)) {
+        if ($loadFixtures || (!$environment->isProduction() && !$update)) {
             $io->newLine();
             $io->section(__('Installing Data Fixtures'));
 

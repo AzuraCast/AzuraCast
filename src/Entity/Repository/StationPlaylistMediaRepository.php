@@ -5,7 +5,7 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
-use App\Settings;
+use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Psr\Log\LoggerInterface;
@@ -19,7 +19,7 @@ class StationPlaylistMediaRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $settings,
         LoggerInterface $logger,
         StationQueueRepository $queueRepo
     ) {

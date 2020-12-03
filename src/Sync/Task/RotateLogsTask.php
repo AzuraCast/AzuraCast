@@ -3,8 +3,8 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use App\Environment;
 use App\Radio\Adapters;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use studio24\Rotate;
@@ -13,7 +13,7 @@ use Symfony\Component\Finder\Finder;
 
 class RotateLogsTask extends AbstractTask
 {
-    protected Settings $appSettings;
+    protected Environment $appSettings;
 
     protected Adapters $adapters;
 
@@ -25,7 +25,7 @@ class RotateLogsTask extends AbstractTask
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
-        Settings $appSettings,
+        Environment $appSettings,
         Adapters $adapters,
         Supervisor $supervisor,
         Entity\Repository\StorageLocationRepository $storageLocationRepo

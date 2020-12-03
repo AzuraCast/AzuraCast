@@ -2,7 +2,7 @@
 
 namespace App\Console\Command;
 
-use App\Settings;
+use App\Environment;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -18,12 +18,12 @@ class SetupFixturesCommand extends CommandAbstract
         SymfonyStyle $io,
         EntityManagerInterface $em,
         ContainerInterface $di,
-        Settings $settings
+        Environment $environment
     ): int {
         $loader = new Loader();
 
         // Dependency-inject the fixtures and load them.
-        $fixturesDir = $settings[Settings::BASE_DIR] . '/src/Entity/Fixture';
+        $fixturesDir = $environment[Environment::BASE_DIR] . '/src/Entity/Fixture';
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($fixturesDir),

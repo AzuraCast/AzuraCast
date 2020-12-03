@@ -2,7 +2,7 @@
 
 use App\Console\Application;
 use App\Console\Command;
-use App\Settings;
+use App\Environment;
 
 return function (Application $console) {
     // Set console version and name.
@@ -11,10 +11,10 @@ return function (Application $console) {
     /** @var App\Version $version */
     $version = $di->get(App\Version::class);
 
-    /** @var Settings $settings */
-    $settings = $di->get(Settings::class);
+    /** @var Environment $environment */
+    $environment = $di->get(Environment::class);
 
-    $console->setName($settings[Settings::APP_NAME] . ' Command Line Tools (' . $settings[Settings::APP_ENV] . ')');
+    $console->setName($environment[Environment::APP_NAME] . ' Command Line Tools (' . $environment[Environment::APP_ENV] . ')');
     $console->setVersion($version->getVersion());
 
     /*

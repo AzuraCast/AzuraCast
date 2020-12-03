@@ -4,9 +4,9 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Environment;
 use App\Exception;
 use App\Radio\AutoDJ;
-use App\Settings;
 use App\Utilities;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -21,7 +21,7 @@ class StationRequestRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $settings,
         LoggerInterface $logger,
         StationMediaRepository $mediaRepo
     ) {

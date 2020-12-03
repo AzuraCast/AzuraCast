@@ -2,10 +2,10 @@
 
 namespace App\Middleware;
 
+use App\Environment;
 use App\Http\ServerRequest;
 use App\Session\Csrf;
 use App\Session\Flash;
-use App\Settings;
 use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionPersistenceInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -20,11 +20,11 @@ class InjectSession implements MiddlewareInterface
 {
     protected SessionPersistenceInterface $sessionPersistence;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
     public function __construct(
         SessionPersistenceInterface $sessionPersistence,
-        Settings $settings
+        Environment $settings
     ) {
         $this->sessionPersistence = $sessionPersistence;
         $this->settings = $settings;

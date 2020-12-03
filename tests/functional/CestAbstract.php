@@ -8,7 +8,7 @@ abstract class CestAbstract
 {
     protected ContainerInterface $di;
 
-    protected App\Settings $settings;
+    protected App\Environment $environment;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
@@ -27,7 +27,7 @@ abstract class CestAbstract
 
         $this->settingsRepo = $this->di->get(Entity\Repository\SettingsRepository::class);
         $this->stationRepo = $this->di->get(Entity\Repository\StationRepository::class);
-        $this->settings = $this->di->get(App\Settings::class);
+        $this->environment = $this->di->get(App\Environment::class);
     }
 
     public function _after(FunctionalTester $I): void

@@ -5,6 +5,7 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
+use App\Environment;
 use App\Exception\CannotProcessMediaException;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
@@ -13,7 +14,6 @@ use App\Media\AlbumArt;
 use App\Media\MetadataManagerInterface;
 use App\Media\MimeType;
 use App\Service\AudioWaveform;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
@@ -40,7 +40,7 @@ class StationMediaRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $settings,
         LoggerInterface $logger,
         MetadataManagerInterface $metadataManager,
         CustomFieldRepository $customFieldRepo,

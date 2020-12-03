@@ -20,6 +20,8 @@ class Auth
 
     protected UserRepository $userRepo;
 
+    protected Environment $environment;
+
     /** @var User|bool|null */
     protected $user;
 
@@ -28,10 +30,12 @@ class Auth
 
     public function __construct(
         UserRepository $userRepo,
-        SessionInterface $session
+        SessionInterface $session,
+        Environment $environment
     ) {
         $this->userRepo = $userRepo;
         $this->session = $session;
+        $this->environment = $environment;
     }
 
     /**
@@ -110,7 +114,7 @@ class Auth
      */
     public function isLoggedIn(): bool
     {
-        if (Settings::getInstance()->isCli() && !Settings::getInstance()->isTesting()) {
+        if ($this->environment->isCli() && !$this->environment->isTesting()) {
             return false;
         }
 

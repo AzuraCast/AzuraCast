@@ -5,9 +5,9 @@ namespace App\Form;
 use App\Acl;
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -21,7 +21,7 @@ class StationForm extends EntityForm
 
     protected Acl $acl;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -31,7 +31,7 @@ class StationForm extends EntityForm
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Acl $acl,
         Config $config,
-        Settings $settings
+        Environment $settings
     ) {
         $this->acl = $acl;
         $this->entityClass = Entity\Station::class;

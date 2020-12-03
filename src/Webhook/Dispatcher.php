@@ -3,11 +3,11 @@
 namespace App\Webhook;
 
 use App\Entity;
+use App\Environment;
 use App\Event\SendWebhooks;
 use App\Exception;
 use App\Http\RouterInterface;
 use App\Message;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -49,7 +49,7 @@ class Dispatcher implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             return [];
         }
 
@@ -103,7 +103,7 @@ class Dispatcher implements EventSubscriberInterface
      */
     public function dispatch(SendWebhooks $event): void
     {
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             $this->logger->info('In testing mode; no webhooks dispatched.');
             return;
         }

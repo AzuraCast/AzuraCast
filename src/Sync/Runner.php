@@ -4,10 +4,10 @@ namespace App\Sync;
 
 use App\Entity;
 use App\Entity\Repository\SettingsRepository;
+use App\Environment;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
 use App\LockFactory;
-use App\Settings;
 use Monolog\Logger;
 
 /**
@@ -52,7 +52,7 @@ class Runner
 
         set_time_limit($syncInfo['timeout']);
 
-        if (Settings::getInstance()->isCli()) {
+        if (Environment::getInstance()->isCli()) {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
             ini_set('display_errors', '1');
             ini_set('log_errors', '1');

@@ -5,6 +5,7 @@ namespace App\Middleware;
 use App\Auth;
 use App\Customization;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,18 +21,26 @@ class GetCurrentUser implements MiddlewareInterface
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
+    protected Environment $environment;
+
     public function __construct(
         Entity\Repository\UserRepository $userRepo,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Environment $environment
     ) {
         $this->userRepo = $userRepo;
         $this->settingsRepo = $settingsRepo;
+        $this->environment = $environment;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Initialize the Auth for this request.
-        $auth = new Auth($this->userRepo, $request->getAttribute(ServerRequest::ATTR_SESSION));
+        $auth = new Auth(
+            $this->userRepo,
+            $request->getAttribute(ServerRequest::ATTR_SESSION),
+            $this->environment
+        );
         $user = ($auth->isLoggedIn()) ? $auth->getLoggedInUser() : null;
 
         $request = $request

@@ -3,7 +3,7 @@
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
-use App\Settings;
+use App\Environment;
 use Gettext\Translations;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -15,18 +15,18 @@ class GenerateCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        Settings $settings
+        Environment $environment
     ): int {
         $io->title('Generate Locales');
 
-        $dest_file = $settings[Settings::BASE_DIR] . '/resources/locale/default.pot';
+        $dest_file = $environment->getBaseDirectory() . '/resources/locale/default.pot';
         $translations = new Translations();
 
         // Find all PHP/PHTML files in the application's code.
         $translatable_folders = [
-            $settings[Settings::BASE_DIR] . '/src',
-            $settings[Settings::BASE_DIR] . '/config',
-            $settings[Settings::VIEWS_DIR],
+            $environment->getBaseDirectory() . '/src',
+            $environment->getBaseDirectory() . '/config',
+            $environment->getViewsDirectory(),
         ];
 
         foreach ($translatable_folders as $folder) {

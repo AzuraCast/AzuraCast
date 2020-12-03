@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
-use App\Settings;
 use App\Version;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,7 +14,7 @@ class SettingsForm extends AbstractSettingsForm
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
-        Settings $settings,
+        Environment $settings,
         Version $version,
         Config $config
     ) {

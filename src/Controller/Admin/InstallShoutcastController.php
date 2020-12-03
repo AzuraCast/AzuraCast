@@ -3,11 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Config;
+use App\Environment;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
-use App\Settings;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -24,8 +24,11 @@ class InstallShoutcastController
         $this->form_config = $config->get('forms/install_shoutcast');
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        Environment $environment
+    ): ResponseInterface {
         $form_config = $this->form_config;
 
         $version = SHOUTcast::getVersion();
@@ -41,7 +44,7 @@ class InstallShoutcastController
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             try {
-                $sc_base_dir = Settings::getInstance()->getParentDirectory() . '/servers/shoutcast2';
+                $sc_base_dir = $environment->getParentDirectory() . '/servers/shoutcast2';
 
                 $files = $request->getUploadedFiles();
                 /** @var UploadedFileInterface $import_file */

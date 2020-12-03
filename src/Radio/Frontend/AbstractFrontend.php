@@ -3,10 +3,10 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Environment;
 use App\EventDispatcher;
 use App\Http\Router;
 use App\Radio\AbstractAdapter;
-use App\Settings;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
@@ -153,7 +153,7 @@ abstract class AbstractFrontend extends AbstractAdapter
 
         if (
             $use_radio_proxy
-            || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
+            || (!Environment::getInstance()->isProduction() && !Environment::getInstance()->isDocker())
             || 'https' === $base_url->getScheme()
         ) {
             // Web proxy support.

@@ -4,6 +4,7 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Entity\Station;
+use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
 use App\EventDispatcher;
@@ -12,7 +13,6 @@ use App\LockFactory;
 use App\Message;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
-use App\Settings;
 use DeepCopy\DeepCopy;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -87,7 +87,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             return [];
         }
 

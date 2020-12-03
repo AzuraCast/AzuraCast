@@ -3,8 +3,8 @@
 namespace App\Radio;
 
 use App\Entity\Station;
+use App\Environment;
 use App\Exception;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
@@ -44,7 +44,7 @@ class Configuration
      */
     public function writeConfiguration(Station $station, $regen_auth_key = false, $force_restart = false): void
     {
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             return;
         }
 
@@ -389,7 +389,7 @@ class Configuration
      */
     public function removeConfiguration(Station $station): void
     {
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             return;
         }
 

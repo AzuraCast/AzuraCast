@@ -4,10 +4,10 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Environment;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Settings;
 use App\Sync\Task\CheckMediaTask;
 use App\Utilities;
 use Closure;
@@ -39,7 +39,7 @@ class StationRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $settings,
         SettingsRepository $settingsRepo,
         StorageLocationRepository $storageLocationRepo,
         LoggerInterface $logger,

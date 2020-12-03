@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity;
-use App\Settings;
+use App\Environment;
 use App\Version;
 use Exception;
 use GuzzleHttp\Client;
@@ -13,7 +13,7 @@ class AzuraCastCentral
 {
     protected const BASE_URL = 'https://central.azuracast.com';
 
-    protected Settings $appSettings;
+    protected Environment $environment;
 
     protected Client $httpClient;
 
@@ -25,13 +25,13 @@ class AzuraCastCentral
 
     public function __construct(
         Entity\Repository\SettingsRepository $settingsRepo,
-        Settings $appSettings,
+        Environment $environment,
         Version $version,
         Client $httpClient,
         LoggerInterface $logger
     ) {
         $this->settingsRepo = $settingsRepo;
-        $this->appSettings = $appSettings;
+        $this->environment = $environment;
         $this->version = $version;
         $this->httpClient = $httpClient;
         $this->logger = $logger;
@@ -48,8 +48,8 @@ class AzuraCastCentral
 
         $request_body = [
             'id' => $app_uuid,
-            'is_docker' => $this->appSettings->isDocker(),
-            'environment' => $this->appSettings[Settings::APP_ENV],
+            'is_docker' => $this->environment->isDocker(),
+            'environment' => $this->environment[Environment::APP_ENV],
             'release_channel' => $this->version->getReleaseChannel(),
         ];
 

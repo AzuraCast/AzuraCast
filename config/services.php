@@ -3,15 +3,15 @@
  * PHP-DI Services
  */
 
+use App\Environment;
 use App\Event;
-use App\Settings;
 use Psr\Container\ContainerInterface;
 
 return [
 
     // URL Router helper
     App\Http\Router::class => function (
-        Settings $settings,
+        Environment $settings,
         Slim\App $app,
         App\Entity\Repository\SettingsRepository $settingsRepo
     ) {
@@ -57,7 +57,7 @@ return [
     App\Doctrine\DecoratedEntityManager::class => function (
         Doctrine\Common\Cache\Cache $doctrineCache,
         Doctrine\Common\Annotations\Reader $reader,
-        Settings $settings,
+        Environment $environment,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
         App\EventDispatcher $dispatcher
@@ -81,7 +81,7 @@ return [
             'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
         ];
 
-        if (!$settings[Settings::IS_DOCKER]) {
+        if (!$environment->isDocker()) {
             $connectionOptions['host'] = $_ENV['db_host'] ?? 'localhost';
             $connectionOptions['port'] = $_ENV['db_port'] ?? '3306';
             $connectionOptions['dbname'] = $_ENV['db_name'] ?? 'azuracast';
@@ -93,15 +93,15 @@ return [
             // Fetch and store entity manager.
             $config = Doctrine\ORM\Tools\Setup::createConfiguration(
                 Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS,
-                $settings->getTempDirectory() . '/proxies',
+                $environment->getTempDirectory() . '/proxies',
                 $doctrineCache
             );
 
-            $mappingClassesPaths = [$settings->getBaseDirectory() . '/src/Entity'];
+            $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
 
             $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
                 $mappingClassesPaths,
-                $settings->getBaseDirectory()
+                $environment->getBaseDirectory()
             );
             $dispatcher->dispatch($buildDoctrineMappingPathsEvent);
 
@@ -140,8 +140,8 @@ return [
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Redis cache
-    Redis::class => function (Settings $settings) {
-        $redis_host = $settings->isDocker() ? 'redis' : 'localhost';
+    Redis::class => function (Environment $environment) {
+        $redis_host = $environment->isDocker() ? 'redis' : 'localhost';
 
         $redis = new Redis();
         $redis->connect($redis_host, 6379, 15);
@@ -150,7 +150,7 @@ return [
         return $redis;
     },
 
-    Psr\Cache\CacheItemPoolInterface::class => function (Settings $settings, ContainerInterface $di) {
+    Psr\Cache\CacheItemPoolInterface::class => function (Environment $settings, ContainerInterface $di) {
         return !$settings->isTesting()
             ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
             : new Cache\Adapter\PHPArray\ArrayCachePool;
@@ -159,7 +159,7 @@ return [
 
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
-        Settings $settings,
+        Environment $settings,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($settings->isCli()) {
@@ -173,7 +173,7 @@ return [
 
     // Session save handler middleware
     Mezzio\Session\SessionPersistenceInterface::class => function (
-        Settings $settings,
+        Environment $settings,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($settings->isCli()) {
@@ -220,8 +220,8 @@ return [
     },
 
     // Monolog Logger
-    Monolog\Logger::class => function (Settings $settings) {
-        $logger = new Monolog\Logger($settings[Settings::APP_NAME] ?? 'app');
+    Monolog\Logger::class => function (Environment $environment) {
+        $logger = new Monolog\Logger($environment[Environment::APP_NAME] ?? 'app');
 
         $loggingLevel = null;
         if (!empty($_ENV['LOG_LEVEL'])) {
@@ -242,15 +242,15 @@ return [
             }
         }
 
-        $loggingLevel ??= $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+        $loggingLevel ??= $environment->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
 
-        if ($settings->isDocker() || $settings->isCli()) {
+        if ($environment->isDocker() || $environment->isCli()) {
             $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
 
         $log_file = new Monolog\Handler\StreamHandler(
-            $settings[Settings::TEMP_DIR] . '/app.log',
+            $environment[Environment::TEMP_DIR] . '/app.log',
             $loggingLevel,
             true
         );
@@ -263,7 +263,7 @@ return [
     // Doctrine annotations reader
     Doctrine\Common\Annotations\Reader::class => function (
         Doctrine\Common\Cache\Cache $doctrine_cache,
-        Settings $settings
+        Environment $settings
     ) {
         return new Doctrine\Common\Annotations\CachedReader(
             new Doctrine\Common\Annotations\AnnotationReader,
@@ -351,7 +351,7 @@ return [
     },
 
     // Supervisor manager
-    Supervisor\Supervisor::class => function (Settings $settings) {
+    Supervisor\Supervisor::class => function (Environment $settings) {
         $client = new fXmlRpc\Client(
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
             new fXmlRpc\Transport\PsrTransport(
@@ -385,17 +385,17 @@ return [
     App\Media\MetadataManagerInterface::class => DI\get(App\Media\GetId3\GetId3MetadataManager::class),
 
     // Asset Management
-    App\Assets::class => function (App\Config $config, Settings $settings) {
+    App\Assets::class => function (App\Config $config, Environment $environment) {
         $libraries = $config->get('assets');
 
         $versioned_files = [];
-        $assets_file = $settings[Settings::BASE_DIR] . '/web/static/assets.json';
+        $assets_file = $environment->getBaseDirectory() . '/web/static/assets.json';
         if (file_exists($assets_file)) {
             $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }
 
         $vueComponents = [];
-        $assets_file = $settings[Settings::BASE_DIR] . '/web/static/webpack.json';
+        $assets_file = $environment->getBaseDirectory() . '/web/static/webpack.json';
         if (file_exists($assets_file)) {
             $vueComponents = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }

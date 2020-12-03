@@ -4,18 +4,18 @@ namespace App\Notification\Check;
 
 use App\Acl;
 use App\Entity;
+use App\Environment;
 use App\Event\GetNotifications;
 use App\Notification\Notification;
-use App\Settings;
 use Carbon\CarbonImmutable;
 
 class RecentBackupCheck
 {
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected Settings $appSettings;
+    protected Environment $appSettings;
 
-    public function __construct(Entity\Repository\SettingsRepository $settingsRepo, Settings $appSettings)
+    public function __construct(Entity\Repository\SettingsRepository $settingsRepo, Environment $appSettings)
     {
         $this->settingsRepo = $settingsRepo;
         $this->appSettings = $appSettings;

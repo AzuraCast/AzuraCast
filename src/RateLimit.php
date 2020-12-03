@@ -9,9 +9,9 @@ class RateLimit
 {
     protected Redis $redis;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
-    public function __construct(Redis $redis, Settings $settings)
+    public function __construct(Redis $redis, Environment $settings)
     {
         $this->redis = $redis;
         $this->settings = $settings;

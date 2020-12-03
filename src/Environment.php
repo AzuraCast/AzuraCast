@@ -5,7 +5,7 @@ namespace App;
 use App\Traits\AvailableStaticallyTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Settings extends ArrayCollection
+class Environment extends ArrayCollection
 {
     use AvailableStaticallyTrait;
 

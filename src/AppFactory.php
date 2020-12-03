@@ -18,27 +18,26 @@ use Slim\Interfaces\RouteResolverInterface;
 
 class AppFactory
 {
-    public static function create($autoloader = null, $appSettings = [], $diDefinitions = []): App
+    public static function create($autoloader = null, $appEnvironment = [], $diDefinitions = []): App
     {
         // Register Annotation autoloader
         if (null !== $autoloader) {
             AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
         }
 
-        $settings = new Settings(self::buildSettings($appSettings));
-        Settings::setInstance($settings);
+        $environment = new Environment(self::buildEnvironment($appEnvironment));
+        Environment::setInstance($environment);
 
-        self::applyPhpSettings($settings);
+        self::applyPhpSettings($environment);
 
         // Helper constants for annotations.
         define('SAMPLE_TIMESTAMP', random_int(time() - 86400, time() + 86400));
 
         // Override DI definitions for settings.
-        $diDefinitions[Settings::class] = $settings;
-        $diDefinitions['settings'] = DI\Get(Settings::class);
+        $diDefinitions[Environment::class] = $environment;
 
         if ($autoloader) {
-            $plugins = new Plugins($settings[Settings::BASE_DIR] . '/plugins');
+            $plugins = new Plugins($environment->getBaseDirectory() . '/plugins');
 
             $diDefinitions[Plugins::class] = $plugins;
             $diDefinitions = $plugins->registerServices($diDefinitions);
@@ -46,7 +45,7 @@ class AppFactory
             $plugins = null;
         }
 
-        $di = self::buildContainer($settings, $diDefinitions);
+        $di = self::buildContainer($environment, $diDefinitions);
 
         Logger::setInstance($di->get(LoggerInterface::class));
 
@@ -65,77 +64,77 @@ class AppFactory
     /**
      * @return mixed[]
      */
-    protected static function buildSettings(array $settings): array
+    protected static function buildEnvironment(array $environment): array
     {
-        if (!isset($settings[Settings::BASE_DIR])) {
+        if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');
         }
 
-        $settings[Settings::TEMP_DIR] = dirname($settings[Settings::BASE_DIR]) . '/www_tmp';
+        $environment[Environment::TEMP_DIR] = dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
 
-        $settings[Settings::IS_DOCKER] = file_exists(dirname($settings[Settings::BASE_DIR]) . '/.docker');
-        $settings[Settings::DOCKER_REVISION] = getenv('AZURACAST_DC_REVISION') ?? 1;
+        $environment[Environment::IS_DOCKER] = file_exists(dirname($environment[Environment::BASE_DIR]) . '/.docker');
+        $environment[Environment::DOCKER_REVISION] = getenv('AZURACAST_DC_REVISION') ?? 1;
 
-        $settings[Settings::CONFIG_DIR] = $settings[Settings::BASE_DIR] . '/config';
-        $settings[Settings::VIEWS_DIR] = $settings[Settings::BASE_DIR] . '/templates';
+        $environment[Environment::CONFIG_DIR] = $environment[Environment::BASE_DIR] . '/config';
+        $environment[Environment::VIEWS_DIR] = $environment[Environment::BASE_DIR] . '/templates';
 
-        if (!isset($settings[Settings::BASE_DIR])) {
+        if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');
         }
 
-        if (!isset($settings[Settings::TEMP_DIR])) {
-            $settings[Settings::TEMP_DIR] = dirname($settings[Settings::BASE_DIR]) . '/www_tmp';
+        if (!isset($environment[Environment::TEMP_DIR])) {
+            $environment[Environment::TEMP_DIR] = dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
         }
 
-        if (!isset($settings[Settings::CONFIG_DIR])) {
-            $settings[Settings::CONFIG_DIR] = $settings[Settings::BASE_DIR] . '/config';
+        if (!isset($environment[Environment::CONFIG_DIR])) {
+            $environment[Environment::CONFIG_DIR] = $environment[Environment::BASE_DIR] . '/config';
         }
 
-        if (!isset($settings[Settings::VIEWS_DIR])) {
-            $settings[Settings::VIEWS_DIR] = $settings[Settings::BASE_DIR] . '/templates';
+        if (!isset($environment[Environment::VIEWS_DIR])) {
+            $environment[Environment::VIEWS_DIR] = $environment[Environment::BASE_DIR] . '/templates';
         }
 
-        if ($settings[Settings::IS_DOCKER]) {
+        if ($environment[Environment::IS_DOCKER]) {
             $_ENV = getenv();
-        } elseif (file_exists($settings[Settings::BASE_DIR] . '/env.ini')) {
-            $_ENV = array_merge($_ENV, parse_ini_file($settings[Settings::BASE_DIR] . '/env.ini'));
+        } elseif (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
+            $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
         }
 
-        if (!isset($settings[Settings::APP_ENV])) {
-            $settings[Settings::APP_ENV] = $_ENV['APPLICATION_ENV'] ?? Settings::ENV_PRODUCTION;
+        if (!isset($environment[Environment::APP_ENV])) {
+            $environment[Environment::APP_ENV] = $_ENV['APPLICATION_ENV'] ?? Environment::ENV_PRODUCTION;
         }
 
         if (isset($_ENV['BASE_URL'])) {
-            $settings[Settings::BASE_URL] = $_ENV['BASE_URL'];
+            $environment[Environment::BASE_URL] = $_ENV['BASE_URL'];
         }
 
         if (isset($_ENV['ENABLE_ADVANCED_FEATURES'])) {
-            $settings[Settings::ENABLE_ADVANCED_FEATURES] = $_ENV['ENABLE_ADVANCED_FEATURES'];
+            $environment[Environment::ENABLE_ADVANCED_FEATURES] = $_ENV['ENABLE_ADVANCED_FEATURES'];
         }
 
-        if (file_exists($settings[Settings::CONFIG_DIR] . '/settings.php')) {
-            $settingsFile = require($settings[Settings::CONFIG_DIR] . '/settings.php');
+        if (file_exists($environment[Environment::CONFIG_DIR] . '/env.php')) {
+            $envFile = require($environment[Environment::CONFIG_DIR] . '/env.php');
 
-            if (is_array($settingsFile)) {
-                $settings = array_merge($settings, $settingsFile);
+            if (is_array($envFile)) {
+                $environment = array_merge($environment, $envFile);
             }
         }
 
-        return $settings;
+        return $environment;
     }
 
-    protected static function applyPhpSettings(Settings $settings): void
+    protected static function applyPhpSettings(Environment $environment): void
     {
         error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 
-        ini_set('display_startup_errors', !$settings->isProduction() ? '1' : '0');
-        ini_set('display_errors', !$settings->isProduction() ? '1' : '0');
+        ini_set('display_startup_errors', !$environment->isProduction() ? '1' : '0');
+        ini_set('display_errors', !$environment->isProduction() ? '1' : '0');
         ini_set('log_errors', '1');
         ini_set(
             'error_log',
-            $settings[Settings::IS_DOCKER]
+            $environment->isDocker()
                 ? '/dev/stderr'
-                : $settings[Settings::TEMP_DIR] . '/php_errors.log'
+                : $environment->getTempDirectory() . '/php_errors.log'
         );
         ini_set('session.use_only_cookies', '1');
         ini_set('session.cookie_httponly', '1');
@@ -147,25 +146,24 @@ class AppFactory
         session_cache_limiter('');
     }
 
-    protected static function buildContainer(Settings $settings, array $diDefinitions = []): DI\Container
+    protected static function buildContainer(Environment $environment, array $diDefinitions = []): DI\Container
     {
         $containerBuilder = new DI\ContainerBuilder();
         $containerBuilder->useAnnotations(true);
         $containerBuilder->useAutowiring(true);
 
-        if ($settings->isProduction()) {
-            $containerBuilder->enableCompilation($settings[Settings::TEMP_DIR]);
+        if ($environment->isProduction()) {
+            $containerBuilder->enableCompilation($environment->getTempDirectory());
         }
 
-        if (!isset($diDefinitions[Settings::class])) {
-            $diDefinitions[Settings::class] = $settings;
-            $diDefinitions['settings'] = DI\Get(Settings::class);
+        if (!isset($diDefinitions[Environment::class])) {
+            $diDefinitions[Environment::class] = $environment;
         }
 
         $containerBuilder->addDefinitions($diDefinitions);
 
         // Check for services.php file and include it if one exists.
-        $config_dir = $settings[Settings::CONFIG_DIR];
+        $config_dir = $environment->getConfigDirectory();
         if (file_exists($config_dir . '/services.php')) {
             $containerBuilder->addDefinitions($config_dir . '/services.php');
         }
@@ -213,8 +211,8 @@ class AppFactory
         $di = $app->getContainer();
         $routeCollector = $app->getRouteCollector();
 
-        /** @var Settings $settings */
-        $settings = $di->get(Settings::class);
+        /** @var Environment $environment */
+        $environment = $di->get(Environment::class);
 
         // Use the PHP-DI Bridge's action invocation helper.
         $resolvers = [
@@ -231,8 +229,8 @@ class AppFactory
 
         $routeCollector->setDefaultInvocationStrategy($controllerInvoker);
 
-        if ($settings->isProduction()) {
-            $routeCollector->setCacheFile($settings[Settings::TEMP_DIR] . '/app_routes.cache.php');
+        if ($environment->isProduction()) {
+            $routeCollector->setCacheFile($environment->getTempDirectory() . '/app_routes.cache.php');
         }
     }
 

@@ -3,11 +3,11 @@
 namespace App\Controller\Stations;
 
 use App\Config;
+use App\Environment;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
-use App\Settings;
 use App\Sync\Task\RunAutomatedAssignmentTask;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -19,14 +19,14 @@ class AutomationController
 
     protected RunAutomatedAssignmentTask $sync_task;
 
-    protected Settings $app_settings;
+    protected Environment $app_settings;
 
     protected array $form_config;
 
     public function __construct(
         EntityManagerInterface $em,
         RunAutomatedAssignmentTask $sync_task,
-        Settings $app_settings,
+        Environment $app_settings,
         Config $config
     ) {
         $this->em = $em;

@@ -2,15 +2,15 @@
 
 namespace App\Radio;
 
-use App\Settings;
+use App\Environment;
 
 class CertificateLocator
 {
     public static function findCertificate(): Certificate
     {
-        $settings = Settings::getInstance();
+        $environment = Environment::getInstance();
 
-        if (!empty($_ENV['VIRTUAL_HOST']) && $settings->isDockerRevisionNewerThan(10)) {
+        if (!empty($_ENV['VIRTUAL_HOST']) && $environment->isDockerRevisionNewerThan(10)) {
             $vhost = $_ENV['VIRTUAL_HOST'];
 
             // Check environment variable for a virtual host.
@@ -38,9 +38,9 @@ class CertificateLocator
 
     public static function getDefaultCertificates(): Certificate
     {
-        $settings = Settings::getInstance();
+        $environment = Environment::getInstance();
 
-        if ($settings->isDocker()) {
+        if ($environment->isDocker()) {
             return new Certificate('/etc/nginx/ssl.key', '/etc/nginx/ssl.crt');
         }
 

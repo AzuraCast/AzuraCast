@@ -3,7 +3,7 @@
 namespace App\Http;
 
 use App\Entity;
-use App\Settings;
+use App\Environment;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use InvalidArgumentException;
@@ -17,14 +17,14 @@ class Router implements RouterInterface
 {
     protected RouteParserInterface $routeParser;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
     protected ?ServerRequestInterface $currentRequest = null;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        Settings $settings,
+        Environment $settings,
         RouteParserInterface $routeParser,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {

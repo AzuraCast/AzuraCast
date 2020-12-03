@@ -2,16 +2,16 @@
 
 namespace App\Console\Command;
 
-use App\Settings;
+use App\Environment;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MigrateConfigCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        Settings $settings
+        Environment $environment
     ): int {
-        $env_path = $settings[Settings::BASE_DIR] . '/env.ini';
+        $env_path = $environment->getBaseDirectory() . '/env.ini';
         $iniSettings = [];
 
         if (file_exists($env_path)) {
@@ -23,19 +23,19 @@ class MigrateConfigCommand extends CommandAbstract
             }
         }
 
-        if (empty($iniSettings['application_env']) && file_exists($settings[Settings::BASE_DIR] . '/app/.env')) {
-            $iniSettings['application_env'] = @file_get_contents($settings[Settings::BASE_DIR] . '/app/.env');
+        if (empty($iniSettings['application_env']) && file_exists($environment->getBaseDirectory() . '/app/.env')) {
+            $iniSettings['application_env'] = @file_get_contents($environment->getBaseDirectory() . '/app/.env');
         }
 
         if (empty($iniSettings['db_password'])) {
-            $legacy_path = $settings[Settings::BASE_DIR] . '/app/env.ini';
+            $legacy_path = $environment->getBaseDirectory() . '/app/env.ini';
             if (file_exists($legacy_path)) {
                 $old_settings = parse_ini_file($legacy_path);
                 $iniSettings = array_merge($iniSettings, $old_settings);
             }
 
-            if (file_exists($settings[Settings::BASE_DIR] . '/app/config/db.conf.php')) {
-                $db_conf = include($settings[Settings::BASE_DIR] . '/app/config/db.conf.php');
+            if (file_exists($environment->getBaseDirectory() . '/app/config/db.conf.php')) {
+                $db_conf = include($environment->getBaseDirectory() . '/app/config/db.conf.php');
                 $iniSettings['db_password'] = $db_conf['password'];
 
                 if ($db_conf['user'] === 'root') {

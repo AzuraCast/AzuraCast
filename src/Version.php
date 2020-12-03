@@ -22,19 +22,18 @@ class Version
 
     protected string $repoDir;
 
-    protected Settings $appSettings;
+    protected Environment $environment;
 
-    public function __construct(CacheInterface $cache, Settings $appSettings)
+    public function __construct(CacheInterface $cache, Environment $environment)
     {
         $this->cache = $cache;
-        $this->appSettings = $appSettings;
-
-        $this->repoDir = $appSettings[Settings::BASE_DIR];
+        $this->environment = $environment;
+        $this->repoDir = $environment->getBaseDirectory();
     }
 
     public function getReleaseChannel(): string
     {
-        if ($this->appSettings->isDocker()) {
+        if ($this->environment->isDocker()) {
             $channel = $_ENV['AZURACAST_VERSION'] ?? 'latest';
 
             return ('stable' === $channel)
@@ -72,7 +71,7 @@ class Version
 
             if (empty($details)) {
                 $details = $this->getRawDetails();
-                $ttl = $this->appSettings->isProduction() ? 86400 : 600;
+                $ttl = $this->environment->isProduction() ? 86400 : 600;
 
                 $this->cache->set('app_version_details', $details, $ttl);
             }

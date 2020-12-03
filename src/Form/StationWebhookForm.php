@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Http\Router;
 use App\Http\ServerRequest;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Serializer;
@@ -22,7 +22,7 @@ class StationWebhookForm extends EntityForm
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Settings $settings,
+        Environment $settings,
         Config $config,
         Router $router
     ) {

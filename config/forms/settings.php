@@ -1,6 +1,6 @@
 <?php
 /**
- * @var App\Settings $settings
+ * @var App\Environment $settings
  * @var App\Version $version
  */
 

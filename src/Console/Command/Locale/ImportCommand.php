@@ -3,7 +3,7 @@
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
-use App\Settings;
+use App\Environment;
 use Gettext\Translations;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -11,12 +11,12 @@ class ImportCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        Settings $settings
+        Environment $environment
     ): int {
         $io->title('Import Locales');
 
-        $locales = $settings['locale']['supported'];
-        $locale_base = $settings[Settings::BASE_DIR] . '/resources/locale';
+        $locales = $environment['locale']['supported'];
+        $locale_base = $environment->getBaseDirectory() . '/resources/locale';
 
         foreach ($locales as $locale_key => $locale_name) {
             $locale_source = $locale_base . '/' . $locale_key . '/LC_MESSAGES/default.po';

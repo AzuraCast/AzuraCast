@@ -3,11 +3,11 @@
 namespace App\Http;
 
 use App\Entity;
+use App\Environment;
 use App\Exception;
 use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
 use App\Session\Flash;
-use App\Settings;
 use App\ViewFactory;
 use Gettext\Translator;
 use Mezzio\Session\SessionInterface;
@@ -33,14 +33,14 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected ViewFactory $viewFactory;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
     public function __construct(
         App $app,
         Logger $logger,
         Router $router,
         ViewFactory $viewFactory,
-        Settings $settings
+        Environment $settings
     ) {
         parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
 

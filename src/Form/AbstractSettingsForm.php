@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractSettingsForm extends Form
@@ -13,12 +13,12 @@ abstract class AbstractSettingsForm extends Form
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
-        Settings $settings,
+        Environment $settings,
         array $formConfig
     ) {
         parent::__construct($formConfig);
@@ -38,7 +38,7 @@ abstract class AbstractSettingsForm extends Form
         return $this->settingsRepo;
     }
 
-    public function getSettings(): Settings
+    public function getSettings(): Environment
     {
         return $this->settings;
     }

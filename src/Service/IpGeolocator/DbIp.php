@@ -2,14 +2,14 @@
 
 namespace App\Service\IpGeolocator;
 
-use App\Settings;
+use App\Environment;
 
 class DbIp extends AbstractIpGeolocator
 {
     public static function getBaseDirectory(): string
     {
-        $settings = Settings::getInstance();
-        return dirname($settings[Settings::BASE_DIR]) . '/dbip';
+        $environment = Environment::getInstance();
+        return dirname($environment[Environment::BASE_DIR]) . '/dbip';
     }
 
     public static function getDatabasePath(): string

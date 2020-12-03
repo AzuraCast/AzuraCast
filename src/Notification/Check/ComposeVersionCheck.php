@@ -3,15 +3,15 @@
 namespace App\Notification\Check;
 
 use App\Acl;
+use App\Environment;
 use App\Event\GetNotifications;
 use App\Notification\Notification;
-use App\Settings;
 
 class ComposeVersionCheck
 {
-    protected Settings $appSettings;
+    protected Environment $appSettings;
 
-    public function __construct(Settings $appSettings)
+    public function __construct(Environment $appSettings)
     {
         $this->appSettings = $appSettings;
     }

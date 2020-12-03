@@ -4,7 +4,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Settings;
+use App\Environment;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
@@ -21,7 +21,7 @@ class SongHistoryRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $settings,
         LoggerInterface $logger,
         ListenerRepository $listenerRepository,
         StationQueueRepository $stationQueueRepository

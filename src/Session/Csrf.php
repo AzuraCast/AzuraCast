@@ -2,8 +2,8 @@
 
 namespace App\Session;
 
+use App\Environment;
 use App\Exception;
-use App\Settings;
 use App\Traits\AvailableStaticallyTrait;
 use Mezzio\Session\SessionInterface;
 
@@ -16,9 +16,9 @@ class Csrf
 
     protected SessionInterface $session;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
-    public function __construct(SessionInterface $session, Settings $settings)
+    public function __construct(SessionInterface $session, Environment $settings)
     {
         $this->session = $session;
         $this->settings = $settings;

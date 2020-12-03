@@ -54,7 +54,7 @@ class Customization
         // Set up the PHP translator
         $translator = new Translator();
 
-        $locale_base = Settings::getInstance()->getBaseDirectory() . '/resources/locale/compiled';
+        $locale_base = Environment::getInstance()->getBaseDirectory() . '/resources/locale/compiled';
         $locale_path = $locale_base . '/' . $this->locale . '.php';
 
         if (file_exists($locale_path)) {
@@ -74,7 +74,7 @@ class Customization
      */
     protected function initLocale(?ServerRequestInterface $request = null): string
     {
-        $settings = Settings::getInstance();
+        $settings = Environment::getInstance();
 
         $supported_locales = $settings['locale']['supported'];
         $try_locales = [];
@@ -194,18 +194,18 @@ class Customization
      */
     public function getPageTitle($title = null): string
     {
-        $settings = Settings::getInstance();
+        $settings = Environment::getInstance();
 
         if (!$this->hideProductName()) {
             if ($title) {
-                $title .= ' - ' . $settings[Settings::APP_NAME];
+                $title .= ' - ' . $settings[Environment::APP_NAME];
             } else {
-                $title = $settings[Settings::APP_NAME];
+                $title = $settings[Environment::APP_NAME];
             }
         }
 
         if (!$settings->isProduction()) {
-            $title = '(' . ucfirst($settings[Settings::APP_ENV]) . ') ' . $title;
+            $title = '(' . ucfirst($settings[Environment::APP_ENV]) . ') ' . $title;
         }
 
         return $title;

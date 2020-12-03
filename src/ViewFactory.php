@@ -15,7 +15,7 @@ class ViewFactory
 {
     protected ContainerInterface $di;
 
-    protected Settings $settings;
+    protected Environment $environment;
 
     protected EventDispatcher $dispatcher;
 
@@ -25,13 +25,13 @@ class ViewFactory
 
     public function __construct(
         ContainerInterface $di,
-        Settings $settings,
+        Environment $environment,
         EventDispatcher $dispatcher,
         Version $version,
         Assets $assets
     ) {
         $this->di = $di;
-        $this->settings = $settings;
+        $this->environment = $environment;
         $this->dispatcher = $dispatcher;
         $this->version = $version;
         $this->assets = $assets;
@@ -39,11 +39,11 @@ class ViewFactory
 
     public function create(ServerRequestInterface $request): View
     {
-        $view = new View($this->settings[Settings::VIEWS_DIR], 'phtml');
+        $view = new View($this->environment->getViewsDirectory(), 'phtml');
 
         // Add non-request-dependent content.
         $view->addData([
-            'settings' => $this->settings,
+            'environment' => $this->environment,
             'version' => $this->version,
         ]);
 

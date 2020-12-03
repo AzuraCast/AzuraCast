@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Config;
 use App\Entity;
-use App\Settings;
+use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
 
 class BackupSettingsForm extends AbstractSettingsForm
@@ -13,7 +13,7 @@ class BackupSettingsForm extends AbstractSettingsForm
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Settings $settings,
+        Environment $settings,
         Config $config
     ) {
         $formConfig = $config->get('forms/backup', [

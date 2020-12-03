@@ -3,13 +3,13 @@
 namespace App\Controller\Frontend;
 
 use App\Entity;
+use App\Environment;
 use App\Exception\NotLoggedInException;
 use App\Form\SettingsForm;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -19,12 +19,12 @@ class SetupController
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
-    protected Settings $settings;
+    protected Environment $settings;
 
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepository,
-        Settings $settings
+        Environment $settings
     ) {
         $this->em = $em;
         $this->settingsRepo = $settingsRepository;

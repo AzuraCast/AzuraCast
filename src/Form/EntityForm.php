@@ -3,10 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Station;
+use App\Environment;
 use App\Exception;
 use App\Http\ServerRequest;
 use App\Normalizer\DoctrineEntityNormalizer;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use InvalidArgumentException;
@@ -122,7 +122,7 @@ class EntityForm extends Form
             $this->em->flush();
 
             // Intentionally refresh the station entity in case it didn't refresh elsewhere.
-            if ($this->station instanceof Station && Settings::getInstance()->isTesting()) {
+            if ($this->station instanceof Station && Environment::getInstance()->isTesting()) {
                 $this->em->refresh($this->station);
             }
 

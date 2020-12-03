@@ -8,7 +8,7 @@ class Config
 {
     protected string $baseFolder;
 
-    public function __construct(Settings $settings)
+    public function __construct(Environment $settings)
     {
         $this->baseFolder = $settings->getConfigDirectory();
     }

@@ -3,9 +3,9 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Environment;
 use App\Logger;
 use App\Radio\CertificateLocator;
-use App\Settings;
 use App\Utilities;
 use App\Xml\Reader;
 use App\Xml\Writer;
@@ -27,7 +27,7 @@ class Icecast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
-        $baseUrl = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
+        $baseUrl = 'http://' . (Environment::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getAdapter(
             AdapterFactory::ADAPTER_ICECAST,
@@ -104,7 +104,7 @@ class Icecast extends AbstractFrontend
     protected function getDefaults(Entity\Station $station): array
     {
         $config_dir = $station->getRadioConfigDir();
-        $settings = Settings::getInstance();
+        $environment = Environment::getInstance();
 
         $settingsBaseUrl = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, 'http://localhost');
         if (strpos($settingsBaseUrl, 'http') !== 0) {
@@ -158,12 +158,12 @@ class Icecast extends AbstractFrontend
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
-                'x-forwarded-for' => $settings->isDocker() ? '172.*.*.*' : '127.0.0.1',
+                'x-forwarded-for' => $environment->isDocker() ? '172.*.*.*' : '127.0.0.1',
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
                 'errorlog' => '/dev/stderr',
-                'loglevel' => $settings->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
+                'loglevel' => $environment->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
                 'logsize' => 10000,
             ],
             'security' => [
@@ -362,7 +362,7 @@ class Icecast extends AbstractFrontend
         $new_path = '/usr/local/bin/icecast';
         $legacy_path = '/usr/bin/icecast2';
 
-        if (Settings::getInstance()->isDocker() || file_exists($new_path)) {
+        if (Environment::getInstance()->isDocker() || file_exists($new_path)) {
             return $new_path;
         }
 

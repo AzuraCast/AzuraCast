@@ -8,6 +8,7 @@ use App\Version;
 use Exception;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 class AzuraCastCentral
 {
@@ -17,24 +18,28 @@ class AzuraCastCentral
 
     protected Client $httpClient;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
+
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
 
     protected Version $version;
 
     protected LoggerInterface $logger;
 
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Version $version,
         Client $httpClient,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Entity\Settings $settings,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo
     ) {
-        $this->settingsRepo = $settingsRepo;
         $this->environment = $environment;
         $this->version = $version;
         $this->httpClient = $httpClient;
         $this->logger = $logger;
+        $this->settings = $settings;
+        $this->settingsTableRepo = $settingsTableRepo;
     }
 
     /**
@@ -44,10 +49,8 @@ class AzuraCastCentral
      */
     public function checkForUpdates(): ?array
     {
-        $app_uuid = $this->settingsRepo->getUniqueIdentifier();
-
         $request_body = [
-            'id' => $app_uuid,
+            'id' => $this->getUniqueIdentifier(),
             'is_docker' => $this->environment->isDocker(),
             'environment' => $this->environment[Environment::APP_ENV],
             'release_channel' => $this->version->getReleaseChannel(),
@@ -78,6 +81,20 @@ class AzuraCastCentral
         return null;
     }
 
+    public function getUniqueIdentifier(): string
+    {
+        $appUuid = $this->settings->getAppUniqueIdentifier();
+
+        if (empty($appUuid)) {
+            $appUuid = Uuid::uuid4()->toString();
+
+            $this->settings->setAppUniqueIdentifier($appUuid);
+            $this->settingsTableRepo->writeSettings($this->settings);
+        }
+
+        return $appUuid;
+    }
+
     /**
      * Ping the AzuraCast Central server to retrieve this installation's likely public-facing IP.
      *
@@ -86,7 +103,7 @@ class AzuraCastCentral
     public function getIp(bool $cached = true): ?string
     {
         $ip = ($cached)
-            ? $this->settingsRepo->getSetting(Entity\Settings::EXTERNAL_IP)
+            ? $this->settings->getExternalIp()
             : null;
 
         if (empty($ip)) {
@@ -106,7 +123,8 @@ class AzuraCastCentral
             }
 
             if (!empty($ip) && $cached) {
-                $this->settingsRepo->setSetting(Entity\Settings::EXTERNAL_IP, $ip);
+                $this->settings->setExternalIp($ip);
+                $this->settingsTableRepo->writeSettings($this->settings);
             }
         }
 

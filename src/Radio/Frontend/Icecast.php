@@ -106,7 +106,7 @@ class Icecast extends AbstractFrontend
         $config_dir = $station->getRadioConfigDir();
         $environment = Environment::getInstance();
 
-        $settingsBaseUrl = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, 'http://localhost');
+        $settingsBaseUrl = $this->settings->getBaseUrl() ?: 'http://localhost';
         if (strpos($settingsBaseUrl, 'http') !== 0) {
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }

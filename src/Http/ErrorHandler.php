@@ -33,18 +33,18 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected ViewFactory $viewFactory;
 
-    protected Environment $settings;
+    protected Environment $environment;
 
     public function __construct(
         App $app,
         Logger $logger,
         Router $router,
         ViewFactory $viewFactory,
-        Environment $settings
+        Environment $environment
     ) {
         parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
 
-        $this->settings = $settings;
+        $this->environment = $environment;
         $this->viewFactory = $viewFactory;
         $this->router = $router;
     }
@@ -66,7 +66,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $this->loggerLevel = LogLevel::WARNING;
         }
 
-        $this->showDetailed = (!$this->settings->isProduction() && !in_array(
+        $this->showDetailed = (!$this->environment->isProduction() && !in_array(
             $this->loggerLevel,
             [LogLevel::DEBUG, LogLevel::INFO, LogLevel::NOTICE],
             true
@@ -80,7 +80,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
     {
         $xhr = $req->getHeaderLine('X-Requested-With') === 'XMLHttpRequest';
 
-        if ($xhr || $this->settings->isCli() || $this->settings->isTesting()) {
+        if ($xhr || $this->environment->isCli() || $this->environment->isTesting()) {
             return true;
         }
 

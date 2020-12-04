@@ -9,17 +9,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    protected Entity\Repository\SettingsRepository $settings_repo;
-
-    public function __construct(Entity\Repository\SettingsRepository $settings_repo)
-    {
-        $this->settings_repo = $settings_repo;
-    }
-
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function indexAction(
+        ServerRequest $request,
+        Response $response,
+        Entity\Settings $settings
+    ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
-        if ($this->settings_repo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) === 0) {
+        if (!$settings->isSetupComplete()) {
             return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
 
@@ -28,7 +24,7 @@ class IndexController
 
         if (!($user instanceof Entity\User)) {
             // Redirect to a custom homepage URL if specified in settings.
-            $homepage_redirect = trim($this->settings_repo->getSetting(Entity\Settings::HOMEPAGE_REDIRECT_URL));
+            $homepage_redirect = trim($settings->getHomepageRedirectUrl());
 
             if (!empty($homepage_redirect)) {
                 return $response->withRedirect($homepage_redirect, 302);

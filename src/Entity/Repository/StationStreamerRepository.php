@@ -23,13 +23,13 @@ class StationStreamerRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Environment $settings,
+        Environment $environment,
         LoggerInterface $logger,
         Scheduler $scheduler,
         StationStreamerBroadcastRepository $broadcastRepo,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
 
         $this->scheduler = $scheduler;
         $this->broadcastRepo = $broadcastRepo;

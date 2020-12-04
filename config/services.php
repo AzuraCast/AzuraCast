@@ -11,12 +11,12 @@ return [
 
     // URL Router helper
     App\Http\Router::class => function (
-        Environment $settings,
+        Environment $environment,
         Slim\App $app,
-        App\Entity\Repository\SettingsRepository $settingsRepo
+        App\Entity\Settings $settings
     ) {
         $route_parser = $app->getRouteCollector()->getRouteParser();
-        return new App\Http\Router($settings, $route_parser, $settingsRepo);
+        return new App\Http\Router($environment, $route_parser, $settings);
     },
     App\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
@@ -138,6 +138,11 @@ return [
         }
     },
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
+
+    // Database settings
+    App\Entity\Settings::class => function (App\Entity\Repository\SettingsTableRepository $settingsTableRepo) {
+        return $settingsTableRepo->readSettings(true);
+    },
 
     // Redis cache
     Redis::class => function (Environment $environment) {

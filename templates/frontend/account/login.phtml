@@ -14,7 +14,7 @@ $this->layout('minimal', [
                         <?php if ($customization->hideProductName()): ?>
                             <?=__('Welcome!')?>
                         <?php else: ?>
-                            <?=sprintf(__('Welcome to %s!'), $settings['name'])?>
+                            <?=sprintf(__('Welcome to %s!'), $environment['name'])?>
                         <?php endif; ?>
                     </h2>
                     <h3 class="text-center">

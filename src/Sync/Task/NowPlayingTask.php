@@ -41,6 +41,8 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\ListenerRepository $listenerRepo;
 
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+
     protected LockFactory $lockFactory;
 
     protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator;
@@ -51,8 +53,8 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepository,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Adapters $adapters,
         AutoDJ $autodj,
         CacheInterface $cache,
@@ -62,9 +64,10 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         RouterInterface $router,
         Entity\Repository\ListenerRepository $listenerRepository,
         Entity\Repository\StationQueueRepository $queueRepo,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
         Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator
     ) {
-        parent::__construct($em, $settingsRepository, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->adapters = $adapters;
         $this->autodj = $autodj;
@@ -76,10 +79,11 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
         $this->listenerRepo = $listenerRepository;
         $this->queueRepo = $queueRepo;
+        $this->settingsTableRepo = $settingsTableRepo;
 
         $this->nowPlayingApiGenerator = $nowPlayingApiGenerator;
 
-        $this->analyticsLevel = (string)$settingsRepository->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $this->analyticsLevel = $settings->getAnalytics();
     }
 
     /**
@@ -103,8 +107,10 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
     {
         $nowplaying = $this->loadNowPlaying($force);
 
-        $this->cache->set(Entity\Settings::NOWPLAYING, $nowplaying, 120);
-        $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING, $nowplaying);
+        $this->cache->set('nowplaying', $nowplaying, 120);
+
+        $this->settings->setNowplaying($nowplaying);
+        $this->settingsTableRepo->writeSettings($this->settings);
     }
 
     /**

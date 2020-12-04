@@ -19,11 +19,11 @@ class StationPlaylistMediaRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Environment $settings,
+        Environment $environment,
         LoggerInterface $logger,
         StationQueueRepository $queueRepo
     ) {
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
 
         $this->queueRepo = $queueRepo;
     }

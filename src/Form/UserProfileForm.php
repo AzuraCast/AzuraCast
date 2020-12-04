@@ -18,10 +18,10 @@ class UserProfileForm extends EntityForm
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config,
-        Environment $settings
+        Environment $environment
     ) {
         $form_config = $config->get('forms/profile', [
-            'settings' => $settings,
+            'settings' => $environment,
         ]);
         parent::__construct($em, $serializer, $validator, $form_config);
 

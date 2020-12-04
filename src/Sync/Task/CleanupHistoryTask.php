@@ -14,12 +14,12 @@ class CleanupHistoryTask extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Entity\Repository\SongHistoryRepository $historyRepo,
         Entity\Repository\ListenerRepository $listenerRepo
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->historyRepo = $historyRepo;
         $this->listenerRepo = $listenerRepo;
@@ -27,10 +27,7 @@ class CleanupHistoryTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $daysToKeep = (int)$this->settingsRepo->getSetting(
-            Entity\Settings::HISTORY_KEEP_DAYS,
-            Entity\SongHistory::DEFAULT_DAYS_TO_KEEP
-        );
+        $daysToKeep = $this->settings->getHistoryKeepDays();
 
         if ($daysToKeep !== 0) {
             $this->historyRepo->cleanup($daysToKeep);

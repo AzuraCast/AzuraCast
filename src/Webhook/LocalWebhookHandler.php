@@ -23,18 +23,22 @@ class LocalWebhookHandler
 
     protected CacheInterface $cache;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
+
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
 
     public function __construct(
         Logger $logger,
         Client $httpClient,
         CacheInterface $cache,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Entity\Settings $settings,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo
     ) {
         $this->logger = $logger;
         $this->httpClient = $httpClient;
         $this->cache = $cache;
-        $this->settingsRepo = $settingsRepo;
+        $this->settings = $settings;
+        $this->settingsTableRepo = $settingsTableRepo;
     }
 
     public function dispatch(SendWebhooks $event): void
@@ -46,7 +50,7 @@ class LocalWebhookHandler
             // Replace the relevant station information in the cache and database.
             $this->logger->debug('Updating NowPlaying cache...');
 
-            $np_full = $this->cache->get('api_nowplaying_data');
+            $np_full = $this->cache->get('nowplaying');
 
             if ($np_full) {
                 $np_new = [];
@@ -59,8 +63,10 @@ class LocalWebhookHandler
                     }
                 }
 
-                $this->cache->set('api_nowplaying_data', $np_new, 120);
-                $this->settingsRepo->setSetting('nowplaying', $np_new);
+                $this->cache->set('nowplaying', $np_new, 120);
+
+                $this->settings->setNowplaying($np_new);
+                $this->settingsTableRepo->writeSettings($this->settings);
             }
         }
 

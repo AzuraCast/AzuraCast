@@ -3,7 +3,7 @@
 namespace App\Sync;
 
 use App\Entity;
-use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\SettingsTableRepository;
 use App\Environment;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
@@ -17,19 +17,23 @@ class Runner
 {
     protected Logger $logger;
 
-    protected SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
+
+    protected SettingsTableRepository $settingsTableRepo;
 
     protected LockFactory $lockFactory;
 
     protected EventDispatcher $eventDispatcher;
 
     public function __construct(
-        SettingsRepository $settingsRepo,
+        SettingsTableRepository $settingsRepo,
+        Entity\Settings $settings,
         Logger $logger,
         LockFactory $lockFactory,
         EventDispatcher $eventDispatcher
     ) {
-        $this->settingsRepo = $settingsRepo;
+        $this->settingsTableRepo = $settingsRepo;
+        $this->settings = $settings;
         $this->logger = $logger;
         $this->lockFactory = $lockFactory;
         $this->eventDispatcher = $eventDispatcher;
@@ -38,7 +42,7 @@ class Runner
     public function runSyncTask(string $type, bool $force = false): void
     {
         // Immediately halt if setup is not complete.
-        if ($this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
+        if (!$this->settings->isSetupComplete()) {
             die('Setup not complete; halting synchronized task.');
         }
 
@@ -98,7 +102,8 @@ class Runner
                 ));
             }
 
-            $this->settingsRepo->setSetting($syncInfo['lastRunSetting'], time());
+            $this->settings->updateSyncLastRunTime($type);
+            $this->settingsTableRepo->writeSettings($this->settings);
         } finally {
             $lock->release();
         }
@@ -109,8 +114,6 @@ class Runner
      */
     public function getSyncTimes(): array
     {
-        $this->settingsRepo->clearCache();
-
         $shortTaskTimeout = $_ENV['SYNC_SHORT_EXECUTION_TIME'] ?? 600;
         $longTaskTimeout = $_ENV['SYNC_LONG_EXECUTION_TIME'] ?? 1800;
 
@@ -120,7 +123,6 @@ class Runner
                 'contents' => [
                     __('Now Playing Data'),
                 ],
-                'lastRunSetting' => Entity\Settings::NOWPLAYING_LAST_RUN,
                 'timeout' => $shortTaskTimeout,
                 'interval' => 15,
             ],
@@ -129,7 +131,6 @@ class Runner
                 'contents' => [
                     __('Song Requests Queue'),
                 ],
-                'lastRunSetting' => Entity\Settings::SHORT_SYNC_LAST_RUN,
                 'timeout' => $shortTaskTimeout,
                 'interval' => 60,
             ],
@@ -138,7 +139,6 @@ class Runner
                 'contents' => [
                     __('Check Media Folders'),
                 ],
-                'lastRunSetting' => Entity\Settings::MEDIUM_SYNC_LAST_RUN,
                 'timeout' => $shortTaskTimeout,
                 'interval' => 300,
             ],
@@ -148,14 +148,13 @@ class Runner
                     __('Analytics/Statistics'),
                     __('Cleanup'),
                 ],
-                'lastRunSetting' => Entity\Settings::LONG_SYNC_LAST_RUN,
                 'timeout' => $longTaskTimeout,
                 'interval' => 3600,
             ],
         ];
 
-        foreach ($syncs as &$sync_info) {
-            $sync_info['latest'] = $this->settingsRepo->getSetting($sync_info['lastRunSetting'], 0);
+        foreach ($syncs as $task => &$sync_info) {
+            $sync_info['latest'] = $this->settings->getSyncLastRunTime($task);
             $sync_info['diff'] = time() - $sync_info['latest'];
         }
 

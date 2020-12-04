@@ -14,9 +14,14 @@ class Customization
     public const DEFAULT_LOCALE = 'en_US.UTF-8';
     public const DEFAULT_THEME = 'light';
 
+    public const THEME_LIGHT = 'light';
+    public const THEME_DARK = 'dark';
+
     protected ?Entity\User $user = null;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
+
+    protected Environment $environment;
 
     protected string $locale = self::DEFAULT_LOCALE;
 
@@ -27,11 +32,14 @@ class Customization
     protected string $instanceName = '';
 
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Settings $settings,
+        Environment $environment,
         ServerRequestInterface $request
     ) {
-        $this->settingsRepo = $settingsRepo;
-        $this->instanceName = (string)$this->settingsRepo->getSetting(Entity\Settings::INSTANCE_NAME, '');
+        $this->settings = $settings;
+        $this->environment = $environment;
+
+        $this->instanceName = $settings->getInstanceName() ?? '';
 
         // Register current user
         $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
@@ -44,7 +52,7 @@ class Customization
         if (!empty($queryParams['theme'])) {
             $this->publicTheme = $this->theme = $queryParams['theme'];
         } else {
-            $this->publicTheme = $this->settingsRepo->getSetting(Entity\Settings::PUBLIC_THEME, $this->publicTheme);
+            $this->publicTheme = $settings->getPublicTheme() ?? $this->publicTheme;
 
             if (null !== $this->user && !empty($this->user->getTheme())) {
                 $this->theme = (string)$this->user->getTheme();
@@ -74,9 +82,7 @@ class Customization
      */
     protected function initLocale(?ServerRequestInterface $request = null): string
     {
-        $settings = Environment::getInstance();
-
-        $supported_locales = $settings['locale']['supported'];
+        $supported_locales = $this->environment['locale']['supported'];
         $try_locales = [];
 
         // Prefer user-based profile locale.
@@ -160,7 +166,7 @@ class Customization
      */
     public function getCustomPublicCss(): string
     {
-        return (string)$this->settingsRepo->getSetting(Entity\Settings::CUSTOM_CSS_PUBLIC, '');
+        return $this->settings->getPublicCustomCss() ?? '';
     }
 
     /**
@@ -168,7 +174,7 @@ class Customization
      */
     public function getCustomPublicJs(): string
     {
-        return (string)$this->settingsRepo->getSetting(Entity\Settings::CUSTOM_JS_PUBLIC, '');
+        return $this->settings->getPublicCustomJs() ?? '';
     }
 
     /**
@@ -176,7 +182,7 @@ class Customization
      */
     public function getCustomInternalCss(): string
     {
-        return (string)$this->settingsRepo->getSetting(Entity\Settings::CUSTOM_CSS_INTERNAL, '');
+        return $this->settings->getInternalCustomCss() ?? '';
     }
 
     /**
@@ -184,7 +190,7 @@ class Customization
      */
     public function hideAlbumArt(): bool
     {
-        return (bool)$this->settingsRepo->getSetting(Entity\Settings::HIDE_ALBUM_ART, false);
+        return $this->settings->getHideAlbumArt();
     }
 
     /**
@@ -194,18 +200,16 @@ class Customization
      */
     public function getPageTitle($title = null): string
     {
-        $settings = Environment::getInstance();
-
         if (!$this->hideProductName()) {
             if ($title) {
-                $title .= ' - ' . $settings[Environment::APP_NAME];
+                $title .= ' - ' . $this->environment[Environment::APP_NAME];
             } else {
-                $title = $settings[Environment::APP_NAME];
+                $title = $this->environment[Environment::APP_NAME];
             }
         }
 
-        if (!$settings->isProduction()) {
-            $title = '(' . ucfirst($settings[Environment::APP_ENV]) . ') ' . $title;
+        if (!$this->environment->isProduction()) {
+            $title = '(' . ucfirst($this->environment[Environment::APP_ENV]) . ') ' . $title;
         }
 
         return $title;
@@ -216,7 +220,7 @@ class Customization
      */
     public function hideProductName(): bool
     {
-        return (bool)$this->settingsRepo->getSetting(Entity\Settings::HIDE_PRODUCT_NAME, false);
+        return $this->settings->getHideProductName();
     }
 
     public function useWebSocketsForNowPlaying(): bool
@@ -225,7 +229,7 @@ class Customization
             return false;
         }
 
-        return (bool)$this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING_USE_WEBSOCKETS, false);
+        return $this->settings->getEnableWebsockets();
     }
 
     /**

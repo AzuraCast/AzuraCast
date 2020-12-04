@@ -35,7 +35,7 @@ class StationCloneForm extends StationForm
         Configuration $configuration,
         CheckMediaTask $media_sync,
         Config $config,
-        Environment $settings,
+        Environment $environment,
         FilesystemManager $filesystem
     ) {
         parent::__construct(
@@ -46,7 +46,7 @@ class StationCloneForm extends StationForm
             $storageLocationRepo,
             $acl,
             $config,
-            $settings
+            $environment
         );
 
         $form_config = $config->get('forms/station_clone');

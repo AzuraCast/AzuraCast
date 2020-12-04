@@ -40,7 +40,7 @@ class StationMediaRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Environment $settings,
+        Environment $environment,
         LoggerInterface $logger,
         MetadataManagerInterface $metadataManager,
         CustomFieldRepository $customFieldRepo,
@@ -48,7 +48,7 @@ class StationMediaRepository extends Repository
         StorageLocationRepository $storageLocationRepo,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
 
         $this->customFieldRepo = $customFieldRepo;
         $this->spmRepo = $spmRepo;

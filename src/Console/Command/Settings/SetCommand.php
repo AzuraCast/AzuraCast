@@ -10,14 +10,14 @@ class SetCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        Entity\Repository\SettingsRepository $settings_repo,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
         string $settingKey,
         string $settingValue
     ): int {
         $io->title('AzuraCast Settings');
 
         if (strtolower($settingValue) === 'null') {
-            $settings_repo->deleteSetting($settingKey);
+            $settingsTableRepo->writeSettings([$settingKey => null]);
 
             $io->success(sprintf('Setting "%s" removed.', $settingKey));
             return 0;
@@ -27,7 +27,7 @@ class SetCommand extends CommandAbstract
             $settingValue = json_decode($settingValue, true, 512, JSON_THROW_ON_ERROR);
         }
 
-        $settings_repo->setSetting($settingKey, $settingValue);
+        $settingsTableRepo->writeSettings([$settingKey => $settingValue]);
 
         $io->success(sprintf('Setting "%s" updated.', $settingKey));
 

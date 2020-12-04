@@ -15,21 +15,25 @@ class CheckUpdatesTask extends AbstractTask
 
     protected AzuraCastCentral $azuracastCentral;
 
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
         AzuraCastCentral $azuracastCentral
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
+        $this->settingsTableRepo = $settingsTableRepo;
         $this->azuracastCentral = $azuracastCentral;
     }
 
     public function run(bool $force = false): void
     {
         if (!$force) {
-            $update_last_run = (int)$this->settingsRepo->getSetting(Entity\Settings::UPDATE_LAST_RUN, 0);
+            $update_last_run = $this->settings->getUpdateLastRun();
 
             if ($update_last_run > (time() - self::UPDATE_THRESHOLD)) {
                 $this->logger->debug('Not checking for updates; checked too recently.');
@@ -46,7 +50,9 @@ class CheckUpdatesTask extends AbstractTask
             $updates = $this->azuracastCentral->checkForUpdates();
 
             if (!empty($updates)) {
-                $this->settingsRepo->setSetting(Entity\Settings::UPDATE_RESULTS, $updates);
+                $this->settings->setUpdateResults($updates);
+                $this->settingsTableRepo->writeSettings($this->settings);
+
                 $this->logger->info('Successfully checked for updates.', ['results' => $updates]);
             } else {
                 $this->logger->error('Error parsing update data response from AzuraCast central.');
@@ -56,6 +62,7 @@ class CheckUpdatesTask extends AbstractTask
             return;
         }
 
-        $this->settingsRepo->setSetting(Entity\Settings::UPDATE_LAST_RUN, time());
+        $this->settings->updateUpdateLastRun();
+        $this->settingsTableRepo->writeSettings($this->settings);
     }
 }

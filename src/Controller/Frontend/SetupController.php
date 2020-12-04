@@ -17,17 +17,21 @@ class SetupController
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
-    protected Environment $settings;
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+
+    protected Environment $environment;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepository,
-        Environment $settings
+        Entity\Repository\SettingsTableRepository $settingsRepository,
+        Environment $environment,
+        Entity\Settings $settings
     ) {
         $this->em = $em;
-        $this->settingsRepo = $settingsRepository;
+        $this->settingsTableRepo = $settingsRepository;
+        $this->environment = $environment;
         $this->settings = $settings;
     }
 
@@ -50,7 +54,7 @@ class SetupController
      */
     protected function getSetupStep(ServerRequest $request): string
     {
-        if (0 !== (int)$this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
+        if ($this->settings->isSetupComplete()) {
             return 'complete';
         }
 
@@ -110,7 +114,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'register' && $this->settings->isProduction()) {
+        if ($current_step !== 'register' && $this->environment->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
@@ -170,7 +174,7 @@ class SetupController
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'station' && $this->settings->isProduction()) {
+        if ($current_step !== 'station' && $this->environment->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
@@ -199,12 +203,13 @@ class SetupController
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'settings' && $this->settings->isProduction()) {
+        if ($current_step !== 'settings' && $this->environment->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
         if ($settingsForm->process($request)) {
-            $this->settingsRepo->setSetting(Entity\Settings::SETUP_COMPLETE, time());
+            $this->settings->updateSetupComplete();
+            $this->settingsTableRepo->writeSettings($this->settings);
 
             // Notify the user and redirect to homepage.
             $request->getFlash()->addMessage(

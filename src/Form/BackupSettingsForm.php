@@ -11,20 +11,20 @@ class BackupSettingsForm extends AbstractSettingsForm
 {
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Environment $settings,
+        Environment $environment,
         Config $config
     ) {
         $formConfig = $config->get('forms/backup', [
-            'settings' => $settings,
+            'settings' => $environment,
             'storageLocations' => $storageLocationRepo->fetchSelectByType(Entity\StorageLocation::TYPE_BACKUP, true),
         ]);
 
         parent::__construct(
             $em,
-            $settingsRepo,
-            $settings,
+            $settingsTableRepo,
+            $environment,
             $formConfig
         );
     }

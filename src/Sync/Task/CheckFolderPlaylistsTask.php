@@ -18,13 +18,13 @@ class CheckFolderPlaylistsTask extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationPlaylistFolderRepository $folderRepo,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->spmRepo = $spmRepo;
         $this->folderRepo = $folderRepo;

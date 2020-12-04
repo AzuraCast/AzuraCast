@@ -17,18 +17,18 @@ class Router implements RouterInterface
 {
     protected RouteParserInterface $routeParser;
 
-    protected Environment $settings;
+    protected Environment $environment;
 
     protected ?ServerRequestInterface $currentRequest = null;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     public function __construct(
-        Environment $settings,
+        Environment $environment,
         RouteParserInterface $routeParser,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Entity\Settings $settings
     ) {
-        $this->settingsRepo = $settingsRepo;
+        $this->environment = $environment;
         $this->settings = $settings;
         $this->routeParser = $routeParser;
     }
@@ -154,7 +154,7 @@ class Router implements RouterInterface
 
     public function getBaseUrl(bool $useRequest = true): UriInterface
     {
-        $settingsBaseUrl = $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, '');
+        $settingsBaseUrl = $this->settings->getBaseUrl();
         if (!empty($settingsBaseUrl)) {
             if (strpos($settingsBaseUrl, 'http') !== 0) {
                 $settingsBaseUrl = 'http://' . $settingsBaseUrl;
@@ -165,7 +165,7 @@ class Router implements RouterInterface
             $baseUrl = new Uri('');
         }
 
-        $useHttps = (bool)$this->settingsRepo->getSetting(Entity\Settings::ALWAYS_USE_SSL, 0);
+        $useHttps = $this->settings->getAlwaysUseSsl();
 
         if ($useRequest && $this->currentRequest instanceof ServerRequestInterface) {
             $currentUri = $this->currentRequest->getUri();
@@ -174,7 +174,7 @@ class Router implements RouterInterface
                 $useHttps = true;
             }
 
-            $preferBrowserUrl = (bool)$this->settingsRepo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
+            $preferBrowserUrl = $this->settings->getPreferBrowserUrl();
             if ($preferBrowserUrl || $baseUrl->getHost() === '') {
                 $ignoredHosts = ['web', 'nginx', 'localhost'];
                 if (!in_array($currentUri->getHost(), $ignoredHosts, true)) {

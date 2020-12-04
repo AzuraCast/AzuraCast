@@ -11,14 +11,14 @@ use Carbon\CarbonImmutable;
 
 class RecentBackupCheck
 {
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
-    protected Environment $appSettings;
+    protected Environment $environment;
 
-    public function __construct(Entity\Repository\SettingsRepository $settingsRepo, Environment $appSettings)
+    public function __construct(Entity\Settings $settings, Environment $environment)
     {
-        $this->settingsRepo = $settingsRepo;
-        $this->appSettings = $appSettings;
+        $this->settings = $settings;
+        $this->environment = $environment;
     }
 
     public function __invoke(GetNotifications $event): void
@@ -30,19 +30,19 @@ class RecentBackupCheck
             return;
         }
 
-        if (!$this->appSettings->isProduction()) {
+        if (!$this->environment->isProduction()) {
             return;
         }
 
         $threshold = CarbonImmutable::now()->subWeeks(2)->getTimestamp();
 
         // Don't show backup warning for freshly created installations.
-        $setupComplete = (int)$this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0);
+        $setupComplete = $this->settings->getSetupCompleteTime();
         if ($setupComplete >= $threshold) {
             return;
         }
 
-        $backupLastRun = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
+        $backupLastRun = $this->settings->getBackupLastRun();
 
         if ($backupLastRun < $threshold) {
             $router = $request->getRouter();

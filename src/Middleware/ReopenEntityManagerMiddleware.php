@@ -15,12 +15,12 @@ class ReopenEntityManagerMiddleware implements MiddlewareInterface
 {
     protected DecoratedEntityManager $em;
 
-    protected Environment $settings;
+    protected Environment $environment;
 
-    public function __construct(DecoratedEntityManager $em, Environment $settings)
+    public function __construct(DecoratedEntityManager $em, Environment $environment)
     {
         $this->em = $em;
-        $this->settings = $settings;
+        $this->environment = $environment;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -30,7 +30,7 @@ class ReopenEntityManagerMiddleware implements MiddlewareInterface
         try {
             return $handler->handle($request);
         } finally {
-            if (!$this->settings->isTesting()) {
+            if (!$this->environment->isTesting()) {
                 $this->em->getConnection()->close();
             }
 

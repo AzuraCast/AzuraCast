@@ -20,13 +20,13 @@ class CheckRequests extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Entity\Repository\StationRequestRepository $requestRepo,
         Adapters $adapters,
         EventDispatcher $dispatcher
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->requestRepo = $requestRepo;
         $this->dispatcher = $dispatcher;

@@ -19,18 +19,18 @@ class EnforceSecurity implements MiddlewareInterface
 {
     protected ResponseFactoryInterface $responseFactory;
 
-    protected Entity\Repository\SettingsRepository $settings_repo;
-
     protected Assets $assets;
+
+    protected Entity\Settings $settings;
 
     public function __construct(
         App $app,
-        Entity\Repository\SettingsRepository $settings_repo,
-        Assets $assets
+        Assets $assets,
+        Entity\Settings $settings
     ) {
         $this->responseFactory = $app->getResponseFactory();
-        $this->settings_repo = $settings_repo;
         $this->assets = $assets;
+        $this->settings = $settings;
     }
 
     /**
@@ -39,7 +39,7 @@ class EnforceSecurity implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $always_use_ssl = (bool)$this->settings_repo->getSetting('always_use_ssl', 0);
+        $always_use_ssl = $this->settings->getAlwaysUseSsl();
         $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 
         // Assemble Content Security Policy (CSP)

@@ -9,12 +9,12 @@ class RateLimit
 {
     protected Redis $redis;
 
-    protected Environment $settings;
+    protected Environment $environment;
 
-    public function __construct(Redis $redis, Environment $settings)
+    public function __construct(Redis $redis, Environment $environment)
     {
         $this->redis = $redis;
-        $this->settings = $settings;
+        $this->environment = $environment;
     }
 
     /**
@@ -31,7 +31,7 @@ class RateLimit
         int $timeout = 5,
         int $interval = 2
     ): bool {
-        if ($this->settings->isTesting() || $this->settings->isCli()) {
+        if ($this->environment->isTesting() || $this->environment->isCli()) {
             return true;
         }
 

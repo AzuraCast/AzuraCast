@@ -21,23 +21,27 @@ class UpdateGeoLiteTask extends AbstractTask
 
     protected IpGeolocation $geoLite;
 
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Client $httpClient,
-        IpGeolocation $geoLite
+        IpGeolocation $geoLite,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->httpClient = $httpClient;
         $this->geoLite = $geoLite;
+        $this->settingsTableRepo = $settingsTableRepo;
     }
 
     public function run(bool $force = false): void
     {
         if (!$force) {
-            $lastRun = (int)$this->settingsRepo->getSetting(Entity\Settings::GEOLITE_LAST_RUN, 0);
+            $lastRun = $this->settings->getGeoliteLastRun();
 
             if ($lastRun > (time() - self::UPDATE_THRESHOLD)) {
                 $this->logger->debug('Not checking for updates; checked too recently.');
@@ -55,12 +59,13 @@ class UpdateGeoLiteTask extends AbstractTask
             ]);
         }
 
-        $this->settingsRepo->setSetting(Entity\Settings::GEOLITE_LAST_RUN, time());
+        $this->settings->updateGeoliteLastRun();
+        $this->settingsTableRepo->writeSettings($this->settings);
     }
 
     public function updateDatabase(): void
     {
-        $licenseKey = trim($this->settingsRepo->getSetting(Entity\Settings::GEOLITE_LICENSE_KEY));
+        $licenseKey = trim($this->settings->getGeoliteLicenseKey());
 
         if (empty($licenseKey)) {
             $this->logger->info('Not checking for GeoLite updates; no license key provided.');

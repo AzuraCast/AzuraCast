@@ -16,14 +16,14 @@ class Api
 {
     protected Entity\Repository\ApiKeyRepository $api_repo;
 
-    protected Entity\Repository\SettingsRepository $settings_repo;
+    protected Entity\Settings $settings;
 
     public function __construct(
         Entity\Repository\ApiKeyRepository $apiKeyRepository,
-        Entity\Repository\SettingsRepository $settingsRepository
+        Entity\Settings $settings
     ) {
         $this->api_repo = $apiKeyRepository;
-        $this->settings_repo = $settingsRepository;
+        $this->settings = $settings;
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
@@ -40,12 +40,12 @@ class Api
         }
 
         // Set default cache control for API pages.
-        $prefer_browser_url = (bool)$this->settings_repo->getSetting(Entity\Settings::PREFER_BROWSER_URL, 0);
+        $prefer_browser_url = $this->settings->getPreferBrowserUrl();
 
         $response = $handler->handle($request);
 
         // Check for a user-set CORS header override.
-        $acao_header = trim($this->settings_repo->getSetting(Entity\Settings::API_ACCESS_CONTROL));
+        $acao_header = trim($this->settings->getApiAccessControl());
         if (!empty($acao_header)) {
             if ('*' === $acao_header) {
                 $response = $response->withHeader('Access-Control-Allow-Origin', '*');
@@ -55,7 +55,7 @@ class Api
 
                 if (!empty($origin)) {
                     $rawOrigins = array_map('trim', explode(',', $acao_header));
-                    $rawOrigins[] = $this->settings_repo->getSetting(Entity\Settings::BASE_URL);
+                    $rawOrigins[] = $this->settings->getBaseUrl();
 
                     $origins = [];
                     foreach ($rawOrigins as $rawOrigin) {

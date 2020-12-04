@@ -10,13 +10,13 @@ use App\Version;
 
 class UpdateCheck
 {
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     protected Version $version;
 
-    public function __construct(Entity\Repository\SettingsRepository $settingsRepo, Version $version)
+    public function __construct(Entity\Settings $settings, Version $version)
     {
-        $this->settingsRepo = $settingsRepo;
+        $this->settings = $settings;
         $this->version = $version;
     }
 
@@ -29,12 +29,12 @@ class UpdateCheck
             return;
         }
 
-        $checkForUpdates = (bool)$this->settingsRepo->getSetting(Entity\Settings::CENTRAL_UPDATES, 1);
+        $checkForUpdates = $this->settings->getCheckForUpdates();
         if (!$checkForUpdates) {
             return;
         }
 
-        $updateData = $this->settingsRepo->getSetting(Entity\Settings::UPDATE_RESULTS);
+        $updateData = $this->settings->getUpdateResults();
         if (empty($updateData)) {
             return;
         }

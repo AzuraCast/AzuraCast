@@ -67,7 +67,7 @@ class AzuraRelay extends AbstractRemote
         $fe_config = $station->getFrontendConfig();
         $radio_port = $fe_config->getPort();
 
-        $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
+        $use_radio_proxy = $this->settings->getUseRadioProxy();
 
         if (
             $use_radio_proxy

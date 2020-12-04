@@ -17,16 +17,16 @@ class StreamersController
 
     protected AzuraCastCentral $ac_central;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     public function __construct(
         EntityManagerInterface $em,
         AzuraCastCentral $ac_central,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Entity\Settings $settings
     ) {
         $this->em = $em;
         $this->ac_central = $ac_central;
-        $this->settingsRepo = $settingsRepo;
+        $this->settings = $settings;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -61,7 +61,7 @@ class StreamersController
         $be_settings = $station->getBackendConfig();
 
         return $view->renderToResponse($response, 'stations/streamers/index', [
-            'server_url' => $this->settingsRepo->getSetting(Entity\Settings::BASE_URL, ''),
+            'server_url' => $this->settings->getBaseUrl(),
             'stream_port' => $backend->getStreamPort($station),
             'ip' => $this->ac_central->getIp(),
             'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',

@@ -27,7 +27,7 @@ abstract class AbstractFrontend extends AbstractAdapter
 
     protected Router $router;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     protected Entity\Repository\StationMountRepository $stationMountRepo;
 
@@ -38,8 +38,8 @@ abstract class AbstractFrontend extends AbstractAdapter
         AdapterFactory $adapterFactory,
         Client $client,
         Router $router,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StationMountRepository $stationMountRepo
+        Entity\Repository\StationMountRepository $stationMountRepo,
+        Entity\Settings $settings
     ) {
         parent::__construct($em, $supervisor, $dispatcher);
 
@@ -47,8 +47,8 @@ abstract class AbstractFrontend extends AbstractAdapter
         $this->http_client = $client;
         $this->router = $router;
 
-        $this->settingsRepo = $settingsRepo;
         $this->stationMountRepo = $stationMountRepo;
+        $this->settings = $settings;
     }
 
     /**
@@ -149,7 +149,7 @@ abstract class AbstractFrontend extends AbstractAdapter
             $base_url = $this->router->getBaseUrl();
         }
 
-        $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
+        $use_radio_proxy = $this->settings->getUseRadioProxy();
 
         if (
             $use_radio_proxy

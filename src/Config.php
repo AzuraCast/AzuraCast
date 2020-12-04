@@ -8,9 +8,9 @@ class Config
 {
     protected string $baseFolder;
 
-    public function __construct(Environment $settings)
+    public function __construct(Environment $environment)
     {
-        $this->baseFolder = $settings->getConfigDirectory();
+        $this->baseFolder = $environment->getConfigDirectory();
     }
 
     /**

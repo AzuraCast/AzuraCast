@@ -16,6 +16,13 @@ trait AvailableStaticallyTrait
     }
 
     /**
+     */
+    public static function hasInstance(): bool
+    {
+        return isset(self::$instance);
+    }
+
+    /**
      * @param static $instance
      */
     public static function setInstance($instance): void

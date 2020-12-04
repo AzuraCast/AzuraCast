@@ -16,12 +16,12 @@ class BuildQueueTask extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         AutoDJ $autoDJ,
         LockFactory $lockFactory
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->autoDJ = $autoDJ;
         $this->lockFactory = $lockFactory;

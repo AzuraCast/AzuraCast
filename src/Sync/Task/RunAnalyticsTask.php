@@ -17,13 +17,13 @@ class RunAnalyticsTask extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Entity\Repository\AnalyticsRepository $analyticsRepo,
         Entity\Repository\ListenerRepository $listenerRepo,
         Entity\Repository\SongHistoryRepository $historyRepo
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->analyticsRepo = $analyticsRepo;
         $this->listenerRepo = $listenerRepo;
@@ -32,7 +32,7 @@ class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $analytics_level = $this->settingsRepo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $analytics_level = $this->settings->getAnalytics();
 
         switch ($analytics_level) {
             case Entity\Analytics::LEVEL_NONE:

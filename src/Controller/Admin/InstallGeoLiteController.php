@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\SettingsTableRepository;
 use App\Entity\Settings;
 use App\Form\GeoLiteSettingsForm;
 use App\Http\Response;
@@ -52,12 +52,14 @@ class InstallGeoLiteController
     public function uninstallAction(
         ServerRequest $request,
         Response $response,
-        SettingsRepository $settingsRepo,
+        Settings $settings,
+        SettingsTableRepository $settingsTableRepo,
         $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $settingsRepo->setSetting(Settings::GEOLITE_LICENSE_KEY, '');
+        $settings->setGeoliteLicenseKey(null);
+        $settingsTableRepo->writeSettings($settings);
 
         @unlink(GeoLite::getDatabasePath());
 

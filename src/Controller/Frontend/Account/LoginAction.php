@@ -2,7 +2,6 @@
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Settings;
 use App\Entity\User;
 use App\Exception\RateLimitExceededException;
@@ -21,13 +20,13 @@ class LoginAction
         Response $response,
         EntityManagerInterface $em,
         RateLimit $rateLimit,
-        SettingsRepository $settingsRepo
+        Settings $settings
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();
 
         // Check installation completion progress.
-        if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
+        if (!$settings->isSetupComplete()) {
             $num_users = (int)$em->createQuery(
                 <<<'DQL'
                     SELECT COUNT(u.id) FROM App\Entity\User u
@@ -84,7 +83,7 @@ class LoginAction
                 }
 
                 // Redirect to complete setup if it's not completed yet.
-                if ($settingsRepo->getSetting(Settings::SETUP_COMPLETE, 0) === 0) {
+                if (!$settings->isSetupComplete()) {
                     $flash->addMessage(
                         sprintf(
                             '<b>%s</b><br>%s',

@@ -20,19 +20,19 @@ class Repository
 
     protected Serializer $serializer;
 
-    protected Environment $settings;
+    protected Environment $environment;
 
     protected LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Environment $settings,
+        Environment $environment,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->serializer = $serializer;
-        $this->settings = $settings;
+        $this->environment = $environment;
         $this->logger = $logger;
 
         if (!isset($this->entityClass)) {

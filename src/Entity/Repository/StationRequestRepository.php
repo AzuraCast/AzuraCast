@@ -21,11 +21,11 @@ class StationRequestRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Environment $settings,
+        Environment $environment,
         LoggerInterface $logger,
         StationMediaRepository $mediaRepo
     ) {
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
 
         $this->mediaRepo = $mediaRepo;
     }

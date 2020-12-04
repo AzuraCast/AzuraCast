@@ -12,14 +12,14 @@ class SyncTaskCheck
 {
     protected Runner $syncRunner;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     public function __construct(
         Runner $syncRunner,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Entity\Settings $settings
     ) {
         $this->syncRunner = $syncRunner;
-        $this->settingsRepo = $settingsRepo;
+        $this->settings = $settings;
     }
 
     public function __invoke(GetNotifications $event): void
@@ -31,7 +31,7 @@ class SyncTaskCheck
             return;
         }
 
-        $setupComplete = (int)$this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0);
+        $setupComplete = $this->settings->isSetupComplete();
         $syncTasks = $this->syncRunner->getSyncTimes();
 
         foreach ($syncTasks as $taskKey => $task) {

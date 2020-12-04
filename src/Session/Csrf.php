@@ -16,12 +16,12 @@ class Csrf
 
     protected SessionInterface $session;
 
-    protected Environment $settings;
+    protected Environment $environment;
 
-    public function __construct(SessionInterface $session, Environment $settings)
+    public function __construct(SessionInterface $session, Environment $environment)
     {
         $this->session = $session;
-        $this->settings = $settings;
+        $this->environment = $environment;
     }
 
     /**
@@ -56,7 +56,7 @@ class Csrf
      */
     public function verify(string $key, string $namespace = self::DEFAULT_NAMESPACE): void
     {
-        if ($this->settings->isTesting()) {
+        if ($this->environment->isTesting()) {
             return;
         }
 

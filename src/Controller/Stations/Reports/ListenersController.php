@@ -13,15 +13,12 @@ class ListenersController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Settings $settings,
         IpGeolocation $ipGeo
     ): ResponseInterface {
         $view = $request->getView();
 
-        $analytics_level = $settingsRepo->getSetting(
-            Entity\Settings::LISTENER_ANALYTICS,
-            Entity\Analytics::LEVEL_ALL
-        );
+        $analytics_level = $settings->getAnalytics();
 
         if ($analytics_level !== Entity\Analytics::LEVEL_ALL) {
             return $view->renderToResponse($response, 'stations/reports/restricted');

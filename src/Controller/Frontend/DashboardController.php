@@ -19,7 +19,7 @@ class DashboardController
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     protected Acl $acl;
 
@@ -33,15 +33,15 @@ class DashboardController
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         Acl $acl,
+        Entity\Settings $settings,
         CacheInterface $cache,
         Adapters $adapter_manager,
         EventDispatcher $dispatcher
     ) {
         $this->em = $em;
-        $this->settingsRepo = $settingsRepo;
         $this->acl = $acl;
+        $this->settings = $settings;
         $this->cache = $cache;
         $this->adapter_manager = $adapter_manager;
         $this->dispatcher = $dispatcher;
@@ -116,10 +116,7 @@ class DashboardController
         }
 
         // Detect current analytics level.
-        $analytics_level = $this->settingsRepo->getSetting(
-            Entity\Settings::LISTENER_ANALYTICS,
-            Entity\Analytics::LEVEL_ALL
-        );
+        $analytics_level = $this->settings->getAnalytics();
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $metrics = null;

@@ -21,7 +21,7 @@ class SongHistoryRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Environment $settings,
+        Environment $environment,
         LoggerInterface $logger,
         ListenerRepository $listenerRepository,
         StationQueueRepository $stationQueueRepository
@@ -29,7 +29,7 @@ class SongHistoryRepository extends Repository
         $this->listenerRepository = $listenerRepository;
         $this->stationQueueRepository = $stationQueueRepository;
 
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
     }
 
     /**

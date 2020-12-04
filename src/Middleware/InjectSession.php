@@ -20,14 +20,14 @@ class InjectSession implements MiddlewareInterface
 {
     protected SessionPersistenceInterface $sessionPersistence;
 
-    protected Environment $settings;
+    protected Environment $environment;
 
     public function __construct(
         SessionPersistenceInterface $sessionPersistence,
-        Environment $settings
+        Environment $environment
     ) {
         $this->sessionPersistence = $sessionPersistence;
-        $this->settings = $settings;
+        $this->environment = $environment;
     }
 
     /**
@@ -38,7 +38,7 @@ class InjectSession implements MiddlewareInterface
     {
         $session = new LazySession($this->sessionPersistence, $request);
 
-        $csrf = new Csrf($session, $this->settings);
+        $csrf = new Csrf($session, $this->environment);
         Csrf::setInstance($csrf);
 
         $flash = new Flash($session);

@@ -17,7 +17,8 @@ class SetupCommand extends CommandAbstract
         OutputInterface $output,
         Environment $environment,
         ContainerInterface $di,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Settings $settings,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
         Entity\Repository\StationRepository $stationRepo,
         AzuraCastCentral $acCentral,
         bool $update = false,
@@ -73,7 +74,7 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'queue:clear');
 
-        $settingsRepo->deleteSetting(Entity\Settings::NOWPLAYING);
+        $settings->setNowplaying(null);
         $stationRepo->clearNowPlaying();
 
         $io->newLine();
@@ -83,10 +84,14 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'azuracast:radio:restart');
 
         // Clear settings that should be reset upon update.
-        $settingsRepo->setSetting(Entity\Settings::UPDATE_LAST_RUN, time());
-        $settingsRepo->deleteSetting(Entity\Settings::UPDATE_RESULTS);
-        $settingsRepo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
-        $settingsRepo->deleteSetting(Entity\Settings::EXTERNAL_IP);
+        $settings->updateUpdateLastRun();
+        $settings->setUpdateResults(null);
+        $settings->setExternalIp(null);
+        if (!$update) {
+            $settings->setAppUniqueIdentifier(null);
+        }
+
+        $settingsTableRepo->writeSettings($settings);
 
         $io->newLine();
 

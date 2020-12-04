@@ -10,18 +10,18 @@ abstract class AbstractTask
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     protected LoggerInterface $logger;
+
+    protected Entity\Settings $settings;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Entity\Settings $settings
     ) {
         $this->em = $em;
-        $this->settingsRepo = $settingsRepo;
         $this->logger = $logger;
+        $this->settings = $settings;
     }
 
     abstract public function run(bool $force = false): void;

@@ -50,16 +50,30 @@ class SettingsTableRepository extends Repository
     }
 
     /**
+     * Given a long-running process, update the Settings entity to have the latest data.
+     *
+     * @param array|null $newData
+     *
+     */
+    public function updateSettings(?array $newData = null): Entity\Settings
+    {
+        $settings = $this->readSettings(true);
+
+        if (null === $newData) {
+            $newData = $this->readSettingsArray(true);
+        }
+
+        $settings = $this->arrayToObject($newData, $settings);
+        return $settings;
+    }
+
+    /**
      * @param bool $cached
      *
      * @return mixed[]
      */
     public function readSettingsArray(bool $cached = true): array
     {
-        if ($cached && $this->cache->has(self::CACHE_KEY)) {
-            return $this->cache->get(self::CACHE_KEY);
-        }
-
         $allRecords = [];
         foreach ($this->repository->findAll() as $record) {
             /** @var Entity\SettingsTable $record */
@@ -77,7 +91,7 @@ class SettingsTableRepository extends Repository
     public function writeSettings($settingsObj): void
     {
         if (is_array($settingsObj)) {
-            $settingsObj = $this->arrayToObject($settingsObj, $this->readSettings(false));
+            $settings = $this->updateSettings($settingsObj);
         }
 
         $errors = $this->validator->validate($settingsObj);

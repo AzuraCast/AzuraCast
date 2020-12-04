@@ -73,7 +73,7 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'queue:clear');
 
-        $settings = $settingsTableRepo->readSettings();
+        $settings = $settingsTableRepo->updateSettings();
         $settings->setNowplaying(null);
 
         $stationRepo->clearNowPlaying();

@@ -49,7 +49,7 @@ abstract class AbstractSettingsForm extends Form
         $defaults = $this->settingsTableRepo->readSettingsArray(false);
 
         // Use current URI from request if the base URL isn't set.
-        if (!isset($defaults['baseUrl'])) {
+        if (empty($defaults['baseUrl'])) {
             $currentUri = $request->getUri()->withPath('');
             $defaults['baseUrl'] = (string)$currentUri;
         }

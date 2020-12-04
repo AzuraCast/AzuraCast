@@ -9,7 +9,7 @@
 - name: Ensure Composer is up-to-date
   shell: composer self-update --2
   when:
-    - composer_installed.changed !== True
+    - composer_installed.changed != True
 
 - name: Ensure vendor folder exists
   file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0744

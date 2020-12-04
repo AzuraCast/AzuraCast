@@ -237,7 +237,7 @@ class Settings
     }
 
     /**
-     * @OA\Property(example=Customization::DEFAULT_THEME)
+     * @OA\Property(example="light")
      * @Assert\Choice({Customization::THEME_LIGHT, Customization::THEME_DARK})
      * @var string Base Theme for Public Pages
      */

@@ -538,20 +538,8 @@ class Settings
         return $this->nowplaying;
     }
 
-    /**
-     * @param Entity\Api\NowPlaying|array|null $nowplaying
-     */
-    public function setNowplaying($nowplaying): void
+    public function setNowplaying(?array $nowplaying): void
     {
-        if ($nowplaying instanceof Entity\Api\NowPlaying) {
-            $nowplaying = json_decode(
-                json_encode($nowplaying, JSON_THROW_ON_ERROR),
-                true,
-                512,
-                JSON_THROW_ON_ERROR
-            );
-        }
-
         $this->nowplaying = $nowplaying;
     }
 

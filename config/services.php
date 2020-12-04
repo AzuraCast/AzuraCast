@@ -164,10 +164,10 @@ return [
 
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
-        Environment $settings,
+        Environment $environment,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
-        if ($settings->isCli()) {
+        if ($environment->isCli()) {
             $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
         }
 
@@ -178,10 +178,10 @@ return [
 
     // Session save handler middleware
     Mezzio\Session\SessionPersistenceInterface::class => function (
-        Environment $settings,
+        Environment $environment,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
-        if ($settings->isCli()) {
+        if ($environment->isCli()) {
             $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
         }
 

@@ -21,7 +21,7 @@ class ListCommand extends CommandAbstract
         ];
         $rows = [];
 
-        $all_settings = $settingsTableRepo->readSettingsArray(false);
+        $all_settings = $settingsTableRepo->readSettingsArray();
         foreach ($all_settings as $setting_key => $setting_value) {
             $value = print_r($setting_value, true);
             $value = Utilities::truncateText($value, 600);

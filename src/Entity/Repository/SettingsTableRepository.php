@@ -37,12 +37,12 @@ class SettingsTableRepository extends Repository
         $this->validator = $validator;
     }
 
-    public function readSettings(bool $cached = true): Entity\Settings
+    public function readSettings(): Entity\Settings
     {
         if (Entity\Settings::hasInstance()) {
             return Entity\Settings::getInstance();
         } else {
-            $settings = $this->arrayToObject($this->readSettingsArray($cached));
+            $settings = $this->arrayToObject($this->readSettingsArray());
             Entity\Settings::setInstance($settings);
 
             return $settings;
@@ -57,22 +57,18 @@ class SettingsTableRepository extends Repository
      */
     public function updateSettings(?array $newData = null): Entity\Settings
     {
-        $settings = $this->readSettings(true);
-
         if (null === $newData) {
-            $newData = $this->readSettingsArray(true);
+            $newData = $this->readSettingsArray();
         }
 
-        $settings = $this->arrayToObject($newData, $settings);
+        $settings = $this->arrayToObject($newData, $this->readSettings());
         return $settings;
     }
 
     /**
-     * @param bool $cached
-     *
      * @return mixed[]
      */
-    public function readSettingsArray(bool $cached = true): array
+    public function readSettingsArray(): array
     {
         $allRecords = [];
         foreach ($this->repository->findAll() as $record) {
@@ -91,7 +87,7 @@ class SettingsTableRepository extends Repository
     public function writeSettings($settingsObj): void
     {
         if (is_array($settingsObj)) {
-            $settings = $this->updateSettings($settingsObj);
+            $settingsObj = $this->updateSettings($settingsObj);
         }
 
         $errors = $this->validator->validate($settingsObj);

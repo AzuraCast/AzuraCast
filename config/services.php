@@ -141,7 +141,7 @@ return [
 
     // Database settings
     App\Entity\Settings::class => function (App\Entity\Repository\SettingsTableRepository $settingsTableRepo) {
-        return $settingsTableRepo->readSettings(true);
+        return $settingsTableRepo->readSettings();
     },
 
     // Redis cache

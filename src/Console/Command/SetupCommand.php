@@ -17,7 +17,6 @@ class SetupCommand extends CommandAbstract
         OutputInterface $output,
         Environment $environment,
         ContainerInterface $di,
-        Entity\Settings $settings,
         Entity\Repository\SettingsTableRepository $settingsTableRepo,
         Entity\Repository\StationRepository $stationRepo,
         AzuraCastCentral $acCentral,
@@ -74,7 +73,9 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'queue:clear');
 
+        $settings = $settingsTableRepo->readSettings();
         $settings->setNowplaying(null);
+
         $stationRepo->clearNowPlaying();
 
         $io->newLine();

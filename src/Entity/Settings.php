@@ -200,7 +200,7 @@ class Settings
      * @OA\Property(example="")
      * @var mixed[]|null Results of the latest update check.
      */
-    protected ?array $updateResults;
+    protected ?array $updateResults = null;
 
     /**
      * @return mixed[]|null

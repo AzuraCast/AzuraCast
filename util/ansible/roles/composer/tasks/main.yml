@@ -7,7 +7,7 @@
     warn: no
 
 - name: Ensure Composer is up-to-date
-  shell: composer self-update
+  shell: composer self-update --2
   when:
     - composer_installed.changed !== True
 

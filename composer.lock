@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.166.1",
+            "version": "3.166.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "36788095cfab7850400e337a3128572cfc1537e6"
+                "reference": "fe0ec9235d07b0f51ec4396dce0dd639020ae1a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/36788095cfab7850400e337a3128572cfc1537e6",
-                "reference": "36788095cfab7850400e337a3128572cfc1537e6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fe0ec9235d07b0f51ec4396dce0dd639020ae1a7",
+                "reference": "fe0ec9235d07b0f51ec4396dce0dd639020ae1a7",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.166.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.166.2"
             },
-            "time": "2020-12-03T19:25:02+00:00"
+            "time": "2020-12-04T19:12:30+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -1092,16 +1092,16 @@
         },
         {
             "name": "dflydev/fig-cookies",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dflydev/dflydev-fig-cookies.git",
-                "reference": "733af78ddad60aec96f7c4a1204619dd4d62afff"
+                "reference": "ba0b1a3d7982946ed98c9544f460ffb67a69e359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-fig-cookies/zipball/733af78ddad60aec96f7c4a1204619dd4d62afff",
-                "reference": "733af78ddad60aec96f7c4a1204619dd4d62afff",
+                "url": "https://api.github.com/repos/dflydev/dflydev-fig-cookies/zipball/ba0b1a3d7982946ed98c9544f460ffb67a69e359",
+                "reference": "ba0b1a3d7982946ed98c9544f460ffb67a69e359",
                 "shasum": ""
             },
             "require": {
@@ -1144,9 +1144,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dflydev/dflydev-fig-cookies/issues",
-                "source": "https://github.com/dflydev/dflydev-fig-cookies/tree/v2.0.1"
+                "source": "https://github.com/dflydev/dflydev-fig-cookies/tree/v2.0.2"
             },
-            "time": "2020-01-02T16:13:22+00:00"
+            "time": "2020-12-04T16:41:16+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2116,16 +2116,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.8.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "418587bc25c107f16b53ae67a6ef8589408aff6c"
+                "reference": "242cf1a33df1b8bc5e1b86c3ebd01db07851c833"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/418587bc25c107f16b53ae67a6ef8589408aff6c",
-                "reference": "418587bc25c107f16b53ae67a6ef8589408aff6c",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/242cf1a33df1b8bc5e1b86c3ebd01db07851c833",
+                "reference": "242cf1a33df1b8bc5e1b86c3ebd01db07851c833",
                 "shasum": ""
             },
             "require": {
@@ -2202,9 +2202,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.8.0"
+                "source": "https://github.com/doctrine/orm/tree/2.8.1"
             },
-            "time": "2020-12-03T19:18:13+00:00"
+            "time": "2020-12-04T19:53:07+00:00"
         },
         {
             "name": "doctrine/persistence",

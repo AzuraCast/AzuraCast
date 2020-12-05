@@ -383,16 +383,16 @@ class Settings
 
     /**
      * @OA\Property(example=400)
-     * @var int|null The timecode (i.e. 400 for 4:00AM) when automated backups should run.
+     * @var string|null The timecode (i.e. 400 for 4:00AM) when automated backups should run.
      */
-    protected ?int $backupTimeCode = null;
+    protected ?string $backupTimeCode = null;
 
-    public function getBackupTimeCode(): ?int
+    public function getBackupTimeCode(): ?string
     {
         return $this->backupTimeCode;
     }
 
-    public function setBackupTimeCode(?int $backupTimeCode): void
+    public function setBackupTimeCode(?string $backupTimeCode): void
     {
         $this->backupTimeCode = $backupTimeCode;
     }

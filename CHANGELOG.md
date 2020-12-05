@@ -21,6 +21,9 @@ release channel, you can take advantage of these new features and fixes.
 
 - Various issues with processing some types of media have been resolved.
 
+- When manually running a synchronization task from the "System Debugger" page, the task will run in the backgroun and
+  progress will be displayed on a screen that refreshes periodically. This will avoid timeout issues.
+
 ---
 
 # AzuraCast 0.11 (Nov 28, 2020)
@@ -149,7 +152,7 @@ stable version before making these major changes.
 - Icecast now uses the same SSL certificate your web connection uses via LetsEncrypt setup. (#2969)
 - Connecting to a SHOUTcast 1 remote relay works again. (#2989)
 - The "Play" icon will now properly switch between playing and not-playing states for only the actively playing item. (
-  #3170)
+  # 3170)
 
 ---
 
@@ -285,7 +288,7 @@ introduces minor changes to the AzuraCast API (see below) and is tagged as a new
   haven't fundamentally changed with the exception of having stricter types.
 
 - Fixed a bug where non-public stations would trigger the Now Playing API response returning in a non-standard format. (
-  #2709)
+  # 2709)
 
 - Metadata from previous DJs won't be played back when the next DJ connects. (#2728)
 
@@ -353,7 +356,7 @@ introduces minor changes to the AzuraCast API (see below) and is tagged as a new
 - Quotas are now enforced within the built-in SFTP server. (#2315).
 
 - You can now directly provide an amplification value that Liquidsoap will use on each track from the media manager. (
-  #2334)
+  # 2334)
 
 - The AzuraCast AutoDJ's scheduling code has been significantly overhauled to be easier to maintain and to fix a number
   of "edge case" scenarios; you should now see much more accurate track selection that more reliably avoids duplicate

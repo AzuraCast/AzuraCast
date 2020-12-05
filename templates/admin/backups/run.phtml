@@ -10,28 +10,23 @@ $this->layout('main', [
 ]);
 ?>
 
-    <div class="card mb-3">
-        <div class="card-header bg-primary-dark">
-            <h3 class="card-title"><?=__('Run Manual Backup')?></h3>
-        </div>
-        <div class="card-actions">
-            <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:index')?>">
-                <i class="material-icons" aria-hidden="true">arrow_back</i>
-                <?=__('Backups Home')?>
-            </a>
-        </div>
-        <div class="card-body">
-            <p class="card-text">
-                <?=__('The backup process is running in the background. To view the logs, click the button below.')?>
-            </p>
-
-            <div class="buttons">
-                <a class="btn btn-primary log-item" href="<?=$router->fromHere('admin:backups:log',
-                    ['path' => $outputLog])?>">
-                    <?=__('View Backup Log')?>
-                </a>
-            </div>
-        </div>
+<div class="card mb-3">
+    <div class="card-header bg-primary-dark">
+        <h3 class="card-title"><?=__('Run Manual Backup')?></h3>
     </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:index')?>">
+            <i class="material-icons" aria-hidden="true">arrow_back</i>
+            <?=__('Backups Home')?>
+        </a>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <?=__('The backup process is running in the background. The log below will update automatically.')?>
+        </p>
 
-<?=$this->fetch('partials/log_viewer')?>
+        <?=$this->fetch('partials/log_inline', [
+            'url' => $router->fromHere('admin:backups:log', ['path' => $outputLog]),
+        ])?>
+    </div>
+</div>

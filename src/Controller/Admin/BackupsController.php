@@ -8,6 +8,7 @@ use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Settings;
 use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
+use App\File;
 use App\Flysystem\Filesystem;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
@@ -97,7 +98,7 @@ class BackupsController extends AbstractLogViewerController
         if ($request->isPost() && $runForm->isValid($request->getParsedBody())) {
             $data = $runForm->getValues();
 
-            $tempFile = tempnam('/tmp', 'backup_');
+            $tempFile = File::generateTempPath('backup.log');
 
             $storageLocationId = (int)$data['storage_location'];
             if ($storageLocationId <= 0) {
@@ -129,9 +130,11 @@ class BackupsController extends AbstractLogViewerController
     public function logAction(
         ServerRequest $request,
         Response $response,
-        $path
+        string $path
     ): ResponseInterface {
-        return $this->view($request, $response, '/tmp/' . $path, true);
+        $logPath = File::validateTempPath($path);
+
+        return $this->view($request, $response, $logPath, true);
     }
 
     public function downloadAction(

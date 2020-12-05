@@ -25,6 +25,9 @@ return function (App $app) {
             $group->get('/sync/{type}', Controller\Admin\DebugController::class . ':syncAction')
                 ->setName('admin:debug:sync');
 
+            $group->get('/log/{path}', Controller\Admin\DebugController::class . ':logAction')
+                ->setName('admin:debug:log');
+
             $group->group('/station/{station_id}', function (RouteCollectorProxy $group) {
 
                 $group->map(['GET', 'POST'], '/nextsong', Controller\Admin\DebugController::class . ':nextsongAction')

@@ -8,7 +8,10 @@ use App\Environment;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
 use App\LockFactory;
+use App\Message;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\Log\LogLevel;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -41,6 +44,24 @@ class Runner
         $this->logger = $logger;
         $this->lockFactory = $lockFactory;
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function __invoke(Message\AbstractMessage $message): void
+    {
+        if ($message instanceof Message\RunSyncTaskMessage) {
+            $outputPath = $message->outputPath;
+
+            if (null !== $outputPath) {
+                $logHandler = new StreamHandler($outputPath, LogLevel::DEBUG, true);
+                $this->logger->pushHandler($logHandler);
+            }
+
+            $this->runSyncTask($message->type, true);
+
+            if (null !== $outputPath) {
+                $this->logger->popHandler();
+            }
+        }
     }
 
     public function runSyncTask(string $type, bool $force = false): void

@@ -3,9 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Console\Application;
+use App\Controller\AbstractLogViewerController;
 use App\Entity;
+use App\File;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Message\RunSyncTaskMessage;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
@@ -14,8 +17,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 
-class DebugController
+class DebugController extends AbstractLogViewerController
 {
     protected Logger $logger;
 
@@ -23,10 +27,13 @@ class DebugController
 
     protected Application $console;
 
-    public function __construct(Logger $logger, Application $console)
+    protected MessageBus $messageBus;
+
+    public function __construct(Logger $logger, Application $console, MessageBus $messageBus)
     {
         $this->logger = $logger;
         $this->console = $console;
+        $this->messageBus = $messageBus;
 
         $this->testHandler = new TestHandler(Logger::DEBUG, false);
     }
@@ -46,20 +53,30 @@ class DebugController
     public function syncAction(
         ServerRequest $request,
         Response $response,
-        Runner $sync,
-        $type
+        string $type
     ): ResponseInterface {
-        $this->logger->pushHandler($this->testHandler);
+        $tempFile = File::generateTempPath('sync_task_' . $type . '.log');
 
-        $sync->runSyncTask($type, true);
+        $message = new RunSyncTaskMessage();
+        $message->type = $type;
+        $message->outputPath = $tempFile;
 
-        $this->logger->popHandler();
+        $this->messageBus->dispatch($message);
 
-        return $request->getView()->renderToResponse($response, 'system/log_view', [
-            'sidebar' => null,
-            'title' => __('Sync Task Output'),
-            'log_records' => $this->testHandler->getRecords(),
+        return $request->getView()->renderToResponse($response, 'admin/debug/sync', [
+            'title' => __('Run Synchronized Task'),
+            'outputLog' => basename($tempFile),
         ]);
+    }
+
+    public function logAction(
+        ServerRequest $request,
+        Response $response,
+        string $path
+    ): ResponseInterface {
+        $logPath = File::validateTempPath($path);
+
+        return $this->view($request, $response, $logPath, true);
     }
 
     public function nextsongAction(

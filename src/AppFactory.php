@@ -77,7 +77,7 @@ class AppFactory
             $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
         }
 
-        $environment = array_merge($environment, array_filter($_ENV));
+        $environment = array_merge(array_filter($_ENV), $environment);
 
         $environment[Environment::IS_DOCKER] = $isDocker;
 

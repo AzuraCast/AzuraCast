@@ -14,5 +14,7 @@ return [
 
     Message\BackupMessage::class => Task\RunBackupTask::class,
 
+    Message\RunSyncTaskMessage::class => App\Sync\Runner::class,
+
     Message\DispatchWebhookMessage::class => App\Webhook\Dispatcher::class,
 ];

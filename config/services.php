@@ -318,8 +318,10 @@ return [
         App\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
-        App\Plugins $plugins
+        App\Plugins $plugins,
+        Environment $environment
     ) {
+
         // Configure message sending middleware
         $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
         $sendMessageMiddleware->setLogger($logger);
@@ -348,6 +350,13 @@ return [
 
         // Add unique protection middleware
         $uniqueMiddleware = new App\MessageQueue\HandleUniqueMiddleware($lockFactory);
+
+        // On testing, messages are handled directly when called
+        if ($environment->isTesting()) {
+            return new Symfony\Component\Messenger\MessageBus([
+                $handleMessageMiddleware,
+            ]);
+        }
 
         // Compile finished message bus.
         return new Symfony\Component\Messenger\MessageBus([

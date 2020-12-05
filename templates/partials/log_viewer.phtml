@@ -20,9 +20,7 @@ $assets
                     <label class="custom-control-label" for="modal-log-autoscroll"><?=__('Automatically scroll to the bottom of the log')?></label>
                 </div>
 
-                <textarea class="form-control" id="modal-log-view-contents" spellcheck="false" readonly style="white-space: pre; overflow: auto">
-                    Loading...
-                </textarea>
+                <textarea class="form-control log-viewer" id="modal-log-view-contents" spellcheck="false" readonly>Loading...</textarea>
                 <div class="buttons pt-2">
                     <button class="btn btn-copy btn-primary btn-sm" data-clipboard-target="#modal-log-view-contents">
                         <i class="material-icons">file_copy</i> <?=__('Copy to Clipboard')?>

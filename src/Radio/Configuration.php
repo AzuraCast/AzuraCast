@@ -23,16 +23,20 @@ class Configuration
 
     protected Logger $logger;
 
+    protected Environment $environment;
+
     public function __construct(
         EntityManagerInterface $em,
         Adapters $adapters,
         Supervisor $supervisor,
-        Logger $logger
+        Logger $logger,
+        Environment $environment
     ) {
         $this->em = $em;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
         $this->logger = $logger;
+        $this->environment = $environment;
     }
 
     /**
@@ -44,7 +48,7 @@ class Configuration
      */
     public function writeConfiguration(Station $station, $regen_auth_key = false, $force_restart = false): void
     {
-        if (Environment::getInstance()->isTesting()) {
+        if ($this->environment->isTesting()) {
             return;
         }
 
@@ -263,15 +267,8 @@ class Configuration
         // Iterate from port 8000 to 9000, in increments of 10
         $protected_ports = [8080];
 
-        $port_min = (int)getenv('AUTO_ASSIGN_PORT_MIN');
-        if (0 === $port_min) {
-            $port_min = self::DEFAULT_PORT_MIN;
-        }
-
-        $port_max = (int)getenv('AUTO_ASSIGN_PORT_MAX');
-        if (0 === $port_max) {
-            $port_max = self::DEFAULT_PORT_MAX;
-        }
+        $port_min = $this->environment->getAutoAssignPortMin();
+        $port_max = $this->environment->getAutoAssignPortMax();
 
         for ($port = $port_min; $port <= $port_max; $port += 10) {
             if (in_array($port, $protected_ports, true)) {

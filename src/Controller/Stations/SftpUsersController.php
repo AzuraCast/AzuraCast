@@ -2,6 +2,7 @@
 
 namespace App\Controller\Stations;
 
+use App\Environment;
 use App\Exception\StationUnsupportedException;
 use App\Form\SftpUserForm;
 use App\Http\Response;
@@ -15,11 +16,15 @@ class SftpUsersController extends AbstractStationCrudController
 {
     protected AzuraCastCentral $ac_central;
 
-    public function __construct(SftpUserForm $form, AzuraCastCentral $ac_central)
+    protected Environment $environment;
+
+    public function __construct(SftpUserForm $form, AzuraCastCentral $ac_central, Environment $environment)
     {
         parent::__construct($form);
 
         $this->ac_central = $ac_central;
+        $this->environment = $environment;
+
         $this->csrf_namespace = 'stations_sftp_users';
     }
 
@@ -34,7 +39,8 @@ class SftpUsersController extends AbstractStationCrudController
         $baseUrl = $request->getRouter()->getBaseUrl(false)
             ->withScheme('sftp')
             ->withPort(null);
-        $port = $_ENV['AZURACAST_SFTP_PORT'] ?? 2022;
+
+        $port = $this->environment->getSftpPort();
 
         $sftpInfo = [
             'url' => (string)$baseUrl,

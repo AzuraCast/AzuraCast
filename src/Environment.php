@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Radio\Configuration;
 use App\Traits\AvailableStaticallyTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -16,7 +17,7 @@ class Environment extends ArrayCollection
 
     // Core settings values
     public const APP_NAME = 'name';
-    public const APP_ENV = 'app_env';
+    public const APP_ENV = 'APPLICATION_ENV';
 
     public const BASE_DIR = 'base_dir';
     public const TEMP_DIR = 'temp_dir';
@@ -26,15 +27,27 @@ class Environment extends ArrayCollection
     public const IS_DOCKER = 'is_docker';
     public const IS_CLI = 'is_cli';
 
-    public const BASE_URL = 'base_url';
+    public const BASE_URL = 'BASE_URL';
     public const ASSETS_URL = 'assets_url';
 
     public const ENABLE_DATABASE = 'enable_database';
     public const ENABLE_REDIS = 'enable_redis';
 
-    public const DOCKER_REVISION = 'docker_revision';
+    public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
 
-    public const ENABLE_ADVANCED_FEATURES = 'enable_advanced_features';
+    public const ENABLE_ADVANCED_FEATURES = 'ENABLE_ADVANCED_FEATURES';
+
+    public const LANG = 'LANG';
+
+    public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
+
+    public const SFTP_PORT = 'AZURACAST_SFTP_PORT';
+
+    public const AUTO_ASSIGN_PORT_MIN = 'AUTO_ASSIGN_PORT_MIN';
+    public const AUTO_ASSIGN_PORT_MAX = 'AUTO_ASSIGN_PORT_MAX';
+
+    public const SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
+    public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
 
     // Default settings
     protected array $defaults = [
@@ -140,7 +153,7 @@ class Environment extends ArrayCollection
         return $this->getParentDirectory() . '/stations';
     }
 
-    public function isDockerRevisionNewerThan(int $version): bool
+    public function isDockerRevisionAtLeast(int $version): bool
     {
         if (!$this->isDocker()) {
             return false;
@@ -157,5 +170,44 @@ class Environment extends ArrayCollection
         }
 
         return (bool)($this->get(self::ENABLE_ADVANCED_FEATURES) ?? true);
+    }
+
+    public function getLang(): ?string
+    {
+        return $this->get(self::LANG);
+    }
+
+    public function getReleaseChannel(): string
+    {
+        $channel = $this->get(self::RELEASE_CHANNEL) ?? 'latest';
+
+        return ('stable' === $channel)
+            ? Version::RELEASE_CHANNEL_STABLE
+            : Version::RELEASE_CHANNEL_ROLLING;
+    }
+
+    public function getSftpPort(): int
+    {
+        return (int)($this->get(self::SFTP_PORT) ?? 2022);
+    }
+
+    public function getAutoAssignPortMin(): int
+    {
+        return (int)($this->get(self::AUTO_ASSIGN_PORT_MIN) ?? Configuration::DEFAULT_PORT_MIN);
+    }
+
+    public function getAutoAssignPortMax(): int
+    {
+        return (int)($this->get(self::AUTO_ASSIGN_PORT_MAX) ?? Configuration::DEFAULT_PORT_MAX);
+    }
+
+    public function getSyncShortExecutionTime(): int
+    {
+        return (int)($this->get(self::SYNC_SHORT_EXECUTION_TIME) ?? 600);
+    }
+
+    public function getSyncLongExecutionTime(): int
+    {
+        return (int)($this->get(self::SYNC_LONG_EXECUTION_TIME) ?? 1800);
     }
 }

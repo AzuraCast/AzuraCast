@@ -18,6 +18,8 @@ class Version
     public const RELEASE_CHANNEL_ROLLING = 'rolling';
     public const RELEASE_CHANNEL_STABLE = 'stable';
 
+    public const LATEST_COMPOSE_REVISION = 11;
+
     protected CacheInterface $cache;
 
     protected string $repoDir;
@@ -34,11 +36,7 @@ class Version
     public function getReleaseChannel(): string
     {
         if ($this->environment->isDocker()) {
-            $channel = $_ENV['AZURACAST_VERSION'] ?? 'latest';
-
-            return ('stable' === $channel)
-                ? self::RELEASE_CHANNEL_STABLE
-                : self::RELEASE_CHANNEL_ROLLING;
+            return $this->environment->getReleaseChannel();
         }
 
         $details = $this->getDetails();

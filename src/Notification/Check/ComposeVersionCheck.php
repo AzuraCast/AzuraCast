@@ -6,14 +6,15 @@ use App\Acl;
 use App\Environment;
 use App\Event\GetNotifications;
 use App\Notification\Notification;
+use App\Version;
 
 class ComposeVersionCheck
 {
-    protected Environment $appSettings;
+    protected Environment $environment;
 
-    public function __construct(Environment $appSettings)
+    public function __construct(Environment $environment)
     {
-        $this->appSettings = $appSettings;
+        $this->environment = $environment;
     }
 
     public function __invoke(GetNotifications $event): void
@@ -25,13 +26,11 @@ class ComposeVersionCheck
             return;
         }
 
-        if (!$this->appSettings->isDocker()) {
+        if (!$this->environment->isDocker()) {
             return;
         }
 
-        $compose_revision = $_ENV['AZURACAST_DC_REVISION'] ?? 1;
-
-        if ($compose_revision < 5) {
+        if (!$this->environment->isDockerRevisionAtLeast(Version::LATEST_COMPOSE_REVISION)) {
             $event->addNotification(new Notification(
                 __('Your <code>docker-compose.yml</code> file is out of date!'),
                 // phpcs:disable Generic.Files.LineLength

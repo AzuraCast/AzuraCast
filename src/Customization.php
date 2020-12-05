@@ -101,9 +101,9 @@ class Customization
         }
 
         // Attempt to load from environment variable.
-        $env_locale = getenv('LANG');
-        if (!empty($env_locale)) {
-            $try_locales[] = substr($env_locale, 0, 5) . '.UTF-8';
+        $envLocale = $this->environment->getLang();
+        if (!empty($envLocale)) {
+            $try_locales[] = substr($envLocale, 0, 5) . '.UTF-8';
         }
 
         foreach ($try_locales as $exact_locale) {

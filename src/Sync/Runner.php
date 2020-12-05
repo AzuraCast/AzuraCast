@@ -121,8 +121,8 @@ class Runner
      */
     public function getSyncTimes(): array
     {
-        $shortTaskTimeout = $_ENV['SYNC_SHORT_EXECUTION_TIME'] ?? 600;
-        $longTaskTimeout = $_ENV['SYNC_LONG_EXECUTION_TIME'] ?? 1800;
+        $shortTaskTimeout = $this->environment->getSyncShortExecutionTime();
+        $longTaskTimeout = $this->environment->getSyncLongExecutionTime();
 
         $syncs = [
             GetSyncTasks::SYNC_NOWPLAYING => [

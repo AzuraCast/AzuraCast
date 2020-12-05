@@ -10,7 +10,7 @@ class CertificateLocator
     {
         $environment = Environment::getInstance();
 
-        if (!empty($_ENV['VIRTUAL_HOST']) && $environment->isDockerRevisionNewerThan(10)) {
+        if (!empty($_ENV['VIRTUAL_HOST']) && $environment->isDockerRevisionAtLeast(10)) {
             $vhost = $_ENV['VIRTUAL_HOST'];
 
             // Check environment variable for a virtual host.

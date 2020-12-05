@@ -70,47 +70,21 @@ class AppFactory
             throw new Exception\BootstrapException('No base directory specified!');
         }
 
-        $environment[Environment::TEMP_DIR] = dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
-
-        $environment[Environment::IS_DOCKER] = file_exists(dirname($environment[Environment::BASE_DIR]) . '/.docker');
-        $environment[Environment::DOCKER_REVISION] = getenv('AZURACAST_DC_REVISION') ?? 1;
-
-        $environment[Environment::CONFIG_DIR] = $environment[Environment::BASE_DIR] . '/config';
-        $environment[Environment::VIEWS_DIR] = $environment[Environment::BASE_DIR] . '/templates';
-
-        if (!isset($environment[Environment::BASE_DIR])) {
-            throw new Exception\BootstrapException('No base directory specified!');
-        }
-
-        if (!isset($environment[Environment::TEMP_DIR])) {
-            $environment[Environment::TEMP_DIR] = dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
-        }
-
-        if (!isset($environment[Environment::CONFIG_DIR])) {
-            $environment[Environment::CONFIG_DIR] = $environment[Environment::BASE_DIR] . '/config';
-        }
-
-        if (!isset($environment[Environment::VIEWS_DIR])) {
-            $environment[Environment::VIEWS_DIR] = $environment[Environment::BASE_DIR] . '/templates';
-        }
-
-        if ($environment[Environment::IS_DOCKER]) {
+        $isDocker = file_exists(dirname($environment[Environment::BASE_DIR]) . '/.docker');
+        if ($isDocker) {
             $_ENV = getenv();
         } elseif (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
             $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
         }
 
-        if (!isset($environment[Environment::APP_ENV])) {
-            $environment[Environment::APP_ENV] = $_ENV['APPLICATION_ENV'] ?? Environment::ENV_PRODUCTION;
-        }
+        $environment = array_merge($environment, array_filter($_ENV));
 
-        if (isset($_ENV['BASE_URL'])) {
-            $environment[Environment::BASE_URL] = $_ENV['BASE_URL'];
-        }
+        $environment[Environment::IS_DOCKER] = $isDocker;
 
-        if (isset($_ENV['ENABLE_ADVANCED_FEATURES'])) {
-            $environment[Environment::ENABLE_ADVANCED_FEATURES] = $_ENV['ENABLE_ADVANCED_FEATURES'];
-        }
+        $environment[Environment::TEMP_DIR] = dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
+        $environment[Environment::CONFIG_DIR] = $environment[Environment::BASE_DIR] . '/config';
+        $environment[Environment::VIEWS_DIR] = $environment[Environment::BASE_DIR] . '/templates';
+        $environment[Environment::TEMP_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
 
         if (file_exists($environment[Environment::CONFIG_DIR] . '/env.php')) {
             $envFile = require($environment[Environment::CONFIG_DIR] . '/env.php');

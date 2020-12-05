@@ -16,7 +16,7 @@ class StationMediaCustomField
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -56,6 +56,11 @@ class StationMediaCustomField
     {
         $this->media = $media;
         $this->field = $field;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getMedia(): StationMedia

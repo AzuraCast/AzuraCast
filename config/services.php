@@ -137,6 +137,8 @@ return [
             throw new App\Exception\BootstrapException($e->getMessage());
         }
     },
+
+    App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Database settings

@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
 use App\Radio\Backend\Liquidsoap;
-use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Exception;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
@@ -19,7 +19,7 @@ use Throwable;
 
 class BatchAction
 {
-    protected EntityManagerInterface $em;
+    protected ReloadableEntityManagerInterface $em;
 
     protected MessageBus $messageBus;
 
@@ -30,7 +30,7 @@ class BatchAction
     protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         MessageBus $messageBus,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
@@ -188,8 +188,7 @@ class BatchAction
                 }
 
                 foreach ($playlists as $playlistId => $playlistRecord) {
-                    /** @var Entity\StationPlaylist $playlist */
-                    $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
+                    $playlist = $this->em->refetchAsReference($playlistRecord);
 
                     $playlistWeights[$playlist->getId()]++;
                     $weight = $playlistWeights[$playlist->getId()];
@@ -202,8 +201,7 @@ class BatchAction
             }
         }
 
-        /** @var Entity\Station $station */
-        $station = $this->em->find(Entity\Station::class, $station->getId());
+        $station = $this->em->refetch($station);
 
         foreach ($result->directories as $dir) {
             try {

@@ -40,7 +40,7 @@ class StationMedia implements SongInterface
      *
      * @OA\Property(example=1)
      *
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -230,7 +230,7 @@ class StationMedia implements SongInterface
         $this->generateUniqueId();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

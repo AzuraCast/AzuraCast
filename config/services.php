@@ -60,6 +60,7 @@ return [
         Environment $environment,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
+        App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
         App\EventDispatcher $dispatcher
     ) {
         $connectionOptions = [
@@ -125,6 +126,7 @@ return [
             $eventManager = new Doctrine\Common\EventManager;
             $eventManager->addEventSubscriber($eventRequiresRestart);
             $eventManager->addEventSubscriber($eventAuditLog);
+            $eventManager->addEventSubscriber($eventChangeTracking);
 
             return new App\Doctrine\DecoratedEntityManager(function () use (
                 $connectionOptions,

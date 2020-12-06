@@ -91,11 +91,11 @@ final class Version20201204043539 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // Noop
+        $this->addSql('-- "No Query"');
     }
 
     public function down(Schema $schema): void
     {
-        // Noop
+        $this->addSql('-- "No Query"');
     }
 }

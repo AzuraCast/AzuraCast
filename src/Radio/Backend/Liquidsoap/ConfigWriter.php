@@ -656,7 +656,7 @@ class ConfigWriter implements EventSubscriberInterface
             $params = (array)$params;
             $params['api_auth'] = '!azuracast_api_auth';
 
-            $service_uri = ($this->environment[Environment::DOCKER_REVISION] >= 5) ? 'web' : 'nginx';
+            $service_uri = ($this->environment->isDockerRevisionAtLeast(5)) ? 'web' : 'nginx';
             $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
             $command = 'curl -s --request POST --url ' . $api_url;
             foreach ($params as $paramKey => $paramVal) {

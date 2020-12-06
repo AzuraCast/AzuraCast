@@ -14,7 +14,7 @@ return function (Application $console) {
     /** @var Environment $environment */
     $environment = $di->get(Environment::class);
 
-    $console->setName($environment[Environment::APP_NAME] . ' Command Line Tools (' . $environment[Environment::APP_ENV] . ')');
+    $console->setName($environment->getAppName() . ' Command Line Tools (' . $environment->getAppEnvironment() . ')');
     $console->setVersion($version->getVersion());
 
     /*

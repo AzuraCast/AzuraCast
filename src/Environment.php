@@ -4,11 +4,12 @@ namespace App;
 
 use App\Radio\Configuration;
 use App\Traits\AvailableStaticallyTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 
-class Environment extends ArrayCollection
+class Environment
 {
     use AvailableStaticallyTrait;
+
+    protected array $data = [];
 
     // Environments
     public const ENV_DEVELOPMENT = 'development';
@@ -78,39 +79,47 @@ class Environment extends ArrayCollection
 
     public function __construct(array $elements = [])
     {
-        $elements = array_merge($this->defaults, $elements);
-        parent::__construct($elements);
+        $this->data = array_merge($this->defaults, $elements);
+    }
+
+    public function getAppEnvironment(): string
+    {
+        return $this->data[self::APP_ENV] ?? self::ENV_PRODUCTION;
     }
 
     public function isProduction(): bool
     {
-        if ($this->containsKey(self::APP_ENV)) {
-            return (self::ENV_PRODUCTION === $this->get(self::APP_ENV));
-        }
-        return true;
+        return self::ENV_PRODUCTION === $this->getAppEnvironment();
     }
 
     public function isTesting(): bool
     {
-        if ($this->containsKey(self::APP_ENV)) {
-            return (self::ENV_TESTING === $this->get(self::APP_ENV));
-        }
-        return false;
+        return self::ENV_TESTING === $this->getAppEnvironment();
+    }
+
+    public function isDevelopment(): bool
+    {
+        return self::ENV_DEVELOPMENT === $this->getAppEnvironment();
     }
 
     public function isDocker(): bool
     {
-        return (bool)($this->get(self::IS_DOCKER) ?? true);
+        return (bool)($this->data[self::IS_DOCKER] ?? true);
     }
 
     public function isCli(): bool
     {
-        return $this->get(self::IS_CLI) ?? ('cli' === PHP_SAPI);
+        return $this->data[self::IS_CLI] ?? ('cli' === PHP_SAPI);
+    }
+
+    public function getAppName(): string
+    {
+        return $this->data[self::APP_NAME] ?? 'Application';
     }
 
     public function getAssetUrl(): ?string
     {
-        return $this->get(self::ASSET_URL) ?? '';
+        return $this->data[self::ASSET_URL] ?? '';
     }
 
     /**
@@ -118,7 +127,7 @@ class Environment extends ArrayCollection
      */
     public function getBaseDirectory(): string
     {
-        return $this->get(self::BASE_DIR);
+        return $this->data[self::BASE_DIR];
     }
 
     /**
@@ -126,7 +135,7 @@ class Environment extends ArrayCollection
      */
     public function getTempDirectory(): string
     {
-        return $this->get(self::TEMP_DIR);
+        return $this->data[self::TEMP_DIR];
     }
 
     /**
@@ -134,7 +143,7 @@ class Environment extends ArrayCollection
      */
     public function getConfigDirectory(): string
     {
-        return $this->get(self::CONFIG_DIR);
+        return $this->data[self::CONFIG_DIR];
     }
 
     /**
@@ -142,7 +151,7 @@ class Environment extends ArrayCollection
      */
     public function getViewsDirectory(): string
     {
-        return $this->get(self::VIEWS_DIR);
+        return $this->data[self::VIEWS_DIR];
     }
 
     /**
@@ -167,7 +176,7 @@ class Environment extends ArrayCollection
             return false;
         }
 
-        $compareVersion = (int)($this->get(self::DOCKER_REVISION) ?? 0);
+        $compareVersion = (int)($this->data[self::DOCKER_REVISION] ?? 0);
         return ($compareVersion >= $version);
     }
 
@@ -177,12 +186,12 @@ class Environment extends ArrayCollection
             return true;
         }
 
-        return (bool)($this->get(self::ENABLE_ADVANCED_FEATURES) ?? true);
+        return (bool)($this->data[self::ENABLE_ADVANCED_FEATURES] ?? true);
     }
 
     public function getLang(): ?string
     {
-        return $this->get(self::LANG);
+        return $this->data[self::LANG];
     }
 
     /**
@@ -190,12 +199,12 @@ class Environment extends ArrayCollection
      */
     public function getSupportedLocales(): array
     {
-        return $this->get(self::SUPPORTED_LOCALES) ?? [];
+        return $this->data[self::SUPPORTED_LOCALES] ?? [];
     }
 
     public function getReleaseChannel(): string
     {
-        $channel = $this->get(self::RELEASE_CHANNEL) ?? 'latest';
+        $channel = $this->data[self::RELEASE_CHANNEL] ?? 'latest';
 
         return ('stable' === $channel)
             ? Version::RELEASE_CHANNEL_STABLE
@@ -204,26 +213,26 @@ class Environment extends ArrayCollection
 
     public function getSftpPort(): int
     {
-        return (int)($this->get(self::SFTP_PORT) ?? 2022);
+        return (int)($this->data[self::SFTP_PORT] ?? 2022);
     }
 
     public function getAutoAssignPortMin(): int
     {
-        return (int)($this->get(self::AUTO_ASSIGN_PORT_MIN) ?? Configuration::DEFAULT_PORT_MIN);
+        return (int)($this->data[self::AUTO_ASSIGN_PORT_MIN] ?? Configuration::DEFAULT_PORT_MIN);
     }
 
     public function getAutoAssignPortMax(): int
     {
-        return (int)($this->get(self::AUTO_ASSIGN_PORT_MAX) ?? Configuration::DEFAULT_PORT_MAX);
+        return (int)($this->data[self::AUTO_ASSIGN_PORT_MAX] ?? Configuration::DEFAULT_PORT_MAX);
     }
 
     public function getSyncShortExecutionTime(): int
     {
-        return (int)($this->get(self::SYNC_SHORT_EXECUTION_TIME) ?? 600);
+        return (int)($this->data[self::SYNC_SHORT_EXECUTION_TIME] ?? 600);
     }
 
     public function getSyncLongExecutionTime(): int
     {
-        return (int)($this->get(self::SYNC_LONG_EXECUTION_TIME) ?? 1800);
+        return (int)($this->data[self::SYNC_LONG_EXECUTION_TIME] ?? 1800);
     }
 }

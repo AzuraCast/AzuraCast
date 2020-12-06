@@ -32,6 +32,7 @@ abstract class AbstractFrontend extends AbstractAdapter
     protected Entity\Repository\StationMountRepository $stationMountRepo;
 
     public function __construct(
+        Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
@@ -41,7 +42,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         Entity\Repository\StationMountRepository $stationMountRepo,
         Entity\Settings $settings
     ) {
-        parent::__construct($em, $supervisor, $dispatcher);
+        parent::__construct($environment, $em, $supervisor, $dispatcher);
 
         $this->adapterFactory = $adapterFactory;
         $this->http_client = $client;
@@ -153,7 +154,7 @@ abstract class AbstractFrontend extends AbstractAdapter
 
         if (
             $use_radio_proxy
-            || (!Environment::getInstance()->isProduction() && !Environment::getInstance()->isDocker())
+            || (!$this->environment->isProduction() && !$this->environment->isDocker())
             || 'https' === $base_url->getScheme()
         ) {
             // Web proxy support.

@@ -1,7 +1,5 @@
 <?php
 
-use App\Environment;
-
 class C02_Station_MediaCest extends CestAbstract
 {
     /**
@@ -16,7 +14,7 @@ class C02_Station_MediaCest extends CestAbstract
         $station_id = $testStation->getId();
 
         // Upload test song
-        $test_song_orig = $this->environment[Environment::BASE_DIR] . '/resources/error.mp3';
+        $test_song_orig = $this->environment->getBaseDirectory() . '/resources/error.mp3';
         $I->sendPOST('/api/station/' . $station_id . '/files', [
             'path' => 'error.mp3',
             'file' => base64_encode(file_get_contents($test_song_orig)),

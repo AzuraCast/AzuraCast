@@ -3,7 +3,7 @@
 // http://www.favicon-generator.org/
 
 /** @var App\Environment $environment */
-$icon_base = '/static/icons/' . $environment[App\Environment::APP_ENV];
+$icon_base = $environment->getAssetUrl() . '/icons/' . $environment->getAppEnvironment();
 ?>
 <link rel="apple-touch-icon" sizes="180x180" href="<?=$icon_base?>/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="<?=$icon_base?>/favicon-32x32.png">

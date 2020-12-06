@@ -41,7 +41,7 @@ class SHOUTcast extends AbstractFrontend
 
         // Docker versions before 3 included the SC binary across the board.
         $environment = Environment::getInstance();
-        if ($environment->isDocker() && $environment[Environment::DOCKER_REVISION] < 3) {
+        if ($environment->isDocker() && !$environment->isDockerRevisionAtLeast(3)) {
             return $new_path;
         }
 
@@ -54,7 +54,7 @@ class SHOUTcast extends AbstractFrontend
     {
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
-        $baseUrl = 'http://' . (Environment::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
+        $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getAdapter(
             AdapterFactory::ADAPTER_SHOUTCAST2,

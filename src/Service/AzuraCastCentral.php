@@ -52,7 +52,7 @@ class AzuraCastCentral
         $request_body = [
             'id' => $this->getUniqueIdentifier(),
             'is_docker' => $this->environment->isDocker(),
-            'environment' => $this->environment[Environment::APP_ENV],
+            'environment' => $this->environment->getAppEnvironment(),
             'release_channel' => $this->version->getReleaseChannel(),
         ];
 

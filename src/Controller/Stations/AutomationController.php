@@ -3,7 +3,6 @@
 namespace App\Controller\Stations;
 
 use App\Config;
-use App\Environment;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -19,19 +18,15 @@ class AutomationController
 
     protected RunAutomatedAssignmentTask $sync_task;
 
-    protected Environment $app_settings;
-
     protected array $form_config;
 
     public function __construct(
         EntityManagerInterface $em,
         RunAutomatedAssignmentTask $sync_task,
-        Environment $app_settings,
         Config $config
     ) {
         $this->em = $em;
         $this->sync_task = $sync_task;
-        $this->app_settings = $app_settings;
         $this->form_config = $config->get('forms/automation');
     }
 
@@ -58,7 +53,6 @@ class AutomationController
         }
 
         return $request->getView()->renderToResponse($response, 'stations/automation/index', [
-            'app_settings' => $this->app_settings,
             'form' => $form,
         ]);
     }

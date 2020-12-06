@@ -17,12 +17,13 @@ class Liquidsoap extends AbstractBackend
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
     public function __construct(
+        Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
         Entity\Repository\StationStreamerRepository $streamerRepo
     ) {
-        parent::__construct($em, $supervisor, $dispatcher);
+        parent::__construct($environment, $em, $supervisor, $dispatcher);
 
         $this->streamerRepo = $streamerRepo;
     }
@@ -176,7 +177,7 @@ class Liquidsoap extends AbstractBackend
      */
     public function command(Entity\Station $station, $command_str): array
     {
-        $hostname = (Environment::getInstance()->isDocker() ? 'stations' : 'localhost');
+        $hostname = ($this->environment->isDocker() ? 'stations' : 'localhost');
         $fp = stream_socket_client(
             'tcp://' . $hostname . ':' . $this->getTelnetPort($station),
             $errno,
@@ -221,7 +222,7 @@ class Liquidsoap extends AbstractBackend
         // Docker revisions 3 and later use the `radio` container.
         $environment = Environment::getInstance();
 
-        if ($environment->isDocker() && $environment[Environment::DOCKER_REVISION] < 3) {
+        if ($environment->isDocker() && !$environment->isDockerRevisionAtLeast(3)) {
             return '/var/azuracast/.opam/system/bin/liquidsoap';
         }
 

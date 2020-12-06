@@ -9,7 +9,7 @@ class DbIp extends AbstractIpGeolocator
     public static function getBaseDirectory(): string
     {
         $environment = Environment::getInstance();
-        return dirname($environment[Environment::BASE_DIR]) . '/dbip';
+        return dirname($environment->getBaseDirectory()) . '/dbip';
     }
 
     public static function getDatabasePath(): string

@@ -18,6 +18,8 @@ use Supervisor\Supervisor;
 
 abstract class AbstractAdapter
 {
+    protected Environment $environment;
+
     protected EntityManagerInterface $em;
 
     protected Supervisor $supervisor;
@@ -25,10 +27,12 @@ abstract class AbstractAdapter
     protected EventDispatcher $dispatcher;
 
     public function __construct(
+        Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher
     ) {
+        $this->environment = $environment;
         $this->em = $em;
         $this->supervisor = $supervisor;
         $this->dispatcher = $dispatcher;
@@ -85,7 +89,7 @@ abstract class AbstractAdapter
      */
     public function hasCommand(Entity\Station $station): bool
     {
-        if (Environment::getInstance()->isTesting() || !$station->isEnabled()) {
+        if ($this->environment->isTesting() || !$station->isEnabled()) {
             return false;
         }
 

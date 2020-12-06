@@ -9,7 +9,7 @@ class GeoLite extends AbstractIpGeolocator
     public static function getBaseDirectory(): string
     {
         $environment = Environment::getInstance();
-        return dirname($environment[Environment::BASE_DIR]) . '/geoip';
+        return dirname($environment->getBaseDirectory()) . '/geoip';
     }
 
     public static function getDatabasePath(): string

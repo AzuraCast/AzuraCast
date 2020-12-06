@@ -23,7 +23,7 @@ class SetupFixturesCommand extends CommandAbstract
         $loader = new Loader();
 
         // Dependency-inject the fixtures and load them.
-        $fixturesDir = $environment[Environment::BASE_DIR] . '/src/Entity/Fixture';
+        $fixturesDir = $environment->getBaseDirectory() . '/src/Entity/Fixture';
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($fixturesDir),

@@ -15,7 +15,7 @@ class ImportCommand extends CommandAbstract
     ): int {
         $io->title('Import Locales');
 
-        $locales = $environment['locale']['supported'];
+        $locales = $environment->getSupportedLocales();
         $locale_base = $environment->getBaseDirectory() . '/resources/locale';
 
         foreach ($locales as $locale_key => $locale_name) {

@@ -228,7 +228,7 @@ return [
 
     // Monolog Logger
     Monolog\Logger::class => function (Environment $environment) {
-        $logger = new Monolog\Logger($environment[Environment::APP_NAME] ?? 'app');
+        $logger = new Monolog\Logger($environment->getAppName());
 
         $loggingLevel = null;
         if (!empty($_ENV['LOG_LEVEL'])) {
@@ -257,7 +257,7 @@ return [
         }
 
         $log_file = new Monolog\Handler\StreamHandler(
-            $environment[Environment::TEMP_DIR] . '/app.log',
+            $environment->getTempDirectory() . '/app.log',
             $loggingLevel,
             true
         );

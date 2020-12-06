@@ -21,7 +21,7 @@ class NChan
         }
 
         if ($environment->isDocker()) {
-            return $environment[Environment::DOCKER_REVISION] >= 5;
+            return $environment->isDockerRevisionAtLeast(5);
         }
 
         // Check for support for Ansible installations.

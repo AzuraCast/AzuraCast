@@ -62,7 +62,7 @@ class Customization
         // Set up the PHP translator
         $translator = new Translator();
 
-        $locale_base = Environment::getInstance()->getBaseDirectory() . '/resources/locale/compiled';
+        $locale_base = $environment->getBaseDirectory() . '/resources/locale/compiled';
         $locale_path = $locale_base . '/' . $this->locale . '.php';
 
         if (file_exists($locale_path)) {
@@ -202,14 +202,14 @@ class Customization
     {
         if (!$this->hideProductName()) {
             if ($title) {
-                $title .= ' - ' . $this->environment[Environment::APP_NAME];
+                $title .= ' - ' . $this->environment->getAppName();
             } else {
-                $title = $this->environment[Environment::APP_NAME];
+                $title = $this->environment->getAppName();
             }
         }
 
         if (!$this->environment->isProduction()) {
-            $title = '(' . ucfirst($this->environment[Environment::APP_ENV]) . ') ' . $title;
+            $title = '(' . ucfirst($this->environment->getAppEnvironment()) . ') ' . $title;
         }
 
         return $title;

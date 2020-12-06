@@ -27,7 +27,7 @@ class SetupCommand extends CommandAbstract
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
         $io->listing([
-            __('Environment: %s', ucfirst($environment[Environment::APP_ENV])),
+            __('Environment: %s', ucfirst($environment->getAppEnvironment())),
             __('Installation Method: %s', $environment->isDocker() ? 'Docker' : 'Ansible'),
         ]);
 

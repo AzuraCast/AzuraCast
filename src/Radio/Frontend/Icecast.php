@@ -27,7 +27,7 @@ class Icecast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
-        $baseUrl = 'http://' . (Environment::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
+        $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getAdapter(
             AdapterFactory::ADAPTER_ICECAST,
@@ -104,7 +104,6 @@ class Icecast extends AbstractFrontend
     protected function getDefaults(Entity\Station $station): array
     {
         $config_dir = $station->getRadioConfigDir();
-        $environment = Environment::getInstance();
 
         $settingsBaseUrl = $this->settings->getBaseUrl() ?: 'http://localhost';
         if (strpos($settingsBaseUrl, 'http') !== 0) {
@@ -158,12 +157,12 @@ class Icecast extends AbstractFrontend
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
-                'x-forwarded-for' => $environment->isDocker() ? '172.*.*.*' : '127.0.0.1',
+                'x-forwarded-for' => $this->environment->isDocker() ? '172.*.*.*' : '127.0.0.1',
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
                 'errorlog' => '/dev/stderr',
-                'loglevel' => $environment->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
+                'loglevel' => $this->environment->isProduction() ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
                 'logsize' => 10000,
             ],
             'security' => [

@@ -82,7 +82,7 @@ class Customization
      */
     protected function initLocale(?ServerRequestInterface $request = null): string
     {
-        $supported_locales = $this->environment['locale']['supported'];
+        $supported_locales = $this->environment->getSupportedLocales();
         $try_locales = [];
 
         // Prefer user-based profile locale.

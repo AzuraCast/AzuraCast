@@ -21,7 +21,7 @@ class UserProfileForm extends EntityForm
         Environment $environment
     ) {
         $form_config = $config->get('forms/profile', [
-            'settings' => $environment,
+            'environment' => $environment,
         ]);
         parent::__construct($em, $serializer, $validator, $form_config);
 

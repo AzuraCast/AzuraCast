@@ -16,28 +16,25 @@ class Environment extends ArrayCollection
     public const ENV_PRODUCTION = 'production';
 
     // Core settings values
-    public const APP_NAME = 'name';
+    public const APP_NAME = 'APP_NAME';
     public const APP_ENV = 'APPLICATION_ENV';
 
-    public const BASE_DIR = 'base_dir';
-    public const TEMP_DIR = 'temp_dir';
-    public const CONFIG_DIR = 'config_dir';
-    public const VIEWS_DIR = 'views_dir';
-    public const DOCTRINE_OPTIONS = 'doctrine_options';
-    public const IS_DOCKER = 'is_docker';
-    public const IS_CLI = 'is_cli';
+    public const BASE_DIR = 'BASE_DIR';
+    public const TEMP_DIR = 'TEMP_DIR';
+    public const CONFIG_DIR = 'CONFIG_DIR';
+    public const VIEWS_DIR = 'VIEWS_DIR';
 
-    public const BASE_URL = 'BASE_URL';
-    public const ASSETS_URL = 'assets_url';
+    public const IS_DOCKER = 'IS_DOCKER';
+    public const IS_CLI = 'IS_CLI';
 
-    public const ENABLE_DATABASE = 'enable_database';
-    public const ENABLE_REDIS = 'enable_redis';
+    public const ASSET_URL = 'ASSETS_URL';
 
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
 
     public const ENABLE_ADVANCED_FEATURES = 'ENABLE_ADVANCED_FEATURES';
 
     public const LANG = 'LANG';
+    public const SUPPORTED_LOCALES = 'SUPPORTED_LOCALES';
 
     public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
 
@@ -51,16 +48,32 @@ class Environment extends ArrayCollection
 
     // Default settings
     protected array $defaults = [
-        self::APP_NAME => 'Application',
+        self::APP_NAME => 'AzuraCast',
         self::APP_ENV => self::ENV_PRODUCTION,
 
         self::IS_DOCKER => true,
         self::IS_CLI => ('cli' === PHP_SAPI),
 
-        self::ASSETS_URL => '/static',
+        self::ASSET_URL => '/static',
 
-        self::ENABLE_DATABASE => true,
-        self::ENABLE_REDIS => true,
+        self::SUPPORTED_LOCALES => [
+            'en_US.UTF-8' => 'English (Default)',
+            'cs_CZ.UTF-8' => 'čeština',             // Czech
+            'de_DE.UTF-8' => 'Deutsch',             // German
+            'es_ES.UTF-8' => 'Español',             // Spanish
+            'fr_FR.UTF-8' => 'Français',            // French
+            'el_GR.UTF-8' => 'ελληνικά',            // Greek
+            'it_IT.UTF-8' => 'Italiano',            // Italian
+            'hu_HU.UTF-8' => 'magyar',              // Hungarian
+            'nl_NL.UTF-8' => 'Nederlands',          // Dutch
+            'pl_PL.UTF-8' => 'Polski',              // Polish
+            'pt_PT.UTF-8' => 'Português',           // Portuguese
+            'pt_BR.UTF-8' => 'Português do Brasil', // Brazilian Portuguese
+            'ru_RU.UTF-8' => 'Русский язык',        // Russian
+            'sv_SE.UTF-8' => 'Svenska',             // Swedish
+            'tr_TR.UTF-8' => 'Türkçe',              // Turkish
+            'zh_CN.UTF-8' => '簡化字',               // Simplified Chinese
+        ],
     ];
 
     public function __construct(array $elements = [])
@@ -95,14 +108,9 @@ class Environment extends ArrayCollection
         return $this->get(self::IS_CLI) ?? ('cli' === PHP_SAPI);
     }
 
-    public function enableDatabase(): bool
+    public function getAssetUrl(): ?string
     {
-        return (bool)($this->get(self::ENABLE_DATABASE) ?? true);
-    }
-
-    public function enableRedis(): bool
-    {
-        return (bool)($this->get(self::ENABLE_REDIS) ?? true);
+        return $this->get(self::ASSET_URL) ?? '';
     }
 
     /**
@@ -175,6 +183,14 @@ class Environment extends ArrayCollection
     public function getLang(): ?string
     {
         return $this->get(self::LANG);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSupportedLocales(): array
+    {
+        return $this->get(self::SUPPORTED_LOCALES) ?? [];
     }
 
     public function getReleaseChannel(): string

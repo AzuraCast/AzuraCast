@@ -70,29 +70,21 @@ class AppFactory
             throw new Exception\BootstrapException('No base directory specified!');
         }
 
-        $isDocker = file_exists(dirname($environment[Environment::BASE_DIR]) . '/.docker');
-        if ($isDocker) {
+        $environment[Environment::IS_DOCKER] = file_exists(
+            dirname($environment[Environment::BASE_DIR]) . '/.docker'
+        );
+
+        $environment[Environment::TEMP_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
+        $environment[Environment::CONFIG_DIR] ??= $environment[Environment::BASE_DIR] . '/config';
+        $environment[Environment::VIEWS_DIR] ??= $environment[Environment::BASE_DIR] . '/templates';
+
+        if ($environment[Environment::IS_DOCKER]) {
             $_ENV = getenv();
         } elseif (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
             $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
         }
 
         $environment = array_merge(array_filter($_ENV), $environment);
-
-        $environment[Environment::IS_DOCKER] = $isDocker;
-
-        $environment[Environment::TEMP_DIR] = dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
-        $environment[Environment::CONFIG_DIR] = $environment[Environment::BASE_DIR] . '/config';
-        $environment[Environment::VIEWS_DIR] = $environment[Environment::BASE_DIR] . '/templates';
-        $environment[Environment::TEMP_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
-
-        if (file_exists($environment[Environment::CONFIG_DIR] . '/env.php')) {
-            $envFile = require($environment[Environment::CONFIG_DIR] . '/env.php');
-
-            if (is_array($envFile)) {
-                $environment = array_merge($environment, $envFile);
-            }
-        }
 
         return $environment;
     }

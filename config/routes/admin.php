@@ -19,7 +19,8 @@ return function (App $app) {
             $group->get('/clear-cache', Controller\Admin\DebugController::class . ':clearCacheAction')
                 ->setName('admin:debug:clear-cache');
 
-            $group->get('/clear-queue', Controller\Admin\DebugController::class . ':clearQueueAction')
+            $group->get('/clear-queue[/{queue}]',
+                Controller\Admin\DebugController::class . ':clearQueueAction')
                 ->setName('admin:debug:clear-queue');
 
             $group->get('/sync/{type}', Controller\Admin\DebugController::class . ':syncAction')

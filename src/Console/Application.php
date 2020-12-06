@@ -31,6 +31,8 @@ class Application extends \Silly\Edition\PhpDi\Application
         $result_output = stream_get_contents($temp_stream);
         fclose($temp_stream);
 
+        $result_output = trim($result_output);
+
         return [
             $result_code,
             $result_output,

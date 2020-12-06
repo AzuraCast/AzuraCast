@@ -108,7 +108,7 @@ return function (Application $console) {
     )->setDescription(__('Process the message queue.'));
 
     $console->command(
-        'queue:clear',
+        'queue:clear [queue]',
         Command\MessageQueue\ClearCommand::class
     )->setDescription(__('Clear the contents of the message queue.'));
 

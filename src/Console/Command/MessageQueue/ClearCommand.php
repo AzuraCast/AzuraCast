@@ -10,14 +10,27 @@ class ClearCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        QueueManager $queueManager
+        QueueManager $queueManager,
+        ?string $queue = null
     ): int {
-        $connections = $queueManager->getConnections();
-        foreach ($connections as $connection) {
-            $connection->cleanup();
+        $allQueues = QueueManager::getAllQueues();
+
+        if (!empty($queue)) {
+            if (in_array($queue, $allQueues, true)) {
+                $queueManager->clearQueue($queue);
+                $io->success(sprintf('Message queue "%s" cleared.', $queue));
+            } else {
+                $io->error(sprintf('Message queue "%s" does not exist.', $queue));
+                return 1;
+            }
+        } else {
+            foreach ($allQueues as $queueName) {
+                $queueManager->clearQueue($queueName);
+            }
+
+            $io->success('All message queues cleared.');
         }
 
-        $io->success('Message queue cleared.');
         return 0;
     }
 }

@@ -9,6 +9,7 @@ use App\File;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\RunSyncTaskMessage;
+use App\MessageQueue\QueueManager;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
@@ -42,10 +43,19 @@ class DebugController extends AbstractLogViewerController
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
-        Runner $sync
+        Runner $sync,
+        QueueManager $queueManager
     ): ResponseInterface {
+        $queues = QueueManager::getAllQueues();
+
+        $queueTotals = [];
+        foreach ($queues as $queue) {
+            $queueTotals[$queue] = $queueManager->getQueueCount($queue);
+        }
+
         return $request->getView()->renderToResponse($response, 'admin/debug/index', [
             'sync_times' => $sync->getSyncTimes(),
+            'queue_totals' => $queueTotals,
             'stations' => $stationRepo->fetchArray(),
         ]);
     }
@@ -152,11 +162,15 @@ class DebugController extends AbstractLogViewerController
 
     public function clearQueueAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        ?string $queue = null
     ): ResponseInterface {
-        [$resultCode, $resultOutput] = $this->console->runCommandWithArgs(
-            'queue:clear'
-        );
+        $args = [];
+        if (!empty($queue)) {
+            $args['queue'] = $queue;
+        }
+
+        [$resultCode, $resultOutput] = $this->console->runCommandWithArgs('queue:clear', $args);
 
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);

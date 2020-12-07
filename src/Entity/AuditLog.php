@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="audit_log")
- * @ORM\Entity
+ * @ORM\Entity(readOnly=true)
  */
 class AuditLog
 {

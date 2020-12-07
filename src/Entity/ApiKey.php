@@ -9,7 +9,7 @@ use JsonSerializable;
 
 /**
  * @ORM\Table(name="api_keys")
- * @ORM\Entity()
+ * @ORM\Entity(readOnly=true)
  *
  * @AuditLog\Auditable
  */

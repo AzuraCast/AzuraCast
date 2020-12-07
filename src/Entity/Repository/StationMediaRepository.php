@@ -20,6 +20,7 @@ use InvalidArgumentException;
 use League\Flysystem\FileNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
+
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
@@ -74,10 +75,12 @@ class StationMediaRepository extends Repository
         $storageLocation = $this->getStorageLocation($source);
 
         /** @var Entity\StationMedia|null $media */
-        $media = $this->repository->findOneBy([
-            'storage_location' => $storageLocation,
-            'id' => $id,
-        ]);
+        $media = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'id' => $id,
+            ]
+        );
 
         return $media;
     }
@@ -92,10 +95,12 @@ class StationMediaRepository extends Repository
         $storageLocation = $this->getStorageLocation($source);
 
         /** @var Entity\StationMedia|null $media */
-        $media = $this->repository->findOneBy([
-            'storage_location' => $storageLocation,
-            'path' => $path,
-        ]);
+        $media = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'path' => $path,
+            ]
+        );
 
         return $media;
     }
@@ -110,10 +115,12 @@ class StationMediaRepository extends Repository
         $storageLocation = $this->getStorageLocation($source);
 
         /** @var Entity\StationMedia|null $media */
-        $media = $this->repository->findOneBy([
-            'storage_location' => $storageLocation,
-            'unique_id' => $uniqueId,
-        ]);
+        $media = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'unique_id' => $uniqueId,
+            ]
+        );
 
         return $media;
     }
@@ -204,9 +211,12 @@ class StationMediaRepository extends Repository
                 return false;
             }
 
-            $fs->withLocalFile($mediaUri, function ($path) use ($media): void {
-                $this->loadFromFile($media, $path);
-            });
+            $fs->withLocalFile(
+                $mediaUri,
+                function ($path) use ($media): void {
+                    $this->loadFromFile($media, $path);
+                }
+            );
         }
 
         $media->setMtime($mediaMtime);
@@ -335,21 +345,27 @@ class StationMediaRepository extends Repository
         }
 
         // Write tags to the Media file.
-        return $fs->withLocalFile($media->getPath(), function ($path) use ($media, $metadata) {
-            if ($this->metadataManager->writeMetadata($metadata, $path)) {
-                $media->setMtime(time() + 5);
-                return true;
+        return $fs->withLocalFile(
+            $media->getPath(),
+            function ($path) use ($media, $metadata) {
+                if ($this->metadataManager->writeMetadata($metadata, $path)) {
+                    $media->setMtime(time() + 5);
+                    return true;
+                }
+                return false;
             }
-            return false;
-        });
+        );
     }
 
     public function updateWaveform(Entity\StationMedia $media): void
     {
         $fs = $this->getFilesystem($media);
-        $fs->withLocalFile($media->getPath(), function ($path) use ($media): void {
-            $this->writeWaveform($media, $path);
-        });
+        $fs->withLocalFile(
+            $media->getPath(),
+            function ($path) use ($media): void {
+                $this->writeWaveform($media, $path);
+            }
+        );
     }
 
     public function writeWaveform(Entity\StationMedia $media, string $path): bool

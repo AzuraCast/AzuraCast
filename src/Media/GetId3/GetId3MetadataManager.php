@@ -114,7 +114,12 @@ class GetId3MetadataManager implements MetadataManagerInterface
             $tags['comments']['picture'][0] = $tags['attached_picture'][0];
         }
 
-        $tagwriter->tag_data = $tags;
+        $tagData = [];
+        foreach ($tags as $tagKey => $tagValue) {
+            $tagData[$tagKey] = [$tagValue];
+        }
+
+        $tagwriter->tag_data = $tagData;
 
         return $tagwriter->WriteTags();
     }

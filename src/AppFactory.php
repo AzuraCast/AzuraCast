@@ -177,7 +177,6 @@ class AppFactory
         $di = $app->getContainer();
         $routeCollector = $app->getRouteCollector();
 
-        /** @var Environment $environment */
         $environment = $di->get(Environment::class);
 
         // Use the PHP-DI Bridge's action invocation helper.
@@ -207,7 +206,6 @@ class AppFactory
     {
         $di = $app->getContainer();
 
-        /** @var EventDispatcher $dispatcher */
         $dispatcher = $di->get(EventDispatcher::class);
         $dispatcher->dispatch(new Event\BuildRoutes($app));
     }

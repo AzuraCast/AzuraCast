@@ -26,10 +26,12 @@ class SetupCommand extends CommandAbstract
         $io->title(__('AzuraCast Setup'));
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
-        $io->listing([
-            __('Environment: %s', ucfirst($environment->getAppEnvironment())),
-            __('Installation Method: %s', $environment->isDocker() ? 'Docker' : 'Ansible'),
-        ]);
+        $io->listing(
+            [
+                __('Environment: %s', ucfirst($environment->getAppEnvironment())),
+                __('Installation Method: %s', $environment->isDocker() ? 'Docker' : 'Ansible'),
+            ]
+        );
 
         if ($update) {
             $io->note(__('Running in update mode.'));
@@ -41,7 +43,6 @@ class SetupCommand extends CommandAbstract
             }
         }
 
-        /** @var EntityManagerInterface $em */
         $em = $di->get(EntityManagerInterface::class);
         $conn = $em->getConnection();
 
@@ -49,9 +50,13 @@ class SetupCommand extends CommandAbstract
         $io->section(__('Running Database Migrations'));
 
         $conn->ping();
-        $this->runCommand($output, 'migrations:migrate', [
-            '--allow-no-migration' => true,
-        ]);
+        $this->runCommand(
+            $output,
+            'migrations:migrate',
+            [
+                '--allow-no-migration' => true,
+            ]
+        );
 
         $io->newLine();
         $io->section(__('Generating Database Proxy Classes'));
@@ -97,16 +102,20 @@ class SetupCommand extends CommandAbstract
         $io->newLine();
 
         if ($update) {
-            $io->success([
-                __('AzuraCast is now updated to the latest version!'),
-            ]);
+            $io->success(
+                [
+                    __('AzuraCast is now updated to the latest version!'),
+                ]
+            );
         } else {
             $public_ip = $acCentral->getIp(false);
 
-            $io->success([
-                __('AzuraCast installation complete!'),
-                __('Visit %s to complete setup.', 'http://' . $public_ip),
-            ]);
+            $io->success(
+                [
+                    __('AzuraCast installation complete!'),
+                    __('Visit %s to complete setup.', 'http://' . $public_ip),
+                ]
+            );
         }
 
         return 0;

@@ -20,7 +20,6 @@ use InvalidArgumentException;
 use League\Flysystem\FileNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
-
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use const JSON_UNESCAPED_SLASHES;
@@ -188,7 +187,6 @@ class StationMediaRepository extends Repository
         if (null !== $uploadedPath) {
             try {
                 $this->loadFromFile($media, $uploadedPath);
-                $this->writeWaveform($media, $uploadedPath);
             } finally {
                 $fs->putFromLocal($uploadedPath, $mediaUri);
             }
@@ -208,7 +206,6 @@ class StationMediaRepository extends Repository
 
             $fs->withLocalFile($mediaUri, function ($path) use ($media): void {
                 $this->loadFromFile($media, $path);
-                $this->writeWaveform($media, $path);
             });
         }
 

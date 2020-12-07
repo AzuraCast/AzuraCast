@@ -3,10 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Acl;
+use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Quota;
-use App\Settings;
 use App\Sync\Runner;
 use Brick\Math\BigInteger;
 use Psr\Http\Message\ResponseInterface;
@@ -16,7 +16,8 @@ class IndexController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Runner $sync
+        Runner $sync,
+        Environment $environment
     ): ResponseInterface {
         $view = $request->getView();
         $user = $request->getUser();
@@ -33,7 +34,7 @@ class IndexController
             ]);
         }
 
-        $stationsBaseDir = Settings::getInstance()->getStationDirectory();
+        $stationsBaseDir = $environment->getStationDirectory();
 
         $spaceTotal = BigInteger::of(disk_total_space($stationsBaseDir));
         $spaceFree = BigInteger::of(disk_free_space($stationsBaseDir));

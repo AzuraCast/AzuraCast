@@ -26,7 +26,7 @@ class Relay
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @OA\Property(example=1)
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -101,7 +101,7 @@ class Relay
         $this->updated_at = time();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

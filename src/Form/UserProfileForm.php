@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
-use App\Settings;
 use AzuraForms\Field\AbstractField;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -18,10 +18,10 @@ class UserProfileForm extends EntityForm
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config,
-        Settings $settings
+        Environment $environment
     ) {
         $form_config = $config->get('forms/profile', [
-            'settings' => $settings,
+            'environment' => $environment,
         ]);
         parent::__construct($em, $serializer, $validator, $form_config);
 

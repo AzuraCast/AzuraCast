@@ -9,7 +9,7 @@ use JsonSerializable;
  * @ORM\Table(name="role_permissions", uniqueConstraints={
  *   @ORM\UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
  * })
- * @ORM\Entity()
+ * @ORM\Entity(readOnly=true)
  */
 class RolePermission implements JsonSerializable
 {
@@ -17,7 +17,7 @@ class RolePermission implements JsonSerializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -67,7 +67,7 @@ class RolePermission implements JsonSerializable
         }
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

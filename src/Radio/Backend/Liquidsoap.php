@@ -3,11 +3,11 @@
 namespace App\Radio\Backend;
 
 use App\Entity;
+use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\EventDispatcher;
 use App\Exception;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
@@ -17,12 +17,13 @@ class Liquidsoap extends AbstractBackend
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
     public function __construct(
+        Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
         Entity\Repository\StationStreamerRepository $streamerRepo
     ) {
-        parent::__construct($em, $supervisor, $dispatcher);
+        parent::__construct($environment, $em, $supervisor, $dispatcher);
 
         $this->streamerRepo = $streamerRepo;
     }
@@ -176,7 +177,7 @@ class Liquidsoap extends AbstractBackend
      */
     public function command(Entity\Station $station, $command_str): array
     {
-        $hostname = (Settings::getInstance()->isDocker() ? 'stations' : 'localhost');
+        $hostname = ($this->environment->isDocker() ? 'stations' : 'localhost');
         $fp = stream_socket_client(
             'tcp://' . $hostname . ':' . $this->getTelnetPort($station),
             $errno,
@@ -219,9 +220,9 @@ class Liquidsoap extends AbstractBackend
     public static function getBinary()
     {
         // Docker revisions 3 and later use the `radio` container.
-        $settings = Settings::getInstance();
+        $environment = Environment::getInstance();
 
-        if ($settings->isDocker() && $settings[Settings::DOCKER_REVISION] < 3) {
+        if ($environment->isDocker() && !$environment->isDockerRevisionAtLeast(3)) {
             return '/var/azuracast/.opam/system/bin/liquidsoap';
         }
 

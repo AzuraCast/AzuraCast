@@ -51,7 +51,7 @@ class FlowUploadAction
                     'exception' => $e,
                 ]);
 
-                return $response->withJson(new Entity\Api\Status());
+                return $response->withJson(Entity\Api\Error::fromException($e));
             }
 
             // If the user is looking at a playlist's contents, add uploaded media to that playlist.

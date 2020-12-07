@@ -7,8 +7,7 @@ use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
-use App\Settings;
-use App\Sync\Task\RadioAutomation;
+use App\Sync\Task\RunAutomatedAssignmentTask;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -17,21 +16,17 @@ class AutomationController
 {
     protected EntityManagerInterface $em;
 
-    protected RadioAutomation $sync_task;
-
-    protected Settings $app_settings;
+    protected RunAutomatedAssignmentTask $sync_task;
 
     protected array $form_config;
 
     public function __construct(
         EntityManagerInterface $em,
-        RadioAutomation $sync_task,
-        Settings $app_settings,
+        RunAutomatedAssignmentTask $sync_task,
         Config $config
     ) {
         $this->em = $em;
         $this->sync_task = $sync_task;
-        $this->app_settings = $app_settings;
         $this->form_config = $config->get('forms/automation');
     }
 
@@ -58,7 +53,6 @@ class AutomationController
         }
 
         return $request->getView()->renderToResponse($response, 'stations/automation/index', [
-            'app_settings' => $this->app_settings,
             'form' => $form,
         ]);
     }

@@ -32,7 +32,7 @@ class StationRemote implements StationMountInterface
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @OA\Property(example=1)
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -225,7 +225,7 @@ class StationRemote implements StationMountInterface
         $this->station = $station;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

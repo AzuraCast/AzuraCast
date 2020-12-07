@@ -7,7 +7,7 @@
     <exclude-pattern>src/Tests/*$</exclude-pattern>
 
     <arg name="basepath" value="."/>
-    <arg name="extensions" value="php" />
+    <arg name="extensions" value="php"/>
     <arg name="colors"/>
 
     <!-- relative path from PHPCS source location -->

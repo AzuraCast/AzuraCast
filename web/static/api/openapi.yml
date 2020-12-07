@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: '0.11'
+  version: 0.11.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -300,7 +300,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Api_Admin_Settings'
+                $ref: '#/components/schemas/Settings'
         '403':
           description: 'Access denied'
       security:
@@ -315,7 +315,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Api_Admin_Settings'
+              $ref: '#/components/schemas/Settings'
       responses:
         '200':
           description: Success
@@ -1965,129 +1965,69 @@ components:
           items:
             $ref: '#/components/schemas/Api_StationMount'
       type: object
-    Api_Admin_Settings:
-      properties:
-        base_url:
-          description: 'Site Base URL'
-          type: string
-        instance_name:
-          description: 'AzuraCast Instance Name'
-          type: string
-          nullable: true
-        timezone:
-          description: 'System Default Time Zone'
-          type: string
-          nullable: true
-        prefer_browser_url:
-          description: 'Prefer Browser URL (If Available)'
-          type: integer
-        use_radio_proxy:
-          description: 'Use Web Proxy for Radio'
-          type: integer
-        history_keep_days:
-          description: 'Days of Playback History to Keep'
-          type: integer
-        always_use_ssl:
-          description: 'Always Use HTTPS'
-          type: integer
-        api_access_control:
-          description: 'API "Access-Control-Allow-Origin" header'
-          type: string
-        analytics:
-          description: 'Listener Analytics Collection'
-          type: string
-        central_updates_channel:
-          description: 'Check for Updates and Announcements'
-          type: integer
-        public_theme:
-          description: 'Base Theme for Public Pages'
-          type: string
-        hide_album_art:
-          description: 'Hide Album Art on Public Pages'
-          type: integer
-        homepage_redirect_url:
-          description: 'Homepage Redirect URL'
-          type: string
-          nullable: true
-        default_album_art_url:
-          description: 'Default Album Art URL'
-          type: string
-          nullable: true
-        hide_product_name:
-          description: 'Hide AzuraCast Branding on Public Pages'
-          type: integer
-        custom_css_public:
-          description: 'Custom CSS for Public Pages'
-          type: string
-          nullable: true
-        custom_js_public:
-          description: 'Custom JS for Public Pages'
-          type: string
-          nullable: true
-        custom_css_internal:
-          description: 'Custom CSS for Internal Pages'
-          type: string
-          nullable: true
-      type: object
     Api_Admin_StorageLocation:
-      properties:
-        id:
-          type: integer
-          example: 1
-        type:
-          type: string
-          example: station_media
-        adapter:
-          type: string
-          example: local
-        path:
-          type: string
-          example: /var/azuracast/stations/azuratest_radio/media
-          nullable: true
-        s3CredentialKey:
-          type: string
-          example: your-key-here
-          nullable: true
-        s3CredentialSecret:
-          type: string
-          example: your-secret-here
-          nullable: true
-        s3Region:
-          type: string
-          example: your-region
-          nullable: true
-        s3Version:
-          type: string
-          example: latest
-          nullable: true
-        s3Bucket:
-          type: string
-          example: your-bucket-name
-          nullable: true
-        s3Endpoint:
-          type: string
-          example: 'https://your-region.digitaloceanspaces.com'
-          nullable: true
-        storageQuota:
-          type: string
-          example: '50 GB'
-          nullable: true
-        storageUsed:
-          type: string
-          example: '1 GB'
-          nullable: true
-        uri:
-          description: 'The URI associated with the storage location.'
-          type: string
-          example: /var/azuracast/www
-        stations:
-          description: 'The stations using this storage location, if any.'
-          type: array
-          items:
-            type: string
-            example: 'AzuraTest Radio'
-          nullable: true
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasLinks'
+        -
+          properties:
+            id:
+              type: integer
+              example: 1
+            type:
+              type: string
+              example: station_media
+            adapter:
+              type: string
+              example: local
+            path:
+              type: string
+              example: /var/azuracast/stations/azuratest_radio/media
+              nullable: true
+            s3CredentialKey:
+              type: string
+              example: your-key-here
+              nullable: true
+            s3CredentialSecret:
+              type: string
+              example: your-secret-here
+              nullable: true
+            s3Region:
+              type: string
+              example: your-region
+              nullable: true
+            s3Version:
+              type: string
+              example: latest
+              nullable: true
+            s3Bucket:
+              type: string
+              example: your-bucket-name
+              nullable: true
+            s3Endpoint:
+              type: string
+              example: 'https://your-region.digitaloceanspaces.com'
+              nullable: true
+            storageQuota:
+              type: string
+              example: '50 GB'
+              nullable: true
+            storageUsed:
+              type: string
+              example: '1 GB'
+              nullable: true
+            uri:
+              description: 'The URI associated with the storage location.'
+              type: string
+              example: /var/azuracast/www
+            stations:
+              description: 'The stations using this storage location, if any.'
+              type: array
+              items:
+                type: string
+                example: 'AzuraTest Radio'
+              nullable: true
     Api_DetailedSongHistory:
       allOf:
         -
@@ -2148,7 +2088,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1606584191
+          example: 1607279238
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2294,7 +2234,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1606584191
+          example: 1607279238
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2392,7 +2332,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1606584191
+          example: 1607279238
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2411,14 +2351,11 @@ components:
     Api_StationQueueDetailed:
       allOf:
         -
+          $ref: '#/components/schemas/HasLinks'
+        -
           $ref: '#/components/schemas/Api_StationQueue'
         -
           properties:
-            links:
-              type: array
-              items:
-                type: string
-                example: 'http://localhost/api/stations/1/queue/1'
             autodj_custom_uri:
               description: 'Custom AutoDJ playback URI, if it exists.'
               type: string
@@ -2484,7 +2421,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1606584191
+          example: 1607279238
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2492,7 +2429,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1606584191
+          example: 1607279238
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2532,7 +2469,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1606584191
+          example: 1607279238
       type: object
     Api_Time:
       properties:
@@ -2553,6 +2490,14 @@ components:
           type: string
           example: '2012-12-25T16:30:00.000000Z'
       type: object
+    HasLinks:
+      properties:
+        links:
+          type: array
+          items:
+            type: string
+            example: 'http://localhost/api/stations/1/queue/1'
+      type: object
     Api_UploadFile:
       properties:
         path:
@@ -2566,6 +2511,7 @@ components:
       properties:
         id:
           type: integer
+          nullable: true
         name:
           type: string
         short_name:
@@ -2582,6 +2528,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         base_url:
           type: string
           example: 'http://custom-url.example.com'
@@ -2594,21 +2541,151 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1606584191
+          example: 1607279238
         updated_at:
           type: integer
-          example: 1606584191
+          example: 1607279238
       type: object
     Role:
       properties:
         id:
           type: integer
           example: 1
+          nullable: true
         name:
           type: string
           example: 'Super Administrator'
         permissions:
           items: {  }
+      type: object
+    Settings:
+      properties:
+        baseUrl:
+          type: string
+          example: 'https://your.azuracast.site'
+        instanceName:
+          type: string
+          example: 'My AzuraCast Instance'
+          nullable: true
+        preferBrowserUrl:
+          type: boolean
+          example: 'false'
+        useRadioProxy:
+          type: boolean
+          example: 'false'
+        historyKeepDays:
+          type: integer
+        alwaysUseSsl:
+          type: boolean
+          example: 'false'
+        apiAccessControl:
+          type: string
+          example: '*'
+        enableWebsockets:
+          type: boolean
+          example: 'false'
+        analytics:
+          description: 'Listener Analytics Collection'
+          type: string
+        checkForUpdates:
+          type: boolean
+          example: 'true'
+        appUniqueIdentifier:
+          type: string
+          example: ''
+          nullable: true
+        updateResults:
+          description: 'Results of the latest update check.'
+          example: ''
+        updateLastRun:
+          type: integer
+          example: 1607279238
+        publicTheme:
+          type: string
+          example: light
+        hideAlbumArt:
+          type: boolean
+          example: 'false'
+        homepageRedirectUrl:
+          type: string
+          example: 'https://example.com/'
+          nullable: true
+        defaultAlbumArtUrl:
+          type: string
+          example: 'https://example.com/image.jpg'
+          nullable: true
+        hideProductName:
+          type: boolean
+          example: 'false'
+        publicCustomCss:
+          type: string
+          example: ''
+          nullable: true
+        publicCustomJs:
+          type: string
+          example: ''
+          nullable: true
+        internalCustomCss:
+          type: string
+          example: ''
+          nullable: true
+        backupEnabled:
+          type: boolean
+          example: 'false'
+        backupTimeCode:
+          type: string
+          example: 400
+          nullable: true
+        backupExcludeMedia:
+          type: boolean
+          example: 'false'
+        backupKeepCopies:
+          type: integer
+          example: 2
+        backupStorageLocation:
+          type: integer
+          example: 1
+          nullable: true
+        backupLastRun:
+          type: integer
+          example: 1607279238
+        backupLastResult:
+          type: string
+          example: ''
+          nullable: true
+        backupLastOutput:
+          type: string
+          example: ''
+          nullable: true
+        setupCompleteTime:
+          type: integer
+          example: 1607279238
+        nowplaying:
+          description: 'The current cached now playing data.'
+          example: ''
+        syncNowplayingLastRun:
+          type: integer
+          example: 1607279238
+        syncShortLastRun:
+          type: integer
+          example: 1607279238
+        syncMediumLastRun:
+          type: integer
+          example: 1607279238
+        syncLongLastRun:
+          type: integer
+          example: 1607279238
+        externalIp:
+          type: string
+          example: 192.168.1.1
+          nullable: true
+        geoliteLicenseKey:
+          type: string
+          example: ''
+          nullable: true
+        geoliteLastRun:
+          type: integer
+          example: 1607279238
       type: object
     Station:
       properties:
@@ -2718,98 +2795,104 @@ components:
           nullable: true
       type: object
     StationMedia:
-      properties:
-        id:
-          type: integer
-          example: 1
-        album:
-          description: 'The name of the media file''s album.'
-          type: string
-          example: 'Test Album'
-          nullable: true
-        genre:
-          description: 'The genre of the media file.'
-          type: string
-          example: Rock
-          nullable: true
-        lyrics:
-          description: 'Full lyrics of the track, if available.'
-          type: string
-          example: '...Never gonna give you up...'
-          nullable: true
-        isrc:
-          description: 'The track ISRC (International Standard Recording Code), used for licensing purposes.'
-          type: string
-          example: GBARL0600786
-          nullable: true
-        length:
-          description: 'The song duration in seconds.'
-          type: number
-          format: float
-          example: 240
-        length_text:
-          description: 'The formatted song duration (in mm:ss format)'
-          type: string
-          example: '4:00'
-          nullable: true
-        path:
-          description: 'The relative path of the media file.'
-          type: string
-          example: test.mp3
-          nullable: true
-        mtime:
-          description: 'The UNIX timestamp when the database was last modified.'
-          type: integer
-          example: 1606584191
-          nullable: true
-        amplify:
-          description: 'The amount of amplification (in dB) to be applied to the radio source;'
-          type: number
-          format: float
-          example: -14
-          nullable: true
-        fade_overlap:
-          description: 'The length of time (in seconds) before the next song starts in the fade;'
-          type: number
-          format: float
-          example: 2
-          nullable: true
-        fade_in:
-          description: 'The length of time (in seconds) to fade in the next track;'
-          type: number
-          format: float
-          example: 3
-          nullable: true
-        fade_out:
-          description: 'The length of time (in seconds) to fade out the previous track;'
-          type: number
-          format: float
-          example: 3
-          nullable: true
-        cue_in:
-          description: 'The length of time (in seconds) from the start of the track to start playing;'
-          type: number
-          format: float
-          example: 30
-          nullable: true
-        cue_out:
-          description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing;'
-          type: number
-          format: float
-          example: 30
-          nullable: true
-        art_updated_at:
-          description: 'The latest time (UNIX timestamp) when album art was updated.'
-          type: integer
-          example: 1606584191
-        playlists:
-          items: {  }
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/UniqueId'
+        -
+          properties:
+            id:
+              type: integer
+              example: 1
+              nullable: true
+            album:
+              description: 'The name of the media file''s album.'
+              type: string
+              example: 'Test Album'
+              nullable: true
+            genre:
+              description: 'The genre of the media file.'
+              type: string
+              example: Rock
+              nullable: true
+            lyrics:
+              description: 'Full lyrics of the track, if available.'
+              type: string
+              example: '...Never gonna give you up...'
+              nullable: true
+            isrc:
+              description: 'The track ISRC (International Standard Recording Code), used for licensing purposes.'
+              type: string
+              example: GBARL0600786
+              nullable: true
+            length:
+              description: 'The song duration in seconds.'
+              type: number
+              format: float
+              example: 240
+            length_text:
+              description: 'The formatted song duration (in mm:ss format)'
+              type: string
+              example: '4:00'
+              nullable: true
+            path:
+              description: 'The relative path of the media file.'
+              type: string
+              example: test.mp3
+              nullable: true
+            mtime:
+              description: 'The UNIX timestamp when the database was last modified.'
+              type: integer
+              example: 1607279238
+              nullable: true
+            amplify:
+              description: 'The amount of amplification (in dB) to be applied to the radio source;'
+              type: number
+              format: float
+              example: -14
+              nullable: true
+            fade_overlap:
+              description: 'The length of time (in seconds) before the next song starts in the fade;'
+              type: number
+              format: float
+              example: 2
+              nullable: true
+            fade_in:
+              description: 'The length of time (in seconds) to fade in the next track;'
+              type: number
+              format: float
+              example: 3
+              nullable: true
+            fade_out:
+              description: 'The length of time (in seconds) to fade out the previous track;'
+              type: number
+              format: float
+              example: 3
+              nullable: true
+            cue_in:
+              description: 'The length of time (in seconds) from the start of the track to start playing;'
+              type: number
+              format: float
+              example: 30
+              nullable: true
+            cue_out:
+              description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing;'
+              type: number
+              format: float
+              example: 30
+              nullable: true
+            art_updated_at:
+              description: 'The latest time (UNIX timestamp) when album art was updated.'
+              type: integer
+              example: 1607279238
+            playlists:
+              items: {  }
     StationMount:
       properties:
         id:
           type: integer
           example: 1
+          nullable: true
         name:
           type: string
           example: /radio.mp3
@@ -2939,6 +3022,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         display_name:
           type: string
           example: '128kbps MP3'
@@ -3026,6 +3110,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         streamer_username:
           type: string
           example: dj_test
@@ -3048,7 +3133,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1606584191
+          example: 1607279238
           nullable: true
         schedule_items:
           items: {  }
@@ -3058,6 +3143,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
       type: object
     StationWebhook:
       properties:
@@ -3090,7 +3176,7 @@ components:
           type: array
           items: {  }
       type: object
-    Trait_UniqueId:
+    UniqueId:
       properties:
         unique_id:
           description: 'A unique identifier associated with this record.'
@@ -3102,6 +3188,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         email:
           type: string
           example: demo@azuracast.com
@@ -3128,10 +3215,10 @@ components:
           nullable: true
         created_at:
           type: integer
-          example: 1606584191
+          example: 1607279238
         updated_at:
           type: integer
-          example: 1606584191
+          example: 1607279238
         roles:
           items: {  }
       type: object
@@ -3195,6 +3282,8 @@ tags:
     name: 'Administration: Settings'
   -
     name: 'Administration: Stations'
+  -
+    name: 'Administration: Storage Locations'
   -
     name: Miscellaneous
 externalDocs:

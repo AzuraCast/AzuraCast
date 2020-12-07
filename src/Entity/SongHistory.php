@@ -26,8 +26,8 @@ class SongHistory implements SongInterface
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int|null
      */
     protected $id;
 
@@ -187,7 +187,7 @@ class SongHistory implements SongInterface
         $this->delta_positive = 0;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

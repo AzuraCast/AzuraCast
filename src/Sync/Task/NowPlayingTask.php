@@ -4,6 +4,7 @@ namespace App\Sync\Task;
 
 use App\Entity;
 use App\Entity\Station;
+use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
 use App\EventDispatcher;
@@ -12,7 +13,6 @@ use App\LockFactory;
 use App\Message;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
-use App\Settings;
 use DeepCopy\DeepCopy;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -25,7 +25,7 @@ use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
-class NowPlaying extends AbstractTask implements EventSubscriberInterface
+class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 {
     protected CacheInterface $cache;
 
@@ -41,6 +41,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\ListenerRepository $listenerRepo;
 
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+
     protected LockFactory $lockFactory;
 
     protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator;
@@ -51,8 +53,8 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepository,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Adapters $adapters,
         AutoDJ $autodj,
         CacheInterface $cache,
@@ -62,9 +64,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
         RouterInterface $router,
         Entity\Repository\ListenerRepository $listenerRepository,
         Entity\Repository\StationQueueRepository $queueRepo,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
         Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator
     ) {
-        parent::__construct($em, $settingsRepository, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->adapters = $adapters;
         $this->autodj = $autodj;
@@ -76,10 +79,11 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
 
         $this->listenerRepo = $listenerRepository;
         $this->queueRepo = $queueRepo;
+        $this->settingsTableRepo = $settingsTableRepo;
 
         $this->nowPlayingApiGenerator = $nowPlayingApiGenerator;
 
-        $this->analyticsLevel = (string)$settingsRepository->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+        $this->analyticsLevel = $settings->getAnalytics();
     }
 
     /**
@@ -87,7 +91,7 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             return [];
         }
 
@@ -103,8 +107,10 @@ class NowPlaying extends AbstractTask implements EventSubscriberInterface
     {
         $nowplaying = $this->loadNowPlaying($force);
 
-        $this->cache->set(Entity\Settings::NOWPLAYING, $nowplaying, 120);
-        $this->settingsRepo->setSetting(Entity\Settings::NOWPLAYING, $nowplaying);
+        $this->cache->set('nowplaying', $nowplaying, 120);
+
+        $this->settings->setNowplaying($nowplaying);
+        $this->settingsTableRepo->writeSettings($this->settings);
     }
 
     /**

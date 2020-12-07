@@ -25,7 +25,7 @@ class CustomField
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @OA\Property()
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -57,7 +57,7 @@ class CustomField
      */
     protected $auto_assign;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

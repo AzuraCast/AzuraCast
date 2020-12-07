@@ -3,20 +3,20 @@
  * PHP-DI Services
  */
 
+use App\Environment;
 use App\Event;
-use App\Settings;
 use Psr\Container\ContainerInterface;
 
 return [
 
     // URL Router helper
     App\Http\Router::class => function (
-        Settings $settings,
+        Environment $environment,
         Slim\App $app,
-        App\Entity\Repository\SettingsRepository $settingsRepo
+        App\Entity\Settings $settings
     ) {
         $route_parser = $app->getRouteCollector()->getRouteParser();
-        return new App\Http\Router($settings, $route_parser, $settingsRepo);
+        return new App\Http\Router($environment, $route_parser, $settings);
     },
     App\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
@@ -57,9 +57,10 @@ return [
     App\Doctrine\DecoratedEntityManager::class => function (
         Doctrine\Common\Cache\Cache $doctrineCache,
         Doctrine\Common\Annotations\Reader $reader,
-        Settings $settings,
+        Environment $environment,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
+        App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
         App\EventDispatcher $dispatcher
     ) {
         $connectionOptions = [
@@ -81,7 +82,7 @@ return [
             'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
         ];
 
-        if (!$settings[Settings::IS_DOCKER]) {
+        if (!$environment->isDocker()) {
             $connectionOptions['host'] = $_ENV['db_host'] ?? 'localhost';
             $connectionOptions['port'] = $_ENV['db_port'] ?? '3306';
             $connectionOptions['dbname'] = $_ENV['db_name'] ?? 'azuracast';
@@ -93,15 +94,15 @@ return [
             // Fetch and store entity manager.
             $config = Doctrine\ORM\Tools\Setup::createConfiguration(
                 Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS,
-                $settings->getTempDirectory() . '/proxies',
+                $environment->getTempDirectory() . '/proxies',
                 $doctrineCache
             );
 
-            $mappingClassesPaths = [$settings->getBaseDirectory() . '/src/Entity'];
+            $mappingClassesPaths = [$environment->getBaseDirectory() . '/src/Entity'];
 
             $buildDoctrineMappingPathsEvent = new Event\BuildDoctrineMappingPaths(
                 $mappingClassesPaths,
-                $settings->getBaseDirectory()
+                $environment->getBaseDirectory()
             );
             $dispatcher->dispatch($buildDoctrineMappingPathsEvent);
 
@@ -125,6 +126,7 @@ return [
             $eventManager = new Doctrine\Common\EventManager;
             $eventManager->addEventSubscriber($eventRequiresRestart);
             $eventManager->addEventSubscriber($eventAuditLog);
+            $eventManager->addEventSubscriber($eventChangeTracking);
 
             return new App\Doctrine\DecoratedEntityManager(function () use (
                 $connectionOptions,
@@ -137,11 +139,18 @@ return [
             throw new App\Exception\BootstrapException($e->getMessage());
         }
     },
+
+    App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
+    // Database settings
+    App\Entity\Settings::class => function (App\Entity\Repository\SettingsTableRepository $settingsTableRepo) {
+        return $settingsTableRepo->readSettings();
+    },
+
     // Redis cache
-    Redis::class => function (Settings $settings) {
-        $redis_host = $settings->isDocker() ? 'redis' : 'localhost';
+    Redis::class => function (Environment $environment) {
+        $redis_host = $environment->isDocker() ? 'redis' : 'localhost';
 
         $redis = new Redis();
         $redis->connect($redis_host, 6379, 15);
@@ -150,7 +159,7 @@ return [
         return $redis;
     },
 
-    Psr\Cache\CacheItemPoolInterface::class => function (Settings $settings, ContainerInterface $di) {
+    Psr\Cache\CacheItemPoolInterface::class => function (Environment $settings, ContainerInterface $di) {
         return !$settings->isTesting()
             ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
             : new Cache\Adapter\PHPArray\ArrayCachePool;
@@ -159,10 +168,10 @@ return [
 
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
-        Settings $settings,
+        Environment $environment,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
-        if ($settings->isCli()) {
+        if ($environment->isCli()) {
             $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
         }
 
@@ -173,10 +182,10 @@ return [
 
     // Session save handler middleware
     Mezzio\Session\SessionPersistenceInterface::class => function (
-        Settings $settings,
+        Environment $environment,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
-        if ($settings->isCli()) {
+        if ($environment->isCli()) {
             $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
         }
 
@@ -188,7 +197,8 @@ return [
             '/',
             'nocache',
             43200,
-            time()
+            time(),
+            true
         );
     },
 
@@ -219,8 +229,8 @@ return [
     },
 
     // Monolog Logger
-    Monolog\Logger::class => function (Settings $settings) {
-        $logger = new Monolog\Logger($settings[Settings::APP_NAME] ?? 'app');
+    Monolog\Logger::class => function (Environment $environment) {
+        $logger = new Monolog\Logger($environment->getAppName());
 
         $loggingLevel = null;
         if (!empty($_ENV['LOG_LEVEL'])) {
@@ -241,15 +251,15 @@ return [
             }
         }
 
-        $loggingLevel ??= $settings->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+        $loggingLevel ??= $environment->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
 
-        if ($settings->isDocker() || $settings->isCli()) {
+        if ($environment->isDocker() || $environment->isCli()) {
             $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
 
         $log_file = new Monolog\Handler\StreamHandler(
-            $settings[Settings::TEMP_DIR] . '/app.log',
+            $environment->getTempDirectory() . '/app.log',
             $loggingLevel,
             true
         );
@@ -262,7 +272,7 @@ return [
     // Doctrine annotations reader
     Doctrine\Common\Annotations\Reader::class => function (
         Doctrine\Common\Cache\Cache $doctrine_cache,
-        Settings $settings
+        Environment $settings
     ) {
         return new Doctrine\Common\Annotations\CachedReader(
             new Doctrine\Common\Annotations\AnnotationReader,
@@ -310,8 +320,10 @@ return [
         App\LockFactory $lockFactory,
         Monolog\Logger $logger,
         ContainerInterface $di,
-        App\Plugins $plugins
+        App\Plugins $plugins,
+        Environment $environment
     ) {
+
         // Configure message sending middleware
         $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
         $sendMessageMiddleware->setLogger($logger);
@@ -341,6 +353,13 @@ return [
         // Add unique protection middleware
         $uniqueMiddleware = new App\MessageQueue\HandleUniqueMiddleware($lockFactory);
 
+        // On testing, messages are handled directly when called
+        if ($environment->isTesting()) {
+            return new Symfony\Component\Messenger\MessageBus([
+                $handleMessageMiddleware,
+            ]);
+        }
+
         // Compile finished message bus.
         return new Symfony\Component\Messenger\MessageBus([
             $sendMessageMiddleware,
@@ -350,7 +369,7 @@ return [
     },
 
     // Supervisor manager
-    Supervisor\Supervisor::class => function (Settings $settings) {
+    Supervisor\Supervisor::class => function (Environment $settings) {
         $client = new fXmlRpc\Client(
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
             new fXmlRpc\Transport\PsrTransport(
@@ -384,49 +403,49 @@ return [
     App\Media\MetadataManagerInterface::class => DI\get(App\Media\GetId3\GetId3MetadataManager::class),
 
     // Asset Management
-    App\Assets::class => function (App\Config $config, Settings $settings) {
+    App\Assets::class => function (App\Config $config, Environment $environment) {
         $libraries = $config->get('assets');
 
         $versioned_files = [];
-        $assets_file = $settings[Settings::BASE_DIR] . '/web/static/assets.json';
+        $assets_file = $environment->getBaseDirectory() . '/web/static/assets.json';
         if (file_exists($assets_file)) {
             $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }
 
         $vueComponents = [];
-        $assets_file = $settings[Settings::BASE_DIR] . '/web/static/webpack.json';
+        $assets_file = $environment->getBaseDirectory() . '/web/static/webpack.json';
         if (file_exists($assets_file)) {
             $vueComponents = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }
 
-        return new App\Assets($libraries, $versioned_files, $vueComponents);
+        return new App\Assets($environment, $libraries, $versioned_files, $vueComponents);
     },
 
     // Synchronized (Cron) Tasks
     App\Sync\TaskLocator::class => function (ContainerInterface $di) {
         return new App\Sync\TaskLocator($di, [
             App\Event\GetSyncTasks::SYNC_NOWPLAYING => [
-                App\Sync\Task\BuildQueue::class,
-                App\Sync\Task\NowPlaying::class,
-                App\Sync\Task\ReactivateStreamer::class,
+                App\Sync\Task\BuildQueueTask::class,
+                App\Sync\Task\NowPlayingTask::class,
+                App\Sync\Task\ReactivateStreamerTask::class,
             ],
             App\Event\GetSyncTasks::SYNC_SHORT => [
-                App\Sync\Task\RadioRequests::class,
-                App\Sync\Task\Backup::class,
-                App\Sync\Task\RelayCleanup::class,
+                App\Sync\Task\CheckRequests::class,
+                App\Sync\Task\RunBackupTask::class,
+                App\Sync\Task\CleanupRelaysTask::class,
             ],
             App\Event\GetSyncTasks::SYNC_MEDIUM => [
-                App\Sync\Task\Media::class,
-                App\Sync\Task\FolderPlaylists::class,
-                App\Sync\Task\CheckForUpdates::class,
+                App\Sync\Task\CheckMediaTask::class,
+                App\Sync\Task\CheckFolderPlaylistsTask::class,
+                App\Sync\Task\CheckUpdatesTask::class,
             ],
             App\Event\GetSyncTasks::SYNC_LONG => [
-                App\Sync\Task\Analytics::class,
-                App\Sync\Task\RadioAutomation::class,
-                App\Sync\Task\HistoryCleanup::class,
-                App\Sync\Task\StorageCleanupTask::class,
-                App\Sync\Task\RotateLogs::class,
-                App\Sync\Task\UpdateGeoLiteDatabase::class,
+                App\Sync\Task\RunAnalyticsTask::class,
+                App\Sync\Task\RunAutomatedAssignmentTask::class,
+                App\Sync\Task\CleanupHistoryTask::class,
+                App\Sync\Task\CleanupStorageTask::class,
+                App\Sync\Task\RotateLogsTask::class,
+                App\Sync\Task\UpdateGeoLiteTask::class,
             ],
         ]);
     },

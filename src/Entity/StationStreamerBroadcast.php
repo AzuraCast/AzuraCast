@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
  * Each individual broadcast associated with a streamer.
  *
  * @ORM\Table(name="station_streamer_broadcasts")
- * @ORM\Entity()
+ * @ORM\Entity(readOnly=true)
  * @ORM\HasLifecycleCallbacks
  *
  * @OA\Schema(type="object")
@@ -25,7 +25,7 @@ class StationStreamerBroadcast
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @OA\Property(example=1)
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -73,7 +73,7 @@ class StationStreamerBroadcast
         $this->timestampStart = time();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

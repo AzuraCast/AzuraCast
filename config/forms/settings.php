@@ -1,6 +1,6 @@
 <?php
 /**
- * @var App\Settings $settings
+ * @var App\Environment $settings
  * @var App\Version $version
  */
 
@@ -28,7 +28,7 @@ return [
             'tab' => 'system',
 
             'elements' => [
-                Entity\Settings::BASE_URL => [
+                'baseUrl' => [
                     'url',
                     [
                         'label' => __('Site Base URL'),
@@ -38,7 +38,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::INSTANCE_NAME => [
+                'instanceName' => [
                     'text',
                     [
                         'label' => __('AzuraCast Instance Name'),
@@ -47,7 +47,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::PREFER_BROWSER_URL => [
+                'preferBrowserUrl' => [
                     'toggle',
                     [
                         'label' => __('Prefer Browser URL (If Available)'),
@@ -59,7 +59,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::USE_RADIO_PROXY => [
+                'useRadioProxy' => [
                     'toggle',
                     [
                         'label' => __('Use Web Proxy for Radio'),
@@ -71,7 +71,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::HISTORY_KEEP_DAYS => [
+                'historyKeepDays' => [
                     'radio',
                     [
                         'label' => __('Days of Playback History to Keep'),
@@ -84,12 +84,12 @@ return [
                             730 => __('Last 2 Years'),
                             0 => __('Indefinitely'),
                         ],
-                        'default' => \App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
+                        'default' => App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
                         'form_group_class' => 'col-sm-6',
                     ],
                 ],
 
-                Entity\Settings::NOWPLAYING_USE_WEBSOCKETS => [
+                'enableWebsockets' => [
                     'toggle',
                     [
                         'label' => __('Use WebSockets for Now Playing Updates'),
@@ -110,7 +110,7 @@ return [
 
             'elements' => [
 
-                Entity\Settings::ALWAYS_USE_SSL => [
+                'alwaysUseSsl' => [
                     'toggle',
                     [
                         'label' => __('Always Use HTTPS'),
@@ -122,7 +122,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::API_ACCESS_CONTROL => [
+                'apiAccessControl' => [
                     'text',
                     [
                         'label' => __('API "Access-Control-Allow-Origin" header'),
@@ -141,7 +141,7 @@ return [
             'tab' => 'privacy',
             'elements' => [
 
-                Entity\Settings::LISTENER_ANALYTICS => [
+                'analytics' => [
                     'radio',
                     [
                         'label' => __('Listener Analytics Collection'),
@@ -174,7 +174,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::CENTRAL_UPDATES => [
+                'checkForUpdates' => [
                     'toggle',
                     [
                         'label' => __('Show Update Announcements'),

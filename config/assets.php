@@ -1,7 +1,7 @@
 <?php
 
 use App\Customization;
-use App\Settings;
+use App\Environment;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -29,7 +29,7 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'dist/lib/vue/' . (Settings::getInstance()->isProduction() ? 'vue.min.js' : 'vue.js'),
+                    'src' => 'dist/lib/vue/' . (Environment::getInstance()->isProduction() ? 'vue.min.js' : 'vue.js'),
                 ],
             ],
         ],

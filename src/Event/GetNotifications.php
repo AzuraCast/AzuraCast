@@ -17,7 +17,7 @@ class GetNotifications extends Event
         $this->request = $request;
         $this->notifications = [];
     }
-    
+
     public function getRequest(): ServerRequest
     {
         return $this->request;

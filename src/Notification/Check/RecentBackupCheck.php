@@ -4,21 +4,21 @@ namespace App\Notification\Check;
 
 use App\Acl;
 use App\Entity;
+use App\Environment;
 use App\Event\GetNotifications;
 use App\Notification\Notification;
-use App\Settings;
 use Carbon\CarbonImmutable;
 
 class RecentBackupCheck
 {
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
-    protected Settings $appSettings;
+    protected Environment $environment;
 
-    public function __construct(Entity\Repository\SettingsRepository $settingsRepo, Settings $appSettings)
+    public function __construct(Entity\Settings $settings, Environment $environment)
     {
-        $this->settingsRepo = $settingsRepo;
-        $this->appSettings = $appSettings;
+        $this->settings = $settings;
+        $this->environment = $environment;
     }
 
     public function __invoke(GetNotifications $event): void
@@ -30,12 +30,19 @@ class RecentBackupCheck
             return;
         }
 
-        if (!$this->appSettings->isProduction()) {
+        if (!$this->environment->isProduction()) {
             return;
         }
 
         $threshold = CarbonImmutable::now()->subWeeks(2)->getTimestamp();
-        $backupLastRun = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
+
+        // Don't show backup warning for freshly created installations.
+        $setupComplete = $this->settings->getSetupCompleteTime();
+        if ($setupComplete >= $threshold) {
+            return;
+        }
+
+        $backupLastRun = $this->settings->getBackupLastRun();
 
         if ($backupLastRun < $threshold) {
             $router = $request->getRouter();

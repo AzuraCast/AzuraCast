@@ -17,17 +17,17 @@ class OverviewController
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     protected Entity\Repository\AnalyticsRepository $analyticsRepo;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Settings $settings,
         Entity\Repository\AnalyticsRepository $analyticsRepo
     ) {
         $this->em = $em;
-        $this->settingsRepo = $settingsRepo;
+        $this->settings = $settings;
         $this->analyticsRepo = $analyticsRepo;
     }
 
@@ -37,10 +37,7 @@ class OverviewController
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        $analytics_level = $this->settingsRepo->getSetting(
-            Entity\Settings::LISTENER_ANALYTICS,
-            Entity\Analytics::LEVEL_ALL
-        );
+        $analytics_level = $this->settings->getAnalytics();
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
@@ -183,13 +180,15 @@ class OverviewController
         /* Play Count Statistics */
 
         $song_totals_raw = [];
-        $song_totals_raw['played'] = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sh.song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS records
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
-            GROUP BY sh.song_id
-            ORDER BY records DESC')
-            ->setParameter('station_id', $station->getId())
+        $song_totals_raw['played'] = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh.song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS records
+                FROM App\Entity\SongHistory sh
+                WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
+                GROUP BY sh.song_id
+                ORDER BY records DESC
+            DQL
+        )->setParameter('station_id', $station->getId())
             ->setParameter('timestamp', $statisticsThreshold->getTimestamp())
             ->setMaxResults(40)
             ->getArrayResult();
@@ -209,13 +208,16 @@ class OverviewController
         $songPerformanceThreshold = CarbonImmutable::parse('-2 days', $station_tz)->getTimestamp();
 
         // Get all songs played in timeline.
-        $songs_played_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sh
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station_id = :station_id
-            AND sh.timestamp_start >= :timestamp
-            AND sh.listeners_start IS NOT NULL
-            ORDER BY sh.timestamp_start ASC')
-            ->setParameter('station_id', $station->getId())
+        $songs_played_raw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh
+                FROM App\Entity\SongHistory sh
+                WHERE sh.station_id = :station_id
+                AND sh.timestamp_start >= :timestamp
+                AND sh.listeners_start IS NOT NULL
+                ORDER BY sh.timestamp_start ASC
+            DQL
+        )->setParameter('station_id', $station->getId())
             ->setParameter('timestamp', $songPerformanceThreshold)
             ->getArrayResult();
 

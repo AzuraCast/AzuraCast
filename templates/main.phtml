@@ -9,7 +9,7 @@
  * @var App\Assets $assets
  * @var App\Version $version
  * @var App\Http\ServerRequest $request
- * @var array $app_settings
+ * @var App\Environment $environment
  */
 
 $page_class ??= '';
@@ -153,7 +153,7 @@ $user = $request->getUser();
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
     <?=__('Powered by %s',
-        '<a href="https://www.azuracast.com/" target="_blank">' . $settings['name'] . '</a> &bull; ' . $version->getVersionText() . ' &bull; ' . (\App\Settings::getInstance()->isDocker() ? 'Docker' : 'Ansible') . ' &bull; PHP ' . \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION)?>
+        '<a href="https://www.azuracast.com/" target="_blank">' . $environment->getAppName() . '</a> &bull; ' . $version->getVersionText() . ' &bull; ' . ($environment->isDocker() ? 'Docker' : 'Ansible') . ' &bull; PHP ' . \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION)?>
     <br>
     <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>',
         'https://www.azuracast.com/donate.html')?>

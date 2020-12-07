@@ -9,25 +9,28 @@ use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 
-class StorageCleanupTask extends AbstractTask
+class CleanupStorageTask extends AbstractTask
 {
     protected FilesystemManager $filesystem;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->filesystem = $filesystem;
     }
 
     public function run(bool $force = false): void
     {
-        $stationsQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT s
-            FROM App\Entity\Station s');
+        $stationsQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT s FROM App\Entity\Station s
+            DQL
+        );
 
         $stations = SimpleBatchIteratorAggregate::fromQuery($stationsQuery, 1);
         foreach ($stations as $station) {
@@ -37,10 +40,12 @@ class StorageCleanupTask extends AbstractTask
 
         // Check all stations for automation settings.
         // Use this to avoid detached entity errors.
-        $storageLocationsQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT sl
-            FROM App\Entity\StorageLocation sl
-            WHERE sl.type = :type')
-            ->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
+        $storageLocationsQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sl FROM App\Entity\StorageLocation sl
+                WHERE sl.type = :type
+            DQL
+        )->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
 
         $storageLocations = SimpleBatchIteratorAggregate::fromQuery($storageLocationsQuery, 1);
         foreach ($storageLocations as $storageLocation) {
@@ -69,11 +74,13 @@ class StorageCleanupTask extends AbstractTask
     {
         $fs = $storageLocation->getFilesystem();
 
-        $allUniqueIdsRaw = $this->em
-            ->createQuery(/** @lang DQL */ 'SELECT sm.unique_id
+        $allUniqueIdsRaw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sm.unique_id
                 FROM App\Entity\StationMedia sm
-                WHERE sm.storage_location = :storageLocation')
-            ->setParameter('storageLocation', $storageLocation)
+                WHERE sm.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $storageLocation)
             ->getArrayResult();
 
         $allUniqueIds = [];

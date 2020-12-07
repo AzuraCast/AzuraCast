@@ -3,6 +3,7 @@
 namespace App\Radio\Backend\Liquidsoap;
 
 use App\Entity;
+use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
 use App\Flysystem\FilesystemManager;
@@ -10,7 +11,6 @@ use App\Logger;
 use App\Message;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -32,14 +32,18 @@ class ConfigWriter implements EventSubscriberInterface
 
     protected FilesystemManager $filesystem;
 
+    protected Environment $environment;
+
     public function __construct(
         EntityManagerInterface $em,
         Liquidsoap $liquidsoap,
-        FilesystemManager $filesystem
+        FilesystemManager $filesystem,
+        Environment $environment
     ) {
         $this->em = $em;
         $this->liquidsoap = $liquidsoap;
         $this->filesystem = $filesystem;
+        $this->environment = $environment;
     }
 
     /**
@@ -86,14 +90,12 @@ class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $appSettings = Settings::getInstance();
-        if (!$appSettings->enableAdvancedFeatures()) {
+        if (!$this->environment->enableAdvancedFeatures()) {
             return;
         }
 
         $station = $event->getStation();
         $settings = $station->getBackendConfig();
-
         if (!empty($settings[$sectionName])) {
             $event->appendLines([
                 '# Custom Configuration (Specified in Station Profile)',
@@ -135,7 +137,7 @@ class ConfigWriter implements EventSubscriberInterface
             'set("log.stdout", true)',
             'set("log.file", false)',
             'set("server.telnet",true)',
-            'set("server.telnet.bind_addr","' . (Settings::getInstance()->isDocker() ? '0.0.0.0' : '127.0.0.1') . '")',
+            'set("server.telnet.bind_addr","' . ($this->environment->isDocker() ? '0.0.0.0' : '127.0.0.1') . '")',
             'set("server.telnet.port", ' . $this->liquidsoap->getTelnetPort($station) . ')',
             'set("harbor.bind_addrs",["0.0.0.0"])',
             '',
@@ -524,12 +526,15 @@ class ConfigWriter implements EventSubscriberInterface
         $mediaBaseDir = $mediaStorage->getPath() . '/';
         $playlistFile = [];
 
-        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT DISTINCT sm
-            FROM App\Entity\StationMedia sm
-            JOIN sm.playlists spm
-            WHERE spm.playlist = :playlist
-            ORDER BY spm.weight ASC
-        ')->setParameter('playlist', $playlist);
+        $mediaQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT DISTINCT sm
+                FROM App\Entity\StationMedia sm
+                JOIN sm.playlists spm
+                WHERE spm.playlist = :playlist
+                ORDER BY spm.weight ASC                
+            DQL
+        )->setParameter('playlist', $playlist);
 
         $mediaIterator = $mediaQuery->iterate();
 
@@ -646,14 +651,12 @@ class ConfigWriter implements EventSubscriberInterface
      */
     protected function getApiUrlCommand(Entity\Station $station, $endpoint, $params = []): string
     {
-        $settings = Settings::getInstance();
-
         // Docker cURL-based API URL call with API authentication.
-        if ($settings->isDocker()) {
+        if ($this->environment->isDocker()) {
             $params = (array)$params;
             $params['api_auth'] = '!azuracast_api_auth';
 
-            $service_uri = ($settings[Settings::DOCKER_REVISION] >= 5) ? 'web' : 'nginx';
+            $service_uri = ($this->environment->isDockerRevisionAtLeast(5)) ? 'web' : 'nginx';
             $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
             $command = 'curl -s --request POST --url ' . $api_url;
             foreach ($params as $paramKey => $paramVal) {
@@ -662,7 +665,7 @@ class ConfigWriter implements EventSubscriberInterface
             }
         } else {
             // Ansible shell-script call.
-            $shell_path = '/usr/bin/php ' . $settings->getBaseDirectory() . '/bin/console';
+            $shell_path = '/usr/bin/php ' . $this->environment->getBaseDirectory() . '/bin/console';
 
             $shell_args = [];
             $shell_args[] = 'azuracast:internal:' . $endpoint;
@@ -878,9 +881,9 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Write fallback to safety file to ensure infallible source for the broadcast outputs.
-        $error_file = Settings::getInstance()->isDocker()
+        $error_file = $this->environment->isDocker()
             ? '/usr/local/share/icecast/web/error.mp3'
-            : Settings::getInstance()->getBaseDirectory() . '/resources/error.mp3';
+            : $this->environment->getBaseDirectory() . '/resources/error.mp3';
 
         $event->appendLines([
             sprintf(

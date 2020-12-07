@@ -1,31 +1,31 @@
 <?php
 $this->layout('main', [
     'title' => __('My API Keys'),
-    'manual' => true
+    'manual' => true,
 ]);
 $assets->load('clipboard');
 ?>
 
 <div class="card">
     <div class="card-header bg-primary-dark">
-        <h2 class="card-title"><?=__('New Key Generated') ?></h2>
+        <h2 class="card-title"><?=__('New Key Generated')?></h2>
     </div>
     <div class="card-body">
-        <p><?=__('<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.') ?></p>
+        <p><?=__('<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.')?></p>
 
-        <p><?=__('Your full API key is below:') ?></p>
+        <p><?=__('Your full API key is below:')?></p>
 
         <div class="well">
-            <code id="api_key"><?=$key_identifier ?><?=\App\Entity\ApiKey::SEPARATOR ?><?=$key_verifier ?></code>
+            <code id="api_key"><?=$key?></code>
             <div class="buttons">
-                <button class="btn btn-copy btn-default btn-sm" data-clipboard-target="#api_key"><?=__('Copy to Clipboard') ?></button>
+                <button class="btn btn-copy btn-default btn-sm" data-clipboard-target="#api_key"><?=__('Copy to Clipboard')?></button>
             </div>
         </div>
 
-        <p><?=__('When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.') ?></p>
+        <p><?=__('When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.')?></p>
 
         <div class="buttons">
-            <a class="btn btn-lg btn-primary" href="<?=$router->named('api_keys:index') ?>"><?=__('Continue') ?></a>
+            <a class="btn btn-lg btn-primary" href="<?=$router->named('api_keys:index')?>"><?=__('Continue')?></a>
         </div>
     </div>
 </div>

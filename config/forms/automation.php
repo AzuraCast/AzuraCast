@@ -23,7 +23,7 @@ return [
                 'label' => __('Days Between Automated Assignments'),
                 'description' => __('Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.'),
                 'class' => 'inline',
-                'default' => App\Sync\Task\RadioAutomation::DEFAULT_THRESHOLD_DAYS,
+                'default' => App\Sync\Task\RunAutomatedAssignmentTask::DEFAULT_THRESHOLD_DAYS,
                 'choices' => [
                     7 => sprintf(__('%d days'), 7),
                     14 => sprintf(__('%d days'), 14),

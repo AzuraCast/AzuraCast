@@ -62,6 +62,7 @@ class QueueManager implements SendersLocatorInterface
                     'delete_after_ack' => true,
                     'redeliver_timeout' => 43200,
                     'claim_interval' => 86400,
+                    'dbindex' => $this->redis->getDbNum(),
                 ],
                 array_filter([
                     'host' => $this->redis->getHost(),
@@ -113,6 +114,11 @@ class QueueManager implements SendersLocatorInterface
 
         $connection->cleanup();
         $connection->setup();
+    }
+
+    public function getQueueCount(string $queueName): int
+    {
+        return $this->redis->xLen('messages_' . $queueName);
     }
 
     /**

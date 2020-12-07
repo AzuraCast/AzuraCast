@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Settings;
 use App\Version;
 use Psr\Http\Message\ResponseInterface;
 
@@ -12,13 +12,13 @@ use function OpenApi\scan;
 
 class OpenApiController
 {
-    protected Settings $settings;
+    protected Environment $environment;
 
     protected Version $version;
 
-    public function __construct(Settings $settings, Version $version)
+    public function __construct(Environment $environment, Version $version)
     {
-        $this->settings = $settings;
+        $this->environment = $environment;
         $this->version = $version;
     }
 
@@ -34,9 +34,9 @@ class OpenApiController
         define('AZURACAST_VERSION', $this->version->getVersion());
 
         $oa = scan([
-            $this->settings[Settings::BASE_DIR] . '/util/openapi.php',
-            $this->settings[Settings::BASE_DIR] . '/src/Entity',
-            $this->settings[Settings::BASE_DIR] . '/src/Controller/Api',
+            $this->environment->getBaseDirectory() . '/util/openapi.php',
+            $this->environment->getBaseDirectory() . '/src/Entity',
+            $this->environment->getBaseDirectory() . '/src/Controller/Api',
         ], [
             'exclude' => [
                 'bootstrap',

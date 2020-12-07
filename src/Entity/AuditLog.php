@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="audit_log")
- * @ORM\Entity
+ * @ORM\Entity(readOnly=true)
  */
 class AuditLog
 {
@@ -24,7 +24,7 @@ class AuditLog
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -122,7 +122,7 @@ class AuditLog
             : null;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

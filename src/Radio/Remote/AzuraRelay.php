@@ -3,7 +3,7 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
-use App\Settings;
+use App\Environment;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use NowPlaying\Result\Result;
@@ -67,11 +67,11 @@ class AzuraRelay extends AbstractRemote
         $fe_config = $station->getFrontendConfig();
         $radio_port = $fe_config->getPort();
 
-        $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
+        $use_radio_proxy = $this->settings->getUseRadioProxy();
 
         if (
             $use_radio_proxy
-            || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
+            || (!Environment::getInstance()->isProduction() && !Environment::getInstance()->isDocker())
             || 'https' === $base_url->getScheme()
         ) {
             // Web proxy support.

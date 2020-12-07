@@ -1,0 +1,15 @@
+<?php
+/** @var \App\Assets $assets */
+$assets
+    ->load('clipboard')
+    ->addInlineJs($this->fetch('partials/log_inline.js'), 99);
+?>
+
+<div id="log-view" data-url="<?=$url?>">
+    <textarea class="form-control log-viewer" id="log-view-contents" spellcheck="false" readonly>Loading...</textarea>
+    <div class="buttons pt-2">
+        <button class="btn btn-copy btn-primary btn-sm" data-clipboard-target="#log-view-contents">
+            <i class="material-icons">file_copy</i> <?=__('Copy to Clipboard')?>
+        </button>
+    </div>
+</div>

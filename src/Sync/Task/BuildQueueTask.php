@@ -8,7 +8,7 @@ use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class BuildQueue extends AbstractTask
+class BuildQueueTask extends AbstractTask
 {
     protected AutoDJ $autoDJ;
 
@@ -16,12 +16,12 @@ class BuildQueue extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         AutoDJ $autoDJ,
         LockFactory $lockFactory
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->autoDJ = $autoDJ;
         $this->lockFactory = $lockFactory;

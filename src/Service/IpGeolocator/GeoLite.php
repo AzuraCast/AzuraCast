@@ -2,14 +2,14 @@
 
 namespace App\Service\IpGeolocator;
 
-use App\Settings;
+use App\Environment;
 
 class GeoLite extends AbstractIpGeolocator
 {
     public static function getBaseDirectory(): string
     {
-        $settings = Settings::getInstance();
-        return dirname($settings[Settings::BASE_DIR]) . '/geoip';
+        $environment = Environment::getInstance();
+        return dirname($environment->getBaseDirectory()) . '/geoip';
     }
 
     public static function getDatabasePath(): string

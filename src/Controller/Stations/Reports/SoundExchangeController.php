@@ -58,10 +58,13 @@ class SoundExchangeController
                 ],
             ];
 
-            $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
-                FROM App\Entity\StationMedia sm
-                WHERE sm.station_id = :station_id')
-                ->setParameter('station_id', $station->getId())
+            $all_media = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT sm
+                    FROM App\Entity\StationMedia sm
+                    WHERE sm.station_id = :station_id                    
+                DQL
+            )->setParameter('station_id', $station->getId())
                 ->getArrayResult();
 
             $media_by_id = [];
@@ -69,22 +72,17 @@ class SoundExchangeController
                 $media_by_id[$media_row['song_id']] = $media_row;
             }
 
-            $history_rows = $this->em
-                ->createQuery(/** @lang DQL */
-                    'SELECT
-                        sh.song_id AS song_id,
-                        sh.text,
-                        sh.artist,
-                        sh.title,
-                        COUNT(sh.id) AS plays,
+            $history_rows = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS plays,
                         SUM(sh.unique_listeners) AS unique_listeners
                     FROM App\Entity\SongHistory sh
                     WHERE sh.station_id = :station_id
                     AND sh.timestamp_start <= :time_end
                     AND sh.timestamp_end >= :time_start
-                    GROUP BY sh.song_id'
-                )
-                ->setParameter('station_id', $station->getId())
+                    GROUP BY sh.song_id
+                DQL
+            )->setParameter('station_id', $station->getId())
                 ->setParameter('time_start', $start_date)
                 ->setParameter('time_end', $end_date)
                 ->getArrayResult();
@@ -101,12 +99,14 @@ class SoundExchangeController
             // Assemble report items
             $station_name = $station->getName();
 
-            $set_isrc_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE
-                App\Entity\StationMedia sm
-                SET sm.isrc = :isrc
-                WHERE sm.song_id = :song_id
-                AND sm.station_id = :station_id')
-                ->setParameter('station_id', $station->getId());
+            $set_isrc_query = $this->em->createQuery(
+                <<<'DQL'
+                    UPDATE App\Entity\StationMedia sm
+                    SET sm.isrc = :isrc
+                    WHERE sm.song_id = :song_id
+                    AND sm.station_id = :station_id
+                DQL
+            )->setParameter('station_id', $station->getId());
 
             foreach ($history_rows_by_id as $song_id => $history_row) {
                 $song_row = $media_by_id[$song_id] ?? $history_row;

@@ -5,11 +5,29 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
+use App\Environment;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\Serializer\Serializer;
 
 class StationPlaylistMediaRepository extends Repository
 {
+    protected StationQueueRepository $queueRepo;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        Environment $environment,
+        LoggerInterface $logger,
+        StationQueueRepository $queueRepo
+    ) {
+        parent::__construct($em, $serializer, $environment, $logger);
+
+        $this->queueRepo = $queueRepo;
+    }
+
     /**
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
@@ -64,11 +82,13 @@ class StationPlaylistMediaRepository extends Repository
     public function getHighestSongWeight(Entity\StationPlaylist $playlist): int
     {
         try {
-            $highest_weight = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                MAX(e.weight)
-                FROM App\Entity\StationPlaylistMedia e
-                WHERE e.playlist_id = :playlist_id')
-                ->setParameter('playlist_id', $playlist->getId())
+            $highest_weight = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT MAX(e.weight)
+                    FROM App\Entity\StationPlaylistMedia e
+                    WHERE e.playlist_id = :playlist_id
+                DQL
+            )->setParameter('playlist_id', $playlist->getId())
                 ->getSingleScalarResult();
         } catch (NoResultException $e) {
             $highest_weight = 1;
@@ -96,6 +116,8 @@ class StationPlaylistMediaRepository extends Repository
 
             $affectedPlaylists[$playlist->getId()] = $playlist;
 
+            $this->queueRepo->clearForMediaAndPlaylist($media, $playlist);
+
             $this->em->remove($spmRow);
         }
 
@@ -114,12 +136,14 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping): void
     {
-        $update_query = $this->em->createQuery(/** @lang DQL */ 'UPDATE
-            App\Entity\StationPlaylistMedia e
-            SET e.weight = :weight
-            WHERE e.playlist_id = :playlist_id
-            AND e.id = :id')
-            ->setParameter('playlist_id', $playlist->getId());
+        $update_query = $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\StationPlaylistMedia e
+                SET e.weight = :weight
+                WHERE e.playlist_id = :playlist_id
+                AND e.id = :id
+            DQL
+        )->setParameter('playlist_id', $playlist->getId());
 
         foreach ($mapping as $id => $weight) {
             $update_query->setParameter('id', $id)
@@ -138,13 +162,15 @@ class StationPlaylistMediaRepository extends Repository
      */
     public function getPlayableMedia(Entity\StationPlaylist $playlist): array
     {
-        $all_media = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sm.id, sm.song_id, sm.artist, sm.title
-            FROM App\Entity\StationMedia sm
-            JOIN sm.playlists spm
-            WHERE spm.playlist_id = :playlist_id
-            ORDER BY spm.weight ASC')
-            ->setParameter('playlist_id', $playlist->getId())
+        $all_media = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sm.id, sm.song_id, sm.artist, sm.title
+                FROM App\Entity\StationMedia sm
+                JOIN sm.playlists spm
+                WHERE spm.playlist_id = :playlist_id
+                ORDER BY spm.weight ASC
+            DQL
+        )->setParameter('playlist_id', $playlist->getId())
             ->getArrayResult();
 
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {

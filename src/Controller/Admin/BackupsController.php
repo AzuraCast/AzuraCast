@@ -4,11 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Config;
 use App\Controller\AbstractLogViewerController;
-use App\Entity\Repository\SettingsRepository;
 use App\Entity\Repository\StorageLocationRepository;
 use App\Entity\Settings;
 use App\Entity\StorageLocation;
 use App\Exception\NotFoundException;
+use App\File;
 use App\Flysystem\Filesystem;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
@@ -16,31 +16,31 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\BackupMessage;
 use App\Session\Flash;
-use App\Sync\Task\Backup;
+use App\Sync\Task\RunBackupTask;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
 class BackupsController extends AbstractLogViewerController
 {
-    protected SettingsRepository $settingsRepo;
+    protected Settings $settings;
 
     protected StorageLocationRepository $storageLocationRepo;
 
-    protected Backup $backupTask;
+    protected RunBackupTask $backupTask;
 
     protected MessageBus $messageBus;
 
     protected string $csrfNamespace = 'admin_backups';
 
     public function __construct(
-        SettingsRepository $settings_repo,
         StorageLocationRepository $storageLocationRepo,
-        Backup $backup_task,
+        Settings $settings,
+        RunBackupTask $backup_task,
         MessageBus $messageBus
     ) {
-        $this->settingsRepo = $settings_repo;
         $this->storageLocationRepo = $storageLocationRepo;
 
+        $this->settings = $settings;
         $this->backupTask = $backup_task;
         $this->messageBus = $messageBus;
     }
@@ -60,10 +60,10 @@ class BackupsController extends AbstractLogViewerController
 
         return $request->getView()->renderToResponse($response, 'admin/backups/index', [
             'backups' => $backups,
-            'is_enabled' => (bool)$this->settingsRepo->getSetting(Settings::BACKUP_ENABLED, false),
-            'last_run' => $this->settingsRepo->getSetting(Settings::BACKUP_LAST_RUN, 0),
-            'last_result' => $this->settingsRepo->getSetting(Settings::BACKUP_LAST_RESULT, 0),
-            'last_output' => $this->settingsRepo->getSetting(Settings::BACKUP_LAST_OUTPUT, ''),
+            'is_enabled' => $this->settings->isBackupEnabled(),
+            'last_run' => $this->settings->getBackupLastRun(),
+            'last_result' => $this->settings->getBackupLastResult(),
+            'last_output' => $this->settings->getBackupLastOutput(),
             'csrf' => $request->getCsrf()->generate($this->csrfNamespace),
         ]);
     }
@@ -98,7 +98,7 @@ class BackupsController extends AbstractLogViewerController
         if ($request->isPost() && $runForm->isValid($request->getParsedBody())) {
             $data = $runForm->getValues();
 
-            $tempFile = tempnam('/tmp', 'backup_');
+            $tempFile = File::generateTempPath('backup.log');
 
             $storageLocationId = (int)$data['storage_location'];
             if ($storageLocationId <= 0) {
@@ -130,9 +130,11 @@ class BackupsController extends AbstractLogViewerController
     public function logAction(
         ServerRequest $request,
         Response $response,
-        $path
+        string $path
     ): ResponseInterface {
-        return $this->view($request, $response, '/tmp/' . $path, true);
+        $logPath = File::validateTempPath($path);
+
+        return $this->view($request, $response, $logPath, true);
     }
 
     public function downloadAction(

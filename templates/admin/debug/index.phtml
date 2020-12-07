@@ -26,13 +26,13 @@ $this->layout('main', [
     <div class="col-md-6">
         <div class="card mb-3">
             <div class="card-header bg-primary-dark">
-                <h2 class="card-title"><?=__('Clear Message Queue')?></h2>
+                <h2 class="card-title"><?=__('Clear All Message Queues')?></h2>
             </div>
             <div class="card-body">
-                <p><?=__('This will clear any pending unprocessed messages in the message queue.')?></p>
+                <p><?=__('This will clear any pending unprocessed messages in all message queues.')?></p>
                 <div class="buttons">
                     <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:clear-queue')?>">
-                        <?=__('Clear Message Queue')?>
+                        <?=__('Clear All Message Queues')?>
                     </a>
                 </div>
             </div>
@@ -55,6 +55,29 @@ $this->layout('main', [
                         <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:sync',
                             ['type' => $sync_key])?>">
                             <?=__('Run Task')?>
+                        </a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header bg-primary-dark">
+        <h2 class="card-title"><?=__('Message Queues')?></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <?php foreach ($queue_totals as $queueType => $queueTotal): ?>
+                <div class="col">
+                    <h5 class="mb-0"><?=$queueType?></h5>
+                    <p><?=__('%d queued messages', $queueTotal)?></p>
+
+                    <div class="buttons">
+                        <a class="btn btn-sm btn-primary" role="button" href="<?=$router->named('admin:debug:clear-queue',
+                            ['queue' => $queueType])?>">
+                            <?=__('Clear Queue')?>
                         </a>
                     </div>
                 </div>

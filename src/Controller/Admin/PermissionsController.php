@@ -23,14 +23,16 @@ class PermissionsController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $all_roles = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            r, rp, s
-            FROM App\Entity\Role r
-            LEFT JOIN r.users u
-            LEFT JOIN r.permissions rp
-            LEFT JOIN rp.station s
-            ORDER BY r.id ASC')
-            ->getArrayResult();
+        $all_roles = $this->em->createQuery(
+            <<<'DQL'
+                SELECT r, rp, s
+                FROM App\Entity\Role r
+                LEFT JOIN r.users u
+                LEFT JOIN r.permissions rp
+                LEFT JOIN rp.station s
+                ORDER BY r.id ASC
+            DQL
+        )->getArrayResult();
 
         $roles = [];
 

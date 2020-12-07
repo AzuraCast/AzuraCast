@@ -4,10 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Controller\AbstractLogViewerController;
 use App\Entity;
+use App\Environment;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,9 +15,12 @@ class LogsController extends AbstractLogViewerController
 {
     protected EntityManagerInterface $em;
 
-    public function __construct(EntityManagerInterface $em)
+    protected Environment $environment;
+
+    public function __construct(EntityManagerInterface $em, Environment $environment)
     {
         $this->em = $em;
+        $this->environment = $environment;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -44,7 +47,7 @@ class LogsController extends AbstractLogViewerController
      */
     protected function getGlobalLogs(): array
     {
-        $tempDir = Settings::getInstance()->getTempDirectory();
+        $tempDir = $this->environment->getTempDirectory();
         $logPaths = [];
 
         $logPaths['azuracast_log'] = [
@@ -53,7 +56,7 @@ class LogsController extends AbstractLogViewerController
             'tail' => true,
         ];
 
-        if (!Settings::getInstance()->isDocker()) {
+        if (!$this->environment->isDocker()) {
             $logPaths['nginx_access'] = [
                 'name' => __('Nginx Access Log'),
                 'path' => $tempDir . '/access.log',

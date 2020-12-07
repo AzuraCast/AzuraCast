@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
-class RadioAutomation extends AbstractTask
+class RunAutomatedAssignmentTask extends AbstractTask
 {
     public const DEFAULT_THRESHOLD_DAYS = 14;
 
@@ -20,12 +20,12 @@ class RadioAutomation extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Adapters $adapters
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->mediaRepo = $mediaRepo;
         $this->adapters = $adapters;
@@ -41,7 +41,11 @@ class RadioAutomation extends AbstractTask
         // Check all stations for automation settings.
         // Use this to avoid detached entity errors.
         $stations = SimpleBatchIteratorAggregate::fromQuery(
-            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
+            $this->em->createQuery(
+                <<<'DQL'
+                    SELECT s FROM App\Entity\Station s
+                DQL
+            ),
             1
         );
 
@@ -79,11 +83,14 @@ class RadioAutomation extends AbstractTask
 
 
         // Pull songs in current playlists, then clear those playlists.
-        $getSongsInPlaylistQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sm.id
-            FROM App\Entity\StationPlaylistMedia spm
-            JOIN spm.media sm
-            WHERE spm.playlist = :playlist');
+        $getSongsInPlaylistQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sm.id
+                FROM App\Entity\StationPlaylistMedia spm
+                JOIN spm.media sm
+                WHERE spm.playlist = :playlist
+            DQL
+        );
 
         $mediaToUpdate = [];
         $playlists = [];
@@ -124,7 +131,7 @@ class RadioAutomation extends AbstractTask
 
         // Place all songs with 0 plays back in their original playlists.
         foreach ($mediaReport as $song_id => $media) {
-            if ($media['num_plays'] === 0 && isset($original_playlists[$song_id])) {
+            if ($media['num_plays'] === 0) {
                 unset($mediaToUpdate[$media['id']], $mediaReport[$song_id]);
             }
         }
@@ -157,11 +164,14 @@ class RadioAutomation extends AbstractTask
         }
 
         // Update media playlist placement.
-        $updateMediaPlaylistQuery = $this->em->createQuery(/** @lang DQL */ 'UPDATE
-            App\Entity\StationPlaylistMedia spm
-            SET spm.playlist_id = :new_playlist_id
-            WHERE spm.playlist_id = :old_playlist_id
-            AND spm.media_id = :media_id');
+        $updateMediaPlaylistQuery = $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\StationPlaylistMedia spm
+                SET spm.playlist_id = :new_playlist_id
+                WHERE spm.playlist_id = :old_playlist_id
+                AND spm.media_id = :media_id
+            DQL
+        );
 
         foreach ($mediaToUpdate as $mediaId => $playlists) {
             $updateMediaPlaylistQuery->setParameter('media_id', $mediaId)
@@ -198,13 +208,15 @@ class RadioAutomation extends AbstractTask
             ->getTimestamp();
 
         // Pull all SongHistory data points.
-        $dataPointsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start
-            FROM App\Entity\SongHistory sh
-            WHERE sh.station = :station
-            AND sh.timestamp_end != 0
-            AND sh.timestamp_start >= :threshold')
-            ->setParameter('station', $station)
+        $dataPointsRaw = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start
+                FROM App\Entity\SongHistory sh
+                WHERE sh.station = :station
+                AND sh.timestamp_end != 0
+                AND sh.timestamp_start >= :threshold
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
@@ -221,12 +233,14 @@ class RadioAutomation extends AbstractTask
             $data_points[$row['song_id']][] = $row;
         }
 
-        $mediaQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sm
-            FROM App\Entity\StationMedia sm
-            WHERE sm.storage_location = :storageLocation
-            ORDER BY sm.artist ASC, sm.title ASC')
-            ->setParameter('storageLocation', $station->getMediaStorageLocation());
+        $mediaQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sm
+                FROM App\Entity\StationMedia sm
+                WHERE sm.storage_location = :storageLocation
+                ORDER BY sm.artist ASC, sm.title ASC
+            DQL
+        )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         $iterator = SimpleBatchIteratorAggregate::fromQuery($mediaQuery, 100);
         $report = [];

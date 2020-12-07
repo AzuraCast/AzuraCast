@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
-use App\Settings;
 use App\Version;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,20 +13,20 @@ class SettingsForm extends AbstractSettingsForm
 {
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Settings $settings,
+        Entity\Repository\SettingsTableRepository $settingsRepo,
+        Environment $environment,
         Version $version,
         Config $config
     ) {
         $formConfig = $config->get('forms/settings', [
-            'settings' => $settings,
+            'settings' => $environment,
             'version' => $version,
         ]);
 
         parent::__construct(
             $em,
             $settingsRepo,
-            $settings,
+            $environment,
             $formConfig
         );
     }
@@ -34,7 +34,7 @@ class SettingsForm extends AbstractSettingsForm
     public function process(ServerRequest $request): bool
     {
         if ('https' !== $request->getUri()->getScheme()) {
-            $alwaysUseSsl = $this->getField(Entity\Settings::ALWAYS_USE_SSL);
+            $alwaysUseSsl = $this->getField('alwaysUseSsl');
             $alwaysUseSsl->setAttribute('disabled', 'disabled');
             $alwaysUseSsl->setOption(
                 'description',

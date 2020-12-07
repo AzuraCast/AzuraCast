@@ -7,6 +7,7 @@ use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\EventDispatcher;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManager;
+use App\MessageQueue\ReloadSettingsMiddleware;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
@@ -35,6 +36,7 @@ class ProcessCommand extends CommandAbstract
 
         $eventDispatcher->addServiceSubscriber(ClearEntityManagerSubscriber::class);
         $eventDispatcher->addServiceSubscriber(LogWorkerExceptionSubscriber::class);
+        $eventDispatcher->addServiceSubscriber(ReloadSettingsMiddleware::class);
 
         if ($runtime > 0) {
             $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $logger));

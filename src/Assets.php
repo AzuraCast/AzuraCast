@@ -39,19 +39,16 @@ class Assets
     /** @var ServerRequestInterface|null The current request (if it's available) */
     protected ?ServerRequestInterface $request = null;
 
-    /**
-     * Assets constructor.
-     *
-     * @param array $libraries
-     * @param array $versioned_files
-     *
-     * @throws \Exception
-     */
+    protected Environment $environment;
+
     public function __construct(
+        Environment $environment,
         array $libraries = [],
         array $versioned_files = [],
         array $vueComponents = []
     ) {
+        $this->environment = $environment;
+
         foreach ($libraries as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }
@@ -465,7 +462,7 @@ class Assets
             return $resource_uri;
         }
 
-        return '/static/' . $resource_uri;
+        return $this->environment->getAssetUrl() . '/' . $resource_uri;
     }
 
     /**

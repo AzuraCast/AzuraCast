@@ -17,7 +17,7 @@ class NowplayingController implements EventSubscriberInterface
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     protected CacheInterface $cache;
 
@@ -25,12 +25,12 @@ class NowplayingController implements EventSubscriberInterface
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Settings $settings,
         CacheInterface $cache,
         EventDispatcher $dispatcher
     ) {
         $this->em = $em;
-        $this->settingsRepo = $settingsRepo;
+        $this->settings = $settings;
         $this->cache = $cache;
         $this->dispatcher = $dispatcher;
     }
@@ -140,19 +140,21 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromCache(LoadNowPlaying $event): void
     {
-        $event->setNowPlaying((array)$this->cache->get(Entity\Settings::NOWPLAYING), 'redis');
+        $event->setNowPlaying((array)$this->cache->get('nowplaying'), 'redis');
     }
 
     public function loadFromSettings(LoadNowPlaying $event): void
     {
-        $event->setNowPlaying((array)$this->settingsRepo->getSetting(Entity\Settings::NOWPLAYING), 'settings');
+        $event->setNowPlaying((array)$this->settings->getNowplaying(), 'settings');
     }
 
     public function loadFromStations(LoadNowPlaying $event): void
     {
-        $nowplaying_db = $this->em
-            ->createQuery(/** @lang DQL */ 'SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1')
-            ->getArrayResult();
+        $nowplaying_db = $this->em->createQuery(
+            <<<'DQL'
+                SELECT s.nowplaying FROM App\Entity\Station s WHERE s.is_enabled = 1
+            DQL
+        )->getArrayResult();
 
         $np = [];
         foreach ($nowplaying_db as $np_row) {

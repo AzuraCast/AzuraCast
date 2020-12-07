@@ -8,9 +8,9 @@ abstract class CestAbstract
 {
     protected ContainerInterface $di;
 
-    protected App\Settings $settings;
+    protected App\Environment $environment;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
 
     protected Entity\Repository\StationRepository $stationRepo;
 
@@ -25,9 +25,9 @@ abstract class CestAbstract
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
 
-        $this->settingsRepo = $this->di->get(Entity\Repository\SettingsRepository::class);
+        $this->settingsTableRepo = $this->di->get(Entity\Repository\SettingsTableRepository::class);
         $this->stationRepo = $this->di->get(Entity\Repository\StationRepository::class);
-        $this->settings = $this->di->get(App\Settings::class);
+        $this->environment = $this->di->get(App\Environment::class);
     }
 
     public function _after(FunctionalTester $I): void
@@ -48,7 +48,10 @@ abstract class CestAbstract
     {
         $I->wantTo('Start with an incomplete setup.');
 
-        $this->settingsRepo->setSetting('setup_complete', 0);
+        $settings = $this->settingsTableRepo->updateSettings();
+        $settings->setSetupCompleteTime(0);
+        $this->settingsTableRepo->writeSettings($settings);
+
         $this->_cleanTables();
     }
 
@@ -89,8 +92,10 @@ abstract class CestAbstract
         $this->test_station = $this->stationRepo->create($test_station);
 
         // Set settings.
-        $this->settingsRepo->setSetting('setup_complete', time());
-        $this->settingsRepo->setSetting('base_url', 'localhost');
+        $settings = $this->settingsTableRepo->updateSettings();
+        $settings->updateSetupComplete();
+        $settings->setBaseUrl('localhost');
+        $this->settingsTableRepo->writeSettings($settings);
     }
 
     protected function getTestStation(): Entity\Station

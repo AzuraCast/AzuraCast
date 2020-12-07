@@ -3,13 +3,13 @@
 namespace App\Controller\Frontend;
 
 use App\Entity;
+use App\Environment;
 use App\Exception\NotLoggedInException;
 use App\Form\SettingsForm;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -17,17 +17,21 @@ class SetupController
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
-    protected Settings $settings;
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+
+    protected Environment $environment;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepository,
-        Settings $settings
+        Entity\Repository\SettingsTableRepository $settingsRepository,
+        Environment $environment,
+        Entity\Settings $settings
     ) {
         $this->em = $em;
-        $this->settingsRepo = $settingsRepository;
+        $this->settingsTableRepo = $settingsRepository;
+        $this->environment = $environment;
         $this->settings = $settings;
     }
 
@@ -50,14 +54,16 @@ class SetupController
      */
     protected function getSetupStep(ServerRequest $request): string
     {
-        if (0 !== (int)$this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0)) {
+        if ($this->settings->isSetupComplete()) {
             return 'complete';
         }
 
         // Step 1: Register
-        $num_users = (int)$this->em
-            ->createQuery(/** @lang DQL */ 'SELECT COUNT(u.id) FROM App\Entity\User u')
-            ->getSingleScalarResult();
+        $num_users = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(u.id) FROM App\Entity\User u
+            DQL
+        )->getSingleScalarResult();
 
         if (0 === $num_users) {
             return 'register';
@@ -70,9 +76,11 @@ class SetupController
         }
 
         // Step 2: Set up Station
-        $num_stations = (int)$this->em
-            ->createQuery(/** @lang DQL */ 'SELECT COUNT(s.id) FROM App\Entity\Station s')
-            ->getSingleScalarResult();
+        $num_stations = (int)$this->em->createQuery(
+            <<<'DQL'
+                SELECT COUNT(s.id) FROM App\Entity\Station s
+            DQL
+        )->getSingleScalarResult();
 
         if (0 === $num_stations) {
             return 'station';
@@ -106,7 +114,7 @@ class SetupController
     {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'register' && $this->settings->isProduction()) {
+        if ($current_step !== 'register' && $this->environment->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
@@ -166,7 +174,7 @@ class SetupController
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'station' && $this->settings->isProduction()) {
+        if ($current_step !== 'station' && $this->environment->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
@@ -195,12 +203,13 @@ class SetupController
     ): ResponseInterface {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
-        if ($current_step !== 'settings' && $this->settings->isProduction()) {
+        if ($current_step !== 'settings' && $this->environment->isProduction()) {
             return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
         }
 
         if ($settingsForm->process($request)) {
-            $this->settingsRepo->setSetting(Entity\Settings::SETUP_COMPLETE, time());
+            $this->settings->updateSetupComplete();
+            $this->settingsTableRepo->writeSettings($this->settings);
 
             // Notify the user and redirect to homepage.
             $request->getFlash()->addMessage(

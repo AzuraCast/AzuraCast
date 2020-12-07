@@ -19,9 +19,11 @@ class ApiController extends AbstractAdminCrudController
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $records = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            a, u FROM App\Entity\ApiKey a JOIN a.user u')
-            ->getArrayResult();
+        $records = $this->em->createQuery(
+            <<<'DQL'
+                SELECT a, u FROM App\Entity\ApiKey a JOIN a.user u
+            DQL
+        )->getArrayResult();
 
         return $request->getView()->renderToResponse($response, 'admin/api/index', [
             'records' => $records,

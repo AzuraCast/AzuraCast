@@ -1,7 +1,5 @@
 <?php
 
-use App\Entity;
-
 return [
     'groups' => [
 
@@ -10,7 +8,7 @@ return [
 
             'elements' => [
 
-                Entity\Settings::BACKUP_ENABLED => [
+                'backupEnabled' => [
                     'toggle',
                     [
                         'label' => __('Run Automatic Nightly Backups'),
@@ -22,7 +20,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::BACKUP_TIME => [
+                'backupTimeCode' => [
                     'PlaylistTime',
                     [
                         'label' => __('Scheduled Backup Time'),
@@ -31,7 +29,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::BACKUP_EXCLUDE_MEDIA => [
+                'backupExcludeMedia' => [
                     'toggle',
                     [
                         'label' => __('Exclude Media from Backups'),
@@ -43,7 +41,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::BACKUP_KEEP_COPIES => [
+                'backupKeepCopies' => [
                     'number',
                     [
                         'label' => __('Number of Backup Copies to Keep'),
@@ -55,7 +53,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::BACKUP_STORAGE_LOCATION => [
+                'backupStorageLocation' => [
                     'select',
                     [
                         'label' => __('Storage Location'),

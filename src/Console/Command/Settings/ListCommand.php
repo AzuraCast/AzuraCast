@@ -11,7 +11,7 @@ class ListCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        Entity\Repository\SettingsRepository $settings_repo
+        Entity\Repository\SettingsTableRepository $settingsTableRepo
     ): int {
         $io->title(__('AzuraCast Settings'));
 
@@ -21,7 +21,7 @@ class ListCommand extends CommandAbstract
         ];
         $rows = [];
 
-        $all_settings = $settings_repo->fetchAll();
+        $all_settings = $settingsTableRepo->readSettingsArray();
         foreach ($all_settings as $setting_key => $setting_value) {
             $value = print_r($setting_value, true);
             $value = Utilities::truncateText($value, 600);

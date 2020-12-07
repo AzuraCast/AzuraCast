@@ -3,6 +3,7 @@
 namespace App\Entity\Fixture;
 
 use App\Entity;
+use App\Security\SplitToken;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -17,7 +18,7 @@ class ApiKey extends AbstractFixture implements DependentFixtureInterface
             /** @var Entity\User $demo_user */
             $demo_user = $this->getReference('demo_user');
 
-            $api_key = new Entity\ApiKey($demo_user, $demo_api_key);
+            $api_key = new Entity\ApiKey($demo_user, SplitToken::fromKeyString($demo_api_key));
             $api_key->setComment('Demo User');
 
             $em->persist($api_key);
@@ -29,7 +30,7 @@ class ApiKey extends AbstractFixture implements DependentFixtureInterface
             /** @var Entity\User $admin_user */
             $admin_user = $this->getReference('admin_user');
 
-            $api_key = new Entity\ApiKey($admin_user, $admin_api_key);
+            $api_key = new Entity\ApiKey($admin_user, SplitToken::fromKeyString($admin_api_key));
             $api_key->setComment('Administrator');
 
             $em->persist($api_key);

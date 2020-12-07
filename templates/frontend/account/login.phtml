@@ -1,7 +1,7 @@
 <?php
 $this->layout('minimal', [
     'title' => __('Log In'),
-    'page_class' => 'login-content'
+    'page_class' => 'login-content',
 ]);
 ?>
 
@@ -12,14 +12,14 @@ $this->layout('minimal', [
                 <div class="col-sm">
                     <h2 class="card-title mb-0 text-center">
                         <?php if ($customization->hideProductName()): ?>
-                            <?=__('Welcome!') ?>
+                            <?=__('Welcome!')?>
                         <?php else: ?>
-                            <?=sprintf(__('Welcome to %s!'), $settings['name']) ?>
+                            <?=sprintf(__('Welcome to %s!'), $environment->getAppName())?>
                         <?php endif; ?>
                     </h2>
                     <h3 class="text-center">
                         <?php if (!empty($customization->getInstanceName())): ?>
-                            <small class="text-muted"><?=$this->e($customization->getInstanceName()) ?></small>
+                            <small class="text-muted"><?=$this->e($customization->getInstanceName())?></small>
                         <?php endif; ?>
                     </h3>
                 </div>
@@ -29,23 +29,32 @@ $this->layout('minimal', [
                 <div class="form-group">
                     <label for="username" class="mb-2">
                         <i class="material-icons mr-1" aria-hidden="true">email</i>
-                        <strong><?=__('E-mail Address') ?></strong>
+                        <strong><?=__('E-mail Address')?></strong>
                     </label>
-                    <input type="email" name="username" class="form-control" placeholder="<?=__('name@example.com') ?>" aria-label="<?=__('E-mail Address') ?>" required autofocus>
+                    <input type="email" name="username" class="form-control" placeholder="<?=__('name@example.com')?>" aria-label="<?=__('E-mail Address')?>" required autofocus>
                 </div>
                 <div class="form-group mt-2">
                     <label for="password" class="mb-2">
                         <i class="material-icons mr-1" aria-hidden="true">vpn_key</i>
-                        <strong><?=__('Password') ?></strong>
+                        <strong><?=__('Password')?></strong>
                     </label>
-                    <input type="password" name="password" class="form-control" placeholder="<?=__('Enter your password') ?>" aria-label="<?=__('Password') ?>" required>
+                    <input type="password" name="password" class="form-control" placeholder="<?=__('Enter your password')?>" aria-label="<?=__('Password')?>" required>
                 </div>
-                <button type="submit" role="button" title="<?=__('Sign in') ?>" class="btn btn-login btn-primary btn-block mt-2 mb-3">
-                    <?=__('Sign in') ?>
+                <div class="form-group mt-2">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" name="remember" id="frm_remember_me" value="1" class="toggle-switch custom-control-input">
+                        <label for="frm_remember_me" class="custom-control-label">
+                            <?=__('Remember me')?>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" role="button" title="<?=__('Sign in')?>" class="btn btn-login btn-primary btn-block mt-2 mb-3">
+                    <?=__('Sign in')?>
                 </button>
             </form>
 
-            <p class="text-center"><?=__('Please log in to continue.') ?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://www.azuracast.com/help/docker/#reset-an-account-password') ?></p>
+            <p class="text-center"><?=__('Please log in to continue.')?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'),
+                    'https://www.azuracast.com/help/docker/#reset-an-account-password')?></p>
         </div>
     </div>
 </div>

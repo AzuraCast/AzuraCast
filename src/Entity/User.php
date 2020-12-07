@@ -32,10 +32,10 @@ class User
     /**
      * @ORM\Column(name="uid", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @OA\Property(example=1)
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -160,7 +160,7 @@ class User
         $this->updated_at = time();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

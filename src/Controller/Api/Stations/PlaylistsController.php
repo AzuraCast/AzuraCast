@@ -138,12 +138,14 @@ class PlaylistsController extends AbstractScheduledEntityController
     {
         $station = $request->getStation();
 
-        $scheduleItems = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            ssc, sp
-            FROM App\Entity\StationSchedule ssc
-            JOIN ssc.playlist sp
-            WHERE sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1
-        ')->setParameter('station', $station)
+        $scheduleItems = $this->em->createQuery(
+            <<<'DQL'
+                SELECT ssc, sp
+                FROM App\Entity\StationSchedule ssc
+                JOIN ssc.playlist sp
+                WHERE sp.station = :station AND sp.is_jingle = 0 AND sp.is_enabled = 1
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         return $this->renderEvents(
@@ -193,12 +195,15 @@ class PlaylistsController extends AbstractScheduledEntityController
             throw new Exception(__('This playlist is not a sequential playlist.'));
         }
 
-        $media_items = $this->em->createQuery(/** @lang DQL */ 'SELECT spm, sm
-            FROM App\Entity\StationPlaylistMedia spm
-            JOIN spm.media sm
-            WHERE spm.playlist_id = :playlist_id
-            ORDER BY spm.weight ASC')
-            ->setParameter('playlist_id', $id)
+        $media_items = $this->em->createQuery(
+            <<<'DQL'
+                SELECT spm, sm
+                FROM App\Entity\StationPlaylistMedia spm
+                JOIN spm.media sm
+                WHERE spm.playlist_id = :playlist_id
+                ORDER BY spm.weight ASC
+            DQL
+        )->setParameter('playlist_id', $id)
             ->getArrayResult();
 
         return $response->withJson($media_items);
@@ -334,10 +339,13 @@ class PlaylistsController extends AbstractScheduledEntityController
             // Assemble list of station media to match against.
             $media_lookup = [];
 
-            $media_info_raw = $this->em->createQuery(/** @lang DQL */ 'SELECT sm.id, sm.path
-                FROM App\Entity\StationMedia sm
-                WHERE sm.station = :station')
-                ->setParameter('station', $station)
+            $media_info_raw = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT sm.id, sm.path
+                    FROM App\Entity\StationMedia sm
+                    WHERE sm.station = :station
+                DQL
+            )->setParameter('station', $station)
                 ->getArrayResult();
 
             foreach ($media_info_raw as $row) {
@@ -366,10 +374,13 @@ class PlaylistsController extends AbstractScheduledEntityController
 
             // Assign all matched media to the playlist.
             if (!empty($matches)) {
-                $matchedMediaRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT sm
-                    FROM App\Entity\StationMedia sm
-                    WHERE sm.station = :station AND sm.id IN (:matched_ids)')
-                    ->setParameter('station', $station)
+                $matchedMediaRaw = $this->em->createQuery(
+                    <<<'DQL'
+                        SELECT sm
+                        FROM App\Entity\StationMedia sm
+                        WHERE sm.station = :station AND sm.id IN (:matched_ids)
+                    DQL
+                )->setParameter('station', $station)
                     ->setParameter('matched_ids', $matches)
                     ->execute();
 
@@ -413,12 +424,14 @@ class PlaylistsController extends AbstractScheduledEntityController
 
         $return = $this->toArray($record);
 
-        $song_totals = $this->em->createQuery(/** @lang DQL */ '
-            SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
-            FROM App\Entity\StationMedia sm
-            JOIN sm.playlists spm
-            WHERE spm.playlist = :playlist')
-            ->setParameter('playlist', $record)
+        $song_totals = $this->em->createQuery(
+            <<<'DQL'
+                SELECT count(sm.id) AS num_songs, sum(sm.length) AS total_length
+                FROM App\Entity\StationMedia sm
+                JOIN sm.playlists spm
+                WHERE spm.playlist = :playlist
+            DQL
+        )->setParameter('playlist', $record)
             ->getArrayResult();
 
         $return['num_songs'] = (int)$song_totals[0]['num_songs'];

@@ -111,11 +111,13 @@ class SongApiGenerator
 
         $mediaFields = [];
         if ($media_id !== null) {
-            $mediaFieldsRaw = $this->em->createQuery(/** @lang DQL */ 'SELECT
-                smcf.field_id, smcf.value
-                FROM App\Entity\StationMediaCustomField smcf
-                WHERE smcf.media_id = :media_id')
-                ->setParameter('media_id', $media_id)
+            $mediaFieldsRaw = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT smcf.field_id, smcf.value
+                    FROM App\Entity\StationMediaCustomField smcf
+                    WHERE smcf.media_id = :media_id
+                DQL
+            )->setParameter('media_id', $media_id)
                 ->getArrayResult();
 
             foreach ($mediaFieldsRaw as $row) {

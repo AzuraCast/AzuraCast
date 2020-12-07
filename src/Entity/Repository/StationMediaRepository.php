@@ -5,6 +5,7 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
+use App\Environment;
 use App\Exception\CannotProcessMediaException;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
@@ -13,7 +14,6 @@ use App\Media\AlbumArt;
 use App\Media\MetadataManagerInterface;
 use App\Media\MimeType;
 use App\Service\AudioWaveform;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
@@ -40,7 +40,7 @@ class StationMediaRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $environment,
         LoggerInterface $logger,
         MetadataManagerInterface $metadataManager,
         CustomFieldRepository $customFieldRepo,
@@ -48,7 +48,7 @@ class StationMediaRepository extends Repository
         StorageLocationRepository $storageLocationRepo,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
 
         $this->customFieldRepo = $customFieldRepo;
         $this->spmRepo = $spmRepo;
@@ -75,10 +75,12 @@ class StationMediaRepository extends Repository
         $storageLocation = $this->getStorageLocation($source);
 
         /** @var Entity\StationMedia|null $media */
-        $media = $this->repository->findOneBy([
-            'storage_location' => $storageLocation,
-            'id' => $id,
-        ]);
+        $media = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'id' => $id,
+            ]
+        );
 
         return $media;
     }
@@ -93,10 +95,12 @@ class StationMediaRepository extends Repository
         $storageLocation = $this->getStorageLocation($source);
 
         /** @var Entity\StationMedia|null $media */
-        $media = $this->repository->findOneBy([
-            'storage_location' => $storageLocation,
-            'path' => $path,
-        ]);
+        $media = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'path' => $path,
+            ]
+        );
 
         return $media;
     }
@@ -111,10 +115,12 @@ class StationMediaRepository extends Repository
         $storageLocation = $this->getStorageLocation($source);
 
         /** @var Entity\StationMedia|null $media */
-        $media = $this->repository->findOneBy([
-            'storage_location' => $storageLocation,
-            'unique_id' => $uniqueId,
-        ]);
+        $media = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'unique_id' => $uniqueId,
+            ]
+        );
 
         return $media;
     }
@@ -188,7 +194,6 @@ class StationMediaRepository extends Repository
         if (null !== $uploadedPath) {
             try {
                 $this->loadFromFile($media, $uploadedPath);
-                $this->writeWaveform($media, $uploadedPath);
             } finally {
                 $fs->putFromLocal($uploadedPath, $mediaUri);
             }
@@ -206,10 +211,12 @@ class StationMediaRepository extends Repository
                 return false;
             }
 
-            $fs->withLocalFile($mediaUri, function ($path) use ($media): void {
-                $this->loadFromFile($media, $path);
-                $this->writeWaveform($media, $path);
-            });
+            $fs->withLocalFile(
+                $mediaUri,
+                function ($path) use ($media): void {
+                    $this->loadFromFile($media, $path);
+                }
+            );
         }
 
         $media->setMtime($mediaMtime);
@@ -338,21 +345,27 @@ class StationMediaRepository extends Repository
         }
 
         // Write tags to the Media file.
-        return $fs->withLocalFile($media->getPath(), function ($path) use ($media, $metadata) {
-            if ($this->metadataManager->writeMetadata($metadata, $path)) {
-                $media->setMtime(time() + 5);
-                return true;
+        return $fs->withLocalFile(
+            $media->getPath(),
+            function ($path) use ($media, $metadata) {
+                if ($this->metadataManager->writeMetadata($metadata, $path)) {
+                    $media->setMtime(time() + 5);
+                    return true;
+                }
+                return false;
             }
-            return false;
-        });
+        );
     }
 
     public function updateWaveform(Entity\StationMedia $media): void
     {
         $fs = $this->getFilesystem($media);
-        $fs->withLocalFile($media->getPath(), function ($path) use ($media): void {
-            $this->writeWaveform($media, $path);
-        });
+        $fs->withLocalFile(
+            $media->getPath(),
+            function ($path) use ($media): void {
+                $this->writeWaveform($media, $path);
+            }
+        );
     }
 
     public function writeWaveform(Entity\StationMedia $media, string $path): bool
@@ -364,7 +377,10 @@ class StationMediaRepository extends Repository
         $fs = $this->getFilesystem($media);
         return $fs->put(
             $waveformPath,
-            json_encode($waveform, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
+            json_encode(
+                $waveform,
+                JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR | JSON_PARTIAL_OUTPUT_ON_ERROR
+            )
         );
     }
 

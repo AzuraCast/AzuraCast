@@ -3,15 +3,15 @@
 namespace App\Service;
 
 use App\Entity\Station;
-use App\Settings;
+use App\Environment;
 
 class SftpGo
 {
     public static function isSupported(): bool
     {
-        $settings = Settings::getInstance();
+        $environment = Environment::getInstance();
 
-        return !$settings->isTesting() && $settings->isDockerRevisionNewerThan(7);
+        return !$environment->isTesting() && $environment->isDockerRevisionAtLeast(7);
     }
 
     public static function isSupportedForStation(Station $station): bool

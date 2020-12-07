@@ -2,116 +2,694 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Customization;
+use App\Entity;
+use App\Event\GetSyncTasks;
+use App\Traits\AvailableStaticallyTrait;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="settings")
- * @ORM\Entity()
+ * @OA\Schema(type="object", schema="Settings")
  */
 class Settings
 {
-    // Predefined settings constants.
-    public const BASE_URL = 'base_url';
-    public const INSTANCE_NAME = 'instance_name';
-
-    public const PREFER_BROWSER_URL = 'prefer_browser_url';
-    public const USE_RADIO_PROXY = 'use_radio_proxy';
-    public const HISTORY_KEEP_DAYS = 'history_keep_days';
-
-    public const ALWAYS_USE_SSL = 'always_use_ssl';
-    public const API_ACCESS_CONTROL = 'api_access_control';
-    public const NOWPLAYING_USE_WEBSOCKETS = 'nowplaying_use_websockets';
-
-    public const LISTENER_ANALYTICS = 'analytics';
-    public const CENTRAL_UPDATES = 'central_updates_channel';
-
-    // Custom branding constants.
-    public const PUBLIC_THEME = 'public_theme';
-    public const HIDE_ALBUM_ART = 'hide_album_art';
-    public const HOMEPAGE_REDIRECT_URL = 'homepage_redirect_url';
-    public const DEFAULT_ALBUM_ART_URL = 'default_album_art_url';
-    public const HIDE_PRODUCT_NAME = 'hide_product_name';
-    public const CUSTOM_CSS_PUBLIC = 'custom_css_public';
-    public const CUSTOM_JS_PUBLIC = 'custom_js_public';
-    public const CUSTOM_CSS_INTERNAL = 'custom_css_internal';
-
-    // Backup settings
-    public const BACKUP_ENABLED = 'backup_enabled';
-    public const BACKUP_TIME = 'backup_time';
-    public const BACKUP_EXCLUDE_MEDIA = 'backup_exclude_media';
-    public const BACKUP_KEEP_COPIES = 'backup_keep_copies';
-    public const BACKUP_STORAGE_LOCATION = 'backup_storage_location';
-
-    // Internal settings
-    public const SETUP_COMPLETE = 'setup_complete';
-
-    public const NOWPLAYING_LAST_STARTED = 'nowplaying_last_started';
-    public const NOWPLAYING_LAST_RUN = 'nowplaying_last_run';
-    public const NOWPLAYING = 'nowplaying';
-
-    public const SHORT_SYNC_LAST_RUN = 'sync_fast_last_run';
-    public const MEDIUM_SYNC_LAST_RUN = 'sync_last_run';
-    public const LONG_SYNC_LAST_RUN = 'sync_slow_last_run';
-
-    public const UPDATES_NONE = 0;
-    public const UPDATES_ALL = 1;
-    public const UPDATES_RELEASE_ONLY = 2;
-
-    public const UNIQUE_IDENTIFIER = 'central_app_uuid';
-    public const UPDATE_RESULTS = 'central_update_results';
-    public const UPDATE_LAST_RUN = 'central_update_last_run';
-
-    public const EXTERNAL_IP = 'external_ip';
-
-    public const BACKUP_LAST_RUN = 'backup_last_run';
-    public const BACKUP_LAST_RESULT = 'backup_last_result';
-    public const BACKUP_LAST_OUTPUT = 'backup_last_output';
-
-    public const GEOLITE_LICENSE_KEY = 'geolite_license_key';
-    public const GEOLITE_LAST_RUN = 'geolite_last_run';
+    use AvailableStaticallyTrait;
 
     /**
-     * @ORM\Column(name="setting_key", type="string", length=64)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @OA\Property(example="https://your.azuracast.site")
+     * @var string Site Base URL
+     */
+    protected string $baseUrl = '';
+
+    public function getBaseUrl(): string
+    {
+        return $this->baseUrl;
+    }
+
+    public function setBaseUrl(string $baseUrl): void
+    {
+        $this->baseUrl = $baseUrl;
+    }
+
+    /**
+     * @OA\Property(example="My AzuraCast Instance")
+     * @var string|null AzuraCast Instance Name
+     */
+    protected ?string $instanceName = null;
+
+    public function getInstanceName(): ?string
+    {
+        return $this->instanceName;
+    }
+
+    public function setInstanceName(?string $instanceName): void
+    {
+        $this->instanceName = $instanceName;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Prefer Browser URL (If Available)
+     */
+    protected bool $preferBrowserUrl = false;
+
+    public function getPreferBrowserUrl(): bool
+    {
+        return (bool)($this->preferBrowserUrl);
+    }
+
+    public function setPreferBrowserUrl(bool $preferBrowserUrl): void
+    {
+        $this->preferBrowserUrl = $preferBrowserUrl;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Use Web Proxy for Radio
+     */
+    protected bool $useRadioProxy = false;
+
+    public function getUseRadioProxy(): bool
+    {
+        return (bool)($this->useRadioProxy);
+    }
+
+    public function setUseRadioProxy(bool $useRadioProxy): void
+    {
+        $this->useRadioProxy = $useRadioProxy;
+    }
+
+    /**
+     * @OA\Property()
+     * @Assert\Choice({0,14,30,60,365,730})
+     * @var int Days of Playback History to Keep
+     */
+    protected int $historyKeepDays = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
+
+    public function getHistoryKeepDays(): int
+    {
+        return $this->historyKeepDays;
+    }
+
+    public function setHistoryKeepDays(int $historyKeepDays): void
+    {
+        $this->historyKeepDays = $historyKeepDays;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Always Use HTTPS
+     */
+    protected bool $alwaysUseSsl = false;
+
+    public function getAlwaysUseSsl(): bool
+    {
+        return (bool)$this->alwaysUseSsl;
+    }
+
+    public function setAlwaysUseSsl(bool $alwaysUseSsl): void
+    {
+        $this->alwaysUseSsl = $alwaysUseSsl;
+    }
+
+    /**
+     * @OA\Property(example="*")
+     * @var string API "Access-Control-Allow-Origin" header
+     */
+    protected string $apiAccessControl = '';
+
+    public function getApiAccessControl(): string
+    {
+        return $this->apiAccessControl;
+    }
+
+    public function setApiAccessControl(string $apiAccessControl): void
+    {
+        $this->apiAccessControl = $apiAccessControl;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Whether to use Websockets for Now Playing data updates.
+     */
+    protected bool $enableWebsockets = false;
+
+    public function getEnableWebsockets(): bool
+    {
+        return (bool)$this->enableWebsockets;
+    }
+
+    public function setEnableWebsockets(bool $enableWebsockets): void
+    {
+        $this->enableWebsockets = $enableWebsockets;
+    }
+
+    /**
+     * Listener Analytics Collection
+     *
+     * @OA\Property()
+     * @Assert\Choice({Entity\Analytics::LEVEL_NONE, Entity\Analytics::LEVEL_NO_IP, Entity\Analytics::LEVEL_ALL})
      * @var string
      */
-    protected $setting_key;
+    protected string $analytics = Entity\Analytics::LEVEL_ALL;
 
-    /**
-     * @ORM\Column(name="setting_value", type="json", nullable=true)
-     * @var mixed
-     */
-    protected $setting_value;
-
-    public function __construct(string $setting_key)
+    public function getAnalytics(): string
     {
-        $this->setting_key = $setting_key;
+        return $this->analytics;
     }
 
-    public function getSettingKey(): string
+    public function setAnalytics(string $analytics): void
     {
-        return $this->setting_key;
+        $this->analytics = $analytics;
     }
 
     /**
-     * @return mixed
+     * @OA\Property(example="true")
+     * @var bool Check for Updates and Announcements
      */
-    public function getSettingValue()
+    protected bool $checkForUpdates = true;
+
+    public function getCheckForUpdates(): bool
     {
-        return $this->setting_value;
+        return $this->checkForUpdates;
     }
 
-    public function setSettingValue($setting_value): void
+    public function setCheckForUpdates(bool $checkForUpdates): void
     {
-        $this->setting_value = $setting_value;
+        $this->checkForUpdates = $checkForUpdates;
     }
 
     /**
-     * @return mixed
+     * @OA\Property(example="")
+     * @var string|null The unique identifier for this installation (for update checks).
      */
-    public function getValue()
+    protected ?string $appUniqueIdentifier = null;
+
+    public function getAppUniqueIdentifier(): ?string
     {
-        return $this->setting_value;
+        return $this->appUniqueIdentifier;
+    }
+
+    public function setAppUniqueIdentifier(?string $appUniqueIdentifier): void
+    {
+        $this->appUniqueIdentifier = $appUniqueIdentifier;
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var mixed[]|null Results of the latest update check.
+     */
+    protected ?array $updateResults = null;
+
+    /**
+     * @return mixed[]|null
+     */
+    public function getUpdateResults(): ?array
+    {
+        return $this->updateResults;
+    }
+
+    public function setUpdateResults(?array $updateResults): void
+    {
+        $this->updateResults = $updateResults;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when updates were last checked.
+     */
+    protected int $updateLastRun = 0;
+
+    public function getUpdateLastRun(): int
+    {
+        return $this->updateLastRun;
+    }
+
+    public function setUpdateLastRun(int $updateLastRun): void
+    {
+        $this->updateLastRun = $updateLastRun;
+    }
+
+    public function updateUpdateLastRun(): void
+    {
+        $this->setUpdateLastRun(time());
+    }
+
+    /**
+     * @OA\Property(example="light")
+     * @Assert\Choice({Customization::THEME_LIGHT, Customization::THEME_DARK})
+     * @var string Base Theme for Public Pages
+     */
+    protected string $publicTheme = Customization::DEFAULT_THEME;
+
+    public function getPublicTheme(): string
+    {
+        return $this->publicTheme;
+    }
+
+    public function setPublicTheme(string $publicTheme): void
+    {
+        $this->publicTheme = $publicTheme;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Hide Album Art on Public Pages
+     */
+    protected bool $hideAlbumArt = false;
+
+    public function getHideAlbumArt(): bool
+    {
+        return $this->hideAlbumArt;
+    }
+
+    public function setHideAlbumArt(bool $hideAlbumArt): void
+    {
+        $this->hideAlbumArt = $hideAlbumArt;
+    }
+
+    /**
+     * @OA\Property(example="https://example.com/")
+     * @var string|null Homepage Redirect URL
+     */
+    protected ?string $homepageRedirectUrl = null;
+
+    public function getHomepageRedirectUrl(): ?string
+    {
+        return $this->homepageRedirectUrl;
+    }
+
+    public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void
+    {
+        $this->homepageRedirectUrl = $homepageRedirectUrl;
+    }
+
+    /**
+     * @OA\Property(example="https://example.com/image.jpg")
+     * @var string|null Default Album Art URL
+     */
+    protected ?string $defaultAlbumArtUrl = null;
+
+    public function getDefaultAlbumArtUrl(): ?string
+    {
+        return $this->defaultAlbumArtUrl;
+    }
+
+    public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void
+    {
+        $this->defaultAlbumArtUrl = $defaultAlbumArtUrl;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Hide AzuraCast Branding on Public Pages
+     */
+    protected bool $hideProductName = false;
+
+    public function getHideProductName(): bool
+    {
+        return (bool)$this->hideProductName;
+    }
+
+    public function setHideProductName(bool $hideProductName): void
+    {
+        $this->hideProductName = $hideProductName;
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var string|null Custom CSS for Public Pages
+     */
+    protected ?string $publicCustomCss = null;
+
+    public function getPublicCustomCss(): ?string
+    {
+        return $this->publicCustomCss;
+    }
+
+    public function setPublicCustomCss(?string $publicCustomCss): void
+    {
+        $this->publicCustomCss = $publicCustomCss;
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var string|null Custom JS for Public Pages
+     */
+    protected ?string $publicCustomJs = null;
+
+    public function getPublicCustomJs(): ?string
+    {
+        return $this->publicCustomJs;
+    }
+
+    public function setPublicCustomJs(?string $publicCustomJs): void
+    {
+        $this->publicCustomJs = $publicCustomJs;
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var string|null Custom CSS for Internal Pages
+     */
+    protected ?string $internalCustomCss = null;
+
+    public function getInternalCustomCss(): ?string
+    {
+        return $this->internalCustomCss;
+    }
+
+    public function setInternalCustomCss(?string $internalCustomCss): void
+    {
+        $this->internalCustomCss = $internalCustomCss;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Whether backup is enabled.
+     */
+    protected bool $backupEnabled = false;
+
+    public function isBackupEnabled(): bool
+    {
+        return $this->backupEnabled;
+    }
+
+    public function setBackupEnabled(bool $backupEnabled): void
+    {
+        $this->backupEnabled = $backupEnabled;
+    }
+
+    /**
+     * @OA\Property(example=400)
+     * @var string|null The timecode (i.e. 400 for 4:00AM) when automated backups should run.
+     */
+    protected ?string $backupTimeCode = null;
+
+    public function getBackupTimeCode(): ?string
+    {
+        return $this->backupTimeCode;
+    }
+
+    public function setBackupTimeCode(?string $backupTimeCode): void
+    {
+        $this->backupTimeCode = $backupTimeCode;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Whether to exclude media in automated backups.
+     */
+    protected bool $backupExcludeMedia = false;
+
+    public function getBackupExcludeMedia(): bool
+    {
+        return $this->backupExcludeMedia;
+    }
+
+    public function setBackupExcludeMedia(bool $backupExcludeMedia): void
+    {
+        $this->backupExcludeMedia = $backupExcludeMedia;
+    }
+
+    /**
+     * @OA\Property(example=2)
+     * @var int Number of backups to keep, or infinite if zero/null.
+     */
+    protected int $backupKeepCopies = 0;
+
+    public function getBackupKeepCopies(): int
+    {
+        return $this->backupKeepCopies;
+    }
+
+    public function setBackupKeepCopies(int $backupKeepCopies): void
+    {
+        $this->backupKeepCopies = $backupKeepCopies;
+    }
+
+    /**
+     * @OA\Property(example=1)
+     * @var int|null The storage location ID for automated backups.
+     */
+    protected ?int $backupStorageLocation = null;
+
+    public function getBackupStorageLocation(): ?int
+    {
+        return $this->backupStorageLocation;
+    }
+
+    public function setBackupStorageLocation(?int $backupStorageLocation): void
+    {
+        $this->backupStorageLocation = $backupStorageLocation;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when automated backup was last run.
+     */
+    protected int $backupLastRun = 0;
+
+    public function getBackupLastRun(): int
+    {
+        return $this->backupLastRun;
+    }
+
+    public function setBackupLastRun(int $backupLastRun): void
+    {
+        $this->backupLastRun = $backupLastRun;
+    }
+
+    public function updateBackupLastRun(): void
+    {
+        $this->setBackupLastRun(time());
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var string|null The result of the latest automated backup task.
+     */
+    protected ?string $backupLastResult = null;
+
+    public function getBackupLastResult(): ?string
+    {
+        return $this->backupLastResult;
+    }
+
+    public function setBackupLastResult(?string $backupLastResult): void
+    {
+        $this->backupLastResult = $backupLastResult;
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var string|null The output of the latest automated backup task.
+     */
+    protected ?string $backupLastOutput = null;
+
+    public function getBackupLastOutput(): ?string
+    {
+        return $this->backupLastOutput;
+    }
+
+    public function setBackupLastOutput(?string $backupLastOutput): void
+    {
+        $this->backupLastOutput = $backupLastOutput;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when setup was last completed.
+     */
+    protected int $setupCompleteTime = 0;
+
+    public function getSetupCompleteTime(): int
+    {
+        return $this->setupCompleteTime;
+    }
+
+    public function isSetupComplete(): bool
+    {
+        return (0 !== $this->setupCompleteTime);
+    }
+
+    public function setSetupCompleteTime(int $setupCompleteTime): void
+    {
+        $this->setupCompleteTime = $setupCompleteTime;
+    }
+
+    public function updateSetupComplete(): void
+    {
+        $this->setSetupCompleteTime(time());
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var mixed[]|null The current cached now playing data.
+     */
+    protected ?array $nowplaying = null;
+
+    /**
+     * @return mixed[]|null
+     */
+    public function getNowplaying(): ?array
+    {
+        return $this->nowplaying;
+    }
+
+    public function setNowplaying(?array $nowplaying): void
+    {
+        $this->nowplaying = $nowplaying;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when the now playing sync task was last run.
+     */
+    protected int $syncNowplayingLastRun = 0;
+
+    public function getSyncNowplayingLastRun(): int
+    {
+        return $this->syncNowplayingLastRun;
+    }
+
+    public function setSyncNowplayingLastRun(int $syncNowplayingLastRun): void
+    {
+        $this->syncNowplayingLastRun = $syncNowplayingLastRun;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when the 60-second "short" sync task was last run.
+     */
+    protected int $syncShortLastRun = 0;
+
+    public function getSyncShortLastRun(): int
+    {
+        return $this->syncShortLastRun;
+    }
+
+    public function setSyncShortLastRun(int $syncShortLastRun): void
+    {
+        $this->syncShortLastRun = $syncShortLastRun;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when the 5-minute "medium" sync task was last run.
+     */
+    protected int $syncMediumLastRun = 0;
+
+    public function getSyncMediumLastRun(): int
+    {
+        return $this->syncMediumLastRun;
+    }
+
+    public function setSyncMediumLastRun(int $syncMediumLastRun): void
+    {
+        $this->syncMediumLastRun = $syncMediumLastRun;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when the 1-hour "long" sync task was last run.
+     */
+    protected int $syncLongLastRun = 0;
+
+    public function getSyncLongLastRun(): int
+    {
+        return $this->syncLongLastRun;
+    }
+
+    public function setSyncLongLastRun(int $syncLongLastRun): void
+    {
+        $this->syncLongLastRun = $syncLongLastRun;
+    }
+
+    public function getSyncLastRunTime(string $type): int
+    {
+        $timesByType = [
+            GetSyncTasks::SYNC_NOWPLAYING => $this->syncNowplayingLastRun,
+            GetSyncTasks::SYNC_SHORT => $this->syncShortLastRun,
+            GetSyncTasks::SYNC_MEDIUM => $this->syncMediumLastRun,
+            GetSyncTasks::SYNC_LONG => $this->syncLongLastRun,
+        ];
+
+        return $timesByType[$type] ?? 0;
+    }
+
+    public function updateSyncLastRunTime(string $type): void
+    {
+        switch ($type) {
+            case GetSyncTasks::SYNC_NOWPLAYING:
+                $this->syncNowplayingLastRun = time();
+                break;
+
+            case GetSyncTasks::SYNC_SHORT:
+                $this->syncShortLastRun = time();
+                break;
+
+            case GetSyncTasks::SYNC_MEDIUM:
+                $this->syncMediumLastRun = time();
+                break;
+
+            case GetSyncTasks::SYNC_LONG:
+                $this->syncLongLastRun = time();
+                break;
+        }
+    }
+
+    /**
+     * @OA\Property(example="192.168.1.1")
+     * @var string|null This installation's external IP.
+     */
+    protected ?string $externalIp = null;
+
+    public function getExternalIp(): ?string
+    {
+        return $this->externalIp;
+    }
+
+    public function setExternalIp(?string $externalIp): void
+    {
+        $this->externalIp = $externalIp;
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var string|null The license key for the Maxmind Geolite download.
+     */
+    protected ?string $geoliteLicenseKey = null;
+
+    public function getGeoliteLicenseKey(): ?string
+    {
+        return $this->geoliteLicenseKey;
+    }
+
+    public function setGeoliteLicenseKey(?string $geoliteLicenseKey): void
+    {
+        $this->geoliteLicenseKey = $geoliteLicenseKey;
+    }
+
+    /**
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int The UNIX timestamp when the Maxmind Geolite was last downloaded.
+     */
+    protected int $geoliteLastRun = 0;
+
+    public function getGeoliteLastRun(): int
+    {
+        return $this->geoliteLastRun;
+    }
+
+    public function setGeoliteLastRun(int $geoliteLastRun): void
+    {
+        $this->geoliteLastRun = $geoliteLastRun;
+    }
+
+    public function updateGeoliteLastRun(): void
+    {
+        $this->setGeoliteLastRun(time());
     }
 }

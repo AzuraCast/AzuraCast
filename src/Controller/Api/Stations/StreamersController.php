@@ -109,12 +109,14 @@ class StreamersController extends AbstractScheduledEntityController
     {
         $station = $request->getStation();
 
-        $scheduleItems = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            ssc, sst
-            FROM App\Entity\StationSchedule ssc
-            LEFT JOIN ssc.streamer sst
-            WHERE sst.station = :station AND sst.is_active = 1
-        ')->setParameter('station', $station)
+        $scheduleItems = $this->em->createQuery(
+            <<<'DQL'
+                SELECT ssc, sst
+                FROM App\Entity\StationSchedule ssc
+                LEFT JOIN ssc.streamer sst
+                WHERE sst.station = :station AND sst.is_active = 1
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         return $this->renderEvents(

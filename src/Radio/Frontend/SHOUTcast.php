@@ -3,8 +3,8 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Environment;
 use App\Logger;
-use App\Settings;
 use App\Utilities;
 use Exception;
 use NowPlaying\Adapter\AdapterFactory;
@@ -40,8 +40,8 @@ class SHOUTcast extends AbstractFrontend
         $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
 
         // Docker versions before 3 included the SC binary across the board.
-        $settings = Settings::getInstance();
-        if ($settings->isDocker() && $settings[Settings::DOCKER_REVISION] < 3) {
+        $environment = Environment::getInstance();
+        if ($environment->isDocker() && !$environment->isDockerRevisionAtLeast(3)) {
             return $new_path;
         }
 
@@ -54,7 +54,7 @@ class SHOUTcast extends AbstractFrontend
     {
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
-        $baseUrl = 'http://' . (Settings::getInstance()->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
+        $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getAdapter(
             AdapterFactory::ADAPTER_SHOUTCAST2,

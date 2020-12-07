@@ -1,0 +1,35 @@
+$(function () {
+    var logUrl = $('#log-view').data('url');
+    var logContents = $('#log-view-contents');
+    var currentLogPosition, timeoutUpdateLog;
+
+    function updateLogView () {
+        $.getJSON(logUrl, {
+            position: currentLogPosition
+        }, function (logData) {
+
+            if (currentLogPosition == 0) {
+                logContents.text('');
+            }
+
+            if (logData.contents != '') {
+                logContents.append(logData.contents + '\n');
+
+                // Timeout to allow height to adjust to appended contents.
+                setTimeout(function () {
+                    logContents.animate({ scrollTop: logContents.prop('scrollHeight') }, 'fast');
+                }, 500);
+            }
+
+            currentLogPosition = logData.position;
+
+            if (!logData.eof) {
+                timeoutUpdateLog = setTimeout(updateLogView, 15000);
+            }
+        }).fail(function (xhr) {
+            logContents.text('Error: ' + xhr.responseJSON.message);
+        });
+    }
+
+    timeoutUpdateLog = setTimeout(updateLogView, 1000);
+});

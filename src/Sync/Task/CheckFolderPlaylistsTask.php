@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
-class FolderPlaylists extends AbstractTask
+class CheckFolderPlaylistsTask extends AbstractTask
 {
     protected Entity\Repository\StationPlaylistFolderRepository $folderRepo;
 
@@ -18,13 +18,13 @@ class FolderPlaylists extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationPlaylistFolderRepository $folderRepo,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->spmRepo = $spmRepo;
         $this->folderRepo = $folderRepo;
@@ -34,7 +34,11 @@ class FolderPlaylists extends AbstractTask
     public function run(bool $force = false): void
     {
         $stations = SimpleBatchIteratorAggregate::fromQuery(
-            $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s'),
+            $this->em->createQuery(
+                <<<'DQL'
+                    SELECT s FROM App\Entity\Station s
+                DQL
+            ),
             1
         );
 
@@ -52,12 +56,14 @@ class FolderPlaylists extends AbstractTask
 
     public function syncPlaylistFolders(Entity\Station $station): void
     {
-        $folderPlaylists = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            spf, sp
-            FROM App\Entity\StationPlaylistFolder spf
-            JOIN spf.playlist sp
-            WHERE spf.station = :station')
-            ->setParameter('station', $station)
+        $folderPlaylists = $this->em->createQuery(
+            <<<'DQL'
+                SELECT spf, sp
+                FROM App\Entity\StationPlaylistFolder spf
+                JOIN spf.playlist sp
+                WHERE spf.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         $folders = [];
@@ -77,12 +83,14 @@ class FolderPlaylists extends AbstractTask
 
         $this->em->flush();
 
-        $mediaInFolderQuery = $this->em->createQuery(/** @lang DQL */ 'SELECT
-            sm
-            FROM App\Entity\StationMedia sm
-            WHERE sm.storage_location = :storageLocation
-            AND sm.path LIKE :path')
-            ->setParameter('storageLocation', $station->getMediaStorageLocation());
+        $mediaInFolderQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sm
+                FROM App\Entity\StationMedia sm
+                WHERE sm.storage_location = :storageLocation
+                AND sm.path LIKE :path                
+            DQL
+        )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
         foreach ($folders as $path => $playlists) {
             $mediaInFolder = $mediaInFolderQuery->setParameter('path', $path . '/%')

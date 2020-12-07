@@ -152,10 +152,12 @@ class FilesController extends AbstractStationApiCrudController
         $station = $this->getStation($request);
         $storageLocation = $station->getMediaStorageLocation();
 
-        $query = $this->em->createQuery(/** @lang DQL */ 'SELECT e
-            FROM App\Entity\StationMedia e
-            WHERE e.storage_location = :storageLocation')
-            ->setParameter('storageLocation', $storageLocation);
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                SELECT e FROM App\Entity\StationMedia e
+                WHERE e.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $storageLocation);
 
         return $this->listPaginatedFromQuery($request, $response, $query);
     }

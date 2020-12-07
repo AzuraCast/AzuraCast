@@ -3,17 +3,17 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use App\Environment;
 use App\Radio\Adapters;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use studio24\Rotate;
 use Supervisor\Supervisor;
 use Symfony\Component\Finder\Finder;
 
-class RotateLogs extends AbstractTask
+class RotateLogsTask extends AbstractTask
 {
-    protected Settings $appSettings;
+    protected Environment $environment;
 
     protected Adapters $adapters;
 
@@ -23,16 +23,16 @@ class RotateLogs extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
-        Settings $appSettings,
+        Entity\Settings $settings,
+        Environment $environment,
         Adapters $adapters,
         Supervisor $supervisor,
         Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
-        $this->appSettings = $appSettings;
+        $this->environment = $environment;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
         $this->storageLocationRepo = $storageLocationRepo;
@@ -57,19 +57,16 @@ class RotateLogs extends AbstractTask
         }
 
         // Rotate the main AzuraCast log.
-        $rotate = new Rotate\Rotate($this->appSettings->getTempDirectory() . '/app.log');
+        $rotate = new Rotate\Rotate($this->environment->getTempDirectory() . '/app.log');
         $rotate->keep(5);
         $rotate->size('5MB');
         $rotate->run();
 
         // Rotate the automated backups.
-        $backups_to_keep = (int)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_KEEP_COPIES, 0);
+        $backups_to_keep = $this->settings->getBackupKeepCopies();
 
         if ($backups_to_keep > 0) {
-            $backupStorageId = (int)$this->settingsRepo->getSetting(
-                Entity\Settings::BACKUP_STORAGE_LOCATION,
-                null
-            );
+            $backupStorageId = (int)$this->settings->getBackupStorageLocation();
 
             if ($backupStorageId > 0) {
                 $storageLocation = $this->storageLocationRepo->findByType(

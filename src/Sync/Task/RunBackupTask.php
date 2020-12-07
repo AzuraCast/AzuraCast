@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class Backup extends AbstractTask
+class RunBackupTask extends AbstractTask
 {
     public const BASE_DIR = '/var/azuracast/backups';
 
@@ -19,17 +19,21 @@ class Backup extends AbstractTask
 
     protected Application $console;
 
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         MessageBus $messageBus,
-        Application $console
+        Application $console,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->messageBus = $messageBus;
         $this->console = $console;
+        $this->settingsTableRepo = $settingsTableRepo;
     }
 
     /**
@@ -40,7 +44,8 @@ class Backup extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
-            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RUN, time());
+            $this->settings->updateBackupLastRun();
+            $this->settingsTableRepo->writeSettings($this->settings);
 
             [$result_code, $result_output] = $this->runBackup(
                 $message->path,
@@ -49,8 +54,9 @@ class Backup extends AbstractTask
                 $message->storageLocationId
             );
 
-            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_RESULT, $result_code);
-            $this->settingsRepo->setSetting(Entity\Settings::BACKUP_LAST_OUTPUT, $result_output);
+            $this->settings->setBackupLastResult($result_code);
+            $this->settings->setBackupLastOutput($result_output);
+            $this->settingsTableRepo->writeSettings($this->settings);
         }
     }
 
@@ -88,7 +94,7 @@ class Backup extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $backup_enabled = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_ENABLED, false);
+        $backup_enabled = $this->settings->isBackupEnabled();
         if (!$backup_enabled) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
@@ -97,11 +103,11 @@ class Backup extends AbstractTask
         $now_utc = CarbonImmutable::now('UTC');
 
         $threshold = $now_utc->subDay()->getTimestamp();
-        $last_run = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_LAST_RUN, 0);
+        $last_run = $this->settings->getBackupLastRun();
 
         if ($last_run <= $threshold) {
             // Check if the backup time matches (if it's set).
-            $backupTimecode = $this->settingsRepo->getSetting(Entity\Settings::BACKUP_TIME, null);
+            $backupTimecode = $this->settings->getBackupTimeCode();
 
             if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
@@ -128,10 +134,7 @@ class Backup extends AbstractTask
             }
 
             // Trigger a new backup.
-            $storageLocationId = (int)$this->settingsRepo->getSetting(
-                Entity\Settings::BACKUP_STORAGE_LOCATION,
-                0
-            );
+            $storageLocationId = (int)($this->settings->getBackupStorageLocation() ?? 0);
             if ($storageLocationId <= 0) {
                 $storageLocationId = null;
             }
@@ -139,7 +142,7 @@ class Backup extends AbstractTask
             $message = new Message\BackupMessage();
             $message->storageLocationId = $storageLocationId;
             $message->path = 'automatic_backup.zip';
-            $message->excludeMedia = (bool)$this->settingsRepo->getSetting(Entity\Settings::BACKUP_EXCLUDE_MEDIA, 0);
+            $message->excludeMedia = $this->settings->getBackupExcludeMedia();
 
             $this->messageBus->dispatch($message);
         }

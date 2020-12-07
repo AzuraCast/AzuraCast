@@ -3,8 +3,8 @@
 namespace App\Console\Command;
 
 use App\Entity;
+use App\Environment;
 use App\Service\AzuraCastCentral;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,9 +15,9 @@ class SetupCommand extends CommandAbstract
     public function __invoke(
         SymfonyStyle $io,
         OutputInterface $output,
-        Settings $settings,
+        Environment $environment,
         ContainerInterface $di,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
         Entity\Repository\StationRepository $stationRepo,
         AzuraCastCentral $acCentral,
         bool $update = false,
@@ -26,22 +26,23 @@ class SetupCommand extends CommandAbstract
         $io->title(__('AzuraCast Setup'));
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
-        $io->listing([
-            __('Environment: %s', ucfirst($settings[Settings::APP_ENV])),
-            __('Installation Method: %s', $settings->isDocker() ? 'Docker' : 'Ansible'),
-        ]);
+        $io->listing(
+            [
+                __('Environment: %s', ucfirst($environment->getAppEnvironment())),
+                __('Installation Method: %s', $environment->isDocker() ? 'Docker' : 'Ansible'),
+            ]
+        );
 
         if ($update) {
             $io->note(__('Running in update mode.'));
 
-            if (!$settings->isDocker()) {
+            if (!$environment->isDocker()) {
                 $io->section(__('Migrating Legacy Configuration'));
                 $this->runCommand($output, 'azuracast:config:migrate');
                 $io->newLine();
             }
         }
 
-        /** @var EntityManagerInterface $em */
         $em = $di->get(EntityManagerInterface::class);
         $conn = $em->getConnection();
 
@@ -49,9 +50,13 @@ class SetupCommand extends CommandAbstract
         $io->section(__('Running Database Migrations'));
 
         $conn->ping();
-        $this->runCommand($output, 'migrations:migrate', [
-            '--allow-no-migration' => true,
-        ]);
+        $this->runCommand(
+            $output,
+            'migrations:migrate',
+            [
+                '--allow-no-migration' => true,
+            ]
+        );
 
         $io->newLine();
         $io->section(__('Generating Database Proxy Classes'));
@@ -59,7 +64,7 @@ class SetupCommand extends CommandAbstract
         $conn->ping();
         $this->runCommand($output, 'orm:generate-proxies');
 
-        if ($loadFixtures || (!$settings->isProduction() && !$update)) {
+        if ($loadFixtures || (!$environment->isProduction() && !$update)) {
             $io->newLine();
             $io->section(__('Installing Data Fixtures'));
 
@@ -73,7 +78,9 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'queue:clear');
 
-        $settingsRepo->deleteSetting(Entity\Settings::NOWPLAYING);
+        $settings = $settingsTableRepo->updateSettings();
+        $settings->setNowplaying(null);
+
         $stationRepo->clearNowPlaying();
 
         $io->newLine();
@@ -83,24 +90,32 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'azuracast:radio:restart');
 
         // Clear settings that should be reset upon update.
-        $settingsRepo->setSetting(Entity\Settings::UPDATE_LAST_RUN, time());
-        $settingsRepo->deleteSetting(Entity\Settings::UPDATE_RESULTS);
-        $settingsRepo->deleteSetting(Entity\Settings::UNIQUE_IDENTIFIER);
-        $settingsRepo->deleteSetting(Entity\Settings::EXTERNAL_IP);
+        $settings->updateUpdateLastRun();
+        $settings->setUpdateResults(null);
+        $settings->setExternalIp(null);
+        if (!$update) {
+            $settings->setAppUniqueIdentifier(null);
+        }
+
+        $settingsTableRepo->writeSettings($settings);
 
         $io->newLine();
 
         if ($update) {
-            $io->success([
-                __('AzuraCast is now updated to the latest version!'),
-            ]);
+            $io->success(
+                [
+                    __('AzuraCast is now updated to the latest version!'),
+                ]
+            );
         } else {
             $public_ip = $acCentral->getIp(false);
 
-            $io->success([
-                __('AzuraCast installation complete!'),
-                __('Visit %s to complete setup.', 'http://' . $public_ip),
-            ]);
+            $io->success(
+                [
+                    __('AzuraCast installation complete!'),
+                    __('Visit %s to complete setup.', 'http://' . $public_ip),
+                ]
+            );
         }
 
         return 0;

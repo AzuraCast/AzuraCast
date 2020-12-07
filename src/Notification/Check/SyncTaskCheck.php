@@ -3,6 +3,7 @@
 namespace App\Notification\Check;
 
 use App\Acl;
+use App\Entity;
 use App\Event\GetNotifications;
 use App\Notification\Notification;
 use App\Sync\Runner;
@@ -11,9 +12,14 @@ class SyncTaskCheck
 {
     protected Runner $syncRunner;
 
-    public function __construct(Runner $syncRunner)
-    {
+    protected Entity\Settings $settings;
+
+    public function __construct(
+        Runner $syncRunner,
+        Entity\Settings $settings
+    ) {
         $this->syncRunner = $syncRunner;
+        $this->settings = $settings;
     }
 
     public function __invoke(GetNotifications $event): void
@@ -25,11 +31,18 @@ class SyncTaskCheck
             return;
         }
 
+        $setupComplete = $this->settings->isSetupComplete();
         $syncTasks = $this->syncRunner->getSyncTimes();
 
         foreach ($syncTasks as $taskKey => $task) {
             $interval = $task['interval'];
             $diff = $task['diff'];
+
+            // Don't show notification if this installation is freshly installed.
+            $threshold = time() - ($interval * 5);
+            if ($setupComplete >= $threshold) {
+                continue;
+            }
 
             if ($diff > ($interval * 5)) {
                 $router = $request->getRouter();

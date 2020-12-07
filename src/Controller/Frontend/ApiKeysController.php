@@ -8,6 +8,7 @@ use App\Exception\NotFoundException;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Security\SplitToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -66,13 +67,10 @@ class ApiKeysController
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            // Setting values here to avoid static analysis errors.
-            $key_identifier = null;
-            $key_verifier = null;
-
+            $key = null;
             if ($new_record) {
-                $record = new Entity\ApiKey($user);
-                [$key_identifier, $key_verifier] = $record->generate();
+                $key = SplitToken::generate();
+                $record = new Entity\ApiKey($user, $key);
             }
 
             $this->record_repo->fromArray($record, $data);
@@ -84,8 +82,7 @@ class ApiKeysController
             // Render one-time display
             if ($new_record) {
                 return $view->renderToResponse($response, 'frontend/api_keys/new_key', [
-                    'key_identifier' => $key_identifier,
-                    'key_verifier' => $key_verifier,
+                    'key' => (string)$key,
                 ]);
             }
 
@@ -107,7 +104,7 @@ class ApiKeysController
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
 
-        $record = $this->record_repo->getRepository()->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
+        $record = $this->record_repo->getRepository()->findOneBy(['id' => $id, 'user' => $user]);
 
         if ($record instanceof Entity\ApiKey) {
             $this->em->remove($record);

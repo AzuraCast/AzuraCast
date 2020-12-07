@@ -8,6 +8,19 @@ use Doctrine\ORM\QueryBuilder;
 
 class StationQueueRepository extends Repository
 {
+    public function clearForMediaAndPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void
+    {
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq
+                WHERE sq.media = :media AND sq.playlist = :playlist
+            DQL
+        )
+            ->setParameter('media', $media)
+            ->setParameter('playlist', $playlist)
+            ->execute();
+    }
+
     public function getNextVisible(Entity\Station $station): ?Entity\StationQueue
     {
         $queue = $this->getUpcomingQueue($station);
@@ -30,8 +43,12 @@ class StationQueueRepository extends Repository
         $station = $queueRow->getStation();
 
         // Remove all existing records that are marked as "sent to AutoDJ".
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
-            WHERE sq.station = :station AND sq.sent_to_autodj = 1')
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station AND sq.sent_to_autodj = 1
+            DQL
+        )
             ->setParameter('station', $station)
             ->execute();
 

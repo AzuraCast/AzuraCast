@@ -188,6 +188,11 @@ setup-letsencrypt() {
 # Configure release mode settings.
 #
 setup-release() {
+    if [[ ! -f .env ]]; then
+        echo "Writing default .env file..."
+        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/sample.env -o .env
+    fi
+
     local AZURACAST_VERSION="latest"
     if ask "Prefer stable release versions of AzuraCast?" N; then
         AZURACAST_VERSION="stable"
@@ -252,8 +257,7 @@ install() {
     fi
 
     if [[ ! -f .env ]]; then
-        echo "Writing default .env file..."
-        curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/sample.env -o .env
+        setup-release
     fi
 
     if [[ ! -f azuracast.env ]]; then
@@ -268,8 +272,6 @@ install() {
         )
         sed -i "s/azur4c457/${NEW_PASSWORD}/g" azuracast.env
     fi
-
-    setup-release
 
     if [[ ! -f docker-compose.yml ]]; then
         echo "Retrieving default docker-compose.yml file..."

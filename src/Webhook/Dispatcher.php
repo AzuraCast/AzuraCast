@@ -3,11 +3,11 @@
 namespace App\Webhook;
 
 use App\Entity;
+use App\Environment;
 use App\Event\SendWebhooks;
 use App\Exception;
 use App\Http\RouterInterface;
 use App\Message;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -16,6 +16,8 @@ use Symfony\Component\Messenger\MessageBus;
 
 class Dispatcher implements EventSubscriberInterface
 {
+    protected Environment $environment;
+
     protected Logger $logger;
 
     protected MessageBus $messageBus;
@@ -29,6 +31,7 @@ class Dispatcher implements EventSubscriberInterface
     protected EntityManagerInterface $em;
 
     public function __construct(
+        Environment $environment,
         Logger $logger,
         EntityManagerInterface $em,
         MessageBus $messageBus,
@@ -36,6 +39,7 @@ class Dispatcher implements EventSubscriberInterface
         LocalWebhookHandler $localHandler,
         ConnectorLocator $connectors
     ) {
+        $this->environment = $environment;
         $this->logger = $logger;
         $this->em = $em;
         $this->messageBus = $messageBus;
@@ -49,7 +53,7 @@ class Dispatcher implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        if (Settings::getInstance()->isTesting()) {
+        if (Environment::getInstance()->isTesting()) {
             return [];
         }
 
@@ -103,7 +107,7 @@ class Dispatcher implements EventSubscriberInterface
      */
     public function dispatch(SendWebhooks $event): void
     {
-        if (Settings::getInstance()->isTesting()) {
+        if ($this->environment->isTesting()) {
             $this->logger->info('In testing mode; no webhooks dispatched.');
             return;
         }

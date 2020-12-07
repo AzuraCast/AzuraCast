@@ -10,7 +10,7 @@
  * @var App\Assets $assets
  * @var App\Version $version
  * @var App\Http\ServerRequest $request
- * @var array $app_settings
+ * @var App\Environment $environment
  */
 
 $page_class ??= '';
@@ -46,7 +46,7 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
 <?php if (!$customization->hideProductName() && !$hide_footer): ?>
     <footer id="footer" class="footer-alt" role="contentinfo">
         <?=sprintf(__('Powered by %s'),
-            '<a href="https://azuracast.com/" target="_blank">' . $settings['name'] . '</a>' . ' ')?><br>
+            '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' ')?><br>
         <?=sprintf(__('Mascot designed by %s'),
             '<a href="https://tysontan.deviantart.com/" target="_blank">Tyson Tan</a>')?>
     </footer>

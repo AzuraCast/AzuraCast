@@ -3,12 +3,15 @@
 namespace App\Sync;
 
 use App\Entity;
-use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\SettingsTableRepository;
+use App\Environment;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
 use App\LockFactory;
-use App\Settings;
+use App\Message;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\Log\LogLevel;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -17,29 +20,58 @@ class Runner
 {
     protected Logger $logger;
 
-    protected SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
+
+    protected Environment $environment;
+
+    protected SettingsTableRepository $settingsTableRepo;
 
     protected LockFactory $lockFactory;
 
     protected EventDispatcher $eventDispatcher;
 
     public function __construct(
-        SettingsRepository $settingsRepo,
+        SettingsTableRepository $settingsRepo,
+        Entity\Settings $settings,
+        Environment $environment,
         Logger $logger,
         LockFactory $lockFactory,
         EventDispatcher $eventDispatcher
     ) {
-        $this->settingsRepo = $settingsRepo;
+        $this->settingsTableRepo = $settingsRepo;
+        $this->settings = $settings;
+        $this->environment = $environment;
         $this->logger = $logger;
         $this->lockFactory = $lockFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    public function __invoke(Message\AbstractMessage $message): void
+    {
+        if ($message instanceof Message\RunSyncTaskMessage) {
+            $outputPath = $message->outputPath;
+
+            if (null !== $outputPath) {
+                $logHandler = new StreamHandler($outputPath, LogLevel::DEBUG, true);
+                $this->logger->pushHandler($logHandler);
+            }
+
+            $this->runSyncTask($message->type, true);
+
+            if (null !== $outputPath) {
+                $this->logger->popHandler();
+            }
+        }
+    }
+
     public function runSyncTask(string $type, bool $force = false): void
     {
         // Immediately halt if setup is not complete.
-        if ($this->settingsRepo->getSetting(Entity\Settings::SETUP_COMPLETE, 0) == 0) {
-            die('Setup not complete; halting synchronized task.');
+        if (!$this->settings->isSetupComplete()) {
+            $this->logger->notice(
+                sprintf('Skipping sync task %s; setup not complete.', $type)
+            );
+            return;
         }
 
         $allSyncInfo = $this->getSyncTimes();
@@ -52,7 +84,7 @@ class Runner
 
         set_time_limit($syncInfo['timeout']);
 
-        if (Settings::getInstance()->isCli()) {
+        if ($this->environment->isCli()) {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
             ini_set('display_errors', '1');
             ini_set('log_errors', '1');
@@ -98,7 +130,8 @@ class Runner
                 ));
             }
 
-            $this->settingsRepo->setSetting($syncInfo['lastRunSetting'], time());
+            $this->settings->updateSyncLastRunTime($type);
+            $this->settingsTableRepo->writeSettings($this->settings);
         } finally {
             $lock->release();
         }
@@ -109,10 +142,8 @@ class Runner
      */
     public function getSyncTimes(): array
     {
-        $this->settingsRepo->clearCache();
-
-        $shortTaskTimeout = $_ENV['SYNC_SHORT_EXECUTION_TIME'] ?? 600;
-        $longTaskTimeout = $_ENV['SYNC_LONG_EXECUTION_TIME'] ?? 1800;
+        $shortTaskTimeout = $this->environment->getSyncShortExecutionTime();
+        $longTaskTimeout = $this->environment->getSyncLongExecutionTime();
 
         $syncs = [
             GetSyncTasks::SYNC_NOWPLAYING => [
@@ -120,8 +151,8 @@ class Runner
                 'contents' => [
                     __('Now Playing Data'),
                 ],
-                'lastRunSetting' => Entity\Settings::NOWPLAYING_LAST_RUN,
                 'timeout' => $shortTaskTimeout,
+                'latest' => $this->settings->getSyncNowplayingLastRun(),
                 'interval' => 15,
             ],
             GetSyncTasks::SYNC_SHORT => [
@@ -129,8 +160,8 @@ class Runner
                 'contents' => [
                     __('Song Requests Queue'),
                 ],
-                'lastRunSetting' => Entity\Settings::SHORT_SYNC_LAST_RUN,
                 'timeout' => $shortTaskTimeout,
+                'latest' => $this->settings->getSyncShortLastRun(),
                 'interval' => 60,
             ],
             GetSyncTasks::SYNC_MEDIUM => [
@@ -138,8 +169,8 @@ class Runner
                 'contents' => [
                     __('Check Media Folders'),
                 ],
-                'lastRunSetting' => Entity\Settings::MEDIUM_SYNC_LAST_RUN,
                 'timeout' => $shortTaskTimeout,
+                'latest' => $this->settings->getSyncMediumLastRun(),
                 'interval' => 300,
             ],
             GetSyncTasks::SYNC_LONG => [
@@ -148,14 +179,13 @@ class Runner
                     __('Analytics/Statistics'),
                     __('Cleanup'),
                 ],
-                'lastRunSetting' => Entity\Settings::LONG_SYNC_LAST_RUN,
                 'timeout' => $longTaskTimeout,
+                'latest' => $this->settings->getSyncLongLastRun(),
                 'interval' => 3600,
             ],
         ];
 
         foreach ($syncs as &$sync_info) {
-            $sync_info['latest'] = $this->settingsRepo->getSetting($sync_info['lastRunSetting'], 0);
             $sync_info['diff'] = time() - $sync_info['latest'];
         }
 

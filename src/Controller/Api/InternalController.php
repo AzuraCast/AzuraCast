@@ -9,7 +9,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
-use App\Sync\Task\NowPlaying;
+use App\Sync\Task\NowPlayingTask;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
@@ -17,7 +17,7 @@ class InternalController
 {
     protected Acl $acl;
 
-    protected NowPlaying $sync_nowplaying;
+    protected NowPlayingTask $sync_nowplaying;
 
     protected AutoDJ $autodj;
 
@@ -25,7 +25,7 @@ class InternalController
 
     public function __construct(
         Acl $acl,
-        NowPlaying $sync_nowplaying,
+        NowPlayingTask $sync_nowplaying,
         AutoDJ $autodj,
         Logger $logger
     ) {

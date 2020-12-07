@@ -4,9 +4,9 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Environment;
 use App\Exception;
 use App\Radio\AutoDJ;
-use App\Settings;
 use App\Utilities;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -21,11 +21,11 @@ class StationRequestRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $environment,
         LoggerInterface $logger,
         StationMediaRepository $mediaRepo
     ) {
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
 
         $this->mediaRepo = $mediaRepo;
     }
@@ -73,11 +73,13 @@ class StationRequestRepository extends Repository
                 $thresholdSeconds = 15;
             }
 
-            $recent_requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr
-                FROM App\Entity\StationRequest sr
-                WHERE sr.ip = :user_ip
-                AND sr.timestamp >= :threshold')
-                ->setParameter('user_ip', $ip)
+            $recent_requests = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT sr FROM App\Entity\StationRequest sr
+                    WHERE sr.ip = :user_ip
+                    AND sr.timestamp >= :threshold
+                DQL
+            )->setParameter('user_ip', $ip)
                 ->setParameter('threshold', time() - $thresholdSeconds)
                 ->getArrayResult();
 
@@ -109,13 +111,16 @@ class StationRequestRepository extends Repository
         $pending_request_threshold = time() - (60 * 10);
 
         try {
-            $pending_request = $this->em->createQuery(/** @lang DQL */ 'SELECT sr.timestamp
-                FROM App\Entity\StationRequest sr
-                WHERE sr.track_id = :track_id
-                AND sr.station_id = :station_id
-                AND (sr.timestamp >= :threshold OR sr.played_at = 0)
-                ORDER BY sr.timestamp DESC')
-                ->setParameter('track_id', $media->getId())
+            $pending_request = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT sr.timestamp
+                    FROM App\Entity\StationRequest sr
+                    WHERE sr.track_id = :track_id
+                    AND sr.station_id = :station_id
+                    AND (sr.timestamp >= :threshold OR sr.played_at = 0)
+                    ORDER BY sr.timestamp DESC
+                DQL
+            )->setParameter('track_id', $media->getId())
                 ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $pending_request_threshold)
                 ->setMaxResults(1)
@@ -138,12 +143,15 @@ class StationRequestRepository extends Repository
         $now ??= CarbonImmutable::now($station->getTimezoneObject());
 
         // Look up all requests that have at least waited as long as the threshold.
-        $requests = $this->em->createQuery(/** @lang DQL */ 'SELECT sr, sm
-            FROM App\Entity\StationRequest sr JOIN sr.track sm
-            WHERE sr.played_at = 0
-            AND sr.station = :station
-            ORDER BY sr.skip_delay DESC, sr.id ASC')
-            ->setParameter('station', $station)
+        $requests = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sr, sm
+                FROM App\Entity\StationRequest sr JOIN sr.track sm
+                WHERE sr.played_at = 0
+                AND sr.station = :station
+                ORDER BY sr.skip_delay DESC, sr.id ASC
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         foreach ($requests as $request) {
@@ -180,12 +188,15 @@ class StationRequestRepository extends Repository
 
         $lastPlayThreshold = time() - ($lastPlayThresholdMins * 60);
 
-        $recentTracks = $this->em->createQuery(/** @lang DQL */ 'SELECT sh.id, sh.title, sh.artist
+        $recentTracks = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sh.id, sh.title, sh.artist
                 FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start >= :threshold
-                ORDER BY sh.timestamp_start DESC')
-            ->setParameter('station', $station)
+                ORDER BY sh.timestamp_start DESC
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('threshold', $lastPlayThreshold)
             ->getArrayResult();
 

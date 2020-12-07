@@ -13,33 +13,30 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.11';
+    public const FALLBACK_VERSION = '0.11.1';
 
     public const RELEASE_CHANNEL_ROLLING = 'rolling';
     public const RELEASE_CHANNEL_STABLE = 'stable';
+
+    public const LATEST_COMPOSE_REVISION = 11;
 
     protected CacheInterface $cache;
 
     protected string $repoDir;
 
-    protected Settings $appSettings;
+    protected Environment $environment;
 
-    public function __construct(CacheInterface $cache, Settings $appSettings)
+    public function __construct(CacheInterface $cache, Environment $environment)
     {
         $this->cache = $cache;
-        $this->appSettings = $appSettings;
-
-        $this->repoDir = $appSettings[Settings::BASE_DIR];
+        $this->environment = $environment;
+        $this->repoDir = $environment->getBaseDirectory();
     }
 
     public function getReleaseChannel(): string
     {
-        if ($this->appSettings->isDocker()) {
-            $channel = $_ENV['AZURACAST_VERSION'] ?? 'latest';
-
-            return ('stable' === $channel)
-                ? self::RELEASE_CHANNEL_STABLE
-                : self::RELEASE_CHANNEL_ROLLING;
+        if ($this->environment->isDocker()) {
+            return $this->environment->getReleaseChannel();
         }
 
         $details = $this->getDetails();
@@ -72,7 +69,7 @@ class Version
 
             if (empty($details)) {
                 $details = $this->getRawDetails();
-                $ttl = $this->appSettings->isProduction() ? 86400 : 600;
+                $ttl = $this->environment->isProduction() ? 86400 : 600;
 
                 $this->cache->set('app_version_details', $details, $ttl);
             }

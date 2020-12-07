@@ -4,11 +4,11 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Environment;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Settings;
-use App\Sync\Task\Media;
+use App\Sync\Task\CheckMediaTask;
 use App\Utilities;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
-    protected Media $mediaSync;
+    protected CheckMediaTask $mediaSync;
 
     protected Adapters $adapters;
 
@@ -32,32 +32,32 @@ class StationRepository extends Repository
 
     protected CacheInterface $cache;
 
-    protected SettingsRepository $settingsRepo;
-
     protected StorageLocationRepository $storageLocationRepo;
+
+    protected Entity\Settings $settings;
 
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
-        SettingsRepository $settingsRepo,
+        Environment $environment,
         StorageLocationRepository $storageLocationRepo,
         LoggerInterface $logger,
-        Media $mediaSync,
+        CheckMediaTask $mediaSync,
         Adapters $adapters,
         Configuration $configuration,
         ValidatorInterface $validator,
-        CacheInterface $cache
+        CacheInterface $cache,
+        Entity\Settings $settings
     ) {
         $this->mediaSync = $mediaSync;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
         $this->validator = $validator;
         $this->cache = $cache;
-        $this->settingsRepo = $settingsRepo;
         $this->storageLocationRepo = $storageLocationRepo;
+        $this->settings = $settings;
 
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
     }
 
     /**
@@ -75,8 +75,11 @@ class StationRepository extends Repository
      */
     public function fetchAll()
     {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT s FROM App\Entity\Station s ORDER BY s.name ASC')
-            ->execute();
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT s FROM App\Entity\Station s ORDER BY s.name ASC
+            DQL
+        )->execute();
     }
 
     /**
@@ -194,24 +197,36 @@ class StationRepository extends Repository
 
     protected function flushRelatedMedia(Entity\Station $station): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\SongHistory sh SET sh.media = null
-            WHERE sh.station = :station')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\SongHistory sh SET sh.media = null
+                WHERE sh.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationPlaylistMedia spm
-            WHERE spm.playlist_id IN (SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station)')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationPlaylistMedia spm
+                WHERE spm.playlist_id IN (
+                    SELECT sp.id FROM App\Entity\StationPlaylist sp WHERE sp.station = :station
+                )
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
-            WHERE sq.station = :station')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationRequest sr
-            WHERE sr.station = :station')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationRequest sr WHERE sr.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
     }
 
@@ -304,8 +319,11 @@ class StationRepository extends Repository
      */
     public function clearNowPlaying(): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'UPDATE App\Entity\Station s SET s.nowplaying=null')
-            ->execute();
+        $this->em->createQuery(
+            <<<'DQL'
+                UPDATE App\Entity\Station s SET s.nowplaying=null
+            DQL
+        )->execute();
     }
 
     /**
@@ -323,7 +341,7 @@ class StationRepository extends Repository
             }
         }
 
-        $custom_url = trim($this->settingsRepo->getSetting(Entity\Settings::DEFAULT_ALBUM_ART_URL));
+        $custom_url = trim($this->settings->getDefaultAlbumArtUrl());
 
         if (!empty($custom_url)) {
             return new Uri($custom_url);

@@ -3,9 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Console\Application;
+use App\Controller\AbstractLogViewerController;
 use App\Entity;
+use App\File;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Message\RunSyncTaskMessage;
+use App\MessageQueue\QueueManager;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
@@ -14,8 +18,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Messenger\MessageBus;
 
-class DebugController
+class DebugController extends AbstractLogViewerController
 {
     protected Logger $logger;
 
@@ -23,10 +28,13 @@ class DebugController
 
     protected Application $console;
 
-    public function __construct(Logger $logger, Application $console)
+    protected MessageBus $messageBus;
+
+    public function __construct(Logger $logger, Application $console, MessageBus $messageBus)
     {
         $this->logger = $logger;
         $this->console = $console;
+        $this->messageBus = $messageBus;
 
         $this->testHandler = new TestHandler(Logger::DEBUG, false);
     }
@@ -35,10 +43,19 @@ class DebugController
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
-        Runner $sync
+        Runner $sync,
+        QueueManager $queueManager
     ): ResponseInterface {
+        $queues = QueueManager::getAllQueues();
+
+        $queueTotals = [];
+        foreach ($queues as $queue) {
+            $queueTotals[$queue] = $queueManager->getQueueCount($queue);
+        }
+
         return $request->getView()->renderToResponse($response, 'admin/debug/index', [
             'sync_times' => $sync->getSyncTimes(),
+            'queue_totals' => $queueTotals,
             'stations' => $stationRepo->fetchArray(),
         ]);
     }
@@ -46,20 +63,30 @@ class DebugController
     public function syncAction(
         ServerRequest $request,
         Response $response,
-        Runner $sync,
-        $type
+        string $type
     ): ResponseInterface {
-        $this->logger->pushHandler($this->testHandler);
+        $tempFile = File::generateTempPath('sync_task_' . $type . '.log');
 
-        $sync->runSyncTask($type, true);
+        $message = new RunSyncTaskMessage();
+        $message->type = $type;
+        $message->outputPath = $tempFile;
 
-        $this->logger->popHandler();
+        $this->messageBus->dispatch($message);
 
-        return $request->getView()->renderToResponse($response, 'system/log_view', [
-            'sidebar' => null,
-            'title' => __('Sync Task Output'),
-            'log_records' => $this->testHandler->getRecords(),
+        return $request->getView()->renderToResponse($response, 'admin/debug/sync', [
+            'title' => __('Run Synchronized Task'),
+            'outputLog' => basename($tempFile),
         ]);
+    }
+
+    public function logAction(
+        ServerRequest $request,
+        Response $response,
+        string $path
+    ): ResponseInterface {
+        $logPath = File::validateTempPath($path);
+
+        return $this->view($request, $response, $logPath, true);
     }
 
     public function nextsongAction(
@@ -72,9 +99,11 @@ class DebugController
 
         $station = $request->getStation();
 
-        $em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\StationQueue sq
-            WHERE sq.station = :station')
-            ->setParameter('station', $station)
+        $em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq WHERE sq.station = :station
+            DQL
+        )->setParameter('station', $station)
             ->execute();
 
         $this->logger->debug('Current queue cleared.');
@@ -133,11 +162,15 @@ class DebugController
 
     public function clearQueueAction(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        ?string $queue = null
     ): ResponseInterface {
-        [$resultCode, $resultOutput] = $this->console->runCommandWithArgs(
-            'queue:clear'
-        );
+        $args = [];
+        if (!empty($queue)) {
+            $args['queue'] = $queue;
+        }
+
+        [$resultCode, $resultOutput] = $this->console->runCommandWithArgs('queue:clear', $args);
 
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);

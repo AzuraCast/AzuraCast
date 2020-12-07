@@ -11,7 +11,7 @@ class B03_Admin_DebugCest extends CestAbstract
         $I->wantTo('Run now-playing synchronization task.');
 
         $I->amOnPage('/admin/debug/sync/nowplaying');
-        $I->seeInSource('Sync Task Output');
+        $I->seeInSource('Run Synchronization Task');
     }
 
     /**
@@ -23,7 +23,7 @@ class B03_Admin_DebugCest extends CestAbstract
         $I->wantTo('Run short synchronization task.');
 
         $I->amOnPage('/admin/debug/sync/short');
-        $I->seeInSource('Sync Task Output');
+        $I->seeInSource('Run Synchronization Task');
     }
 
     /**
@@ -35,7 +35,7 @@ class B03_Admin_DebugCest extends CestAbstract
         $I->wantTo('Run medium synchronization task.');
 
         $I->amOnPage('/admin/debug/sync/medium');
-        $I->seeInSource('Sync Task Output');
+        $I->seeInSource('Run Synchronization Task');
     }
 
     /**
@@ -47,6 +47,6 @@ class B03_Admin_DebugCest extends CestAbstract
         $I->wantTo('Run long synchronization task.');
 
         $I->amOnPage('/admin/debug/sync/long');
-        $I->seeInSource('Sync Task Output');
+        $I->seeInSource('Run Synchronization Task');
     }
 }

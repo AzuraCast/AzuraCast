@@ -16,8 +16,8 @@ class StationQueue implements SongInterface
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int|null
      */
     protected $id;
 
@@ -119,7 +119,7 @@ class StationQueue implements SongInterface
         $this->sent_to_autodj = false;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

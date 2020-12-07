@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * }, uniqueConstraints={
  *   @ORM\UniqueConstraint(name="stats_unique_idx", columns={"station_id", "type", "moment"})
  * })
- * @ORM\Entity
+ * @ORM\Entity(readOnly=true)
  */
 class Analytics
 {

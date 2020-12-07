@@ -66,6 +66,7 @@ use OpenApi\Annotations as OA;
  * @OA\Tag(name="Administration: Roles")
  * @OA\Tag(name="Administration: Settings")
  * @OA\Tag(name="Administration: Stations")
+ * @OA\Tag(name="Administration: Storage Locations")
  *
  * @OA\Tag(name="Miscellaneous")
  *

@@ -3,10 +3,10 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
+use App\Environment;
 use App\EventDispatcher;
 use App\Http\Router;
 use App\Radio\AbstractAdapter;
-use App\Settings;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
@@ -27,28 +27,29 @@ abstract class AbstractFrontend extends AbstractAdapter
 
     protected Router $router;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     protected Entity\Repository\StationMountRepository $stationMountRepo;
 
     public function __construct(
+        Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
         AdapterFactory $adapterFactory,
         Client $client,
         Router $router,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StationMountRepository $stationMountRepo
+        Entity\Repository\StationMountRepository $stationMountRepo,
+        Entity\Settings $settings
     ) {
-        parent::__construct($em, $supervisor, $dispatcher);
+        parent::__construct($environment, $em, $supervisor, $dispatcher);
 
         $this->adapterFactory = $adapterFactory;
         $this->http_client = $client;
         $this->router = $router;
 
-        $this->settingsRepo = $settingsRepo;
         $this->stationMountRepo = $stationMountRepo;
+        $this->settings = $settings;
     }
 
     /**
@@ -149,11 +150,11 @@ abstract class AbstractFrontend extends AbstractAdapter
             $base_url = $this->router->getBaseUrl();
         }
 
-        $use_radio_proxy = $this->settingsRepo->getSetting('use_radio_proxy', 0);
+        $use_radio_proxy = $this->settings->getUseRadioProxy();
 
         if (
             $use_radio_proxy
-            || (!Settings::getInstance()->isProduction() && !Settings::getInstance()->isDocker())
+            || (!$this->environment->isProduction() && !$this->environment->isDocker())
             || 'https' === $base_url->getScheme()
         ) {
             // Web proxy support.

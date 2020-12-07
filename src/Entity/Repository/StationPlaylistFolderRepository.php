@@ -21,10 +21,12 @@ class StationPlaylistFolderRepository extends Repository
             [, $path] = explode('://', $path, 2);
         }
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE
-            FROM App\Entity\StationPlaylistFolder spf
-            WHERE spf.station = :station AND spf.path = :path')
-            ->setParameter('station', $station)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationPlaylistFolder spf
+                WHERE spf.station = :station AND spf.path = :path
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('path', $path)
             ->execute();
 
@@ -36,7 +38,7 @@ class StationPlaylistFolderRepository extends Repository
             ) {
                 /** @var Entity\StationPlaylist $playlist */
                 $playlist = $this->em->getReference(Entity\StationPlaylist::class, $playlistId);
-                
+
                 $newRecord = new Entity\StationPlaylistFolder($station, $playlist, $path);
                 $this->em->persist($newRecord);
             }

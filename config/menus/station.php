@@ -11,7 +11,7 @@ return function (App\Event\BuildStationMenu $e) {
     $backend = $e->getStationBackend();
     $frontend = $e->getStationFrontend();
 
-    $settings = $e->getSettings();
+    $settings = $e->getEnvironment();
 
     $e->merge([
         'start_station' => [

@@ -17,12 +17,12 @@ class AnalyticsRepository extends Repository
         DateTimeInterface $threshold,
         string $type = Entity\Analytics::INTERVAL_DAILY
     ): array {
-        return $this->em->createQuery(/** @lang DQL */ 'SELECT a
-            FROM App\Entity\Analytics a
-            WHERE a.station = :station
-            AND a.type = :type
-            AND a.moment >= :threshold')
-            ->setParameter('station', $station)
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT a FROM App\Entity\Analytics a
+                WHERE a.station = :station AND a.type = :type AND a.moment >= :threshold
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('type', $type)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
@@ -31,15 +31,21 @@ class AnalyticsRepository extends Repository
     public function clearAllAfterTime(
         DateTimeInterface $threshold
     ): void {
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a WHERE a.moment >= :threshold')
-            ->setParameter('threshold', $threshold)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\Analytics a WHERE a.moment >= :threshold
+            DQL
+        )->setParameter('threshold', $threshold)
             ->execute();
     }
 
     public function clearAll(): void
     {
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a')
-            ->execute();
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\Analytics a
+            DQL
+        )->execute();
     }
 
     public function cleanup(): void
@@ -47,9 +53,12 @@ class AnalyticsRepository extends Repository
         $hourlyRetention = CarbonImmutable::now()
             ->subDays(14);
 
-        $this->em->createQuery(/** @lang DQL */ 'DELETE FROM App\Entity\Analytics a
-            WHERE a.type = :type AND a.moment <= :threshold')
-            ->setParameter('type', Entity\Analytics::INTERVAL_HOURLY)
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\Analytics a
+                WHERE a.type = :type AND a.moment <= :threshold
+            DQL
+        )->setParameter('type', Entity\Analytics::INTERVAL_HOURLY)
             ->setParameter('threshold', $hourlyRetention)
             ->execute();
     }

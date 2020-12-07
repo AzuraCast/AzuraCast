@@ -10,7 +10,7 @@ use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class RadioRequests extends AbstractTask
+class CheckRequests extends AbstractTask
 {
     protected Adapters $adapters;
 
@@ -20,13 +20,13 @@ class RadioRequests extends AbstractTask
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         LoggerInterface $logger,
+        Entity\Settings $settings,
         Entity\Repository\StationRequestRepository $requestRepo,
         Adapters $adapters,
         EventDispatcher $dispatcher
     ) {
-        parent::__construct($em, $settingsRepo, $logger);
+        parent::__construct($em, $logger, $settings);
 
         $this->requestRepo = $requestRepo;
         $this->dispatcher = $dispatcher;

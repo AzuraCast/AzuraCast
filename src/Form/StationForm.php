@@ -5,9 +5,9 @@ namespace App\Form;
 use App\Acl;
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
 use App\Radio\Frontend\SHOUTcast;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -21,7 +21,7 @@ class StationForm extends EntityForm
 
     protected Acl $acl;
 
-    protected Settings $settings;
+    protected Environment $environment;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -31,13 +31,13 @@ class StationForm extends EntityForm
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Acl $acl,
         Config $config,
-        Settings $settings
+        Environment $environment
     ) {
         $this->acl = $acl;
         $this->entityClass = Entity\Station::class;
         $this->station_repo = $station_repo;
         $this->storageLocationRepo = $storageLocationRepo;
-        $this->settings = $settings;
+        $this->environment = $environment;
 
         $form_config = $config->get('forms/station');
         parent::__construct($em, $serializer, $validator, $form_config);
@@ -46,7 +46,7 @@ class StationForm extends EntityForm
     public function configure(array $options): void
     {
         // Hide "advanced" fields if advanced features are hidden on this installation.
-        if (!$this->settings->enableAdvancedFeatures()) {
+        if (!$this->environment->enableAdvancedFeatures()) {
             foreach ($options['groups'] as $groupId => $group) {
                 foreach ($group['elements'] as $elementKey => $element) {
                     $elementOptions = (array)$element[1];

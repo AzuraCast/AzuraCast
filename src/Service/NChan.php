@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Settings;
+use App\Environment;
 
 /**
  * Utility class for managing NChan, the nginx websocket/SSE/long-polling module.
@@ -14,14 +14,14 @@ class NChan
      */
     public static function isSupported(): bool
     {
-        $settings = Settings::getInstance();
+        $environment = Environment::getInstance();
 
-        if ($settings->isTesting()) {
+        if ($environment->isTesting()) {
             return false;
         }
 
-        if ($settings->isDocker()) {
-            return $settings[Settings::DOCKER_REVISION] >= 5;
+        if ($environment->isDocker()) {
+            return $environment->isDockerRevisionAtLeast(5);
         }
 
         // Check for support for Ansible installations.

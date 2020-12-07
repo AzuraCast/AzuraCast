@@ -4,10 +4,10 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Environment;
 use App\Flysystem\FilesystemManager;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Scheduler;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -23,13 +23,13 @@ class StationStreamerRepository extends Repository
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
-        Settings $settings,
+        Environment $environment,
         LoggerInterface $logger,
         Scheduler $scheduler,
         StationStreamerBroadcastRepository $broadcastRepo,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $serializer, $settings, $logger);
+        parent::__construct($em, $serializer, $environment, $logger);
 
         $this->scheduler = $scheduler;
         $this->broadcastRepo = $broadcastRepo;

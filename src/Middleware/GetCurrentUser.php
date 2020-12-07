@@ -5,6 +5,7 @@ namespace App\Middleware;
 use App\Auth;
 use App\Customization;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,20 +19,28 @@ class GetCurrentUser implements MiddlewareInterface
 {
     protected Entity\Repository\UserRepository $userRepo;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
+
+    protected Environment $environment;
 
     public function __construct(
         Entity\Repository\UserRepository $userRepo,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Environment $environment,
+        Entity\Settings $settings
     ) {
         $this->userRepo = $userRepo;
-        $this->settingsRepo = $settingsRepo;
+        $this->environment = $environment;
+        $this->settings = $settings;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Initialize the Auth for this request.
-        $auth = new Auth($this->userRepo, $request->getAttribute(ServerRequest::ATTR_SESSION));
+        $auth = new Auth(
+            $this->userRepo,
+            $request->getAttribute(ServerRequest::ATTR_SESSION),
+            $this->environment
+        );
         $user = ($auth->isLoggedIn()) ? $auth->getLoggedInUser() : null;
 
         $request = $request
@@ -40,7 +49,7 @@ class GetCurrentUser implements MiddlewareInterface
             ->withAttribute('is_logged_in', (null !== $user));
 
         // Initialize Customization (timezones, locales, etc) based on the current logged in user.
-        $customization = new Customization($this->settingsRepo, $request);
+        $customization = new Customization($this->settings, $this->environment, $request);
 
         $request = $request
             ->withAttribute('locale', $customization->getLocale())

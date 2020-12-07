@@ -2,14 +2,14 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Repository\SettingsRepository;
+use App\Entity\Repository\SettingsTableRepository;
 use App\Entity\Settings;
 use App\Form\GeoLiteSettingsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use App\Session\Flash;
-use App\Sync\Task\UpdateGeoLiteDatabase;
+use App\Sync\Task\UpdateGeoLiteTask;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 
@@ -21,7 +21,7 @@ class InstallGeoLiteController
         ServerRequest $request,
         Response $response,
         GeoLiteSettingsForm $form,
-        UpdateGeoLiteDatabase $syncTask
+        UpdateGeoLiteTask $syncTask
     ): ResponseInterface {
         if (false !== $form->process($request)) {
             $flash = $request->getFlash();
@@ -52,12 +52,14 @@ class InstallGeoLiteController
     public function uninstallAction(
         ServerRequest $request,
         Response $response,
-        SettingsRepository $settingsRepo,
+        Settings $settings,
+        SettingsTableRepository $settingsTableRepo,
         $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $settingsRepo->setSetting(Settings::GEOLITE_LICENSE_KEY, '');
+        $settings->setGeoliteLicenseKey(null);
+        $settingsTableRepo->writeSettings($settings);
 
         @unlink(GeoLite::getDatabasePath());
 

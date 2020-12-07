@@ -15,7 +15,7 @@ abstract class AbstractRemote
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Settings $settings;
 
     protected Client $http_client;
 
@@ -25,13 +25,13 @@ abstract class AbstractRemote
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Settings $settings,
         Client $http_client,
         Logger $logger,
         AdapterFactory $adapterFactory
     ) {
         $this->em = $em;
-        $this->settingsRepo = $settingsRepo;
+        $this->settings = $settings;
         $this->http_client = $http_client;
         $this->logger = $logger;
         $this->adapterFactory = $adapterFactory;

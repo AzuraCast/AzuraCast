@@ -5,11 +5,11 @@ namespace App\Form;
 use App\Acl;
 use App\Config;
 use App\Entity;
+use App\Environment;
 use App\Flysystem\FilesystemManager;
 use App\Http\ServerRequest;
 use App\Radio\Configuration;
-use App\Settings;
-use App\Sync\Task\Media;
+use App\Sync\Task\CheckMediaTask;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +21,7 @@ class StationCloneForm extends StationForm
 {
     protected Configuration $configuration;
 
-    protected Media $media_sync;
+    protected CheckMediaTask $media_sync;
 
     protected FilesystemManager $filesystem;
 
@@ -33,9 +33,9 @@ class StationCloneForm extends StationForm
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Acl $acl,
         Configuration $configuration,
-        Media $media_sync,
+        CheckMediaTask $media_sync,
         Config $config,
-        Settings $settings,
+        Environment $environment,
         FilesystemManager $filesystem
     ) {
         parent::__construct(
@@ -46,7 +46,7 @@ class StationCloneForm extends StationForm
             $storageLocationRepo,
             $acl,
             $config,
-            $settings
+            $environment
         );
 
         $form_config = $config->get('forms/station_clone');
@@ -197,7 +197,7 @@ class StationCloneForm extends StationForm
             }
 
             // Set new radio base directory
-            $station_base_dir = Settings::getInstance()->getStationDirectory();
+            $station_base_dir = Environment::getInstance()->getStationDirectory();
             $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
 
             $new_record->ensureDirectoriesExist();

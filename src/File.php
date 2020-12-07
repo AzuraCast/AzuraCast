@@ -43,4 +43,33 @@ class File
         $str = str_replace('%', '-', $str);
         return $str;
     }
+
+    public static function generateTempPath(string $pattern = ''): string
+    {
+        $prefix = pathinfo($pattern, PATHINFO_FILENAME) ?? 'temp';
+        $extension = pathinfo($pattern, PATHINFO_EXTENSION) ?? 'log';
+
+        $tempPath = tempnam(sys_get_temp_dir(), $prefix . '_') . '.' . $extension;
+        touch($tempPath);
+
+        return $tempPath;
+    }
+
+    public static function validateTempPath(string $path): string
+    {
+        $tempDir = sys_get_temp_dir();
+        $fullPath = realpath($tempDir . '/' . $path);
+
+        if (false === $fullPath) {
+            throw new \InvalidArgumentException(sprintf('Invalid path: "%s"', $path));
+        }
+
+        if (0 !== strpos($fullPath, $tempDir)) {
+            throw new \InvalidArgumentException(
+                sprintf('Path "%s" is not within "%s".', $fullPath, $tempDir)
+            );
+        }
+
+        return $fullPath;
+    }
 }

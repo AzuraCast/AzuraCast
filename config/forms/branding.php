@@ -1,7 +1,5 @@
 <?php
 
-use App\Entity;
-
 return [
     'method' => 'post',
 
@@ -10,7 +8,7 @@ return [
             'use_grid' => true,
             'elements' => [
 
-                Entity\Settings::PUBLIC_THEME => [
+                'publicTheme' => [
                     'radio',
                     [
                         'label' => __('Base Theme for Public Pages'),
@@ -24,7 +22,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::HIDE_ALBUM_ART => [
+                'hideAlbumArt' => [
                     'toggle',
                     [
                         'label' => __('Hide Album Art on Public Pages'),
@@ -36,7 +34,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::HOMEPAGE_REDIRECT_URL => [
+                'homepageRedirectUrl' => [
                     'text',
                     [
                         'label' => __('Homepage Redirect URL'),
@@ -46,7 +44,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::DEFAULT_ALBUM_ART_URL => [
+                'defaultAlbumArtUrl' => [
                     'text',
                     [
                         'label' => __('Default Album Art URL'),
@@ -56,7 +54,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::HIDE_PRODUCT_NAME => [
+                'hideProductName' => [
                     'toggle',
                     [
                         'label' => __('Hide AzuraCast Branding on Public Pages'),
@@ -68,7 +66,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::CUSTOM_CSS_PUBLIC => [
+                'publicCustomCss' => [
                     'textarea',
                     [
                         'label' => __('Custom CSS for Public Pages'),
@@ -82,7 +80,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::CUSTOM_JS_PUBLIC => [
+                'publicCustomJs' => [
                     'textarea',
                     [
                         'label' => __('Custom JS for Public Pages'),
@@ -96,7 +94,7 @@ return [
                     ],
                 ],
 
-                Entity\Settings::CUSTOM_CSS_INTERNAL => [
+                'internalCustomCss' => [
                     'textarea',
                     [
                         'label' => __('Custom CSS for Internal Pages'),

@@ -3,29 +3,29 @@
 namespace App\Form;
 
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
-use App\Settings;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractSettingsForm extends Form
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
 
-    protected Settings $settings;
+    protected Environment $environment;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Settings $settings,
+        Entity\Repository\SettingsTableRepository $settingsTableRepo,
+        Environment $environment,
         array $formConfig
     ) {
         parent::__construct($formConfig);
 
         $this->em = $em;
-        $this->settings = $settings;
-        $this->settingsRepo = $settingsRepo;
+        $this->environment = $environment;
+        $this->settingsTableRepo = $settingsTableRepo;
     }
 
     public function getEntityManager(): EntityManagerInterface
@@ -33,25 +33,25 @@ abstract class AbstractSettingsForm extends Form
         return $this->em;
     }
 
-    public function getEntityRepository(): Entity\Repository\SettingsRepository
+    public function getEntityRepository(): Entity\Repository\SettingsTableRepository
     {
-        return $this->settingsRepo;
+        return $this->settingsTableRepo;
     }
 
-    public function getSettings(): Settings
+    public function getEnvironment(): Environment
     {
-        return $this->settings;
+        return $this->environment;
     }
 
     public function process(ServerRequest $request): bool
     {
         // Populate the form with existing values (if they exist).
-        $defaults = $this->settingsRepo->fetchArray(false);
+        $defaults = $this->settingsTableRepo->readSettingsArray();
 
         // Use current URI from request if the base URL isn't set.
-        if (!isset($defaults[Entity\Settings::BASE_URL])) {
+        if (empty($defaults['baseUrl'])) {
             $currentUri = $request->getUri()->withPath('');
-            $defaults[Entity\Settings::BASE_URL] = (string)$currentUri;
+            $defaults['baseUrl'] = (string)$currentUri;
         }
 
         $this->populate($defaults);
@@ -59,7 +59,7 @@ abstract class AbstractSettingsForm extends Form
         // Handle submission.
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
-            $this->settingsRepo->setSettings($data);
+            $this->settingsTableRepo->writeSettings($data);
             return true;
         }
 

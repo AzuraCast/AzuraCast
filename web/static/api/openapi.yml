@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: '0.11'
+  version: 0.11.1
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -2088,7 +2088,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1607067345
+          example: 1607279238
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2234,7 +2234,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1607067345
+          example: 1607279238
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2332,7 +2332,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1607067345
+          example: 1607279238
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2421,7 +2421,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1607067345
+          example: 1607279238
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2429,7 +2429,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1607067345
+          example: 1607279238
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2469,7 +2469,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1607067345
+          example: 1607279238
       type: object
     Api_Time:
       properties:
@@ -2511,6 +2511,7 @@ components:
       properties:
         id:
           type: integer
+          nullable: true
         name:
           type: string
         short_name:
@@ -2527,6 +2528,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         base_url:
           type: string
           example: 'http://custom-url.example.com'
@@ -2539,16 +2541,17 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1607067345
+          example: 1607279238
         updated_at:
           type: integer
-          example: 1607067345
+          example: 1607279238
       type: object
     Role:
       properties:
         id:
           type: integer
           example: 1
+          nullable: true
         name:
           type: string
           example: 'Super Administrator'
@@ -2596,7 +2599,7 @@ components:
           example: ''
         updateLastRun:
           type: integer
-          example: 1607067345
+          example: 1607279238
         publicTheme:
           type: string
           example: light
@@ -2630,7 +2633,7 @@ components:
           type: boolean
           example: 'false'
         backupTimeCode:
-          type: integer
+          type: string
           example: 400
           nullable: true
         backupExcludeMedia:
@@ -2645,7 +2648,7 @@ components:
           nullable: true
         backupLastRun:
           type: integer
-          example: 1607067345
+          example: 1607279238
         backupLastResult:
           type: string
           example: ''
@@ -2656,22 +2659,22 @@ components:
           nullable: true
         setupCompleteTime:
           type: integer
-          example: 1607067345
+          example: 1607279238
         nowplaying:
           description: 'The current cached now playing data.'
           example: ''
         syncNowplayingLastRun:
           type: integer
-          example: 1607067345
+          example: 1607279238
         syncShortLastRun:
           type: integer
-          example: 1607067345
+          example: 1607279238
         syncMediumLastRun:
           type: integer
-          example: 1607067345
+          example: 1607279238
         syncLongLastRun:
           type: integer
-          example: 1607067345
+          example: 1607279238
         externalIp:
           type: string
           example: 192.168.1.1
@@ -2682,7 +2685,7 @@ components:
           nullable: true
         geoliteLastRun:
           type: integer
-          example: 1607067345
+          example: 1607279238
       type: object
     Station:
       properties:
@@ -2801,6 +2804,7 @@ components:
             id:
               type: integer
               example: 1
+              nullable: true
             album:
               description: 'The name of the media file''s album.'
               type: string
@@ -2839,7 +2843,7 @@ components:
             mtime:
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer
-              example: 1607067345
+              example: 1607279238
               nullable: true
             amplify:
               description: 'The amount of amplification (in dB) to be applied to the radio source;'
@@ -2880,7 +2884,7 @@ components:
             art_updated_at:
               description: 'The latest time (UNIX timestamp) when album art was updated.'
               type: integer
-              example: 1607067345
+              example: 1607279238
             playlists:
               items: {  }
     StationMount:
@@ -2888,6 +2892,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         name:
           type: string
           example: /radio.mp3
@@ -3017,6 +3022,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         display_name:
           type: string
           example: '128kbps MP3'
@@ -3104,6 +3110,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         streamer_username:
           type: string
           example: dj_test
@@ -3126,7 +3133,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1607067345
+          example: 1607279238
           nullable: true
         schedule_items:
           items: {  }
@@ -3136,6 +3143,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
       type: object
     StationWebhook:
       properties:
@@ -3180,6 +3188,7 @@ components:
         id:
           type: integer
           example: 1
+          nullable: true
         email:
           type: string
           example: demo@azuracast.com
@@ -3206,10 +3215,10 @@ components:
           nullable: true
         created_at:
           type: integer
-          example: 1607067345
+          example: 1607279238
         updated_at:
           type: integer
-          example: 1607067345
+          example: 1607279238
         roles:
           items: {  }
       type: object

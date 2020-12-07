@@ -3,6 +3,10 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+---
+
+# AzuraCast 0.11.1 (Dec 7, 2020)
+
 ## New Features/Changes
 
 - **Remember Me**: You can now select the "Remember me" button when logging in to extend your session to two weeks
@@ -14,6 +18,9 @@ release channel, you can take advantage of these new features and fixes.
   caused quite a lot of confusion. The former `Settings` class is now named `Environment` (as it contains
   environment-specific settings) and the `Settings` database entity has been made strictly typed and the settings have
   been migrated to a new naming convention.
+
+- To improve performance when processing large media collections, waveforms won't be processed during the initial media
+  processing step and will be processed on-demand.
 
 ## Bug Fixes
 

@@ -3,6 +3,11 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+## New Features/Changes
+
+- **Dropbox Storage Locations**: Dropbox is now supported as a remote location for storage locations, which can hold
+  station media, station live broadcast recordings and system backups.
+
 ---
 
 # AzuraCast 0.11.1 (Dec 7, 2020)

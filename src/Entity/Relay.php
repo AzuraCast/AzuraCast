@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;

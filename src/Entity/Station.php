@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -294,7 +296,7 @@ class Station
      * @OA\Property(example="https://example.com/image.jpg")
      * @var string|null The station-specific default album artwork URL.
      */
-    protected $default_album_art_url = null;
+    protected $default_album_art_url;
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")

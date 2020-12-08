@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -428,10 +430,12 @@ class StorageLocation
     {
         if (self::ADAPTER_S3 === $this->adapter) {
             $client = $this->getS3Client();
-            $client->listObjectsV2([
-                'Bucket' => $this->s3Bucket,
-                'max-keys' => 1,
-            ]);
+            $client->listObjectsV2(
+                [
+                    'Bucket' => $this->s3Bucket,
+                    'max-keys' => 1,
+                ]
+            );
         }
 
         $adapter = $this->getStorageAdapter();
@@ -457,15 +461,17 @@ class StorageLocation
             throw new \InvalidArgumentException('This storage location is not using the S3 adapter.');
         }
 
-        $s3Options = array_filter([
-            'credentials' => [
-                'key' => $this->s3CredentialKey,
-                'secret' => $this->s3CredentialSecret,
-            ],
-            'region' => $this->s3Region,
-            'version' => $this->s3Version,
-            'endpoint' => $this->s3Endpoint,
-        ]);
+        $s3Options = array_filter(
+            [
+                'credentials' => [
+                    'key' => $this->s3CredentialKey,
+                    'secret' => $this->s3CredentialSecret,
+                ],
+                'region' => $this->s3Region,
+                'version' => $this->s3Version,
+                'endpoint' => $this->s3Endpoint,
+            ]
+        );
         return new S3Client($s3Options);
     }
 

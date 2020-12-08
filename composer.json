@@ -61,6 +61,7 @@
     "rlanvin/php-ip": "^2.0",
     "slim/http": "^1.1",
     "slim/slim": "^4.2",
+    "spatie/flysystem-dropbox": "^1.2",
     "spomky-labs/otphp": "^10.0",
     "studio24/rotate": "^1.0",
     "supervisorphp/supervisor": "^4.0",

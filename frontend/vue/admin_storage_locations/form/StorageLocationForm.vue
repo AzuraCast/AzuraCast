@@ -14,6 +14,9 @@
                         <b-form-radio value="s3">
                             <translate key="lang_form_adapter_s3">Remote: S3 Compatible</translate>
                         </b-form-radio>
+                        <b-form-radio value="dropbox">
+                            <translate key="lang_form_adapter_dropbox">Remote: Dropbox</translate>
+                        </b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>
 
@@ -125,6 +128,31 @@
 
                             <b-form-input id="form_edit_s3Version" type="text" v-model="form.s3Version.$model"
                                           :state="form.s3Version.$dirty ? !form.s3Version.$error : null"></b-form-input>
+                            <b-form-invalid-feedback>
+                                <translate key="lang_error_required">This field is required.</translate>
+                            </b-form-invalid-feedback>
+                        </b-form-group>
+                    </b-row>
+                </b-form-group>
+            </b-card-body>
+        </b-card>
+
+        <b-card v-show="form.adapter.$model === 'dropbox'" class="mb-3" no-body>
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_form_adapter_dropbox">Remote: Dropbox</translate>
+                </h2>
+            </div>
+            <b-card-body>
+                <b-form-group>
+                    <b-row>
+                        <b-form-group class="col-md-12" label-for="form_edit_dropboxAuthToken">
+                            <template v-slot:label>
+                                <translate key="lang_form_edit_dropboxAuthToken">Dropbox Auth Token</translate>
+                            </template>
+
+                            <b-form-input id="form_edit_dropboxAuthToken" type="text" v-model="form.dropboxAuthToken.$model"
+                                          :state="form.dropboxAuthToken.$dirty ? !form.dropboxAuthToken.$error : null"></b-form-input>
                             <b-form-invalid-feedback>
                                 <translate key="lang_error_required">This field is required.</translate>
                             </b-form-invalid-feedback>

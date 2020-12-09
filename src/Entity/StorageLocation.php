@@ -65,7 +65,11 @@ class StorageLocation
     /**
      * @ORM\Column(name="adapter", type="string", length=50)
      *
-     * @Assert\Choice(choices={StorageLocation::ADAPTER_LOCAL, StorageLocation::ADAPTER_S3})
+     * @Assert\Choice(choices={
+     *     StorageLocation::ADAPTER_LOCAL,
+     *     StorageLocation::ADAPTER_S3,
+     *     StorageLocation::ADAPTER_DROPBOX
+     * })
      * @var string The storage adapter to use for this location.
      */
     protected $adapter = self::ADAPTER_LOCAL;
@@ -531,6 +535,7 @@ class StorageLocation
         $adapterNames = [
             self::ADAPTER_LOCAL => 'Local',
             self::ADAPTER_S3 => 'S3',
+            self::ADAPTER_DROPBOX => 'Dropbox',
         ];
         return $adapterNames[$this->adapter] . ': ' . $this->getUri();
     }

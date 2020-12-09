@@ -150,6 +150,9 @@
                             <template v-slot:label>
                                 <translate key="lang_form_edit_dropboxAuthToken">Dropbox Auth Token</translate>
                             </template>
+                            <template v-slot:description>
+                                <a href="https://dropbox.tech/developers/generate-an-access-token-for-your-own-account" target="_blank" v-translate key="lang_form_edit_dropboxAuthToken_desc">Learn More about Dropbox Auth Tokens</a>
+                            </template>
 
                             <b-form-input id="form_edit_dropboxAuthToken" type="text" v-model="form.dropboxAuthToken.$model"
                                           :state="form.dropboxAuthToken.$dirty ? !form.dropboxAuthToken.$error : null"></b-form-input>

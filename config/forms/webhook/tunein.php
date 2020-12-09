@@ -1,7 +1,9 @@
 <?php
-/** @var array $app_settings */
-/** @var array $triggers */
-/** @var App\Http\Router $router */
+/**
+ * @var array $triggers
+ * @var App\Environment $environment
+ * @var App\Http\Router $router
+ */
 
 return [
     'method' => 'post',
@@ -15,7 +17,9 @@ return [
                     'text',
                     [
                         'label' => __('Web Hook Name'),
-                        'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
+                        'description' => __(
+                            'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'
+                        ),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
                     ],

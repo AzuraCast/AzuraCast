@@ -1,7 +1,9 @@
 <?php
-/** @var array $app_settings */
-/** @var array $triggers */
-/** @var App\Http\Router $router */
+/**
+ * @var array $triggers
+ * @var App\Environment $environment
+ * @var App\Http\Router $router
+ */
 
 return [
     'method' => 'post',
@@ -16,7 +18,9 @@ return [
                     'text',
                     [
                         'label' => __('Web Hook Name'),
-                        'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
+                        'description' => __(
+                            'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'
+                        ),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
                     ],
@@ -26,8 +30,10 @@ return [
                     'text',
                     [
                         'label' => __('Bot Token'),
-                        'description' => __('See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.',
-                            'https://core.telegram.org/bots#botfather'),
+                        'description' => __(
+                            'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.',
+                            'https://core.telegram.org/bots#botfather'
+                        ),
                         'belongsTo' => 'config',
                         'required' => true,
                         'form_group_class' => 'col-md-6',
@@ -38,7 +44,9 @@ return [
                     'text',
                     [
                         'label' => __('Chat ID'),
-                        'description' => __('Unique identifier for the target chat or username of the target channel (in the format @channelusername).'),
+                        'description' => __(
+                            'Unique identifier for the target chat or username of the target channel (in the format @channelusername).'
+                        ),
                         'belongsTo' => 'config',
                         'required' => true,
                         'form_group_class' => 'col-md-6',
@@ -50,7 +58,9 @@ return [
                     [
                         'label' => __('Custom API Base URL'),
                         'label_class' => 'advanced',
-                        'description' => __('Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.'),
+                        'description' => __(
+                            'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.'
+                        ),
                         'belongsTo' => 'config',
                         'form_group_class' => 'col-md-6',
                     ],
@@ -73,8 +83,12 @@ return [
             'use_grid' => true,
             'legend' => __('Customize Message'),
             'legend_class' => 'd-none',
-            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'),
-                $router->named('api:nowplaying:index')),
+            'description' => sprintf(
+                __(
+                    'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'
+                ),
+                $router->named('api:nowplaying:index')
+            ),
 
             'elements' => [
 
@@ -83,8 +97,12 @@ return [
                     [
                         'label' => __('Main Message Content'),
                         'belongsTo' => 'config',
-                        'default' => sprintf(__('Now playing on %s: %s by %s! Tune in now.'), '{{ station.name }}',
-                            '{{ now_playing.song.title }}', '{{ now_playing.song.artist }}'),
+                        'default' => sprintf(
+                            __('Now playing on %s: %s by %s! Tune in now.'),
+                            '{{ station.name }}',
+                            '{{ now_playing.song.title }}',
+                            '{{ now_playing.song.artist }}'
+                        ),
                         'required' => true,
                         'form_group_class' => 'col-sm-12',
                     ],
@@ -94,8 +112,10 @@ return [
                     'radio',
                     [
                         'label' => __('Message parsing mode'),
-                        'description' => __('See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.',
-                            'https://core.telegram.org/bots/api#sendmessage'),
+                        'description' => __(
+                            'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.',
+                            'https://core.telegram.org/bots/api#sendmessage'
+                        ),
                         'default' => 'Markdown',
                         'options' => [
                             'Markdown' => 'Markdown',

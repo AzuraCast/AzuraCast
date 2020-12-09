@@ -446,7 +446,7 @@ class StorageLocation
                 break;
 
             case self::ADAPTER_DROPBOX:
-                return 'dropbox://' . ltrim($path, '/');
+                return 'dropbox://' . $this->dropboxAuthToken . ltrim($path, '/');
                 break;
 
             case self::ADAPTER_LOCAL:

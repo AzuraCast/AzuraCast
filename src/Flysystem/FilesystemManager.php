@@ -120,6 +120,13 @@ class FilesystemManager
             $objectUrl = $s3Client->getObjectUrl($bucket, $adapter->applyPathPrefix('/cache'));
             return $this->filterCacheKey($objectUrl);
         }
+
+        if ($adapter instanceof DropboxAdapter) {
+            return $this->filterCacheKey(
+                'dropbox_' . $adapter->getClient()->getAccessToken() . $adapter->applyPathPrefix('/cache')
+            );
+        }
+
         if ($adapter instanceof AbstractAdapter) {
             return $this->filterCacheKey(ltrim($adapter->getPathPrefix(), '/'));
         }

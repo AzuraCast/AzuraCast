@@ -56,6 +56,16 @@ class WriteLiquidsoapConfiguration extends Event
     }
 
     /**
+     * Set configuration string.
+     *
+     * @param array $lines
+     */
+    public function setConfigLines(array $configLines): void
+    {
+        $this->configLines = $configLines;
+    }
+
+    /**
      * Compile the configuration lines together and return the result.
      */
     public function buildConfiguration(): string

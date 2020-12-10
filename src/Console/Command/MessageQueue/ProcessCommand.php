@@ -23,10 +23,13 @@ class ProcessCommand extends CommandAbstract
         int $runtime = 0,
         ?string $workerName = null
     ): int {
-        $logger->notice('Starting new Message Queue worker process.', [
-            'runtime' => $runtime,
-            'workerName' => $workerName,
-        ]);
+        $logger->notice(
+            'Starting new Message Queue worker process.',
+            [
+                'runtime' => $runtime,
+                'workerName' => $workerName,
+            ]
+        );
 
         if (null !== $workerName) {
             $queueManager->setWorkerName($workerName);
@@ -42,8 +45,20 @@ class ProcessCommand extends CommandAbstract
             $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $logger));
         }
 
-        $worker = new Worker($receivers, $messageBus, $eventDispatcher, $logger);
-        $worker->run();
+        try {
+            $worker = new Worker($receivers, $messageBus, $eventDispatcher, $logger);
+            $worker->run();
+        } catch (\Throwable $e) {
+            $logger->error(
+                sprintf('Message queue error: %s', $e->getMessage()),
+                [
+                    'workerName' => $workerName,
+                    'exception' => $e,
+                ]
+            );
+            return 1;
+        }
+
 
         return 0;
     }

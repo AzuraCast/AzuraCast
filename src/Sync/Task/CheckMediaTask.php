@@ -75,8 +75,8 @@ class CheckMediaTask extends AbstractTask
     {
         $query = $this->em->createQuery(
             <<<'DQL'
-                SELECT sl 
-                FROM App\Entity\StorageLocation sl 
+                SELECT sl
+                FROM App\Entity\StorageLocation sl
                 WHERE sl.type = :type
             DQL
         )->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
@@ -85,10 +85,12 @@ class CheckMediaTask extends AbstractTask
 
         foreach ($storageLocations as $storageLocation) {
             /** @var Entity\StorageLocation $storageLocation */
-            $this->logger->info(sprintf(
-                'Processing media for storage location %s...',
-                (string)$storageLocation
-            ));
+            $this->logger->info(
+                sprintf(
+                    'Processing media for storage location %s...',
+                    (string)$storageLocation
+                )
+            );
 
             $this->importMusic($storageLocation);
             gc_collect_cycles();
@@ -115,14 +117,20 @@ class CheckMediaTask extends AbstractTask
         $total_size = BigInteger::zero();
 
         try {
-            $fsIterator = $fs->createIterator('/', [
-                Options::OPTION_IS_RECURSIVE => true,
-                Options::OPTION_FILTER => FilterFactory::isFile(),
-            ]);
+            $fsIterator = $fs->createIterator(
+                '/',
+                [
+                    Options::OPTION_IS_RECURSIVE => true,
+                    Options::OPTION_FILTER => FilterFactory::isFile(),
+                ]
+            );
         } catch (S3Exception $e) {
-            $this->logger->error(sprintf('S3 Error for Storage Space %s', (string)$storageLocation), [
-                'exception' => $e,
-            ]);
+            $this->logger->error(
+                sprintf('S3 Error for Storage Space %s', (string)$storageLocation),
+                [
+                    'exception' => $e,
+                ]
+            );
             return;
         }
 
@@ -152,8 +160,23 @@ class CheckMediaTask extends AbstractTask
         $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
         $stats['total_files'] = count($music_files);
 
-        // Clear existing queue.
-        $this->queueManager->clearQueue(QueueManager::QUEUE_MEDIA);
+        // Check queue for existing pending processing entries.
+        $queuedMediaUpdates = [];
+        $queuedNewFiles = [];
+
+        $messengerConnection = $this->queueManager->getTransport(QueueManager::QUEUE_MEDIA);
+        foreach ($messengerConnection->all() as $envelope) {
+            $message = $envelope->getMessage();
+
+            if ($message instanceof Message\ReprocessMediaMessage) {
+                $queuedMediaUpdates[$message->media_id] = true;
+            } elseif (
+                $message instanceof Message\AddNewMediaMessage
+                && $message->storage_location_id === $storageLocation->getId()
+            ) {
+                $queuedNewFiles[$message->path] = true;
+            }
+        }
 
         // Check queue for existing pending processing entries.
         $existingMediaQuery = $this->em->createQuery(
@@ -179,7 +202,10 @@ class CheckMediaTask extends AbstractTask
                 }
 
                 $file_info = $music_files[$path_hash];
-                if ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+
+                if (isset($queuedMediaUpdates[$media_row->getId()])) {
+                    $stats['already_queued']++;
+                } elseif ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
                     $message = new Message\ReprocessMediaMessage();
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
@@ -205,13 +231,17 @@ class CheckMediaTask extends AbstractTask
                 continue;
             }
 
-            $message = new Message\AddNewMediaMessage();
-            $message->storage_location_id = $storageLocation->getId();
-            $message->path = $new_music_file['path'];
+            if (isset($queuedNewFiles[$new_music_file['path']])) {
+                $stats['already_queued']++;
+            } else {
+                $message = new Message\AddNewMediaMessage();
+                $message->storage_location_id = $storageLocation->getId();
+                $message->path = $new_music_file['path'];
 
-            $this->messageBus->dispatch($message);
+                $this->messageBus->dispatch($message);
 
-            $stats['created']++;
+                $stats['created']++;
+            }
         }
 
         $this->logger->debug(sprintf('Media processed for "%s".', (string)$storageLocation), $stats);

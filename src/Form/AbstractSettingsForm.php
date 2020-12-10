@@ -11,13 +11,13 @@ abstract class AbstractSettingsForm extends Form
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Environment $environment;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         array $formConfig
     ) {
@@ -25,7 +25,7 @@ abstract class AbstractSettingsForm extends Form
 
         $this->em = $em;
         $this->environment = $environment;
-        $this->settingsTableRepo = $settingsTableRepo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function getEntityManager(): EntityManagerInterface
@@ -33,9 +33,9 @@ abstract class AbstractSettingsForm extends Form
         return $this->em;
     }
 
-    public function getEntityRepository(): Entity\Repository\SettingsTableRepository
+    public function getEntityRepository(): Entity\Repository\SettingsRepository
     {
-        return $this->settingsTableRepo;
+        return $this->settingsRepo;
     }
 
     public function getEnvironment(): Environment
@@ -46,7 +46,7 @@ abstract class AbstractSettingsForm extends Form
     public function process(ServerRequest $request): bool
     {
         // Populate the form with existing values (if they exist).
-        $defaults = $this->settingsTableRepo->readSettingsArray();
+        $defaults = $this->settingsRepo->readSettingsArray();
 
         // Use current URI from request if the base URL isn't set.
         if (empty($defaults['baseUrl'])) {
@@ -59,7 +59,7 @@ abstract class AbstractSettingsForm extends Form
         // Handle submission.
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
-            $this->settingsTableRepo->writeSettings($data);
+            $this->settingsRepo->writeSettings($data);
             return true;
         }
 

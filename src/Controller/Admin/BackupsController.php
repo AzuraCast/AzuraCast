@@ -4,9 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Config;
 use App\Controller\AbstractLogViewerController;
-use App\Entity\Repository\StorageLocationRepository;
-use App\Entity\Settings;
-use App\Entity\StorageLocation;
+use App\Entity;
 use App\Exception\NotFoundException;
 use App\File;
 use App\Flysystem\Filesystem;
@@ -22,9 +20,9 @@ use Symfony\Component\Messenger\MessageBus;
 
 class BackupsController extends AbstractLogViewerController
 {
-    protected Settings $settings;
+    protected Entity\Settings $settings;
 
-    protected StorageLocationRepository $storageLocationRepo;
+    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
 
     protected RunBackupTask $backupTask;
 
@@ -33,14 +31,14 @@ class BackupsController extends AbstractLogViewerController
     protected string $csrfNamespace = 'admin_backups';
 
     public function __construct(
-        StorageLocationRepository $storageLocationRepo,
-        Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         RunBackupTask $backup_task,
         MessageBus $messageBus
     ) {
         $this->storageLocationRepo = $storageLocationRepo;
+        $this->settings = $settingsRepo->readSettings();
 
-        $this->settings = $settings;
         $this->backupTask = $backup_task;
         $this->messageBus = $messageBus;
     }
@@ -48,7 +46,8 @@ class BackupsController extends AbstractLogViewerController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $backups = [];
-        foreach ($this->storageLocationRepo->findAllByType(StorageLocation::TYPE_BACKUP) as $storageLocation) {
+        $storageLocations = $this->storageLocationRepo->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
+        foreach ($storageLocations as $storageLocation) {
             $fs = $storageLocation->getFilesystem();
             foreach ($fs->listContents('', true) as $file) {
                 $file['storageLocationId'] = $storageLocation->getId();
@@ -58,14 +57,18 @@ class BackupsController extends AbstractLogViewerController
         }
         $backups = array_reverse($backups);
 
-        return $request->getView()->renderToResponse($response, 'admin/backups/index', [
-            'backups' => $backups,
-            'is_enabled' => $this->settings->isBackupEnabled(),
-            'last_run' => $this->settings->getBackupLastRun(),
-            'last_result' => $this->settings->getBackupLastResult(),
-            'last_output' => $this->settings->getBackupLastOutput(),
-            'csrf' => $request->getCsrf()->generate($this->csrfNamespace),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'admin/backups/index',
+            [
+                'backups' => $backups,
+                'is_enabled' => $this->settings->isBackupEnabled(),
+                'last_run' => $this->settings->getBackupLastRun(),
+                'last_result' => $this->settings->getBackupLastResult(),
+                'last_output' => $this->settings->getBackupLastOutput(),
+                'csrf' => $request->getCsrf()->generate($this->csrfNamespace),
+            ]
+        );
     }
 
     public function configureAction(
@@ -78,11 +81,15 @@ class BackupsController extends AbstractLogViewerController
             return $response->withRedirect($request->getRouter()->fromHere('admin:backups:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $settingsForm,
-            'render_mode' => 'edit',
-            'title' => __('Configure Backups'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $settingsForm,
+                'render_mode' => 'edit',
+                'title' => __('Configure Backups'),
+            ]
+        );
     }
 
     public function runAction(
@@ -90,9 +97,17 @@ class BackupsController extends AbstractLogViewerController
         Response $response,
         Config $config
     ): ResponseInterface {
-        $runForm = new Form($config->get('forms/backup_run', [
-            'storageLocations' => $this->storageLocationRepo->fetchSelectByType(StorageLocation::TYPE_BACKUP, true),
-        ]));
+        $runForm = new Form(
+            $config->get(
+                'forms/backup_run',
+                [
+                    'storageLocations' => $this->storageLocationRepo->fetchSelectByType(
+                        Entity\StorageLocation::TYPE_BACKUP,
+                        true
+                    ),
+                ]
+            )
+        );
 
         // Handle submission.
         if ($request->isPost() && $runForm->isValid($request->getParsedBody())) {
@@ -113,18 +128,26 @@ class BackupsController extends AbstractLogViewerController
 
             $this->messageBus->dispatch($message);
 
-            return $request->getView()->renderToResponse($response, 'admin/backups/run', [
-                'title' => __('Run Manual Backup'),
-                'path' => $data['path'],
-                'outputLog' => basename($tempFile),
-            ]);
+            return $request->getView()->renderToResponse(
+                $response,
+                'admin/backups/run',
+                [
+                    'title' => __('Run Manual Backup'),
+                    'path' => $data['path'],
+                    'outputLog' => basename($tempFile),
+                ]
+            );
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $runForm,
-            'render_mode' => 'edit',
-            'title' => __('Run Manual Backup'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $runForm,
+                'render_mode' => 'edit',
+                'title' => __('Run Manual Backup'),
+            ]
+        );
     }
 
     public function logAction(
@@ -173,12 +196,12 @@ class BackupsController extends AbstractLogViewerController
         [$storageLocationId, $path] = explode('|', $pathStr);
 
         $storageLocation = $this->storageLocationRepo->findByType(
-            StorageLocation::TYPE_BACKUP,
+            Entity\StorageLocation::TYPE_BACKUP,
             (int)$storageLocationId
         );
 
 
-        if (!($storageLocation instanceof StorageLocation)) {
+        if (!($storageLocation instanceof Entity\StorageLocation)) {
             throw new \InvalidArgumentException('Invalid storage location.');
         }
 

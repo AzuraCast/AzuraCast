@@ -16,10 +16,9 @@ class CleanupStorageTask extends AbstractTask
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->filesystem = $filesystem;
     }

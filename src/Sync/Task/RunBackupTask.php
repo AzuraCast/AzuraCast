@@ -13,27 +13,24 @@ use Symfony\Component\Messenger\MessageBus;
 
 class RunBackupTask extends AbstractTask
 {
-    public const BASE_DIR = '/var/azuracast/backups';
-
     protected MessageBus $messageBus;
 
     protected Application $console;
 
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         MessageBus $messageBus,
         Application $console,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->messageBus = $messageBus;
         $this->console = $console;
-        $this->settingsTableRepo = $settingsTableRepo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -44,8 +41,10 @@ class RunBackupTask extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
-            $this->settings->updateBackupLastRun();
-            $this->settingsTableRepo->writeSettings($this->settings);
+            $settings = $this->settingsRepo->readSettings(true);
+            $settings->updateBackupLastRun();
+
+            $this->settingsRepo->writeSettings($settings);
 
             [$result_code, $result_output] = $this->runBackup(
                 $message->path,
@@ -54,9 +53,10 @@ class RunBackupTask extends AbstractTask
                 $message->storageLocationId
             );
 
-            $this->settings->setBackupLastResult($result_code);
-            $this->settings->setBackupLastOutput($result_output);
-            $this->settingsTableRepo->writeSettings($this->settings);
+            $settings = $this->settingsRepo->readSettings(true);
+            $settings->setBackupLastResult($result_code);
+            $settings->setBackupLastOutput($result_output);
+            $this->settingsRepo->writeSettings($settings);
         }
     }
 
@@ -94,7 +94,9 @@ class RunBackupTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $backup_enabled = $this->settings->isBackupEnabled();
+        $settings = $this->settingsRepo->readSettings();
+
+        $backup_enabled = $settings->isBackupEnabled();
         if (!$backup_enabled) {
             $this->logger->debug('Automated backups disabled; skipping...');
             return;
@@ -103,11 +105,11 @@ class RunBackupTask extends AbstractTask
         $now_utc = CarbonImmutable::now('UTC');
 
         $threshold = $now_utc->subDay()->getTimestamp();
-        $last_run = $this->settings->getBackupLastRun();
+        $last_run = $settings->getBackupLastRun();
 
         if ($last_run <= $threshold) {
             // Check if the backup time matches (if it's set).
-            $backupTimecode = $this->settings->getBackupTimeCode();
+            $backupTimecode = $settings->getBackupTimeCode();
 
             if (null !== $backupTimecode && '' !== $backupTimecode) {
                 $isWithinTimecode = false;
@@ -134,7 +136,7 @@ class RunBackupTask extends AbstractTask
             }
 
             // Trigger a new backup.
-            $storageLocationId = (int)($this->settings->getBackupStorageLocation() ?? 0);
+            $storageLocationId = $settings->getBackupStorageLocation() ?? 0;
             if ($storageLocationId <= 0) {
                 $storageLocationId = null;
             }
@@ -142,7 +144,7 @@ class RunBackupTask extends AbstractTask
             $message = new Message\BackupMessage();
             $message->storageLocationId = $storageLocationId;
             $message->path = 'automatic_backup.zip';
-            $message->excludeMedia = $this->settings->getBackupExcludeMedia();
+            $message->excludeMedia = $settings->getBackupExcludeMedia();
 
             $this->messageBus->dispatch($message);
         }

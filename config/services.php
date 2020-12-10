@@ -10,42 +10,41 @@ use Psr\Container\ContainerInterface;
 return [
 
     // URL Router helper
-    App\Http\Router::class => function (
-        Environment $environment,
-        Slim\App $app,
-        App\Entity\Settings $settings
-    ) {
-        $route_parser = $app->getRouteCollector()->getRouteParser();
-        return new App\Http\Router($environment, $route_parser, $settings);
-    },
     App\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
     // Error handler
-    App\Http\ErrorHandler::class => DI\autowire(),
     Slim\Interfaces\ErrorHandlerInterface::class => DI\Get(App\Http\ErrorHandler::class),
 
     // HTTP client
     GuzzleHttp\Client::class => function (Psr\Log\LoggerInterface $logger) {
         $stack = GuzzleHttp\HandlerStack::create();
 
-        $stack->unshift(function (callable $handler) {
-            return function (Psr\Http\Message\RequestInterface $request, array $options) use ($handler) {
-                $options[GuzzleHttp\RequestOptions::VERIFY] = Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
-                return $handler($request, $options);
-            };
-        }, 'ssl_verify');
+        $stack->unshift(
+            function (callable $handler) {
+                return function (Psr\Http\Message\RequestInterface $request, array $options) use ($handler) {
+                    $options[GuzzleHttp\RequestOptions::VERIFY] = Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(
+                    );
+                    return $handler($request, $options);
+                };
+            },
+            'ssl_verify'
+        );
 
-        $stack->push(GuzzleHttp\Middleware::log(
-            $logger,
-            new GuzzleHttp\MessageFormatter('HTTP client {method} call to {uri} produced response {code}'),
-            Psr\Log\LogLevel::DEBUG
-        ));
+        $stack->push(
+            GuzzleHttp\Middleware::log(
+                $logger,
+                new GuzzleHttp\MessageFormatter('HTTP client {method} call to {uri} produced response {code}'),
+                Psr\Log\LogLevel::DEBUG
+            )
+        );
 
-        return new GuzzleHttp\Client([
-            'handler' => $stack,
-            GuzzleHttp\RequestOptions::HTTP_ERRORS => false,
-            GuzzleHttp\RequestOptions::TIMEOUT => 3.0,
-        ]);
+        return new GuzzleHttp\Client(
+            [
+                'handler' => $stack,
+                GuzzleHttp\RequestOptions::HTTP_ERRORS => false,
+                GuzzleHttp\RequestOptions::TIMEOUT => 3.0,
+            ]
+        );
     },
 
     // DBAL
@@ -128,13 +127,15 @@ return [
             $eventManager->addEventSubscriber($eventAuditLog);
             $eventManager->addEventSubscriber($eventChangeTracking);
 
-            return new App\Doctrine\DecoratedEntityManager(function () use (
-                $connectionOptions,
-                $config,
-                $eventManager
-            ) {
-                return Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager);
-            });
+            return new App\Doctrine\DecoratedEntityManager(
+                function () use (
+                    $connectionOptions,
+                    $config,
+                    $eventManager
+                ) {
+                    return Doctrine\ORM\EntityManager::create($connectionOptions, $config, $eventManager);
+                }
+            );
         } catch (Exception $e) {
             throw new App\Exception\BootstrapException($e->getMessage());
         }
@@ -142,11 +143,6 @@ return [
 
     App\Doctrine\ReloadableEntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
-
-    // Database settings
-    App\Entity\Settings::class => function (App\Entity\Repository\SettingsTableRepository $settingsTableRepo) {
-        return $settingsTableRepo->readSettings();
-    },
 
     // Redis cache
     Redis::class => function (Environment $environment) {
@@ -303,7 +299,9 @@ return [
     },
 
     // Symfony Validator
-    Symfony\Component\Validator\ConstraintValidatorFactoryInterface::class => DI\autowire(App\Validator\ConstraintValidatorFactory::class),
+    Symfony\Component\Validator\ConstraintValidatorFactoryInterface::class => DI\autowire(
+        App\Validator\ConstraintValidatorFactory::class
+    ),
 
     Symfony\Component\Validator\Validator\ValidatorInterface::class => function (
         Doctrine\Common\Annotations\Reader $annotation_reader,
@@ -323,7 +321,6 @@ return [
         App\Plugins $plugins,
         Environment $environment
     ) {
-
         // Configure message sending middleware
         $sendMessageMiddleware = new Symfony\Component\Messenger\Middleware\SendMessageMiddleware($queueManager);
         $sendMessageMiddleware->setLogger($logger);
@@ -355,17 +352,21 @@ return [
 
         // On testing, messages are handled directly when called
         if ($environment->isTesting()) {
-            return new Symfony\Component\Messenger\MessageBus([
-                $handleMessageMiddleware,
-            ]);
+            return new Symfony\Component\Messenger\MessageBus(
+                [
+                    $handleMessageMiddleware,
+                ]
+            );
         }
 
         // Compile finished message bus.
-        return new Symfony\Component\Messenger\MessageBus([
-            $sendMessageMiddleware,
-            $uniqueMiddleware,
-            $handleMessageMiddleware,
-        ]);
+        return new Symfony\Component\Messenger\MessageBus(
+            [
+                $sendMessageMiddleware,
+                $uniqueMiddleware,
+                $handleMessageMiddleware,
+            ]
+        );
     },
 
     // Supervisor manager
@@ -401,66 +402,4 @@ return [
     },
 
     App\Media\MetadataManagerInterface::class => DI\get(App\Media\GetId3\GetId3MetadataManager::class),
-
-    // Asset Management
-    App\Assets::class => function (App\Config $config, Environment $environment) {
-        $libraries = $config->get('assets');
-
-        $versioned_files = [];
-        $assets_file = $environment->getBaseDirectory() . '/web/static/assets.json';
-        if (file_exists($assets_file)) {
-            $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
-        }
-
-        $vueComponents = [];
-        $assets_file = $environment->getBaseDirectory() . '/web/static/webpack.json';
-        if (file_exists($assets_file)) {
-            $vueComponents = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
-        }
-
-        return new App\Assets($environment, $libraries, $versioned_files, $vueComponents);
-    },
-
-    // Synchronized (Cron) Tasks
-    App\Sync\TaskLocator::class => function (ContainerInterface $di) {
-        return new App\Sync\TaskLocator($di, [
-            App\Event\GetSyncTasks::SYNC_NOWPLAYING => [
-                App\Sync\Task\BuildQueueTask::class,
-                App\Sync\Task\NowPlayingTask::class,
-                App\Sync\Task\ReactivateStreamerTask::class,
-            ],
-            App\Event\GetSyncTasks::SYNC_SHORT => [
-                App\Sync\Task\CheckRequests::class,
-                App\Sync\Task\RunBackupTask::class,
-                App\Sync\Task\CleanupRelaysTask::class,
-            ],
-            App\Event\GetSyncTasks::SYNC_MEDIUM => [
-                App\Sync\Task\CheckMediaTask::class,
-                App\Sync\Task\CheckFolderPlaylistsTask::class,
-                App\Sync\Task\CheckUpdatesTask::class,
-            ],
-            App\Event\GetSyncTasks::SYNC_LONG => [
-                App\Sync\Task\RunAnalyticsTask::class,
-                App\Sync\Task\RunAutomatedAssignmentTask::class,
-                App\Sync\Task\CleanupHistoryTask::class,
-                App\Sync\Task\CleanupStorageTask::class,
-                App\Sync\Task\RotateLogsTask::class,
-                App\Sync\Task\UpdateGeoLiteTask::class,
-            ],
-        ]);
-    },
-
-    // Web Hooks
-    App\Webhook\ConnectorLocator::class => function (
-        ContainerInterface $di,
-        App\Config $config
-    ) {
-        $webhooks = $config->get('webhooks');
-        $services = [];
-        foreach ($webhooks['webhooks'] as $webhook_key => $webhook_info) {
-            $services[$webhook_key] = $webhook_info['class'];
-        }
-
-        return new App\Webhook\ConnectorLocator($di, $services);
-    },
 ];

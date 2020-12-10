@@ -12,22 +12,26 @@ class CleanupHistoryTask extends AbstractTask
 
     protected Entity\Repository\ListenerRepository $listenerRepo;
 
+    protected Entity\Repository\SettingsRepository $settingsRepo;
+
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\SongHistoryRepository $historyRepo,
         Entity\Repository\ListenerRepository $listenerRepo
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
+        $this->settingsRepo = $settingsRepo;
         $this->historyRepo = $historyRepo;
         $this->listenerRepo = $listenerRepo;
     }
 
     public function run(bool $force = false): void
     {
-        $daysToKeep = $this->settings->getHistoryKeepDays();
+        $settings = $this->settingsRepo->readSettings();
+        $daysToKeep = $settings->getHistoryKeepDays();
 
         if ($daysToKeep !== 0) {
             $this->historyRepo->cleanup($daysToKeep);

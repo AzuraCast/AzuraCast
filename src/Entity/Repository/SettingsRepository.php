@@ -13,8 +13,10 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SettingsTableRepository extends Repository
+class SettingsRepository extends Repository
 {
+    protected static ?Entity\Settings $instance = null;
+
     protected const CACHE_KEY = 'settings';
 
     protected const CACHE_TTL = 600;
@@ -22,6 +24,8 @@ class SettingsTableRepository extends Repository
     protected CacheInterface $cache;
 
     protected ValidatorInterface $validator;
+
+    protected string $entityClass = Entity\SettingsTable::class;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -37,32 +41,18 @@ class SettingsTableRepository extends Repository
         $this->validator = $validator;
     }
 
-    public function readSettings(): Entity\Settings
+    public function readSettings(bool $reload = false): Entity\Settings
     {
-        if (Entity\Settings::hasInstance()) {
-            return Entity\Settings::getInstance();
-        } else {
-            $settings = $this->arrayToObject($this->readSettingsArray());
-            Entity\Settings::setInstance($settings);
-
-            return $settings;
+        if ($reload || null === self::$instance) {
+            self::$instance = $this->arrayToObject($this->readSettingsArray());
         }
+
+        return self::$instance;
     }
 
-    /**
-     * Given a long-running process, update the Settings entity to have the latest data.
-     *
-     * @param array|null $newData
-     *
-     */
-    public function updateSettings(?array $newData = null): Entity\Settings
+    public function clearSettingsInstance(): void
     {
-        if (null === $newData) {
-            $newData = $this->readSettingsArray();
-        }
-
-        $settings = $this->arrayToObject($newData, $this->readSettings());
-        return $settings;
+        self::$instance = null;
     }
 
     /**
@@ -70,6 +60,10 @@ class SettingsTableRepository extends Repository
      */
     public function readSettingsArray(): array
     {
+        if ($this->cache->has(self::CACHE_KEY)) {
+            return $this->cache->get(self::CACHE_KEY);
+        }
+
         $allRecords = [];
         foreach ($this->repository->findAll() as $record) {
             /** @var Entity\SettingsTable $record */
@@ -87,7 +81,7 @@ class SettingsTableRepository extends Repository
     public function writeSettings($settingsObj): void
     {
         if (is_array($settingsObj)) {
-            $settingsObj = $this->updateSettings($settingsObj);
+            $settingsObj = $this->arrayToObject($settingsObj, $this->readSettings(true));
         }
 
         $errors = $this->validator->validate($settingsObj);
@@ -155,9 +149,12 @@ class SettingsTableRepository extends Repository
 
     protected function arrayToObject(array $settings, ?Entity\Settings $existingSettings = null): Entity\Settings
     {
-        $settings = array_filter($settings, function ($value) {
-            return null !== $value;
-        });
+        $settings = array_filter(
+            $settings,
+            function ($value) {
+                return null !== $value;
+            }
+        );
 
         $context = [];
         if (null !== $existingSettings) {

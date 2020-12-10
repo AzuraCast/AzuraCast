@@ -10,14 +10,14 @@ use App\Version;
 
 class UpdateCheck
 {
-    protected Entity\Settings $settings;
-
     protected Version $version;
 
-    public function __construct(Entity\Settings $settings, Version $version)
+    protected Entity\Repository\SettingsRepository $settingsRepo;
+
+    public function __construct(Version $version, Entity\Repository\SettingsRepository $settingsRepo)
     {
-        $this->settings = $settings;
         $this->version = $version;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function __invoke(GetNotifications $event): void
@@ -29,12 +29,14 @@ class UpdateCheck
             return;
         }
 
-        $checkForUpdates = $this->settings->getCheckForUpdates();
+        $settings = $this->settingsRepo->readSettings();
+
+        $checkForUpdates = $settings->getCheckForUpdates();
         if (!$checkForUpdates) {
             return;
         }
 
-        $updateData = $this->settings->getUpdateResults();
+        $updateData = $settings->getUpdateResults();
         if (empty($updateData)) {
             return;
         }
@@ -61,11 +63,13 @@ class UpdateCheck
                 $instructions_string,
             ];
 
-            $event->addNotification(new Notification(
-                __('New AzuraCast Release Version Available'),
-                implode(' ', $notification_parts),
-                Notification::INFO
-            ));
+            $event->addNotification(
+                new Notification(
+                    __('New AzuraCast Release Version Available'),
+                    implode(' ', $notification_parts),
+                    Notification::INFO
+                )
+            );
             return;
         }
 
@@ -73,10 +77,12 @@ class UpdateCheck
             $notification_parts = [];
             if ($updateData['rolling_updates_available'] < 15 && !empty($updateData['rolling_updates_list'])) {
                 $notification_parts[] = __('The following improvements have been made since your last update:');
-                $notification_parts[] = nl2br('<ul><li>' . implode(
-                    '</li><li>',
-                    $updateData['rolling_updates_list']
-                ) . '</li></ul>');
+                $notification_parts[] = nl2br(
+                    '<ul><li>' . implode(
+                        '</li><li>',
+                        $updateData['rolling_updates_list']
+                    ) . '</li></ul>'
+                );
             } else {
                 $notification_parts[] = '<b>' . __(
                     'Your installation is currently %d update(s) behind the latest version.',
@@ -87,11 +93,13 @@ class UpdateCheck
 
             $notification_parts[] = $instructions_string;
 
-            $event->addNotification(new Notification(
-                __('New AzuraCast Updates Available'),
-                implode(' ', $notification_parts),
-                Notification::INFO
-            ));
+            $event->addNotification(
+                new Notification(
+                    __('New AzuraCast Updates Available'),
+                    implode(' ', $notification_parts),
+                    Notification::INFO
+                )
+            );
             return;
         }
     }

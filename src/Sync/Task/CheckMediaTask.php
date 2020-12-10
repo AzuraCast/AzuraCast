@@ -32,14 +32,13 @@ class CheckMediaTask extends AbstractTask
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         FilesystemManager $filesystem,
         MessageBus $messageBus,
         QueueManager $queueManager
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->storageLocationRepo = $storageLocationRepo;
         $this->mediaRepo = $mediaRepo;

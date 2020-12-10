@@ -2,17 +2,17 @@
 
 namespace App\MessageQueue;
 
-use App\Entity\Repository\SettingsTableRepository;
+use App\Entity\Repository\SettingsRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 
 class ReloadSettingsMiddleware implements EventSubscriberInterface
 {
-    protected SettingsTableRepository $settingsTableRepo;
+    protected SettingsRepository $settingsRepo;
 
-    public function __construct(SettingsTableRepository $settingsTableRepo)
+    public function __construct(SettingsRepository $settingsRepo)
     {
-        $this->settingsTableRepo = $settingsTableRepo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -27,6 +27,6 @@ class ReloadSettingsMiddleware implements EventSubscriberInterface
 
     public function resetSettings(WorkerMessageReceivedEvent $event): void
     {
-        $this->settingsTableRepo->updateSettings();
+        $this->settingsRepo->clearSettingsInstance();
     }
 }

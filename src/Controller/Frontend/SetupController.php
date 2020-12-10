@@ -17,22 +17,18 @@ class SetupController
 {
     protected EntityManagerInterface $em;
 
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Environment $environment;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsTableRepository $settingsRepository,
-        Environment $environment,
-        Entity\Settings $settings
+        Entity\Repository\SettingsRepository $settingsRepository,
+        Environment $environment
     ) {
         $this->em = $em;
-        $this->settingsTableRepo = $settingsRepository;
+        $this->settingsRepo = $settingsRepository;
         $this->environment = $environment;
-        $this->settings = $settings;
     }
 
     /**
@@ -54,7 +50,8 @@ class SetupController
      */
     protected function getSetupStep(ServerRequest $request): string
     {
-        if ($this->settings->isSetupComplete()) {
+        $settings = $this->settingsRepo->readSettings();
+        if ($settings->isSetupComplete()) {
             return 'complete';
         }
 
@@ -182,9 +179,13 @@ class SetupController
             return $response->withRedirect($request->getRouter()->named('setup:settings'));
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/setup/station', [
-            'form' => $stationForm,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'frontend/setup/station',
+            [
+                'form' => $stationForm,
+            ]
+        );
     }
 
     /**
@@ -208,8 +209,9 @@ class SetupController
         }
 
         if ($settingsForm->process($request)) {
-            $this->settings->updateSetupComplete();
-            $this->settingsTableRepo->writeSettings($this->settings);
+            $settings = $this->settingsRepo->readSettings();
+            $settings->updateSetupComplete();
+            $this->settingsRepo->writeSettings($settings);
 
             // Notify the user and redirect to homepage.
             $request->getFlash()->addMessage(
@@ -224,8 +226,12 @@ class SetupController
             return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
-        return $request->getView()->renderToResponse($response, 'frontend/setup/settings', [
-            'form' => $settingsForm,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'frontend/setup/settings',
+            [
+                'form' => $settingsForm,
+            ]
+        );
     }
 }

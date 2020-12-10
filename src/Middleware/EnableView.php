@@ -3,7 +3,8 @@
 namespace App\Middleware;
 
 use App\Http\ServerRequest;
-use App\ViewFactory;
+use App\View;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -14,16 +15,21 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class EnableView implements MiddlewareInterface
 {
-    protected ViewFactory $viewFactory;
+    protected FactoryInterface $factory;
 
-    public function __construct(ViewFactory $viewFactory)
+    public function __construct(FactoryInterface $factory)
     {
-        $this->viewFactory = $viewFactory;
+        $this->factory = $factory;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $view = $this->viewFactory->create($request);
+        $view = $this->factory->make(
+            View::class,
+            [
+                'request' => $request,
+            ]
+        );
 
         $request = $request->withAttribute(ServerRequest::ATTR_VIEW, $view);
         return $handler->handle($request);

@@ -9,6 +9,8 @@ use Psr\Log\LoggerInterface;
 
 class RunAnalyticsTask extends AbstractTask
 {
+    protected Entity\Repository\SettingsRepository $settingsRepo;
+
     protected Entity\Repository\AnalyticsRepository $analyticsRepo;
 
     protected Entity\Repository\ListenerRepository $listenerRepo;
@@ -18,13 +20,14 @@ class RunAnalyticsTask extends AbstractTask
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\AnalyticsRepository $analyticsRepo,
         Entity\Repository\ListenerRepository $listenerRepo,
         Entity\Repository\SongHistoryRepository $historyRepo
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
+        $this->settingsRepo = $settingsRepo;
         $this->analyticsRepo = $analyticsRepo;
         $this->listenerRepo = $listenerRepo;
         $this->historyRepo = $historyRepo;
@@ -32,7 +35,8 @@ class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $analytics_level = $this->settings->getAnalytics();
+        $settings = $this->settingsRepo->readSettings();
+        $analytics_level = $settings->getAnalytics();
 
         switch ($analytics_level) {
             case Entity\Analytics::LEVEL_NONE:

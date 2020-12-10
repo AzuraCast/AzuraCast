@@ -23,22 +23,18 @@ class LocalWebhookHandler
 
     protected CacheInterface $cache;
 
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         Logger $logger,
         Client $httpClient,
         CacheInterface $cache,
-        Entity\Settings $settings,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->logger = $logger;
         $this->httpClient = $httpClient;
         $this->cache = $cache;
-        $this->settings = $settings;
-        $this->settingsTableRepo = $settingsTableRepo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function dispatch(SendWebhooks $event): void
@@ -65,8 +61,9 @@ class LocalWebhookHandler
 
                 $this->cache->set('nowplaying', $np_new, 120);
 
-                $this->settings->setNowplaying($np_new);
-                $this->settingsTableRepo->writeSettings($this->settings);
+                $settings = $this->settingsRepo->readSettings(true);
+                $settings->setNowplaying($np_new);
+                $this->settingsRepo->writeSettings($settings);
             }
         }
 
@@ -76,10 +73,15 @@ class LocalWebhookHandler
         $config_dir = $station->getRadioConfigDir();
         $np_file = $config_dir . '/nowplaying.txt';
 
-        $np_text = implode(' - ', array_filter([
-            $np->now_playing->song->artist ?? null,
-            $np->now_playing->song->title ?? null,
-        ]));
+        $np_text = implode(
+            ' - ',
+            array_filter(
+                [
+                    $np->now_playing->song->artist ?? null,
+                    $np->now_playing->song->title ?? null,
+                ]
+            )
+        );
 
         if (empty($np_text)) {
             $np_text = $station->getName();
@@ -107,9 +109,12 @@ class LocalWebhookHandler
         if (NChan::isSupported()) {
             $this->logger->debug('Dispatching Nchan notification...');
 
-            $this->httpClient->post('http://localhost:9010/pub/' . urlencode($station->getShortName()), [
-                'json' => $np,
-            ]);
+            $this->httpClient->post(
+                'http://localhost:9010/pub/' . urlencode($station->getShortName()),
+                [
+                    'json' => $np,
+                ]
+            );
         }
     }
 }

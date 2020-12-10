@@ -41,7 +41,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     protected Entity\Repository\ListenerRepository $listenerRepo;
 
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected LockFactory $lockFactory;
 
@@ -49,12 +49,9 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     protected RouterInterface $router;
 
-    protected string $analyticsLevel = Entity\Analytics::LEVEL_ALL;
-
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         Adapters $adapters,
         AutoDJ $autodj,
         CacheInterface $cache,
@@ -64,10 +61,10 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         RouterInterface $router,
         Entity\Repository\ListenerRepository $listenerRepository,
         Entity\Repository\StationQueueRepository $queueRepo,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->adapters = $adapters;
         $this->autodj = $autodj;
@@ -79,11 +76,9 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
         $this->listenerRepo = $listenerRepository;
         $this->queueRepo = $queueRepo;
-        $this->settingsTableRepo = $settingsTableRepo;
+        $this->settingsRepo = $settingsRepo;
 
         $this->nowPlayingApiGenerator = $nowPlayingApiGenerator;
-
-        $this->analyticsLevel = $settings->getAnalytics();
     }
 
     /**
@@ -109,8 +104,9 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
         $this->cache->set('nowplaying', $nowplaying, 120);
 
-        $this->settings->setNowplaying($nowplaying);
-        $this->settingsTableRepo->writeSettings($this->settings);
+        $settings = $this->settingsRepo->readSettings(true);
+        $settings->setNowplaying($nowplaying);
+        $this->settingsRepo->writeSettings($settings);
     }
 
     /**
@@ -118,7 +114,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
      *
      * @return Entity\Api\NowPlaying[]
      */
-    protected function loadNowPlaying($force = false): array
+    protected function loadNowPlaying(bool $force = false): array
     {
         $stations = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);
@@ -131,16 +127,9 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         return $nowplaying;
     }
 
-    /**
-     * Generate Structured NowPlaying Data for a given station.
-     *
-     * @param Entity\Station $station
-     * @param bool $standalone Whether the request is for this station alone or part of the regular sync process.
-     *
-     */
     public function processStation(
         Entity\Station $station,
-        $standalone = false
+        bool $standalone = false
     ): Entity\Api\NowPlaying {
         $lock = $this->getLockForStation($station);
         $lock->acquire(true);
@@ -149,15 +138,18 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             /** @var Logger $logger */
             $logger = $this->logger;
 
-            $logger->pushProcessor(function ($record) use ($station) {
-                $record['extra']['station'] = [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
-                ];
-                return $record;
-            });
+            $logger->pushProcessor(
+                function ($record) use ($station) {
+                    $record['extra']['station'] = [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ];
+                    return $record;
+                }
+            );
 
-            $include_clients = ($this->analyticsLevel === Entity\Analytics::LEVEL_ALL);
+            $settings = $this->settingsRepo->readSettings();
+            $include_clients = (Entity\Analytics::LEVEL_NONE !== $settings->getAnalytics());
 
             $frontend_adapter = $this->adapters->getFrontendAdapter($station);
             $remote_adapters = $this->adapters->getRemoteAdapters($station);
@@ -174,20 +166,27 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
                 $npResult = $event->getResult();
             } catch (Exception $e) {
-                $this->logger->log(Logger::ERROR, $e->getMessage(), [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'code' => $e->getCode(),
-                ]);
+                $this->logger->log(
+                    Logger::ERROR,
+                    $e->getMessage(),
+                    [
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
+                        'code' => $e->getCode(),
+                    ]
+                );
 
                 $npResult = Result::blank();
             }
 
-            $this->logger->debug('Final NowPlaying Response for Station', [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
-                'np' => $npResult,
-            ]);
+            $this->logger->debug(
+                'Final NowPlaying Response for Station',
+                [
+                    'id' => $station->getId(),
+                    'name' => $station->getName(),
+                    'np' => $npResult,
+                ]
+            );
 
             // Update detailed listener statistics, if they exist for the station
             if ($include_clients && null !== $npResult->clients) {
@@ -267,9 +266,12 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             $message = new Message\UpdateNowPlayingMessage();
             $message->station_id = $station->getId();
 
-            $this->messageBus->dispatch($message, [
-                new DelayStamp(2000),
-            ]);
+            $this->messageBus->dispatch(
+                $message,
+                [
+                    new DelayStamp(2000),
+                ]
+            );
         } finally {
             $lock->release();
         }

@@ -23,11 +23,11 @@ class OverviewController
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\AnalyticsRepository $analyticsRepo
     ) {
         $this->em = $em;
-        $this->settings = $settings;
+        $this->settings = $settingsRepo->readSettings();
         $this->analyticsRepo = $analyticsRepo;
     }
 
@@ -237,25 +237,32 @@ class OverviewController
             $songs[] = $song_row;
         }
 
-        usort($songs, function ($a_arr, $b_arr) {
-            $a = $a_arr['stat_delta'];
-            $b = $b_arr['stat_delta'];
+        usort(
+            $songs,
+            function ($a_arr, $b_arr) {
+                $a = $a_arr['stat_delta'];
+                $b = $b_arr['stat_delta'];
 
-            return $a <=> $b;
-        });
+                return $a <=> $b;
+            }
+        );
 
-        return $request->getView()->renderToResponse($response, 'stations/reports/overview', [
-            'charts' => [
-                'daily' => json_encode($daily_data, JSON_THROW_ON_ERROR),
-                'daily_alt' => implode('', $daily_alt),
-                'hourly' => json_encode($hourly_data, JSON_THROW_ON_ERROR),
-                'hourly_alt' => implode('', $hourly_alt),
-                'day_of_week' => json_encode($day_of_week_data, JSON_THROW_ON_ERROR),
-                'day_of_week_alt' => implode('', $day_of_week_alt),
-            ],
-            'song_totals' => $song_totals,
-            'best_performing_songs' => array_reverse(array_slice($songs, -5)),
-            'worst_performing_songs' => array_slice($songs, 0, 5),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/reports/overview',
+            [
+                'charts' => [
+                    'daily' => json_encode($daily_data, JSON_THROW_ON_ERROR),
+                    'daily_alt' => implode('', $daily_alt),
+                    'hourly' => json_encode($hourly_data, JSON_THROW_ON_ERROR),
+                    'hourly_alt' => implode('', $hourly_alt),
+                    'day_of_week' => json_encode($day_of_week_data, JSON_THROW_ON_ERROR),
+                    'day_of_week_alt' => implode('', $day_of_week_alt),
+                ],
+                'song_totals' => $song_totals,
+                'best_performing_songs' => array_reverse(array_slice($songs, -5)),
+                'worst_performing_songs' => array_slice($songs, 0, 5),
+            ]
+        );
     }
 }

@@ -34,28 +34,29 @@ class StationRepository extends Repository
 
     protected StorageLocationRepository $storageLocationRepo;
 
-    protected Entity\Settings $settings;
+    protected SettingsRepository $settingsRepo;
 
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
+        SettingsRepository $settingsRepo,
         StorageLocationRepository $storageLocationRepo,
         LoggerInterface $logger,
         CheckMediaTask $mediaSync,
         Adapters $adapters,
         Configuration $configuration,
         ValidatorInterface $validator,
-        CacheInterface $cache,
-        Entity\Settings $settings
+        CacheInterface $cache
     ) {
         $this->mediaSync = $mediaSync;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
         $this->validator = $validator;
         $this->cache = $cache;
+
+        $this->settingsRepo = $settingsRepo;
         $this->storageLocationRepo = $storageLocationRepo;
-        $this->settings = $settings;
 
         parent::__construct($em, $serializer, $environment, $logger);
     }
@@ -341,7 +342,8 @@ class StationRepository extends Repository
             }
         }
 
-        $custom_url = trim($this->settings->getDefaultAlbumArtUrl());
+        $settings = $this->settingsRepo->readSettings();
+        $custom_url = trim($settings->getDefaultAlbumArtUrl());
 
         if (!empty($custom_url)) {
             return new Uri($custom_url);

@@ -2,8 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Repository\SettingsTableRepository;
-use App\Entity\Settings;
+use App\Entity\Repository\SettingsRepository;
 use App\Form\GeoLiteSettingsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -27,13 +26,17 @@ class InstallGeoLiteController
             $flash = $request->getFlash();
 
             try {
-                $syncTask->updateDatabase();
+                $settings = $form->getEntityRepository()->readSettings();
+                $syncTask->updateDatabase($settings->getGeoliteLicenseKey() ?? '');
                 $flash->addMessage(__('Changes saved.'), Flash::SUCCESS);
             } catch (Exception $e) {
-                $flash->addMessage(__(
-                    'An error occurred while downloading the GeoLite database: %s',
-                    $e->getMessage() . ' (' . $e->getFile() . ' L' . $e->getLine() . ')'
-                ), Flash::ERROR);
+                $flash->addMessage(
+                    __(
+                        'An error occurred while downloading the GeoLite database: %s',
+                        $e->getMessage() . ' (' . $e->getFile() . ' L' . $e->getLine() . ')'
+                    ),
+                    Flash::ERROR
+                );
             }
 
             return $response->withRedirect($request->getUri()->getPath());
@@ -41,25 +44,29 @@ class InstallGeoLiteController
 
         $version = GeoLite::getVersion();
 
-        return $request->getView()->renderToResponse($response, 'admin/install_geolite/index', [
-            'form' => $form,
-            'title' => __('Install GeoLite IP Database'),
-            'version' => $version,
-            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'admin/install_geolite/index',
+            [
+                'form' => $form,
+                'title' => __('Install GeoLite IP Database'),
+                'version' => $version,
+                'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
+            ]
+        );
     }
 
     public function uninstallAction(
         ServerRequest $request,
         Response $response,
-        Settings $settings,
-        SettingsTableRepository $settingsTableRepo,
+        SettingsRepository $settingsRepo,
         $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
+        $settings = $settingsRepo->readSettings();
         $settings->setGeoliteLicenseKey(null);
-        $settingsTableRepo->writeSettings($settings);
+        $settingsRepo->writeSettings($settings);
 
         @unlink(GeoLite::getDatabasePath());
 

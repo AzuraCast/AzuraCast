@@ -664,7 +664,9 @@ class Settings
 
     public function getGeoliteLicenseKey(): ?string
     {
-        return $this->geoliteLicenseKey;
+        return (null === $this->geoliteLicenseKey)
+            ? null
+            : trim($this->geoliteLicenseKey);
     }
 
     public function setGeoliteLicenseKey(?string $geoliteLicenseKey): void

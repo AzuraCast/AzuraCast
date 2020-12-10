@@ -11,7 +11,7 @@ class ListCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo
+        Entity\Repository\SettingsRepository $settingsTableRepo
     ): int {
         $io->title(__('AzuraCast Settings'));
 

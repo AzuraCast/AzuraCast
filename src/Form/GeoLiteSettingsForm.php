@@ -14,7 +14,7 @@ class GeoLiteSettingsForm extends AbstractSettingsForm
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsTableRepository $settingsRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Config $config,
         UpdateGeoLiteTask $syncTask

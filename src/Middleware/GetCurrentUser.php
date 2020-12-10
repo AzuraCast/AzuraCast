@@ -5,8 +5,8 @@ namespace App\Middleware;
 use App\Auth;
 use App\Customization;
 use App\Entity;
-use App\Environment;
 use App\Http\ServerRequest;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -17,29 +17,21 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class GetCurrentUser implements MiddlewareInterface
 {
-    protected Entity\Repository\UserRepository $userRepo;
+    protected FactoryInterface $factory;
 
-    protected Entity\Settings $settings;
-
-    protected Environment $environment;
-
-    public function __construct(
-        Entity\Repository\UserRepository $userRepo,
-        Environment $environment,
-        Entity\Settings $settings
-    ) {
-        $this->userRepo = $userRepo;
-        $this->environment = $environment;
-        $this->settings = $settings;
+    public function __construct(FactoryInterface $factory)
+    {
+        $this->factory = $factory;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Initialize the Auth for this request.
-        $auth = new Auth(
-            $this->userRepo,
-            $request->getAttribute(ServerRequest::ATTR_SESSION),
-            $this->environment
+        $auth = $this->factory->make(
+            Auth::class,
+            [
+                'session' => $request->getAttribute(ServerRequest::ATTR_SESSION),
+            ]
         );
         $user = ($auth->isLoggedIn()) ? $auth->getLoggedInUser() : null;
 
@@ -49,7 +41,12 @@ class GetCurrentUser implements MiddlewareInterface
             ->withAttribute('is_logged_in', (null !== $user));
 
         // Initialize Customization (timezones, locales, etc) based on the current logged in user.
-        $customization = new Customization($this->settings, $this->environment, $request);
+        $customization = $this->factory->make(
+            Customization::class,
+            [
+                'request' => $request,
+            ]
+        );
 
         $request = $request
             ->withAttribute('locale', $customization->getLocale())

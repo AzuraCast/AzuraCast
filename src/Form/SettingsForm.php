@@ -13,15 +13,18 @@ class SettingsForm extends AbstractSettingsForm
 {
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsTableRepository $settingsRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Version $version,
         Config $config
     ) {
-        $formConfig = $config->get('forms/settings', [
-            'settings' => $environment,
-            'version' => $version,
-        ]);
+        $formConfig = $config->get(
+            'forms/settings',
+            [
+                'settings' => $environment,
+                'version' => $version,
+            ]
+        );
 
         parent::__construct(
             $em,

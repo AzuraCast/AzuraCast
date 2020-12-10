@@ -21,28 +21,28 @@ class UpdateGeoLiteTask extends AbstractTask
 
     protected IpGeolocation $geoLite;
 
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         Client $httpClient,
         IpGeolocation $geoLite,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->httpClient = $httpClient;
         $this->geoLite = $geoLite;
-        $this->settingsTableRepo = $settingsTableRepo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function run(bool $force = false): void
     {
-        if (!$force) {
-            $lastRun = $this->settings->getGeoliteLastRun();
+        $settings = $this->settingsRepo->readSettings();
 
+        if (!$force) {
+            $lastRun = $settings->getGeoliteLastRun();
             if ($lastRun > (time() - self::UPDATE_THRESHOLD)) {
                 $this->logger->debug('Not checking for updates; checked too recently.');
                 return;
@@ -50,23 +50,25 @@ class UpdateGeoLiteTask extends AbstractTask
         }
 
         try {
-            $this->updateDatabase();
+            $this->updateDatabase($settings->getGeoliteLicenseKey() ?? '');
         } catch (Exception $e) {
-            $this->logger->error('Error updating GeoLite database.', [
-                'error' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-            ]);
+            $this->logger->error(
+                'Error updating GeoLite database.',
+                [
+                    'error' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ]
+            );
         }
 
-        $this->settings->updateGeoliteLastRun();
-        $this->settingsTableRepo->writeSettings($this->settings);
+        $settings = $this->settingsRepo->readSettings(true);
+        $settings->updateGeoliteLastRun();
+        $this->settingsRepo->writeSettings($settings);
     }
 
-    public function updateDatabase(): void
+    public function updateDatabase(string $licenseKey): void
     {
-        $licenseKey = trim($this->settings->getGeoliteLicenseKey());
-
         if (empty($licenseKey)) {
             $this->logger->info('Not checking for GeoLite updates; no license key provided.');
             return;
@@ -77,28 +79,34 @@ class UpdateGeoLiteTask extends AbstractTask
 
         set_time_limit(900);
 
-        $this->httpClient->get('https://download.maxmind.com/app/geoip_download', [
-            RequestOptions::HTTP_ERRORS => true,
-            RequestOptions::QUERY => [
-                'license_key' => $licenseKey,
-                'edition_id' => 'GeoLite2-City',
-                'suffix' => 'tar.gz',
-            ],
-            RequestOptions::DECODE_CONTENT => false,
-            RequestOptions::SINK => $downloadPath,
-            RequestOptions::TIMEOUT => 600,
-        ]);
+        $this->httpClient->get(
+            'https://download.maxmind.com/app/geoip_download',
+            [
+                RequestOptions::HTTP_ERRORS => true,
+                RequestOptions::QUERY => [
+                    'license_key' => $licenseKey,
+                    'edition_id' => 'GeoLite2-City',
+                    'suffix' => 'tar.gz',
+                ],
+                RequestOptions::DECODE_CONTENT => false,
+                RequestOptions::SINK => $downloadPath,
+                RequestOptions::TIMEOUT => 600,
+            ]
+        );
 
         if (!file_exists($downloadPath)) {
             throw new RuntimeException('New GeoLite database .tar.gz file not found.');
         }
 
-        $process = new Process([
-            'tar',
-            'xvzf',
-            $downloadPath,
-            '--strip-components=1',
-        ], $baseDir);
+        $process = new Process(
+            [
+                'tar',
+                'xvzf',
+                $downloadPath,
+                '--strip-components=1',
+            ],
+            $baseDir
+        );
 
         $process->mustRun();
 

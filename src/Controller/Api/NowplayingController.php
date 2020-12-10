@@ -25,12 +25,12 @@ class NowplayingController implements EventSubscriberInterface
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         CacheInterface $cache,
         EventDispatcher $dispatcher
     ) {
         $this->em = $em;
-        $this->settings = $settings;
+        $this->settings = $settingsRepo->readSettings();
         $this->cache = $cache;
         $this->dispatcher = $dispatcher;
     }
@@ -122,9 +122,12 @@ class NowplayingController implements EventSubscriberInterface
 
         // If unauthenticated, hide non-public stations from full view.
         if ($request->getAttribute('user') === null) {
-            $np = array_filter($np, function ($np_row) {
-                return $np_row->station->is_public;
-            });
+            $np = array_filter(
+                $np,
+                function ($np_row) {
+                    return $np_row->station->is_public;
+                }
+            );
 
             // Prevent NP array from returning as an object.
             $np = array_values($np);

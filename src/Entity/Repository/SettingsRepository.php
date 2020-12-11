@@ -168,7 +168,17 @@ class SettingsRepository extends Repository
      */
     protected function objectToArray(Entity\Settings $settings): array
     {
-        return $this->serializer->normalize($settings, null);
+        $reflectionClass = new ReflectionObject($settings);
+        $array = $this->serializer->normalize($settings, null);
+
+        // Prevent serializer from returning things that aren't actually properties on the class.
+        return array_filter(
+            $array,
+            function ($key) use ($reflectionClass) {
+                return $reflectionClass->hasProperty($key);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 
     protected function arrayToObject(array $settings, ?Entity\Settings $existingSettings = null): Entity\Settings

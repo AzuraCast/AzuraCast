@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use App\Customization;
 use App\Entity;
 use App\Event\GetSyncTasks;
@@ -199,6 +200,8 @@ class Settings
     /**
      * @OA\Property(example="")
      * @var mixed[]|null Results of the latest update check.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected ?array $updateResults = null;
 
@@ -218,6 +221,8 @@ class Settings
     /**
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The UNIX timestamp when updates were last checked.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected int $updateLastRun = 0;
 
@@ -448,6 +453,8 @@ class Settings
     /**
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The UNIX timestamp when automated backup was last run.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected int $backupLastRun = 0;
 
@@ -469,6 +476,8 @@ class Settings
     /**
      * @OA\Property(example="")
      * @var string|null The result of the latest automated backup task.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected ?string $backupLastResult = null;
 
@@ -485,6 +494,8 @@ class Settings
     /**
      * @OA\Property(example="")
      * @var string|null The output of the latest automated backup task.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected ?string $backupLastOutput = null;
 
@@ -527,6 +538,8 @@ class Settings
     /**
      * @OA\Property(example="")
      * @var mixed[]|null The current cached now playing data.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected ?array $nowplaying = null;
 
@@ -546,6 +559,8 @@ class Settings
     /**
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The UNIX timestamp when the now playing sync task was last run.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected int $syncNowplayingLastRun = 0;
 
@@ -562,6 +577,8 @@ class Settings
     /**
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The UNIX timestamp when the 60-second "short" sync task was last run.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected int $syncShortLastRun = 0;
 
@@ -578,6 +595,8 @@ class Settings
     /**
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The UNIX timestamp when the 5-minute "medium" sync task was last run.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected int $syncMediumLastRun = 0;
 
@@ -594,6 +613,8 @@ class Settings
     /**
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The UNIX timestamp when the 1-hour "long" sync task was last run.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected int $syncLongLastRun = 0;
 
@@ -643,6 +664,8 @@ class Settings
     /**
      * @OA\Property(example="192.168.1.1")
      * @var string|null This installation's external IP.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected ?string $externalIp = null;
 
@@ -677,6 +700,8 @@ class Settings
     /**
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int The UNIX timestamp when the Maxmind Geolite was last downloaded.
+     *
+     * @AuditLog\AuditIgnore
      */
     protected int $geoliteLastRun = 0;
 

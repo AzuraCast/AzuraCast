@@ -2,13 +2,16 @@
 
 namespace App\Entity\Repository;
 
+use App\Annotations\AuditLog\AuditIgnore;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Exception\ValidationException;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use ReflectionObject;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -25,6 +28,8 @@ class SettingsRepository extends Repository
 
     protected ValidatorInterface $validator;
 
+    protected Reader $annotationReader;
+
     protected string $entityClass = Entity\SettingsTable::class;
 
     public function __construct(
@@ -33,12 +38,14 @@ class SettingsRepository extends Repository
         Environment $environment,
         LoggerInterface $logger,
         CacheInterface $cache,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        Reader $annotationReader
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
 
         $this->cache = $cache;
         $this->validator = $validator;
+        $this->annotationReader = $annotationReader;
     }
 
     public function readSettings(bool $reload = false): Entity\Settings
@@ -93,8 +100,6 @@ class SettingsRepository extends Repository
 
         $settings = $this->objectToArray($settingsObj);
 
-        $this->cache->set(self::CACHE_KEY, $settings, self::CACHE_TTL);
-
         $currentRecords = $this->repository->findAll();
         $allRecords = [];
         foreach ($currentRecords as $record) {
@@ -122,19 +127,38 @@ class SettingsRepository extends Repository
         }
 
         if (!empty($changes)) {
-            $auditLog = new Entity\AuditLog(
-                Entity\AuditLog::OPER_UPDATE,
-                Entity\SettingsTable::class,
-                'Settings',
-                null,
-                null,
-                $changes
+            // Ignore any properties tagged with "AuditIgnore".
+            $reflectionClass = new ReflectionObject($settingsObj);
+            $loggableChanges = array_filter(
+                $changes,
+                function ($settingKey) use ($reflectionClass) {
+                    $reflectionProp = $reflectionClass->getProperty($settingKey);
+                    $ignoreAnnotation = $this->annotationReader->getPropertyAnnotation(
+                        $reflectionProp,
+                        AuditIgnore::class
+                    );
+                    return (null === $ignoreAnnotation);
+                },
+                ARRAY_FILTER_USE_KEY
             );
 
-            $this->em->persist($auditLog);
+            if (!empty($loggableChanges)) {
+                $auditLog = new Entity\AuditLog(
+                    Entity\AuditLog::OPER_UPDATE,
+                    Entity\SettingsTable::class,
+                    'Settings',
+                    null,
+                    null,
+                    $loggableChanges
+                );
+
+                $this->em->persist($auditLog);
+            }
         }
 
         $this->em->flush();
+
+        $this->cache->set(self::CACHE_KEY, $settings, self::CACHE_TTL);
     }
 
     /**

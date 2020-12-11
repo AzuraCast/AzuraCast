@@ -5,10 +5,20 @@
     warn: no
 
 - name: Ensure vendor folder exists
-  file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0744
-  with_items:
-    - "{{ www_base }}/vendor"
-    - "{{ www_base }}/composer.lock"
+  file:
+    path: "{{ www_base }}/vendor"
+    state: directory
+    owner: azuracast
+    group: www-data
+    mode: 0744
+
+- name: Ensure composer.lock exists
+  file:
+    path: "{{ www_base }}/composer.lock"
+    state: file
+    owner: azuracast
+    group: www-data
+    mode: 0744
 
 - name: Install Composer Dependencies (Development)
   become: true

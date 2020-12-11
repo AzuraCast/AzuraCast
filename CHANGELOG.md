@@ -8,6 +8,17 @@ release channel, you can take advantage of these new features and fixes.
 - **Dropbox Storage Locations**: Dropbox is now supported as a remote location for storage locations, which can hold
   station media, station live broadcast recordings and system backups.
 
+## Bug Fixes
+
+- A major issue that caused multiple Message Queue workers to lock up and fail to process new messages (including new
+  media) has been identified and fixed.
+
+- Issues with viewing (#3526) and dispatching (#3535) webhooks have been fixed.
+
+- Ansible installation issues (#198, #3517, etc.) have been resolved.
+
+- The settings retrieval process has been reworked to avoid collisions when saving changes (#3525).
+
 ---
 
 # AzuraCast 0.11.1 (Dec 7, 2020)

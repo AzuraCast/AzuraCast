@@ -6,7 +6,6 @@ use App\Config;
 use App\Controller\AbstractLogViewerController;
 use App\Entity;
 use App\Exception\NotFoundException;
-use App\File;
 use App\Flysystem\Filesystem;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
@@ -15,6 +14,7 @@ use App\Http\ServerRequest;
 use App\Message\BackupMessage;
 use App\Session\Flash;
 use App\Sync\Task\RunBackupTask;
+use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 

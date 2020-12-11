@@ -129,10 +129,10 @@ class Icecast extends AbstractFrontend
                 'burst-size' => 65535,
             ],
             'authentication' => [
-                'source-password' => Utilities::generatePassword(),
-                'relay-password' => Utilities::generatePassword(),
+                'source-password' => Utilities\Strings::generatePassword(),
+                'relay-password' => Utilities\Strings::generatePassword(),
                 'admin-user' => 'admin',
-                'admin-password' => Utilities::generatePassword(),
+                'admin-password' => Utilities\Strings::generatePassword(),
             ],
 
             'listen-socket' => [

@@ -48,7 +48,7 @@ class GetId3MetadataManager implements MetadataManagerInterface
                     if (!empty($tagContents[0]) && !$metaTags->containsKey($tagName)) {
                         $tagValue = $tagContents[0];
                         if (is_array($tagValue)) {
-                            $flatValue = Utilities::flattenArray($tagValue);
+                            $flatValue = Utilities\Arrays::flattenArray($tagValue);
                             $tagValue = implode(', ', $flatValue);
                         }
 

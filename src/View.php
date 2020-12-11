@@ -100,14 +100,14 @@ class View extends Engine
         $this->registerFunction(
             'truncate',
             function ($text, $length = 80) {
-                return Utilities::truncateText($text, $length);
+                return Utilities\Strings::truncateText($text, $length);
             }
         );
 
         $this->registerFunction(
             'truncateUrl',
             function ($url) {
-                return Utilities::truncateUrl($url);
+                return Utilities\Strings::truncateUrl($url);
             }
         );
 
@@ -121,7 +121,7 @@ class View extends Engine
                     $a[] = 'target="_blank"';
                 }
 
-                $a_body = ($truncate) ? Utilities::truncateUrl($url) : $url;
+                $a_body = ($truncate) ? Utilities\Strings::truncateUrl($url) : $url;
                 return '<a ' . implode(' ', $a) . '>' . $a_body . '</a>';
             }
         );

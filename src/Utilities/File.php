@@ -1,6 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Utilities;
+
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 /**
  * Static class that facilitates the uploading, reading and deletion of files in a controlled directory.
@@ -71,5 +75,39 @@ class File
         }
 
         return $fullPath;
+    }
+
+    /**
+     * Recursively remove a directory and its contents.
+     *
+     * @param string $source
+     */
+    public static function rmdirRecursive(string $source): bool
+    {
+        if (empty($source) || !file_exists($source)) {
+            return true;
+        }
+
+        if (is_file($source) || is_link($source)) {
+            return @unlink($source);
+        }
+
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($files as $fileinfo) {
+            /** @var SplFileInfo $fileinfo */
+            if ('link' !== $fileinfo->getType() && $fileinfo->isDir()) {
+                if (!rmdir($fileinfo->getRealPath())) {
+                    return false;
+                }
+            } elseif (!unlink($fileinfo->getRealPath())) {
+                return false;
+            }
+        }
+
+        return rmdir($source);
     }
 }

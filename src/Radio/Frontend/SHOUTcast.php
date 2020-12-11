@@ -212,8 +212,8 @@ class SHOUTcast extends AbstractFrontend
         $config_path = $station->getRadioConfigDir();
 
         return [
-            'password' => Utilities::generatePassword(),
-            'adminpassword' => Utilities::generatePassword(),
+            'password' => Utilities\Strings::generatePassword(),
+            'adminpassword' => Utilities\Strings::generatePassword(),
             'logfile' => $config_path . '/sc_serv.log',
             'w3clog' => $config_path . '/sc_w3c.log',
             'banfile' => $this->writeIpBansFile($station),

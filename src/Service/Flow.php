@@ -26,9 +26,9 @@
 namespace App\Service;
 
 use App\Exception;
-use App\File;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\File;
 use Normalizer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -104,11 +104,13 @@ class Flow
                 }
 
                 if ($file->getSize() !== $currentChunkSize) {
-                    throw new Exception(sprintf(
-                        'File size of %s does not match expected size of %s',
-                        $file->getSize(),
-                        $currentChunkSize
-                    ));
+                    throw new Exception(
+                        sprintf(
+                            'File size of %s does not match expected size of %s',
+                            $file->getSize(),
+                            $currentChunkSize
+                        )
+                    );
                 }
 
                 $file->moveTo($chunkPath);

@@ -7,7 +7,6 @@ use App\Entity;
 use App\Environment;
 use App\Exception;
 use App\Radio\AutoDJ;
-use App\Utilities;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,10 +33,11 @@ class StationRequestRepository extends Repository
         Entity\Station $station,
         string $trackId,
         bool $isAuthenticated,
-        string $ip
+        string $ip,
+        string $userAgent
     ): int {
         // Forbid web crawlers from using this feature.
-        if (Utilities::isCrawler()) {
+        if ($this->isCrawler($userAgent)) {
             throw new Exception(__('Search engine crawlers are not permitted to use this feature.'));
         }
 
@@ -84,9 +84,11 @@ class StationRequestRepository extends Repository
                 ->getArrayResult();
 
             if (count($recent_requests) > 0) {
-                throw new Exception(__(
-                    'You have submitted a request too recently! Please wait before submitting another one.'
-                ));
+                throw new Exception(
+                    __(
+                        'You have submitted a request too recently! Please wait before submitting another one.'
+                    )
+                );
             }
         }
 
@@ -96,6 +98,26 @@ class StationRequestRepository extends Repository
         $this->em->flush();
 
         return $record->getId();
+    }
+
+    protected function isCrawler(string $userAgent): bool
+    {
+        $userAgent = strtolower($userAgent);
+
+        // phpcs:disable Generic.Files.LineLength
+        $crawlers_agents = strtolower(
+            'Bloglines subscriber|Dumbot|Sosoimagespider|QihooBot|FAST-WebCrawler|Superdownloads Spiderman|LinkWalker|msnbot|ASPSeek|WebAlta Crawler|Lycos|FeedFetcher-Google|Yahoo|YoudaoBot|AdsBot-Google|Googlebot|Scooter|Gigabot|Charlotte|eStyle|AcioRobot|GeonaBot|msnbot-media|Baidu|CocoCrawler|Google|Charlotte t|Yahoo! Slurp China|Sogou web spider|YodaoBot|MSRBOT|AbachoBOT|Sogou head spider|AltaVista|IDBot|Sosospider|Yahoo! Slurp|Java VM|DotBot|LiteFinder|Yeti|Rambler|Scrubby|Baiduspider|accoona'
+        );
+        // phpcs:enable
+        $crawlers = explode('|', $crawlers_agents);
+
+        foreach ($crawlers as $crawler) {
+            if (strpos($userAgent, trim($crawler)) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -211,9 +233,11 @@ class StationRequestRepository extends Repository
         $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack($eligibleTracks, $recentTracks));
 
         if ($isDuplicate) {
-            throw new Exception(__(
-                'This song or artist has been played too recently. Wait a while before requesting it again.'
-            ));
+            throw new Exception(
+                __(
+                    'This song or artist has been played too recently. Wait a while before requesting it again.'
+                )
+            );
         }
 
         return true;

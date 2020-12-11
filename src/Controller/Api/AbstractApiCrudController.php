@@ -54,7 +54,7 @@ abstract class AbstractApiCrudController
 
             // Older jQuery Bootgrid requests should be "flattened".
             if ($is_bootgrid && !$is_internal) {
-                return Utilities::flattenArray($return, '_');
+                return Utilities\Arrays::flattenArray($return, '_');
             }
 
             return $return;

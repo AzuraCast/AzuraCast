@@ -530,7 +530,7 @@ class StationRemote implements StationMountInterface
             return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format);
         }
 
-        return Utilities::truncateUrl($this->url);
+        return Utilities\Strings::truncateUrl($this->url);
     }
 
     /**

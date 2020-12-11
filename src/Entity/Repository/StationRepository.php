@@ -292,7 +292,7 @@ class StationRepository extends Repository
 
         // Remove media folders.
         $radio_dir = $station->getRadioBaseDir();
-        Utilities::rmdirRecursive($radio_dir);
+        Utilities\File::rmdirRecursive($radio_dir);
 
         // Save changes and continue to the last setup step.
         $this->em->flush();

@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Console\Application;
 use App\Controller\AbstractLogViewerController;
 use App\Entity;
-use App\File;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\RunSyncTaskMessage;
@@ -14,6 +13,7 @@ use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
 use App\Sync\Runner;
+use App\Utilities\File;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -53,11 +53,15 @@ class DebugController extends AbstractLogViewerController
             $queueTotals[$queue] = $queueManager->getQueueCount($queue);
         }
 
-        return $request->getView()->renderToResponse($response, 'admin/debug/index', [
-            'sync_times' => $sync->getSyncTimes(),
-            'queue_totals' => $queueTotals,
-            'stations' => $stationRepo->fetchArray(),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'admin/debug/index',
+            [
+                'sync_times' => $sync->getSyncTimes(),
+                'queue_totals' => $queueTotals,
+                'stations' => $stationRepo->fetchArray(),
+            ]
+        );
     }
 
     public function syncAction(
@@ -73,10 +77,14 @@ class DebugController extends AbstractLogViewerController
 
         $this->messageBus->dispatch($message);
 
-        return $request->getView()->renderToResponse($response, 'admin/debug/sync', [
-            'title' => __('Run Synchronized Task'),
-            'outputLog' => basename($tempFile),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'admin/debug/sync',
+            [
+                'title' => __('Run Synchronized Task'),
+                'outputLog' => basename($tempFile),
+            ]
+        );
     }
 
     public function logAction(
@@ -112,11 +120,15 @@ class DebugController extends AbstractLogViewerController
 
         $this->logger->popHandler();
 
-        return $request->getView()->renderToResponse($response, 'system/log_view', [
-            'sidebar' => null,
-            'title' => __('Debug Output'),
-            'log_records' => $this->testHandler->getRecords(),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/log_view',
+            [
+                'sidebar' => null,
+                'title' => __('Debug Output'),
+                'log_records' => $this->testHandler->getRecords(),
+            ]
+        );
     }
 
     public function telnetAction(
@@ -132,18 +144,25 @@ class DebugController extends AbstractLogViewerController
             $command = $request->getParam('command');
 
             $telnetResponse = $backend->command($station, $command);
-            $this->logger->debug('Telnet Command Response', [
-                'response' => $telnetResponse,
-            ]);
+            $this->logger->debug(
+                'Telnet Command Response',
+                [
+                    'response' => $telnetResponse,
+                ]
+            );
         }
 
         $this->logger->popHandler();
 
-        return $request->getView()->renderToResponse($response, 'system/log_view', [
-            'sidebar' => null,
-            'title' => __('Debug Output'),
-            'log_records' => $this->testHandler->getRecords(),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/log_view',
+            [
+                'sidebar' => null,
+                'title' => __('Debug Output'),
+                'log_records' => $this->testHandler->getRecords(),
+            ]
+        );
     }
 
     public function clearCacheAction(

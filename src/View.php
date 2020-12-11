@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Http\Response;
 use App\Http\ServerRequest;
 use DI\FactoryInterface;
 use Doctrine\Inflector\InflectorFactory;
@@ -15,6 +14,8 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 class View extends Engine
 {
+    protected Assets $assets;
+
     public function __construct(
         FactoryInterface $factory,
         Environment $environment,
@@ -33,7 +34,7 @@ class View extends Engine
         );
 
         // Add request-dependent content.
-        $assets = $factory->make(
+        $this->assets = $factory->make(
             Assets::class,
             [
                 'request' => $request,
@@ -48,7 +49,7 @@ class View extends Engine
                 'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
                 'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
                 'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-                'assets' => $assets,
+                'assets' => $this->assets,
             ]
         );
 
@@ -159,12 +160,6 @@ class View extends Engine
         $response->getBody()->write($template);
         $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
 
-        if ($response instanceof Response && !$response->hasCacheLifetime()) {
-            /** @var Assets $assets */
-            $assets = $this->getData('assets');
-            $response = $assets->writeCsp($response);
-        }
-
-        return $response;
+        return $this->assets->writeCsp($response);
     }
 }

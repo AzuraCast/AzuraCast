@@ -22,11 +22,11 @@ class StreamersController
     public function __construct(
         EntityManagerInterface $em,
         AzuraCastCentral $ac_central,
-        Entity\Settings $settings
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->em = $em;
         $this->ac_central = $ac_central;
-        $this->settings = $settings;
+        $this->settings = $settingsRepo->readSettings();
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -60,12 +60,16 @@ class StreamersController
 
         $be_settings = $station->getBackendConfig();
 
-        return $view->renderToResponse($response, 'stations/streamers/index', [
-            'server_url' => $this->settings->getBaseUrl(),
-            'stream_port' => $backend->getStreamPort($station),
-            'ip' => $this->ac_central->getIp(),
-            'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
-            'station_tz' => $station->getTimezone(),
-        ]);
+        return $view->renderToResponse(
+            $response,
+            'stations/streamers/index',
+            [
+                'server_url' => $this->settings->getBaseUrl(),
+                'stream_port' => $backend->getStreamPort($station),
+                'ip' => $this->ac_central->getIp(),
+                'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
+                'station_tz' => $station->getTimezone(),
+            ]
+        );
     }
 }

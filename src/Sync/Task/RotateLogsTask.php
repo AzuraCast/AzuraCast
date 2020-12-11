@@ -19,22 +19,26 @@ class RotateLogsTask extends AbstractTask
 
     protected Supervisor $supervisor;
 
+    protected Entity\Repository\SettingsRepository $settingsRepo;
+
     protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
 
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         Environment $environment,
         Adapters $adapters,
         Supervisor $supervisor,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->environment = $environment;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
+
+        $this->settingsRepo = $settingsRepo;
         $this->storageLocationRepo = $storageLocationRepo;
     }
 
@@ -63,10 +67,12 @@ class RotateLogsTask extends AbstractTask
         $rotate->run();
 
         // Rotate the automated backups.
-        $backups_to_keep = $this->settings->getBackupKeepCopies();
+        $settings = $this->settingsRepo->readSettings();
+
+        $backups_to_keep = $settings->getBackupKeepCopies();
 
         if ($backups_to_keep > 0) {
-            $backupStorageId = (int)$this->settings->getBackupStorageLocation();
+            $backupStorageId = (int)$settings->getBackupStorageLocation();
 
             if ($backupStorageId > 0) {
                 $storageLocation = $this->storageLocationRepo->findByType(

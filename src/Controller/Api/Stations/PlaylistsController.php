@@ -296,10 +296,12 @@ class PlaylistsController extends AbstractScheduledEntityController
         $this->em->persist($record);
         $this->em->flush();
 
-        return $response->withJson(new Entity\Api\Status(
-            true,
-            __('Playlist reshuffled.')
-        ));
+        return $response->withJson(
+            new Entity\Api\Status(
+                true,
+                __('Playlist reshuffled.')
+            )
+        );
     }
 
     public function importAction(
@@ -335,6 +337,7 @@ class PlaylistsController extends AbstractScheduledEntityController
 
         if (!empty($paths)) {
             $station = $request->getStation();
+            $storageLocation = $station->getMediaStorageLocation();
 
             // Assemble list of station media to match against.
             $media_lookup = [];
@@ -343,9 +346,9 @@ class PlaylistsController extends AbstractScheduledEntityController
                 <<<'DQL'
                     SELECT sm.id, sm.path
                     FROM App\Entity\StationMedia sm
-                    WHERE sm.station = :station
+                    WHERE sm.storage_location = :storageLocation
                 DQL
-            )->setParameter('station', $station)
+            )->setParameter('storageLocation', $storageLocation)
                 ->getArrayResult();
 
             foreach ($media_info_raw as $row) {
@@ -378,9 +381,9 @@ class PlaylistsController extends AbstractScheduledEntityController
                     <<<'DQL'
                         SELECT sm
                         FROM App\Entity\StationMedia sm
-                        WHERE sm.station = :station AND sm.id IN (:matched_ids)
+                        WHERE sm.storage_location = :storageLocation AND sm.id IN (:matched_ids)
                     DQL
-                )->setParameter('station', $station)
+                )->setParameter('storageLocation', $storageLocation)
                     ->setParameter('matched_ids', $matches)
                     ->execute();
 
@@ -407,10 +410,16 @@ class PlaylistsController extends AbstractScheduledEntityController
             $this->em->flush();
         }
 
-        return $response->withJson(new Entity\Api\Status(
-            true,
-            __('Playlist successfully imported; %d of %d files were successfully matched.', $foundPaths, $totalPaths)
-        ));
+        return $response->withJson(
+            new Entity\Api\Status(
+                true,
+                __(
+                    'Playlist successfully imported; %d of %d files were successfully matched.',
+                    $foundPaths,
+                    $totalPaths
+                )
+            )
+        );
     }
 
     /**
@@ -470,8 +479,14 @@ class PlaylistsController extends AbstractScheduledEntityController
      */
     protected function toArray($record, array $context = []): array
     {
-        return parent::toArray($record, array_merge($context, [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue'],
-        ]));
+        return parent::toArray(
+            $record,
+            array_merge(
+                $context,
+                [
+                    AbstractNormalizer::IGNORED_ATTRIBUTES => ['queue'],
+                ]
+            )
+        );
     }
 }

@@ -117,34 +117,51 @@ class BackupCommand extends CommandAbstract
         $io->section(__('Creating backup archive...'));
 
         // Strip leading slashes from backup paths.
-        $files_to_backup = array_map(function ($val) {
-            if (0 === strpos($val, '/')) {
-                return substr($val, 1);
-            }
-            return $val;
-        }, $files_to_backup);
+        $files_to_backup = array_map(
+            function ($val) {
+                if (0 === strpos($val, '/')) {
+                    return substr($val, 1);
+                }
+                return $val;
+            },
+            $files_to_backup
+        );
 
         switch ($file_ext) {
             case 'gz':
             case 'tgz':
-                $this->passThruProcess($io, array_merge([
-                    'tar',
-                    'zcvf',
-                    $tmpPath,
-                ], $files_to_backup), '/');
+                $this->passThruProcess(
+                    $io,
+                    array_merge(
+                        [
+                            'tar',
+                            'zcvf',
+                            $tmpPath,
+                        ],
+                        $files_to_backup
+                    ),
+                    '/'
+                );
                 break;
 
             case 'zip':
             default:
                 $dont_compress = ['.tar.gz', '.zip', '.jpg', '.mp3', '.ogg', '.flac', '.aac', '.wav'];
 
-                $this->passThruProcess($io, array_merge([
-                    'zip',
-                    '-r',
-                    '-n',
-                    implode(':', $dont_compress),
-                    $tmpPath,
-                ], $files_to_backup), '/');
+                $this->passThruProcess(
+                    $io,
+                    array_merge(
+                        [
+                            'zip',
+                            '-r',
+                            '-n',
+                            implode(':', $dont_compress),
+                            $tmpPath,
+                        ],
+                        $files_to_backup
+                    ),
+                    '/'
+                );
                 break;
         }
 
@@ -158,16 +175,18 @@ class BackupCommand extends CommandAbstract
         // Cleanup
         $io->section(__('Cleaning up temporary files...'));
 
-        Utilities::rmdirRecursive($tmp_dir_mariadb);
+        Utilities\File::rmdirRecursive($tmp_dir_mariadb);
 
         $io->newLine();
 
         $end_time = microtime(true);
         $time_diff = $end_time - $start_time;
 
-        $io->success([
-            __('Backup complete in %.2f seconds.', $time_diff),
-        ]);
+        $io->success(
+            [
+                __('Backup complete in %.2f seconds.', $time_diff),
+            ]
+        );
         return 0;
     }
 }

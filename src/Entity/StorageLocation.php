@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -15,6 +17,9 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Config;
+use League\Flysystem\Util;
+use Spatie\Dropbox\Client;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,6 +39,7 @@ class StorageLocation
 
     public const ADAPTER_LOCAL = 'local';
     public const ADAPTER_S3 = 's3';
+    public const ADAPTER_DROPBOX = 'dropbox';
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -59,7 +65,11 @@ class StorageLocation
     /**
      * @ORM\Column(name="adapter", type="string", length=50)
      *
-     * @Assert\Choice(choices={StorageLocation::ADAPTER_LOCAL, StorageLocation::ADAPTER_S3})
+     * @Assert\Choice(choices={
+     *     StorageLocation::ADAPTER_LOCAL,
+     *     StorageLocation::ADAPTER_S3,
+     *     StorageLocation::ADAPTER_DROPBOX
+     * })
      * @var string The storage adapter to use for this location.
      */
     protected $adapter = self::ADAPTER_LOCAL;
@@ -112,6 +122,13 @@ class StorageLocation
      * @var string|null The optional custom S3 endpoint S3 adapters.
      */
     protected $s3Endpoint = null;
+
+    /**
+     * @ORM\Column(name="dropbox_auth_token", type="string", length=255, nullable=true)
+     *
+     * @var string|null The optional custom S3 endpoint S3 adapters.
+     */
+    protected $dropboxAuthToken = null;
 
     /**
      * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
@@ -245,6 +262,16 @@ class StorageLocation
     public function setS3Endpoint(?string $s3Endpoint): void
     {
         $this->s3Endpoint = $this->truncateString($s3Endpoint, 255);
+    }
+
+    public function getDropboxAuthToken(): ?string
+    {
+        return $this->dropboxAuthToken;
+    }
+
+    public function setDropboxAuthToken(?string $dropboxAuthToken): void
+    {
+        $this->dropboxAuthToken = $dropboxAuthToken;
     }
 
     public function isLocal(): bool
@@ -418,6 +445,10 @@ class StorageLocation
                 }
                 break;
 
+            case self::ADAPTER_DROPBOX:
+                return 'dropbox://' . $this->dropboxAuthToken . ltrim($path, '/');
+                break;
+
             case self::ADAPTER_LOCAL:
             default:
                 return $path;
@@ -428,10 +459,12 @@ class StorageLocation
     {
         if (self::ADAPTER_S3 === $this->adapter) {
             $client = $this->getS3Client();
-            $client->listObjectsV2([
-                'Bucket' => $this->s3Bucket,
-                'max-keys' => 1,
-            ]);
+            $client->listObjectsV2(
+                [
+                    'Bucket' => $this->s3Bucket,
+                    'max-keys' => 1,
+                ]
+            );
         }
 
         $adapter = $this->getStorageAdapter();
@@ -445,6 +478,9 @@ class StorageLocation
                 $client = $this->getS3Client();
                 return new AwsS3Adapter($client, $this->s3Bucket, $this->path);
 
+            case self::ADAPTER_DROPBOX:
+                return new DropboxAdapter($this->getDropboxClient(), $this->path);
+
             case self::ADAPTER_LOCAL:
             default:
                 return new Local($this->path);
@@ -457,16 +493,27 @@ class StorageLocation
             throw new \InvalidArgumentException('This storage location is not using the S3 adapter.');
         }
 
-        $s3Options = array_filter([
-            'credentials' => [
-                'key' => $this->s3CredentialKey,
-                'secret' => $this->s3CredentialSecret,
-            ],
-            'region' => $this->s3Region,
-            'version' => $this->s3Version,
-            'endpoint' => $this->s3Endpoint,
-        ]);
+        $s3Options = array_filter(
+            [
+                'credentials' => [
+                    'key' => $this->s3CredentialKey,
+                    'secret' => $this->s3CredentialSecret,
+                ],
+                'region' => $this->s3Region,
+                'version' => $this->s3Version,
+                'endpoint' => $this->s3Endpoint,
+            ]
+        );
         return new S3Client($s3Options);
+    }
+
+    protected function getDropboxClient(): Client
+    {
+        if (self::ADAPTER_DROPBOX !== $this->adapter) {
+            throw new \InvalidArgumentException('This storage location is not using the Dropbox adapter.');
+        }
+
+        return new Client($this->dropboxAuthToken);
     }
 
     /**
@@ -475,6 +522,11 @@ class StorageLocation
      */
     public function getFilesystem($config = null): Filesystem
     {
+        $config = Util::ensureConfig($config);
+        if (self::ADAPTER_DROPBOX === $this->adapter) {
+            $config->set('case_sensitive', false);
+        }
+
         return new Filesystem($this->getStorageAdapter(), $config);
     }
 
@@ -483,6 +535,7 @@ class StorageLocation
         $adapterNames = [
             self::ADAPTER_LOCAL => 'Local',
             self::ADAPTER_S3 => 'S3',
+            self::ADAPTER_DROPBOX => 'Dropbox',
         ];
         return $adapterNames[$this->adapter] . ': ' . $this->getUri();
     }

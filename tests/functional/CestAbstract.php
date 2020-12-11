@@ -10,7 +10,7 @@ abstract class CestAbstract
 
     protected App\Environment $environment;
 
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Entity\Repository\StationRepository $stationRepo;
 
@@ -25,7 +25,7 @@ abstract class CestAbstract
         $this->di = $tests_module->container;
         $this->em = $tests_module->em;
 
-        $this->settingsTableRepo = $this->di->get(Entity\Repository\SettingsTableRepository::class);
+        $this->settingsRepo = $this->di->get(Entity\Repository\SettingsRepository::class);
         $this->stationRepo = $this->di->get(Entity\Repository\StationRepository::class);
         $this->environment = $this->di->get(App\Environment::class);
     }
@@ -48,9 +48,10 @@ abstract class CestAbstract
     {
         $I->wantTo('Start with an incomplete setup.');
 
-        $settings = $this->settingsTableRepo->updateSettings();
+        $settings = $this->settingsRepo->readSettings(true);
         $settings->setSetupCompleteTime(0);
-        $this->settingsTableRepo->writeSettings($settings);
+
+        $this->settingsRepo->writeSettings($settings);
 
         $this->_cleanTables();
     }
@@ -92,10 +93,10 @@ abstract class CestAbstract
         $this->test_station = $this->stationRepo->create($test_station);
 
         // Set settings.
-        $settings = $this->settingsTableRepo->updateSettings();
+        $settings = $this->settingsRepo->readSettings(true);
         $settings->updateSetupComplete();
         $settings->setBaseUrl('localhost');
-        $this->settingsTableRepo->writeSettings($settings);
+        $this->settingsRepo->writeSettings($settings);
     }
 
     protected function getTestStation(): Entity\Station
@@ -149,10 +150,13 @@ abstract class CestAbstract
         $I->amOnPage('/');
         $I->seeInCurrentUrl('/login');
 
-        $I->submitForm('#login-form', [
-            'username' => $this->login_username,
-            'password' => $this->login_password,
-        ]);
+        $I->submitForm(
+            '#login-form',
+            [
+                'username' => $this->login_username,
+                'password' => $this->login_password,
+            ]
+        );
 
         $I->seeInSource('Logged In');
     }

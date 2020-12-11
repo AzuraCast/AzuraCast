@@ -21,11 +21,10 @@ class RunAutomatedAssignmentTask extends AbstractTask
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Adapters $adapters
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->mediaRepo = $mediaRepo;
         $this->adapters = $adapters;
@@ -125,9 +124,12 @@ class RunAutomatedAssignmentTask extends AbstractTask
         $mediaReport = $this->generateReport($station, $threshold_days);
 
         // Remove songs that weren't already in auto-assigned playlists.
-        $mediaReport = array_filter($mediaReport, function ($media) use ($mediaToUpdate) {
-            return (isset($mediaToUpdate[$media['id']]));
-        });
+        $mediaReport = array_filter(
+            $mediaReport,
+            function ($media) use ($mediaToUpdate) {
+                return (isset($mediaToUpdate[$media['id']]));
+            }
+        );
 
         // Place all songs with 0 plays back in their original playlists.
         foreach ($mediaReport as $song_id => $media) {
@@ -137,9 +139,12 @@ class RunAutomatedAssignmentTask extends AbstractTask
         }
 
         // Sort songs by ratio descending.
-        uasort($mediaReport, function ($a_media, $b_media) {
-            return (int)$b_media['ratio'] <=> (int)$a_media['ratio'];
-        });
+        uasort(
+            $mediaReport,
+            function ($a_media, $b_media) {
+                return (int)$b_media['ratio'] <=> (int)$a_media['ratio'];
+            }
+        );
 
         // Distribute media across the enabled playlists and assign media to playlist.
         $numSongs = count($mediaReport);

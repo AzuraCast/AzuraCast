@@ -34,14 +34,14 @@ class DashboardController
     public function __construct(
         EntityManagerInterface $em,
         Acl $acl,
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         CacheInterface $cache,
         Adapters $adapter_manager,
         EventDispatcher $dispatcher
     ) {
         $this->em = $em;
         $this->acl = $acl;
-        $this->settings = $settings;
+        $this->settings = $settingsRepo->readSettings();
         $this->cache = $cache;
         $this->adapter_manager = $adapter_manager;
         $this->dispatcher = $dispatcher;
@@ -59,11 +59,14 @@ class DashboardController
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         // Don't show stations the user can't manage.
-        $stations = array_filter($stations, function ($station) use ($user) {
-            /** @var Entity\Station $station */
-            return $station->isEnabled() &&
-                $this->acl->userAllowed($user, Acl::STATION_VIEW, $station->getId());
-        });
+        $stations = array_filter(
+            $stations,
+            function ($station) use ($user) {
+                /** @var Entity\Station $station */
+                return $station->isEnabled() &&
+                    $this->acl->userAllowed($user, Acl::STATION_VIEW, $station->getId());
+            }
+        );
 
         if (empty($stations) && !$show_admin) {
             return $view->renderToResponse($response, 'frontend/index/noaccess');
@@ -136,13 +139,17 @@ class DashboardController
             }
         }
 
-        return $view->renderToResponse($response, 'frontend/index/index', [
-            'stations' => ['stations' => $view_stations],
-            'station_ids' => $station_ids,
-            'show_admin' => $show_admin,
-            'metrics' => $metrics,
-            'notifications' => $notifications,
-        ]);
+        return $view->renderToResponse(
+            $response,
+            'frontend/index/index',
+            [
+                'stations' => ['stations' => $view_stations],
+                'station_ids' => $station_ids,
+                'show_admin' => $show_admin,
+                'metrics' => $metrics,
+                'notifications' => $notifications,
+            ]
+        );
     }
 
     /**

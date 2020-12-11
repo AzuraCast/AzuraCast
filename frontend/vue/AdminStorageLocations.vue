@@ -89,7 +89,10 @@ export default {
                     return this.$gettext('Local');
 
                 case 's3':
-                    return this.$gettext('Remote S3');
+                    return this.$gettext('Remote: S3 Compatible');
+
+                case 'dropbox':
+                    return this.$gettext('Remote: Dropbox');
             }
         },
         relist () {

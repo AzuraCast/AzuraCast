@@ -12,9 +12,10 @@ class IndexController
     public function indexAction(
         ServerRequest $request,
         Response $response,
-        Entity\Settings $settings
+        Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
         // Redirect to complete setup, if it hasn't been completed yet.
+        $settings = $settingsRepo->readSettings();
         if (!$settings->isSetupComplete()) {
             return $response->withRedirect($request->getRouter()->named('setup:index'));
         }

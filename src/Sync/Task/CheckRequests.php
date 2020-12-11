@@ -21,12 +21,11 @@ class CheckRequests extends AbstractTask
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         Entity\Repository\StationRequestRepository $requestRepo,
         Adapters $adapters,
         EventDispatcher $dispatcher
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->requestRepo = $requestRepo;
         $this->dispatcher = $dispatcher;
@@ -67,10 +66,12 @@ class CheckRequests extends AbstractTask
         }
 
         // Check for an existing SongHistory record and skip if one exists.
-        $sq = $this->em->getRepository(Entity\StationQueue::class)->findOneBy([
-            'station' => $station,
-            'request' => $request,
-        ]);
+        $sq = $this->em->getRepository(Entity\StationQueue::class)->findOneBy(
+            [
+                'station' => $station,
+                'request' => $request,
+            ]
+        );
 
         if (!$sq instanceof Entity\StationQueue) {
             // Log the item in SongHistory.

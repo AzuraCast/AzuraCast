@@ -9,6 +9,7 @@ use GuzzleHttp\Psr7\UriResolver;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+use Slim\App;
 use Slim\Interfaces\RouteInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Routing\RouteContext;
@@ -25,12 +26,12 @@ class Router implements RouterInterface
 
     public function __construct(
         Environment $environment,
-        RouteParserInterface $routeParser,
-        Entity\Settings $settings
+        App $app,
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->environment = $environment;
-        $this->settings = $settings;
-        $this->routeParser = $routeParser;
+        $this->settings = $settingsRepo->readSettings();
+        $this->routeParser = $app->getRouteCollector()->getRouteParser();
     }
 
     /**

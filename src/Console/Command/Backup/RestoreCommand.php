@@ -43,19 +43,27 @@ class RestoreCommand extends CommandAbstract
         switch ($file_ext) {
             case 'gz':
             case 'tgz':
-                $this->passThruProcess($io, [
-                    'tar',
-                    'zxvf',
-                    $path,
-                ], '/');
+                $this->passThruProcess(
+                    $io,
+                    [
+                        'tar',
+                        'zxvf',
+                        $path,
+                    ],
+                    '/'
+                );
                 break;
 
             case 'zip':
             default:
-                $this->passThruProcess($io, [
-                    'unzip',
-                    $path,
-                ], '/');
+                $this->passThruProcess(
+                    $io,
+                    [
+                        'unzip',
+                        $path,
+                    ],
+                    '/'
+                );
                 break;
         }
 
@@ -88,7 +96,7 @@ class RestoreCommand extends CommandAbstract
             ]
         );
 
-        Utilities::rmdirRecursive($tmp_dir_mariadb);
+        Utilities\File::rmdirRecursive($tmp_dir_mariadb);
         $io->newLine();
 
         // Update from current version to latest.
@@ -99,9 +107,11 @@ class RestoreCommand extends CommandAbstract
         $end_time = microtime(true);
         $time_diff = $end_time - $start_time;
 
-        $io->success([
-            'Restore complete in ' . round($time_diff, 3) . ' seconds.',
-        ]);
+        $io->success(
+            [
+                'Restore complete in ' . round($time_diff, 3) . ' seconds.',
+            ]
+        );
         return 0;
     }
 }

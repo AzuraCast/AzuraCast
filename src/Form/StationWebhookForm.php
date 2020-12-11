@@ -32,7 +32,7 @@ class StationWebhookForm extends EntityForm
         $config_injections = [
             'router' => $router,
             'triggers' => $webhook_config['triggers'],
-            'app_settings' => $environment,
+            'environment' => $environment,
         ];
 
         foreach ($webhook_config['webhooks'] as $webhook_key => $webhook_info) {
@@ -68,10 +68,12 @@ class StationWebhookForm extends EntityForm
     public function process(ServerRequest $request, $record = null)
     {
         if (!$record instanceof Entity\StationWebhook) {
-            throw new InvalidArgumentException(sprintf(
-                'Record is not an instance of %s',
-                Entity\StationWebhook::class
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Record is not an instance of %s',
+                    Entity\StationWebhook::class
+                )
+            );
         }
 
         $this->configure($this->forms[$record->getType()]);

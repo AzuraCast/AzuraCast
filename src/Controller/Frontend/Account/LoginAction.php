@@ -2,7 +2,7 @@
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity\Settings;
+use App\Entity\Repository\SettingsRepository;
 use App\Entity\User;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
@@ -20,12 +20,14 @@ class LoginAction
         Response $response,
         EntityManagerInterface $em,
         RateLimit $rateLimit,
-        Settings $settings
+        SettingsRepository $settingsRepo
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();
 
         // Check installation completion progress.
+        $settings = $settingsRepo->readSettings();
+
         if (!$settings->isSetupComplete()) {
             $num_users = (int)$em->createQuery(
                 <<<'DQL'

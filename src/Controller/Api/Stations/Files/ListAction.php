@@ -44,7 +44,8 @@ class ListAction
             : $currentDir . '/%';
 
         $media_query = $em->createQueryBuilder()
-            ->select('partial sm.{
+            ->select(
+                'partial sm.{
                 id,
                 unique_id,
                 art_updated_at,
@@ -55,7 +56,8 @@ class ListAction
                 title,
                 album,
                 genre
-            }')
+            }'
+            )
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
             ->from(Entity\StationMedia::class, 'sm')
@@ -178,9 +180,12 @@ class ListAction
                 $files[] = $short_path;
             }
         } else {
-            $filesIterator = $fs->createIterator($currentDir, [
-                Options::OPTION_IS_RECURSIVE => false,
-            ]);
+            $filesIterator = $fs->createIterator(
+                $currentDir,
+                [
+                    Options::OPTION_IS_RECURSIVE => false,
+                ]
+            );
 
             $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
 
@@ -253,7 +258,7 @@ class ListAction
             $sort_by[] = SORT_ASC;
         }
 
-        $result = Utilities::arrayOrderBy($result, $sort_by);
+        $result = Utilities\Arrays::arrayOrderBy($result, $sort_by);
 
         $num_results = count($result);
 
@@ -276,11 +281,13 @@ class ListAction
             $return_result = [];
         }
 
-        return $response->withJson([
-            'current' => $page,
-            'rowCount' => $row_count,
-            'total' => $num_results,
-            'rows' => $return_result,
-        ]);
+        return $response->withJson(
+            [
+                'current' => $page,
+                'rowCount' => $row_count,
+                'total' => $num_results,
+                'rows' => $return_result,
+            ]
+        );
     }
 }

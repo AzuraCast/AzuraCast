@@ -2,8 +2,7 @@
 
 namespace App\Sync;
 
-use App\Entity;
-use App\Entity\Repository\SettingsTableRepository;
+use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Event\GetSyncTasks;
 use App\EventDispatcher;
@@ -20,26 +19,22 @@ class Runner
 {
     protected Logger $logger;
 
-    protected Entity\Settings $settings;
-
     protected Environment $environment;
 
-    protected SettingsTableRepository $settingsTableRepo;
+    protected SettingsRepository $settingsRepo;
 
     protected LockFactory $lockFactory;
 
     protected EventDispatcher $eventDispatcher;
 
     public function __construct(
-        SettingsTableRepository $settingsRepo,
-        Entity\Settings $settings,
+        SettingsRepository $settingsRepo,
         Environment $environment,
         Logger $logger,
         LockFactory $lockFactory,
         EventDispatcher $eventDispatcher
     ) {
-        $this->settingsTableRepo = $settingsRepo;
-        $this->settings = $settings;
+        $this->settingsRepo = $settingsRepo;
         $this->environment = $environment;
         $this->logger = $logger;
         $this->lockFactory = $lockFactory;
@@ -67,7 +62,8 @@ class Runner
     public function runSyncTask(string $type, bool $force = false): void
     {
         // Immediately halt if setup is not complete.
-        if (!$this->settings->isSetupComplete()) {
+        $settings = $this->settingsRepo->readSettings();
+        if (!$settings->isSetupComplete()) {
             $this->logger->notice(
                 sprintf('Skipping sync task %s; setup not complete.', $type)
             );
@@ -123,15 +119,18 @@ class Runner
                 $end_time = microtime(true);
                 $time_diff = $end_time - $start_time;
 
-                $this->logger->debug(sprintf(
-                    'Timer "%s" completed in %01.3f second(s).',
-                    $taskClass,
-                    round($time_diff, 3)
-                ));
+                $this->logger->debug(
+                    sprintf(
+                        'Timer "%s" completed in %01.3f second(s).',
+                        $taskClass,
+                        round($time_diff, 3)
+                    )
+                );
             }
 
-            $this->settings->updateSyncLastRunTime($type);
-            $this->settingsTableRepo->writeSettings($this->settings);
+            $settings = $this->settingsRepo->readSettings(true);
+            $settings->updateSyncLastRunTime($type);
+            $this->settingsRepo->writeSettings($settings);
         } finally {
             $lock->release();
         }
@@ -145,6 +144,8 @@ class Runner
         $shortTaskTimeout = $this->environment->getSyncShortExecutionTime();
         $longTaskTimeout = $this->environment->getSyncLongExecutionTime();
 
+        $settings = $this->settingsRepo->readSettings();
+
         $syncs = [
             GetSyncTasks::SYNC_NOWPLAYING => [
                 'name' => __('Now Playing Data'),
@@ -152,7 +153,7 @@ class Runner
                     __('Now Playing Data'),
                 ],
                 'timeout' => $shortTaskTimeout,
-                'latest' => $this->settings->getSyncNowplayingLastRun(),
+                'latest' => $settings->getSyncNowplayingLastRun(),
                 'interval' => 15,
             ],
             GetSyncTasks::SYNC_SHORT => [
@@ -161,7 +162,7 @@ class Runner
                     __('Song Requests Queue'),
                 ],
                 'timeout' => $shortTaskTimeout,
-                'latest' => $this->settings->getSyncShortLastRun(),
+                'latest' => $settings->getSyncShortLastRun(),
                 'interval' => 60,
             ],
             GetSyncTasks::SYNC_MEDIUM => [
@@ -170,7 +171,7 @@ class Runner
                     __('Check Media Folders'),
                 ],
                 'timeout' => $shortTaskTimeout,
-                'latest' => $this->settings->getSyncMediumLastRun(),
+                'latest' => $settings->getSyncMediumLastRun(),
                 'interval' => 300,
             ],
             GetSyncTasks::SYNC_LONG => [
@@ -180,7 +181,7 @@ class Runner
                     __('Cleanup'),
                 ],
                 'timeout' => $longTaskTimeout,
-                'latest' => $this->settings->getSyncLongLastRun(),
+                'latest' => $settings->getSyncLongLastRun(),
                 'interval' => 3600,
             ],
         ];

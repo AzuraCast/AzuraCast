@@ -49,7 +49,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
     {
-        $values = Utilities::flattenArray($np, '.');
+        $values = Utilities\Arrays::flattenArray($np, '.');
         $vars = [];
 
         foreach ($raw_vars as $var_key => $var_value) {

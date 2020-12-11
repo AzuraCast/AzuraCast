@@ -11,13 +11,16 @@ class BrandingSettingsForm extends AbstractSettingsForm
 {
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsTableRepository $settingsRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Config $config
     ) {
-        $formConfig = $config->get('forms/branding', [
-            'settings' => $environment,
-        ]);
+        $formConfig = $config->get(
+            'forms/branding',
+            [
+                'settings' => $environment,
+            ]
+        );
 
         parent::__construct(
             $em,

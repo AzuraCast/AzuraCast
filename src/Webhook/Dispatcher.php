@@ -30,6 +30,8 @@ class Dispatcher implements EventSubscriberInterface
 
     protected EntityManagerInterface $em;
 
+    protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen;
+
     public function __construct(
         Environment $environment,
         Logger $logger,
@@ -37,7 +39,8 @@ class Dispatcher implements EventSubscriberInterface
         MessageBus $messageBus,
         RouterInterface $router,
         LocalWebhookHandler $localHandler,
-        ConnectorLocator $connectors
+        ConnectorLocator $connectors,
+        Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen
     ) {
         $this->environment = $environment;
         $this->logger = $logger;
@@ -46,6 +49,7 @@ class Dispatcher implements EventSubscriberInterface
         $this->router = $router;
         $this->localHandler = $localHandler;
         $this->connectors = $connectors;
+        $this->nowPlayingApiGen = $nowPlayingApiGen;
     }
 
     /**
@@ -119,10 +123,12 @@ class Dispatcher implements EventSubscriberInterface
         }
 
         /** @var Entity\StationWebhook[] $enabledWebhooks */
-        $enabledWebhooks = $stationWebhooks->filter(function ($webhook) {
-            /** @var Entity\StationWebhook $webhook */
-            return $webhook->isEnabled();
-        });
+        $enabledWebhooks = $stationWebhooks->filter(
+            function ($webhook) {
+                /** @var Entity\StationWebhook $webhook */
+                return $webhook->isEnabled();
+            }
+        );
 
         $this->logger->debug('Triggering events: ' . implode(', ', $event->getTriggers()));
 
@@ -152,7 +158,7 @@ class Dispatcher implements EventSubscriberInterface
         $handler = new TestHandler(Logger::DEBUG, false);
         $this->logger->pushHandler($handler);
 
-        $np = $station->getNowplaying();
+        $np = $this->nowPlayingApiGen->currentOrEmpty($station);
         $np->resolveUrls($this->router->getBaseUrl(false));
         $np->cache = 'event';
 

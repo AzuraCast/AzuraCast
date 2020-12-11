@@ -12,14 +12,14 @@ class SyncTaskCheck
 {
     protected Runner $syncRunner;
 
-    protected Entity\Settings $settings;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         Runner $syncRunner,
-        Entity\Settings $settings
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->syncRunner = $syncRunner;
-        $this->settings = $settings;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function __invoke(GetNotifications $event): void
@@ -31,7 +31,9 @@ class SyncTaskCheck
             return;
         }
 
-        $setupComplete = $this->settings->isSetupComplete();
+        $settings = $this->settingsRepo->readSettings();
+
+        $setupComplete = $settings->isSetupComplete();
         $syncTasks = $this->syncRunner->getSyncTimes();
 
         foreach ($syncTasks as $taskKey => $task) {
@@ -48,17 +50,19 @@ class SyncTaskCheck
                 $router = $request->getRouter();
                 $backupUrl = $router->named('admin:debug:sync', ['type' => $taskKey]);
 
-                $event->addNotification(new Notification(
-                    __('Synchronized Task Not Recently Run'),
-                    // phpcs:disable Generic.Files.LineLength
-                    __(
-                        'The "%s" synchronization task has not run recently. This may indicate an error with your installation. <a href="%s" target="_blank">Manually run the task</a> to check for errors.',
-                        $task['name'],
-                        $backupUrl
-                    ),
-                    // phpcs:enable
-                    Notification::ERROR
-                ));
+                $event->addNotification(
+                    new Notification(
+                        __('Synchronized Task Not Recently Run'),
+                        // phpcs:disable Generic.Files.LineLength
+                        __(
+                            'The "%s" synchronization task has not run recently. This may indicate an error with your installation. <a href="%s" target="_blank">Manually run the task</a> to check for errors.',
+                            $task['name'],
+                            $backupUrl
+                        ),
+                        // phpcs:enable
+                        Notification::ERROR
+                    )
+                );
             }
         }
     }

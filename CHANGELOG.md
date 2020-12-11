@@ -5,6 +5,36 @@ release channel, you can take advantage of these new features and fixes.
 
 ---
 
+# AzuraCast 0.11.2 (Dec 11, 2020)
+
+This update includes some minor new features but resolves significant bugs identified in version 0.11.1. Updating is
+recommended for all users.
+
+## New Features/Changes
+
+- **Dropbox Storage Locations**: Dropbox is now supported as a remote location for storage locations, which can hold
+  station media, station live broadcast recordings and system backups.
+
+## Bug Fixes
+
+- A major issue that caused multiple Message Queue workers to lock up and fail to process new messages (including new
+  media) has been identified and fixed.
+
+- Issues with viewing (#3526) and dispatching (#3535) webhooks have been fixed.
+
+- Ansible installation issues (#198, #3517, etc.) have been resolved.
+
+- The settings retrieval process has been reworked to avoid collisions when saving changes (#3525).
+
+- An issue causing the Audit Log to log _all_ settings changes, flooding the audit log with automated settings changes,
+  has been fixed, and the fix will clean up the excess records as it's applied (#3545).
+
+- Importing playlists from existing M3U/PLS files works correctly again (#3528).
+
+- A bug preventing stations from being cloned has been fixed (#3501).
+
+---
+
 # AzuraCast 0.11.1 (Dec 7, 2020)
 
 ## New Features/Changes

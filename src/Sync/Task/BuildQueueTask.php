@@ -17,11 +17,10 @@ class BuildQueueTask extends AbstractTask
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         AutoDJ $autoDJ,
         LockFactory $lockFactory
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->autoDJ = $autoDJ;
         $this->lockFactory = $lockFactory;
@@ -33,6 +32,7 @@ class BuildQueueTask extends AbstractTask
             ->findBy(['is_enabled' => 1]);
 
         foreach ($stations as $station) {
+            /** @var Entity\Station $station */
             $this->processStation($station, $force);
         }
     }

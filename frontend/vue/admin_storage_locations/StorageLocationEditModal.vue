@@ -69,6 +69,18 @@ export default {
                 validations.form.s3Version = {};
                 validations.form.s3Bucket = {};
                 validations.form.s3Endpoint = {};
+                validations.form.dropboxAuthToken = {};
+                break;
+
+            case 'dropbox':
+                validations.form.path = {};
+                validations.form.s3CredentialKey = {};
+                validations.form.s3CredentialSecret = {};
+                validations.form.s3Region = {};
+                validations.form.s3Version = {};
+                validations.form.s3Bucket = {};
+                validations.form.s3Endpoint = {};
+                validations.form.dropboxAuthToken = { required };
                 break;
 
             case 's3':
@@ -79,6 +91,7 @@ export default {
                 validations.form.s3Version = { required };
                 validations.form.s3Bucket = { required };
                 validations.form.s3Endpoint = { required };
+                validations.form.dropboxAuthToken = {};
                 break;
         }
 
@@ -95,6 +108,7 @@ export default {
                 's3Version': 'latest',
                 's3Bucket': null,
                 's3Endpoint': null,
+                'dropboxAuthToken': null,
                 'storageQuota': ''
             };
         },
@@ -126,6 +140,7 @@ export default {
                     's3Version': d.s3Version,
                     's3Bucket': d.s3Bucket,
                     's3Endpoint': d.s3Endpoint,
+                    'dropboxAuthToken': d.dropboxAuthToken,
                     'storageQuota': d.storageQuota
                 };
 

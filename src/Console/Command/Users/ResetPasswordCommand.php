@@ -21,7 +21,7 @@ class ResetPasswordCommand extends CommandAbstract
             ->findOneBy(['email' => $email]);
 
         if ($user instanceof Entity\User) {
-            $temp_pw = Utilities::generatePassword(15);
+            $temp_pw = Utilities\Strings::generatePassword(15);
 
             $user->setNewPassword($temp_pw);
             $user->setTwoFactorSecret(null);

@@ -1,7 +1,9 @@
 <?php
-/** @var array $app_settings */
-/** @var array $triggers */
-/** @var App\Http\Router $router */
+/**
+ * @var array $triggers
+ * @var App\Environment $environment
+ * @var App\Http\Router $router
+ */
 
 return [
     'method' => 'post',
@@ -16,7 +18,9 @@ return [
                     'text',
                     [
                         'label' => __('Web Hook Name'),
-                        'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
+                        'description' => __(
+                            'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'
+                        ),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
                     ],
@@ -50,8 +54,10 @@ return [
             'use_grid' => true,
             'legend' => __('Customize Message'),
             'legend_class' => 'd-none',
-            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'),
-                $router->named('api:nowplaying:index')),
+            'description' => __(
+                'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.',
+                $router->named('api:nowplaying:index')
+            ),
 
             'elements' => [
 
@@ -120,7 +126,7 @@ return [
                     [
                         'label' => __('Footer Text'),
                         'belongsTo' => 'config',
-                        'default' => sprintf(__('Powered by %s'), $app_settings['name']),
+                        'default' => sprintf(__('Powered by %s'), $environment->getAppName()),
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

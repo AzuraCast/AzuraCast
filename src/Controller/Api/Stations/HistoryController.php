@@ -152,7 +152,7 @@ class HistoryController
             $row->resolveUrls($router->getBaseUrl());
 
             if ($is_bootgrid) {
-                return App\Utilities::flattenArray($row, '_');
+                return App\Utilities\Arrays::flattenArray($row, '_');
             }
 
             return $row;

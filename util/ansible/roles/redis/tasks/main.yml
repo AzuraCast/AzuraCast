@@ -9,9 +9,12 @@
     name: redis-server
     state: latest
 
-- name: Set Redis service name
-  set_fact:
-    redis_service_name: "{{ 'redis-server' if ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal' else 'redis' }}"
-
-- name: Restart Redis service
-  service: name="{{ redis_service_name }}" state=restarted
+- name: Enable and restart all core services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  ignore_errors: True
+  with_items:
+    - "redis-server"
+    - "redis"

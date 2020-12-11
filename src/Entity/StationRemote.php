@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -500,10 +502,12 @@ class StationRemote implements StationMountInterface
         $response->name = $this->getDisplayName();
         $response->url = $adapter->getPublicUrl($this);
 
-        $response->listeners = new Api\NowPlayingListeners([
-            'unique' => $this->listeners_unique,
-            'total' => $this->listeners_total,
-        ]);
+        $response->listeners = new Api\NowPlayingListeners(
+            [
+                'unique' => $this->listeners_unique,
+                'total' => $this->listeners_total,
+            ]
+        );
 
         if ($this->enable_autodj || (Adapters::REMOTE_AZURARELAY === $this->type)) {
             $response->bitrate = (int)$this->autodj_bitrate;
@@ -526,7 +530,7 @@ class StationRemote implements StationMountInterface
             return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format);
         }
 
-        return Utilities::truncateUrl($this->url);
+        return Utilities\Strings::truncateUrl($this->url);
     }
 
     /**

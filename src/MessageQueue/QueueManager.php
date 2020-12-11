@@ -3,11 +3,12 @@
 namespace App\MessageQueue;
 
 use App\Message\AbstractMessage;
-use Redis;
-use Symfony\Component\Messenger\Bridge\Redis\Transport\Connection;
-use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport;
+use Doctrine\DBAL\Connection;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection as MessengerConnection;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 
 class QueueManager implements SendersLocatorInterface
 {
@@ -16,16 +17,13 @@ class QueueManager implements SendersLocatorInterface
     public const QUEUE_LOW_PRIORITY = 'low_priority';
     public const QUEUE_MEDIA = 'media';
 
-    public Redis $redis;
+    protected Connection $db;
 
-    /** @var Connection[] */
-    public array $connections = [];
+    protected string $workerName = 'app';
 
-    public string $workerName = 'app';
-
-    public function __construct(Redis $redis)
+    public function __construct(Connection $db)
     {
-        $this->redis = $redis;
+        $this->db = $db;
     }
 
     public function setWorkerName(string $workerName): void
@@ -50,38 +48,28 @@ class QueueManager implements SendersLocatorInterface
         ];
     }
 
-    public function getConnection(string $queueName): Connection
+    public function getConnection(string $queueName): MessengerConnection
     {
-        $cacheName = $queueName . '_' . $this->workerName;
-
-        if (!isset($this->connections[$cacheName])) {
-            $this->connections[$cacheName] = new Connection(
-                [
-                    'stream' => 'messages_' . $queueName,
-                    'consumer' => $this->workerName,
-                    'delete_after_ack' => true,
-                    'redeliver_timeout' => 43200,
-                    'claim_interval' => 86400,
-                    'dbindex' => $this->redis->getDbNum(),
-                ],
-                array_filter([
-                    'host' => $this->redis->getHost(),
-                    'port' => $this->redis->getPort(),
-                    'auth' => $this->redis->getAuth(),
-                ])
-            );
-        }
-
-        return $this->connections[$cacheName];
+        return new MessengerConnection(
+            [
+                'table_name' => 'messenger_messages',
+                'queue_name' => $queueName,
+                'auto_setup' => false,
+            ],
+            $this->db
+        );
     }
 
-    public function getTransport(string $queueName): RedisTransport
+    public function getTransport(string $queueName): DoctrineTransport
     {
-        return new RedisTransport($this->getConnection($queueName));
+        return new DoctrineTransport(
+            $this->getConnection($queueName),
+            new PhpSerializer()
+        );
     }
 
     /**
-     * @return RedisTransport[]
+     * @return DoctrineTransport[]
      */
     public function getTransports(): array
     {
@@ -95,7 +83,7 @@ class QueueManager implements SendersLocatorInterface
     }
 
     /**
-     * @return Connection[]
+     * @return MessengerConnection[]
      */
     public function getConnections(): array
     {
@@ -108,17 +96,9 @@ class QueueManager implements SendersLocatorInterface
         return $connections;
     }
 
-    public function clearQueue(string $queueName): void
-    {
-        $connection = $this->getConnection($queueName);
-
-        $connection->cleanup();
-        $connection->setup();
-    }
-
     public function getQueueCount(string $queueName): int
     {
-        return $this->redis->xLen('messages_' . $queueName);
+        return $this->getConnection($queueName)->getMessageCount();
     }
 
     /**

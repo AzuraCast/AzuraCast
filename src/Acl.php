@@ -14,8 +14,6 @@ class Acl
     public const GLOBAL_LOGS = 'view system logs';
     public const GLOBAL_SETTINGS = 'administer settings';
     public const GLOBAL_API_KEYS = 'administer api keys';
-    public const GLOBAL_USERS = 'administer user accounts';
-    public const GLOBAL_PERMISSIONS = 'administer permissions';
     public const GLOBAL_STATIONS = 'administer stations';
     public const GLOBAL_CUSTOM_FIELDS = 'administer custom fields';
     public const GLOBAL_BACKUPS = 'administer backups';

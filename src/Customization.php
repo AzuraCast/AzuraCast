@@ -32,14 +32,14 @@ class Customization
     protected string $instanceName = '';
 
     public function __construct(
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         ServerRequestInterface $request
     ) {
-        $this->settings = $settings;
+        $this->settings = $settingsRepo->readSettings();
         $this->environment = $environment;
 
-        $this->instanceName = $settings->getInstanceName() ?? '';
+        $this->instanceName = $this->settings->getInstanceName() ?? '';
 
         // Register current user
         $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
@@ -52,7 +52,7 @@ class Customization
         if (!empty($queryParams['theme'])) {
             $this->publicTheme = $this->theme = $queryParams['theme'];
         } else {
-            $this->publicTheme = $settings->getPublicTheme() ?? $this->publicTheme;
+            $this->publicTheme = $this->settings->getPublicTheme() ?? $this->publicTheme;
 
             if (null !== $this->user && !empty($this->user->getTheme())) {
                 $this->theme = (string)$this->user->getTheme();

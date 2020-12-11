@@ -39,8 +39,8 @@ abstract class AbstractFrontend extends AbstractAdapter
         AdapterFactory $adapterFactory,
         Client $client,
         Router $router,
-        Entity\Repository\StationMountRepository $stationMountRepo,
-        Entity\Settings $settings
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\StationMountRepository $stationMountRepo
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher);
 
@@ -49,7 +49,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         $this->router = $router;
 
         $this->stationMountRepo = $stationMountRepo;
-        $this->settings = $settings;
+        $this->settings = $settingsRepo->readSettings();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App;
 
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 use function base64_encode;
@@ -43,39 +44,33 @@ class Assets
 
     public function __construct(
         Environment $environment,
-        array $libraries = [],
-        array $versioned_files = [],
-        array $vueComponents = []
+        Config $config,
+        ?ServerRequestInterface $request
     ) {
         $this->environment = $environment;
+        $this->request = $request;
 
+        $libraries = $config->get('assets');
         foreach ($libraries as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }
 
+        $versioned_files = [];
+        $assets_file = $environment->getBaseDirectory() . '/web/static/assets.json';
+        if (file_exists($assets_file)) {
+            $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
+        }
         $this->versioned_files = $versioned_files;
+
+        $vueComponents = [];
+        $assets_file = $environment->getBaseDirectory() . '/web/static/webpack.json';
+        if (file_exists($assets_file)) {
+            $vueComponents = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
+        }
         $this->addVueComponents($vueComponents);
 
         $this->csp_nonce = preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
         $this->csp_domains = [];
-    }
-
-    /**
-     * Create a new copy of this object for a specific request.
-     *
-     * @param ServerRequestInterface $request
-     */
-    public function withRequest(ServerRequestInterface $request): self
-    {
-        $newAssets = clone $this;
-        $newAssets->setRequest($request);
-
-        return $newAssets;
-    }
-
-    public function setRequest(ServerRequestInterface $request): void
-    {
-        $this->request = $request;
     }
 
     protected function addVueComponents(array $vueComponents = []): void
@@ -162,14 +157,16 @@ class Assets
      */
     public function addJs($js_script): self
     {
-        $this->load([
-            'order' => 100,
-            'files' => [
-                'js' => [
-                    (is_array($js_script)) ? $js_script : ['src' => $js_script],
+        $this->load(
+            [
+                'order' => 100,
+                'files' => [
+                    'js' => [
+                        (is_array($js_script)) ? $js_script : ['src' => $js_script],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
         return $this;
     }
@@ -250,12 +247,14 @@ class Assets
      */
     public function addInlineJs($js_script, int $order = 100): self
     {
-        $this->load([
-            'order' => $order,
-            'inline' => [
-                'js' => (is_array($js_script)) ? $js_script : [$js_script],
-            ],
-        ]);
+        $this->load(
+            [
+                'order' => $order,
+                'inline' => [
+                    'js' => (is_array($js_script)) ? $js_script : [$js_script],
+                ],
+            ]
+        );
 
         return $this;
     }
@@ -268,14 +267,16 @@ class Assets
      */
     public function addCss($css_script, int $order = 100): self
     {
-        $this->load([
-            'order' => $order,
-            'files' => [
-                'css' => [
-                    (is_array($css_script)) ? $css_script : ['src' => $css_script],
+        $this->load(
+            [
+                'order' => $order,
+                'files' => [
+                    'css' => [
+                        (is_array($css_script)) ? $css_script : ['src' => $css_script],
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
         return $this;
     }
@@ -287,12 +288,14 @@ class Assets
      */
     public function addInlineCss($css_script): self
     {
-        $this->load([
-            'order' => 100,
-            'inline' => [
-                'css' => (is_array($css_script)) ? $css_script : [$css_script],
-            ],
-        ]);
+        $this->load(
+            [
+                'order' => 100,
+                'inline' => [
+                    'css' => (is_array($css_script)) ? $css_script : [$css_script],
+                ],
+            ]
+        );
 
         return $this;
     }
@@ -310,10 +313,13 @@ class Assets
         foreach ($this->loaded as $item) {
             if (!empty($item['files']['css'])) {
                 foreach ($item['files']['css'] as $file) {
-                    $compiled_attributes = $this->compileAttributes($file, [
-                        'rel' => 'stylesheet',
-                        'type' => 'text/css',
-                    ]);
+                    $compiled_attributes = $this->compileAttributes(
+                        $file,
+                        [
+                            'rel' => 'stylesheet',
+                            'type' => 'text/css',
+                        ]
+                    );
 
                     $result[] = '<link ' . implode(' ', $compiled_attributes) . ' />';
                 }
@@ -349,9 +355,12 @@ class Assets
         foreach ($this->loaded as $item) {
             if (!empty($item['files']['js'])) {
                 foreach ($item['files']['js'] as $file) {
-                    $compiled_attributes = $this->compileAttributes($file, [
-                        'type' => 'text/javascript',
-                    ]);
+                    $compiled_attributes = $this->compileAttributes(
+                        $file,
+                        [
+                            'type' => 'text/javascript',
+                        ]
+                    );
 
                     $result[] = '<script ' . implode(' ', $compiled_attributes) . '></script>';
                 }
@@ -397,9 +406,12 @@ class Assets
     protected function sort(): void
     {
         if (!$this->is_sorted) {
-            uasort($this->loaded, function ($a, $b): int {
-                return $a['order'] <=> $b['order']; // SPACESHIP!
-            });
+            uasort(
+                $this->loaded,
+                function ($a, $b): int {
+                    return $a['order'] <=> $b['order']; // SPACESHIP!
+                }
+            );
 
             $this->is_sorted = true;
         }
@@ -479,5 +491,24 @@ class Assets
         if (!isset($this->csp_domains[$domain])) {
             $this->csp_domains[$domain] = $domain;
         }
+    }
+
+    public function writeCsp(ResponseInterface $response): ResponseInterface
+    {
+        $csp = [];
+        if ('https' === $this->request->getUri()->getScheme()) {
+            $csp[] = 'upgrade-insecure-requests';
+        }
+
+        // CSP JavaScript policy
+        // Note: unsafe-eval included for Vue template compiling
+        $csp_script_src = $this->getCspDomains();
+        $csp_script_src[] = "'self'";
+        $csp_script_src[] = "'unsafe-eval'";
+        $csp_script_src[] = "'nonce-" . $this->getCspNonce() . "'";
+
+        $csp[] = 'script-src ' . implode(' ', $csp_script_src);
+
+        return $response->withHeader('Content-Security-Policy', implode('; ', $csp));
     }
 }

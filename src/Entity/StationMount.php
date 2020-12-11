@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -405,10 +407,12 @@ class StationMount implements StationMountInterface
         $response->is_default = (bool)$this->is_default;
         $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
 
-        $response->listeners = new Api\NowPlayingListeners([
-            'unique' => $this->listeners_unique,
-            'total' => $this->listeners_total,
-        ]);
+        $response->listeners = new Api\NowPlayingListeners(
+            [
+                'unique' => $this->listeners_unique,
+                'total' => $this->listeners_total,
+            ]
+        );
 
         if ($this->enable_autodj) {
             $response->bitrate = (int)$this->autodj_bitrate;

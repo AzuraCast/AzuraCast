@@ -19,12 +19,11 @@ class CheckFolderPlaylistsTask extends AbstractTask
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Settings $settings,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationPlaylistFolderRepository $folderRepo,
         FilesystemManager $filesystem
     ) {
-        parent::__construct($em, $logger, $settings);
+        parent::__construct($em, $logger);
 
         $this->spmRepo = $spmRepo;
         $this->folderRepo = $folderRepo;
@@ -45,9 +44,12 @@ class CheckFolderPlaylistsTask extends AbstractTask
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
 
-            $this->logger->info('Processing auto-assigning folders for station...', [
-                'station' => $station->getName(),
-            ]);
+            $this->logger->info(
+                'Processing auto-assigning folders for station...',
+                [
+                    'station' => $station->getName(),
+                ]
+            );
 
             $this->syncPlaylistFolders($station);
             gc_collect_cycles();
@@ -88,7 +90,7 @@ class CheckFolderPlaylistsTask extends AbstractTask
                 SELECT sm
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
-                AND sm.path LIKE :path                
+                AND sm.path LIKE :path
             DQL
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 

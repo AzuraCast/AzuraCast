@@ -1,11 +1,15 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="audit_log")
+ * @ORM\Table(name="audit_log", indexes={
+ *     @ORM\Index(name="idx_search", columns={"class", "user", "identifier"}),
+ * })
  * @ORM\Entity(readOnly=true)
  */
 class AuditLog

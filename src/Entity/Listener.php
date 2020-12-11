@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -151,18 +153,24 @@ class Listener
      */
     public static function filterClients(array $clients): array
     {
-        return array_filter($clients, function ($client) {
-            // Ignore clients with the "Icecast" UA as those are relays and not listeners.
-            return !(false !== stripos($client['user_agent'], 'Icecast'));
-        });
+        return array_filter(
+            $clients,
+            function ($client) {
+                // Ignore clients with the "Icecast" UA as those are relays and not listeners.
+                return !(false !== stripos($client['user_agent'], 'Icecast'));
+            }
+        );
     }
 
     public static function getListenerSeconds(array $intervals): int
     {
         // Sort by start time.
-        usort($intervals, function ($a, $b) {
-            return $a['start'] <=> $b['start'];
-        });
+        usort(
+            $intervals,
+            function ($a, $b) {
+                return $a['start'] <=> $b['start'];
+            }
+        );
 
         $seconds = 0;
 

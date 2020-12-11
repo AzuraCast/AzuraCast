@@ -20,23 +20,18 @@ class SettingsController
 
     protected ValidatorInterface $validator;
 
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
-
-    protected Entity\Settings $settings;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo,
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->em = $em;
         $this->serializer = $serializer;
         $this->validator = $validator;
-
-        $this->settingsTableRepo = $settingsTableRepo;
-        $this->settings = $settings;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -55,7 +50,8 @@ class SettingsController
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        return $response->withJson($this->serializer->normalize($this->settings, null));
+        $settings = $this->settingsRepo->readSettings();
+        return $response->withJson($this->serializer->normalize($settings, null));
     }
 
     /**
@@ -79,7 +75,7 @@ class SettingsController
      */
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->settingsTableRepo->writeSettings($request->getParsedBody());
+        $this->settingsRepo->writeSettings($request->getParsedBody());
 
         return $response->withJson(new Entity\Api\Status());
     }

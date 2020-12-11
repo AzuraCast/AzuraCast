@@ -2,9 +2,7 @@
 
 namespace App\Middleware;
 
-use App\Assets;
 use App\Entity;
-use App\Http\Response;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,18 +17,14 @@ class EnforceSecurity implements MiddlewareInterface
 {
     protected ResponseFactoryInterface $responseFactory;
 
-    protected Assets $assets;
-
-    protected Entity\Settings $settings;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         App $app,
-        Assets $assets,
-        Entity\Settings $settings
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->responseFactory = $app->getResponseFactory();
-        $this->assets = $assets;
-        $this->settings = $settings;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -39,20 +33,17 @@ class EnforceSecurity implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $always_use_ssl = $this->settings->getAlwaysUseSsl();
+        $settings = $this->settingsRepo->readSettings();
+        $always_use_ssl = $settings->getAlwaysUseSsl();
+
         $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 
-        // Assemble Content Security Policy (CSP)
-        $csp = [];
-        $add_hsts_header = false;
-
+        $addHstsHeader = false;
         if ('https' === $request->getUri()->getScheme()) {
             // Enforce secure cookies.
             ini_set('session.cookie_secure', '1');
 
-            $csp[] = 'upgrade-insecure-requests';
-
-            $add_hsts_header = true;
+            $addHstsHeader = true;
         } elseif ($always_use_ssl && !$internal_api_url) {
             return $this->responseFactory->createResponse(307)
                 ->withHeader('Location', (string)$request->getUri()->withScheme('https'));
@@ -60,7 +51,7 @@ class EnforceSecurity implements MiddlewareInterface
 
         $response = $handler->handle($request);
 
-        if ($add_hsts_header) {
+        if ($addHstsHeader) {
             $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
         }
 
@@ -70,19 +61,6 @@ class EnforceSecurity implements MiddlewareInterface
             $response = $response->withoutHeader('X-Frame-Options');
         } else {
             $response = $response->withHeader('X-Frame-Options', 'DENY');
-        }
-
-        if (($response instanceof Response) && !$response->hasCacheLifetime()) {
-            // CSP JavaScript policy
-            // Note: unsafe-eval included for Vue template compiling
-            $csp_script_src = $this->assets->getCspDomains();
-            $csp_script_src[] = "'self'";
-            $csp_script_src[] = "'unsafe-eval'";
-            $csp_script_src[] = "'nonce-" . $this->assets->getCspNonce() . "'";
-
-            $csp[] = 'script-src ' . implode(' ', $csp_script_src);
-
-            $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
         }
 
         return $response;

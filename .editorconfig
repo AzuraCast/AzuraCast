@@ -112,8 +112,8 @@ ij_twig_spaces_inside_delimiters = true
 ij_twig_spaces_inside_variable_delimiters = true
 
 [*.vue]
-indent_size = 2
-tab_width = 2
+indent_size = 4
+tab_width = 4
 ij_continuation_indent_size = 4
 ij_vue_indent_children_of_top_level = template
 ij_vue_interpolation_new_line_after_start_delimiter = true

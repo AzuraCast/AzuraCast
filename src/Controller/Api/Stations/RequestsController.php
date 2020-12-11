@@ -108,24 +108,29 @@ class RequestsController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($media_row) use ($station, $is_bootgrid, $router) {
-            /** @var Entity\StationMedia $media_row */
-            $row = new Entity\Api\StationRequest();
-            $row->song = ($this->songApiGenerator)($media_row);
-            $row->request_id = $media_row->getUniqueId();
-            $row->request_url = (string)$router->named('api:requests:submit', [
-                'station_id' => $station->getId(),
-                'media_id' => $media_row->getUniqueId(),
-            ]);
+        $paginator->setPostprocessor(
+            function ($media_row) use ($station, $is_bootgrid, $router) {
+                /** @var Entity\StationMedia $media_row */
+                $row = new Entity\Api\StationRequest();
+                $row->song = ($this->songApiGenerator)($media_row);
+                $row->request_id = $media_row->getUniqueId();
+                $row->request_url = (string)$router->named(
+                    'api:requests:submit',
+                    [
+                        'station_id' => $station->getId(),
+                        'media_id' => $media_row->getUniqueId(),
+                    ]
+                );
 
-            $row->resolveUrls($router->getBaseUrl());
+                $row->resolveUrls($router->getBaseUrl());
 
-            if ($is_bootgrid) {
-                return Utilities::flattenArray($row, '_');
+                if ($is_bootgrid) {
+                    return Utilities\Arrays::flattenArray($row, '_');
+                }
+
+                return $row;
             }
-
-            return $row;
-        });
+        );
 
         return $paginator->write($response);
     }
@@ -175,7 +180,13 @@ class RequestsController
         $isAuthenticated = ($user instanceof Entity\User);
 
         try {
-            $this->requestRepo->submit($station, $media_id, $isAuthenticated, $request->getIp());
+            $this->requestRepo->submit(
+                $station,
+                $media_id,
+                $isAuthenticated,
+                $request->getIp(),
+                $request->getHeaderLine('User-Agent')
+            );
 
             return $response->withJson(new Entity\Api\Status(true, __('Request submitted successfully.')));
         } catch (Exception $e) {

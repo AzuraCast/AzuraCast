@@ -9,7 +9,9 @@ use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Config;
 use Psr\Cache\CacheItemPoolInterface;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 
 /**
  * A wrapper and manager class for accessing assets on the filesystem.
@@ -86,12 +88,17 @@ class FilesystemManager
 
     public function getFilesystemForAdapter(AdapterInterface $adapter, bool $cached = false): Filesystem
     {
+        $config = new Config();
+        if ($adapter instanceof DropboxAdapter) {
+            $config->set('case_sensitive', false);
+        }
+
         if ($cached) {
             $cachedClient = new Psr6Cache($this->cachePool, $this->getCacheKey($adapter), 3600);
             $adapter = new CachedAdapter($adapter, $cachedClient);
         }
 
-        return new Filesystem($adapter);
+        return new Filesystem($adapter, $config);
     }
 
     public function flushCacheForAdapter(AdapterInterface $adapter, bool $inMemoryOnly = false): void
@@ -113,6 +120,13 @@ class FilesystemManager
             $objectUrl = $s3Client->getObjectUrl($bucket, $adapter->applyPathPrefix('/cache'));
             return $this->filterCacheKey($objectUrl);
         }
+
+        if ($adapter instanceof DropboxAdapter) {
+            return $this->filterCacheKey(
+                'dropbox_' . $adapter->getClient()->getAccessToken() . $adapter->applyPathPrefix('/cache')
+            );
+        }
+
         if ($adapter instanceof AbstractAdapter) {
             return $this->filterCacheKey(ltrim($adapter->getPathPrefix(), '/'));
         }

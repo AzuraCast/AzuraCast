@@ -1,12 +1,14 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Environment;
-use App\File;
 use App\Normalizer\Annotation\DeepNormalize;
 use App\Radio\Adapters;
+use App\Utilities\File;
 use App\Validator\Constraints as AppAssert;
 use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -294,7 +296,7 @@ class Station
      * @OA\Property(example="https://example.com/image.jpg")
      * @var string|null The station-specific default album artwork URL.
      */
-    protected $default_album_art_url = null;
+    protected $default_album_art_url;
 
     /**
      * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")

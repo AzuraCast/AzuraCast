@@ -1,7 +1,9 @@
 <?php
-/** @var array $app_settings */
-/** @var array $triggers */
-/** @var App\Http\Router $router */
+/**
+ * @var array $triggers
+ * @var App\Environment $environment
+ * @var App\Http\Router $router
+ */
 
 return [
     'method' => 'post',
@@ -12,15 +14,17 @@ return [
             'use_grid' => true,
             'legend' => __('Twitter Account Details'),
             'legend_class' => 'd-none',
-            'description' => __('Steps for configuring a Twitter application:<br>
+            'description' => __(
+                'Steps for configuring a Twitter application:<br>
                 <ol type="1">
-                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>. 
+                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>.
                     Use this installation\'s base URL as the application URL.</li>
                     <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
                     <li>At the bottom of the page, click "Create my access token".</li>
                 </ol>
                 <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>',
-                'https://developer.twitter.com/en/apps'),
+                'https://developer.twitter.com/en/apps'
+            ),
 
             'elements' => [
 
@@ -97,7 +101,9 @@ return [
                     'text',
                     [
                         'label' => __('Web Hook Name'),
-                        'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
+                        'description' => __(
+                            'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'
+                        ),
                         'required' => true,
                         'form_group_class' => 'col-md-6',
                     ],
@@ -119,10 +125,16 @@ return [
                         'label' => __('Message Body'),
                         'belongsTo' => 'config',
                         'required' => true,
-                        'default' => sprintf(__('Now playing on %s: %s by %s! Tune in now.'), '{{ station.name }}',
-                            '{{ now_playing.song.title }}', '{{ now_playing.song.artist }}'),
-                        'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'),
-                            $router->named('api:nowplaying:index')),
+                        'default' => __(
+                            'Now playing on %s: %s by %s! Tune in now.',
+                            '{{ station.name }}',
+                            '{{ now_playing.song.title }}',
+                            '{{ now_playing.song.artist }}'
+                        ),
+                        'description' => __(
+                            'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.',
+                            $router->named('api:nowplaying:index')
+                        ),
                         'form_group_class' => 'col-sm-12',
                     ],
                 ],

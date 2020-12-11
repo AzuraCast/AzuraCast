@@ -10,7 +10,7 @@ class SetCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo,
+        Entity\Repository\SettingsRepository $settingsTableRepo,
         string $settingKey,
         string $settingValue
     ): int {

@@ -8,7 +8,8 @@ use App\Exception;
 use App\Exception\NotLoggedInException;
 use App\Exception\PermissionDeniedException;
 use App\Session\Flash;
-use App\ViewFactory;
+use App\View;
+use DI\FactoryInterface;
 use Gettext\Translator;
 use Mezzio\Session\SessionInterface;
 use Monolog\Logger;
@@ -31,21 +32,21 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected Router $router;
 
-    protected ViewFactory $viewFactory;
+    protected FactoryInterface $factory;
 
     protected Environment $environment;
 
     public function __construct(
         App $app,
+        FactoryInterface $factory,
         Logger $logger,
         Router $router,
-        ViewFactory $viewFactory,
         Environment $environment
     ) {
         parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
 
         $this->environment = $environment;
-        $this->viewFactory = $viewFactory;
+        $this->factory = $factory;
         $this->router = $router;
     }
 
@@ -130,12 +131,14 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         if (false !== stripos($ua, 'curl')) {
             $response = $this->responseFactory->createResponse($this->statusCode);
 
-            $response->getBody()->write(sprintf(
-                'Error: %s on %s L%s',
-                $this->exception->getMessage(),
-                $this->exception->getFile(),
-                $this->exception->getLine()
-            ));
+            $response->getBody()->write(
+                sprintf(
+                    'Error: %s on %s L%s',
+                    $this->exception->getMessage(),
+                    $this->exception->getFile(),
+                    $this->exception->getLine()
+                )
+            );
 
             return $response;
         }
@@ -150,7 +153,12 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             }
 
             try {
-                $view = $this->viewFactory->create($this->request);
+                $view = $this->factory->make(
+                    View::class,
+                    [
+                        'request' => $this->request,
+                    ]
+                );
 
                 return $view->renderToResponse(
                     $response,
@@ -238,7 +246,12 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         }
 
         try {
-            $view = $this->viewFactory->create($this->request);
+            $view = $this->factory->make(
+                View::class,
+                [
+                    'request' => $this->request,
+                ]
+            );
 
             return $view->renderToResponse(
                 $response,

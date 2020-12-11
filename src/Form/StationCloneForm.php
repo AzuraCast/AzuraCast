@@ -66,10 +66,12 @@ class StationCloneForm extends StationForm
             throw new InvalidArgumentException('Record must be a station.');
         }
 
-        $this->populate([
-            'name' => $record->getName() . ' - Copy',
-            'description' => $record->getDescription(),
-        ]);
+        $this->populate(
+            [
+                'name' => $record->getName() . ' - Copy',
+                'description' => $record->getDescription(),
+            ]
+        );
 
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
@@ -123,12 +125,13 @@ class StationCloneForm extends StationForm
             $unset_values = [
                 'short_name',
                 'radio_base_dir',
+                'media_storage_location',
+                'recordings_storage_location',
                 'adapter_api_key',
                 'nowplaying',
                 'nowplaying_timestamp',
                 'current_streamer_id',
                 'current_streamer',
-                'storage_used',
             ];
 
             foreach ($unset_values as $prop) {
@@ -194,16 +197,20 @@ class StationCloneForm extends StationForm
 
             if ('share' === $data['clone_media']) {
                 $new_record->setMediaStorageLocation($record->getMediaStorageLocation());
+                $new_record->setRecordingsStorageLocation($record->getRecordingsStorageLocation());
             }
 
             // Set new radio base directory
-            $station_base_dir = Environment::getInstance()->getStationDirectory();
+            $station_base_dir = $this->environment->getStationDirectory();
             $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
 
             $new_record->ensureDirectoriesExist();
 
             // Persist all newly created records (and relations).
             $this->em->persist($new_record);
+
+            $this->em->persist($new_record->getMediaStorageLocation());
+            $this->em->persist($new_record->getRecordingsStorageLocation());
 
             foreach ($new_record->getMounts() as $subrecord) {
                 $this->em->persist($subrecord);

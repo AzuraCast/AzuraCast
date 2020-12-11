@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpMissingFieldTypeInspection */
+
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
@@ -472,10 +474,12 @@ class StationMedia implements SongInterface
 
     public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
     {
-        $item = $this->playlists->filter(function ($spm) use ($playlist) {
-            /** @var StationPlaylistMedia $spm */
-            return $spm->getPlaylist()->getId() === $playlist->getId();
-        });
+        $item = $this->playlists->filter(
+            function ($spm) use ($playlist) {
+                /** @var StationPlaylistMedia $spm */
+                return $spm->getPlaylist()->getId() === $playlist->getId();
+            }
+        );
 
         $firstItem = $item->first();
 
@@ -555,14 +559,16 @@ class StationMedia implements SongInterface
         $metadata = new Metadata();
         $metadata->setDuration($this->getLength());
 
-        $tagsToSet = array_filter([
-            'title' => $this->getTitle(),
-            'artist' => $this->getArtist(),
-            'album' => $this->getAlbum(),
-            'genre' => $this->getGenre(),
-            'unsynchronised_lyric' => $this->getLyrics(),
-            'isrc' => $this->getIsrc(),
-        ]);
+        $tagsToSet = array_filter(
+            [
+                'title' => $this->getTitle(),
+                'artist' => $this->getArtist(),
+                'album' => $this->getAlbum(),
+                'genre' => $this->getGenre(),
+                'unsynchronised_lyric' => $this->getLyrics(),
+                'isrc' => $this->getIsrc(),
+            ]
+        );
 
         $tags = $metadata->getTags();
         foreach ($tagsToSet as $tagKey => $tagValue) {

@@ -4,12 +4,12 @@ namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use App\File;
 use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator\QueryPaginator;
 use App\Utilities;
+use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
 class BroadcastsController extends AbstractApiCrudController
@@ -55,46 +55,48 @@ class BroadcastsController extends AbstractApiCrudController
 
         $fs = $filesystem->getForStation($station);
 
-        $paginator->setPostprocessor(function ($row) use ($is_bootgrid, $router, $fs) {
-            /** @var Entity\StationStreamerBroadcast $row */
-            $return = $this->toArray($row);
+        $paginator->setPostprocessor(
+            function ($row) use ($is_bootgrid, $router, $fs) {
+                /** @var Entity\StationStreamerBroadcast $row */
+                $return = $this->toArray($row);
 
-            unset($return['recordingPath']);
+                unset($return['recordingPath']);
 
-            $recordingPath = $row->getRecordingPath();
-            $recordingUri = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
+                $recordingPath = $row->getRecordingPath();
+                $recordingUri = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
 
-            if ($fs->has($recordingUri)) {
-                $recordingMeta = $fs->getMetadata($recordingUri);
+                if ($fs->has($recordingUri)) {
+                    $recordingMeta = $fs->getMetadata($recordingUri);
 
-                $return['recording'] = [
-                    'path' => $recordingPath,
-                    'size' => $recordingMeta['size'],
-                    'links' => [
-                        'download' => $router->fromHere(
-                            'api:stations:streamer:broadcast:download',
-                            ['broadcast_id' => $row->getId()],
-                            [],
-                            true
-                        ),
-                        'delete' => $router->fromHere(
-                            'api:stations:streamer:broadcast:delete',
-                            ['broadcast_id' => $row->getId()],
-                            [],
-                            true
-                        ),
-                    ],
-                ];
-            } else {
-                $return['recording'] = [];
+                    $return['recording'] = [
+                        'path' => $recordingPath,
+                        'size' => $recordingMeta['size'],
+                        'links' => [
+                            'download' => $router->fromHere(
+                                'api:stations:streamer:broadcast:download',
+                                ['broadcast_id' => $row->getId()],
+                                [],
+                                true
+                            ),
+                            'delete' => $router->fromHere(
+                                'api:stations:streamer:broadcast:delete',
+                                ['broadcast_id' => $row->getId()],
+                                [],
+                                true
+                            ),
+                        ],
+                    ];
+                } else {
+                    $return['recording'] = [];
+                }
+
+                if ($is_bootgrid) {
+                    return Utilities\Arrays::flattenArray($return, '_');
+                }
+
+                return $return;
             }
-
-            if ($is_bootgrid) {
-                return Utilities::flattenArray($return, '_');
-            }
-
-            return $return;
-        });
+        );
 
         return $paginator->write($response);
     }
@@ -177,20 +179,24 @@ class BroadcastsController extends AbstractApiCrudController
     protected function getRecord(Entity\Station $station, int $id): ?Entity\StationStreamerBroadcast
     {
         /** @var Entity\StationStreamerBroadcast|null $broadcast */
-        $broadcast = $this->em->getRepository(Entity\StationStreamerBroadcast::class)->findOneBy([
-            'id' => $id,
-            'station' => $station,
-        ]);
+        $broadcast = $this->em->getRepository(Entity\StationStreamerBroadcast::class)->findOneBy(
+            [
+                'id' => $id,
+                'station' => $station,
+            ]
+        );
         return $broadcast;
     }
 
     protected function getStreamer(Entity\Station $station, int $id): ?Entity\StationStreamer
     {
         /** @var Entity\StationStreamer|null $streamer */
-        $streamer = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy([
-            'id' => $id,
-            'station' => $station,
-        ]);
+        $streamer = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy(
+            [
+                'id' => $id,
+                'station' => $station,
+            ]
+        );
         return $streamer;
     }
 }

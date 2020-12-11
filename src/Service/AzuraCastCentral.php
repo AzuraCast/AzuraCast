@@ -18,9 +18,7 @@ class AzuraCastCentral
 
     protected Client $httpClient;
 
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\SettingsTableRepository $settingsTableRepo;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Version $version;
 
@@ -31,15 +29,13 @@ class AzuraCastCentral
         Version $version,
         Client $httpClient,
         LoggerInterface $logger,
-        Entity\Settings $settings,
-        Entity\Repository\SettingsTableRepository $settingsTableRepo
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->environment = $environment;
         $this->version = $version;
         $this->httpClient = $httpClient;
         $this->logger = $logger;
-        $this->settings = $settings;
-        $this->settingsTableRepo = $settingsTableRepo;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -83,13 +79,14 @@ class AzuraCastCentral
 
     public function getUniqueIdentifier(): string
     {
-        $appUuid = $this->settings->getAppUniqueIdentifier();
+        $settings = $this->settingsRepo->readSettings();
+        $appUuid = $settings->getAppUniqueIdentifier();
 
         if (empty($appUuid)) {
             $appUuid = Uuid::uuid4()->toString();
 
-            $this->settings->setAppUniqueIdentifier($appUuid);
-            $this->settingsTableRepo->writeSettings($this->settings);
+            $settings->setAppUniqueIdentifier($appUuid);
+            $this->settingsRepo->writeSettings($settings);
         }
 
         return $appUuid;
@@ -102,8 +99,9 @@ class AzuraCastCentral
      */
     public function getIp(bool $cached = true): ?string
     {
+        $settings = $this->settingsRepo->readSettings();
         $ip = ($cached)
-            ? $this->settings->getExternalIp()
+            ? $settings->getExternalIp()
             : null;
 
         if (empty($ip)) {
@@ -123,8 +121,8 @@ class AzuraCastCentral
             }
 
             if (!empty($ip) && $cached) {
-                $this->settings->setExternalIp($ip);
-                $this->settingsTableRepo->writeSettings($this->settings);
+                $settings->setExternalIp($ip);
+                $this->settingsRepo->writeSettings($settings);
             }
         }
 

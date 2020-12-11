@@ -13,11 +13,12 @@ class ListenersController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Settings $settings,
+        Entity\Repository\SettingsRepository $settingsRepo,
         IpGeolocation $ipGeo
     ): ResponseInterface {
         $view = $request->getView();
 
+        $settings = $settingsRepo->readSettings();
         $analytics_level = $settings->getAnalytics();
 
         if ($analytics_level !== Entity\Analytics::LEVEL_ALL) {
@@ -25,8 +26,12 @@ class ListenersController
         }
 
         $attribution = $ipGeo->getAttribution();
-        return $view->renderToResponse($response, 'stations/reports/listeners', [
-            'attribution' => $attribution,
-        ]);
+        return $view->renderToResponse(
+            $response,
+            'stations/reports/listeners',
+            [
+                'attribution' => $attribution,
+            ]
+        );
     }
 }

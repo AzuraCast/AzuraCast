@@ -205,7 +205,7 @@ class StationCloneForm extends StationForm
             $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
 
             $new_record->ensureDirectoriesExist();
-            
+
             // Persist all newly created records (and relations).
             $this->em->persist($new_record);
 

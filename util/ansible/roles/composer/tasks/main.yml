@@ -4,7 +4,12 @@
   args:
     warn: no
 
-- name: Ensure vendor folder exists
+- name: Clear existing vendor folder
+  file:
+    path: "{{ www_base }}/vendor"
+    state: absent
+
+- name: Recreate vendor folder
   file:
     path: "{{ www_base }}/vendor"
     state: directory

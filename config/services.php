@@ -155,12 +155,27 @@ return [
         return $redis;
     },
 
-    Psr\Cache\CacheItemPoolInterface::class => function (Environment $settings, ContainerInterface $di) {
-        return !$settings->isTesting()
-            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
-            : new Cache\Adapter\PHPArray\ArrayCachePool;
+    Symfony\Contracts\Cache\CacheInterface::class => function (
+        Environment $environment,
+        Psr\Log\LoggerInterface $logger,
+        ContainerInterface $di
+    ) {
+        if ($environment->isTesting()) {
+            $adapter = new Symfony\Component\Cache\Adapter\ArrayAdapter();
+        } else {
+            $adapter = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
+        }
+
+        $adapter->setLogger($logger);
+        return $adapter;
     },
-    Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
+
+    Psr\Cache\CacheItemPoolInterface::class => DI\get(
+        Symfony\Contracts\Cache\CacheInterface::class
+    ),
+    Psr\SimpleCache\CacheInterface::class => function (Psr\Cache\CacheItemPoolInterface $cache) {
+        return new Symfony\Component\Cache\Psr16Cache($cache);
+    },
 
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
@@ -168,12 +183,12 @@ return [
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($environment->isCli()) {
-            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+            $cachePool = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         }
 
-        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'doctrine|');
-
-        return new Cache\Bridge\Doctrine\DoctrineCacheBridge($cachePool);
+        $doctrineCache = new Symfony\Component\Cache\DoctrineProvider($cachePool);
+        $doctrineCache->setNamespace('doctrine.');
+        return $doctrineCache;
     },
 
     // Session save handler middleware
@@ -182,10 +197,10 @@ return [
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($environment->isCli()) {
-            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+            $cachePool = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         }
 
-        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'session|');
+        $cachePool = new Symfony\Component\Cache\Adapter\ProxyAdapter($cachePool, 'session.');
 
         return new Mezzio\Session\Cache\CacheSessionPersistence(
             $cachePool,

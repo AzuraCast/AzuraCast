@@ -37,7 +37,7 @@ class RateLimit
 
         $ip = $request->getIp();
         $cache_name = sprintf(
-            'rate_limit|%s|%s',
+            'rate_limit.%s.%s',
             $group_name,
             str_replace(':', '.', $ip)
         );

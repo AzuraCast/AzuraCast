@@ -12,6 +12,7 @@ use League\Flysystem\Cached\CachedAdapter;
 use League\Flysystem\Config;
 use Psr\Cache\CacheItemPoolInterface;
 use Spatie\FlysystemDropbox\DropboxAdapter;
+use Symfony\Component\Cache\Adapter\ProxyAdapter;
 
 /**
  * A wrapper and manager class for accessing assets on the filesystem.
@@ -28,7 +29,7 @@ class FilesystemManager
 
     public function __construct(CacheItemPoolInterface $cachePool)
     {
-        $this->cachePool = new PrefixedCachePool($cachePool, 'fs|');
+        $this->cachePool = new ProxyAdapter($cachePool, 'fs.');
     }
 
     public function getForStation(Entity\Station $station, bool $cached = true): StationFilesystemGroup

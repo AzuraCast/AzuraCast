@@ -3,6 +3,25 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+## New Features/Changes
+
+- **Media Manager Improvements:** Two changes have been made to the media manager to improve the user experience and
+  accessibility:
+    - You can now edit the playlists associated with a track from directly within the "Edit" modal dialog box for that
+      track.
+    - If all of the tracks/directories selected are in a playlist, that playlist will be checked by default in the "Set
+      Playlists" dropdown.
+
+## Code Quality/Technical Changes
+
+- In preparation for the PHP 8.0 update, we have switched our PSR-6/PSR-16 cache implementation to the Symfony Cache
+  component. If you are building a plugin that uses the cache, as long as you are using the PSR cache interfaces, no
+  change will be required.
+
+## Bug Fixes
+
+- If your browser sends a locale like `fr` instead of `fr_FR`, it will now be supported and detected (#3558).
+
 ---
 
 # AzuraCast 0.11.2 (Dec 11, 2020)

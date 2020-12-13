@@ -71,12 +71,11 @@ export default {
         currentDirectory: String,
         selectedFiles: Array,
         selectedDirs: Array,
-        initialPlaylists: Array,
+        playlists: Array,
         batchUrl: String
     },
     data () {
         return {
-            playlists: this.initialPlaylists,
             checkedPlaylists: [],
             newPlaylist: ''
         };
@@ -175,7 +174,7 @@ export default {
                 }).then((resp) => {
                     if (resp.data.success) {
                         if (resp.data.record) {
-                            this.playlists.push(resp.data.record);
+                            this.$emit('add-playlist', resp.data.record);
                         }
 
                         let notifyMessage = (this.checkedPlaylists.length > 0)

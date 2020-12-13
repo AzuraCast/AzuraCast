@@ -219,19 +219,23 @@ class FilesController extends AbstractStationApiCrudController
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
-        $record = $this->fromArray($data, $record, [
-            AbstractNormalizer::CALLBACKS => [
-                'path' => function ($new_value, $record) {
-                    // Detect and handle a rename.
-                    if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                        $fs = $record->getStorageLocation()->getFilesystem();
-                        $fs->rename($record->getPath(), $new_value);
-                    }
+        $record = $this->fromArray(
+            $data,
+            $record,
+            [
+                AbstractNormalizer::CALLBACKS => [
+                    'path' => function ($new_value, $record) {
+                        // Detect and handle a rename.
+                        if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
+                            $fs = $record->getStorageLocation()->getFilesystem();
+                            $fs->rename($record->getPath(), $new_value);
+                        }
 
-                    return $new_value;
-                },
-            ],
-        ]);
+                        return $new_value;
+                    },
+                ],
+            ]
+        );
 
         $errors = $this->validator->validate($record);
         if (count($errors) > 0) {
@@ -276,16 +280,20 @@ class FilesController extends AbstractStationApiCrudController
                         $playlist_weight = 0;
                     }
 
-                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                        'station_id' => $station->getId(),
-                        'id' => $playlist_id,
-                    ]);
+                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
+                        [
+                            'station' => $station,
+                            'id' => $playlist_id,
+                        ]
+                    );
 
                     if ($playlist instanceof Entity\StationPlaylist) {
                         $affected_playlists[$playlist->getId()] = $playlist;
                         $this->playlistMediaRepo->addMediaToPlaylist($record, $playlist, $playlist_weight);
                     }
                 }
+
+                $this->em->flush();
 
                 // Handle playlist changes.
                 $backend = $this->adapters->getBackendAdapter($station);
@@ -308,14 +316,18 @@ class FilesController extends AbstractStationApiCrudController
     {
         $mediaStorage = $station->getMediaStorageLocation();
 
-        return $this->editRecord($data, null, [
-            AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
-                $this->entityClass => [
-                    'station' => $station,
-                    'storageLocation' => $mediaStorage,
+        return $this->editRecord(
+            $data,
+            null,
+            [
+                AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
+                    $this->entityClass => [
+                        'station' => $station,
+                        'storageLocation' => $mediaStorage,
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
     }
 
     protected function getRecord(Entity\Station $station, $id): ?object
@@ -325,10 +337,12 @@ class FilesController extends AbstractStationApiCrudController
 
         $fieldsToCheck = ['id', 'unique_id', 'song_id'];
         foreach ($fieldsToCheck as $field) {
-            $record = $repo->findOneBy([
-                'storage_location' => $mediaStorage,
-                $field => $id,
-            ]);
+            $record = $repo->findOneBy(
+                [
+                    'storage_location' => $mediaStorage,
+                    $field => $id,
+                ]
+            );
 
             if ($record instanceof $this->entityClass) {
                 return $record;

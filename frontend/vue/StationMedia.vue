@@ -8,7 +8,8 @@
 
             <media-toolbar :selected-files="selectedFiles" :selected-dirs="selectedDirs"
                            :batch-url="batchUrl" :current-directory="currentDirectory"
-                           :initial-playlists="initialPlaylists" @relist="onTriggerRelist"></media-toolbar>
+                           :playlists="playlists" @add-playlist="onAddPlaylist"
+                           @relist="onTriggerRelist"></media-toolbar>
         </div>
 
         <data-table ref="datatable" id="station_media" selectable paginated select-fields
@@ -95,7 +96,8 @@
         <rename-modal :rename-url="renameUrl" ref="renameModal" @relist="onTriggerRelist">
         </rename-modal>
 
-        <edit-modal ref="editModal" :custom-fields="customFields" @relist="onTriggerRelist"></edit-modal>
+        <edit-modal ref="editModal" :custom-fields="customFields" :playlists="playlists"
+                    @relist="onTriggerRelist"></edit-modal>
     </div>
 </template>
 
@@ -224,6 +226,7 @@ export default {
 
         return {
             fields: fields,
+            playlists: this.initialPlaylists,
             selectedFiles: [],
             selectedDirs: [],
             currentDirectory: '',
@@ -278,6 +281,9 @@ export default {
         },
         onTriggerRelist () {
             this.$refs.datatable.relist();
+        },
+        onAddPlaylist (row) {
+            this.playlists.push(row);
         },
         playAudio (url) {
             this.$eventHub.$emit('player_toggle', url);

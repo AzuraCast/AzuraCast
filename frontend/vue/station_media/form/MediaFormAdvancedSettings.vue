@@ -81,16 +81,16 @@
 </template>
 
 <script>
-    export default {
-        name: 'MediaFormAdvancedSettings',
-        props: {
-            form: Object,
-            songLength: String
-        },
-        computed: {
-            langTitle () {
-                return this.$gettext('Advanced Playback Settings');
-            }
+export default {
+    name: 'MediaFormAdvancedSettings',
+    props: {
+        form: Object,
+        songLength: String
+    },
+    computed: {
+        langTitle () {
+            return this.$gettext('Advanced');
         }
-    };
+    }
+};
 </script>

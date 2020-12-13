@@ -5,6 +5,7 @@
             <b-form class="form" @submit.prevent="doEdit">
                 <b-tabs content-class="mt-3">
                     <media-form-basic-info :form="$v.form"></media-form-basic-info>
+                    <media-form-playlists :form="$v.form" :playlists="playlists"></media-form-playlists>
                     <media-form-album-art :album-art-url="albumArtUrl"></media-form-album-art>
                     <media-form-custom-fields v-if="customFields.length > 0" :form="$v.form" :custom-fields="customFields"></media-form-custom-fields>
                     <media-form-waveform-editor :form="form" :audio-url="audioUrl" :waveform-url="waveformUrl"></media-form-waveform-editor>
@@ -34,10 +35,12 @@ import MediaFormCustomFields from './form/MediaFormCustomFields';
 import MediaFormAdvancedSettings from './form/MediaFormAdvancedSettings';
 import InvisibleSubmitButton from '../components/InvisibleSubmitButton';
 import MediaFormWaveformEditor from './form/MediaFormWaveformEditor';
+import MediaFormPlaylists from './form/MediaFormPlaylists';
 
 export default {
     name: 'EditModal',
     components: {
+        MediaFormPlaylists,
         MediaFormWaveformEditor,
         MediaFormAdvancedSettings,
         MediaFormCustomFields,
@@ -47,7 +50,8 @@ export default {
     },
     mixins: [validationMixin],
     props: {
-        customFields: Array
+        customFields: Array,
+        playlists: Array
     },
     data () {
         return {
@@ -80,6 +84,7 @@ export default {
                 fade_out: {},
                 cue_in: {},
                 cue_out: {},
+                playlists: {},
                 custom_fields: {}
             }
         };
@@ -98,7 +103,6 @@ export default {
     methods: {
         getBlankForm () {
             let customFields = {};
-
             _.forEach(this.customFields.slice(), (field) => {
                 customFields[field.key] = null;
             });
@@ -117,6 +121,7 @@ export default {
                 fade_out: null,
                 cue_in: null,
                 cue_out: null,
+                playlists: [],
                 custom_fields: customFields
             };
         },
@@ -148,6 +153,7 @@ export default {
                     fade_out: d.fade_out,
                     cue_in: d.cue_in,
                     cue_out: d.cue_out,
+                    playlists: _.map(d.playlists, 'id'),
                     custom_fields: {}
                 };
 

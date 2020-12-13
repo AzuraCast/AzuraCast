@@ -162,10 +162,12 @@ class BatchAction
                 $playlists[$playlist->getId()] = $playlist;
                 $playlistWeights[$playlist->getId()] = 0;
             } else {
-                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                    'station_id' => $station->getId(),
-                    'id' => (int)$playlistId,
-                ]);
+                $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
+                    [
+                        'station_id' => $station->getId(),
+                        'id' => (int)$playlistId,
+                    ]
+                );
 
                 if ($playlist instanceof Entity\StationPlaylist) {
                     $affectedPlaylists[$playlist->getId()] = $playlist->getId();
@@ -186,6 +188,8 @@ class BatchAction
                         $affectedPlaylists[$playlistId] = $playlistRecord;
                     }
                 }
+
+                $this->em->flush();
 
                 foreach ($playlists as $playlistId => $playlistRecord) {
                     $playlist = $this->em->refetchAsReference($playlistRecord);
@@ -305,10 +309,13 @@ class BatchAction
 
         if ($recursive) {
             foreach ($directories as $dir) {
-                $dirIterator = $fs->createIterator($dir, [
-                    Options::OPTION_IS_RECURSIVE => true,
-                    Options::OPTION_FILTER => FilterFactory::isFile(),
-                ]);
+                $dirIterator = $fs->createIterator(
+                    $dir,
+                    [
+                        Options::OPTION_IS_RECURSIVE => true,
+                        Options::OPTION_FILTER => FilterFactory::isFile(),
+                    ]
+                );
 
                 foreach ($dirIterator as $subDirMeta) {
                     $files[] = $subDirMeta['path'];
@@ -373,7 +380,7 @@ class BatchAction
     {
         $query = $this->em->createQuery(
             <<<'DQL'
-                SELECT sm 
+                SELECT sm
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
                 AND sm.path LIKE :path

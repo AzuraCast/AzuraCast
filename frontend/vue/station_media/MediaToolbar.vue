@@ -148,7 +148,8 @@ export default {
                     'dirs': this.selectedItems.directories
                 }).then((resp) => {
                     if (resp.data.success) {
-                        notify('<b>' + notifyMessage + '</b><br>' + this.selectedDirs.join('<br>') + this.selectedFiles.join('<br>'), 'success', false);
+                        let allItemNames = _.map(this.selectedItems.all, 'name');
+                        notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success', false);
                     } else {
                         notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger');
                     }
@@ -190,7 +191,8 @@ export default {
                             ? this.$gettext('Playlists updated for selected files:')
                             : this.$gettext('Playlists cleared for selected files:');
 
-                        notify('<b>' + notifyMessage + '</b><br>' + this.selectedDirs.join('<br>') + this.selectedFiles.join('<br>'), 'success');
+                        let allItemNames = _.map(this.selectedItems.all, 'name');
+                        notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success');
 
                         this.checkedPlaylists = [];
                         this.newPlaylist = '';

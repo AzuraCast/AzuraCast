@@ -43,6 +43,7 @@
 <script>
 import DataTable from '../components/DataTable.vue';
 import axios from 'axios';
+import _ from 'lodash';
 
 export default {
     name: 'MoveFilesModal',
@@ -83,9 +84,9 @@ export default {
                 'files': this.selectedItems.files,
                 'dirs': this.selectedItems.directories
             }).then((resp) => {
-                let allSelectedNames = _.map(this.selectedFiles.all, 'name');
+                let allItemNames = _.map(this.selectedItems.all, 'name');
                 let notifyMessage = this.$gettext('Files moved:');
-                notify('<b>' + notifyMessage + '</b><br>' + allSelectedNames.join('<br>'), 'success', false);
+                notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success', false);
 
                 this.close();
                 this.$emit('relist');

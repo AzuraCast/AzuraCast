@@ -58,31 +58,30 @@ class SoundExchangeController
                 ],
             ];
 
-            $all_media = $this->em->createQueryBuilder()
-                ->select(
-                    'partial sm.{
-                id,
-                unique_id,
-                art_updated_at,
-                path,
-                length,
-                length_text,
-                artist,
-                title,
-                album,
-                genre
-            }'
-                )
-                ->addSelect('partial spm.{id}, partial sp.{id, name}')
-                ->addSelect('partial smcf.{id, field_id, value}')
-                ->from(Entity\StationMedia::class, 'sm')
-                ->leftJoin('sm.custom_fields', 'smcf')
-                ->leftJoin('sm.playlists', 'spm')
-                ->leftJoin('spm.playlist', 'sp')
-                ->where('sm.storage_location = :storageLocation')
-                ->andWhere('(sp.station IS NULL OR sp.station = :station)')
+            $all_media = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT PARTIAL sm.{
+                        id,
+                        unique_id,
+                        art_updated_at,
+                        path,
+                        length,
+                        length_text,
+                        artist,
+                        title,
+                        album,
+                        genre
+                    }, PARTIAL spm.{id}, PARTIAL sp.{id, name}, PARTIAL smcf.{id, field_id, value}
+                    FROM App\Entity\StationMedia sm
+                    LEFT JOIN sm.custom_fields smcf
+                    LEFT JOIN sm.playlists spm
+                    LEFT JOIN spm.playlist sp
+                    WHERE sm.storage_location = :storageLocation
+                    AND sp.station IS NULL OR sp.station = :station
+                DQL
+            )->setParameter('station', $station)
                 ->setParameter('storageLocation', $station->getMediaStorageLocation())
-                ->setParameter('station', $station)->getQuery()->getArrayResult();
+                ->getArrayResult();
 
             $media_by_id = [];
             foreach ($all_media as $media_row) {

@@ -64,13 +64,13 @@
 </template>
 <script>
 import axios from 'axios';
+import _ from 'lodash';
 
 export default {
     name: 'station-media-toolbar',
     props: {
         currentDirectory: String,
-        selectedFiles: Array,
-        selectedDirs: Array,
+        selectedItems: Object,
         playlists: Array,
         batchUrl: String
     },
@@ -81,6 +81,15 @@ export default {
         };
     },
     watch: {
+        selectedItems (items) {
+            // Get all playlists that are active on ALL selected items.
+            let playlistsForItems = _.map(items.all, (item) => {
+                return _.map(item.media_playlists, 'id');
+            });
+
+            // Check the checkboxes for those playlists.
+            this.checkedPlaylists = _.intersection(...playlistsForItems);
+        },
         newPlaylist (text) {
             if (text !== '') {
                 if (!this.checkedPlaylists.includes('new')) {
@@ -114,7 +123,7 @@ export default {
             let buttonText = this.$gettext('Delete');
             let buttonConfirmText = this.$gettext('Delete %{ num } media files?');
 
-            let numFiles = this.selectedFiles.length + this.selectedDirs.length;
+            let numFiles = this.selectedItems.all.length;
 
             Swal.fire({
                 title: this.$gettextInterpolate(buttonConfirmText, { num: numFiles }),
@@ -129,14 +138,14 @@ export default {
             });
         },
         doBatch (action, notifyMessage) {
-            if (this.selectedFiles.length || this.selectedDirs.length) {
+            if (this.selectedItems.all.length) {
                 this.notifyPending();
 
                 axios.put(this.batchUrl, {
                     'do': action,
                     'current_directory': this.currentDirectory,
-                    'files': this.selectedFiles,
-                    'dirs': this.selectedDirs
+                    'files': this.selectedItems.files,
+                    'dirs': this.selectedItems.directories
                 }).then((resp) => {
                     if (resp.data.success) {
                         notify('<b>' + notifyMessage + '</b><br>' + this.selectedDirs.join('<br>') + this.selectedFiles.join('<br>'), 'success', false);
@@ -161,7 +170,7 @@ export default {
         setPlaylists () {
             this.$refs.setPlaylistsDropdown.hide();
 
-            if (this.selectedFiles.length || this.selectedDirs.length) {
+            if (this.selectedItems.all.length) {
                 this.notifyPending();
 
                 axios.put(this.batchUrl, {
@@ -169,8 +178,8 @@ export default {
                     'playlists': this.checkedPlaylists,
                     'new_playlist_name': this.newPlaylist,
                     'currentDirectory': this.currentDirectory,
-                    'files': this.selectedFiles,
-                    'dirs': this.selectedDirs
+                    'files': this.selectedItems.files,
+                    'dirs': this.selectedItems.directories
                 }).then((resp) => {
                     if (resp.data.success) {
                         if (resp.data.record) {

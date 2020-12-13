@@ -6,8 +6,7 @@
             <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase" :valid-mime-types="validMimeTypes"
                          :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
 
-            <media-toolbar :selected-files="selectedFiles" :selected-dirs="selectedDirs"
-                           :batch-url="batchUrl" :current-directory="currentDirectory"
+            <media-toolbar :batch-url="batchUrl" :selected-items="selectedItems" :current-directory="currentDirectory"
                            :playlists="playlists" @add-playlist="onAddPlaylist"
                            @relist="onTriggerRelist"></media-toolbar>
         </div>
@@ -63,8 +62,8 @@
             </template>
             <template v-slot:cell(playlists)="row">
                 <template v-for="(playlist, index) in row.item.media_playlists">
-                    <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist)"
-                       :title="langPlaylistSelect">{{ playlist }}</a>
+                    <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
+                       :title="langPlaylistSelect">{{ playlist.name }}</a>
                     <span v-if="index+1 < row.item.media_playlists.length">, </span>
                 </template>
             </template>
@@ -88,8 +87,7 @@
                              @relist="onTriggerRelist">
         </new-directory-modal>
 
-        <move-files-modal :selected-files="selectedFiles" :selected-dirs="selectedDirs"
-                          :current-directory="currentDirectory" :batch-url="batchUrl"
+        <move-files-modal :selected-items="selectedItems" :current-directory="currentDirectory" :batch-url="batchUrl"
                           :list-directories-url="listDirectoriesUrl" @relist="onTriggerRelist">
         </move-files-modal>
 
@@ -227,8 +225,11 @@ export default {
         return {
             fields: fields,
             playlists: this.initialPlaylists,
-            selectedFiles: [],
-            selectedDirs: [],
+            selectedItems: {
+                all: [],
+                files: [],
+                directories: []
+            },
             currentDirectory: '',
             searchPhrase: null
         };
@@ -266,12 +267,13 @@ export default {
             return formatFileSize(size);
         },
         onRowSelected (items) {
-            this.selectedFiles = _.map(_.filter(items, (row) => {
-                return !row.is_dir;
-            }), 'name');
-            this.selectedDirs = _.map(_.filter(items, (row) => {
-                return row.is_dir;
-            }), 'name');
+            let splitItems = _.partition(items, 'is_dir');
+
+            this.selectedItems = {
+                all: items,
+                files: _.map(splitItems[1], 'name'),
+                directories: _.map(splitItems[1], 'name')
+            };
         },
         onRefreshed () {
             this.$eventHub.$emit('refreshed');

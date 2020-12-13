@@ -106,10 +106,14 @@ class ListAction
 
         // Process all database results.
         $media_in_dir = [];
+
         foreach ($media_in_dir_raw as $media_row) {
             $playlists = [];
             foreach ($media_row['playlists'] as $playlist_row) {
-                $playlists[] = $playlist_row['playlist']['name'];
+                $playlists[] = [
+                    'id' => $playlist_row['playlist']['id'],
+                    'name' => $playlist_row['playlist']['name'],
+                ];
             }
 
             $custom_fields = [];
@@ -171,7 +175,10 @@ class ListAction
                 ];
             }
 
-            $folders_in_dir[$folder_row['path']]['playlists'][] = $folder_row['playlist']['name'];
+            $folders_in_dir[$folder_row['path']]['playlists'][] = [
+                'id' => $folder_row['playlist']['id'],
+                'name' => $folder_row['playlist']['name'],
+            ];
         }
 
         $files = [];

@@ -10,11 +10,12 @@ use App\Exception\ValidationException;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
 use ReflectionObject;
+use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class SettingsRepository extends Repository
 {
@@ -67,19 +68,19 @@ class SettingsRepository extends Repository
      */
     public function readSettingsArray(): array
     {
-        if ($this->cache->has(self::CACHE_KEY)) {
-            return $this->cache->get(self::CACHE_KEY);
-        }
+        return $this->cache->get(
+            self::CACHE_KEY,
+            function (CacheItem $item) {
+                $item->expiresAfter(self::CACHE_TTL);
 
-        $allRecords = [];
-        foreach ($this->repository->findAll() as $record) {
-            /** @var Entity\SettingsTable $record */
-            $allRecords[$record->getSettingKey()] = $record->getSettingValue();
-        }
-
-        $this->cache->set(self::CACHE_KEY, $allRecords, self::CACHE_TTL);
-
-        return $allRecords;
+                $allRecords = [];
+                foreach ($this->repository->findAll() as $record) {
+                    /** @var Entity\SettingsTable $record */
+                    $allRecords[$record->getSettingKey()] = $record->getSettingValue();
+                }
+                return $allRecords;
+            }
+        );
     }
 
     /**
@@ -157,8 +158,7 @@ class SettingsRepository extends Repository
         }
 
         $this->em->flush();
-
-        $this->cache->set(self::CACHE_KEY, $settings, self::CACHE_TTL);
+        $this->cache->delete(self::CACHE_KEY);
     }
 
     /**

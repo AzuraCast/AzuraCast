@@ -16,7 +16,6 @@ use Exception;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -29,8 +28,6 @@ class StationRepository extends Repository
     protected Configuration $configuration;
 
     protected ValidatorInterface $validator;
-
-    protected CacheInterface $cache;
 
     protected StorageLocationRepository $storageLocationRepo;
 
@@ -46,14 +43,12 @@ class StationRepository extends Repository
         CheckMediaTask $mediaSync,
         Adapters $adapters,
         Configuration $configuration,
-        ValidatorInterface $validator,
-        CacheInterface $cache
+        ValidatorInterface $validator
     ) {
         $this->mediaSync = $mediaSync;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
         $this->validator = $validator;
-        $this->cache = $cache;
 
         $this->settingsRepo = $settingsRepo;
         $this->storageLocationRepo = $storageLocationRepo;
@@ -161,8 +156,6 @@ class StationRepository extends Repository
         }
 
         $this->configuration->writeConfiguration($station, $adapter_changed);
-
-        $this->cache->delete('stations');
 
         return $station;
     }
@@ -276,8 +269,6 @@ class StationRepository extends Repository
         $this->em->persist($station);
         $this->em->flush();
 
-        $this->cache->delete('stations');
-
         return $station;
     }
 
@@ -311,8 +302,6 @@ class StationRepository extends Repository
 
         $this->em->remove($station);
         $this->em->flush();
-
-        $this->cache->delete('stations');
     }
 
     /**

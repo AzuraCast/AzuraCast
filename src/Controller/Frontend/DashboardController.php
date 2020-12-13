@@ -13,7 +13,8 @@ use App\Radio\Adapters;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Cache\CacheItem;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class DashboardController
 {
@@ -22,8 +23,6 @@ class DashboardController
     protected Entity\Settings $settings;
 
     protected Acl $acl;
-
-    protected CacheInterface $cache;
 
     protected Router $router;
 
@@ -35,20 +34,21 @@ class DashboardController
         EntityManagerInterface $em,
         Acl $acl,
         Entity\Repository\SettingsRepository $settingsRepo,
-        CacheInterface $cache,
         Adapters $adapter_manager,
         EventDispatcher $dispatcher
     ) {
         $this->em = $em;
         $this->acl = $acl;
         $this->settings = $settingsRepo->readSettings();
-        $this->cache = $cache;
         $this->adapter_manager = $adapter_manager;
         $this->dispatcher = $dispatcher;
     }
 
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function indexAction(
+        ServerRequest $request,
+        Response $response,
+        CacheInterface $cache
+    ): ResponseInterface {
         $view = $request->getView();
         $user = $request->getUser();
         $router = $request->getRouter();
@@ -132,11 +132,13 @@ class DashboardController
 
             $cache_name = 'homepage_metrics_' . implode(',', $stats_cache_stations);
 
-            $metrics = $this->cache->get($cache_name);
-            if (empty($metrics)) {
-                $metrics = $this->getMetrics($view_stations, $show_admin);
-                $this->cache->set($cache_name, $metrics, 600);
-            }
+            $metrics = $cache->get(
+                $cache_name,
+                function (CacheItem $item) use ($view_stations, $show_admin) {
+                    $item->expiresAfter(600);
+                    return $this->getMetrics($view_stations, $show_admin);
+                }
+            );
         }
 
         return $view->renderToResponse(

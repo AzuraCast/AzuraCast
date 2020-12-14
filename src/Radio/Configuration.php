@@ -6,8 +6,8 @@ use App\Entity\Station;
 use App\Environment;
 use App\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use fXmlRpc\Exception\FaultException;
 use Monolog\Logger;
+use Supervisor\Exception\SupervisorException;
 use Supervisor\Supervisor;
 
 class Configuration
@@ -185,8 +185,21 @@ class Configuration
 
             foreach ($reload_removed as $group) {
                 $affected_groups[] = $group;
-                $this->supervisor->stopProcessGroup($group);
-                $this->supervisor->removeProcessGroup($group);
+
+                try {
+                    $this->supervisor->stopProcessGroup($group);
+                    $this->supervisor->removeProcessGroup($group);
+                } catch (SupervisorException $e) {
+                    $this->logger->log(
+                        Logger::ERROR,
+                        $e->getMessage(),
+                        [
+                            'file' => $e->getFile(),
+                            'line' => $e->getLine(),
+                            'code' => $e->getCode(),
+                        ]
+                    );
+                }
             }
         }
 
@@ -195,9 +208,22 @@ class Configuration
 
             foreach ($reload_changed as $group) {
                 $affected_groups[] = $group;
-                $this->supervisor->stopProcessGroup($group);
-                $this->supervisor->removeProcessGroup($group);
-                $this->supervisor->addProcessGroup($group);
+
+                try {
+                    $this->supervisor->stopProcessGroup($group);
+                    $this->supervisor->removeProcessGroup($group);
+                    $this->supervisor->addProcessGroup($group);
+                } catch (SupervisorException $e) {
+                    $this->logger->log(
+                        Logger::ERROR,
+                        $e->getMessage(),
+                        [
+                            'file' => $e->getFile(),
+                            'line' => $e->getLine(),
+                            'code' => $e->getCode(),
+                        ]
+                    );
+                }
             }
         }
 
@@ -206,7 +232,20 @@ class Configuration
 
             foreach ($reload_added as $group) {
                 $affected_groups[] = $group;
-                $this->supervisor->addProcessGroup($group);
+
+                try {
+                    $this->supervisor->addProcessGroup($group);
+                } catch (SupervisorException $e) {
+                    $this->logger->log(
+                        Logger::ERROR,
+                        $e->getMessage(),
+                        [
+                            'file' => $e->getFile(),
+                            'line' => $e->getLine(),
+                            'code' => $e->getCode(),
+                        ]
+                    );
+                }
             }
         }
 
@@ -343,9 +382,12 @@ class Configuration
         }
 
         if (null !== $except_station && null !== $except_station->getId()) {
-            return array_filter($used_ports, function ($station_reference) use ($except_station) {
-                return ($station_reference['id'] !== $except_station->getId());
-            });
+            return array_filter(
+                $used_ports,
+                function ($station_reference) use ($except_station) {
+                    return ($station_reference['id'] !== $except_station->getId());
+                }
+            );
         }
 
         return $used_ports;
@@ -396,12 +438,16 @@ class Configuration
         try {
             $this->supervisor->stopProcessGroup($station_group, true);
             $this->supervisor->removeProcessGroup($station_group);
-        } catch (FaultException $e) {
-            $this->logger->log(Logger::ERROR, $e->getMessage(), [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'code' => $e->getCode(),
-            ]);
+        } catch (SupervisorException $e) {
+            $this->logger->log(
+                Logger::ERROR,
+                $e->getMessage(),
+                [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'code' => $e->getCode(),
+                ]
+            );
         }
 
         $supervisor_config_path = $this->getSupervisorConfigFile($station);

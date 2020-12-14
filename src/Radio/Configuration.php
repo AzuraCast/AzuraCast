@@ -153,8 +153,12 @@ class Configuration
         $was_restarted = in_array($station_group, $affected_groups, true);
 
         if (!$was_restarted && $force_restart) {
-            $this->supervisor->stopProcessGroup($station_group, true);
-            $this->supervisor->startProcessGroup($station_group, true);
+            try {
+                $this->supervisor->stopProcessGroup($station_group, true);
+                $this->supervisor->startProcessGroup($station_group, true);
+            } catch (SupervisorException $e) {
+            }
+            
             $was_restarted = true;
         }
 
@@ -190,15 +194,6 @@ class Configuration
                     $this->supervisor->stopProcessGroup($group);
                     $this->supervisor->removeProcessGroup($group);
                 } catch (SupervisorException $e) {
-                    $this->logger->log(
-                        Logger::ERROR,
-                        $e->getMessage(),
-                        [
-                            'file' => $e->getFile(),
-                            'line' => $e->getLine(),
-                            'code' => $e->getCode(),
-                        ]
-                    );
                 }
             }
         }
@@ -214,15 +209,6 @@ class Configuration
                     $this->supervisor->removeProcessGroup($group);
                     $this->supervisor->addProcessGroup($group);
                 } catch (SupervisorException $e) {
-                    $this->logger->log(
-                        Logger::ERROR,
-                        $e->getMessage(),
-                        [
-                            'file' => $e->getFile(),
-                            'line' => $e->getLine(),
-                            'code' => $e->getCode(),
-                        ]
-                    );
                 }
             }
         }
@@ -236,15 +222,6 @@ class Configuration
                 try {
                     $this->supervisor->addProcessGroup($group);
                 } catch (SupervisorException $e) {
-                    $this->logger->log(
-                        Logger::ERROR,
-                        $e->getMessage(),
-                        [
-                            'file' => $e->getFile(),
-                            'line' => $e->getLine(),
-                            'code' => $e->getCode(),
-                        ]
-                    );
                 }
             }
         }
@@ -439,15 +416,6 @@ class Configuration
             $this->supervisor->stopProcessGroup($station_group, true);
             $this->supervisor->removeProcessGroup($station_group);
         } catch (SupervisorException $e) {
-            $this->logger->log(
-                Logger::ERROR,
-                $e->getMessage(),
-                [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'code' => $e->getCode(),
-                ]
-            );
         }
 
         $supervisor_config_path = $this->getSupervisorConfigFile($station);

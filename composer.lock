@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d4aa7e9c4120c3925090ef25552256c",
+    "content-hash": "e308b78d2f128f2a11789a205aefae53",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3573,16 +3573,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.1.1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "f9eee5cec93dfb313a38b6b288741e84e53f02d5"
+                "reference": "1cb1cde8e8dd0f70cc0fe51354a59acad9302084"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f9eee5cec93dfb313a38b6b288741e84e53f02d5",
-                "reference": "f9eee5cec93dfb313a38b6b288741e84e53f02d5",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1cb1cde8e8dd0f70cc0fe51354a59acad9302084",
+                "reference": "1cb1cde8e8dd0f70cc0fe51354a59acad9302084",
                 "shasum": ""
             },
             "require": {
@@ -3595,16 +3595,17 @@
             "require-dev": {
                 "aws/aws-sdk-php": "^2.4.9 || ^3.0",
                 "doctrine/couchdb": "~1.0@dev",
-                "elasticsearch/elasticsearch": "^6.0",
+                "elasticsearch/elasticsearch": "^7",
                 "graylog2/gelf-php": "^1.4.2",
+                "mongodb/mongodb": "^1.8",
                 "php-amqplib/php-amqplib": "~2.4",
                 "php-console/php-console": "^3.1.3",
-                "php-parallel-lint/php-parallel-lint": "^1.0",
                 "phpspec/prophecy": "^1.6.1",
+                "phpstan/phpstan": "^0.12.59",
                 "phpunit/phpunit": "^8.5",
                 "predis/predis": "^1.1",
                 "rollbar/rollbar": "^1.3",
-                "ruflin/elastica": ">=0.90 <3.0",
+                "ruflin/elastica": ">=0.90 <7.0.1",
                 "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
@@ -3624,7 +3625,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-main": "2.x-dev"
                 }
             },
             "autoload": {
@@ -3640,11 +3641,11 @@
                 {
                     "name": "Jordi Boggiano",
                     "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
+                    "homepage": "https://seld.be"
                 }
             ],
             "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
+            "homepage": "https://github.com/Seldaek/monolog",
             "keywords": [
                 "log",
                 "logging",
@@ -3652,7 +3653,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.1.1"
+                "source": "https://github.com/Seldaek/monolog/tree/2.2.0"
             },
             "funding": [
                 {
@@ -3664,7 +3665,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-23T08:41:23+00:00"
+            "time": "2020-12-14T13:15:25+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -3970,30 +3971,29 @@
         },
         {
             "name": "ocramius/doctrine-batch-utils",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/DoctrineBatchUtils.git",
-                "reference": "b2591637a0302fafb456abf043f701dda0bd1446"
+                "reference": "8affefde661133a385c2416dcb63277e77e1913b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/DoctrineBatchUtils/zipball/b2591637a0302fafb456abf043f701dda0bd1446",
-                "reference": "b2591637a0302fafb456abf043f701dda0bd1446",
+                "url": "https://api.github.com/repos/Ocramius/DoctrineBatchUtils/zipball/8affefde661133a385c2416dcb63277e77e1913b",
+                "reference": "8affefde661133a385c2416dcb63277e77e1913b",
                 "shasum": ""
             },
             "require": {
-                "doctrine/orm": "^2.7.4",
+                "doctrine/orm": "^2.8",
                 "doctrine/persistence": "^1.3.3 || ^2.0",
-                "php": "^7.3.0"
+                "php": "^7.4.0|| ^8.0"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^8.2.0",
-                "infection/infection": "^0.15.2",
-                "phpstan/phpstan": "^0.12.52",
-                "phpstan/phpstan-phpunit": "^0.12.16",
-                "phpunit/phpunit": "^9.2.6",
-                "roave/backward-compatibility-check": "^4.4",
+                "infection/infection": "^0.20.2",
+                "phpstan/phpstan": "^0.12.61",
+                "phpstan/phpstan-phpunit": "^0.12.14",
+                "phpunit/phpunit": "^9.5",
                 "vimeo/psalm": "^4.0.1"
             },
             "type": "library",
@@ -4023,9 +4023,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Ocramius/DoctrineBatchUtils/issues",
-                "source": "https://github.com/Ocramius/DoctrineBatchUtils/tree/2.1.0"
+                "source": "https://github.com/Ocramius/DoctrineBatchUtils/tree/2.2.0"
             },
-            "time": "2020-10-26T18:43:45+00:00"
+            "time": "2020-12-14T11:44:11+00:00"
         },
         {
             "name": "ocramius/proxy-manager",
@@ -5818,21 +5818,22 @@
         },
         {
             "name": "supervisorphp/supervisor",
-            "version": "v4.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "3deb0b1e0a79ac155172074f727a47b9ee68940b"
+                "reference": "df2d05e658de38edc7ff0167b0fa047e2dc1d0c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/3deb0b1e0a79ac155172074f727a47b9ee68940b",
-                "reference": "3deb0b1e0a79ac155172074f727a47b9ee68940b",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/df2d05e658de38edc7ff0167b0fa047e2dc1d0c1",
+                "reference": "df2d05e658de38edc7ff0167b0fa047e2dc1d0c1",
                 "shasum": ""
             },
             "require": {
                 "lstrojny/fxmlrpc": ">=0.12",
-                "php": ">=7.3"
+                "php": ">=7.4",
+                "psr/log": "^1.1"
             },
             "require-dev": {
                 "behat/behat": "^3.0",
@@ -5850,6 +5851,7 @@
                 "roave/security-advisories": "dev-master",
                 "supervisorphp/configuration": "^0.2"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5878,9 +5880,9 @@
             ],
             "support": {
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
-                "source": "https://github.com/supervisorphp/supervisor/tree/v4.0.0"
+                "source": "https://github.com/supervisorphp/supervisor/tree/master"
             },
-            "time": "2020-07-02T01:08:38+00:00"
+            "time": "2020-12-14T17:53:47+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -9535,16 +9537,16 @@
         },
         {
             "name": "phar-io/version",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/version.git",
-                "reference": "726c026815142e4f8677b7cb7f2249c9ffb7ecae"
+                "reference": "e4782611070e50613683d2b9a57730e9a3ba5451"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/version/zipball/726c026815142e4f8677b7cb7f2249c9ffb7ecae",
-                "reference": "726c026815142e4f8677b7cb7f2249c9ffb7ecae",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/e4782611070e50613683d2b9a57730e9a3ba5451",
+                "reference": "e4782611070e50613683d2b9a57730e9a3ba5451",
                 "shasum": ""
             },
             "require": {
@@ -9580,9 +9582,9 @@
             "description": "Library for handling version information and constraints",
             "support": {
                 "issues": "https://github.com/phar-io/version/issues",
-                "source": "https://github.com/phar-io/version/tree/3.0.3"
+                "source": "https://github.com/phar-io/version/tree/3.0.4"
             },
-            "time": "2020-11-30T09:21:21+00:00"
+            "time": "2020-12-13T23:18:30+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -9864,16 +9866,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.61",
+            "version": "0.12.62",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "2096111b454b018ba6edcd4852b54a78e4ccbeca"
+                "reference": "632393159335bbbdd7ca07d19b3ad50d76aa7fd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/2096111b454b018ba6edcd4852b54a78e4ccbeca",
-                "reference": "2096111b454b018ba6edcd4852b54a78e4ccbeca",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/632393159335bbbdd7ca07d19b3ad50d76aa7fd8",
+                "reference": "632393159335bbbdd7ca07d19b3ad50d76aa7fd8",
                 "shasum": ""
             },
             "require": {
@@ -9904,7 +9906,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.61"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.62"
             },
             "funding": [
                 {
@@ -9920,7 +9922,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-13T10:04:03+00:00"
+            "time": "2020-12-13T13:59:38+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -12288,6 +12290,7 @@
         "azuracast/nowplaying": 20,
         "james-heinrich/getid3": 20,
         "lstrojny/fxmlrpc": 20,
+        "supervisorphp/supervisor": 20,
         "wikimedia/composer-merge-plugin": 20,
         "roave/security-advisories": 20
     },

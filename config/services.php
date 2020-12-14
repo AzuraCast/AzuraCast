@@ -385,7 +385,7 @@ return [
     },
 
     // Supervisor manager
-    Supervisor\Supervisor::class => function (Environment $settings) {
+    Supervisor\Supervisor::class => function (Environment $settings, Psr\Log\LoggerInterface $logger) {
         $client = new fXmlRpc\Client(
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
             new fXmlRpc\Transport\PsrTransport(
@@ -394,8 +394,7 @@ return [
             )
         );
 
-        $supervisor = new Supervisor\Supervisor($client);
-
+        $supervisor = new Supervisor\Supervisor($client, $logger);
         if (!$supervisor->isConnected()) {
             throw new \App\Exception(sprintf('Could not connect to supervisord.'));
         }

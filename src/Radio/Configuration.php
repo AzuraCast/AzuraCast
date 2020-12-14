@@ -158,7 +158,7 @@ class Configuration
                 $this->supervisor->startProcessGroup($station_group, true);
             } catch (SupervisorException $e) {
             }
-            
+
             $was_restarted = true;
         }
 

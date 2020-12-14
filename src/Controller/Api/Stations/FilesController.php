@@ -245,12 +245,9 @@ class FilesController extends AbstractStationApiCrudController
         }
 
         if ($record instanceof Entity\StationMedia) {
+            $this->mediaRepo->writeToFile($record);
             $this->em->persist($record);
             $this->em->flush();
-
-            if ($this->mediaRepo->writeToFile($record)) {
-                $record->updateSongId();
-            }
 
             if (null !== $custom_fields) {
                 $this->customFieldsRepo->setCustomFields($record, $custom_fields);

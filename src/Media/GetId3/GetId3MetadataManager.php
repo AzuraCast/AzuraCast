@@ -24,11 +24,13 @@ class GetId3MetadataManager implements MetadataManagerInterface
         $info = $id3->analyze($path);
 
         if (!empty($info['error'])) {
-            throw new CannotProcessMediaException(sprintf(
-                'Cannot process media file at path "%s": %s',
-                pathinfo($path, PATHINFO_FILENAME),
-                json_encode($info['error'], JSON_THROW_ON_ERROR)
-            ));
+            throw new CannotProcessMediaException(
+                sprintf(
+                    'Cannot process media file at path "%s": %s',
+                    pathinfo($path, PATHINFO_FILENAME),
+                    json_encode($info['error'], JSON_THROW_ON_ERROR)
+                )
+            );
         }
 
         $metadata = new Metadata();
@@ -121,6 +123,15 @@ class GetId3MetadataManager implements MetadataManagerInterface
 
         $tagwriter->tag_data = $tagData;
 
-        return $tagwriter->WriteTags();
+        $writeTagsResult = $tagwriter->WriteTags();
+
+        if (false === $writeTagsResult) {
+            throw CannotProcessMediaException::forPath(
+                $path,
+                implode(', ', $tagwriter->errors)
+            );
+        }
+
+        return true;
     }
 }

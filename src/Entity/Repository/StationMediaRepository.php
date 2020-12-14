@@ -345,14 +345,24 @@ class StationMediaRepository extends Repository
         }
 
         // Write tags to the Media file.
+        $media->setMtime(time() + 5);
+        $media->updateSongId();
+
         return $fs->withLocalFile(
             $media->getPath(),
-            function ($path) use ($media, $metadata) {
-                if ($this->metadataManager->writeMetadata($metadata, $path)) {
-                    $media->setMtime(time() + 5);
+            function ($path) use ($metadata) {
+                try {
+                    $this->metadataManager->writeMetadata($metadata, $path);
                     return true;
+                } catch (CannotProcessMediaException $e) {
+                    $this->logger->error(
+                        $e->getMessage(),
+                        [
+                            'exception' => $e,
+                        ]
+                    );
+                    return false;
                 }
-                return false;
             }
         );
     }

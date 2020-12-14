@@ -16,7 +16,7 @@ final class Version20201211164613 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE INDEX idx_search ON audit_log (class, user, identifier)');
+        $this->addSql('CREATE INDEX IF NOT EXISTS idx_search ON audit_log (class, user, identifier)');
     }
 
     public function postUp(Schema $schema): void
@@ -32,6 +32,6 @@ final class Version20201211164613 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP INDEX idx_search ON audit_log');
+        $this->addSql('DROP INDEX IF EXISTS idx_search ON audit_log');
     }
 }

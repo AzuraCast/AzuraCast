@@ -52,6 +52,8 @@ recommended for all users.
 
 - A bug preventing stations from being cloned has been fixed (#3501).
 
+- The SoundExchange royalties report has been updated and is working again (#3552).
+
 ---
 
 # AzuraCast 0.11.1 (Dec 7, 2020)

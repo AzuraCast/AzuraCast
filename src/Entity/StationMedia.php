@@ -134,7 +134,7 @@ class StationMedia implements SongInterface
     protected $mtime = 0;
 
     /**
-     * @ORM\Column(name="amplify", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="amplify", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=-14.00)
      *
@@ -144,7 +144,7 @@ class StationMedia implements SongInterface
     protected $amplify;
 
     /**
-     * @ORM\Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_overlap", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=2.00)
      *
@@ -154,7 +154,7 @@ class StationMedia implements SongInterface
     protected $fade_overlap;
 
     /**
-     * @ORM\Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_in", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=3.00)
      *
@@ -164,7 +164,7 @@ class StationMedia implements SongInterface
     protected $fade_in;
 
     /**
-     * @ORM\Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_out", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=3.00)
      *
@@ -174,7 +174,7 @@ class StationMedia implements SongInterface
     protected $fade_out;
 
     /**
-     * @ORM\Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true)
+     * @ORM\Column(name="cue_in", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=30.00)
      *
@@ -184,7 +184,7 @@ class StationMedia implements SongInterface
     protected $cue_in;
 
     /**
-     * @ORM\Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true)
+     * @ORM\Column(name="cue_out", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=30.00)
      *

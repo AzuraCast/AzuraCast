@@ -78,7 +78,7 @@ class SftpUploadCommand extends CommandAbstract
     protected function flushCache(Entity\StorageLocation $storageLocation): void
     {
         $adapter = $storageLocation->getStorageAdapter();
-        $fs = $this->filesystem->getFilesystemForAdapter($adapter);
+        $fs = $this->filesystem->getFilesystemForAdapter($adapter, true);
         $fs->clearCache(false);
     }
 

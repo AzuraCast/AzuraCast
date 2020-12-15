@@ -123,12 +123,13 @@ class GetId3MetadataManager implements MetadataManagerInterface
 
         $tagwriter->tag_data = $tagData;
 
-        $writeTagsResult = $tagwriter->WriteTags();
+        $tagwriter->WriteTags();
 
-        if (false === $writeTagsResult) {
+        if (!empty($tagwriter->errors) || !empty($tagwriter->warnings)) {
+            $messages = array_merge($tagwriter->errors, $tagwriter->warnings);
             throw CannotProcessMediaException::forPath(
                 $path,
-                implode(', ', $tagwriter->errors)
+                implode(', ', $messages)
             );
         }
 

@@ -242,27 +242,7 @@ return [
     // Monolog Logger
     Monolog\Logger::class => function (Environment $environment) {
         $logger = new Monolog\Logger($environment->getAppName());
-
-        $loggingLevel = null;
-        if (!empty($_ENV['LOG_LEVEL'])) {
-            $allowedLogLevels = [
-                Psr\Log\LogLevel::DEBUG,
-                Psr\Log\LogLevel::INFO,
-                Psr\Log\LogLevel::NOTICE,
-                Psr\Log\LogLevel::WARNING,
-                Psr\Log\LogLevel::ERROR,
-                Psr\Log\LogLevel::CRITICAL,
-                Psr\Log\LogLevel::ALERT,
-                Psr\Log\LogLevel::EMERGENCY,
-            ];
-
-            $loggingLevel = strtolower($_ENV['LOG_LEVEL']);
-            if (!in_array($loggingLevel, $allowedLogLevels, true)) {
-                $loggingLevel = null;
-            }
-        }
-
-        $loggingLevel ??= $environment->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+        $loggingLevel = $environment->getLogLevel();
 
         if ($environment->isDocker() || $environment->isCli()) {
             $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);

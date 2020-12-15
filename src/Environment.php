@@ -4,6 +4,7 @@ namespace App;
 
 use App\Radio\Configuration;
 use App\Traits\AvailableStaticallyTrait;
+use Psr\Log\LogLevel;
 
 class Environment
 {
@@ -46,6 +47,8 @@ class Environment
 
     public const SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
+
+    public const LOG_LEVEL = 'LOG_LEVEL';
 
     // Default settings
     protected array $defaults = [
@@ -234,5 +237,31 @@ class Environment
     public function getSyncLongExecutionTime(): int
     {
         return (int)($this->data[self::SYNC_LONG_EXECUTION_TIME] ?? 1800);
+    }
+
+    public function getLogLevel(): string
+    {
+        if (!empty($this->data[self::LOG_LEVEL])) {
+            $loggingLevel = strtolower($this->data[self::LOG_LEVEL]);
+
+            $allowedLogLevels = [
+                LogLevel::DEBUG,
+                LogLevel::INFO,
+                LogLevel::NOTICE,
+                LogLevel::WARNING,
+                LogLevel::ERROR,
+                LogLevel::CRITICAL,
+                LogLevel::ALERT,
+                LogLevel::EMERGENCY,
+            ];
+
+            if (in_array($loggingLevel, $allowedLogLevels, true)) {
+                return $loggingLevel;
+            }
+        }
+
+        return $this->isProduction()
+            ? LogLevel::NOTICE
+            : LogLevel::DEBUG;
     }
 }

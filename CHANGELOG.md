@@ -9,7 +9,7 @@ release channel, you can take advantage of these new features and fixes.
   accessibility:
     - You can now edit the playlists associated with a track from directly within the "Edit" modal dialog box for that
       track.
-    - If all of the tracks/directories selected are in a playlist, that playlist will be checked by default in the "Set
+    - If all tracks/directories selected are in a playlist, that playlist will be checked by default in the "Set
       Playlists" dropdown.
 
 ## Code Quality/Technical Changes
@@ -21,6 +21,9 @@ release channel, you can take advantage of these new features and fixes.
 ## Bug Fixes
 
 - If your browser sends a locale like `fr` instead of `fr_FR`, it will now be supported and detected (#3558).
+
+- Fixed a bug where sometimes changes to media metadata would be saved, only for the next 5-minute synchronization
+  process to revert to the previous data (#3553).
 
 ---
 

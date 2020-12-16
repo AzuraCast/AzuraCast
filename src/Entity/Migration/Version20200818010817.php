@@ -23,7 +23,7 @@ final class Version20200818010817 extends AbstractMigration
         $this->addSql('ALTER TABLE settings CHANGE setting_value setting_value LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
         $this->addSql('ALTER TABLE song_history CHANGE delta_points delta_points LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
         $this->addSql('ALTER TABLE station CHANGE frontend_config frontend_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\', CHANGE backend_config backend_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\', CHANGE automation_settings automation_settings LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
-        $this->addSql('ALTER TABLE station_queue ADD log LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\', CHANGE station_id station_id INT NOT NULL');
+        $this->addSql('ALTER TABLE station_queue ADD IF NOT EXISTS log LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\', CHANGE station_id station_id INT NOT NULL');
         $this->addSql('ALTER TABLE station_webhooks CHANGE triggers triggers LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\', CHANGE config config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\', CHANGE metadata metadata LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
     }
 

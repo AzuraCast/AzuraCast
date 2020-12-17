@@ -21,6 +21,7 @@ class MimeType
             'audio/x-flac', // flac
             'audio/x-m4a', // alt for m4a/mp4a
             'audio/x-wav', // wav
+            'video/mp4', // some MP4 audio files are recognized as this (#3569)
         ];
     }
 

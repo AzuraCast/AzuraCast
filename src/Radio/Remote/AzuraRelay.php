@@ -62,7 +62,7 @@ class AzuraRelay extends AbstractRemote
             throw new InvalidArgumentException('AzuraRelay remote must have a corresponding relay.');
         }
 
-        $base_url = new Uri($relay->getBaseUrl());
+        $base_url = new Uri(rtrim($relay->getBaseUrl(), '/'));
 
         $fe_config = $station->getFrontendConfig();
         $radio_port = $fe_config->getPort();

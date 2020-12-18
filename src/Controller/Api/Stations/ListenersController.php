@@ -5,6 +5,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
@@ -19,10 +20,13 @@ class ListenersController
 
     protected IpGeolocation $geoLite;
 
-    public function __construct(EntityManagerInterface $em, IpGeolocation $geoLite)
+    protected DeviceDetector $deviceDetector;
+
+    public function __construct(EntityManagerInterface $em, IpGeolocation $geoLite, DeviceDetector $deviceDetector)
     {
         $this->em = $em;
         $this->geoLite = $geoLite;
+        $this->deviceDetector = $deviceDetector;
     }
 
     /**
@@ -127,7 +131,6 @@ class ListenersController
             }
         }
 
-        $detect = new Mobile_Detect();
         $locale = $request->getAttribute('locale');
 
         $format = $params['format'] ?? 'json';
@@ -153,7 +156,7 @@ class ListenersController
                     (string)$listener['listener_ip'],
                     Entity\Listener::getListenerSeconds($listener['intervals']),
                     (string)$listener['listener_user_agent'],
-                    $detect->isMobile($listener['listener_user_agent']) ? 'true' : 'false',
+                    $this->isMobile($listener['listener_user_agent']) ? 'true' : 'false',
                 ];
 
                 if ('success' === $location['status']) {
@@ -182,7 +185,7 @@ class ListenersController
             $api = new Entity\Api\Listener();
             $api->ip = (string)$listener['listener_ip'];
             $api->user_agent = (string)$listener['listener_user_agent'];
-            $api->is_mobile = $detect->isMobile($listener['listener_user_agent']);
+            $api->is_mobile = $this->isMobile($listener['listener_user_agent']);
             $api->connected_on = (int)$listener['timestamp_start'];
             $api->connected_time = Entity\Listener::getListenerSeconds($listener['intervals']);
             $api->location = $this->geoLite->getLocationInfo($listener['listener_ip'], $locale);
@@ -191,5 +194,11 @@ class ListenersController
         }
 
         return $response->withJson($listeners);
+    }
+
+    protected function isMobile(string $userAgent): bool
+    {
+        $dd = $this->deviceDetector->parse($userAgent);
+        return $dd->isMobile();
     }
 }

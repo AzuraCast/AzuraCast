@@ -28,6 +28,14 @@ class Listener
     public string $user_agent = '';
 
     /**
+     * The listener's client details (extracted from user-agent)
+     *
+     * @OA\Property(example="")
+     * @var string
+     */
+    public string $client = '';
+
+    /**
      * Whether the user-agent is likely a mobile browser.
      *
      * @OA\Property(example=true)

@@ -133,6 +133,40 @@ class ListenersController
 
         $locale = $request->getAttribute('locale');
 
+        /** @var Entity\Api\Listener[] $listeners */
+        $listeners = [];
+        foreach ($listeners_raw as $listener) {
+            $userAgent = (string)$listener['listener_user_agent'];
+            $dd = $this->deviceDetector->parse($userAgent);
+
+            if ($dd->isBot()) {
+                $clientBot = $dd->getBot();
+                $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
+                $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
+                $client = $clientBotName . ' (' . $clientBotType . ')';
+            } else {
+                $clientInfo = $dd->getClient();
+                $clientBrowser = $clientInfo['name'] ?? 'Unknown Browser';
+                $clientVersion = $clientInfo['version'] ?? '0.00';
+
+                $clientOsInfo = $dd->getOs();
+                $clientOs = $clientOsInfo['name'] ?? 'Unknown OS';
+
+                $client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
+            }
+
+            $api = new Entity\Api\Listener();
+            $api->ip = (string)$listener['listener_ip'];
+            $api->user_agent = $userAgent;
+            $api->client = $client;
+            $api->is_mobile = $dd->isMobile();
+            $api->connected_on = (int)$listener['timestamp_start'];
+            $api->connected_time = Entity\Listener::getListenerSeconds($listener['intervals']);
+            $api->location = $this->geoLite->getLocationInfo($listener['listener_ip'], $locale);
+
+            $listeners[] = $api;
+        }
+
         $format = $params['format'] ?? 'json';
 
         if ('csv' === $format) {
@@ -141,6 +175,7 @@ class ListenersController
                     'IP',
                     'Seconds Connected',
                     'User Agent',
+                    'Client',
                     'Is Mobile',
                     'Location',
                     'Country',
@@ -149,16 +184,16 @@ class ListenersController
                 ],
             ];
 
-            foreach ($listeners_raw as $listener) {
-                $location = $this->geoLite->getLocationInfo($listener['listener_ip'], $locale);
-
+            foreach ($listeners as $listener) {
                 $export_row = [
-                    (string)$listener['listener_ip'],
-                    Entity\Listener::getListenerSeconds($listener['intervals']),
-                    (string)$listener['listener_user_agent'],
-                    $this->isMobile($listener['listener_user_agent']) ? 'true' : 'false',
+                    $listener->ip,
+                    $listener->connected_time,
+                    $listener->user_agent,
+                    $listener->client,
+                    $listener->is_mobile,
                 ];
 
+                $location = $listener->location;
                 if ('success' === $location['status']) {
                     $export_row[] = $location['region'] . ', ' . $location['country'];
                     $export_row[] = $location['country'];
@@ -180,25 +215,6 @@ class ListenersController
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
 
-        $listeners = [];
-        foreach ($listeners_raw as $listener) {
-            $api = new Entity\Api\Listener();
-            $api->ip = (string)$listener['listener_ip'];
-            $api->user_agent = (string)$listener['listener_user_agent'];
-            $api->is_mobile = $this->isMobile($listener['listener_user_agent']);
-            $api->connected_on = (int)$listener['timestamp_start'];
-            $api->connected_time = Entity\Listener::getListenerSeconds($listener['intervals']);
-            $api->location = $this->geoLite->getLocationInfo($listener['listener_ip'], $locale);
-
-            $listeners[] = $api;
-        }
-
         return $response->withJson($listeners);
-    }
-
-    protected function isMobile(string $userAgent): bool
-    {
-        $dd = $this->deviceDetector->parse($userAgent);
-        return $dd->isMobile();
     }
 }

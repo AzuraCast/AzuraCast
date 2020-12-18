@@ -19,6 +19,7 @@ class SetupCommand extends CommandAbstract
         ContainerInterface $di,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\StationRepository $stationRepo,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         AzuraCastCentral $acCentral,
         bool $update = false,
         bool $loadFixtures = false
@@ -98,6 +99,8 @@ class SetupCommand extends CommandAbstract
         }
 
         $settingsRepo->writeSettings($settings);
+
+        $storageLocationRepo->createDefaultStorageLocations();
 
         $io->newLine();
 

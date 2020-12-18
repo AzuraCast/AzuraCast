@@ -249,8 +249,9 @@ return [
             $logger->pushHandler($log_stderr);
         }
 
-        $log_file = new Monolog\Handler\StreamHandler(
+        $log_file = new Monolog\Handler\RotatingFileHandler(
             $environment->getTempDirectory() . '/app.log',
+            5,
             $loggingLevel,
             true
         );

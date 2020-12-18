@@ -143,7 +143,7 @@ class RunBackupTask extends AbstractTask
 
             $message = new Message\BackupMessage();
             $message->storageLocationId = $storageLocationId;
-            $message->path = 'automatic_backup.zip';
+            $message->path = 'automatic_backup_' . gmdate('Ymd_His') . '.zip';
             $message->excludeMedia = $settings->getBackupExcludeMedia();
 
             $this->messageBus->dispatch($message);

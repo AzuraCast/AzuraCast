@@ -60,7 +60,6 @@
         "slim/slim": "^4.2",
         "spatie/flysystem-dropbox": "^1.2",
         "spomky-labs/otphp": "^10.0",
-        "studio24/rotate": "^1.0",
         "supervisorphp/supervisor": "dev-master",
         "symfony/cache": "^5.2",
         "symfony/console": "^5",

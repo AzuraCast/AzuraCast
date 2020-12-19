@@ -10,12 +10,13 @@ use App\Exception\CannotProcessMediaException;
 use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
 use App\Flysystem\FilesystemManager;
-use App\Media\AlbumArt;
 use App\Media\MetadataManagerInterface;
 use App\Media\MimeType;
 use App\Service\AudioWaveform;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Intervention\Image\Constraint;
+use Intervention\Image\ImageManager;
 use InvalidArgumentException;
 use League\Flysystem\FileNotFoundException;
 use Psr\Log\LoggerInterface;
@@ -37,6 +38,8 @@ class StationMediaRepository extends Repository
 
     protected FilesystemManager $filesystem;
 
+    protected ImageManager $imageManager;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
@@ -46,7 +49,8 @@ class StationMediaRepository extends Repository
         CustomFieldRepository $customFieldRepo,
         StationPlaylistMediaRepository $spmRepo,
         StorageLocationRepository $storageLocationRepo,
-        FilesystemManager $filesystem
+        FilesystemManager $filesystem,
+        ImageManager $imageManager
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
 
@@ -56,6 +60,7 @@ class StationMediaRepository extends Repository
 
         $this->metadataManager = $metadataManager;
         $this->filesystem = $filesystem;
+        $this->imageManager = $imageManager;
     }
 
     /**
@@ -310,15 +315,24 @@ class StationMediaRepository extends Repository
 
     public function writeAlbumArt(Entity\StationMedia $media, string $rawArtString): bool
     {
-        $fs = $this->getFilesystem($media);
-
-        $albumArt = AlbumArt::resize($rawArtString);
-        $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-
         $media->setArtUpdatedAt(time());
         $this->em->persist($media);
 
-        return $fs->put($albumArtPath, $albumArt);
+        $fs = $this->getFilesystem($media);
+
+        $albumArt = $this->imageManager->make($rawArtString);
+        $albumArt->fit(
+            1200,
+            1200,
+            function (Constraint $constraint): void {
+                $constraint->upsize();
+            }
+        );
+
+        $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
+        $albumArtStream = $albumArt->stream('jpg', 90);
+
+        return $fs->putStream($albumArtPath, $albumArtStream->detach());
     }
 
     public function removeAlbumArt(Entity\StationMedia $media): void

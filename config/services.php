@@ -383,6 +383,15 @@ return [
         return $supervisor;
     },
 
+    // Image Manager
+    Intervention\Image\ImageManager::class => function () {
+        return new Intervention\Image\ImageManager(
+            [
+                'driver' => 'gd',
+            ]
+        );
+    },
+
     // NowPlaying Adapter factory
     NowPlaying\Adapter\AdapterFactory::class => function (
         GuzzleHttp\Client $httpClient,

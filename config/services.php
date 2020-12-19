@@ -216,6 +216,7 @@ return [
     // Console
     App\Console\Application::class => function (DI\Container $di, App\EventDispatcher $dispatcher) {
         $console = new App\Console\Application('Command Line Interface', '1.0.0', $di);
+        $console->setDispatcher($dispatcher);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.
         $event = new App\Event\BuildConsoleCommands($console);

@@ -595,8 +595,7 @@ uninstall() {
 letsencrypt-create() {
     setup-letsencrypt
 
-    docker-compose stop web
-    docker-compose rm -f web
+    docker-compose down
     docker-compose up -d
     exit
 }

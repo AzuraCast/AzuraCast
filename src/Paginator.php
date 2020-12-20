@@ -63,7 +63,9 @@ class Paginator
 
     public function setCurrentPage(int $currentPage): void
     {
-        $this->paginator->setCurrentPage($currentPage);
+        $this->paginator->setCurrentPage(
+            ($currentPage >= 1) ? $currentPage : 1
+        );
     }
 
     public function setMaxPerPage(int $maxPerPage): void

@@ -7,7 +7,7 @@ use App\Entity;
 use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator\QueryPaginator;
+use App\Paginator;
 use App\Utilities;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
@@ -48,7 +48,7 @@ class BroadcastsController extends AbstractApiCrudController
         )->setParameter('station', $station)
             ->setParameter('streamer', $streamer);
 
-        $paginator = new QueryPaginator($query, $request);
+        $paginator = Paginator::fromQuery($query, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();

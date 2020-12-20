@@ -6,7 +6,7 @@ use App\Entity;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator\QueryPaginator;
+use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
@@ -103,7 +103,7 @@ class RequestsController
                 ->setParameter('query', '%' . $search_phrase . '%');
         }
 
-        $paginator = new QueryPaginator($qb, $request);
+        $paginator = Paginator::fromQueryBuilder($qb, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();

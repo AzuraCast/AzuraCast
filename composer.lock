@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0e64b0e23059f9ad475158304fbcf65",
+    "content-hash": "b0f554a284cb0b3e397be2d4d53bf117",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -4388,6 +4388,124 @@
                 "source": "https://github.com/overtrue/phplint/tree/2.3.5"
             },
             "time": "2020-12-11T17:27:13+00:00"
+        },
+        {
+            "name": "pagerfanta/core",
+            "version": "v2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pagerfanta-packages/core.git",
+                "reference": "83c82d8189efa5a4bd0479c7db6e42d000c7cb03"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pagerfanta-packages/core/zipball/83c82d8189efa5a4bd0479c7db6e42d000c7cb03",
+                "reference": "83c82d8189efa5a4bd0479c7db6e42d000c7cb03",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.2 || ^8.0",
+                "symfony/deprecation-contracts": "^2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pagerfanta\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Core Pagerfanta API",
+            "keywords": [
+                "pagerfanta"
+            ],
+            "support": {
+                "source": "https://github.com/pagerfanta-packages/core/tree/v2.5.1"
+            },
+            "time": "2020-11-11T00:40:39+00:00"
+        },
+        {
+            "name": "pagerfanta/doctrine-collections-adapter",
+            "version": "v2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pagerfanta-packages/doctrine-collections-adapter.git",
+                "reference": "598a12e5f7c35a51905414dff9416d9208f02d0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pagerfanta-packages/doctrine-collections-adapter/zipball/598a12e5f7c35a51905414dff9416d9208f02d0f",
+                "reference": "598a12e5f7c35a51905414dff9416d9208f02d0f",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/collections": "^1.4",
+                "pagerfanta/core": "^2.4",
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pagerfanta\\Doctrine\\Collections\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Pagerfanta adapter for Doctrine Collections",
+            "keywords": [
+                "collections",
+                "doctrine",
+                "pagerfanta"
+            ],
+            "support": {
+                "source": "https://github.com/pagerfanta-packages/doctrine-collections-adapter/tree/v2.5.1"
+            },
+            "time": "2020-11-11T00:40:39+00:00"
+        },
+        {
+            "name": "pagerfanta/doctrine-orm-adapter",
+            "version": "v2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pagerfanta-packages/doctrine-orm-adapter.git",
+                "reference": "b040b7d2fc5bd904b2059f28cbc1a71b283fd04b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pagerfanta-packages/doctrine-orm-adapter/zipball/b040b7d2fc5bd904b2059f28cbc1a71b283fd04b",
+                "reference": "b040b7d2fc5bd904b2059f28cbc1a71b283fd04b",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.5",
+                "pagerfanta/core": "^2.4",
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pagerfanta\\Doctrine\\ORM\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Pagerfanta adapter for Doctrine ORM",
+            "keywords": [
+                "doctrine",
+                "orm",
+                "pagerfanta"
+            ],
+            "support": {
+                "source": "https://github.com/pagerfanta-packages/doctrine-orm-adapter/tree/v2.5.1"
+            },
+            "time": "2020-11-11T00:40:39+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

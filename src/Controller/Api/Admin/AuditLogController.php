@@ -5,7 +5,7 @@ namespace App\Controller\Api\Admin;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator\QueryPaginator;
+use App\Paginator;
 use Carbon\CarbonImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,39 +51,41 @@ class AuditLogController
 
         $qb->orderBy('a.timestamp', 'DESC');
 
-        $paginator = new QueryPaginator($qb, $request);
+        $paginator = Paginator::fromQueryBuilder($qb, $request);
 
-        $paginator->setPostprocessor(function (Entity\AuditLog $row) {
-            $operations = [
-                Entity\AuditLog::OPER_UPDATE => 'update',
-                Entity\AuditLog::OPER_DELETE => 'delete',
-                Entity\AuditLog::OPER_INSERT => 'insert',
-            ];
+        $paginator->setPostprocessor(
+            function (Entity\AuditLog $row) {
+                $operations = [
+                    Entity\AuditLog::OPER_UPDATE => 'update',
+                    Entity\AuditLog::OPER_DELETE => 'delete',
+                    Entity\AuditLog::OPER_INSERT => 'insert',
+                ];
 
-            $changesRaw = $row->getChanges();
-            $changes = [];
+                $changesRaw = $row->getChanges();
+                $changes = [];
 
-            foreach ($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
-                $changes[] = [
-                    'field' => $fieldName,
-                    'from' => json_encode($fieldPrevious, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
-                    'to' => json_encode($fieldNew, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
+                foreach ($changesRaw as $fieldName => [$fieldPrevious, $fieldNew]) {
+                    $changes[] = [
+                        'field' => $fieldName,
+                        'from' => json_encode($fieldPrevious, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
+                        'to' => json_encode($fieldNew, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
+                    ];
+                }
+
+                return [
+                    'id' => $row->getId(),
+                    'timestamp' => $row->getTimestamp(),
+                    'operation' => $row->getOperation(),
+                    'operation_text' => $operations[$row->getOperation()],
+                    'class' => $row->getClass(),
+                    'identifier' => $row->getIdentifier(),
+                    'target_class' => $row->getTargetClass(),
+                    'target' => $row->getTarget(),
+                    'user' => $row->getUser(),
+                    'changes' => $changes,
                 ];
             }
-
-            return [
-                'id' => $row->getId(),
-                'timestamp' => $row->getTimestamp(),
-                'operation' => $row->getOperation(),
-                'operation_text' => $operations[$row->getOperation()],
-                'class' => $row->getClass(),
-                'identifier' => $row->getIdentifier(),
-                'target_class' => $row->getTargetClass(),
-                'target' => $row->getTarget(),
-                'user' => $row->getUser(),
-                'changes' => $changes,
-            ];
-        });
+        );
 
         return $paginator->write($response);
     }

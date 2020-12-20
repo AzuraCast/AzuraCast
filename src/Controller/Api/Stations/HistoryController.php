@@ -6,7 +6,6 @@ use App;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator\QueryPaginator;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -141,22 +140,24 @@ class HistoryController
 
         $qb->orderBy('sh.timestamp_start', 'DESC');
 
-        $paginator = new QueryPaginator($qb, $request);
+        $paginator = App\Paginator::fromQueryBuilder($qb, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($sh_row) use ($is_bootgrid, $router) {
-            /** @var Entity\SongHistory $sh_row */
-            $row = $this->songHistoryApiGenerator->detailed($sh_row);
-            $row->resolveUrls($router->getBaseUrl());
+        $paginator->setPostprocessor(
+            function ($sh_row) use ($is_bootgrid, $router) {
+                /** @var Entity\SongHistory $sh_row */
+                $row = $this->songHistoryApiGenerator->detailed($sh_row);
+                $row->resolveUrls($router->getBaseUrl());
 
-            if ($is_bootgrid) {
-                return App\Utilities\Arrays::flattenArray($row, '_');
+                if ($is_bootgrid) {
+                    return App\Utilities\Arrays::flattenArray($row, '_');
+                }
+
+                return $row;
             }
-
-            return $row;
-        });
+        );
 
         return $paginator->write($response);
     }

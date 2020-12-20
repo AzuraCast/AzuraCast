@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator\QueryPaginator;
+use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
@@ -44,7 +44,7 @@ abstract class AbstractApiCrudController
         Query $query,
         callable $postProcessor = null
     ): ResponseInterface {
-        $paginator = new QueryPaginator($query, $request);
+        $paginator = Paginator::fromQuery($query, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $is_internal = ('true' === $request->getParam('internal', 'false'));
@@ -95,25 +95,32 @@ abstract class AbstractApiCrudController
      */
     protected function toArray($record, array $context = []): array
     {
-        return $this->serializer->normalize($record, null, array_merge($context, [
-            ObjectNormalizer::ENABLE_MAX_DEPTH => true,
-            ObjectNormalizer::MAX_DEPTH_HANDLER => function (
-                $innerObject,
-                $outerObject,
-                string $attributeName,
-                string $format = null,
-                array $context = []
-            ) {
-                return $this->displayShortenedObject($innerObject);
-            },
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
-                $object,
-                string $format = null,
-                array $context = []
-            ) {
-                return $this->displayShortenedObject($object);
-            },
-        ]));
+        return $this->serializer->normalize(
+            $record,
+            null,
+            array_merge(
+                $context,
+                [
+                    ObjectNormalizer::ENABLE_MAX_DEPTH => true,
+                    ObjectNormalizer::MAX_DEPTH_HANDLER => function (
+                        $innerObject,
+                        $outerObject,
+                        string $attributeName,
+                        string $format = null,
+                        array $context = []
+                    ) {
+                        return $this->displayShortenedObject($innerObject);
+                    },
+                    ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
+                        $object,
+                        string $format = null,
+                        array $context = []
+                    ) {
+                        return $this->displayShortenedObject($object);
+                    },
+                ]
+            )
+        );
     }
 
     /**

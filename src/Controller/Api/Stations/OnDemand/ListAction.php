@@ -6,7 +6,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
-use App\Paginator\ArrayPaginator;
+use App\Paginator;
 use App\Utilities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -97,7 +97,7 @@ class ListAction
             $trackList = $trackList->matching($criteria);
         }
 
-        $paginator = new ArrayPaginator($trackList, $request);
+        $paginator = Paginator::fromCollection($trackList, $request);
         return $paginator->write($response);
     }
 

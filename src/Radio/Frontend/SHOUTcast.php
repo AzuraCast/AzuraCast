@@ -4,7 +4,6 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Environment;
-use App\Logger;
 use App\Utilities;
 use Exception;
 use NowPlaying\Adapter\AdapterFactory;
@@ -90,7 +89,7 @@ class SHOUTcast extends AbstractFrontend
                 $defaultResult = $defaultResult->merge($otherResult);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
         return $defaultResult;

@@ -4,7 +4,6 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Environment;
-use App\Logger;
 use App\Radio\CertificateLocator;
 use App\Utilities;
 use App\Xml\Reader;
@@ -61,7 +60,7 @@ class Icecast extends AbstractFrontend
                 $defaultResult = $defaultResult->merge($otherResult);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
         return $defaultResult;

@@ -10,6 +10,7 @@ use App\Exception;
 use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\Log\LoggerInterface;
 use Supervisor\Supervisor;
 
 class Liquidsoap extends AbstractBackend
@@ -21,9 +22,10 @@ class Liquidsoap extends AbstractBackend
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
+        LoggerInterface $logger,
         Entity\Repository\StationStreamerRepository $streamerRepo
     ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher);
+        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
 
         $this->streamerRepo = $streamerRepo;
     }

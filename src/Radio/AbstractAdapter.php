@@ -9,8 +9,8 @@ use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\BadNameException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
-use App\Logger;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
 use Supervisor\Process;
@@ -26,16 +26,20 @@ abstract class AbstractAdapter
 
     protected EventDispatcher $dispatcher;
 
+    protected LoggerInterface $logger;
+
     public function __construct(
         Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
-        EventDispatcher $dispatcher
+        EventDispatcher $dispatcher,
+        LoggerInterface $logger
     ) {
         $this->environment = $environment;
         $this->em = $em;
         $this->supervisor = $supervisor;
         $this->dispatcher = $dispatcher;
+        $this->logger = $logger;
     }
 
     /**
@@ -143,7 +147,7 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->stopProcess($program_name);
-                Logger::getInstance()->info(
+                $this->logger->info(
                     'Adapter "' . static::class . '" stopped.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );
@@ -168,7 +172,7 @@ abstract class AbstractAdapter
 
             try {
                 $this->supervisor->startProcess($program_name);
-                Logger::getInstance()->info(
+                $this->logger->info(
                     'Adapter "' . static::class . '" started.',
                     ['station_id' => $station->getId(), 'station_name' => $station->getName()]
                 );

@@ -17,6 +17,7 @@ use NowPlaying\Result\Result;
 use PhpIP\IP;
 use PhpIP\IPBlock;
 use Psr\Http\Message\UriInterface;
+use Psr\Log\LoggerInterface;
 use Supervisor\Supervisor;
 
 abstract class AbstractFrontend extends AbstractAdapter
@@ -36,13 +37,14 @@ abstract class AbstractFrontend extends AbstractAdapter
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
+        LoggerInterface $logger,
         AdapterFactory $adapterFactory,
         Client $client,
         Router $router,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\StationMountRepository $stationMountRepo
     ) {
-        parent::__construct($environment, $em, $supervisor, $dispatcher);
+        parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
 
         $this->adapterFactory = $adapterFactory;
         $this->http_client = $client;

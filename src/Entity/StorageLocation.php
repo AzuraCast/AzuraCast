@@ -389,6 +389,8 @@ class StorageLocation
             if (null === $quota || $quota->isGreaterThan($totalSpace)) {
                 return $totalSpace;
             }
+
+            return $quota;
         } elseif (null !== $quota) {
             return $quota;
         }

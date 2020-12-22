@@ -47,9 +47,12 @@ class FlowUploadAction
             try {
                 $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse['path']);
             } catch (CannotProcessMediaException $e) {
-                $logger->error($e->getMessage(), [
-                    'exception' => $e,
-                ]);
+                $logger->error(
+                    $e->getMessageWithPath(),
+                    [
+                        'exception' => $e,
+                    ]
+                );
 
                 return $response->withJson(Entity\Api\Error::fromException($e));
             }
@@ -61,10 +64,12 @@ class FlowUploadAction
                 if (0 === strpos($search_phrase, 'playlist:')) {
                     $playlist_name = substr($search_phrase, 9);
 
-                    $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy([
-                        'station_id' => $station->getId(),
-                        'name' => $playlist_name,
-                    ]);
+                    $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy(
+                        [
+                            'station_id' => $station->getId(),
+                            'name' => $playlist_name,
+                        ]
+                    );
 
                     if ($playlist instanceof Entity\StationPlaylist) {
                         $spmRepo->addMediaToPlaylist($stationMedia, $playlist);

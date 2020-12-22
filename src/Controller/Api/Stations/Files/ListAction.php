@@ -83,6 +83,8 @@ class ListAction
             }
 
             $folders_in_dir_raw = [];
+
+            $unprocessableMediaRaw = [];
         } else {
             // Avoid loading subfolder media.
             $media_query->andWhere('sm.path NOT LIKE :pathWithSubfolders')
@@ -97,6 +99,17 @@ class ListAction
                     AND spf.path LIKE :path
                 DQL
             )->setParameter('station', $station)
+                ->setParameter('path', $currentDir . '%')
+                ->getArrayResult();
+
+            $unprocessableMediaRaw = $em->createQuery(
+                <<<'DQL'
+                    SELECT upm
+                    FROM App\Entity\UnprocessableMedia upm
+                    WHERE upm.storage_location = :storageLocation
+                    AND upm.path LIKE :path
+                DQL
+            )->setParameter('storageLocation', $storageLocation)
                 ->setParameter('path', $currentDir . '%')
                 ->getArrayResult();
         }
@@ -152,13 +165,12 @@ class ListAction
                             'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
                         ]
                     ),
-                    'can_edit' => true,
                     'edit_url' => (string)$router->named(
                         'api:stations:file',
                         ['station_id' => $station->getId(), 'id' => $media_row['id']]
                     ),
                     'play_url' => (string)$router->named(
-                        'api:stations:file:download',
+                        'api:stations:files:play',
                         ['station_id' => $station->getId(), 'id' => $media_row['id']],
                         [],
                         true
@@ -179,6 +191,11 @@ class ListAction
                 'id' => $folder_row['playlist']['id'],
                 'name' => $folder_row['playlist']['name'],
             ];
+        }
+
+        $unprocessableMedia = [];
+        foreach ($unprocessableMediaRaw as $unprocessableRow) {
+            $unprocessableMedia[$unprocessableRow['path']] = $unprocessableRow['error'];
         }
 
         $files = [];
@@ -216,9 +233,21 @@ class ListAction
                 }
             } elseif (isset($media_in_dir[$short])) {
                 $media = $media_in_dir[$short];
+            } elseif (isset($unprocessableMedia[$short])) {
+                $media = [
+                    'name' => __(
+                        'File Not Processed: %s',
+                        Utilities\Strings::truncateText($unprocessableMedia[$short])
+                    ),
+                ];
             } else {
-                $media = ['name' => __('File Not Processed'), 'playlists' => [], 'is_playable' => false];
+                $media = [
+                    'name' => __('File Processing'),
+                ];
             }
+
+            $media['playlists'] ??= [];
+            $media['is_playable'] ??= false;
 
             $max_length = 60;
             $shortname = $meta['basename'];
@@ -233,7 +262,11 @@ class ListAction
                 'path' => $short,
                 'text' => $shortname,
                 'is_dir' => ('dir' === $meta['type']),
-                'can_rename' => true,
+                'download_url' => (string)$router->named(
+                    'api:stations:files:download',
+                    ['station_id' => $station->getId()],
+                    ['file' => $short]
+                ),
                 'rename_url' => (string)$router->named(
                     'api:stations:files:rename',
                     ['station_id' => $station->getId()],

@@ -38,14 +38,19 @@
                             {{ row.item.text }}
                         </a>
                     </template>
-                    <template v-else>
+                    <template v-else-if="row.item.media_play_url">
                         <a class="name" :href="row.item.media_play_url" target="_blank" :title="row.item.name">
                             {{ row.item.media_name }}
                         </a>
                     </template>
+                    <template v-else>
+                        <a class="name" :href="row.item.download_url" target="_blank" :title="row.item.text">
+                            {{ row.item.text }}
+                        </a>
+                    </template>
                     <br>
-                    <small v-if="row.item.is_dir" key="lang_dir" v-translate>Directory</small>
-                    <small v-else>{{ row.item.text }}</small>
+                    <small v-if="row.item.media_play_url">{{ row.item.text }}</small>
+                    <small v-else>{{ row.item.media_name }}</small>
                 </div>
             </template>
             <template v-slot:cell(media_genre)="row">
@@ -68,18 +73,17 @@
                 </template>
             </template>
             <template v-slot:cell(commands)="row">
-                <template v-if="row.item.media_can_edit">
+                <template v-if="row.item.media_edit_url">
                     <b-button size="sm" variant="primary"
                               @click.prevent="edit(row.item.media_edit_url, row.item.media_art_url, row.item.media_play_url, row.item.media_waveform_url)">
                         {{ langEditButton }}
                     </b-button>
                 </template>
-                <template v-else-if="row.item.can_rename">
+                <template v-else>
                     <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
                         {{ langRenameButton }}
                     </b-button>
                 </template>
-                <template v-else>&nbsp;</template>
             </template>
         </data-table>
 

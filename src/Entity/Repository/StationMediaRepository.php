@@ -2,18 +2,17 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
 use App\Environment;
 use App\Exception\CannotProcessMediaException;
-use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
 use App\Flysystem\FilesystemManager;
 use App\Media\MetadataManagerInterface;
 use App\Media\MimeType;
 use App\Service\AudioWaveform;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
@@ -34,6 +33,8 @@ class StationMediaRepository extends Repository
 
     protected StorageLocationRepository $storageLocationRepo;
 
+    protected UnprocessableMediaRepository $unprocessableMediaRepo;
+
     protected MetadataManagerInterface $metadataManager;
 
     protected FilesystemManager $filesystem;
@@ -41,7 +42,7 @@ class StationMediaRepository extends Repository
     protected ImageManager $imageManager;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
@@ -49,6 +50,7 @@ class StationMediaRepository extends Repository
         CustomFieldRepository $customFieldRepo,
         StationPlaylistMediaRepository $spmRepo,
         StorageLocationRepository $storageLocationRepo,
+        UnprocessableMediaRepository $unprocessableMediaRepo,
         FilesystemManager $filesystem,
         ImageManager $imageManager
     ) {
@@ -57,6 +59,7 @@ class StationMediaRepository extends Repository
         $this->customFieldRepo = $customFieldRepo;
         $this->spmRepo = $spmRepo;
         $this->storageLocationRepo = $storageLocationRepo;
+        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
 
         $this->metadataManager = $metadataManager;
         $this->filesystem = $filesystem;
@@ -161,19 +164,30 @@ class StationMediaRepository extends Repository
         $path = FilesystemManager::stripPrefix($path);
 
         $record = $this->findByPath($path, $source);
+        $storageLocation = $this->getStorageLocation($source);
 
         $created = false;
         if (!($record instanceof Entity\StationMedia)) {
-            $storageLocation = $this->getStorageLocation($source);
-
             $record = new Entity\StationMedia($storageLocation, $path);
             $created = true;
         }
 
-        $reprocessed = $this->processMedia($record, $created, $uploadedFrom);
+        try {
+            $reprocessed = $this->processMedia($record, $created, $uploadedFrom);
+        } catch (CannotProcessMediaException $e) {
+            $this->unprocessableMediaRepo->setForPath(
+                $storageLocation,
+                $path,
+                $e->getMessage()
+            );
+
+            throw $e;
+        }
 
         if ($created || $reprocessed) {
             $this->em->flush();
+
+            $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
         }
 
         return $record;
@@ -194,22 +208,22 @@ class StationMediaRepository extends Repository
         ?string $uploadedPath = null
     ): bool {
         $fs = $this->getFilesystem($media);
-        $mediaUri = $media->getPath();
+        $path = $media->getPath();
 
         if (null !== $uploadedPath) {
             try {
                 $this->loadFromFile($media, $uploadedPath);
             } finally {
-                $fs->putFromLocal($uploadedPath, $mediaUri);
+                $fs->putFromLocal($uploadedPath, $path);
             }
 
             $mediaMtime = time();
         } else {
-            if (!$fs->has($mediaUri)) {
-                throw new MediaProcessingException(sprintf('Media path "%s" not found.', $mediaUri));
+            if (!$fs->has($path)) {
+                throw new CannotProcessMediaException(sprintf('Media path "%s" not found.', $path));
             }
 
-            $mediaMtime = (int)$fs->getTimestamp($mediaUri);
+            $mediaMtime = (int)$fs->getTimestamp($path);
 
             // No need to update if all of these conditions are true.
             if (!$force && !$media->needsReprocessing($mediaMtime)) {
@@ -217,9 +231,9 @@ class StationMediaRepository extends Repository
             }
 
             $fs->withLocalFile(
-                $mediaUri,
-                function ($path) use ($media): void {
-                    $this->loadFromFile($media, $path);
+                $path,
+                function ($localPath) use ($media): void {
+                    $this->loadFromFile($media, $localPath);
                 }
             );
         }

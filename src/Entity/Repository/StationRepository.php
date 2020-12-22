@@ -2,6 +2,7 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
@@ -11,7 +12,6 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Sync\Task\CheckMediaTask;
 use App\Utilities;
 use Closure;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
@@ -34,7 +34,7 @@ class StationRepository extends Repository
     protected SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         SettingsRepository $settingsRepo,

@@ -2,17 +2,17 @@
 
 namespace App\Sync\Task;
 
-use Doctrine\ORM\EntityManagerInterface;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractTask
 {
-    protected EntityManagerInterface $em;
+    protected ReloadableEntityManagerInterface $em;
 
     protected LoggerInterface $logger;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {
         $this->em = $em;

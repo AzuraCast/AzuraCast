@@ -2,11 +2,11 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception;
 use App\Radio\Adapters;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
@@ -19,7 +19,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
     protected Adapters $adapters;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Adapters $adapters

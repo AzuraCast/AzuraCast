@@ -2,9 +2,9 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\FilesystemManager;
-use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
@@ -17,7 +17,7 @@ class CheckFolderPlaylistsTask extends AbstractTask
     protected FilesystemManager $filesystem;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationPlaylistFolderRepository $folderRepo,

@@ -2,10 +2,10 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Radio\Adapters;
-use Doctrine\ORM\EntityManagerInterface;
 use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Log\LoggerInterface;
 use Supervisor\Supervisor;
@@ -24,7 +24,7 @@ class RotateLogsTask extends AbstractTask
     protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Environment $environment,
         Adapters $adapters,

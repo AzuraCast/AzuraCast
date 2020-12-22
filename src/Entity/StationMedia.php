@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  *
  * @OA\Schema(type="object")
  */
-class StationMedia implements SongInterface
+class StationMedia implements SongInterface, ProcessableMediaInterface
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -498,9 +498,9 @@ class StationMedia implements SongInterface
         $this->custom_fields = $custom_fields;
     }
 
-    public function needsReprocessing($current_mtime = 0): bool
+    public function needsReprocessing(int $currentFileModifiedTime = 0): bool
     {
-        return $current_mtime > $this->mtime;
+        return $currentFileModifiedTime > $this->mtime;
     }
 
     /**

@@ -2,11 +2,11 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
 use App\Environment;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -17,7 +17,7 @@ class StationPlaylistMediaRepository extends Repository
     protected StationQueueRepository $queueRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
@@ -49,10 +49,12 @@ class StationPlaylistMediaRepository extends Repository
 
         // Only update existing record for random-order playlists.
         if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
-            $record = $this->repository->findOneBy([
-                'media_id' => $media->getId(),
-                'playlist_id' => $playlist->getId(),
-            ]);
+            $record = $this->repository->findOneBy(
+                [
+                    'media_id' => $media->getId(),
+                    'playlist_id' => $playlist->getId(),
+                ]
+            );
         } else {
             $record = null;
         }

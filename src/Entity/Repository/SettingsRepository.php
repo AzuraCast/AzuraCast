@@ -3,12 +3,12 @@
 namespace App\Entity\Repository;
 
 use App\Annotations\AuditLog\AuditIgnore;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Exception\ValidationException;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionObject;
 use Symfony\Component\Cache\CacheItem;
@@ -34,7 +34,7 @@ class SettingsRepository extends Repository
     protected string $entityClass = Entity\SettingsTable::class;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,

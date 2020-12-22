@@ -2,8 +2,8 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class CleanupHistoryTask extends AbstractTask
@@ -15,7 +15,7 @@ class CleanupHistoryTask extends AbstractTask
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\SongHistoryRepository $historyRepo,

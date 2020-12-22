@@ -2,6 +2,7 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Entity\Station;
 use App\Environment;
@@ -14,7 +15,6 @@ use App\Message;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ;
 use DeepCopy\DeepCopy;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Monolog\Logger;
 use NowPlaying\Result\Result;
@@ -50,7 +50,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
     protected RouterInterface $router;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Adapters $adapters,
         AutoDJ $autodj,

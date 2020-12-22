@@ -2,10 +2,10 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Service\IpGeolocation;
 use App\Service\IpGeolocator\GeoLite;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
@@ -24,7 +24,7 @@ class UpdateGeoLiteTask extends AbstractTask
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Client $httpClient,
         IpGeolocation $geoLite,

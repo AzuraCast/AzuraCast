@@ -2,10 +2,10 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\LockFactory;
 use App\Radio\AutoDJ;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class BuildQueueTask extends AbstractTask
@@ -15,7 +15,7 @@ class BuildQueueTask extends AbstractTask
     protected LockFactory $lockFactory;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         AutoDJ $autoDJ,
         LockFactory $lockFactory

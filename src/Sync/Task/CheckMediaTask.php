@@ -23,6 +23,8 @@ class CheckMediaTask extends AbstractTask
 
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
+    protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo;
+
     protected FilesystemManager $filesystem;
 
     protected MessageBus $messageBus;
@@ -34,6 +36,7 @@ class CheckMediaTask extends AbstractTask
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
         FilesystemManager $filesystem,
         MessageBus $messageBus,
         QueueManager $queueManager
@@ -42,6 +45,8 @@ class CheckMediaTask extends AbstractTask
 
         $this->storageLocationRepo = $storageLocationRepo;
         $this->mediaRepo = $mediaRepo;
+        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
+
         $this->filesystem = $filesystem;
         $this->messageBus = $messageBus;
         $this->queueManager = $queueManager;
@@ -112,7 +117,7 @@ class CheckMediaTask extends AbstractTask
             'not_processable' => 0,
         ];
 
-        $music_files = [];
+        $musicFiles = [];
         $total_size = BigInteger::zero();
 
         try {
@@ -149,15 +154,15 @@ class CheckMediaTask extends AbstractTask
                 $total_size = $total_size->plus($file['size']);
             }
 
-            $path_hash = md5($file['path']);
-            $music_files[$path_hash] = $file;
+            $pathHash = md5($file['path']);
+            $musicFiles[$pathHash] = $file;
         }
 
         $storageLocation->setStorageUsed($total_size);
         $this->em->persist($storageLocation);
 
         $stats['total_size'] = $total_size . ' (' . Quota::getReadableSize($total_size) . ')';
-        $stats['total_files'] = count($music_files);
+        $stats['total_files'] = count($musicFiles);
 
         // Check queue for existing pending processing entries.
         $queuedMediaUpdates = [];
@@ -191,20 +196,20 @@ class CheckMediaTask extends AbstractTask
             /** @var Entity\StationMedia $media_row */
 
             // Check if media file still exists.
-            $path_hash = md5($media_row->getPath());
+            $pathHash = md5($media_row->getPath());
 
-            if (isset($music_files[$path_hash])) {
+            if (isset($musicFiles[$pathHash])) {
                 $force_reprocess = false;
                 if (empty($media_row->getUniqueId())) {
                     $media_row->generateUniqueId();
                     $force_reprocess = true;
                 }
 
-                $file_info = $music_files[$path_hash];
+                $fileInfo = $musicFiles[$pathHash];
 
                 if (isset($queuedMediaUpdates[$media_row->getId()])) {
                     $stats['already_queued']++;
-                } elseif ($force_reprocess || $media_row->needsReprocessing($file_info['timestamp'])) {
+                } elseif ($force_reprocess || $media_row->needsReprocessing($fileInfo['timestamp'])) {
                     $message = new Message\ReprocessMediaMessage();
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
@@ -215,7 +220,7 @@ class CheckMediaTask extends AbstractTask
                     $stats['unchanged']++;
                 }
 
-                unset($music_files[$path_hash]);
+                unset($musicFiles[$pathHash]);
             } else {
                 $this->mediaRepo->remove($media_row);
 
@@ -223,19 +228,64 @@ class CheckMediaTask extends AbstractTask
             }
         }
 
+        // Loop through currently unprocessable media.
+        $unprocessableMediaQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT upm FROM App\Entity\UnprocessableMedia upm
+                WHERE upm.storage_location = :storageLocation
+            DQL
+        )->setParameter('storageLocation', $storageLocation);
+
+        $iterator = SimpleBatchIteratorAggregate::fromQuery($unprocessableMediaQuery, 10);
+
+        foreach ($iterator as $unprocessableRow) {
+            /** @var Entity\UnprocessableMedia $unprocessableRow */
+            $pathHash = md5($unprocessableRow->getPath());
+
+            if (isset($musicFiles[$pathHash])) {
+                $fileInfo = $musicFiles[$pathHash];
+
+                if ($unprocessableRow->needsReprocessing($fileInfo['timestamp'])) {
+                    $message = new Message\AddNewMediaMessage();
+                    $message->storage_location_id = $storageLocation->getId();
+                    $message->path = $fileInfo['path'];
+
+                    $this->messageBus->dispatch($message);
+
+                    $stats['updated']++;
+                } else {
+                    $stats['not_processable']++;
+                }
+
+                unset($musicFiles[$pathHash]);
+            } else {
+                $this->unprocessableMediaRepo->clearForPath($storageLocation, $unprocessableRow->getPath());
+            }
+        }
+
+        $storageLocation = $this->em->refetch($storageLocation);
+
         // Create files that do not currently exist.
-        foreach ($music_files as $path_hash => $new_music_file) {
-            if (!MimeType::isPathProcessable($new_music_file['path'])) {
+        foreach ($musicFiles as $pathHash => $newMusicFile) {
+            $path = $newMusicFile['path'];
+            if (!MimeType::isPathProcessable($path)) {
+                $mimeType = MimeType::getMimeTypeFromPath($path);
+
+                $this->unprocessableMediaRepo->setForPath(
+                    $storageLocation,
+                    $path,
+                    sprintf('MIME type "%s" is not processable.', $mimeType)
+                );
+
                 $stats['not_processable']++;
-                continue;
             }
 
-            if (isset($queuedNewFiles[$new_music_file['path']])) {
+            if (isset($queuedNewFiles[$path])) {
                 $stats['already_queued']++;
             } else {
                 $message = new Message\AddNewMediaMessage();
                 $message->storage_location_id = $storageLocation->getId();
-                $message->path = $new_music_file['path'];
+                $message->path = $path;
 
                 $this->messageBus->dispatch($message);
 

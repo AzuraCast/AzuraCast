@@ -9,9 +9,10 @@ class SyncCommand extends CommandAbstract
 {
     public function __invoke(
         Runner $sync,
-        string $task = App\Event\GetSyncTasks::SYNC_NOWPLAYING
+        string $task = App\Event\GetSyncTasks::SYNC_NOWPLAYING,
+        bool $force = false
     ): int {
-        $sync->runSyncTask($task);
+        $sync->runSyncTask($task, $force);
         return 0;
     }
 }

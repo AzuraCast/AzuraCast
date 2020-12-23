@@ -86,7 +86,12 @@ class Runner
             ini_set('log_errors', '1');
         }
 
-        $this->logger->notice(sprintf('Running sync task: %s', $syncInfo['name']));
+        $this->logger->notice(
+            sprintf('Running sync task: %s', $syncInfo['name']),
+            [
+                'force' => $force,
+            ]
+        );
 
         $lock = $this->lockFactory->createLock('sync_' . $type, $syncInfo['timeout']);
 
@@ -108,7 +113,10 @@ class Runner
             $tasks = $event->getTasks();
 
             foreach ($tasks as $taskClass => $task) {
-                if (!$lock->isAcquired()) {
+                if (!$force && !$lock->isAcquired()) {
+                    $this->logger->error(
+                        sprintf('Lock timed out before task %s can run.', $taskClass)
+                    );
                     return;
                 }
 

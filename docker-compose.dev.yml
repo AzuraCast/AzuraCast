@@ -32,4 +32,4 @@ services:
     build:
       context: ../docker-azuracast-radio
     volumes:
-      - ./util/local_ssl:/etc/nginx/certs:ro
+      - ./util/local_ssl:/etc/nginx/certs

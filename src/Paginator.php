@@ -134,7 +134,7 @@ class Paginator
                 $results[] = $postprocessor($result);
             }
         } else {
-            $results = iterator_to_array($iterator);
+            $results = iterator_to_array($iterator, false);
         }
 
         if ($this->isDisabled) {

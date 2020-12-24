@@ -975,6 +975,12 @@ class ConfigWriter implements EventSubscriberInterface
         end
 
         radio = on_metadata(metadata_updated,radio)
+
+        # A metadata-less source of radio for broadcasting OGG streams to prevent premature playback stops
+        # See the following AzuraCast issue: https://github.com/AzuraCast/AzuraCast/issues/3597
+        radio_without_metadata = radio;
+        radio_without_metadata = drop_metadata(merge_tracks(radio_without_metadata))
+        ignore(radio_without_metadata)
         EOF
         );
     }
@@ -1071,7 +1077,14 @@ class ConfigWriter implements EventSubscriberInterface
             $output_params[] = 'protocol="icy"';
         }
 
-        $output_params[] = 'radio';
+        // Opus streams need to use a metadata-less source in order to prevent certain players
+        // like Chromium browsers from stopping the playback after each track
+        // More information about this: https://github.com/AzuraCast/AzuraCast/issues/3597
+        if ($mount->getAutodjFormat() === Entity\StationMountInterface::FORMAT_OPUS) {
+            $output_params[] = 'radio_without_metadata';
+        } else {
+            $output_params[] = 'radio';
+        }
 
         return 'output.icecast(' . implode(', ', $output_params) . ')';
     }

@@ -14,9 +14,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
-- In preparation for the PHP 8.0 update, we have switched our PSR-6/PSR-16 cache implementation to the Symfony Cache
-  component. If you are building a plugin that uses the cache, as long as you are using the PSR cache interfaces, no
-  change will be required.
+- Unprocessable media is now stored in a separate database table along with the date/time processed and the relevant
+  error that prevented the file from being processed. This will prevent a situation where numerous files are non-
+  processable but are processed in every 5-minute sync. AzuraCast will automatically re-check files marked as
+  "unprocessable" if their modified time updates (i.e. the file is reuploaded) or approximately a week passes.
+
+- In preparation for the PHP 8.0 update and for other technical reasons, we have made some library changes:
+
+    - Switched PSR-6/PSR-16 cache implementation to the `symfony/cache` component.
+    - Removed the `studio24/rotate` and replaced with custom implementation for Flysystem.
+    - Switched from custom paginator to the `pagerfanta` library.
+    - Switched from custom image manipulation to the `intervention/image` library.
+    - Switched from custom crawler/bot detection to the `matomo/device-detector` library.
+
+  If you are building a plugin that uses the cache, as long as you are using the PSR interfaces, no change will be
+  required, but other updates may be required to your codebase.
 
 ## Bug Fixes
 

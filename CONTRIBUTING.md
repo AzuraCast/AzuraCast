@@ -12,14 +12,12 @@ If your IDE does not support EditorConfig, the most important standard to rememb
 
 Accessibility, security, and modern best practices are very important in AzuraCast's development. Any newly contributed code can, and should, take advantage of the full suite of new features made available in PHP 7.4 and newer.
  
-Instructions for developing with AzuraCast locally are [available here](https://www.azuracast.com/developers). If you have questions about the guidelines above or about how to contribute to AzuraCast, please create a Github issue, join our [Slack](https://www.azuracast.com/slack) or [Discord server.](https://www.azuracast.com/discord) Please note that support is offered on an 'as available' basis. 
+Instructions for developing with AzuraCast locally are [available here](https://www.azuracast.com/developers). If you have questions about the guidelines above or about how to contribute to AzuraCast, please create a Github issue, join our [Discord server.](https://www.azuracast.com/discord) Please note that support is offered on an 'as available' basis. 
 
 Contributions are also welcome in the supporting technologies used to make AzuraCast possible, such as:
 
  - Dockerfiles (see [our separate repositories](https://github.com/AzuraCast) for Docker containers)
  - [Ansible configuration](https://github.com/AzuraCast/AzuraCast/tree/master/util/ansible) for Ansible installs
- 
-
 
 ## Translating AzuraCast
 

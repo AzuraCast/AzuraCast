@@ -28,7 +28,7 @@ class Paginator
     protected bool $isBootgrid = false;
 
     /** @var bool Whether to show pagination controls. */
-    protected bool $isDisabled = false;
+    protected bool $isDisabled = true;
 
     /** @var callable|null A callable postprocessor that can be run on each result. */
     protected $postprocessor;
@@ -39,19 +39,21 @@ class Paginator
         $this->router = $request->getAttribute(ServerRequest::ATTR_ROUTER);
 
         $params = $request->getQueryParams();
-
-        $this->isDisabled = true;
         $this->isBootgrid = isset($params['rowCount']) || isset($params['searchPhrase']);
 
         if ($this->isBootgrid) {
-            $this->setCurrentPage((int)$params['current']);
-            $this->setPerPage((int)$params['rowCount']);
-        } else {
-            if (isset($params['page'])) {
-                $this->setCurrentPage((int)$params['page']);
+            if (isset($params['rowCount'])) {
+                $this->setPerPage((int)$params['rowCount']);
             }
+            if (isset($params['current'])) {
+                $this->setCurrentPage((int)$params['current']);
+            }
+        } else {
             if (isset($params['per_page'])) {
                 $this->setPerPage((int)$params['per_page']);
+            }
+            if (isset($params['page'])) {
+                $this->setCurrentPage((int)$params['page']);
             }
         }
     }
@@ -122,6 +124,11 @@ class Paginator
 
     public function write(Response $response): ResponseInterface
     {
+        if ($this->isDisabled) {
+            $this->paginator->setCurrentPage(1);
+            $this->paginator->setMaxPerPage(PHP_INT_MAX);
+        }
+
         $iterator = $this->getIterator();
         $total = $this->getCount();
 

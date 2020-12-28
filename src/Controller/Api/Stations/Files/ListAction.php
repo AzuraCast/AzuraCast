@@ -6,6 +6,7 @@ use App\Entity;
 use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Jhofm\FlysystemIterator\Options\Options;
@@ -300,34 +301,7 @@ class ListAction
 
         $result = Utilities\Arrays::arrayOrderBy($result, $sort_by);
 
-        $num_results = count($result);
-
-        $page = (int)($request->getParam('current', 1));
-        $row_count = (int)($request->getParam('rowCount', 15));
-
-        if ($row_count === 0) {
-            $row_count = $num_results;
-        }
-
-        if ($num_results > 0 && $row_count > 0) {
-            $offset_start = ($page - 1) * $row_count;
-            if ($offset_start >= $num_results) {
-                $page = floor($num_results / $row_count);
-                $offset_start = ($page - 1) * $row_count;
-            }
-
-            $return_result = array_slice($result, $offset_start, $row_count);
-        } else {
-            $return_result = [];
-        }
-
-        return $response->withJson(
-            [
-                'current' => $page,
-                'rowCount' => $row_count,
-                'total' => $num_results,
-                'rows' => $return_result,
-            ]
-        );
+        $paginator = Paginator::fromArray($result, $request);
+        return $paginator->write($response);
     }
 }

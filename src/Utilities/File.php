@@ -33,19 +33,12 @@ class File
      *
      * @param string $str
      */
-    public static function sanitizeFileName($str): string
+    public static function sanitizeFileName(string $str): string
     {
-        $str = strip_tags($str);
-        $str = preg_replace('/[\r\n\t ]+/', ' ', $str);
-        $str = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $str);
-        $str = strtolower($str);
-        $str = html_entity_decode($str, ENT_QUOTES, "utf-8");
-        $str = htmlentities($str, ENT_QUOTES, "utf-8");
-        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str);
+        $str = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
+        $str = mb_ereg_replace("([\.]{2,})", '.', $str);
         $str = str_replace(' ', '_', $str);
-        $str = rawurlencode($str);
-        $str = str_replace('%', '-', $str);
-        return $str;
+        return mb_strtolower($str);
     }
 
     public static function generateTempPath(string $pattern = ''): string

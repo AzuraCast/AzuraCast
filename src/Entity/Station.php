@@ -415,7 +415,7 @@ class Station
         $this->name = $this->truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName($name);
+            $this->setShortName(null);
         }
     }
 
@@ -426,13 +426,15 @@ class Station
             : self::getStationShortName($this->name);
     }
 
-    public function setShortName(?string $short_name): void
+    public function setShortName(?string $shortName): void
     {
-        $short_name = trim($short_name);
-        if (!empty($short_name)) {
-            $short_name = self::getStationShortName($short_name);
-            $this->short_name = $this->truncateString($short_name, 100);
+        $shortName = trim($shortName);
+        if (empty($shortName)) {
+            $shortName = $this->name;
         }
+
+        $shortName = self::getStationShortName($shortName);
+        $this->short_name = $this->truncateString($shortName, 100);
     }
 
     public static function getStationShortName(string $str): string

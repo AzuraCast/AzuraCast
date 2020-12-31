@@ -14,6 +14,7 @@ use App\Media\MetadataManagerInterface;
 use App\Media\MimeType;
 use App\Service\AudioWaveform;
 use Exception;
+use Generator;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
 use InvalidArgumentException;
@@ -111,6 +112,18 @@ class StationMediaRepository extends Repository
         );
 
         return $media;
+    }
+
+    public function iteratePaths(array $paths, $source): Generator
+    {
+        $storageLocation = $this->getStorageLocation($source);
+
+        foreach ($paths as $path) {
+            $media = $this->findByPath($path, $storageLocation);
+            if ($media instanceof Entity\StationMedia) {
+                yield $path => $media;
+            }
+        }
     }
 
     /**

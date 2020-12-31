@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\Entity()
  */
-class UnprocessableMedia implements ProcessableMediaInterface
+class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterface
 {
     public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
@@ -41,9 +41,9 @@ class UnprocessableMedia implements ProcessableMediaInterface
     protected $storage_location;
 
     /**
-     * @ORM\Column(name="path", type="string", length=500, nullable=true)
+     * @ORM\Column(name="path", type="string", length=500)
      *
-     * @var string|null The relative path of the media file.
+     * @var string The relative path of the media file.
      */
     protected $path;
 
@@ -78,12 +78,12 @@ class UnprocessableMedia implements ProcessableMediaInterface
         return $this->storage_location;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function setPath(?string $path): void
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }

@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  *
  * @OA\Schema(type="object")
  */
-class StationMedia implements SongInterface, ProcessableMediaInterface
+class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -116,11 +116,11 @@ class StationMedia implements SongInterface, ProcessableMediaInterface
     protected $length_text = '0:00';
 
     /**
-     * @ORM\Column(name="path", type="string", length=500, nullable=true)
+     * @ORM\Column(name="path", type="string", length=500)
      *
      * @OA\Property(example="test.mp3")
      *
-     * @var string|null The relative path of the media file.
+     * @var string The relative path of the media file.
      */
     protected $path;
 
@@ -320,12 +320,12 @@ class StationMedia implements SongInterface, ProcessableMediaInterface
         $this->length_text = $length_text;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function setPath(?string $path = null): void
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }

@@ -103,4 +103,22 @@ class File
 
         return rmdir($source);
     }
+
+    public static function renameDirectoryInPath(string $path, string $fromDir, string $toDir): string
+    {
+        if ('' === $fromDir && '' !== $toDir) {
+            // Just prepend the new directory.
+            return $toDir . '/' . $path;
+        }
+
+        if (0 === \stripos($path, $fromDir)) {
+            $newBasePath = ltrim(substr($path, strlen($fromDir)), '/');
+            if ('' !== $toDir) {
+                return $toDir . '/' . $newBasePath;
+            }
+            return $newBasePath;
+        }
+
+        return $path;
+    }
 }

@@ -9,6 +9,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
 use App\Radio\Backend\Liquidsoap;
+use App\Utilities\File;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Exception;
 use Jhofm\FlysystemIterator\Filter\FilterFactory;
@@ -29,18 +30,22 @@ class BatchAction
 
     protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo;
 
+    protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo;
+
     public function __construct(
         ReloadableEntityManagerInterface $em,
         MessageBus $messageBus,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo
+        Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
+        Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo
     ) {
         $this->em = $em;
         $this->messageBus = $messageBus;
         $this->mediaRepo = $mediaRepo;
         $this->playlistMediaRepo = $playlistMediaRepo;
         $this->playlistFolderRepo = $playlistFolderRepo;
+        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
     }
 
     public function __invoke(
@@ -76,6 +81,7 @@ class BatchAction
             $this->em->clear(Entity\StationMedia::class);
             $this->em->clear(Entity\StationPlaylist::class);
             $this->em->clear(Entity\StationPlaylistMedia::class);
+            $this->em->clear(Entity\UnprocessableMedia::class);
             $this->em->clear(Entity\StationRequest::class);
         }
 
@@ -109,19 +115,30 @@ class BatchAction
             }
         }
 
+        /*
+         * NOTE: This iteration clears the entity manager.
+         */
+        foreach ($this->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessableMedia) {
+            $this->em->remove($unprocessableMedia);
+        }
+
         foreach ($result->files as $file) {
             try {
                 $fs->delete($file);
             } catch (Throwable $e) {
-                $errors[] = $file . ': ' . $e->getMessage();
+                $result->errors[] = $file . ': ' . $e->getMessage();
             }
         }
 
         foreach ($result->directories as $dir) {
+            foreach ($this->iteratePlaylistFoldersInDirectory($station, $dir) as $playlistFolder) {
+                $this->em->remove($playlistFolder);
+            }
+
             try {
                 $fs->deleteDir($dir);
             } catch (Throwable $e) {
-                $errors[] = $dir . ': ' . $e->getMessage();
+                $result->errors[] = $dir . ': ' . $e->getMessage();
             }
         }
 
@@ -211,7 +228,7 @@ class BatchAction
             try {
                 $this->playlistFolderRepo->setPlaylistsForFolder($station, $playlists, $dir);
             } catch (Exception $e) {
-                $errors[] = $dir . ': ' . $e->getMessage();
+                $result->errors[] = $dir . ': ' . $e->getMessage();
             }
         }
 
@@ -233,37 +250,51 @@ class BatchAction
         $from = $request->getParam('currentDirectory', '');
         $to = $request->getParam('directory', '');
 
-        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
-            $oldPath = $media->getPath();
-            $newPath = $this->renamePath($from, $to, $oldPath);
+        $toMove = [
+            $this->iterateMedia($storageLocation, $result->files),
+            $this->iterateUnprocessableMedia($storageLocation, $result->files),
+        ];
 
-            try {
-                if ($fs->rename($oldPath, $newPath)) {
-                    $media->setPath($newPath);
-                    $this->em->persist($media);
+        foreach ($toMove as $iterator) {
+            foreach ($iterator as $record) {
+                /** @var Entity\PathAwareInterface $record */
+                $oldPath = $record->getPath();
+                $newPath = File::renameDirectoryInPath($oldPath, $from, $to);
+
+                try {
+                    if ($fs->rename($oldPath, $newPath)) {
+                        $record->setPath($newPath);
+                        $this->em->persist($record);
+                    }
+                } catch (Throwable $e) {
+                    $result->errors[] = $oldPath . ': ' . $e->getMessage();
                 }
-            } catch (Throwable $e) {
-                $result->errors[] = $oldPath . ': ' . $e->getMessage();
             }
         }
 
         foreach ($result->directories as $dirPath) {
-            $newDirPath = $this->renamePath($from, $to, $dirPath);
+            $newDirPath = File::renameDirectoryInPath($dirPath, $from, $to);
 
-            try {
-                if ($fs->rename($dirPath, $newDirPath)) {
-                    foreach ($this->iteratePlaylistFoldersInDirectory($station, $dirPath) as $playlistFolder) {
-                        $playlistFolder->setPath($this->renamePath($from, $to, $playlistFolder->getPath()));
-                        $this->em->persist($playlistFolder);
-                    }
+            if ($fs->rename($dirPath, $newDirPath)) {
+                $toMove = [
+                    $this->iterateMediaInDirectory($storageLocation, $dirPath),
+                    $this->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
+                    $this->iteratePlaylistFoldersInDirectory($station, $dirPath),
+                ];
 
-                    foreach ($this->iterateMediaInDirectory($storageLocation, $dirPath) as $media) {
-                        $media->setPath($this->renamePath($from, $to, $media->getPath()));
-                        $this->em->persist($media);
+                foreach ($toMove as $iterator) {
+                    foreach ($iterator as $record) {
+                        /** @var Entity\PathAwareInterface $record */
+                        try {
+                            $record->setPath(
+                                File::renameDirectoryInPath($record->getPath(), $from, $to)
+                            );
+                            $this->em->persist($record);
+                        } catch (Throwable $e) {
+                            $result->errors[] = $record->getPath() . ': ' . $e->getMessage();
+                        }
                     }
                 }
-            } catch (Throwable $e) {
-                $result->errors[] = $dirPath . ': ' . $e->getMessage();
             }
         }
 
@@ -278,9 +309,6 @@ class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        /*
-         * NOTE: This iteration clears the entity manager.
-         */
         foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
             try {
                 /** @var Entity\Station $stationRef */
@@ -342,32 +370,11 @@ class BatchAction
      */
     protected function iterateMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
     {
-        $iteration = 0;
-
-        $this->em->beginTransaction();
-
-        try {
-            foreach ($paths as $path) {
-                $iteration++;
-
-                $media = $this->mediaRepo->findByPath($path, $storageLocation);
-                if ($media instanceof Entity\StationMedia) {
-                    yield $path => $media;
-
-                    if (!($iteration % 25)) {
-                        $this->em->flush();
-                        $this->em->clear();
-                    }
-                }
-            }
-        } catch (Throwable $exception) {
-            $this->em->rollback();
-            throw $exception;
-        }
-
-        $this->em->flush();
-        $this->em->clear();
-        $this->em->commit();
+        return SimpleBatchIteratorAggregate::fromTraversableResult(
+            $this->mediaRepo->iteratePaths($paths, $storageLocation),
+            $this->em,
+            25
+        );
     }
 
     /**
@@ -384,6 +391,48 @@ class BatchAction
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
                 AND sm.path LIKE :path
+            DQL
+        )->setParameter('storageLocation', $storageLocation)
+            ->setParameter('path', $dir . '/%');
+
+        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+    }
+
+    /**
+     * Iterate through unprocessable media, while occasionally flushing and clearing the entity manager.
+     *
+     * @note This function flushes the entity manager.
+     *
+     * @param Entity\StorageLocation $storageLocation
+     * @param array $paths
+     *
+     * @return iterable|Entity\UnprocessableMedia[]
+     */
+    protected function iterateUnprocessableMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
+    {
+        return SimpleBatchIteratorAggregate::fromTraversableResult(
+            $this->unprocessableMediaRepo->iteratePaths($paths, $storageLocation),
+            $this->em,
+            25
+        );
+    }
+
+    /**
+     * @param Entity\StorageLocation $storageLocation
+     * @param string $dir
+     *
+     * @return iterable|Entity\UnprocessableMedia[]
+     */
+    protected function iterateUnprocessableMediaInDirectory(
+        Entity\StorageLocation $storageLocation,
+        string $dir
+    ): iterable {
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                SELECT upm
+                FROM App\Entity\UnprocessableMedia upm
+                WHERE upm.storage_location = :storageLocation
+                AND upm.path LIKE :path
             DQL
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
@@ -410,24 +459,6 @@ class BatchAction
             ->setParameter('path', $dir . '%');
 
         return SimpleBatchIteratorAggregate::fromQuery($query, 25);
-    }
-
-    protected function renamePath(string $fromDir, string $toDir, string $path): string
-    {
-        if ('' === $fromDir && '' !== $toDir) {
-            // Just prepend the new directory.
-            return $toDir . '/' . $path;
-        }
-
-        if (0 === \stripos($path, $fromDir)) {
-            $newBasePath = ltrim(substr($path, strlen($fromDir)), '/');
-            if ('' !== $toDir) {
-                return $toDir . '/' . $newBasePath;
-            }
-            return $newBasePath;
-        }
-
-        return $path;
     }
 
     protected function writePlaylistChanges(

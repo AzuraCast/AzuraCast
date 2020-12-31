@@ -4,9 +4,33 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use Generator;
 
 class UnprocessableMediaRepository extends Repository
 {
+    public function findByPath(string $path, Entity\StorageLocation $storageLocation): ?Entity\UnprocessableMedia
+    {
+        /** @var Entity\UnprocessableMedia|null $record */
+        $record = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'path' => $path,
+            ]
+        );
+
+        return $record;
+    }
+
+    public function iteratePaths(array $paths, Entity\StorageLocation $storageLocation): Generator
+    {
+        foreach ($paths as $path) {
+            $record = $this->findByPath($path, $storageLocation);
+            if ($record instanceof Entity\UnprocessableMedia) {
+                yield $path => $record;
+            }
+        }
+    }
+
     public function clearForPath(
         Entity\StorageLocation $storageLocation,
         string $path

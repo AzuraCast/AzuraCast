@@ -20,7 +20,7 @@ echo "(Environment: $APPLICATION_ENV)"
 
 if [ "$APPLICATION_ENV" = "production" ]; then
     if bool "$COMPOSER_PLUGIN_MODE"; then
-        composer update --lock --no-dev --optimize-autoloader
+        composer update --no-dev --optimize-autoloader
     fi
 else
     if [ "$APPLICATION_ENV" = "testing" ]; then

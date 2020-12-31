@@ -258,7 +258,7 @@ class FilesController extends AbstractStationApiCrudController
                 $affected_playlists = [];
 
                 // Remove existing playlists.
-                $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($record);
+                $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($record, $station);
                 $this->em->flush();
 
                 foreach ($media_playlists as $playlist_id => $playlist) {
@@ -369,18 +369,8 @@ class FilesController extends AbstractStationApiCrudController
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        /** @var Entity\StationPlaylist[] $affected_playlists */
-        $affected_playlists = [];
-
-        $media_playlists = $this->playlistMediaRepo->clearPlaylistsFromMedia($record);
-        foreach ($media_playlists as $playlist_id => $playlist) {
-            if (!isset($affected_playlists[$playlist_id])) {
-                $affected_playlists[$playlist_id] = $playlist;
-            }
-        }
-
         // Delete the media file off the filesystem.
-        $this->mediaRepo->remove($record);
+        $affected_playlists = $this->mediaRepo->remove($record);
 
         // Write new PLS playlist configuration.
         foreach ($affected_playlists as $playlist_id => $playlist) {

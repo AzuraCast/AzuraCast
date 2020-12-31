@@ -199,7 +199,7 @@ class BatchAction
          */
         foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
             try {
-                $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media);
+                $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media, $station);
                 foreach ($mediaPlaylists as $playlistId => $playlistRecord) {
                     if (!isset($affectedPlaylists[$playlistId])) {
                         $affectedPlaylists[$playlistId] = $playlistRecord;

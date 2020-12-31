@@ -9,6 +9,7 @@ use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr;
 use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Http\Message\ResponseInterface;
 
@@ -46,28 +47,17 @@ class ListAction
 
         $media_query = $em->createQueryBuilder()
             ->select(
-                'partial sm.{
-                id,
-                unique_id,
-                art_updated_at,
-                path,
-                length,
-                length_text,
-                artist,
-                title,
-                album,
-                genre
-            }'
+                'partial sm.{id, unique_id, art_updated_at, path, length, length_text, '
+                . 'artist, title, album, genre}'
             )
             ->addSelect('partial spm.{id}, partial sp.{id, name}')
             ->addSelect('partial smcf.{id, field_id, value}')
             ->from(Entity\StationMedia::class, 'sm')
             ->leftJoin('sm.custom_fields', 'smcf')
             ->leftJoin('sm.playlists', 'spm')
-            ->leftJoin('spm.playlist', 'sp')
+            ->leftJoin('spm.playlist', 'sp', Expr\Join::WITH, 'sp.station = :station')
             ->where('sm.storage_location = :storageLocation')
             ->andWhere('sm.path LIKE :path')
-            ->andWhere('(sp.station IS NULL OR sp.station = :station)')
             ->setParameter('storageLocation', $station->getMediaStorageLocation())
             ->setParameter('station', $station)
             ->setParameter('path', $pathLike);
@@ -124,10 +114,12 @@ class ListAction
         foreach ($media_in_dir_raw as $media_row) {
             $playlists = [];
             foreach ($media_row['playlists'] as $playlist_row) {
-                $playlists[] = [
-                    'id' => $playlist_row['playlist']['id'],
-                    'name' => $playlist_row['playlist']['name'],
-                ];
+                if (isset($playlist_row['playlist'])) {
+                    $playlists[] = [
+                        'id' => $playlist_row['playlist']['id'],
+                        'name' => $playlist_row['playlist']['name'],
+                    ];
+                }
             }
 
             $custom_fields = [];

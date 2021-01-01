@@ -168,10 +168,7 @@ class CheckMediaTask extends AbstractTask
         $queuedMediaUpdates = [];
         $queuedNewFiles = [];
 
-        $messengerConnection = $this->queueManager->getTransport(QueueManager::QUEUE_MEDIA);
-        foreach ($messengerConnection->all() as $envelope) {
-            $message = $envelope->getMessage();
-
+        foreach ($this->queueManager->getMessagesInTransport(QueueManager::QUEUE_MEDIA) as $message) {
             if ($message instanceof Message\ReprocessMediaMessage) {
                 $queuedMediaUpdates[$message->media_id] = true;
             } elseif (

@@ -7,7 +7,8 @@ use App\Entity;
 use App\Flysystem\Filesystem;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Message\WritePlaylistFileMessage;
+use App\Message;
+use App\MessageQueue\QueueManager;
 use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
@@ -24,6 +25,8 @@ class BatchAction
 
     protected MessageBus $messageBus;
 
+    protected QueueManager $queueManager;
+
     protected Entity\Repository\StationMediaRepository $mediaRepo;
 
     protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo;
@@ -35,6 +38,7 @@ class BatchAction
     public function __construct(
         ReloadableEntityManagerInterface $em,
         MessageBus $messageBus,
+        QueueManager $queueManager,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
@@ -42,6 +46,8 @@ class BatchAction
     ) {
         $this->em = $em;
         $this->messageBus = $messageBus;
+        $this->queueManager = $queueManager;
+
         $this->mediaRepo = $mediaRepo;
         $this->playlistMediaRepo = $playlistMediaRepo;
         $this->playlistFolderRepo = $playlistFolderRepo;
@@ -71,6 +77,10 @@ class BatchAction
 
             case 'queue':
                 $result = $this->doQueue($request, $station, $storageLocation, $fs);
+                break;
+
+            case 'reprocess':
+                $result = $this->doReprocess($request, $station, $storageLocation, $fs);
                 break;
 
             default:
@@ -327,6 +337,56 @@ class BatchAction
         return $result;
     }
 
+    public function doReprocess(
+        ServerRequest $request,
+        Entity\Station $station,
+        Entity\StorageLocation $storageLocation,
+        Filesystem $fs
+    ): Entity\Api\BatchResult {
+        $result = $this->parseRequest($request, $fs, true);
+
+        // Get existing queue items
+        $queuedMediaUpdates = [];
+        $queuedNewFiles = [];
+
+        foreach ($this->queueManager->getMessagesInTransport(QueueManager::QUEUE_MEDIA) as $message) {
+            if ($message instanceof Message\ReprocessMediaMessage) {
+                $queuedMediaUpdates[$message->media_id] = true;
+            } elseif (
+                $message instanceof Message\AddNewMediaMessage
+                && $message->storage_location_id === $storageLocation->getId()
+            ) {
+                $queuedNewFiles[$message->path] = true;
+            }
+        }
+
+        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+            $mediaId = (int)$media->getId();
+
+            if (!isset($queuedMediaUpdates[$mediaId])) {
+                $message = new Message\ReprocessMediaMessage();
+                $message->media_id = $mediaId;
+                $message->force = true;
+
+                $this->messageBus->dispatch($message);
+            }
+        }
+
+        foreach ($this->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
+            $path = $unprocessable->getPath();
+
+            if (!isset($queuedNewFiles[$path])) {
+                $message = new Message\AddNewMediaMessage();
+                $message->storage_location_id = (int)$storageLocation->getId();
+                $message->path = $unprocessable->getPath();
+
+                $this->messageBus->dispatch($message);
+            }
+        }
+
+        return $result;
+    }
+
     protected function parseRequest(
         ServerRequest $request,
         Filesystem $fs,
@@ -471,7 +531,7 @@ class BatchAction
         if ($backend instanceof Liquidsoap) {
             foreach ($playlists as $playlistId => $playlistRow) {
                 // Instruct the message queue to start a new "write playlist to file" task.
-                $message = new WritePlaylistFileMessage();
+                $message = new Message\WritePlaylistFileMessage();
                 $message->playlist_id = $playlistId;
 
                 $this->messageBus->dispatch($message);

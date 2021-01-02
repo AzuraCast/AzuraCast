@@ -75,7 +75,7 @@ return [
                     'radio',
                     [
                         'label' => __('Days of Playback History to Keep'),
-                        'description' => __('Set longer to preserve more playback history for stations. Set shorter to save disk space.'),
+                        'description' => __('Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space. '),
                         'choices' => [
                             14 => __('Last 14 Days'),
                             30 => __('Last 30 Days'),

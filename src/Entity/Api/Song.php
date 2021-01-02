@@ -17,7 +17,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="9f33bbc912c19603e51be8e0987d076b")
      * @var string
      */
-    public string $id;
+    public string $id = '';
 
     /**
      * The song title, usually "Artist - Title"
@@ -25,7 +25,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Chet Porter - Aluko River")
      * @var string
      */
-    public string $text;
+    public string $text = '';
 
     /**
      * The song artist.
@@ -33,7 +33,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Chet Porter")
      * @var string
      */
-    public string $artist;
+    public string $artist = '';
 
     /**
      * The song title.
@@ -41,7 +41,7 @@ class Song implements ResolvableUrlInterface
      * @OA\Property(example="Aluko River")
      * @var string
      */
-    public string $title;
+    public string $title = '';
 
     /**
      * The song album.

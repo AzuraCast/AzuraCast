@@ -5,39 +5,6 @@ namespace App\Utilities;
 class Arrays
 {
     /**
-     * Sort a supplied array (the first argument) by one or more indices, specified in this format:
-     * arrayOrderBy($data, [ 'index_name', SORT_ASC, 'index2_name', SORT_DESC ])
-     *
-     * Internally uses array_multisort().
-     *
-     * @param array $data
-     * @param array $args
-     *
-     * @return mixed
-     */
-    public static function arrayOrderBy($data, array $args = [])
-    {
-        if (empty($args)) {
-            return $data;
-        }
-
-        foreach ($args as $n => $field) {
-            if (is_string($field)) {
-                $tmp = [];
-                foreach ($data as $key => $row) {
-                    $tmp[$key] = $row[$field];
-                }
-                $args[$n] = $tmp;
-            }
-        }
-
-        $args[] = &$data;
-        array_multisort(...$args);
-
-        return array_pop($args);
-    }
-
-    /**
      * Flatten an array from format:
      * [
      *   'user' => [
@@ -65,7 +32,7 @@ class Arrays
         if (!is_array($array)) {
             if (is_object($array)) {
                 // Quick and dirty conversion from object to array.
-                $array = json_decode(json_encode($array, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+                $array = self::objectToArray($array);
             } else {
                 return $array;
             }
@@ -83,5 +50,20 @@ class Arrays
         }
 
         return $return;
+    }
+
+    /**
+     * @param object $source
+     *
+     * @return mixed[]
+     */
+    public static function objectToArray(object $source): array
+    {
+        return json_decode(
+            json_encode($source, JSON_THROW_ON_ERROR),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
     }
 }

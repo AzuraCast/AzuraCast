@@ -8,14 +8,13 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr;
 use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
-
-use const SORT_ASC;
-use const SORT_DESC;
 
 class ListAction
 {
@@ -40,6 +39,8 @@ class ListAction
 
         $currentDir = $request->getParam('currentDirectory', '');
         $searchPhrase = trim($request->getParam('searchPhrase', ''));
+
+        $isInternal = (bool)$request->getParam('internal', false);
 
         $cacheKeyParts = [
             'files_list',
@@ -125,6 +126,56 @@ class ListAction
             $mediaInDir = [];
 
             foreach ($media_in_dir_raw as $media_row) {
+                $media = new Entity\Api\FileListMedia();
+
+                $media->title = (string)$media_row['title'];
+                $media->artist = (string)$media_row['artist'];
+                $media->text = $media_row['artist'] . ' - ' . $media_row['title'];
+                $media->album = (string)$media_row['album'];
+                $media->genre = (string)$media_row['genre'];
+
+                $media->is_playable = ($media_row['length'] !== 0);
+                $media->length = $media_row['length'];
+                $media->length_text = $media_row['length_text'];
+
+                $media->art = (0 === $media_row['art_updated_at'])
+                    ? (string)$stationRepo->getDefaultAlbumArtUrl($station)
+                    : (string)$router->named(
+                        'api:stations:media:art',
+                        [
+                            'station_id' => $station->getId(),
+                            'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
+                        ]
+                    );
+
+                foreach ($media_row['custom_fields'] as $custom_field) {
+                    $media->custom_fields[$custom_field['field_id']] = $custom_field['value'];
+                }
+
+                $media->links = [
+                    'play' => (string)$router->named(
+                        'api:stations:files:play',
+                        ['station_id' => $station->getId(), 'id' => $media_row['id']],
+                        [],
+                        true
+                    ),
+                    'edit' => (string)$router->named(
+                        'api:stations:file',
+                        ['station_id' => $station->getId(), 'id' => $media_row['id']]
+                    ),
+                    'art' => (string)$router->named(
+                        'api:stations:media:art-internal',
+                        ['station_id' => $station->getId(), 'media_id' => $media_row['id']]
+                    ),
+                    'waveform' => (string)$router->named(
+                        'api:stations:media:waveform',
+                        [
+                            'station_id' => $station->getId(),
+                            'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
+                        ]
+                    ),
+                ];
+
                 $playlists = [];
                 foreach ($media_row['playlists'] as $playlist_row) {
                     if (isset($playlist_row['playlist'])) {
@@ -135,54 +186,10 @@ class ListAction
                     }
                 }
 
-                $custom_fields = [];
-                foreach ($media_row['custom_fields'] as $custom_field) {
-                    $custom_fields['custom_' . $custom_field['field_id']] = $custom_field['value'];
-                }
-
-                $artImgSrc = (0 === $media_row['art_updated_at'])
-                    ? (string)$stationRepo->getDefaultAlbumArtUrl($station)
-                    : (string)$router->named(
-                        'api:stations:media:art',
-                        [
-                            'station_id' => $station->getId(),
-                            'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
-                        ]
-                    );
-
                 $mediaInDir[$media_row['path']] = [
-                        'is_playable' => ($media_row['length'] !== 0),
-                        'length' => $media_row['length'],
-                        'length_text' => $media_row['length_text'],
-                        'artist' => $media_row['artist'],
-                        'title' => $media_row['title'],
-                        'album' => $media_row['album'],
-                        'genre' => $media_row['genre'],
-                        'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                        'art' => $artImgSrc,
-                        'art_url' => (string)$router->named(
-                            'api:stations:media:art-internal',
-                            ['station_id' => $station->getId(), 'media_id' => $media_row['id']]
-                        ),
-                        'waveform_url' => (string)$router->named(
-                            'api:stations:media:waveform',
-                            [
-                                'station_id' => $station->getId(),
-                                'media_id' => $media_row['unique_id'] . '-' . $media_row['art_updated_at'],
-                            ]
-                        ),
-                        'edit_url' => (string)$router->named(
-                            'api:stations:file',
-                            ['station_id' => $station->getId(), 'id' => $media_row['id']]
-                        ),
-                        'play_url' => (string)$router->named(
-                            'api:stations:files:play',
-                            ['station_id' => $station->getId(), 'id' => $media_row['id']],
-                            [],
-                            true
-                        ),
-                        'playlists' => $playlists,
-                    ] + $custom_fields;
+                    'media' => $media,
+                    'playlists' => $playlists,
+                ];
             }
 
             $folders_in_dir = [];
@@ -229,84 +236,95 @@ class ListAction
             foreach ($files as $path) {
                 $meta = $fs->getMetadata($path);
 
-                if ('dir' === $meta['type']) {
-                    $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
-
-                    if (isset($folders_in_dir[$path])) {
-                        $media['playlists'] = $folders_in_dir[$path]['playlists'];
-                    }
-                } elseif (isset($mediaInDir[$path])) {
-                    $media = $mediaInDir[$path];
-                } elseif (isset($unprocessableMedia[$path])) {
-                    $media = [
-                        'name' => __(
-                            'File Not Processed: %s',
-                            Utilities\Strings::truncateText($unprocessableMedia[$path])
-                        ),
-                    ];
-                } else {
-                    $media = [
-                        'name' => __('File Processing'),
-                    ];
-                }
-
-                $media['playlists'] ??= [];
-                $media['is_playable'] ??= false;
+                $row = new Entity\Api\FileList();
+                $row->path = $path;
 
                 $max_length = 60;
                 $shortname = $meta['basename'];
                 if (mb_strlen($shortname) > $max_length) {
                     $shortname = mb_substr($shortname, 0, $max_length - 15) . '...' . mb_substr($shortname, -12);
                 }
+                $row->path_short = $shortname;
 
-                $result_row = [
-                    'mtime' => $meta['timestamp'],
-                    'size' => $meta['size'],
-                    'name' => $path,
-                    'path' => $path,
-                    'text' => $shortname,
-                    'is_dir' => ('dir' === $meta['type']),
-                    'download_url' => (string)$router->named(
+                $row->timestamp = $meta['timestamp'];
+                $row->size = $meta['size'];
+                $row->is_dir = ('dir' === $meta['type']);
+
+                $row->media = new Entity\Api\FileListMedia();
+
+                if (isset($mediaInDir[$path])) {
+                    $row->media = $mediaInDir[$path]['media'];
+                    $row->text = $row->media->text;
+                    $row->playlists = (array)$mediaInDir[$path]['playlists'];
+                } elseif ('dir' === $meta['type']) {
+                    $row->text = __('Directory');
+
+                    if (isset($folders_in_dir[$path])) {
+                        $row->playlists = (array)$folders_in_dir[$path]['playlists'];
+                    }
+                } elseif (isset($unprocessableMedia[$path])) {
+                    $row->text = __(
+                        'File Not Processed: %s',
+                        Utilities\Strings::truncateText($unprocessableMedia[$path])
+                    );
+                } else {
+                    $row->text = __('File Processing');
+                }
+
+                $row->links = [
+                    'download' => (string)$router->named(
                         'api:stations:files:download',
                         ['station_id' => $station->getId()],
                         ['file' => $path]
                     ),
-                    'rename_url' => (string)$router->named(
+                    'rename' => (string)$router->named(
                         'api:stations:files:rename',
                         ['station_id' => $station->getId()],
                         ['file' => $path]
                     ),
                 ];
 
-                foreach ($media as $media_key => $media_val) {
-                    $result_row['media_' . $media_key] = $media_val;
-                }
-
-                $result[] = $result_row;
+                $result[] = $row;
             }
 
             $cache->set($cacheKey, $result, 300);
         }
 
-        // Apply sorting
-        $sort = $request->getParam('sort');
-        $sortOrder = ('desc' === strtolower($request->getParam('sortOrder', 'asc')))
-            ? SORT_DESC
-            : SORT_ASC;
+        // Apply array flattening for internal results
+        if ($isInternal) {
+            $result = array_map(
+                function (Entity\Api\FileList $row) {
+                    $playlists = $row->playlists;
+                    $row->playlists = [];
 
-        $sortBy = ['is_dir', SORT_DESC];
+                    $row = Utilities\Arrays::flattenArray($row, '_');
+                    $row['playlists'] = $playlists;
 
-        if (!empty($sort)) {
-            $sortBy[] = $sort;
-            $sortBy[] = $sortOrder;
-        } else {
-            $sortBy[] = 'name';
-            $sortBy[] = SORT_ASC;
+                    return $row;
+                },
+                $result
+            );
         }
 
-        $result = Utilities\Arrays::arrayOrderBy($result, $sortBy);
+        // Apply sorting
+        $resultCollection = new ArrayCollection($result);
 
-        $paginator = Paginator::fromArray($result, $request);
+        $sort = $request->getParam('sort');
+        $sortOrder = ('desc' === strtolower($request->getParam('sortOrder', 'asc')))
+            ? Criteria::DESC
+            : Criteria::ASC;
+
+        $sortBy = ['is_dir' => Criteria::DESC];
+
+        if (!empty($sort)) {
+            $sortBy[$sort] = $sortOrder;
+        } else {
+            $sortBy['path'] = Criteria::ASC;
+        }
+
+        $resultCollection = $resultCollection->matching(Criteria::create()->orderBy($sortBy));
+
+        $paginator = Paginator::fromCollection($resultCollection, $request);
         return $paginator->write($response);
     }
 }

@@ -49,7 +49,7 @@ class FilesController
         $custom_fields = [];
         foreach ($custom_fields_raw as $row) {
             $custom_fields[] = [
-                'display_key' => 'media_custom_' . $row['id'],
+                'display_key' => 'media_custom_fields_' . $row['id'],
                 'key' => $row['short_name'],
                 'label' => $row['name'],
             ];
@@ -57,15 +57,19 @@ class FilesController
 
         $mediaStorage = $station->getMediaStorageLocation();
 
-        return $request->getView()->renderToResponse($response, 'stations/files/index', [
-            'show_sftp' => SftpGo::isSupportedForStation($station),
-            'playlists' => $playlists,
-            'custom_fields' => $custom_fields,
-            'mime_types' => MimeType::getProcessableTypes(),
-            'space_used' => $mediaStorage->getStorageUsed(),
-            'space_total' => $mediaStorage->getStorageAvailable(),
-            'space_percent' => $mediaStorage->getStorageUsePercentage(),
-            'files_count' => $files_count,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/files/index',
+            [
+                'show_sftp' => SftpGo::isSupportedForStation($station),
+                'playlists' => $playlists,
+                'custom_fields' => $custom_fields,
+                'mime_types' => MimeType::getProcessableTypes(),
+                'space_used' => $mediaStorage->getStorageUsed(),
+                'space_total' => $mediaStorage->getStorageAvailable(),
+                'space_percent' => $mediaStorage->getStorageUsePercentage(),
+                'files_count' => $files_count,
+            ]
+        );
     }
 }

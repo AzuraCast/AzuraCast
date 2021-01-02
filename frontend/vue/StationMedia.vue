@@ -20,9 +20,10 @@
                        v-if="row.item.media_art" data-fancybox="gallery">
                         <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
                     </a>
+
                     <template v-if="row.item.media_is_playable">
-                        <a class="file-icon btn-audio" href="#" :data-url="row.item.media_play_url"
-                           @click.prevent="playAudio(row.item.media_play_url)" :title="langPlayPause">
+                        <a class="file-icon btn-audio" href="#" :data-url="row.item.media_links_play"
+                           @click.prevent="playAudio(row.item.media_links_play)" :title="langPlayPause">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>
                     </template>
@@ -32,25 +33,26 @@
                             <i class="material-icons" aria-hidden="true" v-else>note</i>
                         </span>
                     </template>
+
                     <template v-if="row.item.is_dir">
                         <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
                            :title="row.item.name">
-                            {{ row.item.text }}
+                            {{ row.item.path_short }}
                         </a>
                     </template>
-                    <template v-else-if="row.item.media_play_url">
-                        <a class="name" :href="row.item.media_play_url" target="_blank" :title="row.item.name">
-                            {{ row.item.media_name }}
+                    <template v-else-if="row.item.media_is_playable">
+                        <a class="name" :href="row.item.media_links_play" target="_blank" :title="row.item.name">
+                            {{ row.item.text }}
                         </a>
                     </template>
                     <template v-else>
-                        <a class="name" :href="row.item.download_url" target="_blank" :title="row.item.text">
-                            {{ row.item.text }}
+                        <a class="name" :href="row.item.links_download" target="_blank" :title="row.item.text">
+                            {{ row.item.path_short }}
                         </a>
                     </template>
                     <br>
-                    <small v-if="row.item.media_play_url">{{ row.item.text }}</small>
-                    <small v-else>{{ row.item.media_name }}</small>
+                    <small v-if="row.item.media_is_playable">{{ row.item.path_short }}</small>
+                    <small v-else>{{ row.item.text }}</small>
                 </div>
             </template>
             <template v-slot:cell(media_genre)="row">
@@ -66,16 +68,16 @@
                 </template>
             </template>
             <template v-slot:cell(playlists)="row">
-                <template v-for="(playlist, index) in row.item.media_playlists">
+                <template v-for="(playlist, index) in row.item.playlists">
                     <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
                        :title="langPlaylistSelect">{{ playlist.name }}</a>
-                    <span v-if="index+1 < row.item.media_playlists.length">, </span>
+                    <span v-if="index+1 < row.item.playlists.length">, </span>
                 </template>
             </template>
             <template v-slot:cell(commands)="row">
-                <template v-if="row.item.media_edit_url">
+                <template v-if="row.item.media_links_edit">
                     <b-button size="sm" variant="primary"
-                              @click.prevent="edit(row.item.media_edit_url, row.item.media_art_url, row.item.media_play_url, row.item.media_waveform_url)">
+                              @click.prevent="edit(row.item.media_links_edit, row.item.media_links_art, row.item.media_links_play, row.item.media_links_waveform)">
                         {{ langEditButton }}
                     </b-button>
                 </template>
@@ -204,7 +206,7 @@ export default {
         fields.push(
             { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
             {
-                key: 'mtime',
+                key: 'timestamp',
                 label: this.$gettext('Modified'),
                 sortable: true,
                 formatter: (value, key, item) => {

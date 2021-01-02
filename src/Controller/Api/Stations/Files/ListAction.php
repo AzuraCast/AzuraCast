@@ -61,7 +61,7 @@ class ListAction
 
             $media_query = $em->createQueryBuilder()
                 ->select(
-                    'partial sm.{id, unique_id, art_updated_at, path, length, length_text, '
+                    'partial sm.{id, song_id, unique_id, art_updated_at, path, length, length_text, '
                     . 'artist, title, album, genre}'
                 )
                 ->addSelect('partial spm.{id}, partial sp.{id, name}')
@@ -128,6 +128,7 @@ class ListAction
             foreach ($media_in_dir_raw as $media_row) {
                 $media = new Entity\Api\FileListMedia();
 
+                $media->id = (string)$media_row['song_id'];
                 $media->title = (string)$media_row['title'];
                 $media->artist = (string)$media_row['artist'];
                 $media->text = $media_row['artist'] . ' - ' . $media_row['title'];

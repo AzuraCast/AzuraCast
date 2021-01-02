@@ -277,8 +277,8 @@ export default {
 
             this.selectedItems = {
                 all: items,
-                files: _.map(splitItems[1], 'name'),
-                directories: _.map(splitItems[0], 'name')
+                files: _.map(splitItems[1], 'path'),
+                directories: _.map(splitItems[0], 'path')
             };
         },
         onRefreshed () {

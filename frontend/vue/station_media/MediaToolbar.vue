@@ -148,7 +148,7 @@ export default {
                     'dirs': this.selectedItems.directories
                 }).then((resp) => {
                     if (resp.data.success) {
-                        let allItemNames = _.map(this.selectedItems.all, 'name');
+                        let allItemNames = _.map(this.selectedItems.all, 'path_short');
                         notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success', false);
                     } else {
                         notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger');
@@ -191,7 +191,7 @@ export default {
                             ? this.$gettext('Playlists updated for selected files:')
                             : this.$gettext('Playlists cleared for selected files:');
 
-                        let allItemNames = _.map(this.selectedItems.all, 'name');
+                        let allItemNames = _.map(this.selectedItems.all, 'path_short');
                         notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success');
 
                         this.checkedPlaylists = [];

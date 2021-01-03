@@ -92,7 +92,7 @@ export default {
         selectedItems (items) {
             // Get all playlists that are active on ALL selected items.
             let playlistsForItems = _.map(items.all, (item) => {
-                return _.map(item.media_playlists, 'id');
+                return _.map(item.playlists, 'id');
             });
 
             // Check the checkboxes for those playlists.

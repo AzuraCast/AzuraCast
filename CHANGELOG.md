@@ -5,12 +5,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- **Media Manager Improvements:** Two changes have been made to the media manager to improve the user experience and
+- **Media Manager Improvements:** Some changes have been made to the media manager to improve the user experience and
   accessibility:
     - You can now edit the playlists associated with a track from directly within the "Edit" modal dialog box for that
       track.
     - If all tracks/directories selected are in a playlist, that playlist will be checked by default in the "Set
       Playlists" dropdown.
+    - Media uploaded via the Media Manager and Station programmatic names will no longer aggressively escape UTF-8
+      characters, and will instead leave them intact in most cases.
+    - You can now instruct AzuraCast to re-analyze and reprocess the selected media files in the Media Manager.
+
+- The "Duplicate Songs" report has been merged into the Media Manager, so you can take full advantage of the rich
+  filtering and other tools available in the Media Manager when addressing duplicate tracks.
+
+- You can now view all "Unprocessable" media in a single report; this includes non-music files (like images) and any
+  media that has errors that prevent us from processing them.
 
 ## Code Quality/Technical Changes
 
@@ -30,12 +39,17 @@ release channel, you can take advantage of these new features and fixes.
   If you are building a plugin that uses the cache, as long as you are using the PSR interfaces, no change will be
   required, but other updates may be required to your codebase.
 
+- The Docker Utility Script (`./docker.sh`) will now ask before running `docker system prune` post-update.
+
 ## Bug Fixes
 
 - If your browser sends a locale like `fr` instead of `fr_FR`, it will now be supported and detected (#3558).
 
 - Fixed a bug where sometimes changes to media metadata would be saved, only for the next 5-minute synchronization
   process to revert to the previous data (#3553).
+
+- Issues with the Media Manager not showing files correctly when they were shared between stations has been fixed.
+  (#3618)
 
 ---
 

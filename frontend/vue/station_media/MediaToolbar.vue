@@ -41,14 +41,22 @@
                     </b-dropdown-form>
                 </b-dropdown>
             </div>
-            <b-button size="sm" variant="primary" @click="doQueue" v-b-tooltip.hover :title="langQueue">
-                <i class="material-icons" aria-hidden="true">queue_play_next</i>
-                <translate key="lang_btn_queue">Queue</translate>
-            </b-button>
             <b-button size="sm" variant="primary" v-b-modal.move_file>
                 <i class="material-icons" aria-hidden="true">open_with</i>
                 <translate key="lang_btn_move">Move</translate>
             </b-button>
+            <b-dropdown size="sm" variant="default">
+                <template v-slot:button-content>
+                    <i class="material-icons" aria-hidden="true">more_horiz</i> {{ langMore }}
+                </template>
+                <b-dropdown-item @click="doQueue" v-b-tooltip.hover :title="langQueue">
+                    <translate key="lang_btn_queue">Queue</translate>
+                </b-dropdown-item>
+                <b-dropdown-item @click="doReprocess" v-b-tooltip.hover :title="langReprocess">
+                    <translate key="lang_btn_reprocess">Reprocess</translate>
+                </b-dropdown-item>
+            </b-dropdown>
+
             <b-button size="sm" variant="danger" @click="doDelete">
                 <i class="material-icons" aria-hidden="true">delete</i>
                 <translate key="lang_btn_delete">Delete</translate>
@@ -105,8 +113,14 @@ export default {
         langNewPlaylist () {
             return this.$gettext('New Playlist');
         },
+        langMore () {
+            return this.$gettext('More');
+        },
         langQueue () {
             return this.$gettext('Queue the selected media to play next');
+        },
+        langReprocess () {
+            return this.$gettext('Analyze and reprocess the selected media');
         },
         langErrors () {
             return this.$gettext('The request could not be processed.');
@@ -118,6 +132,9 @@ export default {
     methods: {
         doQueue (e) {
             this.doBatch('queue', this.$gettext('Files queued for playback:'));
+        },
+        doReprocess (e) {
+            this.doBatch('reprocess', this.$gettext('Files marked for reprocessing:'));
         },
         doDelete (e) {
             let buttonText = this.$gettext('Delete');

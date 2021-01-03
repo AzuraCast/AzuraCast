@@ -130,15 +130,6 @@ return function (App $app) {
                     )
                         ->setName('stations:reports:performance');
 
-                    $group->get('/duplicates', Controller\Stations\Reports\DuplicatesController::class)
-                        ->setName('stations:reports:duplicates');
-
-                    $group->get(
-                        '/duplicates/delete/{media_id}',
-                        Controller\Stations\Reports\DuplicatesController::class . ':deleteAction'
-                    )
-                        ->setName('stations:reports:duplicates:delete');
-
                     $group->map(['GET', 'POST'], '/listeners', Controller\Stations\Reports\ListenersController::class)
                         ->setName('stations:reports:listeners');
 

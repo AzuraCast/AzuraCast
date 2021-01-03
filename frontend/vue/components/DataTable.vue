@@ -19,7 +19,7 @@
                         <b-btn-group class="actions">
                             <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
                                       :title="langRefreshTooltip">
-                                <i class="material-icons">refresh</i>
+                                <i class="material-icons" aria-hidden="true">refresh</i>
                             </b-button>
                             <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover
                                         :title="langPerPageTooltip">

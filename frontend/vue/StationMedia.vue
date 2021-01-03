@@ -240,16 +240,14 @@ export default {
             searchPhrase: null
         };
     },
+    created () {
+        window.addEventListener('hashchange', this.onHashChange);
+    },
+    destroyed () {
+        window.removeEventListener('hashchange', this.onHashChange);
+    },
     mounted () {
-        // Load directory from URL hash, if applicable.
-        let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
-
-        if (urlHash.substr(0, 9) === 'playlist:') {
-            window.location.hash = '';
-            this.filter(urlHash);
-        } else if (urlHash !== '') {
-            this.changeDirectory(urlHash);
-        }
+        this.onHashChange();
     },
     computed: {
         langAlbumArt () {
@@ -292,6 +290,19 @@ export default {
         },
         onAddPlaylist (row) {
             this.playlists.push(row);
+        },
+        onHashChange () {
+            // Load directory from URL hash, if applicable.
+            let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
+
+            if ('' !== urlHash) {
+                if (urlHash.substr(0, 9) === 'playlist:' || urlHash.substr(0, 8) === 'special:') {
+                    window.location.hash = '';
+                    this.filter(urlHash);
+                } else {
+                    this.changeDirectory(urlHash);
+                }
+            }
         },
         playAudio (url) {
             this.$eventHub.$emit('player_toggle', url);

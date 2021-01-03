@@ -11,7 +11,7 @@
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="icon glyphicon input-group-addon search"></span>
-                            <b-form-input debounce="200" v-model="filter" class="search-field form-control"
+                            <b-form-input debounce="200" v-model="filter" type="search" class="search-field form-control"
                                           :placeholder="langSearch"></b-form-input>
                         </div>
                     </div>
@@ -328,7 +328,6 @@ export default {
             this.refresh();
         },
         relist () {
-            this.filter = null;
             this.flushCache = true;
             this.refresh();
         },

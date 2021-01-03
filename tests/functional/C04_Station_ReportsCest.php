@@ -28,11 +28,6 @@ class C04_Station_ReportsCest extends CestAbstract
         $I->seeResponseCodeIs(200);
         $I->see('Song Listener Impact');
 
-        $I->amOnPage('/station/' . $station_id . '/reports/duplicates');
-
-        $I->seeResponseCodeIs(200);
-        $I->see('No duplicates were found. Nice work!');
-
         $I->amOnPage('/station/' . $station_id . '/reports/requests');
 
         $I->seeResponseCodeIs(200);

@@ -45,6 +45,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Hidden mount points and relays will still be shown on the profile page.
+
 - If your browser sends a locale like `fr` instead of `fr_FR`, it will now be supported and detected (#3558).
 
 - Fixed a bug where sometimes changes to media metadata would be saved, only for the next 5-minute synchronization

@@ -183,6 +183,10 @@ class Icecast extends AbstractFrontend
                 'genre' => $station->getGenre(),
             ];
 
+            if (!$mount_row->isVisibleOnPublicPages()) {
+                $mount['hidden'] = 1;
+            }
+
             if (!empty($mount_row->getFallbackMount())) {
                 $mount['fallback-mount'] = $mount_row->getFallbackMount();
                 $mount['fallback-override'] = 1;
@@ -366,9 +370,9 @@ class Icecast extends AbstractFrontend
 
         if (file_exists($legacy_path)) {
             return $legacy_path;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface

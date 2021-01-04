@@ -23,6 +23,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Mount points that are hidden from public view are also hidden on the Icecast status overview page.
+
 - Unprocessable media is now stored in a separate database table along with the date/time processed and the relevant
   error that prevented the file from being processed. This will prevent a situation where numerous files are non-
   processable but are processed in every 5-minute sync. AzuraCast will automatically re-check files marked as

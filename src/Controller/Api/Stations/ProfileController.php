@@ -13,7 +13,8 @@ class ProfileController
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationScheduleRepository $scheduleRepo,
-        Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator
+        Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
+        Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
@@ -24,6 +25,7 @@ class ProfileController
         $apiResponse = new Entity\Api\StationProfile();
         $apiResponse->fromParentObject($nowPlayingApi);
 
+        $apiResponse->station = ($stationApiGenerator)($station, null, true);
         $apiResponse->cache = 'database';
 
         $apiResponse->services = new Entity\Api\StationServiceStatus(

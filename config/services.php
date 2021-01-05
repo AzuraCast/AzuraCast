@@ -146,11 +146,13 @@ return [
 
     // Redis cache
     Redis::class => function (Environment $environment) {
-        $redis_host = $environment->isDocker() ? 'redis' : 'localhost';
+        $redisHost = $_ENV['REDIS_HOST'] ?? ($environment->isDocker() ? 'redis' : 'localhost');
+        $redisPort = (int)($_ENV['REDIS_PORT'] ?? 6379);
+        $redisDb = (int)($_ENV['REDIS_DB'] ?? 1);
 
         $redis = new Redis();
-        $redis->connect($redis_host, 6379, 15);
-        $redis->select(1);
+        $redis->connect($redisHost, $redisPort, 15);
+        $redis->select($redisDb);
 
         return $redis;
     },

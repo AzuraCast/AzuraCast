@@ -34,7 +34,6 @@ release channel, you can take advantage of these new features and fixes.
   "unprocessable" if their modified time updates (i.e. the file is reuploaded) or approximately a week passes.
 
 - In preparation for the PHP 8.0 update and for other technical reasons, we have made some library changes:
-
     - Switched PSR-6/PSR-16 cache implementation to the `symfony/cache` component.
     - Removed the `studio24/rotate` and replaced with custom implementation for Flysystem.
     - Switched from custom paginator to the `pagerfanta` library.
@@ -45,6 +44,12 @@ release channel, you can take advantage of these new features and fixes.
   required, but other updates may be required to your codebase.
 
 - The Docker Utility Script (`./docker.sh`) will now ask before running `docker system prune` post-update.
+
+- For more advanced setups, you can now set the following environment variables in `azuracast.env` to use a third-party
+  Redis service instead of the one bundled with AzuraCast:
+    - `REDIS_HOST` (default: `redis` for Docker, `localhost` for Ansible)
+    - `REDIS_PORT` (default: 6379)
+    - `REDIS_DB` for the database index (default: 1)
 
 ## Bug Fixes
 

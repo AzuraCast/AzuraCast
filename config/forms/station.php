@@ -24,7 +24,11 @@ $tzSelect = [
     ],
 ];
 
-foreach (DateTimeZone::listIdentifiers((DateTimeZone::ALL ^ DateTimeZone::ANTARCTICA ^ DateTimeZone::UTC)) as $tzIdentifier) {
+foreach (
+    DateTimeZone::listIdentifiers(
+        (DateTimeZone::ALL ^ DateTimeZone::ANTARCTICA ^ DateTimeZone::UTC)
+    ) as $tzIdentifier
+) {
     $tz = new DateTimeZone($tzIdentifier);
     $tzRegion = substr($tzIdentifier, 0, strpos($tzIdentifier, '/')) ?: $tzIdentifier;
     $tzSubregion = str_replace([$tzRegion . '/', '_'], ['', ' '], $tzIdentifier) ?: $tzRegion;
@@ -88,7 +92,9 @@ return [
                     'text',
                     [
                         'label' => __('Web Site URL'),
-                        'description' => __('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.'),
+                        'description' => __(
+                            'Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.'
+                        ),
                         'form_group_class' => 'col-md-6',
                     ],
                 ],
@@ -97,7 +103,9 @@ return [
                     'select',
                     [
                         'label' => __('Time Zone'),
-                        'description' => __('Scheduled playlists and other timed items will be controlled by this time zone.'),
+                        'description' => __(
+                            'Scheduled playlists and other timed items will be controlled by this time zone.'
+                        ),
                         'options' => $tzSelect,
                         'default' => 'UTC',
                         'form_group_class' => 'col-sm-12',
@@ -119,8 +127,10 @@ return [
                 'enable_on_demand' => [
                     'toggle',
                     [
-                        'label' => __('Enable On-Demand Streaming and Downloads'),
-                        'description' => __('If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.'),
+                        'label' => __('Enable On-Demand Streaming'),
+                        'description' => __(
+                            'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.'
+                        ),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -132,8 +142,24 @@ return [
                     'text',
                     [
                         'label' => __('Default Album Art URL'),
-                        'description' => __('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.'),
+                        'description' => __(
+                            'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.'
+                        ),
                         'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'enable_on_demand_download' => [
+                    'toggle',
+                    [
+                        'label' => __('Enable Downloads on On-Demand Page'),
+                        'description' => __(
+                            'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.'
+                        ),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                        'form_group_class' => 'col-sm-6',
                     ],
                 ],
 
@@ -142,7 +168,9 @@ return [
                     [
                         'label' => __('URL Stub'),
                         'label_class' => 'advanced',
-                        'description' => __('Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'),
+                        'description' => __(
+                            'Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'
+                        ),
                         'form_group_class' => 'col-md-6',
                     ],
                 ],
@@ -152,7 +180,9 @@ return [
                     [
                         'label' => __('Number of Recently Played Songs'),
                         'label_class' => 'advanced',
-                        'description' => __('Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.'),
+                        'description' => __(
+                            'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.'
+                        ),
                         'choices' => [
                             0 => __('Disabled'),
                             1 => '1',
@@ -215,7 +245,9 @@ return [
                     [
                         'label' => __('Customize Broadcasting Port'),
                         'label_class' => 'advanced',
-                        'description' => __('No other program can be using this port. Leave blank to automatically assign a port.'),
+                        'description' => __(
+                            'No other program can be using this port. Leave blank to automatically assign a port.'
+                        ),
                         'belongsTo' => 'frontend_config',
                         'form_group_class' => 'col-md-6',
                     ],
@@ -226,7 +258,9 @@ return [
                     [
                         'label' => __('Maximum Listeners'),
                         'label_class' => 'advanced',
-                        'description' => __('Maximum number of total listeners across all streams. Leave blank to use the default (250).'),
+                        'description' => __(
+                            'Maximum number of total listeners across all streams. Leave blank to use the default (250).'
+                        ),
                         'belongsTo' => 'frontend_config',
                         'form_group_class' => 'col-md-6',
                     ],
@@ -239,7 +273,9 @@ return [
                         'label_class' => 'advanced',
                         'belongsTo' => 'frontend_config',
                         'class' => 'text-preformatted',
-                        'description' => __('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
+                        'description' => __(
+                            'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'
+                        ),
                         'form_group_class' => 'col-sm-7',
                     ],
                 ],
@@ -266,7 +302,9 @@ return [
                     'radio',
                     [
                         'label' => __('AutoDJ Service'),
-                        'description' => __('This software shuffles from playlists of music constantly and plays when no other radio source is available.'),
+                        'description' => __(
+                            'This software shuffles from playlists of music constantly and plays when no other radio source is available.'
+                        ),
                         'options' => $backend_types,
                         'default' => Adapters::DEFAULT_BACKEND,
                     ],
@@ -286,7 +324,9 @@ return [
                     [
                         'label' => __('Crossfade Method'),
                         'belongsTo' => 'backend_config',
-                        'description' => __('Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.'),
+                        'description' => __(
+                            'Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.'
+                        ),
                         'choices' => [
                             StationBackendConfiguration::CROSSFADE_SMART => __('Smart Mode'),
                             StationBackendConfiguration::CROSSFADE_NORMAL => __('Normal Mode'),
@@ -316,7 +356,9 @@ return [
                     [
                         'label' => __('Apply Compression and Normalization'),
                         'belongsTo' => 'backend_config',
-                        'description' => __('Compress and normalize your station\'s audio, producing a more uniform and "full" sound.'),
+                        'description' => __(
+                            'Compress and normalize your station\'s audio, producing a more uniform and "full" sound.'
+                        ),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -328,7 +370,9 @@ return [
                     'toggle',
                     [
                         'label' => __('Allow Song Requests'),
-                        'description' => __('Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.'),
+                        'description' => __(
+                            'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.'
+                        ),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -340,7 +384,9 @@ return [
                     'number',
                     [
                         'label' => __('Request Minimum Delay (Minutes)'),
-                        'description' => __('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.'),
+                        'description' => __(
+                            'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.'
+                        ),
                         'default' => Station::DEFAULT_REQUEST_DELAY,
                         'min' => '0',
                         'max' => '1440',
@@ -352,7 +398,9 @@ return [
                     'number',
                     [
                         'label' => __('Request Last Played Threshold (Minutes)'),
-                        'description' => __('If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.'),
+                        'description' => __(
+                            'If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.'
+                        ),
                         'default' => Station::DEFAULT_REQUEST_THRESHOLD,
                         'min' => '0',
                         'max' => '1440',
@@ -364,7 +412,9 @@ return [
                     'toggle',
                     [
                         'label' => __('Allow Streamers / DJs'),
-                        'description' => __('If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
+                        'description' => __(
+                            'If enabled, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'
+                        ),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -376,7 +426,9 @@ return [
                     'toggle',
                     [
                         'label' => __('Record Live Broadcasts'),
-                        'description' => __('If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.'),
+                        'description' => __(
+                            'If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.'
+                        ),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -425,7 +477,9 @@ return [
                     'number',
                     [
                         'label' => __('Deactivate Streamer on Disconnect (Seconds)'),
-                        'description' => __('Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely.'),
+                        'description' => __(
+                            'Number of seconds to deactivate station streamer on manual disconnect. Set to 0 to disable deactivation completely.'
+                        ),
                         'default' => 0,
                         'min' => '0',
                         'step' => '1',
@@ -438,7 +492,9 @@ return [
                     [
                         'label' => __('Customize DJ/Streamer Port'),
                         'label_class' => 'advanced',
-                        'description' => __('No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.'),
+                        'description' => __(
+                            'No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.'
+                        ),
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-6',
                     ],
@@ -449,7 +505,9 @@ return [
                     [
                         'label' => __('Customize Internal Request Processing Port'),
                         'label_class' => 'advanced',
-                        'description' => __('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'),
+                        'description' => __(
+                            'This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'
+                        ),
                         'belongsTo' => 'backend_config',
                         'form_group_class' => 'col-md-6',
                     ],
@@ -459,7 +517,9 @@ return [
                     'number',
                     [
                         'label' => __('DJ/Streamer Buffer Time (Seconds)'),
-                        'description' => __('The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'),
+                        'description' => __(
+                            'The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'
+                        ),
                         'default' => 5,
                         'min' => 0,
                         'max' => 60,
@@ -474,7 +534,9 @@ return [
                     [
                         'label' => __('Customize DJ/Streamer Mount Point'),
                         'label_class' => 'advanced',
-                        'description' => __('If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.'),
+                        'description' => __(
+                            'If your streaming software requires a specific mount point path, specify it here. Otherwise, use the default.'
+                        ),
                         'belongsTo' => 'backend_config',
                         'default' => '/',
                         'form_group_class' => 'col-md-6',
@@ -487,7 +549,9 @@ return [
                         'label' => __('Use Replaygain Metadata'),
                         'label_class' => 'advanced',
                         'belongsTo' => 'backend_config',
-                        'description' => __('Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.'),
+                        'description' => __(
+                            'Instruct Liquidsoap to use any replaygain metadata associated with a song to control its volume level.'
+                        ),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -499,7 +563,9 @@ return [
                     'number',
                     [
                         'label' => __('AutoDJ Queue Length'),
-                        'description' => __('If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.'),
+                        'description' => __(
+                            'If using AzuraCast\'s AutoDJ, this determines how many songs in advance the AutoDJ will automatically fill the queue.'
+                        ),
                         'default' => StationBackendConfiguration::DEFAULT_QUEUE_LENGTH,
                         'min' => 1,
                         'max' => 25,
@@ -513,7 +579,9 @@ return [
                     [
                         'label' => __('Manual AutoDJ Mode'),
                         'label_class' => 'advanced',
-                        'description' => __('This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
+                        'description' => __(
+                            'This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'
+                        ),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -527,7 +595,9 @@ return [
                     [
                         'label' => __('Character Set Encoding'),
                         'label_class' => 'advanced',
-                        'description' => __('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.'),
+                        'description' => __(
+                            'For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.'
+                        ),
                         'belongsTo' => 'backend_config',
                         'default' => 'UTF-8',
                         'choices' => [
@@ -542,7 +612,9 @@ return [
                     'number',
                     [
                         'label' => __('Duplicate Prevention Time Range (Minutes)'),
-                        'description' => __('This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.'),
+                        'description' => __(
+                            'This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.'
+                        ),
                         'belongsTo' => 'backend_config',
                         'default' => StationBackendConfiguration::DEFAULT_DUPLICATE_PREVENTION_TIME_RANGE,
                         'min' => '0',
@@ -576,7 +648,9 @@ return [
                     [
                         'label' => __('Base Station Directory'),
                         'label_class' => 'advanced',
-                        'description' => __('The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'),
+                        'description' => __(
+                            'The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'
+                        ),
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

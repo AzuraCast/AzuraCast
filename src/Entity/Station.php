@@ -257,6 +257,14 @@ class Station
     protected $enable_on_demand = false;
 
     /**
+     * @ORM\Column(name="enable_on_demand_download", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
+     * @var bool Whether the "on-demand" page offers download capability.
+     */
+    protected $enable_on_demand_download = true;
+
+    /**
      * @ORM\Column(name="needs_restart", type="boolean")
      *
      * @AuditLog\AuditIgnore()
@@ -857,6 +865,16 @@ class Station
     public function setEnableOnDemand(bool $enable_on_demand): void
     {
         $this->enable_on_demand = $enable_on_demand;
+    }
+
+    public function getEnableOnDemandDownload(): bool
+    {
+        return $this->enable_on_demand_download;
+    }
+
+    public function setEnableOnDemandDownload(bool $enable_on_demand_download): void
+    {
+        $this->enable_on_demand_download = $enable_on_demand_download;
     }
 
     public function isEnabled(): bool

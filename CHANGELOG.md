@@ -21,6 +21,9 @@ release channel, you can take advantage of these new features and fixes.
 - You can now view all "Unprocessable" media in a single report; this includes non-music files (like images) and any
   media that has errors that prevent us from processing them.
 
+- You can disable the "Download" button on the "On-Demand" media page while leaving streaming enabled by editing the
+  station profile.
+
 ## Code Quality/Technical Changes
 
 - Mount points that are hidden from public view are also hidden on the Icecast status overview page.

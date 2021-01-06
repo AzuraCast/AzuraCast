@@ -279,7 +279,7 @@ class ListAction
                 }
                 $row->path_short = $shortname;
 
-                $row->timestamp = $meta['timestamp'];
+                $row->timestamp = $meta['timestamp'] ?? 0;
                 $row->size = $meta['size'];
                 $row->is_dir = ('dir' === $meta['type']);
 

@@ -5,7 +5,7 @@ namespace App\Notification\Check;
 use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
-use App\Notification\Notification;
+use App\Session\Flash;
 use App\Sync\Runner;
 
 class SyncTaskCheck
@@ -50,19 +50,18 @@ class SyncTaskCheck
                 $router = $request->getRouter();
                 $backupUrl = $router->named('admin:debug:sync', ['type' => $taskKey]);
 
-                $event->addNotification(
-                    new Notification(
-                        __('Synchronized Task Not Recently Run'),
-                        // phpcs:disable Generic.Files.LineLength
-                        __(
-                            'The "%s" synchronization task has not run recently. This may indicate an error with your installation. <a href="%s" target="_blank">Manually run the task</a> to check for errors.',
-                            $task['name'],
-                            $backupUrl
-                        ),
-                        // phpcs:enable
-                        Notification::ERROR
-                    )
+                // phpcs:disable Generic.Files.LineLength
+                $notification = new Entity\Api\Notification();
+                $notification->title = __('Synchronized Task Not Recently Run');
+                $notification->body = __(
+                    'The "%s" synchronization task has not run recently. This may indicate an error with your installation. <a href="%s" target="_blank">Manually run the task</a> to check for errors.',
+                    $task['name'],
+                    $backupUrl
                 );
+                $notification->type = Flash::ERROR;
+                // phpcs:enable
+
+                $event->addNotification($notification);
             }
         }
     }

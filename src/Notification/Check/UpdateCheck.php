@@ -5,7 +5,7 @@ namespace App\Notification\Check;
 use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
-use App\Notification\Notification;
+use App\Session\Flash;
 use App\Version;
 
 class UpdateCheck
@@ -63,17 +63,16 @@ class UpdateCheck
                 $instructions_string,
             ];
 
-            $event->addNotification(
-                new Notification(
-                    __('New AzuraCast Release Version Available'),
-                    implode(' ', $notification_parts),
-                    Notification::INFO
-                )
-            );
+            $notification = new Entity\Api\Notification();
+            $notification->title = __('New AzuraCast Release Version Available');
+            $notification->body = implode(' ', $notification_parts);
+            $notification->type = Flash::INFO;
+
+            $event->addNotification($notification);
             return;
         }
 
-        if (Version::RELEASE_CHANNEL_ROLLING === $releaseChannel && $updateData['needs_rolling_update']) {
+        if (Version::RELEASE_CHANNEL_ROLLING === $releaseChannel) { // } && $updateData['needs_rolling_update']) {
             $notification_parts = [];
             if ($updateData['rolling_updates_available'] < 15 && !empty($updateData['rolling_updates_list'])) {
                 $notification_parts[] = __('The following improvements have been made since your last update:');
@@ -93,13 +92,12 @@ class UpdateCheck
 
             $notification_parts[] = $instructions_string;
 
-            $event->addNotification(
-                new Notification(
-                    __('New AzuraCast Updates Available'),
-                    implode(' ', $notification_parts),
-                    Notification::INFO
-                )
-            );
+            $notification = new Entity\Api\Notification();
+            $notification->title = __('New AzuraCast Updates Available');
+            $notification->body = implode(' ', $notification_parts);
+            $notification->type = Flash::INFO;
+
+            $event->addNotification($notification);
             return;
         }
     }

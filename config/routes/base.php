@@ -6,13 +6,13 @@ use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
-    $app->get('/', Controller\Frontend\IndexController::class . ':indexAction')
+    $app->get('/', Controller\Frontend\IndexAction::class)
         ->setName('home');
 
     $app->group(
         '',
         function (RouteCollectorProxy $group) {
-            $group->get('/dashboard', Controller\Frontend\DashboardController::class . ':indexAction')
+            $group->get('/dashboard', Controller\Frontend\DashboardAction::class)
                 ->setName('dashboard');
 
             $group->get('/logout', Controller\Frontend\Account\LogoutAction::class)

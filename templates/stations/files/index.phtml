@@ -1,23 +1,28 @@
 <?php
+
 /** @var \App\Assets $assets */
-$this->layout('main', [
-    'title' => __('Music Files'),
-    'manual' => true,
-    'page_class' => 'page-file-manager',
-]);
+$this->layout(
+    'main',
+    [
+        'title' => __('Music Files'),
+        'manual' => true,
+        'page_class' => 'page-file-manager',
+    ]
+);
 
 $assets
-    ->load('vue')
-    ->load('moment')
-    ->load('fancybox')
-    ->load('InlinePlayer')
     ->load('StationMedia')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
-    ->addInlineJs($this->fetch('stations/files/index.js', [
-        'playlists' => $playlists,
-        'custom_fields' => $custom_fields,
-        'mime_types' => $mime_types,
-    ]));
+    ->addInlineJs(
+        $this->fetch(
+            'stations/files/index.js',
+            [
+                'playlists' => $playlists,
+                'custom_fields' => $custom_fields,
+                'mime_types' => $mime_types,
+            ]
+        )
+    );
 ?>
 
 <div class="row">
@@ -29,7 +34,8 @@ $assets
                         <h2 class="card-title"><?=__('Music Files')?></h2>
                     </div>
                     <div class="col-md-5 text-right text-white-50">
-                        <?php if ($space_total): ?>
+                        <?php
+                        if ($space_total): ?>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent?>"
                                      aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent?>%;">
@@ -37,13 +43,16 @@ $assets
                                 </div>
                             </div>
                             <?=__('%s of %s Used (%d Files)', $space_used, $space_total, $files_count)?>
-                        <?php else: ?>
+                        <?php
+                        else: ?>
                             <?=__('%s Used (%d Files)', $space_used, $files_count)?>
-                        <?php endif; ?>
+                        <?php
+                        endif; ?>
                     </div>
                 </div>
             </div>
-            <?php if ($show_sftp): ?>
+            <?php
+            if ($show_sftp): ?>
                 <div class="card-body alert-info d-flex align-items-center" role="alert">
                     <div class="flex-shrink-0 mr-2">
                         <i class="material-icons" aria-hidden="true">info</i>
@@ -60,7 +69,8 @@ $assets
                         </a>
                     </div>
                 </div>
-            <?php endif; ?>
+            <?php
+            endif; ?>
 
             <div id="media-manager"></div>
         </div>

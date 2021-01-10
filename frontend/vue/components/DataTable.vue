@@ -56,7 +56,8 @@
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                      :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
-                     :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide" :no-provider-filtering="handleClientSide"
+                     :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
+                     :no-provider-filtering="handleClientSide"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
                 <template v-slot:head(selected)="data">
@@ -182,15 +183,14 @@ export default {
     data () {
         let allFields = [];
         _.forEach(this.fields, function (field) {
-            allFields.push({
-                key: field.key,
-                label: _.defaultTo(field.label, ''),
-                isRowHeader: _.defaultTo(field.isRowHeader, false),
-                sortable: _.defaultTo(field.sortable, false),
-                selectable: _.defaultTo(field.selectable, false),
-                visible: _.defaultTo(field.visible, true),
-                formatter: _.defaultTo(field.formatter, null)
-            });
+            allFields.push(_.defaults(_.clone(field), {
+                label: '',
+                isRowHeader: false,
+                sortable: false,
+                selectable: false,
+                visible: true,
+                formatter: null
+            }));
         });
 
         return {

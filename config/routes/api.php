@@ -38,6 +38,25 @@ return function (App $app) {
                 ->setName('api:index:time');
 
             $group->group(
+                '/frontend',
+                function (RouteCollectorProxy $group) {
+                    $group->group(
+                        '/dashboard',
+                        function (RouteCollectorProxy $group) {
+                            $group->get('/charts', Controller\Api\Frontend\Dashboard\ChartsAction::class)
+                                ->setName('api:frontend:dashboard:charts');
+
+                            $group->get('/notifications', Controller\Api\Frontend\Dashboard\NotificationsAction::class)
+                                ->setName('api:frontend:dashboard:notifications');
+
+                            $group->get('/stations', Controller\Api\Frontend\Dashboard\StationsAction::class)
+                                ->setName('api:frontend:dashboard:stations');
+                        }
+                    );
+                }
+            )->add(Middleware\RequireLogin::class);
+
+            $group->group(
                 '/internal',
                 function (RouteCollectorProxy $group) {
                     $group->group(

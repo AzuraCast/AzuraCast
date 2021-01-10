@@ -1,37 +1,31 @@
 <?php
-$station_ids = [];
-foreach ($stations['stations'] as $station) {
-    $station_ids[] = urlencode($station['station']['short_name']);
-}
+/**
+ * @var \App\Entity\User $user
+ * @var \App\Http\Router $router
+ */
+
+$props = [
+    'userName' => $user->getName() ?? __('AzuraCast User'),
+    'userEmail' => $user->getEmail(),
+    'userAvatar' => $user->getAvatar(64),
+    'profileUrl' => (string)$router->named('profile:index'),
+    'adminUrl' => (string)$router->named('admin:index:index'),
+    'showAdmin' => $showAdmin,
+    'notificationsUrl' => (string)$router->named('api:frontend:dashboard:notifications'),
+    'showCharts' => $showCharts,
+    'chartsUrl' => (string)$router->named('api:frontend:dashboard:charts'),
+    'addStationUrl' => (string)$router->named('admin:stations:add'),
+    'stationsUrl' => (string)$router->named('api:frontend:dashboard:stations'),
+];
 ?>
 
-var station_dashboard;
-
 $(function () {
-  station_dashboard = new Vue({
-    el: '#station_dashboard',
-    data: <?=json_encode($stations) ?>,
-    methods: {
-      toggle: function (url) {
-        this.$eventHub.$emit('player_toggle', url);
-      }
-    }
-  });
-});
-
-$(function () {
-  setTimeout(loadNowPlaying, 15000);
-});
-
-function loadNowPlaying () {
-  $.getJSON('<?=$router->named('api:nowplaying:index') ?>', function (data) {
-    $.each(data, function (k, row) {
-      var station_id = row.station.id;
-      station_dashboard['stations'][station_id]['np'] = row;
+    let dashboard = new Vue({
+        el: '#dashboard',
+        render: function (createElement) {
+            return createElement(Dashboard.default, {
+                props: <?=json_encode($props) ?>
+            });
+        }
     });
-
-    setTimeout(loadNowPlaying, 15000);
-  }).fail(function () {
-    setTimeout(loadNowPlaying, 30000);
-  });
-}
+});

@@ -6,7 +6,6 @@
 
 <script>
 import _ from 'lodash';
-import Chart from 'chart.js';
 
 export default {
     name: 'TimeSeriesChart',
@@ -16,67 +15,72 @@ export default {
         data: Array
     },
     data () {
-        let chartOptions = _.defaultsDeep(_.clone(this.options), {
-            type: 'line',
-            data: {
-                datasets: this.data
-            },
-            aspectRatio: 4,
-            plugins: {
-                colorschemes: {
-                    scheme: 'tableau.Tableau20'
-                }
-            },
-            scales: {
-                xAxes: [{
-                    type: 'time',
-                    distribution: 'linear',
-                    time: {
-                        unit: 'day'
-                    },
-                    ticks: {
-                        source: 'data',
-                        autoSkip: true
-                    }
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: this.$gettext('Listeners')
-                    },
-                    ticks: {
-                        min: 0
-                    }
-                }]
-            },
-            tooltips: {
-                intersect: false,
-                mode: 'index',
-                callbacks: {
-                    label: function (tooltipItem, myData) {
-                        let label = myData.datasets[tooltipItem.datasetIndex].label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += parseFloat(tooltipItem.value).toFixed(2);
-                        return label;
-                    }
-                }
-            }
-        });
-
         return {
-            chartOptions: chartOptions,
             _chart: null
         };
     },
     mounted () {
+        Chart.platform.disableCSSInjection = true;
+
         this.renderChart();
     },
     methods: {
         renderChart () {
+            const defaultOptions = {
+                type: 'line',
+                data: {
+                    datasets: this.data
+                },
+                options: {
+                    aspectRatio: 3,
+                    plugins: {
+                        colorschemes: {
+                            scheme: 'tableau.Tableau20'
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            distribution: 'linear',
+                            time: {
+                                unit: 'day'
+                            },
+                            ticks: {
+                                source: 'data',
+                                autoSkip: true
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: this.$gettext('Listeners')
+                            },
+                            ticks: {
+                                min: 0
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        intersect: false,
+                        mode: 'index',
+                        callbacks: {
+                            label: function (tooltipItem, myData) {
+                                let label = myData.datasets[tooltipItem.datasetIndex].label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += parseFloat(tooltipItem.value).toFixed(2);
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
             if (this._chart) this._chart.destroy();
-            this._chart = new Chart(this.$refs.canvas.getContext('2d'), this.chartOptions);
+
+            let chartOptions = _.defaultsDeep(_.clone(this.options), defaultOptions);
+            this._chart = new Chart(this.$refs.canvas.getContext('2d'), chartOptions);
         }
     },
     beforeDestroy () {

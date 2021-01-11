@@ -27,19 +27,18 @@ class ChartsAction
                 ->withJson(new Entity\Api\Error(403, 'Analytics are disabled for this installation.'));
         }
 
-        $user = $request->getUser();
         $acl = $request->getAcl();
 
         // Don't show stations the user can't manage.
-        $showAdmin = $acl->userAllowed($user, Acl::GLOBAL_VIEW);
+        $showAdmin = $acl->isAllowed(Acl::GLOBAL_VIEW);
 
         /** @var Entity\Station[] $stations */
         $stations = array_filter(
             $em->getRepository(Entity\Station::class)->findAll(),
-            function ($station) use ($user, $acl) {
+            function ($station) use ($acl) {
                 /** @var Entity\Station $station */
                 return $station->isEnabled() &&
-                    $acl->userAllowed($user, Acl::STATION_VIEW, $station->getId());
+                    $acl->isAllowed(Acl::STATION_VIEW, $station->getId());
             }
         );
 

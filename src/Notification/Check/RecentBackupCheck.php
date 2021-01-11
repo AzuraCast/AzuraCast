@@ -28,7 +28,7 @@ class RecentBackupCheck
         // This notification is for backup administrators only.
         $request = $event->getRequest();
         $acl = $request->getAcl();
-        if (!$acl->userAllowed($request->getUser(), Acl::GLOBAL_BACKUPS)) {
+        if (!$acl->isAllowed(Acl::GLOBAL_BACKUPS)) {
             return;
         }
 

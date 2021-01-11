@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Acl;
 use App\Config;
 use App\Entity;
 use App\Environment;
@@ -31,7 +30,6 @@ class StationCloneForm extends StationForm
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Acl $acl,
         Configuration $configuration,
         CheckMediaTask $media_sync,
         Config $config,
@@ -44,7 +42,6 @@ class StationCloneForm extends StationForm
             $validator,
             $station_repo,
             $storageLocationRepo,
-            $acl,
             $config,
             $environment
         );

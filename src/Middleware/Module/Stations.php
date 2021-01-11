@@ -2,6 +2,7 @@
 
 namespace App\Middleware\Module;
 
+use App\Environment;
 use App\Event;
 use App\EventDispatcher;
 use App\Http\ServerRequest;
@@ -17,9 +18,12 @@ class Stations
 {
     protected EventDispatcher $dispatcher;
 
-    public function __construct(EventDispatcher $dispatcher)
+    protected Environment $environment;
+
+    public function __construct(EventDispatcher $dispatcher, Environment $environment)
     {
         $this->dispatcher = $dispatcher;
+        $this->environment = $environment;
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
@@ -30,16 +34,15 @@ class Stations
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
 
-        $view->addData([
-            'station' => $station,
-            'frontend' => $frontend,
-            'backend' => $backend,
-        ]);
+        $view->addData(
+            [
+                'station' => $station,
+                'frontend' => $frontend,
+                'backend' => $backend,
+            ]
+        );
 
-        $user = $request->getUser();
-        $router = $request->getRouter();
-
-        $event = new Event\BuildStationMenu($request->getAcl(), $user, $router, $station, $backend, $frontend);
+        $event = new Event\BuildStationMenu($request, $this->environment, $station);
         $this->dispatcher->dispatch($event);
 
         $active_tab = null;
@@ -50,12 +53,17 @@ class Stations
             $active_tab = $route_parts[1];
         }
 
-        $view->addData([
-            'sidebar' => $view->render('stations/sidebar', [
-                'menu' => $event->getFilteredMenu(),
-                'active' => $active_tab,
-            ]),
-        ]);
+        $view->addData(
+            [
+                'sidebar' => $view->render(
+                    'stations/sidebar',
+                    [
+                        'menu' => $event->getFilteredMenu(),
+                        'active' => $active_tab,
+                    ]
+                ),
+            ]
+        );
 
         return $handler->handle($request);
     }

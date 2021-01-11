@@ -23,7 +23,7 @@ class ComposeVersionCheck
         // This notification is for full administrators only.
         $request = $event->getRequest();
         $acl = $request->getAcl();
-        if (!$acl->userAllowed($request->getUser(), Acl::GLOBAL_ALL)) {
+        if (!$acl->isAllowed(Acl::GLOBAL_ALL)) {
             return;
         }
 

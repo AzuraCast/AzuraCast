@@ -20,7 +20,6 @@ class IndexController
         Environment $environment
     ): ResponseInterface {
         $view = $request->getView();
-        $user = $request->getUser();
 
         // Remove the sidebar on the homepage.
         $view->addData(['sidebar' => null]);
@@ -28,10 +27,12 @@ class IndexController
         // Synchronization statuses
         $acl = $request->getAcl();
 
-        if ($acl->userAllowed($user, Acl::GLOBAL_ALL)) {
-            $view->addData([
-                'sync_times' => $sync->getSyncTimes(),
-            ]);
+        if ($acl->isAllowed(Acl::GLOBAL_ALL)) {
+            $view->addData(
+                [
+                    'sync_times' => $sync->getSyncTimes(),
+                ]
+            );
         }
 
         $stationsBaseDir = $environment->getStationDirectory();
@@ -52,14 +53,18 @@ class IndexController
         $memoryFree = Quota::convertFromReadableSize($meminfo['MemAvailable']) ?? BigInteger::zero();
         $memoryUsed = $memoryTotal->minus($memoryFree);
 
-        return $view->renderToResponse($response, 'admin/index/index', [
-            'load' => sys_getloadavg(),
-            'space_percent' => Quota::getPercentage($spaceUsed, $spaceTotal),
-            'space_used' => Quota::getReadableSize($spaceUsed),
-            'space_total' => Quota::getReadableSize($spaceTotal),
-            'memory_percent' => Quota::getPercentage($memoryUsed, $memoryTotal),
-            'memory_used' => Quota::getReadableSize($memoryUsed),
-            'memory_total' => Quota::getReadableSize($memoryTotal),
-        ]);
+        return $view->renderToResponse(
+            $response,
+            'admin/index/index',
+            [
+                'load' => sys_getloadavg(),
+                'space_percent' => Quota::getPercentage($spaceUsed, $spaceTotal),
+                'space_used' => Quota::getReadableSize($spaceUsed),
+                'space_total' => Quota::getReadableSize($spaceTotal),
+                'memory_percent' => Quota::getPercentage($memoryUsed, $memoryTotal),
+                'memory_used' => Quota::getReadableSize($memoryUsed),
+                'memory_total' => Quota::getReadableSize($memoryTotal),
+            ]
+        );
     }
 }

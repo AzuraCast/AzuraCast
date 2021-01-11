@@ -21,7 +21,6 @@ class DashboardAction
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
         $view = $request->getView();
-        $user = $request->getUser();
         $acl = $request->getAcl();
 
         // Detect current analytics level.
@@ -33,7 +32,7 @@ class DashboardAction
             $response,
             'frontend/index/index',
             [
-                'showAdmin' => $acl->userAllowed($user, Acl::GLOBAL_VIEW),
+                'showAdmin' => $acl->isAllowed(Acl::GLOBAL_VIEW),
                 'showCharts' => $showCharts,
             ]
         );

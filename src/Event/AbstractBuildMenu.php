@@ -2,40 +2,27 @@
 
 namespace App\Event;
 
-use App\Acl;
-use App\Entity\User;
 use App\Environment;
-use App\Http\RouterInterface;
+use App\Http\ServerRequest;
 use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractBuildMenu extends Event
 {
-    protected Acl $acl;
-
-    protected User $user;
-
-    protected RouterInterface $router;
+    protected ServerRequest $request;
 
     protected Environment $environment;
 
     protected array $menu = [];
 
-    public function __construct(Acl $acl, User $user, RouterInterface $router)
+    public function __construct(ServerRequest $request, Environment $environment)
     {
-        $this->acl = $acl;
-        $this->user = $user;
-        $this->router = $router;
-        $this->environment = Environment::getInstance();
+        $this->request = $request;
+        $this->environment = $environment;
     }
 
-    public function getAcl(): Acl
+    public function getRequest(): ServerRequest
     {
-        return $this->acl;
-    }
-
-    public function getRouter(): RouterInterface
-    {
-        return $this->router;
+        return $this->request;
     }
 
     public function getEnvironment(): Environment
@@ -49,7 +36,7 @@ abstract class AbstractBuildMenu extends Event
      * @param string $item_id
      * @param array $item_details
      */
-    public function addItem($item_id, array $item_details): void
+    public function addItem(string $item_id, array $item_details): void
     {
         $this->merge([$item_id => $item_details]);
     }
@@ -100,11 +87,9 @@ abstract class AbstractBuildMenu extends Event
         return true;
     }
 
-    /**
-     * @param string $permission_name
-     */
     public function checkPermission(string $permission_name): bool
     {
-        return $this->acl->userAllowed($this->user, $permission_name);
+        $acl = $this->request->getAcl();
+        return $acl->isAllowed($permission_name);
     }
 }

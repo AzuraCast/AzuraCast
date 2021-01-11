@@ -101,11 +101,13 @@ class RelaysController
             ->execute();
 
         $acl = $request->getAcl();
-        $user = $request->getUser();
 
-        return array_filter($all_stations, function (Entity\Station $station) use ($acl, $user) {
-            return $acl->userAllowed($user, Acl::STATION_BROADCASTING, $station->getId());
-        });
+        return array_filter(
+            $all_stations,
+            function (Entity\Station $station) use ($acl) {
+                return $acl->isAllowed(Acl::STATION_BROADCASTING, $station->getId());
+            }
+        );
     }
 
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface

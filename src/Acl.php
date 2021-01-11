@@ -32,22 +32,32 @@ class Acl
     public const STATION_AUTOMATION = 'manage station automation';
     public const STATION_WEB_HOOKS = 'manage station web hooks';
 
-    protected Entity\Repository\RolePermissionRepository $permission_repo;
+    protected Entity\Repository\RolePermissionRepository $permissionRepo;
 
     protected EventDispatcher $dispatcher;
 
     protected array $permissions;
+
     protected ?array $actions;
+
+    protected ?Entity\User $user;
 
     public function __construct(
         Entity\Repository\RolePermissionRepository $rolePermissionRepository,
-        EventDispatcher $dispatcher
+        EventDispatcher $dispatcher,
+        ?Entity\User $user = null
     ) {
-        $this->permission_repo = $rolePermissionRepository;
+        $this->permissionRepo = $rolePermissionRepository;
         $this->dispatcher = $dispatcher;
+        $this->setUser($user);
 
         $this->permissions = $this->listPermissions();
         $this->reload();
+    }
+
+    public function setUser(?Entity\User $user): void
+    {
+        $this->user = $user;
     }
 
     /**
@@ -55,7 +65,7 @@ class Acl
      */
     public function reload(): void
     {
-        $this->actions = $this->permission_repo->getActionsForAllRoles();
+        $this->actions = $this->permissionRepo->getActionsForAllRoles();
     }
 
     /**
@@ -115,24 +125,18 @@ class Acl
     }
 
     /**
-     * Wrapper around the 'userAllowed' function that throws a UI-friendly exception upon failure.
+     * Check if the current user associated with the request has the specified permission.
      *
-     * @param Entity\User|null $user
      * @param string|array $action
-     * @param null $station_id
-     *
-     * @throws Exception\NotLoggedInException
-     * @throws Exception\PermissionDeniedException
+     * @param int|Entity\Station|null $stationId
      */
-    public function checkPermission(?Entity\User $user = null, $action, $station_id = null): void
+    public function isAllowed($action, $stationId = null): bool
     {
-        if (!($user instanceof Entity\User)) {
-            throw new Exception\NotLoggedInException();
+        if (!isset($this->user)) {
+            throw new \RuntimeException('Cannot check permission with no user set.');
         }
 
-        if (!$this->userAllowed($user, $action, $station_id)) {
-            throw new Exception\PermissionDeniedException();
-        }
+        return $this->userAllowed($this->user, $action, $stationId);
     }
 
     /**
@@ -140,23 +144,23 @@ class Acl
      *
      * @param Entity\User|null $user
      * @param string|array $action
-     * @param int|Entity\Station|null $station_id
+     * @param int|Entity\Station|null $stationId
      */
-    public function userAllowed(?Entity\User $user = null, $action, $station_id = null): bool
+    public function userAllowed(?Entity\User $user = null, $action, $stationId = null): bool
     {
         if (!($user instanceof Entity\User)) {
             return false;
         }
 
-        if ($station_id instanceof Entity\Station) {
-            $station_id = $station_id->getId();
+        if ($stationId instanceof Entity\Station) {
+            $stationId = $stationId->getId();
         }
 
         $num_roles = $user->getRoles()->count();
         if ($num_roles > 0) {
             if ($num_roles === 1) {
                 $role = $user->getRoles()->first();
-                return $this->roleAllowed($role->getId(), $action, $station_id);
+                return $this->roleAllowed($role->getId(), $action, $stationId);
             }
 
             $roles = [];
@@ -166,7 +170,7 @@ class Acl
                 }
             }
 
-            return $this->roleAllowed($roles, $action, $station_id);
+            return $this->roleAllowed($roles, $action, $stationId);
         }
 
         return false;

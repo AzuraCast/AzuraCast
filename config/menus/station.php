@@ -6,10 +6,12 @@
 use App\Acl;
 
 return function (App\Event\BuildStationMenu $e) {
-    $router = $e->getRouter();
+    $request = $e->getRequest();
     $station = $e->getStation();
-    $backend = $e->getStationBackend();
-    $frontend = $e->getStationFrontend();
+
+    $router = $request->getRouter();
+    $backend = $request->getStationBackend();
+    $frontend = $request->getStationFrontend();
 
     $settings = $e->getEnvironment();
 

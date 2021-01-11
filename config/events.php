@@ -82,7 +82,6 @@ return function (App\EventDispatcher $dispatcher) {
             $app->add(Middleware\WrapExceptionsWithRequestData::class);
 
             $app->add(Middleware\EnforceSecurity::class);
-            $app->add(Middleware\InjectAcl::class);
             $app->add(Middleware\GetCurrentUser::class);
 
             // Request injection middlewares.

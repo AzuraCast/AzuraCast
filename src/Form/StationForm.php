@@ -19,8 +19,6 @@ class StationForm extends EntityForm
 
     protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
 
-    protected Acl $acl;
-
     protected Environment $environment;
 
     public function __construct(
@@ -29,11 +27,9 @@ class StationForm extends EntityForm
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Acl $acl,
         Config $config,
         Environment $environment
     ) {
-        $this->acl = $acl;
         $this->entityClass = Entity\Station::class;
         $this->station_repo = $station_repo;
         $this->storageLocationRepo = $storageLocationRepo;
@@ -68,9 +64,8 @@ class StationForm extends EntityForm
     public function process(ServerRequest $request, $record = null)
     {
         // Check for administrative permissions and hide admin fields otherwise.
-        $user = $request->getUser();
-
-        $canSeeAdministration = $this->acl->userAllowed($user, Acl::GLOBAL_STATIONS);
+        $acl = $request->getAcl();
+        $canSeeAdministration = $acl->isAllowed(Acl::GLOBAL_STATIONS);
         if (!$canSeeAdministration) {
             foreach ($this->options['groups']['admin']['elements'] as $element_key => $element_info) {
                 unset($this->fields[$element_key]);

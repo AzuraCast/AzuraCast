@@ -7,9 +7,9 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class IndexController
+class IndexAction
 {
-    public function indexAction(
+    public function __invoke(
         ServerRequest $request,
         Response $response,
         Entity\Repository\SettingsRepository $settingsRepo

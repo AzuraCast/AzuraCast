@@ -19,7 +19,7 @@
     "@fullcalendar/timegrid": "^4.4.2",
     "@fullcalendar/vue": "^4.4.2",
     "autosize": "^4.0.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
     "bootstrap-daterangepicker": "^3.1.0",
     "bootstrap-notify": "^3.1.3",

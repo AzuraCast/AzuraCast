@@ -132,10 +132,6 @@ class Acl
      */
     public function isAllowed($action, $stationId = null): bool
     {
-        if (!isset($this->user)) {
-            throw new \RuntimeException('Cannot check permission with no user set.');
-        }
-
         return $this->userAllowed($this->user, $action, $stationId);
     }
 

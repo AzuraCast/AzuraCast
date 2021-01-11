@@ -50,7 +50,7 @@
                     </h3>
                 </div>
                 <div class="flex-shrink-0">
-                    <b-button variant="outline-default" size="sm" class="py-2" v-b-toggle.charts>{{ langShowHideCharts }}</b-button>
+                    <b-button variant="outline-default" size="sm" class="py-2" @click="toggleCharts">{{ langShowHideCharts }}</b-button>
                 </div>
             </div>
             <b-collapse id="charts" v-model="chartsVisible">
@@ -130,6 +130,7 @@
 import TimeSeriesChart from './components/TimeSeriesChart';
 import DataTable from './components/DataTable';
 import axios from 'axios';
+import store from 'store';
 
 export default {
     components: { DataTable, TimeSeriesChart },
@@ -149,7 +150,7 @@ export default {
     data () {
         return {
             chartsLoading: true,
-            chartsVisible: true,
+            chartsVisible: null,
             chartsData: {
                 average: {
                     metrics: [],
@@ -199,6 +200,12 @@ export default {
     mounted () {
         moment.tz.setDefault('UTC');
 
+        if (store.enabled && store.get('dashboard_show_chart') !== undefined) {
+            this.chartsVisible = store.get('dashboard_show_chart', true);
+        } else {
+            this.chartsVisible = true;
+        }
+
         axios.get(this.chartsUrl).then((response) => {
             this.chartsData = response.data;
             this.chartsLoading = false;
@@ -214,6 +221,13 @@ export default {
         });
     },
     methods: {
+        toggleCharts () {
+            this.chartsVisible = !this.chartsVisible;
+
+            if (store.enabled) {
+                store.set('dashboard_show_chart', this.chartsVisible);
+            }
+        },
         playAudio (url) {
             this.$eventHub.$emit('player_toggle', url);
         }

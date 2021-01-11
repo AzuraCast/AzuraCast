@@ -49,18 +49,14 @@ class RecentBackupCheck
         $backupLastRun = $settings->getBackupLastRun();
 
         if ($backupLastRun < $threshold) {
-            $router = $request->getRouter();
-            $backupUrl = $router->named('admin:backups:index');
-
-            // phpcs:disable Generic.Files.LineLength
             $notification = new Entity\Api\Notification();
             $notification->title = __('Installation Not Recently Backed Up');
-            $notification->body = __(
-                'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.',
-                $backupUrl
-            );
+            $notification->body = __('This installation has not been backed up in the last two weeks.');
             $notification->type = Flash::INFO;
-            // phpcs:enable
+
+            $router = $request->getRouter();
+            $notification->actionLabel = __('Backups');
+            $notification->actionUrl = (string)$router->named('admin:backups:index');
 
             $event->addNotification($notification);
         }

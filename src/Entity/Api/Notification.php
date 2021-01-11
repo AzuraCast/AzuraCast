@@ -9,4 +9,8 @@ class Notification
     public string $body;
 
     public string $type;
+
+    public ?string $actionLabel;
+
+    public ?string $actionUrl;
 }

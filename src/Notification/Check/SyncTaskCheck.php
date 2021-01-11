@@ -33,7 +33,7 @@ class SyncTaskCheck
 
         $settings = $this->settingsRepo->readSettings();
 
-        $setupComplete = $settings->isSetupComplete();
+        $setupComplete = $settings->getSetupCompleteTime();
         $syncTasks = $this->syncRunner->getSyncTimes();
 
         foreach ($syncTasks as $taskKey => $task) {
@@ -47,18 +47,19 @@ class SyncTaskCheck
             }
 
             if ($diff > ($interval * 5)) {
-                $router = $request->getRouter();
-                $backupUrl = $router->named('admin:debug:sync', ['type' => $taskKey]);
-
                 // phpcs:disable Generic.Files.LineLength
                 $notification = new Entity\Api\Notification();
                 $notification->title = __('Synchronized Task Not Recently Run');
                 $notification->body = __(
-                    'The "%s" synchronization task has not run recently. This may indicate an error with your installation. <a href="%s" target="_blank">Manually run the task</a> to check for errors.',
-                    $task['name'],
-                    $backupUrl
+                    'The "%s" synchronization task has not run recently. This may indicate an error with your installation.',
+                    $task['name']
                 );
                 $notification->type = Flash::ERROR;
+
+                $router = $request->getRouter();
+
+                $notification->actionLabel = __('Manually Run Task');
+                $notification->actionUrl = (string)$router->named('admin:debug:sync', ['type' => $taskKey]);
                 // phpcs:enable
 
                 $event->addNotification($notification);

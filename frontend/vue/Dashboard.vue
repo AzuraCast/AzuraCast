@@ -22,16 +22,21 @@
             </div>
 
             <template v-if="!notificationsLoading && notifications.length > 0">
-                <div v-for="notification in notifications" class="card-body d-flex" :class="'alert-'+notification.type" role="alert">
-                    <div class="flex-shrink-0 mt-3 mr-3" v-if="'info' === notification.type">
+                <div v-for="notification in notifications" class="card-body d-flex align-items-center" :class="'alert-'+notification.type" role="alert">
+                    <div class="flex-shrink-0 mr-3" v-if="'info' === notification.type">
                         <i class="material-icons lg" aria-hidden="true">info</i>
                     </div>
-                    <div class="flex-shrink-0 mt-3 mr-3" v-else>
+                    <div class="flex-shrink-0 mr-3" v-else>
                         <i class="material-icons lg" aria-hidden="true">warning</i>
                     </div>
                     <div class="flex-fill">
                         <h4>{{ notification.title }}</h4>
                         <p class="card-text" v-html="notification.body"></p>
+                    </div>
+                    <div v-if="notification.actionLabel && notification.actionUrl" class="flex-shrink-0 ml-3">
+                        <b-button :href="notification.actionUrl" target="_blank" size="sm" variant="inverse">
+                            {{ notification.actionLabel }}
+                        </b-button>
                     </div>
                 </div>
             </template>

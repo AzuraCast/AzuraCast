@@ -20,9 +20,12 @@ class UserProfileForm extends EntityForm
         Config $config,
         Environment $environment
     ) {
-        $form_config = $config->get('forms/profile', [
-            'environment' => $environment,
-        ]);
+        $form_config = $config->get(
+            'forms/profile',
+            [
+                'environment' => $environment,
+            ]
+        );
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\User::class;
@@ -35,20 +38,22 @@ class UserProfileForm extends EntityForm
     {
         $user = $request->getUser();
 
-        $this->getField('password')->addValidator(function ($val, AbstractField $field) use ($user) {
-            $form = $field->getForm();
+        $this->getField('password')->addValidator(
+            function ($val, AbstractField $field) use ($user) {
+                $form = $field->getForm();
 
-            $new_password = $form->getField('new_password')->getValue();
-            if (!empty($new_password)) {
-                if ($user->verifyPassword($val)) {
-                    return true;
+                $new_password = $form->getField('new_password')->getValue();
+                if (!empty($new_password)) {
+                    if ($user->verifyPassword($val)) {
+                        return true;
+                    }
+
+                    return 'Current password could not be verified.';
                 }
 
-                return 'Current password could not be verified.';
+                return true;
             }
-
-            return true;
-        });
+        );
 
         return parent::process($request, $user);
     }
@@ -64,7 +69,7 @@ class UserProfileForm extends EntityForm
 
         $currentTheme = $user->getTheme();
         if (empty($currentTheme)) {
-            $currentTheme = $themeFieldOptions['default'];
+            $currentTheme = $themeField->getValue();
         }
 
         foreach ($themeOptions as $theme) {

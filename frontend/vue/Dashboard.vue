@@ -34,7 +34,7 @@
                         <p class="card-text" v-html="notification.body"></p>
                     </div>
                     <div v-if="notification.actionLabel && notification.actionUrl" class="flex-shrink-0 ml-3">
-                        <b-button :href="notification.actionUrl" target="_blank" size="sm" variant="inverse">
+                        <b-button :href="notification.actionUrl" target="_blank" size="sm" variant="light">
                             {{ notification.actionLabel }}
                         </b-button>
                     </div>
@@ -50,7 +50,7 @@
                     </h3>
                 </div>
                 <div class="flex-shrink-0">
-                    <b-button variant="outline-default" size="sm" class="py-2" @click="toggleCharts">{{ langShowHideCharts }}</b-button>
+                    <b-button variant="outline-light" size="sm" class="py-2" @click="toggleCharts">{{ langShowHideCharts }}</b-button>
                 </div>
             </div>
             <b-collapse id="charts" v-model="chartsVisible">

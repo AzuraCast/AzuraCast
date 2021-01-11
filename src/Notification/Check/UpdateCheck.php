@@ -74,9 +74,9 @@ class UpdateCheck
             $notificationParts = [];
 
             $notificationParts[] = '<b>' . __(
-                    'Your installation is currently %d update(s) behind the latest version.',
-                    $updateData['rolling_updates_available']
-                ) . '</b>';
+                'Your installation is currently %d update(s) behind the latest version.',
+                $updateData['rolling_updates_available']
+            ) . '</b>';
 
             $notificationParts[] = sprintf(
                 '<a href="%s" target="_blank">' . __('View the changelog for full details.') . '</a>',

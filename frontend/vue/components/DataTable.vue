@@ -316,6 +316,10 @@ export default {
             }
         },
         onRefreshed () {
+            Vue.nextTick(() => {
+                this.$eventHub.$emit('content_changed');
+            });
+
             this.$emit('refreshed');
         },
         refresh () {

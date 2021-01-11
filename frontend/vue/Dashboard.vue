@@ -91,7 +91,7 @@
                 <template v-slot:cell(station)="{ item }">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 pr-2">
-                            <a class="file-icon btn-audio" href="#" :data-url="item.station.listen_url"
+                            <a class="file-icon btn-audio has-listener" href="#" :data-url="item.station.listen_url"
                                @click.prevent="playAudio(item.station.listen_url)" :title="langPlayPause">
                                 <i class="material-icons lg align-middle" aria-hidden="true">play_circle_filled</i>
                             </a>

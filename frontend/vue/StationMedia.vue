@@ -22,7 +22,7 @@
                     </a>
 
                     <template v-if="row.item.media_is_playable">
-                        <a class="file-icon btn-audio" href="#" :data-url="row.item.media_links_play"
+                        <a class="file-icon btn-audio has-listener" href="#" :data-url="row.item.media_links_play"
                            @click.prevent="playAudio(row.item.media_links_play)" :title="langPlayPause">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>

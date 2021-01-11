@@ -4,72 +4,61 @@
 $assets->load('InlinePlayer');
 ?>
 
-var inline_player;
+let inlinePlayer, currentUrl = null;
 
-var pause_text = <?=$this->escapeJs(__('Pause')) ?>;
-var play_text = <?=$this->escapeJs(__('Play')) ?>;
+const pauseText = <?=$this->escapeJs(__('Pause')) ?>;
+const playText = <?=$this->escapeJs(__('Play')) ?>;
+
+function redrawPlayIcons () {
+    $('.btn-audio').each(function () {
+        if (!$(this).hasClass('has-listener')) {
+            $(this).on('click', function (e) {
+                e.preventDefault();
+                inlinePlayer.$eventHub.$emit('player_toggle', $(this).data('url'));
+                return false;
+            });
+            $(this).addClass('has-listener');
+        }
+
+        let playIcon = $(this).find('i.material-icons');
+        if (null !== currentUrl && $(this).is('[data-url^="' + currentUrl + '"]')) {
+            $(this).addClass('playing')
+                .attr('title', pauseText)
+                .attr('aria-label', pauseText);
+
+            playIcon.text('pause_circle_filled');
+        } else {
+            $(this).removeClass('playing')
+                .attr('title', playText)
+                .attr('aria-label', playText);
+
+            playIcon.text('play_circle_filled');
+        }
+    });
+}
 
 $(function () {
-    inline_player = new Vue({
+    inlinePlayer = new Vue({
         el: '#radio-player-controls',
         render: function (createElement) {
             return createElement(InlinePlayer.default);
         }
     });
 
-    $('.btn-audio').each(function () {
-        $(this).removeClass('playing')
-            .attr('role', 'button')
-            .attr('title', play_text)
-            .attr('aria-label', play_text);
+    redrawPlayIcons();
 
-        $(this).find('i').attr('aria-hidden', true);
+    inlinePlayer.$eventHub.$on('player_stopped', function () {
+        currentUrl = null;
+        redrawPlayIcons();
     });
 
-    $('.btn-audio').on('click', function (e) {
-        e.preventDefault();
-        inline_player.$eventHub.$emit('player_toggle', $(this).data('url'));
-        return false;
+    inlinePlayer.$eventHub.$on('player_playing', function (audio_source) {
+        currentUrl = audio_source.split(/[?#]/)[0];
+        redrawPlayIcons();
     });
 
-    inline_player.$eventHub.$on('player_stopped', function () {
-        $('.btn-audio').each(function () {
-            $(this).removeClass('playing')
-                .attr('title', play_text)
-                .attr('aria-label', play_text);
-
-            var play_icon = $(this).find('i');
-            if (play_icon.hasClass('material-icons')) {
-                play_icon.text('play_circle_filled');
-            }
-        });
-    });
-
-    inline_player.$eventHub.$on('player_playing', function (audio_source) {
-
-        var urlWithoutQuery = audio_source.split(/[?#]/)[0];
-
-        $('.btn-audio').each(function () {
-            var play_icon;
-            if ($(this).is('[data-url^="' + urlWithoutQuery + '"]')) {
-                $(this).addClass('playing')
-                    .attr('title', pause_text)
-                    .attr('aria-label', pause_text);
-
-                play_icon = $(this).find('i');
-                if (play_icon.hasClass('material-icons')) {
-                    play_icon.text('pause_circle_filled');
-                }
-            } else {
-                $(this).removeClass('playing')
-                    .attr('title', play_text)
-                    .attr('aria-label', play_text);
-
-                play_icon = $(this).find('i');
-                if (play_icon.hasClass('material-icons')) {
-                    play_icon.text('play_circle_filled');
-                }
-            }
-        });
+    // The "content_changed" event fires from other components when they redraw portions of a page.
+    inlinePlayer.$eventHub.$on('content_changed', function () {
+        redrawPlayIcons();
     });
 });

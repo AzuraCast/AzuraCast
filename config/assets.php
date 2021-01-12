@@ -468,7 +468,7 @@ return [
 
     'StationMedia' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox'],
         // Auto-managed by Assets
     ],
 

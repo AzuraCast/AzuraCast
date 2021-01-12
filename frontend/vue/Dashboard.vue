@@ -219,6 +219,8 @@ export default {
         }).catch((error) => {
             console.error(error);
         });
+
+        this.stationsTimeout = setTimeout(this.updateNowPlaying, 30000);
     },
     methods: {
         toggleCharts () {
@@ -230,6 +232,10 @@ export default {
         },
         playAudio (url) {
             this.$eventHub.$emit('player_toggle', url);
+        },
+        updateNowPlaying () {
+            this.$refs.datatable.refresh();
+            this.stationsTimeout = setTimeout(this.updateNowPlaying, 30000);
         }
     }
 };

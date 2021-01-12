@@ -300,9 +300,9 @@ class ConfigWriter implements EventSubscriberInterface
             } else {
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
-                        $playlistFunc = $playlistFuncName . '("' . self::cleanUpString(
-                                $playlist->getRemoteUrl()
-                            ) . '")';
+                        $playlistFunc = $playlistFuncName . '("'
+                            . self::cleanUpString($playlist->getRemoteUrl())
+                            . '")';
                         $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
                         break;
 
@@ -315,9 +315,8 @@ class ConfigWriter implements EventSubscriberInterface
                         $buffer = $playlist->getRemoteBuffer();
                         $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                        $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function . '(max=' . $buffer . '., "' . self::cleanUpString(
-                                $remote_url
-                            ) . '"))';
+                        $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function
+                            . '(max=' . $buffer . '., "' . self::cleanUpString($remote_url) . '"))';
                         break;
                 }
             }
@@ -326,12 +325,11 @@ class ConfigWriter implements EventSubscriberInterface
                 $playlistConfigLines[] = $playlistVarName . ' = drop_metadata(' . $playlistVarName . ')';
             }
 
-            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . self::cleanUpString(
-                    $playlistVarName
-                ) . '", ' . $playlistVarName . ')';
-            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . self::cleanUpString(
-                    $playlistVarName
-                ) . '", ' . $playlistVarName . ')';
+            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_'
+                . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
+
+            $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
+                . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
@@ -367,8 +365,8 @@ class ConfigWriter implements EventSubscriberInterface
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
                     if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $playlist->getType()) {
-                        $playlistScheduleVar = 'rotate(weights=[1,' . $playlist->getPlayPerSongs(
-                            ) . '], [' . $playlistVarName . ', radio])';
+                        $playlistScheduleVar = 'rotate(weights=[1,'
+                            . $playlist->getPlayPerSongs() . '], [' . $playlistVarName . ', radio])';
                     } else {
                         $delaySeconds = $playlist->getPlayPerMinutes() * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
@@ -397,9 +395,8 @@ class ConfigWriter implements EventSubscriberInterface
 
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
-                            $playTime = '(' . $minutePlayTime . ') and (' . $this->getScheduledPlaylistPlayTime(
-                                    $scheduleItem
-                                ) . ')';
+                            $playTime = '(' . $minutePlayTime . ') and ('
+                                . $this->getScheduledPlaylistPlayTime($scheduleItem) . ')';
 
                             $schedule_timing = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {

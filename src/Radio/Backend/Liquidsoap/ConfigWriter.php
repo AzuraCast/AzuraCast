@@ -301,8 +301,8 @@ class ConfigWriter implements EventSubscriberInterface
                 switch ($playlist->getRemoteType()) {
                     case Entity\StationPlaylist::REMOTE_TYPE_PLAYLIST:
                         $playlistFunc = $playlistFuncName . '("' . self::cleanUpString(
-                            $playlist->getRemoteUrl()
-                        ) . '")';
+                                $playlist->getRemoteUrl()
+                            ) . '")';
                         $playlistConfigLines[] = $playlistVarName . ' = ' . $playlistFunc;
                         break;
 
@@ -316,8 +316,8 @@ class ConfigWriter implements EventSubscriberInterface
                         $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
                         $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function . '(max=' . $buffer . '., "' . self::cleanUpString(
-                            $remote_url
-                        ) . '"))';
+                                $remote_url
+                            ) . '"))';
                         break;
                 }
             }
@@ -327,11 +327,11 @@ class ConfigWriter implements EventSubscriberInterface
             }
 
             $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_' . self::cleanUpString(
-                $playlistVarName
-            ) . '", ' . $playlistVarName . ')';
+                    $playlistVarName
+                ) . '", ' . $playlistVarName . ')';
             $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_' . self::cleanUpString(
-                $playlistVarName
-            ) . '", ' . $playlistVarName . ')';
+                    $playlistVarName
+                ) . '", ' . $playlistVarName . ')';
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
@@ -368,7 +368,7 @@ class ConfigWriter implements EventSubscriberInterface
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
                     if (Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS === $playlist->getType()) {
                         $playlistScheduleVar = 'rotate(weights=[1,' . $playlist->getPlayPerSongs(
-                        ) . '], [' . $playlistVarName . ', radio])';
+                            ) . '], [' . $playlistVarName . ', radio])';
                     } else {
                         $delaySeconds = $playlist->getPlayPerMinutes() * 60;
                         $delayTrackSensitive = $playlist->backendInterruptOtherSongs() ? 'false' : 'true';
@@ -398,8 +398,8 @@ class ConfigWriter implements EventSubscriberInterface
                     if ($scheduleItems->count() > 0) {
                         foreach ($scheduleItems as $scheduleItem) {
                             $playTime = '(' . $minutePlayTime . ') and (' . $this->getScheduledPlaylistPlayTime(
-                                $scheduleItem
-                            ) . ')';
+                                    $scheduleItem
+                                ) . ')';
 
                             $schedule_timing = '({ ' . $playTime . ' }, ' . $playlistVarName . ')';
                             if ($playlist->backendInterruptOtherSongs()) {
@@ -1069,6 +1069,10 @@ class ConfigWriter implements EventSubscriberInterface
 
         if ($isShoutcastMode) {
             $output_params[] = 'protocol="icy"';
+        }
+
+        if (Entity\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
+            $output_params[] = 'icy_metadata="true"';
         }
 
         $output_params[] = 'radio';

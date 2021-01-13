@@ -9,6 +9,7 @@ use App\Http\ServerRequest;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -105,17 +106,31 @@ class HistoryController
                 'Streamer',
             ];
 
-            foreach ($qb->getQuery()->getArrayResult() as $song_row) {
-                $datetime = CarbonImmutable::createFromTimestamp($song_row['timestamp_start'], $station_tz);
+            $iterator = SimpleBatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
+
+            foreach ($iterator as $sh) {
+                /** @var Entity\SongHistory $sh */
+                $datetime = CarbonImmutable::createFromTimestamp($sh->getTimestampStart(), $station_tz);
+
+                $playlist = $sh->getPlaylist();
+                $playlistName = (null !== $playlist)
+                    ? $playlist->getName()
+                    : '';
+
+                $streamer = $sh->getStreamer();
+                $streamerName = (null !== $streamer)
+                    ? $streamer->getDisplayName()
+                    : '';
+
                 $export_row = [
                     $datetime->format('Y-m-d'),
                     $datetime->format('g:ia'),
-                    $song_row['listeners_start'],
-                    $song_row['delta_total'],
-                    $song_row['title'] ?: $song_row['text'],
-                    $song_row['artist'],
-                    $song_row['playlist']['name'] ?? '',
-                    $song_row['streamer']['display_name'] ?? $song_row['streamer']['streamer_username'] ?? '',
+                    $sh->getListenersStart(),
+                    $sh->getDeltaTotal(),
+                    $sh->getTitle() ?: $sh->getText(),
+                    $sh->getArtist(),
+                    $playlistName,
+                    $streamerName,
                 ];
 
                 $export_all[] = $export_row;

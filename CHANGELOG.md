@@ -24,6 +24,8 @@ release channel, you can take advantage of these new features and fixes.
 - You can disable the "Download" button on the "On-Demand" media page while leaving streaming enabled by editing the
   station profile.
 
+- You can show or hide the charts on the dashboard, and sort and filter stations listed there.
+
 ## Code Quality/Technical Changes
 
 - Mount points that are hidden from public view are also hidden on the Icecast status overview page.
@@ -51,6 +53,9 @@ release channel, you can take advantage of these new features and fixes.
     - `REDIS_PORT` (default: 6379)
     - `REDIS_DB` for the database index (default: 1)
 
+- There is a new debug CLI command, `azuracast:debug:optimize-tables`, which optimizes all tables in the MariaDB
+  database and can recover space that's no longer in use.
+
 ## Bug Fixes
 
 - Hidden mount points and relays will still be shown on the profile page.
@@ -62,6 +67,10 @@ release channel, you can take advantage of these new features and fixes.
 
 - Issues with the Media Manager not showing files correctly when they were shared between stations has been fixed.
   (#3618)
+
+- Fixed a bug where the first theme switch doesn't actually switch the theme.
+
+- Fixed an issue with Ogg Opus streams not continuing to play. (#3597)
 
 ---
 

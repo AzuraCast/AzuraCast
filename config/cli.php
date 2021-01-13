@@ -124,6 +124,11 @@ return function (Application $console) {
         Command\GenerateApiDocsCommand::class
     )->setDescription('Trigger regeneration of AzuraCast API documentation.');
 
+    $console->command(
+        'azuracast:debug:optimize-tables',
+        Command\Debug\OptimizeTablesCommand::class
+    )->setDescription('Optimize all tables in the database.');
+
     // User-side tools
     $console->command(
         'azuracast:account:list',

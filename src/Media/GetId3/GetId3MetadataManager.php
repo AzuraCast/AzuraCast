@@ -64,6 +64,10 @@ class GetId3MetadataManager implements MetadataManagerInterface
             $metadata->setArtwork($info['attached_picture'][0]['data']);
         } elseif (!empty($info['comments']['picture'][0])) {
             $metadata->setArtwork($info['comments']['picture'][0]['data']);
+        } elseif (!empty($info['id3v2']['APIC'][0]['data'])) {
+            $metadata->setArtwork($info['id3v2']['APIC'][0]['data']);
+        } elseif (!empty($info['id3v2']['PIC'][0]['data'])) {
+            $metadata->setArtwork($info['id3v2']['PIC'][0]['data']);
         }
 
         return $metadata;

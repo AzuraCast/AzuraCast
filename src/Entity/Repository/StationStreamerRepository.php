@@ -115,7 +115,7 @@ class StationStreamerRepository extends Repository
             $destPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $broadcastPath;
 
             if ($fs->has($tempPath)) {
-                $fs->copy($tempPath, $destPath);
+                $fs->move($tempPath, $destPath);
             }
 
             $broadcast->setTimestampEnd(time());

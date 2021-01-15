@@ -12,7 +12,7 @@ use OpenApi\Annotations as OA;
  * Each individual broadcast associated with a streamer.
  *
  * @ORM\Table(name="station_streamer_broadcasts")
- * @ORM\Entity(readOnly=true)
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *
  * @OA\Schema(type="object")

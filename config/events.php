@@ -154,6 +154,7 @@ return function (App\EventDispatcher $dispatcher) {
     $dispatcher->addServiceSubscriber(
         [
             App\Console\ErrorHandler::class,
+            App\Media\AlbumArtListener::class,
             App\Radio\AutoDJ\Queue::class,
             App\Radio\AutoDJ\Annotations::class,
             App\Radio\Backend\Liquidsoap\ConfigWriter::class,

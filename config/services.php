@@ -407,6 +407,4 @@ return [
             $logger
         );
     },
-
-    App\Media\MetadataManagerInterface::class => DI\get(App\Media\GetId3\GetId3MetadataManager::class),
 ];

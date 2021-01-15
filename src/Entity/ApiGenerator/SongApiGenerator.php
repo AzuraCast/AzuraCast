@@ -3,6 +3,8 @@
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
+use App\Event\Radio\GetAlbumArt;
+use App\EventDispatcher;
 use App\Http\Router;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
@@ -18,16 +20,24 @@ class SongApiGenerator
 
     protected Entity\Repository\CustomFieldRepository $customFieldRepo;
 
+    protected Entity\Repository\SettingsRepository $settingsRepo;
+
+    protected EventDispatcher $eventDispatcher;
+
     public function __construct(
         EntityManagerInterface $em,
         Router $router,
         Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\CustomFieldRepository $customFieldRepo
+        Entity\Repository\CustomFieldRepository $customFieldRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        EventDispatcher $eventDispatcher
     ) {
         $this->em = $em;
         $this->router = $router;
         $this->stationRepo = $stationRepo;
         $this->customFieldRepo = $customFieldRepo;
+        $this->settingsRepo = $settingsRepo;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(
@@ -46,56 +56,57 @@ class SongApiGenerator
             $response->genre = (string)$song->getGenre();
             $response->lyrics = (string)$song->getLyrics();
 
-            $response->art = $this->getAlbumArtUrl(
-                $station,
-                $song->getUniqueId(),
-                $song->getArtUpdatedAt(),
-                $baseUri
-            );
             $response->custom_fields = $this->getCustomFields($song->getId());
         } else {
-            $response->art = $this->getDefaultAlbumArtUrl($station, $baseUri);
             $response->custom_fields = $this->getCustomFields();
         }
+
+        $response->art = $this->getAlbumArtUrl($song, $station, $baseUri);
 
         return $response;
     }
 
-
     protected function getAlbumArtUrl(
+        Entity\SongInterface $song,
         ?Entity\Station $station = null,
-        string $mediaUniqueId,
-        int $mediaUpdatedTimestamp,
         ?UriInterface $baseUri = null
     ): UriInterface {
-        if (null === $station || 0 === $mediaUpdatedTimestamp) {
-            return $this->getDefaultAlbumArtUrl($station, $baseUri);
-        }
-
-        if ($baseUri === null) {
+        if (null === $baseUri) {
             $baseUri = $this->router->getBaseUrl();
         }
 
-        $path = $this->router->named(
-            'api:stations:media:art',
-            [
-                'station_id' => $station->getId(),
-                'media_id' => $mediaUniqueId . '-' . $mediaUpdatedTimestamp,
-            ]
-        );
+        if (null !== $station && $song instanceof Entity\StationMedia) {
+            $mediaUpdatedTimestamp = $song->getArtUpdatedAt();
+
+            if (0 !== $mediaUpdatedTimestamp) {
+                $path = $this->router->named(
+                    'api:stations:media:art',
+                    [
+                        'station_id' => $station->getId(),
+                        'media_id' => $song->getUniqueId() . '-' . $mediaUpdatedTimestamp,
+                    ]
+                );
+
+                return UriResolver::resolve($baseUri, $path);
+            }
+        }
+
+        $settings = $this->settingsRepo->readSettings();
+
+        if ($settings->getUseExternalAlbumArtInApis()) {
+            $event = new GetAlbumArt($song);
+            $this->eventDispatcher->dispatch($event);
+
+            $path = $event->getAlbumArt();
+        } else {
+            $path = null;
+        }
+
+        if (null === $path) {
+            $path = $this->stationRepo->getDefaultAlbumArtUrl($station);
+        }
 
         return UriResolver::resolve($baseUri, $path);
-    }
-
-    protected function getDefaultAlbumArtUrl(
-        ?Entity\Station $station = null,
-        ?UriInterface $baseUri = null
-    ): UriInterface {
-        if ($baseUri === null) {
-            $baseUri = $this->router->getBaseUrl();
-        }
-
-        return UriResolver::resolve($baseUri, $this->stationRepo->getDefaultAlbumArtUrl($station));
     }
 
     /**

@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Media\GetId3;
+namespace App\Media;
 
 use App\Exception\CannotProcessMediaException;
-use App\Media\Metadata;
-use App\Media\MetadataManagerInterface;
 use App\Utilities;
 use voku\helper\UTF8;
 
-class GetId3MetadataManager implements MetadataManagerInterface
+class GetId3Metadata
 {
-    /**
-     * @inheritDoc
-     */
     public function getMetadata(string $path): Metadata
     {
         $id3 = new \getID3();
@@ -89,9 +84,6 @@ class GetId3MetadataManager implements MetadataManagerInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     public function writeMetadata(Metadata $metadata, string $path): bool
     {
         $getID3 = new \getID3();

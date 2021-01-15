@@ -5,6 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Album Art Retrieval via Last.fm**: If you specify a last.fm API key in the system settings panel, you can now use
+  the last.fm album information service to retrieve album art both when generating API responses (which are used to show
+  the currently playing track, among other purposes) and when uploading media that has no album art associated.
+
 - **Media Manager Improvements:** Some changes have been made to the media manager to improve the user experience and
   accessibility:
     - You can now edit the playlists associated with a track from directly within the "Edit" modal dialog box for that

@@ -10,8 +10,7 @@ use App\Environment;
 use App\Exception\CannotProcessMediaException;
 use App\Flysystem\Filesystem;
 use App\Flysystem\FilesystemManager;
-use App\Media\MetadataManagerInterface;
-use App\Media\MimeType;
+use App\Media\MetadataManager;
 use App\Service\AudioWaveform;
 use Exception;
 use Generator;
@@ -36,7 +35,7 @@ class StationMediaRepository extends Repository
 
     protected UnprocessableMediaRepository $unprocessableMediaRepo;
 
-    protected MetadataManagerInterface $metadataManager;
+    protected MetadataManager $metadataManager;
 
     protected FilesystemManager $filesystem;
 
@@ -47,7 +46,7 @@ class StationMediaRepository extends Repository
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        MetadataManagerInterface $metadataManager,
+        MetadataManager $metadataManager,
         CustomFieldRepository $customFieldRepo,
         StationPlaylistMediaRepository $spmRepo,
         StorageLocationRepository $storageLocationRepo,
@@ -265,18 +264,8 @@ class StationMediaRepository extends Repository
      */
     public function loadFromFile(Entity\StationMedia $media, string $filePath): void
     {
-        if (!MimeType::isFileProcessable($filePath)) {
-            $mimeType = MimeType::getMimeTypeFromFile($filePath);
-            throw CannotProcessMediaException::forPath(
-                $filePath,
-                sprintf('MIME type "%s" is not processable.', $mimeType)
-            );
-        }
-
         // Load metadata from supported files.
-        $metadata = $this->metadataManager->getMetadata($filePath);
-
-        $media->fromMetadata($metadata);
+        $metadata = $this->metadataManager->getMetadata($media, $filePath);
 
         // Persist the media record for later custom field operations.
         $this->em->persist($media);
@@ -325,19 +314,6 @@ class StationMediaRepository extends Repository
 
         // Generate a song_id hash based on the track
         $media->updateSongId();
-    }
-
-    public function readAlbumArt(Entity\StationMedia $media): ?string
-    {
-        $fs = $this->getFilesystem($media);
-
-        $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-
-        if (!$fs->has($albumArtPath)) {
-            return null;
-        }
-
-        return $fs->read($albumArtPath);
     }
 
     public function writeAlbumArt(Entity\StationMedia $media, string $rawArtString): bool

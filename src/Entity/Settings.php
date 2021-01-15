@@ -308,6 +308,55 @@ class Settings
 
     /**
      * @OA\Property(example="false")
+     * @var bool Attempt to fetch album art from external sources when processing media.
+     */
+    protected bool $useExternalAlbumArtWhenProcessingMedia = false;
+
+    public function getUseExternalAlbumArtWhenProcessingMedia(): bool
+    {
+        return $this->useExternalAlbumArtWhenProcessingMedia;
+    }
+
+    public function setUseExternalAlbumArtWhenProcessingMedia(bool $useExternalAlbumArtWhenProcessingMedia): void
+    {
+        $this->useExternalAlbumArtWhenProcessingMedia = $useExternalAlbumArtWhenProcessingMedia;
+    }
+
+    /**
+     * @OA\Property(example="false")
+     * @var bool Attempt to fetch album art from external sources in API requests.
+     */
+    protected bool $useExternalAlbumArtInApis = false;
+
+    public function getUseExternalAlbumArtInApis(): bool
+    {
+        return $this->useExternalAlbumArtInApis;
+    }
+
+    public function setUseExternalAlbumArtInApis(bool $useExternalAlbumArtInApis): void
+    {
+        $this->useExternalAlbumArtInApis = $useExternalAlbumArtInApis;
+    }
+
+    /**
+     * @OA\Property(example="SAMPLE-API-KEY")
+     * @var string|null An API key to connect to Last.fm services, if provided.
+     */
+    protected ?string $lastFmApiKey = null;
+
+    public function getLastFmApiKey(): ?string
+    {
+        return $this->lastFmApiKey;
+    }
+
+    public function setLastFmApiKey(?string $lastFmApiKey): void
+    {
+        $lastFmApiKey = trim($lastFmApiKey);
+        $this->lastFmApiKey = (!empty($lastFmApiKey)) ? $lastFmApiKey : null;
+    }
+
+    /**
+     * @OA\Property(example="false")
      * @var bool Hide AzuraCast Branding on Public Pages
      */
     protected bool $hideProductName = false;

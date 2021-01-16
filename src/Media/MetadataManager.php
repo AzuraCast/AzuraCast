@@ -6,13 +6,14 @@ use App\Entity;
 use App\Event\Radio\GetAlbumArt;
 use App\EventDispatcher;
 use App\Exception\CannotProcessMediaException;
+use App\Media\MetadataService\MetadataServiceInterface;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
 class MetadataManager
 {
-    protected GetId3Metadata $getid3;
+    protected MetadataServiceInterface $metadataService;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
@@ -21,18 +22,18 @@ class MetadataManager
     protected Client $httpClient;
 
     public function __construct(
-        GetId3Metadata $getid3,
+        MetadataServiceInterface $metadataService,
         Entity\Repository\SettingsRepository $settingsRepo,
         EventDispatcher $eventDispatcher,
         Client $httpClient
     ) {
-        $this->getid3 = $getid3;
+        $this->metadataService = $metadataService;
         $this->settingsRepo = $settingsRepo;
         $this->eventDispatcher = $eventDispatcher;
         $this->httpClient = $httpClient;
     }
 
-    public function getMetadata(Entity\StationMedia $media, string $filePath): Metadata
+    public function getMetadata(Entity\StationMedia $media, string $filePath): Entity\Metadata
     {
         if (!MimeType::isFileProcessable($filePath)) {
             $mimeType = MimeType::getMimeTypeFromFile($filePath);
@@ -42,7 +43,7 @@ class MetadataManager
             );
         }
 
-        $metadata = $this->getid3->getMetadata($filePath);
+        $metadata = $this->metadataService->getMetadata($filePath);
         $media->fromMetadata($metadata);
 
         $artwork = $metadata->getArtwork();
@@ -80,8 +81,8 @@ class MetadataManager
         return (string)$response->getBody();
     }
 
-    public function writeMetadata(Metadata $metadata, string $filePath): bool
+    public function writeMetadata(Entity\Metadata $metadata, string $filePath): bool
     {
-        return $this->getid3->writeMetadata($metadata, $filePath);
+        return $this->metadataService->writeMetadata($metadata, $filePath);
     }
 }

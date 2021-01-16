@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Media;
+namespace App\Media\MetadataService;
 
+use App\Entity;
 use App\Exception\CannotProcessMediaException;
 use App\Utilities;
 use voku\helper\UTF8;
 
-class GetId3Metadata
+class GetId3MetadataService implements MetadataServiceInterface
 {
-    public function getMetadata(string $path): Metadata
+    public function getMetadata(string $path): Entity\Metadata
     {
         $id3 = new \getID3();
 
@@ -28,7 +29,7 @@ class GetId3Metadata
             );
         }
 
-        $metadata = new Metadata();
+        $metadata = new Entity\Metadata();
 
         if (is_numeric($info['playtime_seconds'])) {
             $metadata->setDuration($info['playtime_seconds']);
@@ -84,7 +85,7 @@ class GetId3Metadata
         );
     }
 
-    public function writeMetadata(Metadata $metadata, string $path): bool
+    public function writeMetadata(Entity\Metadata $metadata, string $path): bool
     {
         $getID3 = new \getID3();
         $getID3->setOption(['encoding' => 'UTF8']);

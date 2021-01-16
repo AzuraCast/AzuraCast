@@ -6,7 +6,6 @@ use App\Entity;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use Psr\Log\LoggerInterface;
 
 class LastFm
 {
@@ -14,17 +13,13 @@ class LastFm
 
     protected Client $httpClient;
 
-    protected LoggerInterface $logger;
-
     protected ?string $apiKey = null;
 
     public function __construct(
         Client $client,
-        LoggerInterface $logger,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->httpClient = $client;
-        $this->logger = $logger;
 
         $settings = $settingsRepo->readSettings();
         $this->apiKey = $settings->getLastFmApiKey();
@@ -35,77 +30,26 @@ class LastFm
         return !empty($this->apiKey);
     }
 
-    public function getAlbumArt(Entity\SongInterface $song): ?string
-    {
-        if (!$this->hasApiKey()) {
-            throw new \InvalidArgumentException('No last.fm API key provided.');
-        }
-
-        if ($song instanceof Entity\StationMedia && !empty($song->getAlbum())) {
-            return $this->getAlbumArtFromMedia($song);
-        }
-
-        $response = $this->makeRequest(
-            [
-                'method' => 'track.getInfo',
-                'artist' => $song->getArtist(),
-                'track' => $song->getTitle(),
-            ]
-        );
-
-        if (isset($response['album'])) {
-            return $this->getImageFromArray($response['album']['image'] ?? []);
-        }
-
-        return null;
-    }
-
-    public function getAlbumArtFromMedia(Entity\StationMedia $media): ?string
-    {
-        if (!$this->hasApiKey()) {
-            throw new \InvalidArgumentException('No last.fm API key provided.');
-        }
-
-        $response = $this->makeRequest(
-            [
-                'method' => 'album.getInfo',
-                'artist' => $media->getArtist(),
-                'album' => $media->getAlbum(),
-            ]
-        );
-
-        if (isset($response['album'])) {
-            return $this->getImageFromArray($response['album']['image'] ?? []);
-        }
-
-        return null;
-    }
-
-    protected function getImageFromArray(array $images): ?string
-    {
-        $imagesBySize = [];
-        foreach ($images as $image) {
-            $size = ('' === $image['size']) ? 'default' : $image['size'];
-            $imagesBySize[$size] = $image['#text'];
-        }
-
-        return $imagesBySize['large']
-            ?? $imagesBySize['extralarge']
-            ?? $imagesBySize['default']
-            ?? null;
-    }
-
     /**
+     * @param string $apiMethod API method to call.
      * @param mixed[] $query Query string parameters to supplement defaults.
      *
      * @return mixed[] The decoded JSON response.
      */
-    protected function makeRequest(array $query): array
-    {
+    public function makeRequest(
+        string $apiMethod,
+        array $query = []
+    ): array {
+        $apiKey = $this->apiKey;
+        if (empty($apiKey)) {
+            throw new \InvalidArgumentException('No last.fm API key provided.');
+        }
+
         $query = array_merge(
             $query,
             [
-                'api_key' => $this->apiKey,
+                'method' => $apiMethod,
+                'api_key' => $apiKey,
                 'format' => 'json',
             ]
         );

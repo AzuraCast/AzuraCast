@@ -4,7 +4,7 @@ namespace App\Media;
 
 use App\Entity;
 use App\Event\Radio\GetAlbumArt;
-use App\Service\LastFm;
+use App\Media\AlbumArtService\AlbumArtServiceInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,18 +13,18 @@ class AlbumArtListener implements EventSubscriberInterface
 {
     public const CACHE_LIFETIME = 43200;
 
-    protected LastFm $lastFm;
-
     protected LoggerInterface $logger;
 
     protected CacheInterface $cache;
 
+    protected AlbumArtServiceInterface $albumArtService;
+
     public function __construct(
-        LastFm $lastFm,
         LoggerInterface $logger,
-        CacheInterface $cache
+        CacheInterface $cache,
+        AlbumArtServiceInterface $albumArtService
     ) {
-        $this->lastFm = $lastFm;
+        $this->albumArtService = $albumArtService;
         $this->logger = $logger;
         $this->cache = $cache;
     }
@@ -72,9 +72,9 @@ class AlbumArtListener implements EventSubscriberInterface
     {
         $song = $event->getSong();
 
-        if (!$this->lastFm->hasApiKey()) {
+        if (!$this->albumArtService->isSupported()) {
             $this->logger->debug(
-                'No Last.fm API key specified; skipping check.',
+                'Album art service is not currently supported (no API key?); skipping check.',
                 [
                     'song' => $song->getText(),
                     'songId' => $song->getSongId(),
@@ -84,7 +84,7 @@ class AlbumArtListener implements EventSubscriberInterface
         }
 
         try {
-            $albumArtUrl = $this->lastFm->getAlbumArt($song);
+            $albumArtUrl = $this->albumArtService->getAlbumArt($song);
 
             if (null !== $albumArtUrl) {
                 $this->cache->set(

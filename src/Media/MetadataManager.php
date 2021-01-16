@@ -6,6 +6,7 @@ use App\Entity;
 use App\Event\Radio\GetAlbumArt;
 use App\EventDispatcher;
 use App\Exception\CannotProcessMediaException;
+use App\Media\AlbumArtService\AlbumArtServiceInterface;
 use App\Media\MetadataService\MetadataServiceInterface;
 use App\Version;
 use GuzzleHttp\Client;
@@ -14,6 +15,8 @@ use GuzzleHttp\RequestOptions;
 class MetadataManager
 {
     protected MetadataServiceInterface $metadataService;
+
+    protected AlbumArtServiceInterface $albumArtService;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 

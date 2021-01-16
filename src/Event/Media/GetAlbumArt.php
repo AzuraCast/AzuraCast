@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Event\Radio;
+namespace App\Event\Media;
 
 use App\Entity;
-use GuzzleHttp\Psr7\Uri;
-use Psr\Http\Message\UriInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class GetAlbumArt extends Event
 {
     protected Entity\SongInterface $song;
 
-    protected ?UriInterface $albumArt = null;
+    protected ?string $albumArt = null;
 
     public function __construct(Entity\SongInterface $song)
     {
@@ -23,20 +21,15 @@ class GetAlbumArt extends Event
         return $this->song;
     }
 
-    /**
-     * @param string|UriInterface $albumArt
-     */
-    public function setAlbumArt($albumArt): void
+    public function setAlbumArt(?string $albumArt): void
     {
-        if (!($albumArt instanceof UriInterface)) {
-            $albumArt = new Uri($albumArt);
-        }
-
-        $this->albumArt = $albumArt;
+        $this->albumArt = !empty($albumArt)
+            ? $albumArt
+            : null;
         $this->stopPropagation();
     }
 
-    public function getAlbumArt(): ?UriInterface
+    public function getAlbumArt(): ?string
     {
         return $this->albumArt;
     }

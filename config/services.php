@@ -412,7 +412,7 @@ return [
         App\Media\MetadataService\GetId3MetadataService::class
     ),
 
-    App\Media\AlbumArtService\AlbumArtServiceInterface::class => DI\get(
-        App\Media\AlbumArtService\LastFmAlbumArtService::class
+    App\Media\AlbumArtHandler\AlbumArtServiceInterface::class => DI\get(
+        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class
     ),
 ];

@@ -3,13 +3,28 @@
 namespace App\Media\MetadataService;
 
 use App\Entity;
+use App\Event\Media\ReadMetadata;
+use App\Event\Media\WriteMetadata;
 use App\Exception\CannotProcessMediaException;
 use App\Utilities;
+use Symfony\Contracts\EventDispatcher\Event;
 use voku\helper\UTF8;
 
-class GetId3MetadataService implements MetadataServiceInterface
+class GetId3MetadataService
 {
-    public function getMetadata(string $path): Entity\Metadata
+    public function __invoke(Event $event): void
+    {
+        if ($event instanceof ReadMetadata) {
+            $metadata = $this->readMetadata($event->getPath());
+            $event->setMetadata($metadata);
+        } elseif ($event instanceof WriteMetadata) {
+            if ($this->writeMetadata($event->getMetadata(), $event->getPath())) {
+                $event->stopPropagation();
+            }
+        }
+    }
+
+    public function readMetadata(string $path): Entity\Metadata
     {
         $id3 = new \getID3();
 

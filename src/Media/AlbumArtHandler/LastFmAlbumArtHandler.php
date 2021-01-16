@@ -1,25 +1,51 @@
 <?php
 
-namespace App\Media\AlbumArtService;
+namespace App\Media\AlbumArtHandler;
 
 use App\Entity;
+use App\Event\Media\GetAlbumArt;
 use App\Service\LastFm;
+use Psr\Log\LoggerInterface;
 
-class LastFmAlbumArtService implements AlbumArtServiceInterface
+class LastFmAlbumArtHandler
 {
     protected LastFm $lastFm;
 
-    public function __construct(LastFm $lastFm)
+    protected LoggerInterface $logger;
+
+    public function __construct(LastFm $lastFm, LoggerInterface $logger)
     {
         $this->lastFm = $lastFm;
+        $this->logger = $logger;
     }
 
-    public function isSupported(): bool
+    public function __invoke(GetAlbumArt $event): void
     {
-        return $this->lastFm->hasApiKey();
+        if (!$this->lastFm->hasApiKey()) {
+            $this->logger->info('No last.fm API key specified; skipping last.fm album art check.');
+            return;
+        }
+
+        $song = $event->getSong();
+
+        try {
+            $albumArt = $this->getAlbumArt($song);
+            if (!empty($albumArt)) {
+                $event->setAlbumArt($albumArt);
+            }
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                sprintf('Last.fm Album Art Error: %s', $e->getMessage()),
+                [
+                    'exception' => $e,
+                    'song' => $song->getText(),
+                    'songId' => $song->getSongId(),
+                ]
+            );
+        }
     }
 
-    public function getAlbumArt(Entity\SongInterface $song): ?string
+    protected function getAlbumArt(Entity\SongInterface $song): ?string
     {
         if ($song instanceof Entity\StationMedia && !empty($song->getAlbum())) {
             $response = $this->lastFm->makeRequest(

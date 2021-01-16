@@ -3,10 +3,11 @@
 namespace App\Media;
 
 use App\Entity;
-use App\Event\Radio\GetAlbumArt;
+use App\Event\Media\ReadMetadata;
+use App\Event\Media\WriteMetadata;
 use App\EventDispatcher;
 use App\Exception\CannotProcessMediaException;
-use App\Media\AlbumArtService\AlbumArtServiceInterface;
+use App\Media\AlbumArtHandler\AlbumArtServiceInterface;
 use App\Media\MetadataService\MetadataServiceInterface;
 use App\Version;
 use GuzzleHttp\Client;
@@ -14,26 +15,20 @@ use GuzzleHttp\RequestOptions;
 
 class MetadataManager
 {
-    protected MetadataServiceInterface $metadataService;
-
-    protected AlbumArtServiceInterface $albumArtService;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     protected EventDispatcher $eventDispatcher;
 
     protected Client $httpClient;
 
+    protected RemoteAlbumArt $remoteAlbumArt;
+
     public function __construct(
-        MetadataServiceInterface $metadataService,
-        Entity\Repository\SettingsRepository $settingsRepo,
         EventDispatcher $eventDispatcher,
-        Client $httpClient
+        Client $httpClient,
+        RemoteAlbumArt $remoteAlbumArt
     ) {
-        $this->metadataService = $metadataService;
-        $this->settingsRepo = $settingsRepo;
         $this->eventDispatcher = $eventDispatcher;
         $this->httpClient = $httpClient;
+        $this->remoteAlbumArt = $remoteAlbumArt;
     }
 
     public function getMetadata(Entity\StationMedia $media, string $filePath): Entity\Metadata
@@ -46,15 +41,15 @@ class MetadataManager
             );
         }
 
-        $metadata = $this->metadataService->getMetadata($filePath);
+        $event = new ReadMetadata($filePath);
+        $this->eventDispatcher->dispatch($event);
+
+        $metadata = $event->getMetadata();
         $media->fromMetadata($metadata);
 
         $artwork = $metadata->getArtwork();
-        if (empty($artwork)) {
-            $settings = $this->settingsRepo->readSettings();
-            if ($settings->getUseExternalAlbumArtWhenProcessingMedia()) {
-                $metadata->setArtwork($this->getExternalArtwork($media));
-            }
+        if (empty($artwork) && $this->remoteAlbumArt->enableForMedia()) {
+            $metadata->setArtwork($this->getExternalArtwork($media));
         }
 
         return $metadata;
@@ -62,10 +57,7 @@ class MetadataManager
 
     protected function getExternalArtwork(Entity\StationMedia $media): ?string
     {
-        $event = new GetAlbumArt($media);
-        $this->eventDispatcher->dispatch($event);
-
-        $artUri = (string)$event->getAlbumArt();
+        $artUri = ($this->remoteAlbumArt)($media);
         if (empty($artUri)) {
             return null;
         }
@@ -84,8 +76,9 @@ class MetadataManager
         return (string)$response->getBody();
     }
 
-    public function writeMetadata(Entity\Metadata $metadata, string $filePath): bool
+    public function writeMetadata(Entity\Metadata $metadata, string $filePath): void
     {
-        return $this->metadataService->writeMetadata($metadata, $filePath);
+        $event = new WriteMetadata($metadata, $filePath);
+        $this->eventDispatcher->dispatch($event);
     }
 }

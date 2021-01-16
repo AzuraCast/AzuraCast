@@ -3,9 +3,8 @@
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
-use App\Event\Radio\GetAlbumArt;
-use App\EventDispatcher;
 use App\Http\Router;
+use App\Media\RemoteAlbumArt;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
 use Psr\Http\Message\UriInterface;
@@ -20,24 +19,20 @@ class SongApiGenerator
 
     protected Entity\Repository\CustomFieldRepository $customFieldRepo;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected EventDispatcher $eventDispatcher;
+    protected RemoteAlbumArt $remoteAlbumArt;
 
     public function __construct(
         EntityManagerInterface $em,
         Router $router,
         Entity\Repository\StationRepository $stationRepo,
         Entity\Repository\CustomFieldRepository $customFieldRepo,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        EventDispatcher $eventDispatcher
+        RemoteAlbumArt $remoteAlbumArt
     ) {
         $this->em = $em;
         $this->router = $router;
         $this->stationRepo = $stationRepo;
         $this->customFieldRepo = $customFieldRepo;
-        $this->settingsRepo = $settingsRepo;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->remoteAlbumArt = $remoteAlbumArt;
     }
 
     public function __invoke(
@@ -91,16 +86,9 @@ class SongApiGenerator
             }
         }
 
-        $settings = $this->settingsRepo->readSettings();
-
-        if ($settings->getUseExternalAlbumArtInApis()) {
-            $event = new GetAlbumArt($song);
-            $this->eventDispatcher->dispatch($event);
-
-            $path = $event->getAlbumArt();
-        } else {
-            $path = null;
-        }
+        $path = $this->remoteAlbumArt->enableForApis()
+            ? ($this->remoteAlbumArt)($song)
+            : null;
 
         if (null === $path) {
             $path = $this->stationRepo->getDefaultAlbumArtUrl($station);

@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Media;
+
+use App\Entity;
+use App\Event\Media\GetAlbumArt;
+use App\EventDispatcher;
+use App\Media\AlbumArtHandler\AlbumArtServiceInterface;
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
+
+class RemoteAlbumArt
+{
+    public const CACHE_LIFETIME = 43200;
+
+    protected LoggerInterface $logger;
+
+    protected CacheInterface $cache;
+
+    protected Entity\Repository\SettingsRepository $settingsRepo;
+
+    protected EventDispatcher $eventDispatcher;
+
+    public function __construct(
+        LoggerInterface $logger,
+        CacheInterface $cache,
+        Entity\Repository\SettingsRepository $settingsRepo
+    ) {
+        $this->logger = $logger;
+        $this->cache = $cache;
+        $this->settingsRepo = $settingsRepo;
+    }
+
+    public function enableForApis(): bool
+    {
+        $settings = $this->settingsRepo->readSettings();
+        return $settings->getUseExternalAlbumArtInApis();
+    }
+
+    public function enableForMedia(): bool
+    {
+        $settings = $this->settingsRepo->readSettings();
+        return $settings->getUseExternalAlbumArtWhenProcessingMedia();
+    }
+
+    public function __invoke(Entity\SongInterface $song): ?string
+    {
+        $cacheKey = 'album_art.' . $song->getSongId();
+
+        if ($this->cache->has($cacheKey)) {
+            $cacheResult = $this->cache->get($cacheKey);
+
+            $this->logger->debug(
+                'Cached entry found for track.',
+                [
+                    'result' => $cacheResult,
+                    'song' => $song->getText(),
+                    'songId' => $song->getSongId(),
+                ]
+            );
+
+            if ($cacheResult['success']) {
+                return $cacheResult['url'];
+            }
+
+            return null;
+        }
+
+        $event = new GetAlbumArt($song);
+        $this->eventDispatcher->dispatch($event);
+
+        $albumArtUrl = $event->getAlbumArt();
+
+        if (null !== $albumArtUrl) {
+            $this->cache->set(
+                $cacheKey,
+                [
+                    'success' => true,
+                    'url' => $albumArtUrl,
+                ],
+                self::CACHE_LIFETIME
+            );
+        }
+
+        return $albumArtUrl;
+    }
+}

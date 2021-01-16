@@ -7,6 +7,7 @@ use App\Http\Router;
 use App\Media\RemoteAlbumArt;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\UriInterface;
 
 class SongApiGenerator
@@ -38,7 +39,8 @@ class SongApiGenerator
     public function __invoke(
         Entity\SongInterface $song,
         ?Entity\Station $station = null,
-        ?UriInterface $baseUri = null
+        ?UriInterface $baseUri = null,
+        bool $allowRemoteArt = false
     ): Entity\Api\Song {
         $response = new Entity\Api\Song();
         $response->id = (string)$song->getSongId();
@@ -56,7 +58,7 @@ class SongApiGenerator
             $response->custom_fields = $this->getCustomFields();
         }
 
-        $response->art = $this->getAlbumArtUrl($song, $station, $baseUri);
+        $response->art = $this->getAlbumArtUrl($song, $station, $baseUri, $allowRemoteArt);
 
         return $response;
     }
@@ -64,7 +66,8 @@ class SongApiGenerator
     protected function getAlbumArtUrl(
         Entity\SongInterface $song,
         ?Entity\Station $station = null,
-        ?UriInterface $baseUri = null
+        ?UriInterface $baseUri = null,
+        bool $allowRemoteArt = false
     ): UriInterface {
         if (null === $baseUri) {
             $baseUri = $this->router->getBaseUrl();
@@ -86,7 +89,7 @@ class SongApiGenerator
             }
         }
 
-        $path = $this->remoteAlbumArt->enableForApis()
+        $path = ($allowRemoteArt && $this->remoteAlbumArt->enableForApis())
             ? ($this->remoteAlbumArt)($song)
             : null;
 
@@ -94,7 +97,7 @@ class SongApiGenerator
             $path = $this->stationRepo->getDefaultAlbumArtUrl($station);
         }
 
-        return UriResolver::resolve($baseUri, $path);
+        return UriResolver::resolve($baseUri, Utils::uriFor($path));
     }
 
     /**

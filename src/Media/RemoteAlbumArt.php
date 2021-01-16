@@ -11,7 +11,7 @@ use Psr\SimpleCache\CacheInterface;
 
 class RemoteAlbumArt
 {
-    public const CACHE_LIFETIME = 43200;
+    public const CACHE_LIFETIME = 86400 * 14; // Two Weeks
 
     protected LoggerInterface $logger;
 
@@ -24,11 +24,13 @@ class RemoteAlbumArt
     public function __construct(
         LoggerInterface $logger,
         CacheInterface $cache,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Entity\Repository\SettingsRepository $settingsRepo,
+        EventDispatcher $eventDispatcher
     ) {
         $this->logger = $logger;
         $this->cache = $cache;
         $this->settingsRepo = $settingsRepo;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function enableForApis(): bool

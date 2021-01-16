@@ -153,13 +153,13 @@ return function (App\EventDispatcher $dispatcher) {
 
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,
-        App\Media\AlbumArtHandler\MusicBrainzAlbumArtHandler::class,
+        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class,
         '__invoke',
         10
     );
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,
-        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class,
+        App\Media\AlbumArtHandler\MusicBrainzAlbumArtHandler::class,
         '__invoke',
         -10
     );

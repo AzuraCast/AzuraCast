@@ -220,7 +220,7 @@ return [
                 'useExternalAlbumArtInApis' => [
                     'toggle',
                     [
-                        'label' => __('Check Web Services for Album Art in API Responses'),
+                        'label' => __('Check Web Services for Album Art for "Now Playing" Tracks'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -231,7 +231,7 @@ return [
                 'useExternalAlbumArtWhenProcessingMedia' => [
                     'toggle',
                     [
-                        'label' => __('Check Web Services for Album Art When Processing Media'),
+                        'label' => __('Check Web Services for Album Art When Uploading Media'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,

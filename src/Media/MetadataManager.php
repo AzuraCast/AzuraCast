@@ -67,6 +67,7 @@ class MetadataManager
             'GET',
             $artUri,
             [
+                RequestOptions::TIMEOUT => 10,
                 RequestOptions::HEADERS => [
                     'User-Agent' => 'AzuraCast ' . Version::FALLBACK_VERSION,
                 ],

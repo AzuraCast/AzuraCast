@@ -220,7 +220,7 @@ return [
                 'useExternalAlbumArtInApis' => [
                     'toggle',
                     [
-                        'label' => __('Check last.fm for Album Art in API Responses'),
+                        'label' => __('Check Web Services for Album Art in API Responses'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -231,7 +231,7 @@ return [
                 'useExternalAlbumArtWhenProcessingMedia' => [
                     'toggle',
                     [
-                        'label' => __('Check last.fm for Album Art When Processing Media'),
+                        'label' => __('Check Web Services for Album Art When Processing Media'),
                         'selected_text' => __('Yes'),
                         'deselected_text' => __('No'),
                         'default' => false,
@@ -243,7 +243,6 @@ return [
                     'text',
                     [
                         'label' => __('Last.fm API Key'),
-                        'class' => 'advanced',
                         'description' => __(
                             '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.',
                             'https://www.last.fm/api/account/create'

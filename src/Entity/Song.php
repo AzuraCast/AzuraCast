@@ -92,4 +92,9 @@ class Song implements SongInterface
         $currentSong = new CurrentSong($songText);
         return self::createFromNowPlayingSong($currentSong);
     }
+
+    public static function offline(): self
+    {
+        return self::createFromText('Stream Offline');
+    }
 }

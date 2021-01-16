@@ -47,6 +47,18 @@ class RemoteAlbumArt
 
     public function __invoke(Entity\SongInterface $song): ?string
     {
+        // Avoid tracks that shouldn't ever hit remote APIs.
+        $offlineSong = Entity\Song::offline();
+        if ($song->getSongId() === $offlineSong->getSongId()) {
+            return null;
+        }
+
+        // Catch the default error track and derivatives.
+        if (false !== mb_stripos($song->getText(), 'AzuraCast')) {
+            return null;
+        }
+
+        // Check for cached API hits for the same song ID before.
         $cacheKey = 'album_art.' . $song->getSongId();
 
         if ($this->cache->has($cacheKey)) {
@@ -68,6 +80,7 @@ class RemoteAlbumArt
             return null;
         }
 
+        // Dispatch new event to various registered handlers.
         $event = new GetAlbumArt($song);
         $this->eventDispatcher->dispatch($event);
 

@@ -63,7 +63,7 @@ class MusicBrainzAlbumArtHandler
         $response = $this->musicBrainz->makeRequest(
             'recording/',
             [
-                'query' => implode(' and ', $searchQuery),
+                'query' => implode(' AND ', $searchQuery),
                 'inc' => 'releases',
                 'limit' => 5,
             ]

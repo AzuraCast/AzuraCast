@@ -48,7 +48,7 @@ class RemoteAlbumArt
     public function __invoke(Entity\SongInterface $song): ?string
     {
         // Avoid tracks that shouldn't ever hit remote APIs.
-        $offlineSong = Entity\Song::offline();
+        $offlineSong = Entity\Song::createOffline();
         if ($song->getSongId() === $offlineSong->getSongId()) {
             return null;
         }

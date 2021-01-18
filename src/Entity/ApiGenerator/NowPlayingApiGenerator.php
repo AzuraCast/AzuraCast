@@ -155,7 +155,7 @@ class NowPlayingApiGenerator
         $np->station = ($this->stationApiGenerator)($station, $baseUri);
         $np->listeners = new Entity\Api\NowPlayingListeners();
 
-        $songObj = Entity\Song::offline();
+        $songObj = Entity\Song::createOffline();
 
         $offlineApiNowPlaying = new Entity\Api\NowPlayingCurrentSong();
         $offlineApiNowPlaying->sh_id = 0;

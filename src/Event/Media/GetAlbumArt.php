@@ -26,7 +26,10 @@ class GetAlbumArt extends Event
         $this->albumArt = !empty($albumArt)
             ? $albumArt
             : null;
-        $this->stopPropagation();
+
+        if (null !== $this->albumArt) {
+            $this->stopPropagation();
+        }
     }
 
     public function getAlbumArt(): ?string

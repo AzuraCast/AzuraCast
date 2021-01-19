@@ -60,21 +60,21 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Music Files'),
                 'icon' => 'library_music',
                 'url' => $router->fromHere('stations:files:index'),
-                'visible' => $backend::supportsMedia(),
+                'visible' => $backend->supportsMedia(),
                 'permission' => Acl::STATION_MEDIA,
             ],
             'playlists' => [
                 'label' => __('Playlists'),
                 'icon' => 'queue_music',
                 'url' => $router->fromHere('stations:playlists:index'),
-                'visible' => $backend::supportsMedia(),
+                'visible' => $backend->supportsMedia(),
                 'permission' => Acl::STATION_MEDIA,
             ],
             'streamers' => [
                 'label' => __('Streamer/DJ Accounts'),
                 'icon' => 'mic',
                 'url' => $router->fromHere('stations:streamers:index'),
-                'visible' => $backend::supportsStreamers(),
+                'visible' => $backend->supportsStreamers(),
                 'permission' => Acl::STATION_STREAMERS,
             ],
             'web_dj' => [
@@ -89,7 +89,7 @@ return function (App\Event\BuildStationMenu $e) {
                 'label' => __('Mount Points'),
                 'icon' => 'wifi_tethering',
                 'url' => $router->fromHere('stations:mounts:index'),
-                'visible' => $frontend::supportsMounts(),
+                'visible' => $frontend->supportsMounts(),
                 'permission' => Acl::STATION_MOUNTS,
             ],
             'remotes' => [
@@ -116,7 +116,7 @@ return function (App\Event\BuildStationMenu $e) {
                     'reports_listeners' => [
                         'label' => __('Listeners'),
                         'url' => $router->fromHere('stations:reports:listeners'),
-                        'visible' => $frontend::supportsListenerDetail(),
+                        'visible' => $frontend->supportsListenerDetail(),
                     ],
                     'reports_requests' => [
                         'label' => __('Song Requests'),
@@ -130,22 +130,22 @@ return function (App\Event\BuildStationMenu $e) {
                     'reports_performance' => [
                         'label' => __('Song Listener Impact'),
                         'url' => $router->fromHere('stations:reports:performance'),
-                        'visible' => $backend::supportsMedia(),
+                        'visible' => $backend->supportsMedia(),
                     ],
                     'reports_duplicates' => [
                         'label' => __('Duplicate Songs'),
                         'url' => $router->fromHere('stations:files:index') . '#special:duplicates',
-                        'visible' => $backend::supportsMedia(),
+                        'visible' => $backend->supportsMedia(),
                     ],
                     'reports_unprocessable' => [
                         'label' => __('Unprocessable Files'),
                         'url' => $router->fromHere('stations:files:index') . '#special:unprocessable',
-                        'visible' => $backend::supportsMedia(),
+                        'visible' => $backend->supportsMedia(),
                     ],
                     'reports_soundexchange' => [
                         'label' => __('SoundExchange Royalties'),
                         'url' => $router->fromHere('stations:reports:soundexchange'),
-                        'visible' => $frontend::supportsListenerDetail(),
+                        'visible' => $frontend->supportsListenerDetail(),
                     ],
                 ],
             ],
@@ -162,7 +162,7 @@ return function (App\Event\BuildStationMenu $e) {
                     'automation' => [
                         'label' => __('Automated Assignment'),
                         'url' => $router->fromHere('stations:automation:index'),
-                        'visible' => $backend::supportsMedia(),
+                        'visible' => $backend->supportsMedia(),
                         'permission' => Acl::STATION_AUTOMATION,
                     ],
                     'ls_config' => [

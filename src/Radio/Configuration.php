@@ -39,58 +39,94 @@ class Configuration
         $this->environment = $environment;
     }
 
-    /**
-     * Write all configuration changes to the filesystem and reload supervisord.
-     *
-     * @param Station $station
-     * @param bool $regen_auth_key
-     * @param bool $force_restart Always restart this station's supervisor instances, even if nothing changed.
-     */
-    public function writeConfiguration(Station $station, $regen_auth_key = false, $force_restart = false): void
+    public function initializeConfiguration(Station $station): void
+    {
+        // Ensure default values for frontend/backend config exist.
+        $station->setFrontendConfig($station->getFrontendConfig());
+        $station->setBackendConfig($station->getBackendConfig());
+
+        // Ensure port configuration exists
+        $this->assignRadioPorts($station);
+
+        // Clear station caches and generate API adapter key if none exists.
+        if (empty($station->getAdapterApiKey())) {
+            $station->generateAdapterApiKey();
+        }
+
+        // Ensure all directories exist.
+        $station->ensureDirectoriesExist();
+
+        $this->em->persist($station);
+        $this->em->persist($station->getMediaStorageLocation());
+        $this->em->persist($station->getRecordingsStorageLocation());
+
+        $this->em->flush();
+    }
+
+    public function handleConfigurationChange(Station $station): void
     {
         if ($this->environment->isTesting()) {
             return;
         }
 
-        // Initialize adapters.
-        $supervisor_config = [];
-        $supervisor_config_path = $this->getSupervisorConfigFile($station);
+        $this->initializeConfiguration($station);
 
-        if (!$station->isEnabled()) {
-            @unlink($supervisor_config_path);
-            $this->reloadSupervisorForStation($station, false);
+        if (!$station->isEnabled() || !$station->getHasStarted()) {
             return;
         }
 
-        // Ensure port configuration exists
-        $this->assignRadioPorts($station, false);
+        $frontend = $this->adapters->getFrontendAdapter($station);
+        $backend = $this->adapters->getBackendAdapter($station);
 
-        // Clear station caches and generate API adapter key if none exists.
-        if ($regen_auth_key || empty($station->getAdapterApiKey())) {
-            $station->generateAdapterApiKey();
+        if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
+            return;
         }
 
-        $station->clearCache();
+        $frontendChanged = $frontend->compareConfiguration($station);
+        $backendChanged = $backend->compareConfiguration($station);
 
-        $this->em->persist($station);
-        $this->em->flush();
+        if ($frontendChanged || $backendChanged) {
+            $station->setNeedsRestart(true);
+            $this->em->persist($station);
+            $this->em->flush();
+        }
+    }
+
+    /**
+     * Write all configuration changes to the filesystem and reload supervisord.
+     *
+     * @param Station $station
+     * @param bool $forceRestart Always restart this station's supervisor instances, even if nothing changed.
+     */
+    public function writeConfiguration(
+        Station $station,
+        bool $forceRestart = false
+    ): void {
+        if ($this->environment->isTesting()) {
+            return;
+        }
+
+        $this->initializeConfiguration($station);
+
+        // Initialize adapters.
+        $supervisorConfig = [];
+        $supervisorConfigFile = $this->getSupervisorConfigFile($station);
+
+        if (!$station->isEnabled()) {
+            @unlink($supervisorConfigFile);
+            $this->reloadSupervisorForStation($station);
+            return;
+        }
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);
 
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
-            @unlink($supervisor_config_path);
-            $this->reloadSupervisorForStation($station, false);
+            @unlink($supervisorConfigFile);
+            $this->reloadSupervisorForStation($station);
             return;
         }
-
-        // Ensure all directories exist.
-        $station->ensureDirectoriesExist();
-
-        // Write config files for both backend and frontend.
-        $frontend->write($station);
-        $backend->write($station);
 
         // Get group information
         $backend_name = $backend->getProgramName($station);
@@ -108,25 +144,29 @@ class Configuration
             $programs[] = $frontend_program;
         }
 
-        $supervisor_config[] = '[group:' . $backend_group . ']';
-        $supervisor_config[] = 'programs=' . implode(',', $programs);
-        $supervisor_config[] = '';
+        $supervisorConfig[] = '[group:' . $backend_group . ']';
+        $supervisorConfig[] = 'programs=' . implode(',', $programs);
+        $supervisorConfig[] = '';
 
         // Write frontend
         if ($frontend->hasCommand($station)) {
-            $supervisor_config[] = $this->writeConfigurationSection($station, $frontend, 90);
+            $supervisorConfig[] = $this->writeConfigurationSection($station, $frontend, 90);
         }
 
         // Write backend
         if ($backend->hasCommand($station)) {
-            $supervisor_config[] = $this->writeConfigurationSection($station, $backend, 100);
+            $supervisorConfig[] = $this->writeConfigurationSection($station, $backend, 100);
         }
 
         // Write config contents
-        $supervisor_config_data = implode("\n", $supervisor_config);
-        file_put_contents($supervisor_config_path, $supervisor_config_data);
+        $supervisor_config_data = implode("\n", $supervisorConfig);
+        file_put_contents($supervisorConfigFile, $supervisor_config_data);
 
-        $this->reloadSupervisorForStation($station, $force_restart);
+        // Write supporting configurations.
+        $frontend->write($station);
+        $backend->write($station);
+
+        $this->reloadSupervisorForStation($station, $forceRestart);
     }
 
     /**
@@ -145,7 +185,7 @@ class Configuration
      * @param Station $station
      * @param bool $force_restart
      */
-    protected function reloadSupervisorForStation(Station $station, $force_restart = false): void
+    protected function reloadSupervisorForStation(Station $station, $force_restart = false): bool
     {
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
@@ -165,10 +205,13 @@ class Configuration
         if ($was_restarted) {
             $station->setHasStarted(true);
             $station->setNeedsRestart(false);
+            $station->clearCache();
 
             $this->em->persist($station);
             $this->em->flush();
         }
+
+        return $was_restarted;
     }
 
     /**

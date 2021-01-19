@@ -23,15 +23,19 @@ class MountsController extends AbstractStationCrudController
         $station = $request->getStation();
         $frontend = $request->getStationFrontend();
 
-        if (!$frontend::supportsMounts()) {
+        if (!$frontend->supportsMounts()) {
             throw new StationUnsupportedException(__('This feature is not currently supported on this station.'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/mounts/index', [
-            'frontend_type' => $station->getFrontendType(),
-            'mounts' => $station->getMounts(),
-            'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/mounts/index',
+            [
+                'frontend_type' => $station->getFrontendType(),
+                'mounts' => $station->getMounts(),
+                'csrf' => $request->getCsrf()->generate($this->csrf_namespace),
+            ]
+        );
     }
 
     public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
@@ -41,11 +45,15 @@ class MountsController extends AbstractStationCrudController
             return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/mounts/edit', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => $id ? __('Edit Mount Point') : __('Add Mount Point'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/mounts/edit',
+            [
+                'form' => $this->form,
+                'render_mode' => 'edit',
+                'title' => $id ? __('Edit Mount Point') : __('Add Mount Point'),
+            ]
+        );
     }
 
     public function deleteAction(

@@ -488,31 +488,7 @@ class Station
             $frontend_config = $config;
         }
 
-        $config = $frontend_config->toArray();
-
-        if ($this->frontend_config != $config) {
-            $this->setNeedsRestart(true);
-        }
-
-        $this->frontend_config = $config;
-    }
-
-    /**
-     * Set frontend configuration but do not overwrite existing values.
-     *
-     * @param array $default_config
-     */
-    public function setFrontendConfigDefaults(array $default_config): void
-    {
-        $frontend_config = (array)$this->frontend_config;
-
-        foreach ($default_config as $config_key => $config_value) {
-            if (empty($frontend_config[$config_key])) {
-                $frontend_config[$config_key] = $config_value;
-            }
-        }
-
-        $this->frontend_config = $frontend_config;
+        $this->frontend_config = $frontend_config->toArray();
     }
 
     public function getBackendType(): ?string
@@ -572,13 +548,7 @@ class Station
             $backend_config = $config;
         }
 
-        $config = $backend_config->toArray();
-
-        if ($this->backend_config != $config) {
-            $this->setNeedsRestart(true);
-        }
-
-        $this->backend_config = $config;
+        $this->backend_config = $backend_config->toArray();
     }
 
     public function getAdapterApiKey(): ?string

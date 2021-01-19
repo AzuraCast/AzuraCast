@@ -173,9 +173,9 @@ class StationRepository extends Repository
         }
 
         // Create default mountpoints if station supports them.
-        if ($frontend_adapter::supportsMounts()) {
+        if ($frontend_adapter->supportsMounts()) {
             // Create default mount points.
-            $mount_points = $frontend_adapter::getDefaultMounts();
+            $mount_points = $frontend_adapter->getDefaultMounts();
 
             foreach ($mount_points as $mount_point) {
                 $mount_record = new Entity\StationMount($station);
@@ -231,15 +231,8 @@ class StationRepository extends Repository
      */
     public function create(Entity\Station $station): Entity\Station
     {
-        // Create path for station.
-        $station->ensureDirectoriesExist();
-
-        $this->em->persist($station);
-        $this->em->persist($station->getMediaStorageLocation());
-        $this->em->persist($station->getRecordingsStorageLocation());
-
-        // Generate station ID.
-        $this->em->flush();
+        $station->generateAdapterApiKey();
+        $this->configuration->initializeConfiguration($station);
 
         // Scan directory for any existing files.
         set_time_limit(600);
@@ -253,21 +246,9 @@ class StationRepository extends Repository
         /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
 
-        // Load adapters.
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-
         // Create default mountpoints if station supports them.
+        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
         $this->resetMounts($station, $frontend_adapter);
-
-        // Load configuration from adapter to pull source and admin PWs.
-        $frontend_adapter->read($station);
-
-        // Write the adapter configurations and update supervisord.
-        $this->configuration->writeConfiguration($station, true);
-
-        // Save changes and continue to the last setup step.
-        $this->em->persist($station);
-        $this->em->flush();
 
         return $station;
     }

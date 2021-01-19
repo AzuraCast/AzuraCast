@@ -55,11 +55,27 @@ abstract class AbstractFrontend extends AbstractAdapter
     }
 
     /**
+     * @return bool Whether the station supports multiple mount points per station
+     */
+    public function supportsMounts(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool Whether the station supports enhanced listener detail (per-client records)
+     */
+    public function supportsListenerDetail(): bool
+    {
+        return false;
+    }
+
+    /**
      * Get the default mounts when resetting or initializing a station.
      *
      * @return mixed[]
      */
-    public static function getDefaultMounts(): array
+    public function getDefaultMounts(): array
     {
         return [
             [
@@ -71,29 +87,6 @@ abstract class AbstractFrontend extends AbstractAdapter
             ],
         ];
     }
-
-    /**
-     * @return bool Whether the station supports multiple mount points per station
-     */
-    public static function supportsMounts(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @return bool Whether the station supports enhanced listener detail (per-client records)
-     */
-    public static function supportsListenerDetail(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Read configuration from external service to Station object.
-     *
-     * @param Entity\Station $station
-     */
-    abstract public function read(Entity\Station $station): bool;
 
     /**
      * @inheritdoc
@@ -156,8 +149,8 @@ abstract class AbstractFrontend extends AbstractAdapter
 
         if (
             $use_radio_proxy
-            || (!$this->environment->isProduction() && !$this->environment->isDocker())
             || 'https' === $base_url->getScheme()
+            || (!$this->environment->isProduction() && !$this->environment->isDocker())
         ) {
             // Web proxy support.
             return $base_url
@@ -194,9 +187,11 @@ abstract class AbstractFrontend extends AbstractAdapter
     }
 
     /**
+     * @param string|null $custom_config_raw
+     *
      * @return mixed[]|bool
      */
-    protected function processCustomConfig($custom_config_raw)
+    protected function processCustomConfig(?string $custom_config_raw)
     {
         $custom_config = [];
 
@@ -208,11 +203,6 @@ abstract class AbstractFrontend extends AbstractAdapter
         }
 
         return $custom_config;
-    }
-
-    protected function getRadioPort(Entity\Station $station): int
-    {
-        return (8000 + (($station->getId() - 1) * 10));
     }
 
     protected function writeIpBansFile(Entity\Station $station): string

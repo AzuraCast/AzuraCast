@@ -7,24 +7,24 @@ use App\Radio\AbstractAdapter;
 
 abstract class AbstractBackend extends AbstractAdapter
 {
-    public static function supportsMedia(): bool
+    public function supportsMedia(): bool
     {
-        return true;
+        return false;
     }
 
-    public static function supportsRequests(): bool
+    public function supportsRequests(): bool
     {
-        return true;
+        return false;
     }
 
-    public static function supportsStreamers(): bool
+    public function supportsStreamers(): bool
     {
-        return true;
+        return false;
     }
 
-    public static function supportsWebStreaming(): bool
+    public function supportsWebStreaming(): bool
     {
-        return true;
+        return false;
     }
 
     public function getStreamPort(Entity\Station $station): ?int
@@ -33,6 +33,8 @@ abstract class AbstractBackend extends AbstractAdapter
     }
 
     /**
+     * @param Entity\StationMedia $media
+     *
      * @return mixed[]
      */
     public function annotateMedia(Entity\StationMedia $media): array

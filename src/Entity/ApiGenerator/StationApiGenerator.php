@@ -34,7 +34,7 @@ class StationApiGenerator
         $response->listen_url = $fa->getStreamUrl($station, $baseUri);
 
         $mounts = [];
-        if ($fa::supportsMounts() && $station->getMounts()->count() > 0) {
+        if ($fa->supportsMounts() && $station->getMounts()->count() > 0) {
             foreach ($station->getMounts() as $mount) {
                 if ($showAllMounts || $mount->isVisibleOnPublicPages()) {
                     $mounts[] = $mount->api($fa, $baseUri);

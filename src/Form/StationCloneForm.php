@@ -7,6 +7,7 @@ use App\Entity;
 use App\Environment;
 use App\Flysystem\FilesystemManager;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Sync\Task\CheckMediaTask;
 use DeepCopy;
@@ -30,10 +31,11 @@ class StationCloneForm extends StationForm
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Configuration $configuration,
-        CheckMediaTask $media_sync,
         Config $config,
         Environment $environment,
+        Adapters $adapters,
+        Configuration $configuration,
+        CheckMediaTask $media_sync,
         FilesystemManager $filesystem
     ) {
         parent::__construct(
@@ -43,7 +45,8 @@ class StationCloneForm extends StationForm
             $station_repo,
             $storageLocationRepo,
             $config,
-            $environment
+            $environment,
+            $adapters
         );
 
         $form_config = $config->get('forms/station_clone');

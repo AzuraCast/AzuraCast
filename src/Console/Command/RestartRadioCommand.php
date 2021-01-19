@@ -36,16 +36,9 @@ class RestartRadioCommand extends CommandAbstract
         $io->progressStart(count($stations));
 
         foreach ($stations as $station) {
-            $configuration->writeConfiguration($station, false, true);
-
-            $station->setHasStarted(true);
-            $station->setNeedsRestart(false);
-            $em->persist($station);
-
+            $configuration->writeConfiguration($station, true);
             $io->progressAdvance();
         }
-
-        $em->flush();
 
         $io->progressFinish();
         return 0;

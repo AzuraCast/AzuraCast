@@ -18,8 +18,8 @@ $props = [
     // Common
     'backendType' => $station->getBackendType(),
     'frontendType' => $station->getFrontendType(),
-    'stationSupportsRequests' => $backend::supportsRequests(),
-    'stationSupportsStreamers' => $backend::supportsStreamers(),
+    'stationSupportsRequests' => $backend->supportsRequests(),
+    'stationSupportsStreamers' => $backend->supportsStreamers(),
     'enableRequests' => $station->getEnableRequests(),
     'enableStreamers' => $station->getEnableStreamers(),
     'enablePublicPage' => $station->getEnablePublicPage(),

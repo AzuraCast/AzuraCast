@@ -18,11 +18,11 @@ use Supervisor\Supervisor;
 
 abstract class AbstractAdapter
 {
+    protected Supervisor $supervisor;
+
     protected Environment $environment;
 
     protected EntityManagerInterface $em;
-
-    protected Supervisor $supervisor;
 
     protected EventDispatcher $dispatcher;
 
@@ -43,29 +43,67 @@ abstract class AbstractAdapter
     }
 
     /**
+     * Write configuration from Station object to the external service.
+     *
+     * @param Entity\Station $station
+     *
+     * @return bool Whether the newly written configuration differs from what was already on disk.
+     */
+    public function write(Entity\Station $station): bool
+    {
+        $configPath = $this->getConfigurationPath($station);
+        if (null === $configPath) {
+            return false;
+        }
+
+        $currentConfig = (file_exists($configPath))
+            ? file_get_contents($configPath)
+            : null;
+
+        $newConfig = $this->getCurrentConfiguration($station);
+
+        file_put_contents($configPath, $newConfig);
+
+        return 0 !== strcmp($currentConfig, $newConfig);
+    }
+
+    /**
+     * Generate the configuration for this adapter as it would exist with current database settings.
+     *
+     * @param Entity\Station $station
+     *
+     */
+    public function getCurrentConfiguration(Entity\Station $station): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Returns the main path where configuration data is stored for this adapter.
+     *
+     */
+    public function getConfigurationPath(Entity\Station $station): ?string
+    {
+        return null;
+    }
+
+    /**
      * Indicate if the adapter in question is installed on the server.
      */
-    public static function isInstalled(): bool
+    public function isInstalled(): bool
     {
-        return (static::getBinary() !== false);
+        return (null !== $this->getBinary());
     }
 
     /**
      * Return the binary executable location for this item.
      *
-     * @return string|bool Returns either the path to the binary if it exists or a boolean for error/success
+     * @return string|null Returns either the path to the binary if it exists or null for no binary.
      */
-    public static function getBinary()
+    public function getBinary(): ?string
     {
-        return true;
+        return null;
     }
-
-    /**
-     * Write configuration from Station object to the external service.
-     *
-     * @param Entity\Station $station
-     */
-    abstract public function write(Entity\Station $station): bool;
 
     /**
      * Check if the service is running.
@@ -74,16 +112,16 @@ abstract class AbstractAdapter
      */
     public function isRunning(Entity\Station $station): bool
     {
-        if ($this->hasCommand($station)) {
-            $program_name = $this->getProgramName($station);
-            $process = $this->supervisor->getProcess($program_name);
-
-            if ($process instanceof Process) {
-                return $process->isRunning();
-            }
+        if (!$this->hasCommand($station)) {
+            return true;
         }
 
-        return false;
+        $program_name = $this->getProgramName($station);
+        $process = $this->supervisor->getProcess($program_name);
+
+        return ($process instanceof Process)
+            ? $process->isRunning()
+            : false;
     }
 
     /**
@@ -121,10 +159,6 @@ abstract class AbstractAdapter
      * Restart the executable service.
      *
      * @param Entity\Station $station
-     *
-     * @throws SupervisorException
-     * @throws AlreadyRunningException
-     * @throws NotRunningException
      */
     public function restart(Entity\Station $station): void
     {
@@ -196,7 +230,7 @@ abstract class AbstractAdapter
      */
     protected function handleSupervisorException(
         SupervisorLibException $e,
-        $program_name,
+        string $program_name,
         Entity\Station $station
     ): void {
         $class_parts = explode('\\', static::class);

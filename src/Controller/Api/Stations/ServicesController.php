@@ -49,10 +49,12 @@ class ServicesController
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
 
-        return $response->withJson(new Entity\Api\StationServiceStatus(
-            $backend->isRunning($station),
-            $frontend->isRunning($station)
-        ));
+        return $response->withJson(
+            new Entity\Api\StationServiceStatus(
+                $backend->isRunning($station),
+                $frontend->isRunning($station)
+            )
+        );
     }
 
     /**
@@ -71,7 +73,7 @@ class ServicesController
     public function restartAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $this->configuration->writeConfiguration($station, false, true);
+        $this->configuration->writeConfiguration($station, true);
 
         return $response->withJson(new Entity\Api\Status(true, __('Station restarted.')));
     }

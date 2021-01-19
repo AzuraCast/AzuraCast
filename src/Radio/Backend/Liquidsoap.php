@@ -30,30 +30,50 @@ class Liquidsoap extends AbstractBackend
         $this->streamerRepo = $streamerRepo;
     }
 
-    /**
-     * Write configuration from Station object to the external service.
-     *
-     * Special thanks to the team of PonyvilleFM for assisting with Liquidsoap configuration and debugging.
-     *
-     * @param Entity\Station $station
-     */
-    public function write(Entity\Station $station): bool
+    public function supportsMedia(): bool
     {
-        $event = new WriteLiquidsoapConfiguration($station);
-        $this->dispatcher->dispatch($event);
-
-        $ls_config_contents = $event->buildConfiguration();
-
-        $config_path = $station->getRadioConfigDir();
-        $ls_config_path = $config_path . '/liquidsoap.liq';
-
-        file_put_contents($ls_config_path, $ls_config_contents);
         return true;
+    }
+
+    public function supportsRequests(): bool
+    {
+        return true;
+    }
+
+    public function supportsStreamers(): bool
+    {
+        return true;
+    }
+
+    public function supportsWebStreaming(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConfigurationPath(Entity\Station $station): ?string
+    {
+        return $station->getRadioConfigDir() . '/liquidsoap.liq';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCurrentConfiguration(Entity\Station $station): ?string
+    {
+        return $this->doGetConfiguration($station, false);
     }
 
     public function getEditableConfiguration(Entity\Station $station): string
     {
-        $event = new WriteLiquidsoapConfiguration($station, true);
+        return $this->doGetConfiguration($station, true);
+    }
+
+    protected function doGetConfiguration(Entity\Station $station, bool $forEditing = false): string
+    {
+        $event = new WriteLiquidsoapConfiguration($station, $forEditing);
         $this->dispatcher->dispatch($event);
 
         return $event->buildConfiguration();
@@ -208,18 +228,18 @@ class Liquidsoap extends AbstractBackend
      */
     public function getCommand(Entity\Station $station): ?string
     {
-        if ($binary = self::getBinary()) {
+        if ($binary = $this->getBinary()) {
             $config_path = $station->getRadioConfigDir() . '/liquidsoap.liq';
             return $binary . ' ' . $config_path;
         }
 
-        return '/bin/false';
+        return null;
     }
 
     /**
      * @inheritDoc
      */
-    public static function getBinary()
+    public function getBinary(): ?string
     {
         // Docker revisions 3 and later use the `radio` container.
         $environment = Environment::getInstance();

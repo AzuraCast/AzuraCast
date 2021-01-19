@@ -7,7 +7,7 @@ use App\Config;
 use App\Entity;
 use App\Environment;
 use App\Http\ServerRequest;
-use App\Radio\Frontend\SHOUTcast;
+use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -21,6 +21,8 @@ class StationForm extends EntityForm
 
     protected Environment $environment;
 
+    protected Adapters $adapters;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
@@ -28,14 +30,21 @@ class StationForm extends EntityForm
         Entity\Repository\StationRepository $station_repo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Config $config,
-        Environment $environment
+        Environment $environment,
+        Adapters $adapters
     ) {
         $this->entityClass = Entity\Station::class;
         $this->station_repo = $station_repo;
         $this->storageLocationRepo = $storageLocationRepo;
         $this->environment = $environment;
+        $this->adapters = $adapters;
 
-        $form_config = $config->get('forms/station');
+        $form_config = $config->get(
+            'forms/station',
+            [
+                'adapters' => $adapters,
+            ]
+        );
         parent::__construct($em, $serializer, $validator, $form_config);
     }
 
@@ -73,7 +82,8 @@ class StationForm extends EntityForm
             unset($this->options['groups']['admin']);
         }
 
-        if (!SHOUTcast::isInstalled()) {
+        $installedFrontends = $this->adapters->listFrontendAdapters(true);
+        if (!isset($installedFrontends[Adapters::FRONTEND_SHOUTCAST])) {
             $frontendDesc = __(
                 'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
                 $request->getRouter()->named('admin:install_shoutcast:index')

@@ -40,7 +40,7 @@ class Adapters
      */
     public function getFrontendAdapter(Entity\Station $station): Frontend\AbstractFrontend
     {
-        $adapters = self::listFrontendAdapters();
+        $adapters = $this->listFrontendAdapters();
 
         $frontend_type = $station->getFrontendType();
 
@@ -62,33 +62,32 @@ class Adapters
      *
      * @return mixed[]
      */
-    public static function listFrontendAdapters($check_installed = false): array
+    public function listFrontendAdapters(bool $check_installed = false): array
     {
-        static $adapters;
-
-        if ($adapters === null) {
-            $adapters = [
-                self::FRONTEND_ICECAST => [
-                    'name' => __('Use <b>%s</b> on this server', 'Icecast 2.4'),
-                    'class' => Frontend\Icecast::class,
-                ],
-                self::FRONTEND_SHOUTCAST => [
-                    'name' => __('Use <b>%s</b> on this server', 'SHOUTcast DNAS 2'),
-                    'class' => Frontend\SHOUTcast::class,
-                ],
-                self::FRONTEND_REMOTE => [
-                    'name' => __('Connect to a <b>remote radio server</b>'),
-                    'class' => Frontend\Remote::class,
-                ],
-            ];
-        }
+        $adapters = [
+            self::FRONTEND_ICECAST => [
+                'name' => __('Use <b>%s</b> on this server', 'Icecast 2.4'),
+                'class' => Frontend\Icecast::class,
+            ],
+            self::FRONTEND_SHOUTCAST => [
+                'name' => __('Use <b>%s</b> on this server', 'SHOUTcast DNAS 2'),
+                'class' => Frontend\SHOUTcast::class,
+            ],
+            self::FRONTEND_REMOTE => [
+                'name' => __('Connect to a <b>remote radio server</b>'),
+                'class' => Frontend\Remote::class,
+            ],
+        ];
 
         if ($check_installed) {
-            return array_filter($adapters, function ($adapter_info) {
-                /** @var AbstractAdapter $adapter_class */
-                $adapter_class = $adapter_info['class'];
-                return $adapter_class::isInstalled();
-            });
+            return array_filter(
+                $adapters,
+                function ($adapter_info) {
+                    /** @var AbstractAdapter $adapter */
+                    $adapter = $this->adapters->get($adapter_info['class']);
+                    return $adapter->isInstalled();
+                }
+            );
         }
 
         return $adapters;
@@ -101,7 +100,7 @@ class Adapters
      */
     public function getBackendAdapter(Entity\Station $station): Backend\AbstractBackend
     {
-        $adapters = self::listBackendAdapters();
+        $adapters = $this->listBackendAdapters();
 
         $backend_type = $station->getBackendType();
 
@@ -123,29 +122,28 @@ class Adapters
      *
      * @return mixed[]
      */
-    public static function listBackendAdapters($check_installed = false): array
+    public function listBackendAdapters(bool $check_installed = false): array
     {
-        static $adapters;
-
-        if ($adapters === null) {
-            $adapters = [
-                self::BACKEND_LIQUIDSOAP => [
-                    'name' => __('Use <b>%s</b> on this server', 'Liquidsoap'),
-                    'class' => Backend\Liquidsoap::class,
-                ],
-                self::BACKEND_NONE => [
-                    'name' => __('<b>Do not use</b> an AutoDJ service'),
-                    'class' => Backend\None::class,
-                ],
-            ];
-        }
+        $adapters = [
+            self::BACKEND_LIQUIDSOAP => [
+                'name' => __('Use <b>%s</b> on this server', 'Liquidsoap'),
+                'class' => Backend\Liquidsoap::class,
+            ],
+            self::BACKEND_NONE => [
+                'name' => __('<b>Do not use</b> an AutoDJ service'),
+                'class' => Backend\None::class,
+            ],
+        ];
 
         if ($check_installed) {
-            return array_filter($adapters, function ($adapter_info) {
-                /** @var AbstractAdapter $adapter_class */
-                $adapter_class = $adapter_info['class'];
-                return $adapter_class::isInstalled();
-            });
+            return array_filter(
+                $adapters,
+                function ($adapter_info) {
+                    /** @var AbstractAdapter $adapter */
+                    $adapter = $this->adapters->get($adapter_info['class']);
+                    return $adapter->isInstalled();
+                }
+            );
         }
 
         return $adapters;
@@ -178,7 +176,7 @@ class Adapters
      */
     public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\AbstractRemote
     {
-        $adapters = self::listRemoteAdapters();
+        $adapters = $this->listRemoteAdapters();
 
         $remote_type = $remote->getType();
 
@@ -198,7 +196,7 @@ class Adapters
     /**
      * @return mixed[]
      */
-    public static function listRemoteAdapters(): array
+    public function listRemoteAdapters(): array
     {
         return [
             self::REMOTE_SHOUTCAST1 => [

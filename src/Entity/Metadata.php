@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Media;
+namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 

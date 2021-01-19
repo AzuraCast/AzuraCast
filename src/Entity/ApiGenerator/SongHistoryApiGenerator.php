@@ -14,8 +14,11 @@ class SongHistoryApiGenerator
         $this->songApiGenerator = $songApiGenerator;
     }
 
-    public function __invoke(Entity\SongHistory $record, ?UriInterface $baseUri = null): Entity\Api\SongHistory
-    {
+    public function __invoke(
+        Entity\SongHistory $record,
+        ?UriInterface $baseUri = null,
+        bool $allowRemoteArt = false
+    ): Entity\Api\SongHistory {
         $response = new Entity\Api\SongHistory();
         $response->sh_id = $record->getId();
         $response->played_at = (0 === $record->getTimestampStart())
@@ -36,9 +39,19 @@ class SongHistoryApiGenerator
         }
 
         if (null !== $record->getMedia()) {
-            $response->song = ($this->songApiGenerator)($record->getMedia(), $record->getStation(), $baseUri);
+            $response->song = ($this->songApiGenerator)(
+                $record->getMedia(),
+                $record->getStation(),
+                $baseUri,
+                $allowRemoteArt
+            );
         } else {
-            $response->song = ($this->songApiGenerator)($record, $record->getStation(), $baseUri);
+            $response->song = ($this->songApiGenerator)(
+                $record,
+                $record->getStation(),
+                $baseUri,
+                $allowRemoteArt
+            );
         }
 
         return $response;
@@ -47,14 +60,18 @@ class SongHistoryApiGenerator
     /**
      * @param Entity\SongHistory[] $records
      * @param UriInterface|null $baseUri
+     * @param bool $allowRemoteArt
      *
      * @return Entity\Api\SongHistory[]
      */
-    public function fromArray(array $records, ?UriInterface $baseUri = null): array
-    {
+    public function fromArray(
+        array $records,
+        ?UriInterface $baseUri = null,
+        bool $allowRemoteArt = false
+    ): array {
         $apiRecords = [];
         foreach ($records as $record) {
-            $apiRecords[] = ($this)($record, $baseUri);
+            $apiRecords[] = ($this)($record, $baseUri, $allowRemoteArt);
         }
         return $apiRecords;
     }

@@ -39,11 +39,13 @@ class Song implements SongInterface
         }
 
         if (!is_string($songText)) {
-            throw new InvalidArgumentException(sprintf(
-                '$songText parameter must be a string, array, or instance of %s or %s.',
-                self::class,
-                CurrentSong::class
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    '$songText parameter must be a string, array, or instance of %s or %s.',
+                    self::class,
+                    CurrentSong::class
+                )
+            );
         }
 
         // Strip non-alphanumeric characters
@@ -78,9 +80,9 @@ class Song implements SongInterface
     public static function createFromArray(array $songRow): self
     {
         $currentSong = new CurrentSong(
-            $songRow['text'] ?? null,
-            $songRow['title'] ?? null,
-            $songRow['artist'] ?? null
+            $songRow['text'] ?? '',
+            $songRow['title'] ?? '',
+            $songRow['artist'] ?? ''
         );
         return self::createFromNowPlayingSong($currentSong);
     }
@@ -89,5 +91,10 @@ class Song implements SongInterface
     {
         $currentSong = new CurrentSong($songText);
         return self::createFromNowPlayingSong($currentSong);
+    }
+
+    public static function createOffline(): self
+    {
+        return self::createFromText('Stream Offline');
     }
 }

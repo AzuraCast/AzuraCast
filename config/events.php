@@ -151,6 +151,28 @@ return function (App\EventDispatcher $dispatcher) {
         App\Notification\Check\SyncTaskCheck::class
     );
 
+    $dispatcher->addCallableListener(
+        Event\Media\GetAlbumArt::class,
+        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class,
+        '__invoke',
+        10
+    );
+    $dispatcher->addCallableListener(
+        Event\Media\GetAlbumArt::class,
+        App\Media\AlbumArtHandler\MusicBrainzAlbumArtHandler::class,
+        '__invoke',
+        -10
+    );
+
+    $dispatcher->addCallableListener(
+        Event\Media\ReadMetadata::class,
+        App\Media\MetadataService\GetId3MetadataService::class
+    );
+    $dispatcher->addCallableListener(
+        Event\Media\WriteMetadata::class,
+        App\Media\MetadataService\GetId3MetadataService::class
+    );
+
     $dispatcher->addServiceSubscriber(
         [
             App\Console\ErrorHandler::class,

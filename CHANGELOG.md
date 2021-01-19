@@ -5,6 +5,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- **Remote Album Art Retrieval**: If enabled in the system settings panel, AzuraCast will now check remote services to
+  attempt to retrieve album art if it is missing, or not provided (i.e. for live DJs). By default, this system uses the
+  MusicBrainz database, which is comprehensive but can be slow; if you provide an API key for the last.fm API, AzuraCast
+  will prefer the last.fm API for album art instead.
+
 - **Media Manager Improvements:** Some changes have been made to the media manager to improve the user experience and
   accessibility:
     - You can now edit the playlists associated with a track from directly within the "Edit" modal dialog box for that

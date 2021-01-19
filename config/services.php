@@ -408,5 +408,11 @@ return [
         );
     },
 
-    App\Media\MetadataManagerInterface::class => DI\get(App\Media\GetId3\GetId3MetadataManager::class),
+    App\Media\MetadataService\MetadataServiceInterface::class => DI\get(
+        App\Media\MetadataService\GetId3MetadataService::class
+    ),
+
+    App\Media\AlbumArtHandler\AlbumArtServiceInterface::class => DI\get(
+        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class
+    ),
 ];

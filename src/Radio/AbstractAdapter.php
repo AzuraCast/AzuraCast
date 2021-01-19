@@ -51,30 +51,6 @@ abstract class AbstractAdapter
      */
     public function write(Entity\Station $station): bool
     {
-        return $this->compareConfiguration($station, true);
-    }
-
-    /**
-     * Generate the configuration for this adapter as it would exist with current database settings.
-     *
-     * @param Entity\Station $station
-     *
-     */
-    public function getCurrentConfiguration(Entity\Station $station): ?string
-    {
-        return null;
-    }
-
-    /**
-     * Check whether the configuration currently generated differs from what is currently stored on disk.
-     *
-     * @param Entity\Station $station
-     * @param bool $writeNewConfig
-     *
-     * @return bool Whether configuration generated now differs from what is on disk.
-     */
-    public function compareConfiguration(Entity\Station $station, bool $writeNewConfig = false): bool
-    {
         $configPath = $this->getConfigurationPath($station);
         if (null === $configPath) {
             return false;
@@ -86,11 +62,20 @@ abstract class AbstractAdapter
 
         $newConfig = $this->getCurrentConfiguration($station);
 
-        if ($writeNewConfig) {
-            file_put_contents($configPath, $newConfig);
-        }
+        file_put_contents($configPath, $newConfig);
 
         return 0 !== strcmp($currentConfig, $newConfig);
+    }
+
+    /**
+     * Generate the configuration for this adapter as it would exist with current database settings.
+     *
+     * @param Entity\Station $station
+     *
+     */
+    public function getCurrentConfiguration(Entity\Station $station): ?string
+    {
+        return null;
     }
 
     /**
@@ -169,25 +154,6 @@ abstract class AbstractAdapter
      * @param Entity\Station $station
      */
     abstract public function getProgramName(Entity\Station $station): string;
-
-    public function supportsSoftReload(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Soft-reloads an adapter, if it's supported by the adapter.
-     *
-     * @param Entity\Station $station
-     */
-    public function reload(Entity\Station $station): void
-    {
-        if (!$this->supportsSoftReload()) {
-            $this->restart($station);
-        }
-
-        throw new \RuntimeException('Feature not implemented!');
-    }
 
     /**
      * Restart the executable service.

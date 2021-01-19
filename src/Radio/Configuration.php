@@ -63,35 +63,6 @@ class Configuration
         $this->em->flush();
     }
 
-    public function handleConfigurationChange(Station $station): void
-    {
-        if ($this->environment->isTesting()) {
-            return;
-        }
-
-        $this->initializeConfiguration($station);
-
-        if (!$station->isEnabled() || !$station->getHasStarted()) {
-            return;
-        }
-
-        $frontend = $this->adapters->getFrontendAdapter($station);
-        $backend = $this->adapters->getBackendAdapter($station);
-
-        if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
-            return;
-        }
-
-        $frontendChanged = $frontend->compareConfiguration($station);
-        $backendChanged = $backend->compareConfiguration($station);
-
-        if ($frontendChanged || $backendChanged) {
-            $station->setNeedsRestart(true);
-            $this->em->persist($station);
-            $this->em->flush();
-        }
-    }
-
     /**
      * Write all configuration changes to the filesystem and reload supervisord.
      *

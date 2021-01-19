@@ -121,17 +121,9 @@ class StationRepository extends Repository
      */
     public function edit(Entity\Station $station): Entity\Station
     {
-        // Create path for station.
-        $station->ensureDirectoriesExist();
-
-        $this->em->persist($station);
-        $this->em->persist($station->getMediaStorageLocation());
-        $this->em->persist($station->getRecordingsStorageLocation());
-
         $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
 
-        // Generate station ID.
-        $this->em->flush();
+        $this->configuration->initializeConfiguration($station);
 
         // Delete media-related items if the media storage is changed.
         /** @var Entity\StorageLocation|null $oldMediaStorage */
@@ -155,7 +147,9 @@ class StationRepository extends Repository
             $this->resetMounts($station, $frontend);
         }
 
-        $this->configuration->writeConfiguration($station, $adapter_changed);
+        if ($adapter_changed) {
+            $this->configuration->writeConfiguration($station, true);
+        }
 
         return $station;
     }

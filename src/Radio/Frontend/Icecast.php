@@ -29,17 +29,6 @@ class Icecast extends AbstractFrontend
         return true;
     }
 
-    public function supportsSoftReload(): bool
-    {
-        return true;
-    }
-
-    public function reload(Entity\Station $station): void
-    {
-        $this->write($station);
-        // TODO: Implement soft-reload functionality.
-    }
-
     public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();

@@ -488,7 +488,13 @@ class Station
             $frontend_config = $config;
         }
 
-        $this->frontend_config = $frontend_config->toArray();
+        $config = $frontend_config->toArray();
+
+        if ($this->frontend_config != $config) {
+            $this->setNeedsRestart(true);
+        }
+
+        $this->frontend_config = $config;
     }
 
     public function getBackendType(): ?string
@@ -548,7 +554,13 @@ class Station
             $backend_config = $config;
         }
 
-        $this->backend_config = $backend_config->toArray();
+        $config = $backend_config->toArray();
+
+        if ($this->backend_config != $config) {
+            $this->setNeedsRestart(true);
+        }
+
+        $this->backend_config = $config;
     }
 
     public function getAdapterApiKey(): ?string

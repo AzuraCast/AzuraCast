@@ -551,6 +551,8 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         if (isset($tags['isrc'])) {
             $this->setIsrc($tags['isrc']);
         }
+
+        $this->updateSongId();
     }
 
     public function toMetadata(): Metadata

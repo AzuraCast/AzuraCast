@@ -117,11 +117,16 @@ abstract class AbstractAdapter
         }
 
         $program_name = $this->getProgramName($station);
-        $process = $this->supervisor->getProcess($program_name);
 
-        return ($process instanceof Process)
-            ? $process->isRunning()
-            : false;
+        try {
+            $process = $this->supervisor->getProcess($program_name);
+
+            return ($process instanceof Process)
+                ? $process->isRunning()
+                : false;
+        } catch (Fault\BadNameException $e) {
+            return false;
+        }
     }
 
     /**

@@ -81,6 +81,7 @@ class EditLiquidsoapConfigController
                     [
                         'belongsTo' => 'backend_config',
                         'class' => 'text-preformatted',
+                        'spellcheck' => 'false',
                     ],
                 ];
             } else {
@@ -114,10 +115,14 @@ class EditLiquidsoapConfigController
             return $response->withRedirect($request->getUri()->getPath());
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
-            'render_mode' => 'edit',
-            'title' => __('Edit Liquidsoap Configuration'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $form,
+                'render_mode' => 'edit',
+                'title' => __('Edit Liquidsoap Configuration'),
+            ]
+        );
     }
 }

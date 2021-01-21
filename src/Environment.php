@@ -276,6 +276,9 @@ class Environment
             : LogLevel::DEBUG;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getDatabaseSettings(): array
     {
         if (!isset($this->data[self::DB_NAME], $this->data[self::DB_USER], $this->data[self::DB_PASSWORD])) {
@@ -291,6 +294,9 @@ class Environment
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getRedisSettings(): array
     {
         return [

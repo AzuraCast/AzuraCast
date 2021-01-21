@@ -1,18 +1,24 @@
 ---
-  - name: Ensure update script continues to be executable
-    file: path="{{ item }}" state=touch mode="a+x"
-    with_items:
-     - "{{ www_base }}/update.sh"
-     - "{{ www_base }}/bin/console"
+- name : Ensure update script continues to be executable
+  file : path="{{ item }}" state=touch mode="a+x"
+  with_items :
+    - "{{ www_base }}/update.sh"
+    - "{{ www_base }}/bin/console"
 
-  - name: Run AzuraCast Setup (Install Mode)
-    become: true
-    become_user: azuracast
-    shell: php {{ www_base }}/bin/console azuracast:setup
-    when: update_mode|bool == false
+- name : Run AzuraCast Setup (Install Mode)
+  become : true
+  become_user : azuracast
+  shell : php {{ www_base }}/bin/console azuracast:setup
+  when : update_mode|bool == false
 
-  - name: Run AzuraCast Setup (Update Mode)
-    become: true
-    become_user: azuracast
-    shell: php {{ www_base }}/bin/console azuracast:setup --update
-    when: update_mode|bool == true
+- name : Migrate Legacy Configuration (Update Mode)
+  become : true
+  become_user : azuracast
+  shell : php {{ www_base }}/bin/console azuracast:config:migrate
+  when : update_mode|bool == true
+
+- name : Run AzuraCast Setup (Update Mode)
+  become : true
+  become_user : azuracast
+  shell : php {{ www_base }}/bin/console azuracast:setup --update
+  when : update_mode|bool == true

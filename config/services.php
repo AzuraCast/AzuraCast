@@ -62,32 +62,22 @@ return [
         App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
         App\EventDispatcher $dispatcher
     ) {
-        $connectionOptions = [
-            'host' => $_ENV['MYSQL_HOST'] ?? 'mariadb',
-            'port' => $_ENV['MYSQL_PORT'] ?? 3306,
-            'dbname' => $_ENV['MYSQL_DATABASE'],
-            'user' => $_ENV['MYSQL_USER'],
-            'password' => $_ENV['MYSQL_PASSWORD'],
-            'driver' => 'pdo_mysql',
-            'charset' => 'utf8mb4',
-            'defaultTableOptions' => [
+        $connectionOptions = array_merge(
+            $environment->getDatabaseSettings(),
+            [
+                'driver' => 'pdo_mysql',
                 'charset' => 'utf8mb4',
-                'collate' => 'utf8mb4_general_ci',
-            ],
-            'driverOptions' => [
-                // PDO::MYSQL_ATTR_INIT_COMMAND = 1002;
-                1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
-            ],
-            'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
-        ];
-
-        if (!$environment->isDocker()) {
-            $connectionOptions['host'] = $_ENV['db_host'] ?? 'localhost';
-            $connectionOptions['port'] = $_ENV['db_port'] ?? '3306';
-            $connectionOptions['dbname'] = $_ENV['db_name'] ?? 'azuracast';
-            $connectionOptions['user'] = $_ENV['db_username'] ?? 'azuracast';
-            $connectionOptions['password'] = $_ENV['db_password'];
-        }
+                'defaultTableOptions' => [
+                    'charset' => 'utf8mb4',
+                    'collate' => 'utf8mb4_general_ci',
+                ],
+                'driverOptions' => [
+                    // PDO::MYSQL_ATTR_INIT_COMMAND = 1002;
+                    1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
+                ],
+                'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
+            ]
+        );
 
         try {
             // Fetch and store entity manager.
@@ -146,13 +136,11 @@ return [
 
     // Redis cache
     Redis::class => function (Environment $environment) {
-        $redisHost = $_ENV['REDIS_HOST'] ?? ($environment->isDocker() ? 'redis' : 'localhost');
-        $redisPort = (int)($_ENV['REDIS_PORT'] ?? 6379);
-        $redisDb = (int)($_ENV['REDIS_DB'] ?? 1);
+        $settings = $environment->getRedisSettings();
 
         $redis = new Redis();
-        $redis->connect($redisHost, $redisPort, 15);
-        $redis->select($redisDb);
+        $redis->connect($settings['host'], $settings['port'], 15);
+        $redis->select($settings['db']);
 
         return $redis;
     },

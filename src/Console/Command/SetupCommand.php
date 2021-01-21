@@ -36,12 +36,6 @@ class SetupCommand extends CommandAbstract
 
         if ($update) {
             $io->note(__('Running in update mode.'));
-
-            if (!$environment->isDocker()) {
-                $io->section(__('Migrating Legacy Configuration'));
-                $this->runCommand($output, 'azuracast:config:migrate');
-                $io->newLine();
-            }
         }
 
         $em = $di->get(EntityManagerInterface::class);

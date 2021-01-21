@@ -50,6 +50,17 @@ class Environment
 
     public const LOG_LEVEL = 'LOG_LEVEL';
 
+    // Database and Cache Configuration Variables
+    public const DB_HOST = 'MYSQL_HOST';
+    public const DB_PORT = 'MYSQL_PORT';
+    public const DB_NAME = 'MYSQL_DATABASE';
+    public const DB_USER = 'MYSQL_USER';
+    public const DB_PASSWORD = 'MYSQL_PASSWORD';
+
+    public const REDIS_HOST = 'REDIS_HOST';
+    public const REDIS_PORT = 'REDIS_PORT';
+    public const REDIS_DB = 'REDIS_DB';
+
     // Default settings
     protected array $defaults = [
         self::APP_NAME => 'AzuraCast',
@@ -263,5 +274,29 @@ class Environment
         return $this->isProduction()
             ? LogLevel::NOTICE
             : LogLevel::DEBUG;
+    }
+
+    public function getDatabaseSettings(): array
+    {
+        if (!isset($this->data[self::DB_NAME], $this->data[self::DB_USER], $this->data[self::DB_PASSWORD])) {
+            throw new \InvalidArgumentException('Database connection parameters not provided.');
+        }
+
+        return [
+            'host' => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : 'localhost'),
+            'port' => (int)($this->data[self::DB_PORT] ?? 3306),
+            'dbname' => $this->data[self::DB_NAME],
+            'user' => $this->data[self::DB_USER],
+            'password' => $this->data[self::DB_PASSWORD],
+        ];
+    }
+
+    public function getRedisSettings(): array
+    {
+        return [
+            'host' => $this->data[self::REDIS_HOST] ?? ($this->isDocker() ? 'redis' : 'localhost'),
+            'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
+            'db' => (int)($this->data[self::REDIS_DB] ?? 1),
+        ];
     }
 }

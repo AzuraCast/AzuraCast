@@ -11,40 +11,64 @@ class MigrateConfigCommand extends CommandAbstract
         SymfonyStyle $io,
         Environment $environment
     ): int {
-        $env_path = $environment->getBaseDirectory() . '/env.ini';
-        $iniSettings = [];
+        $envSettings = [];
 
-        if (file_exists($env_path)) {
-            $iniSettings = parse_ini_file($env_path);
+        $iniPath = $environment->getBaseDirectory() . '/env.ini';
+        if (file_exists($iniPath)) {
+            $envSettings = (array)parse_ini_file($iniPath);
+        }
 
-            if (!empty($iniSettings['db_password'])) {
-                $io->writeln(__('Configuration already set up.'));
-                return 0;
+        // Migrate from existing legacy config files.
+        $legacyIniPath = $environment->getBaseDirectory() . '/app/env.ini';
+        if (file_exists($legacyIniPath)) {
+            $iniSettings = parse_ini_file($legacyIniPath);
+            $envSettings = array_merge($envSettings, (array)$iniSettings);
+        }
+
+        $legacyAppEnvFile = $environment->getBaseDirectory() . '/app/.env';
+        if (file_exists($legacyAppEnvFile)) {
+            $envSettings[Environment::APP_ENV] ??= file_get_contents($legacyAppEnvFile);
+        }
+
+        $legacyDbConfFile = $environment->getBaseDirectory() . '/app/config/db.conf.php';
+        if (file_exists($legacyDbConfFile)) {
+            $dbConf = include($legacyDbConfFile);
+
+            $envSettings[Environment::DB_PASSWORD] ??= $dbConf['password'];
+            if (isset($dbConf['user']) && 'root' === $dbConf['user']) {
+                $envSettings[Environment::DB_USER] = 'root';
             }
         }
 
-        if (empty($iniSettings['application_env']) && file_exists($environment->getBaseDirectory() . '/app/.env')) {
-            $iniSettings['application_env'] = @file_get_contents($environment->getBaseDirectory() . '/app/.env');
-        }
+        // Migrate from older environment variable names to new ones.
+        $settingsToMigrate = [
+            'application_env' => Environment::APP_ENV,
+            'db_host' => Environment::DB_HOST,
+            'db_port' => Environment::DB_PORT,
+            'db_name' => Environment::DB_NAME,
+            'db_username' => Environment::DB_USER,
+            'db_password' => Environment::DB_PASSWORD,
+        ];
 
-        if (empty($iniSettings['db_password'])) {
-            $legacy_path = $environment->getBaseDirectory() . '/app/env.ini';
-            if (file_exists($legacy_path)) {
-                $old_settings = parse_ini_file($legacy_path);
-                $iniSettings = array_merge($iniSettings, $old_settings);
+        foreach ($settingsToMigrate as $oldSetting => $newSetting) {
+            // In the future, if the env vars change, disregard this migration.
+            if ($oldSetting === $newSetting) {
+                continue;
             }
 
-            if (file_exists($environment->getBaseDirectory() . '/app/config/db.conf.php')) {
-                $db_conf = include($environment->getBaseDirectory() . '/app/config/db.conf.php');
-                $iniSettings['db_password'] = $db_conf['password'];
-
-                if ($db_conf['user'] === 'root') {
-                    $iniSettings['db_username'] = 'root';
-                }
+            if (!empty($envSettings[$oldSetting])) {
+                $envSettings[$newSetting] ??= $envSettings[$oldSetting];
+                unset($envSettings[$oldSetting]);
             }
         }
 
-        $ini_data = [
+        // Set sensible defaults for variables that may not be set.
+        $envSettings[Environment::DB_HOST] ??= 'localhost';
+        $envSettings[Environment::DB_PORT] ??= '3306';
+        $envSettings[Environment::DB_NAME] ??= 'azuracast';
+        $envSettings[Environment::DB_USER] ??= 'azuracast';
+
+        $iniData = [
             ';',
             '; AzuraCast Environment Settings',
             ';',
@@ -52,12 +76,16 @@ class MigrateConfigCommand extends CommandAbstract
             ';',
             '[configuration]',
         ];
-
-        foreach ($iniSettings as $setting_key => $setting_val) {
-            $ini_data[] = $setting_key . '="' . $setting_val . '"';
+        foreach ($envSettings as $settingKey => $settingVal) {
+            $iniData[] = $settingKey . '="' . $settingVal . '"';
         }
 
-        file_put_contents($env_path, implode("\n", $ini_data));
+        file_put_contents($iniPath, implode("\n", $iniData));
+
+        // Remove legacy files.
+        @unlink($legacyIniPath);
+        @unlink($legacyAppEnvFile);
+        @unlink($legacyDbConfFile);
 
         $io->writeln(__('Configuration successfully written.'));
         return 0;

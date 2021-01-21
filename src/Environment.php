@@ -281,16 +281,12 @@ class Environment
      */
     public function getDatabaseSettings(): array
     {
-        if (!isset($this->data[self::DB_NAME], $this->data[self::DB_USER], $this->data[self::DB_PASSWORD])) {
-            throw new \InvalidArgumentException('Database connection parameters not provided.');
-        }
-
         return [
             'host' => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : 'localhost'),
             'port' => (int)($this->data[self::DB_PORT] ?? 3306),
-            'dbname' => $this->data[self::DB_NAME],
-            'user' => $this->data[self::DB_USER],
-            'password' => $this->data[self::DB_PASSWORD],
+            'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
+            'user' => $this->data[self::DB_USER] ?? 'azuracast',
+            'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
         ];
     }
 

@@ -182,7 +182,6 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Set up playlists using older format as a fallback.
-        $hasDefaultPlaylist = false;
         $playlistObjects = [];
 
         foreach ($station->getPlaylists() as $playlistRaw) {
@@ -190,32 +189,11 @@ class ConfigWriter implements EventSubscriberInterface
             if (!$playlistRaw->getIsEnabled()) {
                 continue;
             }
-            if ($playlistRaw->getType() === Entity\StationPlaylist::TYPE_DEFAULT) {
-                $hasDefaultPlaylist = true;
-            }
 
             $playlistObjects[] = $playlistRaw;
         }
 
-        // Create a new default playlist if one doesn't exist.
-        if (!$hasDefaultPlaylist) {
-            $this->logger->info(
-                'No default playlist existed for this station; new one was automatically created.',
-                ['station_id' => $station->getId(), 'station_name' => $station->getName()]
-            );
-
-            // Auto-create an empty default playlist.
-            $defaultPlaylist = new Entity\StationPlaylist($station);
-            $defaultPlaylist->setName('default');
-
-            $this->em->persist($defaultPlaylist);
-            $this->em->flush();
-
-            $playlistObjects[] = $defaultPlaylist;
-        }
-
         $playlistVarNames = [];
-
         $genPlaylistWeights = [];
         $genPlaylistVars = [];
 

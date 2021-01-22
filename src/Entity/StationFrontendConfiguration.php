@@ -10,10 +10,18 @@ class StationFrontendConfiguration extends ArrayCollection
     public function __construct(array $elements = [])
     {
         // Generate defaults if not set.
-        $elements[self::SOURCE_PASSWORD] ??= Strings::generatePassword();
-        $elements[self::ADMIN_PASSWORD] ??= Strings::generatePassword();
-        $elements[self::RELAY_PASSWORD] ??= Strings::generatePassword();
-        $elements[self::STREAMER_PASSWORD] ??= Strings::generatePassword();
+        $autoAssignPasswords = [
+            self::SOURCE_PASSWORD,
+            self::ADMIN_PASSWORD,
+            self::RELAY_PASSWORD,
+            self::STREAMER_PASSWORD,
+        ];
+
+        foreach ($autoAssignPasswords as $autoAssignPassword) {
+            if (empty($elements[$autoAssignPassword])) {
+                $elements[$autoAssignPassword] = Strings::generatePassword();
+            }
+        }
 
         parent::__construct($elements);
     }

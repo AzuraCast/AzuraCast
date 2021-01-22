@@ -3,6 +3,7 @@
 namespace App\Radio;
 
 use App\Entity\Station;
+use App\Entity\StationPlaylist;
 use App\Environment;
 use App\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,6 +56,19 @@ class Configuration
 
         // Ensure all directories exist.
         $station->ensureDirectoriesExist();
+
+        // Check for at least one playlist, and create one if it doesn't exist.
+        $defaultPlaylists = $station->getPlaylists()->filter(
+            function (StationPlaylist $row) {
+                return $row->getIsEnabled() && StationPlaylist::TYPE_DEFAULT === $row->getType();
+            }
+        );
+
+        if (0 === $defaultPlaylists->count()) {
+            $defaultPlaylist = new StationPlaylist($station);
+            $defaultPlaylist->setName('default');
+            $this->em->persist($defaultPlaylist);
+        }
 
         $this->em->persist($station);
         $this->em->persist($station->getMediaStorageLocation());

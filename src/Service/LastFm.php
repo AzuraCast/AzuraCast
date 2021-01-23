@@ -3,9 +3,12 @@
 namespace App\Service;
 
 use App\Entity;
+use App\Exception\RateLimitExceededException;
+use App\LockFactory;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Symfony\Component\Lock\Exception\LockConflictedException;
 
 class LastFm
 {
@@ -13,13 +16,17 @@ class LastFm
 
     protected Client $httpClient;
 
+    protected LockFactory $lockFactory;
+
     protected ?string $apiKey = null;
 
     public function __construct(
         Client $client,
+        LockFactory $lockFactory,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->httpClient = $client;
+        $this->lockFactory = $lockFactory;
 
         $settings = $settingsRepo->readSettings();
         $this->apiKey = $settings->getLastFmApiKey();
@@ -43,6 +50,20 @@ class LastFm
         $apiKey = $this->apiKey;
         if (empty($apiKey)) {
             throw new \InvalidArgumentException('No last.fm API key provided.');
+        }
+
+        $rateLimitLock = $this->lockFactory->createLock(
+            'api_lastfm',
+            1,
+            false,
+            500,
+            10
+        );
+
+        try {
+            $rateLimitLock->acquire(true);
+        } catch (LockConflictedException $e) {
+            throw new RateLimitExceededException('Could not acquire rate limiting lock.');
         }
 
         $query = array_merge(

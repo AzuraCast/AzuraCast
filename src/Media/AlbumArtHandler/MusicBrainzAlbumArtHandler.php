@@ -3,7 +3,6 @@
 namespace App\Media\AlbumArtHandler;
 
 use App\Entity;
-use App\RateLimit;
 use App\Service\MusicBrainz;
 use Psr\Log\LoggerInterface;
 
@@ -11,9 +10,9 @@ class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {
     protected MusicBrainz $musicBrainz;
 
-    public function __construct(MusicBrainz $musicBrainz, LoggerInterface $logger, RateLimit $rateLimit)
+    public function __construct(MusicBrainz $musicBrainz, LoggerInterface $logger)
     {
-        parent::__construct($logger, $rateLimit);
+        parent::__construct($logger);
 
         $this->musicBrainz = $musicBrainz;
     }

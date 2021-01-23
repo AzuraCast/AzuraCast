@@ -2,12 +2,15 @@
 
 namespace App\Service;
 
+use App\Exception\RateLimitExceededException;
+use App\LockFactory;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\UriResolver;
 use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Lock\Exception\LockConflictedException;
 
 class MusicBrainz
 {
@@ -17,9 +20,12 @@ class MusicBrainz
 
     protected Client $httpClient;
 
-    public function __construct(Client $httpClient)
+    protected LockFactory $lockFactory;
+
+    public function __construct(Client $httpClient, LockFactory $lockFactory)
     {
         $this->httpClient = $httpClient;
+        $this->lockFactory = $lockFactory;
     }
 
     /**
@@ -32,6 +38,20 @@ class MusicBrainz
         $uri,
         array $query = []
     ): array {
+        $rateLimitLock = $this->lockFactory->createLock(
+            'api_musicbrainz',
+            1,
+            false,
+            500,
+            10
+        );
+
+        try {
+            $rateLimitLock->acquire(true);
+        } catch (LockConflictedException $e) {
+            throw new RateLimitExceededException('Could not acquire rate limiting lock.');
+        }
+
         $query = array_merge(
             $query,
             [

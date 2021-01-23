@@ -5,19 +5,15 @@ namespace App\Media\AlbumArtHandler;
 use App\Entity;
 use App\Event\Media\GetAlbumArt;
 use App\Exception\RateLimitExceededException;
-use App\RateLimit;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractAlbumArtHandler
 {
     protected LoggerInterface $logger;
 
-    protected RateLimit $rateLimit;
-
-    public function __construct(LoggerInterface $logger, RateLimit $rateLimit)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
-        $this->rateLimit = $rateLimit;
     }
 
     public function __invoke(GetAlbumArt $event): void
@@ -30,16 +26,6 @@ abstract class AbstractAlbumArtHandler
                     'Service %f is not currently supported; skipping album art check.',
                     $serviceName
                 )
-            );
-            return;
-        }
-
-        // Check rate limit
-        try {
-            $this->checkRateLimit($serviceName);
-        } catch (RateLimitExceededException $e) {
-            $this->logger->error(
-                sprintf('%s Album Art Error: Rate limit exceeded. Skipping request.', $serviceName)
             );
             return;
         }
@@ -61,7 +47,10 @@ abstract class AbstractAlbumArtHandler
                 ]
             );
 
-            if (false !== stripos($e->getMessage(), 'rate limit')) {
+            if (
+                $e instanceof RateLimitExceededException
+                || false !== stripos($e->getMessage(), 'rate limit')
+            ) {
                 return;
             }
 
@@ -70,20 +59,6 @@ abstract class AbstractAlbumArtHandler
                 $e->getCode(),
                 $e
             );
-        }
-    }
-
-    protected function checkRateLimit(string $serviceName, int $maxIterations = 5, int $iteration = 1): void
-    {
-        try {
-            $this->rateLimit->checkRateLimit($serviceName, 1, 2);
-        } catch (RateLimitExceededException $e) {
-            if ($iteration >= $maxIterations) {
-                throw $e;
-            }
-
-            usleep(1100000); // 1.1 seconds
-            $this->checkRateLimit($serviceName, $maxIterations, $iteration + 1);
         }
     }
 

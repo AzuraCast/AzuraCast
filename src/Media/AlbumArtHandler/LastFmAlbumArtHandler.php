@@ -3,7 +3,6 @@
 namespace App\Media\AlbumArtHandler;
 
 use App\Entity;
-use App\RateLimit;
 use App\Service\LastFm;
 use Psr\Log\LoggerInterface;
 
@@ -11,9 +10,9 @@ class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 {
     protected LastFm $lastFm;
 
-    public function __construct(LastFm $lastFm, LoggerInterface $logger, RateLimit $rateLimit)
+    public function __construct(LastFm $lastFm, LoggerInterface $logger)
     {
-        parent::__construct($logger, $rateLimit);
+        parent::__construct($logger);
 
         $this->lastFm = $lastFm;
     }

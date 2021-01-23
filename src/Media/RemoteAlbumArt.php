@@ -81,19 +81,31 @@ class RemoteAlbumArt
         }
 
         // Dispatch new event to various registered handlers.
-        $event = new GetAlbumArt($song);
-        $this->eventDispatcher->dispatch($event);
+        try {
+            $event = new GetAlbumArt($song);
+            $this->eventDispatcher->dispatch($event);
 
-        $albumArtUrl = $event->getAlbumArt();
+            $albumArtUrl = $event->getAlbumArt();
 
-        if (null !== $albumArtUrl) {
+            if (null !== $albumArtUrl) {
+                $this->cache->set(
+                    $cacheKey,
+                    [
+                        'success' => true,
+                        'url' => $albumArtUrl,
+                    ],
+                    self::CACHE_LIFETIME
+                );
+            }
+        } catch (\Throwable $e) {
+            $albumArtUrl = null;
+
             $this->cache->set(
                 $cacheKey,
                 [
-                    'success' => true,
-                    'url' => $albumArtUrl,
-                ],
-                self::CACHE_LIFETIME
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ]
             );
         }
 

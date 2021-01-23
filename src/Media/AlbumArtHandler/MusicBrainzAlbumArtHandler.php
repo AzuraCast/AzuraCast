@@ -3,42 +3,24 @@
 namespace App\Media\AlbumArtHandler;
 
 use App\Entity;
-use App\Event\Media\GetAlbumArt;
+use App\RateLimit;
 use App\Service\MusicBrainz;
 use Psr\Log\LoggerInterface;
 
-class MusicBrainzAlbumArtHandler
+class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {
     protected MusicBrainz $musicBrainz;
 
-    protected LoggerInterface $logger;
-
-    public function __construct(MusicBrainz $musicBrainz, LoggerInterface $logger)
+    public function __construct(MusicBrainz $musicBrainz, LoggerInterface $logger, RateLimit $rateLimit)
     {
+        parent::__construct($logger, $rateLimit);
+
         $this->musicBrainz = $musicBrainz;
-        $this->logger = $logger;
     }
 
-    public function __invoke(GetAlbumArt $event): void
+    protected function getServiceName(): string
     {
-        $song = $event->getSong();
-
-        try {
-            $albumArt = $this->getAlbumArt($song);
-
-            if (!empty($albumArt)) {
-                $event->setAlbumArt($albumArt);
-            }
-        } catch (\Throwable $e) {
-            $this->logger->error(
-                sprintf('MusicBrainz Album Art Error: %s', $e->getMessage()),
-                [
-                    'exception' => $e,
-                    'song' => $song->getText(),
-                    'songId' => $song->getSongId(),
-                ]
-            );
-        }
+        return 'MusicBrainz';
     }
 
     public function getAlbumArt(Entity\SongInterface $song): ?string

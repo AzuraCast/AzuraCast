@@ -48,7 +48,7 @@ class LoginAction
 
         if ($request->isPost()) {
             try {
-                $rateLimit->checkRateLimit($request, 'login', 30, 5);
+                $rateLimit->checkRequestRateLimit($request, 'login', 30, 5);
             } catch (RateLimitExceededException $e) {
                 $flash->addMessage(
                     sprintf(

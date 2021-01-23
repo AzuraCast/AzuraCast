@@ -3,46 +3,24 @@
 namespace App\Media\AlbumArtHandler;
 
 use App\Entity;
-use App\Event\Media\GetAlbumArt;
+use App\RateLimit;
 use App\Service\LastFm;
 use Psr\Log\LoggerInterface;
 
-class LastFmAlbumArtHandler
+class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 {
     protected LastFm $lastFm;
 
-    protected LoggerInterface $logger;
-
-    public function __construct(LastFm $lastFm, LoggerInterface $logger)
+    public function __construct(LastFm $lastFm, LoggerInterface $logger, RateLimit $rateLimit)
     {
+        parent::__construct($logger, $rateLimit);
+
         $this->lastFm = $lastFm;
-        $this->logger = $logger;
     }
 
-    public function __invoke(GetAlbumArt $event): void
+    protected function getServiceName(): string
     {
-        if (!$this->lastFm->hasApiKey()) {
-            $this->logger->info('No last.fm API key specified; skipping last.fm album art check.');
-            return;
-        }
-
-        $song = $event->getSong();
-
-        try {
-            $albumArt = $this->getAlbumArt($song);
-            if (!empty($albumArt)) {
-                $event->setAlbumArt($albumArt);
-            }
-        } catch (\Throwable $e) {
-            $this->logger->error(
-                sprintf('Last.fm Album Art Error: %s', $e->getMessage()),
-                [
-                    'exception' => $e,
-                    'song' => $song->getText(),
-                    'songId' => $song->getSongId(),
-                ]
-            );
-        }
+        return 'LastFm';
     }
 
     protected function getAlbumArt(Entity\SongInterface $song): ?string

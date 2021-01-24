@@ -28,12 +28,6 @@ server {
     ssl_certificate    /etc/nginx/ssl/server.crt;
     ssl_certificate_key    /etc/nginx/ssl/server.key;
 
-{% if ansible_distribution_release == 'focal' %}
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384';
-    ssl_prefer_server_ciphers off;
-{% endif %}
-
     root {{ app_base }}/www/web;
     index index.php;
 
@@ -45,8 +39,6 @@ server {
 
     access_log {{ app_base }}/www_tmp/access.log;
     error_log {{ app_base }}/www_tmp/error.log;
-
-    client_max_body_size 50M;
 
     # Serve a static version of the nowplaying data for non-PHP-blocking delivery.
     location /api/nowplaying_static {

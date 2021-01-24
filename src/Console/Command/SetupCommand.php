@@ -87,7 +87,11 @@ class SetupCommand extends CommandAbstract
         // Clear settings that should be reset upon update.
         $settings->updateUpdateLastRun();
         $settings->setUpdateResults(null);
-        $settings->setExternalIp(null);
+
+        if ('127.0.0.1' !== $settings->getExternalIp()) {
+            $settings->setExternalIp(null);
+        }
+
         if (!$update) {
             $settings->setAppUniqueIdentifier(null);
         }

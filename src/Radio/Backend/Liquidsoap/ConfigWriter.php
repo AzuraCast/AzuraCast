@@ -211,7 +211,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         foreach ($playlistObjects as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            $playlistVarName = 'playlist_' . str_replace('-', '_', $playlist->getShortName());
+            $playlistVarName = self::cleanUpVarName('playlist_' . $playlist->getShortName());
 
             if (in_array($playlistVarName, $playlistVarNames, true)) {
                 $playlistVarName .= '_' . $playlist->getId();
@@ -411,7 +411,7 @@ class ConfigWriter implements EventSubscriberInterface
                 '# Standard Playlists',
                 sprintf(
                     'radio = random(id="%s", weights=[%s], [%s])',
-                    self::getVarName($station, 'standard_playlists'),
+                    self::prefixVarName($station, 'standard_playlists'),
                     implode(', ', $genPlaylistWeights),
                     implode(', ', $genPlaylistVars)
                 ),
@@ -426,7 +426,7 @@ class ConfigWriter implements EventSubscriberInterface
                     '# Standard Schedule Switches',
                     sprintf(
                         'radio = switch(id="%s", track_sensitive=true, [ %s ])',
-                        self::getVarName($station, 'schedule_switch'),
+                        self::prefixVarName($station, 'schedule_switch'),
                         implode(', ', $scheduleSwitches)
                     ),
                 ]
@@ -468,19 +468,19 @@ class ConfigWriter implements EventSubscriberInterface
                 [
                     sprintf(
                         'dynamic = request.dynamic.list(id="%s", timeout=20., retry_delay=3., azuracast_next_song)',
-                        self::getVarName($station, 'next_song')
+                        self::prefixVarName($station, 'next_song')
                     ),
                     sprintf(
                         'dynamic = audio_to_stereo(id="%s", dynamic)',
-                        self::getVarName($station, 'stereo_next_song')
+                        self::prefixVarName($station, 'stereo_next_song')
                     ),
                     sprintf(
                         'dynamic = cue_cut(id="%s", dynamic)',
-                        self::getVarName($station, 'cue_next_song')
+                        self::prefixVarName($station, 'cue_next_song')
                     ),
                     sprintf(
                         'radio = fallback(id="%s", track_sensitive = true, [dynamic, radio])',
-                        self::getVarName($station, 'autodj_fallback')
+                        self::prefixVarName($station, 'autodj_fallback')
                     ),
                 ]
             );
@@ -494,7 +494,7 @@ class ConfigWriter implements EventSubscriberInterface
                     '# Interrupting Schedule Switches',
                     sprintf(
                         'radio = switch(id="%s", track_sensitive=false, [ %s ])',
-                        self::getVarName($station, 'interrupt_switch'),
+                        self::prefixVarName($station, 'interrupt_switch'),
                         implode(', ', $scheduleSwitchesInterrupting)
                     ),
                 ]
@@ -503,12 +503,12 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendLines(
             [
-                'requests = request.queue(id="' . self::getVarName($station, 'requests') . '")',
-                'requests = audio_to_stereo(id="' . self::getVarName($station, 'stereo_requests') . '", requests)',
-                'requests = cue_cut(id="' . self::getVarName($station, 'cue_requests') . '", requests)',
+                'requests = request.queue(id="' . self::prefixVarName($station, 'requests') . '")',
+                'requests = audio_to_stereo(id="' . self::prefixVarName($station, 'stereo_requests') . '", requests)',
+                'requests = cue_cut(id="' . self::prefixVarName($station, 'cue_requests') . '", requests)',
                 sprintf(
                     'radio = fallback(id="%s", track_sensitive = true, [requests, radio])',
-                    self::getVarName($station, 'requests_fallback')
+                    self::prefixVarName($station, 'requests_fallback')
                 ),
                 '',
                 'add_skip_command(radio)',
@@ -821,7 +821,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $harbor_params = [
             '"' . self::cleanUpString($dj_mount) . '"',
-            'id = "' . self::getVarName($station, 'input_streamer') . '"',
+            'id = "' . self::prefixVarName($station, 'input_streamer') . '"',
             'port = ' . $this->liquidsoap->getStreamPort($station),
             'auth = dj_auth',
             'icy = true',
@@ -849,7 +849,7 @@ class ConfigWriter implements EventSubscriberInterface
                 '',
                 sprintf(
                     'radio = fallback(id="%s", replay_metadata=false, track_sensitive=false, [live, radio])',
-                    self::getVarName($station, 'live_fallback')
+                    self::prefixVarName($station, 'live_fallback')
                 ),
             ]
         );
@@ -929,7 +929,7 @@ class ConfigWriter implements EventSubscriberInterface
             [
                 sprintf(
                     'radio = fallback(id="%s", track_sensitive = false, [radio, single(id="error_jingle", "%s")])',
-                    self::getVarName($station, 'safe_fallback'),
+                    self::prefixVarName($station, 'safe_fallback'),
                     $error_file
                 ),
             ]
@@ -1016,7 +1016,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $output_params = [];
         $output_params[] = $output_format;
-        $output_params[] = 'id="' . self::getVarName($station, $idPrefix . $id) . '"';
+        $output_params[] = 'id="' . self::prefixVarName($station, $idPrefix . $id) . '"';
 
         $output_params[] = 'host = "' . self::cleanUpString($mount->getAutodjHost()) . '"';
         $output_params[] = 'port = ' . (int)$mount->getAutodjPort();
@@ -1142,17 +1142,40 @@ class ConfigWriter implements EventSubscriberInterface
     }
 
     /**
+     * Apply a more aggressive string filtering to variable names used in Liquidsoap.
+     *
+     * @param string $str
+     *
+     * @return string The cleaned up, variable-name-friendly string.
+     */
+    public static function cleanUpVarName(string $str): string
+    {
+        $str = strip_tags($str);
+        $str = preg_replace('/[\r\n\t ]+/', ' ', $str);
+        $str = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $str);
+        $str = strtolower($str);
+        $str = html_entity_decode($str, ENT_QUOTES, "utf-8");
+        $str = htmlentities($str, ENT_QUOTES, "utf-8");
+        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str);
+        $str = str_replace(' ', '_', $str);
+        $str = rawurlencode($str);
+        $str = str_replace('%', '-', $str);
+
+        return $str;
+    }
+
+    /**
      * Given an original name and a station, return a filtered prefixed variable identifying the station.
      *
      * @param Entity\Station $station
-     * @param string $original_name
+     * @param string $originalName
      */
-    public static function getVarName(Entity\Station $station, $original_name): string
+    public static function prefixVarName(Entity\Station $station, string $originalName): string
     {
-        $short_name = self::cleanUpString($station->getShortName());
+        $shortName = self::cleanUpString($station->getShortName());
 
-        return (!empty($short_name))
-            ? $short_name . '_' . $original_name
-            : 'station_' . $station->getId() . '_' . $original_name;
+        return (!empty($shortName))
+            ? $shortName . '_' . $originalName
+            : 'station_' . $station->getId() . '_' . $originalName;
     }
 }

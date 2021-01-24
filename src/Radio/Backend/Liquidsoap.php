@@ -255,7 +255,7 @@ class Liquidsoap extends AbstractBackend
     {
         $queue = $this->command(
             $station,
-            ConfigWriter::getVarName($station, 'requests') . '.queue'
+            ConfigWriter::prefixVarName($station, 'requests') . '.queue'
         );
         return empty($queue[0]);
     }
@@ -267,7 +267,7 @@ class Liquidsoap extends AbstractBackend
     {
         return $this->command(
             $station,
-            ConfigWriter::getVarName($station, 'requests') . '.push ' . $music_file
+            ConfigWriter::prefixVarName($station, 'requests') . '.push ' . $music_file
         );
     }
 
@@ -278,7 +278,7 @@ class Liquidsoap extends AbstractBackend
     {
         return $this->command(
             $station,
-            ConfigWriter::getVarName($station, 'requests_fallback') . '.skip'
+            ConfigWriter::prefixVarName($station, 'requests_fallback') . '.skip'
         );
     }
 
@@ -319,7 +319,7 @@ class Liquidsoap extends AbstractBackend
 
         return $this->command(
             $station,
-            ConfigWriter::getVarName($station, 'input_streamer') . '.stop'
+            ConfigWriter::prefixVarName($station, 'input_streamer') . '.stop'
         );
     }
 

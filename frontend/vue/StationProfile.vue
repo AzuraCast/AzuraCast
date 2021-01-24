@@ -118,8 +118,7 @@ export default {
                     playlist: ''
                 },
                 schedule: []
-            },
-            npTimeout: null
+            }
         };
     },
     mounted () {
@@ -163,15 +162,12 @@ export default {
             axios.get(this.profileApiUri).then((response) => {
                 let np = response.data;
                 np.loading = false;
-
                 this.np = np;
+
+                setTimeout(this.checkNowPlaying, 15000);
             }).catch((error) => {
                 console.error(error);
-                clearTimeout(this.np_timeout);
-                this.npTimeout = setTimeout(this.checkNowPlaying, 30000);
-            }).then(() => {
-                clearTimeout(this.np_timeout);
-                this.npTimeout = setTimeout(this.checkNowPlaying, 15000);
+                setTimeout(this.checkNowPlaying, 30000);
             });
         }
     }

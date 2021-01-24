@@ -163,7 +163,6 @@ export default {
             },
             notificationsLoading: true,
             notifications: [],
-            stationsTimeout: null,
             stationsFields: [
                 {
                     key: 'station',
@@ -220,7 +219,7 @@ export default {
             console.error(error);
         });
 
-        this.stationsTimeout = setTimeout(this.updateNowPlaying, 30000);
+        setTimeout(this.updateNowPlaying, 30000);
     },
     methods: {
         toggleCharts () {
@@ -235,7 +234,7 @@ export default {
         },
         updateNowPlaying () {
             this.$refs.datatable.refresh();
-            this.stationsTimeout = setTimeout(this.updateNowPlaying, 30000);
+            setTimeout(this.updateNowPlaying, 30000);
         }
     }
 };

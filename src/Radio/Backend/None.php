@@ -6,6 +6,11 @@ use App\Entity;
 
 class None extends AbstractBackend
 {
+    public function isInstalled(): bool
+    {
+        return true;
+    }
+
     public function start(Entity\Station $station): void
     {
         $this->logger->error(

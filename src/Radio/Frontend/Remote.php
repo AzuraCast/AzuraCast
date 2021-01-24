@@ -8,6 +8,11 @@ use Psr\Http\Message\UriInterface;
 
 class Remote extends AbstractFrontend
 {
+    public function isInstalled(): bool
+    {
+        return true;
+    }
+
     public function getStreamUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
     {
         return new Uri('');

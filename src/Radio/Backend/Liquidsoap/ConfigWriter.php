@@ -235,7 +235,6 @@ class ConfigWriter implements EventSubscriberInterface
             }
 
             $playlistConfigLines = [];
-            $createDummyOutputBuffer = false;
 
             if (Entity\StationPlaylist::SOURCE_SONGS === $playlist->getSource()) {
                 $playlistFilePath = $this->writePlaylistFile($playlist, false);
@@ -296,8 +295,6 @@ class ConfigWriter implements EventSubscriberInterface
 
                         $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function
                             . '(max=' . $buffer . '., "' . self::cleanUpString($remote_url) . '"))';
-
-                        $createDummyOutputBuffer = true;
                         break;
                 }
             }
@@ -314,13 +311,6 @@ class ConfigWriter implements EventSubscriberInterface
 
             if (Entity\StationPlaylist::TYPE_ADVANCED === $playlist->getType()) {
                 $playlistConfigLines[] = 'ignore(' . $playlistVarName . ')';
-            }
-
-            if ($createDummyOutputBuffer) {
-                // Workaround for remote URL playlists not buffering correctly.
-                // See: https://github.com/AzuraCast/AzuraCast/issues/3701
-                $playlistConfigLines[] = 'output.dummy(id="dummy_output_' . $playlistVarName . '"'
-                    . ', fallible=true, ' . $playlistVarName . ')';
             }
 
             $event->appendLines($playlistConfigLines);

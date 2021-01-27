@@ -27,19 +27,25 @@ class AzuraRelay extends AbstractRemote
         if (isset($npRawRelay[$station->getId()][$remote->getMount()])) {
             $npRaw = $npRawRelay[$station->getId()][$remote->getMount()];
 
-            $npNew = Result::fromArray($npRaw);
+            $result = Result::fromArray($npRaw);
+
+            if (!empty($result->clients)) {
+                foreach ($result->clients as $client) {
+                    $client->mount = 'remote_' . $remote->getId();
+                }
+            }
 
             $this->logger->debug(
                 'Response for remote relay',
-                ['remote' => $remote->getDisplayName(), 'response' => $npNew]
+                ['remote' => $remote->getDisplayName(), 'response' => $result]
             );
 
-            $remote->setListenersTotal($np->listeners->total);
-            $remote->setListenersUnique($np->listeners->unique);
+            $remote->setListenersTotal($result->listeners->total);
+            $remote->setListenersUnique($result->listeners->unique);
             $this->em->persist($remote);
             $this->em->flush();
 
-            return $np->merge($npNew);
+            return $np->merge($result);
         }
 
         return $np;

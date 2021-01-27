@@ -403,4 +403,5 @@ return [
     App\Media\AlbumArtHandler\AlbumArtServiceInterface::class => DI\get(
         App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class
     ),
+
 ];

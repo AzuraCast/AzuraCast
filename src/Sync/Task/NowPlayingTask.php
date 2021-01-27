@@ -197,14 +197,14 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
             // Trigger the dispatching of webhooks.
 
-            /** @var Entity\Api\NowPlaying $np_event */
-            $np_event = (new DeepCopy())->copy($np);
-            $np_event->resolveUrls($this->router->getBaseUrl(false));
-            $np_event->cache = 'event';
+            /** @var Entity\Api\NowPlaying $eventNp */
+            $eventNp = (new DeepCopy())->copy($np);
+            $eventNp->resolveUrls($this->router->getBaseUrl(false));
+            $eventNp->cache = 'event';
 
-            $webhook_event = new SendWebhooks($station, $np_event, $standalone);
+            $webhookEvent = new SendWebhooks($station, $eventNp, $standalone);
 
-            $this->eventDispatcher->dispatch($webhook_event);
+            $this->eventDispatcher->dispatch($webhookEvent);
 
             $station->setNowplaying($np);
             $this->em->persist($station);

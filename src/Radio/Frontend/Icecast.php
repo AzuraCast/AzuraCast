@@ -48,8 +48,13 @@ class Icecast extends AbstractFrontend
 
         try {
             foreach ($station->getMounts() as $mount) {
-                /** @var Entity\StationMount $mount */
                 $result = $npAdapter->getNowPlaying($mount->getName(), $includeClients);
+
+                if (!empty($result->clients)) {
+                    foreach ($result->clients as $client) {
+                        $client->mount = 'local_' . $mount->getId();
+                    }
+                }
 
                 $mount->setListenersTotal($result->listeners->total);
                 $mount->setListenersUnique($result->listeners->unique);

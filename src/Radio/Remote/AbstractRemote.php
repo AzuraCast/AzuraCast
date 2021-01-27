@@ -59,16 +59,22 @@ abstract class AbstractRemote
         $npAdapter->setAdminPassword($remote->getAdminPassword());
 
         try {
-            $npRemote = $npAdapter->getNowPlaying($remote->getMount(), $includeClients);
+            $result = $npAdapter->getNowPlaying($remote->getMount(), $includeClients);
 
-            $this->logger->debug('NowPlaying adapter response', ['response' => $npRemote]);
+            if (!empty($result->clients)) {
+                foreach ($result->clients as $client) {
+                    $client->mount = 'remote_' . $remote->getId();
+                }
+            }
 
-            $remote->setListenersTotal($npRemote->listeners->total);
-            $remote->setListenersUnique($npRemote->listeners->unique);
+            $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
+
+            $remote->setListenersTotal($result->listeners->total);
+            $remote->setListenersUnique($result->listeners->unique);
             $this->em->persist($remote);
             $this->em->flush();
 
-            return $np->merge($npRemote);
+            return $np->merge($result);
         } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }

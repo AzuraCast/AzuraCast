@@ -74,10 +74,15 @@ class SHOUTcast extends AbstractFrontend
         try {
             $sid = 0;
             foreach ($station->getMounts() as $mount) {
-                /** @var Entity\StationMount $mount */
                 $sid++;
 
                 $result = $npAdapter->getNowPlaying((string)$sid, $includeClients);
+
+                if (!empty($result->clients)) {
+                    foreach ($result->clients as $client) {
+                        $client->mount = 'local_' . $mount->getId();
+                    }
+                }
 
                 $mount->setListenersTotal($result->listeners->total);
                 $mount->setListenersUnique($result->listeners->unique);

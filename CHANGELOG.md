@@ -31,6 +31,11 @@ release channel, you can take advantage of these new features and fixes.
 
 - You can show or hide the charts on the dashboard, and sort and filter stations listed there.
 
+- Listeners are now tracked by the mount point/remote stream they're connected to, which is shown in reports.
+
+- **Google Analytics**: A new webhook has been created that will automatically post live listeners to your Analytics
+  property. This is only compatible with "Universal Analytics" properties (codes that begin with GA-).
+
 ## Code Quality/Technical Changes
 
 - Mount points that are hidden from public view are also hidden on the Icecast status overview page.

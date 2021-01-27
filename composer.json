@@ -75,6 +75,7 @@
         "symfony/redis-messenger": "^5",
         "symfony/serializer": "^5",
         "symfony/validator": "^5",
+        "theiconic/php-ga-measurement-protocol": "^2.9",
         "voku/portable-utf8": "^5.4",
         "wikimedia/composer-merge-plugin": "dev-feature/composer-v2",
         "zircote/swagger-php": "^3"

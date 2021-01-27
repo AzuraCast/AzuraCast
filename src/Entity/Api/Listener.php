@@ -44,6 +44,22 @@ class Listener
     public bool $is_mobile = false;
 
     /**
+     * Whether the user is connected to a local mount point or a remote one.
+     *
+     * @OA\Property(example=false)
+     * @var bool
+     */
+    public bool $mount_is_local = false;
+
+    /**
+     * The display name of the mount point.
+     *
+     * @OA\Property(example="/radio.mp3")
+     * @var string
+     */
+    public string $mount_name = '';
+
+    /**
      * UNIX timestamp that the user first connected.
      *
      * @OA\Property(example=SAMPLE_TIMESTAMP)

@@ -32,6 +32,11 @@ return [
             'name' => __('Twitter Post'),
             'description' => __('Automatically send a tweet.'),
         ],
+        Connector\GoogleAnalytics::NAME => [
+            'class' => Connector\GoogleAnalytics::class,
+            'name' => __('Google Analytics Integration'),
+            'description' => __('Send stream listener details to Google Analytics.'),
+        ],
     ],
 
     // The triggers that can be selected for a web hook to trigger.

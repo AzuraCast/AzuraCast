@@ -235,7 +235,7 @@ return function (App $app) {
                         ->setName('api:stations:ondemand:download')
                         ->add(new Middleware\RateLimit('ondemand', 1, 2));
 
-                    $group->get('/listeners', Controller\Api\Stations\ListenersController::class . ':indexAction')
+                    $group->get('/listeners', Controller\Api\Stations\ListenersAction::class)
                         ->setName('api:listeners:index')
                         ->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
 

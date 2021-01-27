@@ -53,7 +53,7 @@ class ListenerRepository extends Repository
                 SELECT l.id, l.listener_uid, l.listener_hash
                 FROM App\Entity\Listener l
                 WHERE l.station = :station
-                AND l.timestamp_end = 0                
+                AND l.timestamp_end = 0
             DQL
         )->setParameter('station', $station)
             ->getArrayResult();
@@ -74,6 +74,18 @@ class ListenerRepository extends Repository
             } else {
                 // Create a new record.
                 $record = new Entity\Listener($station, $client);
+
+                if (!empty($client->mount)) {
+                    [$mountType, $mountId] = explode('_', $client->mount, 2);
+
+                    if ('local' === $mountType) {
+                        $record->setMount($this->em->getReference(Entity\StationMount::class, (int)$mountId));
+                    } elseif ('remote' === $mountType) {
+                        $record->setRemote($this->em->getReference(Entity\StationRemote::class, (int)$mountId));
+                    }
+                }
+
+
                 $this->em->persist($record);
             }
         }

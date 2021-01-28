@@ -5,6 +5,16 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+There have been no changes since the latest stable release.
+
+---
+
+# AzuraCast 0.12 (Jan 27, 2021)
+
+This update introduces significant new features and fixes a number of bugs reported by the community.
+
+## New Features/Changes
+
 - **Remote Album Art Retrieval**: If enabled in the system settings panel, AzuraCast will now check remote services to
   attempt to retrieve album art if it is missing, or not provided (i.e. for live DJs). By default, this system uses the
   MusicBrainz database, which is comprehensive but can be slow; if you provide an API key for the last.fm API, AzuraCast

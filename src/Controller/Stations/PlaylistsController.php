@@ -14,12 +14,16 @@ class PlaylistsController
         $station = $request->getStation();
 
         $backend = $request->getStationBackend();
-        if (!$backend::supportsMedia()) {
+        if (!$backend->supportsMedia()) {
             throw new Exception(__('This feature is not currently supported on this station.'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/playlists/index', [
-            'station_tz' => $station->getTimezone(),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/playlists/index',
+            [
+                'station_tz' => $station->getTimezone(),
+            ]
+        );
     }
 }

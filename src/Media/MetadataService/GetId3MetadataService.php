@@ -1,19 +1,30 @@
 <?php
 
-namespace App\Media\GetId3;
+namespace App\Media\MetadataService;
 
+use App\Entity;
+use App\Event\Media\ReadMetadata;
+use App\Event\Media\WriteMetadata;
 use App\Exception\CannotProcessMediaException;
-use App\Media\Metadata;
-use App\Media\MetadataManagerInterface;
 use App\Utilities;
+use Symfony\Contracts\EventDispatcher\Event;
 use voku\helper\UTF8;
 
-class GetId3MetadataManager implements MetadataManagerInterface
+class GetId3MetadataService
 {
-    /**
-     * @inheritDoc
-     */
-    public function getMetadata(string $path): Metadata
+    public function __invoke(Event $event): void
+    {
+        if ($event instanceof ReadMetadata) {
+            $metadata = $this->readMetadata($event->getPath());
+            $event->setMetadata($metadata);
+        } elseif ($event instanceof WriteMetadata) {
+            if ($this->writeMetadata($event->getMetadata(), $event->getPath())) {
+                $event->stopPropagation();
+            }
+        }
+    }
+
+    public function readMetadata(string $path): Entity\Metadata
     {
         $id3 = new \getID3();
 
@@ -24,14 +35,16 @@ class GetId3MetadataManager implements MetadataManagerInterface
         $info = $id3->analyze($path);
 
         if (!empty($info['error'])) {
-            throw new CannotProcessMediaException(sprintf(
-                'Cannot process media file at path "%s": %s',
-                pathinfo($path, PATHINFO_FILENAME),
-                json_encode($info['error'], JSON_THROW_ON_ERROR)
-            ));
+            throw new CannotProcessMediaException(
+                sprintf(
+                    'Cannot process media file at path "%s": %s',
+                    pathinfo($path, PATHINFO_FILENAME),
+                    json_encode($info['error'], JSON_THROW_ON_ERROR)
+                )
+            );
         }
 
-        $metadata = new Metadata();
+        $metadata = new Entity\Metadata();
 
         if (is_numeric($info['playtime_seconds'])) {
             $metadata->setDuration($info['playtime_seconds']);
@@ -62,6 +75,10 @@ class GetId3MetadataManager implements MetadataManagerInterface
             $metadata->setArtwork($info['attached_picture'][0]['data']);
         } elseif (!empty($info['comments']['picture'][0])) {
             $metadata->setArtwork($info['comments']['picture'][0]['data']);
+        } elseif (!empty($info['id3v2']['APIC'][0]['data'])) {
+            $metadata->setArtwork($info['id3v2']['APIC'][0]['data']);
+        } elseif (!empty($info['id3v2']['PIC'][0]['data'])) {
+            $metadata->setArtwork($info['id3v2']['PIC'][0]['data']);
         }
 
         return $metadata;
@@ -83,10 +100,7 @@ class GetId3MetadataManager implements MetadataManagerInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function writeMetadata(Metadata $metadata, string $path): bool
+    public function writeMetadata(Entity\Metadata $metadata, string $path): bool
     {
         $getID3 = new \getID3();
         $getID3->setOption(['encoding' => 'UTF8']);
@@ -121,6 +135,16 @@ class GetId3MetadataManager implements MetadataManagerInterface
 
         $tagwriter->tag_data = $tagData;
 
-        return $tagwriter->WriteTags();
+        $tagwriter->WriteTags();
+
+        if (!empty($tagwriter->errors) || !empty($tagwriter->warnings)) {
+            $messages = array_merge($tagwriter->errors, $tagwriter->warnings);
+            throw CannotProcessMediaException::forPath(
+                $path,
+                implode(', ', $messages)
+            );
+        }
+
+        return true;
     }
 }

@@ -5,7 +5,7 @@ namespace App\Notification\Check;
 use App\Acl;
 use App\Entity;
 use App\Event\GetNotifications;
-use App\Notification\Notification;
+use App\Session\Flash;
 use App\Version;
 
 class UpdateCheck
@@ -25,7 +25,7 @@ class UpdateCheck
         // This notification is for full administrators only.
         $request = $event->getRequest();
         $acl = $request->getAcl();
-        if (!$acl->userAllowed($request->getUser(), Acl::GLOBAL_ALL)) {
+        if (!$acl->isAllowed(Acl::GLOBAL_ALL)) {
             return;
         }
 
@@ -41,65 +41,57 @@ class UpdateCheck
             return;
         }
 
-        $instructions_url = 'https://www.azuracast.com/administration/system/updating.html';
-        $instructions_string = __(
-            'Follow the <a href="%s" target="_blank">update instructions</a> to update your installation.',
-            $instructions_url
-        );
+        $actionLabel = __('Update Instructions');
+        $actionUrl = Version::UPDATE_URL;
 
         $releaseChannel = $this->version->getReleaseChannel();
 
         if (Version::RELEASE_CHANNEL_STABLE === $releaseChannel && $updateData['needs_release_update']) {
-            $notification_parts = [
+            $notificationParts = [
                 '<b>' . __(
                     'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.',
-                    'https://github.com/AzuraCast/AzuraCast/releases',
+                    Version::CHANGELOG_URL,
                     $updateData['latest_release']
                 ) . '</b>',
                 __(
                     'You are currently running version %s. Updating is highly recommended.',
                     $updateData['current_release']
                 ),
-                $instructions_string,
             ];
 
-            $event->addNotification(
-                new Notification(
-                    __('New AzuraCast Release Version Available'),
-                    implode(' ', $notification_parts),
-                    Notification::INFO
-                )
-            );
+            $notification = new Entity\Api\Notification();
+            $notification->title = __('New AzuraCast Release Version Available');
+            $notification->body = implode(' ', $notificationParts);
+            $notification->type = Flash::INFO;
+            $notification->actionLabel = $actionLabel;
+            $notification->actionUrl = $actionUrl;
+
+            $event->addNotification($notification);
             return;
         }
 
         if (Version::RELEASE_CHANNEL_ROLLING === $releaseChannel && $updateData['needs_rolling_update']) {
-            $notification_parts = [];
-            if ($updateData['rolling_updates_available'] < 15 && !empty($updateData['rolling_updates_list'])) {
-                $notification_parts[] = __('The following improvements have been made since your last update:');
-                $notification_parts[] = nl2br(
-                    '<ul><li>' . implode(
-                        '</li><li>',
-                        $updateData['rolling_updates_list']
-                    ) . '</li></ul>'
-                );
-            } else {
-                $notification_parts[] = '<b>' . __(
-                    'Your installation is currently %d update(s) behind the latest version.',
-                    $updateData['rolling_updates_available']
-                ) . '</b>';
-                $notification_parts[] = __('You should update to take advantage of bug and security fixes.');
-            }
+            $notificationParts = [];
 
-            $notification_parts[] = $instructions_string;
+            $notificationParts[] = '<b>' . __(
+                'Your installation is currently %d update(s) behind the latest version.',
+                $updateData['rolling_updates_available']
+            ) . '</b>';
 
-            $event->addNotification(
-                new Notification(
-                    __('New AzuraCast Updates Available'),
-                    implode(' ', $notification_parts),
-                    Notification::INFO
-                )
+            $notificationParts[] = sprintf(
+                '<a href="%s" target="_blank">' . __('View the changelog for full details.') . '</a>',
+                Version::CHANGELOG_URL
             );
+            $notificationParts[] = __('You should update to take advantage of bug and security fixes.');
+
+            $notification = new Entity\Api\Notification();
+            $notification->title = __('New AzuraCast Updates Available');
+            $notification->body = implode(' ', $notificationParts);
+            $notification->type = Flash::INFO;
+            $notification->actionLabel = $actionLabel;
+            $notification->actionUrl = $actionUrl;
+
+            $event->addNotification($notification);
             return;
         }
     }

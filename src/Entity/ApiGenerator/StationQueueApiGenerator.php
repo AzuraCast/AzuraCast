@@ -14,8 +14,11 @@ class StationQueueApiGenerator
         $this->songApiGenerator = $songApiGenerator;
     }
 
-    public function __invoke(Entity\StationQueue $record, ?UriInterface $baseUri = null): Entity\Api\StationQueue
-    {
+    public function __invoke(
+        Entity\StationQueue $record,
+        ?UriInterface $baseUri = null,
+        bool $allowRemoteArt = false
+    ): Entity\Api\StationQueue {
         $response = new Entity\Api\StationQueue();
         $response->cued_at = $record->getTimestampCued();
         $response->duration = (int)$record->getDuration();
@@ -27,9 +30,19 @@ class StationQueueApiGenerator
         }
 
         if ($record->getMedia()) {
-            $response->song = ($this->songApiGenerator)($record->getMedia(), $record->getStation(), $baseUri);
+            $response->song = ($this->songApiGenerator)(
+                $record->getMedia(),
+                $record->getStation(),
+                $baseUri,
+                $allowRemoteArt
+            );
         } else {
-            $response->song = ($this->songApiGenerator)($record, $record->getStation(), $baseUri);
+            $response->song = ($this->songApiGenerator)(
+                $record,
+                $record->getStation(),
+                $baseUri,
+                $allowRemoteArt
+            );
         }
 
         return $response;

@@ -16,7 +16,6 @@ tmp/cache/*---*
 /env.ini
 /app/env.ini
 /app/.env
-/env.ini
 /azuracast.env
 /util/fixtures/*
 /util/fixtures/**/*

@@ -3,11 +3,8 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
-use App\Environment;
-use App\Logger;
 use App\Radio\CertificateLocator;
 use App\Utilities;
-use App\Xml\Reader;
 use App\Xml\Writer;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
@@ -21,6 +18,16 @@ class Icecast extends AbstractFrontend
     public const LOGLEVEL_INFO = 3;
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
+
+    public function supportsMounts(): bool
+    {
+        return true;
+    }
+
+    public function supportsListenerDetail(): bool
+    {
+        return true;
+    }
 
     public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
@@ -41,8 +48,13 @@ class Icecast extends AbstractFrontend
 
         try {
             foreach ($station->getMounts() as $mount) {
-                /** @var Entity\StationMount $mount */
                 $result = $npAdapter->getNowPlaying($mount->getName(), $includeClients);
+
+                if (!empty($result->clients)) {
+                    foreach ($result->clients as $client) {
+                        $client->mount = 'local_' . $mount->getId();
+                    }
+                }
 
                 $mount->setListenersTotal($result->listeners->total);
                 $mount->setListenersUnique($result->listeners->unique);
@@ -61,49 +73,21 @@ class Icecast extends AbstractFrontend
                 $defaultResult = $defaultResult->merge($otherResult);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
         return $defaultResult;
     }
 
-    public function read(Entity\Station $station): bool
+    public function getConfigurationPath(Entity\Station $station): ?string
     {
-        $config = $this->getConfig($station);
-        $station->setFrontendConfigDefaults($this->loadFromConfig($station, $config));
-        return true;
+        return $station->getRadioConfigDir() . '/icecast.xml';
     }
 
-    /**
-     * @return mixed[]
-     */
-    protected function getConfig(Entity\Station $station): array
+    public function getCurrentConfiguration(Entity\Station $station): ?string
     {
-        $config_path = $station->getRadioConfigDir();
-        $icecast_path = $config_path . '/icecast.xml';
-
-        $defaults = $this->getDefaults($station);
-
-        if (file_exists($icecast_path)) {
-            $reader = new Reader();
-            $data = $reader->fromFile($icecast_path);
-
-            return self::arrayMergeRecursiveDistinct($defaults, $data);
-        }
-
-        return $defaults;
-    }
-
-    /*
-     * Process Management
-     */
-
-    /**
-     * @return mixed[]
-     */
-    protected function getDefaults(Entity\Station $station): array
-    {
-        $config_dir = $station->getRadioConfigDir();
+        $frontendConfig = $station->getFrontendConfig();
+        $configDir = $station->getRadioConfigDir();
 
         $settingsBaseUrl = $this->settings->getBaseUrl() ?: 'http://localhost';
         if (strpos($settingsBaseUrl, 'http') !== 0) {
@@ -113,40 +97,38 @@ class Icecast extends AbstractFrontend
 
         $certPaths = CertificateLocator::findCertificate();
 
-        $defaults = [
+        $config = [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
             'hostname' => $baseUrl->getHost(),
             'limits' => [
-                'clients' => 2500,
+                'clients' => $frontendConfig->getMaxListeners() ?? 2500,
                 'sources' => $station->getMounts()->count(),
-                // 'threadpool' => 5,
                 'queue-size' => 524288,
                 'client-timeout' => 30,
                 'header-timeout' => 15,
                 'source-timeout' => 10,
-                // 'burst-on-connect' => 1,
                 'burst-size' => 65535,
             ],
             'authentication' => [
-                'source-password' => Utilities\Strings::generatePassword(),
-                'relay-password' => Utilities\Strings::generatePassword(),
+                'source-password' => $frontendConfig->getSourcePassword(),
+                'relay-password' => $frontendConfig->getRelayPassword(),
                 'admin-user' => 'admin',
-                'admin-password' => Utilities\Strings::generatePassword(),
+                'admin-password' => $frontendConfig->getAdminPassword(),
             ],
 
             'listen-socket' => [
-                'port' => $this->getRadioPort($station),
+                'port' => $frontendConfig->getPort(),
             ],
 
             'mount' => [],
             'fileserve' => 1,
             'paths' => [
                 'basedir' => '/usr/local/share/icecast',
-                'logdir' => $config_dir,
+                'logdir' => $configDir,
                 'webroot' => '/usr/local/share/icecast/web',
                 'adminroot' => '/usr/local/share/icecast/admin',
-                'pidfile' => $config_dir . '/icecast.pid',
+                'pidfile' => $configDir . '/icecast.pid',
                 'alias' => [
                     '@source' => '/',
                     '@dest' => '/status.xsl',
@@ -184,6 +166,10 @@ class Icecast extends AbstractFrontend
                 'genre' => $station->getGenre(),
             ];
 
+            if (!$mount_row->isVisibleOnPublicPages()) {
+                $mount['hidden'] = 1;
+            }
+
             if (!empty($mount_row->getFallbackMount())) {
                 $mount['fallback-mount'] = $mount_row->getFallbackMount();
                 $mount['fallback-override'] = 1;
@@ -193,14 +179,14 @@ class Icecast extends AbstractFrontend
                 $mount_conf = $this->processCustomConfig($mount_row->getFrontendConfig());
 
                 if (!empty($mount_conf)) {
-                    $mount = self::arrayMergeRecursiveDistinct($mount, $mount_conf);
+                    $mount = Utilities\Arrays::arrayMergeRecursiveDistinct($mount, $mount_conf);
                 }
             }
 
             if ($mount_row->getRelayUrl()) {
                 $relay_parts = parse_url($mount_row->getRelayUrl());
 
-                $defaults['relay'][] = [
+                $config['relay'][] = [
                     'server' => $relay_parts['host'],
                     'port' => $relay_parts['port'],
                     'mount' => $relay_parts['path'],
@@ -208,168 +194,48 @@ class Icecast extends AbstractFrontend
                 ];
             }
 
-            $defaults['mount'][] = $mount;
+            $config['mount'][] = $mount;
         }
 
-        return $defaults;
-    }
-
-    /**
-     * array_merge_recursive does indeed merge arrays, but it converts values with duplicate
-     * keys to arrays rather than overwriting the value in the first array with the duplicate
-     * value in the second array, as array_merge does. I.e., with array_merge_recursive,
-     * this happens (documented behavior):
-     *
-     * array_merge_recursive(array('key' => 'org value'), array('key' => 'new value'));
-     *     => array('key' => array('org value', 'new value'));
-     *
-     * array_merge_recursive_distinct does not change the datatypes of the values in the arrays.
-     * Matching keys' values in the second array overwrite those in the first array, as is the
-     * case with array_merge, i.e.:
-     *
-     * array_merge_recursive_distinct(array('key' => 'org value'), array('key' => 'new value'));
-     *     => array('key' => array('new value'));
-     *
-     * Parameters are passed by reference, though only for performance reasons. They're not
-     * altered by this function.
-     *
-     * @param array $array1
-     * @param array $array2
-     *
-     * @return mixed[]
-     *
-     * @author Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
-     * @author Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
-     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
-     */
-    public static function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
-    {
-        $merged = $array1;
-        foreach ($array2 as $key => &$value) {
-            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-                $merged[$key] = self::arrayMergeRecursiveDistinct($merged[$key], $value);
-            } else {
-                $merged[$key] = $value;
-            }
-        }
-
-        return $merged;
-    }
-
-    /*
-     * Configuration
-     */
-
-    /**
-     * @return mixed[]
-     */
-    protected function loadFromConfig(Entity\Station $station, $config): array
-    {
-        $frontend_config = $station->getFrontendConfig();
-
-        return [
-            Entity\StationFrontendConfiguration::CUSTOM_CONFIGURATION => $frontend_config->getCustomConfiguration(),
-            Entity\StationFrontendConfiguration::SOURCE_PASSWORD => $config['authentication']['source-password'],
-            Entity\StationFrontendConfiguration::ADMIN_PASSWORD => $config['authentication']['admin-password'],
-            Entity\StationFrontendConfiguration::RELAY_PASSWORD => $config['authentication']['relay-password'],
-            Entity\StationFrontendConfiguration::STREAMER_PASSWORD => $config['mount'][0]['password'],
-            Entity\StationFrontendConfiguration::MAX_LISTENERS => $config['limits']['clients'],
-        ];
-    }
-
-    public function write(Entity\Station $station): bool
-    {
-        $config = $this->getDefaults($station);
-
-        $frontend_config = $station->getFrontendConfig();
-
-        $port = $frontend_config->getPort();
-        if (null !== $port) {
-            $config['listen-socket']['port'] = $port;
-        }
-
-        $sourcePw = $frontend_config->getSourcePassword();
-        if (!empty($sourcePw)) {
-            $config['authentication']['source-password'] = $sourcePw;
-        }
-
-        $adminPw = $frontend_config->getAdminPassword();
-        if (!empty($adminPw)) {
-            $config['authentication']['admin-password'] = $adminPw;
-        }
-
-        $relayPw = $frontend_config->getRelayPassword();
-        if (!empty($relayPw)) {
-            $config['authentication']['relay-password'] = $relayPw;
-        }
-
-        $streamerPw = $frontend_config->getStreamerPassword();
-        if (!empty($streamerPw)) {
-            foreach ($config['mount'] as &$mount) {
-                if (!empty($mount['password'])) {
-                    $mount['password'] = $streamerPw;
-                }
-            }
-        }
-
-        $maxListeners = $frontend_config->getMaxListeners();
-        if (null !== $maxListeners) {
-            $config['limits']['clients'] = $maxListeners;
-        }
-
-        $customConfig = $frontend_config->getCustomConfiguration();
+        $customConfig = $frontendConfig->getCustomConfiguration();
         if (!empty($customConfig)) {
             $custom_conf = $this->processCustomConfig($customConfig);
             if (!empty($custom_conf)) {
-                $config = self::arrayMergeRecursiveDistinct($config, $custom_conf);
+                $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $custom_conf);
             }
         }
 
-        // Set any unset values back to the DB config.
-        $station->setFrontendConfigDefaults($this->loadFromConfig($station, $config));
-
-        $this->em->persist($station);
-        $this->em->flush();
-
-        $config_path = $station->getRadioConfigDir();
-        $icecast_path = $config_path . '/icecast.xml';
-
-        $writer = new Writer();
-        $icecast_config_str = $writer->toString($config, 'icecast');
+        $configString = (new Writer())->toString($config, 'icecast');
 
         // Strip the first line (the XML charset)
-        $icecast_config_str = substr($icecast_config_str, strpos($icecast_config_str, "\n") + 1);
-
-        file_put_contents($icecast_path, $icecast_config_str);
-        return true;
+        return substr($configString, strpos($configString, "\n") + 1);
     }
 
     public function getCommand(Entity\Station $station): ?string
     {
-        if ($binary = self::getBinary()) {
-            $config_path = $station->getRadioConfigDir() . '/icecast.xml';
-            return $binary . ' -c ' . $config_path;
+        if ($binary = $this->getBinary()) {
+            return $binary . ' -c ' . $this->getConfigurationPath($station);
         }
-        return '/bin/false';
+        return null;
     }
 
     /**
      * @inheritDoc
      */
-    public static function getBinary()
+    public function getBinary(): ?string
     {
         $new_path = '/usr/local/bin/icecast';
         $legacy_path = '/usr/bin/icecast2';
 
-        if (Environment::getInstance()->isDocker() || file_exists($new_path)) {
+        if ($this->environment->isDocker() || file_exists($new_path)) {
             return $new_path;
         }
 
         if (file_exists($legacy_path)) {
             return $legacy_path;
-        } else {
-            return false;
         }
+
+        return null;
     }
 
     public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface

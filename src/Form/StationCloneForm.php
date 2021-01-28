@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Acl;
 use App\Config;
 use App\Entity;
 use App\Environment;
 use App\Flysystem\FilesystemManager;
 use App\Http\ServerRequest;
+use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Sync\Task\CheckMediaTask;
 use DeepCopy;
@@ -31,11 +31,11 @@ class StationCloneForm extends StationForm
         ValidatorInterface $validator,
         Entity\Repository\StationRepository $station_repo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Acl $acl,
-        Configuration $configuration,
-        CheckMediaTask $media_sync,
         Config $config,
         Environment $environment,
+        Adapters $adapters,
+        Configuration $configuration,
+        CheckMediaTask $media_sync,
         FilesystemManager $filesystem
     ) {
         parent::__construct(
@@ -44,9 +44,9 @@ class StationCloneForm extends StationForm
             $validator,
             $station_repo,
             $storageLocationRepo,
-            $acl,
             $config,
-            $environment
+            $environment,
+            $adapters
         );
 
         $form_config = $config->get('forms/station_clone');

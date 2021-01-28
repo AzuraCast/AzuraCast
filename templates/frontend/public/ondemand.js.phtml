@@ -1,6 +1,11 @@
 <?php
+/**
+ * @var \App\Entity\Station $station
+ */
+
 $props = [
     'listUrl' => $router->fromHere('api:stations:ondemand:list'),
+    'showDownloadButton' => $station->getEnableOnDemandDownload(),
     'customFields' => $custom_fields,
     'stationName' => $station->getName(),
 ]

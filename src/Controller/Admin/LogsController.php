@@ -36,10 +36,14 @@ class LogsController extends AbstractLogViewerController
             ];
         }
 
-        return $request->getView()->renderToResponse($response, 'admin/logs/index', [
-            'global_logs' => $this->getGlobalLogs(),
-            'station_logs' => $station_logs,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'admin/logs/index',
+            [
+                'global_logs' => $this->getGlobalLogs(),
+                'station_logs' => $station_logs,
+            ]
+        );
     }
 
     /**
@@ -52,7 +56,7 @@ class LogsController extends AbstractLogViewerController
 
         $logPaths['azuracast_log'] = [
             'name' => __('AzuraCast Application Log'),
-            'path' => $tempDir . '/app.log',
+            'path' => $tempDir . '/app-' . gmdate('Y-m-d') . '.log',
             'tail' => true,
         ];
 

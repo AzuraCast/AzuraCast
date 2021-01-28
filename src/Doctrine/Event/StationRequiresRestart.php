@@ -45,6 +45,7 @@ class StationRequiresRestart implements EventSubscriber
         ];
 
         $stations_to_restart = [];
+
         foreach ($collections_to_check as $change_type => $collection) {
             foreach ($collection as $entity) {
                 if (

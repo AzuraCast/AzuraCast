@@ -2,20 +2,20 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Entity\StationPlaylist;
 use App\Environment;
 use App\Exception\CannotProcessMediaException;
-use App\Exception\MediaProcessingException;
 use App\Flysystem\Filesystem;
 use App\Flysystem\FilesystemManager;
-use App\Media\AlbumArt;
-use App\Media\MetadataManagerInterface;
-use App\Media\MimeType;
+use App\Media\MetadataManager;
 use App\Service\AudioWaveform;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Generator;
+use Intervention\Image\Constraint;
+use Intervention\Image\ImageManager;
 use InvalidArgumentException;
 use League\Flysystem\FileNotFoundException;
 use Psr\Log\LoggerInterface;
@@ -33,29 +33,37 @@ class StationMediaRepository extends Repository
 
     protected StorageLocationRepository $storageLocationRepo;
 
-    protected MetadataManagerInterface $metadataManager;
+    protected UnprocessableMediaRepository $unprocessableMediaRepo;
+
+    protected MetadataManager $metadataManager;
 
     protected FilesystemManager $filesystem;
 
+    protected ImageManager $imageManager;
+
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        MetadataManagerInterface $metadataManager,
+        MetadataManager $metadataManager,
         CustomFieldRepository $customFieldRepo,
         StationPlaylistMediaRepository $spmRepo,
         StorageLocationRepository $storageLocationRepo,
-        FilesystemManager $filesystem
+        UnprocessableMediaRepository $unprocessableMediaRepo,
+        FilesystemManager $filesystem,
+        ImageManager $imageManager
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
 
         $this->customFieldRepo = $customFieldRepo;
         $this->spmRepo = $spmRepo;
         $this->storageLocationRepo = $storageLocationRepo;
+        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
 
         $this->metadataManager = $metadataManager;
         $this->filesystem = $filesystem;
+        $this->imageManager = $imageManager;
     }
 
     /**
@@ -103,6 +111,18 @@ class StationMediaRepository extends Repository
         );
 
         return $media;
+    }
+
+    public function iteratePaths(array $paths, $source): Generator
+    {
+        $storageLocation = $this->getStorageLocation($source);
+
+        foreach ($paths as $path) {
+            $media = $this->findByPath($path, $storageLocation);
+            if ($media instanceof Entity\StationMedia) {
+                yield $path => $media;
+            }
+        }
     }
 
     /**
@@ -156,19 +176,30 @@ class StationMediaRepository extends Repository
         $path = FilesystemManager::stripPrefix($path);
 
         $record = $this->findByPath($path, $source);
+        $storageLocation = $this->getStorageLocation($source);
 
         $created = false;
         if (!($record instanceof Entity\StationMedia)) {
-            $storageLocation = $this->getStorageLocation($source);
-
             $record = new Entity\StationMedia($storageLocation, $path);
             $created = true;
         }
 
-        $reprocessed = $this->processMedia($record, $created, $uploadedFrom);
+        try {
+            $reprocessed = $this->processMedia($record, $created, $uploadedFrom);
+        } catch (CannotProcessMediaException $e) {
+            $this->unprocessableMediaRepo->setForPath(
+                $storageLocation,
+                $path,
+                $e->getMessage()
+            );
+
+            throw $e;
+        }
 
         if ($created || $reprocessed) {
             $this->em->flush();
+
+            $this->unprocessableMediaRepo->clearForPath($storageLocation, $path);
         }
 
         return $record;
@@ -189,22 +220,22 @@ class StationMediaRepository extends Repository
         ?string $uploadedPath = null
     ): bool {
         $fs = $this->getFilesystem($media);
-        $mediaUri = $media->getPath();
+        $path = $media->getPath();
 
         if (null !== $uploadedPath) {
             try {
                 $this->loadFromFile($media, $uploadedPath);
             } finally {
-                $fs->putFromLocal($uploadedPath, $mediaUri);
+                $fs->putFromLocal($uploadedPath, $path);
             }
 
             $mediaMtime = time();
         } else {
-            if (!$fs->has($mediaUri)) {
-                throw new MediaProcessingException(sprintf('Media path "%s" not found.', $mediaUri));
+            if (!$fs->has($path)) {
+                throw new CannotProcessMediaException(sprintf('Media path "%s" not found.', $path));
             }
 
-            $mediaMtime = (int)$fs->getTimestamp($mediaUri);
+            $mediaMtime = (int)$fs->getTimestamp($path);
 
             // No need to update if all of these conditions are true.
             if (!$force && !$media->needsReprocessing($mediaMtime)) {
@@ -212,9 +243,9 @@ class StationMediaRepository extends Repository
             }
 
             $fs->withLocalFile(
-                $mediaUri,
-                function ($path) use ($media): void {
-                    $this->loadFromFile($media, $path);
+                $path,
+                function ($localPath) use ($media): void {
+                    $this->loadFromFile($media, $localPath);
                 }
             );
         }
@@ -233,18 +264,8 @@ class StationMediaRepository extends Repository
      */
     public function loadFromFile(Entity\StationMedia $media, string $filePath): void
     {
-        if (!MimeType::isFileProcessable($filePath)) {
-            $mimeType = MimeType::getMimeTypeFromFile($filePath);
-            throw CannotProcessMediaException::forPath(
-                $filePath,
-                sprintf('MIME type "%s" is not processable.', $mimeType)
-            );
-        }
-
         // Load metadata from supported files.
-        $metadata = $this->metadataManager->getMetadata($filePath);
-
-        $media->fromMetadata($metadata);
+        $metadata = $this->metadataManager->getMetadata($media, $filePath);
 
         // Persist the media record for later custom field operations.
         $this->em->persist($media);
@@ -295,30 +316,26 @@ class StationMediaRepository extends Repository
         $media->updateSongId();
     }
 
-    public function readAlbumArt(Entity\StationMedia $media): ?string
-    {
-        $fs = $this->getFilesystem($media);
-
-        $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-
-        if (!$fs->has($albumArtPath)) {
-            return null;
-        }
-
-        return $fs->read($albumArtPath);
-    }
-
     public function writeAlbumArt(Entity\StationMedia $media, string $rawArtString): bool
     {
-        $fs = $this->getFilesystem($media);
-
-        $albumArt = AlbumArt::resize($rawArtString);
-        $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-
         $media->setArtUpdatedAt(time());
         $this->em->persist($media);
 
-        return $fs->put($albumArtPath, $albumArt);
+        $fs = $this->getFilesystem($media);
+
+        $albumArt = $this->imageManager->make($rawArtString);
+        $albumArt->fit(
+            1200,
+            1200,
+            function (Constraint $constraint): void {
+                $constraint->upsize();
+            }
+        );
+
+        $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
+        $albumArtStream = $albumArt->stream('jpg', 90);
+
+        return $fs->putStream($albumArtPath, $albumArtStream->detach());
     }
 
     public function removeAlbumArt(Entity\StationMedia $media): void
@@ -345,14 +362,24 @@ class StationMediaRepository extends Repository
         }
 
         // Write tags to the Media file.
+        $media->setMtime(time() + 5);
+        $media->updateSongId();
+
         return $fs->withLocalFile(
             $media->getPath(),
-            function ($path) use ($media, $metadata) {
-                if ($this->metadataManager->writeMetadata($metadata, $path)) {
-                    $media->setMtime(time() + 5);
+            function ($path) use ($metadata) {
+                try {
+                    $this->metadataManager->writeMetadata($metadata, $path);
                     return true;
+                } catch (CannotProcessMediaException $e) {
+                    $this->logger->error(
+                        $e->getMessage(),
+                        [
+                            'exception' => $e,
+                        ]
+                    );
+                    return false;
                 }
-                return false;
             }
         );
     }

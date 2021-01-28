@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Entity;
+use App\Entity\Api\Error;
 use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -13,23 +13,21 @@ class DownloadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int $id,
-        FilesystemManager $filesystem,
-        Entity\Repository\StationMediaRepository $mediaRepo
+        FilesystemManager $filesystem
     ): ResponseInterface {
         set_time_limit(600);
 
         $station = $request->getStation();
+        $storageLocation = $station->getMediaStorageLocation();
+        $fs = $storageLocation->getFilesystem();
 
-        $media = $mediaRepo->find($id, $station);
+        $path = $request->getParam('file');
 
-        if (!$media instanceof Entity\StationMedia) {
+        if (!$fs->has($path)) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Not Found'));
+                ->withJson(new Error(404, 'File not found.'));
         }
 
-        $fs = $filesystem->getForStation($station, false);
-
-        return $fs->streamToResponse($response, $media->getPathUri());
+        return $fs->streamToResponse($response, $path);
     }
 }

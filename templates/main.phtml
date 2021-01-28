@@ -14,8 +14,6 @@
 
 $page_class ??= '';
 $page_class .= ' theme-' . $customization->getTheme();
-
-$user = $request->getUser();
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,27 +36,37 @@ $user = $request->getUser();
     echo $assets->js();
     ?>
 </head>
-<body class="page-full <?=$page_class?> <?php if (!empty($sidebar)): ?>has-sidebar<?php endif; ?>">
+<body class="page-full <?=$page_class?> <?php
+if (!empty($sidebar)): ?>has-sidebar<?php
+endif; ?>">
 <?=$assets->inlineJs()?>
 
 <a class="sr-only sr-only-focusable" href="#content"><?=__('Skip to main content')?></a>
 
 <header class="navbar bg-primary-dark shadow-sm fixed-top">
-    <?php if (!empty($sidebar)): ?>
-        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__('Toggle Sidebar')?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
+    <?php
+    if (!empty($sidebar)): ?>
+        <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__(
+            'Toggle Sidebar'
+        )?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
             <span class="navbar-toggler-icon"></span>
         </button>
-    <?php endif; ?>
+    <?php
+    endif; ?>
 
     <a class="navbar-brand ml-0 mr-auto" href="<?=$router->named('dashboard')?>">
-        azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?>
-            <small><?=$this->e($customization->getInstanceName())?></small><?php endif; ?>
+        azura<strong>cast</strong> <?php
+        if (!empty($customization->getInstanceName())): ?>
+            <small><?=$this->e($customization->getInstanceName())?></small><?php
+        endif; ?>
     </a>
 
     <div id="radio-player-controls"></div>
 
     <div class="dropdown ml-3">
-        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__('Toggle Menu')?>" data-toggle="dropdown" type="button">
+        <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__(
+            'Toggle Menu'
+        )?>" data-toggle="dropdown" type="button">
             <i class="material-icons" aria-hidden="true">more_vert</i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
@@ -69,14 +77,16 @@ $user = $request->getUser();
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
-            <?php if ($acl->userAllowed($user, \App\Acl::GLOBAL_VIEW)): ?>
+            <?php
+            if ($acl->isAllowed(App\Acl::GLOBAL_VIEW)): ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('admin:index:index')?>">
                         <i class="material-icons" aria-hidden="true">settings</i>
                         <?=__('System Administration')?>
                     </a>
                 </li>
-            <?php endif; ?>
+            <?php
+            endif; ?>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('profile:index')?>">
                     <i class="material-icons" aria-hidden="true">account_circle</i>
@@ -102,42 +112,53 @@ $user = $request->getUser();
                 </a>
             </li>
             <li class="dropdown-divider">&nbsp;</li>
-            <?php if ($auth->isMasqueraded()): ?>
+            <?php
+            if ($auth->isMasqueraded()): ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('account:endmasquerade')?>">
                         <i class="material-icons" aria-hidden="true">exit_to_app</i>
                         <?=__('End Session')?>
                     </a>
                 </li>
-            <?php else: ?>
+            <?php
+            else: ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('account:logout')?>">
                         <i class="material-icons" aria-hidden="true">exit_to_app</i>
                         <?=__('Sign Out')?></a></li>
-            <?php endif; ?>
+            <?php
+            endif; ?>
         </ul>
     </div>
 </header>
 
-<?php if (!empty($sidebar)): ?>
+<?php
+if (!empty($sidebar)): ?>
     <div class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
         <nav class="navdrawer-content">
             <?=$sidebar?>
         </nav>
     </div>
-<?php endif; ?>
+<?php
+endif; ?>
 
 <section id="main">
-    <section id="content" <?php if (empty($sidebar)): ?>class="content-alt"<?php endif; ?> role="main">
+    <section id="content" <?php
+    if (empty($sidebar)): ?>class="content-alt"<?php
+    endif; ?> role="main">
         <div class="container">
-            <?php if ($manual): ?>
+            <?php
+            if ($manual): ?>
                 <?=$this->section('content')?>
-            <?php else: ?>
-                <?php if ($header): ?>
+            <?php
+            else: ?>
+                <?php
+                if ($header): ?>
                     <div class="block-header">
                         <h2><?=$header?></h2>
                     </div>
-                <?php endif; ?>
+                <?php
+                endif; ?>
                 <div class="card mb-3" role="region">
                     <div class="card-header bg-primary-dark">
                         <h3 class="card-title"><?=$title?></h3>
@@ -146,30 +167,44 @@ $user = $request->getUser();
                         <?=$this->section('content')?>
                     </div>
                 </div>
-            <?php endif; ?>
+            <?php
+            endif; ?>
         </div>
     </section>
 </section>
 
-<footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=__('Powered by %s',
-        '<a href="https://www.azuracast.com/" target="_blank">' . $environment->getAppName() . '</a> &bull; ' . $version->getVersionText() . ' &bull; ' . ($environment->isDocker() ? 'Docker' : 'Ansible') . ' &bull; PHP ' . \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION)?>
+<footer id="footer" <?php
+if (empty($sidebar)): ?>class="footer-alt"<?php
+endif; ?> role="contentinfo">
+    <?=__(
+        'Powered by %s',
+        '<a href="https://www.azuracast.com/" target="_blank">' . $environment->getAppName(
+        ) . '</a> &bull; ' . $version->getVersionText() . ' &bull; ' . ($environment->isDocker(
+        ) ? 'Docker' : 'Ansible') . ' &bull; PHP ' . \PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION
+    )?>
     <br>
-    <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>',
-        'https://www.azuracast.com/donate.html')?>
+    <?=__(
+        'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>',
+        'https://www.azuracast.com/donate.html'
+    )?>
 </footer>
 
 <div id="radio-player"></div>
 
-<?php if (null !== $flash && $flash->hasMessages()): ?>
+<?php
+if (null !== $flash && $flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
         $(function () {
             <?php foreach($flash->getMessages() as $message): ?>
-            notify("<?=str_replace(['"', "\n"], ['\'', '<br>'],
-                $message['text']) ?>", '<?=$message['color'] ?>', false);
+            notify("<?=str_replace(
+                ['"', "\n"],
+                ['\'', '<br>'],
+                $message['text']
+            ) ?>", '<?=$message['color'] ?>', false);
             <?php endforeach; ?>
         });
     </script>
-<?php endif; ?>
+<?php
+endif; ?>
 </body>
 </html>

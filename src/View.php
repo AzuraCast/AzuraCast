@@ -49,6 +49,7 @@ class View extends Engine
                 'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
                 'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
                 'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
+                'user' => $request->getAttribute(ServerRequest::ATTR_USER),
                 'assets' => $this->assets,
             ]
         );

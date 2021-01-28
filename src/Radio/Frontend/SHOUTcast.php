@@ -3,9 +3,6 @@
 namespace App\Radio\Frontend;
 
 use App\Entity;
-use App\Environment;
-use App\Logger;
-use App\Utilities;
 use Exception;
 use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
@@ -14,9 +11,19 @@ use Symfony\Component\Process\Process;
 
 class SHOUTcast extends AbstractFrontend
 {
-    public static function getVersion(): ?string
+    public function supportsMounts(): bool
     {
-        $binary_path = self::getBinary();
+        return true;
+    }
+
+    public function supportsListenerDetail(): bool
+    {
+        return true;
+    }
+
+    public function getVersion(): ?string
+    {
+        $binary_path = $this->getBinary();
         if (!$binary_path) {
             return null;
         }
@@ -35,13 +42,12 @@ class SHOUTcast extends AbstractFrontend
     /**
      * @inheritDoc
      */
-    public static function getBinary()
+    public function getBinary(): string
     {
         $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
 
         // Docker versions before 3 included the SC binary across the board.
-        $environment = Environment::getInstance();
-        if ($environment->isDocker() && !$environment->isDockerRevisionAtLeast(3)) {
+        if ($this->environment->isDocker() && !$this->environment->isDockerRevisionAtLeast(3)) {
             return $new_path;
         }
 
@@ -68,10 +74,15 @@ class SHOUTcast extends AbstractFrontend
         try {
             $sid = 0;
             foreach ($station->getMounts() as $mount) {
-                /** @var Entity\StationMount $mount */
                 $sid++;
 
                 $result = $npAdapter->getNowPlaying((string)$sid, $includeClients);
+
+                if (!empty($result->clients)) {
+                    foreach ($result->clients as $client) {
+                        $client->mount = 'local_' . $mount->getId();
+                    }
+                }
 
                 $mount->setListenersTotal($result->listeners->total);
                 $mount->setListenersUnique($result->listeners->unique);
@@ -90,79 +101,35 @@ class SHOUTcast extends AbstractFrontend
                 $defaultResult = $defaultResult->merge($otherResult);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
         }
 
         return $defaultResult;
     }
 
-    /*
-     * Process Management
-     */
-
-    /**
-     * @inheritdoc
-     */
-    public function read(Entity\Station $station): bool
+    public function getConfigurationPath(Entity\Station $station): ?string
     {
-        $config = $this->getConfig($station);
-        $station->setFrontendConfigDefaults($this->loadFromConfig($config));
-        return true;
+        return $station->getRadioConfigDir() . '/sc_serv.conf';
     }
 
-    /**
-     * @return string[]|bool Returns either all lines of the config file or false on failure
-     */
-    protected function getConfig(Entity\Station $station)
+    public function getCurrentConfiguration(Entity\Station $station): ?string
     {
-        $config_dir = $station->getRadioConfigDir();
-        return @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
-    }
+        $configPath = $station->getRadioConfigDir();
+        $frontendConfig = $station->getFrontendConfig();
 
-    /*
-     * Configuration
-     */
-
-    /**
-     * @return mixed[]
-     */
-    protected function loadFromConfig($config): array
-    {
-        return [
-            Entity\StationFrontendConfiguration::PORT => $config['portbase'],
-            Entity\StationFrontendConfiguration::SOURCE_PASSWORD => $config['password'],
-            Entity\StationFrontendConfiguration::ADMIN_PASSWORD => $config['adminpassword'],
-            Entity\StationFrontendConfiguration::MAX_LISTENERS => $config['maxuser'],
+        $config = [
+            'password' => $frontendConfig->getSourcePassword(),
+            'adminpassword' => $frontendConfig->getAdminPassword(),
+            'logfile' => $configPath . '/sc_serv.log',
+            'w3clog' => $configPath . '/sc_w3c.log',
+            'banfile' => $this->writeIpBansFile($station),
+            'ripfile' => $configPath . '/sc_serv.rip',
+            'maxuser' => $frontendConfig->getMaxListeners() ?? 250,
+            'portbase' => $frontendConfig->getPort(),
+            'requirestreamconfigs' => 1,
         ];
-    }
 
-    public function write(Entity\Station $station): bool
-    {
-        $config = $this->getDefaults($station);
-
-        $frontend_config = $station->getFrontendConfig();
-
-        $port = $frontend_config->getPort();
-        if (null !== $port) {
-            $config['portbase'] = $port;
-        }
-
-        $sourcePw = $frontend_config->getSourcePassword();
-        if (!empty($sourcePw)) {
-            $config['password'] = $sourcePw;
-        }
-
-        $adminPw = $frontend_config->getAdminPassword();
-        if (!empty($adminPw)) {
-            $config['adminpassword'] = $adminPw;
-        }
-
-        $maxListeners = $frontend_config->getMaxListeners();
-        if (null !== $maxListeners) {
-            $config['maxuser'] = $maxListeners;
-        }
-
-        $customConfig = $frontend_config->getCustomConfiguration();
+        $customConfig = $frontendConfig->getCustomConfiguration();
         if (!empty($customConfig)) {
             $custom_conf = $this->processCustomConfig($customConfig);
             if (!empty($custom_conf)) {
@@ -186,54 +153,20 @@ class SHOUTcast extends AbstractFrontend
             }
         }
 
-        // Set any unset values back to the DB config.
-        $station->setFrontendConfigDefaults($this->loadFromConfig($config));
-
-        $this->em->persist($station);
-        $this->em->flush();
-
-        $config_path = $station->getRadioConfigDir();
-        $sc_path = $config_path . '/sc_serv.conf';
-
-        $sc_file = '';
+        $configFileOutput = '';
         foreach ($config as $config_key => $config_value) {
-            $sc_file .= $config_key . '=' . str_replace("\n", '', $config_value) . "\n";
+            $configFileOutput .= $config_key . '=' . str_replace("\n", '', $config_value) . "\n";
         }
 
-        file_put_contents($sc_path, $sc_file);
-        return true;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function getDefaults(Entity\Station $station): array
-    {
-        $config_path = $station->getRadioConfigDir();
-
-        return [
-            'password' => Utilities\Strings::generatePassword(),
-            'adminpassword' => Utilities\Strings::generatePassword(),
-            'logfile' => $config_path . '/sc_serv.log',
-            'w3clog' => $config_path . '/sc_w3c.log',
-            'banfile' => $this->writeIpBansFile($station),
-            'ripfile' => $config_path . '/sc_serv.rip',
-            'maxuser' => 250,
-            'portbase' => $this->getRadioPort($station),
-            'requirestreamconfigs' => 1,
-        ];
+        return $configFileOutput;
     }
 
     public function getCommand(Entity\Station $station): ?string
     {
-        if ($binary = self::getBinary()) {
-            $config_path = $station->getRadioConfigDir();
-            $sc_config = $config_path . '/sc_serv.conf';
-
-            return $binary . ' ' . $sc_config;
+        if ($binary = $this->getBinary()) {
+            return $binary . ' ' . $this->getConfigurationPath($station);
         }
-
-        return '/bin/false';
+        return null;
     }
 
     public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
@@ -241,22 +174,5 @@ class SHOUTcast extends AbstractFrontend
         $public_url = $this->getPublicUrl($station, $base_url);
         return $public_url
             ->withPath($public_url->getPath() . '/admin.cgi');
-    }
-
-    protected function getDefaultMountSid(Entity\Station $station): int
-    {
-        $default_sid = null;
-        $sid = 0;
-        foreach ($station->getMounts() as $mount) {
-            /** @var Entity\StationMount $mount */
-            $sid++;
-
-            if ($mount->getIsDefault()) {
-                $default_sid = $sid;
-                break;
-            }
-        }
-
-        return $default_sid ?? 1;
     }
 }

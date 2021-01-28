@@ -2,6 +2,7 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
@@ -11,12 +12,10 @@ use App\Radio\Frontend\AbstractFrontend;
 use App\Sync\Task\CheckMediaTask;
 use App\Utilities;
 use Closure;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -30,14 +29,12 @@ class StationRepository extends Repository
 
     protected ValidatorInterface $validator;
 
-    protected CacheInterface $cache;
-
     protected StorageLocationRepository $storageLocationRepo;
 
     protected SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         SettingsRepository $settingsRepo,
@@ -46,14 +43,12 @@ class StationRepository extends Repository
         CheckMediaTask $mediaSync,
         Adapters $adapters,
         Configuration $configuration,
-        ValidatorInterface $validator,
-        CacheInterface $cache
+        ValidatorInterface $validator
     ) {
         $this->mediaSync = $mediaSync;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
         $this->validator = $validator;
-        $this->cache = $cache;
 
         $this->settingsRepo = $settingsRepo;
         $this->storageLocationRepo = $storageLocationRepo;
@@ -126,17 +121,9 @@ class StationRepository extends Repository
      */
     public function edit(Entity\Station $station): Entity\Station
     {
-        // Create path for station.
-        $station->ensureDirectoriesExist();
-
-        $this->em->persist($station);
-        $this->em->persist($station->getMediaStorageLocation());
-        $this->em->persist($station->getRecordingsStorageLocation());
-
         $original_record = $this->em->getUnitOfWork()->getOriginalEntityData($station);
 
-        // Generate station ID.
-        $this->em->flush();
+        $this->configuration->initializeConfiguration($station);
 
         // Delete media-related items if the media storage is changed.
         /** @var Entity\StorageLocation|null $oldMediaStorage */
@@ -160,9 +147,9 @@ class StationRepository extends Repository
             $this->resetMounts($station, $frontend);
         }
 
-        $this->configuration->writeConfiguration($station, $adapter_changed);
-
-        $this->cache->delete('stations');
+        if ($adapter_changed) {
+            $this->configuration->writeConfiguration($station, true);
+        }
 
         return $station;
     }
@@ -180,9 +167,9 @@ class StationRepository extends Repository
         }
 
         // Create default mountpoints if station supports them.
-        if ($frontend_adapter::supportsMounts()) {
+        if ($frontend_adapter->supportsMounts()) {
             // Create default mount points.
-            $mount_points = $frontend_adapter::getDefaultMounts();
+            $mount_points = $frontend_adapter->getDefaultMounts();
 
             foreach ($mount_points as $mount_point) {
                 $mount_record = new Entity\StationMount($station);
@@ -238,15 +225,8 @@ class StationRepository extends Repository
      */
     public function create(Entity\Station $station): Entity\Station
     {
-        // Create path for station.
-        $station->ensureDirectoriesExist();
-
-        $this->em->persist($station);
-        $this->em->persist($station->getMediaStorageLocation());
-        $this->em->persist($station->getRecordingsStorageLocation());
-
-        // Generate station ID.
-        $this->em->flush();
+        $station->generateAdapterApiKey();
+        $this->configuration->initializeConfiguration($station);
 
         // Scan directory for any existing files.
         set_time_limit(600);
@@ -260,23 +240,9 @@ class StationRepository extends Repository
         /** @var Entity\Station $station */
         $station = $this->em->find(Entity\Station::class, $station->getId());
 
-        // Load adapters.
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
-
         // Create default mountpoints if station supports them.
+        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
         $this->resetMounts($station, $frontend_adapter);
-
-        // Load configuration from adapter to pull source and admin PWs.
-        $frontend_adapter->read($station);
-
-        // Write the adapter configurations and update supervisord.
-        $this->configuration->writeConfiguration($station, true);
-
-        // Save changes and continue to the last setup step.
-        $this->em->persist($station);
-        $this->em->flush();
-
-        $this->cache->delete('stations');
 
         return $station;
     }
@@ -311,8 +277,6 @@ class StationRepository extends Repository
 
         $this->em->remove($station);
         $this->em->flush();
-
-        $this->cache->delete('stations');
     }
 
     /**

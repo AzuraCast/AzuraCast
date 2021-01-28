@@ -96,6 +96,10 @@ class Customization
             $browser_locale = Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
 
             if (!empty($browser_locale)) {
+                if (2 === strlen($browser_locale)) {
+                    $browser_locale = strtolower($browser_locale) . '_' . strtoupper($browser_locale);
+                }
+
                 $try_locales[] = substr($browser_locale, 0, 5) . '.UTF-8';
             }
         }

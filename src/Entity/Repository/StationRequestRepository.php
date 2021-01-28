@@ -2,14 +2,15 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Exception;
 use App\Radio\AutoDJ;
+use App\Service\DeviceDetector;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -17,16 +18,20 @@ class StationRequestRepository extends Repository
 {
     protected StationMediaRepository $mediaRepo;
 
+    protected DeviceDetector $deviceDetector;
+
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        StationMediaRepository $mediaRepo
+        StationMediaRepository $mediaRepo,
+        DeviceDetector $deviceDetector
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
 
         $this->mediaRepo = $mediaRepo;
+        $this->deviceDetector = $deviceDetector;
     }
 
     public function submit(
@@ -37,7 +42,9 @@ class StationRequestRepository extends Repository
         string $userAgent
     ): int {
         // Forbid web crawlers from using this feature.
-        if ($this->isCrawler($userAgent)) {
+        $dd = $this->deviceDetector->parse($userAgent);
+
+        if ($dd->isBot()) {
             throw new Exception(__('Search engine crawlers are not permitted to use this feature.'));
         }
 
@@ -98,26 +105,6 @@ class StationRequestRepository extends Repository
         $this->em->flush();
 
         return $record->getId();
-    }
-
-    protected function isCrawler(string $userAgent): bool
-    {
-        $userAgent = strtolower($userAgent);
-
-        // phpcs:disable Generic.Files.LineLength
-        $crawlers_agents = strtolower(
-            'Bloglines subscriber|Dumbot|Sosoimagespider|QihooBot|FAST-WebCrawler|Superdownloads Spiderman|LinkWalker|msnbot|ASPSeek|WebAlta Crawler|Lycos|FeedFetcher-Google|Yahoo|YoudaoBot|AdsBot-Google|Googlebot|Scooter|Gigabot|Charlotte|eStyle|AcioRobot|GeonaBot|msnbot-media|Baidu|CocoCrawler|Google|Charlotte t|Yahoo! Slurp China|Sogou web spider|YodaoBot|MSRBOT|AbachoBOT|Sogou head spider|AltaVista|IDBot|Sosospider|Yahoo! Slurp|Java VM|DotBot|LiteFinder|Yeti|Rambler|Scrubby|Baiduspider|accoona'
-        );
-        // phpcs:enable
-        $crawlers = explode('|', $crawlers_agents);
-
-        foreach ($crawlers as $crawler) {
-            if (strpos($userAgent, trim($crawler)) !== false) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

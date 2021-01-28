@@ -2,13 +2,13 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -19,7 +19,7 @@ class SongHistoryRepository extends Repository
     protected StationQueueRepository $stationQueueRepository;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,

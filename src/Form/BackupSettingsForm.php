@@ -22,7 +22,8 @@ class BackupSettingsForm extends AbstractSettingsForm
                 'settings' => $environment,
                 'storageLocations' => $storageLocationRepo->fetchSelectByType(
                     Entity\StorageLocation::TYPE_BACKUP,
-                    true
+                    true,
+                    __('Select...')
                 ),
             ]
         );

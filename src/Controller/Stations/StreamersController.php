@@ -34,7 +34,7 @@ class StreamersController
         $station = $request->getStation();
         $backend = $request->getStationBackend();
 
-        if (!$backend::supportsStreamers()) {
+        if (!$backend->supportsStreamers()) {
             throw new StationUnsupportedException();
         }
 

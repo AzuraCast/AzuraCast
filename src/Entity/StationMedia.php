@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Flysystem\FilesystemManager;
-use App\Media\Metadata;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,7 +23,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  *
  * @OA\Schema(type="object")
  */
-class StationMedia implements SongInterface
+class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -116,11 +115,11 @@ class StationMedia implements SongInterface
     protected $length_text = '0:00';
 
     /**
-     * @ORM\Column(name="path", type="string", length=500, nullable=true)
+     * @ORM\Column(name="path", type="string", length=500)
      *
      * @OA\Property(example="test.mp3")
      *
-     * @var string|null The relative path of the media file.
+     * @var string The relative path of the media file.
      */
     protected $path;
 
@@ -134,7 +133,7 @@ class StationMedia implements SongInterface
     protected $mtime = 0;
 
     /**
-     * @ORM\Column(name="amplify", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="amplify", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=-14.00)
      *
@@ -144,7 +143,7 @@ class StationMedia implements SongInterface
     protected $amplify;
 
     /**
-     * @ORM\Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_overlap", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=2.00)
      *
@@ -154,7 +153,7 @@ class StationMedia implements SongInterface
     protected $fade_overlap;
 
     /**
-     * @ORM\Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_in", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=3.00)
      *
@@ -164,7 +163,7 @@ class StationMedia implements SongInterface
     protected $fade_in;
 
     /**
-     * @ORM\Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true)
+     * @ORM\Column(name="fade_out", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=3.00)
      *
@@ -174,7 +173,7 @@ class StationMedia implements SongInterface
     protected $fade_out;
 
     /**
-     * @ORM\Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true)
+     * @ORM\Column(name="cue_in", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=30.00)
      *
@@ -184,7 +183,7 @@ class StationMedia implements SongInterface
     protected $cue_in;
 
     /**
-     * @ORM\Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true)
+     * @ORM\Column(name="cue_out", type="decimal", precision=6, scale=1, nullable=true)
      *
      * @OA\Property(example=30.00)
      *
@@ -320,12 +319,12 @@ class StationMedia implements SongInterface
         $this->length_text = $length_text;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function setPath(?string $path = null): void
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }
@@ -498,9 +497,9 @@ class StationMedia implements SongInterface
         $this->custom_fields = $custom_fields;
     }
 
-    public function needsReprocessing($current_mtime = 0): bool
+    public function needsReprocessing(int $currentFileModifiedTime = 0): bool
     {
-        return $current_mtime > $this->mtime;
+        return $currentFileModifiedTime > $this->mtime;
     }
 
     /**
@@ -552,6 +551,8 @@ class StationMedia implements SongInterface
         if (isset($tags['isrc'])) {
             $this->setIsrc($tags['isrc']);
         }
+
+        $this->updateSongId();
     }
 
     public function toMetadata(): Metadata

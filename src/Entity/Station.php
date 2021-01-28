@@ -257,6 +257,14 @@ class Station
     protected $enable_on_demand = false;
 
     /**
+     * @ORM\Column(name="enable_on_demand_download", type="boolean", nullable=false)
+     *
+     * @OA\Property(example=true)
+     * @var bool Whether the "on-demand" page offers download capability.
+     */
+    protected $enable_on_demand_download = true;
+
+    /**
      * @ORM\Column(name="needs_restart", type="boolean")
      *
      * @AuditLog\AuditIgnore()
@@ -415,7 +423,7 @@ class Station
         $this->name = $this->truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName($name);
+            $this->setShortName(null);
         }
     }
 
@@ -426,13 +434,15 @@ class Station
             : self::getStationShortName($this->name);
     }
 
-    public function setShortName(?string $short_name): void
+    public function setShortName(?string $shortName): void
     {
-        $short_name = trim($short_name);
-        if (!empty($short_name)) {
-            $short_name = self::getStationShortName($short_name);
-            $this->short_name = $this->truncateString($short_name, 100);
+        $shortName = trim($shortName);
+        if (empty($shortName)) {
+            $shortName = $this->name;
         }
+
+        $shortName = self::getStationShortName($shortName);
+        $this->short_name = $this->truncateString($shortName, 100);
     }
 
     public static function getStationShortName(string $str): string
@@ -485,24 +495,6 @@ class Station
         }
 
         $this->frontend_config = $config;
-    }
-
-    /**
-     * Set frontend configuration but do not overwrite existing values.
-     *
-     * @param array $default_config
-     */
-    public function setFrontendConfigDefaults(array $default_config): void
-    {
-        $frontend_config = (array)$this->frontend_config;
-
-        foreach ($default_config as $config_key => $config_value) {
-            if (empty($frontend_config[$config_key])) {
-                $frontend_config[$config_key] = $config_value;
-            }
-        }
-
-        $this->frontend_config = $frontend_config;
     }
 
     public function getBackendType(): ?string
@@ -855,6 +847,16 @@ class Station
     public function setEnableOnDemand(bool $enable_on_demand): void
     {
         $this->enable_on_demand = $enable_on_demand;
+    }
+
+    public function getEnableOnDemandDownload(): bool
+    {
+        return $this->enable_on_demand_download;
+    }
+
+    public function setEnableOnDemandDownload(bool $enable_on_demand_download): void
+    {
+        $this->enable_on_demand_download = $enable_on_demand_download;
     }
 
     public function isEnabled(): bool

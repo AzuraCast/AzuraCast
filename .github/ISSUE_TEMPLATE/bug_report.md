@@ -5,6 +5,7 @@ about: Create a report to help us improve
 
 <!--
 Please be kind and patient in your interactions with us. We are a small team of volunteers working solely on donations. Thank you in advance.
+NOTE: Ansible installation methods are NOT supported and support may not be provided outside of the rare circumstances. 
 -->
 
 <!--

@@ -26,10 +26,12 @@
                     <i class="material-icons" aria-hidden="true" v-if="now_playing_url === row.item.download_url">pause_circle_filled</i>
                     <i class="material-icons" aria-hidden="true" v-else>play_circle_filled</i>
                 </a>
-                &nbsp;
-                <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
-                    <i class="material-icons">cloud_download</i>
-                </a>
+                <template v-if="showDownloadButton">
+                    &nbsp;
+                    <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
+                        <i class="material-icons">cloud_download</i>
+                    </a>
+                </template>
             </template>
             <template v-slot:cell(media_art)="row">
                 <a :href="row.item.media_art" class="album-art" target="_blank"
@@ -48,107 +50,108 @@
 </template>
 
 <style lang="scss">
-    #station_on_demand_table {
-        .datatable-main {
-            overflow-y: auto;
+#station_on_demand_table {
+    .datatable-main {
+        overflow-y: auto;
+    }
+
+    table.b-table {
+        thead tr th:nth-child(1),
+        tbody tr td:nth-child(1) {
+            padding-right: 0.75rem;
+            width: 3rem;
+            white-space: nowrap;
         }
 
-        table.b-table {
-            thead tr th:nth-child(1),
-            tbody tr td:nth-child(1) {
-                padding-right: 0.75rem;
-                width: 3rem;
-                white-space: nowrap;
-            }
-
-            thead tr th:nth-child(2),
-            tbody tr td:nth-child(2) {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-                width: 40px;
-            }
-
-            thead tr th:nth-child(3),
-            tbody tr td:nth-child(3) {
-                padding-left: 0.5rem;
-            }
-        }
-
-        img.media_manager_album_art {
+        thead tr th:nth-child(2),
+        tbody tr td:nth-child(2) {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
             width: 40px;
-            height: auto;
-            border-radius: 5px;
+        }
+
+        thead tr th:nth-child(3),
+        tbody tr td:nth-child(3) {
+            padding-left: 0.5rem;
         }
     }
+
+    img.media_manager_album_art {
+        width: 40px;
+        height: auto;
+        border-radius: 5px;
+    }
+}
 
 
 </style>
 
 <script>
-    import InlinePlayer from './InlinePlayer';
-    import DataTable from './components/DataTable';
-    import _ from 'lodash';
+import InlinePlayer from './InlinePlayer';
+import DataTable from './components/DataTable';
+import _ from 'lodash';
 
-    export default {
-        components: { DataTable, InlinePlayer },
-        props: {
-            listUrl: String,
-            stationName: String,
-            customFields: Array
-        },
-        data () {
-            let fields = [
-                { key: 'download_url', label: ' ' },
-                { key: 'media_art', label: this.$gettext('Art') },
-                { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
-                { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true },
-                { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
-                { key: 'playlist', label: this.$gettext('Playlist'), sortable: true, selectable: true, visible: false }
-            ];
+export default {
+    components: { DataTable, InlinePlayer },
+    props: {
+        listUrl: String,
+        stationName: String,
+        customFields: Array,
+        showDownloadButton: Boolean
+    },
+    data () {
+        let fields = [
+            { key: 'download_url', label: ' ' },
+            { key: 'media_art', label: this.$gettext('Art') },
+            { key: 'media_title', label: this.$gettext('Title'), sortable: true, selectable: true },
+            { key: 'media_artist', label: this.$gettext('Artist'), sortable: true, selectable: true },
+            { key: 'media_album', label: this.$gettext('Album'), sortable: true, selectable: true, visible: false },
+            { key: 'playlist', label: this.$gettext('Playlist'), sortable: true, selectable: true, visible: false }
+        ];
 
-            _.forEach(this.customFields.slice(), (field) => {
-                fields.push({
-                    key: field.display_key,
-                    label: field.label,
-                    sortable: true,
-                    selectable: true,
-                    visible: false
-                });
+        _.forEach(this.customFields.slice(), (field) => {
+            fields.push({
+                key: field.display_key,
+                label: field.label,
+                sortable: true,
+                selectable: true,
+                visible: false
             });
+        });
 
-            return {
-                now_playing_url: '',
-                fields: fields
-            };
-        },
-        mounted () {
-            this.$eventHub.$on('player_stopped', () => {
-                this.now_playing_url = '';
-            });
+        return {
+            now_playing_url: '',
+            fields: fields
+        };
+    },
+    mounted () {
+        this.$eventHub.$on('player_stopped', () => {
+            this.now_playing_url = '';
+        });
 
-            this.$eventHub.$on('player_playing', (url) => {
-                this.now_playing_url = url;
-            });
+        this.$eventHub.$on('player_playing', (url) => {
+            this.now_playing_url = url;
+        });
+    },
+    computed: {
+        langAlbumArt () {
+            return this.$gettext('Album Art');
         },
-        computed: {
-            langAlbumArt () {
-                return this.$gettext('Album Art');
-            },
-            langPlayPause () {
-                return this.$gettext('Play/Pause');
-            },
-            langDownload () {
-                return this.$gettext('Download');
-            }
+        langPlayPause () {
+            return this.$gettext('Play/Pause');
         },
-        methods: {
-            playAudio (url) {
-                if (this.now_playing_url === url) {
-                    this.$refs.player.stop();
-                } else {
-                    this.$refs.player.play(url);
-                }
+        langDownload () {
+            return this.$gettext('Download');
+        }
+    },
+    methods: {
+        playAudio (url) {
+            if (this.now_playing_url === url) {
+                this.$refs.player.stop();
+            } else {
+                this.$refs.player.play(url);
             }
         }
-    };
+    }
+};
 </script>

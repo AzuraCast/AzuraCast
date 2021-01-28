@@ -9,6 +9,24 @@ class StationMountRepository extends Repository
 {
     /**
      * @param Entity\Station $station
+     *
+     * @return mixed[]
+     */
+    public function getDisplayNames(Entity\Station $station): array
+    {
+        $mounts = $this->repository->findBy(['station' => $station]);
+
+        $displayNames = [];
+        foreach ($mounts as $mount) {
+            /** @var Entity\StationMount $mount */
+            $displayNames[$mount->getId()] = $mount->getDisplayName();
+        }
+
+        return $displayNames;
+    }
+
+    /**
+     * @param Entity\Station $station
      */
     public function getDefaultMount(Entity\Station $station): ?Entity\StationMount
     {

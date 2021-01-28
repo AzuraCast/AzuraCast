@@ -468,7 +468,7 @@ return [
 
     'StationMedia' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox'],
         // Auto-managed by Assets
     ],
 
@@ -505,13 +505,19 @@ return [
 
     'StationProfile' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 
     'AdminStorageLocations' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
+    'Dashboard' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'chartjs'],
         // Auto-managed by Assets
     ],
 ];

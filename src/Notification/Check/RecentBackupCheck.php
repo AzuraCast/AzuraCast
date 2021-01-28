@@ -6,7 +6,7 @@ use App\Acl;
 use App\Entity;
 use App\Environment;
 use App\Event\GetNotifications;
-use App\Notification\Notification;
+use App\Session\Flash;
 use Carbon\CarbonImmutable;
 
 class RecentBackupCheck
@@ -28,7 +28,7 @@ class RecentBackupCheck
         // This notification is for backup administrators only.
         $request = $event->getRequest();
         $acl = $request->getAcl();
-        if (!$acl->userAllowed($request->getUser(), Acl::GLOBAL_BACKUPS)) {
+        if (!$acl->isAllowed(Acl::GLOBAL_BACKUPS)) {
             return;
         }
 
@@ -49,21 +49,16 @@ class RecentBackupCheck
         $backupLastRun = $settings->getBackupLastRun();
 
         if ($backupLastRun < $threshold) {
-            $router = $request->getRouter();
-            $backupUrl = $router->named('admin:backups:index');
+            $notification = new Entity\Api\Notification();
+            $notification->title = __('Installation Not Recently Backed Up');
+            $notification->body = __('This installation has not been backed up in the last two weeks.');
+            $notification->type = Flash::INFO;
 
-            $event->addNotification(
-                new Notification(
-                    __('Installation Not Recently Backed Up'),
-                    // phpcs:disable Generic.Files.LineLength
-                    __(
-                        'This installation has not been backed up in the last two weeks. Visit the <a href="%s" target="_blank">Backups</a> page to run a new backup.',
-                        $backupUrl
-                    ),
-                    // phpcs:enable
-                    Notification::INFO
-                )
-            );
+            $router = $request->getRouter();
+            $notification->actionLabel = __('Backups');
+            $notification->actionUrl = (string)$router->named('admin:backups:index');
+
+            $event->addNotification($notification);
         }
     }
 }

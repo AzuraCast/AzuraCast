@@ -396,7 +396,9 @@ update() {
         docker-compose run --rm --user="azuracast" web azuracast_update "$@"
         docker-compose up -d
 
-        docker system prune -f
+        if ask "Clean up all stopped Docker containers and images to save space?" Y; then
+            docker system prune -f
+        fi
 
         echo "Update complete!"
     fi
@@ -595,8 +597,7 @@ uninstall() {
 letsencrypt-create() {
     setup-letsencrypt
 
-    docker-compose stop web
-    docker-compose rm -f web
+    docker-compose down
     docker-compose up -d
     exit
 }

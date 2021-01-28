@@ -263,7 +263,7 @@ services:
     volumes:
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - letsencrypt:/etc/nginx/certs:ro
+      - letsencrypt:/etc/nginx/certs
       - tmp_data:/var/azuracast/www_tmp
     networks:
       - frontend

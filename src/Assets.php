@@ -508,6 +508,7 @@ class Assets
         $csp_script_src[] = "'nonce-" . $this->getCspNonce() . "'";
 
         $csp[] = 'script-src ' . implode(' ', $csp_script_src);
+        $csp[] = 'worker-src blob:';
 
         return $response->withHeader('Content-Security-Policy', implode('; ', $csp));
     }

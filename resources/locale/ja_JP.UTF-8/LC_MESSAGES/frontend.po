@@ -12,7 +12,7 @@ msgstr ""
 "X-Crowdin-File-ID: 11\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
-"PO-Revision-Date: 2020-11-25 07:46\n"
+"PO-Revision-Date: 2021-01-27 23:30\n"
 
 #: ./vue/StationPlaylists.vue:25
 msgid "# Songs"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "A playlist that instructs the station to play from a remote URL."
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:60
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:63
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Access Key ID"
 msgstr ""
@@ -59,6 +59,7 @@ msgid "Account List"
 msgstr ""
 
 #: ./vue/AdminStorageLocations.vue:15
+#: ./vue/Dashboard.vue:49
 #: ./vue/SongRequest.vue:18
 #: ./vue/StationMedia.vue:112
 #: ./vue/StationPlaylists.vue:22
@@ -86,6 +87,10 @@ msgstr ""
 msgid "Add Schedule Item"
 msgstr ""
 
+#: ./vue/Dashboard.vue:85
+msgid "Add Station"
+msgstr ""
+
 #: ./vue/AdminStorageLocations.vue:15
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:27
 msgid "Add Storage Location"
@@ -95,6 +100,10 @@ msgstr ""
 #: ./vue/station_streamers/StreamerEditModal.vue:55
 msgid "Add Streamer"
 msgstr ""
+
+#: ./vue/Dashboard.vue:18
+msgid "Administration"
+msgstr "การจัดการระบบ"
 
 #: ./vue/station_profile/ProfileFrontend.vue:20
 #: ./vue/station_profile/ProfileFrontend.vue:8
@@ -106,6 +115,7 @@ msgstr ""
 msgid "Administrator Password"
 msgstr ""
 
+#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:9
 #: ./vue/station_playlists/form/PlaylistFormAdvanced.vue:8
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:76
 msgid "Advanced"
@@ -116,20 +126,16 @@ msgstr ""
 msgid "Advanced Manual AutoDJ Scheduling Options"
 msgstr ""
 
-#: ./vue/station_media/form/MediaFormAdvancedSettings.vue:9
-msgid "Advanced Playback Settings"
-msgstr ""
-
 #: ./vue/SongRequest.vue:17
 #: ./vue/StationMedia.vue:75
-#: ./vue/StationOnDemand.vue:18
+#: ./vue/StationOnDemand.vue:19
 #: ./vue/station_playlists/PlaylistReorderModal.vue:8
 msgid "Album"
-msgstr ""
+msgstr "อัลบั้ม"
 
-#: ./vue/RadioPlayer.vue:92
-#: ./vue/StationMedia.vue:136
-#: ./vue/StationOnDemand.vue:48
+#: ./vue/RadioPlayer.vue:90
+#: ./vue/StationMedia.vue:138
+#: ./vue/StationOnDemand.vue:49
 #: ./vue/station_media/form/MediaFormAlbumArt.vue:16
 msgid "Album Art"
 msgstr ""
@@ -147,11 +153,11 @@ msgstr ""
 msgid "Amplify: Amplification (dB)"
 msgstr ""
 
-#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:112
-#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:158
-#: ./vue/station_media/MediaEditModal.vue:134
-#: ./vue/station_media/MediaEditModal.vue:178
-#: ./vue/station_media/MediaMoveFilesModal.vue:52
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:127
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:173
+#: ./vue/station_media/MediaEditModal.vue:139
+#: ./vue/station_media/MediaEditModal.vue:183
+#: ./vue/station_media/MediaMoveFilesModal.vue:53
 #: ./vue/station_media/MediaNewDirectoryModal.vue:51
 #: ./vue/station_playlists/PlaylistEditModal.vue:134
 #: ./vue/station_playlists/PlaylistEditModal.vue:175
@@ -161,28 +167,32 @@ msgstr ""
 msgid "An error occurred and your request could not be completed."
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:115
+#: ./vue/station_media/MediaToolbar.vue:50
+msgid "Analyze and reprocess the selected media"
+msgstr ""
+
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:118
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "API Version"
 msgstr ""
 
-#: ./vue/AdminStorageLocations.vue:59
+#: ./vue/AdminStorageLocations.vue:62
 #: ./vue/StationPlaylists.vue:116
-#: ./vue/station_media/MediaToolbar.vue:137
+#: ./vue/station_media/MediaToolbar.vue:156
 msgid "Applying changes..."
 msgstr ""
 
-#: ./vue/StationOnDemand.vue:15
+#: ./vue/StationOnDemand.vue:16
 msgid "Art"
 msgstr ""
 
 #: ./vue/SongRequest.vue:16
 #: ./vue/StationMedia.vue:70
-#: ./vue/StationOnDemand.vue:17
+#: ./vue/StationOnDemand.vue:18
 #: ./vue/station_playlists/PlaylistReorderModal.vue:7
 #: ./vue/webcaster/settings.vue:109
 msgid "Artist"
-msgstr ""
+msgstr "ศิลปิน"
 
 #: ./vue/StationPlaylists.vue:76
 #: ./vue/StationPlaylists.vue:21
@@ -199,6 +209,10 @@ msgstr ""
 
 #: ./vue/station_profile/ProfileBackend.vue:4
 msgid "AutoDJ Service"
+msgstr "บริการ AutoDJ"
+
+#: ./vue/Dashboard.vue:55
+msgid "Average Listeners"
 msgstr ""
 
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:41
@@ -233,24 +247,24 @@ msgstr ""
 
 #: ./vue/station_profile/ProfileFrontend.vue:4
 msgid "Broadcasting Service"
-msgstr ""
+msgstr "บริการถ่ายทอดเสียง"
 
 #: ./vue/StationStreamers.vue:38
 #: ./vue/StationStreamers.vue:6
 msgid "Broadcasts"
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:93
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:96
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Bucket Name"
 msgstr ""
 
-#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:152
-#: ./vue/station_media/MediaEditModal.vue:172
+#: ./vue/admin_storage_locations/StorageLocationEditModal.vue:167
+#: ./vue/station_media/MediaEditModal.vue:177
 #: ./vue/station_playlists/PlaylistEditModal.vue:169
 #: ./vue/station_streamers/StreamerEditModal.vue:139
 msgid "Changes saved."
-msgstr ""
+msgstr "บันทึกการเปลี่ยนแปลง"
 
 #: ./vue/station_media/MediaToolbar.vue:32
 msgid "Clear"
@@ -258,7 +272,7 @@ msgstr ""
 
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:12
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:2
-#: ./vue/station_media/MediaEditModal.vue:17
+#: ./vue/station_media/MediaEditModal.vue:18
 #: ./vue/station_media/MediaEditModal.vue:2
 #: ./vue/station_media/MediaMoveFilesModal.vue:32
 #: ./vue/station_media/MediaMoveFilesModal.vue:2
@@ -280,7 +294,7 @@ msgstr ""
 #: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:44
 #: ./vue/station_streamers/form/StreamerFormBasicInfo.vue:1
 msgid "Comments"
-msgstr ""
+msgstr "ความคิดเห็น"
 
 #: ./vue/webcaster/playlist.vue:58
 msgid "Continuous Play"
@@ -341,19 +355,19 @@ msgstr ""
 
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:10
 msgid "Default"
-msgstr ""
+msgstr "ค่าเริ่มต้น"
 
 #: ./vue/AdminStorageLocations.vue:26
 #: ./vue/AdminStorageLocations.vue:6
-#: ./vue/AdminStorageLocations.vue:75
+#: ./vue/AdminStorageLocations.vue:78
 #: ./vue/StationPlaylists.vue:29
 #: ./vue/StationPlaylists.vue:6
 #: ./vue/StationPlaylists.vue:132
 #: ./vue/StationStreamers.vue:41
 #: ./vue/StationStreamers.vue:9
 #: ./vue/StationStreamers.vue:58
-#: ./vue/station_media/MediaToolbar.vue:47
-#: ./vue/station_media/MediaToolbar.vue:50
+#: ./vue/station_media/MediaToolbar.vue:55
+#: ./vue/station_media/MediaToolbar.vue:67
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:24
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:22
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:3
@@ -361,7 +375,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:51
+#: ./vue/station_media/MediaToolbar.vue:68
 msgid "Delete %{ num } media files?"
 msgstr ""
 
@@ -377,7 +391,7 @@ msgstr ""
 msgid "Delete playlist?"
 msgstr ""
 
-#: ./vue/AdminStorageLocations.vue:76
+#: ./vue/AdminStorageLocations.vue:79
 msgid "Delete storage location?"
 msgstr ""
 
@@ -385,7 +399,7 @@ msgstr ""
 msgid "Delete streamer?"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:88
+#: ./vue/components/DataTable.vue:87
 msgid "Deselect"
 msgstr ""
 
@@ -393,11 +407,9 @@ msgstr ""
 msgid "Direct Stream URL"
 msgstr ""
 
-#: ./vue/StationMedia.vue:38
-#: ./vue/StationMedia.vue:27
 #: ./vue/station_media/MediaMoveFilesModal.vue:19
 msgid "Directory"
-msgstr ""
+msgstr "ไดเรกทอรี"
 
 #: ./vue/station_media/MediaNewDirectoryModal.vue:5
 #: ./vue/station_media/MediaNewDirectoryModal.vue:1
@@ -412,7 +424,7 @@ msgstr ""
 #: ./vue/station_profile/ProfileStreamers.vue:16
 #: ./vue/station_profile/ProfileStreamers.vue:14
 msgid "Disable"
-msgstr ""
+msgstr "ปิดใช้งาน"
 
 #: ./vue/station_profile/ProfilePublicPages.vue:27
 msgid "Disable public pages?"
@@ -438,7 +450,7 @@ msgstr ""
 #: ./vue/station_profile/ProfileStreamers.vue:24
 #: ./vue/station_profile/ProfileStreamers.vue:4
 msgid "Disabled"
-msgstr ""
+msgstr "ปิดการใช้งาน"
 
 #: ./vue/station_profile/ProfileNowPlaying.vue:99
 msgid "Disconnect Streamer"
@@ -446,7 +458,7 @@ msgstr ""
 
 #: ./vue/StationStreamers.vue:22
 msgid "Display Name"
-msgstr ""
+msgstr "แสดงชื่อ"
 
 #: ./vue/webcaster/settings.vue:81
 msgid "DJ Credentials"
@@ -456,7 +468,7 @@ msgstr ""
 msgid "Down"
 msgstr ""
 
-#: ./vue/StationOnDemand.vue:54
+#: ./vue/StationOnDemand.vue:55
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:66
 msgid "Download"
 msgstr ""
@@ -473,9 +485,14 @@ msgstr ""
 msgid "Drag files here to upload to this folder or"
 msgstr ""
 
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:142
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Dropbox Auth Token"
+msgstr ""
+
 #: ./vue/AdminStorageLocations.vue:23
 #: ./vue/AdminStorageLocations.vue:3
-#: ./vue/StationMedia.vue:142
+#: ./vue/StationMedia.vue:144
 #: ./vue/StationPlaylists.vue:26
 #: ./vue/StationPlaylists.vue:3
 #: ./vue/StationStreamers.vue:35
@@ -483,7 +500,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: ./vue/station_media/MediaEditModal.vue:69
+#: ./vue/station_media/MediaEditModal.vue:73
 msgid "Edit Media"
 msgstr ""
 
@@ -493,7 +510,7 @@ msgstr ""
 
 #: ./vue/station_profile/ProfileHeader.vue:10
 msgid "Edit Profile"
-msgstr ""
+msgstr "แก้ไขโปรไฟล์"
 
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:26
 msgid "Edit Storage Location"
@@ -563,7 +580,7 @@ msgstr ""
 msgid "End Time"
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:82
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:85
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Endpoint"
 msgstr ""
@@ -583,19 +600,23 @@ msgstr ""
 msgid "File Name"
 msgstr ""
 
-#: ./vue/station_media/MediaMoveFilesModal.vue:44
+#: ./vue/station_media/MediaToolbar.vue:64
+msgid "Files marked for reprocessing:"
+msgstr ""
+
+#: ./vue/station_media/MediaMoveFilesModal.vue:45
 msgid "Files moved:"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:47
+#: ./vue/station_media/MediaToolbar.vue:61
 msgid "Files queued for playback:"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:63
+#: ./vue/station_media/MediaToolbar.vue:80
 msgid "Files removed:"
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:24
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:27
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix."
 msgstr ""
@@ -603,10 +624,10 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:18
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:18
 msgid "Friday"
-msgstr ""
+msgstr "ศุกร์"
 
 #: ./vue/InlinePlayer.vue:34
-#: ./vue/RadioPlayer.vue:89
+#: ./vue/RadioPlayer.vue:87
 #: ./vue/components/Waveform.vue:37
 msgid "Full Volume"
 msgstr ""
@@ -619,6 +640,10 @@ msgstr ""
 
 #: ./vue/StationMedia.vue:76
 msgid "Genre"
+msgstr "ประเภทเพลง"
+
+#: ./vue/Dashboard.vue:65
+msgid "Hide Charts"
 msgstr ""
 
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:65
@@ -724,6 +749,11 @@ msgstr ""
 msgid "Learn about Advanced Playlists"
 msgstr ""
 
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:145
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
+msgid "Learn More about Dropbox Auth Tokens"
+msgstr ""
+
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:92
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:86
@@ -733,16 +763,22 @@ msgstr ""
 
 #: ./vue/StationMedia.vue:77
 msgid "Length"
-msgstr ""
+msgstr "ระยะเวลา"
 
 #: ./vue/station_profile/ProfileBackend.vue:31
 msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
 msgstr ""
 
+#: ./vue/Dashboard.vue:45
+#: ./vue/components/TimeSeriesChart.vue:49
 #: ./vue/station_profile/ProfileStreams.vue:15
 #: ./vue/station_profile/ProfileStreams.vue:45
 #: ./vue/station_profile/ProfileStreams.vue:4
 msgid "Listeners"
+msgstr "ผู้ฟัง"
+
+#: ./vue/Dashboard.vue:48
+msgid "Listeners Per Station"
 msgstr ""
 
 #: ./vue/RadioPlayer.vue:12
@@ -751,7 +787,7 @@ msgstr ""
 msgid "Live"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:97
+#: ./vue/components/DataTable.vue:96
 msgid "Loading..."
 msgstr ""
 
@@ -772,6 +808,8 @@ msgstr ""
 msgid "Low"
 msgstr ""
 
+#: ./vue/Dashboard.vue:118
+#: ./vue/Dashboard.vue:2
 #: ./vue/station_profile/ProfileStreamers.vue:12
 #: ./vue/station_profile/ProfileStreamers.vue:10
 msgid "Manage"
@@ -813,13 +851,14 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:14
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:14
 msgid "Monday"
-msgstr ""
+msgstr "จันทร์"
 
 #: ./vue/StationPlaylists.vue:37
+#: ./vue/station_media/MediaToolbar.vue:44
 msgid "More"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:43
+#: ./vue/station_media/MediaToolbar.vue:39
 msgid "Move"
 msgstr ""
 
@@ -837,14 +876,18 @@ msgid "MP3"
 msgstr ""
 
 #: ./vue/InlinePlayer.vue:25
-#: ./vue/RadioPlayer.vue:83
+#: ./vue/RadioPlayer.vue:81
 #: ./vue/components/Waveform.vue:28
 msgid "Mute"
 msgstr ""
 
+#: ./vue/Dashboard.vue:14
+msgid "My Account"
+msgstr ""
+
 #: ./vue/StationMedia.vue:66
 msgid "Name"
-msgstr ""
+msgstr "ชื่อ"
 
 #: ./vue/station_media/MediaNewDirectoryModal.vue:24
 msgid "New Directory"
@@ -859,19 +902,19 @@ msgstr ""
 msgid "New File Name"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:53
+#: ./vue/station_media/MediaToolbar.vue:61
 msgid "New Folder"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:33
+#: ./vue/station_media/MediaToolbar.vue:41
 msgid "New Playlist"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:142
+#: ./vue/station_media/MediaToolbar.vue:161
 msgid "No files selected."
 msgstr ""
 
-#: ./vue/components/DataTable.vue:94
+#: ./vue/components/DataTable.vue:93
 #: ./vue/public_radio_player/SongHistoryModal.vue:12
 msgid "No records to display."
 msgstr ""
@@ -894,6 +937,7 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
+#: ./vue/Dashboard.vue:48
 #: ./vue/station_profile/ProfileNowPlaying.vue:23
 msgid "Now Playing"
 msgstr ""
@@ -968,17 +1012,17 @@ msgstr ""
 msgid "Password"
 msgstr "パスワード"
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:21
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:24
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Path/Suffix"
 msgstr ""
 
 #: ./vue/InlinePlayer.vue:19
-#: ./vue/RadioPlayer.vue:80
+#: ./vue/RadioPlayer.vue:78
 msgid "Pause"
 msgstr ""
 
-#: ./vue/RadioPlayer.vue:77
+#: ./vue/RadioPlayer.vue:75
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:13
 msgid "Play"
 msgstr ""
@@ -995,8 +1039,9 @@ msgstr ""
 msgid "Play once per hour at the specified minute."
 msgstr ""
 
-#: ./vue/StationMedia.vue:145
-#: ./vue/StationOnDemand.vue:51
+#: ./vue/Dashboard.vue:61
+#: ./vue/StationMedia.vue:147
+#: ./vue/StationOnDemand.vue:52
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:63
 msgid "Play/Pause"
 msgstr ""
@@ -1011,7 +1056,7 @@ msgid "Playing Next"
 msgstr ""
 
 #: ./vue/PublicRadioPlayer.vue:35
-#: ./vue/StationOnDemand.vue:19
+#: ./vue/StationOnDemand.vue:20
 #: ./vue/StationPlaylists.vue:23
 #: ./vue/station_profile/ProfileNowPlaying.vue:40
 #: ./vue/station_profile/ProfileNowPlaying.vue:72
@@ -1055,18 +1100,21 @@ msgstr ""
 #: ./vue/StationPlaylists.vue:6
 #: ./vue/station_media/MediaToolbar.vue:7
 #: ./vue/station_media/MediaToolbar.vue:2
+#: ./vue/station_media/form/MediaFormPlaylists.vue:11
 #: ./vue/station_profile/ProfileBackend.vue:19
 msgid "Playlists"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:118
+#: ./vue/station_media/MediaToolbar.vue:136
 msgid "Playlists cleared for selected files:"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:117
+#: ./vue/station_media/MediaToolbar.vue:135
 msgid "Playlists updated for selected files:"
 msgstr ""
 
+#: ./vue/Dashboard.vue:99
+#: ./vue/Dashboard.vue:10
 #: ./vue/station_profile/ProfilePublicPages.vue:16
 #: ./vue/station_profile/ProfilePublicPages.vue:14
 msgid "Public Page"
@@ -1078,11 +1126,11 @@ msgstr ""
 msgid "Public Pages"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:39
+#: ./vue/station_media/MediaToolbar.vue:46
 msgid "Queue"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:36
+#: ./vue/station_media/MediaToolbar.vue:47
 msgid "Queue the selected media to play next"
 msgstr ""
 
@@ -1094,11 +1142,11 @@ msgstr ""
 msgid "Raw"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:73
+#: ./vue/components/DataTable.vue:72
 msgid "Refresh rows"
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:104
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:107
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Region"
 msgstr ""
@@ -1118,10 +1166,6 @@ msgstr ""
 msgid "Remote Relays"
 msgstr ""
 
-#: ./vue/AdminStorageLocations.vue:46
-msgid "Remote S3"
-msgstr ""
-
 #: ./vue/StationPlaylists.vue:62
 #: ./vue/StationPlaylists.vue:7
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:85
@@ -1139,8 +1183,15 @@ msgstr ""
 msgid "Remote URL Type"
 msgstr ""
 
+#: ./vue/AdminStorageLocations.vue:49
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:17
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:134
+msgid "Remote: Dropbox"
+msgstr ""
+
+#: ./vue/AdminStorageLocations.vue:46
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:14
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:52
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:55
 msgid "Remote: S3 Compatible"
 msgstr ""
 
@@ -1149,7 +1200,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: ./vue/StationMedia.vue:139
+#: ./vue/StationMedia.vue:141
 #: ./vue/station_media/MediaRenameModal.vue:18
 #: ./vue/station_media/MediaRenameModal.vue:5
 msgid "Rename"
@@ -1174,6 +1225,10 @@ msgstr ""
 #: ./vue/station_media/form/MediaFormAlbumArt.vue:14
 #: ./vue/station_media/form/MediaFormAlbumArt.vue:1
 msgid "Replace Album Cover Art"
+msgstr ""
+
+#: ./vue/station_media/MediaToolbar.vue:49
+msgid "Reprocess"
 msgstr ""
 
 #: ./vue/SongRequest.vue:5
@@ -1204,7 +1259,7 @@ msgstr ""
 msgid "Restart"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:76
+#: ./vue/components/DataTable.vue:75
 msgid "Rows per page"
 msgstr ""
 
@@ -1219,7 +1274,7 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:19
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:19
 msgid "Saturday"
-msgstr ""
+msgstr "เสาร์"
 
 #: ./vue/station_media/MediaToolbar.vue:29
 msgid "Save"
@@ -1227,14 +1282,14 @@ msgstr ""
 
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:15
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:5
-#: ./vue/station_media/MediaEditModal.vue:20
+#: ./vue/station_media/MediaEditModal.vue:21
 #: ./vue/station_media/MediaEditModal.vue:5
 #: ./vue/station_playlists/PlaylistEditModal.vue:20
 #: ./vue/station_playlists/PlaylistEditModal.vue:5
 #: ./vue/station_streamers/StreamerEditModal.vue:18
 #: ./vue/station_streamers/StreamerEditModal.vue:5
 msgid "Save Changes"
-msgstr ""
+msgstr "บันทึก"
 
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:26
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:26
@@ -1266,7 +1321,7 @@ msgstr ""
 msgid "Scheduling"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:91
+#: ./vue/components/DataTable.vue:90
 msgid "Search"
 msgstr ""
 
@@ -1280,7 +1335,7 @@ msgstr ""
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:71
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:74
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Secret Key"
 msgstr ""
@@ -1289,21 +1344,21 @@ msgstr ""
 msgid "Seek"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:85
+#: ./vue/components/DataTable.vue:84
 msgid "Select"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:82
+#: ./vue/components/DataTable.vue:81
 msgid "Select all visible rows"
 msgstr ""
 
-#: ./vue/components/DataTable.vue:79
+#: ./vue/components/DataTable.vue:78
 msgid "Select displayed fields"
 msgstr ""
 
 #: ./vue/station_media/MediaFileUpload.vue:17
 msgid "Select File"
-msgstr ""
+msgstr "เลือกไฟล์"
 
 #: ./vue/station_playlists/PlaylistImportModal.vue:5
 #: ./vue/station_playlists/PlaylistImportModal.vue:1
@@ -1316,7 +1371,7 @@ msgstr ""
 msgid "Sequential"
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:38
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:41
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. \"8 GB\". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk."
 msgstr ""
@@ -1341,7 +1396,7 @@ msgstr ""
 msgid "Set Fade Out"
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:30
+#: ./vue/station_media/MediaToolbar.vue:38
 msgid "Set or clear playlists from the selected media"
 msgstr ""
 
@@ -1351,6 +1406,10 @@ msgstr ""
 
 #: ./vue/webcaster/settings.vue:11
 msgid "Settings"
+msgstr ""
+
+#: ./vue/Dashboard.vue:67
+msgid "Show Charts"
 msgstr ""
 
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:37
@@ -1374,7 +1433,7 @@ msgstr ""
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:24
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:1
 msgid "Song Artist"
-msgstr ""
+msgstr "ศิลปิน"
 
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:30
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:1
@@ -1410,7 +1469,7 @@ msgstr ""
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:18
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:1
 msgid "Song Title"
-msgstr ""
+msgstr "ชื่อเพลง"
 
 #: ./vue/StationPlaylists.vue:59
 #: ./vue/StationPlaylists.vue:4
@@ -1476,6 +1535,14 @@ msgstr ""
 msgid "Station Media"
 msgstr ""
 
+#: ./vue/Dashboard.vue:40
+msgid "Station Name"
+msgstr ""
+
+#: ./vue/Dashboard.vue:79
+msgid "Station Overview"
+msgstr ""
+
 #: ./vue/AdminStorageLocations.vue:26
 msgid "Station Recordings"
 msgstr ""
@@ -1509,7 +1576,7 @@ msgstr ""
 msgid "Storage Locations"
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:35
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:38
 #: ./vue/admin_storage_locations/form/StorageLocationForm.vue:1
 msgid "Storage Quota"
 msgstr ""
@@ -1555,7 +1622,7 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:20
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:20
 msgid "Sunday"
-msgstr ""
+msgstr "อาทิตย์"
 
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:38
 msgid "The full playlist is shuffled and then played through in the shuffled order."
@@ -1575,7 +1642,7 @@ msgstr ""
 msgid "The relative path of the file in the station's media directory."
 msgstr ""
 
-#: ./vue/station_media/MediaToolbar.vue:39
+#: ./vue/station_media/MediaToolbar.vue:53
 msgid "The request could not be processed."
 msgstr ""
 
@@ -1609,14 +1676,15 @@ msgstr ""
 msgid "The volume in decibels to amplify the track with. Leave blank to use the system default."
 msgstr ""
 
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:29
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:43
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:65
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:76
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:87
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:98
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:109
-#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:120
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:32
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:46
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:68
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:79
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:90
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:101
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:112
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:123
+#: ./vue/admin_storage_locations/form/StorageLocationForm.vue:150
 #: ./vue/station_media/MediaNewDirectoryModal.vue:8
 #: ./vue/station_media/MediaRenameModal.vue:9
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:13
@@ -1675,15 +1743,15 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:17
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:17
 msgid "Thursday"
-msgstr ""
+msgstr "พฤหัสบดี"
 
 #: ./vue/SongRequest.vue:15
 #: ./vue/StationMedia.vue:67
-#: ./vue/StationOnDemand.vue:16
+#: ./vue/StationOnDemand.vue:17
 #: ./vue/station_playlists/PlaylistReorderModal.vue:6
 #: ./vue/webcaster/settings.vue:103
 msgid "Title"
-msgstr ""
+msgstr "ชื่อเรื่อง"
 
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:33
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:1
@@ -1700,13 +1768,17 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:15
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:15
 msgid "Tuesday"
-msgstr ""
+msgstr "อังคาร"
 
 #: ./vue/station_profile/ProfileNowPlaying.vue:11
 #: ./vue/station_profile/ProfileStreams.vue:34
 #: ./vue/station_profile/ProfileStreams.vue:64
 #: ./vue/station_profile/ProfileStreams.vue:23
 msgid "Unique"
+msgstr ""
+
+#: ./vue/Dashboard.vue:58
+msgid "Unique Listeners"
 msgstr ""
 
 #: ./vue/webcaster/playlist.vue:31
@@ -1739,7 +1811,7 @@ msgstr "ユーザー名"
 msgid "View"
 msgstr ""
 
-#: ./vue/StationMedia.vue:148
+#: ./vue/StationMedia.vue:150
 msgid "View tracks in playlist"
 msgstr ""
 
@@ -1748,7 +1820,7 @@ msgid "Visual Cue Editor"
 msgstr ""
 
 #: ./vue/InlinePlayer.vue:19
-#: ./vue/RadioPlayer.vue:86
+#: ./vue/RadioPlayer.vue:84
 #: ./vue/components/Waveform.vue:64
 msgid "Volume"
 msgstr ""
@@ -1769,7 +1841,7 @@ msgstr ""
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:16
 #: ./vue/station_streamers/form/StreamerFormSchedule.vue:16
 msgid "Wednesday"
-msgstr ""
+msgstr "พุธ"
 
 #: ./vue/StationPlaylists.vue:74
 msgid "Weight"

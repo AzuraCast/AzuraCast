@@ -2,10 +2,10 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Service\AzuraCastCentral;
-use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 
@@ -18,7 +18,7 @@ class CheckUpdatesTask extends AbstractTask
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\SettingsRepository $settingsRepo,
         AzuraCastCentral $azuracastCentral

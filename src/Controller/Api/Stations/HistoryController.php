@@ -6,10 +6,10 @@ use App;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator\QueryPaginator;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -106,17 +106,31 @@ class HistoryController
                 'Streamer',
             ];
 
-            foreach ($qb->getQuery()->getArrayResult() as $song_row) {
-                $datetime = CarbonImmutable::createFromTimestamp($song_row['timestamp_start'], $station_tz);
+            $iterator = SimpleBatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
+
+            foreach ($iterator as $sh) {
+                /** @var Entity\SongHistory $sh */
+                $datetime = CarbonImmutable::createFromTimestamp($sh->getTimestampStart(), $station_tz);
+
+                $playlist = $sh->getPlaylist();
+                $playlistName = (null !== $playlist)
+                    ? $playlist->getName()
+                    : '';
+
+                $streamer = $sh->getStreamer();
+                $streamerName = (null !== $streamer)
+                    ? $streamer->getDisplayName()
+                    : '';
+
                 $export_row = [
                     $datetime->format('Y-m-d'),
                     $datetime->format('g:ia'),
-                    $song_row['listeners_start'],
-                    $song_row['delta_total'],
-                    $song_row['title'] ?: $song_row['text'],
-                    $song_row['artist'],
-                    $song_row['playlist']['name'] ?? '',
-                    $song_row['streamer']['display_name'] ?? $song_row['streamer']['streamer_username'] ?? '',
+                    $sh->getListenersStart(),
+                    $sh->getDeltaTotal(),
+                    $sh->getTitle() ?: $sh->getText(),
+                    $sh->getArtist(),
+                    $playlistName,
+                    $streamerName,
                 ];
 
                 $export_all[] = $export_row;
@@ -141,22 +155,24 @@ class HistoryController
 
         $qb->orderBy('sh.timestamp_start', 'DESC');
 
-        $paginator = new QueryPaginator($qb, $request);
+        $paginator = App\Paginator::fromQueryBuilder($qb, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function ($sh_row) use ($is_bootgrid, $router) {
-            /** @var Entity\SongHistory $sh_row */
-            $row = $this->songHistoryApiGenerator->detailed($sh_row);
-            $row->resolveUrls($router->getBaseUrl());
+        $paginator->setPostprocessor(
+            function ($sh_row) use ($is_bootgrid, $router) {
+                /** @var Entity\SongHistory $sh_row */
+                $row = $this->songHistoryApiGenerator->detailed($sh_row);
+                $row->resolveUrls($router->getBaseUrl());
 
-            if ($is_bootgrid) {
-                return App\Utilities\Arrays::flattenArray($row, '_');
+                if ($is_bootgrid) {
+                    return App\Utilities\Arrays::flattenArray($row, '_');
+                }
+
+                return $row;
             }
-
-            return $row;
-        });
+        );
 
         return $paginator->write($response);
     }

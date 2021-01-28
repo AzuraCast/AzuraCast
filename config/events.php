@@ -48,7 +48,9 @@ return function (App\EventDispatcher $dispatcher) {
 
             $migrationConfigurations = $buildMigrationConfigurationsEvent->getMigrationConfigurations();
 
-            $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationConfigurations);
+            $migrateConfig = new Doctrine\Migrations\Configuration\Migration\ConfigurationArray(
+                $migrationConfigurations
+            );
 
             $migrateFactory = Doctrine\Migrations\DependencyFactory::fromEntityManager(
                 $migrateConfig,
@@ -80,7 +82,6 @@ return function (App\EventDispatcher $dispatcher) {
             $app->add(Middleware\WrapExceptionsWithRequestData::class);
 
             $app->add(Middleware\EnforceSecurity::class);
-            $app->add(Middleware\InjectAcl::class);
             $app->add(Middleware\GetCurrentUser::class);
 
             // Request injection middlewares.
@@ -113,13 +114,19 @@ return function (App\EventDispatcher $dispatcher) {
     );
 
     // Build default menus
-    $dispatcher->addListener(App\Event\BuildAdminMenu::class, function (App\Event\BuildAdminMenu $e) {
-        call_user_func(include(__DIR__ . '/menus/admin.php'), $e);
-    });
+    $dispatcher->addListener(
+        App\Event\BuildAdminMenu::class,
+        function (App\Event\BuildAdminMenu $e) {
+            call_user_func(include(__DIR__ . '/menus/admin.php'), $e);
+        }
+    );
 
-    $dispatcher->addListener(App\Event\BuildStationMenu::class, function (App\Event\BuildStationMenu $e) {
-        call_user_func(include(__DIR__ . '/menus/station.php'), $e);
-    });
+    $dispatcher->addListener(
+        App\Event\BuildStationMenu::class,
+        function (App\Event\BuildStationMenu $e) {
+            call_user_func(include(__DIR__ . '/menus/station.php'), $e);
+        }
+    );
 
     // Other event subscribers from across the application.
     $dispatcher->addCallableListener(
@@ -144,13 +151,37 @@ return function (App\EventDispatcher $dispatcher) {
         App\Notification\Check\SyncTaskCheck::class
     );
 
-    $dispatcher->addServiceSubscriber([
-        App\Radio\AutoDJ\Queue::class,
-        App\Radio\AutoDJ\Annotations::class,
-        App\Radio\Backend\Liquidsoap\ConfigWriter::class,
-        App\Sync\Task\NowPlayingTask::class,
-        App\Webhook\Dispatcher::class,
-        App\Controller\Api\NowplayingController::class,
-    ]);
+    $dispatcher->addCallableListener(
+        Event\Media\GetAlbumArt::class,
+        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class,
+        '__invoke',
+        10
+    );
+    $dispatcher->addCallableListener(
+        Event\Media\GetAlbumArt::class,
+        App\Media\AlbumArtHandler\MusicBrainzAlbumArtHandler::class,
+        '__invoke',
+        -10
+    );
 
+    $dispatcher->addCallableListener(
+        Event\Media\ReadMetadata::class,
+        App\Media\MetadataService\GetId3MetadataService::class
+    );
+    $dispatcher->addCallableListener(
+        Event\Media\WriteMetadata::class,
+        App\Media\MetadataService\GetId3MetadataService::class
+    );
+
+    $dispatcher->addServiceSubscriber(
+        [
+            App\Console\ErrorHandler::class,
+            App\Radio\AutoDJ\Queue::class,
+            App\Radio\AutoDJ\Annotations::class,
+            App\Radio\Backend\Liquidsoap\ConfigWriter::class,
+            App\Sync\Task\NowPlayingTask::class,
+            App\Webhook\Dispatcher::class,
+            App\Controller\Api\NowplayingController::class,
+        ]
+    );
 };

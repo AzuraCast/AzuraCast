@@ -2,12 +2,12 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Radio\Adapters;
-use Doctrine\ORM\EntityManagerInterface;
+use Jhofm\FlysystemIterator\Options\Options;
 use Psr\Log\LoggerInterface;
-use studio24\Rotate;
 use Supervisor\Supervisor;
 use Symfony\Component\Finder\Finder;
 
@@ -24,7 +24,7 @@ class RotateLogsTask extends AbstractTask
     protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Environment $environment,
         Adapters $adapters,
@@ -60,18 +60,11 @@ class RotateLogsTask extends AbstractTask
             }
         }
 
-        // Rotate the main AzuraCast log.
-        $rotate = new Rotate\Rotate($this->environment->getTempDirectory() . '/app.log');
-        $rotate->keep(5);
-        $rotate->size('5MB');
-        $rotate->run();
-
         // Rotate the automated backups.
         $settings = $this->settingsRepo->readSettings();
 
-        $backups_to_keep = $settings->getBackupKeepCopies();
-
-        if ($backups_to_keep > 0) {
+        $copiesToKeep = $settings->getBackupKeepCopies();
+        if ($copiesToKeep > 0) {
             $backupStorageId = (int)$settings->getBackupStorageLocation();
 
             if ($backupStorageId > 0) {
@@ -80,15 +73,45 @@ class RotateLogsTask extends AbstractTask
                     $backupStorageId
                 );
 
-                if ($storageLocation instanceof Entity\StorageLocation && $storageLocation->isLocal()) {
-                    $fs = $storageLocation->getFilesystem();
-                    $autoBackupPath = $fs->getFullPath('automatic_backup.zip');
-
-                    $rotate = new Rotate\Rotate($autoBackupPath);
-                    $rotate->keep($backups_to_keep);
-                    $rotate->run();
+                if ($storageLocation instanceof Entity\StorageLocation) {
+                    $this->rotateBackupStorage($storageLocation, $copiesToKeep);
                 }
             }
+        }
+    }
+
+    protected function rotateBackupStorage(
+        Entity\StorageLocation $storageLocation,
+        int $copiesToKeep
+    ): void {
+        $fs = $storageLocation->getFilesystem();
+
+        $iterator = $fs->createIterator(
+            '',
+            [
+                Options::OPTION_IS_RECURSIVE => false,
+                Options::OPTION_FILTER => function (array $item): bool {
+                    return (isset($item['path']) && 0 === stripos($item['path'], 'automatic_backup'));
+                },
+            ]
+        );
+
+        $backupsByTime = [];
+        foreach ($iterator as $backup) {
+            $backupsByTime[$backup['timestamp']] = $backup['path'];
+        }
+
+        if (count($backupsByTime) <= $copiesToKeep) {
+            return;
+        }
+
+        krsort($backupsByTime);
+
+        $backupsToDelete = array_slice($backupsByTime, $copiesToKeep);
+
+        foreach ($backupsToDelete as $backupToDelete) {
+            $fs->delete($backupToDelete);
+            $this->logger->info(sprintf('Deleted automated backup: "%s"', $backupToDelete));
         }
     }
 

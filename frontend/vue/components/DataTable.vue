@@ -11,7 +11,7 @@
                     <div class="flex-fill">
                         <div class="input-group">
                             <span class="icon glyphicon input-group-addon search"></span>
-                            <b-form-input debounce="200" v-model="filter" class="search-field form-control"
+                            <b-form-input debounce="200" v-model="filter" type="search" class="search-field form-control"
                                           :placeholder="langSearch"></b-form-input>
                         </div>
                     </div>
@@ -19,7 +19,7 @@
                         <b-btn-group class="actions">
                             <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
                                       :title="langRefreshTooltip">
-                                <i class="material-icons">refresh</i>
+                                <i class="material-icons" aria-hidden="true">refresh</i>
                             </b-button>
                             <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover
                                         :title="langPerPageTooltip">
@@ -56,7 +56,8 @@
             <b-table ref="table" show-empty striped hover :selectable="selectable" :api-url="apiUrl" :per-page="perPage"
                      :current-page="currentPage" @row-selected="onRowSelected" :items="loadItems" :fields="visibleFields"
                      :empty-text="langNoRecords" :empty-filtered-text="langNoRecords" :responsive="responsive"
-                     :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide" :no-provider-filtering="handleClientSide"
+                     :no-provider-paging="handleClientSide" :no-provider-sorting="handleClientSide"
+                     :no-provider-filtering="handleClientSide"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
                 <template v-slot:head(selected)="data">
@@ -182,15 +183,14 @@ export default {
     data () {
         let allFields = [];
         _.forEach(this.fields, function (field) {
-            allFields.push({
-                key: field.key,
-                label: _.defaultTo(field.label, ''),
-                isRowHeader: _.defaultTo(field.isRowHeader, false),
-                sortable: _.defaultTo(field.sortable, false),
-                selectable: _.defaultTo(field.selectable, false),
-                visible: _.defaultTo(field.visible, true),
-                formatter: _.defaultTo(field.formatter, null)
-            });
+            allFields.push(_.defaults(_.clone(field), {
+                label: '',
+                isRowHeader: false,
+                sortable: false,
+                selectable: false,
+                visible: true,
+                formatter: null
+            }));
         });
 
         return {
@@ -316,6 +316,10 @@ export default {
             }
         },
         onRefreshed () {
+            Vue.nextTick(() => {
+                this.$eventHub.$emit('content_changed');
+            });
+
             this.$emit('refreshed');
         },
         refresh () {
@@ -328,7 +332,6 @@ export default {
             this.refresh();
         },
         relist () {
-            this.filter = null;
             this.flushCache = true;
             this.refresh();
         },

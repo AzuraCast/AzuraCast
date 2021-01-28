@@ -2,8 +2,8 @@
 
 namespace App\Event;
 
+use App\Entity\Api\Notification;
 use App\Http\ServerRequest;
-use App\Notification\Notification;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class GetNotifications extends Event

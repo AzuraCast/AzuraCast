@@ -62,32 +62,22 @@ return [
         App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
         App\EventDispatcher $dispatcher
     ) {
-        $connectionOptions = [
-            'host' => $_ENV['MYSQL_HOST'] ?? 'mariadb',
-            'port' => $_ENV['MYSQL_PORT'] ?? 3306,
-            'dbname' => $_ENV['MYSQL_DATABASE'],
-            'user' => $_ENV['MYSQL_USER'],
-            'password' => $_ENV['MYSQL_PASSWORD'],
-            'driver' => 'pdo_mysql',
-            'charset' => 'utf8mb4',
-            'defaultTableOptions' => [
+        $connectionOptions = array_merge(
+            $environment->getDatabaseSettings(),
+            [
+                'driver' => 'pdo_mysql',
                 'charset' => 'utf8mb4',
-                'collate' => 'utf8mb4_general_ci',
-            ],
-            'driverOptions' => [
-                // PDO::MYSQL_ATTR_INIT_COMMAND = 1002;
-                1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
-            ],
-            'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
-        ];
-
-        if (!$environment->isDocker()) {
-            $connectionOptions['host'] = $_ENV['db_host'] ?? 'localhost';
-            $connectionOptions['port'] = $_ENV['db_port'] ?? '3306';
-            $connectionOptions['dbname'] = $_ENV['db_name'] ?? 'azuracast';
-            $connectionOptions['user'] = $_ENV['db_username'] ?? 'azuracast';
-            $connectionOptions['password'] = $_ENV['db_password'];
-        }
+                'defaultTableOptions' => [
+                    'charset' => 'utf8mb4',
+                    'collate' => 'utf8mb4_general_ci',
+                ],
+                'driverOptions' => [
+                    // PDO::MYSQL_ATTR_INIT_COMMAND = 1002;
+                    1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci',
+                ],
+                'platform' => new Doctrine\DBAL\Platforms\MariaDb1027Platform(),
+            ]
+        );
 
         try {
             // Fetch and store entity manager.
@@ -146,21 +136,36 @@ return [
 
     // Redis cache
     Redis::class => function (Environment $environment) {
-        $redis_host = $environment->isDocker() ? 'redis' : 'localhost';
+        $settings = $environment->getRedisSettings();
 
         $redis = new Redis();
-        $redis->connect($redis_host, 6379, 15);
-        $redis->select(1);
+        $redis->connect($settings['host'], $settings['port'], 15);
+        $redis->select($settings['db']);
 
         return $redis;
     },
 
-    Psr\Cache\CacheItemPoolInterface::class => function (Environment $settings, ContainerInterface $di) {
-        return !$settings->isTesting()
-            ? new Cache\Adapter\Redis\RedisCachePool($di->get(Redis::class))
-            : new Cache\Adapter\PHPArray\ArrayCachePool;
+    Symfony\Contracts\Cache\CacheInterface::class => function (
+        Environment $environment,
+        Psr\Log\LoggerInterface $logger,
+        ContainerInterface $di
+    ) {
+        if ($environment->isTesting()) {
+            $adapter = new Symfony\Component\Cache\Adapter\ArrayAdapter();
+        } else {
+            $adapter = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
+        }
+
+        $adapter->setLogger($logger);
+        return $adapter;
     },
-    Psr\SimpleCache\CacheInterface::class => DI\get(Psr\Cache\CacheItemPoolInterface::class),
+
+    Psr\Cache\CacheItemPoolInterface::class => DI\get(
+        Symfony\Contracts\Cache\CacheInterface::class
+    ),
+    Psr\SimpleCache\CacheInterface::class => function (Psr\Cache\CacheItemPoolInterface $cache) {
+        return new Symfony\Component\Cache\Psr16Cache($cache);
+    },
 
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
@@ -168,12 +173,12 @@ return [
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($environment->isCli()) {
-            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+            $cachePool = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         }
 
-        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'doctrine|');
-
-        return new Cache\Bridge\Doctrine\DoctrineCacheBridge($cachePool);
+        $doctrineCache = new Symfony\Component\Cache\DoctrineProvider($cachePool);
+        $doctrineCache->setNamespace('doctrine.');
+        return $doctrineCache;
     },
 
     // Session save handler middleware
@@ -182,10 +187,10 @@ return [
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
         if ($environment->isCli()) {
-            $cachePool = new Cache\Adapter\PHPArray\ArrayCachePool();
+            $cachePool = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         }
 
-        $cachePool = new Cache\Prefixed\PrefixedCachePool($cachePool, 'session|');
+        $cachePool = new Symfony\Component\Cache\Adapter\ProxyAdapter($cachePool, 'session.');
 
         return new Mezzio\Session\Cache\CacheSessionPersistence(
             $cachePool,
@@ -201,6 +206,7 @@ return [
     // Console
     App\Console\Application::class => function (DI\Container $di, App\EventDispatcher $dispatcher) {
         $console = new App\Console\Application('Command Line Interface', '1.0.0', $di);
+        $console->setDispatcher($dispatcher);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.
         $event = new App\Event\BuildConsoleCommands($console);
@@ -227,35 +233,16 @@ return [
     // Monolog Logger
     Monolog\Logger::class => function (Environment $environment) {
         $logger = new Monolog\Logger($environment->getAppName());
-
-        $loggingLevel = null;
-        if (!empty($_ENV['LOG_LEVEL'])) {
-            $allowedLogLevels = [
-                Psr\Log\LogLevel::DEBUG,
-                Psr\Log\LogLevel::INFO,
-                Psr\Log\LogLevel::NOTICE,
-                Psr\Log\LogLevel::WARNING,
-                Psr\Log\LogLevel::ERROR,
-                Psr\Log\LogLevel::CRITICAL,
-                Psr\Log\LogLevel::ALERT,
-                Psr\Log\LogLevel::EMERGENCY,
-            ];
-
-            $loggingLevel = strtolower($_ENV['LOG_LEVEL']);
-            if (!in_array($loggingLevel, $allowedLogLevels, true)) {
-                $loggingLevel = null;
-            }
-        }
-
-        $loggingLevel ??= $environment->isProduction() ? Psr\Log\LogLevel::NOTICE : Psr\Log\LogLevel::DEBUG;
+        $loggingLevel = $environment->getLogLevel();
 
         if ($environment->isDocker() || $environment->isCli()) {
             $log_stderr = new Monolog\Handler\StreamHandler('php://stderr', $loggingLevel, true);
             $logger->pushHandler($log_stderr);
         }
 
-        $log_file = new Monolog\Handler\StreamHandler(
+        $log_file = new Monolog\Handler\RotatingFileHandler(
             $environment->getTempDirectory() . '/app.log',
+            5,
             $loggingLevel,
             true
         );
@@ -370,7 +357,7 @@ return [
     },
 
     // Supervisor manager
-    Supervisor\Supervisor::class => function (Environment $settings) {
+    Supervisor\Supervisor::class => function (Environment $settings, Psr\Log\LoggerInterface $logger) {
         $client = new fXmlRpc\Client(
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
             new fXmlRpc\Transport\PsrTransport(
@@ -379,13 +366,21 @@ return [
             )
         );
 
-        $supervisor = new Supervisor\Supervisor($client);
-
+        $supervisor = new Supervisor\Supervisor($client, $logger);
         if (!$supervisor->isConnected()) {
             throw new \App\Exception(sprintf('Could not connect to supervisord.'));
         }
 
         return $supervisor;
+    },
+
+    // Image Manager
+    Intervention\Image\ImageManager::class => function () {
+        return new Intervention\Image\ImageManager(
+            [
+                'driver' => 'gd',
+            ]
+        );
     },
 
     // NowPlaying Adapter factory
@@ -401,5 +396,12 @@ return [
         );
     },
 
-    App\Media\MetadataManagerInterface::class => DI\get(App\Media\GetId3\GetId3MetadataManager::class),
+    App\Media\MetadataService\MetadataServiceInterface::class => DI\get(
+        App\Media\MetadataService\GetId3MetadataService::class
+    ),
+
+    App\Media\AlbumArtHandler\AlbumArtServiceInterface::class => DI\get(
+        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class
+    ),
+
 ];

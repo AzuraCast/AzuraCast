@@ -13,12 +13,18 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.11.2';
+    public const FALLBACK_VERSION = '0.12';
 
     public const RELEASE_CHANNEL_ROLLING = 'rolling';
     public const RELEASE_CHANNEL_STABLE = 'stable';
 
+    // phpcs:disable Generic.Files.LineLength
     public const LATEST_COMPOSE_REVISION = 11;
+    public const LATEST_COMPOSE_URL = 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml';
+
+    public const UPDATE_URL = 'https://www.azuracast.com/administration/system/updating.html';
+    public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/master/CHANGELOG.md';
+    // phpcs:enable
 
     protected CacheInterface $cache;
 

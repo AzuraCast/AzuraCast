@@ -60,21 +60,37 @@ class SoundExchangeController
 
             $all_media = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT sm
+                    SELECT PARTIAL sm.{
+                        id,
+                        unique_id,
+                        art_updated_at,
+                        path,
+                        length,
+                        length_text,
+                        artist,
+                        title,
+                        album,
+                        genre
+                    }, PARTIAL spm.{id}, PARTIAL sp.{id, name}, PARTIAL smcf.{id, field_id, value}
                     FROM App\Entity\StationMedia sm
-                    WHERE sm.station_id = :station_id                    
+                    LEFT JOIN sm.custom_fields smcf
+                    LEFT JOIN sm.playlists spm
+                    LEFT JOIN spm.playlist sp
+                    WHERE sm.storage_location = :storageLocation
+                    AND sp.station IS NULL OR sp.station = :station
                 DQL
-            )->setParameter('station_id', $station->getId())
+            )->setParameter('station', $station)
+                ->setParameter('storageLocation', $station->getMediaStorageLocation())
                 ->getArrayResult();
 
             $media_by_id = [];
             foreach ($all_media as $media_row) {
-                $media_by_id[$media_row['song_id']] = $media_row;
+                $media_by_id[$media_row['id']] = $media_row;
             }
 
             $history_rows = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, COUNT(sh.id) AS plays,
+                    SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, sh.media_id, COUNT(sh.id) AS plays,
                         SUM(sh.unique_listeners) AS unique_listeners
                     FROM App\Entity\SongHistory sh
                     WHERE sh.station_id = :station_id
@@ -89,7 +105,7 @@ class SoundExchangeController
 
             $history_rows_by_id = [];
             foreach ($history_rows as $history_row) {
-                $history_rows_by_id[$history_row['song_id']] = $history_row;
+                $history_rows_by_id[$history_row['media_id']] = $history_row;
             }
 
             // Remove any reference to the "Stream Offline" song.

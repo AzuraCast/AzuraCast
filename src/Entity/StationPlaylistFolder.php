@@ -4,14 +4,17 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TruncateStrings;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="station_playlist_folders")
  * @ORM\Entity()
  */
-class StationPlaylistFolder
+class StationPlaylistFolder implements PathAwareInterface
 {
+    use TruncateStrings;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -39,7 +42,7 @@ class StationPlaylistFolder
     protected $playlist;
 
     /**
-     * @ORM\Column(name="path", type="string", length=255)
+     * @ORM\Column(name="path", type="string", length=500)
      * @var string
      */
     protected $path;
@@ -73,6 +76,6 @@ class StationPlaylistFolder
 
     public function setPath(string $path): void
     {
-        $this->path = $path;
+        $this->path = $this->truncateString($path, 500);
     }
 }

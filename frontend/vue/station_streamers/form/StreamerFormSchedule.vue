@@ -17,7 +17,7 @@
                     </h2>
                 </div>
                 <div class="flex-shrink-0">
-                    <b-button size="sm" variant="outline-light" class="py-1 pr-0" @click.prevent="remove(index)">
+                    <b-button size="sm" variant="outline-light" class="py-2 pr-0" @click.prevent="remove(index)">
                         <i class="material-icons" aria-hidden="true">remove</i>
                         <translate key="lang_btn_remove">Remove</translate>
                     </b-button>
@@ -111,47 +111,47 @@
 </template>
 
 <script>
-    import PlaylistTime from '../../components/TimeCode';
+import PlaylistTime from '../../components/TimeCode';
 
-    export default {
-        name: 'StreamerFormSchedule',
-        components: { PlaylistTime },
-        props: {
-            form: Object,
-            stationTimeZone: String,
-            scheduleItems: Array
-        },
-        data () {
-            return {
-                dayOptions: [
-                    { value: 1, text: this.$gettext('Monday') },
-                    { value: 2, text: this.$gettext('Tuesday') },
-                    { value: 3, text: this.$gettext('Wednesday') },
-                    { value: 4, text: this.$gettext('Thursday') },
-                    { value: 5, text: this.$gettext('Friday') },
-                    { value: 6, text: this.$gettext('Saturday') },
-                    { value: 7, text: this.$gettext('Sunday') }
-                ]
-            };
-        },
-        computed: {
-            langTabTitle () {
-                return this.$gettext('Schedule');
-            }
-        },
-        methods: {
-            add () {
-                this.scheduleItems.push({
-                    start_time: null,
-                    end_time: null,
-                    start_date: null,
-                    end_date: null,
-                    days: []
-                });
-            },
-            remove (index) {
-                this.scheduleItems.splice(index, 1);
-            }
+export default {
+    name: 'StreamerFormSchedule',
+    components: { PlaylistTime },
+    props: {
+        form: Object,
+        stationTimeZone: String,
+        scheduleItems: Array
+    },
+    data () {
+        return {
+            dayOptions: [
+                { value: 1, text: this.$gettext('Monday') },
+                { value: 2, text: this.$gettext('Tuesday') },
+                { value: 3, text: this.$gettext('Wednesday') },
+                { value: 4, text: this.$gettext('Thursday') },
+                { value: 5, text: this.$gettext('Friday') },
+                { value: 6, text: this.$gettext('Saturday') },
+                { value: 7, text: this.$gettext('Sunday') }
+            ]
+        };
+    },
+    computed: {
+        langTabTitle () {
+            return this.$gettext('Schedule');
         }
-    };
+    },
+    methods: {
+        add () {
+            this.scheduleItems.push({
+                start_time: null,
+                end_time: null,
+                start_date: null,
+                end_date: null,
+                days: []
+            });
+        },
+        remove (index) {
+            this.scheduleItems.splice(index, 1);
+        }
+    }
+};
 </script>

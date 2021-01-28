@@ -104,7 +104,7 @@ class MountsController extends AbstractStationApiCrudController
         $station = parent::getStation($request);
 
         $frontend = $request->getStationFrontend();
-        if (!$frontend::supportsMounts()) {
+        if (!$frontend->supportsMounts()) {
             throw new StationUnsupportedException();
         }
 

@@ -43,13 +43,13 @@
 <script>
 import DataTable from '../components/DataTable.vue';
 import axios from 'axios';
+import _ from 'lodash';
 
 export default {
     name: 'MoveFilesModal',
     components: { DataTable },
     props: {
-        selectedFiles: Array,
-        selectedDirs: Array,
+        selectedItems: Object,
         currentDirectory: String,
         batchUrl: String,
         listDirectoriesUrl: String
@@ -66,7 +66,7 @@ export default {
     computed: {
         langHeader () {
             let headerText = this.$gettext('Move %{ num } File(s) to');
-            return this.$gettextInterpolate(headerText, { num: this.selectedFiles.length });
+            return this.$gettextInterpolate(headerText, { num: this.selectedItems.all.length });
         }
     },
     methods: {
@@ -77,15 +77,16 @@ export default {
             this.$refs.modal.hide();
         },
         doMove () {
-            (this.selectedFiles.length || this.selectedDirs.length) && axios.put(this.batchUrl, {
+            (this.selectedItems.all.length) && axios.put(this.batchUrl, {
                 'do': 'move',
                 'currentDirectory': this.currentDirectory,
                 'directory': this.destinationDirectory,
-                'files': this.selectedFiles,
-                'dirs': this.selectedDirs
+                'files': this.selectedItems.files,
+                'dirs': this.selectedItems.directories
             }).then((resp) => {
+                let allItemNames = _.map(this.selectedItems.all, 'name');
                 let notifyMessage = this.$gettext('Files moved:');
-                notify('<b>' + notifyMessage + '</b><br>' + this.selectedFiles.join('<br>'), 'success', false);
+                notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success', false);
 
                 this.close();
                 this.$emit('relist');

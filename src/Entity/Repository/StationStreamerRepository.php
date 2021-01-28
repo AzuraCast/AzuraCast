@@ -2,13 +2,13 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Flysystem\FilesystemManager;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Scheduler;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -21,7 +21,7 @@ class StationStreamerRepository extends Repository
     protected FilesystemManager $filesystem;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
@@ -115,7 +115,7 @@ class StationStreamerRepository extends Repository
             $destPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $broadcastPath;
 
             if ($fs->has($tempPath)) {
-                $fs->copy($tempPath, $destPath);
+                $fs->move($tempPath, $destPath);
             }
 
             $broadcast->setTimestampEnd(time());
@@ -132,11 +132,13 @@ class StationStreamerRepository extends Repository
     protected function getStreamer(Entity\Station $station, string $username = ''): ?Entity\StationStreamer
     {
         /** @var Entity\StationStreamer|null $streamer */
-        $streamer = $this->repository->findOneBy([
-            'station' => $station,
-            'streamer_username' => $username,
-            'is_active' => 1,
-        ]);
+        $streamer = $this->repository->findOneBy(
+            [
+                'station' => $station,
+                'streamer_username' => $username,
+                'is_active' => 1,
+            ]
+        );
 
         return $streamer;
     }

@@ -68,6 +68,7 @@ final class Response extends \Slim\Http\Response
     public function withJson($data, ?int $status = null, int $options = 0, int $depth = 512): ResponseInterface
     {
         $options |= JSON_UNESCAPED_SLASHES;
+        $options |= JSON_UNESCAPED_UNICODE;
 
         return parent::withJson($data, $status, $options, $depth);
     }

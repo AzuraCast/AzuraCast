@@ -6,6 +6,7 @@ use App\Http\Factory\ServerRequestFactory;
 use DI;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Invoker;
+use Monolog\Registry;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -47,7 +48,7 @@ class AppFactory
 
         $di = self::buildContainer($environment, $diDefinitions);
 
-        Logger::setInstance($di->get(LoggerInterface::class));
+        Registry::addLogger($di->get(LoggerInterface::class), 'app', true);
 
         ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
         ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory());

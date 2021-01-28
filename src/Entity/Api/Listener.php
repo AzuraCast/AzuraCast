@@ -28,12 +28,36 @@ class Listener
     public string $user_agent = '';
 
     /**
+     * The listener's client details (extracted from user-agent)
+     *
+     * @OA\Property(example="")
+     * @var string
+     */
+    public string $client = '';
+
+    /**
      * Whether the user-agent is likely a mobile browser.
      *
      * @OA\Property(example=true)
      * @var bool
      */
     public bool $is_mobile = false;
+
+    /**
+     * Whether the user is connected to a local mount point or a remote one.
+     *
+     * @OA\Property(example=false)
+     * @var bool
+     */
+    public bool $mount_is_local = false;
+
+    /**
+     * The display name of the mount point.
+     *
+     * @OA\Property(example="/radio.mp3")
+     * @var string
+     */
+    public string $mount_name = '';
 
     /**
      * UNIX timestamp that the user first connected.

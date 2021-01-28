@@ -30,7 +30,7 @@ class RateLimit
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $rateLimit = $request->getRateLimit();
-        $rateLimit->checkRateLimit($request, $this->rl_group, $this->rl_timeout, $this->rl_interval);
+        $rateLimit->checkRequestRateLimit($request, $this->rl_group, $this->rl_timeout, $this->rl_interval);
 
         return $handler->handle($request);
     }

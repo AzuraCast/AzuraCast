@@ -5,14 +5,13 @@ namespace App\Doctrine;
 use App\Environment;
 use App\Normalizer\DoctrineEntityNormalizer;
 use Closure;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class Repository
 {
-    protected EntityManagerInterface $em;
+    protected ReloadableEntityManagerInterface $em;
 
     protected string $entityClass;
 
@@ -25,7 +24,7 @@ class Repository
     protected LoggerInterface $logger;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger
@@ -123,9 +122,14 @@ class Repository
      */
     public function fromArray($entity, array $source): object
     {
-        return $this->serializer->denormalize($source, get_class($entity), null, [
-            DoctrineEntityNormalizer::OBJECT_TO_POPULATE => $entity,
-        ]);
+        return $this->serializer->denormalize(
+            $source,
+            get_class($entity),
+            null,
+            [
+                DoctrineEntityNormalizer::OBJECT_TO_POPULATE => $entity,
+            ]
+        );
     }
 
     /**
@@ -139,8 +143,12 @@ class Repository
      */
     public function toArray($entity, $deep = false, $form_mode = false): array
     {
-        return $this->serializer->normalize($entity, null, [
-            DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => $form_mode,
-        ]);
+        return $this->serializer->normalize(
+            $entity,
+            null,
+            [
+                DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => $form_mode,
+            ]
+        );
     }
 }

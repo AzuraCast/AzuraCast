@@ -19,7 +19,7 @@
                 <tbody>
                 <tr class="align-middle" v-for="mount in np.station.mounts">
                     <td class="pr-1">
-                        <a class="btn-audio" href="#" v-bind:data-url="mount.url" @click.prevent="toggle(mount.url)">
+                        <a class="btn-audio has-listener" href="#" v-bind:data-url="mount.url" @click.prevent="toggle(mount.url)">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>
                     </td>
@@ -49,7 +49,7 @@
                 <tbody>
                 <tr class="align-middle" v-for="remote in np.station.remotes">
                     <td class="pr-1">
-                        <a class="btn-audio" href="#" v-bind:data-url="remote.url" @click.prevent="toggle(remote.url)">
+                        <a class="btn-audio has-listener" href="#" v-bind:data-url="remote.url" @click.prevent="toggle(remote.url)">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>
                     </td>

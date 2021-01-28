@@ -3,6 +3,95 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+## New Features/Changes
+
+There have been no changes since the latest stable release.
+
+---
+
+# AzuraCast 0.12 (Jan 27, 2021)
+
+This update introduces significant new features and fixes a number of bugs reported by the community.
+
+## New Features/Changes
+
+- **Remote Album Art Retrieval**: If enabled in the system settings panel, AzuraCast will now check remote services to
+  attempt to retrieve album art if it is missing, or not provided (i.e. for live DJs). By default, this system uses the
+  MusicBrainz database, which is comprehensive but can be slow; if you provide an API key for the last.fm API, AzuraCast
+  will prefer the last.fm API for album art instead.
+
+- **Media Manager Improvements:** Some changes have been made to the media manager to improve the user experience and
+  accessibility:
+    - You can now edit the playlists associated with a track from directly within the "Edit" modal dialog box for that
+      track.
+    - If all tracks/directories selected are in a playlist, that playlist will be checked by default in the "Set
+      Playlists" dropdown.
+    - Media uploaded via the Media Manager and Station programmatic names will no longer aggressively escape UTF-8
+      characters, and will instead leave them intact in most cases.
+    - You can now instruct AzuraCast to re-analyze and reprocess the selected media files in the Media Manager.
+
+- The "Duplicate Songs" report has been merged into the Media Manager, so you can take full advantage of the rich
+  filtering and other tools available in the Media Manager when addressing duplicate tracks.
+
+- You can now view all "Unprocessable" media in a single report; this includes non-music files (like images) and any
+  media that has errors that prevent us from processing them.
+
+- You can disable the "Download" button on the "On-Demand" media page while leaving streaming enabled by editing the
+  station profile.
+
+- You can show or hide the charts on the dashboard, and sort and filter stations listed there.
+
+- Listeners are now tracked by the mount point/remote stream they're connected to, which is shown in reports.
+
+- **Google Analytics**: A new webhook has been created that will automatically post live listeners to your Analytics
+  property. This is only compatible with "Universal Analytics" properties (codes that begin with GA-).
+
+## Code Quality/Technical Changes
+
+- Mount points that are hidden from public view are also hidden on the Icecast status overview page.
+
+- Unprocessable media is now stored in a separate database table along with the date/time processed and the relevant
+  error that prevented the file from being processed. This will prevent a situation where numerous files are non-
+  processable but are processed in every 5-minute sync. AzuraCast will automatically re-check files marked as
+  "unprocessable" if their modified time updates (i.e. the file is reuploaded) or approximately a week passes.
+
+- In preparation for the PHP 8.0 update and for other technical reasons, we have made some library changes:
+    - Switched PSR-6/PSR-16 cache implementation to the `symfony/cache` component.
+    - Removed the `studio24/rotate` and replaced with custom implementation for Flysystem.
+    - Switched from custom paginator to the `pagerfanta` library.
+    - Switched from custom image manipulation to the `intervention/image` library.
+    - Switched from custom crawler/bot detection to the `matomo/device-detector` library.
+
+  If you are building a plugin that uses the cache, as long as you are using the PSR interfaces, no change will be
+  required, but other updates may be required to your codebase.
+
+- The Docker Utility Script (`./docker.sh`) will now ask before running `docker system prune` post-update.
+
+- For more advanced setups, you can now set the following environment variables in `azuracast.env` to use a third-party
+  Redis service instead of the one bundled with AzuraCast:
+    - `REDIS_HOST` (default: `redis` for Docker, `localhost` for Ansible)
+    - `REDIS_PORT` (default: 6379)
+    - `REDIS_DB` for the database index (default: 1)
+
+- There is a new debug CLI command, `azuracast:debug:optimize-tables`, which optimizes all tables in the MariaDB
+  database and can recover space that's no longer in use.
+
+## Bug Fixes
+
+- Hidden mount points and relays will still be shown on the profile page.
+
+- If your browser sends a locale like `fr` instead of `fr_FR`, it will now be supported and detected (#3558).
+
+- Fixed a bug where sometimes changes to media metadata would be saved, only for the next 5-minute synchronization
+  process to revert to the previous data (#3553).
+
+- Issues with the Media Manager not showing files correctly when they were shared between stations has been fixed.
+  (#3618)
+
+- Fixed a bug where the first theme switch doesn't actually switch the theme.
+
+- Fixed an issue with Ogg Opus streams not continuing to play. (#3597)
+
 ---
 
 # AzuraCast 0.11.2 (Dec 11, 2020)
@@ -32,6 +121,8 @@ recommended for all users.
 - Importing playlists from existing M3U/PLS files works correctly again (#3528).
 
 - A bug preventing stations from being cloned has been fixed (#3501).
+
+- The SoundExchange royalties report has been updated and is working again (#3552).
 
 ---
 

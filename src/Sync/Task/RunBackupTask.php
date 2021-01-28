@@ -3,11 +3,11 @@
 namespace App\Sync\Task;
 
 use App\Console\Application;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Message;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -20,7 +20,7 @@ class RunBackupTask extends AbstractTask
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         MessageBus $messageBus,
         Application $console,
@@ -143,7 +143,7 @@ class RunBackupTask extends AbstractTask
 
             $message = new Message\BackupMessage();
             $message->storageLocationId = $storageLocationId;
-            $message->path = 'automatic_backup.zip';
+            $message->path = 'automatic_backup_' . gmdate('Ymd_His') . '.zip';
             $message->excludeMedia = $settings->getBackupExcludeMedia();
 
             $this->messageBus->dispatch($message);

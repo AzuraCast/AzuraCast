@@ -2,8 +2,8 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class ReactivateStreamerTask extends AbstractTask
@@ -11,7 +11,7 @@ class ReactivateStreamerTask extends AbstractTask
     protected Entity\Repository\StationStreamerRepository $streamerRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\StationStreamerRepository $streamerRepo
     ) {

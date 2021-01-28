@@ -41,6 +41,8 @@ class StorageLocation
     public const ADAPTER_S3 = 's3';
     public const ADAPTER_DROPBOX = 'dropbox';
 
+    public const DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -387,6 +389,8 @@ class StorageLocation
             if (null === $quota || $quota->isGreaterThan($totalSpace)) {
                 return $totalSpace;
             }
+
+            return $quota;
         } elseif (null !== $quota) {
             return $quota;
         }

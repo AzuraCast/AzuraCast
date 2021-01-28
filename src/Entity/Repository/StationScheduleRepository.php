@@ -2,13 +2,13 @@
 
 namespace App\Entity\Repository;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -17,7 +17,7 @@ class StationScheduleRepository extends Repository
     protected Scheduler $scheduler;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
@@ -160,9 +160,12 @@ class StationScheduleRepository extends Repository
             }
         }
 
-        usort($events, function ($a, $b) {
-            return $a->start_timestamp <=> $b->start_timestamp;
-        });
+        usort(
+            $events,
+            function ($a, $b) {
+                return $a->start_timestamp <=> $b->start_timestamp;
+            }
+        );
 
         return $events;
     }

@@ -272,7 +272,6 @@ export default {
                 'name': '',
                 'url': ''
             },
-            'np_timeout': null,
             'nchan_subscriber': null,
             'clock_interval': null
         };
@@ -283,8 +282,7 @@ export default {
 
         // Convert initial NP data from prop to data.
         this.setNowPlaying(this.np);
-
-        this.np_timeout = setTimeout(this.checkNowPlaying, 5000);
+        setTimeout(this.checkNowPlaying, 5000);
     },
     computed: {
         lang_play_btn () {
@@ -399,11 +397,12 @@ export default {
             } else {
                 axios.get(this.nowPlayingUri).then((response) => {
                     this.setNowPlaying(response.data);
+
+                    setTimeout(this.checkNowPlaying, 15000);
                 }).catch((error) => {
                     console.error(error);
-                }).then(() => {
-                    clearTimeout(this.np_timeout);
-                    this.np_timeout = setTimeout(this.checkNowPlaying, 15000);
+
+                    setTimeout(this.checkNowPlaying, 30000);
                 });
             }
         },

@@ -1,12 +1,14 @@
 user www-data;
-worker_processes auto;
+worker_processes  auto;
+worker_rlimit_nofile 65000;
+
 pid /run/nginx.pid;
 
 include /etc/nginx/modules-enabled/*.conf;
 
 events {
-    worker_connections 10240;
-    # multi_accept on;
+    worker_connections 65000;
+    multi_accept on;
 }
 
 http {
@@ -17,11 +19,15 @@ http {
     sendfile on;
     tcp_nopush on;
     tcp_nodelay on;
+
     keepalive_timeout 65;
+
     types_hash_max_size 2048;
     server_tokens off;
 
     proxy_max_temp_file_size 0;
+
+    client_max_body_size 50M;
 
     # server_names_hash_bucket_size 64;
     # server_name_in_redirect off;
@@ -33,15 +39,14 @@ http {
     # SSL Settings
     ##
 
+{% if ansible_distribution_release == 'focal' %}
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384';
+    ssl_prefer_server_ciphers off;
+{% else %}
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
     ssl_prefer_server_ciphers on;
-
-    ##
-    # Logging Settings
-    ##
-
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
+{% endif %}
 
     ##
     # Logging Settings
@@ -56,13 +61,21 @@ http {
 
     gzip on;
     gzip_disable "msie6";
-
-    # gzip_vary on;
-    # gzip_proxied any;
-    # gzip_comp_level 6;
-    # gzip_buffers 16 8k;
-    # gzip_http_version 1.1;
-    # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_comp_level 6;
+    gzip_min_length 1100;
+    gzip_buffers 16 8k;
+    gzip_proxied any;
+    gzip_types
+        text/plain
+        text/css
+        text/js
+        text/xml
+        text/javascript
+        application/javascript
+        application/x-javascript
+        application/json
+        application/xml
+        application/xml+rss;
 
     ##
     # Virtual Host Configs

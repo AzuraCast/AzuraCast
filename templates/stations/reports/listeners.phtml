@@ -22,8 +22,11 @@ $assets
                         <?=__('Listeners')?>
                     </h2>
                     <div class="flex-shrink">
-                        <a class="btn btn-bg" id="btn-export" href="<?=$router->fromHere('api:listeners:index', [],
-                            ['format' => 'csv'])?>" target="_blank" title="<?=__('Download CSV')?>">
+                        <a class="btn btn-bg" id="btn-export" href="<?=$router->fromHere(
+                            'api:listeners:index',
+                            [],
+                            ['format' => 'csv']
+                        )?>" target="_blank" title="<?=__('Download CSV')?>">
                             <i class="material-icons" aria-hidden="true">file_download</i> <?=__('Download CSV')?>
                         </a>
                         <a class="btn btn-bg dropdown-toggle" id="reportrange" href="#">
@@ -58,6 +61,7 @@ $assets
                         <th><?=__('IP')?></th>
                         <th><?=__('Time (sec)')?></th>
                         <th><?=__('User Agent')?></th>
+                        <th><?=__('Stream')?></th>
                         <th><?=__('Location')?></th>
                     </tr>
                     </thead>
@@ -74,7 +78,22 @@ $assets
                                     <i class="material-icons" aria-hidden="true">desktop_windows</i>
                                     <span class="sr-only"><?=__('Desktop Device')?></span>
                                 </span>
-                            {{ listener.user_agent }}
+                            {{ listener.user_agent }} <br>
+                            <small>{{ listener.client }}</small>
+                        </td>
+                        <td>
+                            <span v-if="listener.mount_name == ''">
+                                <?=__('Unknown')?>
+                            </span>
+                            <span v-else>
+                                {{ listener.mount_name }}<br>
+                                <small v-if="listener.mount_is_local">
+                                    <?=__('Local')?>
+                                </small>
+                                <small v-else>
+                                    <?=__('Remote')?>
+                                </small>
+                            </span>
                         </td>
                         <td>
                                 <span v-if="listener.location.status == 'success'">

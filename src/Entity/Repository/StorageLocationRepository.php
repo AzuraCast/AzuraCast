@@ -9,10 +9,12 @@ class StorageLocationRepository extends Repository
 {
     public function findByType(string $type, int $id): ?Entity\StorageLocation
     {
-        return $this->repository->findOneBy([
-            'type' => $type,
-            'id' => $id,
-        ]);
+        return $this->repository->findOneBy(
+            [
+                'type' => $type,
+                'id' => $id,
+            ]
+        );
     }
 
     /**
@@ -22,9 +24,11 @@ class StorageLocationRepository extends Repository
      */
     public function findAllByType(string $type): array
     {
-        return $this->repository->findBy([
-            'type' => $type,
-        ]);
+        return $this->repository->findBy(
+            [
+                'type' => $type,
+            ]
+        );
     }
 
     /**
@@ -51,6 +55,22 @@ class StorageLocationRepository extends Repository
         }
 
         return $select;
+    }
+
+    public function createDefaultStorageLocations(): void
+    {
+        $backupLocations = $this->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
+
+        if (0 === count($backupLocations)) {
+            $record = new Entity\StorageLocation(
+                Entity\StorageLocation::TYPE_BACKUP,
+                Entity\StorageLocation::ADAPTER_LOCAL
+            );
+            $record->setPath(Entity\StorageLocation::DEFAULT_BACKUPS_PATH);
+            $this->em->persist($record);
+        }
+
+        $this->em->flush();
     }
 
     /**

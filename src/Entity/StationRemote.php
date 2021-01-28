@@ -18,7 +18,6 @@ use const PHP_URL_PORT;
 /**
  * @ORM\Table(name="station_remotes")
  * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks
  *
  * @AuditLog\Auditable
  *

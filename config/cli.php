@@ -55,9 +55,11 @@ return function (Application $console) {
     $console->command(
         'azuracast:internal:nextsong station-id [as-autodj]',
         Command\Internal\NextSongCommand::class
-    )->defaults([
-        'as-autodj' => true,
-    ])->setDescription('Return the next song to the AutoDJ.');
+    )->defaults(
+        [
+            'as-autodj' => true,
+        ]
+    )->setDescription('Return the next song to the AutoDJ.');
 
     $console->command(
         'azuracast:internal:ip',
@@ -98,7 +100,7 @@ return function (Application $console) {
     )->setDescription('Restart all radio stations, or a single one if specified.');
 
     $console->command(
-        'sync:run [task]',
+        'sync:run [--force] [task]',
         Command\SyncCommand::class
     )->setDescription(__('Run one or more scheduled synchronization tasks.'));
 
@@ -121,6 +123,11 @@ return function (Application $console) {
         'azuracast:api:docs',
         Command\GenerateApiDocsCommand::class
     )->setDescription('Trigger regeneration of AzuraCast API documentation.');
+
+    $console->command(
+        'azuracast:debug:optimize-tables',
+        Command\Debug\OptimizeTablesCommand::class
+    )->setDescription('Optimize all tables in the database.');
 
     // User-side tools
     $console->command(

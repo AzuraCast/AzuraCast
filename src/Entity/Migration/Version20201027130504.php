@@ -18,24 +18,35 @@ final class Version20201027130504 extends AbstractMigration
     public function preUp(Schema $schema): void
     {
         // Create temp index
-        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_TEMP_CONVERT ON station_media (path, storage_location_id, station_id)');
+        $this->addSql(
+            'CREATE INDEX IF NOT EXISTS IDX_TEMP_CONVERT ON station_media (path, storage_location_id, station_id)'
+        );
 
         // Create initial backup directory.
-        $this->connection->insert('storage_location', [
-            'type' => 'backup',
-            'adapter' => 'local',
-            'path' => '/var/azuracast/backup',
-        ]);
+        $this->connection->insert(
+            'storage_location',
+            [
+                'type' => 'backup',
+                'adapter' => 'local',
+                'path' => '/var/azuracast/backups',
+            ]
+        );
 
         $storageLocationId = $this->connection->lastInsertId('storage_location');
-        $this->connection->update('settings', [
-            'setting_value' => $storageLocationId,
-        ], [
-            'setting_key' => 'backup_storage_location',
-        ]);
+        $this->connection->update(
+            'settings',
+            [
+                'setting_value' => $storageLocationId,
+            ],
+            [
+                'setting_key' => 'backup_storage_location',
+            ]
+        );
 
         // Migrate existing directories to new StorageLocation paradigm.
-        $stations = $this->connection->fetchAll('SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station WHERE media_storage_location_id IS NULL ORDER BY id ASC');
+        $stations = $this->connection->fetchAll(
+            'SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station WHERE media_storage_location_id IS NULL ORDER BY id ASC'
+        );
 
         $directories = [];
 
@@ -60,20 +71,27 @@ final class Version20201027130504 extends AbstractMigration
             }
 
             // Create recordings dir.
-            $this->connection->insert('storage_location', [
-                'type' => 'station_recordings',
-                'adapter' => 'local',
-                'path' => $baseDir . '/recordings',
-                'storage_quota' => $row['storage_quota'],
-            ]);
+            $this->connection->insert(
+                'storage_location',
+                [
+                    'type' => 'station_recordings',
+                    'adapter' => 'local',
+                    'path' => $baseDir . '/recordings',
+                    'storage_quota' => $row['storage_quota'],
+                ]
+            );
 
             $recordingsStorageLocationId = $this->connection->lastInsertId('storage_location');
 
-            $this->connection->update('station', [
-                'recordings_storage_location_id' => $recordingsStorageLocationId,
-            ], [
-                'id' => $stationId,
-            ]);
+            $this->connection->update(
+                'station',
+                [
+                    'recordings_storage_location_id' => $recordingsStorageLocationId,
+                ],
+                [
+                    'id' => $stationId,
+                ]
+            );
         }
 
         foreach ($directories as $path => $dirInfo) {
@@ -83,21 +101,28 @@ final class Version20201027130504 extends AbstractMigration
             $newWaveformsDir = $path . '/.waveforms';
             rename($dirInfo['waveformsDir'], $newWaveformsDir);
 
-            $this->connection->insert('storage_location', [
-                'type' => 'station_media',
-                'adapter' => 'local',
-                'path' => $path,
-                'storage_quota' => $dirInfo['storageQuota'],
-            ]);
+            $this->connection->insert(
+                'storage_location',
+                [
+                    'type' => 'station_media',
+                    'adapter' => 'local',
+                    'path' => $path,
+                    'storage_quota' => $dirInfo['storageQuota'],
+                ]
+            );
 
             $mediaStorageLocationId = $this->connection->lastInsertId('storage_location');
 
             foreach ($dirInfo['stations'] as $stationId) {
-                $this->connection->update('station', [
-                    'media_storage_location_id' => $mediaStorageLocationId,
-                ], [
-                    'id' => $stationId,
-                ]);
+                $this->connection->update(
+                    'station',
+                    [
+                        'media_storage_location_id' => $mediaStorageLocationId,
+                    ],
+                    [
+                        'id' => $stationId,
+                    ]
+                );
             }
 
             $firstStationId = array_shift($dirInfo['stations']);
@@ -147,20 +172,28 @@ final class Version20201027130504 extends AbstractMigration
                         ];
 
                         foreach ($tablesToUpdate as $table => $fieldName) {
-                            $this->connection->update($table, [
-                                $fieldName => $newMediaId,
-                            ], [
-                                $fieldName => $oldMediaId,
-                            ]);
+                            $this->connection->update(
+                                $table,
+                                [
+                                    $fieldName => $newMediaId,
+                                ],
+                                [
+                                    $fieldName => $oldMediaId,
+                                ]
+                            );
                         }
                     }
                 }
 
-                $this->connection->executeQuery('DELETE FROM station_media WHERE station_id = ?', [
-                    $stationId,
-                ], [
-                    ParameterType::INTEGER,
-                ]);
+                $this->connection->executeQuery(
+                    'DELETE FROM station_media WHERE station_id = ?',
+                    [
+                        $stationId,
+                    ],
+                    [
+                        ParameterType::INTEGER,
+                    ]
+                );
             }
         }
 
@@ -170,7 +203,9 @@ final class Version20201027130504 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station_media ADD CONSTRAINT FK_32AADE3ACDDD8AF FOREIGN KEY (storage_location_id) REFERENCES storage_location (id) ON DELETE CASCADE');
+        $this->addSql(
+            'ALTER TABLE station_media ADD CONSTRAINT FK_32AADE3ACDDD8AF FOREIGN KEY (storage_location_id) REFERENCES storage_location (id) ON DELETE CASCADE'
+        );
         $this->addSql('CREATE INDEX IDX_32AADE3ACDDD8AF ON station_media (storage_location_id)');
         $this->addSql('CREATE UNIQUE INDEX path_unique_idx ON station_media (path, storage_location_id)');
 
@@ -181,7 +216,9 @@ final class Version20201027130504 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE station ADD radio_media_dir VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`, ADD storage_quota BIGINT DEFAULT NULL, ADD storage_used BIGINT DEFAULT NULL');
+        $this->addSql(
+            'ALTER TABLE station ADD radio_media_dir VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`, ADD storage_quota BIGINT DEFAULT NULL, ADD storage_used BIGINT DEFAULT NULL'
+        );
 
         $this->addSql('ALTER TABLE station_media ADD station_id INT NOT NULL');
 

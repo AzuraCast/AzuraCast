@@ -5,6 +5,7 @@ namespace App\Controller\Api\Stations\Files;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
 class RenameAction extends BatchAction
@@ -39,22 +40,36 @@ class RenameAction extends BatchAction
 
             if ('dir' === $pathMeta['type']) {
                 // Update the paths of all media contained within the directory.
-                foreach ($this->iterateMediaInDirectory($storageLocation, $from) as $media) {
-                    $media->setPath($this->renamePath($from, $to, $media->getPath()));
-                    $this->em->persist($media);
-                }
+                $toRename = [
+                    $this->iterateMediaInDirectory($storageLocation, $from),
+                    $this->iterateUnprocessableMediaInDirectory($storageLocation, $from),
+                    $this->iteratePlaylistFoldersInDirectory($station, $from),
+                ];
 
-                foreach ($this->iteratePlaylistFoldersInDirectory($station, $from) as $playlistFolder) {
-                    $playlistFolder->setPath($this->renamePath($from, $to, $playlistFolder->getPath()));
-                    $this->em->persist($playlistFolder);
+                foreach ($toRename as $iterator) {
+                    foreach ($iterator as $record) {
+                        /** @var Entity\PathAwareInterface $record */
+                        $record->setPath(
+                            File::renameDirectoryInPath($record->getPath(), $from, $to)
+                        );
+                        $this->em->persist($record);
+                    }
                 }
             } else {
-                $record = $this->mediaRepo->findByPath($from, $station);
+                $record = $this->mediaRepo->findByPath($from, $storageLocation);
 
                 if ($record instanceof Entity\StationMedia) {
                     $record->setPath($to);
                     $this->em->persist($record);
                     $this->em->flush();
+                } else {
+                    $record = $this->unprocessableMediaRepo->findByPath($from, $storageLocation);
+
+                    if ($record instanceof Entity\UnprocessableMedia) {
+                        $record->setPath($to);
+                        $this->em->persist($record);
+                        $this->em->flush();
+                    }
                 }
             }
         }

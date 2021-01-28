@@ -6,14 +6,15 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
-use App\Paginator\ArrayPaginator;
+use App\Paginator;
 use App\Utilities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Http\Message\ResponseInterface;
-use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Cache\CacheItem;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class ListAction
 {
@@ -47,12 +48,13 @@ class ListAction
         }
 
         $cacheKey = 'ondemand_' . $station->getId();
-        if ($cache->has($cacheKey)) {
-            $trackList = $cache->get($cacheKey, []);
-        } else {
-            $trackList = $this->buildTrackList($station, $request->getRouter());
-            $cache->set($cacheKey, $trackList, 300);
-        }
+        $trackList = $cache->get(
+            $cacheKey,
+            function (CacheItem $item) use ($station, $request) {
+                $item->expiresAfter(300);
+                return $this->buildTrackList($station, $request->getRouter());
+            }
+        );
 
         $trackList = new ArrayCollection($trackList);
 
@@ -72,15 +74,17 @@ class ListAction
                 $searchFields[] = 'media_custom_fields_' . $customField;
             }
 
-            $trackList = $trackList->filter(function ($row) use ($searchFields, $searchPhrase) {
-                foreach ($searchFields as $searchField) {
-                    if (false !== stripos($row[$searchField], $searchPhrase)) {
-                        return true;
+            $trackList = $trackList->filter(
+                function ($row) use ($searchFields, $searchPhrase) {
+                    foreach ($searchFields as $searchField) {
+                        if (false !== stripos($row[$searchField], $searchPhrase)) {
+                            return true;
+                        }
                     }
-                }
 
-                return false;
-            });
+                    return false;
+                }
+            );
         }
 
         if (!empty($params['sort'])) {
@@ -93,7 +97,7 @@ class ListAction
             $trackList = $trackList->matching($criteria);
         }
 
-        $paginator = new ArrayPaginator($trackList, $request);
+        $paginator = Paginator::fromCollection($trackList, $request);
         return $paginator->write($response);
     }
 
@@ -137,10 +141,13 @@ class ListAction
                 $row->track_id = $media->getUniqueId();
                 $row->media = ($this->songApiGenerator)($media, $station);
                 $row->playlist = $playlist['name'];
-                $row->download_url = (string)$router->named('api:stations:ondemand:download', [
-                    'station_id' => $station->getId(),
-                    'media_id' => $media->getUniqueId(),
-                ]);
+                $row->download_url = (string)$router->named(
+                    'api:stations:ondemand:download',
+                    [
+                        'station_id' => $station->getId(),
+                        'media_id' => $media->getUniqueId(),
+                    ]
+                );
 
                 $row->resolveUrls($router->getBaseUrl());
 

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Radio\Configuration;
 use App\Traits\AvailableStaticallyTrait;
+use Psr\Log\LogLevel;
 
 class Environment
 {
@@ -46,6 +47,19 @@ class Environment
 
     public const SYNC_SHORT_EXECUTION_TIME = 'SYNC_SHORT_EXECUTION_TIME';
     public const SYNC_LONG_EXECUTION_TIME = 'SYNC_LONG_EXECUTION_TIME';
+
+    public const LOG_LEVEL = 'LOG_LEVEL';
+
+    // Database and Cache Configuration Variables
+    public const DB_HOST = 'MYSQL_HOST';
+    public const DB_PORT = 'MYSQL_PORT';
+    public const DB_NAME = 'MYSQL_DATABASE';
+    public const DB_USER = 'MYSQL_USER';
+    public const DB_PASSWORD = 'MYSQL_PASSWORD';
+
+    public const REDIS_HOST = 'REDIS_HOST';
+    public const REDIS_PORT = 'REDIS_PORT';
+    public const REDIS_DB = 'REDIS_DB';
 
     // Default settings
     protected array $defaults = [
@@ -234,5 +248,57 @@ class Environment
     public function getSyncLongExecutionTime(): int
     {
         return (int)($this->data[self::SYNC_LONG_EXECUTION_TIME] ?? 1800);
+    }
+
+    public function getLogLevel(): string
+    {
+        if (!empty($this->data[self::LOG_LEVEL])) {
+            $loggingLevel = strtolower($this->data[self::LOG_LEVEL]);
+
+            $allowedLogLevels = [
+                LogLevel::DEBUG,
+                LogLevel::INFO,
+                LogLevel::NOTICE,
+                LogLevel::WARNING,
+                LogLevel::ERROR,
+                LogLevel::CRITICAL,
+                LogLevel::ALERT,
+                LogLevel::EMERGENCY,
+            ];
+
+            if (in_array($loggingLevel, $allowedLogLevels, true)) {
+                return $loggingLevel;
+            }
+        }
+
+        return $this->isProduction()
+            ? LogLevel::NOTICE
+            : LogLevel::DEBUG;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getDatabaseSettings(): array
+    {
+        return [
+            'host' => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : 'localhost'),
+            'port' => (int)($this->data[self::DB_PORT] ?? 3306),
+            'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
+            'user' => $this->data[self::DB_USER] ?? 'azuracast',
+            'password' => $this->data[self::DB_PASSWORD] ?? 'azur4c457',
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getRedisSettings(): array
+    {
+        return [
+            'host' => $this->data[self::REDIS_HOST] ?? ($this->isDocker() ? 'redis' : 'localhost'),
+            'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
+            'db' => (int)($this->data[self::REDIS_DB] ?? 1),
+        ];
     }
 }

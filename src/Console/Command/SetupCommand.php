@@ -19,6 +19,7 @@ class SetupCommand extends CommandAbstract
         ContainerInterface $di,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\StationRepository $stationRepo,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         AzuraCastCentral $acCentral,
         bool $update = false,
         bool $loadFixtures = false
@@ -35,12 +36,6 @@ class SetupCommand extends CommandAbstract
 
         if ($update) {
             $io->note(__('Running in update mode.'));
-
-            if (!$environment->isDocker()) {
-                $io->section(__('Migrating Legacy Configuration'));
-                $this->runCommand($output, 'azuracast:config:migrate');
-                $io->newLine();
-            }
         }
 
         $em = $di->get(EntityManagerInterface::class);
@@ -92,12 +87,18 @@ class SetupCommand extends CommandAbstract
         // Clear settings that should be reset upon update.
         $settings->updateUpdateLastRun();
         $settings->setUpdateResults(null);
-        $settings->setExternalIp(null);
+
+        if ('127.0.0.1' !== $settings->getExternalIp()) {
+            $settings->setExternalIp(null);
+        }
+
         if (!$update) {
             $settings->setAppUniqueIdentifier(null);
         }
 
         $settingsRepo->writeSettings($settings);
+
+        $storageLocationRepo->createDefaultStorageLocations();
 
         $io->newLine();
 

@@ -2,9 +2,9 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Carbon\CarbonImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class RunAnalyticsTask extends AbstractTask
@@ -18,7 +18,7 @@ class RunAnalyticsTask extends AbstractTask
     protected Entity\Repository\SongHistoryRepository $historyRepo;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\AnalyticsRepository $analyticsRepo,

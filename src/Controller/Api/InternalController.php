@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\Acl;
-use App\Entity;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -15,22 +14,18 @@ use Psr\Http\Message\ResponseInterface;
 
 class InternalController
 {
-    protected Acl $acl;
-
-    protected NowPlayingTask $sync_nowplaying;
+    protected NowPlayingTask $syncNowPlaying;
 
     protected AutoDJ $autodj;
 
     protected Logger $logger;
 
     public function __construct(
-        Acl $acl,
-        NowPlayingTask $sync_nowplaying,
+        NowPlayingTask $syncNowPlaying,
         AutoDJ $autodj,
         Logger $logger
     ) {
-        $this->acl = $acl;
-        $this->sync_nowplaying = $sync_nowplaying;
+        $this->syncNowPlaying = $syncNowPlaying;
         $this->autodj = $autodj;
         $this->logger = $logger;
     }
@@ -41,10 +36,13 @@ class InternalController
 
         $station = $request->getStation();
         if (!$station->getEnableStreamers()) {
-            $this->logger->error('Attempted DJ authentication when streamers are disabled on this station.', [
-                'station_id' => $station->getId(),
-                'station_name' => $station->getName(),
-            ]);
+            $this->logger->error(
+                'Attempted DJ authentication when streamers are disabled on this station.',
+                [
+                    'station_id' => $station->getId(),
+                    'station_name' => $station->getName(),
+                ]
+            );
 
             $response->getBody()->write('false');
             return $response;
@@ -68,20 +66,21 @@ class InternalController
     {
         $station = $request->getStation();
 
-        /** @var Entity\User $user */
-        $user = $request->getAttribute(ServerRequest::ATTR_USER);
-
-        if ($this->acl->userAllowed($user, Acl::GLOBAL_VIEW, $station->getId())) {
+        $acl = $request->getAcl();
+        if ($acl->isAllowed(Acl::GLOBAL_VIEW, $station->getId())) {
             return;
         }
 
         $params = $request->getParams();
         $auth_key = $params['api_auth'];
         if (!$station->validateAdapterApiKey($auth_key)) {
-            $this->logger->error('Invalid API key supplied for internal API call.', [
-                'station_id' => $station->getId(),
-                'station_name' => $station->getName(),
-            ]);
+            $this->logger->error(
+                'Invalid API key supplied for internal API call.',
+                [
+                    'station_id' => $station->getId(),
+                    'station_name' => $station->getName(),
+                ]
+            );
 
             throw new PermissionDeniedException();
         }
@@ -107,11 +106,14 @@ class InternalController
             $station = $request->getStation();
             $user = $request->getParam('dj-user', '');
 
-            $this->logger->notice('Received "DJ connected" ping from Liquidsoap.', [
-                'station_id' => $station->getId(),
-                'station_name' => $station->getName(),
-                'dj' => $user,
-            ]);
+            $this->logger->notice(
+                'Received "DJ connected" ping from Liquidsoap.',
+                [
+                    'station_id' => $station->getId(),
+                    'station_name' => $station->getName(),
+                    'dj' => $user,
+                ]
+            );
 
             $response->getBody()->write($adapter->onConnect($station, $user));
             return $response;
@@ -130,11 +132,14 @@ class InternalController
             $station = $request->getStation();
             $user = $request->getParam('dj-user', '');
 
-            $this->logger->notice('Received "DJ disconnected" ping from Liquidsoap.', [
-                'station_id' => $station->getId(),
-                'station_name' => $station->getName(),
-                'dj' => $user,
-            ]);
+            $this->logger->notice(
+                'Received "DJ disconnected" ping from Liquidsoap.',
+                [
+                    'station_id' => $station->getId(),
+                    'station_name' => $station->getName(),
+                    'dj' => $user,
+                ]
+            );
 
             $response->getBody()->write($adapter->onDisconnect($station, $user));
             return $response;
@@ -152,11 +157,14 @@ class InternalController
 
         $body = $request->getParams();
 
-        $this->sync_nowplaying->queueStation($station, [
-            'song_id' => $body['song'] ?? null,
-            'media_id' => $body['media'] ?? null,
-            'playlist_id' => $body['playlist'] ?? null,
-        ]);
+        $this->syncNowPlaying->queueStation(
+            $station,
+            [
+                'song_id' => $body['song'] ?? null,
+                'media_id' => $body['media'] ?? null,
+                'playlist_id' => $body['playlist'] ?? null,
+            ]
+        );
 
         $response->getBody()->write('OK');
         return $response;

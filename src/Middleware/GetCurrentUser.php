@@ -2,6 +2,7 @@
 
 namespace App\Middleware;
 
+use App\Acl;
 use App\Auth;
 use App\Customization;
 use App\Entity;
@@ -48,9 +49,18 @@ class GetCurrentUser implements MiddlewareInterface
             ]
         );
 
+        // Initialize ACL (can only be initialized after Customization as it contains localizations).
+        $acl = $this->factory->make(
+            Acl::class,
+            [
+                'user' => $user,
+            ]
+        );
+
         $request = $request
             ->withAttribute('locale', $customization->getLocale())
-            ->withAttribute(ServerRequest::ATTR_CUSTOMIZATION, $customization);
+            ->withAttribute(ServerRequest::ATTR_CUSTOMIZATION, $customization)
+            ->withAttribute(ServerRequest::ATTR_ACL, $acl);
 
         // Set the Audit Log user.
         Entity\AuditLog::setCurrentUser($user);

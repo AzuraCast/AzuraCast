@@ -179,7 +179,7 @@ class StreamersController extends AbstractScheduledEntityController
         $station = parent::getStation($request);
 
         $backend = $request->getStationBackend();
-        if (!$backend::supportsStreamers()) {
+        if (!$backend->supportsStreamers()) {
             throw new StationUnsupportedException();
         }
 

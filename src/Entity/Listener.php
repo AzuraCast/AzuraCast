@@ -41,6 +41,36 @@ class Listener
     protected $station;
 
     /**
+     * @ORM\Column(name="mount_id", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $mount_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="StationMount")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="mount_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     * @var StationMount|null
+     */
+    protected $mount;
+
+    /**
+     * @ORM\Column(name="remote_id", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $remote_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="StationRemote")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="remote_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     * @var StationRemote|null
+     */
+    protected $remote;
+
+    /**
      * @ORM\Column(name="listener_uid", type="integer")
      * @var int
      */
@@ -97,6 +127,26 @@ class Listener
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    public function getMount(): ?StationMount
+    {
+        return $this->mount;
+    }
+
+    public function setMount(?StationMount $mount): void
+    {
+        $this->mount = $mount;
+    }
+
+    public function getRemote(): ?StationRemote
+    {
+        return $this->remote;
+    }
+
+    public function setRemote(?StationRemote $remote): void
+    {
+        $this->remote = $remote;
     }
 
     public function getListenerUid(): int
@@ -199,15 +249,13 @@ class Listener
         return $seconds;
     }
 
-    /**
-     * @param array|Client $client
-     */
-    public static function calculateListenerHash($client): string
+    public static function calculateListenerHash(Client $client): string
     {
-        if ($client instanceof Client) {
-            return md5($client->ip . $client->userAgent);
+        $hashParts = $client->ip . $client->userAgent;
+        if (!empty($client->mount)) {
+            $hashParts .= $client->mount;
         }
 
-        return md5($client['ip'] . $client['user_agent']);
+        return md5($hashParts);
     }
 }

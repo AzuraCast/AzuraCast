@@ -9,7 +9,8 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Cache\CacheItem;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class ScheduleController extends AbstractStationApiCrudController
 {
@@ -66,12 +67,13 @@ class ScheduleController extends AbstractStationApiCrudController
             $cacheKey = 'api_station_' . $station->getId() . '_schedule_upcoming';
         }
 
-        if ($cache->has($cacheKey)) {
-            $events = $cache->get($cacheKey);
-        } else {
-            $events = $scheduleRepo->getUpcomingSchedule($station, $now);
-            $cache->set($cacheKey, $events, 60);
-        }
+        $events = $cache->get(
+            $cacheKey,
+            function (CacheItem $item) use ($scheduleRepo, $station, $now) {
+                $item->expiresAfter(60);
+                return $scheduleRepo->getUpcomingSchedule($station, $now);
+            }
+        );
 
         $rows = $request->getQueryParam('rows', 5);
         $events = array_slice($events, 0, $rows);

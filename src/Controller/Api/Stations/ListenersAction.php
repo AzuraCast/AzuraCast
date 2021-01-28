@@ -5,6 +5,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
@@ -13,18 +14,8 @@ use Mobile_Detect;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
-class ListenersController
+class ListenersAction
 {
-    protected EntityManagerInterface $em;
-
-    protected IpGeolocation $geoLite;
-
-    public function __construct(EntityManagerInterface $em, IpGeolocation $geoLite)
-    {
-        $this->em = $em;
-        $this->geoLite = $geoLite;
-    }
-
     /**
      * @OA\Get(path="/station/{station_id}/listeners",
      *   tags={"Stations: Listeners"},
@@ -42,13 +33,29 @@ class ListenersController
      *
      * @param ServerRequest $request
      * @param Response $response
+     * @param EntityManagerInterface $em
+     * @param Entity\Repository\StationMountRepository $mountRepo
+     * @param Entity\Repository\StationRemoteRepository $remoteRepo
+     * @param IpGeolocation $geoLite
+     * @param DeviceDetector $deviceDetector
+     *
      */
-    public function indexAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        EntityManagerInterface $em,
+        Entity\Repository\StationMountRepository $mountRepo,
+        Entity\Repository\StationRemoteRepository $remoteRepo,
+        IpGeolocation $geoLite,
+        DeviceDetector $deviceDetector
+    ): ResponseInterface {
         $station = $request->getStation();
         $station_tz = $station->getTimezoneObject();
 
         $params = $request->getQueryParams();
+
+        $mountNames = $mountRepo->getDisplayNames($station);
+        $remoteNames = $remoteRepo->getDisplayNames($station);
 
         if (!empty($params['start'])) {
             $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $station_tz);
@@ -59,7 +66,7 @@ class ListenersController
 
             $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');
 
-            $listeners_unsorted = $this->em->createQuery(
+            $listeners_unsorted = $em->createQuery(
                 <<<'DQL'
                     SELECT l
                     FROM App\Entity\Listener l
@@ -98,7 +105,7 @@ class ListenersController
         } else {
             $range = 'live';
 
-            $listeners_unsorted = $this->em->createQuery(
+            $listeners_unsorted = $em->createQuery(
                 <<<'DQL'
                     SELECT l
                     FROM App\Entity\Listener l
@@ -127,8 +134,55 @@ class ListenersController
             }
         }
 
-        $detect = new Mobile_Detect();
         $locale = $request->getAttribute('locale');
+
+        /** @var Entity\Api\Listener[] $listeners */
+        $listeners = [];
+        foreach ($listeners_raw as $listener) {
+            $userAgent = (string)$listener['listener_user_agent'];
+            $dd = $deviceDetector->parse($userAgent);
+
+            if ($dd->isBot()) {
+                $clientBot = $dd->getBot();
+
+                $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
+                $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
+                $client = $clientBotName . ' (' . $clientBotType . ')';
+            } else {
+                $clientInfo = $dd->getClient();
+                $clientBrowser = $clientInfo['name'] ?? 'Unknown Browser';
+                $clientVersion = $clientInfo['version'] ?? '0.00';
+
+                $clientOsInfo = $dd->getOs();
+                $clientOs = $clientOsInfo['name'] ?? 'Unknown OS';
+
+                $client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
+            }
+
+            $api = new Entity\Api\Listener();
+            $api->ip = (string)$listener['listener_ip'];
+            $api->user_agent = $userAgent;
+            $api->client = $client;
+            $api->is_mobile = $dd->isMobile();
+
+            if ($listener['mount_id']) {
+                $mountId = (int)$listener['mount_id'];
+
+                $api->mount_is_local = true;
+                $api->mount_name = $mountNames[$mountId];
+            } elseif ($listener['remote_id']) {
+                $remoteId = (int)$listener['remote_id'];
+
+                $api->mount_is_local = false;
+                $api->mount_name = $remoteNames[$remoteId];
+            }
+
+            $api->connected_on = (int)$listener['timestamp_start'];
+            $api->connected_time = Entity\Listener::getListenerSeconds($listener['intervals']);
+            $api->location = $geoLite->getLocationInfo($listener['listener_ip'], $locale);
+
+            $listeners[] = $api;
+        }
 
         $format = $params['format'] ?? 'json';
 
@@ -138,7 +192,10 @@ class ListenersController
                     'IP',
                     'Seconds Connected',
                     'User Agent',
+                    'Client',
                     'Is Mobile',
+                    'Mount Type',
+                    'Mount Name',
                     'Location',
                     'Country',
                     'Region',
@@ -146,16 +203,24 @@ class ListenersController
                 ],
             ];
 
-            foreach ($listeners_raw as $listener) {
-                $location = $this->geoLite->getLocationInfo($listener['listener_ip'], $locale);
-
+            foreach ($listeners as $listener) {
                 $export_row = [
-                    (string)$listener['listener_ip'],
-                    Entity\Listener::getListenerSeconds($listener['intervals']),
-                    (string)$listener['listener_user_agent'],
-                    $detect->isMobile($listener['listener_user_agent']) ? 'true' : 'false',
+                    $listener->ip,
+                    $listener->connected_time,
+                    $listener->user_agent,
+                    $listener->client,
+                    $listener->is_mobile,
                 ];
 
+                if ('' === $listener->mount_name) {
+                    $export_row[] = 'Unknown';
+                    $export_row[] = 'Unknown';
+                } else {
+                    $export_row[] = ($listener->mount_is_local) ? 'Local' : 'Remote';
+                    $export_row[] = $listener->mount_name;
+                }
+
+                $location = $listener->location;
                 if ('success' === $location['status']) {
                     $export_row[] = $location['region'] . ', ' . $location['country'];
                     $export_row[] = $location['country'];
@@ -175,19 +240,6 @@ class ListenersController
             $csv_filename = $station->getShortName() . '_listeners_' . $range . '.csv';
 
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
-        }
-
-        $listeners = [];
-        foreach ($listeners_raw as $listener) {
-            $api = new Entity\Api\Listener();
-            $api->ip = (string)$listener['listener_ip'];
-            $api->user_agent = (string)$listener['listener_user_agent'];
-            $api->is_mobile = $detect->isMobile($listener['listener_user_agent']);
-            $api->connected_on = (int)$listener['timestamp_start'];
-            $api->connected_time = Entity\Listener::getListenerSeconds($listener['intervals']);
-            $api->location = $this->geoLite->getLocationInfo($listener['listener_ip'], $locale);
-
-            $listeners[] = $api;
         }
 
         return $response->withJson($listeners);

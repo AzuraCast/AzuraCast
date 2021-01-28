@@ -6,9 +6,9 @@
             <file-upload :upload-url="uploadUrl" :search-phrase="searchPhrase" :valid-mime-types="validMimeTypes"
                          :current-directory="currentDirectory" @relist="onTriggerRelist"></file-upload>
 
-            <media-toolbar :selected-files="selectedFiles" :selected-dirs="selectedDirs"
-                           :batch-url="batchUrl" :current-directory="currentDirectory"
-                           :initial-playlists="initialPlaylists" @relist="onTriggerRelist"></media-toolbar>
+            <media-toolbar :batch-url="batchUrl" :selected-items="selectedItems" :current-directory="currentDirectory"
+                           :playlists="playlists" @add-playlist="onAddPlaylist"
+                           @relist="onTriggerRelist"></media-toolbar>
         </div>
 
         <data-table ref="datatable" id="station_media" selectable paginated select-fields
@@ -20,9 +20,10 @@
                        v-if="row.item.media_art" data-fancybox="gallery">
                         <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
                     </a>
+
                     <template v-if="row.item.media_is_playable">
-                        <a class="file-icon btn-audio" href="#" :data-url="row.item.media_play_url"
-                           @click.prevent="playAudio(row.item.media_play_url)" :title="langPlayPause">
+                        <a class="file-icon btn-audio has-listener" href="#" :data-url="row.item.media_links_play"
+                           @click.prevent="playAudio(row.item.media_links_play)" :title="langPlayPause">
                             <i class="material-icons" aria-hidden="true">play_circle_filled</i>
                         </a>
                     </template>
@@ -32,19 +33,25 @@
                             <i class="material-icons" aria-hidden="true" v-else>note</i>
                         </span>
                     </template>
+
                     <template v-if="row.item.is_dir">
                         <a class="name" href="#" @click.prevent="changeDirectory(row.item.path)"
                            :title="row.item.name">
+                            {{ row.item.path_short }}
+                        </a>
+                    </template>
+                    <template v-else-if="row.item.media_is_playable">
+                        <a class="name" :href="row.item.media_links_play" target="_blank" :title="row.item.name">
                             {{ row.item.text }}
                         </a>
                     </template>
                     <template v-else>
-                        <a class="name" :href="row.item.media_play_url" target="_blank" :title="row.item.name">
-                            {{ row.item.media_name }}
+                        <a class="name" :href="row.item.links_download" target="_blank" :title="row.item.text">
+                            {{ row.item.path_short }}
                         </a>
                     </template>
                     <br>
-                    <small v-if="row.item.is_dir" key="lang_dir" v-translate>Directory</small>
+                    <small v-if="row.item.media_is_playable">{{ row.item.path_short }}</small>
                     <small v-else>{{ row.item.text }}</small>
                 </div>
             </template>
@@ -61,25 +68,24 @@
                 </template>
             </template>
             <template v-slot:cell(playlists)="row">
-                <template v-for="(playlist, index) in row.item.media_playlists">
-                    <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist)"
-                       :title="langPlaylistSelect">{{ playlist }}</a>
-                    <span v-if="index+1 < row.item.media_playlists.length">, </span>
+                <template v-for="(playlist, index) in row.item.playlists">
+                    <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
+                       :title="langPlaylistSelect">{{ playlist.name }}</a>
+                    <span v-if="index+1 < row.item.playlists.length">, </span>
                 </template>
             </template>
             <template v-slot:cell(commands)="row">
-                <template v-if="row.item.media_can_edit">
+                <template v-if="row.item.media_links_edit">
                     <b-button size="sm" variant="primary"
-                              @click.prevent="edit(row.item.media_edit_url, row.item.media_art_url, row.item.media_play_url, row.item.media_waveform_url)">
+                              @click.prevent="edit(row.item.media_links_edit, row.item.media_links_art, row.item.media_links_play, row.item.media_links_waveform)">
                         {{ langEditButton }}
                     </b-button>
                 </template>
-                <template v-else-if="row.item.can_rename">
+                <template v-else>
                     <b-button size="sm" variant="primary" @click.prevent="rename(row.item.path)">
                         {{ langRenameButton }}
                     </b-button>
                 </template>
-                <template v-else>&nbsp;</template>
             </template>
         </data-table>
 
@@ -87,15 +93,15 @@
                              @relist="onTriggerRelist">
         </new-directory-modal>
 
-        <move-files-modal :selected-files="selectedFiles" :selected-dirs="selectedDirs"
-                          :current-directory="currentDirectory" :batch-url="batchUrl"
+        <move-files-modal :selected-items="selectedItems" :current-directory="currentDirectory" :batch-url="batchUrl"
                           :list-directories-url="listDirectoriesUrl" @relist="onTriggerRelist">
         </move-files-modal>
 
         <rename-modal :rename-url="renameUrl" ref="renameModal" @relist="onTriggerRelist">
         </rename-modal>
 
-        <edit-modal ref="editModal" :custom-fields="customFields" @relist="onTriggerRelist"></edit-modal>
+        <edit-modal ref="editModal" :custom-fields="customFields" :playlists="playlists"
+                    @relist="onTriggerRelist"></edit-modal>
     </div>
 </template>
 
@@ -200,7 +206,7 @@ export default {
         fields.push(
             { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },
             {
-                key: 'mtime',
+                key: 'timestamp',
                 label: this.$gettext('Modified'),
                 sortable: true,
                 formatter: (value, key, item) => {
@@ -224,22 +230,24 @@ export default {
 
         return {
             fields: fields,
-            selectedFiles: [],
-            selectedDirs: [],
+            playlists: this.initialPlaylists,
+            selectedItems: {
+                all: [],
+                files: [],
+                directories: []
+            },
             currentDirectory: '',
             searchPhrase: null
         };
     },
+    created () {
+        window.addEventListener('hashchange', this.onHashChange);
+    },
+    destroyed () {
+        window.removeEventListener('hashchange', this.onHashChange);
+    },
     mounted () {
-        // Load directory from URL hash, if applicable.
-        let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
-
-        if (urlHash.substr(0, 9) === 'playlist:') {
-            window.location.hash = '';
-            this.filter(urlHash);
-        } else if (urlHash !== '') {
-            this.changeDirectory(urlHash);
-        }
+        this.onHashChange();
     },
     computed: {
         langAlbumArt () {
@@ -263,12 +271,13 @@ export default {
             return formatFileSize(size);
         },
         onRowSelected (items) {
-            this.selectedFiles = _.map(_.filter(items, (row) => {
-                return !row.is_dir;
-            }), 'name');
-            this.selectedDirs = _.map(_.filter(items, (row) => {
-                return row.is_dir;
-            }), 'name');
+            let splitItems = _.partition(items, 'is_dir');
+
+            this.selectedItems = {
+                all: items,
+                files: _.map(splitItems[1], 'path'),
+                directories: _.map(splitItems[0], 'path')
+            };
         },
         onRefreshed () {
             this.$eventHub.$emit('refreshed');
@@ -278,6 +287,22 @@ export default {
         },
         onTriggerRelist () {
             this.$refs.datatable.relist();
+        },
+        onAddPlaylist (row) {
+            this.playlists.push(row);
+        },
+        onHashChange () {
+            // Load directory from URL hash, if applicable.
+            let urlHash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, '%20'));
+
+            if ('' !== urlHash) {
+                if (urlHash.substr(0, 9) === 'playlist:' || urlHash.substr(0, 8) === 'special:') {
+                    window.location.hash = '';
+                    this.filter(urlHash);
+                } else {
+                    this.changeDirectory(urlHash);
+                }
+            }
         },
         playAudio (url) {
             this.$eventHub.$emit('player_toggle', url);

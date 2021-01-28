@@ -50,12 +50,14 @@ class UptimeWait
 
     public function __construct()
     {
-        $this->spinner = new Spinner([
-            '🖥️🎶－🎵－📻',
-            '🖥️－🎶－🎵📻',
-            '🖥️🎵－🎶－📻',
-            '🖥️－🎵－🎶📻',
-        ]);
+        $this->spinner = new Spinner(
+                [
+                        '🖥️🎶－🎵－📻',
+                        '🖥️－🎶－🎵📻',
+                        '🖥️🎵－🎶－📻',
+                        '🖥️－🎵－🎶📻',
+                ]
+        );
 
         $_ENV = getenv();
 
@@ -88,15 +90,17 @@ class UptimeWait
     {
         try {
             $dbOptions = [
-                'host' => $_ENV['MYSQL_HOST'] ?? 'mariadb',
-                'port' => $_ENV['MYSQL_PORT'] ?? 3306,
-                'dbname' => $_ENV['MYSQL_DATABASE'],
-                'user' => $_ENV['MYSQL_USER'],
-                'password' => $_ENV['MYSQL_PASSWORD'],
+                    'host' => $_ENV['MYSQL_HOST'] ?? 'mariadb',
+                    'port' => (int)($_ENV['MYSQL_PORT'] ?? 3306),
+                    'dbname' => $_ENV['MYSQL_DATABASE'] ?? 'azuracast',
+                    'user' => $_ENV['MYSQL_USER'] ?? 'azuracast',
+                    'password' => $_ENV['MYSQL_PASSWORD'] ?? 'azur4c457',
             ];
 
-            $dbh = new PDO('mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'], $dbOptions['user'],
-                $dbOptions['password']);
+            $dsn = 'mysql:host=' . $dbOptions['host'] . ';port=' . $dbOptions['port']
+                    . ';dbname=' . $dbOptions['dbname'];
+
+            $dbh = new PDO($dsn, $dbOptions['user'], $dbOptions['password']);
 
             $dbh->exec('SELECT 1');
 
@@ -112,10 +116,14 @@ class UptimeWait
 
     protected function checkRedis(): bool
     {
+        $redisHost = $_ENV['REDIS_HOST'] ?? 'redis';
+        $redisPort = (int)($_ENV['REDIS_PORT'] ?? 6379);
+        $redisDb = (int)($_ENV['REDIS_DB'] ?? 1);
+
         try {
             $redis = new Redis();
-            $redis->connect('redis', 6379, 15);
-            $redis->select(1);
+            $redis->connect($redisHost, $redisPort, 15);
+            $redis->select($redisDb);
 
             $redis->ping();
 

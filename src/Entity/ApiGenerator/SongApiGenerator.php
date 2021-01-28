@@ -4,8 +4,10 @@ namespace App\Entity\ApiGenerator;
 
 use App\Entity;
 use App\Http\Router;
+use App\Media\RemoteAlbumArt;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Psr7\UriResolver;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\UriInterface;
 
 class SongApiGenerator
@@ -18,22 +20,27 @@ class SongApiGenerator
 
     protected Entity\Repository\CustomFieldRepository $customFieldRepo;
 
+    protected RemoteAlbumArt $remoteAlbumArt;
+
     public function __construct(
         EntityManagerInterface $em,
         Router $router,
         Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\CustomFieldRepository $customFieldRepo
+        Entity\Repository\CustomFieldRepository $customFieldRepo,
+        RemoteAlbumArt $remoteAlbumArt
     ) {
         $this->em = $em;
         $this->router = $router;
         $this->stationRepo = $stationRepo;
         $this->customFieldRepo = $customFieldRepo;
+        $this->remoteAlbumArt = $remoteAlbumArt;
     }
 
     public function __invoke(
         Entity\SongInterface $song,
         ?Entity\Station $station = null,
-        ?UriInterface $baseUri = null
+        ?UriInterface $baseUri = null,
+        bool $allowRemoteArt = false
     ): Entity\Api\Song {
         $response = new Entity\Api\Song();
         $response->id = (string)$song->getSongId();
@@ -46,56 +53,51 @@ class SongApiGenerator
             $response->genre = (string)$song->getGenre();
             $response->lyrics = (string)$song->getLyrics();
 
-            $response->art = $this->getAlbumArtUrl(
-                $station,
-                $song->getUniqueId(),
-                $song->getArtUpdatedAt(),
-                $baseUri
-            );
             $response->custom_fields = $this->getCustomFields($song->getId());
         } else {
-            $response->art = $this->getDefaultAlbumArtUrl($station, $baseUri);
             $response->custom_fields = $this->getCustomFields();
         }
+
+        $response->art = $this->getAlbumArtUrl($song, $station, $baseUri, $allowRemoteArt);
 
         return $response;
     }
 
-
     protected function getAlbumArtUrl(
+        Entity\SongInterface $song,
         ?Entity\Station $station = null,
-        string $mediaUniqueId,
-        int $mediaUpdatedTimestamp,
-        ?UriInterface $baseUri = null
+        ?UriInterface $baseUri = null,
+        bool $allowRemoteArt = false
     ): UriInterface {
-        if (null === $station || 0 === $mediaUpdatedTimestamp) {
-            return $this->getDefaultAlbumArtUrl($station, $baseUri);
-        }
-
-        if ($baseUri === null) {
+        if (null === $baseUri) {
             $baseUri = $this->router->getBaseUrl();
         }
 
-        $path = $this->router->named(
-            'api:stations:media:art',
-            [
-                'station_id' => $station->getId(),
-                'media_id' => $mediaUniqueId . '-' . $mediaUpdatedTimestamp,
-            ]
-        );
+        if (null !== $station && $song instanceof Entity\StationMedia) {
+            $mediaUpdatedTimestamp = $song->getArtUpdatedAt();
 
-        return UriResolver::resolve($baseUri, $path);
-    }
+            if (0 !== $mediaUpdatedTimestamp) {
+                $path = $this->router->named(
+                    'api:stations:media:art',
+                    [
+                        'station_id' => $station->getId(),
+                        'media_id' => $song->getUniqueId() . '-' . $mediaUpdatedTimestamp,
+                    ]
+                );
 
-    protected function getDefaultAlbumArtUrl(
-        ?Entity\Station $station = null,
-        ?UriInterface $baseUri = null
-    ): UriInterface {
-        if ($baseUri === null) {
-            $baseUri = $this->router->getBaseUrl();
+                return UriResolver::resolve($baseUri, $path);
+            }
         }
 
-        return UriResolver::resolve($baseUri, $this->stationRepo->getDefaultAlbumArtUrl($station));
+        $path = ($allowRemoteArt && $this->remoteAlbumArt->enableForApis())
+            ? ($this->remoteAlbumArt)($song)
+            : null;
+
+        if (null === $path) {
+            $path = $this->stationRepo->getDefaultAlbumArtUrl($station);
+        }
+
+        return UriResolver::resolve($baseUri, Utils::uriFor($path));
     }
 
     /**

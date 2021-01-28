@@ -18,7 +18,7 @@ final class Version20201208185538 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE api_keys CHANGE user_id user_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE storage_location ADD dropbox_auth_token VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE storage_location ADD IF NOT EXISTS dropbox_auth_token VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void

@@ -1,5 +1,5 @@
 <template>
-    <b-tab :title="langTitle">
+    <b-tab :title="langTitle" lazy>
         <b-form-group>
             <b-row>
                 <b-col md="4">
@@ -24,56 +24,56 @@
 </template>
 
 <script>
-    import axios from 'axios';
+import axios from 'axios';
 
-    export default {
-        name: 'MediaFormAlbumArt',
-        props: {
-            albumArtUrl: String
-        },
-        data () {
-            return {
-                artFile: null,
-                albumArtSrc: null
-            };
-        },
-        computed: {
-            langTitle () {
-                return this.$gettext('Album Art');
-            }
-        },
-        watch: {
-            albumArtUrl: {
-                immediate: true,
-                handler (newVal, oldVal) {
-                    this.albumArtSrc = newVal;
-                }
-            }
-        },
-        methods: {
-            uploadNewArt () {
-                let formData = new FormData();
-                formData.append('art', this.artFile);
-
-                axios.post(this.albumArtUrl, formData).then((resp) => {
-                    this.reloadArt();
-                }).catch((err) => {
-                    console.log(err);
-                    this.reloadArt();
-                });
-            },
-            deleteArt () {
-                axios.delete(this.albumArtUrl).then((resp) => {
-                    this.reloadArt();
-                }).catch((err) => {
-                    console.log(err);
-                    this.reloadArt();
-                });
-            },
-            reloadArt () {
-                this.artFile = null;
-                this.albumArtSrc = this.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
+export default {
+    name: 'MediaFormAlbumArt',
+    props: {
+        albumArtUrl: String
+    },
+    data () {
+        return {
+            artFile: null,
+            albumArtSrc: null
+        };
+    },
+    computed: {
+        langTitle () {
+            return this.$gettext('Album Art');
+        }
+    },
+    watch: {
+        albumArtUrl: {
+            immediate: true,
+            handler (newVal, oldVal) {
+                this.albumArtSrc = newVal;
             }
         }
-    };
+    },
+    methods: {
+        uploadNewArt () {
+            let formData = new FormData();
+            formData.append('art', this.artFile);
+
+            axios.post(this.albumArtUrl, formData).then((resp) => {
+                this.reloadArt();
+            }).catch((err) => {
+                console.log(err);
+                this.reloadArt();
+            });
+        },
+        deleteArt () {
+            axios.delete(this.albumArtUrl).then((resp) => {
+                this.reloadArt();
+            }).catch((err) => {
+                console.log(err);
+                this.reloadArt();
+            });
+        },
+        reloadArt () {
+            this.artFile = null;
+            this.albumArtSrc = this.albumArtUrl + '?' + Math.floor(Date.now() / 1000);
+        }
+    }
+};
 </script>

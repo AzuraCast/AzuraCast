@@ -19,9 +19,14 @@ class InstallShoutcastController
 {
     protected array $form_config;
 
-    public function __construct(Config $config)
-    {
+    protected SHOUTcast $adapter;
+
+    public function __construct(
+        Config $config,
+        SHOUTcast $adapter
+    ) {
         $this->form_config = $config->get('forms/install_shoutcast');
+        $this->adapter = $adapter;
     }
 
     public function __invoke(
@@ -31,7 +36,7 @@ class InstallShoutcastController
     ): ResponseInterface {
         $form_config = $this->form_config;
 
-        $version = SHOUTcast::getVersion();
+        $version = $this->adapter->getVersion();
 
         if (null !== $version) {
             $form_config['groups'][0]['elements']['current_version'][1]['markup'] = '<p class="text-success">' . __(
@@ -58,11 +63,14 @@ class InstallShoutcastController
 
                     $import_file->moveTo($sc_tgz_path);
 
-                    $process = new Process([
-                        'tar',
-                        'xvzf',
-                        $sc_tgz_path,
-                    ], $sc_base_dir);
+                    $process = new Process(
+                        [
+                            'tar',
+                            'xvzf',
+                            $sc_tgz_path,
+                        ],
+                        $sc_base_dir
+                    );
 
                     $process->mustRun();
 
@@ -77,10 +85,14 @@ class InstallShoutcastController
             }
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
-            'render_mode' => 'edit',
-            'title' => __('Install SHOUTcast'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $form,
+                'render_mode' => 'edit',
+                'title' => __('Install SHOUTcast'),
+            ]
+        );
     }
 }

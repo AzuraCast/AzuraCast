@@ -129,10 +129,13 @@ class Queue implements EventSubscriberInterface
             ];
         }
 
-        $this->logger->debug('AutoDJ recent song playback history', [
-            'history_once_per_x_songs' => $logOncePerXSongsSongHistory,
-            'history_duplicate_prevention' => $logDuplicatePreventionSongHistory,
-        ]);
+        $this->logger->debug(
+            'AutoDJ recent song playback history',
+            [
+                'history_once_per_x_songs' => $logOncePerXSongsSongHistory,
+                'history_duplicate_prevention' => $logDuplicatePreventionSongHistory,
+            ]
+        );
 
         // Types of playlists that should play, sorted by priority.
         $typesToPlay = [
@@ -169,11 +172,14 @@ class Queue implements EventSubscriberInterface
                 continue;
             }
 
-            $this->logger->info(sprintf(
-                '%d playable playlist(s) of type "%s" found.',
-                count($eligible_playlists),
-                $type
-            ), ['playlists' => $log_playlists]);
+            $this->logger->info(
+                sprintf(
+                    '%d playable playlist(s) of type "%s" found.',
+                    count($eligible_playlists),
+                    $type
+                ),
+                ['playlists' => $log_playlists]
+            );
 
             // Shuffle playlists by weight.
             $this->weightedShuffle($eligible_playlists);
@@ -184,17 +190,22 @@ class Queue implements EventSubscriberInterface
                 foreach ($eligible_playlists as $playlist_id => $weight) {
                     $playlist = $playlists_by_type[$type][$playlist_id];
 
-                    if (
-                        $event->setNextSong($this->playSongFromPlaylist(
+                    $nextSongSet = $event->setNextSong(
+                        $this->playSongFromPlaylist(
                             $playlist,
                             $recentSongHistoryForDuplicatePrevention,
                             $now,
                             $allowDuplicates
-                        ))
-                    ) {
-                        $this->logger->info('Playable track found and registered.', [
-                            'next_song' => (string)$event,
-                        ]);
+                        )
+                    );
+
+                    if ($nextSongSet) {
+                        $this->logger->info(
+                            'Playable track found and registered.',
+                            [
+                                'next_song' => (string)$event,
+                            ]
+                        );
                         return;
                     }
                 }
@@ -210,22 +221,28 @@ class Queue implements EventSubscriberInterface
      *
      * Based on: https://gist.github.com/savvot/e684551953a1716208fbda6c4bb2f344
      *
-     * @param array $array
+     * @param array $original
      */
-    protected function weightedShuffle(array &$array): void
+    protected function weightedShuffle(array &$original): void
     {
-        $arr = $array;
+        $new = $original;
 
-        $max = 1.0 / mt_getrandmax();
-        array_walk($arr, function (&$v, $k) use ($max): void {
-            $v = (mt_rand() * $max) ** (1.0 / $v);
-        });
-        arsort($arr);
-        array_walk($arr, function (&$v, $k) use ($array): void {
-            $v = $array[$k];
-        });
+        array_walk(
+            $new,
+            function (&$v, $k): void {
+                $v = random_int(1, $v);
+            }
+        );
 
-        $array = $arr;
+        arsort($new);
+        array_walk(
+            $new,
+            function (&$v, $k) use ($original): void {
+                $v = $original[$k];
+            }
+        );
+
+        $original = $new;
     }
 
     /**
@@ -372,11 +389,14 @@ class Queue implements EventSubscriberInterface
         $this->em->flush();
 
         if (!$mediaId) {
-            $this->logger->warning(sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()), [
-                'playlist_id' => $playlist->getId(),
-                'playlist_order' => $playlist->getOrder(),
-                'allow_duplicates' => $allowDuplicates,
-            ]);
+            $this->logger->warning(
+                sprintf('Playlist "%s" did not return a playable track.', $playlist->getName()),
+                [
+                    'playlist_id' => $playlist->getId(),
+                    'playlist_order' => $playlist->getOrder(),
+                    'allow_duplicates' => $allowDuplicates,
+                ]
+            );
             return null;
         }
 

@@ -32,13 +32,7 @@ class EditLiquidsoapConfigController
             throw new StationUnsupportedException();
         }
 
-        $configSections = [
-            Liquidsoap\ConfigWriter::CUSTOM_TOP,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_PLAYLISTS,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_FADE,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_LIVE,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_BROADCAST,
-        ];
+        $configSections = Liquidsoap\ConfigWriter::getCustomConfigurationSections();
 
         $config = $backend->getEditableConfiguration($station);
 

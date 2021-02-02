@@ -18,9 +18,10 @@ class ConfigWriter implements EventSubscriberInterface
 {
     public const CUSTOM_TOP = 'custom_config_top';
     public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
-    public const CUSTOM_PRE_BROADCAST = 'custom_config';
     public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';
     public const CUSTOM_PRE_FADE = 'custom_config_pre_fade';
+    public const CUSTOM_PRE_BROADCAST = 'custom_config';
+    public const CUSTOM_BOTTOM = 'custom_config_bottom';
 
     public const CROSSFADE_NORMAL = 'normal';
     public const CROSSFADE_DISABLED = 'none';
@@ -80,6 +81,7 @@ class ConfigWriter implements EventSubscriberInterface
                 ['writePreBroadcastConfiguration', 10],
                 ['writeLocalBroadcastConfiguration', 5],
                 ['writeRemoteBroadcastConfiguration', 0],
+                ['writePostBroadcastConfiguration', -5],
             ],
         ];
     }
@@ -462,7 +464,7 @@ class ConfigWriter implements EventSubscriberInterface
             end
 
             # Delayed ping for AutoDJ Next Song
-            def	wait_for_next_song(autodj)
+            def wait_for_next_song(autodj)
                 autodj_ping_attempts := !autodj_ping_attempts + 1
                 delay = ref 0.25
 
@@ -1121,6 +1123,26 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         $event->appendLines($ls_config);
+    }
+
+    public function writePostBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
+    {
+        $this->writeCustomConfigurationSection($event, self::CUSTOM_BOTTOM);
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getCustomConfigurationSections(): array
+    {
+        return [
+            self::CUSTOM_TOP,
+            self::CUSTOM_PRE_PLAYLISTS,
+            self::CUSTOM_PRE_FADE,
+            self::CUSTOM_PRE_LIVE,
+            self::CUSTOM_PRE_BROADCAST,
+            self::CUSTOM_BOTTOM,
+        ];
     }
 
     /**

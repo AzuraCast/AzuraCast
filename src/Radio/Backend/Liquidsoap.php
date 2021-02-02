@@ -7,7 +7,6 @@ use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\EventDispatcher;
 use App\Exception;
-use App\Radio\Backend\Liquidsoap\ConfigWriter;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
@@ -255,7 +254,7 @@ class Liquidsoap extends AbstractBackend
     {
         $queue = $this->command(
             $station,
-            ConfigWriter::prefixVarName($station, 'requests') . '.queue'
+            'requests.queue'
         );
         return empty($queue[0]);
     }
@@ -267,7 +266,7 @@ class Liquidsoap extends AbstractBackend
     {
         return $this->command(
             $station,
-            ConfigWriter::prefixVarName($station, 'requests') . '.push ' . $music_file
+            'requests.push ' . $music_file
         );
     }
 
@@ -278,7 +277,7 @@ class Liquidsoap extends AbstractBackend
     {
         return $this->command(
             $station,
-            ConfigWriter::prefixVarName($station, 'requests_fallback') . '.skip'
+            'playback.skip'
         );
     }
 
@@ -319,7 +318,7 @@ class Liquidsoap extends AbstractBackend
 
         return $this->command(
             $station,
-            ConfigWriter::prefixVarName($station, 'input_streamer') . '.stop'
+            'input_streamer.stop'
         );
     }
 

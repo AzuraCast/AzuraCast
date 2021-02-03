@@ -29,6 +29,8 @@ class ConfigWriter implements EventSubscriberInterface
 
     protected EntityManagerInterface $em;
 
+    protected Entity\Repository\SettingsRepository $settingsRepo;
+
     protected Liquidsoap $liquidsoap;
 
     protected FilesystemManager $filesystem;
@@ -39,12 +41,14 @@ class ConfigWriter implements EventSubscriberInterface
 
     public function __construct(
         EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Liquidsoap $liquidsoap,
         FilesystemManager $filesystem,
         Environment $environment,
         LoggerInterface $logger
     ) {
         $this->em = $em;
+        $this->settingsRepo = $settingsRepo;
         $this->liquidsoap = $liquidsoap;
         $this->filesystem = $filesystem;
         $this->environment = $environment;
@@ -98,7 +102,8 @@ class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        if (!$this->environment->enableAdvancedFeatures()) {
+        $settings = $this->settingsRepo->readSettings();
+        if (!$settings->getEnableAdvancedFeatures()) {
             return;
         }
 

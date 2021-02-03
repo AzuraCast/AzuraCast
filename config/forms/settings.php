@@ -113,6 +113,20 @@ return [
                     ],
                 ],
 
+                'enableAdvancedFeatures' => [
+                    'toggle',
+                    [
+                        'label' => __('Enable Advanced Features'),
+                        'description' => __(
+                            'Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.'
+                        ),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                        'form_group_class' => 'col-md-12',
+                    ],
+                ],
+
             ],
         ],
 

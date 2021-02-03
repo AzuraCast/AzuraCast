@@ -19,11 +19,13 @@ class Settings extends AbstractFixture
             'useRadioProxy' => true,
             'checkForUpdates' => true,
             'externalIp' => '127.0.0.1',
+            'enableAdvancedFeatures' => true,
         ];
 
         $isDemoMode = (!empty(getenv('INIT_DEMO_API_KEY') ?? ''));
         if ($isDemoMode) {
             $settings['analytics'] = Entity\Analytics::LEVEL_NO_IP;
+            $settings['checkForUpdates'] = false;
             $settings['publicCustomJs'] = <<<'JS'
                 $(function() {
                   if ($('body').hasClass('login-content')) {

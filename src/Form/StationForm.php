@@ -15,9 +15,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationForm extends EntityForm
 {
-    protected Entity\Repository\StationRepository $station_repo;
+    protected Entity\Repository\StationRepository $stationRepo;
 
     protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
+
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Environment $environment;
 
@@ -27,15 +29,18 @@ class StationForm extends EntityForm
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\StationRepository $station_repo,
+        Entity\Repository\StationRepository $stationRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Config $config,
         Environment $environment,
         Adapters $adapters
     ) {
         $this->entityClass = Entity\Station::class;
-        $this->station_repo = $station_repo;
+        $this->stationRepo = $stationRepo;
         $this->storageLocationRepo = $storageLocationRepo;
+        $this->settingsRepo = $settingsRepo;
+
         $this->environment = $environment;
         $this->adapters = $adapters;
 
@@ -51,7 +56,8 @@ class StationForm extends EntityForm
     public function configure(array $options): void
     {
         // Hide "advanced" fields if advanced features are hidden on this installation.
-        if (!$this->environment->enableAdvancedFeatures()) {
+        $settings = $this->settingsRepo->readSettings();
+        if (!$settings->getEnableAdvancedFeatures()) {
             foreach ($options['groups'] as $groupId => $group) {
                 foreach ($group['elements'] as $elementKey => $element) {
                     $elementOptions = (array)$element[1];
@@ -107,34 +113,31 @@ class StationForm extends EntityForm
                 $request->getRouter()->named('admin:storage_locations:index')
             );
 
-            $mediaStorageField = $this->getField('media_storage_location_id');
-            $mediaStorageField->setOption('description', $storageLocationsDesc);
-            $mediaStorageField->setOption(
-                'choices',
-                $this->storageLocationRepo->fetchSelectByType(
-                    Entity\StorageLocation::TYPE_STATION_MEDIA,
-                    $create_mode,
-                    __('Create a new storage location based on the base directory.'),
-                )
-            );
-
-            $recordingsStorageField = $this->getField('recordings_storage_location_id');
-            $recordingsStorageField->setOption('description', $storageLocationsDesc);
-            $recordingsStorageField->setOption(
-                'choices',
-                $this->storageLocationRepo->fetchSelectByType(
-                    Entity\StorageLocation::TYPE_STATION_RECORDINGS,
-                    $create_mode,
-                    __('Create a new storage location based on the base directory.'),
-                )
-            );
-
-            $this->options['groups']['admin']['elements']['recordings_storage_location_id'][1]['choices'] =
-                $this->storageLocationRepo->fetchSelectByType(
-                    Entity\StorageLocation::TYPE_STATION_RECORDINGS,
-                    $create_mode,
-                    __('Create a new storage location based on the base directory.'),
+            if ($this->hasField('media_storage_location_id')) {
+                $mediaStorageField = $this->getField('media_storage_location_id');
+                $mediaStorageField->setOption('description', $storageLocationsDesc);
+                $mediaStorageField->setOption(
+                    'choices',
+                    $this->storageLocationRepo->fetchSelectByType(
+                        Entity\StorageLocation::TYPE_STATION_MEDIA,
+                        $create_mode,
+                        __('Create a new storage location based on the base directory.'),
+                    )
                 );
+            }
+
+            if ($this->hasField('recordings_storage_location_id')) {
+                $recordingsStorageField = $this->getField('recordings_storage_location_id');
+                $recordingsStorageField->setOption('description', $storageLocationsDesc);
+                $recordingsStorageField->setOption(
+                    'choices',
+                    $this->storageLocationRepo->fetchSelectByType(
+                        Entity\StorageLocation::TYPE_STATION_RECORDINGS,
+                        $create_mode,
+                        __('Create a new storage location based on the base directory.'),
+                    )
+                );
+            }
         }
 
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
@@ -178,8 +181,8 @@ class StationForm extends EntityForm
             }
 
             return ($create_mode)
-                ? $this->station_repo->create($record)
-                : $this->station_repo->edit($record);
+                ? $this->stationRepo->create($record)
+                : $this->stationRepo->edit($record);
         }
 
         return false;

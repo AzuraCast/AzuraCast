@@ -35,6 +35,7 @@ class ErrorHandler implements EventSubscriberInterface
     public function onTerminate(ConsoleTerminateEvent $event): void
     {
         $command = $event->getCommand();
+        $commandName = (null !== $command) ? $command->getName() : 'Unknown';
 
         $exitCode = $event->getExitCode();
         if (0 === $exitCode) {
@@ -43,7 +44,7 @@ class ErrorHandler implements EventSubscriberInterface
 
         $message = sprintf(
             'Console command `%s` exited with error code %d.',
-            $command->getName(),
+            $commandName,
             $exitCode
         );
         $this->logger->warning($message);
@@ -52,6 +53,8 @@ class ErrorHandler implements EventSubscriberInterface
     public function onError(ConsoleErrorEvent $event): void
     {
         $command = $event->getCommand();
+        $commandName = (null !== $command) ? $command->getName() : 'Unknown';
+
         $exception = $event->getError();
 
         $message = sprintf(
@@ -60,7 +63,7 @@ class ErrorHandler implements EventSubscriberInterface
             $exception->getMessage(),
             $exception->getFile(),
             $exception->getLine(),
-            $command->getName()
+            $commandName
         );
 
         $this->logger->error($message, ['exception' => $exception]);

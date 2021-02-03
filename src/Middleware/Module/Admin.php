@@ -2,7 +2,7 @@
 
 namespace App\Middleware\Module;
 
-use App\Environment;
+use App\Entity\Repository\SettingsRepository;
 use App\Event;
 use App\EventDispatcher;
 use App\Http\ServerRequest;
@@ -18,17 +18,19 @@ class Admin
 {
     protected EventDispatcher $dispatcher;
 
-    protected Environment $environment;
+    protected SettingsRepository $settingsRepo;
 
-    public function __construct(EventDispatcher $dispatcher, Environment $environment)
+    public function __construct(EventDispatcher $dispatcher, SettingsRepository $settingsRepo)
     {
         $this->dispatcher = $dispatcher;
-        $this->environment = $environment;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $event = new Event\BuildAdminMenu($request, $this->environment);
+        $settings = $this->settingsRepo->readSettings();
+
+        $event = new Event\BuildAdminMenu($request, $settings);
         $this->dispatcher->dispatch($event);
 
         $view = $request->getView();

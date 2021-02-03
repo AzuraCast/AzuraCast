@@ -13,7 +13,7 @@ return function (App\Event\BuildStationMenu $e) {
     $backend = $request->getStationBackend();
     $frontend = $request->getStationFrontend();
 
-    $settings = $e->getEnvironment();
+    $settings = $e->getSettings();
 
     $e->merge(
         [
@@ -168,8 +168,8 @@ return function (App\Event\BuildStationMenu $e) {
                     'ls_config' => [
                         'label' => __('Edit Liquidsoap Configuration'),
                         'url' => $router->fromHere('stations:util:ls_config'),
-                        'visible' => $settings->enableAdvancedFeatures(
-                            ) && $backend instanceof App\Radio\Backend\Liquidsoap,
+                        'visible' => $settings->getEnableAdvancedFeatures()
+                            && $backend instanceof App\Radio\Backend\Liquidsoap,
                         'permission' => Acl::STATION_BROADCASTING,
                     ],
                     'logs' => [

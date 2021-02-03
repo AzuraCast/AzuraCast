@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-use App\Environment;
+use App\Entity\Settings;
 use App\Http\ServerRequest;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -10,14 +10,14 @@ abstract class AbstractBuildMenu extends Event
 {
     protected ServerRequest $request;
 
-    protected Environment $environment;
+    protected Settings $settings;
 
     protected array $menu = [];
 
-    public function __construct(ServerRequest $request, Environment $environment)
+    public function __construct(ServerRequest $request, Settings $settings)
     {
         $this->request = $request;
-        $this->environment = $environment;
+        $this->settings = $settings;
     }
 
     public function getRequest(): ServerRequest
@@ -25,9 +25,9 @@ abstract class AbstractBuildMenu extends Event
         return $this->request;
     }
 
-    public function getEnvironment(): Environment
+    public function getSettings(): Settings
     {
-        return $this->environment;
+        return $this->settings;
     }
 
     /**

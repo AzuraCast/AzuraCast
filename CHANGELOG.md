@@ -7,6 +7,22 @@ release channel, you can take advantage of these new features and fixes.
 
 There have been no changes since the latest stable release.
 
+## Code Quality/Technical Changes
+
+- A new section has been added to the "Edit Liquidsoap Configuration" panel at the very bottom of the configuration,
+  after all broadcasts are sent out.
+
+- The "Enable Advanced Features" environment variable, which never actually worked correctly, has been moved to a
+  database-managed setting manageable via the "System Settings" page, and now works as intended. For new installations,
+  this option is unchecked by default, but can easily be enabled for "power users".
+
+## Bug Fixes
+
+- Playlist weighting (1-25) now properly weights playlists with 1 being the _least_ frequently played and 25 being the _
+  most_ frequently played, as is intended and described in the documentation. (#3735)
+
+- Safety checks have been added to the AutoDJ to prevent the same track from being played consecutively. (#3682)
+
 ---
 
 # AzuraCast 0.12 (Jan 27, 2021)

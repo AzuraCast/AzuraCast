@@ -70,6 +70,23 @@ class StationQueueRepository extends Repository
             ->execute();
     }
 
+    public function clearDuplicatesInQueue(Entity\Station $station): void
+    {
+        $upcomingQueue = $this->getUpcomingQueue($station);
+
+        $lastItem = null;
+        foreach ($upcomingQueue as $queue) {
+            if (null !== $lastItem && $lastItem === $queue->getSongId()) {
+                $this->em->remove($queue);
+                continue;
+            }
+
+            $lastItem = $queue->getSongId();
+        }
+
+        $this->em->flush();
+    }
+
     public function getNextInQueue(Entity\Station $station): ?Entity\StationQueue
     {
         return $this->getUpcomingBaseQuery($station)

@@ -471,14 +471,14 @@ class ConfigWriter implements EventSubscriberInterface
             # Delayed ping for AutoDJ Next Song
             def wait_for_next_song(autodj)
                 autodj_ping_attempts := !autodj_ping_attempts + 1
-                delay = ref 0.25
+                delay = ref 0.5
 
                 if source.is_ready(!autodj) then
                     log("AutoDJ is ready!")
 
                     autodj_is_loading := false
                     delay := -1.0
-                elsif !autodj_ping_attempts > 50 then
+                elsif !autodj_ping_attempts > 200 then
                     log("AutoDJ could not be initialized within the specified timeout.")
 
                     autodj_is_loading := false
@@ -501,7 +501,7 @@ class ConfigWriter implements EventSubscriberInterface
                     dynamic,
                     at(
                         fun()-> !autodj_is_loading,
-                        blank(id = "autodj_startup_blank", duration = 10.)
+                        blank(id = "autodj_startup_blank", duration = 120.)
                     )
                 ]
             )

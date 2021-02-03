@@ -277,7 +277,7 @@ class Liquidsoap extends AbstractBackend
     {
         return $this->command(
             $station,
-            'playback.skip'
+            'requests_fallback.skip'
         );
     }
 

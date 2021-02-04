@@ -271,7 +271,7 @@ class Environment
     public function getDatabaseSettings(): array
     {
         return [
-            'host' => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : 'localhost'),
+            'host' => $this->data[self::DB_HOST] ?? ($this->isDocker() ? 'mariadb' : '127.0.0.1'),
             'port' => (int)($this->data[self::DB_PORT] ?? 3306),
             'dbname' => $this->data[self::DB_NAME] ?? 'azuracast',
             'user' => $this->data[self::DB_USER] ?? 'azuracast',
@@ -285,7 +285,7 @@ class Environment
     public function getRedisSettings(): array
     {
         return [
-            'host' => $this->data[self::REDIS_HOST] ?? ($this->isDocker() ? 'redis' : 'localhost'),
+            'host' => $this->data[self::REDIS_HOST] ?? ($this->isDocker() ? 'redis' : '127.0.0.1'),
             'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];

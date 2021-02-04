@@ -63,9 +63,9 @@ class MigrateConfigCommand extends CommandAbstract
         }
 
         // Set sensible defaults for variables that may not be set.
-        $envSettings[Environment::DB_HOST] ??= '127.0.0.1';
-        if ('localhost' === $envSettings[Environment::DB_HOST]) {
-            $envSettings[Environment::DB_HOST] = '127.0.0.1';
+        $envSettings[Environment::DB_HOST] ??= 'localhost';
+        if ('azuracast' === $envSettings[Environment::DB_HOST]) {
+            $envSettings[Environment::DB_HOST] = 'localhost';
         }
 
         $envSettings[Environment::DB_PORT] ??= '3306';

@@ -3,6 +3,7 @@
  * Webhook Configuration
  */
 
+use App\Entity\StationWebhook;
 use App\Webhook\Connector;
 
 return [
@@ -41,10 +42,10 @@ return [
 
     // The triggers that can be selected for a web hook to trigger.
     'triggers' => [
-        'song_changed' => __('Any time the currently playing song changes'),
-        'listener_gained' => __('Any time the listener count increases'),
-        'listener_lost' => __('Any time the listener count decreases'),
-        'live_connect' => __('Any time a live streamer/DJ connects to the stream'),
-        'live_disconnect' => __('Any time a live streamer/DJ disconnects from the stream'),
+        StationWebhook::TRIGGER_SONG_CHANGED => __('Any time the currently playing song changes'),
+        StationWebhook::TRIGGER_LISTENER_GAINED => __('Any time the listener count increases'),
+        StationWebhook::TRIGGER_LISTENER_LOST => __('Any time the listener count decreases'),
+        StationWebhook::TRIGGER_LIVE_CONNECT => __('Any time a live streamer/DJ connects to the stream'),
+        StationWebhook::TRIGGER_LIVE_DISCONNECT => __('Any time a live streamer/DJ disconnects from the stream'),
     ],
 ];

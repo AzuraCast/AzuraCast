@@ -3,8 +3,6 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use App\Entity\StationWebhook;
-use App\Event\SendWebhooks;
 use App\Utilities;
 use GuzzleHttp\Client;
 use Monolog\Logger;
@@ -12,31 +10,63 @@ use Symfony\Component\Validator\Constraints\UrlValidator;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
-    protected Client $http_client;
+    protected Client $httpClient;
 
     protected Logger $logger;
 
-    public function __construct(Logger $logger, Client $http_client)
+    public function __construct(Logger $logger, Client $httpClient)
     {
         $this->logger = $logger;
-        $this->http_client = $http_client;
+        $this->httpClient = $httpClient;
     }
 
-    public function shouldDispatch(SendWebhooks $event, StationWebhook $webhook): bool
+    public function shouldDispatch(Entity\StationWebhook $webhook, array $triggers = []): bool
     {
-        $triggers = $webhook->getTriggers();
+        if (!$this->webhookShouldTrigger($webhook, $triggers)) {
+            $this->logger->debug(
+                sprintf(
+                    'Webhook "%s" will not run for triggers: %s; skipping...',
+                    $webhook->getName(),
+                    implode(', ', $triggers)
+                )
+            );
+            return false;
+        }
 
-        if (empty($triggers)) {
+        $rateLimitTime = $this->getRateLimitTime($webhook);
+        if (null !== $rateLimitTime && !$webhook->checkRateLimit($rateLimitTime)) {
+            $this->logger->notice(
+                sprintf(
+                    'Webhook "%s" has run less than %d seconds ago; skipping...',
+                    $webhook->getName(),
+                    $rateLimitTime
+                )
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    {
+        $webhookTriggers = $webhook->getTriggers();
+        if (empty($webhookTriggers)) {
             return true;
         }
 
-        foreach ($triggers as $trigger) {
-            if ($event->hasTrigger($trigger)) {
+        foreach ($webhookTriggers as $trigger) {
+            if (in_array($trigger, $triggers, true)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    protected function getRateLimitTime(Entity\StationWebhook $webhook): ?int
+    {
+        return 10;
     }
 
     /**

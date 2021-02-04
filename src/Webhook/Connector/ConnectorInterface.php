@@ -2,7 +2,7 @@
 
 namespace App\Webhook\Connector;
 
-use App\Entity\StationWebhook;
+use App\Entity;
 use App\Event\SendWebhooks;
 
 interface ConnectorInterface
@@ -11,16 +11,32 @@ interface ConnectorInterface
      * Return a boolean indicating whether this connector should dispatch, given the current events
      * that are set to be triggered, and the configured triggers for this connector.
      *
-     * @param SendWebhooks $event The current webhook dispatching event being evaluated.
-     * @param StationWebhook $webhook
+     * @param Entity\StationWebhook $webhook
+     * @param array $triggers
+     *
+     * @return bool Whether the given webhook should dispatch with these triggers.
      */
-    public function shouldDispatch(SendWebhooks $event, StationWebhook $webhook): bool;
+    public function shouldDispatch(
+        Entity\StationWebhook $webhook,
+        array $triggers = []
+    ): bool;
 
     /**
      * Trigger the webhook for the specified station, now playing entry, and specified configuration.
      *
-     * @param SendWebhooks $event The details of the event that triggered the webhook.
-     * @param StationWebhook $webhook
+     * @param Entity\Station $station
+     * @param Entity\StationWebhook $webhook
+     * @param Entity\Api\NowPlaying $np
+     * @param array $triggers
+     * @param bool $isStandalone
+     *
+     * @return bool Whether the webhook actually dispatched.
      */
-    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void;
+    public function dispatch(
+        Entity\Station $station,
+        Entity\StationWebhook $webhook,
+        Entity\Api\NowPlaying $np,
+        array $triggers,
+        bool $isStandalone
+    ): bool;
 }

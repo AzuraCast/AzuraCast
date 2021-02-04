@@ -11,10 +11,9 @@ use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBus;
 
-class Dispatcher implements EventSubscriberInterface
+class Dispatcher
 {
     protected Environment $environment;
 
@@ -53,94 +52,54 @@ class Dispatcher implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed[]
-     */
-    public static function getSubscribedEvents(): array
-    {
-        if (Environment::getInstance()->isTesting()) {
-            return [];
-        }
-
-        return [
-            SendWebhooks::class => [
-                ['localDispatch', 5],
-                ['dispatch', 0],
-            ],
-        ];
-    }
-
-    /**
      * Handle event dispatch.
      *
      * @param Message\AbstractMessage $message
      */
     public function __invoke(Message\AbstractMessage $message): void
     {
-        if ($message instanceof Message\DispatchWebhookMessage) {
-            $webhook = $this->em->find(Entity\StationWebhook::class, $message->webhook_id);
-
-            if (!($webhook instanceof Entity\StationWebhook)) {
-                return;
-            }
-
-            $event = new SendWebhooks(
-                $webhook->getStation(),
-                $message->np,
-                $message->is_standalone,
-                $message->triggers
-            );
-
-            $this->dispatchWebhook($event, $webhook);
-        }
-    }
-
-    /**
-     * Always dispatch the special "local" updater task for standalone updates.
-     *
-     * @param SendWebhooks $event
-     */
-    public function localDispatch(SendWebhooks $event): void
-    {
-        $this->localHandler->dispatch($event);
-    }
-
-    /**
-     * Determine which webhooks to dispatch for a given change in Now Playing data, and dispatch them.
-     *
-     * @param SendWebhooks $event
-     */
-    public function dispatch(SendWebhooks $event): void
-    {
-        if ($this->environment->isTesting()) {
-            $this->logger->info('In testing mode; no webhooks dispatched.');
+        if (!($message instanceof Message\DispatchWebhookMessage)) {
             return;
         }
 
-        // Assemble list of webhooks for the station
-        $stationWebhooks = $event->getStation()->getWebhooks();
-        if (0 === $stationWebhooks->count()) {
+        $station = $this->em->find(Entity\Station::class, $message->station_id);
+        if (!$station instanceof Entity\Station) {
+            return;
+        }
+
+        $np = $message->np;
+        $isStandalone = (bool)$message->is_standalone;
+        $triggers = (array)$message->triggers;
+
+        // Always dispatch the special "local" updater task.
+        $this->localHandler->dispatch($station, $np, $isStandalone);
+
+        if ($this->environment->isTesting()) {
+            $this->logger->notice('In testing mode; no webhooks dispatched.');
             return;
         }
 
         /** @var Entity\StationWebhook[] $enabledWebhooks */
-        $enabledWebhooks = $stationWebhooks->filter(
-            function ($webhook) {
-                /** @var Entity\StationWebhook $webhook */
+        $enabledWebhooks = $station->getWebhooks()->filter(
+            function (Entity\StationWebhook $webhook) {
                 return $webhook->isEnabled();
             }
         );
 
-        $this->logger->debug('Triggering events: ' . implode(', ', $event->getTriggers()));
+        $this->logger->debug('Webhook dispatch: triggering events: ' . implode(', ', $triggers));
 
-        // Trigger all appropriate webhooks.
         foreach ($enabledWebhooks as $webhook) {
-            $message = new Message\DispatchWebhookMessage();
-            $message->webhook_id = $webhook->getId();
-            $message->np = $event->getNowPlaying();
-            $message->triggers = $event->getTriggers();
-            $message->is_standalone = $event->isStandalone();
+            $connectorObj = $this->connectors->getConnector($webhook->getType());
 
-            $this->messageBus->dispatch($message);
+            if ($connectorObj->shouldDispatch($webhook, $triggers)) {
+                $this->logger->debug(sprintf('Dispatching connector "%s".', $webhook->getType()));
+
+                if ($connectorObj->dispatch($station, $webhook, $np, $triggers, $isStandalone)) {
+                    $webhook->updateLastSentTimestamp();
+                    $this->em->persist($webhook);
+                    $this->em->flush();
+                }
+            }
         }
     }
 
@@ -153,8 +112,10 @@ class Dispatcher implements EventSubscriberInterface
      *
      * @throws Exception
      */
-    public function testDispatch(Entity\Station $station, Entity\StationWebhook $webhook): TestHandler
-    {
+    public function testDispatch(
+        Entity\Station $station,
+        Entity\StationWebhook $webhook
+    ): TestHandler {
         $handler = new TestHandler(Logger::DEBUG, false);
         $this->logger->pushHandler($handler);
 
@@ -162,24 +123,11 @@ class Dispatcher implements EventSubscriberInterface
         $np->resolveUrls($this->router->getBaseUrl(false));
         $np->cache = 'event';
 
-        $event = new SendWebhooks($station, $np, true, $webhook->getTriggers());
-        $this->dispatchWebhook($event, $webhook);
+        $connectorObj = $this->connectors->getConnector($webhook->getType());
+        $connectorObj->dispatch($station, $webhook, $np, [Entity\StationWebhook::TRIGGER_ALL], true);
 
         $this->logger->popHandler();
 
         return $handler;
-    }
-
-    protected function dispatchWebhook(
-        SendWebhooks $event,
-        Entity\StationWebhook $webhook
-    ): void {
-        $connectorObj = $this->connectors->getConnector($webhook->getType());
-
-        if ($connectorObj->shouldDispatch($event, $webhook)) {
-            $this->logger->debug(sprintf('Dispatching connector "%s".', $webhook->getType()));
-
-            $connectorObj->dispatch($event, $webhook);
-        }
     }
 }

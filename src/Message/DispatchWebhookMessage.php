@@ -7,8 +7,7 @@ use App\MessageQueue\QueueManager;
 
 class DispatchWebhookMessage extends AbstractUniqueMessage
 {
-    /** @var int The numeric identifier for the StationWebhook record being processed. */
-    public int $webhook_id;
+    public int $station_id;
 
     public NowPlaying $np;
 
@@ -18,7 +17,7 @@ class DispatchWebhookMessage extends AbstractUniqueMessage
 
     public function getIdentifier(): string
     {
-        return 'DispatchWebhookMessage_' . $this->webhook_id;
+        return 'DispatchWebhookMessage_' . $this->station_id;
     }
 
     public function getQueue(): string

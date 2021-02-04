@@ -2,8 +2,7 @@
 
 namespace App\Webhook\Connector;
 
-use App\Entity\StationWebhook;
-use App\Event\SendWebhooks;
+use App\Entity;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 
@@ -59,20 +58,24 @@ use Monolog\Logger;
  * inline	bool	whether or not this field should display inline
  */
 
-
 class Discord extends AbstractConnector
 {
     public const NAME = 'discord';
 
-    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
-    {
+    public function dispatch(
+        Entity\Station $station,
+        Entity\StationWebhook $webhook,
+        Entity\Api\NowPlaying $np,
+        array $triggers,
+        bool $isStandalone
+    ): bool {
         $config = $webhook->getConfig();
 
         $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
             $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return;
+            return false;
         }
 
         $raw_vars = [
@@ -85,7 +88,7 @@ class Discord extends AbstractConnector
             'footer' => $config['footer'] ?? '',
         ];
 
-        $vars = $this->replaceVariables($raw_vars, $event->getNowPlaying());
+        $vars = $this->replaceVariables($raw_vars, $np);
 
         // Compose webhook
         $embed = [
@@ -124,12 +127,16 @@ class Discord extends AbstractConnector
         $this->logger->debug('Dispatching Discord webhook...');
 
         try {
-            $response = $this->http_client->request('POST', $webhook_url, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => $webhook_body,
-            ]);
+            $response = $this->httpClient->request(
+                'POST',
+                $webhook_url,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => $webhook_body,
+                ]
+            );
 
             $this->logger->addRecord(
                 ($response->getStatusCode() !== 204 ? Logger::ERROR : Logger::DEBUG),
@@ -138,7 +145,10 @@ class Discord extends AbstractConnector
             );
         } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from Discord (%d): %s', $e->getCode(), $e->getMessage()));
+            return false;
         }
+
+        return true;
     }
 
     protected function getImageUrl(?string $url = null): ?string

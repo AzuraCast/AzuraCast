@@ -23,6 +23,8 @@ There have been no changes since the latest stable release.
 
 - Safety checks have been added to the AutoDJ to prevent the same track from being played consecutively. (#3682)
 
+- All web hooks now implement a rate limit to never send more than once every 10 seconds.
+
 ---
 
 # AzuraCast 0.12 (Jan 27, 2021)

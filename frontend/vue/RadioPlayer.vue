@@ -410,14 +410,20 @@ export default {
             this.np = np_new;
 
             // Set a "default" current stream if none exists.
-            if (this.current_stream.url === '' && np_new.station.listen_url !== '' && this.streams.length > 0) {
+            if (this.current_stream.url === '' && this.streams.length > 0) {
                 let current_stream = null;
 
-                this.streams.forEach(function (stream) {
-                    if (stream.url === np_new.station.listen_url) {
-                        current_stream = stream;
-                    }
-                });
+                if (np_new.station.listen_url !== '') {
+                    this.streams.forEach(function (stream) {
+                        if (stream.url === np_new.station.listen_url) {
+                            current_stream = stream;
+                        }
+                    });
+                }
+
+                if (current_stream === null) {
+                    current_stream = this.streams[0];
+                }
 
                 this.current_stream = current_stream;
             }

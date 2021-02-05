@@ -163,12 +163,20 @@ class Icecast extends AbstractFrontend
                 '@type' => 'normal',
                 'mount-name' => $mount_row->getName(),
                 'charset' => 'UTF8',
-
                 'stream-name' => $station->getName(),
-                'stream-description' => $station->getDescription(),
-                'stream-url' => $station->getUrl(),
-                'genre' => $station->getGenre(),
             ];
+
+            if (!empty($station->getDescription())) {
+                $mount['stream-description'] = $station->getDescription();
+            }
+
+            if (!empty($station->getUrl())) {
+                $mount['stream-url'] = $station->getUrl();
+            }
+
+            if (!empty($station->getGenre())) {
+                $mount['genre'] = $station->getGenre();
+            }
 
             if (!$mount_row->isVisibleOnPublicPages()) {
                 $mount['hidden'] = 1;

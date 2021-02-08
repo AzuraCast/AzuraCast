@@ -8611,7 +8611,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mcaskill/composer-merge-plugin.git",
-                "reference": "3f4c1e914be5ba7b9e84434a69f3bb835bff2ac1"
+                "reference": "4195d45d1c6aceef57a1658dca9ace09fcd8a311"
             },
             "require": {
                 "composer-plugin-api": "^1.1||^2.0",
@@ -8657,7 +8657,7 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2021-02-01T20:11:41+00:00"
+            "time": "2021-02-07T19:24:39+00:00"
         },
         {
             "name": "zircote/swagger-php",

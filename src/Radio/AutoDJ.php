@@ -159,12 +159,12 @@ class AutoDJ
         $this->logger->popProcessor();
     }
 
-    protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, int $duration): CarbonInterface
+    protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
     {
         $backendConfig = $station->getBackendConfig();
         $startNext = $backendConfig->getCrossfadeDuration();
 
-        $now = $now->addSeconds($duration);
+        $now = $now->addSeconds($duration ?? 1);
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
@@ -183,17 +183,7 @@ class AutoDJ
         $startTimestamp = $currentSong->getTimestampStart();
         $started = CarbonImmutable::createFromTimestamp($startTimestamp, $stationTz);
 
-        $currentSongDuration = ($currentSong->getDuration() ?? 1);
-        $adjustedNow = $this->getAdjustedNow($station, $started, $currentSongDuration);
-
-        $this->logger->debug(
-            'Got currently playing song. Using start time and duration for initial value of now.',
-            [
-                'song' => $currentSong->getText(),
-                'started' => (string)$started,
-                'duration' => $currentSongDuration,
-            ]
-        );
+        $adjustedNow = $this->getAdjustedNow($station, $started, $currentSong->getDuration());
 
         // Return either the current timestamp (if it's later) or the scheduled end time.
         return max($now, $adjustedNow);
@@ -222,8 +212,7 @@ class AutoDJ
             $queueRow->setLog($testHandler->getRecords());
             $this->em->persist($queueRow);
 
-            $duration = $queueRow->getDuration() ?? 1;
-            $now = $this->getAdjustedNow($station, $now, $duration);
+            $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
         }
 
         return $now;

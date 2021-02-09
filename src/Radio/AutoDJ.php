@@ -125,9 +125,31 @@ class AutoDJ
             }
         );
 
+        // Adjust "now" time from current queue.
         $now = $this->getNowFromCurrentSong($station);
 
-        $this->buildQueueFromNow($station, $now, false);
+        $backendOptions = $station->getBackendConfig();
+        $maxQueueLength = $backendOptions->getAutoDjQueueLength();
+        $stationTz = $station->getTimezoneObject();
+
+        $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
+        $queueLength = count($upcomingQueue);
+
+        foreach ($upcomingQueue as $queueRow) {
+            $queueRow->setTimestampCued($now->getTimestamp());
+
+            $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
+            $duration = $queueRow->getDuration() ?? 1;
+            $now = $this->getAdjustedNow($station, $timestampCued, $duration);
+        }
+
+        // Build the remainder of the queue.
+        while ($queueLength < $maxQueueLength) {
+            $now = $this->cueNextSong($station, $now);
+            $queueLength++;
+        }
+
+        $this->queueRepo->clearDuplicatesInQueue($station);
 
         $this->logger->popProcessor();
     }
@@ -170,46 +192,6 @@ class AutoDJ
 
         // Return either the current timestamp (if it's later) or the scheduled end time.
         return max($now, $adjustedNow);
-    }
-
-    protected function buildQueueFromNow(
-        Entity\Station $station,
-        CarbonInterface $now,
-        bool $resetTimestampCued
-    ): void {
-        // Adjust "now" time from current queue.
-        $backendOptions = $station->getBackendConfig();
-        $maxQueueLength = $backendOptions->getAutoDjQueueLength();
-        $stationTz = $station->getTimezoneObject();
-
-        $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
-        $queueLength = count($upcomingQueue);
-
-        /*
-         * Calculate now from the end of the queue if the queue has items.
-         * This assumes that the queue should always be full if a new row is added every time a row is removed.
-         * If the queue is empty, then we fall back to the value of now passed in by the caller, which may bor may
-         * not be accurate but is the best we have.
-         */
-        foreach ($upcomingQueue as $queueRow) {
-            if ($resetTimestampCued === true) {
-                $queueRow->setTimestampCued($now->getTimestamp());
-            }
-
-            $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
-            $duration = $queueRow->getDuration() ?? 1;
-            $now = $this->getAdjustedNow($station, $timestampCued, $duration);
-        }
-
-        if ($queueLength < $maxQueueLength) {
-            // Build the remainder of the queue.
-            while ($queueLength < $maxQueueLength) {
-                $now = $this->cueNextSong($station, $now);
-                $queueLength++;
-            }
-        }
-
-        $this->queueRepo->clearDuplicatesInQueue($station);
     }
 
     protected function cueNextSong(Entity\Station $station, CarbonInterface $now): CarbonInterface

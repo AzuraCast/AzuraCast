@@ -79,11 +79,10 @@ class RunAnalyticsTask extends AbstractTask
             for ($hour = 0; $hour <= 23; $hour++) {
                 $hourUtc = $day->setTime($hour, 0);
 
-                $hourlyMin = 0;
-                $hourlyMax = 0;
+                $hourlyMin = null;
+                $hourlyMax = null;
                 $hourlyAverage = 0;
                 $hourlyUniqueListeners = null;
-                $hourlyStationRows = [];
 
                 foreach ($stations as $stationId => $station) {
                     $stationTz = $station->getTimezoneObject();
@@ -110,12 +109,21 @@ class RunAnalyticsTask extends AbstractTask
                         $avg,
                         $unique
                     );
-                    $hourlyStationRows[$stationId][] = $hourlyRow;
 
                     $this->em->persist($hourlyRow);
 
-                    $hourlyMin = min($hourlyMin, $min);
-                    $hourlyMax = max($hourlyMax, $max);
+                    if (null === $hourlyMin) {
+                        $hourlyMin = $min;
+                    } else {
+                        $hourlyMin = min($hourlyMin, $min);
+                    }
+
+                    if (null === $hourlyMax) {
+                        $hourlyMax = $max;
+                    } else {
+                        $hourlyMax = max($hourlyMax, $max);
+                    }
+
                     $hourlyAverage += $avg;
                 }
 
@@ -124,43 +132,45 @@ class RunAnalyticsTask extends AbstractTask
                     $hourUtc,
                     null,
                     Entity\Analytics::INTERVAL_HOURLY,
-                    $hourlyMin,
-                    $hourlyMax,
+                    $hourlyMin ?? 0,
+                    $hourlyMax ?? 0,
                     $hourlyAverage,
                     $hourlyUniqueListeners
                 );
-                $hourlyStationRows['all'][] = $hourlyAllStationsRow;
 
                 $this->em->persist($hourlyAllStationsRow);
             }
 
             // Aggregate daily totals.
-            $dailyMin = 0;
-            $dailyMax = 0;
+            $dailyMin = null;
+            $dailyMax = null;
             $dailyAverage = 0;
             $dailyUniqueListeners = null;
 
             foreach ($stations as $stationId => $station) {
                 $stationTz = $station->getTimezoneObject();
                 $stationDayStart = $day->shiftTimezone($stationTz);
-
                 $stationDayEnd = $stationDayStart->addDay();
 
-                $dailyStationMin = 0;
-                $dailyStationMax = 0;
-                $dailyStationAverages = [];
+                [$dailyStationMin, $dailyStationMax, $dailyStationAverage] = $this->historyRepo->getStatsByTimeRange(
+                    $station,
+                    $stationDayStart,
+                    $stationDayEnd
+                );
 
-                $hourlyRows = $hourlyStationRows[$stationId] ?? [];
-                foreach ($hourlyRows as $hourlyRow) {
-                    /** @var Entity\Analytics $hourlyRow */
-
-                    $dailyStationMin = min($dailyStationMin, $hourlyRow->getNumberMin());
-                    $dailyStationMax = max($dailyStationMax, $hourlyRow->getNumberMax());
-                    $dailyStationAverages[] = $hourlyRow->getNumberAvg();
+                if (null === $dailyMin) {
+                    $dailyMin = $dailyStationMin;
+                } else {
+                    $dailyMin = min($dailyMin, $dailyStationMin);
                 }
 
-                $dailyMin = min($dailyMin, $dailyStationMin);
-                $dailyMax = max($dailyMax, $dailyStationMax);
+                if (null === $dailyMax) {
+                    $dailyMax = $dailyStationMax;
+                } else {
+                    $dailyMax = max($dailyMax, $dailyStationMax);
+                }
+
+                $dailyAverage += $dailyStationAverage;
 
                 $dailyStationUnique = null;
                 if ($withListeners) {
@@ -173,9 +183,6 @@ class RunAnalyticsTask extends AbstractTask
                     $dailyUniqueListeners ??= 0;
                     $dailyUniqueListeners += $dailyStationUnique;
                 }
-
-                $dailyStationAverage = round(array_sum($dailyStationAverages) / count($dailyStationAverages), 2);
-                $dailyAverage += $dailyStationAverage;
 
                 $dailyStationRow = new Entity\Analytics(
                     $day,
@@ -195,8 +202,8 @@ class RunAnalyticsTask extends AbstractTask
                 $day,
                 null,
                 Entity\Analytics::INTERVAL_DAILY,
-                $dailyMin,
-                $dailyMax,
+                $dailyMin ?? 0,
+                $dailyMax ?? 0,
                 $dailyAverage,
                 $dailyUniqueListeners
             );

@@ -11,26 +11,15 @@ use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class StreamersController
+class StreamersAction
 {
-    protected EntityManagerInterface $em;
-
-    protected AzuraCastCentral $ac_central;
-
-    protected Entity\Settings $settings;
-
-    public function __construct(
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
         EntityManagerInterface $em,
-        AzuraCastCentral $ac_central,
+        AzuraCastCentral $acCentral,
         Entity\Repository\SettingsRepository $settingsRepo
-    ) {
-        $this->em = $em;
-        $this->ac_central = $ac_central;
-        $this->settings = $settingsRepo->readSettings();
-    }
-
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
 
@@ -44,8 +33,8 @@ class StreamersController
             $params = $request->getQueryParams();
             if (isset($params['enable'])) {
                 $station->setEnableStreamers(true);
-                $this->em->persist($station);
-                $this->em->flush();
+                $em->persist($station);
+                $em->flush();
 
                 $request->getFlash()->addMessage(
                     '<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
@@ -58,15 +47,16 @@ class StreamersController
             return $view->renderToResponse($response, 'stations/streamers/disabled');
         }
 
+        $settings = $settingsRepo->readSettings();
         $be_settings = $station->getBackendConfig();
 
         return $view->renderToResponse(
             $response,
             'stations/streamers/index',
             [
-                'server_url' => $this->settings->getBaseUrl(),
+                'server_url' => $settings->getBaseUrl(),
                 'stream_port' => $backend->getStreamPort($station),
-                'ip' => $this->ac_central->getIp(),
+                'ip' => $acCentral->getIp(),
                 'dj_mount_point' => $be_settings['dj_mount_point'] ?? '/',
                 'station_tz' => $station->getTimezone(),
             ]

@@ -10,7 +10,7 @@ use App\Service\SftpGo;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class FilesController
+class FilesAction
 {
     public function __invoke(
         ServerRequest $request,

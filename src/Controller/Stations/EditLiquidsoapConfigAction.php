@@ -13,7 +13,7 @@ use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class EditLiquidsoapConfigController
+class EditLiquidsoapConfigAction
 {
     public function __invoke(
         ServerRequest $request,

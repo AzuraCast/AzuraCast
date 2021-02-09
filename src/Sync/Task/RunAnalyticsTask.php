@@ -68,7 +68,7 @@ class RunAnalyticsTask extends AbstractTask
         }
 
         $now = CarbonImmutable::now('UTC');
-        $day = $now->subDays(5)->setTime(0, 0);// Clear existing analytics in this segment
+        $day = $now->subDays(5)->startOfDay();// Clear existing analytics in this segment
 
         $this->analyticsRepo->cleanup();
         $this->analyticsRepo->clearAllAfterTime($day);
@@ -90,7 +90,11 @@ class RunAnalyticsTask extends AbstractTask
                     $start = $hourUtc->shiftTimezone($stationTz);
                     $end = $start->addHour();
 
-                    [$min, $max, $avg] = $this->historyRepo->getStatsByTimeRange($station, $start, $end);
+                    [$min, $max, $avg] = $this->historyRepo->getStatsByTimeRange(
+                        $station,
+                        $start->getTimestamp(),
+                        $end->getTimestamp()
+                    );
 
                     $unique = null;
                     if ($withListeners) {
@@ -154,8 +158,8 @@ class RunAnalyticsTask extends AbstractTask
 
                 [$dailyStationMin, $dailyStationMax, $dailyStationAverage] = $this->historyRepo->getStatsByTimeRange(
                     $station,
-                    $stationDayStart,
-                    $stationDayEnd
+                    $stationDayStart->getTimestamp(),
+                    $stationDayEnd->getTimestamp()
                 );
 
                 if (null === $dailyMin) {

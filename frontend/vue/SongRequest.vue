@@ -63,7 +63,7 @@ export default {
 
         _.forEach(this.customFields.slice(), (field) => {
             fields.push({
-                key: 'song_custom_fields_' + field.id,
+                key: 'song_custom_fields_' + field.short_name,
                 label: field.name,
                 sortable: true,
                 selectable: true,

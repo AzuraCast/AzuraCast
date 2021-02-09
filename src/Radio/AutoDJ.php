@@ -137,17 +137,22 @@ class AutoDJ
 
         foreach ($upcomingQueue as $queueRow) {
             $queueRow->setTimestampCued($now->getTimestamp());
+            $this->em->persist($queueRow);
 
             $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
             $duration = $queueRow->getDuration() ?? 1;
             $now = $this->getAdjustedNow($station, $timestampCued, $duration);
         }
 
+        $this->em->flush();
+
         // Build the remainder of the queue.
         while ($queueLength < $maxQueueLength) {
             $now = $this->cueNextSong($station, $now);
             $queueLength++;
         }
+
+        $this->em->flush();
 
         $this->queueRepo->clearDuplicatesInQueue($station);
 

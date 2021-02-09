@@ -13,6 +13,8 @@ class PlayerAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
+        Entity\Repository\CustomFieldRepository $customFieldRepo,
         bool $embed = false
     ): ResponseInterface {
         // Override system-wide iframe refusal
@@ -24,42 +26,21 @@ class PlayerAction
             throw new StationNotFoundException();
         }
 
-        $np = [
-            'station' => [
-                'listen_url' => '',
-                'mounts' => [],
-                'remotes' => [],
-            ],
-            'now_playing' => [
-                'song' => [
-                    'title' => __('Song Title'),
-                    'artist' => __('Song Artist'),
-                    'art' => '',
-                ],
-                'playlist' => '',
-                'is_request' => false,
-                'duration' => 0,
-            ],
-            'live' => [
-                'is_live' => false,
-                'streamer_name' => '',
-            ],
-            'song_history' => [],
-        ];
-
-        $station_np = $station->getNowplaying();
-        if ($station_np instanceof Entity\Api\NowPlaying) {
-            $station_np->resolveUrls($request->getRouter()->getBaseUrl());
-            $np = array_intersect_key($station_np->toArray(), $np) + $np;
-        }
+        $np = $npApiGenerator->currentOrEmpty($station);
+        $np->resolveUrls($request->getRouter()->getBaseUrl());
 
         $templateName = ($embed)
             ? 'frontend/public/embed'
             : 'frontend/public/index';
 
-        return $request->getView()->renderToResponse($response, $templateName, [
-            'station' => $station,
-            'nowplaying' => $np,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            $templateName,
+            [
+                'station' => $station,
+                'nowplaying' => $np,
+                'customFields' => $customFieldRepo->fetchArray(),
+            ]
+        );
     }
 }

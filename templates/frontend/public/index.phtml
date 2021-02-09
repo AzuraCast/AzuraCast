@@ -1,16 +1,28 @@
 <?php
 /** @var \App\Entity\Station $station */
 
-$this->layout('minimal', [
-    'page_class' => 'station-' . $station->getShortName(),
-    'title' => $this->e($station->getName()),
-]);
+$this->layout(
+    'minimal',
+    [
+        'page_class' => 'station-' . $station->getShortName(),
+        'title' => $this->e($station->getName()),
+    ]
+);
 
 /** @var \App\Assets $assets */
 $assets
     ->load('fancybox')
     ->load('PublicRadioPlayer')
-    ->addInlineJs($this->fetch('frontend/public/index.js', ['station' => $station, 'nowplaying' => $nowplaying]));
+    ->addInlineJs(
+        $this->fetch(
+            'frontend/public/index.js',
+            [
+                'station' => $station,
+                'nowplaying' => $nowplaying,
+                'customFields' => $customFields,
+            ]
+        )
+    );
 ?>
 
 <div id="public-radio-player">

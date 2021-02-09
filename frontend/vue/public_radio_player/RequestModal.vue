@@ -1,6 +1,6 @@
 <template>
     <b-modal size="lg" id="request_modal" ref="modal" :title="langTitle" hide-footer>
-        <song-request :request-list-uri="requestListUri" @submitted="doClose"></song-request>
+        <song-request :request-list-uri="requestListUri" :custom-fields="customFields" @submitted="doClose"></song-request>
     </b-modal>
 </template>
 
@@ -13,6 +13,11 @@ export default {
         requestListUri: {
             type: String,
             required: true
+        },
+        customFields: {
+            type: Array,
+            required: false,
+            default: () => []
         }
     },
     data () {

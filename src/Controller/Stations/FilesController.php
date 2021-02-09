@@ -15,7 +15,8 @@ class FilesController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        Entity\Repository\CustomFieldRepository $customFieldRepo
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -38,23 +39,6 @@ class FilesController
         )->setParameter('storageLocation', $station->getMediaStorageLocation())
             ->getSingleScalarResult();
 
-        // Get list of custom fields.
-        $custom_fields_raw = $em->createQuery(
-            <<<'DQL'
-                SELECT cf.id, cf.short_name, cf.name
-                FROM App\Entity\CustomField cf ORDER BY cf.name ASC
-            DQL
-        )->getArrayResult();
-
-        $custom_fields = [];
-        foreach ($custom_fields_raw as $row) {
-            $custom_fields[] = [
-                'display_key' => 'media_custom_fields_' . $row['id'],
-                'key' => $row['short_name'],
-                'label' => $row['name'],
-            ];
-        }
-
         $mediaStorage = $station->getMediaStorageLocation();
 
         return $request->getView()->renderToResponse(
@@ -63,7 +47,7 @@ class FilesController
             [
                 'show_sftp' => SftpGo::isSupportedForStation($station),
                 'playlists' => $playlists,
-                'custom_fields' => $custom_fields,
+                'custom_fields' => $customFieldRepo->fetchArray(),
                 'mime_types' => MimeType::getProcessableTypes(),
                 'space_used' => $mediaStorage->getStorageUsed(),
                 'space_total' => $mediaStorage->getStorageAvailable(),

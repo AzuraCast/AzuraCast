@@ -90,7 +90,7 @@ export default {
         };
 
         _.forEach(this.customFields.slice(), (field) => {
-            validations.form.custom_fields[field.key] = {};
+            validations.form.custom_fields[field.short_name] = {};
         });
 
         return validations;
@@ -104,7 +104,7 @@ export default {
         getBlankForm () {
             let customFields = {};
             _.forEach(this.customFields.slice(), (field) => {
-                customFields[field.key] = null;
+                customFields[field.short_name] = null;
             });
 
             return {
@@ -158,7 +158,7 @@ export default {
                 };
 
                 _.forEach(this.customFields.slice(), (field) => {
-                    this.form.custom_fields[field.key] = _.defaultTo(d.custom_fields[field.key], null);
+                    this.form.custom_fields[field.short_name] = _.defaultTo(d.custom_fields[field.short_name], null);
                 });
 
                 this.loading = false;

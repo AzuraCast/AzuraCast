@@ -9,9 +9,12 @@
 $props = [
     'stationName' => $station->getName(),
     'enableRequests' => $station->getEnableRequests(),
-    'downloadPlaylistUri' => (string)$router->named('public:playlist',
-        ['station_id' => $station->getShortName(), 'format' => 'pls']),
+    'downloadPlaylistUri' => (string)$router->named(
+        'public:playlist',
+        ['station_id' => $station->getShortName(), 'format' => 'pls']
+    ),
     'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]),
+    'customFields' => $customFields,
     'initialNowPlaying' => $nowplaying,
     'showAlbumArt' => !$customization->hideAlbumArt(),
 ];

@@ -28,7 +28,7 @@
         </div>
 
         <song-history-modal ref="history_modal"></song-history-modal>
-        <request-modal :request-list-uri="requestListUri"></request-modal>
+        <request-modal :request-list-uri="requestListUri" :custom-fields="customFields"></request-modal>
     </div>
 </template>
 
@@ -57,6 +57,11 @@ export default {
         requestListUri: {
             type: String,
             required: true
+        },
+        customFields: {
+            type: Array,
+            required: false,
+            default: () => []
         }
     },
     computed: {

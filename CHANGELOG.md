@@ -5,7 +5,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no changes since the latest stable release.
+- In the Now Playing API response, the station's public-facing URL and URLs to download the PLS and M3U playlists for
+  the station are included in the response.
 
 ## Code Quality/Technical Changes
 
@@ -17,6 +18,8 @@ There have been no changes since the latest stable release.
   this option is unchecked by default, but can easily be enabled for "power users".
 
 ## Bug Fixes
+
+- The AutoDJ queue timing has been reworked and simplified.
 
 - Playlist weighting (1-25) now properly weights playlists with 1 being the _least_ frequently played and 25 being the _
   most_ frequently played, as is intended and described in the documentation. (#3735)

@@ -21,4 +21,11 @@ class StationQueueDetailed extends StationQueue
      * @var string|null
      */
     public ?string $autodj_custom_uri = null;
+
+    /**
+     * Log entries on how the specific queue item was picked by the AutoDJ.
+     *
+     * @var array|null
+     */
+    public ?array $log = [];
 }

@@ -126,6 +126,7 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse->fromParentObject($row);
 
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
+        $apiResponse->log = $record->getLog();
 
         $apiResponse->links = [
             'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),

@@ -262,7 +262,7 @@ class Environment
 
         return $this->isProduction()
             ? LogLevel::NOTICE
-            : LogLevel::DEBUG;
+            : LogLevel::INFO;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Radio;
 
 use App\Entity;
+use App\Environment;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
@@ -27,13 +28,16 @@ class AutoDJ
 
     protected Scheduler $scheduler;
 
+    protected Environment $environment;
+
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SongHistoryRepository $songHistoryRepo,
         Entity\Repository\StationQueueRepository $queueRepo,
         EventDispatcher $dispatcher,
         Logger $logger,
-        Scheduler $scheduler
+        Scheduler $scheduler,
+        Environment $environment
     ) {
         $this->em = $em;
         $this->songHistoryRepo = $songHistoryRepo;
@@ -41,6 +45,7 @@ class AutoDJ
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
         $this->scheduler = $scheduler;
+        $this->environment = $environment;
     }
 
     /**
@@ -199,7 +204,7 @@ class AutoDJ
         );
 
         // Push another test handler specifically for this one queue task.
-        $testHandler = new TestHandler(Logger::DEBUG, true);
+        $testHandler = new TestHandler($this->environment->getLogLevel(), true);
         $this->logger->pushHandler($testHandler);
 
         $event = new BuildQueue($station, $now);

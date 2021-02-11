@@ -2,7 +2,7 @@ name: Build, Test and Publish
 on:
   pull_request:
     branches:
-      - master
+      - main
   push:
     paths-ignore:
       - '.github/*.yml'
@@ -12,7 +12,7 @@ on:
       - 'util/ansible/**'
     branches:
       - ci-testing
-      - master
+      - main
       - stable
   schedule:
     - cron: '0 2 * * 0' # Weekly on Sundays at 02:00

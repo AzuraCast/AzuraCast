@@ -58,7 +58,7 @@ jobs:
           download_translations: true
           export_only_approved: false
           push_translations: false
-          crowdin_branch_name: master
+          crowdin_branch_name: main
           config: crowdin.yaml
         if: github.event_name == 'push' || github.event_name == 'schedule'
         env:

@@ -23,9 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+
       - name: Reduce Git repository size.
         run: |
           git gc --prune=now --aggressive
+
+      - uses: nelonoel/branch-name@v1.0.1
 
       - name: Cache PHP dependencies
         uses: actions/cache@v1
@@ -95,9 +98,20 @@ jobs:
         run: |
           cat tests/_output/*
 
-      - name: Publish to Docker Hub
+      - name: Publish to Docker Hub (Main Branch)
         uses: docker/build-push-action@v1
-        if: github.event_name == 'push' || github.event_name == 'schedule'
+        if: ${BRANCH_NAME} == 'main' && (github.event_name == 'push' || github.event_name == 'schedule')
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: azuracast/azuracast_web_v2
+          cache_froms: azuracast/azuracast_web_v2:latest
+          tags: latest
+          push: true
+
+      - name: Publish to Docker Hub (Non-Main Branch)
+        uses: docker/build-push-action@v1
+        if: ${BRANCH_NAME} != 'main' && (github.event_name == 'push' || github.event_name == 'schedule')
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}

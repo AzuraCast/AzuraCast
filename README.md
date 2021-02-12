@@ -1,4 +1,4 @@
-![](https://github.com/AzuraCast/AzuraCast/raw/master/resources/azuracast.png)
+![](https://github.com/AzuraCast/AzuraCast/raw/main/resources/azuracast.png)
 
 # AzuraCast: A Self-Hosted Web Radio Manager
 
@@ -77,7 +77,7 @@ Once installed and running, AzuraCast exposes an API that allows you to monitor 
 
 ## License
 
-AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/LICENSE.txt). This project is free and open-source software, and pull requests are always welcome.
+AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/main/LICENSE.txt). This project is free and open-source software, and pull requests are always welcome.
 
 ## Need Help?
 

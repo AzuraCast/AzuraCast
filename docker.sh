@@ -262,7 +262,7 @@ install() {
 
   if [[ ! -f azuracast.env ]]; then
     echo "Creating default AzuraCast settings file..."
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/azuracast.sample.env -o azuracast.env
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/azuracast.sample.env -o azuracast.env
 
     # Generate a random password and replace the MariaDB password with it.
     local NEW_PASSWORD
@@ -283,7 +283,7 @@ install() {
     if [[ $AZURACAST_VERSION == "stable" ]]; then
       curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.yml
     else
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml -o docker-compose.yml
+      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml -o docker-compose.yml
     fi
   fi
 

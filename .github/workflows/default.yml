@@ -124,16 +124,16 @@ jobs :
         run : |
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           if [ $BRANCH_NAME == 'main' ]; then
-            echo "::set-output name=TAG::azuracast/azuracast_web_v2:latest"
-          else
-            echo "::set-output name=TAG::azuracast/azuracast_web_v2:${BRANCH_NAME}"
+            BRANCH_NAME="latest"
           fi
+
+          echo "::set-output name=TAG::${BRANCH_NAME}"
 
       - name : Publish to Docker Hub
         if : github.event_name == 'push' || github.event_name == 'schedule'
         uses : docker/build-push-action@v2
         with :
           push : true
-          tags : ${{ steps.tag.outputs.TAG }}
+          tags : azuracast/azuracast_web_v2:${{ steps.tag.outputs.TAG }}
           cache-from : type=local,src=/tmp/.buildx-cache
           cache-to : type=local,dest=/tmp/.buildx-cache

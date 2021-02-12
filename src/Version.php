@@ -20,10 +20,10 @@ class Version
 
     // phpcs:disable Generic.Files.LineLength
     public const LATEST_COMPOSE_REVISION = 11;
-    public const LATEST_COMPOSE_URL = 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml';
+    public const LATEST_COMPOSE_URL = 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml';
 
     public const UPDATE_URL = 'https://www.azuracast.com/administration/system/updating.html';
-    public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/master/CHANGELOG.md';
+    public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md';
     // phpcs:enable
 
     protected CacheInterface $cache;
@@ -124,7 +124,7 @@ class Version
             $details['tag'] = self::FALLBACK_VERSION;
         }
 
-        $details['branch'] = $this->runProcess(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], 'master');
+        $details['branch'] = $this->runProcess(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], 'main');
 
         return $details;
     }

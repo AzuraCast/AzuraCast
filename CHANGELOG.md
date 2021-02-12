@@ -626,7 +626,7 @@ This release includes some infrastructural changes to the application, along wit
   leaving the main media manager page.
 
 - You can now customize even more of the AzuraCast Docker installation parameters by modifying configuration lines in
-  your local [azuracast.env](https://github.com/AzuraCast/AzuraCast/blob/master/azuracast.sample.env#L70-L80) file.
+  your local [azuracast.env](https://github.com/AzuraCast/AzuraCast/blob/main/azuracast.sample.env#L70-L80) file.
 
 ## Bug Fixes
 
@@ -958,7 +958,7 @@ features and bug fixes.
   are convenient and secure: just scan the provided QR code with an app on your smartphone (FreeOTP, Authy, or any other
   TOTP app) and it will generate a unique code every few seconds. You will be asked for this code any time you log in.
   If you lose access to your authenticator at any time, you can follow
-  the [password reset instructions](https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password)
+  the [password reset instructions](https://github.com/AzuraCast/AzuraCast/blob/main/SUPPORT.md#reset-an-account-password)
   to recover your account.
 
 - **Automatically Send Error Reports**: Thanks to our friends at [Sentry](https://sentry.io/), we've added the ability

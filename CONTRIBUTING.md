@@ -11,13 +11,13 @@ A majority of our repositories come with an `.editorconfig` file in the root, wh
 If your IDE does not support EditorConfig, the most important standard to remember that we follow is the PHP Framework Interoperability Group's [PSR-12 Extended Coding Style](https://www.php-fig.org/psr/psr-12/) standard.
 
 Accessibility, security, and modern best practices are very important in AzuraCast's development. Any newly contributed code can, and should, take advantage of the full suite of new features made available in PHP 7.4 and newer.
- 
-Instructions for developing with AzuraCast locally are [available here](https://www.azuracast.com/developers). If you have questions about the guidelines above or about how to contribute to AzuraCast, please create a Github issue, join our [Discord server.](https://www.azuracast.com/discord) Please note that support is offered on an 'as available' basis. 
+
+Instructions for developing with AzuraCast locally are [available here](https://www.azuracast.com/developers). If you have questions about the guidelines above or about how to contribute to AzuraCast, please create a Github issue, join our [Discord server.](https://www.azuracast.com/discord) Please note that support is offered on an 'as available' basis.
 
 Contributions are also welcome in the supporting technologies used to make AzuraCast possible, such as:
 
  - Dockerfiles (see [our separate repositories](https://github.com/AzuraCast) for Docker containers)
- - [Ansible configuration](https://github.com/AzuraCast/AzuraCast/tree/master/util/ansible) for Ansible installs
+ - [Ansible configuration](https://github.com/AzuraCast/AzuraCast/tree/main/util/ansible) for Ansible installs
 
 ## Translating AzuraCast
 
@@ -44,14 +44,14 @@ While we appreciate everyone who is eager to contribute to this project and help
  - Please **do not e-mail the project developer directly** with questions or issues specific to AzuraCast, unless you were specifically requested to do so as part of an ongoing issue. Contacting me directly prevents me from tracking all outstanding issues in one place, and harms the transparency that is essential to FOSS development. If, however, you are e-mailing me to offer me a paying job...go nuts.
 
  - Please **do not create "this doesn't work" issues** that are just one sentence long and don't provide any insight into the scope of the issue, what changes might have triggered it, or what platform you're running on. At the very minimum, please fill out the template provided, as it gives us a lot of information to debug and provide you with support.
- 
+
  - Please **refer to existing Github issues** if you are curious about the status of outstanding bug reports or new enhancement requests. Always remember that this is a volunteer project primarily built and maintained by a single developer, and manage your expectations accordingly.
 
 ## Support AzuraCast
 
 ### Support us on GitHub Sponsors
 
-Donating through GitHub Sponsors is the best way to show your support for AzuraCast's development. You can change your pledge at any time through the Sponsors Page. GitHub will match every sponsor on our page so every donation counts. 
+Donating through GitHub Sponsors is the best way to show your support for AzuraCast's development. You can change your pledge at any time through the Sponsors Page. GitHub will match every sponsor on our page so every donation counts.
 
 [GitHub Sponsor Page][sponsor]
 

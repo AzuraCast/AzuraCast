@@ -370,7 +370,7 @@ class FilesController extends AbstractStationApiCrudController
         }
 
         // Delete the media file off the filesystem.
-        $affected_playlists = $this->mediaRepo->remove($record);
+        $affected_playlists = $this->mediaRepo->remove($record, true);
 
         // Write new PLS playlist configuration.
         foreach ($affected_playlists as $playlist_id => $playlist) {

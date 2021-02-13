@@ -219,7 +219,7 @@ class CheckMediaTask extends AbstractTask
 
                 unset($musicFiles[$pathHash]);
             } else {
-                $this->mediaRepo->remove($media_row);
+                $this->mediaRepo->remove($media_row, false);
 
                 $stats['deleted']++;
             }

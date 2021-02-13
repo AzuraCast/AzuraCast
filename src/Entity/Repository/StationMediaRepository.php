@@ -426,12 +426,14 @@ class StationMediaRepository extends Repository
 
     /**
      * @param Entity\StationMedia $media
+     * @param bool $deleteFile Whether to remove the media file itself (disabled for batch operations).
      * @param Filesystem|null $fs
      *
      * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function remove(
         Entity\StationMedia $media,
+        bool $deleteFile = false,
         ?Filesystem $fs = null
     ): array {
         $fs ??= $this->getFilesystem($media);
@@ -440,6 +442,14 @@ class StationMediaRepository extends Repository
         foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
             try {
                 $fs->delete($relatedFilePath);
+            } catch (FileNotFoundException $e) {
+                // Skip
+            }
+        }
+
+        if ($deleteFile) {
+            try {
+                $fs->delete($media->getPath());
             } catch (FileNotFoundException $e) {
                 // Skip
             }

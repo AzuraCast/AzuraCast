@@ -210,7 +210,7 @@ class StationRequestRepository extends Repository
 
 
         $eligibleTracks = [
-            $media->getId() =>[
+            $media->getId() => [
                 'title' => $media->getTitle(),
                 'artist' => $media->getArtist(),
             ],

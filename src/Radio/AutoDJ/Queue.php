@@ -576,7 +576,11 @@ class Queue implements EventSubscriberInterface
             $title = trim($playedTrack['title']);
             $titles[$title] = $title;
 
-            $artistParts = explode($dividerString, str_replace($artistSeparators, $dividerString, $playedTrack['artist']));
+            $artistParts = explode(
+                $dividerString,
+                str_replace($artistSeparators, $dividerString, $playedTrack['artist'])
+            );
+
             foreach ($artistParts as $artist) {
                 $artist = trim($artist);
                 if (!empty($artist)) {

@@ -442,51 +442,42 @@ class Queue implements EventSubscriberInterface
     }
 
     /**
-     * @param array $eligibleMedia
-     * @param array $playedMedia
+     * @param array $eligibleTracks
+     * @param array $playedTracks
      * @param bool $allowDuplicates Whether to return a media ID even if duplicates can't be prevented.
      */
     protected function preventDuplicates(
-        array $eligibleMedia = [],
-        array $playedMedia = [],
+        array $eligibleTracks = [],
+        array $playedTracks = [],
         bool $allowDuplicates = false
     ): ?int {
-        if (empty($eligibleMedia)) {
+        if (empty($eligibleTracks)) {
             $this->logger->debug('Eligible song queue is empty!');
             return null;
         }
 
         $latestSongIdsPlayed = [];
-        $playedTracks = [];
 
-        foreach ($playedMedia as $history) {
-            $playedTracks[] = [
-                'artist' => $history['artist'],
-                'title' => $history['title'],
-            ];
-
-            $songId = $history['song_id'];
+        foreach ($playedTracks as $playedTrack) {
+            $songId = $playedTrack['song_id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $history['timestamp_cued'] ?? $history['timestamp_start'];
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'] ?? $playedTrack['timestamp_start'];
             }
         }
 
-        $eligibleTracks = [];
+        $notPlayedEligibleTracks = [];
 
-        foreach ($eligibleMedia as $media) {
-            $songId = $media['song_id'];
+        foreach ($eligibleTracks as $mediaId => $track) {
+            $songId = $track['song_id'];
             if (isset($latestSongIdsPlayed[$songId])) {
                 continue;
             }
 
-            $eligibleTracks[$media['id']] = [
-                'artist' => $media['artist'],
-                'title' => $media['title'],
-            ];
+            $notPlayedEligibleTracks[$mediaId] = $track;
         }
 
-        $mediaId = self::getDistinctTrack($eligibleTracks, $playedTracks);
+        $mediaId = self::getDistinctTrack($notPlayedEligibleTracks, $playedTracks);
 
         if (null !== $mediaId) {
             $this->logger->info(
@@ -502,9 +493,9 @@ class Queue implements EventSubscriberInterface
             $mediaIdsByTimePlayed = [];
 
             // For each piece of eligible media, get its latest played timestamp.
-            foreach ($eligibleMedia as $media) {
-                $songId = $media['song_id'];
-                $mediaIdsByTimePlayed[$media['id']] = $latestSongIdsPlayed[$songId] ?? 0;
+            foreach ($eligibleTracks as $track) {
+                $songId = $track['song_id'];
+                $mediaIdsByTimePlayed[$track['id']] = $latestSongIdsPlayed[$songId] ?? 0;
             }
 
             // Pull the lowest value, which corresponds to the least recently played song.
@@ -579,32 +570,42 @@ class Queue implements EventSubscriberInterface
 
         $artists = [];
         $titles = [];
+        $latestSongIdsPlayed = [];
 
-        foreach ($playedTracks as $song) {
-            $title = trim($song['title']);
+        foreach ($playedTracks as $playedTrack) {
+            $title = trim($playedTrack['title']);
             $titles[$title] = $title;
 
-            $artistParts = explode($dividerString, str_replace($artistSeparators, $dividerString, $song['artist']));
+            $artistParts = explode(
+                $dividerString,
+                str_replace($artistSeparators, $dividerString, $playedTrack['artist'])
+            );
+
             foreach ($artistParts as $artist) {
                 $artist = trim($artist);
                 if (!empty($artist)) {
                     $artists[$artist] = $artist;
                 }
             }
+
+            $songId = $playedTrack['song_id'];
+            if (!isset($latestSongIdsPlayed[$songId])) {
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'] ?? $playedTrack['timestamp_start'];
+            }
         }
 
         $eligibleTracksWithoutSameTitle = [];
 
-        foreach ($eligibleTracks as $trackId => $song) {
+        foreach ($eligibleTracks as $mediaId => $track) {
             // Avoid all direct title matches.
-            $title = trim($song['title']);
+            $title = trim($track['title']);
 
             if (isset($titles[$title])) {
                 continue;
             }
 
             // Attempt to avoid an artist match, if possible.
-            $artist = trim($song['artist']);
+            $artist = trim($track['artist']);
 
             $artistMatchFound = false;
             if (!empty($artist)) {
@@ -623,16 +624,22 @@ class Queue implements EventSubscriberInterface
             }
 
             if (!$artistMatchFound) {
-                return $trackId;
+                return $mediaId;
             }
 
-            $eligibleTracksWithoutSameTitle[$trackId] = $song;
+            $eligibleTracksWithoutSameTitle[$mediaId] = $track;
         }
 
-        foreach ($eligibleTracksWithoutSameTitle as $trackId => $song) {
-            return $trackId;
+        $mediaIdsByTimePlayed = [];
+
+        foreach ($eligibleTracksWithoutSameTitle as $mediaId => $track) {
+            $songId = $track['song_id'];
+
+            $mediaIdsByTimePlayed[$mediaId] = $latestSongIdsPlayed[$songId] ?? 0;
         }
 
-        return null;
+        asort($mediaIdsByTimePlayed);
+
+        return array_key_first($mediaIdsByTimePlayed);
     }
 }

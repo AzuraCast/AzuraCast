@@ -199,8 +199,7 @@ class StationRequestRepository extends Repository
 
         $recentTracks = $this->em->createQuery(
             <<<'DQL'
-                SELECT sh.id, sh.title, sh.artist
-                FROM App\Entity\SongHistory sh
+                SELECT sh FROM App\Entity\SongHistory sh
                 WHERE sh.station = :station
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC
@@ -211,7 +210,7 @@ class StationRequestRepository extends Repository
 
 
         $eligibleTracks = [
-            [
+            $media->getId() => [
                 'title' => $media->getTitle(),
                 'artist' => $media->getArtist(),
             ],

@@ -1,14 +1,13 @@
 ---
-name: Bug Report
-about: Report an error you're encountering with your AzuraCast installation.
+name: Bug Report about: Report an error you're encountering with your AzuraCast installation.
 ---
 
 <!--
 Notes:
 - Please be kind and patient in your interactions with us. We are a small team of volunteers working solely on donations. Thank you in advance.
-- Ansible installation methods are not officially supported and support may not be provided outside of the rare circumstances. 
+- Ansible installation methods are not officially supported and support may not be provided outside of the rare circumstances.
 - Always check your logs before submitting!
-- Make sure your issue isn't already answered here: https://www.azuracast.com/help/
+- Make sure your issue isn't already answered here: https://docs.azuracast.com/en/user-guide/troubleshooting
 -->
 
 **Using Docker installation method**
@@ -51,11 +50,11 @@ Steps to reproduce the behavior:
 
 
 **Device(s):**
- - Device: <!-- [e.g. Desktop, iPhone6] --> 
- - OS: <!-- [e.g. iOS] -->
- - Browser: <!-- [e.g. chrome, safari] -->
- - Version: <!-- [e.g. 22] -->
 
+- Device: <!-- [e.g. Desktop, iPhone6] -->
+- OS: <!-- [e.g. iOS] -->
+- Browser: <!-- [e.g. chrome, safari] -->
+- Version: <!-- [e.g. 22] -->
 
 **Additional context**
 <!-- Add any other context about the problem here. -->

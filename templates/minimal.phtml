@@ -43,16 +43,19 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
 
 <?=$this->section('content')?>
 
-<?php if (!$customization->hideProductName() && !$hide_footer): ?>
+<?php
+if (!$customization->hideProductName() && !$hide_footer): ?>
     <footer id="footer" class="footer-alt" role="contentinfo">
-        <?=sprintf(__('Powered by %s'),
-            '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' ')?><br>
-        <?=sprintf(__('Mascot designed by %s'),
-            '<a href="https://tysontan.deviantart.com/" target="_blank">Tyson Tan</a>')?>
+        <?=sprintf(
+            __('Powered by %s'),
+            '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' '
+        )?>
     </footer>
-<?php endif; ?>
+<?php
+endif; ?>
 
-<?php if (null !== $flash && $flash->hasMessages()): ?>
+<?php
+if (null !== $flash && $flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
         $(function () {
             <?php foreach($flash->getMessages() as $message): ?>
@@ -60,6 +63,7 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
             <?php endforeach; ?>
         });
     </script>
-<?php endif; ?>
+<?php
+endif; ?>
 </body>
 </html>

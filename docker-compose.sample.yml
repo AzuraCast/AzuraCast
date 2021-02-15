@@ -49,7 +49,7 @@ services :
     container_name : azuracast_web
     image : "azuracast/azuracast_web_v2:${AZURACAST_VERSION:-latest}"
     # Want to customize the HTTP/S ports? Follow the instructions here:
-    # https://www.azuracast.com/help/docker/#use-non-standard-ports
+    # https://docs.azuracast.com/en/administration/docker#using-non-standard-ports
     ports :
       - '${AZURACAST_SFTP_PORT:-2022}:2022'
     depends_on :
@@ -117,7 +117,7 @@ services :
       # This default mapping is the outgoing and incoming ports for the first 50 stations.
       # You can override this port mapping in your own docker-compose.override.yml file.
       # For instructions, see:
-      # https://www.azuracast.com/help/docker/#expand-the-docker-radio-station-port-range
+      # https://docs.azuracast.com/en/administration/docker#expanding-the-station-port-range
       - '8000:8000'
       - '8005:8005'
       - '8006:8006'

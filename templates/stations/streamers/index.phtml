@@ -1,11 +1,17 @@
 <?php
+
 $this->layout('main', ['title' => __('Streamer/DJ Accounts'), 'manual' => true]);
 
 /** @var \App\Assets $assets */
 $assets->load('StationStreamers')
-    ->addInlineJs($this->fetch('stations/streamers/index.js', [
-        'station_tz' => $station_tz,
-    ]));
+    ->addInlineJs(
+        $this->fetch(
+            'stations/streamers/index.js',
+            [
+                'station_tz' => $station_tz,
+            ]
+        )
+    );
 ?>
 
 <div class="row">
@@ -22,10 +28,14 @@ $assets->load('StationStreamers')
                 <dl>
                     <dt class="mb-1"><?=__('Server')?>:</dt>
                     <dd><code><?=$this->e($server_url)?></code></dd>
-                    <?php if ($ip): ?>
-                        <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.',
-                                $ip)?></dd>
-                    <?php endif; ?>
+                    <?php
+                    if ($ip): ?>
+                        <dd><?=__(
+                                'You may need to connect directly via your IP address, which is <code>%s</code>.',
+                                $ip
+                            )?></dd>
+                    <?php
+                    endif; ?>
 
                     <dt class="mb-1"><?=__('Port')?>:</dt>
                     <dd><code><?=(int)$stream_port?></code></dd>
@@ -38,10 +48,14 @@ $assets->load('StationStreamers')
                 <dl>
                     <dt class="mb-1"><?=__('Server')?>:</dt>
                     <dd><code><?=$this->e($server_url)?></code></dd>
-                    <?php if ($ip): ?>
-                        <dd><?=__('You may need to connect directly via your IP address, which is <code>%s</code>.',
-                                $ip)?></dd>
-                    <?php endif; ?>
+                    <?php
+                    if ($ip): ?>
+                        <dd><?=__(
+                                'You may need to connect directly via your IP address, which is <code>%s</code>.',
+                                $ip
+                            )?></dd>
+                    <?php
+                    endif; ?>
 
                     <dt class="mb-1"><?=__('Port')?>:</dt>
                     <dd><code><?=__('%d (%d for some clients)', (int)$stream_port, ((int)$stream_port + 1))?></code>
@@ -55,8 +69,12 @@ $assets->load('StationStreamers')
                     </dd>
                 </dl>
 
-                <p><?=sprintf(__('Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.'),
-                        'https://www.azuracast.com/station-management/djs/streaming_software.html')?></p>
+                <p><?=sprintf(
+                        __(
+                            'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.'
+                        ),
+                        'https://docs.azuracast.com/en/user-guide/streaming-software'
+                    )?></p>
             </div>
         </div>
     </div>

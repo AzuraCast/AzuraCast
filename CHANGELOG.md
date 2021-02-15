@@ -754,7 +754,7 @@ important updates to the software in that time, especially in the fields of reli
   the "Now Playing" API, which is a rich summary of the state of a radio station at the moment. To improve performance
   of more popular stations using our software, we've introduced two new methods of accessing this data: a static JSON
   file and a live Websocket/EventSource-driven plugin. You can read more on our
-  new [Now Playing Data APIs Guide](https://www.azuracast.com/developers/nowplaying.html).
+  new [Now Playing Data APIs Guide](https://docs.azuracast.com/en/developers/apis/now-playing-data).
 
 ## Bug Fixes and Minor Updates
 

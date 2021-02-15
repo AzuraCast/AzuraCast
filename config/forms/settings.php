@@ -207,7 +207,7 @@ return [
                         'markup' => '<strong>' . $releaseChannelName . '</strong>',
                         'description' => __(
                             'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.',
-                            'https://www.azuracast.com/administration/system/release-channels.html'
+                            'https://docs.azuracast.com/en/getting-started/updates/release-channels'
                         ),
                     ],
                 ],

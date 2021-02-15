@@ -22,7 +22,7 @@ class Version
     public const LATEST_COMPOSE_REVISION = 11;
     public const LATEST_COMPOSE_URL = 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml';
 
-    public const UPDATE_URL = 'https://www.azuracast.com/administration/system/updating.html';
+    public const UPDATE_URL = 'https://docs.azuracast.com/en/getting-started/updates';
     public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md';
     // phpcs:enable
 

@@ -228,18 +228,21 @@ class Queue implements EventSubscriberInterface
     {
         $new = $original;
 
+        $max = 1.0 / mt_getrandmax();
+
         array_walk(
             $new,
-            function (&$v, $k): void {
-                $v = random_int(1, $v);
+            function (&$value, $key) use ($max): void {
+                $value = (mt_rand() * $max) ** (1.0 / $value);
             }
         );
 
         arsort($new);
+
         array_walk(
             $new,
-            function (&$v, $k) use ($original): void {
-                $v = $original[$k];
+            function (&$value, $key) use ($original): void {
+                $value = $original[$key];
             }
         );
 

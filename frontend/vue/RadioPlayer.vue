@@ -215,6 +215,7 @@
 import axios from 'axios';
 import NchanSubscriber from 'nchan';
 import AudioPlayer from './components/AudioPlayer';
+import * as NowPlaying from './entity/NowPlaying';
 
 export const radioPlayerProps = {
     props: {
@@ -225,28 +226,7 @@ export const radioPlayerProps = {
         initialNowPlaying: {
             type: Object,
             default () {
-                return {
-                    'station': {
-                        'listen_url': '',
-                        'mounts': [],
-                        'remotes': []
-                    },
-                    'now_playing': {
-                        'song': {
-                            'title': 'Song Title',
-                            'artist': 'Song Artist',
-                            'art': ''
-                        },
-                        'is_request': false,
-                        'played_at': 0,
-                        'duration': 0
-                    },
-                    'live': {
-                        'is_live': false,
-                        'streamer_name': ''
-                    },
-                    'song_history': []
-                };
+                return NowPlaying;
             }
         },
         useNchan: {

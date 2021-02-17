@@ -33,10 +33,6 @@ $props = [
     'userCanManageReports' => $acl->isAllowed(App\Acl::STATION_REPORTS, $station->getId()),
     'userCanManageStreamers' => $acl->isAllowed(App\Acl::STATION_STREAMERS, $station->getId()),
 
-    // Streams
-    'playlistPlsUri' => $router->fromHere('public:playlist', ['format' => 'pls']),
-    'playlistM3uUri' => $router->fromHere('public:playlist', ['format' => 'm3u']),
-
     // Header
     'stationName' => $station->getName(),
     'stationDescription' => $station->getDescription(),

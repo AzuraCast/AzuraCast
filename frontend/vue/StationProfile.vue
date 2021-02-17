@@ -48,7 +48,7 @@ import ProfileFrontend, { profileFrontendProps } from './station_profile/Profile
 import ProfileBackendNone from './station_profile/ProfileBackendNone';
 import ProfileBackend, { profileBackendProps } from './station_profile/ProfileBackend';
 import { BACKEND_NONE, FRONTEND_REMOTE } from './inc/radio_adapters';
-import * as NowPlaying from './entity/NowPlaying';
+import NowPlaying from './entity/NowPlaying';
 import axios from 'axios';
 
 export default {

@@ -215,7 +215,7 @@
 import axios from 'axios';
 import NchanSubscriber from 'nchan';
 import AudioPlayer from './components/AudioPlayer';
-import * as NowPlaying from './entity/NowPlaying';
+import NowPlaying from './entity/NowPlaying';
 
 export const radioPlayerProps = {
     props: {

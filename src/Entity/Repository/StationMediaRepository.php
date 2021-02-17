@@ -294,7 +294,18 @@ class StationMediaRepository extends Repository
 
         $artwork = $metadata->getArtwork();
         if (!empty($artwork)) {
-            $this->writeAlbumArt($media, $artwork);
+            try {
+                $this->writeAlbumArt($media, $artwork);
+            } catch (\Exception $exception) {
+                $this->logger->error(
+                    sprintf(
+                        'Album Artwork for "%s" could not be processed: "%s"',
+                        $filePath,
+                        $exception->getMessage()
+                    ),
+                    $exception->getTrace()
+                );
+            }
         }
 
         // Attempt to derive title and artist from filename.

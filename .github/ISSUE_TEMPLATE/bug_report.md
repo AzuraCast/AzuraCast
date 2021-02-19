@@ -1,5 +1,6 @@
 ---
-name: Bug Report about: Report an error you're encountering with your AzuraCast installation.
+name: Bug Report 
+about: Report an error you're encountering with your AzuraCast installation.
 ---
 
 <!--

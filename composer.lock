@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f96db10f604fd420bc9c649f768fa373",
+    "content-hash": "8aed63d3424000ce9590c98912eb5a81",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.173.6",
+            "version": "3.173.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "439a161e46895cd1f7b93b4c0295f95d6a17385e"
+                "reference": "b8ef72b8b335a1bb004505784f1a03ff5b37928f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/439a161e46895cd1f7b93b4c0295f95d6a17385e",
-                "reference": "439a161e46895cd1f7b93b4c0295f95d6a17385e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b8ef72b8b335a1bb004505784f1a03ff5b37928f",
+                "reference": "b8ef72b8b335a1bb004505784f1a03ff5b37928f",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.173.6"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.173.13"
             },
-            "time": "2021-02-09T19:14:22+00:00"
+            "time": "2021-02-19T19:14:50+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "3a64e491f99afedf0d2be342b8788867a4b167b7"
+                "reference": "70e51d4c1892392ad33529949f62cfb93ca5e48a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/3a64e491f99afedf0d2be342b8788867a4b167b7",
-                "reference": "3a64e491f99afedf0d2be342b8788867a4b167b7",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/70e51d4c1892392ad33529949f62cfb93ca5e48a",
+                "reference": "70e51d4c1892392ad33529949f62cfb93ca5e48a",
                 "shasum": ""
             },
             "require": {
@@ -148,9 +148,9 @@
             "homepage": "https://github.com/AzuraCast/azuraforms",
             "support": {
                 "issues": "https://github.com/AzuraCast/azuraforms/issues",
-                "source": "https://github.com/AzuraCast/azuraforms/tree/master"
+                "source": "https://github.com/AzuraCast/azuraforms/tree/main"
             },
-            "time": "2020-02-01T03:18:09+00:00"
+            "time": "2021-02-11T18:01:43+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -1662,16 +1662,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.8.1",
+            "version": "2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "242cf1a33df1b8bc5e1b86c3ebd01db07851c833"
+                "reference": "ebae57eb9637acd8252b398df3121b120688ed5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/242cf1a33df1b8bc5e1b86c3ebd01db07851c833",
-                "reference": "242cf1a33df1b8bc5e1b86c3ebd01db07851c833",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/ebae57eb9637acd8252b398df3121b120688ed5c",
+                "reference": "ebae57eb9637acd8252b398df3121b120688ed5c",
                 "shasum": ""
             },
             "require": {
@@ -1679,7 +1679,7 @@
                 "doctrine/annotations": "^1.11.1",
                 "doctrine/cache": "^1.9.1",
                 "doctrine/collections": "^1.5",
-                "doctrine/common": "^3.0",
+                "doctrine/common": "^3.0.3",
                 "doctrine/dbal": "^2.10.0",
                 "doctrine/event-manager": "^1.1",
                 "doctrine/inflector": "^1.4|^2.0",
@@ -1748,9 +1748,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.8.1"
+                "source": "https://github.com/doctrine/orm/tree/2.8.2"
             },
-            "time": "2020-12-04T19:53:07+00:00"
+            "time": "2021-02-16T22:10:18+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2716,23 +2716,23 @@
         },
         {
             "name": "laminas/laminas-config",
-            "version": "3.4.0",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-config.git",
-                "reference": "0bce6f5abab41dc673196741883b19018a2b5994"
+                "reference": "f91cd6fe79e82cbbcaa36485108a04e8ef1e679b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-config/zipball/0bce6f5abab41dc673196741883b19018a2b5994",
-                "reference": "0bce6f5abab41dc673196741883b19018a2b5994",
+                "url": "https://api.github.com/repos/laminas/laminas-config/zipball/f91cd6fe79e82cbbcaa36485108a04e8ef1e679b",
+                "reference": "f91cd6fe79e82cbbcaa36485108a04e8ef1e679b",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "laminas/laminas-stdlib": "^2.7.7 || ^3.1",
                 "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^7.3 || ^8.0",
+                "php": "^7.3 || ~8.0.0",
                 "psr/container": "^1.0"
             },
             "conflict": {
@@ -2755,12 +2755,6 @@
                 "laminas/laminas-servicemanager": "^2.7.8 || ^3.3; if you need an extensible plugin manager for use with the Config Factory"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.4.x-dev",
-                    "dev-develop": "3.5.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Laminas\\Config\\": "src/"
@@ -2790,7 +2784,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-08-25T11:56:37+00:00"
+            "time": "2021-02-11T15:06:51+00:00"
         },
         {
             "name": "laminas/laminas-eventmanager",
@@ -4059,16 +4053,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.45.0",
+            "version": "2.45.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "e2ba3174ce869da1713c38340dbb36572dfacd5a"
+                "reference": "528783b188bdb853eb21239b1722831e0f000a8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/e2ba3174ce869da1713c38340dbb36572dfacd5a",
-                "reference": "e2ba3174ce869da1713c38340dbb36572dfacd5a",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/528783b188bdb853eb21239b1722831e0f000a8d",
+                "reference": "528783b188bdb853eb21239b1722831e0f000a8d",
                 "shasum": ""
             },
             "require": {
@@ -4148,7 +4142,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-07T21:35:59+00:00"
+            "time": "2021-02-11T18:30:17+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -4395,16 +4389,16 @@
         },
         {
             "name": "pagerfanta/core",
-            "version": "v2.6.0",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pagerfanta-packages/core.git",
-                "reference": "160d03760337d2dab7d44b1435d19df42d9b2ad8"
+                "reference": "e10de33bd8d70cf66560121e5dcf5613ff00f469"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pagerfanta-packages/core/zipball/160d03760337d2dab7d44b1435d19df42d9b2ad8",
-                "reference": "160d03760337d2dab7d44b1435d19df42d9b2ad8",
+                "url": "https://api.github.com/repos/pagerfanta-packages/core/zipball/e10de33bd8d70cf66560121e5dcf5613ff00f469",
+                "reference": "e10de33bd8d70cf66560121e5dcf5613ff00f469",
                 "shasum": ""
             },
             "require": {
@@ -4427,13 +4421,13 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/pagerfanta-packages/core/tree/v2.6.0"
+                "source": "https://github.com/pagerfanta-packages/core/tree/v2.7.0"
             },
-            "time": "2021-02-03T00:02:22+00:00"
+            "time": "2021-02-19T00:33:42+00:00"
         },
         {
             "name": "pagerfanta/doctrine-collections-adapter",
-            "version": "v2.6.0",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pagerfanta-packages/doctrine-collections-adapter.git",
@@ -4467,13 +4461,13 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/pagerfanta-packages/doctrine-collections-adapter/tree/v2.6.0"
+                "source": "https://github.com/pagerfanta-packages/doctrine-collections-adapter/tree/v2.7.0"
             },
             "time": "2020-11-11T00:40:39+00:00"
         },
         {
             "name": "pagerfanta/doctrine-orm-adapter",
-            "version": "v2.6.0",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pagerfanta-packages/doctrine-orm-adapter.git",
@@ -4507,7 +4501,7 @@
                 "pagerfanta"
             ],
             "support": {
-                "source": "https://github.com/pagerfanta-packages/doctrine-orm-adapter/tree/v2.6.0"
+                "source": "https://github.com/pagerfanta-packages/doctrine-orm-adapter/tree/v2.7.0"
             },
             "time": "2020-11-11T00:40:39+00:00"
         },
@@ -7033,7 +7027,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.22.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -7092,7 +7086,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.22.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.22.1"
             },
             "funding": [
                 {
@@ -7112,7 +7106,7 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.22.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
@@ -7175,7 +7169,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.22.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.22.1"
             },
             "funding": [
                 {
@@ -8608,11 +8602,17 @@
         },
         {
             "name": "wikimedia/composer-merge-plugin",
-            "version": "dev-feature/composer-v2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mcaskill/composer-merge-plugin.git",
-                "reference": "b8b8cb4db48720687997fb106ea2953374718450"
+                "url": "https://github.com/wikimedia/composer-merge-plugin.git",
+                "reference": "a674d4bcd55c9fd72f2149d564b875fb8768ca00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/a674d4bcd55c9fd72f2149d564b875fb8768ca00",
+                "reference": "a674d4bcd55c9fd72f2149d564b875fb8768ca00",
+                "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.1||^2.0",
@@ -8624,6 +8624,7 @@
                 "phpunit/phpunit": "^8.5||^9.0",
                 "squizlabs/php_codesniffer": "~3.5.4"
             },
+            "default-branch": true,
             "type": "composer-plugin",
             "extra": {
                 "branch-alias": {
@@ -8636,18 +8637,7 @@
                     "Wikimedia\\Composer\\": "src/"
                 }
             },
-            "scripts": {
-                "coverage": [
-                    "phpunit --log-junit=reports/unitreport.xml --coverage-text --coverage-html=reports/coverage --coverage-clover=reports/coverage.xml",
-                    "phpcs --encoding=utf-8 --standard=PSR2 --report-checkstyle=reports/checkstyle-phpcs.xml --report-full --extensions=php src/* tests/phpunit/*"
-                ],
-                "test": [
-                    "composer validate --no-interaction",
-                    "parallel-lint src tests",
-                    "phpunit",
-                    "phpcs --encoding=utf-8 --standard=PSR2 --extensions=php src/* tests/phpunit/*"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -8658,7 +8648,11 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2021-02-08T17:38:06+00:00"
+            "support": {
+                "issues": "https://github.com/wikimedia/composer-merge-plugin/issues",
+                "source": "https://github.com/wikimedia/composer-merge-plugin/tree/master"
+            },
+            "time": "2021-02-12T04:24:48+00:00"
         },
         {
             "name": "zircote/swagger-php",
@@ -10142,16 +10136,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.74",
+            "version": "0.12.77",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "bc5f9483c8f461c86653dcbd040cf0d2778c91a2"
+                "reference": "1f10b8c8d118d01e7b492f9707999d456be5812c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/bc5f9483c8f461c86653dcbd040cf0d2778c91a2",
-                "reference": "bc5f9483c8f461c86653dcbd040cf0d2778c91a2",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1f10b8c8d118d01e7b492f9707999d456be5812c",
+                "reference": "1f10b8c8d118d01e7b492f9707999d456be5812c",
                 "shasum": ""
             },
             "require": {
@@ -10182,7 +10176,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.74"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.77"
             },
             "funding": [
                 {
@@ -10198,7 +10192,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-08T15:00:25+00:00"
+            "time": "2021-02-17T16:22:19+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -10695,12 +10689,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "5f40d4d577a71466f9723122251b46bdaf634709"
+                "reference": "640ff0b5dcacc0958534c8c0255b90697f3eb2a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5f40d4d577a71466f9723122251b46bdaf634709",
-                "reference": "5f40d4d577a71466f9723122251b46bdaf634709",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/640ff0b5dcacc0958534c8c0255b90697f3eb2a8",
+                "reference": "640ff0b5dcacc0958534c8c0255b90697f3eb2a8",
                 "shasum": ""
             },
             "conflict": {
@@ -10718,6 +10712,7 @@
                 "barrelstrength/sprout-forms": "<3.9",
                 "baserproject/basercms": ">=4,<=4.3.6|>=4.4,<4.4.1",
                 "bolt/bolt": "<3.7.1",
+                "bolt/core": "<4.1.13",
                 "brightlocal/phpwhois": "<=4.2.5",
                 "buddypress/buddypress": "<5.1.2",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
@@ -10942,6 +10937,7 @@
                 "ua-parser/uap-php": "<3.8",
                 "usmanhalalit/pixie": "<1.0.3|>=2,<2.0.2",
                 "verot/class.upload.php": "<=1.0.3|>=2,<=2.0.4",
+                "vrana/adminer": "<4.7.9",
                 "wallabag/tcpdf": "<6.2.22",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "yii2mod/yii2-cms": "<1.9.2",
@@ -11012,7 +11008,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-10T03:02:31+00:00"
+            "time": "2021-02-18T21:02:27+00:00"
         },
         {
             "name": "sebastian/cli-parser",

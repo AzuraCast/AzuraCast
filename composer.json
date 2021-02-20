@@ -77,7 +77,7 @@
         "symfony/validator": "^5",
         "theiconic/php-ga-measurement-protocol": "^2.9",
         "voku/portable-utf8": "^5.4",
-        "wikimedia/composer-merge-plugin": "dev-feature/composer-v2",
+        "wikimedia/composer-merge-plugin": "dev-master",
         "zircote/swagger-php": "^3"
     },
     "require-dev": {
@@ -109,12 +109,6 @@
         "symfony/polyfill-intl-normalizer": "1.99",
         "symfony/polyfill-mbstring": "1.99"
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/mcaskill/composer-merge-plugin.git"
-        }
-    ],
     "scripts": {
         "cleanup-and-test": [
             "@phpcbf",

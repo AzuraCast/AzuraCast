@@ -5,10 +5,28 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+(There have been no new features in the rolling release since the last stable version.)
+
+## Code Quality/Technical Changes
+
+(There have been no technical changes in the rolling release since the last stable version.)
+
+## Bug Fixes
+
+(There have been no bug fixes in the rolling release since the last stable version.)
+
+---
+
+# AzuraCast 0.12.1 (Feb 19, 2021)
+
+## New Features/Changes
+
 - In the Now Playing API response, the station's public-facing URL and URLs to download the PLS and M3U playlists for
   the station are included in the response.
 
 ## Code Quality/Technical Changes
+
+- Across all AzuraCast repositories, the `master` branch has been renamed to `main`.
 
 - A new section has been added to the "Edit Liquidsoap Configuration" panel at the very bottom of the configuration,
   after all broadcasts are sent out.
@@ -19,7 +37,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
-- The AutoDJ queue timing has been reworked and simplified.
+- Calling `DELETE` on the files API endpoint properly deletes the file itself (#3813).
+
+- An issue with the updated dashboard has been fixed, bringing the dashboard appearance closer to the old visual style
+  but while still being a modern Vue component.
+
+- Changes to the weighted shuffle algorithm were reverted after further evaluation.
+
+- The AutoDJ queue timing has been reworked and simplified and issues have been fixed relating to cue timing.
 
 - Playlist weighting (1-25) now properly weights playlists with 1 being the _least_ frequently played and 25 being the _
   most_ frequently played, as is intended and described in the documentation. (#3735)

@@ -13,7 +13,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.12';
+    public const FALLBACK_VERSION = '0.12.1';
 
     public const RELEASE_CHANNEL_ROLLING = 'rolling';
     public const RELEASE_CHANNEL_STABLE = 'stable';

@@ -1,76 +1,77 @@
-name: Build, Test and Publish
-on:
-  pull_request:
-    branches:
-      - master
-  push:
-    paths-ignore:
+name : Build, Test and Publish
+on :
+  pull_request :
+    branches :
+      - main
+  push :
+    paths-ignore :
       - '.github/*.yml'
       - '.github/ISSUE_TEMPLATE/*.md'
       - 'install.sh' # Ansible-only scripts and folders
       - 'update.sh'
       - 'util/ansible/**'
-    branches:
+    branches :
       - ci-testing
-      - master
+      - main
       - stable
-  schedule:
-    - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
+  schedule :
+    - cron : '0 2 * * 0' # Weekly on Sundays at 02:00
 
-jobs:
-  build:
-    name: Build, Test and Publish
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Reduce Git repository size.
-        run: |
+jobs :
+  build :
+    name : Build, Test and Publish
+    runs-on : ubuntu-latest
+    steps :
+      - uses : actions/checkout@master
+
+      - name : Reduce Git repository size.
+        run : |
           git gc --prune=now --aggressive
 
-      - name: Cache PHP dependencies
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+      - name : Cache PHP dependencies
+        uses : actions/cache@v2
+        with :
+          path : vendor
+          key : ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
-      - name: Set console permissions and clear static assets.
-        run: |
+      - name : Set console permissions and clear static assets.
+        run : |
           rm -rf web/static/dist
           rm -rf web/static/assets.json
           chmod a+x bin/console
 
-      - name: Clear existing locales.
-        run: |
+      - name : Clear existing locales.
+        if : github.event_name == 'push' || github.event_name == 'schedule'
+        run : |
           rm -rf resources/locale/compiled
           rm -rf resources/locale/*.UTF-8
           rm -rf resources/locale/translations.json
           mkdir -p resources/locale/compiled
-        if: github.event_name == 'push' || github.event_name == 'schedule'
 
-      - name: Generate new translations from existing code.
-        uses: ./.github/actions/generate-locales
-        if: github.event_name == 'push' || github.event_name == 'schedule'
+      - name : Generate new translations from existing code.
+        if : github.event_name == 'push' || github.event_name == 'schedule'
+        uses : ./.github/actions/generate-locales
 
-      - name: Pull latest translations.
-        uses: crowdin/github-action@1.0.13
-        with:
-          upload_sources: true
-          download_translations: true
-          export_only_approved: false
-          push_translations: false
-          crowdin_branch_name: master
-          config: crowdin.yaml
-        if: github.event_name == 'push' || github.event_name == 'schedule'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      - name : Pull latest translations.
+        if : github.event_name == 'push' || github.event_name == 'schedule'
+        uses : crowdin/github-action@1.0.18
+        with :
+          upload_sources : true
+          download_translations : true
+          export_only_approved : false
+          push_translations : false
+          crowdin_branch_name : main
+          config : crowdin.yaml
+        env :
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID : ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN : ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-      - name: Import locales, build static assets.
-        uses: ./.github/actions/build
+      - name : Import locales, build static assets.
+        uses : ./.github/actions/build
 
-      - name: Set up functional test environment.
-        run: |
+      - name : Set up functional test environment.
+        run : |
           docker pull azuracast/azuracast_web_v2:latest
           docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
 
@@ -81,27 +82,38 @@ jobs:
           docker-compose build web
           docker-compose run --rm --user="azuracast" web azuracast_install
 
-      - name: Run functional test suite.
-        run: |
+      - name : Run functional test suite.
+        run : |
           chmod 777 tests/_output/
           docker-compose run --rm --user="azuracast" web composer dev-test
 
-      - name: Stop all running containers.
-        run: |
+      - name : Stop all running containers.
+        run : |
           docker-compose down
 
-      - name: Echo test output directory
-        if: failure()
-        run: |
+      - name : Echo test output directory
+        if : failure()
+        run : |
           cat tests/_output/*
 
-      - name: Publish to Docker Hub
-        uses: docker/build-push-action@v1
-        if: github.event_name == 'push' || github.event_name == 'schedule'
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: azuracast/azuracast_web_v2
-          cache_froms: azuracast/azuracast_web_v2:latest
-          tag_with_ref: true
-          push: true
+      - name : Determine Tag Name
+        if : github.event_name == 'push' || github.event_name == 'schedule'
+        id : tag
+        run : |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          if [ $BRANCH_NAME == 'main' ]; then
+            BRANCH_NAME="latest"
+          fi
+
+          echo "::set-output name=TAG::${BRANCH_NAME}"
+
+      - name : Publish to Docker Hub
+        uses : docker/build-push-action@v1
+        if : github.event_name == 'push' || github.event_name == 'schedule'
+        with :
+          username : ${{ secrets.DOCKER_USERNAME }}
+          password : ${{ secrets.DOCKER_PASSWORD }}
+          repository : azuracast/azuracast_web_v2
+          cache_froms : azuracast/azuracast_web_v2:latest
+          tags : ${{ steps.tag.outputs.TAG }}
+          push : true

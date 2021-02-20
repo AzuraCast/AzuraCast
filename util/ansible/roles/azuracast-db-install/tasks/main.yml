@@ -60,7 +60,7 @@
     option : "{{ item.option }}"
     value : "{{ item.value }}"
   with_items :
-    - { option : 'MYSQL_HOST', value : 'azuracast' }
+    - { option : 'MYSQL_HOST', value : 'localhost' }
     - { option : 'MYSQL_PORT', value : '3306' }
     - { option : 'MYSQL_USER', value : 'azuracast' }
     - { option : 'MYSQL_DB', value : 'azuracast' }

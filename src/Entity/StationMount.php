@@ -234,10 +234,6 @@ class StationMount implements StationMountInterface
 
     public function isVisibleOnPublicPages(): bool
     {
-        if ($this->is_default) {
-            return true;
-        }
-
         return $this->is_visible_on_public_pages;
     }
 

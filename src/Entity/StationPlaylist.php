@@ -5,7 +5,6 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Environment;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -580,11 +579,6 @@ class StationPlaylist
      */
     public function getBackendOptions(): array
     {
-        $environment = Environment::getInstance();
-        if (!$environment->enableAdvancedFeatures()) {
-            return [];
-        }
-
         return explode(',', $this->backend_options);
     }
 

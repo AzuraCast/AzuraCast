@@ -768,4 +768,20 @@ class Settings
     {
         $this->setGeoliteLastRun(time());
     }
+
+    /**
+     * @OA\Property(example=false)
+     * @var bool Whether to enable "advanced" functionality in the system that is intended for power users.
+     */
+    protected bool $enableAdvancedFeatures = false;
+
+    public function getEnableAdvancedFeatures(): bool
+    {
+        return $this->enableAdvancedFeatures;
+    }
+
+    public function setEnableAdvancedFeatures(bool $enableAdvancedFeatures): void
+    {
+        $this->enableAdvancedFeatures = $enableAdvancedFeatures;
+    }
 }

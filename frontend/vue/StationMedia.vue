@@ -195,8 +195,8 @@ export default {
 
         _.forEach(this.customFields.slice(), (field) => {
             fields.push({
-                key: field.display_key,
-                label: field.label,
+                key: 'media_custom_fields_' + field.id,
+                label: field.name,
                 sortable: true,
                 selectable: true,
                 visible: false

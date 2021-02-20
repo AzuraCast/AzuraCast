@@ -2,7 +2,7 @@
 
 namespace App\Webhook\Connector;
 
-use App\Entity\StationWebhook;
+use App\Entity;
 use App\Event\SendWebhooks;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,27 +22,30 @@ class GoogleAnalytics extends AbstractConnector
 
     public function __construct(
         Logger $logger,
-        Client $http_client,
+        Client $httpClient,
         EntityManagerInterface $em,
         Adapters $adapters
     ) {
-        parent::__construct($logger, $http_client);
+        parent::__construct($logger, $httpClient);
 
         $this->em = $em;
         $this->adapters = $adapters;
     }
 
-    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
-    {
+    public function dispatch(
+        Entity\Station $station,
+        Entity\StationWebhook $webhook,
+        Entity\Api\NowPlaying $np,
+        array $triggers,
+        bool $isStandalone
+    ): bool {
         $config = $webhook->getConfig();
         if (empty($config['tracking_id'])) {
             $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return;
+            return false;
         }
 
         // Get listen URLs for each mount point.
-        $station = $webhook->getStation();
-
         $frontendConfig = $station->getFrontendConfig();
         $radioPort = $frontendConfig->getPort();
 
@@ -62,7 +65,7 @@ class GoogleAnalytics extends AbstractConnector
 
         // Build analytics
         $httpClient = new HttpClient();
-        $httpClient->setClient($this->http_client);
+        $httpClient->setClient($this->httpClient);
 
         $analytics = new Analytics(true);
         $analytics->setHttpClient($httpClient);
@@ -108,5 +111,7 @@ class GoogleAnalytics extends AbstractConnector
         }
 
         $analytics->sendEnqueuedHits();
+
+        return true;
     }
 }

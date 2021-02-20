@@ -21,6 +21,15 @@ class StationWebhook
 {
     use Traits\TruncateStrings;
 
+    public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
+
+    public const TRIGGER_ALL = 'all';
+    public const TRIGGER_SONG_CHANGED = 'song_changed';
+    public const TRIGGER_LISTENER_GAINED = 'listener_gained';
+    public const TRIGGER_LISTENER_LOST = 'listener_lost';
+    public const TRIGGER_LIVE_CONNECT = 'live_connect';
+    public const TRIGGER_LIVE_DISCONNECT = 'live_disconnect';
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -213,5 +222,22 @@ class StationWebhook
     public function clearMetadata(): void
     {
         $this->metadata = [];
+    }
+
+    /**
+     * Check whether this webhook was dispatched in the last $seconds seconds.
+     *
+     * @param int $seconds
+     *
+     */
+    public function checkRateLimit(int $seconds): bool
+    {
+        $lastMessageSent = (int)$this->getMetadataKey(self::LAST_SENT_TIMESTAMP_KEY, 0);
+        return $lastMessageSent <= (time() - $seconds);
+    }
+
+    public function updateLastSentTimestamp(): void
+    {
+        $this->setMetadataKey(self::LAST_SENT_TIMESTAMP_KEY, time());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Middleware\Module;
 
-use App\Environment;
+use App\Entity\Repository\SettingsRepository;
 use App\Event;
 use App\EventDispatcher;
 use App\Http\ServerRequest;
@@ -18,12 +18,12 @@ class Stations
 {
     protected EventDispatcher $dispatcher;
 
-    protected Environment $environment;
+    protected SettingsRepository $settingsRepo;
 
-    public function __construct(EventDispatcher $dispatcher, Environment $environment)
+    public function __construct(EventDispatcher $dispatcher, SettingsRepository $settingsRepo)
     {
         $this->dispatcher = $dispatcher;
-        $this->environment = $environment;
+        $this->settingsRepo = $settingsRepo;
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
@@ -42,7 +42,9 @@ class Stations
             ]
         );
 
-        $event = new Event\BuildStationMenu($request, $this->environment, $station);
+        $settings = $this->settingsRepo->readSettings();
+
+        $event = new Event\BuildStationMenu($request, $settings, $station);
         $this->dispatcher->dispatch($event);
 
         $active_tab = null;

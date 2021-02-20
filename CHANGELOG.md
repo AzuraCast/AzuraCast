@@ -5,7 +5,53 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no changes since the latest stable release.
+(There have been no new features in the rolling release since the last stable version.)
+
+## Code Quality/Technical Changes
+
+(There have been no technical changes in the rolling release since the last stable version.)
+
+## Bug Fixes
+
+(There have been no bug fixes in the rolling release since the last stable version.)
+
+---
+
+# AzuraCast 0.12.1 (Feb 19, 2021)
+
+## New Features/Changes
+
+- In the Now Playing API response, the station's public-facing URL and URLs to download the PLS and M3U playlists for
+  the station are included in the response.
+
+## Code Quality/Technical Changes
+
+- Across all AzuraCast repositories, the `master` branch has been renamed to `main`.
+
+- A new section has been added to the "Edit Liquidsoap Configuration" panel at the very bottom of the configuration,
+  after all broadcasts are sent out.
+
+- The "Enable Advanced Features" environment variable, which never actually worked correctly, has been moved to a
+  database-managed setting manageable via the "System Settings" page, and now works as intended. For new installations,
+  this option is unchecked by default, but can easily be enabled for "power users".
+
+## Bug Fixes
+
+- Calling `DELETE` on the files API endpoint properly deletes the file itself (#3813).
+
+- An issue with the updated dashboard has been fixed, bringing the dashboard appearance closer to the old visual style
+  but while still being a modern Vue component.
+
+- Changes to the weighted shuffle algorithm were reverted after further evaluation.
+
+- The AutoDJ queue timing has been reworked and simplified and issues have been fixed relating to cue timing.
+
+- Playlist weighting (1-25) now properly weights playlists with 1 being the _least_ frequently played and 25 being the _
+  most_ frequently played, as is intended and described in the documentation. (#3735)
+
+- Safety checks have been added to the AutoDJ to prevent the same track from being played consecutively. (#3682)
+
+- All web hooks now implement a rate limit to never send more than once every 10 seconds.
 
 ---
 
@@ -605,7 +651,7 @@ This release includes some infrastructural changes to the application, along wit
   leaving the main media manager page.
 
 - You can now customize even more of the AzuraCast Docker installation parameters by modifying configuration lines in
-  your local [azuracast.env](https://github.com/AzuraCast/AzuraCast/blob/master/azuracast.sample.env#L70-L80) file.
+  your local [azuracast.env](https://github.com/AzuraCast/AzuraCast/blob/main/azuracast.sample.env#L70-L80) file.
 
 ## Bug Fixes
 
@@ -733,7 +779,7 @@ important updates to the software in that time, especially in the fields of reli
   the "Now Playing" API, which is a rich summary of the state of a radio station at the moment. To improve performance
   of more popular stations using our software, we've introduced two new methods of accessing this data: a static JSON
   file and a live Websocket/EventSource-driven plugin. You can read more on our
-  new [Now Playing Data APIs Guide](https://www.azuracast.com/developers/nowplaying.html).
+  new [Now Playing Data APIs Guide](https://docs.azuracast.com/en/developers/apis/now-playing-data).
 
 ## Bug Fixes and Minor Updates
 
@@ -937,7 +983,7 @@ features and bug fixes.
   are convenient and secure: just scan the provided QR code with an app on your smartphone (FreeOTP, Authy, or any other
   TOTP app) and it will generate a unique code every few seconds. You will be asked for this code any time you log in.
   If you lose access to your authenticator at any time, you can follow
-  the [password reset instructions](https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password)
+  the [password reset instructions](https://github.com/AzuraCast/AzuraCast/blob/main/SUPPORT.md#reset-an-account-password)
   to recover your account.
 
 - **Automatically Send Error Reports**: Thanks to our friends at [Sentry](https://sentry.io/), we've added the ability

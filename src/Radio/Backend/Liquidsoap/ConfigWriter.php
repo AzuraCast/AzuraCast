@@ -18,15 +18,18 @@ class ConfigWriter implements EventSubscriberInterface
 {
     public const CUSTOM_TOP = 'custom_config_top';
     public const CUSTOM_PRE_PLAYLISTS = 'custom_config_pre_playlists';
-    public const CUSTOM_PRE_BROADCAST = 'custom_config';
     public const CUSTOM_PRE_LIVE = 'custom_config_pre_live';
     public const CUSTOM_PRE_FADE = 'custom_config_pre_fade';
+    public const CUSTOM_PRE_BROADCAST = 'custom_config';
+    public const CUSTOM_BOTTOM = 'custom_config_bottom';
 
     public const CROSSFADE_NORMAL = 'normal';
     public const CROSSFADE_DISABLED = 'none';
     public const CROSSFADE_SMART = 'smart';
 
     protected EntityManagerInterface $em;
+
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     protected Liquidsoap $liquidsoap;
 
@@ -38,12 +41,14 @@ class ConfigWriter implements EventSubscriberInterface
 
     public function __construct(
         EntityManagerInterface $em,
+        Entity\Repository\SettingsRepository $settingsRepo,
         Liquidsoap $liquidsoap,
         FilesystemManager $filesystem,
         Environment $environment,
         LoggerInterface $logger
     ) {
         $this->em = $em;
+        $this->settingsRepo = $settingsRepo;
         $this->liquidsoap = $liquidsoap;
         $this->filesystem = $filesystem;
         $this->environment = $environment;
@@ -80,6 +85,7 @@ class ConfigWriter implements EventSubscriberInterface
                 ['writePreBroadcastConfiguration', 10],
                 ['writeLocalBroadcastConfiguration', 5],
                 ['writeRemoteBroadcastConfiguration', 0],
+                ['writePostBroadcastConfiguration', -5],
             ],
         ];
     }
@@ -96,7 +102,8 @@ class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        if (!$this->environment->enableAdvancedFeatures()) {
+        $settings = $this->settingsRepo->readSettings();
+        if (!$settings->getEnableAdvancedFeatures()) {
             return;
         }
 
@@ -143,26 +150,37 @@ class ConfigWriter implements EventSubscriberInterface
 
         $pidfile = $fs->getFullPath(FilesystemManager::PREFIX_CONFIG . '://liquidsoap.pid');
 
-        $event->appendLines(
-            [
-                'set("init.daemon", false)',
-                'set("init.daemon.pidfile.path","' . $pidfile . '")',
-                'set("log.stdout", true)',
-                'set("log.file", false)',
-                'set("server.telnet",true)',
-                'set("server.telnet.bind_addr","' . ($this->environment->isDocker() ? '0.0.0.0' : '127.0.0.1') . '")',
-                'set("server.telnet.port", ' . $this->liquidsoap->getTelnetPort($station) . ')',
-                'set("harbor.bind_addrs",["0.0.0.0"])',
-                '',
-                'set("tag.encodings",["UTF-8","ISO-8859-1"])',
-                'set("encoder.encoder.export",["artist","title","album","song"])',
-                '',
-                'setenv("TZ", "' . self::cleanUpString($station->getTimezone()) . '")',
-                '',
-                'azuracast_api_auth = ref "' . self::cleanUpString($station->getAdapterApiKey()) . '"',
-                'ignore(azuracast_api_auth)',
-                '',
-            ]
+        $telnetBindAddr = $this->environment->isDocker() ? '0.0.0.0' : '127.0.0.1';
+        $telnetPort = $this->liquidsoap->getTelnetPort($station);
+
+        $stationTz = self::cleanUpString($station->getTimezone());
+        $stationApiAuth = self::cleanUpString($station->getAdapterApiKey());
+
+        $event->appendBlock(
+            <<<EOF
+        set("init.daemon", false)
+        set("init.daemon.pidfile.path","${pidfile}")
+        set("log.stdout", true)
+        set("log.file", false)
+        set("server.telnet",true)
+        set("server.telnet.bind_addr","${telnetBindAddr}")
+        set("server.telnet.port", ${telnetPort})
+        set("harbor.bind_addrs",["0.0.0.0"])
+
+        set("tag.encodings",["UTF-8","ISO-8859-1"])
+        set("encoder.encoder.export",["artist","title","album","song"])
+
+        setenv("TZ", "${stationTz}")
+
+        azuracast_api_auth = ref "${stationApiAuth}"
+        ignore(azuracast_api_auth)
+
+        autodj_is_loading = ref true
+        ignore(autodj_is_loading)
+
+        autodj_ping_attempts = ref 0
+        ignore(autodj_ping_attempts)
+        EOF
         );
     }
 
@@ -400,8 +418,7 @@ class ConfigWriter implements EventSubscriberInterface
             [
                 '# Standard Playlists',
                 sprintf(
-                    'radio = random(id="%s", weights=[%s], [%s])',
-                    self::prefixVarName($station, 'standard_playlists'),
+                    'radio = random(id="standard_playlists", weights=[%s], [%s])',
                     implode(', ', $genPlaylistWeights),
                     implode(', ', $genPlaylistVars)
                 ),
@@ -415,8 +432,7 @@ class ConfigWriter implements EventSubscriberInterface
                 [
                     '# Standard Schedule Switches',
                     sprintf(
-                        'radio = switch(id="%s", track_sensitive=true, [ %s ])',
-                        self::prefixVarName($station, 'schedule_switch'),
+                        'radio = switch(id="schedule_switch", track_sensitive=true, [ %s ])',
                         implode(', ', $scheduleSwitches)
                     ),
                 ]
@@ -436,7 +452,7 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendBlock(
                 <<< EOF
             # AutoDJ Next Song Script
-            def azuracast_next_song() =
+            def autodj_next_song() =
                 uri = {$nextsongCommand}
                 log("AzuraCast Raw Response: #{uri}")
 
@@ -451,28 +467,49 @@ class ConfigWriter implements EventSubscriberInterface
                    end
                 end
             end
-            EOF
-            );
 
-            $event->appendLines(
+            # Delayed ping for AutoDJ Next Song
+            def wait_for_next_song(autodj)
+                autodj_ping_attempts := !autodj_ping_attempts + 1
+                delay = ref 0.5
+
+                if source.is_ready(!autodj) then
+                    log("AutoDJ is ready!")
+
+                    autodj_is_loading := false
+                    delay := -1.0
+                elsif !autodj_ping_attempts > 200 then
+                    log("AutoDJ could not be initialized within the specified timeout.")
+
+                    autodj_is_loading := false
+                    shutdown()
+
+                    delay := -1.0
+                end
+
+                !delay
+            end
+
+            dynamic = request.dynamic.list(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
+            dynamic = audio_to_stereo(id="stereo_next_song", dynamic)
+            dynamic = cue_cut(id="cue_next_song", dynamic)
+
+            dynamic_startup = fallback(
+                id = "dynamic_startup",
+                track_sensitive = false,
                 [
-                    sprintf(
-                        'dynamic = request.dynamic.list(id="%s", timeout=20., retry_delay=3., azuracast_next_song)',
-                        self::prefixVarName($station, 'next_song')
-                    ),
-                    sprintf(
-                        'dynamic = audio_to_stereo(id="%s", dynamic)',
-                        self::prefixVarName($station, 'stereo_next_song')
-                    ),
-                    sprintf(
-                        'dynamic = cue_cut(id="%s", dynamic)',
-                        self::prefixVarName($station, 'cue_next_song')
-                    ),
-                    sprintf(
-                        'radio = fallback(id="%s", track_sensitive = true, [dynamic, radio])',
-                        self::prefixVarName($station, 'autodj_fallback')
-                    ),
+                    dynamic,
+                    at(
+                        fun()-> !autodj_is_loading,
+                        blank(id = "autodj_startup_blank", duration = 120.)
+                    )
                 ]
+            )
+            radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
+
+            ref_dynamic = ref dynamic;
+            add_timeout(0.25,fun()->wait_for_next_song(ref_dynamic))
+            EOF
             );
         }
 
@@ -483,27 +520,22 @@ class ConfigWriter implements EventSubscriberInterface
                 [
                     '# Interrupting Schedule Switches',
                     sprintf(
-                        'radio = switch(id="%s", track_sensitive=false, [ %s ])',
-                        self::prefixVarName($station, 'interrupt_switch'),
+                        'radio = switch(id="interrupt_switch", track_sensitive=false, [ %s ])',
                         implode(', ', $scheduleSwitchesInterrupting)
                     ),
                 ]
             );
         }
 
-        $event->appendLines(
-            [
-                'requests = request.queue(id="' . self::prefixVarName($station, 'requests') . '")',
-                'requests = audio_to_stereo(id="' . self::prefixVarName($station, 'stereo_requests') . '", requests)',
-                'requests = cue_cut(id="' . self::prefixVarName($station, 'cue_requests') . '", requests)',
-                sprintf(
-                    'radio = fallback(id="%s", track_sensitive = true, [requests, radio])',
-                    self::prefixVarName($station, 'requests_fallback')
-                ),
-                '',
-                'add_skip_command(radio)',
-                '',
-            ]
+        $event->appendBlock(
+            <<< EOF
+        requests = request.queue(id="requests")
+        requests = audio_to_stereo(id="stereo_requests", requests)
+        requests = cue_cut(id="cue_requests", requests)
+
+        radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
+        add_skip_command(radio)
+        EOF
         );
     }
 
@@ -811,7 +843,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $harbor_params = [
             '"' . self::cleanUpString($dj_mount) . '"',
-            'id = "' . self::prefixVarName($station, 'input_streamer') . '"',
+            'id = "input_streamer"',
             'port = ' . $this->liquidsoap->getStreamPort($station),
             'auth = dj_auth',
             'icy = true',
@@ -827,21 +859,20 @@ class ConfigWriter implements EventSubscriberInterface
             $harbor_params[] = 'max = ' . self::toFloat(max($djBuffer + 5, 10));
         }
 
-        $event->appendLines(
-            [
-                '# A Pre-DJ source of radio that can be broadcast if needed',
-                'radio_without_live = radio',
-                'ignore(radio_without_live)',
-                '',
-                '# Live Broadcasting',
-                'live = audio_to_stereo(input.harbor(' . implode(', ', $harbor_params) . '))',
-                'ignore(output.dummy(live, fallible=true))',
-                '',
-                sprintf(
-                    'radio = fallback(id="%s", replay_metadata=false, track_sensitive=false, [live, radio])',
-                    self::prefixVarName($station, 'live_fallback')
-                ),
-            ]
+        $harborParams = implode(', ', $harbor_params);
+
+        $event->appendBlock(
+            <<<EOF
+        # A Pre-DJ source of radio that can be broadcast if needed',
+        radio_without_live = radio
+        ignore(radio_without_live)
+
+        # Live Broadcasting
+        live = audio_to_stereo(input.harbor(${harborParams}))
+        ignore(output.dummy(live, fallible=true))
+
+        radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, [live, radio])
+        EOF
         );
 
         if ($recordLiveStreams) {
@@ -918,8 +949,7 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendLines(
             [
                 sprintf(
-                    'radio = fallback(id="%s", track_sensitive = false, [radio, single(id="error_jingle", "%s")])',
-                    self::prefixVarName($station, 'safe_fallback'),
+                    'radio = fallback(id="safe_fallback", track_sensitive = false, [radio, single(id="error_jingle", "%s")])',
                     $error_file
                 ),
             ]
@@ -1006,7 +1036,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         $output_params = [];
         $output_params[] = $output_format;
-        $output_params[] = 'id="' . self::prefixVarName($station, $idPrefix . $id) . '"';
+        $output_params[] = 'id="' . $idPrefix . $id . '"';
 
         $output_params[] = 'host = "' . self::cleanUpString($mount->getAutodjHost()) . '"';
         $output_params[] = 'port = ' . (int)$mount->getAutodjPort();
@@ -1100,16 +1130,24 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendLines($ls_config);
     }
 
-    /**
-     * Filter a user-supplied string to be a valid LiquidSoap config entry.
-     *
-     * @param string $string
-     *
-     * @return mixed
-     */
-    public static function cleanUpString($string)
+    public function writePostBroadcastConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string);
+        $this->writeCustomConfigurationSection($event, self::CUSTOM_BOTTOM);
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getCustomConfigurationSections(): array
+    {
+        return [
+            self::CUSTOM_TOP,
+            self::CUSTOM_PRE_PLAYLISTS,
+            self::CUSTOM_PRE_FADE,
+            self::CUSTOM_PRE_LIVE,
+            self::CUSTOM_PRE_BROADCAST,
+            self::CUSTOM_BOTTOM,
+        ];
     }
 
     /**
@@ -1129,6 +1167,17 @@ class ConfigWriter implements EventSubscriberInterface
         $mins = $time_code % 100;
 
         return $hours . 'h' . $mins . 'm';
+    }
+
+    /**
+     * Filter a user-supplied string to be a valid LiquidSoap config entry.
+     *
+     * @param string|null $string
+     *
+     */
+    public static function cleanUpString(?string $string): string
+    {
+        return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string ?? '');
     }
 
     /**
@@ -1152,20 +1201,5 @@ class ConfigWriter implements EventSubscriberInterface
         $str = str_replace(['%', '-'], ['', '_'], $str);
 
         return $str;
-    }
-
-    /**
-     * Given an original name and a station, return a filtered prefixed variable identifying the station.
-     *
-     * @param Entity\Station $station
-     * @param string $originalName
-     */
-    public static function prefixVarName(Entity\Station $station, string $originalName): string
-    {
-        $shortName = self::cleanUpString($station->getShortName());
-
-        return (!empty($shortName))
-            ? $shortName . '_' . $originalName
-            : 'station_' . $station->getId() . '_' . $originalName;
     }
 }

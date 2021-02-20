@@ -2,17 +2,17 @@
 
 namespace App\Event;
 
+use App\Entity\Settings;
 use App\Entity\Station;
-use App\Environment;
 use App\Http\ServerRequest;
 
 class BuildStationMenu extends AbstractBuildMenu
 {
     protected Station $station;
 
-    public function __construct(ServerRequest $request, Environment $environment, Station $station)
+    public function __construct(ServerRequest $request, Settings $settings, Station $station)
     {
-        parent::__construct($request, $environment);
+        parent::__construct($request, $settings);
 
         $this->station = $station;
     }

@@ -635,6 +635,24 @@ return [
 
             'elements' => [
 
+                'media_storage_location_id' => [
+                    'select',
+                    [
+                        'label' => __('Media Storage Location'),
+                        'choices' => [],
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'recordings_storage_location_id' => [
+                    'select',
+                    [
+                        'label' => __('Live Recordings Storage Location'),
+                        'choices' => [],
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
                 'is_enabled' => [
                     'toggle',
                     [
@@ -655,26 +673,6 @@ return [
                         'description' => __(
                             'The parent directory where station playlist and configuration files are stored. Leave blank to use default directory.'
                         ),
-                        'form_group_class' => 'col-md-6',
-                    ],
-                ],
-
-                'media_storage_location_id' => [
-                    'select',
-                    [
-                        'label' => __('Media Storage Location'),
-                        'choices' => [],
-                        'label_class' => 'advanced',
-                        'form_group_class' => 'col-md-6',
-                    ],
-                ],
-
-                'recordings_storage_location_id' => [
-                    'select',
-                    [
-                        'label' => __('Live Recordings Storage Location'),
-                        'choices' => [],
-                        'label_class' => 'advanced',
                         'form_group_class' => 'col-md-6',
                     ],
                 ],

@@ -1,14 +1,24 @@
 <?php
-$this->layout('main', [
-    'title' => __('Playlists'),
-    'manual' => true,
-]);
+
+$this->layout(
+    'main',
+    [
+        'title' => __('Playlists'),
+        'manual' => true,
+    ]
+);
 
 /** @var \App\Assets $assets */
 $assets->load('StationPlaylists')
-    ->addInlineJs($this->fetch('stations/playlists/index.js', [
-        'station_tz' => $station_tz,
-    ]));
+    ->addInlineJs(
+        $this->fetch(
+            'stations/playlists/index.js',
+            [
+                'station_tz' => $station_tz,
+                'enableAdvancedFeatures' => $enableAdvancedFeatures,
+            ]
+        )
+    );
 ?>
 
 <div id="station-playlist"></div>

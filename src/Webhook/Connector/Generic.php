@@ -2,23 +2,27 @@
 
 namespace App\Webhook\Connector;
 
-use App\Entity\StationWebhook;
-use App\Event\SendWebhooks;
+use App\Entity;
 use GuzzleHttp\Exception\TransferException;
 
 class Generic extends AbstractConnector
 {
     public const NAME = 'generic';
 
-    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
-    {
+    public function dispatch(
+        Entity\Station $station,
+        Entity\StationWebhook $webhook,
+        Entity\Api\NowPlaying $np,
+        array $triggers,
+        bool $isStandalone
+    ): bool {
         $config = $webhook->getConfig();
 
         $webhook_url = $this->getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
             $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return;
+            return false;
         }
 
         try {
@@ -26,7 +30,7 @@ class Generic extends AbstractConnector
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
-                'json' => $event->getNowPlaying(),
+                'json' => $np,
             ];
 
             if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {
@@ -36,7 +40,7 @@ class Generic extends AbstractConnector
                 ];
             }
 
-            $response = $this->http_client->request('POST', $webhook_url, $request_options);
+            $response = $this->httpClient->request('POST', $webhook_url, $request_options);
 
             $this->logger->debug(
                 sprintf('Generic webhook returned code %d', $response->getStatusCode()),
@@ -44,6 +48,9 @@ class Generic extends AbstractConnector
             );
         } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from generic webhook (%d): %s', $e->getCode(), $e->getMessage()));
+            return false;
         }
+
+        return true;
     }
 }

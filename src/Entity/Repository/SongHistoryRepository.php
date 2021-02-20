@@ -8,7 +8,6 @@ use App\Entity;
 use App\Environment;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use DateTimeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -246,20 +245,13 @@ class SongHistoryRepository extends Repository
 
     /**
      * @param Entity\Station $station
-     * @param int|DateTimeInterface $start
-     * @param int|DateTimeInterface $end
+     * @param int $start
+     * @param int $end
      *
      * @return mixed[] [int $minimumListeners, int $maximumListeners, float $averageListeners]
      */
-    public function getStatsByTimeRange(Entity\Station $station, $start, $end): array
+    public function getStatsByTimeRange(Entity\Station $station, int $start, int $end): array
     {
-        if ($start instanceof DateTimeInterface) {
-            $start = $start->getTimestamp();
-        }
-        if ($end instanceof DateTimeInterface) {
-            $end = $end->getTimestamp();
-        }
-
         $historyTotals = $this->em->createQuery(
             <<<'DQL'
                 SELECT AVG(sh.listeners_end) AS listeners_avg, MAX(sh.listeners_end) AS listeners_max,

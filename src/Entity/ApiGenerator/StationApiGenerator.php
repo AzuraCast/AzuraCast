@@ -3,6 +3,7 @@
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
+use App\Http\Router;
 use App\Radio\Adapters;
 use Psr\Http\Message\UriInterface;
 
@@ -10,9 +11,12 @@ class StationApiGenerator
 {
     protected Adapters $adapters;
 
-    public function __construct(Adapters $adapters)
+    protected Router $router;
+
+    public function __construct(Adapters $adapters, Router $router)
     {
         $this->adapters = $adapters;
+        $this->router = $router;
     }
 
     public function __invoke(
@@ -30,8 +34,18 @@ class StationApiGenerator
         $response->description = (string)$station->getDescription();
         $response->frontend = (string)$station->getFrontendType();
         $response->backend = (string)$station->getBackendType();
+        $response->url = $station->getUrl();
         $response->is_public = $station->getEnablePublicPage();
         $response->listen_url = $fa->getStreamUrl($station, $baseUri);
+
+        $response->playlist_pls_url = $this->router->named(
+            'public:playlist',
+            ['station_id' => $station->getShortName(), 'format' => 'pls']
+        );
+        $response->playlist_m3u_url = $this->router->named(
+            'public:playlist',
+            ['station_id' => $station->getShortName(), 'format' => 'm3u']
+        );
 
         $mounts = [];
         if ($fa->supportsMounts() && $station->getMounts()->count() > 0) {

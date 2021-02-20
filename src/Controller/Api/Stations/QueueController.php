@@ -20,15 +20,19 @@ class QueueController extends AbstractStationApiCrudController
 
     protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator;
 
+    protected Entity\Repository\StationQueueRepository $queueRepo;
+
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator
+        Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
+        Entity\Repository\StationQueueRepository $queueRepo
     ) {
         parent::__construct($em, $serializer, $validator);
 
         $this->queueApiGenerator = $queueApiGenerator;
+        $this->queueRepo = $queueRepo;
     }
 
     /**
@@ -48,22 +52,18 @@ class QueueController extends AbstractStationApiCrudController
      *
      * @inheritdoc
      */
-    public function listAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function listAction(
+        ServerRequest $request,
+        Response $response
+    ): ResponseInterface {
         $station = $request->getStation();
+        $query = $this->queueRepo->getUpcomingQuery($station);
 
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sq, sp, sm
-                FROM App\Entity\StationQueue sq
-                LEFT JOIN sq.media sm
-                LEFT JOIN sq.playlist sp
-                WHERE sq.station = :station
-                ORDER BY sq.timestamp_cued ASC
-            DQL
-        )->setParameter('station', $station);
-
-        return $this->listPaginatedFromQuery($request, $response, $query);
+        return $this->listPaginatedFromQuery(
+            $request,
+            $response,
+            $query
+        );
     }
 
     /**
@@ -126,6 +126,7 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse->fromParentObject($row);
 
         $apiResponse->autodj_custom_uri = $record->getAutodjCustomUri();
+        $apiResponse->log = $record->getLog();
 
         $apiResponse->links = [
             'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),

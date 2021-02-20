@@ -5,7 +5,7 @@ $props = [
     'locale' => substr($customization->getLocale(), 0, 2),
     'filesUrl' => $router->fromHere('stations:files:index'),
     'stationTimeZone' => $station_tz,
-    'enableAdvancedFeatures' => $environment->enableAdvancedFeatures(),
+    'enableAdvancedFeatures' => $enableAdvancedFeatures,
 ]
 ?>
 var station_playlists;

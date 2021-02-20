@@ -3,6 +3,7 @@
 namespace App\Radio;
 
 use App\Entity;
+use App\Environment;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
@@ -27,13 +28,16 @@ class AutoDJ
 
     protected Scheduler $scheduler;
 
+    protected Environment $environment;
+
     public function __construct(
         EntityManagerInterface $em,
         Entity\Repository\SongHistoryRepository $songHistoryRepo,
         Entity\Repository\StationQueueRepository $queueRepo,
         EventDispatcher $dispatcher,
         Logger $logger,
-        Scheduler $scheduler
+        Scheduler $scheduler,
+        Environment $environment
     ) {
         $this->em = $em;
         $this->songHistoryRepo = $songHistoryRepo;
@@ -41,6 +45,7 @@ class AutoDJ
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
         $this->scheduler = $scheduler;
+        $this->environment = $environment;
     }
 
     /**
@@ -48,66 +53,123 @@ class AutoDJ
      *
      * @param Entity\Station $station
      * @param bool $asAutoDj
+     * @param int $iteration The iteration of the current attempt to
      */
-    public function annotateNextSong(Entity\Station $station, $asAutoDj = false): string
-    {
-        $queueRow = $this->queueRepo->getNextInQueue($station);
-        if (!($queueRow instanceof Entity\StationQueue)) {
+    public function annotateNextSong(
+        Entity\Station $station,
+        bool $asAutoDj = false,
+        int $iteration = 1
+    ): string {
+        if ($iteration > 3) {
+            $this->logger->error(
+                'Too many attempts to get next song; giving up.',
+                [
+                    'station' => [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ],
+                ]
+            );
             return '';
         }
 
-        $this->logger->pushProcessor(function ($record) use ($station) {
-            $record['extra']['station'] = [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
-            ];
-            return $record;
-        });
+        $queueRow = $this->queueRepo->getNextInQueue($station);
 
-        $duration = $queueRow->getDuration() ?? 0;
-        $now = $this->getNowFromCurrentSong($station);
+        // Try to rebuild the queue if it's empty.
+        if (!($queueRow instanceof Entity\StationQueue)) {
+            $this->logger->info(
+                'Queue is empty; rebuilding before attempting to get next song.',
+                [
+                    'station' => [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ],
+                ]
+            );
 
-        $this->logger->debug('Adjusting now based on duration of most recently cued song.', [
-            'song' => $queueRow->getText(),
-            'cued' => (string)$now,
-            'duration' => $duration,
-        ]);
+            $this->buildQueue($station);
+            return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
+        }
 
-        $now = $this->getAdjustedNow($station, $now, $duration);
+        // Check that the song coming up isn't the same song as what's currently being played.
+        $currentSong = $this->songHistoryRepo->getCurrent($station);
+        if (
+            ($currentSong instanceof Entity\SongHistory)
+            && $queueRow->getSongId() === $currentSong->getSongId()
+        ) {
+            $this->em->remove($queueRow);
+            $this->em->flush();
+
+            $this->logger->info(
+                'Queue would play the same song again; removing and attempting to get next song.',
+                [
+                    'station' => [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ],
+                ]
+            );
+
+            return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
+        }
 
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
-
-        $this->buildQueueFromNow($station, $now, true);
-
-        $this->logger->popProcessor();
-
         return $event->buildAnnotations();
     }
 
     public function buildQueue(Entity\Station $station): void
     {
-        $this->logger->pushProcessor(function ($record) use ($station) {
-            $record['extra']['station'] = [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
-            ];
-            return $record;
-        });
+        $this->logger->pushProcessor(
+            function ($record) use ($station) {
+                $record['extra']['station'] = [
+                    'id' => $station->getId(),
+                    'name' => $station->getName(),
+                ];
+                return $record;
+            }
+        );
 
+        // Adjust "now" time from current queue.
         $now = $this->getNowFromCurrentSong($station);
 
-        $this->buildQueueFromNow($station, $now, false);
+        $backendOptions = $station->getBackendConfig();
+        $maxQueueLength = $backendOptions->getAutoDjQueueLength();
+        $stationTz = $station->getTimezoneObject();
+
+        $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
+        $queueLength = count($upcomingQueue);
+
+        foreach ($upcomingQueue as $queueRow) {
+            $queueRow->setTimestampCued($now->getTimestamp());
+            $this->em->persist($queueRow);
+
+            $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
+            $duration = $queueRow->getDuration() ?? 1;
+            $now = $this->getAdjustedNow($station, $timestampCued, $duration);
+        }
+
+        $this->em->flush();
+
+        // Build the remainder of the queue.
+        while ($queueLength < $maxQueueLength) {
+            $now = $this->cueNextSong($station, $now);
+            $queueLength++;
+        }
+
+        $this->em->flush();
+
+        $this->queueRepo->clearDuplicatesInQueue($station);
 
         $this->logger->popProcessor();
     }
 
-    protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, int $duration): CarbonInterface
+    protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
     {
         $backendConfig = $station->getBackendConfig();
         $startNext = $backendConfig->getCrossfadeDuration();
 
-        $now = $now->addSeconds($duration);
+        $now = $now->addSeconds($duration ?? 1);
         return ($duration >= $startNext)
             ? $now->subMilliseconds((int)($startNext * 1000))
             : $now;
@@ -126,73 +188,23 @@ class AutoDJ
         $startTimestamp = $currentSong->getTimestampStart();
         $started = CarbonImmutable::createFromTimestamp($startTimestamp, $stationTz);
 
-        $currentSongDuration = ($currentSong->getDuration() ?? 1);
-        $adjustedNow = $this->getAdjustedNow($station, $started, $currentSongDuration);
-
-        $this->logger->debug(
-            'Got currently playing song. Using start time and duration for initial value of now.',
-            [
-                'song' => $currentSong->getText(),
-                'started' => (string)$started,
-                'duration' => $currentSongDuration,
-            ]
-        );
+        $adjustedNow = $this->getAdjustedNow($station, $started, $currentSong->getDuration());
 
         // Return either the current timestamp (if it's later) or the scheduled end time.
         return max($now, $adjustedNow);
     }
 
-    protected function buildQueueFromNow(
-        Entity\Station $station,
-        CarbonInterface $now,
-        bool $resetTimestampCued
-    ): CarbonInterface {
-        // Adjust "now" time from current queue.
-        $backendOptions = $station->getBackendConfig();
-        $maxQueueLength = $backendOptions->getAutoDjQueueLength();
-        $stationTz = $station->getTimezoneObject();
-
-        $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
-        $queueLength = count($upcomingQueue);
-
-        /*
-         * Calculate now from the end of the queue if the queue has items.
-         * This assumes that the queue should always be full if a new row is added every time a row is removed.
-         * If the queue is empty, then we fall back to the value of now passed in by the caller, which may bor may
-         * not be accurate but is the best we have.
-         */
-        foreach ($upcomingQueue as $queueRow) {
-            if ($resetTimestampCued === true) {
-                $queueRow->setTimestampCued($now->getTimestamp());
-            }
-
-            $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
-            $duration = $queueRow->getDuration() ?? 1;
-            $now = $this->getAdjustedNow($station, $timestampCued, $duration);
-        }
-
-        if ($queueLength >= $maxQueueLength) {
-            $this->logger->debug('AutoDJ queue is already at current max length (' . $maxQueueLength . ').');
-            return $now;
-        }
-
-        // Build the remainder of the queue.
-        while ($queueLength < $maxQueueLength) {
-            $now = $this->cueNextSong($station, $now);
-            $queueLength++;
-        }
-
-        return $now;
-    }
-
     protected function cueNextSong(Entity\Station $station, CarbonInterface $now): CarbonInterface
     {
-        $this->logger->debug('Adding to station queue.', [
-            'now' => (string)$now,
-        ]);
+        $this->logger->debug(
+            'Adding to station queue.',
+            [
+                'now' => (string)$now,
+            ]
+        );
 
         // Push another test handler specifically for this one queue task.
-        $testHandler = new TestHandler(Logger::DEBUG, true);
+        $testHandler = new TestHandler($this->environment->getLogLevel(), true);
         $this->logger->pushHandler($testHandler);
 
         $event = new BuildQueue($station, $now);
@@ -205,8 +217,7 @@ class AutoDJ
             $queueRow->setLog($testHandler->getRecords());
             $this->em->persist($queueRow);
 
-            $duration = $queueRow->getDuration() ?? 1;
-            $now = $this->getAdjustedNow($station, $now, $duration);
+            $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
         }
 
         return $now;

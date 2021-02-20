@@ -3,13 +3,17 @@
         <h2 class="card-title"><?=__('Need Help?')?></h2>
     </div>
     <div class="card-body">
-        <p><?=__('You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.',
-                'https://www.azuracast.com/help/')?></p>
+        <p><?=__(
+                'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.',
+                'https://docs.azuracast.com/en/user-guide/troubleshooting'
+            )?></p>
 
         <p><?=__('If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.')?></p>
 
-        <p><?=__('Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.',
-                ($environment->isDocker() ? 'Docker' : 'Ansible'))?></p>
+        <p><?=__(
+                'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.',
+                ($environment->isDocker() ? 'Docker' : 'Ansible')
+            )?></p>
     </div>
     <div class="card-actions">
         <a class="btn btn-outline-primary" role="button" href="https://github.com/AzuraCast/AzuraCast/issues/new/choose" target="_blank">

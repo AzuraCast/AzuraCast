@@ -2,7 +2,7 @@
 
 namespace App\Webhook\Connector;
 
-use App\Entity\StationWebhook;
+use App\Entity;
 use App\Event\SendWebhooks;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
@@ -17,15 +17,28 @@ class Twitter extends AbstractConnector
 
     protected EntityManagerInterface $em;
 
-    public function __construct(Logger $logger, Client $http_client, EntityManagerInterface $em)
+    public function __construct(Logger $logger, Client $httpClient, EntityManagerInterface $em)
     {
-        parent::__construct($logger, $http_client);
+        parent::__construct($logger, $httpClient);
 
         $this->em = $em;
     }
 
-    public function dispatch(SendWebhooks $event, StationWebhook $webhook): void
+    protected function getRateLimitTime(Entity\StationWebhook $webhook): ?int
     {
+        $config = $webhook->getConfig();
+        $rateLimitSeconds = (int)($config['rate_limit'] ?? 0);
+
+        return max(10, $rateLimitSeconds);
+    }
+
+    public function dispatch(
+        Entity\Station $station,
+        Entity\StationWebhook $webhook,
+        Entity\Api\NowPlaying $np,
+        array $triggers,
+        bool $isStandalone
+    ): bool {
         $config = $webhook->getConfig();
 
         if (
@@ -35,54 +48,44 @@ class Twitter extends AbstractConnector
             || empty($config['token_secret'])
         ) {
             $this->logger->error('Webhook ' . self::NAME . ' is missing necessary configuration. Skipping...');
-            return;
-        }
-
-        // Check rate limit
-
-        $rate_limit_seconds = (int)($config['rate_limit'] ?? 0);
-        if (0 !== $rate_limit_seconds) {
-            $last_tweet = (int)$webhook->getMetadataKey('last_message_sent', 0);
-
-            if ($last_tweet > (time() - $rate_limit_seconds)) {
-                $this->logger->info(sprintf(
-                    'A tweet was sent less than %d seconds ago. Skipping...',
-                    $rate_limit_seconds
-                ));
-                return;
-            }
+            return false;
         }
 
         // Set up Twitter OAuth
-
         /** @var HandlerStack $stack */
-        $stack = clone $this->http_client->getConfig('handler');
+        $stack = clone $this->httpClient->getConfig('handler');
 
-        $middleware = new Oauth1([
-            'consumer_key' => trim($config['consumer_key']),
-            'consumer_secret' => trim($config['consumer_secret']),
-            'token' => trim($config['token']),
-            'token_secret' => trim($config['token_secret']),
-        ]);
+        $middleware = new Oauth1(
+            [
+                'consumer_key' => trim($config['consumer_key']),
+                'consumer_secret' => trim($config['consumer_secret']),
+                'token' => trim($config['token']),
+                'token_secret' => trim($config['token_secret']),
+            ]
+        );
         $stack->push($middleware);
 
         $raw_vars = [
             'message' => $config['message'] ?? '',
         ];
 
-        $vars = $this->replaceVariables($raw_vars, $event->getNowPlaying());
+        $vars = $this->replaceVariables($raw_vars, $np);
 
         // Dispatch webhook
         $this->logger->debug('Posting to Twitter...');
 
         try {
-            $response = $this->http_client->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', [
-                'auth' => 'oauth',
-                'handler' => $stack,
-                'form_params' => [
-                    'status' => $vars['message'],
-                ],
-            ]);
+            $response = $this->httpClient->request(
+                'POST',
+                'https://api.twitter.com/1.1/statuses/update.json',
+                [
+                    'auth' => 'oauth',
+                    'handler' => $stack,
+                    'form_params' => [
+                        'status' => $vars['message'],
+                    ],
+                ]
+            );
 
             $this->logger->debug(
                 sprintf('Twitter returned code %d', $response->getStatusCode()),
@@ -90,10 +93,9 @@ class Twitter extends AbstractConnector
             );
         } catch (TransferException $e) {
             $this->logger->error(sprintf('Error from Twitter (%d): %s', $e->getCode(), $e->getMessage()));
+            return false;
         }
 
-        $webhook->setMetadataKey('last_message_sent', time());
-        $this->em->persist($webhook);
-        $this->em->flush();
+        return true;
     }
 }

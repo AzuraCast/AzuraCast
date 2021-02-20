@@ -40,7 +40,7 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker
 
-VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/etc/letsencrypt", "/var/azuracast/sftpgo/persist"]
+VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist"]
 
 #
 # END Operations as `azuracast` user

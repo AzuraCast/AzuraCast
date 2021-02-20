@@ -2,7 +2,7 @@
 
 namespace App\Controller\Stations;
 
-use App\Environment;
+use App\Entity\Repository\SettingsRepository;
 use App\Exception\AdvancedFeatureException;
 use App\Exception\StationUnsupportedException;
 use App\Form\Form;
@@ -13,18 +13,19 @@ use App\Session\Flash;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class EditLiquidsoapConfigController
+class EditLiquidsoapConfigAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
-        Environment $settings
+        SettingsRepository $settingsRepo
     ): ResponseInterface {
         $station = $request->getStation();
         $backend = $request->getStationBackend();
 
-        if (!$settings->enableAdvancedFeatures()) {
+        $settings = $settingsRepo->readSettings();
+        if (!$settings->getEnableAdvancedFeatures()) {
             throw new AdvancedFeatureException();
         }
 
@@ -32,13 +33,7 @@ class EditLiquidsoapConfigController
             throw new StationUnsupportedException();
         }
 
-        $configSections = [
-            Liquidsoap\ConfigWriter::CUSTOM_TOP,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_PLAYLISTS,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_FADE,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_LIVE,
-            Liquidsoap\ConfigWriter::CUSTOM_PRE_BROADCAST,
-        ];
+        $configSections = Liquidsoap\ConfigWriter::getCustomConfigurationSections();
 
         $config = $backend->getEditableConfiguration($station);
 
@@ -96,17 +91,17 @@ class EditLiquidsoapConfigController
             $tok = strtok($tokens);
         }
 
-        $settings = $station->getBackendConfig();
-        $form = new Form($formConfig, ['backend_config' => $settings->toArray()]);
+        $backendConfig = $station->getBackendConfig();
+        $form = new Form($formConfig, ['backend_config' => $backendConfig->toArray()]);
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             $data = $form->getValues();
 
             foreach ($data['backend_config'] as $configKey => $configValue) {
-                $settings[$configKey] = $configValue;
+                $backendConfig[$configKey] = $configValue;
             }
 
-            $station->setBackendConfig($settings);
+            $station->setBackendConfig($backendConfig);
 
             $em->persist($station);
             $em->flush();

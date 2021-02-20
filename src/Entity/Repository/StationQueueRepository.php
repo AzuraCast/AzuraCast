@@ -4,6 +4,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 class StationQueueRepository extends Repository
@@ -64,10 +65,31 @@ class StationQueueRepository extends Repository
      */
     public function getUpcomingQueue(Entity\Station $station): array
     {
+        return $this->getUpcomingQuery($station)->execute();
+    }
+
+    public function getUpcomingQuery(Entity\Station $station): Query
+    {
         return $this->getUpcomingBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 0')
-            ->getQuery()
-            ->execute();
+            ->getQuery();
+    }
+
+    public function clearDuplicatesInQueue(Entity\Station $station): void
+    {
+        $upcomingQueue = $this->getUpcomingQueue($station);
+
+        $lastItem = null;
+        foreach ($upcomingQueue as $queue) {
+            if (null !== $lastItem && $lastItem === $queue->getSongId()) {
+                $this->em->remove($queue);
+                continue;
+            }
+
+            $lastItem = $queue->getSongId();
+        }
+
+        $this->em->flush();
     }
 
     public function getNextInQueue(Entity\Station $station): ?Entity\StationQueue

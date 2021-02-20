@@ -133,31 +133,31 @@ class SongHistory implements SongInterface
     protected $timestamp_end;
 
     /**
-     * @ORM\Column(name="listeners_end", type="smallint", nullable=true)
+     * @ORM\Column(name="listeners_end", type="integer", nullable=true)
      * @var int|null
      */
     protected $listeners_end;
 
     /**
-     * @ORM\Column(name="unique_listeners", type="smallint", nullable=true)
+     * @ORM\Column(name="unique_listeners", type="integer", nullable=true)
      * @var int|null
      */
     protected $unique_listeners;
 
     /**
-     * @ORM\Column(name="delta_total", type="smallint")
+     * @ORM\Column(name="delta_total", type="integer")
      * @var int
      */
     protected $delta_total;
 
     /**
-     * @ORM\Column(name="delta_positive", type="smallint")
+     * @ORM\Column(name="delta_positive", type="integer")
      * @var int
      */
     protected $delta_positive;
 
     /**
-     * @ORM\Column(name="delta_negative", type="smallint")
+     * @ORM\Column(name="delta_negative", type="integer")
      * @var int
      */
     protected $delta_negative;

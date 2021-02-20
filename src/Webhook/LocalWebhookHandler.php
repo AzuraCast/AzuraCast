@@ -4,7 +4,6 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Environment;
-use App\Event\SendWebhooks;
 use App\Service\NChan;
 use GuzzleHttp\Client;
 use Monolog\Logger;
@@ -37,12 +36,12 @@ class LocalWebhookHandler
         $this->settingsRepo = $settingsRepo;
     }
 
-    public function dispatch(SendWebhooks $event): void
-    {
-        $np = $event->getNowPlaying();
-        $station = $event->getStation();
-
-        if ($event->isStandalone()) {
+    public function dispatch(
+        Entity\Station $station,
+        Entity\Api\NowPlaying $np,
+        bool $isStandalone
+    ): void {
+        if ($isStandalone) {
             // Replace the relevant station information in the cache and database.
             $this->logger->debug('Updating NowPlaying cache...');
 

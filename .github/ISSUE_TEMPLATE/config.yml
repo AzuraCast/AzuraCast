@@ -1,0 +1,18 @@
+blank_issues_enabled : false
+
+contact_links :
+  - name : AzuraCast Help Page
+    url : https://docs.azuracast.com/en/user-guide/troubleshooting
+    about : Check the AzuraCast help page for solutions to common problems.
+
+  - name : New Feature Suggestion
+    url : https://features.azuracast.com
+    about : Submit an idea for a new feature via our FeatureUpvote site.
+
+  - name : Submit New Translations
+    url : https://translate.azuracast.com
+    about : Submit and manage translations for the AzuraCast application.
+
+  - name : Join AzuraCast Discord
+    url : https://discord.gg/azuracast
+    about : Join the Discord community for help and support from other station owners.

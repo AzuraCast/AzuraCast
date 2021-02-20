@@ -16,8 +16,8 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
-        "azuracast/azuraforms": "dev-master",
-        "azuracast/nowplaying": "dev-master",
+        "azuracast/azuraforms": "dev-main",
+        "azuracast/nowplaying": "dev-main",
         "bacon/bacon-qr-code": "^2.0",
         "beberlei/doctrineextensions": "^1.2",
         "brick/math": "^0.9",
@@ -63,7 +63,7 @@
         "slim/slim": "^4.2",
         "spatie/flysystem-dropbox": "^1.2",
         "spomky-labs/otphp": "^10.0",
-        "supervisorphp/supervisor": "dev-master",
+        "supervisorphp/supervisor": "dev-main",
         "symfony/cache": "^5.2",
         "symfony/console": "^5",
         "symfony/event-dispatcher": "^5",
@@ -77,7 +77,7 @@
         "symfony/validator": "^5",
         "theiconic/php-ga-measurement-protocol": "^2.9",
         "voku/portable-utf8": "^5.4",
-        "wikimedia/composer-merge-plugin": "dev-feature/composer-v2",
+        "wikimedia/composer-merge-plugin": "dev-master",
         "zircote/swagger-php": "^3"
     },
     "require-dev": {
@@ -109,12 +109,6 @@
         "symfony/polyfill-intl-normalizer": "1.99",
         "symfony/polyfill-mbstring": "1.99"
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/mcaskill/composer-merge-plugin.git"
-        }
-    ],
     "scripts": {
         "cleanup-and-test": [
             "@phpcbf",

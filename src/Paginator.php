@@ -138,7 +138,7 @@ class Paginator
             $results = [];
             $postprocessor = $this->postprocessor;
             foreach ($iterator as $result) {
-                $results[] = $postprocessor($result);
+                $results[] = $postprocessor($result, $this);
             }
         } else {
             $results = iterator_to_array($iterator, false);

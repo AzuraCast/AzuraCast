@@ -75,53 +75,82 @@
         </section>
 
         <section class="card" role="region">
-            <div class="card-header bg-primary-dark">
-                <h3 class="card-title">
-                    <translate key="dashboard_header_stations">Station Overview</translate>
-                </h3>
+            <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
+                <div class="flex-fill">
+                    <h2 class="card-title">
+                        <translate key="dashboard_header_stations">Station Overview</translate>
+                    </h2>
+                </div>
+                <div class="flex-shrink-0" v-if="showAdmin">
+                    <b-button variant="outline-light" size="sm" class="py-2" :href="addStationUrl">
+                        <i class="material-icons" aria-hidden="true">add</i>
+                        <translate key="dashboard_btn_add_station">Add Station</translate>
+                    </b-button>
+                </div>
             </div>
-            <div class="card-actions" v-if="showAdmin">
-                <a class="btn btn-outline-primary" :href="addStationUrl">
-                    <i class="material-icons" aria-hidden="true">add</i>
-                    <translate key="dashboard_btn_add_station">Add Station</translate>
-                </a>
-            </div>
-            <data-table ref="datatable" id="station_playlists" paginated :fields="stationsFields" :responsive="false"
-                        :api-url="stationsUrl">
-                <template v-slot:cell(station)="{ item }">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0 pr-2">
+
+            <b-overlay variant="card" :show="stationsLoading">
+                <div class="card-body py-3" v-if="stationsLoading">
+                    &nbsp;
+                </div>
+                <table class="table table-striped table-responsive mb-0" id="station_dashboard" v-else>
+                    <colgroup>
+                        <col width="5%">
+                        <col width="30%">
+                        <col width="10%">
+                        <col width="40%">
+                        <col width="15%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th class="pr-3">&nbsp;</th>
+                        <th class="pl-2">
+                            <translate key="lang_col_station_name">Station Name</translate>
+                        </th>
+                        <th class="text-center">
+                            <translate key="lang_col_listeners">Listeners</translate>
+                        </th>
+                        <th>
+                            <translate key="lang_col_now_playing">Now Playing</translate>
+                        </th>
+                        <th class="text-right"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="align-middle" v-for="item in stations" :key="item.station.id">
+                        <td class="text-center pr-3">
                             <a class="file-icon btn-audio has-listener" href="#" :data-url="item.station.listen_url"
                                @click.prevent="playAudio(item.station.listen_url)" :title="langPlayPause">
                                 <i class="material-icons lg align-middle" aria-hidden="true">play_circle_filled</i>
                             </a>
-                        </div>
-                        <div class="flex-fill">
+                        </td>
+                        <td class="pl-2">
                             <big>{{ item.station.name }}</big><br>
                             <a :href="item.links.public" target="_blank">
                                 <translate key="dashboard_link_public_page">Public Page</translate>
                             </a>
-                        </div>
-                    </div>
-                </template>
-                <template v-slot:cell(listeners)="{ item }">
-                    <span class="nowplaying-listeners">{{ item.listeners.current }}</span>
-                </template>
-                <template v-slot:cell(now_playing)="{ item }">
-                    <div v-if="item.now_playing.song.title != ''">
-                        <strong><span class="nowplaying-title">{{ item.now_playing.song.title }}</span></strong><br>
-                        <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
-                    </div>
-                    <div v-else>
-                        <strong><span class="nowplaying-title">{{ item.now_playing.song.text }}</span></strong>
-                    </div>
-                </template>
-                <template v-slot:cell(actions)="{ item }">
-                    <a class="btn btn-primary" v-bind:href="item.links.manage">
-                        <translate key="dashboard_btn_manage_station">Manage</translate>
-                    </a>
-                </template>
-            </data-table>
+                        </td>
+                        <td class="text-center">
+                            <span class="nowplaying-listeners">{{ item.listeners.current }}</span>
+                        </td>
+                        <td>
+                            <div v-if="item.now_playing.song.title !== ''">
+                                <strong><span class="nowplaying-title">{{ item.now_playing.song.title }}</span></strong><br>
+                                <span class="nowplaying-artist">{{ item.now_playing.song.artist }}</span>
+                            </div>
+                            <div v-else>
+                                <strong><span class="nowplaying-title">{{ item.now_playing.song.text }}</span></strong>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <a class="btn btn-primary" v-bind:href="item.links.manage">
+                                <translate key="dashboard_btn_manage_station">Manage</translate>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </b-overlay>
         </section>
     </div>
 </template>
@@ -163,20 +192,8 @@ export default {
             },
             notificationsLoading: true,
             notifications: [],
-            stationsFields: [
-                {
-                    key: 'station',
-                    label: this.$gettext('Station Name'),
-                    sortable: true
-                },
-                {
-                    key: 'listeners',
-                    label: this.$gettext('Listeners'),
-                    sortable: true
-                },
-                { key: 'now_playing', label: this.$gettext('Now Playing'), sortable: false },
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false }
-            ]
+            stationsLoading: true,
+            stations: []
         };
     },
     computed: {
@@ -219,7 +236,7 @@ export default {
             console.error(error);
         });
 
-        setTimeout(this.updateNowPlaying, 30000);
+        this.updateNowPlaying();
     },
     methods: {
         toggleCharts () {
@@ -233,8 +250,19 @@ export default {
             this.$eventHub.$emit('player_toggle', url);
         },
         updateNowPlaying () {
-            this.$refs.datatable.refresh();
-            setTimeout(this.updateNowPlaying, 30000);
+            axios.get(this.stationsUrl).then((response) => {
+                this.stationsLoading = false;
+                this.stations = response.data;
+
+                Vue.nextTick(() => {
+                    this.$eventHub.$emit('content_changed');
+                });
+
+                setTimeout(this.updateNowPlaying, 15000);
+            }).catch((error) => {
+                console.error(error);
+                setTimeout(this.updateNowPlaying, 30000);
+            });
         }
     }
 };

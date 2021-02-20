@@ -79,7 +79,7 @@
                             <translate key="lang_form_type_custom">Advanced</translate>
                             <span class="form-text mt-0">
                                 <translate key="lang_form_type_custom_desc">Manually define how this playlist is used in Liquidsoap configuration.</translate>
-                                <a href="https://www.azuracast.com/station-management/playlists/#advanced-playlists" target="_blank">
+                                <a href="https://docs.azuracast.com/en/user-guide/playlists/advanced-playlists" target="_blank">
                                     <translate key="lang_form_type_custom_more">Learn about Advanced Playlists</translate>
                                 </a>
                             </span>

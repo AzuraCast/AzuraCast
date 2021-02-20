@@ -97,6 +97,10 @@ class Icecast extends AbstractFrontend
 
         $certPaths = CertificateLocator::findCertificate();
 
+        $xForwardedFor = $this->environment->isDocker()
+            ? ['172.*.*.*', '192.*.*.*']
+            : '127.0.0.1';
+
         $config = [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
@@ -139,7 +143,7 @@ class Icecast extends AbstractFrontend
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
                 // phpcs:enable
                 'deny-ip' => $this->writeIpBansFile($station),
-                'x-forwarded-for' => $this->environment->isDocker() ? '172.*.*.*' : '127.0.0.1',
+                'x-forwarded-for' => $xForwardedFor,
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
@@ -159,12 +163,20 @@ class Icecast extends AbstractFrontend
                 '@type' => 'normal',
                 'mount-name' => $mount_row->getName(),
                 'charset' => 'UTF8',
-
                 'stream-name' => $station->getName(),
-                'stream-description' => $station->getDescription(),
-                'stream-url' => $station->getUrl(),
-                'genre' => $station->getGenre(),
             ];
+
+            if (!empty($station->getDescription())) {
+                $mount['stream-description'] = $station->getDescription();
+            }
+
+            if (!empty($station->getUrl())) {
+                $mount['stream-url'] = $station->getUrl();
+            }
+
+            if (!empty($station->getGenre())) {
+                $mount['genre'] = $station->getGenre();
+            }
 
             if (!$mount_row->isVisibleOnPublicPages()) {
                 $mount['hidden'] = 1;

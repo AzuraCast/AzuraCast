@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import ProfileStreams, { profileStreamsProps } from './station_profile/ProfileStreams';
+import ProfileStreams from './station_profile/ProfileStreams';
 import ProfileHeader, { profileHeaderProps } from './station_profile/ProfileHeader';
 import ProfileNowPlaying, { profileNowPlayingProps } from './station_profile/ProfileNowPlaying';
 import ProfileSchedule from './station_profile/ProfileSchedule';
@@ -48,6 +48,7 @@ import ProfileFrontend, { profileFrontendProps } from './station_profile/Profile
 import ProfileBackendNone from './station_profile/ProfileBackendNone';
 import ProfileBackend, { profileBackendProps } from './station_profile/ProfileBackend';
 import { BACKEND_NONE, FRONTEND_REMOTE } from './inc/radio_adapters';
+import NowPlaying from './entity/NowPlaying';
 import axios from 'axios';
 
 export default {
@@ -64,7 +65,6 @@ export default {
         ProfileStreams
     },
     mixins: [
-        profileStreamsProps,
         profileHeaderProps,
         profileNowPlayingProps,
         profileRequestsProps,
@@ -81,41 +81,11 @@ export default {
     data () {
         return {
             np: {
+                ...NowPlaying,
                 loading: true,
-                station: {
-                    mounts: [],
-                    remotes: []
-                },
                 services: {
                     backend_running: false,
                     frontend_running: false
-                },
-                now_playing: {
-                    song: {
-                        title: '',
-                        artist: '',
-                        art: false
-                    },
-                    playlist: '',
-                    is_request: false,
-                    duration: 0
-                },
-                listeners: {
-                    current: 0,
-                    unique: 0,
-                    total: 0
-                },
-                live: {
-                    is_live: false,
-                    streamer_name: ''
-                },
-                playing_next: {
-                    song: {
-                        title: '',
-                        artist: '',
-                        art: false
-                    },
-                    playlist: ''
                 },
                 schedule: []
             }
@@ -163,6 +133,10 @@ export default {
                 let np = response.data;
                 np.loading = false;
                 this.np = np;
+
+                Vue.nextTick(() => {
+                    this.$eventHub.$emit('content_changed');
+                });
 
                 setTimeout(this.checkNowPlaying, 15000);
             }).catch((error) => {

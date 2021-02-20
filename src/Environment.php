@@ -33,8 +33,6 @@ class Environment
 
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
 
-    public const ENABLE_ADVANCED_FEATURES = 'ENABLE_ADVANCED_FEATURES';
-
     public const LANG = 'LANG';
     public const SUPPORTED_LOCALES = 'SUPPORTED_LOCALES';
 
@@ -194,15 +192,6 @@ class Environment
         return ($compareVersion >= $version);
     }
 
-    public function enableAdvancedFeatures(): bool
-    {
-        if (!$this->isDocker()) {
-            return true;
-        }
-
-        return (bool)($this->data[self::ENABLE_ADVANCED_FEATURES] ?? true);
-    }
-
     public function getLang(): ?string
     {
         return $this->data[self::LANG];
@@ -273,7 +262,7 @@ class Environment
 
         return $this->isProduction()
             ? LogLevel::NOTICE
-            : LogLevel::DEBUG;
+            : LogLevel::INFO;
     }
 
     /**

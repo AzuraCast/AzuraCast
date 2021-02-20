@@ -349,7 +349,7 @@ export default {
             } else {
                 if (this.paginated) {
                     queryParams.rowCount = ctx.perPage;
-                    queryParams.current = ctx.currentPage;
+                    queryParams.current = (ctx.perPage !== 0) ? ctx.currentPage : 1;
                 } else {
                     queryParams.rowCount = 0;
                 }

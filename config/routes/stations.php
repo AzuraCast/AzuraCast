@@ -32,11 +32,11 @@ return function (App $app) {
                 }
             )->add(new Middleware\Permissions(Acl::STATION_AUTOMATION, true));
 
-            $group->get('/files', Controller\Stations\FilesController::class)
+            $group->get('/files', Controller\Stations\FilesAction::class)
                 ->setName('stations:files:index')
                 ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
-            $group->map(['GET', 'POST'], '/ls_config', Controller\Stations\EditLiquidsoapConfigController::class)
+            $group->map(['GET', 'POST'], '/ls_config', Controller\Stations\EditLiquidsoapConfigAction::class)
                 ->setName('stations:util:ls_config')
                 ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
@@ -51,7 +51,7 @@ return function (App $app) {
                 }
             )->add(new Middleware\Permissions(Acl::STATION_LOGS, true));
 
-            $group->get('/playlists', Controller\Stations\PlaylistsController::class)
+            $group->get('/playlists', Controller\Stations\PlaylistsAction::class)
                 ->setName('stations:playlists:index')
                 ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
@@ -90,7 +90,7 @@ return function (App $app) {
                 ->setName('stations:profile:edit')
                 ->add(new Middleware\Permissions(Acl::STATION_PROFILE, true));
 
-            $group->get('/queue', Controller\Stations\QueueController::class)
+            $group->get('/queue', Controller\Stations\QueueAction::class)
                 ->setName('stations:queue:index')
                 ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
@@ -178,7 +178,7 @@ return function (App $app) {
                 }
             )->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
-            $group->get('/streamers', Controller\Stations\StreamersController::class)
+            $group->get('/streamers', Controller\Stations\StreamersAction::class)
                 ->setName('stations:streamers:index')
                 ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 

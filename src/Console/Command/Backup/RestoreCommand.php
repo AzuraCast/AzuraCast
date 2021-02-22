@@ -80,8 +80,13 @@ class RestoreCommand extends CommandAbstract
             return 1;
         }
 
+        // Drop all preloaded tables prior to running a DB dump backup.
         $conn = $em->getConnection();
         $connParams = $conn->getParams();
+
+        foreach ($conn->fetchFirstColumn('SHOW TABLES') as $table) {
+            $conn->executeQuery('DROP TABLE ' . $conn->quoteIdentifier($table));
+        }
 
         $this->passThruProcess(
             $io,

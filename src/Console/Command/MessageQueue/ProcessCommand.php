@@ -4,6 +4,7 @@ namespace App\Console\Command\MessageQueue;
 
 use App\Console\Command\CommandAbstract;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
+use App\Environment;
 use App\EventDispatcher;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManager;
@@ -20,7 +21,8 @@ class ProcessCommand extends CommandAbstract
         EventDispatcher $eventDispatcher,
         QueueManager $queueManager,
         LoggerInterface $logger,
-        int $runtime = 0,
+        Environment $environment,
+        ?int $runtime = 0,
         ?string $workerName = null
     ): int {
         $logger->notice(
@@ -41,9 +43,13 @@ class ProcessCommand extends CommandAbstract
         $eventDispatcher->addServiceSubscriber(LogWorkerExceptionSubscriber::class);
         $eventDispatcher->addServiceSubscriber(ReloadSettingsMiddleware::class);
 
-        if ($runtime > 0) {
-            $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $logger));
+        if ($runtime <= 0) {
+            $runtime = $environment->isProduction()
+                ? 300
+                : 30;
         }
+
+        $eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener($runtime, $logger));
 
         try {
             $worker = new Worker($receivers, $messageBus, $eventDispatcher, $logger);

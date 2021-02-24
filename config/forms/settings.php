@@ -224,6 +224,95 @@ return [
             ],
         ],
 
+        'mail' => [
+            'tab' => 'services',
+            'legend' => __('E-mail Delivery Service'),
+            'description' => __('Used for "Forgot Password" functionality, web hooks and other functions.'),
+            'use_grid' => true,
+
+            'elements' => [
+
+                'mailEnabled' => [
+                    'toggle',
+                    [
+                        'label' => __('Enable Mail Delivery'),
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => false,
+                        'form_group_class' => 'col-md-12',
+                    ],
+                ],
+
+                'mailSenderName' => [
+                    'text',
+                    [
+                        'label' => __('Sender Name'),
+                        'default' => 'AzuraCast',
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'mailSenderEmail' => [
+                    'email',
+                    [
+                        'label' => __('Sender E-mail Address'),
+                        'required' => false,
+                        'default' => '',
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'mailSmtpHost' => [
+                    'text',
+                    [
+                        'label' => __('SMTP Host'),
+                        'default' => '',
+                        'form_group_class' => 'col-md-4',
+                    ],
+                ],
+
+                'mailSmtpPort' => [
+                    'number',
+                    [
+                        'label' => __('SMTP Port'),
+                        'default' => 465,
+                        'form_group_class' => 'col-md-3',
+                    ],
+                ],
+
+                'mailSmtpSecure' => [
+                    'toggle',
+                    [
+                        'label' => __('Use Secure (TLS) SMTP Connection'),
+                        'description' => __('Usually enabled for port 465, disabled for ports 587 or 25.'),
+
+                        'selected_text' => __('Yes'),
+                        'deselected_text' => __('No'),
+                        'default' => true,
+                        'form_group_class' => 'col-md-5',
+                    ],
+                ],
+
+                'mailSmtpUsername' => [
+                    'text',
+                    [
+                        'label' => __('SMTP Username'),
+                        'default' => '',
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'mailSmtpPassword' => [
+                    'password',
+                    [
+                        'label' => __('SMTP Password'),
+                        'default' => '',
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+            ],
+        ],
+
         'thirdPartyServices' => [
             'tab' => 'services',
             'use_grid' => true,

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Router;
 use App\Http\ServerRequest;
 use DI\FactoryInterface;
 use Doctrine\Inflector\InflectorFactory;
@@ -16,24 +17,18 @@ class View extends Engine
 {
     protected Assets $assets;
 
+    protected ?ServerRequestInterface $request = null;
+
     public function __construct(
         FactoryInterface $factory,
         Environment $environment,
         EventDispatcher $dispatcher,
         Version $version,
-        ServerRequestInterface $request
+        ?ServerRequestInterface $request = null
     ) {
         parent::__construct($environment->getViewsDirectory(), 'phtml');
 
         // Add non-request-dependent content.
-        $this->addData(
-            [
-                'environment' => $environment,
-                'version' => $version,
-            ]
-        );
-
-        // Add request-dependent content.
         $this->assets = $factory->make(
             Assets::class,
             [
@@ -43,16 +38,34 @@ class View extends Engine
 
         $this->addData(
             [
-                'request' => $request,
-                'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
-                'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
-                'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
-                'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
-                'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-                'user' => $request->getAttribute(ServerRequest::ATTR_USER),
+                'environment' => $environment,
+                'version' => $version,
                 'assets' => $this->assets,
             ]
         );
+
+        // Add request-dependent content.
+        $this->request = $request;
+
+        if ($request instanceof ServerRequestInterface) {
+            $this->addData(
+                [
+                    'request' => $request,
+                    'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
+                    'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
+                    'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
+                    'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
+                    'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
+                    'user' => $request->getAttribute(ServerRequest::ATTR_USER),
+                ]
+            );
+        } else {
+            $this->addData(
+                [
+                    'router' => $factory->make(Router::class),
+                ]
+            );
+        }
 
         $this->registerFunction(
             'escapeJs',

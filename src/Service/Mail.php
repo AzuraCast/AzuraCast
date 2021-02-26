@@ -3,11 +3,11 @@
 namespace App\Service;
 
 use App\Entity;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Smtp;
-use Laminas\Mail\Transport\SmtpOptions;
-use Laminas\Mail\Transport\TransportInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Swift_Message;
+use Swift_SmtpTransport;
+use Swift_Transport;
 
 class Mail
 {
@@ -50,54 +50,52 @@ class Mail
         return true;
     }
 
-    public function createMessage(): Message
+    public function createMessage(): Swift_Message
     {
         if (!$this->isEnabled()) {
-            throw new \RuntimeException('SMTP mail is currently disabled for this installation.');
+            throw new RuntimeException('SMTP mail is currently disabled for this installation.');
         }
 
         $settings = $this->settingsRepo->readSettings();
 
-        $message = new Message();
-        $message->addFrom(
+        $message = new Swift_Message();
+        $message->setFrom(
             $settings->getMailSenderEmail(),
             $settings->getMailSenderName()
         );
-        $message->setEncoding('UTF-8');
+        $message->setCharset('UTF-8');
 
         return $message;
     }
 
-    public function sendMessage(Message $message): void
+    public function sendMessage(Swift_Message $message): void
     {
         $transport = $this->getTransport();
         $transport->send($message);
     }
 
-    protected function getTransport(): TransportInterface
+    protected function getTransport(): Swift_Transport
     {
         if (!$this->isEnabled()) {
-            throw new \RuntimeException('SMTP mail is currently disabled for this installation.');
+            throw new RuntimeException('SMTP mail is currently disabled for this installation.');
         }
 
         $settings = $this->settingsRepo->readSettings();
 
-        $options = [
-            'name' => $settings->getMailSmtpHost(),
-            'host' => $settings->getMailSmtpHost(),
-            'port' => $settings->getMailSmtpPort(),
-        ];
+        $transport = new Swift_SmtpTransport(
+            $settings->getMailSmtpHost(),
+            $settings->getMailSmtpPort()
+        );
 
         if ($settings->getMailSmtpSecure()) {
-            $options['connection_config']['ssl'] = 'tls';
+            $transport->setEncryption('tls');
         }
 
         if (!empty($settings->getMailSmtpUsername())) {
-            $options['connection_class'] = 'plain';
-            $options['connection_config']['username'] = $settings->getMailSmtpUsername();
-            $options['connection_config']['password'] = $settings->getMailSmtpPassword();
+            $transport->setUsername($settings->getMailSmtpUsername());
+            $transport->setPassword($settings->getMailSmtpPassword());
         }
 
-        return new Smtp(new SmtpOptions($options));
+        return $transport;
     }
 }

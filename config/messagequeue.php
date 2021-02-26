@@ -17,4 +17,6 @@ return [
     Message\RunSyncTaskMessage::class => App\Sync\Runner::class,
 
     Message\DispatchWebhookMessage::class => App\Webhook\Dispatcher::class,
+
+    Message\ForgotPasswordMessage::class => App\Mail\ForgotPasswordMail::class,
 ];

@@ -71,6 +71,10 @@ return function (App $app) {
         ->setName('account:login:2fa')
         ->add(Middleware\EnableView::class);
 
+    $app->map(['GET', 'POST'], '/forgot', Controller\Frontend\Account\ForgotPasswordAction::class)
+        ->setName('account:forgot')
+        ->add(Middleware\EnableView::class);
+
     $app->group(
         '/setup',
         function (RouteCollectorProxy $group) {

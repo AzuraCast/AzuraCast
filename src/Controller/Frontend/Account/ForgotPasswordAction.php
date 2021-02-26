@@ -2,32 +2,33 @@
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity\Repository\UserRepository;
-use App\Entity\User;
+use App\Entity;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Message\ForgotPasswordMessage;
 use App\RateLimit;
-use App\Service\Mail;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class ForgotPasswordAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        UserRepository $userRepo,
-        MessageBus $messageBus,
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\UserRepository $userRepo,
+        Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
         RateLimit $rateLimit,
-        Mail $mail
+        MailerInterface $mailer
     ): ResponseInterface {
         $flash = $request->getFlash();
         $view = $request->getView();
 
-        if (!$mail->isEnabled()) {
+        $settings = $settingsRepo->readSettings();
+        if (!$settings->getMailEnabled()) {
             return $view->renderToResponse($response, 'frontend/account/forgot_disabled');
         }
 
@@ -52,12 +53,24 @@ class ForgotPasswordAction
             $email = $request->getParsedBodyParam('email', '');
             $user = $userRepo->findByEmail($email);
 
-            if ($user instanceof User) {
-                $message = new ForgotPasswordMessage();
-                $message->userId = $user->getId();
-                $message->locale = $request->getLocale()->getLocale();
+            if ($user instanceof Entity\User) {
+                $email = new Email();
+                $email->from(new Address($settings->getMailSenderEmail(), $settings->getMailSenderName()));
+                $email->to($user->getEmail());
 
-                $messageBus->dispatch($message);
+                $email->subject(__('Account Recovery Link'));
+
+                $loginToken = $loginTokenRepo->createToken($user);
+                $email->text(
+                    $view->render(
+                        'mail/forgot',
+                        [
+                            'token' => (string)$loginToken,
+                        ]
+                    )
+                );
+
+                $mailer->send($email);
             }
 
             $flash->addMessage(

@@ -365,6 +365,73 @@ return [
         );
     },
 
+    Symfony\Component\Messenger\MessageBusInterface::class => DI\get(
+        Symfony\Component\Messenger\MessageBus::class
+    ),
+
+    // Mail functionality
+    Symfony\Component\Mailer\Transport\TransportInterface::class => function (
+        App\Entity\Repository\SettingsRepository $settingsRepo,
+        App\EventDispatcher $eventDispatcher,
+        Monolog\Logger $logger
+    ) {
+        $settings = $settingsRepo->readSettings();
+
+        if ($settings->getMailEnabled()) {
+            $requiredSettings = [
+                'mailSenderEmail' => $settings->getMailSenderEmail(),
+                'mailSmtpHost' => $settings->getMailSmtpHost(),
+                'mailSmtpPort' => $settings->getMailSmtpPort(),
+            ];
+
+            $hasAllSettings = true;
+            foreach ($requiredSettings as $settingKey => $setting) {
+                if (empty($setting)) {
+                    $hasAllSettings = false;
+                    break;
+                }
+            }
+
+            if ($hasAllSettings) {
+                $transport = new Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
+                    $settings->getMailSmtpHost(),
+                    $settings->getMailSmtpPort(),
+                    $settings->getMailSmtpSecure(),
+                    $eventDispatcher,
+                    $logger
+                );
+
+                if (!empty($settings->getMailSmtpUsername())) {
+                    $transport->setUsername($settings->getMailSmtpUsername());
+                    $transport->setPassword($settings->getMailSmtpPassword());
+                }
+
+                return $transport;
+            }
+        }
+
+        return new Symfony\Component\Mailer\Transport\NullTransport(
+            $eventDispatcher,
+            $logger
+        );
+    },
+
+    Symfony\Component\Mailer\Mailer::class => function (
+        Symfony\Component\Mailer\Transport\TransportInterface $transport,
+        Symfony\Component\Messenger\MessageBus $messageBus,
+        App\EventDispatcher $eventDispatcher
+    ) {
+        return new Symfony\Component\Mailer\Mailer(
+            $transport,
+            $messageBus,
+            $eventDispatcher
+        );
+    },
+
+    Symfony\Component\Mailer\MailerInterface::class => DI\get(
+        Symfony\Component\Mailer\Mailer::class
+    ),
+
     // Supervisor manager
     Supervisor\Supervisor::class => function (Environment $settings, Psr\Log\LoggerInterface $logger) {
         $client = new fXmlRpc\Client(

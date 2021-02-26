@@ -5,13 +5,10 @@ namespace App;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Service\NChan;
-use Gettext\Translator;
-use Locale;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Customization
 {
-    public const DEFAULT_LOCALE = 'en_US.UTF-8';
     public const DEFAULT_THEME = 'light';
 
     public const THEME_LIGHT = 'light';
@@ -23,7 +20,7 @@ class Customization
 
     protected Environment $environment;
 
-    protected string $locale = self::DEFAULT_LOCALE;
+    protected Locale $locale;
 
     protected string $theme = self::DEFAULT_THEME;
 
@@ -44,8 +41,6 @@ class Customization
         // Register current user
         $this->user = $request->getAttribute(ServerRequest::ATTR_USER);
 
-        $this->locale = $this->initLocale($request);
-
         // Register current theme
         $queryParams = $request->getQueryParams();
 
@@ -59,86 +54,14 @@ class Customization
             }
         }
 
-        // Set up the PHP translator
-        $translator = new Translator();
-
-        $locale_base = $environment->getBaseDirectory() . '/resources/locale/compiled';
-        $locale_path = $locale_base . '/' . $this->locale . '.php';
-
-        if (file_exists($locale_path)) {
-            $translator->loadTranslations($locale_path);
-        }
-
-        $translator->register();
-
-        // Register translation superglobal functions
-        setlocale(LC_ALL, $this->locale);
+        // Register locale
+        $this->locale = new Locale($environment, $request);
+        $this->locale->register();
     }
 
-    /**
-     * Return the user-customized, browser-specified or system default locale.
-     *
-     * @param ServerRequestInterface|null $request
-     */
-    protected function initLocale(?ServerRequestInterface $request = null): string
-    {
-        $supported_locales = $this->environment->getSupportedLocales();
-        $try_locales = [];
-
-        // Prefer user-based profile locale.
-        if ($this->user !== null && !empty($this->user->getLocale()) && 'default' !== $this->user->getLocale()) {
-            $try_locales[] = $this->user->getLocale();
-        }
-
-        // Attempt to load from browser headers.
-        if ($request instanceof ServerRequestInterface) {
-            $server_params = $request->getServerParams();
-            $browser_locale = Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
-
-            if (!empty($browser_locale)) {
-                if (2 === strlen($browser_locale)) {
-                    $browser_locale = strtolower($browser_locale) . '_' . strtoupper($browser_locale);
-                }
-
-                $try_locales[] = substr($browser_locale, 0, 5) . '.UTF-8';
-            }
-        }
-
-        // Attempt to load from environment variable.
-        $envLocale = $this->environment->getLang();
-        if (!empty($envLocale)) {
-            $try_locales[] = substr($envLocale, 0, 5) . '.UTF-8';
-        }
-
-        foreach ($try_locales as $exact_locale) {
-            // Prefer exact match.
-            if (isset($supported_locales[$exact_locale])) {
-                return $exact_locale;
-            }
-
-            // Use approximate match if available.
-            foreach ($supported_locales as $lang_code => $lang_name) {
-                if (strpos($exact_locale, substr($lang_code, 0, 2)) === 0) {
-                    return $lang_code;
-                }
-            }
-        }
-
-        // Default to system option.
-        return self::DEFAULT_LOCALE;
-    }
-
-    public function getLocale(): string
+    public function getLocale(): Locale
     {
         return $this->locale;
-    }
-
-    /**
-     * @return string A shortened locale (minus .UTF-8) for use in Vue.
-     */
-    public function getVueLocale(): string
-    {
-        return json_encode(substr($this->getLocale(), 0, 5), JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -234,14 +157,5 @@ class Customization
         }
 
         return $this->settings->getEnableWebsockets();
-    }
-
-    /**
-     * Initialize the CLI without instantiating the Doctrine DB stack (allowing cache clearing, etc.).
-     */
-    public static function initCli(): void
-    {
-        $translator = new Translator();
-        $translator->register();
     }
 }

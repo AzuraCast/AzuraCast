@@ -2,8 +2,7 @@
 
 namespace App\Controller\Frontend\Account;
 
-use App\Entity\Repository\SettingsRepository;
-use App\Entity\User;
+use App\Entity;
 use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -20,7 +19,8 @@ class LoginAction
         Response $response,
         EntityManagerInterface $em,
         RateLimit $rateLimit,
-        SettingsRepository $settingsRepo
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Entity\Repository\UserLoginTokenRepository $loginTokenRepo
     ): ResponseInterface {
         $auth = $request->getAuth();
         $acl = $request->getAcl();
@@ -64,7 +64,7 @@ class LoginAction
 
             $user = $auth->authenticate($request->getParam('username'), $request->getParam('password'));
 
-            if ($user instanceof User) {
+            if ($user instanceof Entity\User) {
                 // If user selects "remember me", extend the cookie/session lifetime.
                 $session = $request->getSession();
                 if ($session instanceof SessionCookiePersistenceInterface) {

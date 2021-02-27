@@ -75,6 +75,10 @@ return function (App $app) {
         ->setName('account:forgot')
         ->add(Middleware\EnableView::class);
 
+    $app->map(['GET', 'POST'], '/recover/{token}', Controller\Frontend\Account\RecoverAction::class)
+        ->setName('account:recover')
+        ->add(Middleware\EnableView::class);
+
     $app->group(
         '/setup',
         function (RouteCollectorProxy $group) {

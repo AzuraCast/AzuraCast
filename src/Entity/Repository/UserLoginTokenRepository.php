@@ -18,9 +18,20 @@ class UserLoginTokenRepository extends AbstractSplitTokenRepository
         return $token;
     }
 
+    public function revokeForUser(Entity\User $user): void
+    {
+        $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\UserLoginToken ult
+                WHERE ult.user = :user
+            DQL
+        )->setParameter('user', $user)
+            ->execute();
+    }
+
     public function cleanup(): void
     {
-        $threshold = time()-86400; // One day
+        $threshold = time() - 86400; // One day
 
         $this->em->createQuery(
             <<<'DQL'
@@ -29,5 +40,4 @@ class UserLoginTokenRepository extends AbstractSplitTokenRepository
         )->setParameter('threshold', $threshold)
             ->execute();
     }
-
 }

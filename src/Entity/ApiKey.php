@@ -17,7 +17,8 @@ use JsonSerializable;
  */
 class ApiKey implements JsonSerializable
 {
-    use Traits\HasSplitTokenFields, Traits\TruncateStrings;
+    use Traits\HasSplitTokenFields;
+    use Traits\TruncateStrings;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")

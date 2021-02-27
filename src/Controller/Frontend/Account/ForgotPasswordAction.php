@@ -41,7 +41,8 @@ class ForgotPasswordAction
                         '<b>%s</b><br>%s',
                         __('Too many forgot password attempts'),
                         __(
-                            'You have attempted to reset your password too many times. Please wait 30 seconds and try again.'
+                            'You have attempted to reset your password too many times. Please wait '
+                            . '30 seconds and try again.'
                         )
                     ),
                     Flash::ERROR
@@ -78,7 +79,8 @@ class ForgotPasswordAction
                     '<b>%s</b><br>%s',
                     __('Account recovery e-mail sent.'),
                     __(
-                        'If the e-mail address you provided is in the system, check your inbox for a password reset message.'
+                        'If the e-mail address you provided is in the system, check your inbox '
+                        . 'for a password reset message.'
                     )
                 ),
                 Flash::SUCCESS

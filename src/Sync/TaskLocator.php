@@ -34,6 +34,7 @@ class TaskLocator
             GetSyncTasks::SYNC_LONG => [
                 Task\RunAnalyticsTask::class,
                 Task\RunAutomatedAssignmentTask::class,
+                Task\CleanupLoginTokensTask::class,
                 Task\CleanupHistoryTask::class,
                 Task\CleanupStorageTask::class,
                 Task\RotateLogsTask::class,

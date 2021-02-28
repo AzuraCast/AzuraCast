@@ -5,15 +5,21 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-(There have been no new features in the rolling release since the last stable version.)
+- **Self-Service Password Reset**: If SMTP is configured properly in the system settings page, users can now request a
+  password reset directly from the login page instead of requiring administrator intervention. The password reset
+  functionality creates a single-time-use login token that can be used to reset the user's password and log them in
+  once.
 
 ## Code Quality/Technical Changes
 
-(There have been no technical changes in the rolling release since the last stable version.)
+- Logging has been improved for critical errors (i.e. "out of memory" or "execution time exceeded").
+
+- We have improved the visibility and usability of our password strength meter where it is used.
 
 ## Bug Fixes
 
-(There have been no bug fixes in the rolling release since the last stable version.)
+- We have identified an issue that would prevent backups from older than a few months ago from restoring correctly; this
+  issue has been resolved, so backups should now restore without any issue regardless of the backup's age.
 
 ---
 

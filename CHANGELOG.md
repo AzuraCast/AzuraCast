@@ -12,6 +12,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We have removed the "?12345678" cache-busting timestamp query strings appended to the end of stream URLs. These have
+  caused a fair amount of confusion over the years, and with our modern playback controls (and with modern browsers)
+  it's far less necessary than it used to be.
+
 - Logging has been improved for critical errors (i.e. "out of memory" or "execution time exceeded").
 
 - We have improved the visibility and usability of our password strength meter where it is used.

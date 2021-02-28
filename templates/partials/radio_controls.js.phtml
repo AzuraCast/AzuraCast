@@ -21,7 +21,7 @@ function redrawPlayIcons () {
         }
 
         let playIcon = $(this).find('i.material-icons');
-        if (null !== currentUrl && $(this).is('[data-url^="' + currentUrl + '"]')) {
+        if (null !== currentUrl && $(this).is('[data-url="' + currentUrl + '"]')) {
             $(this).addClass('playing')
                 .attr('title', pauseText)
                 .attr('aria-label', pauseText);

@@ -12,9 +12,12 @@ $app = App\AppFactory::create(
         ]
 );
 
+/** @var \Psr\Container\ContainerInterface|\DI\FactoryInterface $di */
 $di = $app->getContainer();
 
-App\Customization::initCli();
+/** @var \App\Locale $locale */
+$locale = $di->make(\App\Locale::class);
+$locale->register();
 
 /** @var App\Console\Application $cli */
 $cli = $di->get(App\Console\Application::class);

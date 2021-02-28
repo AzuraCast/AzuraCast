@@ -17,23 +17,8 @@ use JsonSerializable;
  */
 class ApiKey implements JsonSerializable
 {
+    use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;
-
-    /**
-     * @ORM\Column(name="id", type="string", length=16)
-     * @ORM\Id
-     * @var string
-     */
-    protected $id;
-
-    /**
-     * @ORM\Column(name="verifier", type="string", length=128, nullable=false)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var string
-     */
-    protected $verifier;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")
@@ -53,29 +38,12 @@ class ApiKey implements JsonSerializable
     public function __construct(User $user, SplitToken $token)
     {
         $this->user = $user;
-        $this->id = $token->identifier;
-        $this->verifier = $token->hashVerifier();
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
+        $this->setFromToken($token);
     }
 
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    /**
-     * Verify an incoming API key against the verifier on this record.
-     *
-     * @param SplitToken $userSuppliedToken
-     *
-     */
-    public function verify(SplitToken $userSuppliedToken): bool
-    {
-        return $userSuppliedToken->verify($this->verifier);
     }
 
     /**

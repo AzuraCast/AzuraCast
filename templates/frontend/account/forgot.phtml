@@ -1,0 +1,35 @@
+<?php
+
+$this->layout(
+    'minimal',
+    [
+        'title' => __('Forgot Password'),
+        'page_class' => 'login-content',
+    ]
+);
+?>
+
+<div class="public-page">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title mb-4 text-center"><?=__('Forgot Password')?></h2>
+
+            <form id="login-form" action="" method="post">
+                <div class="form-group">
+                    <label for="email" class="mb-2">
+                        <i class="material-icons mr-1" aria-hidden="true">email</i>
+                        <strong><?=__('E-mail Address')?></strong>
+                    </label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="<?=__(
+                        'name@example.com'
+                    )?>" aria-label="<?=__('E-mail Address')?>" required autofocus>
+                </div>
+                <button type="submit" role="button" title="<?=__(
+                    'Sign in'
+                )?>" class="btn btn-login btn-primary btn-block mt-2 mb-3">
+                    <?=__('Send Recovery E-mail')?>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -69,6 +69,7 @@
         "symfony/event-dispatcher": "^5",
         "symfony/finder": "^5",
         "symfony/lock": "^5.1",
+        "symfony/mailer": "^5.2",
         "symfony/messenger": "^5",
         "symfony/process": "^5",
         "symfony/property-access": "^5",

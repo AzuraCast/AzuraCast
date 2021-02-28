@@ -1,0 +1,39 @@
+<?php
+
+$this->layout(
+    'minimal',
+    [
+        'title' => __('Recover Account'),
+        'page_class' => 'login-content',
+    ]
+);
+
+/** @var \App\Assets $assets */
+$assets->load('zxcvbn');
+?>
+
+<div class="public-page">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title mb-2 text-center"><?=__('Recover Account')?></h2>
+            <p class="text-center mb-3"><?=__('Choose a new password for your account.')?></p>
+
+            <form id="login-form" action="" method="post">
+                <div class="form-group">
+                    <label for="password" class="mb-2">
+                        <i class="material-icons mr-1" aria-hidden="true">vpn_key</i>
+                        <strong><?=__('Password')?></strong>
+                    </label>
+                    <input type="password" id="password" name="password" class="strength form-control" placeholder="<?=__(
+                        'Enter your password'
+                    )?>" aria-label="<?=__('Password')?>" autocomplete="new-password" required autofocus>
+                </div>
+                <button type="submit" role="button" title="<?=__(
+                    'Sign in'
+                )?>" class="btn btn-login btn-primary btn-block mt-2">
+                    <?=__('Recover Account')?>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

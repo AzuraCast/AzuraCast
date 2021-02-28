@@ -42,6 +42,8 @@ class GetCurrentUser implements MiddlewareInterface
             ->withAttribute('is_logged_in', (null !== $user));
 
         // Initialize Customization (timezones, locales, etc) based on the current logged in user.
+
+        /** @var Customization $customization */
         $customization = $this->factory->make(
             Customization::class,
             [
@@ -50,6 +52,8 @@ class GetCurrentUser implements MiddlewareInterface
         );
 
         // Initialize ACL (can only be initialized after Customization as it contains localizations).
+
+        /** @var Acl $acl */
         $acl = $this->factory->make(
             Acl::class,
             [
@@ -58,7 +62,7 @@ class GetCurrentUser implements MiddlewareInterface
         );
 
         $request = $request
-            ->withAttribute('locale', $customization->getLocale())
+            ->withAttribute(ServerRequest::ATTR_LOCALE, $customization->getLocale())
             ->withAttribute(ServerRequest::ATTR_CUSTOMIZATION, $customization)
             ->withAttribute(ServerRequest::ATTR_ACL, $acl);
 

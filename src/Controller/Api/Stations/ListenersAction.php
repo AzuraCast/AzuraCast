@@ -5,6 +5,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Locale;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use App\Utilities\Csv;
@@ -134,7 +135,8 @@ class ListenersAction
             }
         }
 
-        $locale = $request->getAttribute('locale');
+        /** @var Locale $locale */
+        $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE);
 
         /** @var Entity\Api\Listener[] $listeners */
         $listeners = [];
@@ -179,7 +181,7 @@ class ListenersAction
 
             $api->connected_on = (int)$listener['timestamp_start'];
             $api->connected_time = Entity\Listener::getListenerSeconds($listener['intervals']);
-            $api->location = $geoLite->getLocationInfo($listener['listener_ip'], $locale);
+            $api->location = $geoLite->getLocationInfo($listener['listener_ip'], $locale->getLocale());
 
             $listeners[] = $api;
         }

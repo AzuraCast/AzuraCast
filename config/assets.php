@@ -148,6 +148,8 @@ return [
                         'lang' => [
                             'confirm' => __('Are you sure?'),
                             'advanced' => __('Advanced'),
+                            'pw_blank' => __('Enter a password to continue.'),
+                            'pw_good' => __('No problems detected.'),
                         ],
                         'locale' => $locale,
                         'locale_short' => $localeShort,

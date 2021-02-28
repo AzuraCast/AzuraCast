@@ -47,5 +47,7 @@ return [
         StationWebhook::TRIGGER_LISTENER_LOST => __('Any time the listener count decreases'),
         StationWebhook::TRIGGER_LIVE_CONNECT => __('Any time a live streamer/DJ connects to the stream'),
         StationWebhook::TRIGGER_LIVE_DISCONNECT => __('Any time a live streamer/DJ disconnects from the stream'),
+        StationWebhook::TRIGGER_STATION_OFFLINE => __('When the station broadcast goes offline.'),
+        StationWebhook::TRIGGER_STATION_ONLINE => __('When the station broadcast comes online.'),
     ],
 ];

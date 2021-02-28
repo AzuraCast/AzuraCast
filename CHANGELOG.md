@@ -10,6 +10,8 @@ release channel, you can take advantage of these new features and fixes.
   functionality creates a single-time-use login token that can be used to reset the user's password and log them in
   once.
 
+- Web Hooks can now be triggered to dispatch when a station goes offline or comes online.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "?12345678" cache-busting timestamp query strings appended to the end of stream URLs. These have
@@ -19,6 +21,9 @@ release channel, you can take advantage of these new features and fixes.
 - Logging has been improved for critical errors (i.e. "out of memory" or "execution time exceeded").
 
 - We have improved the visibility and usability of our password strength meter where it is used.
+
+- **API Change**: The Now Playing API response now has a boolean "is_online" value to indicate whether we are currently
+  detecting a broadcast from the station.
 
 ## Bug Fixes
 

@@ -54,6 +54,7 @@ class NowPlayingApiGenerator
         $npOld = $station->getNowplaying();
 
         $np = new Entity\Api\NowPlaying();
+        $np->is_online = $npResult->meta->online;
         $np->station = ($this->stationApiGenerator)($station, $baseUri);
         $np->listeners = new Entity\Api\NowPlayingListeners(
             [

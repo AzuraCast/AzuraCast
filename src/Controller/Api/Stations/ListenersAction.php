@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Locale;
@@ -39,7 +40,9 @@ class ListenersAction
      * @param Entity\Repository\StationRemoteRepository $remoteRepo
      * @param IpGeolocation $geoLite
      * @param DeviceDetector $deviceDetector
+     * @param Environment $environment
      *
+     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequest $request,
@@ -48,8 +51,11 @@ class ListenersAction
         Entity\Repository\StationMountRepository $mountRepo,
         Entity\Repository\StationRemoteRepository $remoteRepo,
         IpGeolocation $geoLite,
-        DeviceDetector $deviceDetector
+        DeviceDetector $deviceDetector,
+        Environment $environment
     ): ResponseInterface {
+        set_time_limit($environment->getSyncLongExecutionTime());
+
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();
 

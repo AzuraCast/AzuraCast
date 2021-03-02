@@ -5,6 +5,10 @@ namespace App\Service;
 use App\Service\IpGeolocator;
 use Exception;
 use MaxMind\Db\Reader;
+use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Cache\Adapter\ProxyAdapter;
+use Symfony\Component\Cache\CacheItem;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class IpGeolocation
 {
@@ -12,7 +16,16 @@ class IpGeolocation
 
     protected ?Reader $reader;
 
+    protected ?string $readerShortName;
+
     protected ?string $attribution;
+
+    protected CacheInterface $cache;
+
+    public function __construct(CacheItemPoolInterface $cache)
+    {
+        $this->cache = new ProxyAdapter($cache, 'ip_geo.');
+    }
 
     protected function initialize(): void
     {
@@ -31,12 +44,14 @@ class IpGeolocation
             /** @var IpGeolocator\IpGeolocatorInterface $reader */
             if ($reader::isAvailable()) {
                 $this->reader = $reader::getReader();
+                $this->readerShortName = $reader::getReaderShortName();
                 $this->attribution = $reader::getAttribution();
                 return;
             }
         }
 
         $this->reader = null;
+        $this->readerShortName = null;
         $this->attribution = __(
             'GeoLite database not configured for this installation. See System Administration for instructions.'
         );
@@ -67,20 +82,34 @@ class IpGeolocation
             ];
         }
 
-        try {
-            $ipInfo = $this->reader->get($ip);
-        } catch (Exception $e) {
-            return [
-                'status' => 'error',
-                'message' => $e->getMessage(),
-            ];
-        }
+        $cacheKey = $this->readerShortName . '_' . str_replace([':', '.'], '_', $ip);
 
-        if (empty($ipInfo)) {
-            return [
-                'status' => 'error',
-                'message' => 'Internal/Reserved IP',
-            ];
+        $ipInfo = $this->cache->get(
+            $cacheKey,
+            function (CacheItem $item) use ($ip) {
+                $item->expiresAfter(86400 * 7);
+
+                try {
+                    $ipInfo = $this->reader->get($ip);
+                    if (!empty($ipInfo)) {
+                        return $ipInfo;
+                    }
+
+                    return [
+                        'status' => 'error',
+                        'message' => 'Internal/Reserved IP',
+                    ];
+                } catch (Exception $e) {
+                    return [
+                        'status' => 'error',
+                        'message' => $e->getMessage(),
+                    ];
+                }
+            }
+        );
+
+        if (isset($ipInfo['status']) && $ipInfo['status'] === 'error') {
+            return $ipInfo;
         }
 
         return [

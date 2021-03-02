@@ -10,6 +10,8 @@ interface IpGeolocatorInterface
 
     public static function isAvailable(): bool;
 
+    public static function getReaderShortName(): string;
+
     public static function getReader(): ?Reader;
 
     public static function getAttribution(): string;

@@ -134,8 +134,8 @@ final class Response extends \Slim\Http\Response
      * Write a stream to the response as if it is a file for download.
      *
      * @param StreamInterface $fileStream
-     * @param string $content_type
-     * @param string|null $file_name
+     * @param string $contentType
+     * @param string|null $fileName
      *
      * @return static
      */

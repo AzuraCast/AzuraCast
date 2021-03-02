@@ -54,15 +54,6 @@ class ListenersAction
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
      * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param EntityManagerInterface $em
-     * @param Entity\Repository\StationMountRepository $mountRepo
-     * @param Entity\Repository\StationRemoteRepository $remoteRepo
-     * @param IpGeolocation $geoLite
-     * @param DeviceDetector $deviceDetector
-     *
      */
     public function __invoke(
         ServerRequest $request,
@@ -147,7 +138,6 @@ class ListenersAction
      * @param Response $response
      * @param Entity\Api\Listener[] $listeners
      * @param string $filename
-     *
      */
     public function exportReportAsCsv(
         Response $response,
@@ -225,12 +215,6 @@ class ListenersAction
         return SimpleBatchIteratorAggregate::fromQuery($query, 100);
     }
 
-    /**
-     * @param mixed $params
-     * @param Station $station
-     *
-     * @return SimpleBatchIteratorAggregate
-     */
     protected function createTimeRangeListenersBatchIterator(
         int $startTimestamp,
         int $endTimestamp,
@@ -251,6 +235,9 @@ class ListenersAction
         return SimpleBatchIteratorAggregate::fromQuery($query, 100);
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function buildListenersByHashArray(
         SimpleBatchIteratorAggregate $listenersIterator,
         Entity\Station $station,

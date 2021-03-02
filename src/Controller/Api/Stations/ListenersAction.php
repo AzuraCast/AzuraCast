@@ -11,6 +11,7 @@ use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
+use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -225,8 +226,8 @@ class ListenersAction
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = new \SplTempFileObject();
-        $csv = Writer::createFromFileObject($tempFile);
+        $tempFile = tmpfile();
+        $csv = Writer::createFromStream($tempFile);
 
         $csv->insertOne(
             [
@@ -277,6 +278,8 @@ class ListenersAction
             $csv->insertOne($export_row);
         }
 
-        return $response->renderStringAsFile($csv->getContent(), 'text/csv', $filename);
+        $stream = new Stream($tempFile);
+
+        return $response->renderStreamAsFile($stream, 'text/csv', $filename);
     }
 }

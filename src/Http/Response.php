@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 final class Response extends \Slim\Http\Response
 {
@@ -125,6 +126,37 @@ final class Response extends \Slim\Http\Response
         }
 
         $response->getBody()->write($file_data);
+
+        return new static($response, $this->streamFactory);
+    }
+
+    /**
+     * Write a stream to the response as if it is a file for download.
+     *
+     * @param StreamInterface $fileStream
+     * @param string $content_type
+     * @param string|null $file_name
+     *
+     * @return static
+     */
+    public function renderStreamAsFile(
+        StreamInterface $fileStream,
+        string $contentType,
+        ?string $fileName = null
+    ) {
+        set_time_limit(600);
+
+        $response = $this->response
+            ->withHeader('Pragma', 'public')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+            ->withHeader('Content-Type', $contentType);
+
+        if ($fileName !== null) {
+            $response = $response->withHeader('Content-Disposition', 'attachment; filename=' . $fileName);
+        }
+
+        $response = $response->withBody($fileStream);
 
         return new static($response, $this->streamFactory);
     }

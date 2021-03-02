@@ -42,7 +42,6 @@ class ListenersAction
      * @param DeviceDetector $deviceDetector
      * @param Environment $environment
      *
-     * @return ResponseInterface
      */
     public function __invoke(
         ServerRequest $request,

@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Entity\Station;
+use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Locale;
@@ -59,6 +59,8 @@ class ListenersAction
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
+        set_time_limit($environment->getSyncLongExecutionTime());
+
         $station = $request->getStation();
         $stationTz = $station->getTimezoneObject();
 

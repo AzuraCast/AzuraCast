@@ -12,6 +12,7 @@ use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
+use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -32,16 +33,6 @@ class ListenersAction
      *   @OA\Response(response=403, description="Access denied"),
      *   security={{"api_key": {}}},
      * )
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param EntityManagerInterface $em
-     * @param Entity\Repository\StationMountRepository $mountRepo
-     * @param Entity\Repository\StationRemoteRepository $remoteRepo
-     * @param IpGeolocation $geoLite
-     * @param DeviceDetector $deviceDetector
-     * @param Environment $environment
-     *
      */
     public function __invoke(
         ServerRequest $request,
@@ -60,25 +51,21 @@ class ListenersAction
 
         $params = $request->getQueryParams();
 
-        $mountNames = $mountRepo->getDisplayNames($station);
-        $remoteNames = $remoteRepo->getDisplayNames($station);
-
         $isLive = empty($params['start']);
         $now = CarbonImmutable::now($stationTz);
+
+        $qb = $em->createQueryBuilder()
+            ->select('l')
+            ->from(Entity\Listener::class, 'l')
+            ->where('l.station = :station')
+            ->setParameter('station', $station);
 
         if ($isLive) {
             $range = 'live';
             $startTimestamp = $now->getTimestamp();
             $endTimestamp = $now->getTimestamp();
 
-            $query = $em->createQuery(
-                <<<'DQL'
-                    SELECT l
-                    FROM App\Entity\Listener l
-                    WHERE l.station_id = :station_id
-                    AND l.timestamp_end = 0
-                DQL
-            )->setParameter('station_id', $station->getId());
+            $qb = $qb->andWhere('l.timestamp_end = 0');
         } else {
             $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $stationTz);
             $startTimestamp = $start->getTimestamp();
@@ -88,26 +75,22 @@ class ListenersAction
 
             $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');
 
-            $query = $em->createQuery(
-                <<<'DQL'
-                    SELECT l
-                    FROM App\Entity\Listener l
-                    WHERE l.station_id = :station_id
-                    AND l.timestamp_start < :time_end
-                    AND (l.timestamp_end = 0 OR l.timestamp_end > :time_start)
-                DQL
-            )->setParameter('station_id', $station->getId())
+            $qb = $qb->andWhere('l.timestamp_start < :time_end')
+                ->andWhere('(l.timestamp_end = 0 OR l.timestamp_end > :time_start)')
                 ->setParameter('time_start', $startTimestamp)
                 ->setParameter('time_end', $endTimestamp);
         }
 
         /** @var Locale $locale */
         $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE);
-        $iterator = SimpleBatchIteratorAggregate::fromQuery($query, 100);
 
+        $mountNames = $mountRepo->getDisplayNames($station);
+        $remoteNames = $remoteRepo->getDisplayNames($station);
+
+        $listenersIterator = SimpleBatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
         $listenersByHash = [];
 
-        foreach ($iterator as $listener) {
+        foreach ($listenersIterator as $listener) {
             /** @var Entity\Listener $listener */
             $listenerStart = $listener->getTimestampStart();
 
@@ -207,7 +190,6 @@ class ListenersAction
 
         if ('csv' === $format) {
             return $this->exportReportAsCsv(
-                $request,
                 $response,
                 $listeners,
                 $station->getShortName() . '_listeners_' . $range . '.csv'
@@ -218,20 +200,17 @@ class ListenersAction
     }
 
     /**
-     * @param ServerRequest $request
      * @param Response $response
      * @param Entity\Api\Listener[] $listeners
      * @param string $filename
-     *
      */
     public function exportReportAsCsv(
-        ServerRequest $request,
         Response $response,
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = new \SplTempFileObject();
-        $csv = Writer::createFromFileObject($tempFile);
+        $tempFile = tmpfile();
+        $csv = Writer::createFromStream($tempFile);
 
         $csv->insertOne(
             [
@@ -282,6 +261,8 @@ class ListenersAction
             $csv->insertOne($export_row);
         }
 
-        return $response->renderStringAsFile($csv->getContent(), 'text/csv', $filename);
+        $stream = new Stream($tempFile);
+
+        return $response->renderStreamAsFile($stream, 'text/csv', $filename);
     }
 }

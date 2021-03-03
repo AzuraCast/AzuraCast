@@ -10,7 +10,6 @@ use App\Locale;
 use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use GuzzleHttp\Psr7\Stream;
@@ -20,26 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class ListenersAction
 {
-    protected EntityManagerInterface $em;
-    protected Entity\Repository\StationMountRepository $mountRepo;
-    protected Entity\Repository\StationRemoteRepository $remoteRepo;
-    protected IpGeolocation $geoLite;
-    protected DeviceDetector $deviceDetector;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\StationMountRepository $mountRepo,
-        Entity\Repository\StationRemoteRepository $remoteRepo,
-        IpGeolocation $geoLite,
-        DeviceDetector $deviceDetector
-    ) {
-        $this->em = $em;
-        $this->mountRepo = $mountRepo;
-        $this->remoteRepo = $remoteRepo;
-        $this->geoLite = $geoLite;
-        $this->deviceDetector = $deviceDetector;
-    }
-
     /**
      * @OA\Get(path="/station/{station_id}/listeners",
      *   tags={"Stations: Listeners"},
@@ -57,7 +36,13 @@ class ListenersAction
      */
     public function __invoke(
         ServerRequest $request,
-        Response $response
+        Response $response,
+        EntityManagerInterface $em,
+        Entity\Repository\StationMountRepository $mountRepo,
+        Entity\Repository\StationRemoteRepository $remoteRepo,
+        IpGeolocation $geoLite,
+        DeviceDetector $deviceDetector,
+        Environment $environment
     ): ResponseInterface {
         set_time_limit($environment->getSyncLongExecutionTime());
 
@@ -69,12 +54,18 @@ class ListenersAction
         $isLive = empty($params['start']);
         $now = CarbonImmutable::now($stationTz);
 
+        $qb = $em->createQueryBuilder()
+            ->select('l')
+            ->from(Entity\Listener::class, 'l')
+            ->where('l.station = :station')
+            ->setParameter('station', $station);
+
         if ($isLive) {
             $range = 'live';
             $startTimestamp = $now->getTimestamp();
             $endTimestamp = $now->getTimestamp();
 
-            $listenersIterator = $this->createLiveListenersBatchIterator($station);
+            $qb = $qb->andWhere('l.timestamp_end = 0');
         } else {
             $start = CarbonImmutable::parse($params['start'] . ' 00:00:00', $stationTz);
             $startTimestamp = $start->getTimestamp();
@@ -84,25 +75,97 @@ class ListenersAction
 
             $range = $start->format('Ymd') . '_to_' . $end->format('Ymd');
 
-            $listenersIterator = $this->createTimeRangeListenersBatchIterator(
-                $startTimestamp,
-                $endTimestamp,
-                $station
-            );
+            $qb = $qb->andWhere('l.timestamp_start < :time_end')
+                ->andWhere('(l.timestamp_end = 0 OR l.timestamp_end > :time_start)')
+                ->setParameter('time_start', $startTimestamp)
+                ->setParameter('time_end', $endTimestamp);
         }
 
         /** @var Locale $locale */
         $locale = $request->getAttribute(ServerRequest::ATTR_LOCALE);
 
-        $listenersByHash = $this->buildListenersByHashArray(
-            $listenersIterator,
-            $station,
-            $isLive,
-            $startTimestamp,
-            $endTimestamp,
-            $now,
-            $locale
-        );
+        $mountNames = $mountRepo->getDisplayNames($station);
+        $remoteNames = $remoteRepo->getDisplayNames($station);
+
+        $listenersIterator = SimpleBatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
+        $listenersByHash = [];
+
+        foreach ($listenersIterator as $listener) {
+            /** @var Entity\Listener $listener */
+            $listenerStart = $listener->getTimestampStart();
+
+            if ($isLive) {
+                $listenerEnd = $now->getTimestamp();
+            } else {
+                if ($listenerStart < $startTimestamp) {
+                    $listenerStart = $startTimestamp;
+                }
+
+                $listenerEnd = $listener->getTimestampEnd();
+                if (0 === $listenerEnd || $listenerEnd > $endTimestamp) {
+                    $listenerEnd = $endTimestamp;
+                }
+            }
+
+            $hash = $listener->getListenerHash();
+            if (isset($listenersByHash[$hash])) {
+                $listenersByHash[$hash]['intervals'][] = [
+                    'start' => $listenerStart,
+                    'end' => $listenerEnd,
+                ];
+                continue;
+            }
+
+            $userAgent = $listener->getListenerUserAgent();
+            $dd = $deviceDetector->parse($userAgent);
+
+            if ($dd->isBot()) {
+                $clientBot = $dd->getBot();
+
+                $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
+                $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
+                $client = $clientBotName . ' (' . $clientBotType . ')';
+            } else {
+                $clientInfo = $dd->getClient();
+                $clientBrowser = $clientInfo['name'] ?? 'Unknown Browser';
+                $clientVersion = $clientInfo['version'] ?? '0.00';
+
+                $clientOsInfo = $dd->getOs();
+                $clientOs = $clientOsInfo['name'] ?? 'Unknown OS';
+
+                $client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
+            }
+
+            $api = new Entity\Api\Listener();
+            $api->ip = $listener->getListenerIp();
+            $api->user_agent = $userAgent;
+            $api->client = $client;
+            $api->is_mobile = $dd->isMobile();
+
+            if ($listener->getMountId()) {
+                $mountId = $listener->getMountId();
+
+                $api->mount_is_local = true;
+                $api->mount_name = $mountNames[$mountId];
+            } elseif ($listener->getRemoteId()) {
+                $remoteId = $listener->getRemoteId();
+
+                $api->mount_is_local = false;
+                $api->mount_name = $remoteNames[$remoteId];
+            }
+
+            $api->location = $geoLite->getLocationInfo($api->ip, $locale->getLocale());
+
+            $listenersByHash[$hash] = [
+                'api' => $api,
+                'intervals' => [
+                    [
+                        'start' => $listenerStart,
+                        'end' => $listenerEnd,
+                    ],
+                ],
+            ];
+        }
 
         /** @var Entity\Api\Listener[] $listeners */
         $listeners = [];
@@ -201,136 +264,5 @@ class ListenersAction
         $stream = new Stream($tempFile);
 
         return $response->renderStreamAsFile($stream, 'text/csv', $filename);
-    }
-
-    protected function createLiveListenersBatchIterator(Entity\Station $station): SimpleBatchIteratorAggregate
-    {
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT l
-                FROM App\Entity\Listener l
-                WHERE l.station_id = :station_id
-                AND l.timestamp_end = 0
-            DQL
-        )->setParameter('station_id', $station->getId());
-
-        return SimpleBatchIteratorAggregate::fromQuery($query, 100);
-    }
-
-    protected function createTimeRangeListenersBatchIterator(
-        int $startTimestamp,
-        int $endTimestamp,
-        Entity\Station $station
-    ): SimpleBatchIteratorAggregate {
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT l
-                FROM App\Entity\Listener l
-                WHERE l.station_id = :station_id
-                AND l.timestamp_start < :time_end
-                AND (l.timestamp_end = 0 OR l.timestamp_end > :time_start)
-            DQL
-        )->setParameter('station_id', $station->getId())
-            ->setParameter('time_start', $startTimestamp)
-            ->setParameter('time_end', $endTimestamp);
-
-        return SimpleBatchIteratorAggregate::fromQuery($query, 100);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    protected function buildListenersByHashArray(
-        SimpleBatchIteratorAggregate $listenersIterator,
-        Entity\Station $station,
-        bool $isLive,
-        int $startTimestamp,
-        int $endTimestamp,
-        CarbonInterface $now,
-        Locale $locale
-    ): array {
-        $mountNames = $this->mountRepo->getDisplayNames($station);
-        $remoteNames = $this->remoteRepo->getDisplayNames($station);
-
-        $listenersByHash = [];
-
-        foreach ($listenersIterator as $listener) {
-            /** @var Entity\Listener $listener */
-            $listenerStart = $listener->getTimestampStart();
-
-            if ($isLive) {
-                $listenerEnd = $now->getTimestamp();
-            } else {
-                if ($listenerStart < $startTimestamp) {
-                    $listenerStart = $startTimestamp;
-                }
-
-                $listenerEnd = $listener->getTimestampEnd();
-                if (0 === $listenerEnd || $listenerEnd > $endTimestamp) {
-                    $listenerEnd = $endTimestamp;
-                }
-            }
-
-            $hash = $listener->getListenerHash();
-            if (isset($listenersByHash[$hash])) {
-                $listenersByHash[$hash]['intervals'][] = [
-                    'start' => $listenerStart,
-                    'end' => $listenerEnd,
-                ];
-                continue;
-            }
-
-            $userAgent = $listener->getListenerUserAgent();
-            $dd = $this->deviceDetector->parse($userAgent);
-
-            if ($dd->isBot()) {
-                $clientBot = $dd->getBot();
-
-                $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
-                $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
-                $client = $clientBotName . ' (' . $clientBotType . ')';
-            } else {
-                $clientInfo = $dd->getClient();
-                $clientBrowser = $clientInfo['name'] ?? 'Unknown Browser';
-                $clientVersion = $clientInfo['version'] ?? '0.00';
-
-                $clientOsInfo = $dd->getOs();
-                $clientOs = $clientOsInfo['name'] ?? 'Unknown OS';
-
-                $client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
-            }
-
-            $api = new Entity\Api\Listener();
-            $api->ip = $listener->getListenerIp();
-            $api->user_agent = $userAgent;
-            $api->client = $client;
-            $api->is_mobile = $dd->isMobile();
-
-            if ($listener->getMountId()) {
-                $mountId = $listener->getMountId();
-
-                $api->mount_is_local = true;
-                $api->mount_name = $mountNames[$mountId];
-            } elseif ($listener->getRemoteId()) {
-                $remoteId = $listener->getRemoteId();
-
-                $api->mount_is_local = false;
-                $api->mount_name = $remoteNames[$remoteId];
-            }
-
-            $api->location = $this->geoLite->getLocationInfo($api->ip, $locale->getLocale());
-
-            $listenersByHash[$hash] = [
-                'api' => $api,
-                'intervals' => [
-                    [
-                        'start' => $listenerStart,
-                        'end' => $listenerEnd,
-                    ],
-                ],
-            ];
-        }
-
-        return $listenersByHash;
     }
 }

@@ -233,8 +233,4 @@ class AppFactory
         $dispatcher = $di->get(EventDispatcher::class);
         $dispatcher->dispatch(new Event\BuildRoutes($app));
     }
-
-    public static function handleShutdown(LoggerInterface $logger): void
-    {
-    }
 }

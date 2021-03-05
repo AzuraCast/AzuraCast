@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Install Composer dependencies
-composer install --no-interaction
+composer install --no-interaction --ignore-platform-req=ext-maxminddb
 
 # Import locales on backend
 bin/console locale:generate

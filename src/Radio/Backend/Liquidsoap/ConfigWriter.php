@@ -480,10 +480,6 @@ class ConfigWriter implements EventSubscriberInterface
                     delay := -1.0
                 elsif !autodj_ping_attempts > 200 then
                     log("AutoDJ could not be initialized within the specified timeout.")
-
-                    autodj_is_loading := false
-                    shutdown()
-
                     delay := -1.0
                 end
 

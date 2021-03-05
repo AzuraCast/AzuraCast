@@ -12,6 +12,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Web Hooks can now be triggered to dispatch when a station goes offline or comes online.
 
+- You can now generate listener reports for specific time periods instead of just day ranges.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "?12345678" cache-busting timestamp query strings appended to the end of stream URLs. These have
@@ -27,8 +29,15 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- An issue with some stations crashing shortly after startup has been resolved. This was caused by a safety check we
+  added to the AutoDJ to check that AzuraCast was up and running at the same time; however, this caused issues with
+  stations that don't use the AzuraCast AutoDJ (i.e. stations that stream live or use remote playlists).
+
 - We have identified an issue that would prevent backups from older than a few months ago from restoring correctly; this
   issue has been resolved, so backups should now restore without any issue regardless of the backup's age.
+
+- Several issues causing slowness in the Listener Report (especially the CSV generation) have been improved, so stations
+  with large listener counts should still be able to take advantage of this report in more scenarios.
 
 ---
 

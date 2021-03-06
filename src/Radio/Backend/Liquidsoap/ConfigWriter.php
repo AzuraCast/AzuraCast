@@ -428,15 +428,20 @@ class ConfigWriter implements EventSubscriberInterface
         if (!empty($scheduleSwitches)) {
             $scheduleSwitches[] = '({true}, radio)';
 
-            $event->appendLines(
-                [
-                    '# Standard Schedule Switches',
-                    sprintf(
-                        'radio = switch(id="schedule_switch", track_sensitive=true, [ %s ])',
-                        implode(', ', $scheduleSwitches)
-                    ),
-                ]
-            );
+            $event->appendLines(['# Standard Schedule Switches']);
+
+            // Chunk scheduled switches to avoid hitting the max amount of playlists in a switch()
+            $chunkedScheduleSwitches = array_chunk($scheduleSwitches, 168, true);
+            foreach ($chunkedScheduleSwitches as $scheduleSwitchesChunk) {
+                $event->appendLines(
+                    [
+                        sprintf(
+                            'radio = switch(id="schedule_switch", track_sensitive=true, [ %s ])',
+                            implode(', ', $scheduleSwitchesChunk)
+                        ),
+                    ]
+                );
+            }
         }
 
         // Add in special playlists if necessary.

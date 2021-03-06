@@ -39,6 +39,9 @@ release channel, you can take advantage of these new features and fixes.
 - Several issues causing slowness in the Listener Report (especially the CSV generation) have been improved, so stations
   with large listener counts should still be able to take advantage of this report in more scenarios.
 
+- Fixed a bug in the Now Playing adapter that would cause stations to return as offline when using the Icecast adapter
+  with no administrator password set.
+
 ---
 
 # AzuraCast 0.12.1 (Feb 19, 2021)

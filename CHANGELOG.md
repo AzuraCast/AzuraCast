@@ -5,10 +5,13 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- **Self-Service Password Reset**: If SMTP is configured properly in the system settings page, users can now request a
-  password reset directly from the login page instead of requiring administrator intervention. The password reset
-  functionality creates a single-time-use login token that can be used to reset the user's password and log them in
-  once.
+- **E-mail Delivery**: System administrators can now configure SMTP for e-mail delivery via the system settings page. If
+  SMTP is enabled for your installation, the following functionality is added:
+
+    - **Self-Service Password Reset**: Users can request a password recovery token to reset their own passwords.
+
+    - **E-mail Web Hook**: You can dispatch an e-mail to specified recipients as a web hook when specific triggers
+      occur.
 
 - Web Hooks can now be triggered to dispatch when a station goes offline or comes online.
 

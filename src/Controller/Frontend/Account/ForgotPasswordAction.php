@@ -7,28 +7,24 @@ use App\Exception\RateLimitExceededException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\RateLimit;
+use App\Service\Mail;
 use App\Session\Flash;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 
 class ForgotPasswordAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\UserRepository $userRepo,
         Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
         RateLimit $rateLimit,
-        MailerInterface $mailer
+        Mail $mail
     ): ResponseInterface {
         $flash = $request->getFlash();
         $view = $request->getView();
 
-        $settings = $settingsRepo->readSettings();
-        if (!$settings->getMailEnabled()) {
+        if (!$mail->isEnabled()) {
             return $view->renderToResponse($response, 'frontend/account/forgot_disabled');
         }
 
@@ -55,8 +51,7 @@ class ForgotPasswordAction
             $user = $userRepo->findByEmail($email);
 
             if ($user instanceof Entity\User) {
-                $email = new Email();
-                $email->from(new Address($settings->getMailSenderEmail(), $settings->getMailSenderName()));
+                $email = $mail->createMessage();
                 $email->to($user->getEmail());
 
                 $email->subject(__('Account Recovery Link'));
@@ -71,7 +66,7 @@ class ForgotPasswordAction
                     )
                 );
 
-                $mailer->send($email);
+                $mail->send($email);
             }
 
             $flash->addMessage(

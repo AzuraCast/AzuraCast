@@ -13,6 +13,11 @@ return [
             'name' => __('Generic Web Hook'),
             'description' => __('Automatically send a message to any URL when your station data changes.'),
         ],
+        Connector\Email::NAME => [
+            'class' => Connector\Email::class,
+            'name' => __('Send E-mail'),
+            'description' => __('Send an e-mail to specified address(es).'),
+        ],
         Connector\TuneIn::NAME => [
             'class' => Connector\TuneIn::class,
             'name' => __('TuneIn AIR'),

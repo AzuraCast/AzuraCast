@@ -7,7 +7,7 @@ $minimal_apt_get_install nginx nginx-common nginx-extras openssl
 
 # Install nginx and configuration
 cp /bd_build/nginx/nginx.conf /etc/nginx/nginx.conf
-cp /bd_build/nginx/azuracast.conf /etc/nginx/conf.d/azuracast.conf
+cp /bd_build/nginx/azuracast.conf.tmpl /etc/nginx/azuracast.conf.tmpl
 
 mkdir -p /etc/nginx/azuracast.conf.d/
 

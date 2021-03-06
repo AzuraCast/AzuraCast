@@ -24,6 +24,7 @@ services :
       - letsencrypt_html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment :
+      NGINX_TIMEOUT : ${NGINX_TIMEOUT:-1800}
       DEFAULT_HOST : ${LETSENCRYPT_HOST:-azuracast.local}
     networks :
       - frontend
@@ -63,6 +64,7 @@ services :
       AZURACAST_VERSION : ${AZURACAST_VERSION:-latest}
       AZURACAST_SFTP_PORT : ${AZURACAST_SFTP_PORT:-2022}
       VIRTUAL_HOST : ${LETSENCRYPT_HOST:-azuracast.local}
+      NGINX_TIMEOUT : ${NGINX_TIMEOUT:-1800}
       LETSENCRYPT_HOST : ${LETSENCRYPT_HOST}
       LETSENCRYPT_EMAIL : ${LETSENCRYPT_EMAIL}
     volumes :

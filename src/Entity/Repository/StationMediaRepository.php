@@ -224,7 +224,7 @@ class StationMediaRepository extends Repository
 
         if (null !== $uploadedPath) {
             try {
-                $this->loadFromFile($media, $uploadedPath);
+                $this->loadFromFile($media, $uploadedPath, $fs);
             } finally {
                 $fs->putFromLocal($uploadedPath, $path);
             }
@@ -244,8 +244,8 @@ class StationMediaRepository extends Repository
 
             $fs->withLocalFile(
                 $path,
-                function ($localPath) use ($media): void {
-                    $this->loadFromFile($media, $localPath);
+                function ($localPath) use ($media, $fs): void {
+                    $this->loadFromFile($media, $localPath, $fs);
                 }
             );
         }
@@ -261,9 +261,13 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param string $filePath
+     * @param Filesystem|null $fs
      */
-    public function loadFromFile(Entity\StationMedia $media, string $filePath): void
-    {
+    public function loadFromFile(
+        Entity\StationMedia $media,
+        string $filePath,
+        ?Filesystem $fs = null
+    ): void {
         // Load metadata from supported files.
         $metadata = $this->metadataManager->getMetadata($media, $filePath);
 
@@ -295,7 +299,7 @@ class StationMediaRepository extends Repository
         $artwork = $metadata->getArtwork();
         if (!empty($artwork)) {
             try {
-                $this->writeAlbumArt($media, $artwork);
+                $this->writeAlbumArt($media, $artwork, $fs);
             } catch (\Exception $exception) {
                 $this->logger->error(
                     sprintf(
@@ -327,12 +331,25 @@ class StationMediaRepository extends Repository
         $media->updateSongId();
     }
 
-    public function writeAlbumArt(Entity\StationMedia $media, string $rawArtString): bool
-    {
+    public function updateAlbumArt(
+        Entity\StationMedia $media,
+        string $rawArtString
+    ): bool {
+        $fs = $this->getFilesystem($media);
+
+        $this->writeAlbumArt($media, $rawArtString, $fs);
+        return $this->writeToFile($media, $fs);
+    }
+
+    public function writeAlbumArt(
+        Entity\StationMedia $media,
+        string $rawArtString,
+        ?Filesystem $fs = null
+    ): bool {
+        $fs ??= $this->getFilesystem($media);
+
         $media->setArtUpdatedAt(time());
         $this->em->persist($media);
-
-        $fs = $this->getFilesystem($media);
 
         $albumArt = $this->imageManager->make($rawArtString);
         $albumArt->fit(
@@ -349,9 +366,11 @@ class StationMediaRepository extends Repository
         return $fs->putStream($albumArtPath, $albumArtStream->detach());
     }
 
-    public function removeAlbumArt(Entity\StationMedia $media): void
-    {
-        $fs = $this->getFilesystem($media);
+    public function removeAlbumArt(
+        Entity\StationMedia $media,
+        ?Filesystem $fs = null
+    ): void {
+        $fs ??= $this->getFilesystem($media);
 
         $currentAlbumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
         $fs->delete($currentAlbumArtPath);
@@ -359,11 +378,15 @@ class StationMediaRepository extends Repository
         $media->setArtUpdatedAt(0);
         $this->em->persist($media);
         $this->em->flush();
+
+        $this->writeToFile($media, $fs);
     }
 
-    public function writeToFile(Entity\StationMedia $media): bool
-    {
-        $fs = $this->getFilesystem($media);
+    public function writeToFile(
+        Entity\StationMedia $media,
+        ?Filesystem $fs = null
+    ): bool {
+        $fs ??= $this->getFilesystem($media);
 
         $metadata = $media->toMetadata();
 
@@ -383,36 +406,35 @@ class StationMediaRepository extends Repository
                     $this->metadataManager->writeMetadata($metadata, $path);
                     return true;
                 } catch (CannotProcessMediaException $e) {
-                    $this->logger->error(
-                        $e->getMessage(),
-                        [
-                            'exception' => $e,
-                        ]
-                    );
-                    return false;
+                    throw $e;
                 }
             }
         );
     }
 
-    public function updateWaveform(Entity\StationMedia $media): void
-    {
-        $fs = $this->getFilesystem($media);
+    public function updateWaveform(
+        Entity\StationMedia $media,
+        ?Filesystem $fs = null
+    ): void {
+        $fs ??= $this->getFilesystem($media);
         $fs->withLocalFile(
             $media->getPath(),
-            function ($path) use ($media): void {
-                $this->writeWaveform($media, $path);
+            function ($path) use ($media, $fs): void {
+                $this->writeWaveform($media, $path, $fs);
             }
         );
     }
 
-    public function writeWaveform(Entity\StationMedia $media, string $path): bool
-    {
-        $waveform = AudioWaveform::getWaveformFor($path);
+    public function writeWaveform(
+        Entity\StationMedia $media,
+        string $path,
+        ?Filesystem $fs = null
+    ): bool {
+        $fs ??= $this->getFilesystem($media);
 
+        $waveform = AudioWaveform::getWaveformFor($path);
         $waveformPath = Entity\StationMedia::getWaveformPath($media->getUniqueId());
 
-        $fs = $this->getFilesystem($media);
         return $fs->put(
             $waveformPath,
             json_encode(

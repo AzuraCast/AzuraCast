@@ -30,6 +30,8 @@ release channel, you can take advantage of these new features and fixes.
 - **API Change**: The Now Playing API response now has a boolean "is_online" value to indicate whether we are currently
   detecting a broadcast from the station.
 
+- Liquidsoap has been updated to version 1.4.4 stable, and the SFTPGo library has been updated to its latest version.
+
 ## Bug Fixes
 
 - An issue with some stations crashing shortly after startup has been resolved. This was caused by a safety check we
@@ -44,6 +46,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug in the Now Playing adapter that would cause stations to return as offline when using the Icecast adapter
   with no administrator password set.
+
+- Fixed a bug that prevented metadata from writing back to media files when album art was set.
 
 ---
 

@@ -341,37 +341,35 @@ return function (App $app) {
                     $group->group(
                         '/playlist/{id}',
                         function (RouteCollectorProxy $group) {
-                            $group->put('/toggle', Controller\Api\Stations\PlaylistsController::class . ':toggleAction')
-                                ->setName('api:stations:playlist:toggle');
+                            $group->put(
+                                '/toggle',
+                                Controller\Api\Stations\Playlists\ToggleAction::class
+                            )->setName('api:stations:playlist:toggle');
 
                             $group->put(
                                 '/reshuffle',
-                                Controller\Api\Stations\PlaylistsController::class . ':reshuffleAction'
-                            )
-                                ->setName('api:stations:playlist:reshuffle');
+                                Controller\Api\Stations\Playlists\ReshuffleAction::class
+                            )->setName('api:stations:playlist:reshuffle');
 
                             $group->get(
                                 '/order',
-                                Controller\Api\Stations\PlaylistsController::class . ':getOrderAction'
-                            )
-                                ->setName('api:stations:playlist:order');
+                                Controller\Api\Stations\Playlists\GetOrderAction::class
+                            )->setName('api:stations:playlist:order');
 
                             $group->put(
                                 '/order',
-                                Controller\Api\Stations\PlaylistsController::class . ':putOrderAction'
+                                Controller\Api\Stations\Playlists\PutOrderAction::class
                             );
 
                             $group->post(
                                 '/import',
-                                Controller\Api\Stations\PlaylistsController::class . ':importAction'
-                            )
-                                ->setName('api:stations:playlist:import');
+                                Controller\Api\Stations\Playlists\ImportAction::class
+                            )->setName('api:stations:playlist:import');
 
                             $group->get(
                                 '/export[/{format}]',
-                                Controller\Api\Stations\PlaylistsController::class . ':exportAction'
-                            )
-                                ->setName('api:stations:playlist:export');
+                                Controller\Api\Stations\Playlists\ExportAction::class
+                            )->setName('api:stations:playlist:export');
                         }
                     )->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 

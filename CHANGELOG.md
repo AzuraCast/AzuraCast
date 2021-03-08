@@ -17,6 +17,9 @@ release channel, you can take advantage of these new features and fixes.
 
 - You can now generate listener reports for specific time periods instead of just day ranges.
 
+- For sequential or shuffled playlists, you can now view the internal queue that the AzuraCast AutoDJ uses to track its
+  song playback order from the "More" dropdown next to the playlist.
+
 ## Code Quality/Technical Changes
 
 - We have removed the "?12345678" cache-busting timestamp query strings appended to the end of stream URLs. These have

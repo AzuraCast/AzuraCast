@@ -361,6 +361,16 @@ return function (App $app) {
                                 Controller\Api\Stations\Playlists\PutOrderAction::class
                             );
 
+                            $group->get(
+                                '/queue',
+                                Controller\Api\Stations\Playlists\GetQueueAction::class
+                            )->setName('api:stations:playlist:queue');
+
+                            $group->delete(
+                                '/queue',
+                                Controller\Api\Stations\Playlists\DeleteQueueAction::class
+                            );
+
                             $group->post(
                                 '/import',
                                 Controller\Api\Stations\Playlists\ImportAction::class

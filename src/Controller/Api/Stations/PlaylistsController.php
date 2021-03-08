@@ -209,6 +209,12 @@ class PlaylistsController extends AbstractScheduledEntityController
                 [],
                 !$isInternal
             ),
+            'queue' => $router->fromHere(
+                'api:stations:playlist:queue',
+                ['id' => $record->getId()],
+                [],
+                !$isInternal
+            ),
             'import' => $router->fromHere('api:stations:playlist:import', ['id' => $record->getId()], [], !$isInternal),
             'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];

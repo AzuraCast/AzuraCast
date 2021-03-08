@@ -43,6 +43,10 @@
                                                      v-if="row.item.source === 'songs' && row.item.order === 'sequential'">
                                         {{ langReorderButton }}
                                     </b-dropdown-item>
+                                    <b-dropdown-item @click.prevent="doQueue(row.item.links.queue)"
+                                                     v-if="row.item.source === 'songs' && row.item.order !== 'random'">
+                                        {{ langQueueButton }}
+                                    </b-dropdown-item>
                                     <b-dropdown-item @click.prevent="doModify(row.item.links.reshuffle)"
                                                      v-if="row.item.order === 'shuffle'">
                                         {{ langReshuffleButton }}
@@ -110,6 +114,8 @@
         <edit-modal ref="editModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
                     :enable-advanced-features="enableAdvancedFeatures" @relist="relist"></edit-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
+        <queue-modal ref="queueModal"></queue-modal>
+        <reorder-modal ref="reorderModal"></reorder-modal>
         <import-modal ref="importModal" @relist="relist"></import-modal>
     </div>
 </template>
@@ -120,11 +126,12 @@ import Schedule from './components/ScheduleView';
 import EditModal from './station_playlists/PlaylistEditModal';
 import ReorderModal from './station_playlists/PlaylistReorderModal';
 import ImportModal from './station_playlists/PlaylistImportModal';
+import QueueModal from './station_playlists/PlaylistQueueModal';
 import axios from 'axios';
 
 export default {
     name: 'StationPlaylists',
-    components: { ImportModal, ReorderModal, EditModal, Schedule, DataTable },
+    components: { QueueModal, ImportModal, ReorderModal, EditModal, Schedule, DataTable },
     props: {
         listUrl: String,
         scheduleUrl: String,
@@ -155,6 +162,9 @@ export default {
         },
         langReorderButton () {
             return this.$gettext('Reorder');
+        },
+        langQueueButton () {
+            return this.$gettext('Playback Queue');
         },
         langReshuffleButton () {
             return this.$gettext('Reshuffle');
@@ -225,6 +235,9 @@ export default {
         },
         doReorder (url) {
             this.$refs.reorderModal.open(url);
+        },
+        doQueue (url) {
+            this.$refs.queueModal.open(url);
         },
         doImport (url) {
             this.$refs.importModal.open(url);

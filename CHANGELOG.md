@@ -52,6 +52,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - Fixed a bug that prevented metadata from writing back to media files when album art was set.
 
+- A bug preventing the charts on the dashboard from showing or hiding properly has been fixed.
+
 ---
 
 # AzuraCast 0.12.1 (Feb 19, 2021)

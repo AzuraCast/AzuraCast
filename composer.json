@@ -33,7 +33,7 @@
         "guzzlehttp/oauth-subscriber": "^0.4.0",
         "http-interop/http-factory-guzzle": "^1.0",
         "intervention/image": "^2.5",
-        "james-heinrich/getid3": "dev-master",
+        "james-heinrich/getid3": "^1.9.9",
         "jhofm/flysystem-iterator": "^2.1",
         "laminas/laminas-config": "^3.3",
         "league/csv": "^9.6",

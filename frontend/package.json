@@ -51,7 +51,7 @@
     "moment-timezone": "^0.5.31",
     "nchan": "^1.0.10",
     "popper.js": "^1.16.1",
-    "prettier": "1.12.1",
+    "prettier": "1.19.1",
     "roboto-fontface": "^0.10.0",
     "sass": "^1.27.0",
     "sass-loader": "^7.3.1",

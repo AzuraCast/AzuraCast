@@ -5,6 +5,22 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+There have been no new features since the last stable release.
+
+## Code Quality/Technical Changes
+
+There have been no technical changes since the last stable release.
+
+## Bug Fixes
+
+There have been no new bug fixes since the last stable release.
+
+---
+
+# AzuraCast 0.12.2 (Mar 9, 2021)
+
+## New Features/Changes
+
 - **E-mail Delivery**: System administrators can now configure SMTP for e-mail delivery via the system settings page. If
   SMTP is enabled for your installation, the following functionality is added:
 

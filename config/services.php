@@ -204,8 +204,17 @@ return [
     },
 
     // Console
-    App\Console\Application::class => function (DI\Container $di, App\EventDispatcher $dispatcher) {
-        $console = new App\Console\Application('Command Line Interface', '1.0.0', $di);
+    App\Console\Application::class => function (
+        DI\Container $di,
+        App\EventDispatcher $dispatcher,
+        App\Version $version,
+        Environment $environment
+    ) {
+        $console = new App\Console\Application(
+            $environment->getAppName() . ' Command Line Tools (' . $environment->getAppEnvironment() . ')',
+            $version->getVersion(),
+            $di
+        );
         $console->setDispatcher($dispatcher);
 
         // Trigger an event for the core app and all plugins to build their CLI commands.
@@ -356,6 +365,73 @@ return [
         );
     },
 
+    Symfony\Component\Messenger\MessageBusInterface::class => DI\get(
+        Symfony\Component\Messenger\MessageBus::class
+    ),
+
+    // Mail functionality
+    Symfony\Component\Mailer\Transport\TransportInterface::class => function (
+        App\Entity\Repository\SettingsRepository $settingsRepo,
+        App\EventDispatcher $eventDispatcher,
+        Monolog\Logger $logger
+    ) {
+        $settings = $settingsRepo->readSettings();
+
+        if ($settings->getMailEnabled()) {
+            $requiredSettings = [
+                'mailSenderEmail' => $settings->getMailSenderEmail(),
+                'mailSmtpHost' => $settings->getMailSmtpHost(),
+                'mailSmtpPort' => $settings->getMailSmtpPort(),
+            ];
+
+            $hasAllSettings = true;
+            foreach ($requiredSettings as $settingKey => $setting) {
+                if (empty($setting)) {
+                    $hasAllSettings = false;
+                    break;
+                }
+            }
+
+            if ($hasAllSettings) {
+                $transport = new Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport(
+                    $settings->getMailSmtpHost(),
+                    $settings->getMailSmtpPort(),
+                    $settings->getMailSmtpSecure(),
+                    $eventDispatcher,
+                    $logger
+                );
+
+                if (!empty($settings->getMailSmtpUsername())) {
+                    $transport->setUsername($settings->getMailSmtpUsername());
+                    $transport->setPassword($settings->getMailSmtpPassword());
+                }
+
+                return $transport;
+            }
+        }
+
+        return new Symfony\Component\Mailer\Transport\NullTransport(
+            $eventDispatcher,
+            $logger
+        );
+    },
+
+    Symfony\Component\Mailer\Mailer::class => function (
+        Symfony\Component\Mailer\Transport\TransportInterface $transport,
+        Symfony\Component\Messenger\MessageBus $messageBus,
+        App\EventDispatcher $eventDispatcher
+    ) {
+        return new Symfony\Component\Mailer\Mailer(
+            $transport,
+            $messageBus,
+            $eventDispatcher
+        );
+    },
+
+    Symfony\Component\Mailer\MailerInterface::class => DI\get(
+        Symfony\Component\Mailer\Mailer::class
+    ),
+
     // Supervisor manager
     Supervisor\Supervisor::class => function (Environment $settings, Psr\Log\LoggerInterface $logger) {
         $client = new fXmlRpc\Client(
@@ -395,13 +471,5 @@ return [
             $logger
         );
     },
-
-    App\Media\MetadataService\MetadataServiceInterface::class => DI\get(
-        App\Media\MetadataService\GetId3MetadataService::class
-    ),
-
-    App\Media\AlbumArtHandler\AlbumArtServiceInterface::class => DI\get(
-        App\Media\AlbumArtHandler\LastFmAlbumArtHandler::class
-    ),
 
 ];

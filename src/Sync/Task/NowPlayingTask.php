@@ -340,6 +340,12 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             } elseif ($npOld->live->is_live === true && $np->live->is_live === false) {
                 $triggers[] = Entity\StationWebhook::TRIGGER_LIVE_DISCONNECT;
             }
+
+            if ($npOld->is_online && !$np->is_online) {
+                $triggers[] = Entity\StationWebhook::TRIGGER_STATION_OFFLINE;
+            } elseif (!$npOld->is_online && $np->is_online) {
+                $triggers[] = Entity\StationWebhook::TRIGGER_STATION_ONLINE;
+            }
         }
 
         $message = new Message\DispatchWebhookMessage();

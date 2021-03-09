@@ -44,7 +44,7 @@ class Auth
      * @param string $username
      * @param string $password
      */
-    public function authenticate($username, $password): ?User
+    public function authenticate(string $username, string $password): ?User
     {
         $user_auth = $this->userRepo->authenticate($username, $password);
 

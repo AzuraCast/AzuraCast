@@ -134,6 +134,11 @@ class Listener
         return $this->mount;
     }
 
+    public function getMountId(): ?int
+    {
+        return $this->mount_id;
+    }
+
     public function setMount(?StationMount $mount): void
     {
         $this->mount = $mount;
@@ -142,6 +147,11 @@ class Listener
     public function getRemote(): ?StationRemote
     {
         return $this->remote;
+    }
+
+    public function getRemoteId(): ?int
+    {
+        return $this->remote_id;
     }
 
     public function setRemote(?StationRemote $remote): void

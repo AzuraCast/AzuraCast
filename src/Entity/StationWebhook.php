@@ -29,6 +29,8 @@ class StationWebhook
     public const TRIGGER_LISTENER_LOST = 'listener_lost';
     public const TRIGGER_LIVE_CONNECT = 'live_connect';
     public const TRIGGER_LIVE_DISCONNECT = 'live_disconnect';
+    public const TRIGGER_STATION_OFFLINE = 'station_offline';
+    public const TRIGGER_STATION_ONLINE = 'station_online';
 
     /**
      * @ORM\Column(name="id", type="integer")

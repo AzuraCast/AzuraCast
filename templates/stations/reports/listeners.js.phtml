@@ -1,7 +1,7 @@
 var live_time, is_live, load_timeout, app_datatable, map, api_url;
 
 function cb (start, end) {
-    is_live = live_time.isSame(start, 'day');
+    is_live = live_time.isSame(start);
 
     if (is_live) {
         $('#reportrange span').html(<?=$this->escapeJs(__('Live Listeners')) ?>);
@@ -19,8 +19,8 @@ var updateListeners = function (start, end) {
     var export_url = api_url + '?format=csv';
 
     if (!is_live) {
-        params.start = start.format('YYYY-MM-DD');
-        params.end = end.format('YYYY-MM-DD');
+        params.start = start.format('YYYY-MM-DD H:mm:ss');
+        params.end = end.format('YYYY-MM-DD H:mm:ss');
         export_url += '&start=' + params.start + '&end=' + params.end;
     }
 
@@ -85,31 +85,32 @@ $(function () {
     live_time = moment().add(1, 'days');
 
     $('#reportrange').daterangepicker({
-        showDropdowns: true,
-        minYear: 2016,
-        maxYear: parseInt(moment().format('YYYY'), 10),
-        startDate: live_time,
-        endDate: live_time,
-        opens: "left",
-        ranges: {
-    <?=$this->escapeJs(__('Live Listeners')) ?>:
-    [live_time, live_time],
-    <?=$this->escapeJs(__('Today')) ?>:
-    [moment(), moment()],
-    <?=$this->escapeJs(__('Yesterday')) ?>:
-    [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    <?=$this->escapeJs(__('Last 7 Days')) ?>:
-    [moment().subtract(6, 'days'), moment()],
-    <?=$this->escapeJs(__('Last 30 Days')) ?>:
-    [moment().subtract(29, 'days'), moment()],
-    <?=$this->escapeJs(__('This Month')) ?>:
-    [moment().startOf('month'), moment().endOf('month')],
-    <?=$this->escapeJs(__('Last Month')) ?>:
-    [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-}
-},
-    cb
-)
+            showDropdowns: true,
+            minYear: 2016,
+            maxYear: parseInt(moment().format('YYYY'), 10),
+            startDate: live_time,
+            endDate: live_time,
+            opens: 'left',
+            timePicker: true,
+            ranges: {
+                <?=$this->escapeJs(__('Live Listeners')) ?>:
+                    [live_time, live_time],
+                <?=$this->escapeJs(__('Today')) ?>:
+                    [moment().startOf('day'), moment().endOf('day')],
+                <?=$this->escapeJs(__('Yesterday')) ?>:
+                    [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                <?=$this->escapeJs(__('Last 7 Days')) ?>:
+                    [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                <?=$this->escapeJs(__('Last 30 Days')) ?>:
+                    [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
+                <?=$this->escapeJs(__('This Month')) ?>:
+                    [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+                <?=$this->escapeJs(__('Last Month')) ?>:
+                    [moment().subtract(1, 'month').startOf('month').startOf('day'), moment().subtract(1, 'month').endOf('month').endOf('day')]
+            }
+        },
+        cb
+    )
     ;
 
     app_datatable = new Vue({

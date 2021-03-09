@@ -8,13 +8,13 @@ msgstr ""
 "X-Crowdin-Project: azuracast\n"
 "X-Crowdin-Project-ID: 217396\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /master/resources/locale/frontend.pot\n"
+"X-Crowdin-File: /main/resources/locale/frontend.pot\n"
 "X-Crowdin-File-ID: 11\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2021-01-27 23:30\n"
+"PO-Revision-Date: 2021-03-09 04:27\n"
 
-#: ./vue/StationPlaylists.vue:25
+#: ./vue/StationPlaylists.vue:26
 msgid "# Songs"
 msgstr "＃歌曲"
 
@@ -59,10 +59,10 @@ msgid "Account List"
 msgstr "帐户列表"
 
 #: ./vue/AdminStorageLocations.vue:15
-#: ./vue/Dashboard.vue:49
-#: ./vue/SongRequest.vue:18
+#: ./vue/SongRequest.vue:44
 #: ./vue/StationMedia.vue:112
-#: ./vue/StationPlaylists.vue:22
+#: ./vue/StationPlaylists.vue:23
+#: ./vue/StationQueue.vue:16
 #: ./vue/StationStreamers.vue:20
 #: ./vue/station_playlists/PlaylistReorderModal.vue:9
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:52
@@ -87,7 +87,7 @@ msgstr "添加播放列表"
 msgid "Add Schedule Item"
 msgstr "增加时间表项目"
 
-#: ./vue/Dashboard.vue:85
+#: ./vue/Dashboard.vue:86
 msgid "Add Station"
 msgstr "添加电台"
 
@@ -126,21 +126,22 @@ msgstr "高级"
 msgid "Advanced Manual AutoDJ Scheduling Options"
 msgstr "高级手动AutoDJ调度选项"
 
-#: ./vue/SongRequest.vue:17
+#: ./vue/SongRequest.vue:29
 #: ./vue/StationMedia.vue:75
 #: ./vue/StationOnDemand.vue:19
 #: ./vue/station_playlists/PlaylistReorderModal.vue:8
 msgid "Album"
 msgstr "专辑"
 
-#: ./vue/RadioPlayer.vue:90
+#: ./vue/RadioPlayer.vue:70
+#: ./vue/SongRequest.vue:53
 #: ./vue/StationMedia.vue:138
 #: ./vue/StationOnDemand.vue:49
 #: ./vue/station_media/form/MediaFormAlbumArt.vue:16
 msgid "Album Art"
 msgstr "专辑封面"
 
-#: ./vue/StationPlaylists.vue:31
+#: ./vue/StationPlaylists.vue:32
 msgid "All Playlists"
 msgstr "所有播放列表"
 
@@ -177,7 +178,7 @@ msgid "API Version"
 msgstr "API 版本"
 
 #: ./vue/AdminStorageLocations.vue:62
-#: ./vue/StationPlaylists.vue:116
+#: ./vue/StationPlaylists.vue:123
 #: ./vue/station_media/MediaToolbar.vue:156
 msgid "Applying changes..."
 msgstr "应用更改中..."
@@ -186,15 +187,16 @@ msgstr "应用更改中..."
 msgid "Art"
 msgstr "艺术"
 
-#: ./vue/SongRequest.vue:16
+#: ./vue/SongRequest.vue:24
 #: ./vue/StationMedia.vue:70
 #: ./vue/StationOnDemand.vue:18
+#: ./vue/station_playlists/PlaylistQueueModal.vue:10
 #: ./vue/station_playlists/PlaylistReorderModal.vue:7
 #: ./vue/webcaster/settings.vue:109
 msgid "Artist"
 msgstr "艺术家"
 
-#: ./vue/StationPlaylists.vue:76
+#: ./vue/StationPlaylists.vue:79
 #: ./vue/StationPlaylists.vue:21
 msgid "Auto-Assigned"
 msgstr "自动分配"
@@ -211,7 +213,7 @@ msgstr "本台的AutoDJ已被禁用。当音源不在现场时，不会自动播
 msgid "AutoDJ Service"
 msgstr "自动DJ服务"
 
-#: ./vue/Dashboard.vue:55
+#: ./vue/Dashboard.vue:43
 msgid "Average Listeners"
 msgstr "平均听众"
 
@@ -270,6 +272,11 @@ msgstr "更改已保存。"
 msgid "Clear"
 msgstr "清除"
 
+#: ./vue/station_playlists/PlaylistQueueModal.vue:26
+#: ./vue/station_playlists/PlaylistQueueModal.vue:5
+msgid "Clear Queue"
+msgstr "清理队列"
+
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:12
 #: ./vue/admin_storage_locations/StorageLocationEditModal.vue:2
 #: ./vue/station_media/MediaEditModal.vue:18
@@ -284,6 +291,10 @@ msgstr "清除"
 #: ./vue/station_playlists/PlaylistEditModal.vue:2
 #: ./vue/station_playlists/PlaylistImportModal.vue:17
 #: ./vue/station_playlists/PlaylistImportModal.vue:2
+#: ./vue/station_playlists/PlaylistQueueModal.vue:23
+#: ./vue/station_playlists/PlaylistQueueModal.vue:2
+#: ./vue/station_queue/QueueLogsModal.vue:6
+#: ./vue/station_queue/QueueLogsModal.vue:2
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:33
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:2
 #: ./vue/station_streamers/StreamerEditModal.vue:15
@@ -306,6 +317,8 @@ msgid "Control how this playlist is handled by the AutoDJ software."
 msgstr "控制AutoDJ软件如何处理该播放列表。"
 
 #: ./vue/components/CopyToClipboardButton.vue:3
+#: ./vue/station_queue/QueueLogsModal.vue:9
+#: ./vue/station_queue/QueueLogsModal.vue:5
 msgid "Copy to Clipboard"
 msgstr "复制到剪贴板"
 
@@ -320,7 +333,11 @@ msgstr "创建目录"
 msgid "Cue"
 msgstr "开始"
 
-#: ./vue/StationPlaylists.vue:89
+#: ./vue/StationQueue.vue:18
+msgid "Cued On"
+msgstr "开启队列"
+
+#: ./vue/StationPlaylists.vue:93
 msgid "Custom"
 msgstr "自定义"
 
@@ -362,7 +379,10 @@ msgstr "默认"
 #: ./vue/AdminStorageLocations.vue:78
 #: ./vue/StationPlaylists.vue:29
 #: ./vue/StationPlaylists.vue:6
-#: ./vue/StationPlaylists.vue:132
+#: ./vue/StationPlaylists.vue:139
+#: ./vue/StationQueue.vue:14
+#: ./vue/StationQueue.vue:6
+#: ./vue/StationQueue.vue:37
 #: ./vue/StationStreamers.vue:41
 #: ./vue/StationStreamers.vue:9
 #: ./vue/StationStreamers.vue:58
@@ -387,9 +407,13 @@ msgstr "删除专辑封面"
 msgid "Delete broadcast?"
 msgstr "删除广播？"
 
-#: ./vue/StationPlaylists.vue:133
+#: ./vue/StationPlaylists.vue:140
 msgid "Delete playlist?"
 msgstr "删除播放列表？"
+
+#: ./vue/StationQueue.vue:38
+msgid "Delete queue item?"
+msgstr "删除队列项目吗？"
 
 #: ./vue/AdminStorageLocations.vue:79
 msgid "Delete storage location?"
@@ -416,7 +440,7 @@ msgstr "目录"
 msgid "Directory Name"
 msgstr "目录名称"
 
-#: ./vue/StationPlaylists.vue:58
+#: ./vue/StationPlaylists.vue:62
 #: ./vue/station_profile/ProfilePublicPages.vue:61
 #: ./vue/station_profile/ProfilePublicPages.vue:59
 #: ./vue/station_profile/ProfileRequests.vue:16
@@ -438,9 +462,9 @@ msgstr "禁用歌曲请求？"
 msgid "Disable streamers?"
 msgstr "禁用流媒体？"
 
-#: ./vue/StationPlaylists.vue:79
+#: ./vue/StationPlaylists.vue:82
 #: ./vue/StationPlaylists.vue:24
-#: ./vue/StationPlaylists.vue:69
+#: ./vue/StationPlaylists.vue:73
 #: ./vue/StationStreamers.vue:28
 #: ./vue/StationStreamers.vue:4
 #: ./vue/station_profile/ProfilePublicPages.vue:69
@@ -520,7 +544,7 @@ msgstr "编辑存储位置"
 msgid "Edit Streamer"
 msgstr "编辑流媒体"
 
-#: ./vue/StationPlaylists.vue:59
+#: ./vue/StationPlaylists.vue:63
 #: ./vue/station_profile/ProfilePublicPages.vue:75
 #: ./vue/station_profile/ProfilePublicPages.vue:10
 #: ./vue/station_profile/ProfileRequests.vue:30
@@ -589,8 +613,8 @@ msgstr "端点"
 msgid "Enforce Schedule Times"
 msgstr "执行时间表时间"
 
-#: ./vue/StationPlaylists.vue:47
-#: ./vue/StationPlaylists.vue:24
+#: ./vue/StationPlaylists.vue:50
+#: ./vue/StationPlaylists.vue:27
 #: ./vue/StationPlaylists.vue:2
 msgid "Export %{format}"
 msgstr "输出 %{format}"
@@ -627,22 +651,23 @@ msgid "Friday"
 msgstr "星期五"
 
 #: ./vue/InlinePlayer.vue:34
-#: ./vue/RadioPlayer.vue:87
+#: ./vue/RadioPlayer.vue:67
 #: ./vue/components/Waveform.vue:37
 msgid "Full Volume"
 msgstr "完全音量"
 
-#: ./vue/StationPlaylists.vue:74
+#: ./vue/StationPlaylists.vue:78
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:60
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:92
 msgid "General Rotation"
 msgstr "常规轮换"
 
+#: ./vue/SongRequest.vue:30
 #: ./vue/StationMedia.vue:76
 msgid "Genre"
 msgstr "分类"
 
-#: ./vue/Dashboard.vue:65
+#: ./vue/Dashboard.vue:53
 msgid "Hide Charts"
 msgstr "隐藏图表"
 
@@ -702,7 +727,7 @@ msgstr "如果结束时间早于开始时间，则计划列表将继续过夜。
 msgid "If this station has on-demand streaming and downloading enabled, only songs that are in playlists with this setting enabled will be visible."
 msgstr "如果该电台启用了点播流媒体和下载功能，则只有启用此设置的播放列表中的歌曲才会显示。"
 
-#: ./vue/StationPlaylists.vue:46
+#: ./vue/StationPlaylists.vue:50
 #: ./vue/station_playlists/PlaylistImportModal.vue:20
 #: ./vue/station_playlists/PlaylistImportModal.vue:5
 #: ./vue/station_playlists/PlaylistImportModal.vue:15
@@ -740,7 +765,7 @@ msgstr "已启用"
 msgid "ISRC"
 msgstr "歌词"
 
-#: ./vue/StationPlaylists.vue:67
+#: ./vue/StationPlaylists.vue:70
 #: ./vue/StationPlaylists.vue:12
 msgid "Jingle Mode"
 msgstr "铃声模式"
@@ -769,7 +794,12 @@ msgstr "长度"
 msgid "LiquidSoap is currently shuffling from %{songs} and %{playlists}."
 msgstr "LiquidSoap目前正在从%{歌曲}和%{播放列表}进行排列。"
 
-#: ./vue/Dashboard.vue:45
+#: ./vue/StationQueue.vue:35
+#: ./vue/StationQueue.vue:2
+msgid "Listener Request"
+msgstr "侦听器请求"
+
+#: ./vue/Dashboard.vue:110
 #: ./vue/components/TimeSeriesChart.vue:49
 #: ./vue/station_profile/ProfileStreams.vue:15
 #: ./vue/station_profile/ProfileStreams.vue:45
@@ -804,12 +834,20 @@ msgstr "本地文件系统"
 msgid "Local Streams"
 msgstr "本地流"
 
+#: ./vue/station_queue/QueueLogsModal.vue:13
+msgid "Log View"
+msgstr "查看日志"
+
+#: ./vue/StationQueue.vue:11
+#: ./vue/StationQueue.vue:3
+msgid "Logs"
+msgstr "日志"
+
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:8
 msgid "Low"
 msgstr "低"
 
-#: ./vue/Dashboard.vue:118
-#: ./vue/Dashboard.vue:2
+#: ./vue/Dashboard.vue:145
 #: ./vue/station_profile/ProfileStreamers.vue:12
 #: ./vue/station_profile/ProfileStreamers.vue:10
 msgid "Manage"
@@ -853,7 +891,7 @@ msgstr "更改"
 msgid "Monday"
 msgstr "星期一"
 
-#: ./vue/StationPlaylists.vue:37
+#: ./vue/StationPlaylists.vue:38
 #: ./vue/station_media/MediaToolbar.vue:44
 msgid "More"
 msgstr "更多"
@@ -876,7 +914,7 @@ msgid "MP3"
 msgstr "MP 3"
 
 #: ./vue/InlinePlayer.vue:25
-#: ./vue/RadioPlayer.vue:81
+#: ./vue/RadioPlayer.vue:61
 #: ./vue/components/Waveform.vue:28
 msgid "Mute"
 msgstr "静音"
@@ -885,6 +923,7 @@ msgstr "静音"
 msgid "My Account"
 msgstr "我的帐户"
 
+#: ./vue/SongRequest.vue:20
 #: ./vue/StationMedia.vue:66
 msgid "Name"
 msgstr "名称"
@@ -937,7 +976,7 @@ msgstr "备注"
 msgid "Now"
 msgstr "现在"
 
-#: ./vue/Dashboard.vue:48
+#: ./vue/Dashboard.vue:113
 #: ./vue/station_profile/ProfileNowPlaying.vue:23
 msgid "Now Playing"
 msgstr "正在播放"
@@ -956,7 +995,7 @@ msgstr "播放之间的歌曲数量"
 msgid "On the Air"
 msgstr "直播中"
 
-#: ./vue/StationPlaylists.vue:73
+#: ./vue/StationPlaylists.vue:76
 #: ./vue/StationPlaylists.vue:18
 msgid "On-Demand"
 msgstr "点播请求"
@@ -973,11 +1012,11 @@ msgstr "按需嵌入代码"
 msgid "On-Demand Media"
 msgstr "点播媒体"
 
-#: ./vue/StationPlaylists.vue:81
+#: ./vue/StationPlaylists.vue:85
 msgid "Once per %{minutes} Minutes"
 msgstr "每%{minutes}分钟一次"
 
-#: ./vue/StationPlaylists.vue:77
+#: ./vue/StationPlaylists.vue:81
 msgid "Once per %{songs} Songs"
 msgstr "每%{songs}歌曲一次"
 
@@ -986,7 +1025,7 @@ msgstr "每%{songs}歌曲一次"
 msgid "Once per Hour"
 msgstr "每小时一次"
 
-#: ./vue/StationPlaylists.vue:85
+#: ./vue/StationPlaylists.vue:89
 msgid "Once per Hour (at %{minute})"
 msgstr "每小时一次(%{分钟})"
 
@@ -1018,11 +1057,11 @@ msgid "Path/Suffix"
 msgstr "路径/后缀"
 
 #: ./vue/InlinePlayer.vue:19
-#: ./vue/RadioPlayer.vue:78
+#: ./vue/RadioPlayer.vue:58
 msgid "Pause"
 msgstr "暂停"
 
-#: ./vue/RadioPlayer.vue:75
+#: ./vue/RadioPlayer.vue:55
 #: ./vue/station_media/form/MediaFormWaveformEditor.vue:13
 msgid "Play"
 msgstr "播放"
@@ -1039,12 +1078,17 @@ msgstr "每x首歌曲准确播放一次。"
 msgid "Play once per hour at the specified minute."
 msgstr "每小时在指定的分钟播放一次。"
 
-#: ./vue/Dashboard.vue:61
+#: ./vue/Dashboard.vue:49
 #: ./vue/StationMedia.vue:147
 #: ./vue/StationOnDemand.vue:52
 #: ./vue/station_streamers/StreamerBroadcastsModal.vue:63
 msgid "Play/Pause"
 msgstr "播放/暂停"
+
+#: ./vue/StationPlaylists.vue:44
+#: ./vue/station_playlists/PlaylistQueueModal.vue:14
+msgid "Playback Queue"
+msgstr ""
 
 #: ./vue/station_profile/ProfilePublicPages.vue:22
 #: ./vue/station_profile/ProfilePublicPages.vue:20
@@ -1055,9 +1099,9 @@ msgstr "播放器嵌入代码"
 msgid "Playing Next"
 msgstr "播放下一个"
 
-#: ./vue/PublicRadioPlayer.vue:35
+#: ./vue/PublicRadioPlayer.vue:40
 #: ./vue/StationOnDemand.vue:20
-#: ./vue/StationPlaylists.vue:23
+#: ./vue/StationPlaylists.vue:24
 #: ./vue/station_profile/ProfileNowPlaying.vue:40
 #: ./vue/station_profile/ProfileNowPlaying.vue:72
 #: ./vue/station_profile/ProfileSchedule.vue:14
@@ -1086,6 +1130,10 @@ msgstr "播放列表名称"
 msgid "Playlist order set."
 msgstr "播放列表顺序设置。"
 
+#: ./vue/station_playlists/PlaylistQueueModal.vue:32
+msgid "Playlist queue cleared."
+msgstr ""
+
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:56
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
 msgid "Playlist Type"
@@ -1095,6 +1143,11 @@ msgstr "播放列表类型"
 #: ./vue/station_playlists/form/PlaylistFormBasicInfo.vue:1
 msgid "Playlist Weight"
 msgstr "播放列表权重"
+
+#: ./vue/StationQueue.vue:38
+#: ./vue/StationQueue.vue:5
+msgid "Playlist:"
+msgstr "播放列表："
 
 #: ./vue/StationMedia.vue:107
 #: ./vue/StationPlaylists.vue:6
@@ -1113,8 +1166,7 @@ msgstr "清理所选文件的播放列表："
 msgid "Playlists updated for selected files:"
 msgstr "更新所选文件的播放列表："
 
-#: ./vue/Dashboard.vue:99
-#: ./vue/Dashboard.vue:10
+#: ./vue/Dashboard.vue:128
 #: ./vue/station_profile/ProfilePublicPages.vue:16
 #: ./vue/station_profile/ProfilePublicPages.vue:14
 msgid "Public Page"
@@ -1166,7 +1218,7 @@ msgstr "远程播放缓冲区 (Seconds)"
 msgid "Remote Relays"
 msgstr "远程继电器"
 
-#: ./vue/StationPlaylists.vue:62
+#: ./vue/StationPlaylists.vue:65
 #: ./vue/StationPlaylists.vue:7
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:85
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:1
@@ -1210,7 +1262,7 @@ msgstr "重命名"
 msgid "Rename File/Directory"
 msgstr "重命名文件/目录"
 
-#: ./vue/StationPlaylists.vue:40
+#: ./vue/StationPlaylists.vue:41
 msgid "Reorder"
 msgstr "重新排序"
 
@@ -1231,12 +1283,12 @@ msgstr "更换专辑封面"
 msgid "Reprocess"
 msgstr "正在重新处理"
 
-#: ./vue/SongRequest.vue:5
+#: ./vue/SongRequest.vue:13
 #: ./vue/SongRequest.vue:3
 msgid "Request"
 msgstr "请求"
 
-#: ./vue/public_radio_player/RequestModal.vue:18
+#: ./vue/public_radio_player/RequestModal.vue:23
 msgid "Request a Song"
 msgstr "请求歌曲"
 
@@ -1245,11 +1297,11 @@ msgstr "请求歌曲"
 msgid "Request Embed Code"
 msgstr "需要嵌入代码"
 
-#: ./vue/PublicRadioPlayer.vue:32
+#: ./vue/PublicRadioPlayer.vue:37
 msgid "Request Song"
 msgstr "请求歌曲"
 
-#: ./vue/StationPlaylists.vue:43
+#: ./vue/StationPlaylists.vue:47
 msgid "Reshuffle"
 msgstr "洗牌"
 
@@ -1296,7 +1348,7 @@ msgstr "保存更改"
 msgid "Schedule"
 msgstr "时间表"
 
-#: ./vue/StationPlaylists.vue:34
+#: ./vue/StationPlaylists.vue:35
 #: ./vue/StationStreamers.vue:32
 msgid "Schedule View"
 msgstr "时间表检视"
@@ -1317,7 +1369,7 @@ msgstr "每周预定的播放日"
 msgid "Scheduled Time #%{num}"
 msgstr "预定时间#%{num}。"
 
-#: ./vue/StationPlaylists.vue:24
+#: ./vue/StationPlaylists.vue:25
 msgid "Scheduling"
 msgstr "时间安排"
 
@@ -1365,7 +1417,7 @@ msgstr "选择文件"
 msgid "Select PLS/M3U File to Import"
 msgstr "选择要导入的PLS/M3U文件"
 
-#: ./vue/StationPlaylists.vue:70
+#: ./vue/StationPlaylists.vue:73
 #: ./vue/StationPlaylists.vue:15
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:45
 msgid "Sequential"
@@ -1408,7 +1460,7 @@ msgstr "设置重叠"
 msgid "Settings"
 msgstr "设置"
 
-#: ./vue/Dashboard.vue:67
+#: ./vue/Dashboard.vue:55
 msgid "Show Charts"
 msgstr "显示图表"
 
@@ -1440,7 +1492,7 @@ msgstr "歌曲艺术家"
 msgid "Song Genre"
 msgstr "歌曲类型"
 
-#: ./vue/PublicRadioPlayer.vue:29
+#: ./vue/PublicRadioPlayer.vue:34
 #: ./vue/public_radio_player/SongHistoryModal.vue:9
 msgid "Song History"
 msgstr "歌曲历史"
@@ -1466,12 +1518,13 @@ msgstr "歌曲播放顺序"
 msgid "Song Requests"
 msgstr "歌曲请求"
 
+#: ./vue/StationQueue.vue:17
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:18
 #: ./vue/station_media/form/MediaFormBasicInfo.vue:1
 msgid "Song Title"
 msgstr "歌曲标题"
 
-#: ./vue/StationPlaylists.vue:59
+#: ./vue/StationPlaylists.vue:62
 #: ./vue/StationPlaylists.vue:4
 msgid "Song-based"
 msgstr "基于歌曲"
@@ -1481,6 +1534,7 @@ msgstr "基于歌曲"
 msgid "Song-Based Playlist"
 msgstr "基于歌曲的播放列表"
 
+#: ./vue/StationQueue.vue:19
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:6
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:1
 #: ./vue/station_playlists/form/PlaylistFormSource.vue:8
@@ -1535,11 +1589,11 @@ msgstr "开始/结束日期不能用于具有高级设置的播放列表!"
 msgid "Station Media"
 msgstr "电台媒体"
 
-#: ./vue/Dashboard.vue:40
+#: ./vue/Dashboard.vue:107
 msgid "Station Name"
 msgstr "电台名称"
 
-#: ./vue/Dashboard.vue:79
+#: ./vue/Dashboard.vue:80
 msgid "Station Overview"
 msgstr "电台概况"
 
@@ -1729,6 +1783,10 @@ msgstr "该播放列表将每隔$x分钟播放一次，其中$x在下面指定�
 msgid "This playlist will play every $x songs, where $x is specified below."
 msgstr "此播放列表将每隔$x歌曲播放一次，其中$x在下面指定。"
 
+#: ./vue/station_playlists/PlaylistQueueModal.vue:3
+msgid "This queue contains the remaining tracks in the order they will be queued by the AzuraCast AutoDJ (if the tracks are eligible to be played)."
+msgstr ""
+
 #: ./vue/StationPlaylists.vue:9
 #: ./vue/StationStreamers.vue:9
 #: ./vue/station_playlists/form/PlaylistFormSchedule.vue:57
@@ -1745,9 +1803,10 @@ msgstr "此流媒体在任何时候都没有安排播放。"
 msgid "Thursday"
 msgstr "星期四"
 
-#: ./vue/SongRequest.vue:15
+#: ./vue/SongRequest.vue:21
 #: ./vue/StationMedia.vue:67
 #: ./vue/StationOnDemand.vue:17
+#: ./vue/station_playlists/PlaylistQueueModal.vue:9
 #: ./vue/station_playlists/PlaylistReorderModal.vue:6
 #: ./vue/webcaster/settings.vue:103
 msgid "Title"
@@ -1777,7 +1836,7 @@ msgstr "星期二"
 msgid "Unique"
 msgstr "特别听众"
 
-#: ./vue/Dashboard.vue:58
+#: ./vue/Dashboard.vue:46
 msgid "Unique Listeners"
 msgstr "特别听众"
 
@@ -1792,6 +1851,10 @@ msgstr "未知标题"
 #: ./vue/station_playlists/PlaylistReorderModal.vue:24
 msgid "Up"
 msgstr "上"
+
+#: ./vue/StationQueue.vue:4
+msgid "Upcoming Song Queue"
+msgstr "即将到来的歌曲队列"
 
 #: ./vue/webcaster/settings.vue:116
 msgid "Update Metadata"
@@ -1820,7 +1883,7 @@ msgid "Visual Cue Editor"
 msgstr "视觉提示编辑器"
 
 #: ./vue/InlinePlayer.vue:19
-#: ./vue/RadioPlayer.vue:84
+#: ./vue/RadioPlayer.vue:64
 #: ./vue/components/Waveform.vue:64
 msgid "Volume"
 msgstr "音量"
@@ -1843,7 +1906,7 @@ msgstr "网络DJ"
 msgid "Wednesday"
 msgstr "星期三"
 
-#: ./vue/StationPlaylists.vue:74
+#: ./vue/StationPlaylists.vue:78
 msgid "Weight"
 msgstr "重量"
 

@@ -635,6 +635,7 @@ class Queue implements EventSubscriberInterface
             ' feat ',
             ' feat. ',
             ' & ',
+            ' vs. ',
         ];
         $dividerString = chr(7);
 

@@ -57,6 +57,14 @@ class NowPlaying implements ResolvableUrlInterface
     public array $song_history = [];
 
     /**
+     * Whether the stream is currently online.
+     *
+     * @OA\Property(example=true)
+     * @var bool
+     */
+    public bool $is_online = false;
+
+    /**
      * Debugging information about where the now playing data comes from.
      *
      * @OA\Property(enum={"hit", "database", "station"})

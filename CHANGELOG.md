@@ -5,15 +5,70 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-(There have been no new features in the rolling release since the last stable version.)
+There have been no new features since the last stable release.
 
 ## Code Quality/Technical Changes
 
-(There have been no technical changes in the rolling release since the last stable version.)
+There have been no technical changes since the last stable release.
 
 ## Bug Fixes
 
-(There have been no bug fixes in the rolling release since the last stable version.)
+There have been no new bug fixes since the last stable release.
+
+---
+
+# AzuraCast 0.12.2 (Mar 9, 2021)
+
+## New Features/Changes
+
+- **E-mail Delivery**: System administrators can now configure SMTP for e-mail delivery via the system settings page. If
+  SMTP is enabled for your installation, the following functionality is added:
+
+    - **Self-Service Password Reset**: Users can request a password recovery token to reset their own passwords.
+
+    - **E-mail Web Hook**: You can dispatch an e-mail to specified recipients as a web hook when specific triggers
+      occur.
+
+- Web Hooks can now be triggered to dispatch when a station goes offline or comes online.
+
+- You can now generate listener reports for specific time periods instead of just day ranges.
+
+- For sequential or shuffled playlists, you can now view the internal queue that the AzuraCast AutoDJ uses to track its
+  song playback order from the "More" dropdown next to the playlist.
+
+## Code Quality/Technical Changes
+
+- We have removed the "?12345678" cache-busting timestamp query strings appended to the end of stream URLs. These have
+  caused a fair amount of confusion over the years, and with our modern playback controls (and with modern browsers)
+  it's far less necessary than it used to be.
+
+- Logging has been improved for critical errors (i.e. "out of memory" or "execution time exceeded").
+
+- We have improved the visibility and usability of our password strength meter where it is used.
+
+- **API Change**: The Now Playing API response now has a boolean "is_online" value to indicate whether we are currently
+  detecting a broadcast from the station.
+
+- Liquidsoap has been updated to version 1.4.4 stable, and the SFTPGo library has been updated to its latest version.
+
+## Bug Fixes
+
+- An issue with some stations crashing shortly after startup has been resolved. This was caused by a safety check we
+  added to the AutoDJ to check that AzuraCast was up and running at the same time; however, this caused issues with
+  stations that don't use the AzuraCast AutoDJ (i.e. stations that stream live or use remote playlists).
+
+- We have identified an issue that would prevent backups from older than a few months ago from restoring correctly; this
+  issue has been resolved, so backups should now restore without any issue regardless of the backup's age.
+
+- Several issues causing slowness in the Listener Report (especially the CSV generation) have been improved, so stations
+  with large listener counts should still be able to take advantage of this report in more scenarios.
+
+- Fixed a bug in the Now Playing adapter that would cause stations to return as offline when using the Icecast adapter
+  with no administrator password set.
+
+- Fixed a bug that prevented metadata from writing back to media files when album art was set.
+
+- A bug preventing the charts on the dashboard from showing or hiding properly has been fixed.
 
 ---
 

@@ -14,16 +14,696 @@ Language-Team: Chinese Simplified
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2021-01-27T17:44:25+00:00
-PO-Revision-Date: 2021-01-27 23:30
+POT-Creation-Date: 2021-03-08T13:22:42+00:00
+PO-Revision-Date: 2021-03-09 04:27
 Language: zh_CN
 Plural-Forms: nplurals=1; plural=0;
 X-Crowdin-Project: azuracast
 X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: zh-CN
-X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
 ',
+      ),
+      'Now Playing Data' => 
+      array (
+        0 => '正在播放数据',
+      ),
+      '1-Minute Sync' => 
+      array (
+        0 => '1分钟同步',
+      ),
+      'Song Requests Queue' => 
+      array (
+        0 => '歌曲请求队列',
+      ),
+      '5-Minute Sync' => 
+      array (
+        0 => '5分钟同步',
+      ),
+      'Check Media Folders' => 
+      array (
+        0 => '检查媒体文件夹',
+      ),
+      '1-Hour Sync' => 
+      array (
+        0 => '1小时同步',
+      ),
+      'Analytics/Statistics' => 
+      array (
+        0 => '分析/统计',
+      ),
+      'Cleanup' => 
+      array (
+        0 => '清理',
+      ),
+      'All Stations' => 
+      array (
+        0 => '所有电台',
+      ),
+      'Listeners' => 
+      array (
+        0 => '听众',
+      ),
+      'Record not found!' => 
+      array (
+        0 => '记录不存在！',
+      ),
+      'Changes saved successfully.' => 
+      array (
+        0 => '更改已成功保存。',
+      ),
+      'Record deleted successfully.' => 
+      array (
+        0 => '记录已成功删除。',
+      ),
+      'You cannot remove yourself.' => 
+      array (
+        0 => '您无法删除自己。',
+      ),
+      'This station does not accept requests currently.' => 
+      array (
+        0 => '该电台当前不接受请求。',
+      ),
+      'Request submitted successfully.' => 
+      array (
+        0 => '请求已成功提交。',
+      ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => '这个电台已经没有可用的存储空间了。',
+      ),
+      'Station restarted.' => 
+      array (
+        0 => '电台已重新启动。',
+      ),
+      'Frontend stopped.' => 
+      array (
+        0 => '前端已停止。',
+      ),
+      'Frontend started.' => 
+      array (
+        0 => '前端已启动。',
+      ),
+      'Frontend restarted.' => 
+      array (
+        0 => '前端已重新启动。',
+      ),
+      'Song skipped.' => 
+      array (
+        0 => '已跳过歌曲。',
+      ),
+      'Streamer disconnected.' => 
+      array (
+        0 => '流媒体已断线。',
+      ),
+      'Backend stopped.' => 
+      array (
+        0 => '后端已停止。',
+      ),
+      'Backend started.' => 
+      array (
+        0 => '后端已启动。',
+      ),
+      'Backend restarted.' => 
+      array (
+        0 => '后端已重启。',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => '播放列表成功导入；%d的%d文件被成功匹配。',
+      ),
+      'Playlist queue cleared.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => '未找到播放列表。',
+      ),
+      'This playlist is not a sequential playlist.' => 
+      array (
+        0 => '此播放列表不是顺序播放列表。',
+      ),
+      'Playlist enabled.' => 
+      array (
+        0 => '播放列表已启用。',
+      ),
+      'Playlist disabled.' => 
+      array (
+        0 => '播放列表已禁用。',
+      ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => '播放列表已改组。',
+      ),
+      'This station does not support on-demand streaming.' => 
+      array (
+        0 => '该电台不支持流媒体点播。',
+      ),
+      'File not found.' => 
+      array (
+        0 => '未找到文件。',
+      ),
+      'Record not found.' => 
+      array (
+        0 => '没有找到记录。',
+      ),
+      'No recording available.' => 
+      array (
+        0 => '没有可用的录音。',
+      ),
+      'Directory' => 
+      array (
+        0 => '目录',
+      ),
+      'File Not Processed: %s' => 
+      array (
+        0 => '未处理的文件：%s',
+      ),
+      'File Processing' => 
+      array (
+        0 => '文件处理',
+      ),
+      'No directory specified' => 
+      array (
+        0 => '没有指定目录',
+      ),
+      'Directory "%s" was not created' => 
+      array (
+        0 => '目录"%s "没有被创建',
+      ),
+      'File not specified.' => 
+      array (
+        0 => '未指定文件。',
+      ),
+      'New path not specified.' => 
+      array (
+        0 => '未指定新路径。',
+      ),
+      'Path "%s" is not a folder.' => 
+      array (
+        0 => '路径"%s "不是文件夹。',
+      ),
+      'Too many login attempts' => 
+      array (
+        0 => '尝试登录次数过多',
+      ),
+      'You have attempted to log in too many times. Please wait 30 seconds and try again.' => 
+      array (
+        0 => '您已尝试登录太多次。请等待30秒后再试。',
+      ),
+      'Logged in successfully.' => 
+      array (
+        0 => '登录成功。',
+      ),
+      'Complete the setup process to get started.' => 
+      array (
+        0 => '完成设置过程即可开始。',
+      ),
+      'Login unsuccessful' => 
+      array (
+        0 => '登录失败',
+      ),
+      'Your credentials could not be verified.' => 
+      array (
+        0 => '无法验证您的凭据。',
+      ),
+      'Invalid token specified.' => 
+      array (
+        0 => '指定无效标记。',
+      ),
+      'Logged in using account recovery token' => 
+      array (
+        0 => '使用账户恢复令牌登录',
+      ),
+      'Your password has been updated.' => 
+      array (
+        0 => '您的密码已更新。',
+      ),
+      'Too many forgot password attempts' => 
+      array (
+        0 => '忘记密码功能的尝试次数过多',
+      ),
+      'You have attempted to reset your password too many times. Please wait 30 seconds and try again.' => 
+      array (
+        0 => '您已尝试重置密码太多次。请等待30秒后再试。',
+      ),
+      'Account Recovery Link' => 
+      array (
+        0 => '帐户恢复链接',
+      ),
+      'Account recovery e-mail sent.' => 
+      array (
+        0 => '发送账户恢复电子邮件。',
+      ),
+      'If the e-mail address you provided is in the system, check your inbox for a password reset message.' => 
+      array (
+        0 => '如果您提供的电子邮件地址在系统中，请检查您的收件箱是否有密码重置信息。',
+      ),
+      'Setup has already been completed!' => 
+      array (
+        0 => '设置已经完成!',
+      ),
+      'Super Administrator' => 
+      array (
+        0 => '超级管理员',
+      ),
+      'Setup is now complete!' => 
+      array (
+        0 => '设置现已完成！',
+      ),
+      'Continue setting up your station in the main AzuraCast app.' => 
+      array (
+        0 => '继续在AzuraCast主应用程序中设置您的电台。',
+      ),
+      'API Key not found.' => 
+      array (
+        0 => '找不到API密钥。',
+      ),
+      'API Key updated.' => 
+      array (
+        0 => 'API密钥已更新。',
+      ),
+      'Edit API Key' => 
+      array (
+        0 => '编辑API密钥',
+      ),
+      'Add API Key' => 
+      array (
+        0 => '添加API密钥',
+      ),
+      'API Key deleted.' => 
+      array (
+        0 => 'API密钥已删除。',
+      ),
+      'Profile saved!' => 
+      array (
+        0 => '个人资料已保存！',
+      ),
+      'Edit Profile' => 
+      array (
+        0 => '编辑个人资料',
+      ),
+      'The token you supplied is invalid. Please try again.' => 
+      array (
+        0 => '您提供的令牌无效。请再试一次。',
+      ),
+      'Two-factor authentication enabled.' => 
+      array (
+        0 => '已启用双重身份验证。',
+      ),
+      'Two-factor authentication disabled.' => 
+      array (
+        0 => '已禁用双重身份验证。',
+      ),
+      'Changes saved.' => 
+      array (
+        0 => '更改已保存。',
+      ),
+      'Station updated.' => 
+      array (
+        0 => '电台已更新。',
+      ),
+      'Station added.' => 
+      array (
+        0 => '已添加电台。',
+      ),
+      'Edit Station' => 
+      array (
+        0 => '编辑电台',
+      ),
+      'Station deleted.' => 
+      array (
+        0 => '电台已删除。',
+      ),
+      'Station not found.' => 
+      array (
+        0 => '找不到电台。',
+      ),
+      'Clone Station: %s' => 
+      array (
+        0 => '克隆电台: %s',
+      ),
+      'System Settings' => 
+      array (
+        0 => '系统设置',
+      ),
+      'Permission updated.' => 
+      array (
+        0 => '权限已更新。',
+      ),
+      'Permission added.' => 
+      array (
+        0 => '权限已添加。',
+      ),
+      'Edit Permission' => 
+      array (
+        0 => '编辑权限',
+      ),
+      'Add Permission' => 
+      array (
+        0 => '添加权限',
+      ),
+      'Permission deleted.' => 
+      array (
+        0 => '权限已删除。',
+      ),
+      'Run Synchronized Task' => 
+      array (
+        0 => '运行同步任务',
+      ),
+      'Debug Output' => 
+      array (
+        0 => '调试输出',
+      ),
+      'AzuraCast Application Log' => 
+      array (
+        0 => 'AzuraCast应用程序日志',
+      ),
+      'Nginx Access Log' => 
+      array (
+        0 => 'Nginx访问日志',
+      ),
+      'Nginx Error Log' => 
+      array (
+        0 => 'Nginx错误日志',
+      ),
+      'PHP Application Log' => 
+      array (
+        0 => 'PHP应用程序日志',
+      ),
+      'Supervisord Log' => 
+      array (
+        0 => 'Supervisord 日志',
+      ),
+      'SHOUTcast version "%s" is currently installed.' => 
+      array (
+        0 => '目前安装了SHOUTcast版本"%s"。',
+      ),
+      'Install SHOUTcast' => 
+      array (
+        0 => '安装SHOUTcast',
+      ),
+      'Configure Backups' => 
+      array (
+        0 => '配置备份',
+      ),
+      'Run Manual Backup' => 
+      array (
+        0 => '运行手动备份',
+      ),
+      'Backup deleted.' => 
+      array (
+        0 => '备份已删除。',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => '找不到备份。',
+      ),
+      'Custom Field updated.' => 
+      array (
+        0 => '自定义字段已更新。',
+      ),
+      'Custom Field added.' => 
+      array (
+        0 => '自定义字段已添加。',
+      ),
+      'Edit Custom Field' => 
+      array (
+        0 => '编辑自定义字段',
+      ),
+      'Add Custom Field' => 
+      array (
+        0 => '添加自定义字段',
+      ),
+      'Custom Field deleted.' => 
+      array (
+        0 => '自定义字段已删除。',
+      ),
+      'User updated.' => 
+      array (
+        0 => '用户已更新。',
+      ),
+      'User added.' => 
+      array (
+        0 => '用户已添加。',
+      ),
+      'Another user already exists with this e-mail address. Please update the e-mail address.' => 
+      array (
+        0 => '这个电子邮件地址已经有了另一个用户。请使用新的电子邮件。',
+      ),
+      'Edit User' => 
+      array (
+        0 => '编辑用户',
+      ),
+      'Add User' => 
+      array (
+        0 => '添加用户',
+      ),
+      'You cannot delete your own account.' => 
+      array (
+        0 => '您不能删除自己的账户。',
+      ),
+      'User deleted.' => 
+      array (
+        0 => '用户已删除。',
+      ),
+      'User not found.' => 
+      array (
+        0 => '找不到用户。',
+      ),
+      'An error occurred while downloading the GeoLite database: %s' => 
+      array (
+        0 => '下载GeoLite数据库时发生错误：%s',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => '安装GeoLite IP数据库',
+      ),
+      'GeoLite database uninstalled.' => 
+      array (
+        0 => 'GeoLite数据库已卸载。',
+      ),
+      'Web Hook added.' => 
+      array (
+        0 => '添加了网络钩子。',
+      ),
+      'Add Web Hook' => 
+      array (
+        0 => '添加网络钩子',
+      ),
+      'Web Hook updated.' => 
+      array (
+        0 => '网络钩子已更新。',
+      ),
+      'Edit Web Hook' => 
+      array (
+        0 => '编辑网络钩子',
+      ),
+      'Web hook enabled.' => 
+      array (
+        0 => '网络钩子已启用。',
+      ),
+      'Web Hook disabled.' => 
+      array (
+        0 => '网络钩子已禁用。',
+      ),
+      'Web Hook Test Output' => 
+      array (
+        0 => '测试网络钩子输出',
+      ),
+      'Web Hook deleted.' => 
+      array (
+        0 => '网络钩子已删除。',
+      ),
+      'Save Changes' => 
+      array (
+        0 => '保存更改',
+      ),
+      'Edit Liquidsoap Configuration' => 
+      array (
+        0 => '编辑Liquidsoap配置',
+      ),
+      'Streamers enabled!' => 
+      array (
+        0 => '流媒体已启用！',
+      ),
+      'You can now set up streamer (DJ) accounts.' => 
+      array (
+        0 => '您现在可以设置流媒体（DJ）账户。',
+      ),
+      'Automated assignment complete!' => 
+      array (
+        0 => '自动分配完成！',
+      ),
+      'Automated assignment error' => 
+      array (
+        0 => '自动分配错误',
+      ),
+      'This feature is not currently supported on this station.' => 
+      array (
+        0 => '该电台当前不支持此功能。',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => '编辑挂载点',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => '添加挂载点',
+      ),
+      'Mount Point deleted.' => 
+      array (
+        0 => '挂载点已删除。',
+      ),
+      'Listeners by Day' => 
+      array (
+        0 => '每天的听众',
+      ),
+      'Listeners by Day of Week' => 
+      array (
+        0 => '每星期的听众',
+      ),
+      'Monday' => 
+      array (
+        0 => '星期一',
+      ),
+      'Tuesday' => 
+      array (
+        0 => '星期二',
+      ),
+      'Wednesday' => 
+      array (
+        0 => '星期三',
+      ),
+      'Thursday' => 
+      array (
+        0 => '星期四',
+      ),
+      'Friday' => 
+      array (
+        0 => '星期五',
+      ),
+      'Saturday' => 
+      array (
+        0 => '星期六',
+      ),
+      'Sunday' => 
+      array (
+        0 => '星期日',
+      ),
+      'Listeners by Hour' => 
+      array (
+        0 => '每小时的听众',
+      ),
+      'SoundExchange Report' => 
+      array (
+        0 => '声讯报告',
+      ),
+      'Edit SFTP User' => 
+      array (
+        0 => '编辑SFTP用户',
+      ),
+      'Add SFTP User' => 
+      array (
+        0 => '添加SFTP用户',
+      ),
+      'SFTP User deleted.' => 
+      array (
+        0 => 'SFTP用户已删除。',
+      ),
+      'Remote Relay updated.' => 
+      array (
+        0 => '远程中继已更新。',
+      ),
+      'Remote Relay added.' => 
+      array (
+        0 => '远程中继已添加。',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => '编辑远程中继',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => '添加远程中继',
+      ),
+      'Remote Relay deleted.' => 
+      array (
+        0 => '远程中继已删除。',
+      ),
+      'This record cannot be edited.' => 
+      array (
+        0 => '该记录无法编辑。',
+      ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Liquidsoap 日志',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Liquidsoap 配置',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Icecast访问日志',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Icecast错误日志',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Icecast配置',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'SHOUTcast日志',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'SHOUTcast配置',
+      ),
+      'GeoLite database not configured for this installation. See System Administration for instructions.' => 
+      array (
+        0 => '没有为本次安装配置GeoLite数据库。请参阅系统管理以了解相关说明。',
+      ),
+      'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
+      array (
+        0 => '本产品包括MaxMind创建的GeoLite2数据，可从%s。',
+      ),
+      'IP Geolocation by DB-IP' => 
+      array (
+        0 => '通过DB-IP进行IP地理定位',
+      ),
+      'None' => 
+      array (
+        0 => '无',
+      ),
+      'Search engine crawlers are not permitted to use this feature.' => 
+      array (
+        0 => '搜索引擎爬虫不允许使用此功能。',
+      ),
+      'The song ID you specified could not be found in the station.' => 
+      array (
+        0 => '您指定的歌曲ID在电台中找不到。',
+      ),
+      'The song ID you specified cannot be requested for this station.' => 
+      array (
+        0 => '您指定的歌曲ID不能被要求使用在这个电台。',
+      ),
+      'You have submitted a request too recently! Please wait before submitting another one.' => 
+      array (
+        0 => '您最近提交的请求太多了! 请等待后再提交另一个请求。',
+      ),
+      'Duplicate request: this song was already requested and will play soon.' => 
+      array (
+        0 => '重复请求：这首歌已经被请求了，很快就会播放。',
+      ),
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
+      array (
+        0 => '这首歌或艺术家最近被播放的次数太多。在再次请求之前，请稍等片刻。',
       ),
       'All Permissions' => 
       array (
@@ -105,137 +785,77 @@ X-Crowdin-File-ID: 4
       array (
         0 => '管理电台钩子',
       ),
-      'You must be logged in to access this page.' => 
+      'This storage location could not be validated: %s' => 
       array (
-        0 => '您必须先登录才能访问本页面。',
-      ),
-      'You do not have permission to access this portion of the site.' => 
-      array (
-        0 => '您没有权限访问这部分网站。',
-      ),
-      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
-      array (
-        0 => '想要使用SHOUTcast 2？<a href="%s" target="_blank">在这里安装</a>，然后重新加载这个页面。',
-      ),
-      '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.' => 
-      array (
-        0 => '<a href="%s" target="_blank">在这里管理存储位置和存储配额</a>。',
-      ),
-      'Create a new storage location based on the base directory.' => 
-      array (
-        0 => '在基础目录的基础之上，创建一个新的存储位置。',
-      ),
-      'Visit this page from a secure connection to enforce secure URLs on all pages.' => 
-      array (
-        0 => '从安全连接访问此页面，以在所有页面上使用安全URL。',
-      ),
-      'Select...' => 
-      array (
-        0 => '选择...',
-      ),
-      'Select File' => 
-      array (
-        0 => '选择文件',
+        0 => '该存储位置无法验证： %s',
       ),
       'The port %s is in use by another station.' => 
       array (
         0 => '端口%s正在被另一个电台使用。',
       ),
-      'This storage location could not be validated: %s' => 
+      'Welcome to the AzuraCast Liquidsoap configuration editor.' => 
       array (
-        0 => '该存储位置无法验证： %s',
+        0 => '欢迎来到AzuraCast Liquidsoap配置编辑器。',
       ),
-      'Synchronized Task Not Recently Run' => 
+      'Using this page, you can customize several sections of the Liquidsoap configuration.' => 
       array (
-        0 => '最近未运行的同步任务',
+        0 => '使用这个页面，您可以自定义Liquidsoap配置的几个部分。',
       ),
-      'The "%s" synchronization task has not run recently. This may indicate an error with your installation.' => 
+      'The non-editable sections are automatically generated by AzuraCast.' => 
       array (
-        0 => '最近没有运行"%s "同步任务。这可能表明您的安装出现了错误。',
+        0 => '不可编辑的部分由AzuraCast自动生成。',
       ),
-      'Manually Run Task' => 
+      'Use <b>%s</b> on this server' => 
       array (
-        0 => '手动运行任务',
+        0 => '在此服务器上使用<b>%s</b>',
       ),
-      'Installation Not Recently Backed Up' => 
+      'Connect to a <b>remote radio server</b>' => 
       array (
-        0 => '最近没有备份的安装',
+        0 => '连接到<b>远程广播服务器</b>',
       ),
-      'This installation has not been backed up in the last two weeks.' => 
+      '<b>Do not use</b> an AutoDJ service' => 
       array (
-        0 => '在过去的两个星期里，这个装置还没有备份。',
+        0 => '<b>请勿使用</b>AutoDJ服务',
       ),
-      'Backups' => 
+      '%s is not recognized as a service.' => 
       array (
-        0 => '备份',
+        0 => '%s不被承认为服务。',
       ),
-      'You should update your <code>docker-compose.yml</code> file to reflect the newest changes.' => 
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
       array (
-        0 => '您应该更新您的<code>docker-compose.yml</code>文件以反映最新的更改。',
+        0 => '它可能还没有在 Supervisor 注册。重新开始广播可能会有帮助。',
       ),
-      'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
+      '%s cannot start' => 
       array (
-        0 => '如果您手动维护此文件，请查看<a href="%s" target="_blank">文件的最新版本</a>，并进行任何必要的更改。',
+        0 => '%s无法启动',
       ),
-      'Otherwise, update your installation and answer "Y" when prompted to update the file.' => 
+      'It is already running.' => 
       array (
-        0 => '否则，更新您的安装，并在提示更新文件时回答 "Y"。',
+        0 => '它已经在运行了。',
       ),
-      'Your <code>docker-compose.yml</code> file is out of date!' => 
+      '%s cannot stop' => 
       array (
-        0 => '您的<code>docker-compose.yml</code>文件已经过期了!',
+        0 => '％s不能停止',
       ),
-      'Update Instructions' => 
+      'It is not running.' => 
       array (
-        0 => '更新说明',
+        0 => '它没有运行。',
       ),
-      'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
+      '%s encountered an error' => 
       array (
-        0 => 'AzuraCast <a href="%s" target="_blank">版本%s</a>现已发布。',
+        0 => '%s遇到了一个错误',
       ),
-      'You are currently running version %s. Updating is highly recommended.' => 
+      'Check the log for details.' => 
       array (
-        0 => '您目前正在运行的是%s版本。强烈推荐您进行更新。',
+        0 => '检查日志以获取详细信息。',
       ),
-      'New AzuraCast Release Version Available' => 
+      'Configuration successfully written.' => 
       array (
-        0 => '新的AzuraCast发行版已发布',
-      ),
-      'Your installation is currently %d update(s) behind the latest version.' => 
-      array (
-        0 => '您的安装目前落后于最新版本的%d更新。',
-      ),
-      'View the changelog for full details.' => 
-      array (
-        0 => '查看更新日志以了解完整详细信息。',
-      ),
-      'You should update to take advantage of bug and security fixes.' => 
-      array (
-        0 => '您应该更新以利用错误和安全修复。',
-      ),
-      'New AzuraCast Updates Available' => 
-      array (
-        0 => '新的AzuraCast更新可用',
+        0 => '成功写入配置。',
       ),
       'Fixtures loaded.' => 
       array (
         0 => 'Fixtures 已加载。',
-      ),
-      'Imported locale: %s' => 
-      array (
-        0 => '导入locale： %s',
-      ),
-      'AzuraCast Settings' => 
-      array (
-        0 => 'AzuraCast设置',
-      ),
-      'Setting Key' => 
-      array (
-        0 => '设置密钥',
-      ),
-      'Setting Value' => 
-      array (
-        0 => '显示设置',
       ),
       'Backup path %s not found!' => 
       array (
@@ -253,10 +873,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '创建临时目录...',
       ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => '目录"%s "没有被创建',
-      ),
       'Backing up MariaDB...' => 
       array (
         0 => '正在备份MariaDB ...',
@@ -273,10 +889,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '在%.2f秒内完成备份。',
       ),
-      'Configuration successfully written.' => 
-      array (
-        0 => '成功写入配置。',
-      ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
         0 => '与电子邮件地址"%s "相关联的账户已被设置为管理员',
@@ -284,6 +896,10 @@ X-Crowdin-File-ID: 4
       'Account not found.' => 
       array (
         0 => '找不到帐户。',
+      ),
+      'Imported locale: %s' => 
+      array (
+        0 => '导入locale： %s',
       ),
       'AzuraCast Setup' => 
       array (
@@ -337,741 +953,417 @@ X-Crowdin-File-ID: 4
       array (
         0 => '访问%s完成设置。',
       ),
-      'Use <b>%s</b> on this server' => 
+      'AzuraCast Settings' => 
       array (
-        0 => '在此服务器上使用<b>%s</b>',
+        0 => 'AzuraCast设置',
       ),
-      'Connect to a <b>remote radio server</b>' => 
+      'Setting Key' => 
       array (
-        0 => '连接到<b>远程广播服务器</b>',
+        0 => '设置密钥',
       ),
-      '<b>Do not use</b> an AutoDJ service' => 
+      'Setting Value' => 
       array (
-        0 => '<b>请勿使用</b>AutoDJ服务',
+        0 => '显示设置',
       ),
-      '%s is not recognized as a service.' => 
+      'Update Instructions' => 
       array (
-        0 => '%s不被承认为服务。',
+        0 => '更新说明',
       ),
-      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
       array (
-        0 => '它可能还没有在 Supervisor 注册。重新开始广播可能会有帮助。',
+        0 => 'AzuraCast <a href="%s" target="_blank">版本%s</a>现已发布。',
       ),
-      '%s cannot start' => 
+      'You are currently running version %s. Updating is highly recommended.' => 
       array (
-        0 => '%s无法启动',
+        0 => '您目前正在运行的是%s版本。强烈推荐您进行更新。',
       ),
-      'It is already running.' => 
+      'New AzuraCast Release Version Available' => 
       array (
-        0 => '它已经在运行了。',
+        0 => '新的AzuraCast发行版已发布',
       ),
-      '%s cannot stop' => 
+      'Your installation is currently %d update(s) behind the latest version.' => 
       array (
-        0 => '％s不能停止',
+        0 => '您的安装目前落后于最新版本的%d更新。',
       ),
-      'It is not running.' => 
+      'View the changelog for full details.' => 
       array (
-        0 => '它没有运行。',
+        0 => '查看更新日志以了解完整详细信息。',
       ),
-      '%s encountered an error' => 
+      'You should update to take advantage of bug and security fixes.' => 
       array (
-        0 => '%s遇到了一个错误',
+        0 => '您应该更新以利用错误和安全修复。',
       ),
-      'Check the log for details.' => 
+      'New AzuraCast Updates Available' => 
       array (
-        0 => '检查日志以获取详细信息。',
+        0 => '新的AzuraCast更新可用',
       ),
-      'Welcome to the AzuraCast Liquidsoap configuration editor.' => 
+      'Installation Not Recently Backed Up' => 
       array (
-        0 => '欢迎来到AzuraCast Liquidsoap配置编辑器。',
+        0 => '最近没有备份的安装',
       ),
-      'Using this page, you can customize several sections of the Liquidsoap configuration.' => 
+      'This installation has not been backed up in the last two weeks.' => 
       array (
-        0 => '使用这个页面，您可以自定义Liquidsoap配置的几个部分。',
+        0 => '在过去的两个星期里，这个装置还没有备份。',
       ),
-      'The non-editable sections are automatically generated by AzuraCast.' => 
+      'Backups' => 
       array (
-        0 => '不可编辑的部分由AzuraCast自动生成。',
+        0 => '备份',
       ),
-      'This feature is not currently supported on this station.' => 
+      'Synchronized Task Not Recently Run' => 
       array (
-        0 => '该电台当前不支持此功能。',
+        0 => '最近未运行的同步任务',
       ),
-      'Search engine crawlers are not permitted to use this feature.' => 
+      'The "%s" synchronization task has not run recently. This may indicate an error with your installation.' => 
       array (
-        0 => '搜索引擎爬虫不允许使用此功能。',
+        0 => '最近没有运行"%s "同步任务。这可能表明您的安装出现了错误。',
       ),
-      'This station does not accept requests currently.' => 
+      'Manually Run Task' => 
       array (
-        0 => '该电台当前不接受请求。',
+        0 => '手动运行任务',
       ),
-      'The song ID you specified could not be found in the station.' => 
+      'You should update your <code>docker-compose.yml</code> file to reflect the newest changes.' => 
       array (
-        0 => '您指定的歌曲ID在电台中找不到。',
+        0 => '您应该更新您的<code>docker-compose.yml</code>文件以反映最新的更改。',
       ),
-      'The song ID you specified cannot be requested for this station.' => 
+      'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
       array (
-        0 => '您指定的歌曲ID不能被要求使用在这个电台。',
+        0 => '如果您手动维护此文件，请查看<a href="%s" target="_blank">文件的最新版本</a>，并进行任何必要的更改。',
       ),
-      'You have submitted a request too recently! Please wait before submitting another one.' => 
+      'Otherwise, update your installation and answer "Y" when prompted to update the file.' => 
       array (
-        0 => '您最近提交的请求太多了! 请等待后再提交另一个请求。',
+        0 => '否则，更新您的安装，并在提示更新文件时回答 "Y"。',
       ),
-      'Duplicate request: this song was already requested and will play soon.' => 
+      'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (
-        0 => '重复请求：这首歌已经被请求了，很快就会播放。',
+        0 => '您的<code>docker-compose.yml</code>文件已经过期了!',
       ),
-      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
+      'Select File' => 
       array (
-        0 => '这首歌或艺术家最近被播放的次数太多。在再次请求之前，请稍等片刻。',
+        0 => '选择文件',
       ),
-      'None' => 
+      'Visit this page from a secure connection to enforce secure URLs on all pages.' => 
       array (
-        0 => '无',
+        0 => '从安全连接访问此页面，以在所有页面上使用安全URL。',
       ),
-      'All Stations' => 
+      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
-        0 => '所有电台',
+        0 => '想要使用SHOUTcast 2？<a href="%s" target="_blank">在这里安装</a>，然后重新加载这个页面。',
       ),
-      'Listeners' => 
+      '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.' => 
       array (
-        0 => '听众',
+        0 => '<a href="%s" target="_blank">在这里管理存储位置和存储配额</a>。',
       ),
-      'Record not found!' => 
+      'Create a new storage location based on the base directory.' => 
       array (
-        0 => '记录不存在！',
+        0 => '在基础目录的基础之上，创建一个新的存储位置。',
       ),
-      'Changes saved successfully.' => 
+      'Select...' => 
       array (
-        0 => '更改已成功保存。',
+        0 => '选择...',
       ),
-      'Record deleted successfully.' => 
+      'You must be logged in to access this page.' => 
       array (
-        0 => '记录已成功删除。',
+        0 => '您必须先登录才能访问本页面。',
       ),
-      'You cannot remove yourself.' => 
+      'You do not have permission to access this portion of the site.' => 
       array (
-        0 => '您无法删除自己。',
+        0 => '您没有权限访问这部分网站。',
       ),
-      'This station is out of available storage space.' => 
+      'Are you sure?' => 
       array (
-        0 => '这个电台已经没有可用的存储空间了。',
+        0 => '您确定吗？',
       ),
-      'Request submitted successfully.' => 
+      'Advanced' => 
       array (
-        0 => '请求已成功提交。',
+        0 => '高级',
       ),
-      'Station restarted.' => 
+      'Enter a password to continue.' => 
       array (
-        0 => '电台已重新启动。',
+        0 => '输入密码继续。',
       ),
-      'Frontend stopped.' => 
+      'No problems detected.' => 
       array (
-        0 => '前端已停止。',
+        0 => '没有发现问题。',
       ),
-      'Frontend started.' => 
+      'System Maintenance' => 
       array (
-        0 => '前端已启动。',
+        0 => '系统维护',
       ),
-      'Frontend restarted.' => 
+      'Custom Branding' => 
       array (
-        0 => '前端已重新启动。',
+        0 => '定制品牌',
       ),
-      'Song skipped.' => 
+      'System Logs' => 
       array (
-        0 => '已跳过歌曲。',
+        0 => '系统日志',
       ),
-      'Streamer disconnected.' => 
+      'Storage Locations' => 
       array (
-        0 => '流媒体已断线。',
+        0 => '存储位置',
       ),
-      'Backend stopped.' => 
+      'System Debugger' => 
       array (
-        0 => '后端已停止。',
+        0 => '系统调试器',
       ),
-      'Backend started.' => 
+      'Users' => 
       array (
-        0 => '后端已启动。',
+        0 => '用户',
       ),
-      'Backend restarted.' => 
+      'User Accounts' => 
       array (
-        0 => '后端已重启。',
+        0 => '用户帐号',
       ),
-      'File not specified.' => 
+      'Permissions' => 
       array (
-        0 => '未指定文件。',
+        0 => '权限',
       ),
-      'New path not specified.' => 
+      'Audit Log' => 
       array (
-        0 => '未指定新路径。',
+        0 => '审核日志',
       ),
-      'No directory specified' => 
+      'API Keys' => 
       array (
-        0 => '没有指定目录',
+        0 => 'API密钥',
       ),
-      'Directory' => 
+      'Stations' => 
       array (
-        0 => '目录',
+        0 => '电台',
       ),
-      'File Not Processed: %s' => 
+      'Custom Fields' => 
       array (
-        0 => '未处理的文件：%s',
+        0 => '自定义字段',
       ),
-      'File Processing' => 
+      'Connected AzuraRelays' => 
       array (
-        0 => '文件处理',
+        0 => '连接的AzuraRelays',
       ),
-      'Path "%s" is not a folder.' => 
+      'Start Station' => 
       array (
-        0 => '路径"%s "不是文件夹。',
+        0 => '开始电台',
       ),
-      'This station does not support on-demand streaming.' => 
+      'Ready to start broadcasting? Click to start your station.' => 
       array (
-        0 => '该电台不支持流媒体点播。',
+        0 => '准备开始广播了吗？单击以启动您的电台。',
       ),
-      'File not found.' => 
+      'Restart broadcasting? This will disconnect any current listeners.' => 
       array (
-        0 => '未找到文件。',
+        0 => '重新开始播放？这将断开所有当前的侦听器。',
       ),
-      'Playlist not found.' => 
+      'Restart to Apply Changes' => 
       array (
-        0 => '未找到播放列表。',
+        0 => '重新开始应用更改',
       ),
-      'This playlist is not a sequential playlist.' => 
+      'Click to restart your station and apply configuration changes.' => 
       array (
-        0 => '此播放列表不是顺序播放列表。',
+        0 => '单击以重新启动电台并应用配置更改。',
       ),
-      'Format not found.' => 
+      'Profile' => 
       array (
-        0 => '未找到格式。',
+        0 => '个人资料',
       ),
-      'Playlist enabled.' => 
+      'Public Page' => 
       array (
-        0 => '播放列表已启用。',
+        0 => '公开页面',
       ),
-      'Playlist disabled.' => 
+      'On-Demand Media' => 
       array (
-        0 => '播放列表已禁用。',
+        0 => '点播媒体',
       ),
-      'Playlist reshuffled.' => 
+      'Music Files' => 
       array (
-        0 => '播放列表已改组。',
+        0 => '音乐文件',
       ),
-      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      'Playlists' => 
       array (
-        0 => '播放列表成功导入；%d的%d文件被成功匹配。',
+        0 => '播放列表',
       ),
-      'Record not found.' => 
+      'Streamer/DJ Accounts' => 
       array (
-        0 => '没有找到记录。',
+        0 => '流媒体/ DJ帐户',
       ),
-      'No recording available.' => 
+      'Web DJ' => 
       array (
-        0 => '没有可用的录音。',
+        0 => '网络DJ',
       ),
-      'Liquidsoap Log' => 
+      'Mount Points' => 
       array (
-        0 => 'Liquidsoap 日志',
+        0 => '挂载点',
       ),
-      'Liquidsoap Configuration' => 
+      'Remote Relays' => 
       array (
-        0 => 'Liquidsoap 配置',
+        0 => '远程继电器',
       ),
-      'Icecast Access Log' => 
+      'Web Hooks' => 
       array (
-        0 => 'Icecast访问日志',
+        0 => '网络钩子',
       ),
-      'Icecast Error Log' => 
+      'Reports' => 
       array (
-        0 => 'Icecast错误日志',
+        0 => '报告',
       ),
-      'Icecast Configuration' => 
+      'Statistics Overview' => 
       array (
-        0 => 'Icecast配置',
+        0 => '统计总览',
       ),
-      'SHOUTcast Log' => 
+      'Song Requests' => 
       array (
-        0 => 'SHOUTcast日志',
+        0 => '歌曲请求',
       ),
-      'SHOUTcast Configuration' => 
+      'Song Playback Timeline' => 
       array (
-        0 => 'SHOUTcast配置',
+        0 => '歌曲播放时间线',
       ),
-      'API Key not found.' => 
+      'Song Listener Impact' => 
       array (
-        0 => '找不到API密钥。',
+        0 => '歌曲听众影响',
       ),
-      'API Key updated.' => 
+      'Duplicate Songs' => 
       array (
-        0 => 'API密钥已更新。',
+        0 => '重复的歌曲',
       ),
-      'Edit API Key' => 
+      'Unprocessable Files' => 
       array (
-        0 => '编辑API密钥',
+        0 => '无法处理的文件',
       ),
-      'Add API Key' => 
+      'SoundExchange Royalties' => 
       array (
-        0 => '添加API密钥',
+        0 => 'SoundExchange版税',
       ),
-      'API Key deleted.' => 
+      'Utilities' => 
       array (
-        0 => 'API密钥已删除。',
+        0 => '实用工具',
       ),
-      'Song Title' => 
+      'SFTP Users' => 
       array (
-        0 => '歌曲标题',
+        0 => 'SFTP用户',
       ),
-      'Song Artist' => 
+      'Automated Assignment' => 
       array (
-        0 => '歌曲艺术家',
+        0 => '自动分配',
       ),
-      'Setup has already been completed!' => 
+      'Log Viewer' => 
       array (
-        0 => '设置已经完成!',
+        0 => '日志查看器',
       ),
-      'Super Administrator' => 
+      'Upcoming Song Queue' => 
       array (
-        0 => '超级管理员',
+        0 => '即将到来的歌曲队列',
       ),
-      'Setup is now complete!' => 
+      'Restart Broadcasting' => 
       array (
-        0 => '设置现已完成！',
+        0 => '重新开始广播',
       ),
-      'Continue setting up your station in the main AzuraCast app.' => 
+      'Generic Web Hook' => 
       array (
-        0 => '继续在AzuraCast主应用程序中设置您的电台。',
+        0 => '通用网络钩子',
       ),
-      'Profile saved!' => 
+      'Automatically send a message to any URL when your station data changes.' => 
       array (
-        0 => '个人资料已保存！',
+        0 => '电台数据更改时，自动将消息发送到任何URL。',
       ),
-      'Edit Profile' => 
+      'Send E-mail' => 
       array (
-        0 => '编辑个人资料',
+        0 => '发送电子邮件',
       ),
-      'The token you supplied is invalid. Please try again.' => 
+      'Send an e-mail to specified address(es).' => 
       array (
-        0 => '您提供的令牌无效。请再试一次。',
+        0 => '向指定地址发送电子邮件。',
       ),
-      'Two-factor authentication enabled.' => 
+      'TuneIn AIR' => 
       array (
-        0 => '已启用双重身份验证。',
+        0 => '调谐空气',
       ),
-      'Two-factor authentication disabled.' => 
+      'Send song metadata changes to TuneIn.' => 
       array (
-        0 => '已禁用双重身份验证。',
+        0 => '将歌曲元数据更改发送到TuneIn。',
       ),
-      'Too many login attempts' => 
+      'Discord Webhook' => 
       array (
-        0 => '尝试登录次数过多',
+        0 => 'Discord 网络钩子',
       ),
-      'You have attempted to log in too many times. Please wait 30 seconds and try again.' => 
+      'Automatically send a customized message to your Discord server.' => 
       array (
-        0 => '您已尝试登录太多次。请等待30秒后再试。',
+        0 => '自动向您的Discord服务器发送自定义消息。',
       ),
-      'Logged in successfully.' => 
+      'Telegram Chat Message' => 
       array (
-        0 => '登录成功。',
+        0 => '电报聊天消息',
       ),
-      'Complete the setup process to get started.' => 
+      'Use the Telegram Bot API to send a message to a channel.' => 
       array (
-        0 => '完成设置过程即可开始。',
+        0 => '使用Telegram Bot API将消息发送到频道。',
       ),
-      'Login unsuccessful' => 
+      'Twitter Post' => 
       array (
-        0 => '登录失败',
+        0 => '推特帖子',
       ),
-      'Your credentials could not be verified.' => 
+      'Automatically send a tweet.' => 
       array (
-        0 => '无法验证您的凭据。',
+        0 => '自动发送推文。',
       ),
-      'Station updated.' => 
+      'Google Analytics Integration' => 
       array (
-        0 => '电台已更新。',
+        0 => '谷歌分析集成',
       ),
-      'Station added.' => 
+      'Send stream listener details to Google Analytics.' => 
       array (
-        0 => '已添加电台。',
+        0 => '将流媒体监听器的详细信息发送到谷歌分析。',
       ),
-      'Edit Station' => 
+      'Any time the currently playing song changes' => 
       array (
-        0 => '编辑电台',
+        0 => '当前播放的歌曲随时改变',
       ),
-      'Station deleted.' => 
+      'Any time the listener count increases' => 
       array (
-        0 => '电台已删除。',
+        0 => '只要听众人数增加',
       ),
-      'Station not found.' => 
+      'Any time the listener count decreases' => 
       array (
-        0 => '找不到电台。',
+        0 => '任何时候听众人数减少',
       ),
-      'Changes saved.' => 
+      'Any time a live streamer/DJ connects to the stream' => 
       array (
-        0 => '更改已保存。',
+        0 => '直播流媒体/ DJ随时连接到流',
       ),
-      'Clone Station: %s' => 
+      'Any time a live streamer/DJ disconnects from the stream' => 
       array (
-        0 => '克隆电台: %s',
+        0 => '每当直播流媒体/ DJ与流断开连接时',
       ),
-      'Permission updated.' => 
+      'When the station broadcast goes offline.' => 
       array (
-        0 => '权限已更新。',
+        0 => '当电台广播离线时。',
       ),
-      'Permission added.' => 
+      'When the station broadcast comes online.' => 
       array (
-        0 => '权限已添加。',
+        0 => '当站内广播上线后。',
       ),
-      'Edit Permission' => 
+      'Username' => 
       array (
-        0 => '编辑权限',
+        0 => '用户名',
       ),
-      'Add Permission' => 
+      'New Password' => 
       array (
-        0 => '添加权限',
+        0 => '新密码',
       ),
-      'Permission deleted.' => 
+      'Leave blank to use the current password.' => 
       array (
-        0 => '权限已删除。',
+        0 => '留空以使用当前密码。',
       ),
-      'AzuraCast Application Log' => 
+      'SSH Public Keys' => 
       array (
-        0 => 'AzuraCast应用程序日志',
+        0 => 'SSH公钥',
       ),
-      'Nginx Access Log' => 
+      'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
       array (
-        0 => 'Nginx访问日志',
+        0 => '可选择提供SSH公钥，这可以用来代替密码进行连接。每行输入一个密钥。',
       ),
-      'Nginx Error Log' => 
+      'Run Automatic Nightly Backups' => 
       array (
-        0 => 'Nginx错误日志',
+        0 => '每晚运行自动备份',
       ),
-      'PHP Application Log' => 
+      'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
-        0 => 'PHP应用程序日志',
-      ),
-      'Supervisord Log' => 
-      array (
-        0 => 'Supervisord 日志',
-      ),
-      'System Settings' => 
-      array (
-        0 => '系统设置',
-      ),
-      'Configure Backups' => 
-      array (
-        0 => '配置备份',
-      ),
-      'Run Manual Backup' => 
-      array (
-        0 => '运行手动备份',
-      ),
-      'Backup deleted.' => 
-      array (
-        0 => '备份已删除。',
-      ),
-      'Backup not found.' => 
-      array (
-        0 => '找不到备份。',
-      ),
-      'An error occurred while downloading the GeoLite database: %s' => 
-      array (
-        0 => '下载GeoLite数据库时发生错误：%s',
-      ),
-      'Install GeoLite IP Database' => 
-      array (
-        0 => '安装GeoLite IP数据库',
-      ),
-      'GeoLite database uninstalled.' => 
-      array (
-        0 => 'GeoLite数据库已卸载。',
-      ),
-      'User updated.' => 
-      array (
-        0 => '用户已更新。',
-      ),
-      'User added.' => 
-      array (
-        0 => '用户已添加。',
-      ),
-      'Another user already exists with this e-mail address. Please update the e-mail address.' => 
-      array (
-        0 => '这个电子邮件地址已经有了另一个用户。请使用新的电子邮件。',
-      ),
-      'Edit User' => 
-      array (
-        0 => '编辑用户',
-      ),
-      'Add User' => 
-      array (
-        0 => '添加用户',
-      ),
-      'You cannot delete your own account.' => 
-      array (
-        0 => '您不能删除自己的账户。',
-      ),
-      'User deleted.' => 
-      array (
-        0 => '用户已删除。',
-      ),
-      'User not found.' => 
-      array (
-        0 => '找不到用户。',
-      ),
-      'Run Synchronized Task' => 
-      array (
-        0 => '运行同步任务',
-      ),
-      'Debug Output' => 
-      array (
-        0 => '调试输出',
-      ),
-      'SHOUTcast version "%s" is currently installed.' => 
-      array (
-        0 => '目前安装了SHOUTcast版本"%s"。',
-      ),
-      'Install SHOUTcast' => 
-      array (
-        0 => '安装SHOUTcast',
-      ),
-      'Custom Field updated.' => 
-      array (
-        0 => '自定义字段已更新。',
-      ),
-      'Custom Field added.' => 
-      array (
-        0 => '自定义字段已添加。',
-      ),
-      'Edit Custom Field' => 
-      array (
-        0 => '编辑自定义字段',
-      ),
-      'Add Custom Field' => 
-      array (
-        0 => '添加自定义字段',
-      ),
-      'Custom Field deleted.' => 
-      array (
-        0 => '自定义字段已删除。',
-      ),
-      'Remote Relay updated.' => 
-      array (
-        0 => '远程中继已更新。',
-      ),
-      'Remote Relay added.' => 
-      array (
-        0 => '远程中继已添加。',
-      ),
-      'Edit Remote Relay' => 
-      array (
-        0 => '编辑远程中继',
-      ),
-      'Add Remote Relay' => 
-      array (
-        0 => '添加远程中继',
-      ),
-      'Remote Relay deleted.' => 
-      array (
-        0 => '远程中继已删除。',
-      ),
-      'This record cannot be edited.' => 
-      array (
-        0 => '该记录无法编辑。',
-      ),
-      'Streamers enabled!' => 
-      array (
-        0 => '流媒体已启用！',
-      ),
-      'You can now set up streamer (DJ) accounts.' => 
-      array (
-        0 => '您现在可以设置流媒体（DJ）账户。',
-      ),
-      'Edit SFTP User' => 
-      array (
-        0 => '编辑SFTP用户',
-      ),
-      'Add SFTP User' => 
-      array (
-        0 => '添加SFTP用户',
-      ),
-      'SFTP User deleted.' => 
-      array (
-        0 => 'SFTP用户已删除。',
-      ),
-      'Edit Mount Point' => 
-      array (
-        0 => '编辑挂载点',
-      ),
-      'Add Mount Point' => 
-      array (
-        0 => '添加挂载点',
-      ),
-      'Mount Point deleted.' => 
-      array (
-        0 => '挂载点已删除。',
-      ),
-      'Automated assignment complete!' => 
-      array (
-        0 => '自动分配完成！',
-      ),
-      'Automated assignment error' => 
-      array (
-        0 => '自动分配错误',
-      ),
-      'Save Changes' => 
-      array (
-        0 => '保存更改',
-      ),
-      'Edit Liquidsoap Configuration' => 
-      array (
-        0 => '编辑Liquidsoap配置',
-      ),
-      'Web Hook added.' => 
-      array (
-        0 => '添加了网络钩子。',
-      ),
-      'Add Web Hook' => 
-      array (
-        0 => '添加网络钩子',
-      ),
-      'Web Hook updated.' => 
-      array (
-        0 => '网络钩子已更新。',
-      ),
-      'Edit Web Hook' => 
-      array (
-        0 => '编辑网络钩子',
-      ),
-      'Web hook enabled.' => 
-      array (
-        0 => '网络钩子已启用。',
-      ),
-      'Web Hook disabled.' => 
-      array (
-        0 => '网络钩子已禁用。',
-      ),
-      'Web Hook Test Output' => 
-      array (
-        0 => '测试网络钩子输出',
-      ),
-      'Web Hook deleted.' => 
-      array (
-        0 => '网络钩子已删除。',
-      ),
-      'SoundExchange Report' => 
-      array (
-        0 => '声讯报告',
-      ),
-      'Listeners by Day' => 
-      array (
-        0 => '每天的听众',
-      ),
-      'Listeners by Day of Week' => 
-      array (
-        0 => '每星期的听众',
-      ),
-      'Monday' => 
-      array (
-        0 => '星期一',
-      ),
-      'Tuesday' => 
-      array (
-        0 => '星期二',
-      ),
-      'Wednesday' => 
-      array (
-        0 => '星期三',
-      ),
-      'Thursday' => 
-      array (
-        0 => '星期四',
-      ),
-      'Friday' => 
-      array (
-        0 => '星期五',
-      ),
-      'Saturday' => 
-      array (
-        0 => '星期六',
-      ),
-      'Sunday' => 
-      array (
-        0 => '星期日',
-      ),
-      'Listeners by Hour' => 
-      array (
-        0 => '每小时的听众',
-      ),
-      'Now Playing Data' => 
-      array (
-        0 => '正在播放数据',
-      ),
-      '1-Minute Sync' => 
-      array (
-        0 => '1分钟同步',
-      ),
-      'Song Requests Queue' => 
-      array (
-        0 => '歌曲请求队列',
-      ),
-      '5-Minute Sync' => 
-      array (
-        0 => '5分钟同步',
-      ),
-      'Check Media Folders' => 
-      array (
-        0 => '检查媒体文件夹',
-      ),
-      '1-Hour Sync' => 
-      array (
-        0 => '1小时同步',
-      ),
-      'Analytics/Statistics' => 
-      array (
-        0 => '分析/统计',
-      ),
-      'Cleanup' => 
-      array (
-        0 => '清理',
-      ),
-      'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
-      array (
-        0 => '本产品包括MaxMind创建的GeoLite2数据，可从%s。',
-      ),
-      'IP Geolocation by DB-IP' => 
-      array (
-        0 => '通过DB-IP进行IP地理定位',
-      ),
-      'GeoLite database not configured for this installation. See System Administration for instructions.' => 
-      array (
-        0 => '没有为本次安装配置GeoLite数据库。请参阅系统管理以了解相关说明。',
-      ),
-      'Base Theme for Public Pages' => 
-      array (
-        0 => '公共页面的基本主题',
-      ),
-      'Select a theme to use as a base for station public pages and the login page.' => 
-      array (
-        0 => '选择一个主题作为电台内公共页面和登录页面的基础。',
-      ),
-      'Light' => 
-      array (
-        0 => '光',
-      ),
-      'Default' => 
-      array (
-        0 => '默认',
-      ),
-      'Dark' => 
-      array (
-        0 => '黑暗',
-      ),
-      'Hide Album Art on Public Pages' => 
-      array (
-        0 => '在公共页面上隐藏专辑封面',
-      ),
-      'If selected, album art will not display on public-facing radio pages.' => 
-      array (
-        0 => '如果选择，专辑封面将不会显示在面向公众的广播页面上。',
+        0 => '启用AzuraCast在指定时间自动运行夜间备份。',
       ),
       'Yes' => 
       array (
@@ -1081,65 +1373,33 @@ X-Crowdin-File-ID: 4
       array (
         0 => '否',
       ),
-      'Homepage Redirect URL' => 
+      'Scheduled Backup Time' => 
       array (
-        0 => '主页重定向网址',
+        0 => '预定的备份时间',
       ),
-      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => '如果访问者没有登录并访问AzuraCast主页，您可以将他们自动重定向到这里指定的URL。如果留空，则默认将他们重定向到登录页面。',
+        0 => '如果启用，运行自动备份的时间（UTC）。',
       ),
-      'Default Album Art URL' => 
+      'Exclude Media from Backups' => 
       array (
-        0 => '默认专辑封面URL',
+        0 => '从备份中排除媒体',
       ),
-      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
+      'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
       array (
-        0 => '如果一首歌没有专辑封面，这个URL会被列出。留空以使用标准占位图。',
+        0 => '将媒体排除在自动备份之外可以节省空间，但您应确保在其他地方备份媒体。请注意，只有本地存储的媒体才会被备份。',
       ),
-      'Hide AzuraCast Branding on Public Pages' => 
+      'Number of Backup Copies to Keep' => 
       array (
-        0 => '在公共网页上隐藏AzuraCast品牌信息',
+        0 => '要保存的备份数量',
       ),
-      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => '如果选择，这将从面向公众的页面中移除AzuraCast品牌。',
+        0 => '超过指定天数的副本将被自动删除。设置为0可禁用自动删除。',
       ),
-      'Custom CSS for Public Pages' => 
+      'Storage Location' => 
       array (
-        0 => '公共页面的自定义CSS',
-      ),
-      'This CSS will be applied to the station public pages and login page.' => 
-      array (
-        0 => '该CSS将应用于电台内公共页面和登录页面。',
-      ),
-      'Custom JS for Public Pages' => 
-      array (
-        0 => '公共页面的自定义JS',
-      ),
-      'This javascript code will be applied to the station public pages and login page.' => 
-      array (
-        0 => '该javascript代码将被应用到电台内公共页面和登录页面。',
-      ),
-      'Custom CSS for Internal Pages' => 
-      array (
-        0 => '内部页面的自定义CSS',
-      ),
-      'This CSS will be applied to the main management pages, like this one.' => 
-      array (
-        0 => '这个CSS将被应用到主管理页面，比如这个。',
-      ),
-      'Code from Authenticator App' => 
-      array (
-        0 => '来自认证器应用程序的代码',
-      ),
-      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
-      array (
-        0 => '输入您的身份验证器应用程序提供的当前代码，以验证它是否正常工作。',
-      ),
-      'Verify Authenticator' => 
-      array (
-        0 => '验证身份验证器',
+        0 => '存储位置',
       ),
       'Instructions' => 
       array (
@@ -1168,6 +1428,174 @@ X-Crowdin-File-ID: 4
       'MaxMind License Key' => 
       array (
         0 => 'MaxMind许可证密钥',
+      ),
+      'Use Browser Default' => 
+      array (
+        0 => '使用浏览器默认',
+      ),
+      'Name' => 
+      array (
+        0 => '名称',
+      ),
+      'E-mail Address' => 
+      array (
+        0 => '电子邮件地址',
+      ),
+      'Reset Password' => 
+      array (
+        0 => '重设密码',
+      ),
+      'Leave these fields blank to continue using your current password.' => 
+      array (
+        0 => '将这些字段留空，以继续使用当前的密码。',
+      ),
+      'Current Password' => 
+      array (
+        0 => '当前密码',
+      ),
+      'Confirm New Password' => 
+      array (
+        0 => '确认新密码',
+      ),
+      'Customization' => 
+      array (
+        0 => '定制化',
+      ),
+      'Language' => 
+      array (
+        0 => '语言',
+      ),
+      'Site Theme' => 
+      array (
+        0 => '网站主题',
+      ),
+      'Light' => 
+      array (
+        0 => '光',
+      ),
+      'Default' => 
+      array (
+        0 => '默认',
+      ),
+      'Dark' => 
+      array (
+        0 => '黑暗',
+      ),
+      'Account Information' => 
+      array (
+        0 => '帐户信息',
+      ),
+      'Password' => 
+      array (
+        0 => '密码',
+      ),
+      'Create Account' => 
+      array (
+        0 => '创建帐号',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => '在公共页面上显示',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => '启用，允许听众在本台的公共页面上选择此中继。',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => '远程 电台 类型',
+      ),
+      'Display Name' => 
+      array (
+        0 => '显示名称',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => '在管理页面或公共页面上查看此中继时指定的显示名称。留空以自动生成显示名称。',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => '远程电台监听URL',
+      ),
+      'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
+      array (
+        0 => '例如：如果远程电台网址是%s，输入<code>%s</code>。',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => '远程电台监听挂载点/SID',
+      ),
+      'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => '指定一个挂载点(即<code>%s</code>)或Shoutcast SID(即<code>%s</code>)来指定用于统计或广播的特定流。',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => '远程电台管理员密码',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => '要检索详细的监听器和客户端的详细信息，通常需要一个管理员密码。',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => '廣播AutoDJ到遠端電台',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => '如果启用，此安装的AutoDJ将自动播放音乐到此挂载点。',
+      ),
+      'Configure AutoDJ Broadcasting' => 
+      array (
+        0 => '配置AutoDJ广播',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'AutoDJ格式',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'AutoDJ比特率(kbps)',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => '远程电台源端口',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => '如果您广播的端口与您在上面的URL中列出的端口不同，请在这里指定源端口。',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => '远程站源挂载点/SID',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => '如果您广播的挂载点（即<code>/radio.mp3</code>）或Shoutcast SID（即<code>2</code>）与上面列出的挂载点不同，请在此指定源挂载点。',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => '远程电台源用户名',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => '如果您使用 AutoDJ 进行广播，请在此输入源用户名。这可能是空白的。',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => '远程电台源密码',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => '如果您使用的是AutoDJ广播，请在这里输入源密码。',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => '发布到 "黄页 "目录',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => '启用在 "黄页 "公共广播目录中宣传该挂载点。',
       ),
       'New Station Name' => 
       array (
@@ -1217,405 +1645,235 @@ X-Crowdin-File-ID: 4
       array (
         0 => '创建新电台',
       ),
-      'Account Information' => 
+      'Web Hook Name' => 
       array (
-        0 => '帐户信息',
+        0 => '网络钩子名称',
       ),
-      'E-mail Address' => 
+      'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
-        0 => '电子邮件地址',
+        0 => '为这个网络钩子选择一个名称，以帮助您将它与其他网络钩子区分开来。这将只在管理页面上显示。',
       ),
-      'Password' => 
+      'Bot Token' => 
       array (
-        0 => '密码',
+        0 => '机器人 Token',
       ),
-      'Create Account' => 
+      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
       array (
-        0 => '创建帐号',
+        0 => '请参阅<a href="%s" target="_blank">Telegram文档</a>了解更多细节。',
       ),
-      'Username' => 
+      'Chat ID' => 
       array (
-        0 => '用户名',
+        0 => '聊天 ID',
       ),
-      'New Password' => 
+      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
       array (
-        0 => '新密码',
+        0 => '目标聊天的唯一标识符或目标频道的用户名（格式为@channelusername）。',
       ),
-      'Leave blank to use the current password.' => 
+      'Custom API Base URL' => 
       array (
-        0 => '留空以使用当前密码。',
+        0 => '自定义API基本URL',
       ),
-      'SSH Public Keys' => 
+      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
       array (
-        0 => 'SSH公钥',
+        0 => '留空以使用默认的Telegram API URL（推荐）。指定完整的URL，比如<code>https://api.pwrtelegram.xyz/</code>。',
       ),
-      'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
+      'Web Hook Triggers' => 
       array (
-        0 => '可选择提供SSH公钥，这可以用来代替密码进行连接。每行输入一个密钥。',
+        0 => 'Triggers 网络钩子',
       ),
-      'Comments' => 
+      'Customize Message' => 
       array (
-        0 => '评论',
+        0 => '自定义消息',
       ),
-      'Describe the use-case for this API key for future reference.' => 
+      'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
       array (
-        0 => '描述该API密钥的用途，供将来参考。',
+        0 => '变量的形式为<code>{{ var.name }}</code>。<a href="%s" target="_blank">Now Playing API response</a>中的所有值都可以使用。任何空字段都会被忽略。',
       ),
-      'Rolling Release' => 
+      'Main Message Content' => 
       array (
-        0 => '滚动发布',
+        0 => '主要信息内容',
       ),
-      'Stable' => 
+      'Now playing on %s: %s by %s! Tune in now.' => 
       array (
-        0 => '稳定',
+        0 => '现在播放的是%s: %s by %s! 现在请收听。',
       ),
-      'Settings' => 
+      'Message parsing mode' => 
       array (
-        0 => '设置',
+        0 => '消息解析模式',
       ),
-      'Security' => 
+      'Discord Web Hook URL' => 
       array (
-        0 => '安全',
+        0 => 'Discord网络钩子 URL',
       ),
-      'Privacy' => 
+      'This URL is provided within the Discord application.' => 
       array (
-        0 => '隐私',
+        0 => '此 URL 是在 Discord 应用程序中提供的。',
       ),
-      'Services' => 
+      'Now playing on %s:' => 
       array (
-        0 => '服务项目',
+        0 => '现在播放 %s：',
       ),
-      'Site Base URL' => 
+      'Title' => 
       array (
-        0 => '网站基础网址',
+        0 => '标题',
       ),
-      'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
+      'Description' => 
       array (
-        0 => '此服务所在的基本 URL。使用指向该服务器的外部IP地址或域名（如果有的话）。',
+        0 => '描述',
       ),
-      'AzuraCast Instance Name' => 
+      'URL' => 
       array (
-        0 => 'AzuraCast实例名称',
+        0 => '网址',
       ),
-      'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
+      'Author Name' => 
       array (
-        0 => '这个名字将出现在AzuraCast标志旁边的小标题中，以帮助识别这个服务器。',
+        0 => '作者名字',
       ),
-      'Prefer Browser URL (If Available)' => 
+      'Thumbnail Image URL' => 
       array (
-        0 => '首选浏览器URL（如果可用）',
+        0 => '缩略图网址',
       ),
-      'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
+      'Footer Text' => 
       array (
-        0 => '如果将此设置设置为 "是"，则在有浏览器URL时，将使用浏览器URL代替基本URL。设置为 "否"，则始终使用基本URL。',
+        0 => '页脚文字',
       ),
-      'Use Web Proxy for Radio' => 
+      'Powered by %s' => 
       array (
-        0 => '使用网络代理进行广播',
+        0 => '由%s提供技术支持',
       ),
-      'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
+      'GA Property Tracking ID' => 
       array (
-        0 => '默认情况下，电台在自己的端口上广播（即8000）。如果您正在使用CloudFlare等服务或通过SSL访问您的广播电台，您应该启用此功能，该功能通过网络端口（80和443）路由进行广播。',
+        0 => 'GA 属性跟踪 ID',
       ),
-      'Days of Playback History to Keep' => 
+      'The property ID used to track live listeners.' => 
       array (
-        0 => '保留的播放历史记录天数',
+        0 => '用于跟踪实时听众的属性ID。',
       ),
-      'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space. ' => 
+      'Message Recipient(s)' => 
       array (
-        0 => '设置较长，可保存更多的播放历史和电台的听众元数据。设置较短以节省磁盘空间。',
+        0 => '消息收件人',
       ),
-      'Last 14 Days' => 
+      'E-mail addresses can be separated by commas.' => 
       array (
-        0 => '最近14天',
+        0 => '电子邮件地址可以用逗号分隔。',
       ),
-      'Last 30 Days' => 
+      'Message Subject' => 
       array (
-        0 => '最近30天',
+        0 => '留言主题',
       ),
-      'Last 60 Days' => 
+      'Message Body' => 
       array (
-        0 => '最近60天',
+        0 => '邮件正文',
       ),
-      'Last Year' => 
+      'Twitter Account Details' => 
       array (
-        0 => '最近一年',
+        0 => 'Twitter帐户详细信息',
       ),
-      'Last 2 Years' => 
+      'Steps for configuring a Twitter application:<br>
+                <ol type="1">
+                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>.
+                    Use this installation\'s base URL as the application URL.</li>
+                    <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
+                    <li>At the bottom of the page, click "Create my access token".</li>
+                </ol>
+                <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
-        0 => '最近两年',
+        0 => '配置Twitter应用程序的步骤：<br>。
+                <ol type="1">
+                    <li>在 <a href="%s" target="_blank">Twitter 应用程序站点</a>上创建一个新应用程序。
+                    使用此安装的基本 URL 作为应用程序的 URL。
+                    <li>在新创建的应用程序中，单击 "密钥和访问令牌 "标签。
+                    <li>在页面底部，单击 "创建我的访问令牌"</li>。
+                </ol>
+                <p>完成这些步骤后，请将 "密钥和访问令牌 "页面中的信息输入到下面的字段中。</p>',
       ),
-      'Indefinitely' => 
+      'Consumer Key (API Key)' => 
       array (
-        0 => '无限期',
+        0 => '消费者密钥(API密钥)',
       ),
-      'Use WebSockets for Now Playing Updates' => 
+      'Consumer Secret (API Secret)' => 
       array (
-        0 => '使用WebSockets立即播放广播',
+        0 => '消费者秘密(API秘密)',
       ),
-      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
+      'Access Token' => 
       array (
-        0 => '启用或禁用基于WebSocket的较新和较快的系统来接收公共广播的实时更新。如果您遇到問題，您可能需要停用此功能。',
+        0 => '访问令牌',
       ),
-      'Always Use HTTPS' => 
+      'Access Token Secret' => 
       array (
-        0 => '一律使用HTTPS',
+        0 => '访问令牌机密',
       ),
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
+      'Only Send One Tweet Every...' => 
       array (
-        0 => '设置为 "是"，将始终使用 "https://"安全URL，并在访问不安全的URL时自动重定向到安全URL。',
+        0 => '每天只发送一条推文...',
       ),
-      'API "Access-Control-Allow-Origin" header' => 
+      'No Limit' => 
       array (
-        0 => 'API“ Access-Control-Allow-Origin”标头',
+        0 => '没有限制',
       ),
-      '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
+      '%d seconds' => 
       array (
-        0 => '<a href="%s" target="_blank">了解更多关于此标题的信息</a>。设置为*允许所有来源，或者指定一个由逗号（,）分隔的来源列表。',
+        0 => '%d秒',
       ),
-      'Listener Analytics Collection' => 
+      '%d minutes' => 
       array (
-        0 => '听众分析系列',
+        0 => '%d分钟',
       ),
-      'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
+      'TuneIn Station ID' => 
       array (
-        0 => '汇总听众统计数据用于显示整个系统的电台报告。基于IP的听众统计用于查看实时听众跟踪，可能是版税报告所需。',
+        0 => 'TuneIn电台ID',
       ),
-      '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
+      'The station ID will be a numeric string that starts with the letter S.' => 
       array (
-        0 => '<b>完整：</b>收集总的监听器统计数据和基于 IP 的监听器统计数据',
+        0 => '站号将是一个以字母S开头的数字字符串。',
       ),
-      '<b>Limited:</b> Only collect aggregate listener statistics' => 
+      'TuneIn Partner ID' => 
       array (
-        0 => '<b>限制：</b>只收集总的监听器统计信息',
+        0 => 'TuneIn合作伙伴ID',
       ),
-      '<b>None:</b> Do not collect any listener analytics' => 
+      'TuneIn Partner Key' => 
       array (
-        0 => '<b>无：</b>不收集任何监听者分析',
+        0 => 'TuneIn合作伙伴密钥',
       ),
-      'AzuraCast Update Checks' => 
+      'Web Hook Details' => 
       array (
-        0 => '检查AzuraCast更新',
+        0 => '网络钩子详细信息',
       ),
-      'Current Release Channel' => 
+      'Web hooks automatically send a HTTP POST request to the URL you specify to
+                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
+                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station.
+                In order to process quickly, web hooks have a short timeout, so the responding service should be
+                optimized to handle the request in under 2 seconds.' => 
       array (
-        0 => '当前发布通道',
+        0 => '网络钩子会自动发送一个HTTP POST请求到您指定的URL，以便
+                在您的站点上触发您指定的任何一个触发器时通知您。POST消息的主体是
+                与你的站的<a href="%s" target="_blank">Now Playing API response</a>完全相同的。
+                为了快速处理，web钩子的超时时间很短，所以响应的服务应该是
+                经过优化的，可以在2秒内处理该请求。',
       ),
-      'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.' => 
+      'Web Hook URL' => 
       array (
-        0 => '有关如何切换发布通道的信息，请访问<a href="%s" target="_blank">本页面</a>。',
+        0 => '网络钩子网址',
       ),
-      'Show Update Announcements' => 
+      'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
-        0 => '显示更新公告',
+        0 => '当事件被触发时，接收POST消息的URL。',
       ),
-      'Show new releases within your update channel on the AzuraCast homepage.' => 
+      'Optional: HTTP Basic Authentication Username' => 
       array (
-        0 => '在AzuraCast主页显示您的更新通道中的新版本。',
+        0 => '可选：HTTP基本认证用户名',
       ),
-      'Third-Party Services' => 
+      'If your web hook requires HTTP basic authentication, provide the username here.' => 
       array (
-        0 => '第三方服务',
+        0 => '如果您的web钩子需要HTTP基本认证，请在这里提供用户名。',
       ),
-      'Check Web Services for Album Art for "Now Playing" Tracks' => 
+      'Optional: HTTP Basic Authentication Password' => 
       array (
-        0 => '检查网络服务，以获取 "正在播放 "曲目的专辑封面',
+        0 => '可选：HTTP基本认证密码',
       ),
-      'Check Web Services for Album Art When Uploading Media' => 
+      'If your web hook requires HTTP basic authentication, provide the password here.' => 
       array (
-        0 => '上载媒体时，从网络服务检查专辑封面',
-      ),
-      'Last.fm API Key' => 
-      array (
-        0 => '最后一个fm API密钥',
-      ),
-      '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.' => 
-      array (
-        0 => '<a href="%s" target="_blank">在此申请 API 密钥</a>。该服务可以为本地没有的曲目提供专辑封面。',
-      ),
-      'Enable Automated Assignment' => 
-      array (
-        0 => '启用自动分配',
-      ),
-      'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
-      array (
-        0 => '允许系统根据歌曲的表现定期自动分配歌曲到播放列表。该过程将在后台运行，只有当该选项设置为 "已启用 "且至少有一个播放列表被设置为 "包含在自动分配中 "时才会运行。',
-      ),
-      'Disabled' => 
-      array (
-        0 => '禁用',
-      ),
-      'Enabled' => 
-      array (
-        0 => '启用',
-      ),
-      'Days Between Automated Assignments' => 
-      array (
-        0 => '自动分配的天数',
-      ),
-      'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
-      array (
-        0 => '根据此设置，系统将每隔（此）天利用前（此）天的数据自动重新分配歌曲。',
-      ),
-      '%d days' => 
-      array (
-        0 => '%d 天',
-      ),
-      'Run Automatic Nightly Backups' => 
-      array (
-        0 => '每晚运行自动备份',
-      ),
-      'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
-      array (
-        0 => '启用AzuraCast在指定时间自动运行夜间备份。',
-      ),
-      'Scheduled Backup Time' => 
-      array (
-        0 => '预定的备份时间',
-      ),
-      'The time (in UTC) to run the automated backup, if enabled.' => 
-      array (
-        0 => '如果启用，运行自动备份的时间（UTC）。',
-      ),
-      'Exclude Media from Backups' => 
-      array (
-        0 => '从备份中排除媒体',
-      ),
-      'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
-      array (
-        0 => '将媒体排除在自动备份之外可以节省空间，但您应确保在其他地方备份媒体。请注意，只有本地存储的媒体才会被备份。',
-      ),
-      'Number of Backup Copies to Keep' => 
-      array (
-        0 => '要保存的备份数量',
-      ),
-      'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
-      array (
-        0 => '超过指定天数的副本将被自动删除。设置为0可禁用自动删除。',
-      ),
-      'Storage Location' => 
-      array (
-        0 => '存储位置',
-      ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
-      array (
-        0 => '<p>SHOUTcast 2 DNAS不是自由软件，它的限制性许可证不允许AzuraCast发布SHOUTcast二进制文件。为了安装SHOUTcast，您应该从<a href="%s" target="_blank">SHOUTcast Radio Manager</a>网站下载Linux x64二进制文件。將<code>sc_serv2_linux_x64-latest.tar.gz</code>上傳到下面的编辑框，以自動解壓縮到適當的目錄',
-      ),
-      'Current Installed Version' => 
-      array (
-        0 => '当前安装版本',
-      ),
-      'SHOUTcast is not currently installed on this installation.' => 
-      array (
-        0 => 'SHOUTcast目前没有安装在这个系统上。',
-      ),
-      'Select SHOUTcast 64-bit .tar.gz File' => 
-      array (
-        0 => '选择SHOUTcast 64-bit .tar.gz文件',
-      ),
-      'Upload' => 
-      array (
-        0 => '上传',
-      ),
-      'Mount Point URL' => 
-      array (
-        0 => '挂载点URL',
-      ),
-      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
-      array (
-        0 => '这个地址应该总是以斜杠(/)开头，并且必须是一个有效的URL，比如/autodj.mp3',
-      ),
-      'Display Name' => 
-      array (
-        0 => '显示名称',
-      ),
-      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
-      array (
-        0 => '在管理页面或公共页面上查看此挂载点分配给挂在URL的显示名称。留空以自动生成显示名。',
-      ),
-      'Show on Public Pages' => 
-      array (
-        0 => '在公共页面上显示',
-      ),
-      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
-      array (
-        0 => '启用允许听众在本台的公共页面上选择这个挂载点。',
-      ),
-      'Set as Default Mount Point' => 
-      array (
-        0 => '设置为默认挂在点',
-      ),
-      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
-      array (
-        0 => '如果这个挂载点是默认的，则会在本系统的电台预览和公共电台页面上播放。',
-      ),
-      'Relay Stream URL' => 
-      array (
-        0 => '流媒体中继 URL',
-      ),
-      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
-      array (
-        0 => '输入另一个流的完整URL，以便通过这个挂载点转发其广播。',
-      ),
-      'Publish to "Yellow Pages" Directories' => 
-      array (
-        0 => '发布到 "黄页 "目录',
-      ),
-      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
-      array (
-        0 => '启用在 "黄页 "公共广播目录中宣传该挂载点。',
-      ),
-      'Enable AutoDJ' => 
-      array (
-        0 => '启用自动DJ',
-      ),
-      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
-      array (
-        0 => '如果启用，AutoDJ将自动播放音乐到该安装点。',
-      ),
-      'AutoDJ Format' => 
-      array (
-        0 => 'AutoDJ格式',
-      ),
-      'AutoDJ Bitrate (kbps)' => 
-      array (
-        0 => 'AutoDJ比特率(kbps)',
-      ),
-      'Custom Stream URL' => 
-      array (
-        0 => '自定义流媒体网址',
-      ),
-      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
-      array (
-        0 => '您可以为这个流设置一个自定义的URL，当AzuraCast引用它时，将使用它。留空，则使用默认值。',
-      ),
-      'Fallback Mount' => 
-      array (
-        0 => '回退安装',
-      ),
-      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
-      array (
-        0 => '如果这个挂载点不播放音频，听众将自动被重定向到这个挂载点。默认是/error.mp3，一个重复的错误信息的音频。',
-      ),
-      'Custom Frontend Configuration' => 
-      array (
-        0 => '自定义前端配置',
-      ),
-      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
-      array (
-        0 => '您可以在这里包含任何特殊的挂载点设置，可以是JSON { key: \'value\' }格式，也可以是XML &lt;key&gt;value&lt;/key&gt;',
-      ),
-      'Stream path cannot include reserved keywords: %s' => 
-      array (
-        0 => '流路径不能包含保留关键字：%s',
-      ),
-      'YP Directory Authorization Hash' => 
-      array (
-        0 => 'YP目录授权哈希',
-      ),
-      'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
-      array (
-        0 => '如果您的流媒体被设置为向上面的YP目录做广告，您必须指定一个授权哈希值。您可以在SHOUTcast网站上<a href="%s" target="_blank">管理authashes</a>。',
+        0 => '如果您的web钩子需要HTTP基本认证，请在这里提供密码。',
       ),
       'Field Name' => 
       array (
@@ -1745,10 +2003,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '歌词',
       ),
-      'Language' => 
-      array (
-        0 => '语言',
-      ),
       'Length' => 
       array (
         0 => '长度',
@@ -1853,10 +2107,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => '使用条款',
       ),
-      'Title' => 
-      array (
-        0 => '标题',
-      ),
       'Title Sort Order' => 
       array (
         0 => '标题排序顺序',
@@ -1901,227 +2151,429 @@ X-Crowdin-File-ID: 4
       array (
         0 => '年',
       ),
-      'Twitter Account Details' => 
+      'Base Theme for Public Pages' => 
       array (
-        0 => 'Twitter帐户详细信息',
+        0 => '公共页面的基本主题',
       ),
-      'Steps for configuring a Twitter application:<br>
-                <ol type="1">
-                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>.
-                    Use this installation\'s base URL as the application URL.</li>
-                    <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
-                    <li>At the bottom of the page, click "Create my access token".</li>
-                </ol>
-                <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
+      'Select a theme to use as a base for station public pages and the login page.' => 
       array (
-        0 => '配置Twitter应用程序的步骤：<br>。
-                <ol type="1">
-                    <li>在 <a href="%s" target="_blank">Twitter 应用程序站点</a>上创建一个新应用程序。
-                    使用此安装的基本 URL 作为应用程序的 URL。
-                    <li>在新创建的应用程序中，单击 "密钥和访问令牌 "标签。
-                    <li>在页面底部，单击 "创建我的访问令牌"</li>。
-                </ol>
-                <p>完成这些步骤后，请将 "密钥和访问令牌 "页面中的信息输入到下面的字段中。</p>',
+        0 => '选择一个主题作为电台内公共页面和登录页面的基础。',
       ),
-      'Consumer Key (API Key)' => 
+      'Hide Album Art on Public Pages' => 
       array (
-        0 => '消费者密钥(API密钥)',
+        0 => '在公共页面上隐藏专辑封面',
       ),
-      'Consumer Secret (API Secret)' => 
+      'If selected, album art will not display on public-facing radio pages.' => 
       array (
-        0 => '消费者秘密(API秘密)',
+        0 => '如果选择，专辑封面将不会显示在面向公众的广播页面上。',
       ),
-      'Access Token' => 
+      'Homepage Redirect URL' => 
       array (
-        0 => '访问令牌',
+        0 => '主页重定向网址',
       ),
-      'Access Token Secret' => 
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
       array (
-        0 => '访问令牌机密',
+        0 => '如果访问者没有登录并访问AzuraCast主页，您可以将他们自动重定向到这里指定的URL。如果留空，则默认将他们重定向到登录页面。',
       ),
-      'Only Send One Tweet Every...' => 
+      'Default Album Art URL' => 
       array (
-        0 => '每天只发送一条推文...',
+        0 => '默认专辑封面URL',
       ),
-      'No Limit' => 
+      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
-        0 => '没有限制',
+        0 => '如果一首歌没有专辑封面，这个URL会被列出。留空以使用标准占位图。',
       ),
-      '%d seconds' => 
+      'Hide AzuraCast Branding on Public Pages' => 
       array (
-        0 => '%d秒',
+        0 => '在公共网页上隐藏AzuraCast品牌信息',
       ),
-      '%d minutes' => 
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
       array (
-        0 => '%d分钟',
+        0 => '如果选择，这将从面向公众的页面中移除AzuraCast品牌。',
       ),
-      'Web Hook Name' => 
+      'Custom CSS for Public Pages' => 
       array (
-        0 => '网络钩子名称',
+        0 => '公共页面的自定义CSS',
       ),
-      'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
+      'This CSS will be applied to the station public pages and login page.' => 
       array (
-        0 => '为这个网络钩子选择一个名称，以帮助您将它与其他网络钩子区分开来。这将只在管理页面上显示。',
+        0 => '该CSS将应用于电台内公共页面和登录页面。',
       ),
-      'Web Hook Triggers' => 
+      'Custom JS for Public Pages' => 
       array (
-        0 => 'Triggers 网络钩子',
+        0 => '公共页面的自定义JS',
       ),
-      'Message Body' => 
+      'This javascript code will be applied to the station public pages and login page.' => 
       array (
-        0 => '邮件正文',
+        0 => '该javascript代码将被应用到电台内公共页面和登录页面。',
       ),
-      'Now playing on %s: %s by %s! Tune in now.' => 
+      'Custom CSS for Internal Pages' => 
       array (
-        0 => '现在播放的是%s: %s by %s! 现在请收听。',
+        0 => '内部页面的自定义CSS',
       ),
-      'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
+      'This CSS will be applied to the main management pages, like this one.' => 
       array (
-        0 => '变量的形式为<code>{{ var.name }}</code>。<a href="%s" target="_blank">Now Playing API response</a>中的所有值都可以使用。任何空字段都会被忽略。',
+        0 => '这个CSS将被应用到主管理页面，比如这个。',
       ),
-      'Web Hook Details' => 
+      'Stream path cannot include reserved keywords: %s' => 
       array (
-        0 => '网络钩子详细信息',
+        0 => '流路径不能包含保留关键字：%s',
       ),
-      'Web hooks automatically send a HTTP POST request to the URL you specify to
-                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
-                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station.
-                In order to process quickly, web hooks have a short timeout, so the responding service should be
-                optimized to handle the request in under 2 seconds.' => 
+      'YP Directory Authorization Hash' => 
       array (
-        0 => '网络钩子会自动发送一个HTTP POST请求到您指定的URL，以便
-                在您的站点上触发您指定的任何一个触发器时通知您。POST消息的主体是
-                与你的站的<a href="%s" target="_blank">Now Playing API response</a>完全相同的。
-                为了快速处理，web钩子的超时时间很短，所以响应的服务应该是
-                经过优化的，可以在2秒内处理该请求。',
+        0 => 'YP目录授权哈希',
       ),
-      'Web Hook URL' => 
+      'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
       array (
-        0 => '网络钩子网址',
+        0 => '如果您的流媒体被设置为向上面的YP目录做广告，您必须指定一个授权哈希值。您可以在SHOUTcast网站上<a href="%s" target="_blank">管理authashes</a>。',
       ),
-      'The URL that will receive the POST messages any time an event is triggered.' => 
+      'Fallback Mount' => 
       array (
-        0 => '当事件被触发时，接收POST消息的URL。',
+        0 => '回退安装',
       ),
-      'Optional: HTTP Basic Authentication Username' => 
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => '可选：HTTP基本认证用户名',
+        0 => '如果这个挂载点不播放音频，听众将自动被重定向到这个挂载点。默认是/error.mp3，一个重复的错误信息的音频。',
       ),
-      'If your web hook requires HTTP basic authentication, provide the username here.' => 
+      'Custom Frontend Configuration' => 
       array (
-        0 => '如果您的web钩子需要HTTP基本认证，请在这里提供用户名。',
+        0 => '自定义前端配置',
       ),
-      'Optional: HTTP Basic Authentication Password' => 
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => '可选：HTTP基本认证密码',
+        0 => '您可以在这里包含任何特殊的挂载点设置，可以是JSON { key: \'value\' }格式，也可以是XML &lt;key&gt;value&lt;/key&gt;',
       ),
-      'If your web hook requires HTTP basic authentication, provide the password here.' => 
+      'Mount Point URL' => 
       array (
-        0 => '如果您的web钩子需要HTTP基本认证，请在这里提供密码。',
+        0 => '挂载点URL',
       ),
-      'Bot Token' => 
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
-        0 => '机器人 Token',
+        0 => '这个地址应该总是以斜杠(/)开头，并且必须是一个有效的URL，比如/autodj.mp3',
       ),
-      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
-        0 => '请参阅<a href="%s" target="_blank">Telegram文档</a>了解更多细节。',
+        0 => '在管理页面或公共页面上查看此挂载点分配给挂在URL的显示名称。留空以自动生成显示名。',
       ),
-      'Chat ID' => 
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
       array (
-        0 => '聊天 ID',
+        0 => '启用允许听众在本台的公共页面上选择这个挂载点。',
       ),
-      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
+      'Set as Default Mount Point' => 
       array (
-        0 => '目标聊天的唯一标识符或目标频道的用户名（格式为@channelusername）。',
+        0 => '设置为默认挂在点',
       ),
-      'Custom API Base URL' => 
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => '自定义API基本URL',
+        0 => '如果这个挂载点是默认的，则会在本系统的电台预览和公共电台页面上播放。',
       ),
-      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
+      'Relay Stream URL' => 
       array (
-        0 => '留空以使用默认的Telegram API URL（推荐）。指定完整的URL，比如<code>https://api.pwrtelegram.xyz/</code>。',
+        0 => '流媒体中继 URL',
       ),
-      'Customize Message' => 
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => '自定义消息',
+        0 => '输入另一个流的完整URL，以便通过这个挂载点转发其广播。',
       ),
-      'Main Message Content' => 
+      'Enable AutoDJ' => 
       array (
-        0 => '主要信息内容',
+        0 => '启用自动DJ',
       ),
-      'Message parsing mode' => 
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
       array (
-        0 => '消息解析模式',
+        0 => '如果启用，AutoDJ将自动播放音乐到该安装点。',
       ),
-      'TuneIn Station ID' => 
+      'Custom Stream URL' => 
       array (
-        0 => 'TuneIn电台ID',
+        0 => '自定义流媒体网址',
       ),
-      'The station ID will be a numeric string that starts with the letter S.' => 
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
       array (
-        0 => '站号将是一个以字母S开头的数字字符串。',
+        0 => '您可以为这个流设置一个自定义的URL，当AzuraCast引用它时，将使用它。留空，则使用默认值。',
       ),
-      'TuneIn Partner ID' => 
+      'Metadata' => 
       array (
-        0 => 'TuneIn合作伙伴ID',
+        0 => '元数据',
       ),
-      'TuneIn Partner Key' => 
+      'Full Text' => 
       array (
-        0 => 'TuneIn合作伙伴密钥',
+        0 => '全文',
       ),
-      'GA Property Tracking ID' => 
+      'Artist Name' => 
       array (
-        0 => '',
+        0 => '艺术家姓名',
       ),
-      'The property ID used to track live listeners.' => 
+      'Song Title' => 
       array (
-        0 => '',
+        0 => '歌曲标题',
       ),
-      'Discord Web Hook URL' => 
+      'Role Name' => 
       array (
-        0 => 'Discord网络钩子 URL',
+        0 => '角色名称',
       ),
-      'This URL is provided within the Discord application.' => 
+      'System-Wide Permissions' => 
       array (
-        0 => '此 URL 是在 Discord 应用程序中提供的。',
+        0 => '系统范围内的权限',
       ),
-      'Now playing on %s:' => 
+      'Permissions for %s' => 
       array (
-        0 => '现在播放 %s：',
-      ),
-      'Description' => 
-      array (
-        0 => '描述',
-      ),
-      'URL' => 
-      array (
-        0 => '网址',
-      ),
-      'Author Name' => 
-      array (
-        0 => '作者名字',
-      ),
-      'Thumbnail Image URL' => 
-      array (
-        0 => '缩略图网址',
-      ),
-      'Footer Text' => 
-      array (
-        0 => '页脚文字',
-      ),
-      'Powered by %s' => 
-      array (
-        0 => '由%s提供技术支持',
-      ),
-      'Reset Password' => 
-      array (
-        0 => '重设密码',
+        0 => '%s的权限',
       ),
       'Roles' => 
       array (
         0 => '角色',
+      ),
+      'Rolling Release' => 
+      array (
+        0 => '滚动发布',
+      ),
+      'Stable' => 
+      array (
+        0 => '稳定',
+      ),
+      'Settings' => 
+      array (
+        0 => '设置',
+      ),
+      'Security' => 
+      array (
+        0 => '安全',
+      ),
+      'Privacy' => 
+      array (
+        0 => '隐私',
+      ),
+      'Services' => 
+      array (
+        0 => '服务项目',
+      ),
+      'Site Base URL' => 
+      array (
+        0 => '网站基础网址',
+      ),
+      'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
+      array (
+        0 => '此服务所在的基本 URL。使用指向该服务器的外部IP地址或域名（如果有的话）。',
+      ),
+      'AzuraCast Instance Name' => 
+      array (
+        0 => 'AzuraCast实例名称',
+      ),
+      'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
+      array (
+        0 => '这个名字将出现在AzuraCast标志旁边的小标题中，以帮助识别这个服务器。',
+      ),
+      'Prefer Browser URL (If Available)' => 
+      array (
+        0 => '首选浏览器URL（如果可用）',
+      ),
+      'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
+      array (
+        0 => '如果将此设置设置为 "是"，则在有浏览器URL时，将使用浏览器URL代替基本URL。设置为 "否"，则始终使用基本URL。',
+      ),
+      'Use Web Proxy for Radio' => 
+      array (
+        0 => '使用网络代理进行广播',
+      ),
+      'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
+      array (
+        0 => '默认情况下，电台在自己的端口上广播（即8000）。如果您正在使用CloudFlare等服务或通过SSL访问您的广播电台，您应该启用此功能，该功能通过网络端口（80和443）路由进行广播。',
+      ),
+      'Days of Playback History to Keep' => 
+      array (
+        0 => '保留的播放历史记录天数',
+      ),
+      'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space. ' => 
+      array (
+        0 => '设置较长，可保存更多的播放历史和电台的听众元数据。 设置较短，以节省磁盘空间。 ',
+      ),
+      'Last 14 Days' => 
+      array (
+        0 => '最近14天',
+      ),
+      'Last 30 Days' => 
+      array (
+        0 => '最近30天',
+      ),
+      'Last 60 Days' => 
+      array (
+        0 => '最近60天',
+      ),
+      'Last Year' => 
+      array (
+        0 => '最近一年',
+      ),
+      'Last 2 Years' => 
+      array (
+        0 => '最近两年',
+      ),
+      'Indefinitely' => 
+      array (
+        0 => '无限期',
+      ),
+      'Use WebSockets for Now Playing Updates' => 
+      array (
+        0 => '使用WebSockets立即播放广播',
+      ),
+      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
+      array (
+        0 => '启用或禁用基于WebSocket的较新和较快的系统来接收公共广播的实时更新。如果您遇到問題，您可能需要停用此功能。',
+      ),
+      'Enable Advanced Features' => 
+      array (
+        0 => '启用高级功能',
+      ),
+      'Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.' => 
+      array (
+        0 => '启用Web界面中的某些高级功能，包括配置高级播放列表、配置电台端口、更改基础媒体目录和其他功能，推荐高级用户修改上数选项。',
+      ),
+      'Always Use HTTPS' => 
+      array (
+        0 => '一律使用HTTPS',
+      ),
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
+      array (
+        0 => '设置为 "是"，将始终使用 "https://"安全URL，并在访问不安全的URL时自动重定向到安全URL。',
+      ),
+      'API "Access-Control-Allow-Origin" header' => 
+      array (
+        0 => 'API“ Access-Control-Allow-Origin”标头',
+      ),
+      '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
+      array (
+        0 => '<a href="%s" target="_blank">了解更多关于此标题的信息</a>。设置为*允许所有来源，或者指定一个由逗号（,）分隔的来源列表。',
+      ),
+      'Listener Analytics Collection' => 
+      array (
+        0 => '听众分析系列',
+      ),
+      'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
+      array (
+        0 => '汇总听众统计数据用于显示整个系统的电台报告。基于IP的听众统计用于查看实时听众跟踪，可能是版税报告所需。',
+      ),
+      '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
+      array (
+        0 => '<b>完整：</b>收集总的监听器统计数据和基于 IP 的监听器统计数据',
+      ),
+      '<b>Limited:</b> Only collect aggregate listener statistics' => 
+      array (
+        0 => '<b>限制：</b>只收集总的监听器统计信息',
+      ),
+      '<b>None:</b> Do not collect any listener analytics' => 
+      array (
+        0 => '<b>无：</b>不收集任何监听者分析',
+      ),
+      'AzuraCast Update Checks' => 
+      array (
+        0 => '检查AzuraCast更新',
+      ),
+      'Current Release Channel' => 
+      array (
+        0 => '当前发布通道',
+      ),
+      'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.' => 
+      array (
+        0 => '有关如何切换发布通道的信息，请访问<a href="%s" target="_blank">本页面</a>。',
+      ),
+      'Show Update Announcements' => 
+      array (
+        0 => '显示更新公告',
+      ),
+      'Show new releases within your update channel on the AzuraCast homepage.' => 
+      array (
+        0 => '在AzuraCast主页显示您的更新通道中的新版本。',
+      ),
+      'E-mail Delivery Service' => 
+      array (
+        0 => '电子邮件发送服务',
+      ),
+      'Used for "Forgot Password" functionality, web hooks and other functions.' => 
+      array (
+        0 => '用于 "忘记密码 "功能、网页钩子等功能。',
+      ),
+      'Enable Mail Delivery' => 
+      array (
+        0 => '启用邮件发送',
+      ),
+      'Sender Name' => 
+      array (
+        0 => '发件人名称',
+      ),
+      'Sender E-mail Address' => 
+      array (
+        0 => '发件人邮件地址',
+      ),
+      'SMTP Host' => 
+      array (
+        0 => 'SMTP主机',
+      ),
+      'SMTP Port' => 
+      array (
+        0 => 'SMTP端口',
+      ),
+      'Use Secure (TLS) SMTP Connection' => 
+      array (
+        0 => '使用安全（TLS）SMTP连接',
+      ),
+      'Usually enabled for port 465, disabled for ports 587 or 25.' => 
+      array (
+        0 => '电子邮件通常使用465，587或25端口，有时25端口可能是被禁用的。',
+      ),
+      'SMTP Username' => 
+      array (
+        0 => 'SMTP 用户名',
+      ),
+      'SMTP Password' => 
+      array (
+        0 => 'SMTP密码',
+      ),
+      'Third-Party Services' => 
+      array (
+        0 => '第三方服务',
+      ),
+      'Check Web Services for Album Art for "Now Playing" Tracks' => 
+      array (
+        0 => '检查网络服务，以获取 "正在播放 "曲目的专辑封面',
+      ),
+      'Check Web Services for Album Art When Uploading Media' => 
+      array (
+        0 => '上载媒体时，从网络服务检查专辑封面',
+      ),
+      'Last.fm API Key' => 
+      array (
+        0 => '最后一个fm API密钥',
+      ),
+      '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.' => 
+      array (
+        0 => '<a href="%s" target="_blank">在此申请 API 密钥</a>。该服务可以为本地没有的曲目提供专辑封面。',
+      ),
+      'Code from Authenticator App' => 
+      array (
+        0 => '来自认证器应用程序的代码',
+      ),
+      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
+      array (
+        0 => '输入您的身份验证器应用程序提供的当前代码，以验证它是否正常工作。',
+      ),
+      'Verify Authenticator' => 
+      array (
+        0 => '验证身份验证器',
+      ),
+      'Backup Filename' => 
+      array (
+        0 => '备份文件名',
+      ),
+      'Path where the backup file should be located.' => 
+      array (
+        0 => '备份文件所在的路径。',
+      ),
+      'Exclude Media from Backup' => 
+      array (
+        0 => '从备份中排除媒体',
+      ),
+      'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
+      array (
+        0 => '这将产生一个小得多的备份，但您应确保将媒体备份到其他地方。请注意，只有本地存储的媒体才会被备份。',
       ),
       'Station Profile' => 
       array (
@@ -2138,10 +2590,6 @@ X-Crowdin-File-ID: 4
       'Administration' => 
       array (
         0 => '管理',
-      ),
-      'Name' => 
-      array (
-        0 => '名称',
       ),
       'Web Site URL' => 
       array (
@@ -2194,6 +2642,10 @@ X-Crowdin-File-ID: 4
       'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
         0 => '自定义本电台和所有公共 API 的 "歌曲历史 "部分将出现的歌曲数量。',
+      ),
+      'Disabled' => 
+      array (
+        0 => '禁用',
       ),
       'Broadcasting Service' => 
       array (
@@ -2419,6 +2871,14 @@ X-Crowdin-File-ID: 4
       array (
         0 => '这指定了重复歌曲防止算法应考虑的歌曲历史的时间范围（分钟）。',
       ),
+      'Media Storage Location' => 
+      array (
+        0 => '媒体存储位置',
+      ),
+      'Live Recordings Storage Location' => 
+      array (
+        0 => '现场录音存储位置',
+      ),
       'Enable Broadcasting' => 
       array (
         0 => '启用广播',
@@ -2435,169 +2895,61 @@ X-Crowdin-File-ID: 4
       array (
         0 => '保存电台播放列表和配置文件的父目录。留空，使用默认目录。',
       ),
-      'Media Storage Location' => 
-      array (
-        0 => '媒体存储位置',
-      ),
-      'Live Recordings Storage Location' => 
-      array (
-        0 => '现场录音存储位置',
-      ),
-      'Role Name' => 
-      array (
-        0 => '角色名称',
-      ),
-      'System-Wide Permissions' => 
-      array (
-        0 => '系统范围内的权限',
-      ),
-      'Permissions for %s' => 
-      array (
-        0 => '%s的权限',
-      ),
-      'Backup Filename' => 
-      array (
-        0 => '备份文件名',
-      ),
-      'Path where the backup file should be located.' => 
-      array (
-        0 => '备份文件所在的路径。',
-      ),
-      'Exclude Media from Backup' => 
-      array (
-        0 => '从备份中排除媒体',
-      ),
-      'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
-      array (
-        0 => '这将产生一个小得多的备份，但您应确保将媒体备份到其他地方。请注意，只有本地存储的媒体才会被备份。',
-      ),
-      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
-      array (
-        0 => '启用，允许听众在本台的公共页面上选择此中继。',
-      ),
-      'Remote Station Type' => 
-      array (
-        0 => '远程 电台 类型',
-      ),
-      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
-      array (
-        0 => '在管理页面或公共页面上查看此中继时指定的显示名称。留空以自动生成显示名称。',
-      ),
-      'Remote Station Listening URL' => 
-      array (
-        0 => '远程电台监听URL',
-      ),
-      'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
-      array (
-        0 => '例如：如果远程电台网址是%s，输入<code>%s</code>。',
-      ),
-      'Remote Station Listening Mountpoint/SID' => 
-      array (
-        0 => '远程电台监听挂载点/SID',
-      ),
-      'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
-      array (
-        0 => '指定一个挂载点(即<code>%s</code>)或Shoutcast SID(即<code>%s</code>)来指定用于统计或广播的特定流。',
-      ),
-      'Remote Station Administrator Password' => 
-      array (
-        0 => '远程电台管理员密码',
-      ),
-      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
-      array (
-        0 => '要检索详细的监听器和客户端的详细信息，通常需要一个管理员密码。',
-      ),
-      'Broadcast AutoDJ to Remote Station' => 
-      array (
-        0 => '廣播AutoDJ到遠端電台',
-      ),
-      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
-      array (
-        0 => '如果启用，此安装的AutoDJ将自动播放音乐到此挂载点。',
-      ),
-      'Configure AutoDJ Broadcasting' => 
-      array (
-        0 => '配置AutoDJ广播',
-      ),
-      'Remote Station Source Port' => 
-      array (
-        0 => '远程电台源端口',
-      ),
-      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
-      array (
-        0 => '如果您广播的端口与您在上面的URL中列出的端口不同，请在这里指定源端口。',
-      ),
-      'Remote Station Source Mountpoint/SID' => 
-      array (
-        0 => '远程站源挂载点/SID',
-      ),
-      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
-      array (
-        0 => '如果您广播的挂载点（即<code>/radio.mp3</code>）或Shoutcast SID（即<code>2</code>）与上面列出的挂载点不同，请在此指定源挂载点。',
-      ),
-      'Remote Station Source Username' => 
-      array (
-        0 => '远程电台源用户名',
-      ),
-      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
-      array (
-        0 => '如果您使用 AutoDJ 进行广播，请在此输入源用户名。这可能是空白的。',
-      ),
-      'Remote Station Source Password' => 
-      array (
-        0 => '远程电台源密码',
-      ),
-      'If you are broadcasting using AutoDJ, enter the source password here.' => 
-      array (
-        0 => '如果您使用的是AutoDJ广播，请在这里输入源密码。',
-      ),
       'Log in' => 
       array (
         0 => '登录',
       ),
-      'Metadata' => 
+      'Enable Automated Assignment' => 
       array (
-        0 => '元数据',
+        0 => '启用自动分配',
       ),
-      'Full Text' => 
+      'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => '全文',
+        0 => '允许系统根据歌曲的表现定期自动分配歌曲到播放列表。该过程将在后台运行，只有当该选项设置为 "已启用 "且至少有一个播放列表被设置为 "包含在自动分配中 "时才会运行。',
       ),
-      'Artist Name' => 
+      'Enabled' => 
       array (
-        0 => '艺术家姓名',
+        0 => '启用',
       ),
-      'Use Browser Default' => 
+      'Days Between Automated Assignments' => 
       array (
-        0 => '使用浏览器默认',
+        0 => '自动分配的天数',
       ),
-      'Leave these fields blank to continue using your current password.' => 
+      'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => '将这些字段留空，以继续使用当前的密码。',
+        0 => '根据此设置，系统将每隔（此）天利用前（此）天的数据自动重新分配歌曲。',
       ),
-      'Current Password' => 
+      '%d days' => 
       array (
-        0 => '当前密码',
+        0 => '%d 天',
       ),
-      'Confirm New Password' => 
+      'Comments' => 
       array (
-        0 => '确认新密码',
+        0 => '评论',
       ),
-      'Customization' => 
+      'Describe the use-case for this API key for future reference.' => 
       array (
-        0 => '定制化',
+        0 => '描述该API密钥的用途，供将来参考。',
       ),
-      'Site Theme' => 
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => '网站主题',
+        0 => '<p>SHOUTcast 2 DNAS不是自由软件，它的限制性许可证不允许AzuraCast发布SHOUTcast二进制文件。为了安装SHOUTcast，您应该从<a href="%s" target="_blank">SHOUTcast Radio Manager</a>网站下载Linux x64二进制文件。將<code>sc_serv2_linux_x64-latest.tar.gz</code>上傳到下面的编辑框，以自動解壓縮到適當的目錄',
       ),
-      'Are you sure?' => 
+      'Current Installed Version' => 
       array (
-        0 => '您确定吗？',
+        0 => '当前安装版本',
       ),
-      'Advanced' => 
+      'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => '高级',
+        0 => 'SHOUTcast目前没有安装在这个系统上。',
+      ),
+      'Select SHOUTcast 64-bit .tar.gz File' => 
+      array (
+        0 => '选择SHOUTcast 64-bit .tar.gz文件',
+      ),
+      'Upload' => 
+      array (
+        0 => '上传',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -2638,658 +2990,6 @@ X-Crowdin-File-ID: 4
       'Back up the AzuraCast database and statistics (and optionally media).' => 
       array (
         0 => '备份AzuraCast数据库和统计资料（也可选择媒体）。',
-      ),
-      'System Maintenance' => 
-      array (
-        0 => '系统维护',
-      ),
-      'Custom Branding' => 
-      array (
-        0 => '定制品牌',
-      ),
-      'System Logs' => 
-      array (
-        0 => '系统日志',
-      ),
-      'Storage Locations' => 
-      array (
-        0 => '存储位置',
-      ),
-      'System Debugger' => 
-      array (
-        0 => '系统调试器',
-      ),
-      'Users' => 
-      array (
-        0 => '用户',
-      ),
-      'User Accounts' => 
-      array (
-        0 => '用户帐号',
-      ),
-      'Permissions' => 
-      array (
-        0 => '权限',
-      ),
-      'Audit Log' => 
-      array (
-        0 => '审核日志',
-      ),
-      'API Keys' => 
-      array (
-        0 => 'API密钥',
-      ),
-      'Stations' => 
-      array (
-        0 => '电台',
-      ),
-      'Custom Fields' => 
-      array (
-        0 => '自定义字段',
-      ),
-      'Connected AzuraRelays' => 
-      array (
-        0 => '连接的AzuraRelays',
-      ),
-      'Start Station' => 
-      array (
-        0 => '开始电台',
-      ),
-      'Ready to start broadcasting? Click to start your station.' => 
-      array (
-        0 => '准备开始广播了吗？单击以启动您的电台。',
-      ),
-      'Restart broadcasting? This will disconnect any current listeners.' => 
-      array (
-        0 => '重新开始播放？这将断开所有当前的侦听器。',
-      ),
-      'Restart to Apply Changes' => 
-      array (
-        0 => '重新开始应用更改',
-      ),
-      'Click to restart your station and apply configuration changes.' => 
-      array (
-        0 => '单击以重新启动电台并应用配置更改。',
-      ),
-      'Profile' => 
-      array (
-        0 => '个人资料',
-      ),
-      'Public Page' => 
-      array (
-        0 => '公开页面',
-      ),
-      'On-Demand Media' => 
-      array (
-        0 => '点播媒体',
-      ),
-      'Music Files' => 
-      array (
-        0 => '音乐文件',
-      ),
-      'Playlists' => 
-      array (
-        0 => '播放列表',
-      ),
-      'Streamer/DJ Accounts' => 
-      array (
-        0 => '流媒体/ DJ帐户',
-      ),
-      'Web DJ' => 
-      array (
-        0 => '网络DJ',
-      ),
-      'Mount Points' => 
-      array (
-        0 => '挂载点',
-      ),
-      'Remote Relays' => 
-      array (
-        0 => '远程继电器',
-      ),
-      'Web Hooks' => 
-      array (
-        0 => '网络钩子',
-      ),
-      'Reports' => 
-      array (
-        0 => '报告',
-      ),
-      'Statistics Overview' => 
-      array (
-        0 => '统计总览',
-      ),
-      'Song Requests' => 
-      array (
-        0 => '歌曲请求',
-      ),
-      'Song Playback Timeline' => 
-      array (
-        0 => '歌曲播放时间线',
-      ),
-      'Song Listener Impact' => 
-      array (
-        0 => '歌曲听众影响',
-      ),
-      'Duplicate Songs' => 
-      array (
-        0 => '重复的歌曲',
-      ),
-      'Unprocessable Files' => 
-      array (
-        0 => '无法处理的文件',
-      ),
-      'SoundExchange Royalties' => 
-      array (
-        0 => 'SoundExchange版税',
-      ),
-      'Utilities' => 
-      array (
-        0 => '实用工具',
-      ),
-      'SFTP Users' => 
-      array (
-        0 => 'SFTP用户',
-      ),
-      'Automated Assignment' => 
-      array (
-        0 => '自动分配',
-      ),
-      'Log Viewer' => 
-      array (
-        0 => '日志查看器',
-      ),
-      'Upcoming Song Queue' => 
-      array (
-        0 => '即将到来的歌曲队列',
-      ),
-      'Restart Broadcasting' => 
-      array (
-        0 => '重新开始广播',
-      ),
-      'Generic Web Hook' => 
-      array (
-        0 => '通用网络钩子',
-      ),
-      'Automatically send a message to any URL when your station data changes.' => 
-      array (
-        0 => '电台数据更改时，自动将消息发送到任何URL。',
-      ),
-      'TuneIn AIR' => 
-      array (
-        0 => '调谐空气',
-      ),
-      'Send song metadata changes to TuneIn.' => 
-      array (
-        0 => '将歌曲元数据更改发送到TuneIn。',
-      ),
-      'Discord Webhook' => 
-      array (
-        0 => 'Discord 网络钩子',
-      ),
-      'Automatically send a customized message to your Discord server.' => 
-      array (
-        0 => '自动向您的Discord服务器发送自定义消息。',
-      ),
-      'Telegram Chat Message' => 
-      array (
-        0 => '电报聊天消息',
-      ),
-      'Use the Telegram Bot API to send a message to a channel.' => 
-      array (
-        0 => '使用Telegram Bot API将消息发送到频道。',
-      ),
-      'Twitter Post' => 
-      array (
-        0 => '推特帖子',
-      ),
-      'Automatically send a tweet.' => 
-      array (
-        0 => '自动发送推文。',
-      ),
-      'Google Analytics Integration' => 
-      array (
-        0 => '',
-      ),
-      'Send stream listener details to Google Analytics.' => 
-      array (
-        0 => '',
-      ),
-      'Any time the currently playing song changes' => 
-      array (
-        0 => '当前播放的歌曲随时改变',
-      ),
-      'Any time the listener count increases' => 
-      array (
-        0 => '只要听众人数增加',
-      ),
-      'Any time the listener count decreases' => 
-      array (
-        0 => '任何时候听众人数减少',
-      ),
-      'Any time a live streamer/DJ connects to the stream' => 
-      array (
-        0 => '直播流媒体/ DJ随时连接到流',
-      ),
-      'Any time a live streamer/DJ disconnects from the stream' => 
-      array (
-        0 => '每当直播流媒体/ DJ与流断开连接时',
-      ),
-      'Station Time' => 
-      array (
-        0 => '电台时间',
-      ),
-      'Available Logs' => 
-      array (
-        0 => '可用日志',
-      ),
-      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
-      array (
-        0 => '挂载点是听众连接和收听您的电台的方式。每个挂载点可以是不同的音频格式或质量。使用挂载点，您可以为宽带听众设置一个高质量的流，为移动用户设置一个移动流。',
-      ),
-      'Actions' => 
-      array (
-        0 => '操作',
-      ),
-      'Mount Point' => 
-      array (
-        0 => '挂载点',
-      ),
-      'Edit' => 
-      array (
-        0 => '编辑',
-      ),
-      'Delete mount point "%s"?' => 
-      array (
-        0 => '删除挂载点"%s"？',
-      ),
-      'Delete' => 
-      array (
-        0 => '删除',
-      ),
-      'Default Mount' => 
-      array (
-        0 => '默认挂载点',
-      ),
-      'Listener Request' => 
-      array (
-        0 => '侦听器请求',
-      ),
-      'Playlist:' => 
-      array (
-        0 => '播放列表：',
-      ),
-      'Delete queue item?' => 
-      array (
-        0 => '删除队列项？',
-      ),
-      'Cued On' => 
-      array (
-        0 => '提示上一个',
-      ),
-      'Source' => 
-      array (
-        0 => '源',
-      ),
-      'Automated Playlist Assignment' => 
-      array (
-        0 => '自动播放列表分配',
-      ),
-      'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
-      array (
-        0 => '根据您的电台歌曲之前的表现，%s可以自动将歌曲平均分配到您的播放列表中，将表现最好的歌曲放在权重最高的播放列表位置上。',
-      ),
-      'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
-      array (
-        0 => '一旦您配置了自动分配，请单击下面的按钮来运行自动分配过程。除非您选择了下面的 "启用"，否则该过程根本不会运行。',
-      ),
-      'Run Automated Assignment' => 
-      array (
-        0 => '运行自动分配',
-      ),
-      'Configure Automated Assignment' => 
-      array (
-        0 => '配置自动分配',
-      ),
-      'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
-      array (
-        0 => '网络钩子可以让您连接到外部网络服务，并将您的电台的变化广播传输给他们。',
-      ),
-      'Type' => 
-      array (
-        0 => '类型',
-      ),
-      'Triggers' => 
-      array (
-        0 => '触发器',
-      ),
-      'Enable' => 
-      array (
-        0 => '启用',
-      ),
-      'Trigger the web hook manually and view the raw response.' => 
-      array (
-        0 => '手动触发网络钩子并查看原始响应。',
-      ),
-      'Test' => 
-      array (
-        0 => '测试',
-      ),
-      'Delete web hook "%s"?' => 
-      array (
-        0 => '删除网络钩子 "%s"?',
-      ),
-      'Select the type of web hook to create.' => 
-      array (
-        0 => '选择要创建的网络钩子的类型。',
-      ),
-      'Reorder Playlist' => 
-      array (
-        0 => '重新排序播放列表',
-      ),
-      'Reorder Playlist: %s' => 
-      array (
-        0 => '重新排序播放列表：%s',
-      ),
-      'Down' => 
-      array (
-        0 => '下',
-      ),
-      'Up' => 
-      array (
-        0 => '上',
-      ),
-      'Connection Information' => 
-      array (
-        0 => '连接信息',
-      ),
-      'IceCast Clients' => 
-      array (
-        0 => 'IceCast客户',
-      ),
-      'Server' => 
-      array (
-        0 => '服务器',
-      ),
-      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
-      array (
-        0 => '您可能需要通过您的IP地址进行连接，也就是<code>%s</code>。',
-      ),
-      'Port' => 
-      array (
-        0 => '端口',
-      ),
-      'Mount Name' => 
-      array (
-        0 => '挂载名称',
-      ),
-      'ShoutCast v1 Clients' => 
-      array (
-        0 => 'ShoutCast v1客户端',
-      ),
-      '%d (%d for some clients)' => 
-      array (
-        0 => '%d (某些客户为%d)',
-      ),
-      'or' => 
-      array (
-        0 => '或',
-      ),
-      '(DJ username and password separated by a colon or comma)' => 
-      array (
-        0 => '(DJ用户名和密码请用冒号或逗号隔开)',
-      ),
-      'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
-      array (
-        0 => '<a href="%s" target="_blank">AzuraCast Wiki</a>上有广播软件的设置说明。',
-      ),
-      'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
-      array (
-        0 => '该电台目前已禁用流媒体账户。要启用流媒体账户，请点击下面的按钮。',
-      ),
-      'Enable Streaming' => 
-      array (
-        0 => '启用流媒体',
-      ),
-      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
-      array (
-        0 => '远程中继可以让您与本服务器以外的广播软件合作。您在这里包含的任何中继都会被包含在您的电台统计中。您也可以从本服务器向远程中继进行广播。',
-      ),
-      'Remote Relay' => 
-      array (
-        0 => '远程中继',
-      ),
-      'Delete remote relay "%s"?' => 
-      array (
-        0 => '删除远程中继"%s"？',
-      ),
-      'Live Streamer:' => 
-      array (
-        0 => '直播员：',
-      ),
-      'Today' => 
-      array (
-        0 => '今天',
-      ),
-      'Yesterday' => 
-      array (
-        0 => '昨天',
-      ),
-      'Last 7 Days' => 
-      array (
-        0 => '最近7天',
-      ),
-      'This Month' => 
-      array (
-        0 => '这个月',
-      ),
-      'Last Month' => 
-      array (
-        0 => '上个月',
-      ),
-      'Best Performing Songs' => 
-      array (
-        0 => '最佳表演歌曲',
-      ),
-      'in the last 48 hours' => 
-      array (
-        0 => '最近48小时内',
-      ),
-      'Change' => 
-      array (
-        0 => '更改',
-      ),
-      'Song' => 
-      array (
-        0 => '歌曲',
-      ),
-      'Worst Performing Songs' => 
-      array (
-        0 => '最差歌曲',
-      ),
-      'Most Played Songs' => 
-      array (
-        0 => '最流行的歌曲',
-      ),
-      'in the last month' => 
-      array (
-        0 => '上个月',
-      ),
-      'Plays' => 
-      array (
-        0 => '播放',
-      ),
-      'Download CSV' => 
-      array (
-        0 => '下载 CSV',
-      ),
-      'Date/Time' => 
-      array (
-        0 => '日期/时间',
-      ),
-      'Live Listeners' => 
-      array (
-        0 => '现场听众',
-      ),
-      'There are too many data points to map!' => 
-      array (
-        0 => '数据点太多了，无法绘制!',
-      ),
-      'Clear all pending requests?' => 
-      array (
-        0 => '清除所有待处理的请求？',
-      ),
-      'Clear Pending Requests' => 
-      array (
-        0 => '清除待处理的请求',
-      ),
-      'Date Requested' => 
-      array (
-        0 => '要求日期',
-      ),
-      'Date Played' => 
-      array (
-        0 => '播放日期',
-      ),
-      'Requester IP' => 
-      array (
-        0 => '请求者IP',
-      ),
-      'Not Played' => 
-      array (
-        0 => '未播放',
-      ),
-      'Delete request?' => 
-      array (
-        0 => '删除请求？',
-      ),
-      'Unique Listeners' => 
-      array (
-        0 => '特别听众',
-      ),
-      'for selected period' => 
-      array (
-        0 => '选定时期',
-      ),
-      'Total Listener Hours' => 
-      array (
-        0 => '听众总时数',
-      ),
-      'IP' => 
-      array (
-        0 => 'IP 地址',
-      ),
-      'Time (sec)' => 
-      array (
-        0 => '时间 (sec)',
-      ),
-      'User Agent' => 
-      array (
-        0 => '用户 Agent',
-      ),
-      'Stream' => 
-      array (
-        0 => '',
-      ),
-      'Location' => 
-      array (
-        0 => '位置',
-      ),
-      'Mobile Device' => 
-      array (
-        0 => '移动设备',
-      ),
-      'Desktop Device' => 
-      array (
-        0 => '桌面设备',
-      ),
-      'Unknown' => 
-      array (
-        0 => '未知',
-      ),
-      'Local' => 
-      array (
-        0 => '本地',
-      ),
-      'Remote' => 
-      array (
-        0 => '',
-      ),
-      'Filename' => 
-      array (
-        0 => '文件名',
-      ),
-      'Length Text' => 
-      array (
-        0 => '文字长度',
-      ),
-      'Playlist(s)' => 
-      array (
-        0 => '播放列表',
-      ),
-      'Joins' => 
-      array (
-        0 => '加入',
-      ),
-      'Losses' => 
-      array (
-        0 => '损失',
-      ),
-      'Total' => 
-      array (
-        0 => '总',
-      ),
-      'Play %' => 
-      array (
-        0 => '播放 %',
-      ),
-      'Ratio' => 
-      array (
-        0 => '比',
-      ),
-      'Hour' => 
-      array (
-        0 => '小时',
-      ),
-      'Report Not Available' => 
-      array (
-        0 => '报告不可用',
-      ),
-      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
-      array (
-        0 => '由于系统管理员选择不收集详细的基于IP的听众信息，因此该电台没有该报告。',
-      ),
-      'Delete SFTP User "%s"?' => 
-      array (
-        0 => '删除 SFTP 用户 "%s"？',
-      ),
-      'Station Broadcasting Disabled' => 
-      array (
-        0 => '电台广播已禁用',
-      ),
-      'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
-      array (
-        0 => '您的电台目前未启用广播。您仍然可以管理媒体、播放列表和其他电台设置。要重新启用广播，请<a href="%s">编辑您的电台简介</a>。',
-      ),
-      'Please wait...' => 
-      array (
-        0 => '加载中...',
-      ),
-      '%s of %s Used (%d Files)' => 
-      array (
-        0 => '已使用的%s的%s (%d文件)',
-      ),
-      '%s Used (%d Files)' => 
-      array (
-        0 => '已使用的%s (%d文件)',
-      ),
-      'You can also upload files in bulk via SFTP.' => 
-      array (
-        0 => '您也可以通过SFTP批量上传文件。',
-      ),
-      'Manage SFTP Accounts' => 
-      array (
-        0 => '管理SFTP帐户',
       ),
       'Skip to main content' => 
       array (
@@ -3339,93 +3039,461 @@ X-Crowdin-File-ID: 4
       array (
         0 => '喜欢我们的软件吗？<a href="%s" target="_blank">请捐赠支持AzuraCast！</a>',
       ),
-      'Mascot designed by %s' => 
+      'Errors were encountered when trying to save changes:' => 
       array (
-        0 => 'LOGO设计者：%s',
+        0 => '尝试保存更改时发生错误：',
       ),
-      'Manage Stations' => 
+      'General' => 
       array (
-        0 => '管理电台',
+        0 => '常规',
       ),
-      'Add Station' => 
+      'Details' => 
       array (
-        0 => '添加电台',
+        0 => '详情',
       ),
-      'Station' => 
+      '%s of %s Used (%d Files)' => 
       array (
-        0 => '电台',
+        0 => '已使用的%s的%s (%d文件)',
       ),
-      'Manage' => 
+      '%s Used (%d Files)' => 
       array (
-        0 => '管理',
+        0 => '已使用的%s (%d文件)',
       ),
-      'Clone' => 
+      'You can also upload files in bulk via SFTP.' => 
       array (
-        0 => '克隆',
+        0 => '您也可以通过SFTP批量上传文件。',
       ),
-      'Delete station "%s"?' => 
+      'Manage SFTP Accounts' => 
       array (
-        0 => '删除电台"%s"？',
+        0 => '管理SFTP帐户',
       ),
-      'Delete custom field "%s"?' => 
+      'Please wait...' => 
       array (
-        0 => '删除自定义字段"%s"？',
+        0 => '加载中...',
       ),
-      'SHOUTcast Installed' => 
+      'Station Broadcasting Disabled' => 
       array (
-        0 => '已安装的SHOUTcast',
+        0 => '电台广播已禁用',
       ),
-      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
+      'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
       array (
-        0 => 'SHOUTcast 2 DNAS已经安装完毕，可以使用了。',
+        0 => '您的电台目前未启用广播。您仍然可以管理媒体、播放列表和其他电台设置。要重新启用广播，请<a href="%s">编辑您的电台简介</a>。',
       ),
-      'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
+      'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
       array (
-        0 => '因为您正在运行 Docker，所以一些系统日志只能从主机上的 shell 会话访问。您可以运行<code>%s</code>从终端访问容器日志。',
+        0 => '挂载点是听众连接和收听您的电台的方式。每个挂载点可以是不同的音频格式或质量。使用挂载点，您可以为宽带听众设置一个高质量的流，为移动用户设置一个移动流。',
       ),
-      'Logs by Station' => 
+      'Actions' => 
       array (
-        0 => '电台日志',
+        0 => '操作',
       ),
-      'Delete role "%s"?' => 
+      'Mount Point' => 
       array (
-        0 => '删除角色"%s"？',
+        0 => '挂载点',
       ),
-      'This role cannot be deleted.' => 
+      'Edit' => 
       array (
-        0 => '此角色不能删除。',
+        0 => '编辑',
       ),
-      'Global' => 
+      'Delete mount point "%s"?' => 
       array (
-        0 => '全球',
+        0 => '删除挂载点"%s"？',
       ),
-      'API Key' => 
+      'Delete' => 
       array (
-        0 => 'API密钥',
+        0 => '删除',
       ),
-      'Owner' => 
+      'Default Mount' => 
       array (
-        0 => '所有者',
+        0 => '默认挂载点',
       ),
-      'Revoke' => 
+      'Station Time' => 
       array (
-        0 => '撤消',
+        0 => '电台时间',
       ),
-      'Relay' => 
+      'Clear all pending requests?' => 
       array (
-        0 => '中继',
+        0 => '清除所有待处理的请求？',
       ),
-      'Is Public' => 
+      'Clear Pending Requests' => 
       array (
-        0 => '是公共的',
+        0 => '清除待处理的请求',
       ),
-      'First Connected' => 
+      'Date Requested' => 
       array (
-        0 => '第一连接',
+        0 => '要求日期',
       ),
-      'Latest Update' => 
+      'Date Played' => 
       array (
-        0 => '最新更新',
+        0 => '播放日期',
+      ),
+      'Requester IP' => 
+      array (
+        0 => '请求者IP',
+      ),
+      'Not Played' => 
+      array (
+        0 => '未播放',
+      ),
+      'Delete request?' => 
+      array (
+        0 => '删除请求？',
+      ),
+      'Best Performing Songs' => 
+      array (
+        0 => '最佳表演歌曲',
+      ),
+      'in the last 48 hours' => 
+      array (
+        0 => '最近48小时内',
+      ),
+      'Change' => 
+      array (
+        0 => '更改',
+      ),
+      'Song' => 
+      array (
+        0 => '歌曲',
+      ),
+      'Worst Performing Songs' => 
+      array (
+        0 => '最差歌曲',
+      ),
+      'Most Played Songs' => 
+      array (
+        0 => '最流行的歌曲',
+      ),
+      'in the last month' => 
+      array (
+        0 => '上个月',
+      ),
+      'Plays' => 
+      array (
+        0 => '播放',
+      ),
+      'Live Listeners' => 
+      array (
+        0 => '现场听众',
+      ),
+      'There are too many data points to map!' => 
+      array (
+        0 => '数据点太多了，无法绘制!',
+      ),
+      'Today' => 
+      array (
+        0 => '今天',
+      ),
+      'Yesterday' => 
+      array (
+        0 => '昨天',
+      ),
+      'Last 7 Days' => 
+      array (
+        0 => '最近7天',
+      ),
+      'This Month' => 
+      array (
+        0 => '这个月',
+      ),
+      'Last Month' => 
+      array (
+        0 => '上个月',
+      ),
+      'Report Not Available' => 
+      array (
+        0 => '报告不可用',
+      ),
+      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
+      array (
+        0 => '由于系统管理员选择不收集详细的基于IP的听众信息，因此该电台没有该报告。',
+      ),
+      'Download CSV' => 
+      array (
+        0 => '下载 CSV',
+      ),
+      'Date/Time' => 
+      array (
+        0 => '日期/时间',
+      ),
+      'Source' => 
+      array (
+        0 => '源',
+      ),
+      'Listener Request' => 
+      array (
+        0 => '侦听器请求',
+      ),
+      'Playlist:' => 
+      array (
+        0 => '播放列表：',
+      ),
+      'Live Streamer:' => 
+      array (
+        0 => '直播员：',
+      ),
+      'Unique Listeners' => 
+      array (
+        0 => '特别听众',
+      ),
+      'for selected period' => 
+      array (
+        0 => '选定时期',
+      ),
+      'Total Listener Hours' => 
+      array (
+        0 => '听众总时数',
+      ),
+      'IP' => 
+      array (
+        0 => 'IP 地址',
+      ),
+      'Time (sec)' => 
+      array (
+        0 => '时间 (sec)',
+      ),
+      'User Agent' => 
+      array (
+        0 => '用户 Agent',
+      ),
+      'Stream' => 
+      array (
+        0 => '流',
+      ),
+      'Location' => 
+      array (
+        0 => '位置',
+      ),
+      'Mobile Device' => 
+      array (
+        0 => '移动设备',
+      ),
+      'Desktop Device' => 
+      array (
+        0 => '桌面设备',
+      ),
+      'Unknown' => 
+      array (
+        0 => '未知',
+      ),
+      'Local' => 
+      array (
+        0 => '本地',
+      ),
+      'Remote' => 
+      array (
+        0 => '远程',
+      ),
+      'Hour' => 
+      array (
+        0 => '小时',
+      ),
+      'Filename' => 
+      array (
+        0 => '文件名',
+      ),
+      'Length Text' => 
+      array (
+        0 => '文字长度',
+      ),
+      'Playlist(s)' => 
+      array (
+        0 => '播放列表',
+      ),
+      'Joins' => 
+      array (
+        0 => '加入',
+      ),
+      'Losses' => 
+      array (
+        0 => '损失',
+      ),
+      'Total' => 
+      array (
+        0 => '总',
+      ),
+      'Play %' => 
+      array (
+        0 => '播放 %',
+      ),
+      'Ratio' => 
+      array (
+        0 => '比',
+      ),
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      array (
+        0 => '远程中继可以让您与本服务器以外的广播软件合作。您在这里包含的任何中继都会被包含在您的电台统计中。您也可以从本服务器向远程中继进行广播。',
+      ),
+      'Remote Relay' => 
+      array (
+        0 => '远程中继',
+      ),
+      'Delete remote relay "%s"?' => 
+      array (
+        0 => '删除远程中继"%s"？',
+      ),
+      'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
+      array (
+        0 => '该电台目前已禁用流媒体账户。要启用流媒体账户，请点击下面的按钮。',
+      ),
+      'Enable Streaming' => 
+      array (
+        0 => '启用流媒体',
+      ),
+      'Connection Information' => 
+      array (
+        0 => '连接信息',
+      ),
+      'IceCast Clients' => 
+      array (
+        0 => 'IceCast客户',
+      ),
+      'Server' => 
+      array (
+        0 => '服务器',
+      ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => '您可能需要通过您的IP地址进行连接，也就是<code>%s</code>。',
+      ),
+      'Port' => 
+      array (
+        0 => '端口',
+      ),
+      'Mount Name' => 
+      array (
+        0 => '挂载名称',
+      ),
+      'ShoutCast v1 Clients' => 
+      array (
+        0 => 'ShoutCast v1客户端',
+      ),
+      '%d (%d for some clients)' => 
+      array (
+        0 => '%d (某些客户为%d)',
+      ),
+      'or' => 
+      array (
+        0 => '或',
+      ),
+      '(DJ username and password separated by a colon or comma)' => 
+      array (
+        0 => '(DJ用户名和密码请用冒号或逗号隔开)',
+      ),
+      'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
+      array (
+        0 => '<a href="%s" target="_blank">AzuraCast Wiki</a>上有广播软件的设置说明。',
+      ),
+      'Delete SFTP User "%s"?' => 
+      array (
+        0 => '删除 SFTP 用户 "%s"？',
+      ),
+      'Automated Playlist Assignment' => 
+      array (
+        0 => '自动播放列表分配',
+      ),
+      'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
+      array (
+        0 => '根据您的电台歌曲之前的表现，%s可以自动将歌曲平均分配到您的播放列表中，将表现最好的歌曲放在权重最高的播放列表位置上。',
+      ),
+      'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
+      array (
+        0 => '一旦您配置了自动分配，请单击下面的按钮来运行自动分配过程。除非您选择了下面的 "启用"，否则该过程根本不会运行。',
+      ),
+      'Run Automated Assignment' => 
+      array (
+        0 => '运行自动分配',
+      ),
+      'Configure Automated Assignment' => 
+      array (
+        0 => '配置自动分配',
+      ),
+      'Select the type of web hook to create.' => 
+      array (
+        0 => '选择要创建的网络钩子的类型。',
+      ),
+      'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
+      array (
+        0 => '网络钩子可以让您连接到外部网络服务，并将您的电台的变化广播传输给他们。',
+      ),
+      'Type' => 
+      array (
+        0 => '类型',
+      ),
+      'Triggers' => 
+      array (
+        0 => '触发器',
+      ),
+      'Enable' => 
+      array (
+        0 => '启用',
+      ),
+      'Trigger the web hook manually and view the raw response.' => 
+      array (
+        0 => '手动触发网络钩子并查看原始响应。',
+      ),
+      'Test' => 
+      array (
+        0 => '测试',
+      ),
+      'Delete web hook "%s"?' => 
+      array (
+        0 => '删除网络钩子 "%s"?',
+      ),
+      'Available Logs' => 
+      array (
+        0 => '可用日志',
+      ),
+      'Account Recovery' => 
+      array (
+        0 => '恢复账户',
+      ),
+      'An account recovery link has been requested for your account on "%s".' => 
+      array (
+        0 => '您的账户在"%s "上申请了一个账户恢复链接。',
+      ),
+      'Click the link below to log in to your account.' => 
+      array (
+        0 => '点击以下链接登录您的账户。',
+      ),
+      'Copy to Clipboard' => 
+      array (
+        0 => '复制到剪贴板',
+      ),
+      'Pause' => 
+      array (
+        0 => '暂停',
+      ),
+      'Play' => 
+      array (
+        0 => '播放',
+      ),
+      'Log View' => 
+      array (
+        0 => '查看日志',
+      ),
+      'Automatically scroll to the bottom of the log' => 
+      array (
+        0 => '自动滚动到日志的底部',
+      ),
+      'Need Help?' => 
+      array (
+        0 => '需要帮助吗？',
+      ),
+      'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
+      array (
+        0 => '您可以在我们的<a href="%s" target="_blank">支持文档</a>中找到许多常见问题的答案。',
+      ),
+      'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
+      array (
+        0 => '如果您遇到bug或错误，您可以使用下面的链接提交一个GitHub问题。',
+      ),
+      'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
+      array (
+        0 => '您当前的安装类型是<b>%s</b>。在创建新的问题时，一定要包含此内容。',
+      ),
+      'Add New GitHub Issue' => 
+      array (
+        0 => '添加新的GitHub问题',
       ),
       'Log In' => 
       array (
@@ -3439,45 +3507,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => '(您)',
       ),
-      'Server Status' => 
+      'SHOUTcast Installed' => 
       array (
-        0 => '服务器状态',
+        0 => '已安装的SHOUTcast',
       ),
-      'CPU Load' => 
+      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
       array (
-        0 => 'CPU负载',
-      ),
-      'Current' => 
-      array (
-        0 => '当前',
-      ),
-      '15-Minute Average' => 
-      array (
-        0 => '平均15分钟',
-      ),
-      'Memory' => 
-      array (
-        0 => '记忆',
-      ),
-      '%s of %s Used' => 
-      array (
-        0 => '已使用的%s',
-      ),
-      'Disk Space' => 
-      array (
-        0 => '磁盘空间',
-      ),
-      'Synchronization Tasks' => 
-      array (
-        0 => '同步任务',
-      ),
-      'Last run: %s' => 
-      array (
-        0 => '最后一次运行：%s',
-      ),
-      'Run Task' => 
-      array (
-        0 => '运行任务',
+        0 => 'SHOUTcast 2 DNAS已经安装完毕，可以使用了。',
       ),
       'Clear Cache' => 
       array (
@@ -3494,6 +3530,14 @@ X-Crowdin-File-ID: 4
       'This will clear any pending unprocessed messages in all message queues.' => 
       array (
         0 => '这将清除所有消息队列中所有未处理的消息。',
+      ),
+      'Synchronization Tasks' => 
+      array (
+        0 => '同步任务',
+      ),
+      'Run Task' => 
+      array (
+        0 => '运行任务',
       ),
       'Message Queues' => 
       array (
@@ -3543,6 +3587,166 @@ X-Crowdin-File-ID: 4
       array (
         0 => '同步任务正在后台运行。下面的日志会自动更新。',
       ),
+      'Delete role "%s"?' => 
+      array (
+        0 => '删除角色"%s"？',
+      ),
+      'This role cannot be deleted.' => 
+      array (
+        0 => '此角色不能删除。',
+      ),
+      'Global' => 
+      array (
+        0 => '全球',
+      ),
+      'Manage Stations' => 
+      array (
+        0 => '管理电台',
+      ),
+      'Add Station' => 
+      array (
+        0 => '添加电台',
+      ),
+      'Station' => 
+      array (
+        0 => '电台',
+      ),
+      'Manage' => 
+      array (
+        0 => '管理',
+      ),
+      'Clone' => 
+      array (
+        0 => '克隆',
+      ),
+      'Delete station "%s"?' => 
+      array (
+        0 => '删除电台"%s"？',
+      ),
+      'Relay' => 
+      array (
+        0 => '中继',
+      ),
+      'Is Public' => 
+      array (
+        0 => '是公共的',
+      ),
+      'First Connected' => 
+      array (
+        0 => '第一连接',
+      ),
+      'Latest Update' => 
+      array (
+        0 => '最新更新',
+      ),
+      'API Key' => 
+      array (
+        0 => 'API密钥',
+      ),
+      'Owner' => 
+      array (
+        0 => '所有者',
+      ),
+      'Revoke' => 
+      array (
+        0 => '撤消',
+      ),
+      'Delete custom field "%s"?' => 
+      array (
+        0 => '删除自定义字段"%s"？',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => '目前安装的是GeoLite版本"%s"。',
+      ),
+      'Uninstall GeoLite database?' => 
+      array (
+        0 => '卸载GeoLite数据库？',
+      ),
+      'Uninstall GeoLite Database' => 
+      array (
+        0 => '卸载GeoLite数据库',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => '目前在这个装置上还没有安装GeoLite。',
+      ),
+      'Insert' => 
+      array (
+        0 => '插入',
+      ),
+      'Update' => 
+      array (
+        0 => '更新',
+      ),
+      'Changes' => 
+      array (
+        0 => '更改',
+      ),
+      'User' => 
+      array (
+        0 => '用户',
+      ),
+      'Identifier' => 
+      array (
+        0 => '识别码',
+      ),
+      'Target' => 
+      array (
+        0 => '目标',
+      ),
+      'Field' => 
+      array (
+        0 => '领域',
+      ),
+      'Previous' => 
+      array (
+        0 => '上一条',
+      ),
+      'Updated' => 
+      array (
+        0 => '更新',
+      ),
+      'Server Status' => 
+      array (
+        0 => '服务器状态',
+      ),
+      'CPU Load' => 
+      array (
+        0 => 'CPU负载',
+      ),
+      'Current' => 
+      array (
+        0 => '当前',
+      ),
+      '15-Minute Average' => 
+      array (
+        0 => '平均15分钟',
+      ),
+      'Memory' => 
+      array (
+        0 => '记忆',
+      ),
+      '%s of %s Used' => 
+      array (
+        0 => '已使用的%s',
+      ),
+      'Disk Space' => 
+      array (
+        0 => '磁盘空间',
+      ),
+      'Last run: %s' => 
+      array (
+        0 => '最后一次运行：%s',
+      ),
+      'Backups Home' => 
+      array (
+        0 => '备份主页',
+      ),
+      'The backup process is running in the background. The log below will update automatically.' => 
+      array (
+        0 => '备份过程正在后台运行。下面的日志会自动更新。',
+      ),
       'Automatic Backups' => 
       array (
         0 => '自动备份',
@@ -3591,183 +3795,13 @@ X-Crowdin-File-ID: 4
       array (
         0 => '删除备份"%s"？',
       ),
-      'Backups Home' => 
+      'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
       array (
-        0 => '备份主页',
+        0 => '因为您正在运行 Docker，所以一些系统日志只能从主机上的 shell 会话访问。您可以运行<code>%s</code>从终端访问容器日志。',
       ),
-      'The backup process is running in the background. The log below will update automatically.' => 
+      'Logs by Station' => 
       array (
-        0 => '备份过程正在后台运行。下面的日志会自动更新。',
-      ),
-      'Insert' => 
-      array (
-        0 => '插入',
-      ),
-      'Update' => 
-      array (
-        0 => '更新',
-      ),
-      'Changes' => 
-      array (
-        0 => '更改',
-      ),
-      'User' => 
-      array (
-        0 => '用户',
-      ),
-      'Identifier' => 
-      array (
-        0 => '识别码',
-      ),
-      'Target' => 
-      array (
-        0 => '目标',
-      ),
-      'Field' => 
-      array (
-        0 => '领域',
-      ),
-      'Previous' => 
-      array (
-        0 => '上一条',
-      ),
-      'Updated' => 
-      array (
-        0 => '更新',
-      ),
-      'GeoLite version "%s" is currently installed.' => 
-      array (
-        0 => '目前安装的是GeoLite版本"%s"。',
-      ),
-      'Uninstall GeoLite database?' => 
-      array (
-        0 => '卸载GeoLite数据库？',
-      ),
-      'Uninstall GeoLite Database' => 
-      array (
-        0 => '卸载GeoLite数据库',
-      ),
-      'GeoLite is not currently installed on this installation.' => 
-      array (
-        0 => '目前在这个装置上还没有安装GeoLite。',
-      ),
-      'Create Station' => 
-      array (
-        0 => '创建电台',
-      ),
-      'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
-      array (
-        0 => '通过提供有关您的广播环境的一些信息来完成设置过程。这些设置可以在以后从管理面板上进行更改。',
-      ),
-      'Customize AzuraCast Settings' => 
-      array (
-        0 => '自定义AzuraCast设置',
-      ),
-      'AzuraCast First-Time Setup' => 
-      array (
-        0 => 'AzuraCast首次设置',
-      ),
-      'Welcome to AzuraCast!' => 
-      array (
-        0 => '欢迎来到AzuraCast!',
-      ),
-      'Let\'s get started by creating your Super Administrator account.' => 
-      array (
-        0 => '让我们从创建您的超管账户开始。',
-      ),
-      'This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.' => 
-      array (
-        0 => '这个账户将拥有对系统的全部访问权限，在接下来的设置过程中，您将自动登录到这个账户。',
-      ),
-      'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
-      array (
-        0 => '通过在下面创建您的第一个广播电台来继续设置过程。您以后可以编辑这些详细信息。',
-      ),
-      'Create a New Radio Station' => 
-      array (
-        0 => '创建一个新的广播电台',
-      ),
-      'AzuraCast User' => 
-      array (
-        0 => 'AzuraCast用户',
-      ),
-      'Welcome!' => 
-      array (
-        0 => '欢迎！',
-      ),
-      'Welcome to %s!' => 
-      array (
-        0 => '欢迎来到%s！',
-      ),
-      'name@example.com' => 
-      array (
-        0 => '名称@example.com',
-      ),
-      'Enter your password' => 
-      array (
-        0 => '请输入您的密码',
-      ),
-      'Remember me' => 
-      array (
-        0 => '记住登录信息',
-      ),
-      'Sign in' => 
-      array (
-        0 => '登入',
-      ),
-      'Please log in to continue.' => 
-      array (
-        0 => '请登录后继续。',
-      ),
-      '<a href="%s" target="_blank">Forgot your password?</a>' => 
-      array (
-        0 => '<a href="%s" target="_blank">忘记密码了吗？可在这里找回</a>',
-      ),
-      'Enter Two-Factor Code' => 
-      array (
-        0 => '输入双因素代码',
-      ),
-      'Your account uses a two-factor security code. Enter the code your device is currently showing below.' => 
-      array (
-        0 => '您的账户使用双因素安全代码。请输入您的设备目前在下面显示的代码。',
-      ),
-      'Security Code' => 
-      array (
-        0 => '安全代码',
-      ),
-      'API keys can be used to access some system functionality without needing to log in. All of the keys 
-            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
-      array (
-        0 => 'API密钥可以用来访问一些系统功能，而不需要登录。所有的密钥 
-            您在系统中创建的共享权限。更多信息，请参阅<a href="%s">API文档</a>。',
-      ),
-      'Key Identifier' => 
-      array (
-        0 => '关键标识符',
-      ),
-      'New Key Generated' => 
-      array (
-        0 => '生成新密钥',
-      ),
-      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
-      array (
-        0 => '<b>警告：在继续之前请复制下面的密钥！</b>如果您不复制您的密钥，您将无法再次检索相关信息。',
-      ),
-      'Your full API key is below:' => 
-      array (
-        0 => '您的完整API密钥如下：',
-      ),
-      'Copy to Clipboard' => 
-      array (
-        0 => '复制到剪贴板',
-      ),
-      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
-      array (
-        0 => '当进行API调用时，您可以在 "X-API-Key "头中传递这个值来验证自己的身份。您只能执行您的用户账户被允许执行的操作。',
-      ),
-      'Continue' => 
-      array (
-        0 => '继续',
+        0 => '电台日志',
       ),
       'Enable Two-Factor Authentication' => 
       array (
@@ -3813,53 +3847,147 @@ X-Crowdin-File-ID: 4
       array (
         0 => '启用双因素认证',
       ),
-      'Pause' => 
+      'New Key Generated' => 
       array (
-        0 => '暂停',
+        0 => '生成新密钥',
       ),
-      'Play' => 
+      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
       array (
-        0 => '播放',
+        0 => '<b>警告：在继续之前请复制下面的密钥！</b>如果您不复制您的密钥，您将无法再次检索相关信息。',
       ),
-      'Log View' => 
+      'Your full API key is below:' => 
       array (
-        0 => '查看日志',
+        0 => '您的完整API密钥如下：',
       ),
-      'Automatically scroll to the bottom of the log' => 
+      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
       array (
-        0 => '自动滚动到日志的底部',
+        0 => '当进行API调用时，您可以在 "X-API-Key "头中传递这个值来验证自己的身份。您只能执行您的用户账户被允许执行的操作。',
       ),
-      'Need Help?' => 
+      'Continue' => 
       array (
-        0 => '需要帮助吗？',
+        0 => '继续',
       ),
-      'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
+      'API keys can be used to access some system functionality without needing to log in. All of the keys 
+            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => '您可以在我们的<a href="%s" target="_blank">支持文档</a>中找到许多常见问题的答案。',
+        0 => 'API密钥可以用来访问一些系统功能，而不需要登录。所有的密钥 
+            您在系统中创建的共享权限。更多信息，请参阅<a href="%s">API文档</a>。',
       ),
-      'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
+      'Key Identifier' => 
       array (
-        0 => '如果您遇到bug或错误，您可以使用下面的链接提交一个GitHub问题。',
+        0 => '关键标识符',
       ),
-      'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
+      'Create Station' => 
       array (
-        0 => '您当前的安装类型是<b>%s</b>。在创建新的问题时，一定要包含此内容。',
+        0 => '创建电台',
       ),
-      'Add New GitHub Issue' => 
+      'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
       array (
-        0 => '添加新的GitHub问题',
+        0 => '通过提供有关您的广播环境的一些信息来完成设置过程。这些设置可以在以后从管理面板上进行更改。',
       ),
-      'Errors were encountered when trying to save changes:' => 
+      'Customize AzuraCast Settings' => 
       array (
-        0 => '尝试保存更改时发生错误：',
+        0 => '自定义AzuraCast设置',
       ),
-      'General' => 
+      'AzuraCast First-Time Setup' => 
       array (
-        0 => '常规',
+        0 => 'AzuraCast首次设置',
       ),
-      'Details' => 
+      'Welcome to AzuraCast!' => 
       array (
-        0 => '详情',
+        0 => '欢迎来到AzuraCast!',
+      ),
+      'Let\'s get started by creating your Super Administrator account.' => 
+      array (
+        0 => '让我们从创建您的超管账户开始。',
+      ),
+      'This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.' => 
+      array (
+        0 => '这个账户将拥有对系统的全部访问权限，在接下来的设置过程中，您将自动登录到这个账户。',
+      ),
+      'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
+      array (
+        0 => '通过在下面创建您的第一个广播电台来继续设置过程。您以后可以编辑这些详细信息。',
+      ),
+      'Create a New Radio Station' => 
+      array (
+        0 => '创建一个新的广播电台',
+      ),
+      'AzuraCast User' => 
+      array (
+        0 => 'AzuraCast用户',
+      ),
+      'Forgot Password' => 
+      array (
+        0 => '忘记密码',
+      ),
+      'name@example.com' => 
+      array (
+        0 => '名称@example.com',
+      ),
+      'Sign in' => 
+      array (
+        0 => '登入',
+      ),
+      'Send Recovery E-mail' => 
+      array (
+        0 => '发送恢复电子邮件',
+      ),
+      'Recover Account' => 
+      array (
+        0 => '恢复账户',
+      ),
+      'Choose a new password for your account.' => 
+      array (
+        0 => '为您的账户选择一个新的密码。',
+      ),
+      'Enter your password' => 
+      array (
+        0 => '请输入您的密码',
+      ),
+      'This installation\'s administrator has not configured this functionality.' => 
+      array (
+        0 => '此安装的管理员没有配置此功能。',
+      ),
+      'Contact an administrator to reset your password following the instructions in our documentation:' => 
+      array (
+        0 => '请联系管理员，按照我们文档中的说明重置您的密码：',
+      ),
+      'Password Reset Instructions' => 
+      array (
+        0 => '密码重置说明',
+      ),
+      'Enter Two-Factor Code' => 
+      array (
+        0 => '输入双因素代码',
+      ),
+      'Your account uses a two-factor security code. Enter the code your device is currently showing below.' => 
+      array (
+        0 => '您的账户使用双因素安全代码。请输入您的设备目前在下面显示的代码。',
+      ),
+      'Security Code' => 
+      array (
+        0 => '安全代码',
+      ),
+      'Welcome!' => 
+      array (
+        0 => '欢迎！',
+      ),
+      'Welcome to %s!' => 
+      array (
+        0 => '欢迎来到%s！',
+      ),
+      'Remember me' => 
+      array (
+        0 => '记住登录信息',
+      ),
+      'Please log in to continue.' => 
+      array (
+        0 => '请登录后继续。',
+      ),
+      'Forgot your password?' => 
+      array (
+        0 => '忘记密码？',
       ),
     ),
   ),

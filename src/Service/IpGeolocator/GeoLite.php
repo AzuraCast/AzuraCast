@@ -6,6 +6,11 @@ use App\Environment;
 
 class GeoLite extends AbstractIpGeolocator
 {
+    public static function getReaderShortName(): string
+    {
+        return 'geolite';
+    }
+
     public static function getBaseDirectory(): string
     {
         $environment = Environment::getInstance();

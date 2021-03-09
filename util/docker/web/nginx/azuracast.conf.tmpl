@@ -110,7 +110,7 @@ server {
         fastcgi_param DOCUMENT_ROOT $realpath_root;
         include fastcgi_params;
 
-        fastcgi_read_timeout 1800;
+        fastcgi_read_timeout {{ default .Env.NGINX_TIMEOUT "1800" }};
         fastcgi_buffering off;
 
         internal;

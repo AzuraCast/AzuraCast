@@ -5,22 +5,6 @@ use App\Console\Command;
 use App\Environment;
 
 return function (Application $console) {
-    // Set console version and name.
-    $di = $console->getContainer();
-
-    /** @var App\Version $version */
-    $version = $di->get(App\Version::class);
-
-    /** @var Environment $environment */
-    $environment = $di->get(Environment::class);
-
-    $console->setName($environment->getAppName() . ' Command Line Tools (' . $environment->getAppEnvironment() . ')');
-    $console->setVersion($version->getVersion());
-
-    /*
-     * Register commands.
-     */
-
     // Liquidsoap Internal CLI commands
     $console->command(
         'azuracast:internal:auth station-id [--dj-user=] [--dj-password=]',

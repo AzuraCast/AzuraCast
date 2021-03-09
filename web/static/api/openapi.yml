@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.12.1
+  version: 0.12.2
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -2100,7 +2100,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1613854684
+          example: 1615357697
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2144,6 +2144,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Api_SongHistory'
+        is_online:
+          description: 'Whether the stream is currently online.'
+          type: boolean
+          example: true
         cache:
           description: 'Debugging information about where the now playing data comes from.'
           type: string
@@ -2246,7 +2250,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1613854684
+          example: 1615357697
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2355,7 +2359,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1613854684
+          example: 1615357697
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2444,7 +2448,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1613854684
+          example: 1615357697
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2452,7 +2456,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1613854684
+          example: 1615357697
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2492,7 +2496,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1613854684
+          example: 1615357697
       type: object
     Api_Time:
       properties:
@@ -2564,10 +2568,10 @@ components:
           example: true
         created_at:
           type: integer
-          example: 1613854684
+          example: 1615357697
         updated_at:
           type: integer
-          example: 1613854684
+          example: 1615357697
       type: object
     Role:
       properties:
@@ -2622,7 +2626,7 @@ components:
           example: ''
         updateLastRun:
           type: integer
-          example: 1613854684
+          example: 1615357697
         publicTheme:
           type: string
           example: light
@@ -2681,7 +2685,7 @@ components:
           nullable: true
         backupLastRun:
           type: integer
-          example: 1613854684
+          example: 1615357697
         backupLastResult:
           type: string
           example: ''
@@ -2692,22 +2696,22 @@ components:
           nullable: true
         setupCompleteTime:
           type: integer
-          example: 1613854684
+          example: 1615357697
         nowplaying:
           description: 'The current cached now playing data.'
           example: ''
         syncNowplayingLastRun:
           type: integer
-          example: 1613854684
+          example: 1615357697
         syncShortLastRun:
           type: integer
-          example: 1613854684
+          example: 1615357697
         syncMediumLastRun:
           type: integer
-          example: 1613854684
+          example: 1615357697
         syncLongLastRun:
           type: integer
-          example: 1613854684
+          example: 1615357697
         externalIp:
           type: string
           example: 192.168.1.1
@@ -2718,10 +2722,34 @@ components:
           nullable: true
         geoliteLastRun:
           type: integer
-          example: 1613854684
+          example: 1615357697
         enableAdvancedFeatures:
           type: boolean
           example: false
+        mailEnabled:
+          type: boolean
+          example: 'true'
+        mailSenderName:
+          type: string
+          example: AzuraCast
+        mailSenderEmail:
+          type: string
+          example: example@example.com
+        mailSmtpHost:
+          type: string
+          example: smtp.example.com
+        mailSmtpPort:
+          type: integer
+          example: 465
+        mailSmtpUsername:
+          type: string
+          example: username
+        mailSmtpPassword:
+          type: string
+          example: password
+        mailSmtpSecure:
+          type: boolean
+          example: 'true'
       type: object
     Station:
       properties:
@@ -2882,7 +2910,7 @@ components:
             mtime:
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer
-              example: 1613854684
+              example: 1615357697
               nullable: true
             amplify:
               description: 'The amount of amplification (in dB) to be applied to the radio source;'
@@ -2923,7 +2951,7 @@ components:
             art_updated_at:
               description: 'The latest time (UNIX timestamp) when album art was updated.'
               type: integer
-              example: 1613854684
+              example: 1615357697
             playlists:
               items: {  }
     StationMount:
@@ -3172,7 +3200,7 @@ components:
           example: false
         reactivate_at:
           type: integer
-          example: 1613854684
+          example: 1615357697
           nullable: true
         schedule_items:
           items: {  }
@@ -3254,10 +3282,10 @@ components:
           nullable: true
         created_at:
           type: integer
-          example: 1613854684
+          example: 1615357697
         updated_at:
           type: integer
-          example: 1613854684
+          example: 1615357697
         roles:
           items: {  }
       type: object

@@ -14,16 +14,696 @@ Language-Team: Italian
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-POT-Creation-Date: 2021-01-27T17:44:25+00:00
-PO-Revision-Date: 2021-01-27 23:30
+POT-Creation-Date: 2021-03-08T13:22:42+00:00
+PO-Revision-Date: 2021-03-09 04:27
 Language: it_IT
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Crowdin-Project: azuracast
 X-Crowdin-Project-ID: 217396
 X-Crowdin-Language: it
-X-Crowdin-File: /master/resources/locale/default.pot
+X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
 ',
+      ),
+      'Now Playing Data' => 
+      array (
+        0 => 'Dati Ora in onda',
+      ),
+      '1-Minute Sync' => 
+      array (
+        0 => 'Sincronizzazione 1 minuto',
+      ),
+      'Song Requests Queue' => 
+      array (
+        0 => 'Coda richieste brani',
+      ),
+      '5-Minute Sync' => 
+      array (
+        0 => 'Sincronizzazione 5 minuti',
+      ),
+      'Check Media Folders' => 
+      array (
+        0 => 'Controlla cartelle dei media',
+      ),
+      '1-Hour Sync' => 
+      array (
+        0 => 'Sincronizzazione un\'ora',
+      ),
+      'Analytics/Statistics' => 
+      array (
+        0 => 'Analisi/statistiche',
+      ),
+      'Cleanup' => 
+      array (
+        0 => 'Pulizia',
+      ),
+      'All Stations' => 
+      array (
+        0 => 'Tutte le stazioni',
+      ),
+      'Listeners' => 
+      array (
+        0 => 'Ascoltatori',
+      ),
+      'Record not found!' => 
+      array (
+        0 => 'Record non trovato!',
+      ),
+      'Changes saved successfully.' => 
+      array (
+        0 => 'Modifiche salvate correttamente.',
+      ),
+      'Record deleted successfully.' => 
+      array (
+        0 => 'Record eliminato correttamente.',
+      ),
+      'You cannot remove yourself.' => 
+      array (
+        0 => 'Non puoi rimuovere te stesso.',
+      ),
+      'This station does not accept requests currently.' => 
+      array (
+        0 => 'Attualmente questa stazione non accetta richieste.',
+      ),
+      'Request submitted successfully.' => 
+      array (
+        0 => 'Richiesta inviata con successo.',
+      ),
+      'This station is out of available storage space.' => 
+      array (
+        0 => 'Questa stazione ha esaurito lo spazio disponibile.',
+      ),
+      'Station restarted.' => 
+      array (
+        0 => 'Stazione riavviata.',
+      ),
+      'Frontend stopped.' => 
+      array (
+        0 => 'Frontend interrotto.',
+      ),
+      'Frontend started.' => 
+      array (
+        0 => 'Frontend avviato.',
+      ),
+      'Frontend restarted.' => 
+      array (
+        0 => 'Frontend riavviato.',
+      ),
+      'Song skipped.' => 
+      array (
+        0 => 'Brano saltato.',
+      ),
+      'Streamer disconnected.' => 
+      array (
+        0 => 'Curatore disconnesso.',
+      ),
+      'Backend stopped.' => 
+      array (
+        0 => 'Backend interrotto.',
+      ),
+      'Backend started.' => 
+      array (
+        0 => 'Backend avviato.',
+      ),
+      'Backend restarted.' => 
+      array (
+        0 => 'Backend riavviato.',
+      ),
+      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      array (
+        0 => 'Playlist importata con successo; %d di %d file sono stati abbinati con successo.',
+      ),
+      'Playlist queue cleared.' => 
+      array (
+        0 => '',
+      ),
+      'Playlist not found.' => 
+      array (
+        0 => 'Playlist non trovata.',
+      ),
+      'This playlist is not a sequential playlist.' => 
+      array (
+        0 => 'Questa playlist non è una playlist sequenziale.',
+      ),
+      'Playlist enabled.' => 
+      array (
+        0 => 'Playlist abilitata.',
+      ),
+      'Playlist disabled.' => 
+      array (
+        0 => 'Playlist disabilitata.',
+      ),
+      'Playlist reshuffled.' => 
+      array (
+        0 => 'Playlist rimescolata.',
+      ),
+      'This station does not support on-demand streaming.' => 
+      array (
+        0 => 'Questa stazione non supporta lo streaming on-demand.',
+      ),
+      'File not found.' => 
+      array (
+        0 => 'File non trovato.',
+      ),
+      'Record not found.' => 
+      array (
+        0 => 'Record non trovato.',
+      ),
+      'No recording available.' => 
+      array (
+        0 => 'Nessuna registrazione disponibile.',
+      ),
+      'Directory' => 
+      array (
+        0 => 'Cartella',
+      ),
+      'File Not Processed: %s' => 
+      array (
+        0 => 'File non elaborato: %s',
+      ),
+      'File Processing' => 
+      array (
+        0 => 'Elaborazione File',
+      ),
+      'No directory specified' => 
+      array (
+        0 => 'Nessuna directory specificata',
+      ),
+      'Directory "%s" was not created' => 
+      array (
+        0 => 'La directory "%s" non è stata creata',
+      ),
+      'File not specified.' => 
+      array (
+        0 => 'File non specificato.',
+      ),
+      'New path not specified.' => 
+      array (
+        0 => 'Nuovo percorso non specificato.',
+      ),
+      'Path "%s" is not a folder.' => 
+      array (
+        0 => 'Il percorso "%s" non è una cartella.',
+      ),
+      'Too many login attempts' => 
+      array (
+        0 => 'Troppi tentativi di accesso',
+      ),
+      'You have attempted to log in too many times. Please wait 30 seconds and try again.' => 
+      array (
+        0 => 'Hai tentato di accedere troppe volte. Attendi 30 secondi e riprova.',
+      ),
+      'Logged in successfully.' => 
+      array (
+        0 => 'Accesso riuscito.',
+      ),
+      'Complete the setup process to get started.' => 
+      array (
+        0 => 'Completa il processo di configurazione per iniziare.',
+      ),
+      'Login unsuccessful' => 
+      array (
+        0 => 'Accesso non riuscito',
+      ),
+      'Your credentials could not be verified.' => 
+      array (
+        0 => 'Impossibile verificare le tue credenziali.',
+      ),
+      'Invalid token specified.' => 
+      array (
+        0 => 'Token specificato non valido.',
+      ),
+      'Logged in using account recovery token' => 
+      array (
+        0 => '',
+      ),
+      'Your password has been updated.' => 
+      array (
+        0 => 'La tua password è stata aggiornata.',
+      ),
+      'Too many forgot password attempts' => 
+      array (
+        0 => '',
+      ),
+      'You have attempted to reset your password too many times. Please wait 30 seconds and try again.' => 
+      array (
+        0 => 'Hai tentato di reimpostare la password troppe volte. Si prega di attendere 30 secondi e riprovare.',
+      ),
+      'Account Recovery Link' => 
+      array (
+        0 => 'Link Recupero Account',
+      ),
+      'Account recovery e-mail sent.' => 
+      array (
+        0 => 'Email di recupero account inviata.',
+      ),
+      'If the e-mail address you provided is in the system, check your inbox for a password reset message.' => 
+      array (
+        0 => '',
+      ),
+      'Setup has already been completed!' => 
+      array (
+        0 => 'Installazione già completata!',
+      ),
+      'Super Administrator' => 
+      array (
+        0 => 'Super Amministratore',
+      ),
+      'Setup is now complete!' => 
+      array (
+        0 => 'Installazione ora completata!',
+      ),
+      'Continue setting up your station in the main AzuraCast app.' => 
+      array (
+        0 => 'Continua l\'impostazione della radio nell\'app principale di AzuraCast.',
+      ),
+      'API Key not found.' => 
+      array (
+        0 => 'API Key non trovata.',
+      ),
+      'API Key updated.' => 
+      array (
+        0 => 'API Key aggiornata.',
+      ),
+      'Edit API Key' => 
+      array (
+        0 => 'Modifica API Key',
+      ),
+      'Add API Key' => 
+      array (
+        0 => 'Aggiungi API Key',
+      ),
+      'API Key deleted.' => 
+      array (
+        0 => 'API Key eliminata.',
+      ),
+      'Profile saved!' => 
+      array (
+        0 => 'Profilo salvato!',
+      ),
+      'Edit Profile' => 
+      array (
+        0 => 'Modifica profilo',
+      ),
+      'The token you supplied is invalid. Please try again.' => 
+      array (
+        0 => 'Il token che hai fornito non è valido. Per favore riprova.',
+      ),
+      'Two-factor authentication enabled.' => 
+      array (
+        0 => 'Autenticazione a due fattori abilitata.',
+      ),
+      'Two-factor authentication disabled.' => 
+      array (
+        0 => 'Autenticazione a due fattori disabilitata.',
+      ),
+      'Changes saved.' => 
+      array (
+        0 => 'Modifiche salvate.',
+      ),
+      'Station updated.' => 
+      array (
+        0 => 'Stazione aggiornata.',
+      ),
+      'Station added.' => 
+      array (
+        0 => 'Stazione aggiunta.',
+      ),
+      'Edit Station' => 
+      array (
+        0 => 'Modifica stazione',
+      ),
+      'Station deleted.' => 
+      array (
+        0 => 'Stazione eliminata.',
+      ),
+      'Station not found.' => 
+      array (
+        0 => 'Stazione non trovata.',
+      ),
+      'Clone Station: %s' => 
+      array (
+        0 => 'Clona stazione: %s',
+      ),
+      'System Settings' => 
+      array (
+        0 => 'Impostazioni sistema',
+      ),
+      'Permission updated.' => 
+      array (
+        0 => 'Autorizzazione aggiornata.',
+      ),
+      'Permission added.' => 
+      array (
+        0 => 'Autorizzazione aggiunta.',
+      ),
+      'Edit Permission' => 
+      array (
+        0 => 'Modifica autorizzazione',
+      ),
+      'Add Permission' => 
+      array (
+        0 => 'Aggiungi autorizzazione',
+      ),
+      'Permission deleted.' => 
+      array (
+        0 => 'Autorizzazione eliminata.',
+      ),
+      'Run Synchronized Task' => 
+      array (
+        0 => 'Esegui Attività Sincronizzata',
+      ),
+      'Debug Output' => 
+      array (
+        0 => 'Debug Output',
+      ),
+      'AzuraCast Application Log' => 
+      array (
+        0 => 'Log dell\'applicazione AzuraCast',
+      ),
+      'Nginx Access Log' => 
+      array (
+        0 => 'Log accesso Nginx',
+      ),
+      'Nginx Error Log' => 
+      array (
+        0 => 'Log errori Nginx',
+      ),
+      'PHP Application Log' => 
+      array (
+        0 => 'Log applicazione PHP',
+      ),
+      'Supervisord Log' => 
+      array (
+        0 => 'Log Supervisord',
+      ),
+      'SHOUTcast version "%s" is currently installed.' => 
+      array (
+        0 => 'La versione SHOUTcast "%s" è attualmente installata.',
+      ),
+      'Install SHOUTcast' => 
+      array (
+        0 => 'Installa SHOUTcast',
+      ),
+      'Configure Backups' => 
+      array (
+        0 => 'Configura backup',
+      ),
+      'Run Manual Backup' => 
+      array (
+        0 => 'Esegui backup manuale',
+      ),
+      'Backup deleted.' => 
+      array (
+        0 => 'Backup eliminato.',
+      ),
+      'Backup not found.' => 
+      array (
+        0 => 'Backup non trovato.',
+      ),
+      'Custom Field updated.' => 
+      array (
+        0 => 'Campo personalizzato aggiornato.',
+      ),
+      'Custom Field added.' => 
+      array (
+        0 => 'Campo personalizzato aggiunto.',
+      ),
+      'Edit Custom Field' => 
+      array (
+        0 => 'Modifica campo personalizzato',
+      ),
+      'Add Custom Field' => 
+      array (
+        0 => 'Aggiungi campo personalizzato',
+      ),
+      'Custom Field deleted.' => 
+      array (
+        0 => 'Campo personalizzato eliminato.',
+      ),
+      'User updated.' => 
+      array (
+        0 => 'Utente aggiornato.',
+      ),
+      'User added.' => 
+      array (
+        0 => 'Utente aggiunto.',
+      ),
+      'Another user already exists with this e-mail address. Please update the e-mail address.' => 
+      array (
+        0 => 'Un altro utente esiste già con questo indirizzo e-mail. Si prega di aggiornare l\'indirizzo e-mail.',
+      ),
+      'Edit User' => 
+      array (
+        0 => 'Modifica utente',
+      ),
+      'Add User' => 
+      array (
+        0 => 'Aggiungi utente',
+      ),
+      'You cannot delete your own account.' => 
+      array (
+        0 => 'Non puoi cancellare il tuo account.',
+      ),
+      'User deleted.' => 
+      array (
+        0 => 'Utente eliminato.',
+      ),
+      'User not found.' => 
+      array (
+        0 => 'Utente non trovato.',
+      ),
+      'An error occurred while downloading the GeoLite database: %s' => 
+      array (
+        0 => 'Si è verificato un errore durante il download del database GeoLite: %s',
+      ),
+      'Install GeoLite IP Database' => 
+      array (
+        0 => 'Installa database IP GeoLite',
+      ),
+      'GeoLite database uninstalled.' => 
+      array (
+        0 => 'Database GeoLite disinstallato.',
+      ),
+      'Web Hook added.' => 
+      array (
+        0 => 'Interazione web aggiunta.',
+      ),
+      'Add Web Hook' => 
+      array (
+        0 => 'Aggiungi interazione web',
+      ),
+      'Web Hook updated.' => 
+      array (
+        0 => 'Interazione web aggiornata.',
+      ),
+      'Edit Web Hook' => 
+      array (
+        0 => 'Modifica interazione web',
+      ),
+      'Web hook enabled.' => 
+      array (
+        0 => 'Interazione web abilitata.',
+      ),
+      'Web Hook disabled.' => 
+      array (
+        0 => 'Interazione web disabilitata.',
+      ),
+      'Web Hook Test Output' => 
+      array (
+        0 => 'Output test interazione web',
+      ),
+      'Web Hook deleted.' => 
+      array (
+        0 => 'Interazione web eliminata.',
+      ),
+      'Save Changes' => 
+      array (
+        0 => 'Salva modifiche',
+      ),
+      'Edit Liquidsoap Configuration' => 
+      array (
+        0 => 'Modifica configurazione Liquidsoap',
+      ),
+      'Streamers enabled!' => 
+      array (
+        0 => 'Streamer abilitati!',
+      ),
+      'You can now set up streamer (DJ) accounts.' => 
+      array (
+        0 => 'Ora puoi impostare gli account degli streamer (DJ).',
+      ),
+      'Automated assignment complete!' => 
+      array (
+        0 => 'Assegnazione automatica completata!',
+      ),
+      'Automated assignment error' => 
+      array (
+        0 => 'Errore assegnazione automatica',
+      ),
+      'This feature is not currently supported on this station.' => 
+      array (
+        0 => 'Attualmente questa funzione non è supportata in questa stazione radio.',
+      ),
+      'Edit Mount Point' => 
+      array (
+        0 => 'Modifica Mount Point',
+      ),
+      'Add Mount Point' => 
+      array (
+        0 => 'Aggiungi Mount Point',
+      ),
+      'Mount Point deleted.' => 
+      array (
+        0 => 'Mount Point eliminato.',
+      ),
+      'Listeners by Day' => 
+      array (
+        0 => 'Ascoltatori per giorno',
+      ),
+      'Listeners by Day of Week' => 
+      array (
+        0 => 'Ascoltatori per giorno della settimana',
+      ),
+      'Monday' => 
+      array (
+        0 => 'Lunedì',
+      ),
+      'Tuesday' => 
+      array (
+        0 => 'Martedì',
+      ),
+      'Wednesday' => 
+      array (
+        0 => 'Mercoledì',
+      ),
+      'Thursday' => 
+      array (
+        0 => 'Giovedì',
+      ),
+      'Friday' => 
+      array (
+        0 => 'Venerdì',
+      ),
+      'Saturday' => 
+      array (
+        0 => 'Sabato',
+      ),
+      'Sunday' => 
+      array (
+        0 => 'Domenica',
+      ),
+      'Listeners by Hour' => 
+      array (
+        0 => 'Ascoltatori per ora',
+      ),
+      'SoundExchange Report' => 
+      array (
+        0 => 'Report SoundExchange',
+      ),
+      'Edit SFTP User' => 
+      array (
+        0 => 'Modifica utente SFTP',
+      ),
+      'Add SFTP User' => 
+      array (
+        0 => 'Aggiungi utente SFTP',
+      ),
+      'SFTP User deleted.' => 
+      array (
+        0 => 'Utente SFTP eliminato.',
+      ),
+      'Remote Relay updated.' => 
+      array (
+        0 => 'Flusso remoto aggiornato.',
+      ),
+      'Remote Relay added.' => 
+      array (
+        0 => 'Flusso remoto aggiunto.',
+      ),
+      'Edit Remote Relay' => 
+      array (
+        0 => 'Modifica flusso remoto',
+      ),
+      'Add Remote Relay' => 
+      array (
+        0 => 'Aggiungi flusso remoto',
+      ),
+      'Remote Relay deleted.' => 
+      array (
+        0 => 'Flusso remoto eliminato.',
+      ),
+      'This record cannot be edited.' => 
+      array (
+        0 => 'Questo record non può essere modificato.',
+      ),
+      'Liquidsoap Log' => 
+      array (
+        0 => 'Log Liquidsoap',
+      ),
+      'Liquidsoap Configuration' => 
+      array (
+        0 => 'Configurazione Liquidsoap',
+      ),
+      'Icecast Access Log' => 
+      array (
+        0 => 'Log accesso Icecast',
+      ),
+      'Icecast Error Log' => 
+      array (
+        0 => 'Log errori Icecast',
+      ),
+      'Icecast Configuration' => 
+      array (
+        0 => 'Configurazione Icecast',
+      ),
+      'SHOUTcast Log' => 
+      array (
+        0 => 'Log SHOUTCast',
+      ),
+      'SHOUTcast Configuration' => 
+      array (
+        0 => 'Configurazione SHOUTCast',
+      ),
+      'GeoLite database not configured for this installation. See System Administration for instructions.' => 
+      array (
+        0 => 'Database GeoLite non configurato per questa installazione. Consultare Amministrazione Sistema per le istruzioni.',
+      ),
+      'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
+      array (
+        0 => 'Questo prodotto include dati GeoLite2 creati da MaxMind, disponibili da %s.',
+      ),
+      'IP Geolocation by DB-IP' => 
+      array (
+        0 => 'Geolocalizzazione IP tramite DB-IP',
+      ),
+      'None' => 
+      array (
+        0 => 'Nessuna',
+      ),
+      'Search engine crawlers are not permitted to use this feature.' => 
+      array (
+        0 => 'I crawler dei motori di ricerca non sono autorizzati a usare questa funzione.',
+      ),
+      'The song ID you specified could not be found in the station.' => 
+      array (
+        0 => 'L\'ID del brano che hai specificato non può essere trovato nella stazione.',
+      ),
+      'The song ID you specified cannot be requested for this station.' => 
+      array (
+        0 => 'L\'ID del brano specificato non può essere richiesto in questa stazione.',
+      ),
+      'You have submitted a request too recently! Please wait before submitting another one.' => 
+      array (
+        0 => 'Hai mandato una richiesta troppo presto! Aspetta prima di poterne inviare un\'altra.',
+      ),
+      'Duplicate request: this song was already requested and will play soon.' => 
+      array (
+        0 => 'Richiesta duplicata: questo brano è già stato richiesto e verrà presto riprodotto.',
+      ),
+      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
+      array (
+        0 => 'Questa canzone o artista è stata già riprodotta di recente. Attendi prima di poterlo richiedere un\'altra volta.',
       ),
       'All Permissions' => 
       array (
@@ -105,137 +785,77 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Gestisci interazioni web stazione',
       ),
-      'You must be logged in to access this page.' => 
+      'This storage location could not be validated: %s' => 
       array (
-        0 => 'Devi esserti autenticato per poter accedere a questa pagina.',
-      ),
-      'You do not have permission to access this portion of the site.' => 
-      array (
-        0 => 'Non hai il permesso per accedere a questa parte del sito.',
-      ),
-      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
-      array (
-        0 => 'Vuoi usare SHOUTcast 2? <a href="%s" target="_blank">Installa da qui</a>, poi ricarica questa pagina.',
-      ),
-      '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.' => 
-      array (
-        0 => '',
-      ),
-      'Create a new storage location based on the base directory.' => 
-      array (
-        0 => '',
-      ),
-      'Visit this page from a secure connection to enforce secure URLs on all pages.' => 
-      array (
-        0 => 'Visita questa pagina da una connessione sicura per imporre URL sicuri su tutte le pagine.',
-      ),
-      'Select...' => 
-      array (
-        0 => '',
-      ),
-      'Select File' => 
-      array (
-        0 => 'Seleziona File',
+        0 => 'Questa posizione di archiviazione non può essere convalidata: %s',
       ),
       'The port %s is in use by another station.' => 
       array (
         0 => 'La porta %s è in uso da un\'altra stazione.',
       ),
-      'This storage location could not be validated: %s' => 
+      'Welcome to the AzuraCast Liquidsoap configuration editor.' => 
       array (
-        0 => '',
+        0 => 'Benvenuto nell\'editor di configurazione di AzuraCast Liquidsoap.',
       ),
-      'Synchronized Task Not Recently Run' => 
+      'Using this page, you can customize several sections of the Liquidsoap configuration.' => 
       array (
-        0 => '',
+        0 => 'Utilizzando questa pagina, è possibile personalizzare diverse sezioni della configurazione di Liquidsoap.',
       ),
-      'The "%s" synchronization task has not run recently. This may indicate an error with your installation.' => 
+      'The non-editable sections are automatically generated by AzuraCast.' => 
       array (
-        0 => '',
+        0 => 'Le sezioni non modificabili vengono generate automaticamente da AzuraCast.',
       ),
-      'Manually Run Task' => 
+      'Use <b>%s</b> on this server' => 
       array (
-        0 => '',
+        0 => 'Usa <b>%s</b> su questo server',
       ),
-      'Installation Not Recently Backed Up' => 
+      'Connect to a <b>remote radio server</b>' => 
       array (
-        0 => 'Questa Installazione Non Ha Eseguito Di Recente Il Backup',
+        0 => 'Collegati a un <b>server radio remoto</b>',
       ),
-      'This installation has not been backed up in the last two weeks.' => 
+      '<b>Do not use</b> an AutoDJ service' => 
       array (
-        0 => '',
+        0 => '<b>Non usare</b> un servizio di Dj automatico',
       ),
-      'Backups' => 
+      '%s is not recognized as a service.' => 
       array (
-        0 => 'Backup',
+        0 => '%s non è riconosciuto come un servizio.',
       ),
-      'You should update your <code>docker-compose.yml</code> file to reflect the newest changes.' => 
+      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
       array (
-        0 => '',
+        0 => 'Potrebbe non essere ancora registrato con Supervisor. Riavviare la trasmissione potrebbe aiutare.',
       ),
-      'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
+      '%s cannot start' => 
       array (
-        0 => '',
+        0 => '%s non può partire',
       ),
-      'Otherwise, update your installation and answer "Y" when prompted to update the file.' => 
+      'It is already running.' => 
       array (
-        0 => '',
+        0 => 'E\' già in esecuzione.',
       ),
-      'Your <code>docker-compose.yml</code> file is out of date!' => 
+      '%s cannot stop' => 
       array (
-        0 => 'Il tuo file <code>docker-compose.yml</code> non è aggiornato!',
+        0 => '%s non può spegnersi',
       ),
-      'Update Instructions' => 
+      'It is not running.' => 
       array (
-        0 => '',
+        0 => 'Non è in esecuzione.',
       ),
-      'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
+      '%s encountered an error' => 
       array (
-        0 => 'AzuraCast <a href="%s" target="_blank">versione %s</a> ora disponibile.',
+        0 => '%s è andato in errore',
       ),
-      'You are currently running version %s. Updating is highly recommended.' => 
+      'Check the log for details.' => 
       array (
-        0 => 'Stai attualmente usando la versione %s. Aggiornamento altamente consigliato.',
+        0 => 'Controlla i log per i dettagli.',
       ),
-      'New AzuraCast Release Version Available' => 
+      'Configuration successfully written.' => 
       array (
-        0 => 'Disponibile una nuova versione di AzuraCast',
-      ),
-      'Your installation is currently %d update(s) behind the latest version.' => 
-      array (
-        0 => 'Attualmente la tua installazione è indietro di %d aggiornamenti rispetto all\'ultima versione.',
-      ),
-      'View the changelog for full details.' => 
-      array (
-        0 => '',
-      ),
-      'You should update to take advantage of bug and security fixes.' => 
-      array (
-        0 => 'Dovresti aggiornare per poter correggere errori e vulnerabilità di sicurezza.',
-      ),
-      'New AzuraCast Updates Available' => 
-      array (
-        0 => 'Nuovi aggiornamenti AzuraCast disponibili',
+        0 => 'Configurazione scritta con successo.',
       ),
       'Fixtures loaded.' => 
       array (
         0 => 'Calendari caricati.',
-      ),
-      'Imported locale: %s' => 
-      array (
-        0 => 'Traduzione importata: %s',
-      ),
-      'AzuraCast Settings' => 
-      array (
-        0 => 'Impostazioni AzuraCast',
-      ),
-      'Setting Key' => 
-      array (
-        0 => 'Chiave dell\'impostazione',
-      ),
-      'Setting Value' => 
-      array (
-        0 => 'Valore dell\'impostazione',
       ),
       'Backup path %s not found!' => 
       array (
@@ -253,10 +873,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Creazione directory temporanee in corso...',
       ),
-      'Directory "%s" was not created' => 
-      array (
-        0 => 'La directory "%s" non è stata creata',
-      ),
       'Backing up MariaDB...' => 
       array (
         0 => 'Backup di MariaDB in corso...',
@@ -273,10 +889,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Backup completato in %.2f secondi.',
       ),
-      'Configuration successfully written.' => 
-      array (
-        0 => 'Configurazione scritta con successo.',
-      ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
         0 => 'L\'account associato all\'indirizzo mail "%s" è stato impostato come amministratore',
@@ -284,6 +896,10 @@ X-Crowdin-File-ID: 4
       'Account not found.' => 
       array (
         0 => 'Account non trovato.',
+      ),
+      'Imported locale: %s' => 
+      array (
+        0 => 'Traduzione importata: %s',
       ),
       'AzuraCast Setup' => 
       array (
@@ -337,741 +953,417 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Visita %s per completare la configurazione.',
       ),
-      'Use <b>%s</b> on this server' => 
+      'AzuraCast Settings' => 
       array (
-        0 => 'Usa <b>%s</b> su questo server',
+        0 => 'Impostazioni AzuraCast',
       ),
-      'Connect to a <b>remote radio server</b>' => 
+      'Setting Key' => 
       array (
-        0 => 'Collegati a un <b>server radio remoto</b>',
+        0 => 'Chiave dell\'impostazione',
       ),
-      '<b>Do not use</b> an AutoDJ service' => 
+      'Setting Value' => 
       array (
-        0 => '<b>Non usare</b> un servizio di Dj automatico',
+        0 => 'Valore dell\'impostazione',
       ),
-      '%s is not recognized as a service.' => 
+      'Update Instructions' => 
       array (
-        0 => '%s non è riconosciuto come un servizio.',
+        0 => 'Istruzioni per l\'aggiornamento',
       ),
-      'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
+      'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
       array (
-        0 => 'Potrebbe non essere ancora registrato con Supervisor. Riavviare la trasmissione potrebbe aiutare.',
+        0 => 'AzuraCast <a href="%s" target="_blank">versione %s</a> ora disponibile.',
       ),
-      '%s cannot start' => 
+      'You are currently running version %s. Updating is highly recommended.' => 
       array (
-        0 => '%s non può partire',
+        0 => 'Stai attualmente usando la versione %s. Aggiornamento altamente consigliato.',
       ),
-      'It is already running.' => 
+      'New AzuraCast Release Version Available' => 
       array (
-        0 => 'E\' già in esecuzione.',
+        0 => 'Disponibile una nuova versione di AzuraCast',
       ),
-      '%s cannot stop' => 
+      'Your installation is currently %d update(s) behind the latest version.' => 
       array (
-        0 => '%s non può spegnersi',
+        0 => 'Attualmente la tua installazione è indietro di %d aggiornamenti rispetto all\'ultima versione.',
       ),
-      'It is not running.' => 
+      'View the changelog for full details.' => 
       array (
-        0 => 'Non è in esecuzione.',
+        0 => 'Visualizza il changelog per maggiori dettagli.',
       ),
-      '%s encountered an error' => 
+      'You should update to take advantage of bug and security fixes.' => 
       array (
-        0 => '%s è andato in errore',
+        0 => 'Dovresti aggiornare per poter correggere errori e vulnerabilità di sicurezza.',
       ),
-      'Check the log for details.' => 
+      'New AzuraCast Updates Available' => 
       array (
-        0 => 'Controlla i log per i dettagli.',
+        0 => 'Nuovi aggiornamenti AzuraCast disponibili',
       ),
-      'Welcome to the AzuraCast Liquidsoap configuration editor.' => 
+      'Installation Not Recently Backed Up' => 
       array (
-        0 => 'Benvenuto nell\'editor di configurazione di AzuraCast Liquidsoap.',
+        0 => 'Questa Installazione Non Ha Eseguito Di Recente Il Backup',
       ),
-      'Using this page, you can customize several sections of the Liquidsoap configuration.' => 
+      'This installation has not been backed up in the last two weeks.' => 
       array (
-        0 => 'Utilizzando questa pagina, è possibile personalizzare diverse sezioni della configurazione di Liquidsoap.',
+        0 => 'Questa installazione non è stata salvata nelle ultime due settimane.',
       ),
-      'The non-editable sections are automatically generated by AzuraCast.' => 
+      'Backups' => 
       array (
-        0 => 'Le sezioni non modificabili vengono generate automaticamente da AzuraCast.',
+        0 => 'Backup',
       ),
-      'This feature is not currently supported on this station.' => 
+      'Synchronized Task Not Recently Run' => 
       array (
-        0 => 'Attualmente questa funzione non è supportata in questa stazione radio.',
+        0 => 'Attività sincronizzata non eseguita di recente',
       ),
-      'Search engine crawlers are not permitted to use this feature.' => 
+      'The "%s" synchronization task has not run recently. This may indicate an error with your installation.' => 
       array (
-        0 => 'I crawler dei motori di ricerca non sono autorizzati a usare questa funzione.',
+        0 => 'L\'attività di sincronizzazione "%s" non è stata eseguita recentemente. Questo potrebbe indicare un errore con l\'installazione.',
       ),
-      'This station does not accept requests currently.' => 
+      'Manually Run Task' => 
       array (
-        0 => 'Attualmente questa stazione non accetta richieste.',
+        0 => 'Esegui Manualmente L\'Attività',
       ),
-      'The song ID you specified could not be found in the station.' => 
+      'You should update your <code>docker-compose.yml</code> file to reflect the newest changes.' => 
       array (
-        0 => 'L\'ID del brano che hai specificato non può essere trovato nella stazione.',
+        0 => 'Dovresti aggiornare il file <code>docker-compose.yml</code> per applicare le modifiche più recenti.',
       ),
-      'The song ID you specified cannot be requested for this station.' => 
-      array (
-        0 => 'L\'ID del brano specificato non può essere richiesto in questa stazione.',
-      ),
-      'You have submitted a request too recently! Please wait before submitting another one.' => 
-      array (
-        0 => 'Hai mandato una richiesta troppo presto! Aspetta prima di poterne inviare un\'altra.',
-      ),
-      'Duplicate request: this song was already requested and will play soon.' => 
-      array (
-        0 => 'Richiesta duplicata: questo brano è già stato richiesto e verrà presto riprodotto.',
-      ),
-      'This song or artist has been played too recently. Wait a while before requesting it again.' => 
-      array (
-        0 => 'Questa canzone o artista è stata già riprodotta di recente. Attendi prima di poterlo richiedere un\'altra volta.',
-      ),
-      'None' => 
+      'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
       array (
         0 => '',
       ),
-      'All Stations' => 
-      array (
-        0 => 'Tutte le stazioni',
-      ),
-      'Listeners' => 
-      array (
-        0 => 'Ascoltatori',
-      ),
-      'Record not found!' => 
-      array (
-        0 => 'Record non trovato!',
-      ),
-      'Changes saved successfully.' => 
-      array (
-        0 => 'Modifiche salvate correttamente.',
-      ),
-      'Record deleted successfully.' => 
-      array (
-        0 => 'Record eliminato correttamente.',
-      ),
-      'You cannot remove yourself.' => 
-      array (
-        0 => 'Non puoi rimuovere te stesso.',
-      ),
-      'This station is out of available storage space.' => 
-      array (
-        0 => 'Questa stazione ha esaurito lo spazio disponibile.',
-      ),
-      'Request submitted successfully.' => 
-      array (
-        0 => 'Richiesta inviata con successo.',
-      ),
-      'Station restarted.' => 
-      array (
-        0 => 'Stazione riavviata.',
-      ),
-      'Frontend stopped.' => 
-      array (
-        0 => 'Frontend interrotto.',
-      ),
-      'Frontend started.' => 
-      array (
-        0 => 'Frontend avviato.',
-      ),
-      'Frontend restarted.' => 
-      array (
-        0 => 'Frontend riavviato.',
-      ),
-      'Song skipped.' => 
-      array (
-        0 => 'Brano saltato.',
-      ),
-      'Streamer disconnected.' => 
-      array (
-        0 => 'Curatore disconnesso.',
-      ),
-      'Backend stopped.' => 
-      array (
-        0 => 'Backend interrotto.',
-      ),
-      'Backend started.' => 
-      array (
-        0 => 'Backend avviato.',
-      ),
-      'Backend restarted.' => 
-      array (
-        0 => 'Backend riavviato.',
-      ),
-      'File not specified.' => 
-      array (
-        0 => 'File non specificato.',
-      ),
-      'New path not specified.' => 
-      array (
-        0 => 'Nuovo percorso non specificato.',
-      ),
-      'No directory specified' => 
+      'Otherwise, update your installation and answer "Y" when prompted to update the file.' => 
       array (
         0 => '',
       ),
-      'Directory' => 
+      'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (
-        0 => 'Cartella',
+        0 => 'Il tuo file <code>docker-compose.yml</code> non è aggiornato!',
       ),
-      'File Not Processed: %s' => 
+      'Select File' => 
+      array (
+        0 => 'Seleziona File',
+      ),
+      'Visit this page from a secure connection to enforce secure URLs on all pages.' => 
+      array (
+        0 => 'Visita questa pagina da una connessione sicura per imporre URL sicuri su tutte le pagine.',
+      ),
+      'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
+      array (
+        0 => 'Vuoi usare SHOUTcast 2? <a href="%s" target="_blank">Installa da qui</a>, poi ricarica questa pagina.',
+      ),
+      '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.' => 
+      array (
+        0 => '<a href="%s" target="_blank">Gestisci qui le posizioni di archiviazione e la quota di archiviazione</a>.',
+      ),
+      'Create a new storage location based on the base directory.' => 
+      array (
+        0 => 'Crea una nuova posizione di archiviazione in base alla directory di base.',
+      ),
+      'Select...' => 
+      array (
+        0 => 'Seleziona...',
+      ),
+      'You must be logged in to access this page.' => 
+      array (
+        0 => 'Devi esserti autenticato per poter accedere a questa pagina.',
+      ),
+      'You do not have permission to access this portion of the site.' => 
+      array (
+        0 => 'Non hai il permesso per accedere a questa parte del sito.',
+      ),
+      'Are you sure?' => 
+      array (
+        0 => 'Sei sicuro?',
+      ),
+      'Advanced' => 
+      array (
+        0 => 'Avanzata',
+      ),
+      'Enter a password to continue.' => 
+      array (
+        0 => 'Inserisci una password per continuare.',
+      ),
+      'No problems detected.' => 
+      array (
+        0 => 'Nessun problema rilevato.',
+      ),
+      'System Maintenance' => 
+      array (
+        0 => 'Manutenzione del sistema',
+      ),
+      'Custom Branding' => 
+      array (
+        0 => 'Marchio personalizzato',
+      ),
+      'System Logs' => 
+      array (
+        0 => 'Log di sistema',
+      ),
+      'Storage Locations' => 
       array (
         0 => '',
       ),
-      'File Processing' => 
+      'System Debugger' => 
+      array (
+        0 => 'Debug Di Sistema',
+      ),
+      'Users' => 
+      array (
+        0 => 'Utenti',
+      ),
+      'User Accounts' => 
+      array (
+        0 => 'Account utenti',
+      ),
+      'Permissions' => 
+      array (
+        0 => 'Permessi',
+      ),
+      'Audit Log' => 
+      array (
+        0 => 'Registro attività',
+      ),
+      'API Keys' => 
+      array (
+        0 => 'API Key',
+      ),
+      'Stations' => 
+      array (
+        0 => 'Stazioni',
+      ),
+      'Custom Fields' => 
+      array (
+        0 => 'Campi personalizzati',
+      ),
+      'Connected AzuraRelays' => 
+      array (
+        0 => 'AzuraRelays Collegato',
+      ),
+      'Start Station' => 
+      array (
+        0 => 'Avvia radio',
+      ),
+      'Ready to start broadcasting? Click to start your station.' => 
+      array (
+        0 => 'Pronto per iniziare a trasmettere? Clicca per avviare la tua radio.',
+      ),
+      'Restart broadcasting? This will disconnect any current listeners.' => 
+      array (
+        0 => 'Riavviare la trasmissione? Questo disconnetterà tutti gli ascoltatori correnti.',
+      ),
+      'Restart to Apply Changes' => 
+      array (
+        0 => 'Riavvia per applicare le modifiche',
+      ),
+      'Click to restart your station and apply configuration changes.' => 
+      array (
+        0 => 'Fare clic per riavviare la radio e applicare le modifiche alla configurazione.',
+      ),
+      'Profile' => 
+      array (
+        0 => 'Profilo',
+      ),
+      'Public Page' => 
+      array (
+        0 => 'Pagina pubblica',
+      ),
+      'On-Demand Media' => 
       array (
         0 => '',
       ),
-      'Path "%s" is not a folder.' => 
+      'Music Files' => 
       array (
-        0 => 'Il percorso "%s" non è una cartella.',
+        0 => 'File musicali',
       ),
-      'This station does not support on-demand streaming.' => 
+      'Playlists' => 
       array (
-        0 => 'Questa stazione non supporta lo streaming on-demand.',
+        0 => 'Playlist',
       ),
-      'File not found.' => 
+      'Streamer/DJ Accounts' => 
       array (
-        0 => 'File non trovato.',
+        0 => 'Account streamer/Dj',
       ),
-      'Playlist not found.' => 
+      'Web DJ' => 
       array (
-        0 => 'Playlist non trovata.',
+        0 => 'Web DJ',
       ),
-      'This playlist is not a sequential playlist.' => 
+      'Mount Points' => 
       array (
-        0 => 'Questa playlist non è una playlist sequenziale.',
+        0 => 'Mount Point',
       ),
-      'Format not found.' => 
+      'Remote Relays' => 
       array (
-        0 => 'Formato non trovato.',
+        0 => 'Collegamenti remoti',
       ),
-      'Playlist enabled.' => 
+      'Web Hooks' => 
       array (
-        0 => 'Playlist abilitata.',
+        0 => 'Interazioni web',
       ),
-      'Playlist disabled.' => 
+      'Reports' => 
       array (
-        0 => 'Playlist disabilitata.',
+        0 => 'Report',
       ),
-      'Playlist reshuffled.' => 
+      'Statistics Overview' => 
       array (
-        0 => 'Playlist rimescolata.',
+        0 => 'Panoramica statistiche',
       ),
-      'Playlist successfully imported; %d of %d files were successfully matched.' => 
+      'Song Requests' => 
       array (
-        0 => 'Playlist importata con successo; %d di %d file sono stati abbinati con successo.',
+        0 => 'Richieste di brani',
       ),
-      'Record not found.' => 
+      'Song Playback Timeline' => 
       array (
-        0 => 'Record non trovato.',
+        0 => 'Orari riproduzione brani',
       ),
-      'No recording available.' => 
+      'Song Listener Impact' => 
       array (
-        0 => 'Nessuna registrazione disponibile.',
+        0 => 'Impatto ascoltatori brano',
       ),
-      'Liquidsoap Log' => 
+      'Duplicate Songs' => 
       array (
-        0 => 'Log Liquidsoap',
+        0 => 'Duplica brani',
       ),
-      'Liquidsoap Configuration' => 
+      'Unprocessable Files' => 
       array (
-        0 => 'Configurazione Liquidsoap',
+        0 => 'File non elaborabili',
       ),
-      'Icecast Access Log' => 
+      'SoundExchange Royalties' => 
       array (
-        0 => 'Log accesso Icecast',
+        0 => 'Royalty di SoundExchange',
       ),
-      'Icecast Error Log' => 
+      'Utilities' => 
       array (
-        0 => 'Log errori Icecast',
+        0 => 'Utilità',
       ),
-      'Icecast Configuration' => 
+      'SFTP Users' => 
       array (
-        0 => 'Configurazione Icecast',
+        0 => 'Utenti SFTP',
       ),
-      'SHOUTcast Log' => 
+      'Automated Assignment' => 
       array (
-        0 => 'Log SHOUTCast',
+        0 => 'Assegnazione automatica',
       ),
-      'SHOUTcast Configuration' => 
+      'Log Viewer' => 
       array (
-        0 => 'Configurazione SHOUTCast',
+        0 => 'Visualizzatore log',
       ),
-      'API Key not found.' => 
+      'Upcoming Song Queue' => 
       array (
-        0 => 'API Key non trovata.',
+        0 => 'Coda di brani imminente',
       ),
-      'API Key updated.' => 
+      'Restart Broadcasting' => 
       array (
-        0 => 'API Key aggiornata.',
+        0 => 'Riavvia trasmissione',
       ),
-      'Edit API Key' => 
+      'Generic Web Hook' => 
       array (
-        0 => 'Modifica API Key',
+        0 => 'Interazione web generica',
       ),
-      'Add API Key' => 
+      'Automatically send a message to any URL when your station data changes.' => 
       array (
-        0 => 'Aggiungi API Key',
+        0 => 'Invia automaticamente un messaggio ad un URL qualsiasi quando cambiano i metadati della radio.',
       ),
-      'API Key deleted.' => 
+      'Send E-mail' => 
       array (
-        0 => 'API Key eliminata.',
+        0 => 'Invia E-mail',
       ),
-      'Song Title' => 
-      array (
-        0 => 'Titolo canzone',
-      ),
-      'Song Artist' => 
-      array (
-        0 => 'Artista canzone',
-      ),
-      'Setup has already been completed!' => 
-      array (
-        0 => 'Installazione già completata!',
-      ),
-      'Super Administrator' => 
-      array (
-        0 => 'Super Amministratore',
-      ),
-      'Setup is now complete!' => 
-      array (
-        0 => 'Installazione ora completata!',
-      ),
-      'Continue setting up your station in the main AzuraCast app.' => 
-      array (
-        0 => 'Continua l\'impostazione della radio nell\'app principale di AzuraCast.',
-      ),
-      'Profile saved!' => 
-      array (
-        0 => 'Profilo salvato!',
-      ),
-      'Edit Profile' => 
-      array (
-        0 => 'Modifica profilo',
-      ),
-      'The token you supplied is invalid. Please try again.' => 
-      array (
-        0 => 'Il token che hai fornito non è valido. Per favore riprova.',
-      ),
-      'Two-factor authentication enabled.' => 
-      array (
-        0 => 'Autenticazione a due fattori abilitata.',
-      ),
-      'Two-factor authentication disabled.' => 
-      array (
-        0 => 'Autenticazione a due fattori disabilitata.',
-      ),
-      'Too many login attempts' => 
-      array (
-        0 => 'Troppi tentativi di accesso',
-      ),
-      'You have attempted to log in too many times. Please wait 30 seconds and try again.' => 
-      array (
-        0 => 'Hai tentato di accedere troppe volte. Attendi 30 secondi e riprova.',
-      ),
-      'Logged in successfully.' => 
-      array (
-        0 => 'Accesso riuscito.',
-      ),
-      'Complete the setup process to get started.' => 
-      array (
-        0 => 'Completa il processo di configurazione per iniziare.',
-      ),
-      'Login unsuccessful' => 
-      array (
-        0 => 'Accesso non riuscito',
-      ),
-      'Your credentials could not be verified.' => 
-      array (
-        0 => 'Impossibile verificare le tue credenziali.',
-      ),
-      'Station updated.' => 
-      array (
-        0 => 'Stazione aggiornata.',
-      ),
-      'Station added.' => 
-      array (
-        0 => 'Stazione aggiunta.',
-      ),
-      'Edit Station' => 
-      array (
-        0 => 'Modifica stazione',
-      ),
-      'Station deleted.' => 
-      array (
-        0 => 'Stazione eliminata.',
-      ),
-      'Station not found.' => 
-      array (
-        0 => 'Stazione non trovata.',
-      ),
-      'Changes saved.' => 
-      array (
-        0 => 'Modifiche salvate.',
-      ),
-      'Clone Station: %s' => 
-      array (
-        0 => 'Clona stazione: %s',
-      ),
-      'Permission updated.' => 
-      array (
-        0 => 'Autorizzazione aggiornata.',
-      ),
-      'Permission added.' => 
-      array (
-        0 => 'Autorizzazione aggiunta.',
-      ),
-      'Edit Permission' => 
-      array (
-        0 => 'Modifica autorizzazione',
-      ),
-      'Add Permission' => 
-      array (
-        0 => 'Aggiungi autorizzazione',
-      ),
-      'Permission deleted.' => 
-      array (
-        0 => 'Autorizzazione eliminata.',
-      ),
-      'AzuraCast Application Log' => 
-      array (
-        0 => 'Log dell\'applicazione AzuraCast',
-      ),
-      'Nginx Access Log' => 
-      array (
-        0 => 'Log accesso Nginx',
-      ),
-      'Nginx Error Log' => 
-      array (
-        0 => 'Log errori Nginx',
-      ),
-      'PHP Application Log' => 
-      array (
-        0 => 'Log applicazione PHP',
-      ),
-      'Supervisord Log' => 
-      array (
-        0 => 'Log Supervisord',
-      ),
-      'System Settings' => 
-      array (
-        0 => 'Impostazioni sistema',
-      ),
-      'Configure Backups' => 
-      array (
-        0 => 'Configura backup',
-      ),
-      'Run Manual Backup' => 
-      array (
-        0 => 'Esegui backup manuale',
-      ),
-      'Backup deleted.' => 
-      array (
-        0 => 'Backup eliminato.',
-      ),
-      'Backup not found.' => 
-      array (
-        0 => 'Backup non trovato.',
-      ),
-      'An error occurred while downloading the GeoLite database: %s' => 
-      array (
-        0 => 'Si è verificato un errore durante il download del database GeoLite: %s',
-      ),
-      'Install GeoLite IP Database' => 
-      array (
-        0 => 'Installa database IP GeoLite',
-      ),
-      'GeoLite database uninstalled.' => 
-      array (
-        0 => 'Database GeoLite disinstallato.',
-      ),
-      'User updated.' => 
-      array (
-        0 => 'Utente aggiornato.',
-      ),
-      'User added.' => 
-      array (
-        0 => 'Utente aggiunto.',
-      ),
-      'Another user already exists with this e-mail address. Please update the e-mail address.' => 
-      array (
-        0 => 'Un altro utente esiste già con questo indirizzo e-mail. Si prega di aggiornare l\'indirizzo e-mail.',
-      ),
-      'Edit User' => 
-      array (
-        0 => 'Modifica utente',
-      ),
-      'Add User' => 
-      array (
-        0 => 'Aggiungi utente',
-      ),
-      'You cannot delete your own account.' => 
-      array (
-        0 => 'Non puoi cancellare il tuo account.',
-      ),
-      'User deleted.' => 
-      array (
-        0 => 'Utente eliminato.',
-      ),
-      'User not found.' => 
-      array (
-        0 => 'Utente non trovato.',
-      ),
-      'Run Synchronized Task' => 
+      'Send an e-mail to specified address(es).' => 
       array (
         0 => '',
       ),
-      'Debug Output' => 
+      'TuneIn AIR' => 
       array (
-        0 => 'Debug Output',
+        0 => 'In onda su TuneIn',
       ),
-      'SHOUTcast version "%s" is currently installed.' => 
+      'Send song metadata changes to TuneIn.' => 
       array (
-        0 => 'La versione SHOUTcast "%s" è attualmente installata.',
+        0 => 'Invia a TuneIn i metadati delle canzoni quando cambiano.',
       ),
-      'Install SHOUTcast' => 
+      'Discord Webhook' => 
       array (
-        0 => 'Installa SHOUTcast',
+        0 => 'Interazione con Discord',
       ),
-      'Custom Field updated.' => 
+      'Automatically send a customized message to your Discord server.' => 
       array (
-        0 => 'Campo personalizzato aggiornato.',
+        0 => 'Invia automaticamente un messaggio personalizzato al tuo server Discord.',
       ),
-      'Custom Field added.' => 
+      'Telegram Chat Message' => 
       array (
-        0 => 'Campo personalizzato aggiunto.',
+        0 => 'Messaggio chat Telegram',
       ),
-      'Edit Custom Field' => 
+      'Use the Telegram Bot API to send a message to a channel.' => 
       array (
-        0 => 'Modifica campo personalizzato',
+        0 => 'Usa l\'API dei bot Telegram per inviare un messaggio a un canale.',
       ),
-      'Add Custom Field' => 
+      'Twitter Post' => 
       array (
-        0 => 'Aggiungi campo personalizzato',
+        0 => 'Posta su Twitter',
       ),
-      'Custom Field deleted.' => 
+      'Automatically send a tweet.' => 
       array (
-        0 => 'Campo personalizzato eliminato.',
+        0 => 'Manda un tweet in automatico.',
       ),
-      'Remote Relay updated.' => 
+      'Google Analytics Integration' => 
       array (
-        0 => 'Flusso remoto aggiornato.',
+        0 => 'Integrazione Google Analytics',
       ),
-      'Remote Relay added.' => 
+      'Send stream listener details to Google Analytics.' => 
       array (
-        0 => 'Flusso remoto aggiunto.',
+        0 => '',
       ),
-      'Edit Remote Relay' => 
+      'Any time the currently playing song changes' => 
       array (
-        0 => 'Modifica flusso remoto',
+        0 => 'Ogni volta che cambia il brano in riproduzione',
       ),
-      'Add Remote Relay' => 
+      'Any time the listener count increases' => 
       array (
-        0 => 'Aggiungi flusso remoto',
+        0 => 'Ogni volta che aumenta il numero di ascoltatori',
       ),
-      'Remote Relay deleted.' => 
+      'Any time the listener count decreases' => 
       array (
-        0 => 'Flusso remoto eliminato.',
+        0 => 'Ogni volta che diminuisce il numero di ascoltatori',
       ),
-      'This record cannot be edited.' => 
+      'Any time a live streamer/DJ connects to the stream' => 
       array (
-        0 => 'Questo record non può essere modificato.',
+        0 => 'Ogni volta che un curatore/DJ si collega alla radio',
       ),
-      'Streamers enabled!' => 
+      'Any time a live streamer/DJ disconnects from the stream' => 
       array (
-        0 => 'Streamer abilitati!',
+        0 => 'Ogni volta che un curatore/DJ si disconnette dalla radio',
       ),
-      'You can now set up streamer (DJ) accounts.' => 
+      'When the station broadcast goes offline.' => 
       array (
-        0 => 'Ora puoi impostare gli account degli streamer (DJ).',
+        0 => '',
       ),
-      'Edit SFTP User' => 
+      'When the station broadcast comes online.' => 
       array (
-        0 => 'Modifica utente SFTP',
+        0 => '',
       ),
-      'Add SFTP User' => 
+      'Username' => 
       array (
-        0 => 'Aggiungi utente SFTP',
+        0 => 'Nome utente',
       ),
-      'SFTP User deleted.' => 
+      'New Password' => 
       array (
-        0 => 'Utente SFTP eliminato.',
+        0 => 'Nuova password',
       ),
-      'Edit Mount Point' => 
+      'Leave blank to use the current password.' => 
       array (
-        0 => 'Modifica Mount Point',
+        0 => 'Lascia vuoto per usare la password attuale.',
       ),
-      'Add Mount Point' => 
+      'SSH Public Keys' => 
       array (
-        0 => 'Aggiungi Mount Point',
+        0 => 'Chiavi Pubbliche SSH',
       ),
-      'Mount Point deleted.' => 
+      'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
       array (
-        0 => 'Mount Point eliminato.',
+        0 => '',
       ),
-      'Automated assignment complete!' => 
+      'Run Automatic Nightly Backups' => 
       array (
-        0 => 'Assegnazione automatica completata!',
+        0 => 'Esegui i backup automatici durante la notte',
       ),
-      'Automated assignment error' => 
+      'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
-        0 => 'Errore assegnazione automatica',
-      ),
-      'Save Changes' => 
-      array (
-        0 => 'Salva modifiche',
-      ),
-      'Edit Liquidsoap Configuration' => 
-      array (
-        0 => 'Modifica configurazione Liquidsoap',
-      ),
-      'Web Hook added.' => 
-      array (
-        0 => 'Interazione web aggiunta.',
-      ),
-      'Add Web Hook' => 
-      array (
-        0 => 'Aggiungi interazione web',
-      ),
-      'Web Hook updated.' => 
-      array (
-        0 => 'Interazione web aggiornata.',
-      ),
-      'Edit Web Hook' => 
-      array (
-        0 => 'Modifica interazione web',
-      ),
-      'Web hook enabled.' => 
-      array (
-        0 => 'Interazione web abilitata.',
-      ),
-      'Web Hook disabled.' => 
-      array (
-        0 => 'Interazione web disabilitata.',
-      ),
-      'Web Hook Test Output' => 
-      array (
-        0 => 'Output test interazione web',
-      ),
-      'Web Hook deleted.' => 
-      array (
-        0 => 'Interazione web eliminata.',
-      ),
-      'SoundExchange Report' => 
-      array (
-        0 => 'Report SoundExchange',
-      ),
-      'Listeners by Day' => 
-      array (
-        0 => 'Ascoltatori per giorno',
-      ),
-      'Listeners by Day of Week' => 
-      array (
-        0 => 'Ascoltatori per giorno della settimana',
-      ),
-      'Monday' => 
-      array (
-        0 => 'Lunedì',
-      ),
-      'Tuesday' => 
-      array (
-        0 => 'Martedì',
-      ),
-      'Wednesday' => 
-      array (
-        0 => 'Mercoledì',
-      ),
-      'Thursday' => 
-      array (
-        0 => 'Giovedì',
-      ),
-      'Friday' => 
-      array (
-        0 => 'Venerdì',
-      ),
-      'Saturday' => 
-      array (
-        0 => 'Sabato',
-      ),
-      'Sunday' => 
-      array (
-        0 => 'Domenica',
-      ),
-      'Listeners by Hour' => 
-      array (
-        0 => 'Ascoltatori per ora',
-      ),
-      'Now Playing Data' => 
-      array (
-        0 => 'Dati Ora in onda',
-      ),
-      '1-Minute Sync' => 
-      array (
-        0 => 'Sincronizzazione 1 minuto',
-      ),
-      'Song Requests Queue' => 
-      array (
-        0 => 'Coda richieste brani',
-      ),
-      '5-Minute Sync' => 
-      array (
-        0 => 'Sincronizzazione 5 minuti',
-      ),
-      'Check Media Folders' => 
-      array (
-        0 => 'Controlla cartelle dei media',
-      ),
-      '1-Hour Sync' => 
-      array (
-        0 => 'Sincronizzazione un\'ora',
-      ),
-      'Analytics/Statistics' => 
-      array (
-        0 => 'Analisi/statistiche',
-      ),
-      'Cleanup' => 
-      array (
-        0 => 'Pulizia',
-      ),
-      'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
-      array (
-        0 => 'Questo prodotto include dati GeoLite2 creati da MaxMind, disponibili da %s.',
-      ),
-      'IP Geolocation by DB-IP' => 
-      array (
-        0 => 'Geolocalizzazione IP tramite DB-IP',
-      ),
-      'GeoLite database not configured for this installation. See System Administration for instructions.' => 
-      array (
-        0 => 'Database GeoLite non configurato per questa installazione. Consultare Amministrazione Sistema per le istruzioni.',
-      ),
-      'Base Theme for Public Pages' => 
-      array (
-        0 => 'Tema di base per pagine pubbliche',
-      ),
-      'Select a theme to use as a base for station public pages and the login page.' => 
-      array (
-        0 => 'Seleziona un tema da utilizzare come base per le pagine pubbliche della stazione e la pagina di accesso.',
-      ),
-      'Light' => 
-      array (
-        0 => 'Leggero',
-      ),
-      'Default' => 
-      array (
-        0 => 'Predefinito',
-      ),
-      'Dark' => 
-      array (
-        0 => 'Scuro',
-      ),
-      'Hide Album Art on Public Pages' => 
-      array (
-        0 => 'Nascondi la copertina dell\'album sulle pagine pubbliche',
-      ),
-      'If selected, album art will not display on public-facing radio pages.' => 
-      array (
-        0 => 'Se selezionato, la copertina dell\'album non verrà visualizzata sulle pagine pubbliche della radio.',
+        0 => 'Consente ad Azuracast di eseguire automaticamente i backup notturni all\'ora specificata.',
       ),
       'Yes' => 
       array (
@@ -1081,65 +1373,33 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'No',
       ),
-      'Homepage Redirect URL' => 
+      'Scheduled Backup Time' => 
       array (
-        0 => 'URl di rimando all\'home page',
+        0 => 'Orario di backup pianificato',
       ),
-      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
+      'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => 'Se un utente non ha effettuato l\'accesso e visita la home page di AzuraCast, è possibile reindirizzarlo automaticamente all\'URL specificato qui. Lascia vuoto per reindirizzare per default alla schermata di accesso.',
+        0 => 'L\'ora (in UTC) in cui verrà eseguito il backup, se abilitato.',
       ),
-      'Default Album Art URL' => 
+      'Exclude Media from Backups' => 
       array (
-        0 => 'URL predefinito per le copertine',
+        0 => 'Escludi i file multimediali dai Backup',
       ),
-      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
+      'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
       array (
-        0 => 'Se una canzone non ha copertina, questo URL verrà utilizzato. Lascia vuoto per utilizzare la copertina standard.',
+        0 => '',
       ),
-      'Hide AzuraCast Branding on Public Pages' => 
+      'Number of Backup Copies to Keep' => 
       array (
-        0 => 'Nascondi il marchio AzuraCast nelle pagine pubbliche',
+        0 => 'Numero delle Copie di Backup da conservare',
       ),
-      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
+      'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => 'Se selezionato, rimuoverà il marchio AzuraCast dalle pagine rivolte al pubblico.',
+        0 => 'Le copie precedenti al numero di giorni specificato verranno eliminate in automatico. Imposta a zero per disattivare l\'eliminazione automatica.',
       ),
-      'Custom CSS for Public Pages' => 
+      'Storage Location' => 
       array (
-        0 => 'CSS personalizzato per le pagine pubbliche',
-      ),
-      'This CSS will be applied to the station public pages and login page.' => 
-      array (
-        0 => 'Questo CSS verrà applicato alle pagine pubbliche della radio e alla pagina di accesso.',
-      ),
-      'Custom JS for Public Pages' => 
-      array (
-        0 => 'JS personalizzato per pagine pubbliche',
-      ),
-      'This javascript code will be applied to the station public pages and login page.' => 
-      array (
-        0 => 'Questo codice javascript verrà applicato alle pagine pubbliche della radio e alla pagina di accesso.',
-      ),
-      'Custom CSS for Internal Pages' => 
-      array (
-        0 => 'CSS personalizzato per pagine interne',
-      ),
-      'This CSS will be applied to the main management pages, like this one.' => 
-      array (
-        0 => 'Questo CSS verrà applicato alle pagine di gestione principali, come questa.',
-      ),
-      'Code from Authenticator App' => 
-      array (
-        0 => 'Codice dall\'app di autenticazione',
-      ),
-      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
-      array (
-        0 => 'Inserisci il codice attuale fornito dall\'app di autenticazione per verificare che funzioni correttamente.',
-      ),
-      'Verify Authenticator' => 
-      array (
-        0 => 'Verifica autenticazione',
+        0 => '',
       ),
       'Instructions' => 
       array (
@@ -1168,6 +1428,174 @@ X-Crowdin-File-ID: 4
       'MaxMind License Key' => 
       array (
         0 => 'Chiave Di Licenza MaxMind',
+      ),
+      'Use Browser Default' => 
+      array (
+        0 => 'Usa impostazione browser predefinita',
+      ),
+      'Name' => 
+      array (
+        0 => 'Nome',
+      ),
+      'E-mail Address' => 
+      array (
+        0 => 'Indirizzo e-mail',
+      ),
+      'Reset Password' => 
+      array (
+        0 => 'Reimposta Password',
+      ),
+      'Leave these fields blank to continue using your current password.' => 
+      array (
+        0 => 'Lascia questi campi vuoti per continuare a utilizzare la password attuale.',
+      ),
+      'Current Password' => 
+      array (
+        0 => 'Password attuale',
+      ),
+      'Confirm New Password' => 
+      array (
+        0 => 'Conferma nuova password',
+      ),
+      'Customization' => 
+      array (
+        0 => 'Personalizzazione',
+      ),
+      'Language' => 
+      array (
+        0 => 'Lingua',
+      ),
+      'Site Theme' => 
+      array (
+        0 => 'Tema del sito',
+      ),
+      'Light' => 
+      array (
+        0 => 'Leggero',
+      ),
+      'Default' => 
+      array (
+        0 => 'Predefinito',
+      ),
+      'Dark' => 
+      array (
+        0 => 'Scuro',
+      ),
+      'Account Information' => 
+      array (
+        0 => 'Informazioni account',
+      ),
+      'Password' => 
+      array (
+        0 => 'Password',
+      ),
+      'Create Account' => 
+      array (
+        0 => 'Crea Account',
+      ),
+      'Show on Public Pages' => 
+      array (
+        0 => 'Mostra su pagine pubbliche',
+      ),
+      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
+      array (
+        0 => 'Abilita per consentire agli ascoltatori di selezionare questo collegamento sulle pagine pubbliche di questa stazione.',
+      ),
+      'Remote Station Type' => 
+      array (
+        0 => 'Tipo di stazione remota',
+      ),
+      'Display Name' => 
+      array (
+        0 => 'Nome visualizzato',
+      ),
+      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
+      array (
+        0 => 'Il nome visibile assegnato a questo collegamento durante la visualizzazione su pagine di amministrazione o pubbliche. Lascia vuoto per generarne automaticamente uno.',
+      ),
+      'Remote Station Listening URL' => 
+      array (
+        0 => 'URL per ascoltare la stazione remota',
+      ),
+      'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
+      array (
+        0 => 'Esempio: se l\'URL della radio remota è %s, inserisci <code>%s </code>.',
+      ),
+      'Remote Station Listening Mountpoint/SID' => 
+      array (
+        0 => 'Mountpoint/SID per ascoltare la stazione remota',
+      ),
+      'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
+      array (
+        0 => 'Inserisci un mountpoint (ad esempio <code>%s</code>) o un SID di Shoutcast (ad esempio <code>%s</code>) per indicare un flusso specifico da utilizzare per le statistiche o la trasmissione.',
+      ),
+      'Remote Station Administrator Password' => 
+      array (
+        0 => '',
+      ),
+      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
+      array (
+        0 => '',
+      ),
+      'Broadcast AutoDJ to Remote Station' => 
+      array (
+        0 => 'Trasmetti regia automatica a stazione remota',
+      ),
+      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
+      array (
+        0 => 'Se abilitata, la regia automatica su questa installazione riprodurrà la musica in automatico su questo mount point.',
+      ),
+      'Configure AutoDJ Broadcasting' => 
+      array (
+        0 => 'Configura trasmissione regia automatica',
+      ),
+      'AutoDJ Format' => 
+      array (
+        0 => 'Formato Dj automatico',
+      ),
+      'AutoDJ Bitrate (kbps)' => 
+      array (
+        0 => 'Bitrate Dj automatico (kbps)',
+      ),
+      'Remote Station Source Port' => 
+      array (
+        0 => 'Porta sorgente per stazione remota',
+      ),
+      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
+      array (
+        0 => 'Se la porta verso cui trasmetti è diversa da quella che hai elencato nell\'URL sopra, specifica qui la porta sorgente.',
+      ),
+      'Remote Station Source Mountpoint/SID' => 
+      array (
+        0 => 'Mountpoint/SID sorgente per la stazione remota',
+      ),
+      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
+      array (
+        0 => 'Se il mountpoint (ad esempio <code>/radio.mp3</code>) o SID Shoutcast (ad esempio <code>2</code>) verso cui trasmetti da quello elencato sopra, specifica qui il mount point sorgente.',
+      ),
+      'Remote Station Source Username' => 
+      array (
+        0 => 'Nome utente sorgente per la stazione remota',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
+      array (
+        0 => 'Se stai trasmettendo usando la regia automatica, inserisci qui il nome utente sorgente. Questo potrebbe essere vuoto.',
+      ),
+      'Remote Station Source Password' => 
+      array (
+        0 => 'Password sorgente stazione remota',
+      ),
+      'If you are broadcasting using AutoDJ, enter the source password here.' => 
+      array (
+        0 => 'Se stai trasmettendo usando la regia automatica, inserire qui la password sorgente.',
+      ),
+      'Publish to "Yellow Pages" Directories' => 
+      array (
+        0 => 'Condividi su database di consultazione pubblici',
+      ),
+      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
+      array (
+        0 => 'Abilita questa opzione per pubblicizzare la tua radio negli elenchi pubblici di stazioni.',
       ),
       'New Station Name' => 
       array (
@@ -1217,405 +1645,225 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Crea nuova stazione',
       ),
-      'Account Information' => 
+      'Web Hook Name' => 
       array (
-        0 => 'Informazioni account',
+        0 => 'Nome interazione web',
       ),
-      'E-mail Address' => 
+      'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
       array (
-        0 => 'Indirizzo e-mail',
+        0 => 'Scegli un nome per questa interazione web che ti aiuterà a distinguerla dalle altre. Questo verrà mostrato solo nella pagina di amministrazione.',
       ),
-      'Password' => 
+      'Bot Token' => 
       array (
-        0 => 'Password',
+        0 => 'Token del Bot',
       ),
-      'Create Account' => 
+      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
       array (
-        0 => 'Crea Account',
+        0 => 'Consulta la <a href="%s" target="_blank">documentazione Telegram</a> per maggiori dettagli.',
       ),
-      'Username' => 
+      'Chat ID' => 
       array (
-        0 => 'Nome utente',
+        0 => 'Identificativo della chat',
       ),
-      'New Password' => 
+      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
       array (
-        0 => 'Nuova password',
+        0 => 'Identificativo univoco per la chat di destinazione o il nome utente del canale di destinazione (nella forma @NomeCanale).',
       ),
-      'Leave blank to use the current password.' => 
+      'Custom API Base URL' => 
       array (
-        0 => 'Lascia vuoto per usare la password attuale.',
+        0 => 'Base API URL personalizzato',
       ),
-      'SSH Public Keys' => 
+      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
       array (
-        0 => 'Chiavi Pubbliche SSH',
+        0 => 'Lascia vuoto per usare l\'URL predefinito per le API Telegram (consigliato). Specifica l\'URL completo, come <code>https://api.pwrtelegram.xyz/</code>.',
       ),
-      'Optionally supply SSH public keys this user can use to connect instead of a password. Enter one key per line.' => 
+      'Web Hook Triggers' => 
       array (
-        0 => '',
+        0 => 'Condizioni per l\'interazione web',
       ),
-      'Comments' => 
+      'Customize Message' => 
       array (
-        0 => 'Commenti',
+        0 => 'Personalizza messaggio',
       ),
-      'Describe the use-case for this API key for future reference.' => 
+      'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
       array (
-        0 => 'Descrivi il caso d\'uso per questa chiave API per riferimento futuro.',
+        0 => 'Le variabili sono nella forma <code>{{ var.name }}</code>. 
+Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduzione</a> sono disponibili per l\'uso. Ogni campo vuoto viene ignorato.',
       ),
-      'Rolling Release' => 
+      'Main Message Content' => 
       array (
-        0 => '',
+        0 => 'Contenuto messaggio principale',
       ),
-      'Stable' => 
+      'Now playing on %s: %s by %s! Tune in now.' => 
       array (
-        0 => '',
+        0 => 'In riproduzione su %s: %s di %s! Sintonizzati ora.',
       ),
-      'Settings' => 
+      'Message parsing mode' => 
       array (
-        0 => 'Impostazioni',
+        0 => 'Modalità interpretazione messaggi',
       ),
-      'Security' => 
+      'Discord Web Hook URL' => 
       array (
-        0 => '',
+        0 => 'URL interazione Discord',
       ),
-      'Privacy' => 
+      'This URL is provided within the Discord application.' => 
       array (
-        0 => '',
+        0 => 'Questo URL è fornito all\'interno dell\'applicazione Discord.',
       ),
-      'Services' => 
+      'Now playing on %s:' => 
       array (
-        0 => '',
+        0 => 'In riproduzione su %s:',
       ),
-      'Site Base URL' => 
+      'Title' => 
       array (
-        0 => 'URL del sito base',
+        0 => 'Titolo',
       ),
-      'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
+      'Description' => 
       array (
-        0 => 'L\'indirizzo di base in cui è situato questo servizio. Usa l\'indirizzo IP esterno oppure il nome a dominio completo (se esiste), che punta a questo server.',
+        0 => 'Descrizione',
       ),
-      'AzuraCast Instance Name' => 
+      'URL' => 
       array (
-        0 => 'Nome istanza AzuraCast',
+        0 => 'URL',
       ),
-      'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
+      'Author Name' => 
       array (
-        0 => 'Questo nome apparirà come sottotitolo accanto al logo AzuraCast, per aiutare a identificare questo server.',
+        0 => 'Nome dell\'autore',
       ),
-      'Prefer Browser URL (If Available)' => 
+      'Thumbnail Image URL' => 
       array (
-        0 => 'Preferisci URL del browser (se disponibile)',
+        0 => 'URL immagine miniatura',
       ),
-      'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
+      'Footer Text' => 
       array (
-        0 => 'Se questa impostazione è configurata su "Sì", verrà utilizzato l\'URL del browser anziché l\'URL di base quando è disponibile. Impostare su "No" per utilizzare sempre l\'URL di base.',
+        0 => 'Testo piè pagina',
       ),
-      'Use Web Proxy for Radio' => 
+      'Powered by %s' => 
       array (
-        0 => 'Usa proxy web per la radio',
+        0 => 'Patrocinato da %s',
       ),
-      'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
-      array (
-        0 => 'Per default, le radio trasmettono sulla loro porta (es. 8000). Se usi servizi come CloudFlare o accedi alla stazione tramite SSL, dovresti abilitare questa funzione, che indirizza tutte le radio attraverso le porte web (80 e 443).',
-      ),
-      'Days of Playback History to Keep' => 
-      array (
-        0 => 'Giorni di cronologia di riproduzione da conservare',
-      ),
-      'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space. ' => 
+      'GA Property Tracking ID' => 
       array (
         0 => '',
       ),
-      'Last 14 Days' => 
-      array (
-        0 => 'Ultimi 14 giorni',
-      ),
-      'Last 30 Days' => 
-      array (
-        0 => 'Ultimi 30 giorni',
-      ),
-      'Last 60 Days' => 
-      array (
-        0 => 'Ultimi 60 giorni',
-      ),
-      'Last Year' => 
-      array (
-        0 => 'L\'anno scorso',
-      ),
-      'Last 2 Years' => 
-      array (
-        0 => 'Ultimi 2 anni',
-      ),
-      'Indefinitely' => 
-      array (
-        0 => 'Indefinito',
-      ),
-      'Use WebSockets for Now Playing Updates' => 
-      array (
-        0 => 'Usa WebSocket per gli aggiornamenti dei brani in riproduzione',
-      ),
-      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
-      array (
-        0 => 'Abilita o disabilita l\'uso del sistema basato su WebSocket, più moderno e veloce, per ricevere aggiornamenti in tempo reale sui player di pubblico dominio. Potrebbe essere necessario disabilitarlo in caso di problemi.',
-      ),
-      'Always Use HTTPS' => 
-      array (
-        0 => 'Usa sempre HTTPS',
-      ),
-      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
-      array (
-        0 => 'Impostare su "Sì" per utilizzare sempre URL "https://" protetti e per reindirizzare automaticamente all\'URL protetto quando viene visitato un URL non protetto.',
-      ),
-      'API "Access-Control-Allow-Origin" header' => 
-      array (
-        0 => 'Intestazione API "Access-Control-Allow-Origin"',
-      ),
-      '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
-      array (
-        0 => '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).',
-      ),
-      'Listener Analytics Collection' => 
-      array (
-        0 => 'Raccolta analisi degli ascolti',
-      ),
-      'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
-      array (
-        0 => 'Le statistiche aggregate degli ascolti vengono utilizzate per mostrare i report delle stazioni attraverso il sistema. Le statistiche degli ascolti basate su IP vengono utilizzate per visualizzare il monitoraggio degli ascoltatori in tempo reale e potrebbero essere richieste per i report di royalty.',
-      ),
-      '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
-      array (
-        0 => '<b> Completo: </b> raccoglie statistiche di ascolti aggregate e statistiche ascolti basate su IP',
-      ),
-      '<b>Limited:</b> Only collect aggregate listener statistics' => 
-      array (
-        0 => '<b> Limitato: </b> raccoglie solo statistiche di ascolto aggregate',
-      ),
-      '<b>None:</b> Do not collect any listener analytics' => 
-      array (
-        0 => '<b> Nessuno: </b> non raccoglie alcuna analisi degli ascolti',
-      ),
-      'AzuraCast Update Checks' => 
+      'The property ID used to track live listeners.' => 
       array (
         0 => '',
       ),
-      'Current Release Channel' => 
+      'Message Recipient(s)' => 
       array (
         0 => '',
       ),
-      'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.' => 
+      'E-mail addresses can be separated by commas.' => 
       array (
         0 => '',
       ),
-      'Show Update Announcements' => 
+      'Message Subject' => 
       array (
         0 => '',
       ),
-      'Show new releases within your update channel on the AzuraCast homepage.' => 
+      'Message Body' => 
+      array (
+        0 => 'Corpo del messaggio',
+      ),
+      'Twitter Account Details' => 
+      array (
+        0 => 'Dettagli account Twitter',
+      ),
+      'Steps for configuring a Twitter application:<br>
+                <ol type="1">
+                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>.
+                    Use this installation\'s base URL as the application URL.</li>
+                    <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
+                    <li>At the bottom of the page, click "Create my access token".</li>
+                </ol>
+                <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
       array (
         0 => '',
       ),
-      'Third-Party Services' => 
+      'Consumer Key (API Key)' => 
+      array (
+        0 => 'Consumer Key (API Key)',
+      ),
+      'Consumer Secret (API Secret)' => 
+      array (
+        0 => 'Consumer Secret (API Secret)',
+      ),
+      'Access Token' => 
+      array (
+        0 => 'Token di accesso',
+      ),
+      'Access Token Secret' => 
+      array (
+        0 => 'Token segreto di accesso',
+      ),
+      'Only Send One Tweet Every...' => 
+      array (
+        0 => 'Invia un tweet soltanto ogni...',
+      ),
+      'No Limit' => 
+      array (
+        0 => 'Nessun limite',
+      ),
+      '%d seconds' => 
+      array (
+        0 => '%d secondi',
+      ),
+      '%d minutes' => 
+      array (
+        0 => '%d minuti',
+      ),
+      'TuneIn Station ID' => 
+      array (
+        0 => 'Station ID TuneIn',
+      ),
+      'The station ID will be a numeric string that starts with the letter S.' => 
+      array (
+        0 => 'Lo Station ID sarà una stringa numerica che inizia con la lettera S.',
+      ),
+      'TuneIn Partner ID' => 
+      array (
+        0 => 'Partner ID TuneIn',
+      ),
+      'TuneIn Partner Key' => 
+      array (
+        0 => 'Partner key TuneIn',
+      ),
+      'Web Hook Details' => 
+      array (
+        0 => 'Dettagli interazione web',
+      ),
+      'Web hooks automatically send a HTTP POST request to the URL you specify to
+                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
+                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station.
+                In order to process quickly, web hooks have a short timeout, so the responding service should be
+                optimized to handle the request in under 2 seconds.' => 
       array (
         0 => '',
       ),
-      'Check Web Services for Album Art for "Now Playing" Tracks' => 
+      'Web Hook URL' => 
       array (
-        0 => '',
+        0 => 'URL interazione web',
       ),
-      'Check Web Services for Album Art When Uploading Media' => 
+      'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
-        0 => '',
+        0 => 'L\'URL che riceverà i messaggi POST ogni volta che viene attivato un evento.',
       ),
-      'Last.fm API Key' => 
+      'Optional: HTTP Basic Authentication Username' => 
       array (
-        0 => '',
+        0 => 'Facoltativo: Nome utente autenticazione di base HTTP',
       ),
-      '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.' => 
+      'If your web hook requires HTTP basic authentication, provide the username here.' => 
       array (
-        0 => '',
+        0 => 'Se la tua interazione web richiede l\'autenticazione di base HTTP, fornisci qui il nome utente.',
       ),
-      'Enable Automated Assignment' => 
+      'Optional: HTTP Basic Authentication Password' => 
       array (
-        0 => 'Abilita assegnazione automatica',
+        0 => 'Facoltativo: password autenticazione http di base',
       ),
-      'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
+      'If your web hook requires HTTP basic authentication, provide the password here.' => 
       array (
-        0 => 'Permetti al sistema di assegnare periodicamente canzoni in automatico alle playlist, basandosi sulle loro prestazioni. Questo processo viene eseguito in background, solo se questa opzione viene abilitata e solo se almeno una playlist è impostata su "includi in assegnazione automatica".',
-      ),
-      'Disabled' => 
-      array (
-        0 => 'Disabilitato',
-      ),
-      'Enabled' => 
-      array (
-        0 => 'Abilitato',
-      ),
-      'Days Between Automated Assignments' => 
-      array (
-        0 => 'Giorni tra le assegnazioni automatiche',
-      ),
-      'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
-      array (
-        0 => 'Basandosi su questa impostazione, il sistema riassegnerà automaticamente le canzoni ogni (tot) giorni usando i dati dai precedenti (tot) giorni.',
-      ),
-      '%d days' => 
-      array (
-        0 => '%d giorni',
-      ),
-      'Run Automatic Nightly Backups' => 
-      array (
-        0 => 'Esegui i backup automatici durante la notte',
-      ),
-      'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
-      array (
-        0 => 'Consente ad Azuracast di eseguire automaticamente i backup notturni all\'ora specificata.',
-      ),
-      'Scheduled Backup Time' => 
-      array (
-        0 => 'Orario di backup pianificato',
-      ),
-      'The time (in UTC) to run the automated backup, if enabled.' => 
-      array (
-        0 => 'L\'ora (in UTC) in cui verrà eseguito il backup, se abilitato.',
-      ),
-      'Exclude Media from Backups' => 
-      array (
-        0 => 'Escludi i file multimediali dai Backup',
-      ),
-      'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
-      array (
-        0 => '',
-      ),
-      'Number of Backup Copies to Keep' => 
-      array (
-        0 => 'Numero delle Copie di Backup da conservare',
-      ),
-      'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
-      array (
-        0 => 'Le copie precedenti al numero di giorni specificato verranno eliminate in automatico. Imposta a zero per disattivare l\'eliminazione automatica.',
-      ),
-      'Storage Location' => 
-      array (
-        0 => '',
-      ),
-      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
-      array (
-        0 => '<p> SHOUTcast 2 DNAS non è un software gratuito e la sua licenza restrittiva non consente a AzuraCast di distribuire l\'eseguibile SHOUTcast. Per installare SHOUTcast, devi scaricare l\'eseguibile Linux x64 dal <a href="%s" target="_blank">sito web SHOUTcast Radio Manager</a>. Carica il <code>sc_serv2_linux_x64-latest.tar.gz</code> nel campo sottostante per estrarlo automaticamente nella directory corretta. </p>',
-      ),
-      'Current Installed Version' => 
-      array (
-        0 => 'Versione attualmente installata',
-      ),
-      'SHOUTcast is not currently installed on this installation.' => 
-      array (
-        0 => 'Attualmente ShoutCast non è presente in questa installazione.',
-      ),
-      'Select SHOUTcast 64-bit .tar.gz File' => 
-      array (
-        0 => 'Seleziona il file SHOUTcast 64-bit .tar.gz',
-      ),
-      'Upload' => 
-      array (
-        0 => 'Carica',
-      ),
-      'Mount Point URL' => 
-      array (
-        0 => 'URL mount point',
-      ),
-      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
-      array (
-        0 => 'Questo nome dovrebbe sempre iniziare con una barra (/), ed essere una URL valida, come /autodj.mp3',
-      ),
-      'Display Name' => 
-      array (
-        0 => 'Nome visualizzato',
-      ),
-      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
-      array (
-        0 => 'Il nome assegnato a questo mount point quando viene visualizzato su pagine pubbliche o amministrative. Lascia vuoto per generarne automaticamente uno.',
-      ),
-      'Show on Public Pages' => 
-      array (
-        0 => 'Mostra su pagine pubbliche',
-      ),
-      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
-      array (
-        0 => 'Abilita per consentire agli ascoltatori di selezionare questo mount point sulle pagine pubbliche di questa stazione.',
-      ),
-      'Set as Default Mount Point' => 
-      array (
-        0 => 'Imposta come mount point predefinito',
-      ),
-      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
-      array (
-        0 => 'Se questo mount è il predefinito, verrà riprodotto nell\'anteprima della radio e nella pagina della radio pubblica su questo sistema.',
-      ),
-      'Relay Stream URL' => 
-      array (
-        0 => 'URL flusso da ritrasmettere',
-      ),
-      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
-      array (
-        0 => 'Inserisci la URL completa di un altro streaming, da ritrasmettere attraverso questo mount point.',
-      ),
-      'Publish to "Yellow Pages" Directories' => 
-      array (
-        0 => 'Condividi su database di consultazione pubblici',
-      ),
-      'Enable to advertise this mount point on "Yellow Pages" public radio directories.' => 
-      array (
-        0 => 'Abilita questa opzione per pubblicizzare la tua radio negli elenchi pubblici di stazioni.',
-      ),
-      'Enable AutoDJ' => 
-      array (
-        0 => 'Abilita Dj automatico',
-      ),
-      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
-      array (
-        0 => 'Se abilitato, la regia automatica riprodurrà la musica in automatico su questo mount point.',
-      ),
-      'AutoDJ Format' => 
-      array (
-        0 => 'Formato Dj automatico',
-      ),
-      'AutoDJ Bitrate (kbps)' => 
-      array (
-        0 => 'Bitrate Dj automatico (kbps)',
-      ),
-      'Custom Stream URL' => 
-      array (
-        0 => 'URL flusso personalizzato',
-      ),
-      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
-      array (
-        0 => 'È possibile impostare un URL personalizzato per questo flusso che AzuraCast utilizzerà quando farà riferimento ad esso. Lascia vuoto per utilizzare il valore predefinito.',
-      ),
-      'Fallback Mount' => 
-      array (
-        0 => 'Mount di fallback',
-      ),
-      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
-      array (
-        0 => 'Se il mount point predefinito non riproduce audio, gli ascoltatori verranno trasferiti a questo mount point. Il predefinito è /error.mp3, un messaggio di errore che viene ripetuto.',
-      ),
-      'Custom Frontend Configuration' => 
-      array (
-        0 => 'Configurazione personalizzata dell\'interfaccia utente',
-      ),
-      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
-      array (
-        0 => 'Qui puoi includere qualsiasi impostazione speciale del mount point, sia in formato JSON { key: \'value\' } sia XML &lt;key&gt;value&lt;/key&gt;',
-      ),
-      'Stream path cannot include reserved keywords: %s' => 
-      array (
-        0 => 'Il percorso del flusso non può includere parole chiave riservate: %s',
-      ),
-      'YP Directory Authorization Hash' => 
-      array (
-        0 => 'Hash di autorizzazione alla directory di YP',
-      ),
-      'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
-      array (
-        0 => 'Se lo stream è impostato per la pubblicità nelle directory YP di cui sopra, è necessario specificare un hash di autorizzazione. Puoi gestire i codici di autorizzazione <a href="%s" target="_blank"> sul sito web SHOUTcast </a>.',
+        0 => 'Se la tua interazione Web richiede l\'autenticazione di base HTTP, fornisci qui la password.',
       ),
       'Field Name' => 
       array (
@@ -1745,10 +1993,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'ISRC',
       ),
-      'Language' => 
-      array (
-        0 => 'Lingua',
-      ),
       'Length' => 
       array (
         0 => 'Lunghezza',
@@ -1853,10 +2097,6 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Termini di utilizzo',
       ),
-      'Title' => 
-      array (
-        0 => 'Titolo',
-      ),
       'Title Sort Order' => 
       array (
         0 => '',
@@ -1901,217 +2141,429 @@ X-Crowdin-File-ID: 4
       array (
         0 => 'Anno',
       ),
-      'Twitter Account Details' => 
+      'Base Theme for Public Pages' => 
       array (
-        0 => 'Dettagli account Twitter',
+        0 => 'Tema di base per pagine pubbliche',
       ),
-      'Steps for configuring a Twitter application:<br>
-                <ol type="1">
-                    <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>.
-                    Use this installation\'s base URL as the application URL.</li>
-                    <li>In the newly created application, click the "Keys and Access Tokens" tab.</li>
-                    <li>At the bottom of the page, click "Create my access token".</li>
-                </ol>
-                <p>Once these steps are completed, enter the information from the "Keys and Access Tokens" page into the fields below.</p>' => 
+      'Select a theme to use as a base for station public pages and the login page.' => 
       array (
-        0 => '',
+        0 => 'Seleziona un tema da utilizzare come base per le pagine pubbliche della stazione e la pagina di accesso.',
       ),
-      'Consumer Key (API Key)' => 
+      'Hide Album Art on Public Pages' => 
       array (
-        0 => 'Consumer Key (API Key)',
+        0 => 'Nascondi la copertina dell\'album sulle pagine pubbliche',
       ),
-      'Consumer Secret (API Secret)' => 
+      'If selected, album art will not display on public-facing radio pages.' => 
       array (
-        0 => 'Consumer Secret (API Secret)',
+        0 => 'Se selezionato, la copertina dell\'album non verrà visualizzata sulle pagine pubbliche della radio.',
       ),
-      'Access Token' => 
+      'Homepage Redirect URL' => 
       array (
-        0 => 'Token di accesso',
+        0 => 'URl di rimando all\'home page',
       ),
-      'Access Token Secret' => 
+      'If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.' => 
       array (
-        0 => 'Token segreto di accesso',
+        0 => 'Se un utente non ha effettuato l\'accesso e visita la home page di AzuraCast, è possibile reindirizzarlo automaticamente all\'URL specificato qui. Lascia vuoto per reindirizzare per default alla schermata di accesso.',
       ),
-      'Only Send One Tweet Every...' => 
+      'Default Album Art URL' => 
       array (
-        0 => 'Invia un tweet soltanto ogni...',
+        0 => 'URL predefinito per le copertine',
       ),
-      'No Limit' => 
+      'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
-        0 => 'Nessun limite',
+        0 => 'Se una canzone non ha copertina, questo URL verrà utilizzato. Lascia vuoto per utilizzare la copertina standard.',
       ),
-      '%d seconds' => 
+      'Hide AzuraCast Branding on Public Pages' => 
       array (
-        0 => '%d secondi',
+        0 => 'Nascondi il marchio AzuraCast nelle pagine pubbliche',
       ),
-      '%d minutes' => 
+      'If selected, this will remove the AzuraCast branding from public-facing pages.' => 
       array (
-        0 => '%d minuti',
+        0 => 'Se selezionato, rimuoverà il marchio AzuraCast dalle pagine rivolte al pubblico.',
       ),
-      'Web Hook Name' => 
+      'Custom CSS for Public Pages' => 
       array (
-        0 => 'Nome interazione web',
+        0 => 'CSS personalizzato per le pagine pubbliche',
       ),
-      'Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.' => 
+      'This CSS will be applied to the station public pages and login page.' => 
       array (
-        0 => 'Scegli un nome per questa interazione web che ti aiuterà a distinguerla dalle altre. Questo verrà mostrato solo nella pagina di amministrazione.',
+        0 => 'Questo CSS verrà applicato alle pagine pubbliche della radio e alla pagina di accesso.',
       ),
-      'Web Hook Triggers' => 
+      'Custom JS for Public Pages' => 
       array (
-        0 => 'Condizioni per l\'interazione web',
+        0 => 'JS personalizzato per pagine pubbliche',
       ),
-      'Message Body' => 
+      'This javascript code will be applied to the station public pages and login page.' => 
       array (
-        0 => 'Corpo del messaggio',
+        0 => 'Questo codice javascript verrà applicato alle pagine pubbliche della radio e alla pagina di accesso.',
       ),
-      'Now playing on %s: %s by %s! Tune in now.' => 
+      'Custom CSS for Internal Pages' => 
       array (
-        0 => 'In riproduzione su %s: %s di %s! Sintonizzati ora.',
+        0 => 'CSS personalizzato per pagine interne',
       ),
-      'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.' => 
+      'This CSS will be applied to the main management pages, like this one.' => 
       array (
-        0 => 'Le variabili sono nella forma <code>{{ var.name }}</code>. 
-Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduzione</a> sono disponibili per l\'uso. Ogni campo vuoto viene ignorato.',
+        0 => 'Questo CSS verrà applicato alle pagine di gestione principali, come questa.',
       ),
-      'Web Hook Details' => 
+      'Stream path cannot include reserved keywords: %s' => 
       array (
-        0 => 'Dettagli interazione web',
+        0 => 'Il percorso del flusso non può includere parole chiave riservate: %s',
       ),
-      'Web hooks automatically send a HTTP POST request to the URL you specify to
-                notify it any time one of the triggers you specify occurs on your station. The body of the POST message
-                is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station.
-                In order to process quickly, web hooks have a short timeout, so the responding service should be
-                optimized to handle the request in under 2 seconds.' => 
+      'YP Directory Authorization Hash' => 
       array (
-        0 => '',
+        0 => 'Hash di autorizzazione alla directory di YP',
       ),
-      'Web Hook URL' => 
+      'If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.' => 
       array (
-        0 => 'URL interazione web',
+        0 => 'Se lo stream è impostato per la pubblicità nelle directory YP di cui sopra, è necessario specificare un hash di autorizzazione. Puoi gestire i codici di autorizzazione <a href="%s" target="_blank"> sul sito web SHOUTcast </a>.',
       ),
-      'The URL that will receive the POST messages any time an event is triggered.' => 
+      'Fallback Mount' => 
       array (
-        0 => 'L\'URL che riceverà i messaggi POST ogni volta che viene attivato un evento.',
+        0 => 'Mount di fallback',
       ),
-      'Optional: HTTP Basic Authentication Username' => 
+      'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => 'Facoltativo: Nome utente autenticazione di base HTTP',
+        0 => 'Se il mount point predefinito non riproduce audio, gli ascoltatori verranno trasferiti a questo mount point. Il predefinito è /error.mp3, un messaggio di errore che viene ripetuto.',
       ),
-      'If your web hook requires HTTP basic authentication, provide the username here.' => 
+      'Custom Frontend Configuration' => 
       array (
-        0 => 'Se la tua interazione web richiede l\'autenticazione di base HTTP, fornisci qui il nome utente.',
+        0 => 'Configurazione personalizzata dell\'interfaccia utente',
       ),
-      'Optional: HTTP Basic Authentication Password' => 
+      'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => 'Facoltativo: password autenticazione http di base',
+        0 => 'Qui puoi includere qualsiasi impostazione speciale del mount point, sia in formato JSON { key: \'value\' } sia XML &lt;key&gt;value&lt;/key&gt;',
       ),
-      'If your web hook requires HTTP basic authentication, provide the password here.' => 
+      'Mount Point URL' => 
       array (
-        0 => 'Se la tua interazione Web richiede l\'autenticazione di base HTTP, fornisci qui la password.',
+        0 => 'URL mount point',
       ),
-      'Bot Token' => 
+      'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
-        0 => 'Token del Bot',
+        0 => 'Questo nome dovrebbe sempre iniziare con una barra (/), ed essere una URL valida, come /autodj.mp3',
       ),
-      'See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.' => 
+      'The display name assigned to this mount point when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
       array (
-        0 => 'Consulta la <a href="%s" target="_blank">documentazione Telegram</a> per maggiori dettagli.',
+        0 => 'Il nome assegnato a questo mount point quando viene visualizzato su pagine pubbliche o amministrative. Lascia vuoto per generarne automaticamente uno.',
       ),
-      'Chat ID' => 
+      'Enable to allow listeners to select this mount point on this station\'s public pages.' => 
       array (
-        0 => 'Identificativo della chat',
+        0 => 'Abilita per consentire agli ascoltatori di selezionare questo mount point sulle pagine pubbliche di questa stazione.',
       ),
-      'Unique identifier for the target chat or username of the target channel (in the format @channelusername).' => 
+      'Set as Default Mount Point' => 
       array (
-        0 => 'Identificativo univoco per la chat di destinazione o il nome utente del canale di destinazione (nella forma @NomeCanale).',
+        0 => 'Imposta come mount point predefinito',
       ),
-      'Custom API Base URL' => 
+      'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => 'Base API URL personalizzato',
+        0 => 'Se questo mount è il predefinito, verrà riprodotto nell\'anteprima della radio e nella pagina della radio pubblica su questo sistema.',
       ),
-      'Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.' => 
+      'Relay Stream URL' => 
       array (
-        0 => 'Lascia vuoto per usare l\'URL predefinito per le API Telegram (consigliato). Specifica l\'URL completo, come <code>https://api.pwrtelegram.xyz/</code>.',
+        0 => 'URL flusso da ritrasmettere',
       ),
-      'Customize Message' => 
+      'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => 'Personalizza messaggio',
+        0 => 'Inserisci la URL completa di un altro streaming, da ritrasmettere attraverso questo mount point.',
       ),
-      'Main Message Content' => 
+      'Enable AutoDJ' => 
       array (
-        0 => 'Contenuto messaggio principale',
+        0 => 'Abilita Dj automatico',
       ),
-      'Message parsing mode' => 
+      'If enabled, the AutoDJ will automatically play music to this mount point.' => 
       array (
-        0 => 'Modalità interpretazione messaggi',
+        0 => 'Se abilitato, la regia automatica riprodurrà la musica in automatico su questo mount point.',
       ),
-      'TuneIn Station ID' => 
+      'Custom Stream URL' => 
       array (
-        0 => 'Station ID TuneIn',
+        0 => 'URL flusso personalizzato',
       ),
-      'The station ID will be a numeric string that starts with the letter S.' => 
+      'You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.' => 
       array (
-        0 => 'Lo Station ID sarà una stringa numerica che inizia con la lettera S.',
+        0 => 'È possibile impostare un URL personalizzato per questo flusso che AzuraCast utilizzerà quando farà riferimento ad esso. Lascia vuoto per utilizzare il valore predefinito.',
       ),
-      'TuneIn Partner ID' => 
+      'Metadata' => 
       array (
-        0 => 'Partner ID TuneIn',
+        0 => 'Metadati',
       ),
-      'TuneIn Partner Key' => 
+      'Full Text' => 
       array (
-        0 => 'Partner key TuneIn',
+        0 => 'Testo completo',
       ),
-      'GA Property Tracking ID' => 
+      'Artist Name' => 
       array (
-        0 => '',
+        0 => 'Nome artista',
       ),
-      'The property ID used to track live listeners.' => 
+      'Song Title' => 
       array (
-        0 => '',
+        0 => 'Titolo canzone',
       ),
-      'Discord Web Hook URL' => 
+      'Role Name' => 
       array (
-        0 => 'URL interazione Discord',
+        0 => 'Nome ruolo',
       ),
-      'This URL is provided within the Discord application.' => 
+      'System-Wide Permissions' => 
       array (
-        0 => 'Questo URL è fornito all\'interno dell\'applicazione Discord.',
+        0 => 'Permessi globali sistema',
       ),
-      'Now playing on %s:' => 
+      'Permissions for %s' => 
       array (
-        0 => 'In riproduzione su %s:',
-      ),
-      'Description' => 
-      array (
-        0 => 'Descrizione',
-      ),
-      'URL' => 
-      array (
-        0 => 'URL',
-      ),
-      'Author Name' => 
-      array (
-        0 => 'Nome dell\'autore',
-      ),
-      'Thumbnail Image URL' => 
-      array (
-        0 => 'URL immagine miniatura',
-      ),
-      'Footer Text' => 
-      array (
-        0 => 'Testo piè pagina',
-      ),
-      'Powered by %s' => 
-      array (
-        0 => 'Patrocinato da %s',
-      ),
-      'Reset Password' => 
-      array (
-        0 => 'Reimposta Password',
+        0 => 'Permessi per %s',
       ),
       'Roles' => 
       array (
         0 => 'Ruoli',
+      ),
+      'Rolling Release' => 
+      array (
+        0 => '',
+      ),
+      'Stable' => 
+      array (
+        0 => 'Stabile',
+      ),
+      'Settings' => 
+      array (
+        0 => 'Impostazioni',
+      ),
+      'Security' => 
+      array (
+        0 => 'Sicurezza',
+      ),
+      'Privacy' => 
+      array (
+        0 => 'Privacy',
+      ),
+      'Services' => 
+      array (
+        0 => 'Servizi',
+      ),
+      'Site Base URL' => 
+      array (
+        0 => 'URL del sito base',
+      ),
+      'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
+      array (
+        0 => 'L\'indirizzo di base in cui è situato questo servizio. Usa l\'indirizzo IP esterno oppure il nome a dominio completo (se esiste), che punta a questo server.',
+      ),
+      'AzuraCast Instance Name' => 
+      array (
+        0 => 'Nome istanza AzuraCast',
+      ),
+      'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
+      array (
+        0 => 'Questo nome apparirà come sottotitolo accanto al logo AzuraCast, per aiutare a identificare questo server.',
+      ),
+      'Prefer Browser URL (If Available)' => 
+      array (
+        0 => 'Preferisci URL del browser (se disponibile)',
+      ),
+      'If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.' => 
+      array (
+        0 => 'Se questa impostazione è configurata su "Sì", verrà utilizzato l\'URL del browser anziché l\'URL di base quando è disponibile. Impostare su "No" per utilizzare sempre l\'URL di base.',
+      ),
+      'Use Web Proxy for Radio' => 
+      array (
+        0 => 'Usa proxy web per la radio',
+      ),
+      'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
+      array (
+        0 => 'Per default, le radio trasmettono sulla loro porta (es. 8000). Se usi servizi come CloudFlare o accedi alla stazione tramite SSL, dovresti abilitare questa funzione, che indirizza tutte le radio attraverso le porte web (80 e 443).',
+      ),
+      'Days of Playback History to Keep' => 
+      array (
+        0 => 'Giorni di cronologia di riproduzione da conservare',
+      ),
+      'Set longer to preserve more playback history and listener metadata for stations. Set shorter to save disk space. ' => 
+      array (
+        0 => '',
+      ),
+      'Last 14 Days' => 
+      array (
+        0 => 'Ultimi 14 giorni',
+      ),
+      'Last 30 Days' => 
+      array (
+        0 => 'Ultimi 30 giorni',
+      ),
+      'Last 60 Days' => 
+      array (
+        0 => 'Ultimi 60 giorni',
+      ),
+      'Last Year' => 
+      array (
+        0 => 'L\'anno scorso',
+      ),
+      'Last 2 Years' => 
+      array (
+        0 => 'Ultimi 2 anni',
+      ),
+      'Indefinitely' => 
+      array (
+        0 => 'Indefinito',
+      ),
+      'Use WebSockets for Now Playing Updates' => 
+      array (
+        0 => 'Usa WebSocket per gli aggiornamenti dei brani in riproduzione',
+      ),
+      'Enables or disables the use of the newer and faster WebSocket-based system for receiving live updates on public players. You may need to disable this if you encounter problems with it.' => 
+      array (
+        0 => 'Abilita o disabilita l\'uso del sistema basato su WebSocket, più moderno e veloce, per ricevere aggiornamenti in tempo reale sui player di pubblico dominio. Potrebbe essere necessario disabilitarlo in caso di problemi.',
+      ),
+      'Enable Advanced Features' => 
+      array (
+        0 => '',
+      ),
+      'Enable certain advanced features in the web interface, including advanced playlist configuration, station port assignment, changing base media directories and other functionality that should only be used by users who are comfortable with advanced functionality.' => 
+      array (
+        0 => '',
+      ),
+      'Always Use HTTPS' => 
+      array (
+        0 => 'Usa sempre HTTPS',
+      ),
+      'Set to "Yes" to always use "https://" secure URLs, and to automatically redirect to the secure URL when an insecure URL is visited.' => 
+      array (
+        0 => 'Impostare su "Sì" per utilizzare sempre URL "https://" protetti e per reindirizzare automaticamente all\'URL protetto quando viene visitato un URL non protetto.',
+      ),
+      'API "Access-Control-Allow-Origin" header' => 
+      array (
+        0 => 'Intestazione API "Access-Control-Allow-Origin"',
+      ),
+      '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).' => 
+      array (
+        0 => '<a href="%s" target="_blank">Learn more about this header</a>. Set to * to allow all sources, or specify a list of origins separated by a comma (,).',
+      ),
+      'Listener Analytics Collection' => 
+      array (
+        0 => 'Raccolta analisi degli ascolti',
+      ),
+      'Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.' => 
+      array (
+        0 => 'Le statistiche aggregate degli ascolti vengono utilizzate per mostrare i report delle stazioni attraverso il sistema. Le statistiche degli ascolti basate su IP vengono utilizzate per visualizzare il monitoraggio degli ascoltatori in tempo reale e potrebbero essere richieste per i report di royalty.',
+      ),
+      '<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics' => 
+      array (
+        0 => '<b> Completo: </b> raccoglie statistiche di ascolti aggregate e statistiche ascolti basate su IP',
+      ),
+      '<b>Limited:</b> Only collect aggregate listener statistics' => 
+      array (
+        0 => '<b> Limitato: </b> raccoglie solo statistiche di ascolto aggregate',
+      ),
+      '<b>None:</b> Do not collect any listener analytics' => 
+      array (
+        0 => '<b> Nessuno: </b> non raccoglie alcuna analisi degli ascolti',
+      ),
+      'AzuraCast Update Checks' => 
+      array (
+        0 => '',
+      ),
+      'Current Release Channel' => 
+      array (
+        0 => '',
+      ),
+      'For information on how to switch your release channel, visit <a href="%s" target="_blank">this page</a>.' => 
+      array (
+        0 => '',
+      ),
+      'Show Update Announcements' => 
+      array (
+        0 => '',
+      ),
+      'Show new releases within your update channel on the AzuraCast homepage.' => 
+      array (
+        0 => '',
+      ),
+      'E-mail Delivery Service' => 
+      array (
+        0 => 'Servizio E-mail Delivery',
+      ),
+      'Used for "Forgot Password" functionality, web hooks and other functions.' => 
+      array (
+        0 => '',
+      ),
+      'Enable Mail Delivery' => 
+      array (
+        0 => 'Abilita E-mail Delivery',
+      ),
+      'Sender Name' => 
+      array (
+        0 => 'Nome Mittente',
+      ),
+      'Sender E-mail Address' => 
+      array (
+        0 => 'Indirizzo E-mail Mittente',
+      ),
+      'SMTP Host' => 
+      array (
+        0 => 'Host SMTP',
+      ),
+      'SMTP Port' => 
+      array (
+        0 => 'Porta SMTP',
+      ),
+      'Use Secure (TLS) SMTP Connection' => 
+      array (
+        0 => 'Usa Connessione SMTP Sicura (TLS)',
+      ),
+      'Usually enabled for port 465, disabled for ports 587 or 25.' => 
+      array (
+        0 => 'Di solito abilitata per la porta 465, disabilitata per le porte 587 o 25.',
+      ),
+      'SMTP Username' => 
+      array (
+        0 => 'Username SMTP',
+      ),
+      'SMTP Password' => 
+      array (
+        0 => 'Password SMTP',
+      ),
+      'Third-Party Services' => 
+      array (
+        0 => 'Servizi di terze parti',
+      ),
+      'Check Web Services for Album Art for "Now Playing" Tracks' => 
+      array (
+        0 => '',
+      ),
+      'Check Web Services for Album Art When Uploading Media' => 
+      array (
+        0 => '',
+      ),
+      'Last.fm API Key' => 
+      array (
+        0 => 'Chiave API di Last.fm',
+      ),
+      '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.' => 
+      array (
+        0 => '<a href="%s" target="_blank">Applica una chiave API qui</a>. Questo servizio può fornire album per le tracce dove nessuna è disponibile localmente.',
+      ),
+      'Code from Authenticator App' => 
+      array (
+        0 => 'Codice dall\'app di autenticazione',
+      ),
+      'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
+      array (
+        0 => 'Inserisci il codice attuale fornito dall\'app di autenticazione per verificare che funzioni correttamente.',
+      ),
+      'Verify Authenticator' => 
+      array (
+        0 => 'Verifica autenticazione',
+      ),
+      'Backup Filename' => 
+      array (
+        0 => 'Nome File di Backup',
+      ),
+      'Path where the backup file should be located.' => 
+      array (
+        0 => 'Percorso in cui dovrebbe essere posizionato il file di backup.',
+      ),
+      'Exclude Media from Backup' => 
+      array (
+        0 => 'Escludi media dal backup',
+      ),
+      'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
+      array (
+        0 => '',
       ),
       'Station Profile' => 
       array (
@@ -2128,10 +2580,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Administration' => 
       array (
         0 => 'Amministrazione',
-      ),
-      'Name' => 
-      array (
-        0 => 'Nome',
       ),
       'Web Site URL' => 
       array (
@@ -2159,7 +2607,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Enable On-Demand Streaming' => 
       array (
-        0 => '',
+        0 => 'Abilita Streaming On-Demand',
       ),
       'If enabled, music from playlists with on-demand streaming enabled will be available to stream and download via a specialized public page.' => 
       array (
@@ -2167,7 +2615,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Enable Downloads on On-Demand Page' => 
       array (
-        0 => '',
+        0 => 'Abilita i download sulla pagina On-Demand',
       ),
       'URL Stub' => 
       array (
@@ -2184,6 +2632,10 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
         0 => 'Personalizza il numero di brani che verranno visualizzati nella sezione "Cronologia brani" per questa stazione e in tutte le API pubbliche.',
+      ),
+      'Disabled' => 
+      array (
+        0 => 'Disabilitato',
       ),
       'Broadcasting Service' => 
       array (
@@ -2231,11 +2683,11 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Banned IP Addresses' => 
       array (
-        0 => '',
+        0 => 'Indirizzi Ip Bannati',
       ),
       'List one IP address or group (in CIDR format) per line.' => 
       array (
-        0 => '',
+        0 => 'Elenca un indirizzo IP o un gruppo (in formato CIDR) per riga.',
       ),
       'AutoDJ Service' => 
       array (
@@ -2315,7 +2767,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Record Live Broadcasts' => 
       array (
-        0 => '',
+        0 => 'Registra Trasmissioni Dal Vivo',
       ),
       'If enabled, AzuraCast will automatically record any live broadcasts made to this station to per-broadcast recordings.' => 
       array (
@@ -2409,6 +2861,14 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => '',
       ),
+      'Media Storage Location' => 
+      array (
+        0 => '',
+      ),
+      'Live Recordings Storage Location' => 
+      array (
+        0 => '',
+      ),
       'Enable Broadcasting' => 
       array (
         0 => 'Abilita trasmissione',
@@ -2425,169 +2885,61 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'La cartella principale in cui sono memorizzati la playlist della stazione e i file di configurazione. Lascia vuoto per utilizzare la cartella predefinita.',
       ),
-      'Media Storage Location' => 
-      array (
-        0 => '',
-      ),
-      'Live Recordings Storage Location' => 
-      array (
-        0 => '',
-      ),
-      'Role Name' => 
-      array (
-        0 => 'Nome ruolo',
-      ),
-      'System-Wide Permissions' => 
-      array (
-        0 => 'Permessi globali sistema',
-      ),
-      'Permissions for %s' => 
-      array (
-        0 => 'Permessi per %s',
-      ),
-      'Backup Filename' => 
-      array (
-        0 => 'Nome File di Backup',
-      ),
-      'Path where the backup file should be located.' => 
-      array (
-        0 => '',
-      ),
-      'Exclude Media from Backup' => 
-      array (
-        0 => 'Escludi media dal backup',
-      ),
-      'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
-      array (
-        0 => '',
-      ),
-      'Enable to allow listeners to select this relay on this station\'s public pages.' => 
-      array (
-        0 => 'Abilita per consentire agli ascoltatori di selezionare questo collegamento sulle pagine pubbliche di questa stazione.',
-      ),
-      'Remote Station Type' => 
-      array (
-        0 => 'Tipo di stazione remota',
-      ),
-      'The display name assigned to this relay when viewing it on administrative or public pages. Leave blank to automatically generate one.' => 
-      array (
-        0 => 'Il nome visibile assegnato a questo collegamento durante la visualizzazione su pagine di amministrazione o pubbliche. Lascia vuoto per generarne automaticamente uno.',
-      ),
-      'Remote Station Listening URL' => 
-      array (
-        0 => 'URL per ascoltare la stazione remota',
-      ),
-      'Example: if the remote radio URL is %s, enter <code>%s</code>.' => 
-      array (
-        0 => 'Esempio: se l\'URL della radio remota è %s, inserisci <code>%s </code>.',
-      ),
-      'Remote Station Listening Mountpoint/SID' => 
-      array (
-        0 => 'Mountpoint/SID per ascoltare la stazione remota',
-      ),
-      'Specify a mountpoint (i.e. <code>%s</code>) or a Shoutcast SID (i.e. <code>%s</code>) to specify a specific stream to use for statistics or broadcasting.' => 
-      array (
-        0 => 'Inserisci un mountpoint (ad esempio <code>%s</code>) o un SID di Shoutcast (ad esempio <code>%s</code>) per indicare un flusso specifico da utilizzare per le statistiche o la trasmissione.',
-      ),
-      'Remote Station Administrator Password' => 
-      array (
-        0 => '',
-      ),
-      'To retrieve detailed unique listeners and client details, an administrator password is often required.' => 
-      array (
-        0 => '',
-      ),
-      'Broadcast AutoDJ to Remote Station' => 
-      array (
-        0 => 'Trasmetti regia automatica a stazione remota',
-      ),
-      'If enabled, the AutoDJ on this installation will automatically play music to this mount point.' => 
-      array (
-        0 => 'Se abilitata, la regia automatica su questa installazione riprodurrà la musica in automatico su questo mount point.',
-      ),
-      'Configure AutoDJ Broadcasting' => 
-      array (
-        0 => 'Configura trasmissione regia automatica',
-      ),
-      'Remote Station Source Port' => 
-      array (
-        0 => 'Porta sorgente per stazione remota',
-      ),
-      'If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.' => 
-      array (
-        0 => 'Se la porta verso cui trasmetti è diversa da quella che hai elencato nell\'URL sopra, specifica qui la porta sorgente.',
-      ),
-      'Remote Station Source Mountpoint/SID' => 
-      array (
-        0 => 'Mountpoint/SID sorgente per la stazione remota',
-      ),
-      'If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.' => 
-      array (
-        0 => 'Se il mountpoint (ad esempio <code>/radio.mp3</code>) o SID Shoutcast (ad esempio <code>2</code>) verso cui trasmetti da quello elencato sopra, specifica qui il mount point sorgente.',
-      ),
-      'Remote Station Source Username' => 
-      array (
-        0 => 'Nome utente sorgente per la stazione remota',
-      ),
-      'If you are broadcasting using AutoDJ, enter the source username here. This may be blank.' => 
-      array (
-        0 => 'Se stai trasmettendo usando la regia automatica, inserisci qui il nome utente sorgente. Questo potrebbe essere vuoto.',
-      ),
-      'Remote Station Source Password' => 
-      array (
-        0 => 'Password sorgente stazione remota',
-      ),
-      'If you are broadcasting using AutoDJ, enter the source password here.' => 
-      array (
-        0 => 'Se stai trasmettendo usando la regia automatica, inserire qui la password sorgente.',
-      ),
       'Log in' => 
       array (
         0 => 'Accedi',
       ),
-      'Metadata' => 
+      'Enable Automated Assignment' => 
       array (
-        0 => 'Metadati',
+        0 => 'Abilita assegnazione automatica',
       ),
-      'Full Text' => 
+      'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => 'Testo completo',
+        0 => 'Permetti al sistema di assegnare periodicamente canzoni in automatico alle playlist, basandosi sulle loro prestazioni. Questo processo viene eseguito in background, solo se questa opzione viene abilitata e solo se almeno una playlist è impostata su "includi in assegnazione automatica".',
       ),
-      'Artist Name' => 
+      'Enabled' => 
       array (
-        0 => 'Nome artista',
+        0 => 'Abilitato',
       ),
-      'Use Browser Default' => 
+      'Days Between Automated Assignments' => 
       array (
-        0 => 'Usa impostazione browser predefinita',
+        0 => 'Giorni tra le assegnazioni automatiche',
       ),
-      'Leave these fields blank to continue using your current password.' => 
+      'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => 'Lascia questi campi vuoti per continuare a utilizzare la password attuale.',
+        0 => 'Basandosi su questa impostazione, il sistema riassegnerà automaticamente le canzoni ogni (tot) giorni usando i dati dai precedenti (tot) giorni.',
       ),
-      'Current Password' => 
+      '%d days' => 
       array (
-        0 => 'Password attuale',
+        0 => '%d giorni',
       ),
-      'Confirm New Password' => 
+      'Comments' => 
       array (
-        0 => 'Conferma nuova password',
+        0 => 'Commenti',
       ),
-      'Customization' => 
+      'Describe the use-case for this API key for future reference.' => 
       array (
-        0 => 'Personalizzazione',
+        0 => 'Descrivi il caso d\'uso per questa chiave API per riferimento futuro.',
       ),
-      'Site Theme' => 
+      '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => 'Tema del sito',
+        0 => '<p> SHOUTcast 2 DNAS non è un software gratuito e la sua licenza restrittiva non consente a AzuraCast di distribuire l\'eseguibile SHOUTcast. Per installare SHOUTcast, devi scaricare l\'eseguibile Linux x64 dal <a href="%s" target="_blank">sito web SHOUTcast Radio Manager</a>. Carica il <code>sc_serv2_linux_x64-latest.tar.gz</code> nel campo sottostante per estrarlo automaticamente nella directory corretta. </p>',
       ),
-      'Are you sure?' => 
+      'Current Installed Version' => 
       array (
-        0 => '',
+        0 => 'Versione attualmente installata',
       ),
-      'Advanced' => 
+      'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => 'Avanzata',
+        0 => 'Attualmente ShoutCast non è presente in questa installazione.',
+      ),
+      'Select SHOUTcast 64-bit .tar.gz File' => 
+      array (
+        0 => 'Seleziona il file SHOUTcast 64-bit .tar.gz',
+      ),
+      'Upload' => 
+      array (
+        0 => 'Carica',
       ),
       'Generate the translation locale file.' => 
       array (
@@ -2619,7 +2971,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Clear the contents of the message queue.' => 
       array (
-        0 => '',
+        0 => 'Pulisce il contenuto della coda dei messaggi.',
       ),
       'List all settings in the AzuraCast settings database.' => 
       array (
@@ -2629,249 +2981,93 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Fai il backup del database e le statistiche di AzuraCast (facoltativo backup dei media).',
       ),
-      'System Maintenance' => 
+      'Skip to main content' => 
       array (
-        0 => 'Manutenzione del sistema',
+        0 => 'Vai al contenuto',
       ),
-      'Custom Branding' => 
+      'Toggle Sidebar' => 
       array (
-        0 => 'Marchio personalizzato',
+        0 => 'Barra laterale',
       ),
-      'System Logs' => 
+      'Toggle Menu' => 
       array (
-        0 => 'Log di sistema',
+        0 => 'Menu',
       ),
-      'Storage Locations' => 
+      'Dashboard' => 
+      array (
+        0 => 'Bacheca',
+      ),
+      'System Administration' => 
+      array (
+        0 => 'Amministrazione sistema',
+      ),
+      'My Account' => 
+      array (
+        0 => 'Il mio account',
+      ),
+      'Switch Theme' => 
+      array (
+        0 => 'Cambia tema',
+      ),
+      'My API Keys' => 
+      array (
+        0 => 'Le mie API key',
+      ),
+      'Help' => 
+      array (
+        0 => 'Aiuto',
+      ),
+      'End Session' => 
+      array (
+        0 => 'Termina sessione',
+      ),
+      'Sign Out' => 
+      array (
+        0 => 'Esci',
+      ),
+      'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
+      array (
+        0 => 'Apprezzi il nostro software? <a href="%s" target="_blank"> Dona per supportare AzuraCast! </a>',
+      ),
+      'Errors were encountered when trying to save changes:' => 
+      array (
+        0 => 'Errori riscontrati tentando di salvare le modifiche:',
+      ),
+      'General' => 
+      array (
+        0 => 'Generale',
+      ),
+      'Details' => 
+      array (
+        0 => 'Dettagli',
+      ),
+      '%s of %s Used (%d Files)' => 
+      array (
+        0 => '%s di %s Usati (%d File)',
+      ),
+      '%s Used (%d Files)' => 
       array (
         0 => '',
       ),
-      'System Debugger' => 
+      'You can also upload files in bulk via SFTP.' => 
       array (
-        0 => '',
+        0 => 'Puoi anche caricare file in massa tramite SFTP.',
       ),
-      'Users' => 
+      'Manage SFTP Accounts' => 
       array (
-        0 => 'Utenti',
+        0 => 'Gestisci Account SFTP',
       ),
-      'User Accounts' => 
+      'Please wait...' => 
       array (
-        0 => 'Account utenti',
+        0 => 'Attendere prego...',
       ),
-      'Permissions' => 
+      'Station Broadcasting Disabled' => 
       array (
-        0 => 'Permessi',
+        0 => 'Trasmissione radio disattivata',
       ),
-      'Audit Log' => 
+      'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
       array (
-        0 => '',
-      ),
-      'API Keys' => 
-      array (
-        0 => 'API Key',
-      ),
-      'Stations' => 
-      array (
-        0 => 'Stazioni',
-      ),
-      'Custom Fields' => 
-      array (
-        0 => 'Campi personalizzati',
-      ),
-      'Connected AzuraRelays' => 
-      array (
-        0 => 'AzuraRelays Collegato',
-      ),
-      'Start Station' => 
-      array (
-        0 => 'Avvia radio',
-      ),
-      'Ready to start broadcasting? Click to start your station.' => 
-      array (
-        0 => 'Pronto per iniziare a trasmettere? Clicca per avviare la tua radio.',
-      ),
-      'Restart broadcasting? This will disconnect any current listeners.' => 
-      array (
-        0 => '',
-      ),
-      'Restart to Apply Changes' => 
-      array (
-        0 => 'Riavvia per applicare le modifiche',
-      ),
-      'Click to restart your station and apply configuration changes.' => 
-      array (
-        0 => 'Fare clic per riavviare la radio e applicare le modifiche alla configurazione.',
-      ),
-      'Profile' => 
-      array (
-        0 => 'Profilo',
-      ),
-      'Public Page' => 
-      array (
-        0 => 'Pagina pubblica',
-      ),
-      'On-Demand Media' => 
-      array (
-        0 => '',
-      ),
-      'Music Files' => 
-      array (
-        0 => 'File musicali',
-      ),
-      'Playlists' => 
-      array (
-        0 => 'Playlist',
-      ),
-      'Streamer/DJ Accounts' => 
-      array (
-        0 => 'Account streamer/Dj',
-      ),
-      'Web DJ' => 
-      array (
-        0 => 'Web DJ',
-      ),
-      'Mount Points' => 
-      array (
-        0 => 'Mount Point',
-      ),
-      'Remote Relays' => 
-      array (
-        0 => 'Collegamenti remoti',
-      ),
-      'Web Hooks' => 
-      array (
-        0 => 'Interazioni web',
-      ),
-      'Reports' => 
-      array (
-        0 => 'Report',
-      ),
-      'Statistics Overview' => 
-      array (
-        0 => 'Panoramica statistiche',
-      ),
-      'Song Requests' => 
-      array (
-        0 => 'Richieste di brani',
-      ),
-      'Song Playback Timeline' => 
-      array (
-        0 => 'Orari riproduzione brani',
-      ),
-      'Song Listener Impact' => 
-      array (
-        0 => 'Impatto ascoltatori brano',
-      ),
-      'Duplicate Songs' => 
-      array (
-        0 => 'Duplica brani',
-      ),
-      'Unprocessable Files' => 
-      array (
-        0 => '',
-      ),
-      'SoundExchange Royalties' => 
-      array (
-        0 => 'Royalty di SoundExchange',
-      ),
-      'Utilities' => 
-      array (
-        0 => 'Utilità',
-      ),
-      'SFTP Users' => 
-      array (
-        0 => 'Utenti SFTP',
-      ),
-      'Automated Assignment' => 
-      array (
-        0 => 'Assegnazione automatica',
-      ),
-      'Log Viewer' => 
-      array (
-        0 => 'Visualizzatore log',
-      ),
-      'Upcoming Song Queue' => 
-      array (
-        0 => 'Coda di brani imminente',
-      ),
-      'Restart Broadcasting' => 
-      array (
-        0 => 'Riavvia trasmissione',
-      ),
-      'Generic Web Hook' => 
-      array (
-        0 => 'Interazione web generica',
-      ),
-      'Automatically send a message to any URL when your station data changes.' => 
-      array (
-        0 => 'Invia automaticamente un messaggio ad un URL qualsiasi quando cambiano i metadati della radio.',
-      ),
-      'TuneIn AIR' => 
-      array (
-        0 => 'In onda su TuneIn',
-      ),
-      'Send song metadata changes to TuneIn.' => 
-      array (
-        0 => 'Invia a TuneIn i metadati delle canzoni quando cambiano.',
-      ),
-      'Discord Webhook' => 
-      array (
-        0 => 'Interazione con Discord',
-      ),
-      'Automatically send a customized message to your Discord server.' => 
-      array (
-        0 => 'Invia automaticamente un messaggio personalizzato al tuo server Discord.',
-      ),
-      'Telegram Chat Message' => 
-      array (
-        0 => 'Messaggio chat Telegram',
-      ),
-      'Use the Telegram Bot API to send a message to a channel.' => 
-      array (
-        0 => 'Usa l\'API dei bot Telegram per inviare un messaggio a un canale.',
-      ),
-      'Twitter Post' => 
-      array (
-        0 => 'Posta su Twitter',
-      ),
-      'Automatically send a tweet.' => 
-      array (
-        0 => 'Manda un tweet in automatico.',
-      ),
-      'Google Analytics Integration' => 
-      array (
-        0 => '',
-      ),
-      'Send stream listener details to Google Analytics.' => 
-      array (
-        0 => '',
-      ),
-      'Any time the currently playing song changes' => 
-      array (
-        0 => 'Ogni volta che cambia il brano in riproduzione',
-      ),
-      'Any time the listener count increases' => 
-      array (
-        0 => 'Ogni volta che aumenta il numero di ascoltatori',
-      ),
-      'Any time the listener count decreases' => 
-      array (
-        0 => 'Ogni volta che diminuisce il numero di ascoltatori',
-      ),
-      'Any time a live streamer/DJ connects to the stream' => 
-      array (
-        0 => 'Ogni volta che un curatore/DJ si collega alla radio',
-      ),
-      'Any time a live streamer/DJ disconnects from the stream' => 
-      array (
-        0 => 'Ogni volta che un curatore/DJ si disconnette dalla radio',
-      ),
-      'Station Time' => 
-      array (
-        0 => 'Orario stazione',
-      ),
-      'Available Logs' => 
-      array (
-        0 => 'Log disponibili',
+        0 => 'La tua stazione non è attualmente abilitata per la trasmissione. È comunque possibile gestire i file multimediali, le playlist e altre impostazioni della stazione. Per riattivare la trasmissione, <a href="%s"> modifica il profilo della tua stazione </a>.',
       ),
       'Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.' => 
       array (
@@ -2901,181 +3097,37 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Mount predefinito',
       ),
-      'Listener Request' => 
+      'Station Time' => 
       array (
-        0 => 'Richiesta ascoltatore',
+        0 => 'Orario stazione',
       ),
-      'Playlist:' => 
-      array (
-        0 => 'Playlist:',
-      ),
-      'Delete queue item?' => 
-      array (
-        0 => 'Elimina elemento della coda?',
-      ),
-      'Cued On' => 
-      array (
-        0 => 'Inserito segnale su',
-      ),
-      'Source' => 
-      array (
-        0 => 'Sorgente',
-      ),
-      'Automated Playlist Assignment' => 
-      array (
-        0 => 'Assegnazione automatica playlist',
-      ),
-      'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
-      array (
-        0 => 'Basandosi sulle precedenti prestazioni delle canzoni sulla tua radio, %s può automaticamente distribuire i brani tra le tue playlist, mettendo quelli di qualità migliore nelle playlist di peso più alto.',
-      ),
-      'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
-      array (
-        0 => 'Una volta configurata l\'assegnazione automatica, clicca il tasto sottostante per eseguire il processo di assegnazione. Non verrà eseguito in alcun modo, se non si seleziona "abilitato" qui sotto.',
-      ),
-      'Run Automated Assignment' => 
-      array (
-        0 => 'Esegui assegnazione automatica',
-      ),
-      'Configure Automated Assignment' => 
-      array (
-        0 => 'Configura assegnazione automatica',
-      ),
-      'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
-      array (
-        0 => 'Le interazioni Web ti consentono di collegarti a servizi Web esterni e notificare a questi, le modifiche alla tua stazione.',
-      ),
-      'Type' => 
-      array (
-        0 => 'Tipo',
-      ),
-      'Triggers' => 
-      array (
-        0 => 'Eventi',
-      ),
-      'Enable' => 
-      array (
-        0 => 'Abilita',
-      ),
-      'Trigger the web hook manually and view the raw response.' => 
-      array (
-        0 => 'Attiva manualmente l\'interazione web e visualizza la risposta non elaborata.',
-      ),
-      'Test' => 
-      array (
-        0 => 'Test',
-      ),
-      'Delete web hook "%s"?' => 
-      array (
-        0 => 'Elimina interazione web "%s"?',
-      ),
-      'Select the type of web hook to create.' => 
-      array (
-        0 => 'Seleziona il tipo di interazione web da creare.',
-      ),
-      'Reorder Playlist' => 
-      array (
-        0 => 'Riordina playlist',
-      ),
-      'Reorder Playlist: %s' => 
-      array (
-        0 => 'Riordina Playlist: %s',
-      ),
-      'Down' => 
-      array (
-        0 => 'Giù',
-      ),
-      'Up' => 
-      array (
-        0 => 'Su',
-      ),
-      'Connection Information' => 
-      array (
-        0 => 'Informazioni connessione',
-      ),
-      'IceCast Clients' => 
-      array (
-        0 => 'Client IceCast',
-      ),
-      'Server' => 
-      array (
-        0 => 'Server',
-      ),
-      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
-      array (
-        0 => 'Potrebbe essere necessario connettersi direttamente tramite il tuo indirizzo IP, vale a dire <code>%s</code>.',
-      ),
-      'Port' => 
-      array (
-        0 => 'Porta',
-      ),
-      'Mount Name' => 
-      array (
-        0 => 'Nome Mount',
-      ),
-      'ShoutCast v1 Clients' => 
-      array (
-        0 => 'Client ShoutCast v1',
-      ),
-      '%d (%d for some clients)' => 
-      array (
-        0 => '%d (%d per alcuni client)',
-      ),
-      'or' => 
+      'Clear all pending requests?' => 
       array (
         0 => '',
       ),
-      '(DJ username and password separated by a colon or comma)' => 
+      'Clear Pending Requests' => 
       array (
         0 => '',
       ),
-      'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
+      'Date Requested' => 
       array (
-        0 => 'Le istruzioni di installazione per il software di trasmissione live sono disponibili <a href="%s" target="_blank">sul Wiki AzuraCast</a>.',
+        0 => 'Data richiesta',
       ),
-      'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
+      'Date Played' => 
       array (
-        0 => 'Attualmente gli account degli streamer sono disabilitati per questa stazione. Per abilitarli, clicca il pulsante sotto.',
+        0 => 'Data riproduzione',
       ),
-      'Enable Streaming' => 
+      'Requester IP' => 
       array (
-        0 => 'Abilita Streaming',
+        0 => 'IP richiesta',
       ),
-      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
+      'Not Played' => 
       array (
-        0 => 'I collegamenti remoti consentono di lavorare con il software di trasmissione al di fuori di questo server. Qualsiasi flusso che imposti qui sarà incluso nelle statistiche della tua stazione. È inoltre possibile trasmettere da questo server ai collegamenti remoti.',
+        0 => 'Non riprodotto',
       ),
-      'Remote Relay' => 
+      'Delete request?' => 
       array (
-        0 => 'Collegamento remoto',
-      ),
-      'Delete remote relay "%s"?' => 
-      array (
-        0 => 'Elimina collegamento remoto "%s"?',
-      ),
-      'Live Streamer:' => 
-      array (
-        0 => 'Streamer In Diretta:',
-      ),
-      'Today' => 
-      array (
-        0 => 'Oggi',
-      ),
-      'Yesterday' => 
-      array (
-        0 => 'Ieri',
-      ),
-      'Last 7 Days' => 
-      array (
-        0 => 'Ultimi 7 giorni',
-      ),
-      'This Month' => 
-      array (
-        0 => 'Questo mese',
-      ),
-      'Last Month' => 
-      array (
-        0 => 'Il mese scorso',
+        0 => '',
       ),
       'Best Performing Songs' => 
       array (
@@ -3109,14 +3161,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Riproduzioni',
       ),
-      'Download CSV' => 
-      array (
-        0 => 'Scarica CSV',
-      ),
-      'Date/Time' => 
-      array (
-        0 => 'Data/Ora',
-      ),
       'Live Listeners' => 
       array (
         0 => 'Ascoltatori della diretta',
@@ -3125,33 +3169,57 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => '',
       ),
-      'Clear all pending requests?' => 
+      'Today' => 
       array (
-        0 => '',
+        0 => 'Oggi',
       ),
-      'Clear Pending Requests' => 
+      'Yesterday' => 
       array (
-        0 => '',
+        0 => 'Ieri',
       ),
-      'Date Requested' => 
+      'Last 7 Days' => 
       array (
-        0 => 'Data richiesta',
+        0 => 'Ultimi 7 giorni',
       ),
-      'Date Played' => 
+      'This Month' => 
       array (
-        0 => 'Data riproduzione',
+        0 => 'Questo mese',
       ),
-      'Requester IP' => 
+      'Last Month' => 
       array (
-        0 => 'IP richiesta',
+        0 => 'Il mese scorso',
       ),
-      'Not Played' => 
+      'Report Not Available' => 
       array (
-        0 => 'Non riprodotto',
+        0 => 'Report non disponibile',
       ),
-      'Delete request?' => 
+      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
       array (
-        0 => '',
+        0 => 'Questo report non è disponibile per questa stazione, perché l\'amministratore di sistema ha scelto di non raccogliere informazioni dettagliate sugli ascoltatori basate su IP.',
+      ),
+      'Download CSV' => 
+      array (
+        0 => 'Scarica CSV',
+      ),
+      'Date/Time' => 
+      array (
+        0 => 'Data/Ora',
+      ),
+      'Source' => 
+      array (
+        0 => 'Sorgente',
+      ),
+      'Listener Request' => 
+      array (
+        0 => 'Richiesta ascoltatore',
+      ),
+      'Playlist:' => 
+      array (
+        0 => 'Playlist:',
+      ),
+      'Live Streamer:' => 
+      array (
+        0 => 'Streamer In Diretta:',
       ),
       'Unique Listeners' => 
       array (
@@ -3203,7 +3271,11 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Remote' => 
       array (
-        0 => '',
+        0 => 'Remoto',
+      ),
+      'Hour' => 
+      array (
+        0 => 'Ora',
       ),
       'Filename' => 
       array (
@@ -3237,101 +3309,285 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Ratio',
       ),
-      'Hour' => 
+      'Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.' => 
       array (
-        0 => 'Ora',
+        0 => 'I collegamenti remoti consentono di lavorare con il software di trasmissione al di fuori di questo server. Qualsiasi flusso che imposti qui sarà incluso nelle statistiche della tua stazione. È inoltre possibile trasmettere da questo server ai collegamenti remoti.',
       ),
-      'Report Not Available' => 
+      'Remote Relay' => 
       array (
-        0 => 'Report non disponibile',
+        0 => 'Collegamento remoto',
       ),
-      'This report is not available for this station, because the system administrator has chosen not to collect detailed IP-based listener information.' => 
+      'Delete remote relay "%s"?' => 
       array (
-        0 => 'Questo report non è disponibile per questa stazione, perché l\'amministratore di sistema ha scelto di non raccogliere informazioni dettagliate sugli ascoltatori basate su IP.',
+        0 => 'Elimina collegamento remoto "%s"?',
+      ),
+      'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
+      array (
+        0 => 'Attualmente gli account degli streamer sono disabilitati per questa stazione. Per abilitarli, clicca il pulsante sotto.',
+      ),
+      'Enable Streaming' => 
+      array (
+        0 => 'Abilita Streaming',
+      ),
+      'Connection Information' => 
+      array (
+        0 => 'Informazioni connessione',
+      ),
+      'IceCast Clients' => 
+      array (
+        0 => 'Client IceCast',
+      ),
+      'Server' => 
+      array (
+        0 => 'Server',
+      ),
+      'You may need to connect directly via your IP address, which is <code>%s</code>.' => 
+      array (
+        0 => 'Potrebbe essere necessario connettersi direttamente tramite il tuo indirizzo IP, vale a dire <code>%s</code>.',
+      ),
+      'Port' => 
+      array (
+        0 => 'Porta',
+      ),
+      'Mount Name' => 
+      array (
+        0 => 'Nome Mount',
+      ),
+      'ShoutCast v1 Clients' => 
+      array (
+        0 => 'Client ShoutCast v1',
+      ),
+      '%d (%d for some clients)' => 
+      array (
+        0 => '%d (%d per alcuni client)',
+      ),
+      'or' => 
+      array (
+        0 => 'o',
+      ),
+      '(DJ username and password separated by a colon or comma)' => 
+      array (
+        0 => '(Nome utente e password DJ separati da due punti o virgola)',
+      ),
+      'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
+      array (
+        0 => 'Le istruzioni di installazione per il software di trasmissione live sono disponibili <a href="%s" target="_blank">sul Wiki AzuraCast</a>.',
       ),
       'Delete SFTP User "%s"?' => 
       array (
         0 => 'Eliminare l\'utente SFTP "%s"?',
       ),
-      'Station Broadcasting Disabled' => 
+      'Automated Playlist Assignment' => 
       array (
-        0 => 'Trasmissione radio disattivata',
+        0 => 'Assegnazione automatica playlist',
       ),
-      'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
+      'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
       array (
-        0 => 'La tua stazione non è attualmente abilitata per la trasmissione. È comunque possibile gestire i file multimediali, le playlist e altre impostazioni della stazione. Per riattivare la trasmissione, <a href="%s"> modifica il profilo della tua stazione </a>.',
+        0 => 'Basandosi sulle precedenti prestazioni delle canzoni sulla tua radio, %s può automaticamente distribuire i brani tra le tue playlist, mettendo quelli di qualità migliore nelle playlist di peso più alto.',
       ),
-      'Please wait...' => 
+      'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
       array (
-        0 => 'Attendere prego...',
+        0 => 'Una volta configurata l\'assegnazione automatica, clicca il tasto sottostante per eseguire il processo di assegnazione. Non verrà eseguito in alcun modo, se non si seleziona "abilitato" qui sotto.',
       ),
-      '%s of %s Used (%d Files)' => 
+      'Run Automated Assignment' => 
       array (
-        0 => '%s di %s Usati (%d File)',
+        0 => 'Esegui assegnazione automatica',
       ),
-      '%s Used (%d Files)' => 
+      'Configure Automated Assignment' => 
+      array (
+        0 => 'Configura assegnazione automatica',
+      ),
+      'Select the type of web hook to create.' => 
+      array (
+        0 => 'Seleziona il tipo di interazione web da creare.',
+      ),
+      'Web hooks let you connect to external web services and broadcast changes to your station to them.' => 
+      array (
+        0 => 'Le interazioni Web ti consentono di collegarti a servizi Web esterni e notificare a questi, le modifiche alla tua stazione.',
+      ),
+      'Type' => 
+      array (
+        0 => 'Tipo',
+      ),
+      'Triggers' => 
+      array (
+        0 => 'Eventi',
+      ),
+      'Enable' => 
+      array (
+        0 => 'Abilita',
+      ),
+      'Trigger the web hook manually and view the raw response.' => 
+      array (
+        0 => 'Attiva manualmente l\'interazione web e visualizza la risposta non elaborata.',
+      ),
+      'Test' => 
+      array (
+        0 => 'Test',
+      ),
+      'Delete web hook "%s"?' => 
+      array (
+        0 => 'Elimina interazione web "%s"?',
+      ),
+      'Available Logs' => 
+      array (
+        0 => 'Log disponibili',
+      ),
+      'Account Recovery' => 
+      array (
+        0 => 'Recupero Account',
+      ),
+      'An account recovery link has been requested for your account on "%s".' => 
+      array (
+        0 => 'È stato richiesto un link per il recupero dell\'account per il tuo account su "%s".',
+      ),
+      'Click the link below to log in to your account.' => 
+      array (
+        0 => 'Clicca sul link qui sotto per accedere al tuo account.',
+      ),
+      'Copy to Clipboard' => 
+      array (
+        0 => 'Copia negli appunti',
+      ),
+      'Pause' => 
+      array (
+        0 => 'Pausa',
+      ),
+      'Play' => 
+      array (
+        0 => 'Play',
+      ),
+      'Log View' => 
+      array (
+        0 => 'Visualizzazione log',
+      ),
+      'Automatically scroll to the bottom of the log' => 
+      array (
+        0 => 'Scorri automaticamente fino alla fine del log',
+      ),
+      'Need Help?' => 
+      array (
+        0 => 'Ti serve aiuto?',
+      ),
+      'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
+      array (
+        0 => 'Puoi trovare le risposte per molte domande comuni nei nostri <a href="%s" target="_blank"> documenti di supporto </a>.',
+      ),
+      'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
+      array (
+        0 => 'Se stai riscontrando un bug o un errore, puoi inviare una segnalazione su GitHub utilizzando il link sottostante.',
+      ),
+      'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
+      array (
+        0 => 'La tua attuale installazione è di tipo <b>%s </b>. Assicurati di includere questo dato quando crei una nuova segnalazione.',
+      ),
+      'Add New GitHub Issue' => 
+      array (
+        0 => 'Aggiungi nuova segnalazione su GitHub',
+      ),
+      'Log In' => 
+      array (
+        0 => 'Accedi',
+      ),
+      'Delete user "%s"?' => 
+      array (
+        0 => 'Elimina utente "%s"?',
+      ),
+      '(You)' => 
+      array (
+        0 => '(Tu)',
+      ),
+      'SHOUTcast Installed' => 
+      array (
+        0 => 'SHOUTcast Installato',
+      ),
+      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
+      array (
+        0 => 'SHOUTcast 2 DNAS è installato e pronto per essere utilizzato.',
+      ),
+      'Clear Cache' => 
+      array (
+        0 => 'Cancella Cache',
+      ),
+      'Clearing the application cache may log you out of your session.' => 
+      array (
+        0 => 'La cancellazione della cache dell\'applicazione potrebbe disconnettersi dalla sessione.',
+      ),
+      'Clear All Message Queues' => 
       array (
         0 => '',
       ),
-      'You can also upload files in bulk via SFTP.' => 
+      'This will clear any pending unprocessed messages in all message queues.' => 
       array (
-        0 => 'Puoi anche caricare file in massa tramite SFTP.',
+        0 => 'Questo cancellerà tutti i messaggi non elaborati in attesa in tutte le code dei messaggi.',
       ),
-      'Manage SFTP Accounts' => 
+      'Synchronization Tasks' => 
       array (
-        0 => 'Gestisci Account SFTP',
+        0 => 'Compiti di sincronizzazione',
       ),
-      'Skip to main content' => 
+      'Run Task' => 
       array (
-        0 => 'Vai al contenuto',
+        0 => 'Esegui compito',
       ),
-      'Toggle Sidebar' => 
+      'Message Queues' => 
       array (
-        0 => 'Barra laterale',
+        0 => 'Coda Dei Messaggi',
       ),
-      'Toggle Menu' => 
+      '%d queued messages' => 
       array (
-        0 => 'Menu',
+        0 => '%d messaggi in coda',
       ),
-      'Dashboard' => 
+      'Clear Queue' => 
       array (
-        0 => 'Bacheca',
+        0 => 'Cancella Coda',
       ),
-      'System Administration' => 
+      'Station-Specific Debugging' => 
       array (
-        0 => 'Amministrazione sistema',
+        0 => '',
       ),
-      'My Account' => 
+      'Rebuild AutoDJ Queue' => 
       array (
-        0 => 'Il mio account',
+        0 => 'Ricostruisci Coda AutoDJ',
       ),
-      'Switch Theme' => 
+      'Run Test' => 
       array (
-        0 => 'Cambia tema',
+        0 => 'Esegui Test',
       ),
-      'My API Keys' => 
+      'Send Liquidsoap Telnet Command' => 
       array (
-        0 => 'Le mie API key',
+        0 => 'Invia Comando Telnet Liquidsoap',
       ),
-      'Help' => 
+      'Command' => 
       array (
-        0 => 'Aiuto',
+        0 => '',
       ),
-      'End Session' => 
+      'Execute Command' => 
       array (
-        0 => 'Termina sessione',
+        0 => 'Esegui Comando',
       ),
-      'Sign Out' => 
+      'Run Synchronization Task' => 
       array (
-        0 => 'Esci',
+        0 => 'Esegui Attività Di Sincronizzazione',
       ),
-      'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
+      'Debug Home' => 
       array (
-        0 => 'Apprezzi il nostro software? <a href="%s" target="_blank"> Dona per supportare AzuraCast! </a>',
+        0 => '',
       ),
-      'Mascot designed by %s' => 
+      'The synchronization task is running in the background. The log below will update automatically.' => 
       array (
-        0 => 'Mascotte disegnata da %s',
+        0 => 'L\'attività di sincronizzazione è in esecuzione in background. Il log qui sotto si aggiornerà automaticamente.',
+      ),
+      'Delete role "%s"?' => 
+      array (
+        0 => 'Elimina ruolo "%s"?',
+      ),
+      'This role cannot be deleted.' => 
+      array (
+        0 => 'Questo ruolo non può essere eliminato.',
+      ),
+      'Global' => 
+      array (
+        0 => 'Globale',
       ),
       'Manage Stations' => 
       array (
@@ -3357,50 +3613,6 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Elimina stazione "%s"?',
       ),
-      'Delete custom field "%s"?' => 
-      array (
-        0 => 'Elimina campo personalizzato "%s"?',
-      ),
-      'SHOUTcast Installed' => 
-      array (
-        0 => 'SHOUTcast Installato',
-      ),
-      'The SHOUTcast 2 DNAS is installed and ready for use.' => 
-      array (
-        0 => 'SHOUTcast 2 DNAS è installato e pronto per essere utilizzato.',
-      ),
-      'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
-      array (
-        0 => 'Poiché si esegue Docker, è possibile accedere a alcuni registri di sistema solo da una sessione shell sul computer ospitante. Puoi eseguire <code>%s</code> per accedere ai log del sistema dal terminale.',
-      ),
-      'Logs by Station' => 
-      array (
-        0 => 'Log per stazione',
-      ),
-      'Delete role "%s"?' => 
-      array (
-        0 => 'Elimina ruolo "%s"?',
-      ),
-      'This role cannot be deleted.' => 
-      array (
-        0 => 'Questo ruolo non può essere eliminato.',
-      ),
-      'Global' => 
-      array (
-        0 => 'Globale',
-      ),
-      'API Key' => 
-      array (
-        0 => 'API Key',
-      ),
-      'Owner' => 
-      array (
-        0 => 'Proprietario',
-      ),
-      'Revoke' => 
-      array (
-        0 => 'Revoca',
-      ),
       'Relay' => 
       array (
         0 => '',
@@ -3417,17 +3629,73 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Ultimi aggiornamenti',
       ),
-      'Log In' => 
+      'API Key' => 
       array (
-        0 => 'Accedi',
+        0 => 'API Key',
       ),
-      'Delete user "%s"?' => 
+      'Owner' => 
       array (
-        0 => 'Elimina utente "%s"?',
+        0 => 'Proprietario',
       ),
-      '(You)' => 
+      'Revoke' => 
       array (
-        0 => '(Tu)',
+        0 => 'Revoca',
+      ),
+      'Delete custom field "%s"?' => 
+      array (
+        0 => 'Elimina campo personalizzato "%s"?',
+      ),
+      'GeoLite version "%s" is currently installed.' => 
+      array (
+        0 => 'La versione GeoLite "%s" è attualmente installata.',
+      ),
+      'Uninstall GeoLite database?' => 
+      array (
+        0 => 'Disinstallare il database GeoLite?',
+      ),
+      'Uninstall GeoLite Database' => 
+      array (
+        0 => 'Disinstalla Il Database GeoLite',
+      ),
+      'GeoLite is not currently installed on this installation.' => 
+      array (
+        0 => 'GeoLite non è attualmente installato in questa installazione.',
+      ),
+      'Insert' => 
+      array (
+        0 => 'Inserisci',
+      ),
+      'Update' => 
+      array (
+        0 => 'Aggiorna',
+      ),
+      'Changes' => 
+      array (
+        0 => 'Modifiche',
+      ),
+      'User' => 
+      array (
+        0 => 'Utente',
+      ),
+      'Identifier' => 
+      array (
+        0 => 'Identifica',
+      ),
+      'Target' => 
+      array (
+        0 => 'Target',
+      ),
+      'Field' => 
+      array (
+        0 => 'Campo',
+      ),
+      'Previous' => 
+      array (
+        0 => 'Precedente',
+      ),
+      'Updated' => 
+      array (
+        0 => 'Aggiornato',
       ),
       'Server Status' => 
       array (
@@ -3435,11 +3703,11 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'CPU Load' => 
       array (
-        0 => '',
+        0 => 'Carico CPU',
       ),
       'Current' => 
       array (
-        0 => '',
+        0 => 'Corrente',
       ),
       '15-Minute Average' => 
       array (
@@ -3447,7 +3715,7 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Memory' => 
       array (
-        0 => '',
+        0 => 'Memoria',
       ),
       '%s of %s Used' => 
       array (
@@ -3455,83 +3723,19 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       ),
       'Disk Space' => 
       array (
-        0 => '',
-      ),
-      'Synchronization Tasks' => 
-      array (
-        0 => 'Compiti di sincronizzazione',
+        0 => 'Spazio Su Disco',
       ),
       'Last run: %s' => 
       array (
         0 => 'Ultima esecuzione: %s',
       ),
-      'Run Task' => 
+      'Backups Home' => 
       array (
-        0 => 'Esegui compito',
+        0 => 'Homepage dei backup',
       ),
-      'Clear Cache' => 
+      'The backup process is running in the background. The log below will update automatically.' => 
       array (
-        0 => '',
-      ),
-      'Clearing the application cache may log you out of your session.' => 
-      array (
-        0 => '',
-      ),
-      'Clear All Message Queues' => 
-      array (
-        0 => '',
-      ),
-      'This will clear any pending unprocessed messages in all message queues.' => 
-      array (
-        0 => '',
-      ),
-      'Message Queues' => 
-      array (
-        0 => '',
-      ),
-      '%d queued messages' => 
-      array (
-        0 => '',
-      ),
-      'Clear Queue' => 
-      array (
-        0 => '',
-      ),
-      'Station-Specific Debugging' => 
-      array (
-        0 => '',
-      ),
-      'Rebuild AutoDJ Queue' => 
-      array (
-        0 => 'Ricostruisci Coda AutoDJ',
-      ),
-      'Run Test' => 
-      array (
-        0 => '',
-      ),
-      'Send Liquidsoap Telnet Command' => 
-      array (
-        0 => '',
-      ),
-      'Command' => 
-      array (
-        0 => '',
-      ),
-      'Execute Command' => 
-      array (
-        0 => '',
-      ),
-      'Run Synchronization Task' => 
-      array (
-        0 => '',
-      ),
-      'Debug Home' => 
-      array (
-        0 => '',
-      ),
-      'The synchronization task is running in the background. The log below will update automatically.' => 
-      array (
-        0 => '',
+        0 => 'Il processo di backup è in esecuzione in background. Il log qui sotto si aggiornerà automaticamente.',
       ),
       'Automatic Backups' => 
       array (
@@ -3581,182 +3785,13 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Elimina backup "%s"?',
       ),
-      'Backups Home' => 
+      'Because you are running Docker, some system logs can only be accessed from a shell session on the host computer. You can run <code>%s</code> to access container logs from the terminal.' => 
       array (
-        0 => 'Homepage dei backup',
+        0 => 'Poiché si esegue Docker, è possibile accedere a alcuni registri di sistema solo da una sessione shell sul computer ospitante. Puoi eseguire <code>%s</code> per accedere ai log del sistema dal terminale.',
       ),
-      'The backup process is running in the background. The log below will update automatically.' => 
+      'Logs by Station' => 
       array (
-        0 => '',
-      ),
-      'Insert' => 
-      array (
-        0 => 'Inserisci',
-      ),
-      'Update' => 
-      array (
-        0 => 'Aggiorna',
-      ),
-      'Changes' => 
-      array (
-        0 => 'Modifiche',
-      ),
-      'User' => 
-      array (
-        0 => 'Utente',
-      ),
-      'Identifier' => 
-      array (
-        0 => 'Identifica',
-      ),
-      'Target' => 
-      array (
-        0 => 'Target',
-      ),
-      'Field' => 
-      array (
-        0 => 'Campo',
-      ),
-      'Previous' => 
-      array (
-        0 => 'Precedente',
-      ),
-      'Updated' => 
-      array (
-        0 => 'Aggiornato',
-      ),
-      'GeoLite version "%s" is currently installed.' => 
-      array (
-        0 => 'La versione GeoLite "%s" è attualmente installata.',
-      ),
-      'Uninstall GeoLite database?' => 
-      array (
-        0 => '',
-      ),
-      'Uninstall GeoLite Database' => 
-      array (
-        0 => '',
-      ),
-      'GeoLite is not currently installed on this installation.' => 
-      array (
-        0 => 'GeoLite non è attualmente installato in questa installazione.',
-      ),
-      'Create Station' => 
-      array (
-        0 => 'Crea stazione',
-      ),
-      'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
-      array (
-        0 => 'Completa il processo di installazione fornendo informazioni sul tuo ambiente di trasmissione. Queste impostazioni possono essere cambiate in seguito dal pannello amministrazione.',
-      ),
-      'Customize AzuraCast Settings' => 
-      array (
-        0 => 'Personalizza impostazioni AzuraCast',
-      ),
-      'AzuraCast First-Time Setup' => 
-      array (
-        0 => 'Prima impostazione AzuraCast',
-      ),
-      'Welcome to AzuraCast!' => 
-      array (
-        0 => 'Benvenuto in AzuraCast!',
-      ),
-      'Let\'s get started by creating your Super Administrator account.' => 
-      array (
-        0 => 'Iniziamo creando il tuo account Super Amministratore.',
-      ),
-      'This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.' => 
-      array (
-        0 => 'Questo account avrà pieno accesso al sistema e verrà automaticamente effettuato il login per il resto della configurazione.',
-      ),
-      'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
-      array (
-        0 => 'Continua l\'installazione creando una nuova stazione radio qui sotto. Puoi modificare questi dettagli in seguito.',
-      ),
-      'Create a New Radio Station' => 
-      array (
-        0 => 'Crea una nuova stazione radio',
-      ),
-      'AzuraCast User' => 
-      array (
-        0 => 'Utente AzuraCast',
-      ),
-      'Welcome!' => 
-      array (
-        0 => 'Benvenuto!',
-      ),
-      'Welcome to %s!' => 
-      array (
-        0 => 'Benvenuto in %s!',
-      ),
-      'name@example.com' => 
-      array (
-        0 => 'nome@esempio.com',
-      ),
-      'Enter your password' => 
-      array (
-        0 => 'Inserisci la tua password',
-      ),
-      'Remember me' => 
-      array (
-        0 => '',
-      ),
-      'Sign in' => 
-      array (
-        0 => 'Accedi',
-      ),
-      'Please log in to continue.' => 
-      array (
-        0 => 'Per favore accedi per continuare.',
-      ),
-      '<a href="%s" target="_blank">Forgot your password?</a>' => 
-      array (
-        0 => '<a href="%s" target="_blank">Password dimenticata?</a>',
-      ),
-      'Enter Two-Factor Code' => 
-      array (
-        0 => 'Inserisci il codice a due fattori',
-      ),
-      'Your account uses a two-factor security code. Enter the code your device is currently showing below.' => 
-      array (
-        0 => 'Il tuo account utilizza un codice di sicurezza a due fattori. Inserisci il codice che il tuo dispositivo sta mostrando qui sotto.',
-      ),
-      'Security Code' => 
-      array (
-        0 => 'Codice di sicurezza',
-      ),
-      'API keys can be used to access some system functionality without needing to log in. All of the keys 
-            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
-      array (
-        0 => '',
-      ),
-      'Key Identifier' => 
-      array (
-        0 => 'Identificatore della chiave',
-      ),
-      'New Key Generated' => 
-      array (
-        0 => 'Nuova chiave generata',
-      ),
-      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
-      array (
-        0 => '<b> Importante: copia la chiave qui sotto prima di continuare! </b> Non potrai recuperarla di nuovo.',
-      ),
-      'Your full API key is below:' => 
-      array (
-        0 => 'La tua chiave API completa è la seguente:',
-      ),
-      'Copy to Clipboard' => 
-      array (
-        0 => 'Copia negli appunti',
-      ),
-      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
-      array (
-        0 => 'Quando si effettuano chiamate API, è possibile passare questo valore nell\'intestazione "X-API-Key" per autenticarsi come se stessi. Puoi eseguire solo le azioni che il tuo account utente è autorizzato a eseguire.',
-      ),
-      'Continue' => 
-      array (
-        0 => 'Continua',
+        0 => 'Log per stazione',
       ),
       'Enable Two-Factor Authentication' => 
       array (
@@ -3802,53 +3837,146 @@ Tutti i valori nella <a href="%s" target="_blank">risposta dell\'API In Riproduz
       array (
         0 => 'Abilita autenticazione a due fattori',
       ),
-      'Pause' => 
+      'New Key Generated' => 
       array (
-        0 => 'Pausa',
+        0 => 'Nuova chiave generata',
       ),
-      'Play' => 
+      '<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.' => 
       array (
-        0 => 'Play',
+        0 => '<b> Importante: copia la chiave qui sotto prima di continuare! </b> Non potrai recuperarla di nuovo.',
       ),
-      'Log View' => 
+      'Your full API key is below:' => 
       array (
-        0 => 'Visualizzazione log',
+        0 => 'La tua chiave API completa è la seguente:',
       ),
-      'Automatically scroll to the bottom of the log' => 
+      'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
       array (
-        0 => 'Scorri automaticamente fino alla fine del log',
+        0 => 'Quando si effettuano chiamate API, è possibile passare questo valore nell\'intestazione "X-API-Key" per autenticarsi come se stessi. Puoi eseguire solo le azioni che il tuo account utente è autorizzato a eseguire.',
       ),
-      'Need Help?' => 
+      'Continue' => 
       array (
-        0 => 'Ti serve aiuto?',
+        0 => 'Continua',
       ),
-      'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
+      'API keys can be used to access some system functionality without needing to log in. All of the keys 
+            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
       array (
-        0 => 'Puoi trovare le risposte per molte domande comuni nei nostri <a href="%s" target="_blank"> documenti di supporto </a>.',
+        0 => '',
       ),
-      'If you\'re experiencing a bug or error, you can submit a GitHub issue using the link below.' => 
+      'Key Identifier' => 
       array (
-        0 => 'Se stai riscontrando un bug o un errore, puoi inviare una segnalazione su GitHub utilizzando il link sottostante.',
+        0 => 'Identificatore della chiave',
       ),
-      'Your current installation type is <b>%s</b>. Be sure to include this when creating a new issue.' => 
+      'Create Station' => 
       array (
-        0 => 'La tua attuale installazione è di tipo <b>%s </b>. Assicurati di includere questo dato quando crei una nuova segnalazione.',
+        0 => 'Crea stazione',
       ),
-      'Add New GitHub Issue' => 
+      'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
       array (
-        0 => 'Aggiungi nuova segnalazione su GitHub',
+        0 => 'Completa il processo di installazione fornendo informazioni sul tuo ambiente di trasmissione. Queste impostazioni possono essere cambiate in seguito dal pannello amministrazione.',
       ),
-      'Errors were encountered when trying to save changes:' => 
+      'Customize AzuraCast Settings' => 
       array (
-        0 => 'Errori riscontrati tentando di salvare le modifiche:',
+        0 => 'Personalizza impostazioni AzuraCast',
       ),
-      'General' => 
+      'AzuraCast First-Time Setup' => 
       array (
-        0 => 'Generale',
+        0 => 'Prima impostazione AzuraCast',
       ),
-      'Details' => 
+      'Welcome to AzuraCast!' => 
       array (
-        0 => 'Dettagli',
+        0 => 'Benvenuto in AzuraCast!',
+      ),
+      'Let\'s get started by creating your Super Administrator account.' => 
+      array (
+        0 => 'Iniziamo creando il tuo account Super Amministratore.',
+      ),
+      'This account will have full access to the system, and you\'ll automatically be logged in to it for the rest of setup.' => 
+      array (
+        0 => 'Questo account avrà pieno accesso al sistema e verrà automaticamente effettuato il login per il resto della configurazione.',
+      ),
+      'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
+      array (
+        0 => 'Continua l\'installazione creando una nuova stazione radio qui sotto. Puoi modificare questi dettagli in seguito.',
+      ),
+      'Create a New Radio Station' => 
+      array (
+        0 => 'Crea una nuova stazione radio',
+      ),
+      'AzuraCast User' => 
+      array (
+        0 => 'Utente AzuraCast',
+      ),
+      'Forgot Password' => 
+      array (
+        0 => 'Password Dimenticata',
+      ),
+      'name@example.com' => 
+      array (
+        0 => 'nome@esempio.com',
+      ),
+      'Sign in' => 
+      array (
+        0 => 'Accedi',
+      ),
+      'Send Recovery E-mail' => 
+      array (
+        0 => 'Invia E-mail Di Recupero',
+      ),
+      'Recover Account' => 
+      array (
+        0 => 'Recupera Account',
+      ),
+      'Choose a new password for your account.' => 
+      array (
+        0 => 'Scegli una nuova password per il tuo account.',
+      ),
+      'Enter your password' => 
+      array (
+        0 => 'Inserisci la tua password',
+      ),
+      'This installation\'s administrator has not configured this functionality.' => 
+      array (
+        0 => 'L\'amministratore di questa installazione non ha configurato questa funzionalità.',
+      ),
+      'Contact an administrator to reset your password following the instructions in our documentation:' => 
+      array (
+        0 => 'Contatta un amministratore per reimpostare la tua password seguendo le istruzioni riportate nella nostra documentazione:',
+      ),
+      'Password Reset Instructions' => 
+      array (
+        0 => 'Istruzioni per la reimpostazione della password',
+      ),
+      'Enter Two-Factor Code' => 
+      array (
+        0 => 'Inserisci il codice a due fattori',
+      ),
+      'Your account uses a two-factor security code. Enter the code your device is currently showing below.' => 
+      array (
+        0 => 'Il tuo account utilizza un codice di sicurezza a due fattori. Inserisci il codice che il tuo dispositivo sta mostrando qui sotto.',
+      ),
+      'Security Code' => 
+      array (
+        0 => 'Codice di sicurezza',
+      ),
+      'Welcome!' => 
+      array (
+        0 => 'Benvenuto!',
+      ),
+      'Welcome to %s!' => 
+      array (
+        0 => 'Benvenuto in %s!',
+      ),
+      'Remember me' => 
+      array (
+        0 => 'Ricordami',
+      ),
+      'Please log in to continue.' => 
+      array (
+        0 => 'Per favore accedi per continuare.',
+      ),
+      'Forgot your password?' => 
+      array (
+        0 => 'Hai dimenticato la password?',
       ),
     ),
   ),

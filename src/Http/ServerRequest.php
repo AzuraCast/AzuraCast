@@ -7,6 +7,7 @@ use App\Auth;
 use App\Customization;
 use App\Entity;
 use App\Exception;
+use App\Locale;
 use App\Radio;
 use App\RateLimit;
 use App\Session;
@@ -22,6 +23,7 @@ final class ServerRequest extends \Slim\Http\ServerRequest
     public const ATTR_ROUTER = 'app_router';
     public const ATTR_RATE_LIMIT = 'app_rate_limit';
     public const ATTR_ACL = 'acl';
+    public const ATTR_LOCALE = 'locale';
     public const ATTR_CUSTOMIZATION = 'customization';
     public const ATTR_AUTH = 'auth';
     public const ATTR_STATION = 'station';
@@ -58,6 +60,11 @@ final class ServerRequest extends \Slim\Http\ServerRequest
     public function getRateLimit(): RateLimit
     {
         return $this->getAttributeOfClass(self::ATTR_RATE_LIMIT, RateLimit::class);
+    }
+
+    public function getLocale(): Locale
+    {
+        return $this->getAttributeOfClass(self::ATTR_LOCALE, Locale::class);
     }
 
     public function getCustomization(): Customization

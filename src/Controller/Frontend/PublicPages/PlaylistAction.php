@@ -27,7 +27,7 @@ class PlaylistAction
                 continue;
             }
 
-            $stream_url = $fa->getUrlForMount($station, $mount, null, false);
+            $stream_url = $fa->getUrlForMount($station, $mount, null);
 
             $stream_urls[] = $stream_url;
             $streams[] = [

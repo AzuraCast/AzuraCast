@@ -1,0 +1,18 @@
+<?php
+/** @var */
+
+?><?=__('Account Recovery')?>
+
+
+<?=__('An account recovery link has been requested for your account on "%s".', $environment->getAppName())?>
+
+
+<?=__('Click the link below to log in to your account.')?>
+
+
+<?=$router->named(
+    'account:recover',
+    ['token' => $token],
+    [],
+    true
+)?>

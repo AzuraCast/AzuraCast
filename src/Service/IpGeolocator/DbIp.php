@@ -6,6 +6,11 @@ use App\Environment;
 
 class DbIp extends AbstractIpGeolocator
 {
+    public static function getReaderShortName(): string
+    {
+        return 'dbip';
+    }
+
     public static function getBaseDirectory(): string
     {
         $environment = Environment::getInstance();

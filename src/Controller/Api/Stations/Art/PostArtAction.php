@@ -34,7 +34,7 @@ class PostArtAction
 
             /** @var UploadedFileInterface $file */
             if ($file->getError() === UPLOAD_ERR_OK) {
-                $mediaRepo->writeAlbumArt($media, $file->getStream()->getContents());
+                $mediaRepo->updateAlbumArt($media, $file->getStream()->getContents());
                 $em->flush();
             } elseif ($file->getError() !== UPLOAD_ERR_NO_FILE) {
                 return $response->withStatus(500)

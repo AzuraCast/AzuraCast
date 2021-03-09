@@ -1,0 +1,35 @@
+<?php
+
+$this->layout(
+    'minimal',
+    [
+        'title' => __('Forgot Password'),
+        'page_class' => 'login-content',
+    ]
+);
+?>
+
+<div class="public-page">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-sm">
+                    <h2 class="card-title mb-0 text-center"><?=__('Forgot Password')?></h2>
+                </div>
+            </div>
+
+            <p>
+                <?=__('This installation\'s administrator has not configured this functionality.')?>
+            </p>
+            <p>
+                <?=__(
+                    'Contact an administrator to reset your password following the instructions in our documentation:'
+                )?>
+            </p>
+
+            <a class="btn btn-primary btn-block mt-2 mb-3" href="https://docs.azuracast.com/en/administration/users#resetting-an-account-password" target="_blank">
+                <?=__('Password Reset Instructions')?>
+            </a>
+        </div>
+    </div>
+</div>

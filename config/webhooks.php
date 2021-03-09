@@ -13,6 +13,11 @@ return [
             'name' => __('Generic Web Hook'),
             'description' => __('Automatically send a message to any URL when your station data changes.'),
         ],
+        Connector\Email::NAME => [
+            'class' => Connector\Email::class,
+            'name' => __('Send E-mail'),
+            'description' => __('Send an e-mail to specified address(es).'),
+        ],
         Connector\TuneIn::NAME => [
             'class' => Connector\TuneIn::class,
             'name' => __('TuneIn AIR'),
@@ -47,5 +52,7 @@ return [
         StationWebhook::TRIGGER_LISTENER_LOST => __('Any time the listener count decreases'),
         StationWebhook::TRIGGER_LIVE_CONNECT => __('Any time a live streamer/DJ connects to the stream'),
         StationWebhook::TRIGGER_LIVE_DISCONNECT => __('Any time a live streamer/DJ disconnects from the stream'),
+        StationWebhook::TRIGGER_STATION_OFFLINE => __('When the station broadcast goes offline.'),
+        StationWebhook::TRIGGER_STATION_ONLINE => __('When the station broadcast comes online.'),
     ],
 ];

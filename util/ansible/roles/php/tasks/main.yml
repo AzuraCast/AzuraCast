@@ -63,6 +63,7 @@
       - php7.4-redis       # Cache
       - php7.4-bcmath      # BigInteger
       - php7.4-gmp         # BigInteger and PHP-IP
+      - php7.4-maxminddb   # Maxmind (GeoIP) DB native ext
 
 - name: Configure PHP FPM Pool
   template: src=fpmpool.j2 dest=/etc/php/7.4/fpm/pool.d/www.conf force=true

@@ -213,10 +213,10 @@ export default {
             return this.$gettext('Show Charts');
         }
     },
-    mounted () {
+    created () {
         moment.tz.setDefault('UTC');
 
-        if (store.enabled && store.get('dashboard_show_chart') !== undefined) {
+        if (store.enabled) {
             this.chartsVisible = store.get('dashboard_show_chart', true);
         } else {
             this.chartsVisible = true;

@@ -117,15 +117,13 @@ class GetId3MetadataService
 
         $artwork = $metadata->getArtwork();
         if ($artwork) {
-            $tags['attached_picture'][0] = [
+            $tags['attached_picture'] = [
                 'encodingid' => 0, // ISO-8859-1; 3=UTF8 but only allowed in ID3v2.4
                 'description' => 'cover art',
                 'data' => $artwork,
                 'picturetypeid' => 0x03,
                 'mime' => 'image/jpeg',
             ];
-
-            $tags['comments']['picture'][0] = $tags['attached_picture'][0];
         }
 
         $tagData = [];

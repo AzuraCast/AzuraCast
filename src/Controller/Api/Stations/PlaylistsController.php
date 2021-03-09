@@ -3,16 +3,12 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Exception;
-use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Radio\PlaylistParser;
 use Carbon\CarbonInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class PlaylistsController extends AbstractScheduledEntityController
@@ -177,251 +173,6 @@ class PlaylistsController extends AbstractScheduledEntityController
         );
     }
 
-    public function getOrderAction(
-        ServerRequest $request,
-        Response $response,
-        $id
-    ): ResponseInterface {
-        $record = $this->getRecord($request->getStation(), $id);
-
-        if (!$record instanceof Entity\StationPlaylist) {
-            throw new NotFoundException(__('Playlist not found.'));
-        }
-
-        if (
-            $record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
-            || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL
-        ) {
-            throw new Exception(__('This playlist is not a sequential playlist.'));
-        }
-
-        $media_items = $this->em->createQuery(
-            <<<'DQL'
-                SELECT spm, sm
-                FROM App\Entity\StationPlaylistMedia spm
-                JOIN spm.media sm
-                WHERE spm.playlist_id = :playlist_id
-                ORDER BY spm.weight ASC
-            DQL
-        )->setParameter('playlist_id', $id)
-            ->getArrayResult();
-
-        return $response->withJson($media_items);
-    }
-
-    public function putOrderAction(
-        ServerRequest $request,
-        Response $response,
-        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepository,
-        $id
-    ): ResponseInterface {
-        $record = $this->getRecord($request->getStation(), $id);
-
-        if (!$record instanceof Entity\StationPlaylist) {
-            throw new NotFoundException(__('Playlist not found.'));
-        }
-
-        if (
-            $record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
-            || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL
-        ) {
-            throw new Exception(__('This playlist is not a sequential playlist.'));
-        }
-
-        $order = $request->getParam('order');
-
-        $playlistMediaRepository->setMediaOrder($record, $order);
-        return $response->withJson($order);
-    }
-
-    public function exportAction(
-        ServerRequest $request,
-        Response $response,
-        $id,
-        $format = 'pls'
-    ): ResponseInterface {
-        $record = $this->getRecord($request->getStation(), $id);
-
-        if (!$record instanceof Entity\StationPlaylist) {
-            throw new NotFoundException(__('Playlist not found.'));
-        }
-
-        $formats = [
-            'pls' => 'audio/x-scpls',
-            'm3u' => 'application/x-mpegURL',
-        ];
-
-        if (!isset($formats[$format])) {
-            throw new NotFoundException(__('Format not found.'));
-        }
-
-        $file_name = 'playlist_' . $record->getShortName() . '.' . $format;
-
-        $response->getBody()->write($record->export($format));
-        return $response
-            ->withHeader('Content-Type', $formats[$format])
-            ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name);
-    }
-
-    public function toggleAction(ServerRequest $request, Response $response, $id): ResponseInterface
-    {
-        $record = $this->getRecord($request->getStation(), $id);
-
-        if (!$record instanceof Entity\StationPlaylist) {
-            throw new NotFoundException(__('Playlist not found.'));
-        }
-
-        $new_value = !$record->getIsEnabled();
-
-        $record->setIsEnabled($new_value);
-        $this->em->persist($record);
-        $this->em->flush();
-
-        $flash_message = ($new_value)
-            ? __('Playlist enabled.')
-            : __('Playlist disabled.');
-
-        return $response->withJson(new Entity\Api\Status(true, $flash_message));
-    }
-
-    public function reshuffleAction(ServerRequest $request, Response $response, $id): ResponseInterface
-    {
-        $record = $this->getRecord($request->getStation(), $id);
-
-        if (!$record instanceof Entity\StationPlaylist) {
-            throw new NotFoundException(__('Playlist not found.'));
-        }
-
-        $record->setQueue(null);
-        $this->em->persist($record);
-        $this->em->flush();
-
-        return $response->withJson(
-            new Entity\Api\Status(
-                true,
-                __('Playlist reshuffled.')
-            )
-        );
-    }
-
-    public function importAction(
-        ServerRequest $request,
-        Response $response,
-        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        $id
-    ): ResponseInterface {
-        /** @var Entity\StationPlaylist $playlist */
-        $playlist = $this->getRecord($request->getStation(), $id);
-
-        $files = $request->getUploadedFiles();
-
-        if (empty($files['playlist_file'])) {
-            return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, 'No "playlist_file" provided.'));
-        }
-
-        /** @var UploadedFileInterface $file */
-        $file = $files['playlist_file'];
-
-        if (UPLOAD_ERR_OK !== $file->getError()) {
-            return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, $file->getError()));
-        }
-
-        $playlistFile = $file->getStream()->getContents();
-
-        $paths = PlaylistParser::getSongs($playlistFile);
-
-        $totalPaths = count($paths);
-        $foundPaths = 0;
-
-        if (!empty($paths)) {
-            $station = $request->getStation();
-            $storageLocation = $station->getMediaStorageLocation();
-
-            // Assemble list of station media to match against.
-            $media_lookup = [];
-
-            $media_info_raw = $this->em->createQuery(
-                <<<'DQL'
-                    SELECT sm.id, sm.path
-                    FROM App\Entity\StationMedia sm
-                    WHERE sm.storage_location = :storageLocation
-                DQL
-            )->setParameter('storageLocation', $storageLocation)
-                ->getArrayResult();
-
-            foreach ($media_info_raw as $row) {
-                $path_hash = md5($row['path']);
-                $media_lookup[$path_hash] = $row['id'];
-            }
-
-            // Run all paths against the lookup list of hashes.
-            $matches = [];
-
-            foreach ($paths as $path_raw) {
-                // De-Windows paths (if applicable)
-                $path_raw = str_replace('\\', '/', $path_raw);
-
-                // Work backwards from the basename to try to find matches.
-                $path_parts = explode('/', $path_raw);
-                for ($i = 1, $iMax = count($path_parts); $i <= $iMax; $i++) {
-                    $path_attempt = implode('/', array_slice($path_parts, 0 - $i));
-                    $path_hash = md5($path_attempt);
-
-                    if (isset($media_lookup[$path_hash])) {
-                        $matches[] = $media_lookup[$path_hash];
-                    }
-                }
-            }
-
-            // Assign all matched media to the playlist.
-            if (!empty($matches)) {
-                $matchedMediaRaw = $this->em->createQuery(
-                    <<<'DQL'
-                        SELECT sm
-                        FROM App\Entity\StationMedia sm
-                        WHERE sm.storage_location = :storageLocation AND sm.id IN (:matched_ids)
-                    DQL
-                )->setParameter('storageLocation', $storageLocation)
-                    ->setParameter('matched_ids', $matches)
-                    ->execute();
-
-                /** @var Entity\StationMedia[] $mediaById */
-                $mediaById = [];
-                foreach ($matchedMediaRaw as $row) {
-                    /** @var Entity\StationMedia $row */
-                    $mediaById[$row->getId()] = $row;
-                }
-
-                $weight = $playlistMediaRepo->getHighestSongWeight($playlist);
-
-                // Split this process to preserve the order of the imported items.
-                foreach ($matches as $mediaId) {
-                    $weight++;
-
-                    $media = $mediaById[$mediaId];
-                    $playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
-
-                    $foundPaths++;
-                }
-            }
-
-            $this->em->flush();
-        }
-
-        return $response->withJson(
-            new Entity\Api\Status(
-                true,
-                __(
-                    'Playlist successfully imported; %d of %d files were successfully matched.',
-                    $foundPaths,
-                    $totalPaths
-                )
-            )
-        );
-    }
-
     /**
      * @return mixed[]
      */
@@ -454,6 +205,12 @@ class PlaylistsController extends AbstractScheduledEntityController
             'order' => $router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], !$isInternal),
             'reshuffle' => $router->fromHere(
                 'api:stations:playlist:reshuffle',
+                ['id' => $record->getId()],
+                [],
+                !$isInternal
+            ),
+            'queue' => $router->fromHere(
+                'api:stations:playlist:queue',
                 ['id' => $record->getId()],
                 [],
                 !$isInternal

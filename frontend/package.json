@@ -61,7 +61,7 @@
     "sweetalert2": "^10.3.7",
     "vue": "^2.6.12",
     "vue-gettext": "^2.1.10",
-    "vue-loader": "14.2.2",
+    "vue-loader": "14.2.4",
     "vue-template-compiler": "^2.6.12",
     "vuedraggable": "^2.24.1",
     "vuelidate": "^0.7.5",

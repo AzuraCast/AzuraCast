@@ -46,7 +46,7 @@
     "leaflet": "^1.7.1",
     "leaflet.fullscreen": "^1.6.0",
     "lodash": "^4.17.20",
-    "material-icons": "^0.3.1",
+    "material-icons": "^0.5.3",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
     "nchan": "^1.0.10",

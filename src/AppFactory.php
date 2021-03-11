@@ -157,6 +157,10 @@ class AppFactory
         register_shutdown_function(
             function (LoggerInterface $logger): void {
                 $error = error_get_last();
+                if (null === $error) {
+                    return;
+                }
+
                 $errno = $error["type"] ?? \E_ERROR;
                 $errfile = $error["file"] ?? 'unknown';
                 $errline = $error["line"] ?? 0;

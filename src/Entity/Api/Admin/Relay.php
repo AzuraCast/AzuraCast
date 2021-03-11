@@ -26,32 +26,32 @@ class Relay implements Entity\Api\ResolvableUrlInterface
     public string $name;
 
     /**
-     * Station description
-     * @OA\Property(example="An AzuraCast station!")
-     * @var string
-     */
-    public string $description;
-
-    /**
-     * Station homepage URL
-     * @OA\Property(example="https://www.azuracast.com/")
-     * @var string
-     */
-    public string $url;
-
-    /**
-     * The genre of the station
-     * @OA\Property(example="Variety")
-     * @var string
-     */
-    public string $genre;
-
-    /**
      * Station "short code", used for URL and folder paths
      * @OA\Property(example="azuratest_radio")
      * @var string
      */
     public string $shortcode;
+
+    /**
+     * Station description
+     * @OA\Property(example="An AzuraCast station!")
+     * @var string|null
+     */
+    public ?string $description;
+
+    /**
+     * Station homepage URL
+     * @OA\Property(example="https://www.azuracast.com/")
+     * @var string|null
+     */
+    public ?string $url;
+
+    /**
+     * The genre of the station
+     * @OA\Property(example="Variety")
+     * @var string|null
+     */
+    public ?string $genre;
 
     /**
      * Which broadcasting software (frontend) the station uses

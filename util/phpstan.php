@@ -8,18 +8,9 @@ ini_set('display_errors', 1);
 
 $autoloader = require dirname(__DIR__) . '/vendor/autoload.php';
 
-$app = App\AppFactory::create(
+App\AppFactory::createCli(
     $autoloader,
     [
         App\Environment::BASE_DIR => dirname(__DIR__),
     ]
 );
-
-$di = $app->getContainer();
-
-/** @var \Psr\Container\ContainerInterface|\DI\FactoryInterface $di */
-$di = $app->getContainer();
-
-/** @var \App\Locale $locale */
-$locale = $di->make(\App\Locale::class);
-$locale->register();

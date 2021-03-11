@@ -13,7 +13,8 @@ There have been no technical changes since the last stable release.
 
 ## Bug Fixes
 
-There have been no new bug fixes since the last stable release.
+- When saving changes to a file that does not use ID3 metadata, users will no longer encounter a processing error
+  (#3798).
 
 ---
 

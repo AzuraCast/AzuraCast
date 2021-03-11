@@ -3,11 +3,16 @@
 namespace App\Middleware\Module;
 
 use App\Entity;
+use App\Environment;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\VarDumper\Caster\ReflectionCaster;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
@@ -18,16 +23,32 @@ class Api
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
+    protected Environment $environment;
+
     public function __construct(
         Entity\Repository\ApiKeyRepository $apiKeyRepository,
-        Entity\Repository\SettingsRepository $settingsRepo
+        Entity\Repository\SettingsRepository $settingsRepo,
+        Environment $environment
     ) {
         $this->api_repo = $apiKeyRepository;
         $this->settingsRepo = $settingsRepo;
+        $this->environment = $environment;
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if ($this->environment->isDevelopment()) {
+            $cloner = new VarCloner();
+            $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+
+            $dumper = new CliDumper('php://output');
+            VarDumper::setHandler(
+                function ($var) use ($cloner, $dumper) {
+                    $dumper->dump($cloner->cloneVar($var));
+                }
+            );
+        }
+
         // Attempt API key auth if a key exists.
         $api_key = $this->getApiKey($request);
         $api_user = (!empty($api_key)) ? $this->api_repo->authenticate($api_key) : null;

@@ -43,7 +43,7 @@ class Api
 
             $dumper = new CliDumper('php://output');
             VarDumper::setHandler(
-                function ($var) use ($cloner, $dumper) {
+                function ($var) use ($cloner, $dumper): void {
                     $dumper->dump($cloner->cloneVar($var));
                 }
             );

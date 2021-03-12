@@ -584,12 +584,10 @@ class ConfigWriter implements EventSubscriberInterface
             DQL
         )->setParameter('playlist', $playlist);
 
-        $mediaIterator = $mediaQuery->iterate();
+        $mediaIterator = $mediaQuery->toIterable();
 
-        foreach ($mediaIterator as $row) {
+        foreach ($mediaIterator as $mediaFile) {
             /** @var Entity\StationMedia $mediaFile */
-            $mediaFile = $row[0];
-
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
             $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
 

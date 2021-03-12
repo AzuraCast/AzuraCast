@@ -202,11 +202,7 @@ class StationQueue implements SongInterface
 
     public function sentToAutoDj(): void
     {
-        $cued = $this->getTimestampCued();
-        if (0 === $cued) {
-            $this->setTimestampCued(time());
-        }
-
+        $this->setTimestampCued(time());
         $this->sent_to_autodj = true;
     }
 
@@ -239,5 +235,20 @@ class StationQueue implements SongInterface
         return (null !== $this->media)
             ? (string)$this->media
             : (string)(new Song($this));
+    }
+
+    public static function fromMedia(Station $station, StationMedia $media): self
+    {
+        $sq = new self($station, $media);
+        $sq->setMedia($media);
+        return $sq;
+    }
+
+    public static function fromRequest(StationRequest $request): self
+    {
+        $sq = new self($request->getStation(), $request->getTrack());
+        $sq->setRequest($request);
+        $sq->setMedia($request->getTrack());
+        return $sq;
     }
 }

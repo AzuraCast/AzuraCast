@@ -231,11 +231,10 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                     return;
                 }
 
-                $sq = $this->queueRepo->getUpcomingFromSong($station, $media);
+                $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
 
                 if (!$sq instanceof Entity\StationQueue) {
-                    $sq = new Entity\StationQueue($station, $media);
-                    $sq->setTimestampCued(time());
+                    $sq = Entity\StationQueue::fromMedia($station, $media);
                 } elseif (null === $sq->getMedia()) {
                     $sq->setMedia($media);
                 }

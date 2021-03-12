@@ -7,7 +7,6 @@ use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -63,78 +62,6 @@ class SongHistoryRepository extends Repository
             }
         }
         return $records;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getRecentlyPlayed(
-        Entity\Station $station,
-        CarbonInterface $now,
-        int $rows
-    ): array {
-        $recentlyPlayed = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sq FROM App\Entity\StationQueue sq
-                WHERE sq.station = :station
-                ORDER BY sq.timestamp_cued DESC
-            DQL
-        )->setParameter('station', $station)
-            ->setMaxResults($rows)
-            ->getArrayResult();
-
-        $recentHistory = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sh FROM App\Entity\SongHistory sh
-                WHERE sh.station = :station
-                AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
-                AND sh.timestamp_start >= :threshold
-                ORDER BY sh.timestamp_start DESC
-            DQL
-        )->setParameter('station', $station)
-            ->setParameter('threshold', $now->subDay()->getTimestamp())
-            ->setMaxResults($rows)
-            ->getArrayResult();
-
-        $recentlyPlayed = array_merge($recentlyPlayed, $recentHistory);
-        return array_slice($recentlyPlayed, 0, $rows);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getRecentlyPlayedByTimeRange(
-        Entity\Station $station,
-        CarbonInterface $now,
-        int $minutes
-    ): array {
-        $timeRangeInSeconds = $minutes * 60;
-        $threshold = $now->getTimestamp() - $timeRangeInSeconds;
-
-        $recentlyPlayed = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sq FROM App\Entity\StationQueue sq
-                WHERE sq.station = :station
-                AND sq.timestamp_cued >= :threshold
-                ORDER BY sq.timestamp_cued DESC
-            DQL
-        )->setParameter('station', $station)
-            ->setParameter('threshold', $threshold)
-            ->getArrayResult();
-
-        $recentHistory = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sh FROM App\Entity\SongHistory sh
-                WHERE sh.station = :station
-                AND (sh.timestamp_start != 0 AND sh.timestamp_start IS NOT NULL)
-                AND sh.timestamp_start >= :threshold
-                ORDER BY sh.timestamp_start DESC
-            DQL
-        )->setParameter('station', $station)
-            ->setParameter('threshold', $threshold)
-            ->getArrayResult();
-
-        return array_merge($recentlyPlayed, $recentHistory);
     }
 
     public function register(
@@ -201,12 +128,10 @@ class SongHistoryRepository extends Repository
         }
 
         // Look for an already cued but unplayed song.
-        $sq = $this->stationQueueRepository->getUpcomingFromSong($station, $song);
+        $sq = $this->stationQueueRepository->findRecentlyCuedSong($station, $song);
 
         if ($sq instanceof Entity\StationQueue) {
             $sh = Entity\SongHistory::fromQueue($sq);
-
-            $this->em->remove($sq);
         } else {
             // Processing a new SongHistory item.
             $sh = new Entity\SongHistory($station, $song);

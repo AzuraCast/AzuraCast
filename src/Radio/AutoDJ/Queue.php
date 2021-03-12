@@ -34,6 +34,8 @@ class Queue implements EventSubscriberInterface
 
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
+    protected Entity\Repository\StationQueueRepository $queueRepo;
+
     protected Entity\Repository\SongHistoryRepository $historyRepo;
 
     public function __construct(
@@ -42,6 +44,7 @@ class Queue implements EventSubscriberInterface
         Scheduler $scheduler,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationRequestRepository $requestRepo,
+        Entity\Repository\StationQueueRepository $queueRepo,
         Entity\Repository\SongHistoryRepository $historyRepo
     ) {
         $this->em = $em;
@@ -49,6 +52,7 @@ class Queue implements EventSubscriberInterface
         $this->scheduler = $scheduler;
         $this->spmRepo = $spmRepo;
         $this->requestRepo = $requestRepo;
+        $this->queueRepo = $queueRepo;
         $this->historyRepo = $historyRepo;
     }
 
@@ -84,13 +88,12 @@ class Queue implements EventSubscriberInterface
             return;
         }
 
-        $recentSongHistoryForOncePerXSongs = $this->historyRepo->getRecentlyPlayed(
+        $recentSongHistoryForOncePerXSongs = $this->queueRepo->getRecentlyPlayed(
             $station,
-            $now,
             $oncePerXSongHistoryCount
         );
 
-        $recentSongHistoryForDuplicatePrevention = $this->historyRepo->getRecentlyPlayedByTimeRange(
+        $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
             $now,
             $station->getBackendConfig()->getDuplicatePreventionTimeRange()
@@ -301,9 +304,9 @@ class Queue implements EventSubscriberInterface
                 $this->em->persist($spm);
             }
 
-            $stationQueueEntry = new Entity\StationQueue($playlist->getStation(), $mediaToPlay);
+            $stationQueueEntry = Entity\StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
             $stationQueueEntry->setPlaylist($playlist);
-            $stationQueueEntry->setMedia($mediaToPlay);
+
             $stationQueueEntry->setTimestampCued($now->getTimestamp());
 
             $this->em->persist($stationQueueEntry);
@@ -600,11 +603,7 @@ class Queue implements EventSubscriberInterface
 
         $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
-        $stationQueueEntry = new Entity\StationQueue($request->getStation(), $request->getTrack());
-        $stationQueueEntry->setRequest($request);
-        $stationQueueEntry->setMedia($request->getTrack());
-
-        $stationQueueEntry->setDuration($request->getTrack()->getCalculatedLength());
+        $stationQueueEntry = Entity\StationQueue::fromRequest($request);
         $stationQueueEntry->setTimestampCued($now->getTimestamp());
         $this->em->persist($stationQueueEntry);
 
@@ -724,7 +723,7 @@ class Queue implements EventSubscriberInterface
             $logOncePerXSongsSongHistory[] = [
                 'song' => $row['text'],
                 'cued_at' => (string)(CarbonImmutable::createFromTimestamp(
-                    $row['timestamp_cued'] ?? $row['timestamp_start'],
+                    $row['timestamp_cued'],
                     $now->getTimezone()
                 )),
                 'duration' => $row['duration'],
@@ -737,7 +736,7 @@ class Queue implements EventSubscriberInterface
             $logDuplicatePreventionSongHistory[] = [
                 'song' => $row['text'],
                 'cued_at' => (string)(CarbonImmutable::createFromTimestamp(
-                    $row['timestamp_cued'] ?? $row['timestamp_start'],
+                    $row['timestamp_cued'],
                     $now->getTimezone()
                 )),
                 'duration' => $row['duration'],

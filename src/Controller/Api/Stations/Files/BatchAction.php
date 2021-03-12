@@ -324,8 +324,7 @@ class BatchAction
                 /** @var Entity\Station $stationRef */
                 $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
 
-                $newQueue = new Entity\StationQueue($stationRef, $media);
-                $newQueue->setMedia($media);
+                $newQueue = Entity\StationQueue::fromMedia($stationRef, $media);
                 $newQueue->setTimestampCued(time());
 
                 $this->em->persist($newQueue);

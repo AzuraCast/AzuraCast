@@ -68,6 +68,14 @@ class Listener
     public int $connected_on;
 
     /**
+     * UNIX timestamp that the user disconnected (or the latest timestamp if they are still connected).
+     *
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
+     * @var int
+     */
+    public int $connected_until;
+
+    /**
      * Number of seconds that the user has been connected.
      *
      * @OA\Property(example=30)

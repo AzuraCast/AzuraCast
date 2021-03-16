@@ -7,8 +7,7 @@ $this->layout('minimal', [
 
 /** @var \App\Assets $assets */
 $assets
-    ->load('vue')
-    ->load('Webcaster')
+    ->load('Vue_PublicWebDJ')
     ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station, 'base_uri' => $base_uri]));
 ?>
 <section id="content" role="main" style="height: 100vh;">

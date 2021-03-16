@@ -27,7 +27,7 @@ $(function () {
     const web_dj = new Vue({
         el: '#web_dj',
         render: function (createElement) {
-            return createElement(Webcaster.default, {
+            return createElement(PublicWebDJ.default, {
                 props: <?=json_encode($props) ?>
             });
         }

@@ -5,19 +5,19 @@ module.exports = {
   mode: 'production',
   entry: {
     VueTranslations: './vue/VueTranslations.js',
-    Webcaster: './vue/Webcaster.vue',
-    RadioPlayer: './vue/RadioPlayer.vue',
-    PublicRadioPlayer: './vue/PublicRadioPlayer.vue',
     InlinePlayer: './vue/InlinePlayer.vue',
-    SongRequest: './vue/SongRequest.vue',
-    AdminStorageLocations: './vue/AdminStorageLocations.vue',
-    StationMedia: './vue/StationMedia.vue',
-    StationPlaylists: './vue/StationPlaylists.vue',
-    StationQueue: './vue/StationQueue.vue',
-    StationStreamers: './vue/StationStreamers.vue',
-    StationOnDemand: './vue/StationOnDemand.vue',
-    StationProfile: './vue/StationProfile.vue',
-    Dashboard: './vue/Dashboard.vue'
+    Dashboard: './vue/Dashboard.vue',
+    AdminStorageLocations: './vue/Admin/StorageLocations.vue',
+    PublicFullPlayer: './vue/Public/FullPlayer.vue',
+    PublicOnDemand: './vue/Public/OnDemand.vue',
+    PublicPlayer: './vue/Public/Player.vue',
+    PublicRequests: './vue/Public/Requests.vue',
+    PublicWebDJ: './vue/Public/WebDJ.vue',
+    StationsMedia: './vue/Stations/Media.vue',
+    StationsPlaylists: './vue/Stations/Playlists.vue',
+    StationsProfile: './vue/Stations/Profile.vue',
+    StationsQueue: './vue/Stations/Queue.vue',
+    StationsStreamers: './vue/Stations/Streamers.vue'
   },
   resolve: {
     extensions: ['*', '.js', '.vue', '.json']

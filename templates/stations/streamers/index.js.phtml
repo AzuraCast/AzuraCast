@@ -12,7 +12,7 @@ $(function () {
     station_streamers = new Vue({
         el: '#station-streamers',
         render: function (createElement) {
-            return createElement(StationStreamers.default, {
+            return createElement(StationsStreamers.default, {
                 props: <?=json_encode($props) ?>
             });
         }

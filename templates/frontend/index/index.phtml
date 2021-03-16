@@ -11,8 +11,7 @@
 $this->layout('main', ['title' => __('Dashboard'), 'manual' => true]);
 
 $assets
-    ->load('vue')
-    ->load('Dashboard')
+    ->load('Vue_Dashboard')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
     ->addInlineJs(
         $this->fetch(

@@ -15,7 +15,7 @@ $(function () {
     let songRequest = new Vue({
         el: '#song-requests',
         render: function (createElement) {
-            return createElement(SongRequest.default, {
+            return createElement(PublicRequests.default, {
                 props: <?=json_encode($props) ?>
             });
         }

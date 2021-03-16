@@ -77,6 +77,8 @@ class Assets
     {
         if (!empty($vueComponents['entrypoints'])) {
             foreach ($vueComponents['entrypoints'] as $componentName => $componentDeps) {
+                $componentName = 'Vue_' . $componentName;
+
                 $library = $this->libraries[$componentName] ?? [
                         'order' => 10,
                         'require' => [],

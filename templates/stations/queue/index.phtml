@@ -4,7 +4,7 @@ $this->layout('main', ['title' => __('Upcoming Song Queue'), 'manual' => true]);
 
 /** @var \App\Assets $assets */
 $assets
-    ->load('StationQueue')
+    ->load('Vue_StationsQueue')
     ->addInlineJs($this->fetch('stations/queue/index.js', ['stationTz' => $stationTz]));
 ?>
 

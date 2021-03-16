@@ -156,8 +156,8 @@
 </template>
 
 <script>
-import TimeSeriesChart from './components/TimeSeriesChart';
-import DataTable from './components/DataTable';
+import TimeSeriesChart from './Common/TimeSeriesChart';
+import DataTable from './Common/DataTable';
 import axios from 'axios';
 import store from 'store';
 

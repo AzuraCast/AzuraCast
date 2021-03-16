@@ -106,7 +106,7 @@ $(function () {
     let profile = new Vue({
         el: '#profile',
         render: function (createElement) {
-            return createElement(StationProfile.default, {
+            return createElement(StationsProfile.default, {
                 props: <?=json_encode($props) ?>
             });
         }

@@ -11,7 +11,7 @@ $(function () {
     stationQueue = new Vue({
         el: '#station-queue',
         render: function (createElement) {
-            return createElement(StationQueue.default, {
+            return createElement(StationsQueue.default, {
                 props: <?=json_encode($props) ?>
             });
         }

@@ -17,7 +17,7 @@ $(function () {
     station_media_manager = new Vue({
         el: '#media-manager',
         render: function (createElement) {
-            return createElement(StationMedia.default, {
+            return createElement(StationsMedia.default, {
                 props: <?=json_encode($props) ?>
             });
         }

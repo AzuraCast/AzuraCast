@@ -43,107 +43,107 @@
 </template>
 
 <style lang="scss">
-    .player-inline {
-        .inline-seek {
-            width: 300px;
+.player-inline {
+    .inline-seek {
+        width: 300px;
 
-            div.time-display {
-                font-size: 90%;
-            }
-        }
-
-        .inline-volume-controls {
-            width: 175px;
-        }
-
-        input.player-volume-range,
-        input.player-seek-range {
-            width: 100%;
-            height: 10px;
+        div.time-display {
+            font-size: 90%;
         }
     }
+
+    .inline-volume-controls {
+        width: 175px;
+    }
+
+    input.player-volume-range,
+    input.player-seek-range {
+        width: 100%;
+        height: 10px;
+    }
+}
 </style>
 
 <script>
-    import AudioPlayer from './components/AudioPlayer';
-    import { formatTime } from './inc/format_time';
+import AudioPlayer from './Common/AudioPlayer';
+import formatTime from './Function/FormatTime.js';
 
-    export default {
-        components: { AudioPlayer },
-        data () {
-            return {
-                is_mounted: false
-            };
+export default {
+    components: { AudioPlayer },
+    data () {
+        return {
+            is_mounted: false
+        };
+    },
+    mounted () {
+        this.is_mounted = true;
+    },
+    computed: {
+        langSeek () {
+            return this.$gettext('Seek');
         },
-        mounted () {
-            this.is_mounted = true;
+        langVolume () {
+            return this.$gettext('Volume');
         },
-        computed: {
-            langSeek () {
-                return this.$gettext('Seek');
-            },
-            langVolume () {
-                return this.$gettext('Volume');
-            },
-            durationText () {
-                return formatTime(this.duration);
-            },
-            currentTimeText () {
-                return formatTime(this.currentTime);
-            },
-            duration () {
+        durationText () {
+            return formatTime(this.duration);
+        },
+        currentTimeText () {
+            return formatTime(this.currentTime);
+        },
+        duration () {
+            if (!this.is_mounted) {
+                return;
+            }
+
+            return this.$refs.player.getDuration();
+        },
+        currentTime () {
+            if (!this.is_mounted) {
+                return;
+            }
+
+            return this.$refs.player.getCurrentTime();
+        },
+        is_playing () {
+            if (!this.is_mounted) {
+                return;
+            }
+
+            return this.$refs.player.isPlaying();
+        },
+        volume: {
+            get () {
                 if (!this.is_mounted) {
                     return;
                 }
 
-                return this.$refs.player.getDuration();
+                return this.$refs.player.getVolume();
             },
-            currentTime () {
-                if (!this.is_mounted) {
-                    return;
-                }
-
-                return this.$refs.player.getCurrentTime();
-            },
-            is_playing () {
-                if (!this.is_mounted) {
-                    return;
-                }
-
-                return this.$refs.player.isPlaying();
-            },
-            volume: {
-                get () {
-                    if (!this.is_mounted) {
-                        return;
-                    }
-
-                    return this.$refs.player.getVolume();
-                },
-                set (vol) {
-                    this.$refs.player.setVolume(vol);
-                }
-            },
-            progress: {
-                get () {
-                    if (!this.is_mounted) {
-                        return;
-                    }
-
-                    return this.$refs.player.getProgress();
-                },
-                set (progress) {
-                    this.$refs.player.setProgress(progress);
-                }
+            set (vol) {
+                this.$refs.player.setVolume(vol);
             }
         },
-        methods: {
-            play (url) {
-                this.$refs.player.play(url);
+        progress: {
+            get () {
+                if (!this.is_mounted) {
+                    return;
+                }
+
+                return this.$refs.player.getProgress();
             },
-            stop () {
-                this.$refs.player.stop();
+            set (progress) {
+                this.$refs.player.setProgress(progress);
             }
         }
-    };
+    },
+    methods: {
+        play (url) {
+            this.$refs.player.play(url);
+        },
+        stop () {
+            this.$refs.player.stop();
+        }
+    }
+};
 </script>

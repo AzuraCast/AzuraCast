@@ -32,7 +32,7 @@ $(function () {
     let publicRadioPlayer = new Vue({
         el: '#public-radio-player',
         render: function (createElement) {
-            return createElement(PublicRadioPlayer.default, {
+            return createElement(PublicFullPlayer.default, {
                 props: <?=json_encode($props) ?>
             });
         }

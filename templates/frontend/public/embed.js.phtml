@@ -26,7 +26,7 @@ $(function () {
     radio_player = new Vue({
         el: '#station-nowplaying',
         render: function (createElement) {
-            return createElement(RadioPlayer.default, {
+            return createElement(PublicPlayer.default, {
                 props: <?=json_encode($props) ?>
             });
         }

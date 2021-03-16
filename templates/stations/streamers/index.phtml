@@ -3,7 +3,7 @@
 $this->layout('main', ['title' => __('Streamer/DJ Accounts'), 'manual' => true]);
 
 /** @var \App\Assets $assets */
-$assets->load('StationStreamers')
+$assets->load('Vue_StationsStreamers')
     ->addInlineJs(
         $this->fetch(
             'stations/streamers/index.js',

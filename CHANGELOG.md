@@ -5,7 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features since the last stable release.
+- A new "Embed Widgets" modal has been added to the station profile that will let you customize your embeddable widgets
+  and show you a preview of their rendered status.
+
+- You can now embed playback history as a standalone component in your web site.
 
 ## Code Quality/Technical Changes
 

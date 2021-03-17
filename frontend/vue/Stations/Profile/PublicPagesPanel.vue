@@ -19,49 +19,31 @@
                         <a :href="publicPageUri">{{ publicPageUri }}</a>
                     </td>
                 </tr>
-                <tr>
-                    <td key="lang_profile_embed_code" v-translate>Player Embed Code</td>
-                    <td class="form-field">
-                        <textarea id="player_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;">{{ publicPageEmbedCode }}</textarea>
-                        <copy-to-clipboard-button target="#player_embed_url"></copy-to-clipboard-button>
-                    </td>
-                </tr>
                 <tr v-if="stationSupportsStreamers && enableStreamers">
                     <td key="lang_profile_web_dj" v-translate>Web DJ</td>
                     <td>
                         <a :href="publicWebDjUri">{{ publicWebDjUri }}</a>
                     </td>
                 </tr>
-
                 <tr v-if="enableOnDemand">
                     <td key="lang_profile_on_demand_media" v-translate>On-Demand Media</td>
                     <td>
                         <a :href="publicOnDemandUri">{{ publicOnDemandUri }}</a>
                     </td>
                 </tr>
-                <tr v-if="enableOnDemand">
-                    <td key="lang_profile_on_demand_embed_code" v-translate>On-Demand Embed Code</td>
-                    <td>
-                        <textarea id="ondemand_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;">{{ publicOnDemandEmbedCode }}</textarea>
-                        <copy-to-clipboard-button target="#ondemand_embed_url"></copy-to-clipboard-button>
-                    </td>
-                </tr>
-
-                <tr v-if="stationSupportsRequests && enableRequests">
-                    <td key="lang_profile_embed_code" v-translate>Request Embed Code</td>
-                    <td class="form-field">
-                        <textarea id="request_embed_url" class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;">{{ publicRequestEmbedCode }}</textarea>
-                        <copy-to-clipboard-button target="#request_embed_url"></copy-to-clipboard-button>
-                    </td>
-                </tr>
                 </tbody>
             </table>
             <div class="card-actions" v-if="userCanManageProfile">
+                <a class="btn btn-outline-danger" @click.prevent="doOpenEmbed">
+                    <i class="material-icons" aria-hidden="true">code</i>
+                    <translate key="lang_public_pages_disable">Embed Widgets</translate>
+                </a>
                 <a class="btn btn-outline-danger" :data-confirm-title="langDisablePublicPages" :href="togglePublicPageUri">
                     <i class="material-icons" aria-hidden="true">close</i>
                     <translate key="lang_public_pages_disable">Disable</translate>
                 </a>
             </div>
+            <embed-modal ref="embed_modal" v-bind="$props"></embed-modal>
         </template>
         <template v-else>
             <div class="card-header bg-primary-dark">
@@ -81,7 +63,7 @@
 </template>
 
 <script>
-import CopyToClipboardButton from '../../Common/CopyToClipboardButton';
+import EmbedModal, { profileEmbedModalProps } from './EmbedModal';
 
 export const profilePublicProps = {
     props: {
@@ -93,18 +75,15 @@ export const profilePublicProps = {
         enableRequests: Boolean,
         userCanManageProfile: Boolean,
         publicPageUri: String,
-        publicPageEmbedUri: String,
         publicWebDjUri: String,
         publicOnDemandUri: String,
-        publicOnDemandEmbedUri: String,
-        publicRequestEmbedUri: String,
         togglePublicPageUri: String
     }
 };
 
 export default {
-    components: { CopyToClipboardButton },
-    mixins: [profilePublicProps],
+    components: { EmbedModal },
+    mixins: [profilePublicProps, profileEmbedModalProps],
     computed: {
         langDisablePublicPages () {
             return this.$gettext('Disable public pages?');
@@ -120,6 +99,11 @@ export default {
         },
         publicRequestEmbedCode () {
             return '<iframe src="' + this.publicRequestEmbedUri + '" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe>';
+        }
+    },
+    methods: {
+        doOpenEmbed () {
+            this.$refs.embed_modal.open();
         }
     }
 };

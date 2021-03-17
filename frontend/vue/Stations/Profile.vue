@@ -47,6 +47,7 @@ import ProfilePublicPages, { profilePublicProps } from './Profile/PublicPagesPan
 import ProfileFrontend, { profileFrontendProps } from './Profile/FrontendPanel';
 import ProfileBackendNone from './Profile/BackendNonePanel';
 import ProfileBackend, { profileBackendProps } from './Profile/BackendPanel';
+import { profileEmbedModalProps } from './Profile/EmbedModal';
 import { BACKEND_NONE, FRONTEND_REMOTE } from '../Entity/RadioAdapters.js';
 import NowPlaying from '../Entity/NowPlaying';
 import axios from 'axios';
@@ -71,7 +72,8 @@ export default {
         profileStreamersProps,
         profilePublicProps,
         profileFrontendProps,
-        profileBackendProps
+        profileBackendProps,
+        profileEmbedModalProps
     ],
     props: {
         profileApiUri: String,

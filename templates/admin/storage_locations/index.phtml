@@ -1,12 +1,19 @@
 <?php
-$this->layout('main', [
-    'title' => __('Storage Locations'),
-    'manual' => true,
-]);
+
+$this->layout(
+    'main',
+    [
+        'title' => __('Storage Locations'),
+        'manual' => true,
+    ]
+);
+
+$props = [
+    'listUrl' => $router->fromHere('api:admin:storage_locations'),
+];
 
 /** @var \App\Assets $assets */
-$assets->load('Vue_AdminStorageLocations')
-    ->addInlineJs($this->fetch('admin/storage_locations/index.js'));
+$assets->addVueRender('Vue_AdminStorageLocations', '#admin-storage-locations', $props);
 ?>
 
 <div id="admin-storage-locations"></div>

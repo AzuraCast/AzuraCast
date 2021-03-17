@@ -466,6 +466,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_PublicHistory' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_AdminStorageLocations' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],

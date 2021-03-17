@@ -1,5 +1,6 @@
 <template>
     <div class="radio-player-widget">
+        <now-playing v-bind="$props" @np_updated="setNowPlaying"></now-playing>
         <audio-player ref="player" v-bind:title="np.now_playing.song.text"></audio-player>
 
         <div class="now-playing-details">
@@ -212,12 +213,12 @@
 </style>
 
 <script>
-import axios from 'axios';
-import NchanSubscriber from 'nchan';
+
 import AudioPlayer from '../Common/AudioPlayer';
-import NowPlaying from '../Entity/NowPlaying';
+import NowPlaying, { nowPlayingProps } from '../Common/NowPlaying';
 
 export const radioPlayerProps = {
+    ...nowPlayingProps,
     props: {
         nowPlayingUri: {
             type: String,
@@ -241,7 +242,7 @@ export const radioPlayerProps = {
 };
 
 export default {
-    components: { AudioPlayer },
+    components: { NowPlaying, AudioPlayer },
     mixins: [radioPlayerProps],
     data () {
         return {
@@ -259,10 +260,6 @@ export default {
     mounted () {
         this.is_mounted = true;
         this.clock_interval = setInterval(this.iterateTimer, 1000);
-
-        // Convert initial NP data from prop to data.
-        this.setNowPlaying(this.np);
-        setTimeout(this.checkNowPlaying, 5000);
     },
     computed: {
         lang_play_btn () {
@@ -364,30 +361,9 @@ export default {
             this.current_stream = new_stream;
             this.play();
         },
-        checkNowPlaying () {
-            if (this.useNchan) {
-                this.nchan_subscriber = new NchanSubscriber(this.nowPlayingUri);
-                this.nchan_subscriber.on('message', (message, message_metadata) => {
-                    let np_new = JSON.parse(message);
-                    setTimeout(() => {
-                        this.setNowPlaying(np_new);
-                    }, 5000);
-                });
-                this.nchan_subscriber.start();
-            } else {
-                axios.get(this.nowPlayingUri).then((response) => {
-                    this.setNowPlaying(response.data);
-
-                    setTimeout(this.checkNowPlaying, 15000);
-                }).catch((error) => {
-                    console.error(error);
-
-                    setTimeout(this.checkNowPlaying, 30000);
-                });
-            }
-        },
         setNowPlaying (np_new) {
             this.np = np_new;
+            this.$emit('np_updated', np_new);
 
             // Set a "default" current stream if none exists.
             if (this.current_stream.url === '' && this.streams.length > 0) {
@@ -407,20 +383,6 @@ export default {
 
                 this.current_stream = current_stream;
             }
-
-            // Update the browser metadata for browsers that support it (i.e. Mobile Chrome)
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: np_new.now_playing.song.title,
-                    artist: np_new.now_playing.song.artist,
-                    artwork: [
-                        { src: np_new.now_playing.song.art }
-                    ]
-                });
-            }
-
-            this.$emit('np_updated', np_new);
-            this.$eventHub.$emit('np_updated', np_new);
         },
         iterateTimer () {
             let current_time = Math.floor(Date.now() / 1000);

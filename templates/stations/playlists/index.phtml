@@ -8,17 +8,17 @@ $this->layout(
     ]
 );
 
+$props = [
+    'listUrl' => $router->fromHere('api:stations:playlists'),
+    'scheduleUrl' => $router->fromHere('api:stations:playlists:schedule'),
+    'locale' => substr($customization->getLocale(), 0, 2),
+    'filesUrl' => $router->fromHere('stations:files:index'),
+    'stationTimeZone' => $station_tz,
+    'enableAdvancedFeatures' => $enableAdvancedFeatures,
+];
+
 /** @var \App\Assets $assets */
-$assets->load('Vue_StationsPlaylists')
-    ->addInlineJs(
-        $this->fetch(
-            'stations/playlists/index.js',
-            [
-                'station_tz' => $station_tz,
-                'enableAdvancedFeatures' => $enableAdvancedFeatures,
-            ]
-        )
-    );
+$assets->addVueRender('Vue_StationsPlaylists', '#station-playlist', $props);
 ?>
 
 <div id="station-playlist"></div>

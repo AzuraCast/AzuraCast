@@ -2,10 +2,14 @@
 
 $this->layout('main', ['title' => __('Upcoming Song Queue'), 'manual' => true]);
 
+$props = [
+    'listUrl' => $router->fromHere('api:stations:queue'),
+    'locale' => substr($customization->getLocale(), 0, 2),
+    'stationTimeZone' => $stationTz,
+];
+
 /** @var \App\Assets $assets */
-$assets
-    ->load('Vue_StationsQueue')
-    ->addInlineJs($this->fetch('stations/queue/index.js', ['stationTz' => $stationTz]));
+$assets->addVueRender('Vue_StationsQueue', '#station-queue', $props);
 ?>
 
 <div id="station-queue"></div>

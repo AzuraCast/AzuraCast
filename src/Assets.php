@@ -261,6 +261,31 @@ class Assets
         return $this;
     }
 
+    public function addVueRender(string $name, string $elementId, array $props = []): self
+    {
+        $this->load($name);
+
+        $nameWithoutPrefix = str_replace('Vue_', '', $name);
+        $propsJson = json_encode($props, JSON_THROW_ON_ERROR);
+
+        $this->addInlineJs(
+            <<<JS
+                $(function () {
+                    new Vue({
+                        el: '${elementId}',
+                        render: function (createElement) {
+                            return createElement(${nameWithoutPrefix}.default, {
+                                props: ${propsJson}
+                            });
+                        }
+                    });
+                });
+            JS
+        );
+
+        return $this;
+    }
+
     /**
      * Add a single CSS file.
      *

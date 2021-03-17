@@ -9,6 +9,7 @@ module.exports = {
     Dashboard: './vue/Dashboard.vue',
     AdminStorageLocations: './vue/Admin/StorageLocations.vue',
     PublicFullPlayer: './vue/Public/FullPlayer.vue',
+    PublicHistory: './vue/Public/History.vue',
     PublicOnDemand: './vue/Public/OnDemand.vue',
     PublicPlayer: './vue/Public/Player.vue',
     PublicRequests: './vue/Public/Requests.vue',

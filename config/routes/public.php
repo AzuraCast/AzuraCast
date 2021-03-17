@@ -18,6 +18,9 @@ return function (App $app) {
             $group->get('/playlist[.{format}]', Controller\Frontend\PublicPages\PlaylistAction::class)
                 ->setName('public:playlist');
 
+            $group->get('/history', Controller\Frontend\PublicPages\HistoryAction::class)
+                ->setName('public:history');
+
             $group->get('/dj', Controller\Frontend\PublicPages\WebDjAction::class)
                 ->setName('public:dj');
 

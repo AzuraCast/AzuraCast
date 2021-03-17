@@ -47,13 +47,14 @@ class OnDemandAction
             ];
         }
 
-        $templateName = ($embed)
-            ? 'frontend/public/ondemand_embed'
-            : 'frontend/public/ondemand';
-
-        return $request->getView()->renderToResponse($response, $templateName, [
-            'station' => $station,
-            'custom_fields' => $customFields,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'frontend/public/ondemand',
+            [
+                'embed' => $embed,
+                'station' => $station,
+                'custom_fields' => $customFields,
+            ]
+        );
     }
 }

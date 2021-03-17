@@ -10,19 +10,21 @@ $this->layout(
     ]
 );
 
+$props = [
+    'listUrl' => $router->fromHere('api:stations:files:list'),
+    'batchUrl' => $router->fromHere('api:stations:files:batch'),
+    'uploadUrl' => $router->fromHere('api:stations:files:upload'),
+    'listDirectoriesUrl' => $router->fromHere('api:stations:files:directories'),
+    'mkdirUrl' => $router->fromHere('api:stations:files:mkdir'),
+    'renameUrl' => $router->fromHere('api:stations:files:rename'),
+    'initialPlaylists' => $playlists,
+    'customFields' => $custom_fields,
+    'validMimeTypes' => $mime_types,
+];
+
 $assets
-    ->load('Vue_StationsMedia')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
-    ->addInlineJs(
-        $this->fetch(
-            'stations/files/index.js',
-            [
-                'playlists' => $playlists,
-                'custom_fields' => $custom_fields,
-                'mime_types' => $mime_types,
-            ]
-        )
-    );
+    ->addVueRender('Vue_StationsMedia', '#media-manager', $props);
 ?>
 
 <div class="row">

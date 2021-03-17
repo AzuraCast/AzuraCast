@@ -10,18 +10,23 @@
 
 $this->layout('main', ['title' => __('Dashboard'), 'manual' => true]);
 
+$props = [
+    'userName' => $user->getName() ?? __('AzuraCast User'),
+    'userEmail' => $user->getEmail(),
+    'userAvatar' => $user->getAvatar(64),
+    'profileUrl' => (string)$router->named('profile:index'),
+    'adminUrl' => (string)$router->named('admin:index:index'),
+    'showAdmin' => $showAdmin,
+    'notificationsUrl' => (string)$router->named('api:frontend:dashboard:notifications'),
+    'showCharts' => $showCharts,
+    'chartsUrl' => (string)$router->named('api:frontend:dashboard:charts'),
+    'addStationUrl' => (string)$router->named('admin:stations:add'),
+    'stationsUrl' => (string)$router->named('api:frontend:dashboard:stations'),
+];
+
 $assets
-    ->load('Vue_Dashboard')
     ->addInlineJs($this->fetch('partials/radio_controls.js'), 95)
-    ->addInlineJs(
-        $this->fetch(
-            'frontend/index/index.js',
-            [
-                'showAdmin' => $showAdmin,
-                'showCharts' => $showCharts,
-            ]
-        )
-    );
+    ->addVueRender('Vue_Dashboard', '#dashboard', $props);
 ?>
 
 <div id="dashboard"></div>

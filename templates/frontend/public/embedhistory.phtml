@@ -12,7 +12,6 @@ $this->layout(
 
 $props = [
     'initialNowPlaying' => $nowplaying,
-    'showAlbumArt' => !$customization->hideAlbumArt(),
 ];
 
 if ($customization->useWebSocketsForNowPlaying()) {
@@ -24,9 +23,8 @@ if ($customization->useWebSocketsForNowPlaying()) {
 }
 
 /** @var \App\Assets $assets */
-$assets->addVueRender('Vue_PublicPlayer', '#station-nowplaying', $props);
+$assets
+    ->addVueRender('Vue_PublicHistory', '#song-history', $props);
 ?>
 
-<div class="stations nowplaying">
-    <div id="station-nowplaying"></div>
-</div>
+<div id="song-history"></div>

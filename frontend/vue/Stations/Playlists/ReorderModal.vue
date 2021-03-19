@@ -19,11 +19,11 @@
                             <b-button-group size="sm">
                                 <b-button size="sm" variant="primary" @click.prevent="moveDown(index)" :title="langDownBtn"
                                           v-if="index+1 < media.length">
-                                    <i class="material-icons" aria-hidden="true">arrow_downward</i>
+                                    <icon icon="arrow_downward"></icon>
                                 </b-button>
                                 <b-button size="sm" variant="primary" @click.prevent="moveUp(index)" :title="langUpBtn"
                                           v-if="index > 0">
-                                    <i class="material-icons" aria-hidden="true">arrow_upward</i>
+                                    <icon icon="arrow_upward"></icon>
                                 </b-button>
                             </b-button-group>
                         </td>
@@ -37,10 +37,12 @@
 <script>
 import axios from 'axios';
 import Draggable from 'vuedraggable';
+import Icon from '../../Common/Icon';
 
 export default {
     name: 'ReorderModal',
     components: {
+        Icon,
         Draggable
     },
     data () {

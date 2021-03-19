@@ -11,12 +11,11 @@
                     <template v-if="row.item.recording_links_download">
                         <a class="file-icon btn-audio" href="#"
                            @click.prevent="playAudio(row.item.recording_links_download)" :title="langPlayPause">
-                            <i class="material-icons" aria-hidden="true" v-if="now_playing_url === row.item.recording_links_download">pause_circle_filled</i>
-                            <i class="material-icons" aria-hidden="true" v-else>play_circle_filled</i>
+                            <icon :icon="(now_playing_url === row.item.recording_links_download) ? 'stop_circle' : 'play_circle_filled'"></icon>
                         </a>
                         &nbsp;
                         <a class="name" :href="row.item.recording_links_download" target="_blank" :title="langDownload">
-                            <i class="material-icons">cloud_download</i>
+                            <icon icon="cloud_download"></icon>
                         </a>
                     </template>
                     <template v-else>&nbsp;</template>
@@ -43,10 +42,11 @@ import DataTable from '../../Common/DataTable.vue';
 import axios from 'axios';
 import formatFileSize from '../../Function/FormatFileSize.js';
 import InlinePlayer from '../../InlinePlayer';
+import Icon from '../../Common/Icon';
 
 export default {
     name: 'StreamerBroadcastsModal',
-    components: { InlinePlayer, DataTable },
+    components: { Icon, InlinePlayer, DataTable },
     data () {
         return {
             now_playing_url: null,

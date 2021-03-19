@@ -25,7 +25,7 @@
                 <div class="inline-volume-controls d-flex align-items-center">
                     <div class="flex-shrink-0">
                         <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 0">
-                            <i class="material-icons" aria-hidden="true">volume_mute</i>
+                            <icon icon="volume_mute"></icon>
                             <span class="sr-only" key="lang_mute" v-translate>Mute</span>
                         </a>
                     </div>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="flex-shrink-0">
                         <a class="btn btn-sm btn-outline-inverse py-0 px-3" href="#" @click.prevent="volume = 100">
-                            <i class="material-icons" aria-hidden="true">volume_up</i>
+                            <icon icon="volume_up"></icon>
                             <span class="sr-only" key="lang_vol_full" v-translate>Full Volume</span>
                         </a>
                     </div>
@@ -52,9 +52,11 @@ import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import axios from 'axios';
 import getLogarithmicVolume from '../Function/GetLogarithmicVolume.js';
 import store from 'store';
+import Icon from './Icon';
 
 export default {
     name: 'Waveform',
+    components: { Icon },
     props: {
         audioUrl: String,
         waveformUrl: String

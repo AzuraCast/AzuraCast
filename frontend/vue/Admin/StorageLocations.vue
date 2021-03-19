@@ -12,7 +12,7 @@
 
             <b-card-body body-class="card-padding-sm">
                 <b-button variant="outline-primary" @click.prevent="doCreate">
-                    <i class="material-icons" aria-hidden="true">add</i>
+                    <icon icon="add"></icon>
                     <translate key="lang_add_playlist">Add Storage Location</translate>
                 </b-button>
             </b-card-body>
@@ -47,10 +47,11 @@
 import DataTable from '../Common/DataTable';
 import axios from 'axios';
 import EditModal from './StorageLocations/EditModal';
+import Icon from '../Common/Icon';
 
 export default {
     name: 'AdminStorageLocations',
-    components: { EditModal, DataTable },
+    components: { Icon, EditModal, DataTable },
     props: {
         listUrl: String
     },

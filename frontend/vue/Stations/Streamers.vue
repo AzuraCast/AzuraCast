@@ -16,7 +16,7 @@
                 <b-tab :title="langAccountListTab" no-body>
                     <b-card-body body-class="card-padding-sm">
                         <b-button variant="outline-primary" @click.prevent="doCreate">
-                            <i class="material-icons" aria-hidden="true">add</i>
+                            <icon icon="add"></icon>
                             <translate key="lang_add_streamer">Add Streamer</translate>
                         </b-button>
                     </b-card-body>
@@ -64,10 +64,11 @@ import axios from 'axios';
 import EditModal from './Streamers/EditModal';
 import BroadcastsModal from './Streamers/BroadcastsModal';
 import Schedule from '../Common/ScheduleView';
+import Icon from '../Common/Icon';
 
 export default {
     name: 'StationStreamers',
-    components: { EditModal, BroadcastsModal, DataTable, Schedule },
+    components: { Icon, EditModal, BroadcastsModal, DataTable, Schedule },
     props: {
         listUrl: String,
         scheduleUrl: String,

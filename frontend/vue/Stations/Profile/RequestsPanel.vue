@@ -9,11 +9,11 @@
             </div>
             <div class="card-actions" v-if="userCanManageReports || userCanManageProfile">
                 <a class="btn btn-outline-primary" v-if="userCanManageReports" :href="requestsViewUri">
-                    <i class="material-icons" aria-hidden="true">assignment</i>
+                    <icon icon="assignment"></icon>
                     <translate key="lang_profile_requests_view">View</translate>
                 </a>
                 <a class="btn btn-outline-danger" v-if="userCanManageProfile" :data-confirm-title="langDisableRequests" :href="requestsToggleUri">
-                    <i class="material-icons" aria-hidden="true">close</i>
+                    <icon icon="close"></icon>
                     <translate key="lang_profile_requests_disable">Disable</translate>
                 </a>
             </div>
@@ -27,7 +27,7 @@
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-success" :data-confirm-title="langEnableRequests" :href="requestsToggleUri">
-                    <i class="material-icons" aria-hidden="true">check</i>
+                    <icon icon="check"></icon>
                     <translate key="lang_profile_requests_enable">Enable</translate>
                 </a>
             </div>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import Icon from '../../Common/Icon';
+
 export const profileRequestsProps = {
     props: {
         enableRequests: Boolean,
@@ -47,6 +49,7 @@ export const profileRequestsProps = {
 };
 
 export default {
+    components: { Icon },
     mixins: [profileRequestsProps],
     computed: {
         langDisableRequests () {

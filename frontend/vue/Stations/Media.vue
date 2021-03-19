@@ -24,13 +24,15 @@
                     <template v-if="row.item.media_is_playable">
                         <a class="file-icon btn-audio has-listener" href="#" :data-url="row.item.media_links_play"
                            @click.prevent="playAudio(row.item.media_links_play)" :title="langPlayPause">
-                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
+                            <icon icon="play_circle_filled"></icon>
                         </a>
                     </template>
                     <template v-else>
-                        <span class="file-icon">
-                            <i class="material-icons" aria-hidden="true" v-if="row.item.is_dir">folder</i>
-                            <i class="material-icons" aria-hidden="true" v-else>note</i>
+                        <span class="file-icon" v-if="row.item.is_dir">
+                            <icon icon="folder"></icon>
+                        </span>
+                        <span class="file-icon" v-else>
+                            <icon icon="note"></icon>
                         </span>
                     </template>
 
@@ -124,9 +126,11 @@ import RenameModal from './Media/RenameModal';
 import EditModal from './Media/EditModal';
 import formatFileSize from '../Function/FormatFileSize.js';
 import _ from 'lodash';
+import Icon from '../Common/Icon';
 
 export default {
     components: {
+        Icon,
         EditModal,
         RenameModal,
         MoveFilesModal,

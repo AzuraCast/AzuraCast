@@ -18,7 +18,7 @@
                 </div>
                 <div class="flex-shrink-0">
                     <b-button size="sm" variant="outline-light" class="py-2 pr-0" @click.prevent="remove(index)">
-                        <i class="material-icons" aria-hidden="true">remove</i>
+                        <icon icon="remove"></icon>
                         <translate key="lang_btn_remove">Remove</translate>
                     </b-button>
                 </div>
@@ -111,7 +111,7 @@
 
         <b-button-group>
             <b-button size="sm" variant="outline-primary" @click.prevent="add">
-                <i class="material-icons" aria-hidden="true">add</i>
+                <icon icon="add"></icon>
                 <translate key="lang_btn_add">Add Schedule Item</translate>
             </b-button>
         </b-button-group>
@@ -120,10 +120,11 @@
 
 <script>
 import PlaylistTime from '../../../Common/TimeCode';
+import Icon from '../../../Common/Icon';
 
 export default {
     name: 'PlaylistEditSchedule',
-    components: { PlaylistTime },
+    components: { Icon, PlaylistTime },
     props: {
         form: Object,
         stationTimeZone: String,

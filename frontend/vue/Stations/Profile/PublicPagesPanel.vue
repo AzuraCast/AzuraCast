@@ -35,11 +35,11 @@
             </table>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-danger" @click.prevent="doOpenEmbed">
-                    <i class="material-icons" aria-hidden="true">code</i>
+                    <icon icon="code"></icon>
                     <translate key="lang_public_pages_disable">Embed Widgets</translate>
                 </a>
                 <a class="btn btn-outline-danger" :data-confirm-title="langDisablePublicPages" :href="togglePublicPageUri">
-                    <i class="material-icons" aria-hidden="true">close</i>
+                    <icon icon="close"></icon>
                     <translate key="lang_public_pages_disable">Disable</translate>
                 </a>
             </div>
@@ -54,7 +54,7 @@
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-success" :data-confirm-title="langEnablePublicPages" :href="togglePublicPageUri">
-                    <i class="material-icons" aria-hidden="true">check</i>
+                    <icon icon="check"></icon>
                     <translate key="lang_public_pages_enable">Enable</translate>
                 </a>
             </div>
@@ -64,6 +64,7 @@
 
 <script>
 import EmbedModal, { profileEmbedModalProps } from './EmbedModal';
+import Icon from '../../Common/Icon';
 
 export const profilePublicProps = {
     props: {
@@ -82,7 +83,7 @@ export const profilePublicProps = {
 };
 
 export default {
-    components: { EmbedModal },
+    components: { Icon, EmbedModal },
     mixins: [profilePublicProps, profileEmbedModalProps],
     computed: {
         langDisablePublicPages () {

@@ -15,7 +15,7 @@
                 <b-tab :title="langAllPlaylistsTab" no-body>
                     <b-card-body body-class="card-padding-sm">
                         <b-button variant="outline-primary" @click.prevent="doCreate">
-                            <i class="material-icons" aria-hidden="true">add</i>
+                            <icon icon="add"></icon>
                             <translate key="lang_add_playlist">Add Playlist</translate>
                         </b-button>
                     </b-card-body>
@@ -128,10 +128,11 @@ import ReorderModal from './Playlists/ReorderModal';
 import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
 import axios from 'axios';
+import Icon from '../Common/Icon';
 
 export default {
     name: 'StationPlaylists',
-    components: { QueueModal, ImportModal, ReorderModal, EditModal, Schedule, DataTable },
+    components: { Icon, QueueModal, ImportModal, ReorderModal, EditModal, Schedule, DataTable },
     props: {
         listUrl: String,
         scheduleUrl: String,

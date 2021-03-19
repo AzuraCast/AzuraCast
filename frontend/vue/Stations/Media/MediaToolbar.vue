@@ -5,7 +5,7 @@
                 <b-dropdown size="sm" variant="primary" ref="setPlaylistsDropdown" v-b-tooltip.hover
                             :title="langPlaylistDropdown">
                     <template v-slot:button-content>
-                        <i class="material-icons" aria-hidden="true">clear_all</i>
+                        <icon icon="clear_all"></icon>
                         <translate key="lang_playlists_title">Playlists</translate>
                         <span class="caret"></span>
                     </template>
@@ -42,12 +42,13 @@
                 </b-dropdown>
             </div>
             <b-button size="sm" variant="primary" v-b-modal.move_file>
-                <i class="material-icons" aria-hidden="true">open_with</i>
+                <icon icon="open_with"></icon>
                 <translate key="lang_btn_move">Move</translate>
             </b-button>
             <b-dropdown size="sm" variant="default">
                 <template v-slot:button-content>
-                    <i class="material-icons" aria-hidden="true">more_horiz</i> {{ langMore }}
+                    <icon icon="more_horiz"></icon>
+                    {{ langMore }}
                 </template>
                 <b-dropdown-item @click="doQueue" v-b-tooltip.hover :title="langQueue">
                     <translate key="lang_btn_queue">Queue</translate>
@@ -58,13 +59,13 @@
             </b-dropdown>
 
             <b-button size="sm" variant="danger" @click="doDelete">
-                <i class="material-icons" aria-hidden="true">delete</i>
+                <icon icon="delete"></icon>
                 <translate key="lang_btn_delete">Delete</translate>
             </b-button>
         </div>
         <div class="col-md-4 text-right">
             <b-button size="sm" variant="primary" v-b-modal.create_directory>
-                <i class="material-icons" aria-hidden="true">folder</i>
+                <icon icon="folder"></icon>
                 <translate key="lang_btn_new_folder">New Folder</translate>
             </b-button>
         </div>
@@ -73,9 +74,11 @@
 <script>
 import axios from 'axios';
 import _ from 'lodash';
+import Icon from '../../Common/Icon';
 
 export default {
     name: 'station-media-toolbar',
+    components: { Icon },
     props: {
         currentDirectory: String,
         selectedItems: Object,

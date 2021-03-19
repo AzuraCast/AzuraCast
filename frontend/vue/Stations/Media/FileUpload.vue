@@ -17,7 +17,7 @@
             <translate key="lang_upload_target">Drag files here to upload to this folder or</translate>
             <button id="file_browse_target" class="file-upload btn btn-primary text-center ml-1" type="button">
                 <translate key="lang_select_file">Select File</translate>
-                <i class="material-icons" aria-hidden="true">cloud_upload</i>
+                <icon icon="cloud_upload"></icon>
             </button>
             <small class="file-name"></small>
             <input type="file" :accept="validMimeTypesList" multiple style="visibility: hidden; position: absolute;"/>
@@ -28,9 +28,11 @@
 <script>
 import formatFileSize from '../../Function/FormatFileSize.js';
 import Flow from '@flowjs/flow.js';
+import Icon from '../../Common/Icon';
 
 export default {
     name: 'FileUpload',
+    components: { Icon },
     props: {
         uploadUrl: String,
         currentDirectory: String,

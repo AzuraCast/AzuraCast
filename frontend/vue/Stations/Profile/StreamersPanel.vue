@@ -9,11 +9,11 @@
             </div>
             <div class="card-actions" v-if="userCanManageStreamers || userCanManageProfile">
                 <a class="btn btn-outline-primary" v-if="userCanManageStreamers" :href="streamersViewUri">
-                    <i class="material-icons" aria-hidden="true">settings</i>
+                    <icon icon="settings"></icon>
                     <translate key="lang_profile_streamers_manage">Manage</translate>
                 </a>
                 <a class="btn btn-outline-danger" v-if="userCanManageProfile" :data-confirm-title="langDisableStreamers" :href="streamersToggleUri">
-                    <i class="material-icons" aria-hidden="true">close</i>
+                    <icon icon="close"></icon>
                     <translate key="lang_profile_streamers_disable">Disable</translate>
                 </a>
             </div>
@@ -27,7 +27,7 @@
             </div>
             <div class="card-actions" v-if="userCanManageProfile">
                 <a class="btn btn-outline-success" :data-confirm-title="langEnableStreamers" :href="streamersToggleUri">
-                    <i class="material-icons" aria-hidden="true">check</i>
+                    <icon icon="check"></icon>
                     <translate key="lang_profile_streamers_enable">Enable</translate>
                 </a>
             </div>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import Icon from '../../Common/Icon';
+
 export const profileStreamersProps = {
     props: {
         enableStreamers: Boolean,
@@ -47,6 +49,7 @@ export const profileStreamersProps = {
 };
 
 export default {
+    components: { Icon },
     mixins: [profileStreamersProps],
     computed: {
         langDisableStreamers () {

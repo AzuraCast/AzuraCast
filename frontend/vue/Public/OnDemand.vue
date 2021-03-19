@@ -23,13 +23,12 @@
             <template v-slot:cell(download_url)="row">
                 <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
                    @click.prevent="playAudio(row.item.download_url)" :title="langPlayPause">
-                    <i class="material-icons" aria-hidden="true" v-if="now_playing_url === row.item.download_url">pause_circle_filled</i>
-                    <i class="material-icons" aria-hidden="true" v-else>play_circle_filled</i>
+                    <icon :icon="(now_playing_url === row.item.download_url) ? 'stop_circle' : 'play_circle_filled'"></icon>
                 </a>
                 <template v-if="showDownloadButton">
                     &nbsp;
                     <a class="name" :href="row.item.download_url" target="_blank" :title="langDownload">
-                        <i class="material-icons">cloud_download</i>
+                        <icon icon="cloud_download"></icon>
                     </a>
                 </template>
             </template>
@@ -90,9 +89,10 @@
 import InlinePlayer from '../InlinePlayer';
 import DataTable from '../Common/DataTable';
 import _ from 'lodash';
+import Icon from '../Common/Icon';
 
 export default {
-    components: { DataTable, InlinePlayer },
+    components: { Icon, DataTable, InlinePlayer },
     props: {
         listUrl: String,
         stationName: String,

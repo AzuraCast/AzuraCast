@@ -13,8 +13,9 @@
         <div class="card-body">
             <div class="control-group d-flex justify-content-center mb-3">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn btn-danger" v-on:click="toggleRecording" v-bind:class="{ active: playing }"><i
-                        class="material-icons">mic</i></button>
+                    <button class="btn btn-danger" v-on:click="toggleRecording" v-bind:class="{ active: playing }">
+                        <icon icon="mic"></icon>
+                    </button>
                     <button class="btn" v-on:click="cue" v-bind:class="{ 'btn-primary': passThrough }">
                         <translate key="lang_btn_cue">Cue</translate>
                     </button>
@@ -46,8 +47,10 @@
 <script>
 import track from './Track.js';
 import _ from 'lodash';
+import Icon from '../../Common/Icon';
 
 export default {
+    components: { Icon },
     extends: track,
 
     data: function () {

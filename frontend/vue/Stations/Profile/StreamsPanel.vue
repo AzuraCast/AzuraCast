@@ -20,7 +20,7 @@
                 <tr class="align-middle" v-for="mount in np.station.mounts">
                     <td class="pr-1">
                         <a class="btn-audio has-listener" href="#" v-bind:data-url="mount.url" @click.prevent="toggle(mount.url)">
-                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
+                            <icon icon="play_circle_filled"></icon>
                         </a>
                     </td>
                     <td class="pl-1">
@@ -28,7 +28,7 @@
                         <a v-bind:href="mount.url" target="_blank">{{ mount.url }}</a>
                     </td>
                     <td class="pl-1 text-right">
-                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
+                        <icon class="sm align-middle" icon="headset"></icon>
                         <span class="listeners-total">{{ mount.listeners.total }}</span><br>
                         <small>
                             <span class="listeners-unique">{{ mount.listeners.unique }}</span>
@@ -50,7 +50,7 @@
                 <tr class="align-middle" v-for="remote in np.station.remotes">
                     <td class="pr-1">
                         <a class="btn-audio has-listener" href="#" v-bind:data-url="remote.url" @click.prevent="toggle(remote.url)">
-                            <i class="material-icons" aria-hidden="true">play_circle_filled</i>
+                            <icon icon="play_circle_filled"></icon>
                         </a>
                     </td>
                     <td class="pl-1">
@@ -58,7 +58,7 @@
                         <a v-bind:href="remote.url" target="_blank">{{ remote.url }}</a>
                     </td>
                     <td class="pl-1 text-right">
-                        <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
+                        <icon class="sm align-middle" icon="headset"></icon>
                         <span class="listeners-total">{{ remote.listeners.total }}</span><br>
                         <small>
                             <span class="listeners-unique">{{ remote.listeners.unique }}</span>
@@ -71,11 +71,11 @@
         </table>
         <div class="card-actions">
             <a class="btn btn-outline-primary" :href="np.station.playlist_pls_url">
-                <i class="material-icons" aria-hidden="true">file_download</i>
+                <icon icon="file_download"></icon>
                 <translate key="lang_streams_download_pls">Download PLS</translate>
             </a>
             <a class="btn btn-outline-primary" :href="np.station.playlist_m3u_url">
-                <i class="material-icons" aria-hidden="true">file_download</i>
+                <icon icon="file_download"></icon>
                 <translate key="lang_streams_download_m3u">Download M3U</translate>
             </a>
         </div>
@@ -83,7 +83,10 @@
 </template>
 
 <script>
+import Icon from '../../Common/Icon';
+
 export default {
+    components: { Icon },
     props: {
         np: Object
     },

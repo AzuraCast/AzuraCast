@@ -17,13 +17,15 @@ $assets
                 <div class="custom-control custom-switch pb-3">
                     <input class="custom-control-input" id="modal-log-autoscroll" type="checkbox" checked>
                     <span class="custom-control-track"></span>
-                    <label class="custom-control-label" for="modal-log-autoscroll"><?=__('Automatically scroll to the bottom of the log')?></label>
+                    <label class="custom-control-label" for="modal-log-autoscroll"><?=__(
+                            'Automatically scroll to the bottom of the log'
+                        )?></label>
                 </div>
 
                 <textarea class="form-control log-viewer" id="modal-log-view-contents" spellcheck="false" readonly>Loading...</textarea>
                 <div class="buttons pt-2">
                     <button class="btn btn-copy btn-primary btn-sm" data-clipboard-target="#modal-log-view-contents">
-                        <i class="material-icons">file_copy</i> <?=__('Copy to Clipboard')?>
+                        <i class="material-icons md-file_copy"></i> <?=__('Copy to Clipboard')?>
                     </button>
                 </div>
             </div>

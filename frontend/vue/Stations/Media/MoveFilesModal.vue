@@ -3,7 +3,7 @@
         <b-row class="mb-3 align-items-center">
             <b-col md="6">
                 <b-button size="sm" variant="primary" @click="pageBack" :disabled="dirHistory.length === 0">
-                    <i class="material-icons" aria-hidden="true">chevron_left</i>
+                    <icon icon="chevron_left"></icon>
                     <translate key="lang_btn_back">Back</translate>
                 </b-button>
             </b-col>
@@ -19,7 +19,7 @@
                     <template v-slot:cell(directory)="row">
                         <div class="is_dir">
                             <span class="file-icon">
-                                <i class="material-icons" aria-hidden="true">folder</i>
+                                <icon icon="folder"></icon>
                             </span>
 
                             <a href="#" @click.prevent="enterDirectory(row.item.path)">
@@ -44,10 +44,11 @@
 import DataTable from '../../Common/DataTable.vue';
 import axios from 'axios';
 import _ from 'lodash';
+import Icon from '../../Common/Icon';
 
 export default {
     name: 'MoveFilesModal',
-    components: { DataTable },
+    components: { Icon, DataTable },
     props: {
         selectedItems: Object,
         currentDirectory: String,

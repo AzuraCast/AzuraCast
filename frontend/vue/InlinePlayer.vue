@@ -17,13 +17,13 @@
             </div>
 
             <a class="btn btn-sm btn-outline-light px-2 ml-1" href="#" @click.prevent="stop()">
-                <i class="material-icons" aria-hidden="true">pause</i>
-                <span class="sr-only" key="lang_pause" v-translate>Pause</span>
+                <icon icon="stop"></icon>
+                <span class="sr-only" key="lang_pause" v-translate>Stop</span>
             </a>
             <div class="inline-volume-controls d-inline-flex align-items-center ml-1">
                 <div class="flex-shrink-0">
                     <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 0">
-                        <i class="material-icons" aria-hidden="true">volume_mute</i>
+                        <icon icon="volume_mute"></icon>
                         <span class="sr-only" key="lang_mute" v-translate>Mute</span>
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="flex-shrink-0">
                     <a class="btn btn-sm btn-outline-light px-2" href="#" @click.prevent="volume = 100">
-                        <i class="material-icons" aria-hidden="true">volume_up</i>
+                        <icon icon="volume_up"></icon>
                         <span class="sr-only" key="lang_full_volume" v-translate>Full Volume</span>
                     </a>
                 </div>
@@ -67,9 +67,10 @@
 <script>
 import AudioPlayer from './Common/AudioPlayer';
 import formatTime from './Function/FormatTime.js';
+import Icon from './Common/Icon';
 
 export default {
-    components: { AudioPlayer },
+    components: { Icon, AudioPlayer },
     data () {
         return {
             is_mounted: false

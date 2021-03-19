@@ -12,7 +12,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
-There have been no technical changes since the last stable release.
+- We've switched from the `material-icons` library to the `@material-icons/font` library. In particular, we are using
+  the "two-toned" version of the Material Design icons across the application.
+
+- Instances of the "Pause" icon across the system have been replaced with the "Stop" icon to more properly indicate what
+  they do.
 
 ## Bug Fixes
 

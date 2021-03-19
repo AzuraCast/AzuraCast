@@ -10,11 +10,11 @@
         <b-form-group>
             <b-button-group>
                 <b-button variant="light" @click="playAudio">
-                    <i class="material-icons" aria-hidden="true">play_arrow</i>
+                    <icon icon="play_arrow"></icon>
                     <span class="sr-only"><translate key="lang_btn_play">Play</translate></span>
                 </b-button>
                 <b-button variant="dark" @click="stopAudio">
-                    <i class="material-icons" aria-hidden="true">stop</i>
+                    <icon icon="stop"></icon>
                     <span class="sr-only"><translate key="lang_btn_stop">Stop</translate></span>
                 </b-button>
             </b-button-group>
@@ -47,10 +47,11 @@
 
 <script>
 import Waveform from '../../../Common/Waveform';
+import Icon from '../../../Common/Icon';
 
 export default {
     name: 'MediaFormWaveformEditor',
-    components: { Waveform },
+    components: { Icon, Waveform },
     props: {
         form: Object,
         audioUrl: String,

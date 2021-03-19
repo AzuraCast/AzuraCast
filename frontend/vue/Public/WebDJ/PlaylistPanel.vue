@@ -12,14 +12,20 @@
         <div class="card-body">
             <div class="control-group d-flex justify-content-center">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn btn-sm btn-success" v-if="!playing || paused" v-on:click="play"><i
-                        class="material-icons">play_arrow</i></button>
-                    <button class="btn btn-sm btn-warning" v-if="playing && !paused" v-on:click="togglePause()"><i
-                        class="material-icons">pause</i></button>
-                    <button class="btn btn-sm" v-on:click="previous()"><i class="material-icons">fast_rewind</i>
+                    <button class="btn btn-sm btn-success" v-if="!playing || paused" v-on:click="play">
+                        <icon icon="play_arrow"></icon>
                     </button>
-                    <button class="btn btn-sm" v-on:click="next()"><i class="material-icons">fast_forward</i></button>
-                    <button class="btn btn-sm btn-danger" v-on:click="stop()"><i class="material-icons">stop</i>
+                    <button class="btn btn-sm btn-warning" v-if="playing && !paused" v-on:click="togglePause()">
+                        <icon icon="pause"></icon>
+                    </button>
+                    <button class="btn btn-sm" v-on:click="previous()">
+                        <icon icon="fast_rewind"></icon>
+                    </button>
+                    <button class="btn btn-sm" v-on:click="next()">
+                        <icon icon="fast_forward"></icon>
+                    </button>
+                    <button class="btn btn-sm btn-danger" v-on:click="stop()">
+                        <icon icon="stop"></icon>
                     </button>
                     <button class="btn btn-sm" v-on:click="cue()" v-bind:class="{ 'btn-primary': passThrough }">
                         <translate key="lang_btn_cue">Cue</translate>
@@ -95,8 +101,10 @@
 <script>
 import track from './Track.js';
 import _ from 'lodash';
+import Icon from '../../Common/Icon';
 
 export default {
+    components: { Icon },
     extends: track,
     data () {
         return {

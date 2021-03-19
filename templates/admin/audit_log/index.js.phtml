@@ -30,24 +30,30 @@ $(function() {
             };
         },
         formatters: {
-            "datetime": function(column, row) {
+            'datetime': function (column, row) {
                 return formatTimestamp(row.timestamp);
             },
-            "operation": function(column, row) {
+            'operation': function (column, row) {
                 if (row.operation === <?=\App\Entity\AuditLog::OPER_INSERT ?>) {
-                    return '<span class="text-success" title=<?=$this->escapeJs(__('Insert')) ?>><i class="material-icons lg inline" aria-hidden="true">add_circle</i></span>';
+                    return '<span class="text-success" title=<?=$this->escapeJs(
+                        __('Insert')
+                    ) ?>><i class="material-icons lg inline md-add_circle" aria-hidden="true"></i></span>';
                 } else if (row.operation === <?=\App\Entity\AuditLog::OPER_DELETE ?>) {
-                    return '<span class="text-danger" title=<?=$this->escapeJs(__('Delete')) ?>><i class="material-icons lg inline" aria-hidden="true">remove_circle</i></span>';
+                    return '<span class="text-danger" title=<?=$this->escapeJs(
+                        __('Delete')
+                    ) ?>><i class="material-icons lg inline md-remove_circle" aria-hidden="true"></i></span>';
                 } else {
-                    return '<span class="text-primary" title=<?=$this->escapeJs(__('Update')) ?>><i class="material-icons lg inline" aria-hidden="true">swap_horizontal_circle</i></span>';
+                    return '<span class="text-primary" title=<?=$this->escapeJs(
+                        __('Update')
+                    ) ?>><i class="material-icons lg inline md-swap_horizontal_circle" aria-hidden="true"></i></span>';
                 }
             },
-            "identifier": function(column, row) {
-                return '<small>'+row.class+'</small><br>'+row.identifier;
+            'identifier': function (column, row) {
+                return '<small>' + row.class + '</small><br>' + row.identifier;
             },
-            "target": function(column, row) {
+            'target': function (column, row) {
                 if (row.target) {
-                    return '<small>'+row.target_class+'</small><br>'+row.target;
+                    return '<small>' + row.target_class + '</small><br>' + row.target;
                 }
 
                 return 'N/A';

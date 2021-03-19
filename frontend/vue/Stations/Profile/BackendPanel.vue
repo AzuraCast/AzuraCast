@@ -22,15 +22,15 @@
         </div>
         <div class="card-actions" v-if="userCanManageBroadcasting">
             <a class="api-call no-reload btn btn-outline-secondary" :href="backendRestartUri">
-                <i class="material-icons" aria-hidden="true">update</i>
+                <icon icon="update"></icon>
                 <translate key="lang_profile_backend_restart">Restart</translate>
             </a>
             <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.backend_running" :href="backendStartUri">
-                <i class="material-icons" aria-hidden="true">play_arrow</i>
+                <icon icon="play_arrow"></icon>
                 <translate key="lang_profile_backend_start">Start</translate>
             </a>
             <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.backend_running" :href="backendStopUri">
-                <i class="material-icons" aria-hidden="true">stop</i>
+                <icon icon="stop"></icon>
                 <translate key="lang_profile_backend_stop">Stop</translate>
             </a>
         </div>
@@ -39,6 +39,7 @@
 
 <script>
 import { BACKEND_LIQUIDSOAP } from '../../Entity/RadioAdapters.js';
+import Icon from '../../Common/Icon';
 
 export const profileBackendProps = {
     props: {
@@ -56,6 +57,7 @@ export const profileBackendProps = {
 };
 
 export default {
+    components: { Icon },
     mixins: [profileBackendProps],
     props: {
         np: Object

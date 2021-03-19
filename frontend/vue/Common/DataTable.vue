@@ -19,7 +19,7 @@
                         <b-btn-group class="actions">
                             <b-button variant="default" title="Refresh" @click="onClickRefresh" v-b-tooltip.hover
                                       :title="langRefreshTooltip">
-                                <i class="material-icons" aria-hidden="true">refresh</i>
+                                <icon icon="refresh"></icon>
                             </b-button>
                             <b-dropdown variant="default" :text="perPageLabel" v-b-tooltip.hover
                                         :title="langPerPageTooltip">
@@ -31,7 +31,7 @@
                             <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
                                         :title="langSelectFieldsTooltip">
                                 <template v-slot:button-content>
-                                    <i class="material-icons" aria-hidden="true">filter_list</i>
+                                    <icon icon="filter_list"></icon>
                                     <span class="caret"></span>
                                 </template>
                                 <b-dropdown-form class="pt-3">
@@ -68,11 +68,11 @@
                     <div class="text-muted">
                         <template v-if="rowSelected">
                             <span class="sr-only">{{ langDeselectRow }}</span>
-                            <i class="material-icons" aria-hidden="true">check_box</i>
+                            <icon icon="check_box"></icon>
                         </template>
                         <template v-else>
                             <span class="sr-only">{{ langSelectRow }}</span>
-                            <i class="material-icons" aria-hidden="true">check_box_outline_blank</i>
+                            <icon icon="check_box_outline_blank"></icon>
                         </template>
                     </div>
                 </template>
@@ -142,9 +142,11 @@ table.b-table-selectable {
 import axios from 'axios';
 import store from 'store';
 import _ from 'lodash';
+import Icon from './Icon';
 
 export default {
     name: 'DataTable',
+    components: { Icon },
     props: {
         id: String,
         apiUrl: String,

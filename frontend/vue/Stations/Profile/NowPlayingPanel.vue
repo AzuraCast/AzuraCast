@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center">
                 <h3 class="flex-shrink card-title my-0" key="lang_profile_nowplaying_onair" v-translate>On the Air</h3>
                 <h6 class="card-subtitle text-right flex-fill my-0" style="line-height: 1;">
-                    <i class="material-icons sm align-middle" aria-hidden="true">headset</i>
+                    <icon class="sm align-middle" icon="headset"></icon>
                     {{ langListeners }}
                     <br>
                     <small>
@@ -20,7 +20,7 @@
                     <div class="col-md-6">
                         <div class="clearfix">
                             <h6 style="margin-left: 32px;">
-                                <i class="material-icons" aria-hidden="true">music_note</i>
+                                <icon icon="music_note"></icon>
                                 <translate key="lang_profile_nowplaying_title">Now Playing</translate>
                             </h6>
                             <div class="media">
@@ -50,7 +50,7 @@
                     <div class="col-md-6">
                         <div class="clearfix" v-if="!np.live.is_live && np.playing_next">
                             <h6 style="margin-left: 22px;">
-                                <i class="material-icons" aria-hidden="true">skip_next</i>
+                                <icon icon="skip_next"></icon>
                                 <translate key="profile_nowplaying_playing_next">Playing Next</translate>
                             </h6>
 
@@ -77,7 +77,7 @@
                         </div>
                         <div class="clearfix" v-else-if="np.live.is_live">
                             <h6 style="margin-left: 22px;">
-                                <i class="material-icons" aria-hidden="true">mic</i>
+                                <icon icon="mic"></icon>
                                 <translate key="lang_profile_nowplaying_live">Live</translate>
                             </h6>
 
@@ -92,11 +92,11 @@
 
         <div class="card-actions flex-shrink" v-if="isLiquidsoap && userCanManageBroadcasting">
             <a id="btn_skip_song" class="btn btn-outline-primary api-call no-reload" role="button" v-if="!np.live.is_live" :href="backendSkipSongUri">
-                <i class="material-icons" aria-hidden="true">skip_next</i>
+                <icon icon="skip_next"></icon>
                 <translate key="lang_backend_skip">Skip Song</translate>
             </a>
             <a id="btn_disconnect_streamer" class="btn btn-outline-primary api-call no-reload" role="button" v-if="np.live.is_live" :href="backendDisconnectStreamerUri">
-                <i class="material-icons" aria-hidden="true">volume_off</i>
+                <icon icon="volume_off"></icon>
                 <translate key="lang_backend_disconnect">Disconnect Streamer</translate>
             </a>
         </div>
@@ -105,6 +105,7 @@
 
 <script>
 import { BACKEND_LIQUIDSOAP } from '../../Entity/RadioAdapters.js';
+import Icon from '../../Common/Icon';
 
 export const profileNowPlayingProps = {
     props: {
@@ -116,6 +117,7 @@ export const profileNowPlayingProps = {
 };
 
 export default {
+    components: { Icon },
     mixins: [profileNowPlayingProps],
     props: {
         np: Object

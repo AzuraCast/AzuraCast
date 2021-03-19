@@ -126,7 +126,7 @@ return [
                     'href' => 'dist/lib/roboto-fontface/css/roboto/roboto-fontface.css',
                 ],
                 [
-                    'href' => 'dist/lib/material-icons/material-icons.css',
+                    'href' => 'dist/lib/material-icons/css/twotone.css',
                 ],
             ],
         ],

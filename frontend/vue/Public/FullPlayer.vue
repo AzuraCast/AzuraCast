@@ -12,15 +12,15 @@
 
                 <div class="card-actions">
                     <a class="btn btn-sm btn-outline-secondary" v-b-modal.song_history_modal>
-                        <i class="material-icons" aria-hidden="true">history</i>
+                        <icon icon="history"></icon>
                         {{ langSongHistory }}
                     </a>
                     <a class="btn btn-sm btn-outline-secondary" v-if="enableRequests" v-b-modal.request_modal>
-                        <i class="material-icons" aria-hidden="true">help_outline</i>
+                        <icon icon="help_outline"></icon>
                         {{ langRequestSong }}
                     </a>
                     <a class="btn btn-sm btn-outline-secondary" :href="downloadPlaylistUri">
-                        <i class="material-icons" aria-hidden="true">file_download</i>
+                        <icon icon="file_download"></icon>
                         {{ langDownloadPlaylist }}
                     </a>
                 </div>
@@ -36,10 +36,11 @@
 import RadioPlayer, { radioPlayerProps } from './Player';
 import SongHistoryModal from './FullPlayer/SongHistoryModal';
 import RequestModal from './FullPlayer/RequestModal';
+import Icon from '../Common/Icon';
 
 export default {
     inheritAttrs: false,
-    components: { RequestModal, SongHistoryModal, RadioPlayer },
+    components: { Icon, RequestModal, SongHistoryModal, RadioPlayer },
     mixins: [radioPlayerProps],
     props: {
         stationName: {

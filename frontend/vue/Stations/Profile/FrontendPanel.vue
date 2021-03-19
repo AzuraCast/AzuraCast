@@ -49,15 +49,15 @@
 
             <div class="card-actions">
                 <a class="api-call no-reload btn btn-outline-secondary" :href="frontendRestartUri">
-                    <i class="material-icons" aria-hidden="true">update</i>
+                    <icon icon="update"></icon>
                     <translate key="lang_profile_frontend_restart">Restart</translate>
                 </a>
                 <a class="api-call no-reload btn btn-outline-success" v-show="!np.services.frontend_running" :href="frontendStartUri">
-                    <i class="material-icons" aria-hidden="true">play_arrow</i>
+                    <icon icon="play_arrow"></icon>
                     <translate key="lang_profile_frontend_start">Start</translate>
                 </a>
                 <a class="api-call no-reload btn btn-outline-danger" v-show="np.services.frontend_running" :href="frontendStopUri">
-                    <i class="material-icons" aria-hidden="true">stop</i>
+                    <icon icon="stop"></icon>
                     <translate key="lang_profile_frontend_stop">Stop</translate>
                 </a>
             </div>
@@ -68,6 +68,7 @@
 <script>
 import { FRONTEND_ICECAST, FRONTEND_SHOUTCAST } from '../../Entity/RadioAdapters.js';
 import CopyToClipboardButton from '../../Common/CopyToClipboardButton';
+import Icon from '../../Common/Icon';
 
 export const profileFrontendProps = {
     props: {
@@ -84,7 +85,7 @@ export const profileFrontendProps = {
 };
 
 export default {
-    components: { CopyToClipboardButton },
+    components: { Icon, CopyToClipboardButton },
     mixins: [profileFrontendProps],
     props: {
         np: Object

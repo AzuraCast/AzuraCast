@@ -7,7 +7,7 @@
             </div>
             <div class="flex-shrink-0" v-if="userCanManageProfile">
                 <a class="btn btn-bg" role="button" :href="manageProfileUri">
-                    <i class="material-icons" aria-hidden="true">edit</i>
+                    <icon icon="edit"></icon>
                     <translate key="lang_profile_btn_edit">Edit Profile</translate>
                 </a>
             </div>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import Icon from '../../Common/Icon';
+
 export const profileHeaderProps = {
     props: {
         stationName: String,
@@ -26,6 +28,7 @@ export const profileHeaderProps = {
 };
 
 export default {
+    components: { Icon },
     mixins: [profileHeaderProps]
 };
 </script>

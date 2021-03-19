@@ -21,18 +21,20 @@ function redrawPlayIcons () {
         }
 
         let playIcon = $(this).find('i.material-icons');
+        playIcon.removeClass('md-stop_circle md-play_circle_filled');
+
         if (null !== currentUrl && $(this).is('[data-url="' + currentUrl + '"]')) {
             $(this).addClass('playing')
                 .attr('title', pauseText)
                 .attr('aria-label', pauseText);
 
-            playIcon.text('pause_circle_filled');
+            playIcon.addClass('md-stop_circle');
         } else {
             $(this).removeClass('playing')
                 .attr('title', playText)
                 .attr('aria-label', playText);
 
-            playIcon.text('play_circle_filled');
+            playIcon.addClass('md-play_circle_filled');
         }
     });
 }

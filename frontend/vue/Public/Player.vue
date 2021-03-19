@@ -46,13 +46,13 @@
             <div class="radio-control-play-button" v-if="is_playing">
                 <a href="#" role="button" :title="lang_pause_btn" :aria-label="lang_pause_btn"
                    @click.prevent="toggle()">
-                    <i class="material-icons lg" aria-hidden="true">pause_circle_filled</i>
+                    <icon class="lg" icon="stop_circle"></icon>
                 </a>
             </div>
             <div class="radio-control-play-button" v-else>
                 <a href="#" role="button" :title="lang_play_btn" :aria-label="lang_play_btn"
                    @click.prevent="toggle()">
-                    <i class="material-icons lg" aria-hidden="true">play_circle_filled</i>
+                    <icon class="lg" icon="play_circle_filled"></icon>
                 </a>
             </div>
 
@@ -73,7 +73,7 @@
 
             <div class="radio-control-mute-button">
                 <a href="#" class="text-secondary" :title="lang_mute_btn" @click.prevent="volume = 0">
-                    <i class="material-icons" aria-hidden="true">volume_mute</i>
+                    <icon icon="volume_mute"></icon>
                 </a>
             </div>
             <div class="radio-control-volume-slider">
@@ -82,7 +82,7 @@
             </div>
             <div class="radio-control-max-volume-button">
                 <a href="#" class="text-secondary" :title="lang_full_volume_btn" @click.prevent="volume = 100">
-                    <i class="material-icons" aria-hidden="true">volume_up</i>
+                    <icon icon="volume_up"></icon>
                 </a>
             </div>
         </div>
@@ -216,6 +216,7 @@
 
 import AudioPlayer from '../Common/AudioPlayer';
 import NowPlaying, { nowPlayingProps } from '../Common/NowPlaying';
+import Icon from '../Common/Icon';
 
 export const radioPlayerProps = {
     ...nowPlayingProps,
@@ -242,7 +243,7 @@ export const radioPlayerProps = {
 };
 
 export default {
-    components: { NowPlaying, AudioPlayer },
+    components: { Icon, NowPlaying, AudioPlayer },
     mixins: [radioPlayerProps],
     data () {
         return {

@@ -61,10 +61,10 @@ var jsFiles = {
     ]
   },
   'material-icons': {
-    base: null,
+    base: 'node_modules/@material-icons/font',
     files: [
-      'node_modules/material-icons/iconfont/material-icons.css',
-      'node_modules/material-icons/iconfont/MaterialIcons-Regular*'
+      'node_modules/@material-icons/font/css/twotone.css',
+      'node_modules/@material-icons/font/font/MaterialIcons-TwoTone*'
     ]
   },
   'roboto-fontface': {

@@ -23,7 +23,7 @@ class B02_Admin_RecordsCest extends CestAbstract
         $I->see($this->login_username);
 
         // Add a secondary user
-        $I->click('add', '#content');
+        $I->click('Add User', '#content');
 
         $I->submitForm('.form', [
             'name' => 'ZZZ Test Administrator',
@@ -54,7 +54,7 @@ class B02_Admin_RecordsCest extends CestAbstract
         $I->see('Super Administrator');
 
         // Add another role
-        $I->click('add', '#content');
+        $I->click('Add Permission', '#content');
 
         $I->submitForm('.form', [
             'name' => 'ZZZ Test Administrator',

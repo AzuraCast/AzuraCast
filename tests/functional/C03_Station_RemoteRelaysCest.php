@@ -16,7 +16,7 @@ class C03_Station_RemoteRelaysCest extends CestAbstract
         $I->amOnPage('/station/' . $station_id . '/remotes');
 
         $I->see('Remote Relays');
-        $I->click('add', '#content');
+        $I->click('Add Remote Relay', '#content');
 
         $I->submitForm('.form', [
             'type' => 'shoutcast1',

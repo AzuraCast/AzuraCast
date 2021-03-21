@@ -41,6 +41,16 @@ return function (App $app) {
                 '/frontend',
                 function (RouteCollectorProxy $group) {
                     $group->group(
+                        '/account',
+                        function (RouteCollectorProxy $group) {
+                            $group->get('/me', Controller\Api\Frontend\Account\GetMeAction::class)
+                                ->setName('api:frontend:account:me');
+
+                            $group->put('/me', Controller\Api\Frontend\Account\PutMeAction::class);
+                        }
+                    );
+
+                    $group->group(
                         '/dashboard',
                         function (RouteCollectorProxy $group) {
                             $group->get('/charts', Controller\Api\Frontend\Dashboard\ChartsAction::class)

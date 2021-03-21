@@ -15,7 +15,7 @@ $assets
     <div class="card-actions">
         <a class="btn btn-outline-danger" role="button" data-confirm-title="<?=$this->e(__('Clear all pending requests?'))?>"
            href="<?=$router->fromHere('stations:reports:requests:clear', ['csrf' => $csrf])?>">
-            <i class="material-icons md-remove" aria-hidden="true"></i>
+            <i class="material-icons" aria-hidden="true">remove</i>
             <?=__('Clear Pending Requests')?>
         </a>
     </div>

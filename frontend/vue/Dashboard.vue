@@ -121,7 +121,7 @@
                         <td class="text-center pr-3">
                             <a class="file-icon btn-audio has-listener" href="#" :data-url="item.station.listen_url"
                                @click.prevent="playAudio(item.station.listen_url)" :title="langPlayPause">
-                                <icon class="lg align-middle" icon="play_circle_filled"></icon>
+                                <icon class="lg outlined align-middle" icon="play_circle"></icon>
                             </a>
                         </td>
                         <td class="pl-2">

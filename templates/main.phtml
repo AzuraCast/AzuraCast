@@ -67,12 +67,12 @@ endif; ?>">
         <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" aria-label="<?=__(
             'Toggle Menu'
         )?>" data-toggle="dropdown" type="button">
-            <i class="material-icons md-more_vert" aria-hidden="true"></i>
+            <i class="material-icons" aria-hidden="true">more_vert</i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
             <li>
                 <a class="dropdown-item" href="<?=$router->named('dashboard')?>">
-                    <i class="material-icons md-home" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">home</i>
                     <?=__('Dashboard')?>
                 </a>
             </li>
@@ -81,7 +81,7 @@ endif; ?>">
             if ($acl->isAllowed(App\Acl::GLOBAL_VIEW)): ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('admin:index:index')?>">
-                        <i class="material-icons md-settings" aria-hidden="true"></i>
+                        <i class="material-icons" aria-hidden="true">settings</i>
                         <?=__('System Administration')?>
                     </a>
                 </li>
@@ -89,25 +89,25 @@ endif; ?>">
             endif; ?>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('profile:index')?>">
-                    <i class="material-icons md-account_circle" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">account_circle</i>
                     <?=__('My Account')?>
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('profile:theme')?>">
-                    <i class="material-icons md-invert_colors" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">invert_colors</i>
                     <?=__('Switch Theme')?>
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="<?=$router->named('api_keys:index')?>">
-                    <i class="material-icons md-vpn_key" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">vpn_key</i>
                     <?=__('My API Keys')?>
                 </a>
             </li>
             <li>
                 <a class="dropdown-item" href="https://docs.azuracast.com/en/user-guide/troubleshooting" target="_blank">
-                    <i class="material-icons md-help" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">help</i>
                     <?=__('Help')?>
                 </a>
             </li>
@@ -116,7 +116,7 @@ endif; ?>">
             if ($auth->isMasqueraded()): ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('account:endmasquerade')?>">
-                        <i class="material-icons md-exit_to_app" aria-hidden="true"></i>
+                        <i class="material-icons" aria-hidden="true">exit_to_app</i>
                         <?=__('End Session')?>
                     </a>
                 </li>
@@ -124,7 +124,7 @@ endif; ?>">
             else: ?>
                 <li>
                     <a class="dropdown-item" href="<?=$router->named('account:logout')?>">
-                        <i class="material-icons md-exit_to_app" aria-hidden="true"></i>
+                        <i class="material-icons" aria-hidden="true">exit_to_app</i>
                         <?=__('Sign Out')?></a></li>
             <?php
             endif; ?>

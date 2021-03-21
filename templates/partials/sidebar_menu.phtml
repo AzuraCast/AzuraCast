@@ -27,11 +27,11 @@ $assets->addInlineJs($this->fetch('partials/sidebar_menu.js'), 99);
                <?php
                if (isset($category['title'])): ?>title="<?=$this->e($category['title'])?>"<?php
             endif; ?>>
-                <i class="navdrawer-nav-icon material-icons md-<?=$category['icon']?>" aria-hidden="true"></i>
+                <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?=$category['icon']?></i>
                 <?=$category['label']?>
                 <?php
                 if ($category['external']): ?>
-                    <i class="material-icons md-open_in_new sm"></i>
+                    <i class="material-icons sm">open_in_new</i>
                 <?php
                 endif; ?>
             </a>

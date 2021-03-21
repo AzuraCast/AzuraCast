@@ -24,7 +24,7 @@
                     <template v-if="row.item.media_is_playable">
                         <a class="file-icon btn-audio has-listener" href="#" :data-url="row.item.media_links_play"
                            @click.prevent="playAudio(row.item.media_links_play)" :title="langPlayPause">
-                            <icon icon="play_circle_filled"></icon>
+                            <icon class="outlined" icon="play_circle"></icon>
                         </a>
                     </template>
                     <template v-else>

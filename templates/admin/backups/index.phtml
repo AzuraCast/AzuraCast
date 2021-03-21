@@ -35,12 +35,12 @@ $assets
             </div>
             <div class="card-actions">
                 <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure')?>">
-                    <i class="material-icons md-settings" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">settings</i>
                     <?=__('Configure')?>
                 </a>
                 <?php if (!empty($last_output)): ?>
                     <a class="btn btn-outline-secondary" id="btn-view-log" href="#">
-                        <i class="material-icons md-assignment" aria-hidden="true"></i>
+                        <i class="material-icons" aria-hidden="true">assignment</i>
                         <?=__('Most Recent Backup Log')?>
                     </a>
                 <?php endif; ?>
@@ -54,7 +54,7 @@ $assets
             </div>
             <div class="card-actions">
                 <a class="btn btn-outline-primary" href="<?=$router->fromHere('admin:backups:configure')?>">
-                    <i class="material-icons md-settings" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">settings</i>
                     <?=__('Configure')?>
                 </a>
             </div>
@@ -84,7 +84,7 @@ $assets
     </div>
     <div class="card-actions">
         <a class="btn btn-outline-primary" role="button" href="<?=$router->named('admin:backups:run')?>">
-            <i class="material-icons md-send" aria-hidden="true"></i>
+            <i class="material-icons" aria-hidden="true">send</i>
             <?=__('Run Manual Backup')?>
         </a>
     </div>

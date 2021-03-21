@@ -32,7 +32,7 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
             </div>
             <div class="card-actions">
                 <a class="btn btn-outline-primary" href="<?=$router->named('profile:edit')?>">
-                    <i class="material-icons md-edit" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">edit</i>
                     <?=__('Edit Profile')?>
                 </a>
             </div>
@@ -60,7 +60,7 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
             </div>
             <div class="card-actions">
                 <a class="btn btn-outline-primary" href="<?=$router->named('profile:edit')?>#customization">
-                    <i class="material-icons md-edit" aria-hidden="true"></i>
+                    <i class="material-icons" aria-hidden="true">edit</i>
                     <?=__('Customize')?>
                 </a>
             </div>
@@ -89,13 +89,13 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
                 <?php
                 if (null !== $user->getTwoFactorSecret()): ?>
                     <a class="btn btn-outline-primary" href="<?=$router->named('profile:2fa:disable')?>">
-                        <i class="material-icons md-lock_open" aria-hidden="true"></i>
+                        <i class="material-icons" aria-hidden="true">lock_open</i>
                         <?=__('Disable Two-Factor')?>
                     </a>
                 <?php
                 else: ?>
                     <a class="btn btn-outline-primary" href="<?=$router->named('profile:2fa:enable')?>">
-                        <i class="material-icons md-lock" aria-hidden="true"></i>
+                        <i class="material-icons" aria-hidden="true">lock</i>
                         <?=__('Enable Two-Factor')?>
                     </a>
                 <?php

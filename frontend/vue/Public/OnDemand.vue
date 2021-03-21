@@ -23,7 +23,7 @@
             <template v-slot:cell(download_url)="row">
                 <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
                    @click.prevent="playAudio(row.item.download_url)" :title="langPlayPause">
-                    <icon :icon="(now_playing_url === row.item.download_url) ? 'stop_circle' : 'play_circle_filled'"></icon>
+                    <icon class="outlined" :icon="(now_playing_url === row.item.download_url) ? 'stop_circle' : 'play_circle'"></icon>
                 </a>
                 <template v-if="showDownloadButton">
                     &nbsp;

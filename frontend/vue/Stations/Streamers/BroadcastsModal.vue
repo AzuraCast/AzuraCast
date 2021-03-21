@@ -11,7 +11,7 @@
                     <template v-if="row.item.recording_links_download">
                         <a class="file-icon btn-audio" href="#"
                            @click.prevent="playAudio(row.item.recording_links_download)" :title="langPlayPause">
-                            <icon :icon="(now_playing_url === row.item.recording_links_download) ? 'stop_circle' : 'play_circle_filled'"></icon>
+                            <icon class="outlined" :icon="(now_playing_url === row.item.recording_links_download) ? 'stop_circle' : 'play_circle'"></icon>
                         </a>
                         &nbsp;
                         <a class="name" :href="row.item.recording_links_download" target="_blank" :title="langDownload">

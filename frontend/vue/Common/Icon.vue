@@ -20,14 +20,14 @@ export default {
             switch (this.type) {
                 case 'md':
                 default:
-                    return ['material-icons', 'md-' + this.icon];
+                    return ['material-icons'];
             }
         },
         iconContent () {
             switch (this.type) {
                 case 'md':
                 default:
-                    return '';
+                    return this.icon;
             }
         }
     }

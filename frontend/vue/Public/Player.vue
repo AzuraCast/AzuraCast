@@ -44,15 +44,15 @@
 
         <div class="radio-controls">
             <div class="radio-control-play-button" v-if="is_playing">
-                <a href="#" role="button" :title="lang_pause_btn" :aria-label="lang_pause_btn"
+                <a href="#" role="button" :title="lang_stop_btn" :aria-label="lang_stop_btn"
                    @click.prevent="toggle()">
-                    <icon class="lg" icon="stop_circle"></icon>
+                    <icon class="outlined lg" icon="stop_circle"></icon>
                 </a>
             </div>
             <div class="radio-control-play-button" v-else>
                 <a href="#" role="button" :title="lang_play_btn" :aria-label="lang_play_btn"
                    @click.prevent="toggle()">
-                    <icon class="lg" icon="play_circle_filled"></icon>
+                    <icon class="outlined lg" icon="play_circle"></icon>
                 </a>
             </div>
 
@@ -266,8 +266,8 @@ export default {
         lang_play_btn () {
             return this.$gettext('Play');
         },
-        lang_pause_btn () {
-            return this.$gettext('Pause');
+        lang_stop_btn () {
+            return this.$gettext('Stop');
         },
         lang_mute_btn () {
             return this.$gettext('Mute');

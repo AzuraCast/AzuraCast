@@ -1012,11 +1012,6 @@
         }
       }
     },
-    "@material-icons/font": {
-      "version": "1.0.8",
-      "resolved": "https://registry.npmjs.org/@material-icons/font/-/font-1.0.8.tgz",
-      "integrity": "sha512-o3k/faozPSu+dNjicy29a2MUHNEn07JUgAPjKHXzPaEyKlb+HUUbq6Oo9iRTM0vORc5+8XWWSyvtLyrQSHafHg=="
-    },
     "@nuxt/opencollective": {
       "version": "0.3.2",
       "resolved": "https://registry.npmjs.org/@nuxt/opencollective/-/opencollective-0.3.2.tgz",
@@ -4965,6 +4960,11 @@
           }
         }
       }
+    },
+    "material-icons": {
+      "version": "0.5.4",
+      "resolved": "https://registry.npmjs.org/material-icons/-/material-icons-0.5.4.tgz",
+      "integrity": "sha512-5ycazkNmIOtV78Ff3WgvxQESoJuujdRm0cNbf18fmyJN20jHyqp9rpwi4EfQyGimag0ZLElxtVg3H9enIKdOOw=="
     },
     "md5.js": {
       "version": "1.3.5",

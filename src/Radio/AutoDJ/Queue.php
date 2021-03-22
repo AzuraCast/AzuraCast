@@ -485,21 +485,7 @@ class Queue implements EventSubscriberInterface
         }
 
         if ($playlist->getAvoidDuplicates()) {
-            if ($allowDuplicates) {
-                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
-
-                if (null === $mediaId) {
-                    $this->logger->warning(
-                        'Duplicate prevention yielded no playable song; resetting song queue.'
-                    );
-
-                    // Pull the entire shuffled playlist if a duplicate title can't be avoided.
-                    $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
-                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, true);
-                }
-            } else {
-                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
-            }
+            $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
         } else {
             $mediaId = array_key_first($mediaQueue);
         }

@@ -129,7 +129,8 @@ class CheckFolderPlaylistsTask extends AbstractTask
             }
 
             $this->em->flush();
-            $this->em->clear();
         }
+
+        $this->em->clear();
     }
 }

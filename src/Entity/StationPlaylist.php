@@ -266,6 +266,12 @@ class StationPlaylist
     protected $media_items;
 
     /**
+     * @ORM\OneToMany(targetEntity="StationPlaylistFolder", mappedBy="playlist", fetch="EXTRA_LAZY")
+     * @var Collection
+     */
+    protected $folders;
+
+    /**
      * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="playlist")
      * @var Collection
      *
@@ -282,6 +288,7 @@ class StationPlaylist
         $this->station = $station;
 
         $this->media_items = new ArrayCollection();
+        $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
     }
 
@@ -540,6 +547,14 @@ class StationPlaylist
     public function getMediaItems(): Collection
     {
         return $this->media_items;
+    }
+
+    /**
+     * @return Collection|StationPlaylistFolder[]
+     */
+    public function getFolders(): Collection
+    {
+        return $this->folders;
     }
 
     /**

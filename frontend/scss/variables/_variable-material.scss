@@ -657,6 +657,13 @@ $tooltip-padding-y-desktop: (($tooltip-height-desktop - $tooltip-font-size-deskt
 $tooltip-scale: 0.87 !default;
 $tooltip-zindex: map-get($elevations, 24) !default;
 
+$tooltip-arrow-width: .8rem !default;
+$tooltip-arrow-height: .4rem !default;
+$tooltip-arrow-color: $tooltip-bg !default;
+$tooltip-max-width: 200px !default;
+
+$zindex-tooltip: 1070 !default;
+
 @if $theme == 'dark' {
   $tooltip-bg: $material-color-grey-700;
   $tooltip-color: $white-primary;

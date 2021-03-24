@@ -2,7 +2,7 @@
     <div id="dashboard">
         <section class="card mb-4" role="region">
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
-                <a class="flex-shrink-0" href="http://www.gravatar.com/" target="_blank">
+                <a class="flex-shrink-0" href="http://www.gravatar.com/" target="_blank" v-b-tooltip.hover.right :title="langAvatar">
                     <img :src="userAvatar" style="width: 64px; height: auto;" alt="">
                 </a>
                 <div class="flex-fill ml-3">
@@ -203,6 +203,9 @@ export default {
         },
         langUniqueListenersTab () {
             return this.$gettext('Unique Listeners');
+        },
+        langAvatar () {
+            return this.$gettext('Avatars are retrieved based on your e-mail address from the Gravatar service. Click to manage your Gravatar settings.');
         },
         langPlayPause () {
             return this.$gettext('Play/Pause');

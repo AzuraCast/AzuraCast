@@ -528,16 +528,6 @@ class StationPlaylist
             'title' => $media->getTitle(),
         ];
 
-        if (self::ORDER_SEQUENTIAL !== $this->getOrder()) {
-            shuffle($queue);
-
-            $newQueue = [];
-            foreach ($queue as $row) {
-                $newQueue[$row['id']] = $row;
-            }
-            $queue = $newQueue;
-        }
-
         $this->setQueue($queue);
     }
 

@@ -20,6 +20,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
+- Fixed a minor bug with the `is_now` parameter on the Schedule API endpoint.
+  
+- Fixed a number of bugs relating to how the AutoDJ queue is built.
+
+- Fixed bugs relating to playlist folder auto-assignment.
+
 - When saving changes to a file that does not use ID3 metadata, users will no longer encounter a processing error
   (#3798).
 

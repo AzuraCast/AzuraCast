@@ -1,5 +1,5 @@
 <template>
-    <a :href="avatarServiceUrl" target="_blank" v-b-tooltip.hover.right :title="langAvatar">
+    <a :href="avatarServiceUrl" target="_blank" v-b-tooltip.hover.right :title="langAvatar" v-if="'' !== this.avatarServiceUrl">
         <img :src="avatar" style="width: 64px; height: auto;" alt="">
     </a>
 </template>

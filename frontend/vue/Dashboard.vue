@@ -3,9 +3,9 @@
         <section class="card mb-4" role="region">
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
 
-                <avatar class="flex-shrink-0" v-bind="$props"></avatar>
+                <avatar class="flex-shrink-0 mr-3" v-bind="$props"></avatar>
 
-                <div class="flex-fill ml-3">
+                <div class="flex-fill">
                     <h2 class="card-title mt-0">{{ userName }}</h2>
                     <h3 class="card-subtitle">{{ userEmail }}</h3>
                 </div>

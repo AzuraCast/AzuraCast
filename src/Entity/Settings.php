@@ -6,6 +6,7 @@ use App\Annotations\AuditLog;
 use App\Customization;
 use App\Entity;
 use App\Event\GetSyncTasks;
+use App\Service\Avatar;
 use App\Traits\AvailableStaticallyTrait;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -911,5 +912,37 @@ class Settings
     public function setMailSmtpSecure(bool $mailSmtpSecure): void
     {
         $this->mailSmtpSecure = $mailSmtpSecure;
+    }
+
+    /**
+     * @OA\Property(example="libravatar")
+     * @var string The external avatar service to use when fetching avatars.
+     */
+    protected ?string $avatarService = null;
+
+    public function getAvatarService(): string
+    {
+        return $this->avatarService ?? Avatar::DEFAULT_SERVICE;
+    }
+
+    public function setAvatarService(?string $avatarService): void
+    {
+        $this->avatarService = $avatarService;
+    }
+
+    /**
+     * @OA\Property(example="")
+     * @var string The default avatar URL.
+     */
+    protected ?string $avatarDefaultUrl = null;
+
+    public function getAvatarDefaultUrl(): string
+    {
+        return $this->avatarDefaultUrl ?? Avatar::DEFAULT_AVATAR;
+    }
+
+    public function setAvatarDefaultUrl(?string $avatarDefaultUrl): void
+    {
+        $this->avatarDefaultUrl = $avatarDefaultUrl;
     }
 }

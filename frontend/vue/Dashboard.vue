@@ -2,9 +2,9 @@
     <div id="dashboard">
         <section class="card mb-4" role="region">
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
-                <a class="flex-shrink-0" href="http://www.gravatar.com/" target="_blank" v-b-tooltip.hover.right :title="langAvatar">
-                    <img :src="userAvatar" style="width: 64px; height: auto;" alt="">
-                </a>
+
+                <avatar class="flex-shrink-0" v-bind="$props"></avatar>
+
                 <div class="flex-fill ml-3">
                     <h2 class="card-title mt-0">{{ userName }}</h2>
                     <h3 class="card-subtitle">{{ userEmail }}</h3>
@@ -161,9 +161,11 @@ import DataTable from './Common/DataTable';
 import axios from 'axios';
 import store from 'store';
 import Icon from './Common/Icon';
+import Avatar, { avatarProps } from './Common/Avatar';
 
 export default {
-    components: { Icon, DataTable, TimeSeriesChart },
+    components: { Avatar, Icon, DataTable, TimeSeriesChart },
+    mixins: [avatarProps],
     props: {
         userName: String,
         userEmail: String,
@@ -203,9 +205,6 @@ export default {
         },
         langUniqueListenersTab () {
             return this.$gettext('Unique Listeners');
-        },
-        langAvatar () {
-            return this.$gettext('Avatars are retrieved based on your e-mail address from the Gravatar service. Click to manage your Gravatar settings.');
         },
         langPlayPause () {
             return this.$gettext('Play/Pause');

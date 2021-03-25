@@ -11,9 +11,11 @@
 $this->layout('main', ['title' => __('Dashboard'), 'manual' => true]);
 
 $props = [
+    'avatar' => $avatar,
+    'avatarServiceName' => $avatarServiceName,
+    'avatarServiceUrl' => $avatarServiceUrl,
     'userName' => $user->getName() ?? __('AzuraCast User'),
     'userEmail' => $user->getEmail(),
-    'userAvatar' => $user->getAvatar(64),
     'profileUrl' => (string)$router->named('profile:index'),
     'adminUrl' => (string)$router->named('admin:index:index'),
     'showAdmin' => $showAdmin,

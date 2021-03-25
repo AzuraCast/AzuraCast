@@ -10,6 +10,9 @@ release channel, you can take advantage of these new features and fixes.
 
 - You can now embed playback history as a standalone component in your web site.
 
+- By default, avatars will be served from the free and open-source [Libravatar](https://libravatar.org) service. You can
+  configure the external avatar service from the system settings, along with the default avatar URL.
+
 ## Code Quality/Technical Changes
 
 - We've switched from the `material-icons` library to the `@material-icons/font` library. In particular, we are using
@@ -21,7 +24,7 @@ release channel, you can take advantage of these new features and fixes.
 ## Bug Fixes
 
 - Fixed a minor bug with the `is_now` parameter on the Schedule API endpoint.
-  
+
 - Fixed a number of bugs relating to how the AutoDJ queue is built.
 
 - Fixed bugs relating to playlist folder auto-assignment.

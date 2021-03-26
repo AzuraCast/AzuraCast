@@ -19,7 +19,7 @@ on :
 
 jobs :
   build :
-    name : Build, Test and Publish
+    name : Build and Test
     runs-on : ubuntu-latest
     steps :
       - uses : actions/checkout@master
@@ -96,6 +96,29 @@ jobs :
         if : failure()
         run : |
           cat tests/_output/*
+
+      - name : Upload built static assets and translations
+        uses : actions/upload-artifact@v2
+        with :
+          name : assets
+          if-no-files-found : error
+          path : |
+            resources/locale/compiled
+            resources/locale/translations.json
+            web/static/dist
+            web/static/assets.json
+
+  publish :
+    name : Publish
+    runs-on : ubuntu-latest
+    if : github.event_name == 'push' || github.event_name == 'schedule'
+    steps :
+      - uses : actions/checkout@master
+
+      - name : Download built static assets from previous step
+        uses : actions/download-artifact@v2
+        with :
+          name : assets
 
       - name : Set up QEMU
         uses : docker/setup-qemu-action@v1

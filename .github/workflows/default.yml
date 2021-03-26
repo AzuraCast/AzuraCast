@@ -37,6 +37,7 @@ jobs :
       - name : Set console permissions and clear static assets.
         run : |
           rm -rf web/static/dist
+          rm -rf web/static/webpack.json
           rm -rf web/static/assets.json
           chmod a+x bin/console
 
@@ -106,6 +107,7 @@ jobs :
             resources/locale/compiled
             resources/locale/translations.json
             web/static/dist
+            web/static/webpack.json
             web/static/assets.json
 
   publish :

@@ -46,7 +46,8 @@ ENV VIRTUAL_HOST="azuracast.local" \
     HTTPS_METHOD="noredirect"
 
 # Sensible default environment variables.
-ENV APPLICATION_ENV="production" \
+ENV LANG="en_US.UTF-8" \
+    APPLICATION_ENV="production" \
     ENABLE_ADVANCED_FEATURES="false" \
     MYSQL_HOST="mariadb" \
     MYSQL_PORT=3306 \

@@ -73,11 +73,12 @@ jobs :
 
       - name : Set up functional test environment.
         run : |
-          docker pull azuracast/azuracast_web_v2:latest
-          docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
-
+          cp sample.env .env
           cp azuracast.sample.env azuracast.env
+
           cp docker-compose.sample.yml docker-compose.yml
+          docker-compose pull web
+
           cp docker-compose.testing.yml docker-compose.override.yml
 
           docker-compose build web

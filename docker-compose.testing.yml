@@ -3,6 +3,7 @@ version: '2.2'
 services :
   web :
     build :
+      context : .
       target : testing
       cache_from :
         - azuracast/azuracast_web_v2:latest

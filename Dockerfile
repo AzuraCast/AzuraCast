@@ -61,15 +61,3 @@ ENV LANG="en_US.UTF-8" \
 # Entrypoint and default command
 ENTRYPOINT ["/usr/local/bin/uptime_wait"]
 CMD ["/usr/local/bin/my_init"]
-
-# Test image
-FROM base AS testing
-
-RUN apt-get update \
-    && apt-get install -q -y php7.4-xdebug
-
-ENV PATH="${PATH}:/var/azuracast/.composer/vendor/bin" \
-    APPLICATION_ENV="testing"
-
-# Production image
-FROM base AS prod

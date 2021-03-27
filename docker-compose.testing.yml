@@ -1,13 +1,13 @@
-version: '2.2'
+version : '2.2'
 
 services :
   web :
-    build :
-      context : .
-      target : testing
-      cache_from :
-        - azuracast/azuracast_web_v2:latest
+    image : azuracast_cli:latest
     environment :
       APPLICATION_ENV : 'testing'
+    build :
+      context : ./util/docker/testing
+      cache_from :
+        - azuracast/azuracast_web_v2:latest
     volumes :
       - .:/var/azuracast/www

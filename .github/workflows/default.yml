@@ -161,4 +161,4 @@ jobs :
           push : true
           tags : |
             azuracast/azuracast_web_v2:${{ steps.tag.outputs.TAG }}
-            ghcr.io/azuracast/web_v2:${{ steps.tag.outputs.TAG }}
+            ghcr.io/azuracast/web:${{ steps.tag.outputs.TAG }}

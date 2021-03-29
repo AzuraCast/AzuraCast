@@ -14,8 +14,7 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -640,17 +639,20 @@ class Station
         }
 
         // Flysystem adapters will automatically create the main directory.
-        $this->getRadioBaseDirAdapter();
-        $this->getRadioPlaylistsDirAdapter();
-        $this->getRadioConfigDirAdapter();
-        $this->getRadioTempDirAdapter();
+        $this->ensureDirectoryExists($this->getRadioBaseDir());
+        $this->ensureDirectoryExists($this->getRadioPlaylistsDir());
+        $this->ensureDirectoryExists($this->getRadioConfigDir());
+        $this->ensureDirectoryExists($this->getRadioTempDir());
 
         if (null === $this->media_storage_location) {
             $storageLocation = new StorageLocation(
                 StorageLocation::TYPE_STATION_MEDIA,
                 StorageLocation::ADAPTER_LOCAL
             );
-            $storageLocation->setPath($this->getRadioBaseDir() . '/media');
+
+            $mediaPath = $this->getRadioBaseDir() . '/media';
+            $this->ensureDirectoryExists($mediaPath);
+            $storageLocation->setPath($mediaPath);
 
             $this->media_storage_location = $storageLocation;
         }
@@ -660,19 +662,28 @@ class Station
                 StorageLocation::TYPE_STATION_RECORDINGS,
                 StorageLocation::ADAPTER_LOCAL
             );
-            $storageLocation->setPath($this->getRadioBaseDir() . '/recordings');
+
+            $recordingsPath = $this->getRadioBaseDir() . '/recordings';
+            $this->ensureDirectoryExists($recordingsPath);
+            $storageLocation->setPath($recordingsPath);
 
             $this->recordings_storage_location = $storageLocation;
         }
-
-        $this->getRadioMediaDirAdapter();
-        $this->getRadioRecordingsDirAdapter();
     }
 
-    public function getRadioBaseDirAdapter(?string $suffix = null): AdapterInterface
+    protected function ensureDirectoryExists(string $dirname): void
     {
-        $path = $this->radio_base_dir . $suffix;
-        return new Local($path);
+        if (is_dir($dirname)) {
+            return;
+        }
+
+        $visibilityConverter = new PortableVisibilityConverter();
+        $visibility = $visibilityConverter->defaultForDirectories();
+        if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dirname));
+        }
+
+        clearstatcache(false, $dirname);
     }
 
     public function getRadioPlaylistsDir(): string
@@ -680,39 +691,14 @@ class Station
         return $this->radio_base_dir . '/playlists';
     }
 
-    public function getRadioPlaylistsDirAdapter(): AdapterInterface
-    {
-        return new Local($this->getRadioPlaylistsDir());
-    }
-
     public function getRadioConfigDir(): string
     {
         return $this->radio_base_dir . '/config';
     }
 
-    public function getRadioConfigDirAdapter(): AdapterInterface
-    {
-        return new Local($this->getRadioConfigDir());
-    }
-
     public function getRadioTempDir(): string
     {
         return $this->radio_base_dir . '/temp';
-    }
-
-    public function getRadioTempDirAdapter(): AdapterInterface
-    {
-        return new Local($this->getRadioTempDir());
-    }
-
-    public function getRadioMediaDirAdapter(): AdapterInterface
-    {
-        return $this->getMediaStorageLocation()->getStorageAdapter();
-    }
-
-    public function getRadioRecordingsDirAdapter(): AdapterInterface
-    {
-        return $this->getRecordingsStorageLocation()->getStorageAdapter();
     }
 
     public function getNowplaying(): ?Api\NowPlaying

@@ -8,8 +8,7 @@ use App\Entity;
 use App\Entity\StationPlaylist;
 use App\Environment;
 use App\Exception\CannotProcessMediaException;
-use App\Flysystem\Filesystem;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\FilesystemInterface;
 use App\Media\MetadataManager;
 use App\Service\AudioWaveform;
 use Exception;
@@ -17,7 +16,7 @@ use Generator;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
 use InvalidArgumentException;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -37,8 +36,6 @@ class StationMediaRepository extends Repository
 
     protected MetadataManager $metadataManager;
 
-    protected FilesystemManager $filesystem;
-
     protected ImageManager $imageManager;
 
     public function __construct(
@@ -51,7 +48,6 @@ class StationMediaRepository extends Repository
         StationPlaylistMediaRepository $spmRepo,
         StorageLocationRepository $storageLocationRepo,
         UnprocessableMediaRepository $unprocessableMediaRepo,
-        FilesystemManager $filesystem,
         ImageManager $imageManager
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
@@ -62,7 +58,6 @@ class StationMediaRepository extends Repository
         $this->unprocessableMediaRepo = $unprocessableMediaRepo;
 
         $this->metadataManager = $metadataManager;
-        $this->filesystem = $filesystem;
         $this->imageManager = $imageManager;
     }
 
@@ -173,8 +168,6 @@ class StationMediaRepository extends Repository
         string $path,
         ?string $uploadedFrom = null
     ): Entity\StationMedia {
-        $path = FilesystemManager::stripPrefix($path);
-
         $record = $this->findByPath($path, $source);
         $storageLocation = $this->getStorageLocation($source);
 
@@ -226,16 +219,16 @@ class StationMediaRepository extends Repository
             try {
                 $this->loadFromFile($media, $uploadedPath, $fs);
             } finally {
-                $fs->putFromLocal($uploadedPath, $path);
+                $fs->uploadAndDeleteOriginal($uploadedPath, $path);
             }
 
             $mediaMtime = time();
         } else {
-            if (!$fs->has($path)) {
+            if (!$fs->fileExists($path)) {
                 throw new CannotProcessMediaException(sprintf('Media path "%s" not found.', $path));
             }
 
-            $mediaMtime = (int)$fs->getTimestamp($path);
+            $mediaMtime = $fs->lastModified($path);
 
             // No need to update if all of these conditions are true.
             if (!$force && !$media->needsReprocessing($mediaMtime)) {
@@ -261,12 +254,12 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param string $filePath
-     * @param Filesystem|null $fs
+     * @param FilesystemInterface|null $fs
      */
     public function loadFromFile(
         Entity\StationMedia $media,
         string $filePath,
-        ?Filesystem $fs = null
+        ?FilesystemInterface $fs = null
     ): void {
         // Load metadata from supported files.
         $metadata = $this->metadataManager->getMetadata($media, $filePath);
@@ -344,8 +337,8 @@ class StationMediaRepository extends Repository
     public function writeAlbumArt(
         Entity\StationMedia $media,
         string $rawArtString,
-        ?Filesystem $fs = null
-    ): bool {
+        ?FilesystemInterface $fs = null
+    ): void {
         $fs ??= $this->getFilesystem($media);
 
         $media->setArtUpdatedAt(time());
@@ -363,12 +356,12 @@ class StationMediaRepository extends Repository
         $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
         $albumArtStream = $albumArt->stream('jpg', 90);
 
-        return $fs->putStream($albumArtPath, $albumArtStream->detach());
+        $fs->writeStream($albumArtPath, $albumArtStream->detach());
     }
 
     public function removeAlbumArt(
         Entity\StationMedia $media,
-        ?Filesystem $fs = null
+        ?FilesystemInterface $fs = null
     ): void {
         $fs ??= $this->getFilesystem($media);
 
@@ -384,14 +377,14 @@ class StationMediaRepository extends Repository
 
     public function writeToFile(
         Entity\StationMedia $media,
-        ?Filesystem $fs = null
+        ?FilesystemInterface $fs = null
     ): bool {
         $fs ??= $this->getFilesystem($media);
 
         $metadata = $media->toMetadata();
 
         $art_path = Entity\StationMedia::getArtPath($media->getUniqueId());
-        if ($fs->has($art_path)) {
+        if ($fs->fileExists($art_path)) {
             $metadata->setArtwork($fs->read($art_path));
         }
 
@@ -414,7 +407,7 @@ class StationMediaRepository extends Repository
 
     public function updateWaveform(
         Entity\StationMedia $media,
-        ?Filesystem $fs = null
+        ?FilesystemInterface $fs = null
     ): void {
         $fs ??= $this->getFilesystem($media);
         $fs->withLocalFile(
@@ -428,14 +421,14 @@ class StationMediaRepository extends Repository
     public function writeWaveform(
         Entity\StationMedia $media,
         string $path,
-        ?Filesystem $fs = null
-    ): bool {
+        ?FilesystemInterface $fs = null
+    ): void {
         $fs ??= $this->getFilesystem($media);
 
         $waveform = AudioWaveform::getWaveformFor($path);
         $waveformPath = Entity\StationMedia::getWaveformPath($media->getUniqueId());
 
-        return $fs->put(
+        $fs->write(
             $waveformPath,
             json_encode(
                 $waveform,
@@ -445,29 +438,16 @@ class StationMediaRepository extends Repository
     }
 
     /**
-     * Return the full path associated with a media entity.
-     *
-     * @param Entity\StationMedia $media
-     */
-    public function getFullPath(Entity\StationMedia $media): string
-    {
-        $fs = $this->getFilesystem($media);
-        $uri = $media->getPathUri();
-
-        return $fs->getFullPath($uri);
-    }
-
-    /**
      * @param Entity\StationMedia $media
      * @param bool $deleteFile Whether to remove the media file itself (disabled for batch operations).
-     * @param Filesystem|null $fs
+     * @param FilesystemInterface|null $fs
      *
      * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function remove(
         Entity\StationMedia $media,
         bool $deleteFile = false,
-        ?Filesystem $fs = null
+        ?FilesystemInterface $fs = null
     ): array {
         $fs ??= $this->getFilesystem($media);
 
@@ -475,7 +455,7 @@ class StationMediaRepository extends Repository
         foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
             try {
                 $fs->delete($relatedFilePath);
-            } catch (FileNotFoundException $e) {
+            } catch (FilesystemException $e) {
                 // Skip
             }
         }
@@ -483,7 +463,7 @@ class StationMediaRepository extends Repository
         if ($deleteFile) {
             try {
                 $fs->delete($media->getPath());
-            } catch (FileNotFoundException $e) {
+            } catch (FilesystemException $e) {
                 // Skip
             }
         }
@@ -496,11 +476,8 @@ class StationMediaRepository extends Repository
         return $affectedPlaylists;
     }
 
-    protected function getFilesystem(Entity\StationMedia $media, bool $cached = true): Filesystem
+    protected function getFilesystem(Entity\StationMedia $media): FilesystemInterface
     {
-        return $this->filesystem->getFilesystemForAdapter(
-            $media->getStorageLocation()->getStorageAdapter(),
-            $cached
-        );
+        return $media->getStorageLocation()->getFilesystem();
     }
 }

@@ -2,11 +2,33 @@
 
 namespace App\Flysystem;
 
+use App\Flysystem\Adapter\AdapterInterface;
 use App\Http\Response;
+use League\Flysystem\PathNormalizer;
+use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractFilesystem extends \League\Flysystem\Filesystem implements FilesystemInterface
 {
+    protected AdapterInterface $adapter;
+
+    public function __construct(AdapterInterface $adapter, array $config = [], PathNormalizer $pathNormalizer = null)
+    {
+        $this->adapter = $adapter;
+
+        parent::__construct($adapter, $config, $pathNormalizer);
+    }
+
+    public function getAdapter(): AdapterInterface
+    {
+        return $this->adapter;
+    }
+
+    public function getMetadata(string $path): StorageAttributes
+    {
+        return $this->adapter->getMetadata($path);
+    }
+
     public function uploadAndDeleteOriginal(string $localPath, string $to): void
     {
         $this->upload($localPath, $to);

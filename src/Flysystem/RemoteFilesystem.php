@@ -2,8 +2,8 @@
 
 namespace App\Flysystem;
 
+use App\Flysystem\Adapter\AdapterInterface;
 use App\Http\Response;
-use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\PathNormalizer;
 use League\Flysystem\PathPrefixer;
 use League\MimeTypeDetection\FinfoMimeTypeDetector;
@@ -12,12 +12,12 @@ use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class RemoteFilesystem extends AbstractFilesystem
 {
-    protected FilesystemAdapter $remoteAdapter;
+    protected AdapterInterface $remoteAdapter;
 
     protected PathPrefixer $localPath;
 
     public function __construct(
-        FilesystemAdapter $remoteAdapter,
+        AdapterInterface $remoteAdapter,
         string $localPath = null,
         array $config = [],
         PathNormalizer $pathNormalizer = null
@@ -30,16 +30,13 @@ class RemoteFilesystem extends AbstractFilesystem
         parent::__construct($remoteAdapter, $config, $pathNormalizer);
     }
 
-    public function getAdapter(): FilesystemAdapter
-    {
-        return $this->remoteAdapter;
-    }
-
+    /** @inheritDoc */
     public function isLocal(): bool
     {
         return false;
     }
 
+    /** @inheritDoc */
     public function getLocalPath(string $path): string
     {
         $tempLocalPath = $this->localPath->prefixPath(
@@ -50,6 +47,7 @@ class RemoteFilesystem extends AbstractFilesystem
         return $tempLocalPath;
     }
 
+    /** @inheritDoc */
     public function withLocalFile(string $path, callable $function)
     {
         $localPath = $this->getLocalPath($path);
@@ -63,6 +61,7 @@ class RemoteFilesystem extends AbstractFilesystem
         return $returnVal;
     }
 
+    /** @inheritDoc */
     public function upload(string $localPath, string $to): void
     {
         if (!file_exists($localPath)) {
@@ -80,6 +79,7 @@ class RemoteFilesystem extends AbstractFilesystem
         }
     }
 
+    /** @inheritDoc */
     public function download(string $from, string $localPath): void
     {
         if (file_exists($localPath)) {
@@ -98,6 +98,7 @@ class RemoteFilesystem extends AbstractFilesystem
         }
     }
 
+    /** @inheritDoc */
     public function streamToResponse(
         Response $response,
         string $path,

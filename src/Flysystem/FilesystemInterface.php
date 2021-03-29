@@ -2,17 +2,18 @@
 
 namespace App\Flysystem;
 
+use App\Flysystem\Adapter\AdapterInterface;
 use App\Http\Response;
-use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
 interface FilesystemInterface extends FilesystemOperator
 {
     /**
-     * @return FilesystemAdapter The underlying filesystem adapter.
+     * @return AdapterInterface The underlying filesystem adapter.
      */
-    public function getAdapter(): FilesystemAdapter;
+    public function getAdapter(): AdapterInterface;
 
     /**
      * @return bool Whether this filesystem is directly located on disk.
@@ -25,6 +26,13 @@ interface FilesystemInterface extends FilesystemOperator
      * @return string A path that will be guaranteed to be local to the filesystem.
      */
     public function getLocalPath(string $path): string;
+
+    /**
+     * @param string $path
+     *
+     * @return StorageAttributes Metadata for the specified path.
+     */
+    public function getMetadata(string $path): StorageAttributes;
 
     /**
      * Call a callable function with a path that is guaranteed to be a local path, even if
@@ -55,7 +63,6 @@ interface FilesystemInterface extends FilesystemOperator
      * @param string $localPath
      */
     public function download(string $from, string $localPath): void;
-
 
     /**
      * Read a stream from the filesystem and directly write it to a PSR-7-compatible response object.

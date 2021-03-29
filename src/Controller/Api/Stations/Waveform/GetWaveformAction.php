@@ -5,7 +5,7 @@ namespace App\Controller\Api\Stations\Waveform;
 use App\Entity\Api\Error;
 use App\Entity\Repository\StationMediaRepository;
 use App\Entity\StationMedia;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -15,22 +15,23 @@ class GetWaveformAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        FilesystemManager $filesystem,
         StationMediaRepository $mediaRepo,
         $media_id
     ): ResponseInterface {
         $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
 
         $station = $request->getStation();
-        $fs = $filesystem->getForStation($station);
+
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id)[0];
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
-            $waveformUri = StationMedia::getWaveformUri($media_id);
-            if ($fs->has($waveformUri)) {
-                return $fs->streamToResponse($response, $waveformUri, null, 'inline');
+            $waveformPath = StationMedia::getWaveformPath($media_id);
+            if ($fsMedia->fileExists($waveformPath)) {
+                return $fsMedia->streamToResponse($response, $waveformPath, null, 'inline');
             }
         }
 
@@ -39,11 +40,11 @@ class GetWaveformAction
             return $response->withStatus(500)->withJson(new Error(500, 'Media not found.'));
         }
 
-        $waveformUri = StationMedia::getWaveformUri($media->getUniqueId());
-        if (!$fs->has($waveformUri)) {
+        $waveformPath = StationMedia::getWaveformPath($media->getUniqueId());
+        if (!$fsMedia->fileExists($waveformPath)) {
             $mediaRepo->updateWaveform($media);
         }
 
-        return $fs->streamToResponse($response, $waveformUri, null, 'inline');
+        return $fsMedia->streamToResponse($response, $waveformPath, null, 'inline');
     }
 }

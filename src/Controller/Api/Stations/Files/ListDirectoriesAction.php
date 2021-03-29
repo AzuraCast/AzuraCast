@@ -3,49 +3,56 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 
 class ListDirectoriesAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        FilesystemManager $filesystem
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
-        $fs = $filesystem->getPrefixedAdapterForStation($station, FilesystemManager::PREFIX_MEDIA, true);
 
         $currentDir = $request->getParam('currentDirectory', '');
-        if (!empty($currentDir)) {
-            $dirMeta = $fs->getMetadata($currentDir);
-            if ('dir' !== $dirMeta['type']) {
-                return $response->withStatus(500)
-                    ->withJson(new Entity\Api\Error(500, __('Path "%s" is not a folder.', $currentDir)));
-            }
-        }
+
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
         $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
 
-        $directories = array_filter(array_map(function ($file) use ($protectedPaths) {
-            if ('dir' !== $file['type']) {
-                return null;
-            }
+        $directoriesRaw = $fsMedia->listContents($currentDir, false)->filter(
+            function (StorageAttributes $attrs) use ($protectedPaths) {
+                if (!$attrs->isDir()) {
+                    return false;
+                }
 
-            if (in_array($file['path'], $protectedPaths, true)) {
-                return null;
-            }
+                if (in_array($attrs->path(), $protectedPaths, true)) {
+                    return false;
+                }
 
-            return [
-                'name' => $file['basename'],
-                'path' => $file['path'],
+                return true;
+            }
+        );
+
+        $directories = [];
+        foreach ($directoriesRaw as $directory) {
+            /** @var StorageAttributes $directory */
+            $path = $directory->path();
+
+            $directories[] = [
+                'name' => basename($path),
+                'path' => $path,
             ];
-        }, $fs->listContents($currentDir)));
+        }
 
-        return $response->withJson([
-            'rows' => array_values($directories),
-        ]);
+        return $response->withJson(
+            [
+                'rows' => $directories,
+            ]
+        );
     }
 }

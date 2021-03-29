@@ -3,6 +3,7 @@
 namespace App\Flysystem;
 
 use App\Entity;
+use App\Flysystem\Adapter\LocalAdapter;
 
 class StationFilesystems
 {

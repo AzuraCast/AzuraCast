@@ -44,7 +44,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
             $fileBaseName = basename($filePath);
 
             // Copy the file to the station media directory.
-            $fs->copyFromLocal($filePath, '/' . $fileBaseName);
+            $fs->upload($filePath, '/' . $fileBaseName);
 
             $mediaRow = $this->mediaRepo->getOrCreate($mediaStorage, $fileBaseName);
             $em->persist($mediaRow);

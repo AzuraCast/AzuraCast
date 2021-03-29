@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Exception\ValidationException;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\WritePlaylistFileMessage;
@@ -24,8 +24,6 @@ class FilesController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
-    protected FilesystemManager $filesystem;
-
     protected Adapters $adapters;
 
     protected MessageBus $messageBus;
@@ -40,7 +38,6 @@ class FilesController extends AbstractStationApiCrudController
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        FilesystemManager $filesystem,
         Adapters $adapters,
         MessageBus $messageBus,
         Entity\Repository\CustomFieldRepository $customFieldsRepo,
@@ -49,7 +46,6 @@ class FilesController extends AbstractStationApiCrudController
     ) {
         parent::__construct($em, $serializer, $validator);
 
-        $this->filesystem = $filesystem;
         $this->adapters = $adapters;
         $this->messageBus = $messageBus;
 
@@ -190,10 +186,8 @@ class FilesController extends AbstractStationApiCrudController
         $temp_path = $station->getRadioTempDir() . '/' . $api_record->getSanitizedFilename();
         file_put_contents($temp_path, $api_record->getFileContents());
 
-        $sanitized_path = FilesystemManager::PREFIX_MEDIA . '://' . $api_record->getSanitizedPath();
-
         // Process temp path as regular media record.
-        $record = $this->mediaRepo->getOrCreate($station, $sanitized_path, $temp_path);
+        $record = $this->mediaRepo->getOrCreate($station, $api_record->getSanitizedPath(), $temp_path);
 
         $return = $this->viewRecord($record, $request);
 
@@ -219,16 +213,18 @@ class FilesController extends AbstractStationApiCrudController
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
+
         $record = $this->fromArray(
             $data,
             $record,
             [
                 AbstractNormalizer::CALLBACKS => [
-                    'path' => function ($new_value, $record) {
+                    'path' => function ($new_value, $record) use ($fsMedia) {
                         // Detect and handle a rename.
                         if (($record instanceof Entity\StationMedia) && $new_value !== $record->getPath()) {
-                            $fs = $record->getStorageLocation()->getFilesystem();
-                            $fs->rename($record->getPath(), $new_value);
+                            $fsMedia->move($record->getPath(), $new_value);
                         }
 
                         return $new_value;

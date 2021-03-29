@@ -6,11 +6,12 @@ use App\Entity;
 use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
 use App\Exception;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Message;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -33,8 +34,6 @@ class ConfigWriter implements EventSubscriberInterface
 
     protected Liquidsoap $liquidsoap;
 
-    protected FilesystemManager $filesystem;
-
     protected Environment $environment;
 
     protected LoggerInterface $logger;
@@ -43,14 +42,12 @@ class ConfigWriter implements EventSubscriberInterface
         EntityManagerInterface $em,
         Entity\Repository\SettingsRepository $settingsRepo,
         Liquidsoap $liquidsoap,
-        FilesystemManager $filesystem,
         Environment $environment,
         LoggerInterface $logger
     ) {
         $this->em = $em;
         $this->settingsRepo = $settingsRepo;
         $this->liquidsoap = $liquidsoap;
-        $this->filesystem = $filesystem;
         $this->environment = $environment;
         $this->logger = $logger;
     }
@@ -146,9 +143,9 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_TOP);
 
         $station = $event->getStation();
-        $fs = $this->filesystem->getForStation($station, false);
 
-        $pidfile = $fs->getFullPath(FilesystemManager::PREFIX_CONFIG . '://liquidsoap.pid');
+        $configDir = $station->getRadioConfigDir();
+        $pidfile = $configDir . DIRECTORY_SEPARATOR . 'liquidsoap.pid';
 
         $telnetBindAddr = $this->environment->isDocker() ? '0.0.0.0' : '127.0.0.1';
         $telnetPort = $this->liquidsoap->getTelnetPort($station);
@@ -191,11 +188,16 @@ class ConfigWriter implements EventSubscriberInterface
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_PLAYLISTS);
 
         // Clear out existing playlists directory.
-        $fs = $this->filesystem->getForStation($station, false);
 
-        foreach ($fs->listContents(FilesystemManager::PREFIX_PLAYLISTS . '://', true) as $file) {
-            if ('file' === $file['type']) {
-                $fs->delete($file['filesystem'] . '://' . $file['path']);
+        $fsStation = new StationFilesystems($station);
+        $fsPlaylists = $fsStation->getPlaylistsFilesystem();
+
+        foreach ($fsPlaylists->listContents('', false) as $file) {
+            /** @var StorageAttributes $file */
+            if ($file->isDir()) {
+                $fsPlaylists->deleteDirectory($file->path());
+            } else {
+                $fsPlaylists->delete($file->path());
             }
         }
 

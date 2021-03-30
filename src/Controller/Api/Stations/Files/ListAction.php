@@ -257,7 +257,7 @@ class ListAction
 
                 if ($file instanceof StorageAttributes) {
                     $row->path = $file->path();
-                    $row->timestamp = $file->lastModified();
+                    $row->timestamp = $file->lastModified() ?? 0;
                     $row->is_dir = $file->isDir();
                 } else {
                     $row->path = $file;

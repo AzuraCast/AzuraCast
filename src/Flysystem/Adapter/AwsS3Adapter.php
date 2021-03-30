@@ -22,6 +22,16 @@ class AwsS3Adapter extends AwsS3V3Adapter implements AdapterInterface
 
     protected PathPrefixer $prefixer;
 
+    /**
+     * @var string[]
+     */
+    protected const EXTRA_METADATA_FIELDS = [
+        'Metadata',
+        'StorageClass',
+        'ETag',
+        'VersionId',
+    ];
+
     public function __construct(
         S3ClientInterface $client,
         string $bucket,

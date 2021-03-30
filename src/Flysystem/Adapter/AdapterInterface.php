@@ -10,7 +10,6 @@ interface AdapterInterface extends FilesystemAdapter
     /**
      * @param string $path
      *
-     * @return StorageAttributes
      */
     public function getMetadata(string $path): StorageAttributes;
 }

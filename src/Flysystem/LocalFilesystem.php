@@ -3,9 +3,7 @@
 namespace App\Flysystem;
 
 use App\Flysystem\Adapter\LocalAdapter;
-use App\Http\Response;
 use League\Flysystem\PathNormalizer;
-use Psr\Http\Message\ResponseInterface;
 
 class LocalFilesystem extends AbstractFilesystem
 {
@@ -49,22 +47,5 @@ class LocalFilesystem extends AbstractFilesystem
     {
         $localPath = $this->getLocalPath($path);
         return $function($localPath);
-    }
-
-    /** @inheritDoc */
-    public function streamToResponse(
-        Response $response,
-        string $path,
-        string $fileName = null,
-        string $disposition = 'attachment'
-    ): ResponseInterface {
-        return $this->doStreamToResponse(
-            $response,
-            $this->getLocalPath($path),
-            $this->fileSize($path),
-            $this->mimeType($path),
-            $fileName,
-            $disposition
-        );
     }
 }

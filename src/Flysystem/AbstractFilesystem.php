@@ -4,11 +4,13 @@ namespace App\Flysystem;
 
 use App\Flysystem\Adapter\AdapterInterface;
 use App\Http\Response;
+use League\Flysystem\Filesystem;
 use League\Flysystem\PathNormalizer;
 use League\Flysystem\StorageAttributes;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class AbstractFilesystem extends \League\Flysystem\Filesystem implements FilesystemInterface
+abstract class AbstractFilesystem extends Filesystem implements FilesystemInterface
 {
     protected AdapterInterface $adapter;
 
@@ -35,14 +37,17 @@ abstract class AbstractFilesystem extends \League\Flysystem\Filesystem implement
         @unlink($localPath);
     }
 
-    protected function doStreamToResponse(
+    public function streamToResponse(
         Response $response,
-        string $localPath,
-        int $fileSize,
-        string $mimeType = 'application/octet-stream',
+        string $path,
         string $fileName = null,
         string $disposition = 'attachment'
     ): ResponseInterface {
+        $localPath = $this->getLocalPath($path);
+
+        $mime = new FinfoMimeTypeDetector();
+        $mimeType = $mime->detectMimeTypeFromFile($localPath);
+
         $fileName ??= basename($localPath);
 
         if ('attachment' === $disposition) {
@@ -55,7 +60,7 @@ abstract class AbstractFilesystem extends \League\Flysystem\Filesystem implement
         }
 
         $response = $response->withHeader('Content-Disposition', $disposition)
-            ->withHeader('Content-Length', $fileSize)
+            ->withHeader('Content-Length', filesize($localPath))
             ->withHeader('X-Accel-Buffering', 'no');
 
         // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
@@ -67,9 +72,6 @@ abstract class AbstractFilesystem extends \League\Flysystem\Filesystem implement
         foreach ($specialPaths as $diskPath => $nginxPath) {
             if (0 === strpos($localPath, $diskPath)) {
                 $accelPath = str_replace($diskPath, $nginxPath, $localPath);
-
-                // Temporary work around, see SlimPHP/Slim#2924
-                $response->getBody()->write(' ');
 
                 return $response->withHeader('Content-Type', $mimeType)
                     ->withHeader('X-Accel-Redirect', $accelPath);

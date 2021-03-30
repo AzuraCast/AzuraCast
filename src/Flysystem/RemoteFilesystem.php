@@ -3,11 +3,8 @@
 namespace App\Flysystem;
 
 use App\Flysystem\Adapter\AdapterInterface;
-use App\Http\Response;
 use League\Flysystem\PathNormalizer;
 use League\Flysystem\PathPrefixer;
-use League\MimeTypeDetection\FinfoMimeTypeDetector;
-use Psr\Http\Message\ResponseInterface;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
 class RemoteFilesystem extends AbstractFilesystem
@@ -96,25 +93,5 @@ class RemoteFilesystem extends AbstractFilesystem
         if (is_resource($stream)) {
             fclose($stream);
         }
-    }
-
-    /** @inheritDoc */
-    public function streamToResponse(
-        Response $response,
-        string $path,
-        string $fileName = null,
-        string $disposition = 'attachment'
-    ): ResponseInterface {
-        $localPath = $this->getLocalPath($path);
-        $mime = new FinfoMimeTypeDetector();
-
-        return $this->doStreamToResponse(
-            $response,
-            $localPath,
-            filesize($localPath),
-            $mime->detectMimeTypeFromFile($localPath),
-            $fileName,
-            $disposition
-        );
     }
 }

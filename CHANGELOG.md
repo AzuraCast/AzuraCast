@@ -13,7 +13,12 @@ release channel, you can take advantage of these new features and fixes.
 - By default, avatars will be served from the free and open-source [Libravatar](https://libravatar.org) service. You can
   configure the external avatar service from the system settings, along with the default avatar URL.
 
+- The "Average Listeners" and "Unique Listeners" charts on the dashboard are now "zoomed in" to show the last 30 days;
+  if you want to view older data, simply click and drag the chart to view older data.
+
 ## Code Quality/Technical Changes
+
+- In preparation to support PHP 8.0, we have updated to version 2.0 of the Flysystem filesystem abstraction library.
 
 - We've switched from the `material-icons` library to the `@material-icons/font` library. In particular, we are using
   the "two-toned" version of the Material Design icons across the application.

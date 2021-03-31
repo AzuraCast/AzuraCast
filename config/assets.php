@@ -244,6 +244,14 @@ return [
                     'src' => 'dist/lib/chartjs/chartjs-plugin-colorschemes.min.js',
                     'defer' => true,
                 ],
+                [
+                    'src' => 'dist/lib/chartjs/hammer.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/lib/chartjs/chartjs-plugin-zoom.min.js',
+                    'defer' => true,
+                ],
             ],
             'css' => [
                 [

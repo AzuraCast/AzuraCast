@@ -329,17 +329,6 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         $this->path = $path;
     }
 
-    /**
-     * Return the abstracted "full path" filesystem URI for this record.
-     */
-    public function getPathUri(): string
-    {
-        return FilesystemManager::applyPrefix(
-            FilesystemManager::PREFIX_MEDIA,
-            $this->path
-        );
-    }
-
     public function getMtime(): ?int
     {
         return $this->mtime;
@@ -589,24 +578,8 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         return self::DIR_ALBUM_ART . '/' . $uniqueId . '.jpg';
     }
 
-    public static function getArtUri(string $uniqueId): string
-    {
-        return FilesystemManager::applyPrefix(
-            FilesystemManager::PREFIX_MEDIA,
-            self::getArtPath($uniqueId)
-        );
-    }
-
     public static function getWaveformPath(string $uniqueId): string
     {
         return self::DIR_WAVEFORMS . '/' . $uniqueId . '.json';
-    }
-
-    public static function getWaveformUri(string $uniqueId): string
-    {
-        return FilesystemManager::applyPrefix(
-            FilesystemManager::PREFIX_MEDIA,
-            self::getWaveformPath($uniqueId)
-        );
     }
 }

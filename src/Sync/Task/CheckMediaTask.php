@@ -2,18 +2,17 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Media\MimeType;
 use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Quota;
 use Aws\S3\Exception\S3Exception;
 use Brick\Math\BigInteger;
-use Doctrine\ORM\EntityManagerInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
-use Jhofm\FlysystemIterator\Filter\FilterFactory;
-use Jhofm\FlysystemIterator\Options\Options;
+use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -25,19 +24,16 @@ class CheckMediaTask extends AbstractTask
 
     protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo;
 
-    protected FilesystemManager $filesystem;
-
     protected MessageBus $messageBus;
 
     protected QueueManager $queueManager;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\StationMediaRepository $mediaRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        FilesystemManager $filesystem,
         MessageBus $messageBus,
         QueueManager $queueManager
     ) {
@@ -46,8 +42,6 @@ class CheckMediaTask extends AbstractTask
         $this->storageLocationRepo = $storageLocationRepo;
         $this->mediaRepo = $mediaRepo;
         $this->unprocessableMediaRepo = $unprocessableMediaRepo;
-
-        $this->filesystem = $filesystem;
         $this->messageBus = $messageBus;
         $this->queueManager = $queueManager;
     }
@@ -103,8 +97,7 @@ class CheckMediaTask extends AbstractTask
 
     public function importMusic(Entity\StorageLocation $storageLocation): void
     {
-        $adapter = $storageLocation->getStorageAdapter();
-        $fs = $this->filesystem->getFilesystemForAdapter($adapter, false);
+        $fs = $storageLocation->getFilesystem();
 
         $stats = [
             'total_size' => '0',
@@ -117,16 +110,16 @@ class CheckMediaTask extends AbstractTask
             'not_processable' => 0,
         ];
 
+        /** @var StorageAttributes[] $musicFiles */
         $musicFiles = [];
+
         $total_size = BigInteger::zero();
 
         try {
-            $fsIterator = $fs->createIterator(
-                '/',
-                [
-                    Options::OPTION_IS_RECURSIVE => true,
-                    Options::OPTION_FILTER => FilterFactory::isFile(),
-                ]
+            $fsIterator = $fs->listContents('/', true)->filter(
+                function (StorageAttributes $attrs) {
+                    return $attrs->isFile();
+                }
             );
         } catch (S3Exception $e) {
             $this->logger->error(
@@ -143,18 +136,18 @@ class CheckMediaTask extends AbstractTask
             Entity\StationMedia::DIR_WAVEFORMS,
         ];
 
+        /** @var StorageAttributes $file */
         foreach ($fsIterator as $file) {
             foreach ($protectedPaths as $protectedPath) {
-                if (0 === strpos($file['path'], $protectedPath)) {
+                if (0 === strpos($file->path(), $protectedPath)) {
                     continue 2;
                 }
             }
 
-            if (!empty($file['size'])) {
-                $total_size = $total_size->plus($file['size']);
-            }
+            $size = $fs->fileSize($file->path());
+            $total_size = $total_size->plus($size);
 
-            $pathHash = md5($file['path']);
+            $pathHash = md5($file->path());
             $musicFiles[$pathHash] = $file;
         }
 
@@ -206,7 +199,7 @@ class CheckMediaTask extends AbstractTask
 
                 if (isset($queuedMediaUpdates[$media_row->getId()])) {
                     $stats['already_queued']++;
-                } elseif ($force_reprocess || $media_row->needsReprocessing($fileInfo['timestamp'])) {
+                } elseif ($force_reprocess || $media_row->needsReprocessing($fileInfo->lastModified())) {
                     $message = new Message\ReprocessMediaMessage();
                     $message->media_id = $media_row->getId();
                     $message->force = $force_reprocess;
@@ -242,10 +235,10 @@ class CheckMediaTask extends AbstractTask
             if (isset($musicFiles[$pathHash])) {
                 $fileInfo = $musicFiles[$pathHash];
 
-                if ($unprocessableRow->needsReprocessing($fileInfo['timestamp'])) {
+                if ($unprocessableRow->needsReprocessing($fileInfo->lastModified())) {
                     $message = new Message\AddNewMediaMessage();
                     $message->storage_location_id = $storageLocation->getId();
-                    $message->path = $fileInfo['path'];
+                    $message->path = $fileInfo->path();
 
                     $this->messageBus->dispatch($message);
 
@@ -264,7 +257,7 @@ class CheckMediaTask extends AbstractTask
 
         // Create files that do not currently exist.
         foreach ($musicFiles as $pathHash => $newMusicFile) {
-            $path = $newMusicFile['path'];
+            $path = $newMusicFile->path();
             if (!MimeType::isPathProcessable($path)) {
                 $mimeType = MimeType::getMimeTypeFromPath($path);
 
@@ -295,33 +288,41 @@ class CheckMediaTask extends AbstractTask
 
     public function importPlaylists(Entity\Station $station): void
     {
-        $fs = $this->filesystem->getForStation($station, false);
+        $fsStation = new StationFilesystems($station);
+
+        $fsMedia = $fsStation->getMediaFilesystem();
+
+        // Skip playlist importing for remote filesystems.
+        if (!$fsMedia->isLocal()) {
+            return;
+        }
+
+        $fsPlaylists = $fsStation->getPlaylistsFilesystem();
 
         // Create a lookup cache of all valid imported media.
         $media_lookup = [];
         foreach ($station->getMedia() as $media) {
             /** @var Entity\StationMedia $media */
-            $media_path = $fs->getFullPath($media->getPathUri());
+            $media_path = $fsMedia->getLocalPath($media->getPath());
             $media_hash = md5($media_path);
 
             $media_lookup[$media_hash] = $media;
         }
 
         // Iterate through playlists.
-        $playlist_files_raw = $fs->createIterator(
-            FilesystemManager::PREFIX_PLAYLISTS . '://',
-            [
-                'filter' => FilterFactory::pathMatchesRegex('/^.+\.(m3u|pls)$/i'),
-            ]
+        $playlist_files_raw = $fsPlaylists->listContents('/', true)->filter(
+            function (StorageAttributes $attrs) {
+                return preg_match('/^.+\.(m3u|pls)$/i', $attrs->path()) > 0;
+            }
         );
 
         foreach ($playlist_files_raw as $playlist_file) {
+            /** @var StorageAttributes $playlist_file */
+
             // Create new StationPlaylist record.
             $record = new Entity\StationPlaylist($station);
 
-            $playlist_file_path = $fs->getFullPath(
-                FilesystemManager::PREFIX_PLAYLISTS . '://' . $playlist_file['path']
-            );
+            $playlist_file_path = $fsPlaylists->getLocalPath($playlist_file->path());
 
             $path_parts = pathinfo($playlist_file_path);
             $playlist_name = str_replace('playlist_', '', $path_parts['filename']);

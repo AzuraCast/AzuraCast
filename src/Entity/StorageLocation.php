@@ -5,7 +5,13 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Flysystem\Filesystem;
+use App\Flysystem\Adapter\AdapterInterface;
+use App\Flysystem\Adapter\AwsS3Adapter;
+use App\Flysystem\Adapter\DropboxAdapter;
+use App\Flysystem\Adapter\LocalAdapter;
+use App\Flysystem\FilesystemInterface;
+use App\Flysystem\LocalFilesystem;
+use App\Flysystem\RemoteFilesystem;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
 use Aws\S3\S3Client;
@@ -13,13 +19,7 @@ use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
-use League\Flysystem\Config;
-use League\Flysystem\Util;
 use Spatie\Dropbox\Client;
-use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -391,7 +391,9 @@ class StorageLocation
             }
 
             return $quota;
-        } elseif (null !== $quota) {
+        }
+
+        if (null !== $quota) {
             return $quota;
         }
 
@@ -472,7 +474,7 @@ class StorageLocation
         }
 
         $adapter = $this->getStorageAdapter();
-        $adapter->has('/test');
+        $adapter->fileExists('/test');
     }
 
     public function getStorageAdapter(): AdapterInterface
@@ -487,7 +489,7 @@ class StorageLocation
 
             case self::ADAPTER_LOCAL:
             default:
-                return new Local($this->path);
+                return new LocalAdapter($this->path);
         }
     }
 
@@ -520,18 +522,13 @@ class StorageLocation
         return new Client($this->dropboxAuthToken);
     }
 
-    /**
-     * @param Config|array|null $config
-     *
-     */
-    public function getFilesystem($config = null): Filesystem
+    public function getFilesystem(): FilesystemInterface
     {
-        $config = Util::ensureConfig($config);
-        if (self::ADAPTER_DROPBOX === $this->adapter) {
-            $config->set('case_sensitive', false);
-        }
+        $adapter = $this->getStorageAdapter();
 
-        return new Filesystem($this->getStorageAdapter(), $config);
+        return ($adapter instanceof LocalAdapter)
+            ? new LocalFilesystem($adapter)
+            : new RemoteFilesystem($adapter);
     }
 
     public function __toString(): string

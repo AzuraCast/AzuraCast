@@ -6,7 +6,7 @@ use App\Config;
 use App\Controller\AbstractLogViewerController;
 use App\Entity;
 use App\Exception\NotFoundException;
-use App\Flysystem\Filesystem;
+use App\Flysystem\FilesystemInterface;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
 use App\Http\Response;
@@ -15,6 +15,7 @@ use App\Message\BackupMessage;
 use App\Session\Flash;
 use App\Sync\Task\RunBackupTask;
 use App\Utilities\File;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -167,7 +168,7 @@ class BackupsController extends AbstractLogViewerController
     ): ResponseInterface {
         [$path, $fs] = $this->getFile($path);
 
-        /** @var Filesystem $fs */
+        /** @var FilesystemInterface $fs */
         return $fs->streamToResponse($response->withNoCache(), $path);
     }
 
@@ -177,7 +178,7 @@ class BackupsController extends AbstractLogViewerController
 
         [$path, $fs] = $this->getFile($path);
 
-        /** @var Filesystem $fs */
+        /** @var FilesystemInterface $fs */
         $fs->delete($path);
 
         $request->getFlash()->addMessage('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
@@ -187,8 +188,7 @@ class BackupsController extends AbstractLogViewerController
     /**
      * @param string $rawPath
      *
-     * @return array{0: string, 1: Filesystem}
-     * @throws NotFoundException
+     * @return array{0: string, 1: FilesystemInterface}
      */
     protected function getFile(string $rawPath): array
     {
@@ -202,12 +202,12 @@ class BackupsController extends AbstractLogViewerController
 
 
         if (!($storageLocation instanceof Entity\StorageLocation)) {
-            throw new \InvalidArgumentException('Invalid storage location.');
+            throw new InvalidArgumentException('Invalid storage location.');
         }
 
         $fs = $storageLocation->getFilesystem();
 
-        if (!$fs->has($path)) {
+        if (!$fs->fileExists($path)) {
             throw new NotFoundException(__('Backup not found.'));
         }
 

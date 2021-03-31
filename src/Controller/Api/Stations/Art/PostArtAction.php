@@ -3,7 +3,6 @@
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
-use App\Flysystem\FilesystemManager;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +14,6 @@ class PostArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        FilesystemManager $filesystem,
         Entity\Repository\StationMediaRepository $mediaRepo,
         EntityManagerInterface $em,
         $media_id

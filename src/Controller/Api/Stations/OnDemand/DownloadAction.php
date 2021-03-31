@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -14,8 +14,7 @@ class DownloadAction
         ServerRequest $request,
         Response $response,
         string $media_id,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        FilesystemManager $filesystem
+        Entity\Repository\StationMediaRepository $mediaRepo
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -32,10 +31,10 @@ class DownloadAction
                 ->withJson(new Entity\Api\Error(404, __('File not found.')));
         }
 
-        $filePath = $media->getPathUri();
-        $fs = $filesystem->getForStation($station);
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
         set_time_limit(600);
-        return $fs->streamToResponse($response, $filePath);
+        return $fsMedia->streamToResponse($response, $media->getPath());
     }
 }

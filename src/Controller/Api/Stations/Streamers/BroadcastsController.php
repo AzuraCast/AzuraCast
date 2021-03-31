@@ -4,7 +4,7 @@ namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
@@ -19,14 +19,12 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param FilesystemManager $filesystem
      * @param string|int $station_id
      * @param int $id
      */
     public function listAction(
         ServerRequest $request,
         Response $response,
-        FilesystemManager $filesystem,
         $station_id,
         $id
     ): ResponseInterface {
@@ -53,24 +51,22 @@ class BroadcastsController extends AbstractApiCrudController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $fs = $filesystem->getForStation($station);
+        $fsStation = new StationFilesystems($station);
+        $fsRecordings = $fsStation->getRecordingsFilesystem();
 
         $paginator->setPostprocessor(
-            function ($row) use ($is_bootgrid, $router, $fs) {
+            function ($row) use ($is_bootgrid, $router, $fsRecordings) {
                 /** @var Entity\StationStreamerBroadcast $row */
                 $return = $this->toArray($row);
 
                 unset($return['recordingPath']);
 
                 $recordingPath = $row->getRecordingPath();
-                $recordingUri = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
 
-                if ($fs->has($recordingUri)) {
-                    $recordingMeta = $fs->getMetadata($recordingUri);
-
+                if ($fsRecordings->fileExists($recordingPath)) {
                     $return['recording'] = [
                         'path' => $recordingPath,
-                        'size' => $recordingMeta['size'],
+                        'size' => $fsRecordings->fileSize($recordingPath),
                         'links' => [
                             'download' => $router->fromHere(
                                 'api:stations:streamer:broadcast:download',
@@ -104,7 +100,6 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param FilesystemManager $filesystem
      * @param string|int $station_id
      * @param int $id
      * @param int $broadcast_id
@@ -112,7 +107,6 @@ class BroadcastsController extends AbstractApiCrudController
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        FilesystemManager $filesystem,
         $station_id,
         $id,
         $broadcast_id
@@ -132,12 +126,12 @@ class BroadcastsController extends AbstractApiCrudController
                 ->withJson(new Entity\Api\Error(400, __('No recording available.')));
         }
 
-        $fs = $filesystem->getForStation($station);
         $filename = basename($recordingPath);
 
-        $recordingPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
+        $fsStation = new StationFilesystems($station);
+        $fsRecordings = $fsStation->getRecordingsFilesystem();
 
-        return $fs->streamToResponse(
+        return $fsRecordings->streamToResponse(
             $response,
             $recordingPath,
             File::sanitizeFileName($broadcast->getStreamer()->getDisplayName()) . '_' . $filename
@@ -147,7 +141,6 @@ class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        FilesystemManager $filesystem,
         $station_id,
         $id,
         $broadcast_id
@@ -163,10 +156,10 @@ class BroadcastsController extends AbstractApiCrudController
         $recordingPath = $broadcast->getRecordingPath();
 
         if (!empty($recordingPath)) {
-            $fs = $filesystem->getForStation($station);
-            $recordingPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $recordingPath;
+            $fsStation = new StationFilesystems($station);
+            $fsRecordings = $fsStation->getRecordingsFilesystem();
 
-            $fs->delete($recordingPath);
+            $fsRecordings->delete($recordingPath);
 
             $broadcast->clearRecordingPath();
             $this->em->persist($broadcast);

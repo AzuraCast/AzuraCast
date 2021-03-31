@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +14,6 @@ class PlayAction
         ServerRequest $request,
         Response $response,
         int $id,
-        FilesystemManager $filesystem,
         Entity\Repository\StationMediaRepository $mediaRepo
     ): ResponseInterface {
         set_time_limit(600);
@@ -28,8 +27,9 @@ class PlayAction
                 ->withJson(new Entity\Api\Error(404, 'Not Found'));
         }
 
-        $fs = $filesystem->getForStation($station, false);
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
-        return $fs->streamToResponse($response, $media->getPathUri());
+        return $fsMedia->streamToResponse($response, $media->getPath());
     }
 }

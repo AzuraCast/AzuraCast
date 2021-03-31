@@ -3,6 +3,7 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\File;
@@ -33,43 +34,45 @@ class RenameAction extends BatchAction
 
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
-        $fs = $storageLocation->getFilesystem();
 
-        if ($fs->rename($from, $to)) {
-            $pathMeta = $fs->getMetadata($to);
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
-            if ('dir' === $pathMeta['type']) {
-                // Update the paths of all media contained within the directory.
-                $toRename = [
-                    $this->iterateMediaInDirectory($storageLocation, $from),
-                    $this->iterateUnprocessableMediaInDirectory($storageLocation, $from),
-                    $this->iteratePlaylistFoldersInDirectory($station, $from),
-                ];
+        $fsMedia->move($from, $to);
 
-                foreach ($toRename as $iterator) {
-                    foreach ($iterator as $record) {
-                        /** @var Entity\PathAwareInterface $record */
-                        $record->setPath(
-                            File::renameDirectoryInPath($record->getPath(), $from, $to)
-                        );
-                        $this->em->persist($record);
-                    }
+        $pathMeta = $fsMedia->getMetadata($to);
+
+        if ($pathMeta->isDir()) {
+            // Update the paths of all media contained within the directory.
+            $toRename = [
+                $this->iterateMediaInDirectory($storageLocation, $from),
+                $this->iterateUnprocessableMediaInDirectory($storageLocation, $from),
+                $this->iteratePlaylistFoldersInDirectory($station, $from),
+            ];
+
+            foreach ($toRename as $iterator) {
+                foreach ($iterator as $record) {
+                    /** @var Entity\PathAwareInterface $record */
+                    $record->setPath(
+                        File::renameDirectoryInPath($record->getPath(), $from, $to)
+                    );
+                    $this->em->persist($record);
                 }
-            } else {
-                $record = $this->mediaRepo->findByPath($from, $storageLocation);
+            }
+        } else {
+            $record = $this->mediaRepo->findByPath($from, $storageLocation);
 
-                if ($record instanceof Entity\StationMedia) {
+            if ($record instanceof Entity\StationMedia) {
+                $record->setPath($to);
+                $this->em->persist($record);
+                $this->em->flush();
+            } else {
+                $record = $this->unprocessableMediaRepo->findByPath($from, $storageLocation);
+
+                if ($record instanceof Entity\UnprocessableMedia) {
                     $record->setPath($to);
                     $this->em->persist($record);
                     $this->em->flush();
-                } else {
-                    $record = $this->unprocessableMediaRepo->findByPath($from, $storageLocation);
-
-                    if ($record instanceof Entity\UnprocessableMedia) {
-                        $record->setPath($to);
-                        $this->em->persist($record);
-                        $this->em->flush();
-                    }
                 }
             }
         }

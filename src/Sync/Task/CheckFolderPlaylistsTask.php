@@ -4,7 +4,7 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
@@ -14,20 +14,16 @@ class CheckFolderPlaylistsTask extends AbstractTask
 
     protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
 
-    protected FilesystemManager $filesystem;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        Entity\Repository\StationPlaylistFolderRepository $folderRepo,
-        FilesystemManager $filesystem
+        Entity\Repository\StationPlaylistFolderRepository $folderRepo
     ) {
         parent::__construct($em, $logger);
 
         $this->spmRepo = $spmRepo;
         $this->folderRepo = $folderRepo;
-        $this->filesystem = $filesystem;
     }
 
     public function run(bool $force = false): void
@@ -57,7 +53,8 @@ class CheckFolderPlaylistsTask extends AbstractTask
             ]
         );
 
-        $fs = $this->filesystem->getForStation($station);
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
         $mediaInPlaylistQuery = $this->em->createQuery(
             <<<'DQL'
@@ -95,7 +92,7 @@ class CheckFolderPlaylistsTask extends AbstractTask
                 $path = $folder->getPath();
 
                 // Verify the folder still exists.
-                if (!$fs->has(FilesystemManager::PREFIX_MEDIA . '://' . $path)) {
+                if (!$fsMedia->fileExists($path)) {
                     $this->em->remove($folder);
                 }
 

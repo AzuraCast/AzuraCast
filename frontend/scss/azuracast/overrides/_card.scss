@@ -1,4 +1,8 @@
 .outside-card-header {
+  &:first-child {
+    padding-top: 0;
+  }
+
   padding: $card-padding-y $card-padding-x;
   margin-bottom: $card-inner-spacer-y;
 }

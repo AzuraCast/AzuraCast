@@ -5894,16 +5894,16 @@
         },
         {
             "name": "spatie/flysystem-dropbox",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/flysystem-dropbox.git",
-                "reference": "0bb9f5485d7ac61665ffbcf7dbca38bf2be3174f"
+                "reference": "29709d3025b703c1142f696503fcd7d82c703fb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/flysystem-dropbox/zipball/0bb9f5485d7ac61665ffbcf7dbca38bf2be3174f",
-                "reference": "0bb9f5485d7ac61665ffbcf7dbca38bf2be3174f",
+                "url": "https://api.github.com/repos/spatie/flysystem-dropbox/zipball/29709d3025b703c1142f696503fcd7d82c703fb5",
+                "reference": "29709d3025b703c1142f696503fcd7d82c703fb5",
                 "shasum": ""
             },
             "require": {
@@ -5945,7 +5945,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/flysystem-dropbox/issues",
-                "source": "https://github.com/spatie/flysystem-dropbox/tree/2.0.1"
+                "source": "https://github.com/spatie/flysystem-dropbox/tree/2.0.2"
             },
             "funding": [
                 {
@@ -5957,7 +5957,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-31T07:44:17+00:00"
+            "time": "2021-03-31T22:31:16+00:00"
         },
         {
             "name": "spomky-labs/otphp",

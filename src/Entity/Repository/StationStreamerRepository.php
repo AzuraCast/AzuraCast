@@ -6,7 +6,6 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
-use App\Flysystem\FilesystemManager;
 use App\Flysystem\StationFilesystems;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Scheduler;
@@ -112,7 +111,8 @@ class StationStreamerRepository extends Repository
 
         foreach ($broadcasts as $broadcast) {
             $broadcastPath = $broadcast->getRecordingPath();
-            if ($fsTemp->fileExists($broadcastPath)) {
+
+            if ((null !== $broadcastPath) && $fsTemp->fileExists($broadcastPath)) {
                 $tempPath = $fsTemp->getLocalPath($broadcastPath);
                 $fsRecordings->uploadAndDeleteOriginal($tempPath, $broadcastPath);
             }

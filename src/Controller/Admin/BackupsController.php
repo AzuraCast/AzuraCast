@@ -16,6 +16,8 @@ use App\Session\Flash;
 use App\Sync\Task\RunBackupTask;
 use App\Utilities\File;
 use InvalidArgumentException;
+use League\Flysystem\FileAttributes;
+use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -50,10 +52,24 @@ class BackupsController extends AbstractLogViewerController
         $storageLocations = $this->storageLocationRepo->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
         foreach ($storageLocations as $storageLocation) {
             $fs = $storageLocation->getFilesystem();
+
+            /** @var StorageAttributes $file */
             foreach ($fs->listContents('', true) as $file) {
-                $file['storageLocationId'] = $storageLocation->getId();
-                $file['pathEncoded'] = base64_encode($storageLocation->getId() . '|' . $file['path']);
-                $backups[] = $file;
+                if ($file->isDir()) {
+                    continue;
+                }
+
+                /** @var FileAttributes $file */
+                $filename = $file->path();
+
+                $backups[] = [
+                    'path' => $filename,
+                    'basename' => basename($filename),
+                    'pathEncoded' => base64_encode($storageLocation->getId() . '|' . $filename),
+                    'timestamp' => $file->lastModified(),
+                    'size' => $file->fileSize(),
+                    'storageLocationId' => $storageLocation->getId(),
+                ];
             }
         }
         $backups = array_reverse($backups);

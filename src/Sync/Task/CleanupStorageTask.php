@@ -91,17 +91,26 @@ class CleanupStorageTask extends AbstractTask
         ];
 
         foreach ($cleanupDirs as $key => $dirBase) {
-            $dirContents = $fs->listContents($dirBase, true);
+            try {
+                $dirContents = $fs->listContents($dirBase, true);
 
-            foreach ($dirContents as $row) {
-                /** @var StorageAttributes $row */
-                $path = $row->path();
+                foreach ($dirContents as $row) {
+                    /** @var StorageAttributes $row */
+                    $path = $row->path();
 
-                $filename = pathinfo($path, PATHINFO_FILENAME);
-                if (!isset($allUniqueIds[$filename])) {
-                    $fs->delete($path);
-                    $removed[$key]++;
+                    $filename = pathinfo($path, PATHINFO_FILENAME);
+                    if (!isset($allUniqueIds[$filename])) {
+                        $fs->delete($path);
+                        $removed[$key]++;
+                    }
                 }
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    sprintf('Filesystem error: %s', $e->getMessage()),
+                    [
+                        'exception' => $e,
+                    ]
+                );
             }
         }
 

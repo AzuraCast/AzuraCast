@@ -67,6 +67,7 @@ class SoundExchangeController
                         path,
                         length,
                         length_text,
+                        isrc,
                         artist,
                         title,
                         album,
@@ -109,7 +110,8 @@ class SoundExchangeController
             }
 
             // Remove any reference to the "Stream Offline" song.
-            $offline_song_hash = Entity\Song::getSongHash('stream_offline');
+            $offlineSong = Entity\Song::createOffline();
+            $offline_song_hash = $offlineSong->getSongId();
             unset($history_rows_by_id[$offline_song_hash]);
 
             // Assemble report items

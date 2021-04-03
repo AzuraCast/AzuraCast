@@ -7,8 +7,8 @@ use App\Entity;
 use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\MusicBrainz;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -18,15 +18,16 @@ class SoundExchangeController
 {
     protected EntityManagerInterface $em;
 
-    protected Client $http_client;
+    protected MusicBrainz $musicBrainz;
 
     protected array $form_config;
 
-    public function __construct(EntityManagerInterface $em, Client $http_client, Config $config)
+    public function __construct(EntityManagerInterface $em, MusicBrainz $musicBrainz, Config $config)
     {
         $this->em = $em;
+        $this->musicBrainz = $musicBrainz;
+
         $this->form_config = $config->get('forms/report/soundexchange');
-        $this->http_client = $http_client;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -39,7 +40,7 @@ class SoundExchangeController
             'end_date' => date('Y-m-d', strtotime('last day of last month')),
         ]);
 
-        if (!empty($_POST) && $form->isValid($_POST)) {
+        if ($request->isPost() && $form->isValid($_POST)) {
             $data = $form->getValues();
 
             $start_date = strtotime($data['start_date'] . ' 00:00:00');
@@ -94,12 +95,12 @@ class SoundExchangeController
                     SELECT sh.song_id AS song_id, sh.text, sh.artist, sh.title, sh.media_id, COUNT(sh.id) AS plays,
                         SUM(sh.unique_listeners) AS unique_listeners
                     FROM App\Entity\SongHistory sh
-                    WHERE sh.station_id = :station_id
+                    WHERE sh.station = :station
                     AND sh.timestamp_start <= :time_end
                     AND sh.timestamp_end >= :time_start
                     GROUP BY sh.song_id
                 DQL
-            )->setParameter('station_id', $station->getId())
+            )->setParameter('station', $station)
                 ->setParameter('time_start', $start_date)
                 ->setParameter('time_end', $end_date)
                 ->getArrayResult();
@@ -122,21 +123,23 @@ class SoundExchangeController
                     UPDATE App\Entity\StationMedia sm
                     SET sm.isrc = :isrc
                     WHERE sm.song_id = :song_id
-                    AND sm.station_id = :station_id
+                    AND sm.station = :station
                 DQL
-            )->setParameter('station_id', $station->getId());
+            )->setParameter('station_id', $station);
 
             foreach ($history_rows_by_id as $song_id => $history_row) {
                 $song_row = $media_by_id[$song_id] ?? $history_row;
 
                 // Try to find the ISRC if it's not already listed.
-                if (array_key_exists('isrc', $song_row) && $song_row['isrc'] === null) {
+                if (empty($song_row['isrc'])) {
                     $isrc = $this->findISRC($song_row);
                     $song_row['isrc'] = $isrc;
 
-                    $set_isrc_query->setParameter('isrc', $isrc)
-                        ->setParameter('song_id', $song_id)
-                        ->execute();
+                    if (null !== $isrc) {
+                        $set_isrc_query->setParameter('isrc', $isrc)
+                            ->setParameter('song_id', $song_id)
+                            ->execute();
+                    }
                 }
 
                 $export[] = [
@@ -178,37 +181,16 @@ class SoundExchangeController
         ]);
     }
 
-    protected function findISRC($song_row): string
+    protected function findISRC($song_row): ?string
     {
-        // Temporarily disable this feature, as the Spotify API now requires authentication for all requests.
+        $song = Entity\Song::createFromArray($song_row);
 
-        /*
-        $query_parts = [];
-        if (!empty($song_row['artist'])) {
-            $query_parts[] = 'artist:"' . $song_row['artist'] . '"';
+        foreach ($this->musicBrainz->findRecordingsForSong($song, 'isrcs') as $recording) {
+            if (!empty($recording['isrcs'])) {
+                return $recording['isrcs'][0];
+            }
         }
-        if (!empty($song_row['album'])) {
-            $query_parts[] = 'album:"' . $song_row['album'] . '"';
-        }
-        $query_parts[] = $song_row['title'];
 
-        $search_response = $this->http_client->get('https://api.spotify.com/v1/search', [
-            'query' => [
-                'q' => implode(' ', $query_parts),
-                'type' => 'track',
-                'limit' => 1,
-            ],
-        ]);
-
-        $search_result_raw = $search_response->getBody()->getContents();
-        $search_result = @json_decode($search_result_raw, true);
-
-        if (!empty($search_result['tracks']['items'])) {
-            $track = $search_result['tracks']['items'][0];
-            return str_replace('-', '', $track['external_ids']['isrc']);
-        }
-        */
-
-        return '';
+        return null;
     }
 }

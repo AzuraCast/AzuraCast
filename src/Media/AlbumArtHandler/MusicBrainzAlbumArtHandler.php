@@ -24,38 +24,8 @@ class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 
     public function getAlbumArt(Entity\SongInterface $song): ?string
     {
-        $searchQuery = [];
-
-        $searchQuery[] = $this->quoteQuery($song->getTitle());
-        if (!empty($song->getArtist())) {
-            $searchQuery[] = 'artist:' . $this->quoteQuery($song->getArtist());
-        }
-
-        if ($song instanceof Entity\StationMedia) {
-            if (!empty($song->getAlbum())) {
-                $searchQuery[] = 'release:' . $this->quoteQuery($song->getAlbum());
-            }
-
-            if (!empty($song->getIsrc())) {
-                $searchQuery[] = 'isrc:' . $this->quoteQuery($song->getIsrc());
-            }
-        }
-
-        $response = $this->musicBrainz->makeRequest(
-            'recording/',
-            [
-                'query' => implode(' AND ', $searchQuery),
-                'inc' => 'releases',
-                'limit' => 5,
-            ]
-        );
-
-        if (empty($response['recordings'])) {
-            return null;
-        }
-
         $releaseGroupIds = [];
-        foreach ($response['recordings'] as $recording) {
+        foreach ($this->musicBrainz->findRecordingsForSong($song) as $recording) {
             if (empty($recording['releases'])) {
                 continue;
             }
@@ -79,10 +49,5 @@ class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
         }
 
         return null;
-    }
-
-    protected function quoteQuery(string $query): string
-    {
-        return '"' . str_replace('"', '\'', $query) . '"';
     }
 }

@@ -16,6 +16,9 @@ release channel, you can take advantage of these new features and fixes.
 - The "Average Listeners" and "Unique Listeners" charts on the dashboard are now "zoomed in" to show the last 30 days;
   if you want to view older data, simply click and drag the chart to view older data.
 
+- The SoundExchange report will once again automatically retrieve the ISRCs for tracks with no ISRC assigned (now using
+  the open MusicBrainz API database).
+
 ## Code Quality/Technical Changes
 
 - In preparation to support PHP 8.0, we have updated to version 2.0 of the Flysystem filesystem abstraction library.

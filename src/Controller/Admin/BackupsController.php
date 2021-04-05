@@ -6,7 +6,6 @@ use App\Config;
 use App\Controller\AbstractLogViewerController;
 use App\Entity;
 use App\Exception\NotFoundException;
-use App\Flysystem\FilesystemInterface;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
 use App\Http\Response;
@@ -15,8 +14,9 @@ use App\Message\BackupMessage;
 use App\Session\Flash;
 use App\Sync\Task\RunBackupTask;
 use App\Utilities\File;
+use Azura\Files\Attributes\FileAttributes;
+use Azura\Files\ExtendedFilesystemInterface;
 use InvalidArgumentException;
-use League\Flysystem\FileAttributes;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
@@ -184,8 +184,10 @@ class BackupsController extends AbstractLogViewerController
     ): ResponseInterface {
         [$path, $fs] = $this->getFile($path);
 
-        /** @var FilesystemInterface $fs */
-        return $fs->streamToResponse($response->withNoCache(), $path);
+        /** @var ExtendedFilesystemInterface $fs */
+        return $response
+            ->withNoCache()
+            ->streamFilesystemFile($fs, $response, $path);
     }
 
     public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface
@@ -194,7 +196,7 @@ class BackupsController extends AbstractLogViewerController
 
         [$path, $fs] = $this->getFile($path);
 
-        /** @var FilesystemInterface $fs */
+        /** @var ExtendedFilesystemInterface $fs */
         $fs->delete($path);
 
         $request->getFlash()->addMessage('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
@@ -204,7 +206,7 @@ class BackupsController extends AbstractLogViewerController
     /**
      * @param string $rawPath
      *
-     * @return array{0: string, 1: FilesystemInterface}
+     * @return array{0: string, 1: ExtendedFilesystemInterface}
      */
     protected function getFile(string $rawPath): array
     {

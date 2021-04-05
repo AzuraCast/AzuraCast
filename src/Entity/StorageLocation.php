@@ -5,16 +5,17 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Flysystem\Adapter\AdapterInterface;
-use App\Flysystem\Adapter\AwsS3Adapter;
-use App\Flysystem\Adapter\DropboxAdapter;
-use App\Flysystem\Adapter\LocalAdapter;
-use App\Flysystem\FilesystemInterface;
-use App\Flysystem\LocalFilesystem;
-use App\Flysystem\RemoteFilesystem;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
 use Aws\S3\S3Client;
+use Azura\Files\Adapter\AwsS3\AwsS3Adapter;
+use Azura\Files\Adapter\Dropbox\DropboxAdapter;
+use Azura\Files\Adapter\ExtendedAdapterInterface;
+use Azura\Files\Adapter\Local\LocalFilesystemAdapter;
+use Azura\Files\Adapter\LocalAdapterInterface;
+use Azura\Files\ExtendedFilesystemInterface;
+use Azura\Files\LocalFilesystem;
+use Azura\Files\RemoteFilesystem;
 use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -477,7 +478,7 @@ class StorageLocation
         $adapter->fileExists('/test');
     }
 
-    public function getStorageAdapter(): AdapterInterface
+    public function getStorageAdapter(): ExtendedAdapterInterface
     {
         switch ($this->adapter) {
             case self::ADAPTER_S3:
@@ -489,7 +490,7 @@ class StorageLocation
 
             case self::ADAPTER_LOCAL:
             default:
-                return new LocalAdapter($this->path);
+                return new LocalFilesystemAdapter($this->path);
         }
     }
 
@@ -522,11 +523,11 @@ class StorageLocation
         return new Client($this->dropboxAuthToken);
     }
 
-    public function getFilesystem(): FilesystemInterface
+    public function getFilesystem(): ExtendedFilesystemInterface
     {
         $adapter = $this->getStorageAdapter();
 
-        return ($adapter instanceof LocalAdapter)
+        return ($adapter instanceof LocalAdapterInterface)
             ? new LocalFilesystem($adapter)
             : new RemoteFilesystem($adapter);
     }

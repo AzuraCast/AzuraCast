@@ -3,15 +3,19 @@
 namespace App\Flysystem;
 
 use App\Entity;
-use App\Flysystem\Adapter\LocalAdapter;
+use Azura\Files\Adapter\Local\LocalFilesystemAdapter;
+use Azura\Files\Adapter\LocalAdapterInterface;
+use Azura\Files\ExtendedFilesystemInterface;
+use Azura\Files\LocalFilesystem;
+use Azura\Files\RemoteFilesystem;
 
 class StationFilesystems
 {
     protected Entity\Station $station;
 
-    protected FilesystemInterface $fsMedia;
+    protected ExtendedFilesystemInterface $fsMedia;
 
-    protected FilesystemInterface $fsRecordings;
+    protected ExtendedFilesystemInterface $fsRecordings;
 
     protected LocalFilesystem $fsPlaylists;
 
@@ -24,11 +28,11 @@ class StationFilesystems
         $this->station = $station;
     }
 
-    public function getMediaFilesystem(): FilesystemInterface
+    public function getMediaFilesystem(): ExtendedFilesystemInterface
     {
         if (!isset($this->fsMedia)) {
             $mediaAdapter = $this->station->getMediaStorageLocation()->getStorageAdapter();
-            if ($mediaAdapter instanceof LocalAdapter) {
+            if ($mediaAdapter instanceof LocalAdapterInterface) {
                 $this->fsMedia = new LocalFilesystem($mediaAdapter);
             } else {
                 $tempDir = $this->station->getRadioTempDir();
@@ -39,11 +43,11 @@ class StationFilesystems
         return $this->fsMedia;
     }
 
-    public function getRecordingsFilesystem(): FilesystemInterface
+    public function getRecordingsFilesystem(): ExtendedFilesystemInterface
     {
         if (!isset($this->fsRecordings)) {
             $recordingsAdapter = $this->station->getRecordingsStorageLocation()->getStorageAdapter();
-            if ($recordingsAdapter instanceof LocalAdapter) {
+            if ($recordingsAdapter instanceof LocalAdapterInterface) {
                 $this->fsRecordings = new LocalFilesystem($recordingsAdapter);
             } else {
                 $tempDir = $this->station->getRadioTempDir();
@@ -58,7 +62,7 @@ class StationFilesystems
     {
         if (!isset($this->fsPlaylists)) {
             $playlistsDir = $this->station->getRadioPlaylistsDir();
-            $this->fsPlaylists = new LocalFilesystem(new LocalAdapter($playlistsDir));
+            $this->fsPlaylists = new LocalFilesystem(new LocalFilesystemAdapter($playlistsDir));
         }
 
         return $this->fsPlaylists;
@@ -68,7 +72,7 @@ class StationFilesystems
     {
         if (!isset($this->fsConfig)) {
             $configDir = $this->station->getRadioConfigDir();
-            $this->fsConfig = new LocalFilesystem(new LocalAdapter($configDir));
+            $this->fsConfig = new LocalFilesystem(new LocalFilesystemAdapter($configDir));
         }
 
         return $this->fsConfig;
@@ -78,7 +82,7 @@ class StationFilesystems
     {
         if (!isset($this->fsTemp)) {
             $tempDir = $this->station->getRadioTempDir();
-            $this->fsTemp = new LocalFilesystem(new LocalAdapter($tempDir));
+            $this->fsTemp = new LocalFilesystem(new LocalFilesystemAdapter($tempDir));
         }
 
         return $this->fsTemp;

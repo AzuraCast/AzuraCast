@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use Azura\Files\ExtendedFilesystemInterface;
+use Azura\Files\FilesystemInterface;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -159,5 +162,49 @@ final class Response extends \Slim\Http\Response
         $response = $response->withBody($fileStream);
 
         return new static($response, $this->streamFactory);
+    }
+
+    public function streamFilesystemFile(
+        ExtendedFilesystemInterface $filesystem,
+        string $path,
+        string $fileName = null,
+        string $disposition = 'attachment'
+    ): ResponseInterface {
+        $localPath = $filesystem->getLocalPath($path);
+
+        $mime = new FinfoMimeTypeDetector();
+        $mimeType = $mime->detectMimeTypeFromFile($localPath);
+
+        $fileName ??= basename($localPath);
+
+        if ('attachment' === $disposition) {
+            /*
+             * The regex used below is to ensure that the $fileName contains only
+             * characters ranging from ASCII 128-255 and ASCII 0-31 and 127 are replaced with an empty string
+             */
+            $disposition .= '; filename="' . preg_replace('/[\x00-\x1F\x7F\"]/', ' ', $fileName) . '"';
+            $disposition .= "; filename*=UTF-8''" . rawurlencode($fileName);
+        }
+
+        $response = $this->withHeader('Content-Disposition', $disposition)
+            ->withHeader('Content-Length', filesize($localPath))
+            ->withHeader('X-Accel-Buffering', 'no');
+
+        // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
+        $specialPaths = [
+            '/var/azuracast/backups' => '/internal/backups',
+            '/var/azuracast/stations' => '/internal/stations',
+        ];
+
+        foreach ($specialPaths as $diskPath => $nginxPath) {
+            if (0 === strpos($localPath, $diskPath)) {
+                $accelPath = str_replace($diskPath, $nginxPath, $localPath);
+
+                return $response->withHeader('Content-Type', $mimeType)
+                    ->withHeader('X-Accel-Redirect', $accelPath);
+            }
+        }
+
+        return $response->withFile($localPath, $mimeType);
     }
 }

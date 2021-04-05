@@ -8,9 +8,9 @@ use App\Entity;
 use App\Entity\StationPlaylist;
 use App\Environment;
 use App\Exception\CannotProcessMediaException;
-use App\Flysystem\FilesystemInterface;
 use App\Media\MetadataManager;
 use App\Service\AudioWaveform;
+use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
 use Generator;
 use Intervention\Image\Constraint;
@@ -254,12 +254,12 @@ class StationMediaRepository extends Repository
      *
      * @param Entity\StationMedia $media
      * @param string $filePath
-     * @param FilesystemInterface|null $fs
+     * @param ExtendedFilesystemInterface|null $fs
      */
     public function loadFromFile(
         Entity\StationMedia $media,
         string $filePath,
-        ?FilesystemInterface $fs = null
+        ?ExtendedFilesystemInterface $fs = null
     ): void {
         // Load metadata from supported files.
         $metadata = $this->metadataManager->getMetadata($media, $filePath);
@@ -337,7 +337,7 @@ class StationMediaRepository extends Repository
     public function writeAlbumArt(
         Entity\StationMedia $media,
         string $rawArtString,
-        ?FilesystemInterface $fs = null
+        ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $this->getFilesystem($media);
 
@@ -361,7 +361,7 @@ class StationMediaRepository extends Repository
 
     public function removeAlbumArt(
         Entity\StationMedia $media,
-        ?FilesystemInterface $fs = null
+        ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $this->getFilesystem($media);
 
@@ -377,7 +377,7 @@ class StationMediaRepository extends Repository
 
     public function writeToFile(
         Entity\StationMedia $media,
-        ?FilesystemInterface $fs = null
+        ?ExtendedFilesystemInterface $fs = null
     ): bool {
         $fs ??= $this->getFilesystem($media);
 
@@ -407,7 +407,7 @@ class StationMediaRepository extends Repository
 
     public function updateWaveform(
         Entity\StationMedia $media,
-        ?FilesystemInterface $fs = null
+        ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $this->getFilesystem($media);
         $fs->withLocalFile(
@@ -421,7 +421,7 @@ class StationMediaRepository extends Repository
     public function writeWaveform(
         Entity\StationMedia $media,
         string $path,
-        ?FilesystemInterface $fs = null
+        ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $this->getFilesystem($media);
 
@@ -440,14 +440,14 @@ class StationMediaRepository extends Repository
     /**
      * @param Entity\StationMedia $media
      * @param bool $deleteFile Whether to remove the media file itself (disabled for batch operations).
-     * @param FilesystemInterface|null $fs
+     * @param ExtendedFilesystemInterface|null $fs
      *
      * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function remove(
         Entity\StationMedia $media,
         bool $deleteFile = false,
-        ?FilesystemInterface $fs = null
+        ?ExtendedFilesystemInterface $fs = null
     ): array {
         $fs ??= $this->getFilesystem($media);
 
@@ -476,7 +476,7 @@ class StationMediaRepository extends Repository
         return $affectedPlaylists;
     }
 
-    protected function getFilesystem(Entity\StationMedia $media): FilesystemInterface
+    protected function getFilesystem(Entity\StationMedia $media): ExtendedFilesystemInterface
     {
         return $media->getStorageLocation()->getFilesystem();
     }

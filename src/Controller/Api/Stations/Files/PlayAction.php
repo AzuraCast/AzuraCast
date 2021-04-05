@@ -30,6 +30,6 @@ class PlayAction
         $fsStation = new StationFilesystems($station);
         $fsMedia = $fsStation->getMediaFilesystem();
 
-        return $fsMedia->streamToResponse($response, $media->getPath());
+        return $response->streamFilesystemFile($fsMedia, $media->getPath());
     }
 }

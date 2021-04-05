@@ -27,6 +27,6 @@ class DownloadAction
                 ->withJson(new Error(404, 'File not found.'));
         }
 
-        return $fsMedia->streamToResponse($response, $path);
+        return $response->streamFilesystemFile($fsMedia, $path);
     }
 }

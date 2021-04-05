@@ -4,7 +4,6 @@ namespace App\Controller\Api\Stations\Files;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Flysystem\FilesystemInterface;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -12,10 +11,9 @@ use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
+use Azura\Files\ExtendedFilesystemInterface;
 use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Exception;
-use Jhofm\FlysystemIterator\Filter\FilterFactory;
-use Jhofm\FlysystemIterator\Options\Options;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
@@ -106,7 +104,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        FilesystemInterface $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -167,7 +165,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        FilesystemInterface $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -257,7 +255,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        FilesystemInterface $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, false);
 
@@ -317,7 +315,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        FilesystemInterface $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -342,7 +340,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        FilesystemInterface $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -390,7 +388,7 @@ class BatchAction
 
     protected function parseRequest(
         ServerRequest $request,
-        FilesystemInterface $fs,
+        ExtendedFilesystemInterface $fs,
         bool $recursive = false
     ): Entity\Api\BatchResult {
         $files = array_values((array)$request->getParam('files', []));

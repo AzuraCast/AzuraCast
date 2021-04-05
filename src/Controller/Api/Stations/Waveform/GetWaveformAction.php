@@ -31,7 +31,7 @@ class GetWaveformAction
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $waveformPath = StationMedia::getWaveformPath($media_id);
             if ($fsMedia->fileExists($waveformPath)) {
-                return $fsMedia->streamToResponse($response, $waveformPath, null, 'inline');
+                return $response->streamFilesystemFile($fsMedia, $waveformPath, null, 'inline');
             }
         }
 
@@ -45,6 +45,6 @@ class GetWaveformAction
             $mediaRepo->updateWaveform($media);
         }
 
-        return $fsMedia->streamToResponse($response, $waveformPath, null, 'inline');
+        return $response->streamFilesystemFile($fsMedia, $waveformPath, null, 'inline');
     }
 }

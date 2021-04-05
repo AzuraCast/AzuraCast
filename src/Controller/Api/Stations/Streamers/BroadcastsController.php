@@ -131,8 +131,8 @@ class BroadcastsController extends AbstractApiCrudController
         $fsStation = new StationFilesystems($station);
         $fsRecordings = $fsStation->getRecordingsFilesystem();
 
-        return $fsRecordings->streamToResponse(
-            $response,
+        return $response->streamFilesystemFile(
+            $fsRecordings,
             $recordingPath,
             File::sanitizeFileName($broadcast->getStreamer()->getDisplayName()) . '_' . $filename
         );

@@ -35,6 +35,6 @@ class DownloadAction
         $fsMedia = $fsStation->getMediaFilesystem();
 
         set_time_limit(600);
-        return $fsMedia->streamToResponse($response, $media->getPath());
+        return $response->streamFilesystemFile($fsMedia, $media->getPath());
     }
 }

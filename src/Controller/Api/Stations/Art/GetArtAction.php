@@ -65,7 +65,7 @@ class GetArtAction
         }
 
         if ($fsMedia->fileExists($mediaPath)) {
-            return $fsMedia->streamToResponse($response, $mediaPath, null, 'inline');
+            return $response->streamFilesystemFile($fsMedia, $mediaPath, null, 'inline');
         }
 
         return $defaultArtRedirect;

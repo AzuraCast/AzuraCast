@@ -87,7 +87,8 @@ class SoundExchangeController
 
             $media_by_id = [];
             foreach ($all_media as $media_row) {
-                $media_by_id[$media_row['id']] = $media_row;
+                $mediaId = $media_row['id'];
+                $media_by_id[$mediaId] = $media_row;
             }
 
             $history_rows = $this->em->createQuery(
@@ -122,10 +123,9 @@ class SoundExchangeController
                 <<<'DQL'
                     UPDATE App\Entity\StationMedia sm
                     SET sm.isrc = :isrc
-                    WHERE sm.song_id = :song_id
-                    AND sm.station = :station
+                    WHERE sm.id = :media_id
                 DQL
-            )->setParameter('station_id', $station);
+            );
 
             foreach ($history_rows_by_id as $song_id => $history_row) {
                 $song_row = $media_by_id[$song_id] ?? $history_row;
@@ -135,9 +135,9 @@ class SoundExchangeController
                     $isrc = $this->findISRC($song_row);
                     $song_row['isrc'] = $isrc;
 
-                    if (null !== $isrc) {
+                    if (null !== $isrc && isset($song_row['media_id'])) {
                         $set_isrc_query->setParameter('isrc', $isrc)
-                            ->setParameter('song_id', $song_id)
+                            ->setParameter('media_id', $song_row['media_id'])
                             ->execute();
                     }
                 }
@@ -185,12 +185,15 @@ class SoundExchangeController
     {
         $song = Entity\Song::createFromArray($song_row);
 
-        foreach ($this->musicBrainz->findRecordingsForSong($song, 'isrcs') as $recording) {
-            if (!empty($recording['isrcs'])) {
-                return $recording['isrcs'][0];
+        try {
+            foreach ($this->musicBrainz->findRecordingsForSong($song, 'isrcs') as $recording) {
+                if (!empty($recording['isrcs'])) {
+                    return $recording['isrcs'][0];
+                }
             }
+            return null;
+        } catch (\Throwable $e) {
+            return null;
         }
-
-        return null;
     }
 }

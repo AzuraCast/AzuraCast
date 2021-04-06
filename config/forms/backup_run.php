@@ -15,7 +15,7 @@ return [
             'text',
             [
                 'label' => __('Backup Filename'),
-                'description' => __('Path where the backup file should be located.'),
+                'description' => __('This will be the file name for your backup, include the file type (.zip or .rar) you wish to use.'),
             ],
         ],
 

@@ -40,11 +40,13 @@ class SoundExchangeController
             'end_date' => date('Y-m-d', strtotime('last day of last month')),
         ]);
 
-        if ($request->isPost() && $form->isValid($_POST)) {
+        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             $data = $form->getValues();
 
             $start_date = strtotime($data['start_date'] . ' 00:00:00');
             $end_date = strtotime($data['end_date'] . ' 23:59:59');
+
+            $fetchIsrc = $data['fetch_isrc'];
 
             $export = [
                 [
@@ -131,7 +133,7 @@ class SoundExchangeController
                 $song_row = $media_by_id[$song_id] ?? $history_row;
 
                 // Try to find the ISRC if it's not already listed.
-                if (empty($song_row['isrc'])) {
+                if ($fetchIsrc && empty($song_row['isrc'])) {
                     $isrc = $this->findISRC($song_row);
                     $song_row['isrc'] = $isrc;
 

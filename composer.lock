@@ -220,12 +220,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "a97b5a9ef6966efd9d4cee68da2f7b00dc2e508a"
+                "reference": "df301b02a7cdd71d1c0e42dff0c380d932925381"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/a97b5a9ef6966efd9d4cee68da2f7b00dc2e508a",
-                "reference": "a97b5a9ef6966efd9d4cee68da2f7b00dc2e508a",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/df301b02a7cdd71d1c0e42dff0c380d932925381",
+                "reference": "df301b02a7cdd71d1c0e42dff0c380d932925381",
                 "shasum": ""
             },
             "require": {
@@ -269,7 +269,21 @@
                 "issues": "https://github.com/AzuraCast/nowplaying/issues",
                 "source": "https://github.com/AzuraCast/nowplaying/tree/main"
             },
-            "time": "2021-03-06T06:46:43+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/AzuraCast",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/azuracast",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/AzuraCast",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-04-07T11:55:52+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",

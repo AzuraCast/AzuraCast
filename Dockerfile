@@ -1,5 +1,5 @@
 # Base install step (done first for caching purposes).
-FROM ubuntu:focal as base
+FROM ubuntu:rolling as base
 
 ENV TZ="UTC"
 

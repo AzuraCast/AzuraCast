@@ -2,9 +2,10 @@
 
 namespace App\Http;
 
+use Azura\Files\Adapter\LocalAdapterInterface;
 use Azura\Files\ExtendedFilesystemInterface;
 use Azura\Files\FilesystemInterface;
-use League\MimeTypeDetection\FinfoMimeTypeDetector;
+use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -170,12 +171,13 @@ final class Response extends \Slim\Http\Response
         string $fileName = null,
         string $disposition = 'attachment'
     ): ResponseInterface {
-        $localPath = $filesystem->getLocalPath($path);
+        /** @var FileAttributes $fileMeta */
+        $fileMeta = $filesystem->getMetadata($path);
+        if (!$fileMeta->isFile()) {
+            throw new \InvalidArgumentException('Specified file is not a file!');
+        }
 
-        $mime = new FinfoMimeTypeDetector();
-        $mimeType = $mime->detectMimeTypeFromFile($localPath);
-
-        $fileName ??= basename($localPath);
+        $fileName ??= basename($path);
 
         if ('attachment' === $disposition) {
             /*
@@ -187,24 +189,29 @@ final class Response extends \Slim\Http\Response
         }
 
         $response = $this->withHeader('Content-Disposition', $disposition)
-            ->withHeader('Content-Length', filesize($localPath))
+            ->withHeader('Content-Length', $fileMeta->fileSize())
             ->withHeader('X-Accel-Buffering', 'no');
 
-        // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
-        $specialPaths = [
-            '/var/azuracast/backups' => '/internal/backups',
-            '/var/azuracast/stations' => '/internal/stations',
-        ];
+        $adapter = $filesystem->getAdapter();
+        if ($adapter instanceof LocalAdapterInterface) {
+            $localPath = $filesystem->getLocalPath($path);
 
-        foreach ($specialPaths as $diskPath => $nginxPath) {
-            if (0 === strpos($localPath, $diskPath)) {
-                $accelPath = str_replace($diskPath, $nginxPath, $localPath);
+            // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
+            $specialPaths = [
+                '/var/azuracast/backups' => '/internal/backups',
+                '/var/azuracast/stations' => '/internal/stations',
+            ];
 
-                return $response->withHeader('Content-Type', $mimeType)
-                    ->withHeader('X-Accel-Redirect', $accelPath);
+            foreach ($specialPaths as $diskPath => $nginxPath) {
+                if (0 === strpos($localPath, $diskPath)) {
+                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
+
+                    return $response->withHeader('Content-Type', $fileMeta->mimeType())
+                        ->withHeader('X-Accel-Redirect', $accelPath);
+                }
             }
         }
 
-        return $response->withFile($localPath, $mimeType);
+        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType());
     }
 }

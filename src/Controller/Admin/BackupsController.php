@@ -187,7 +187,7 @@ class BackupsController extends AbstractLogViewerController
         /** @var ExtendedFilesystemInterface $fs */
         return $response
             ->withNoCache()
-            ->streamFilesystemFile($fs, $response, $path);
+            ->streamFilesystemFile($fs, $path);
     }
 
     public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface

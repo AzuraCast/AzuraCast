@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\ApiUtilities;
 use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
 

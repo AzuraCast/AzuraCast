@@ -214,6 +214,12 @@ class AutoDJ
 
         $queueRow = $event->getNextSong();
         if ($queueRow instanceof Entity\StationQueue) {
+            $mediaRow = $queueRow->getMedia();
+            if ($mediaRow instanceof Entity\StationMedia) {
+                $mediaRow->updateSongId();
+                $this->em->persist($mediaRow);
+            }
+
             $queueRow->setLog($testHandler->getRecords());
             $this->em->persist($queueRow);
 

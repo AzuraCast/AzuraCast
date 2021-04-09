@@ -183,7 +183,7 @@ class Liquidsoap extends AbstractBackend
     public static function annotateString(string $str): string
     {
         $str = mb_convert_encoding($str, 'UTF-8');
-        return str_replace(['"', "\n", "\t", "\r", '|'], ["'", '', '', '', '-'], $str);
+        return str_replace(['"', "\n", "\t", "\r"], ['\"', '', '', ''], $str);
     }
 
     /**

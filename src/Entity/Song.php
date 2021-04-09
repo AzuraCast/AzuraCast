@@ -58,7 +58,6 @@ class Song implements SongInterface
             "\n",
             "\t",
             "\r",
-            '|',
         ];
 
         $song_text = str_replace($removeChars, '', $song_text);

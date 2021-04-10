@@ -108,13 +108,13 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
         $this->error = $error;
     }
 
-    public function needsReprocessing(int $currentFileModifiedTime = 0): bool
+    public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool
     {
-        if ($currentFileModifiedTime > $this->mtime) {
+        if ($fileModifiedTime > $dbModifiedTime) {
             return true;
         }
 
-        $threshold = $this->mtime + self::REPROCESS_THRESHOLD_MINIMUM + random_int(0, 86400);
+        $threshold = $dbModifiedTime + self::REPROCESS_THRESHOLD_MINIMUM + random_int(0, 86400);
         return time() > $threshold;
     }
 }

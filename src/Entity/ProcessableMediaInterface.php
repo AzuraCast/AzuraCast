@@ -4,5 +4,8 @@ namespace App\Entity;
 
 interface ProcessableMediaInterface
 {
-    public function needsReprocessing(int $currentFileModifiedTime = 0): bool;
+    public static function needsReprocessing(
+        int $fileModifiedTime = 0,
+        int $dbModifiedTime = 0
+    ): bool;
 }

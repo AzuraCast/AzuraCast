@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Stations;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
@@ -11,7 +12,6 @@ use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
 use OpenApi\Annotations as OA;
@@ -98,7 +98,7 @@ class ListenersAction
         $mountNames = $mountRepo->getDisplayNames($station);
         $remoteNames = $remoteRepo->getDisplayNames($station);
 
-        $listenersIterator = SimpleBatchIteratorAggregate::fromQuery($qb->getQuery(), 250);
+        $listenersIterator = BatchIteratorAggregate::fromQuery($qb->getQuery(), 250);
 
         /** @var Entity\Api\Listener[] $listeners */
         $listeners = [];

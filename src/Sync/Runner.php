@@ -133,6 +133,9 @@ class Runner
                         round($time_diff, 3)
                     )
                 );
+
+                unset($task);
+                gc_collect_cycles();
             }
 
             $settings = $this->settingsRepo->readSettings(true);

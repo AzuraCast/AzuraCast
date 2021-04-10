@@ -48,7 +48,6 @@
         "monolog/monolog": "^2",
         "myclabs/deep-copy": "^1.10",
         "nesbot/carbon": "^2.36",
-        "ocramius/doctrine-batch-utils": "^2.0",
         "overtrue/phplint": "^2.0",
         "pagerfanta/doctrine-collections-adapter": "^3",
         "pagerfanta/doctrine-orm-adapter": "^3",

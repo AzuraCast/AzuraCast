@@ -2,10 +2,10 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
 class CheckFolderPlaylistsTask extends AbstractTask
@@ -28,7 +28,7 @@ class CheckFolderPlaylistsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $stations = SimpleBatchIteratorAggregate::fromQuery(
+        $stations = BatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
                 <<<'DQL'
                     SELECT s FROM App\Entity\Station s

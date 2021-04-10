@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
@@ -12,7 +13,6 @@ use App\MessageQueue\QueueManager;
 use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
 use Azura\Files\ExtendedFilesystemInterface;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Exception;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
@@ -427,7 +427,7 @@ class BatchAction
      */
     protected function iterateMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
     {
-        return SimpleBatchIteratorAggregate::fromTraversableResult(
+        return BatchIteratorAggregate::fromTraversableResult(
             $this->mediaRepo->iteratePaths($paths, $storageLocation),
             $this->em,
             25
@@ -452,7 +452,7 @@ class BatchAction
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
 
-        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+        return BatchIteratorAggregate::fromQuery($query, 25);
     }
 
     /**
@@ -467,7 +467,7 @@ class BatchAction
      */
     protected function iterateUnprocessableMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
     {
-        return SimpleBatchIteratorAggregate::fromTraversableResult(
+        return BatchIteratorAggregate::fromTraversableResult(
             $this->unprocessableMediaRepo->iteratePaths($paths, $storageLocation),
             $this->em,
             25
@@ -494,7 +494,7 @@ class BatchAction
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
 
-        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+        return BatchIteratorAggregate::fromQuery($query, 25);
     }
 
     /**
@@ -515,7 +515,7 @@ class BatchAction
         )->setParameter('station', $station)
             ->setParameter('path', $dir . '%');
 
-        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+        return BatchIteratorAggregate::fromQuery($query, 25);
     }
 
     protected function writePlaylistChanges(

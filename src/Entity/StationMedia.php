@@ -486,9 +486,9 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         $this->custom_fields = $custom_fields;
     }
 
-    public function needsReprocessing(int $currentFileModifiedTime = 0): bool
+    public static function needsReprocessing(int $fileModifiedTime = 0, int $dbModifiedTime = 0): bool
     {
-        return $currentFileModifiedTime > $this->mtime;
+        return $fileModifiedTime > $dbModifiedTime;
     }
 
     /**

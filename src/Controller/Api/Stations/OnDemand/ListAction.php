@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Stations\OnDemand;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -11,7 +12,6 @@ use App\Utilities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -132,7 +132,7 @@ class ListAction
                 DQL
             )->setParameter('playlist_id', $playlist['id']);
 
-            $iterator = SimpleBatchIteratorAggregate::fromQuery($query, 50);
+            $iterator = BatchIteratorAggregate::fromQuery($query, 50);
 
             foreach ($iterator as $media) {
                 /** @var Entity\StationMedia $media */

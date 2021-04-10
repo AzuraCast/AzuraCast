@@ -2,8 +2,8 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Entity;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Finder\Finder;
 
@@ -17,7 +17,7 @@ class CleanupStorageTask extends AbstractTask
             DQL
         );
 
-        $stations = SimpleBatchIteratorAggregate::fromQuery($stationsQuery, 1);
+        $stations = BatchIteratorAggregate::fromQuery($stationsQuery, 1);
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
             $this->cleanStationTempFiles($station);
@@ -32,7 +32,7 @@ class CleanupStorageTask extends AbstractTask
             DQL
         )->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
 
-        $storageLocations = SimpleBatchIteratorAggregate::fromQuery($storageLocationsQuery, 1);
+        $storageLocations = BatchIteratorAggregate::fromQuery($storageLocationsQuery, 1);
         foreach ($storageLocations as $storageLocation) {
             /** @var Entity\StorageLocation $storageLocation */
             $this->cleanMediaStorageLocation($storageLocation);

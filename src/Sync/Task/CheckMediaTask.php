@@ -193,7 +193,7 @@ class CheckMediaTask extends AbstractTask
     ): void {
         $existingMediaQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT partial sm.{ id, path, mtime, unique_id }
+                SELECT sm.id, sm.path, sm.mtime, sm.unique_id
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
             DQL
@@ -249,7 +249,7 @@ class CheckMediaTask extends AbstractTask
     ): void {
         $unprocessableMediaQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT partial upm.{ id, path, mtime }
+                SELECT upm.id, upm.path, upm.mtime
                 FROM App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
             DQL

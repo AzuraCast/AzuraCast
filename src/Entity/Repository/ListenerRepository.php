@@ -50,7 +50,7 @@ class ListenerRepository extends Repository
     {
         $existingClientsRaw = $this->em->createQuery(
             <<<'DQL'
-                SELECT partial l.{ id, listener_uid, listener_hash }
+                SELECT l.id, l.listener_uid, l.listener_hash
                 FROM App\Entity\Listener l
                 WHERE l.station = :station
                 AND l.timestamp_end = 0

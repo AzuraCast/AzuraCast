@@ -51,6 +51,7 @@ class ListAction
         $cacheKey = implode('.', $cacheKeyParts);
 
         $flushCache = (bool)$request->getParam('flushCache', false);
+
         if (!$flushCache && $cache->has($cacheKey)) {
             $result = $cache->get($cacheKey);
         } else {
@@ -60,13 +61,8 @@ class ListAction
                 ? '%'
                 : $currentDir . '/%';
 
-            $mediaQuery = $em->createQueryBuilder()
-                ->select(
-                    'partial sm.{id, song_id, unique_id, art_updated_at, path, length, length_text, '
-                    . 'artist, title, album, genre}'
-                )
-                ->addSelect('partial spm.{id}, partial sp.{id, name}')
-                ->addSelect('partial smcf.{id, field_id, value}')
+            $mediaQueryBuilder = $em->createQueryBuilder()
+                ->select(['sm', 'spm', 'sp', 'smcf'])
                 ->from(Entity\StationMedia::class, 'sm')
                 ->leftJoin('sm.custom_fields', 'smcf')
                 ->leftJoin('sm.playlists', 'spm')
@@ -80,7 +76,7 @@ class ListAction
             // Apply searching
             $foldersInDirQuery = $em->createQuery(
                 <<<'DQL'
-                    SELECT spf, partial sp.{id, name}
+                    SELECT spf, sp
                     FROM App\Entity\StationPlaylistFolder spf
                     JOIN spf.playlist sp
                     WHERE spf.station = :station
@@ -103,11 +99,14 @@ class ListAction
                 if ('special:unprocessable' === $searchPhrase) {
                     $mediaInDirRaw = [];
 
-                    $unprocessableMediaRaw = $unprocessableMediaQuery->getArrayResult();
+                    $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
+                        [],
+                        $unprocessableMediaQuery::HYDRATE_ARRAY
+                    );
                 } else {
                     if ('special:duplicates' === $searchPhrase) {
-                        $mediaQuery->andWhere(
-                            $mediaQuery->expr()->in(
+                        $mediaQueryBuilder->andWhere(
+                            $mediaQueryBuilder->expr()->in(
                                 'sm.song_id',
                                 <<<'DQL'
                                     SELECT sm2.song_id FROM
@@ -121,14 +120,15 @@ class ListAction
                     } elseif (0 === strpos($searchPhrase, 'playlist:')) {
                         [, $playlistName] = explode(':', $searchPhrase, 2);
 
-                        $mediaQuery->andWhere('sp.name = :playlist_name')
+                        $mediaQueryBuilder->andWhere('sp.name = :playlist_name')
                             ->setParameter('playlist_name', $playlistName);
                     } else {
-                        $mediaQuery->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                        $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
                             ->setParameter('query', '%' . $searchPhrase . '%');
                     }
 
-                    $mediaInDirRaw = $mediaQuery->getQuery()->getArrayResult();
+                    $mediaQuery = $mediaQueryBuilder->getQuery();
+                    $mediaInDirRaw = $mediaQuery->getArrayResult();
 
                     $unprocessableMediaRaw = [];
                 }
@@ -136,13 +136,18 @@ class ListAction
                 $foldersInDirRaw = [];
             } else {
                 // Avoid loading subfolder media.
-                $mediaQuery->andWhere('sm.path NOT LIKE :pathWithSubfolders')
+                $mediaQueryBuilder->andWhere('sm.path NOT LIKE :pathWithSubfolders')
                     ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
-                $mediaInDirRaw = $mediaQuery->getQuery()->getArrayResult();
+                $mediaQuery = $mediaQueryBuilder->getQuery();
+                $mediaInDirRaw = $mediaQuery->getArrayResult();
 
                 $foldersInDirRaw = $foldersInDirQuery->getArrayResult();
-                $unprocessableMediaRaw = $unprocessableMediaQuery->getArrayResult();
+
+                $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
+                    [],
+                    $unprocessableMediaQuery::HYDRATE_ARRAY
+                );
             }
 
             // Process all database results.
@@ -171,7 +176,7 @@ class ListAction
                         ]
                     );
 
-                foreach ($row['custom_fields'] as $custom_field) {
+                foreach ((array)$row['custom_fields'] as $custom_field) {
                     $media->custom_fields[$custom_field['field_id']] = $custom_field['value'];
                 }
 

@@ -93,7 +93,7 @@
         "phpunit/php-timer": "^5.0",
         "phpunit/phpunit": "^9.2",
         "roave/security-advisories": "dev-latest",
-        "slevomat/coding-standard": "^6.4",
+        "slevomat/coding-standard": "^7",
         "softcreatr/jsonpath": "^0.7.2",
         "squizlabs/php_codesniffer": "^3.5",
         "symfony/var-dumper": "^5.1"

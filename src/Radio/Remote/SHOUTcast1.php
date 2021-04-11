@@ -3,7 +3,7 @@
 namespace App\Radio\Remote;
 
 use App\Entity;
-use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\AdapterFactory;
 
 class SHOUTcast1 extends AbstractRemote
 {

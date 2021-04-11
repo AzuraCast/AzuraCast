@@ -460,11 +460,11 @@ return [
     },
 
     // NowPlaying Adapter factory
-    NowPlaying\Adapter\AdapterFactory::class => function (
+    NowPlaying\AdapterFactory::class => function (
         GuzzleHttp\Client $httpClient,
         Psr\Log\LoggerInterface $logger
     ) {
-        return new NowPlaying\Adapter\AdapterFactory(
+        return new NowPlaying\AdapterFactory(
             new Http\Factory\Guzzle\UriFactory,
             new Http\Factory\Guzzle\RequestFactory,
             $httpClient,

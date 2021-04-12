@@ -142,34 +142,49 @@ class AutoDJ
         $stationTz = $station->getTimezoneObject();
 
         $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
-        $queueLength = count($upcomingQueue);
+
+        $lastSongId = null;
+        $queueLength = 0;
 
         foreach ($upcomingQueue as $queueRow) {
+            // Prevent the exact same track from being played twice during this loop
+            if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
+                $this->em->remove($queueRow);
+                continue;
+            }
+
+            $queueLength++;
+            $lastSongId = $queueRow->getSongId();
+
             $queueRow->setTimestampCued($now->getTimestamp());
             $this->em->persist($queueRow);
 
             $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
-            $duration = $queueRow->getDuration() ?? 1;
-            $now = $this->getAdjustedNow($station, $timestampCued, $duration);
+            $now = $this->getAdjustedNow($station, $timestampCued, $queueRow->getDuration() ?? 1);
         }
 
         $this->em->flush();
-        $this->em->clear();
 
         // Build the remainder of the queue.
         while ($queueLength < $maxQueueLength) {
-            $station = $this->em->refetch($station);
-            $now = $this->cueNextSong($station, $now);
-            $queueLength++;
+            $queueRow = $this->cueNextSong($station, $now);
+            if ($queueRow instanceof Entity\StationQueue) {
+                $this->em->persist($queueRow);
+
+                // Prevent the exact same track from being played twice during this loop
+                if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
+                    $this->em->remove($queueRow);
+                } else {
+                    $lastSongId = $queueRow->getSongId();
+                    $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration() ?? 1);
+                }
+            } else {
+                break;
+            }
 
             $this->em->flush();
-            $this->em->clear();
-            gc_collect_cycles();
+            $queueLength++;
         }
-
-        $station = $this->em->refetch($station);
-
-        $this->queueRepo->clearDuplicatesInQueue($station);
 
         $this->logger->popProcessor();
     }
@@ -204,7 +219,7 @@ class AutoDJ
         return max($now, $adjustedNow);
     }
 
-    protected function cueNextSong(Entity\Station $station, CarbonInterface $now): CarbonInterface
+    protected function cueNextSong(Entity\Station $station, CarbonInterface $now): ?Entity\StationQueue
     {
         $this->logger->debug(
             'Adding to station queue.',
@@ -224,18 +239,9 @@ class AutoDJ
 
         $queueRow = $event->getNextSong();
         if ($queueRow instanceof Entity\StationQueue) {
-            $mediaRow = $queueRow->getMedia();
-            if ($mediaRow instanceof Entity\StationMedia) {
-                $mediaRow->updateSongId();
-                $this->em->persist($mediaRow);
-            }
-
             $queueRow->setLog($testHandler->getRecords());
-            $this->em->persist($queueRow);
-
-            $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
         }
 
-        return $now;
+        return $queueRow;
     }
 }

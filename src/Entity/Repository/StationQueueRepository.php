@@ -101,36 +101,6 @@ class StationQueueRepository extends Repository
         return $this->getUpcomingBaseQuery($station)->getQuery();
     }
 
-    public function clearDuplicatesInQueue(Entity\Station $station): void
-    {
-        $upcomingQueue = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sq.id, sq.song_id
-                FROM App\Entity\StationQueue sq
-                WHERE sq.station = :station
-                AND sq.sent_to_autodj = 0
-                ORDER BY sq.timestamp_cued ASC
-            DQL
-        )->setParameter('station', $station)
-            ->getArrayResult();
-
-        $removeQueueItemQuery = $this->em->createQuery(
-            <<<'DQL'
-                DELETE FROM App\Entity\StationQueue sq WHERE sq.id = :id
-            DQL
-        );
-
-        $lastItem = null;
-        foreach ($upcomingQueue as $queue) {
-            if (null !== $lastItem && $lastItem === $queue['song_id']) {
-                $removeQueueItemQuery->setParameter('id', $queue['id'])->execute();
-                continue;
-            }
-
-            $lastItem = $queue['song_id'];
-        }
-    }
-
     public function getNextInQueue(Entity\Station $station): ?Entity\StationQueue
     {
         return $this->getUpcomingBaseQuery($station)

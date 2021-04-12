@@ -29,6 +29,11 @@ release channel, you can take advantage of these new features and fixes.
 - Instances of the "Pause" icon across the system have been replaced with the "Stop" icon to more properly indicate what
   they do.
 
+- Heavy performance optimizations have been made in the following areas:
+    - Looping through, and processing, station media (5-minute sync)
+    - Processing listeners for stations with large listener counts
+    - The AutoDJ queue building process
+
 ## Bug Fixes
 
 - Fixed a minor bug with the `is_now` parameter on the Schedule API endpoint.

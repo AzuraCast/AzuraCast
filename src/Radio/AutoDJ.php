@@ -2,6 +2,7 @@
 
 namespace App\Radio;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Event\Radio\AnnotateNextSong;
@@ -10,13 +11,12 @@ use App\EventDispatcher;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 
 class AutoDJ
 {
-    protected EntityManagerInterface $em;
+    protected ReloadableEntityManagerInterface $em;
 
     protected Entity\Repository\SongHistoryRepository $songHistoryRepo;
 
@@ -31,7 +31,7 @@ class AutoDJ
     protected Environment $environment;
 
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Entity\Repository\SongHistoryRepository $songHistoryRepo,
         Entity\Repository\StationQueueRepository $queueRepo,
         EventDispatcher $dispatcher,
@@ -135,6 +135,10 @@ class AutoDJ
 
         $backendOptions = $station->getBackendConfig();
         $maxQueueLength = $backendOptions->getAutoDjQueueLength();
+        if ($maxQueueLength < 1) {
+            $maxQueueLength = 1;
+        }
+
         $stationTz = $station->getTimezoneObject();
 
         $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
@@ -150,14 +154,20 @@ class AutoDJ
         }
 
         $this->em->flush();
+        $this->em->clear();
 
         // Build the remainder of the queue.
         while ($queueLength < $maxQueueLength) {
+            $station = $this->em->refetch($station);
             $now = $this->cueNextSong($station, $now);
             $queueLength++;
+
+            $this->em->flush();
+            $this->em->clear();
+            gc_collect_cycles();
         }
 
-        $this->em->flush();
+        $station = $this->em->refetch($station);
 
         $this->queueRepo->clearDuplicatesInQueue($station);
 

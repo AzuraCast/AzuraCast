@@ -45,15 +45,21 @@ class StationQueueRepository extends Repository
     }
 
     /**
-     * @return mixed[]
+     * @return int[]
      */
-    public function getRecentlyPlayed(
+    public function getRecentPlaylists(
         Entity\Station $station,
         int $rows
     ): array {
-        return $this->getRecentBaseQuery($station)
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT sq.timestamp_cued, sq.playlist_id
+                FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                ORDER BY sq.timestamp_cued DESC
+            DQL
+        )->setParameter('station', $station)
             ->setMaxResults($rows)
-            ->getQuery()
             ->getArrayResult();
     }
 
@@ -67,10 +73,16 @@ class StationQueueRepository extends Repository
     ): array {
         $threshold = $now->subMinutes($minutes)->getTimestamp();
 
-        return $this->getRecentBaseQuery($station)
-            ->andWhere('sq.timestamp_cued >= :threshold')
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT sq.song_id, sq.timestamp_cued, sq.title, sq.artist
+                FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                AND sq.timestamp_cued >= :threshold
+                ORDER BY sq.timestamp_cued DESC
+            DQL
+        )->setParameter('station', $station)
             ->setParameter('threshold', $threshold)
-            ->getQuery()
             ->getArrayResult();
     }
 
@@ -91,19 +103,32 @@ class StationQueueRepository extends Repository
 
     public function clearDuplicatesInQueue(Entity\Station $station): void
     {
-        $upcomingQueue = $this->getUpcomingQueue($station);
+        $upcomingQueue = $this->em->createQuery(
+            <<<'DQL'
+                SELECT sq.id, sq.song_id
+                FROM App\Entity\StationQueue sq
+                WHERE sq.station = :station
+                AND sq.sent_to_autodj = 0
+                ORDER BY sq.timestamp_cued ASC
+            DQL
+        )->setParameter('station', $station)
+            ->getArrayResult();
+
+        $removeQueueItemQuery = $this->em->createQuery(
+            <<<'DQL'
+                DELETE FROM App\Entity\StationQueue sq WHERE sq.id = :id
+            DQL
+        );
 
         $lastItem = null;
         foreach ($upcomingQueue as $queue) {
-            if (null !== $lastItem && $lastItem === $queue->getSongId()) {
-                $this->em->remove($queue);
+            if (null !== $lastItem && $lastItem === $queue['song_id']) {
+                $removeQueueItemQuery->setParameter('id', $queue['id'])->execute();
                 continue;
             }
 
-            $lastItem = $queue->getSongId();
+            $lastItem = $queue['song_id'];
         }
-
-        $this->em->flush();
     }
 
     public function getNextInQueue(Entity\Station $station): ?Entity\StationQueue

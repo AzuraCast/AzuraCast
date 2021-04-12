@@ -21,7 +21,7 @@ class Scheduler
     public function shouldPlaylistPlayNow(
         Entity\StationPlaylist $playlist,
         CarbonInterface $now = null,
-        array $recentSongHistory = []
+        array $recentPlaylistHistory = []
     ): bool {
         $this->logger->pushProcessor(function ($record) use ($playlist) {
             $record['extra']['playlist'] = [
@@ -55,7 +55,7 @@ class Scheduler
 
             case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
                 $playPerSongs = $playlist->getPlayPerSongs();
-                $shouldPlay = !$this->wasPlaylistPlayedRecently($playlist, $recentSongHistory, $playPerSongs);
+                $shouldPlay = !$this->wasPlaylistPlayedRecently($playlist, $recentPlaylistHistory, $playPerSongs);
 
                 $this->logger->debug(sprintf(
                     'Once-per-X-songs playlist %s been played within the last %d song(s).',
@@ -138,15 +138,15 @@ class Scheduler
 
     protected function wasPlaylistPlayedRecently(
         Entity\StationPlaylist $playlist,
-        array $songHistoryEntries = [],
+        array $recentPlaylistHistory = [],
         int $length = 15
     ): bool {
-        if (empty($songHistoryEntries)) {
+        if (empty($recentPlaylistHistory)) {
             return false;
         }
 
         // Check if already played
-        $relevant_song_history = array_slice($songHistoryEntries, 0, $length);
+        $relevant_song_history = array_slice($recentPlaylistHistory, 0, $length);
 
         $was_played = false;
         foreach ($relevant_song_history as $sh_row) {
@@ -156,7 +156,7 @@ class Scheduler
             }
         }
 
-        reset($songHistoryEntries);
+        reset($recentPlaylistHistory);
         return $was_played;
     }
 

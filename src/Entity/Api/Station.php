@@ -61,6 +61,13 @@ class Station implements ResolvableUrlInterface
     public ?string $url = null;
 
     /**
+     * The public player URL for the station.
+     * @OA\Property(example="http://example.com/public/example_station")
+     * @var string|UriInterface
+     */
+    public $public_player_url;
+
+    /**
      * The playlist download URL in PLS format.
      * @OA\Property(example="http://example.com/public/example_station/playlist.pls")
      * @var string|UriInterface
@@ -101,6 +108,7 @@ class Station implements ResolvableUrlInterface
     {
         $this->listen_url = (string)Router::resolveUri($base, $this->listen_url, true);
 
+        $this->public_player_url = (string)Router::resolveUri($base, $this->public_player_url, true);
         $this->playlist_pls_url = (string)Router::resolveUri($base, $this->playlist_pls_url, true);
         $this->playlist_m3u_url = (string)Router::resolveUri($base, $this->playlist_m3u_url, true);
 

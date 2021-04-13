@@ -38,6 +38,10 @@ class StationApiGenerator
         $response->is_public = $station->getEnablePublicPage();
         $response->listen_url = $fa->getStreamUrl($station, $baseUri);
 
+        $response->public_player_url = $this->router->named(
+            'public:index',
+            ['station_id' => $station->getShortName()]
+        );
         $response->playlist_pls_url = $this->router->named(
             'public:playlist',
             ['station_id' => $station->getShortName(), 'format' => 'pls']

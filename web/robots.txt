@@ -18,4 +18,7 @@
 # https://developers.google.com/search/reference/robots_txt
 
 User-agent: *
+Crawl-delay: 5
+
 Disallow: /
+Allow: /public/*

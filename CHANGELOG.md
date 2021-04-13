@@ -5,8 +5,11 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- A new "Embed Widgets" modal has been added to the station profile that will let you customize your embeddable widgets
-  and show you a preview of their rendered status.
+- **Twitter Player Preview**: If you include the URL of your station's public player page in a tweet, a player component
+  will automatically appear in the tweet that includes an embedded player for your station.
+
+- **Embed Widgets**: A new "Embed Widgets" modal has been added to the station profile that will let you customize your
+  embeddable widgets and show you a preview of their rendered status.
 
 - You can now embed playback history as a standalone component in your web site.
 

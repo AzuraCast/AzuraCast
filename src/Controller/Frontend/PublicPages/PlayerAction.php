@@ -17,7 +17,7 @@ class PlayerAction
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         Entity\Repository\CustomFieldRepository $customFieldRepo,
         Entity\Repository\StationRepository $stationRepo,
-        bool $embed = false
+        $embed = false
     ): ResponseInterface {
         // Override system-wide iframe refusal
         $response = $response
@@ -33,18 +33,19 @@ class PlayerAction
         $np = $npApiGenerator->currentOrEmpty($station);
         $np->resolveUrls($request->getRouter()->getBaseUrl());
 
-        $templateName = ($embed)
-            ? 'frontend/public/embed'
-            : 'frontend/public/index';
-
         $defaultAlbumArtUri = $stationRepo->getDefaultAlbumArtUrl($station);
         $baseUrl = $request->getRouter()->getBaseUrl();
         $defaultAlbumArt = Router::resolveUri($baseUrl, $defaultAlbumArtUri, true);
+
+        $templateName = (!empty($embed))
+            ? 'frontend/public/embed'
+            : 'frontend/public/index';
 
         return $request->getView()->renderToResponse(
             $response,
             $templateName,
             [
+                'isSocial' => ('social' === $embed),
                 'station' => $station,
                 'defaultAlbumArt' => $defaultAlbumArt,
                 'nowplaying' => $np,

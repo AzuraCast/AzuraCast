@@ -5,6 +5,7 @@ namespace App\Controller\Frontend\PublicPages;
 use App\Entity;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
+use App\Http\Router;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,6 +16,7 @@ class PlayerAction
         Response $response,
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         Entity\Repository\CustomFieldRepository $customFieldRepo,
+        Entity\Repository\StationRepository $stationRepo,
         bool $embed = false
     ): ResponseInterface {
         // Override system-wide iframe refusal
@@ -33,11 +35,16 @@ class PlayerAction
             ? 'frontend/public/embed'
             : 'frontend/public/index';
 
+        $defaultAlbumArtUri = $stationRepo->getDefaultAlbumArtUrl($station);
+        $baseUrl = $request->getRouter()->getBaseUrl();
+        $defaultAlbumArt = Router::resolveUri($baseUrl, $defaultAlbumArtUri, true);
+
         return $request->getView()->renderToResponse(
             $response,
             $templateName,
             [
                 'station' => $station,
+                'defaultAlbumArt' => $defaultAlbumArt,
                 'nowplaying' => $np,
                 'customFields' => $customFieldRepo->fetchArray(),
             ]

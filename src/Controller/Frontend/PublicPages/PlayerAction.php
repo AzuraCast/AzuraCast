@@ -37,6 +37,8 @@ class PlayerAction
         $baseUrl = $request->getRouter()->getBaseUrl();
         $defaultAlbumArt = Router::resolveUri($baseUrl, $defaultAlbumArtUri, true);
 
+        $autoplay = !empty($request->getQueryParam('autoplay'));
+
         $templateName = (!empty($embed))
             ? 'frontend/public/embed'
             : 'frontend/public/index';
@@ -46,6 +48,7 @@ class PlayerAction
             $templateName,
             [
                 'isSocial' => ('social' === $embed),
+                'autoplay' => $autoplay,
                 'station' => $station,
                 'defaultAlbumArt' => $defaultAlbumArt,
                 'nowplaying' => $np,

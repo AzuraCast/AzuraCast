@@ -9,6 +9,7 @@
 $props = [
     'stationName' => $station->getName(),
     'enableRequests' => $station->getEnableRequests(),
+    'autoplay' => $autoplay,
     'downloadPlaylistUri' => (string)$router->named(
         'public:playlist',
         ['station_id' => $station->getShortName(), 'format' => 'pls']

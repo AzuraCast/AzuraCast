@@ -20,7 +20,9 @@ class PlayerAction
         bool $embed = false
     ): ResponseInterface {
         // Override system-wide iframe refusal
-        $response = $response->withHeader('X-Frame-Options', '*');
+        $response = $response
+            ->withHeader('X-Frame-Options', '*')
+            ->withHeader('X-Robots-Tag', 'index, nofollow');
 
         $station = $request->getStation();
 

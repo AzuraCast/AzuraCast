@@ -492,7 +492,7 @@ class StorageLocation
 
             case self::ADAPTER_LOCAL:
             default:
-            return new LocalFilesystemAdapter(rtrim($this->path, '/'));
+                return new LocalFilesystemAdapter(rtrim($this->path, '/'));
         }
     }
 

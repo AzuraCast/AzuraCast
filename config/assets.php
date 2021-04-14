@@ -125,9 +125,6 @@ return [
                 [
                     'href' => 'dist/lib/roboto-fontface/css/roboto/roboto-fontface.css',
                 ],
-                [
-                    'href' => 'dist/lib/material-icons/material-icons.css',
-                ],
             ],
         ],
         'inline' => [
@@ -245,6 +242,14 @@ return [
                 ],
                 [
                     'src' => 'dist/lib/chartjs/chartjs-plugin-colorschemes.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/lib/chartjs/hammer.min.js',
+                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/lib/chartjs/chartjs-plugin-zoom.min.js',
                     'defer' => true,
                 ],
             ],
@@ -454,7 +459,43 @@ return [
         ],
     ],
 
-    'Webcaster' => [
+    'Vue_Dashboard' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'chartjs'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_PublicFullPlayer' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_PublicHistory' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_AdminStorageLocations' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_PublicOnDemand' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_PublicRequests' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_PublicWebDJ' => [
         'order' => 10,
         'require' => ['vue-component-common'],
         'files' => [
@@ -475,64 +516,34 @@ return [
         ],
     ],
 
-    'StationMedia' => [
+    'Vue_StationsMedia' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox'],
         // Auto-managed by Assets
     ],
 
-    'StationPlaylists' => [
+    'Vue_StationsPlaylists' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
         'replace' => ['moment'],
         // Auto-managed by Assets
     ],
 
-    'StationStreamers' => [
-        'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
-        // Auto-managed by Assets
-    ],
-
-    'StationOnDemand' => [
-        'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
-        // Auto-managed by Assets
-    ],
-
-    'PublicRadioPlayer' => [
-        'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
-        // Auto-managed by Assets
-    ],
-
-    'SongRequest' => [
-        'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
-        // Auto-managed by Assets
-    ],
-
-    'StationProfile' => [
+    'Vue_StationsProfile' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 
-    'StationQueue' => [
+    'Vue_StationsQueue' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 
-    'AdminStorageLocations' => [
+    'Vue_StationsStreamers' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue'],
-        // Auto-managed by Assets
-    ],
-
-    'Dashboard' => [
-        'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'chartjs'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
 ];

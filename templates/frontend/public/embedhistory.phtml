@@ -1,0 +1,30 @@
+<?php
+/** @var App\Entity\Station $station */
+
+$this->layout(
+    'minimal',
+    [
+        'page_class' => 'embed station-' . $station->getShortName(),
+        'title' => $this->e($station->getName()),
+        'hide_footer' => true,
+    ]
+);
+
+$props = [
+    'initialNowPlaying' => $nowplaying,
+];
+
+if ($customization->useWebSocketsForNowPlaying()) {
+    $props['useNchan'] = true;
+    $props['nowPlayingUri'] = '/api/live/nowplaying/' . urlencode($station->getShortName());
+} else {
+    $props['useNchan'] = false;
+    $props['nowPlayingUri'] = (string)$router->named('api:nowplaying:index', ['station_id' => $station->getId()]);
+}
+
+/** @var \App\Assets $assets */
+$assets
+    ->addVueRender('Vue_PublicHistory', '#song-history', $props);
+?>
+
+<div id="song-history"></div>

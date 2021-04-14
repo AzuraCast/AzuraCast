@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Stations;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
@@ -11,7 +12,6 @@ use App\Service\DeviceDetector;
 use App\Service\IpGeolocation;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use GuzzleHttp\Psr7\Stream;
 use League\Csv\Writer;
 use OpenApi\Annotations as OA;
@@ -58,7 +58,8 @@ class ListenersAction
             ->select('l')
             ->from(Entity\Listener::class, 'l')
             ->where('l.station = :station')
-            ->setParameter('station', $station);
+            ->setParameter('station', $station)
+            ->orderBy('l.timestamp_start', 'ASC');
 
         if ($isLive) {
             $range = 'live';
@@ -97,8 +98,13 @@ class ListenersAction
         $mountNames = $mountRepo->getDisplayNames($station);
         $remoteNames = $remoteRepo->getDisplayNames($station);
 
-        $listenersIterator = SimpleBatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
+        $listenersIterator = BatchIteratorAggregate::fromQuery($qb->getQuery(), 250);
+
+        /** @var Entity\Api\Listener[] $listeners */
+        $listeners = [];
         $listenersByHash = [];
+
+        $groupByUnique = ('false' !== ($params['unique'] ?? 'true'));
 
         foreach ($listenersIterator as $listener) {
             /** @var Entity\Listener $listener */
@@ -118,7 +124,7 @@ class ListenersAction
             }
 
             $hash = $listener->getListenerHash();
-            if (isset($listenersByHash[$hash])) {
+            if ($groupByUnique && isset($listenersByHash[$hash])) {
                 $listenersByHash[$hash]['intervals'][] = [
                     'start' => $listenerStart,
                     'end' => $listenerEnd,
@@ -166,34 +172,43 @@ class ListenersAction
 
             $api->location = $geoLite->getLocationInfo($api->ip, $locale->getLocale());
 
-            $listenersByHash[$hash] = [
-                'api' => $api,
-                'intervals' => [
-                    [
-                        'start' => $listenerStart,
-                        'end' => $listenerEnd,
+            if ($groupByUnique) {
+                $listenersByHash[$hash] = [
+                    'api' => $api,
+                    'intervals' => [
+                        [
+                            'start' => $listenerStart,
+                            'end' => $listenerEnd,
+                        ],
                     ],
-                ],
-            ];
+                ];
+            } else {
+                $api->connected_on = $listenerStart;
+                $api->connected_until = $listenerEnd;
+                $api->connected_time = $listenerEnd - $listenerStart;
+                $listeners[] = $api;
+            }
         }
 
-        /** @var Entity\Api\Listener[] $listeners */
-        $listeners = [];
+        if ($groupByUnique) {
+            foreach ($listenersByHash as $hash => $listenerInfo) {
+                $intervals = (array)$listenerInfo['intervals'];
 
-        foreach ($listenersByHash as $hash => $listenerInfo) {
-            $intervals = (array)$listenerInfo['intervals'];
+                $startTime = $now->getTimestamp();
+                $endTime = 0;
+                foreach ($intervals as $interval) {
+                    $startTime = min($interval['start'], $startTime);
+                    $endTime = max($interval['end'], $endTime);
+                }
 
-            $startTime = $now->getTimestamp();
-            foreach ($intervals as $interval) {
-                $startTime = min($interval['start'], $startTime);
+                /** @var Entity\Api\Listener $api */
+                $api = $listenerInfo['api'];
+                $api->connected_on = $startTime;
+                $api->connected_until = $endTime;
+                $api->connected_time = Entity\Listener::getListenerSeconds($intervals);
+
+                $listeners[] = $api;
             }
-
-            /** @var Entity\Api\Listener $api */
-            $api = $listenerInfo['api'];
-            $api->connected_on = $startTime;
-            $api->connected_time = Entity\Listener::getListenerSeconds($intervals);
-
-            $listeners[] = $api;
         }
 
         $format = $params['format'] ?? 'json';
@@ -201,6 +216,7 @@ class ListenersAction
         if ('csv' === $format) {
             return $this->exportReportAsCsv(
                 $response,
+                $station,
                 $listeners,
                 $station->getShortName() . '_listeners_' . $range . '.csv'
             );
@@ -211,20 +227,26 @@ class ListenersAction
 
     /**
      * @param Response $response
+     * @param Entity\Station $station
      * @param Entity\Api\Listener[] $listeners
      * @param string $filename
      */
-    public function exportReportAsCsv(
+    protected function exportReportAsCsv(
         Response $response,
+        Entity\Station $station,
         array $listeners,
         string $filename
     ): ResponseInterface {
         $tempFile = tmpfile();
         $csv = Writer::createFromStream($tempFile);
 
+        $tz = $station->getTimezoneObject();
+
         $csv->insertOne(
             [
                 'IP',
+                'Start Time',
+                'End Time',
                 'Seconds Connected',
                 'User Agent',
                 'Client',
@@ -239,12 +261,17 @@ class ListenersAction
         );
 
         foreach ($listeners as $listener) {
+            $startTime = CarbonImmutable::createFromTimestamp($listener->connected_on, $tz);
+            $endTime = CarbonImmutable::createFromTimestamp($listener->connected_until, $tz);
+
             $export_row = [
                 $listener->ip,
+                $startTime->toIso8601String(),
+                $endTime->toIso8601String(),
                 $listener->connected_time,
                 $listener->user_agent,
                 $listener->client,
-                $listener->is_mobile,
+                $listener->is_mobile ? 'True' : 'False',
             ];
 
             if ('' === $listener->mount_name) {

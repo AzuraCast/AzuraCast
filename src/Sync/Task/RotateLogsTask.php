@@ -6,7 +6,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Radio\Adapters;
-use Jhofm\FlysystemIterator\Options\Options;
+use League\Flysystem\StorageAttributes;
 use Psr\Log\LoggerInterface;
 use Supervisor\Supervisor;
 use Symfony\Component\Finder\Finder;
@@ -86,19 +86,16 @@ class RotateLogsTask extends AbstractTask
     ): void {
         $fs = $storageLocation->getFilesystem();
 
-        $iterator = $fs->createIterator(
-            '',
-            [
-                Options::OPTION_IS_RECURSIVE => false,
-                Options::OPTION_FILTER => function (array $item): bool {
-                    return (isset($item['path']) && 0 === stripos($item['path'], 'automatic_backup'));
-                },
-            ]
+        $iterator = $fs->listContents('', false)->filter(
+            function (StorageAttributes $attrs) {
+                return 0 === stripos($attrs->path(), 'automatic_backup');
+            }
         );
 
         $backupsByTime = [];
         foreach ($iterator as $backup) {
-            $backupsByTime[$backup['timestamp']] = $backup['path'];
+            /** @var StorageAttributes $backup */
+            $backupsByTime[$backup->lastModified()] = $backup->path();
         }
 
         if (count($backupsByTime) <= $copiesToKeep) {

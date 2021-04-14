@@ -41,6 +41,10 @@ class PlaylistAction
             $adapter = $remote_proxy->getAdapter();
             $remote = $remote_proxy->getRemote();
 
+            if (!$remote->isVisibleOnPublicPages()) {
+                continue;
+            }
+
             $stream_url = $adapter->getPublicUrl($remote);
 
             $stream_urls[] = $stream_url;

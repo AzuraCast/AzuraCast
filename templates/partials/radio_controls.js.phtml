@@ -1,12 +1,12 @@
 <?php
 /** @var \App\Customization $customization */
 
-$assets->load('InlinePlayer');
+$assets->load('Vue_InlinePlayer');
 ?>
 
 let inlinePlayer, currentUrl = null;
 
-const pauseText = <?=$this->escapeJs(__('Pause')) ?>;
+const stopText = <?=$this->escapeJs(__('Stop')) ?>;
 const playText = <?=$this->escapeJs(__('Play')) ?>;
 
 function redrawPlayIcons () {
@@ -21,18 +21,19 @@ function redrawPlayIcons () {
         }
 
         let playIcon = $(this).find('i.material-icons');
+
         if (null !== currentUrl && $(this).is('[data-url="' + currentUrl + '"]')) {
             $(this).addClass('playing')
-                .attr('title', pauseText)
-                .attr('aria-label', pauseText);
+                .attr('title', stopText)
+                .attr('aria-label', stopText);
 
-            playIcon.text('pause_circle_filled');
+            playIcon.text('stop_circle');
         } else {
             $(this).removeClass('playing')
                 .attr('title', playText)
                 .attr('aria-label', playText);
 
-            playIcon.text('play_circle_filled');
+            playIcon.text('play_circle');
         }
     });
 }

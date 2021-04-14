@@ -1,19 +1,32 @@
 <?php
-$this->layout('minimal', [
-    'page_class' => 'ondemand station-' . $station->getShortName(),
-    'title' => 'On-Demand Media - ' . $this->e($station->getName()),
-    'hide_footer' => true,
-]);
+
+$pageClass = 'ondemand station-' . $station->getShortName();
+if ($embed) {
+    $pageClass .= ' embed';
+}
+
+$this->layout(
+    'minimal',
+    [
+        'page_class' => $pageClass,
+        'title' => 'On-Demand Media - ' . $this->e($station->getName()),
+        'hide_footer' => true,
+    ]
+);
+
+$props = [
+    'listUrl' => $router->fromHere('api:stations:ondemand:list'),
+    'showDownloadButton' => $station->getEnableOnDemandDownload(),
+    'customFields' => $custom_fields,
+    'stationName' => $station->getName(),
+];
+
+if (!$embed) {
+    $assets->load('fancybox');
+}
 
 /** @var \App\Assets $assets */
-$assets
-    ->load('vue')
-    ->load('fancybox')
-    ->load('StationOnDemand')
-    ->addInlineJs($this->fetch('frontend/public/ondemand.js', [
-        'station' => $station,
-        'custom_fields' => $custom_fields,
-    ]));
+$assets->addVueRender('Vue_PublicOnDemand', '#station_on_demand', $props);
 ?>
 <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
     <div class="container pt-5 pb-5 h-100" style="flex: 1;">

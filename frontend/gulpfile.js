@@ -61,10 +61,8 @@ var jsFiles = {
     ]
   },
   'material-icons': {
-    base: null,
     files: [
-      'node_modules/material-icons/iconfont/material-icons.css',
-      'node_modules/material-icons/iconfont/MaterialIcons-Regular*'
+      'font/*'
     ]
   },
   'roboto-fontface': {
@@ -99,7 +97,9 @@ var jsFiles = {
     files: [
       'node_modules/chart.js/dist/Chart.min.js',
       'node_modules/chart.js/dist/Chart.min.css',
-      'node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js'
+      'node_modules/chartjs-plugin-colorschemes/dist/chartjs-plugin-colorschemes.min.js',
+      'node_modules/hammerjs/hammer.min.js',
+      'node_modules/chartjs-plugin-zoom/chartjs-plugin-zoom.min.js'
     ]
   },
   'select2': {

@@ -7,6 +7,7 @@ use App\Entity;
 use App\EventDispatcher;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\Avatar;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -17,6 +18,7 @@ class DashboardAction
         Response $response,
         EntityManagerInterface $em,
         EventDispatcher $eventDispatcher,
+        Avatar $avatar,
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
@@ -28,10 +30,16 @@ class DashboardAction
         $analyticsLevel = $settings->getAnalytics();
         $showCharts = $analyticsLevel !== Entity\Analytics::LEVEL_NONE;
 
+        // Avatars
+        $avatarService = $avatar->getAvatarService();
+
         return $view->renderToResponse(
             $response,
             'frontend/index/index',
             [
+                'avatar' => $avatar->getAvatar($request->getUser()->getEmail(), 64),
+                'avatarServiceName' => $avatarService->getServiceName(),
+                'avatarServiceUrl' => $avatarService->getServiceUrl(),
                 'showAdmin' => $acl->isAllowed(Acl::GLOBAL_VIEW),
                 'showCharts' => $showCharts,
             ]

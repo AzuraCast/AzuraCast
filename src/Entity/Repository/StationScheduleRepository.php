@@ -139,7 +139,7 @@ class StationScheduleRepository extends Repository
                     $row->start = $start->toIso8601String();
                     $row->end_timestamp = $end->getTimestamp();
                     $row->end = $end->toIso8601String();
-                    $row->is_now = $start->lessThanOrEqualTo($startDate);
+                    $row->is_now = $start->lessThanOrEqualTo($now);
 
                     if ($scheduleItem->getPlaylist() instanceof Entity\StationPlaylist) {
                         $playlist = $scheduleItem->getPlaylist();

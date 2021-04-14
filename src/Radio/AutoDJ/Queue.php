@@ -5,7 +5,6 @@ namespace App\Radio\AutoDJ;
 use App\Entity;
 use App\Event\Radio\BuildQueue;
 use App\Radio\PlaylistParser;
-use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -34,6 +33,8 @@ class Queue implements EventSubscriberInterface
 
     protected Entity\Repository\StationRequestRepository $requestRepo;
 
+    protected Entity\Repository\StationQueueRepository $queueRepo;
+
     protected Entity\Repository\SongHistoryRepository $historyRepo;
 
     public function __construct(
@@ -42,6 +43,7 @@ class Queue implements EventSubscriberInterface
         Scheduler $scheduler,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationRequestRepository $requestRepo,
+        Entity\Repository\StationQueueRepository $queueRepo,
         Entity\Repository\SongHistoryRepository $historyRepo
     ) {
         $this->em = $em;
@@ -49,6 +51,7 @@ class Queue implements EventSubscriberInterface
         $this->scheduler = $scheduler;
         $this->spmRepo = $spmRepo;
         $this->requestRepo = $requestRepo;
+        $this->queueRepo = $queueRepo;
         $this->historyRepo = $historyRepo;
     }
 
@@ -84,13 +87,12 @@ class Queue implements EventSubscriberInterface
             return;
         }
 
-        $recentSongHistoryForOncePerXSongs = $this->historyRepo->getRecentlyPlayed(
+        $recentPlaylistHistory = $this->queueRepo->getRecentPlaylists(
             $station,
-            $now,
             $oncePerXSongHistoryCount
         );
 
-        $recentSongHistoryForDuplicatePrevention = $this->historyRepo->getRecentlyPlayedByTimeRange(
+        $recentSongHistoryForDuplicatePrevention = $this->queueRepo->getRecentlyPlayedByTimeRange(
             $station,
             $now,
             $station->getBackendConfig()->getDuplicatePreventionTimeRange()
@@ -98,7 +100,7 @@ class Queue implements EventSubscriberInterface
 
         $this->logRecentSongHistory(
             $now,
-            $recentSongHistoryForOncePerXSongs,
+            $recentPlaylistHistory,
             $recentSongHistoryForDuplicatePrevention
         );
 
@@ -111,7 +113,7 @@ class Queue implements EventSubscriberInterface
                 $activePlaylistsByType,
                 $currentPlaylistType,
                 $now,
-                $recentSongHistoryForOncePerXSongs
+                $recentPlaylistHistory
             );
 
             if (empty($eligiblePlaylists)) {
@@ -193,14 +195,14 @@ class Queue implements EventSubscriberInterface
         array $playlistsByType,
         string $type,
         CarbonInterface $now,
-        array $recentSongHistoryForOncePerXSongs
+        array $recentPlaylistHistory
     ): array {
         $eligiblePlaylists = [];
         $logPlaylists = [];
 
         foreach ($playlistsByType[$type] as $playlistId => $playlist) {
             /** @var Entity\StationPlaylist $playlist */
-            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $now, $recentSongHistoryForOncePerXSongs)) {
+            if (!$this->scheduler->shouldPlaylistPlayNow($playlist, $now, $recentPlaylistHistory)) {
                 continue;
             }
 
@@ -301,9 +303,9 @@ class Queue implements EventSubscriberInterface
                 $this->em->persist($spm);
             }
 
-            $stationQueueEntry = new Entity\StationQueue($playlist->getStation(), $mediaToPlay);
+            $stationQueueEntry = Entity\StationQueue::fromMedia($playlist->getStation(), $mediaToPlay);
             $stationQueueEntry->setPlaylist($playlist);
-            $stationQueueEntry->setMedia($mediaToPlay);
+
             $stationQueueEntry->setTimestampCued($now->getTimestamp());
 
             $this->em->persist($stationQueueEntry);
@@ -483,20 +485,14 @@ class Queue implements EventSubscriberInterface
 
         if ($playlist->getAvoidDuplicates()) {
             if ($allowDuplicates) {
-                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
+                $this->logger->warning(
+                    'Duplicate prevention yielded no playable song; resetting song queue.'
+                );
 
-                if (null === $mediaId) {
-                    $this->logger->warning(
-                        'Duplicate prevention yielded no playable song; resetting song queue.'
-                    );
-
-                    // Pull the entire shuffled playlist if a duplicate title can't be avoided.
-                    $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
-                    $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, true);
-                }
-            } else {
-                $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, false);
+                $mediaQueue = $this->spmRepo->getPlayableMedia($playlist);
             }
+
+            $mediaId = $this->preventDuplicates($mediaQueue, $recentSongHistory, $allowDuplicates);
         } else {
             $mediaId = array_key_first($mediaQueue);
         }
@@ -533,7 +529,7 @@ class Queue implements EventSubscriberInterface
             $songId = $playedTrack['song_id'];
 
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'] ?? $playedTrack['timestamp_start'];
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'];
             }
         }
 
@@ -600,11 +596,7 @@ class Queue implements EventSubscriberInterface
 
         $this->logger->debug(sprintf('Queueing next song from request ID %d.', $request->getId()));
 
-        $stationQueueEntry = new Entity\StationQueue($request->getStation(), $request->getTrack());
-        $stationQueueEntry->setRequest($request);
-        $stationQueueEntry->setMedia($request->getTrack());
-
-        $stationQueueEntry->setDuration($request->getTrack()->getCalculatedLength());
+        $stationQueueEntry = Entity\StationQueue::fromRequest($request);
         $stationQueueEntry->setTimestampCued($now->getTimestamp());
         $this->em->persist($stationQueueEntry);
 
@@ -661,7 +653,7 @@ class Queue implements EventSubscriberInterface
 
             $songId = $playedTrack['song_id'];
             if (!isset($latestSongIdsPlayed[$songId])) {
-                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'] ?? $playedTrack['timestamp_start'];
+                $latestSongIdsPlayed[$songId] = $playedTrack['timestamp_cued'];
             }
         }
 
@@ -716,40 +708,14 @@ class Queue implements EventSubscriberInterface
 
     protected function logRecentSongHistory(
         CarbonInterface $now,
-        array $recentSongHistoryForOncePerXSongs,
+        array $recentPlaylistHistory,
         array $recentSongHistoryForDuplicatePrevention
     ): void {
-        $logOncePerXSongsSongHistory = [];
-        foreach ($recentSongHistoryForOncePerXSongs as $row) {
-            $logOncePerXSongsSongHistory[] = [
-                'song' => $row['text'],
-                'cued_at' => (string)(CarbonImmutable::createFromTimestamp(
-                    $row['timestamp_cued'] ?? $row['timestamp_start'],
-                    $now->getTimezone()
-                )),
-                'duration' => $row['duration'],
-                'sent_to_autodj' => $row['sent_to_autodj'],
-            ];
-        }
-
-        $logDuplicatePreventionSongHistory = [];
-        foreach ($recentSongHistoryForDuplicatePrevention as $row) {
-            $logDuplicatePreventionSongHistory[] = [
-                'song' => $row['text'],
-                'cued_at' => (string)(CarbonImmutable::createFromTimestamp(
-                    $row['timestamp_cued'] ?? $row['timestamp_start'],
-                    $now->getTimezone()
-                )),
-                'duration' => $row['duration'],
-                'sent_to_autodj' => $row['sent_to_autodj'],
-            ];
-        }
-
         $this->logger->debug(
             'AutoDJ recent song playback history',
             [
-                'history_once_per_x_songs' => $logOncePerXSongsSongHistory,
-                'history_duplicate_prevention' => $logDuplicatePreventionSongHistory,
+                'history_once_per_x_songs' => $recentPlaylistHistory,
+                'history_duplicate_prevention' => $recentSongHistoryForDuplicatePrevention,
             ]
         );
     }

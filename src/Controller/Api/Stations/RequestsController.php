@@ -109,10 +109,9 @@ class RequestsController
         $router = $request->getRouter();
 
         $paginator->setPostprocessor(
-            function ($media_row) use ($station, $is_bootgrid, $router) {
-                /** @var Entity\StationMedia $media_row */
+            function (Entity\StationMedia $media_row) use ($station, $is_bootgrid, $router) {
                 $row = new Entity\Api\StationRequest();
-                $row->song = ($this->songApiGenerator)($media_row);
+                $row->song = ($this->songApiGenerator)($media_row, $station);
                 $row->request_id = $media_row->getUniqueId();
                 $row->request_url = (string)$router->named(
                     'api:requests:submit',

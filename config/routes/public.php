@@ -9,7 +9,7 @@ return function (App $app) {
     $app->group(
         '/public/{station_id}',
         function (RouteCollectorProxy $group) {
-            $group->get('[/{embed:embed}]', Controller\Frontend\PublicPages\PlayerAction::class)
+            $group->get('[/{embed:embed|social}]', Controller\Frontend\PublicPages\PlayerAction::class)
                 ->setName('public:index');
 
             $group->get('/embed-requests', Controller\Frontend\PublicPages\RequestsAction::class)
@@ -17,6 +17,9 @@ return function (App $app) {
 
             $group->get('/playlist[.{format}]', Controller\Frontend\PublicPages\PlaylistAction::class)
                 ->setName('public:playlist');
+
+            $group->get('/history', Controller\Frontend\PublicPages\HistoryAction::class)
+                ->setName('public:history');
 
             $group->get('/dj', Controller\Frontend\PublicPages\WebDjAction::class)
                 ->setName('public:dj');

@@ -1,5 +1,8 @@
 <?php
-/** @var \App\Entity\Station $station */
+/**
+ * @var \App\Entity\Station $station
+ * @var \App\Customization $customization
+ */
 
 $this->layout(
     'minimal',
@@ -12,7 +15,7 @@ $this->layout(
 /** @var \App\Assets $assets */
 $assets
     ->load('fancybox')
-    ->load('PublicRadioPlayer')
+    ->load('Vue_PublicFullPlayer')
     ->addInlineJs(
         $this->fetch(
             'frontend/public/index.js',
@@ -20,9 +23,27 @@ $assets
                 'station' => $station,
                 'nowplaying' => $nowplaying,
                 'customFields' => $customFields,
+                'autoplay' => $autoplay,
             ]
         )
     );
+
+$this->push('head');
+?>
+<meta property="twitter:card" content="player"/>
+<meta property="twitter:player" content="<?=(string)$router->named(
+    'public:index',
+    ['station_id' => $station->getShortName(), 'embed' => 'social'],
+    [],
+    true
+)?>"/>
+<meta property="twitter:player:width" content="400">
+<meta property="twitter:player:height" content="125">
+<meta property="twitter:title" content="<?=$this->e($station->getName())?>">
+<meta property="twitter:site" content="<?=$this->e($station->getUrl())?>">
+<meta property="twitter:image" content="<?=$defaultAlbumArt?>">
+<?php
+$this->end();
 ?>
 
 <div id="public-radio-player">

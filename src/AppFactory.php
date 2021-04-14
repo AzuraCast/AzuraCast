@@ -2,12 +2,18 @@
 
 namespace App;
 
+use App\Console\Application;
+use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
 use DI;
+use DI\Bridge\Slim\ControllerInvoker;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Invoker;
+use Invoker\Invoker;
+use Invoker\ParameterResolver\AssociativeArrayResolver;
+use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
+use Invoker\ParameterResolver\DefaultValueResolver;
+use Invoker\ParameterResolver\ResolverChain;
 use Monolog\Registry;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
@@ -19,14 +25,97 @@ use Slim\Interfaces\RouteResolverInterface;
 
 class AppFactory
 {
-    public static function create($autoloader = null, $appEnvironment = [], $diDefinitions = []): App
+    public static function createApp($autoloader = null, $appEnvironment = [], $diDefinitions = []): App
     {
+        $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
+        return self::buildAppFromContainer($di);
+    }
+
+    public static function createCli($autoloader = null, $appEnvironment = [], $diDefinitions = []): Application
+    {
+        $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
+        self::buildAppFromContainer($di);
+
+        $locale = $di->make(Locale::class);
+        $locale->register();
+
+        return $di->get(Application::class);
+    }
+
+    public static function buildAppFromContainer(DI\Container $container): App
+    {
+        ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
+        ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory());
+
+        $responseFactory = $container->has(ResponseFactoryInterface::class)
+            ? $container->get(ResponseFactoryInterface::class)
+            : new ResponseFactory();
+
+        $callableResolver = $container->has(CallableResolverInterface::class)
+            ? $container->get(CallableResolverInterface::class)
+            : null;
+
+        $routeCollector = $container->has(RouteCollectorInterface::class)
+            ? $container->get(RouteCollectorInterface::class)
+            : null;
+
+        $routeResolver = $container->has(RouteResolverInterface::class)
+            ? $container->get(RouteResolverInterface::class)
+            : null;
+
+        $middlewareDispatcher = $container->has(MiddlewareDispatcherInterface::class)
+            ? $container->get(MiddlewareDispatcherInterface::class)
+            : null;
+
+        $app = new App(
+            $responseFactory,
+            $container,
+            $callableResolver,
+            $routeCollector,
+            $routeResolver,
+            $middlewareDispatcher
+        );
+        $container->set(App::class, $app);
+
+        $routeCollector = $app->getRouteCollector();
+
+        // Use the PHP-DI Bridge's action invocation helper.
+        $resolvers = [
+            // Inject parameters by name first
+            new AssociativeArrayResolver(),
+            // Then inject services by type-hints for those that weren't resolved
+            new TypeHintContainerResolver($container),
+            // Then fall back on parameters default values for optional route parameters
+            new DefaultValueResolver(),
+        ];
+
+        $invoker = new Invoker(new ResolverChain($resolvers), $container);
+        $controllerInvoker = new ControllerInvoker($invoker);
+
+        $routeCollector->setDefaultInvocationStrategy($controllerInvoker);
+
+        $environment = $container->get(Environment::class);
+        if ($environment->isProduction()) {
+            $routeCollector->setCacheFile($environment->getTempDirectory() . '/app_routes.cache.php');
+        }
+
+        $eventDispatcher = $container->get(EventDispatcher::class);
+        $eventDispatcher->dispatch(new Event\BuildRoutes($app));
+
+        return $app;
+    }
+
+    public static function buildContainer(
+        $autoloader = null,
+        $appEnvironment = [],
+        $diDefinitions = []
+    ): DI\Container {
         // Register Annotation autoloader
         if (null !== $autoloader) {
             AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
         }
 
-        $environment = new Environment(self::buildEnvironment($appEnvironment));
+        $environment = self::buildEnvironment($appEnvironment);
         Environment::setInstance($environment);
 
         self::applyPhpSettings($environment);
@@ -46,45 +135,57 @@ class AppFactory
             $plugins = null;
         }
 
-        $di = self::buildContainer($environment, $diDefinitions);
+        $containerBuilder = new DI\ContainerBuilder();
+        $containerBuilder->useAnnotations(true);
+        $containerBuilder->useAutowiring(true);
+        if ($environment->isProduction()) {
+            $containerBuilder->enableCompilation($environment->getTempDirectory());
+        }
+
+        $containerBuilder->addDefinitions($diDefinitions);
+
+        // Check for services.php file and include it if one exists.
+        $config_dir = $environment->getConfigDirectory();
+        if (file_exists($config_dir . '/services.php')) {
+            $containerBuilder->addDefinitions($config_dir . '/services.php');
+        }
+
+        $di = $containerBuilder->build();
 
         $logger = $di->get(LoggerInterface::class);
 
-        register_shutdown_function(function (LoggerInterface $logger): void {
-            $error = error_get_last();
-            $errno = $error["type"] ?? \E_ERROR;
-            $errfile = $error["file"] ?? 'unknown';
-            $errline = $error["line"] ?? 0;
-            $errstr  = $error["message"] ?? 'Shutdown';
+        register_shutdown_function(
+            function (LoggerInterface $logger): void {
+                $error = error_get_last();
+                if (null === $error) {
+                    return;
+                }
 
-            if ($errno &= \E_PARSE | \E_ERROR | \E_USER_ERROR | \E_CORE_ERROR | \E_COMPILE_ERROR) {
-                $logger->critical(sprintf(
-                    'Fatal error: %s in %s on line %d',
-                    $errstr,
-                    $errfile,
-                    $errline
-                ));
-            }
-        }, $logger);
+                $errno = $error["type"] ?? \E_ERROR;
+                $errfile = $error["file"] ?? 'unknown';
+                $errline = $error["line"] ?? 0;
+                $errstr = $error["message"] ?? 'Shutdown';
+
+                if ($errno &= \E_PARSE | \E_ERROR | \E_USER_ERROR | \E_CORE_ERROR | \E_COMPILE_ERROR) {
+                    $logger->critical(
+                        sprintf(
+                            'Fatal error: %s in %s on line %d',
+                            $errstr,
+                            $errfile,
+                            $errline
+                        )
+                    );
+                }
+            },
+            $logger
+        );
 
         Registry::addLogger($logger, 'app', true);
 
-        ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
-        ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory());
-
-        $app = self::createFromContainer($di);
-        $di->set(App::class, $app);
-
-        self::updateRouteHandling($app);
-        self::buildRoutes($app);
-
-        return $app;
+        return $di;
     }
 
-    /**
-     * @return mixed[]
-     */
-    protected static function buildEnvironment(array $environment): array
+    protected static function buildEnvironment(array $environment): Environment
     {
         if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');
@@ -106,7 +207,7 @@ class AppFactory
 
         $environment = array_merge(array_filter($_ENV), $environment);
 
-        return $environment;
+        return new Environment($environment);
     }
 
     protected static function applyPhpSettings(Environment $environment): void
@@ -134,103 +235,5 @@ class AppFactory
         date_default_timezone_set('UTC');
 
         session_cache_limiter('');
-    }
-
-    protected static function buildContainer(Environment $environment, array $diDefinitions = []): DI\Container
-    {
-        $containerBuilder = new DI\ContainerBuilder();
-        $containerBuilder->useAnnotations(true);
-        $containerBuilder->useAutowiring(true);
-
-        if ($environment->isProduction()) {
-            $containerBuilder->enableCompilation($environment->getTempDirectory());
-        }
-
-        if (!isset($diDefinitions[Environment::class])) {
-            $diDefinitions[Environment::class] = $environment;
-        }
-
-        $containerBuilder->addDefinitions($diDefinitions);
-
-        // Check for services.php file and include it if one exists.
-        $config_dir = $environment->getConfigDirectory();
-        if (file_exists($config_dir . '/services.php')) {
-            $containerBuilder->addDefinitions($config_dir . '/services.php');
-        }
-
-        return $containerBuilder->build();
-    }
-
-    protected static function createFromContainer(ContainerInterface $container): App
-    {
-        $responseFactory = $container->has(ResponseFactoryInterface::class)
-            ? $container->get(ResponseFactoryInterface::class)
-            : new Http\Factory\ResponseFactory();
-
-        $callableResolver = $container->has(CallableResolverInterface::class)
-            ? $container->get(CallableResolverInterface::class)
-            : null;
-
-        $routeCollector = $container->has(RouteCollectorInterface::class)
-            ? $container->get(RouteCollectorInterface::class)
-            : null;
-
-        $routeResolver = $container->has(RouteResolverInterface::class)
-            ? $container->get(RouteResolverInterface::class)
-            : null;
-
-        $middlewareDispatcher = $container->has(MiddlewareDispatcherInterface::class)
-            ? $container->get(MiddlewareDispatcherInterface::class)
-            : null;
-
-        return new App(
-            $responseFactory,
-            $container,
-            $callableResolver,
-            $routeCollector,
-            $routeResolver,
-            $middlewareDispatcher
-        );
-    }
-
-    /**
-     * @param App $app
-     */
-    protected static function updateRouteHandling(App $app): void
-    {
-        $di = $app->getContainer();
-        $routeCollector = $app->getRouteCollector();
-
-        $environment = $di->get(Environment::class);
-
-        // Use the PHP-DI Bridge's action invocation helper.
-        $resolvers = [
-            // Inject parameters by name first
-            new Invoker\ParameterResolver\AssociativeArrayResolver(),
-            // Then inject services by type-hints for those that weren't resolved
-            new Invoker\ParameterResolver\Container\TypeHintContainerResolver($di),
-            // Then fall back on parameters default values for optional route parameters
-            new Invoker\ParameterResolver\DefaultValueResolver(),
-        ];
-
-        $invoker = new Invoker\Invoker(new Invoker\ParameterResolver\ResolverChain($resolvers), $di);
-        $controllerInvoker = new DI\Bridge\Slim\ControllerInvoker($invoker);
-
-        $routeCollector->setDefaultInvocationStrategy($controllerInvoker);
-
-        if ($environment->isProduction()) {
-            $routeCollector->setCacheFile($environment->getTempDirectory() . '/app_routes.cache.php');
-        }
-    }
-
-    /**
-     * @param App $app
-     */
-    protected static function buildRoutes(App $app): void
-    {
-        $di = $app->getContainer();
-
-        $dispatcher = $di->get(EventDispatcher::class);
-        $dispatcher->dispatch(new Event\BuildRoutes($app));
     }
 }

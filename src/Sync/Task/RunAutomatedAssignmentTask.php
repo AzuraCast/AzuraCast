@@ -2,12 +2,12 @@
 
 namespace App\Sync\Task;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception;
 use App\Radio\Adapters;
 use Carbon\CarbonImmutable;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 
 class RunAutomatedAssignmentTask extends AbstractTask
@@ -39,7 +39,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
     {
         // Check all stations for automation settings.
         // Use this to avoid detached entity errors.
-        $stations = SimpleBatchIteratorAggregate::fromQuery(
+        $stations = BatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
                 <<<'DQL'
                     SELECT s FROM App\Entity\Station s
@@ -247,7 +247,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
-        $iterator = SimpleBatchIteratorAggregate::fromQuery($mediaQuery, 100);
+        $iterator = BatchIteratorAggregate::fromQuery($mediaQuery, 100);
         $report = [];
 
         foreach ($iterator as $row) {

@@ -33,10 +33,13 @@ class Module extends Framework implements DoctrineProvider
 
         $autoloader = $GLOBALS['autoloader'];
 
-        $this->app = $container_class::create($autoloader, [
-            Environment::BASE_DIR => Configuration::projectDir(),
-            Environment::APP_ENV => Environment::ENV_TESTING,
-        ]);
+        $this->app = $container_class::createApp(
+            $autoloader,
+            [
+                Environment::BASE_DIR => Configuration::projectDir(),
+                Environment::APP_ENV => Environment::ENV_TESTING,
+            ]
+        );
 
         $this->container = $this->app->getContainer();
         $this->em = $this->container->get(EntityManagerInterface::class);

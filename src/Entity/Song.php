@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\ApiUtilities;
 use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
 
@@ -48,10 +47,22 @@ class Song implements SongInterface
             );
         }
 
-        // Strip non-alphanumeric characters
         $song_text = mb_substr($songText, 0, 150, 'UTF-8');
-        $hash_base = mb_strtolower(str_replace([' ', '-'], ['', ''], $song_text), 'UTF-8');
 
+        // Strip out characters that are likely to not be properly translated or relayed through the radio.
+        $removeChars = [
+            ' ',
+            '-',
+            '"',
+            '\'',
+            "\n",
+            "\t",
+            "\r",
+        ];
+
+        $song_text = str_replace($removeChars, '', $song_text);
+
+        $hash_base = mb_strtolower($song_text, 'UTF-8');
         return md5($hash_base);
     }
 

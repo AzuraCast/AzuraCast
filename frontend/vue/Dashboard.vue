@@ -2,20 +2,20 @@
     <div id="dashboard">
         <section class="card mb-4" role="region">
             <div class="card-header bg-primary-dark d-flex flex-wrap align-items-center">
-                <a class="flex-shrink-0" href="http://www.gravatar.com/" target="_blank">
-                    <img :src="userAvatar" style="width: 64px; height: auto;" alt="">
-                </a>
-                <div class="flex-fill ml-3">
+
+                <avatar class="flex-shrink-0 mr-3" v-bind="$props"></avatar>
+
+                <div class="flex-fill">
                     <h2 class="card-title mt-0">{{ userName }}</h2>
                     <h3 class="card-subtitle">{{ userEmail }}</h3>
                 </div>
                 <div class="flex-md-shrink-0 mt-3 mt-md-0">
                     <a class="btn btn-bg" role="button" :href="profileUrl">
-                        <i class="material-icons" aria-hidden="true">account_circle</i>
+                        <icon icon="account_circle"></icon>
                         <translate key="dashboard_btn_my_account">My Account</translate>
                     </a>
                     <a v-if="showAdmin" class="btn btn-bg ml-2" role="button" :href="adminUrl">
-                        <i class="material-icons" aria-hidden="true">settings</i>
+                        <icon icon="settings"></icon>
                         <translate key="dashboard_btn_administration">Administration</translate>
                     </a>
                 </div>
@@ -24,10 +24,10 @@
             <template v-if="!notificationsLoading && notifications.length > 0">
                 <div v-for="notification in notifications" class="card-body d-flex align-items-center" :class="'alert-'+notification.type" role="alert">
                     <div class="flex-shrink-0 mr-3" v-if="'info' === notification.type">
-                        <i class="material-icons lg" aria-hidden="true">info</i>
+                        <icon class="lg" icon="info"></icon>
                     </div>
                     <div class="flex-shrink-0 mr-3" v-else>
-                        <i class="material-icons lg" aria-hidden="true">warning</i>
+                        <icon class="lg" icon="warning"></icon>
                     </div>
                     <div class="flex-fill">
                         <h4>{{ notification.title }}</h4>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="flex-shrink-0" v-if="showAdmin">
                     <b-button variant="outline-light" size="sm" class="py-2" :href="addStationUrl">
-                        <i class="material-icons" aria-hidden="true">add</i>
+                        <icon icon="add"></icon>
                         <translate key="dashboard_btn_add_station">Add Station</translate>
                     </b-button>
                 </div>
@@ -121,7 +121,7 @@
                         <td class="text-center pr-3">
                             <a class="file-icon btn-audio has-listener" href="#" :data-url="item.station.listen_url"
                                @click.prevent="playAudio(item.station.listen_url)" :title="langPlayPause">
-                                <i class="material-icons lg align-middle" aria-hidden="true">play_circle_filled</i>
+                                <icon class="lg outlined align-middle" icon="play_circle"></icon>
                             </a>
                         </td>
                         <td class="pl-2">
@@ -156,13 +156,16 @@
 </template>
 
 <script>
-import TimeSeriesChart from './components/TimeSeriesChart';
-import DataTable from './components/DataTable';
+import TimeSeriesChart from './Common/TimeSeriesChart';
+import DataTable from './Common/DataTable';
 import axios from 'axios';
 import store from 'store';
+import Icon from './Common/Icon';
+import Avatar, { avatarProps } from './Common/Avatar';
 
 export default {
-    components: { DataTable, TimeSeriesChart },
+    components: { Avatar, Icon, DataTable, TimeSeriesChart },
+    mixins: [avatarProps],
     props: {
         userName: String,
         userEmail: String,

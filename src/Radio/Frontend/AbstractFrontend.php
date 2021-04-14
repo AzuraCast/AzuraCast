@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
-use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
 use PhpIP\IP;
 use PhpIP\IPBlock;

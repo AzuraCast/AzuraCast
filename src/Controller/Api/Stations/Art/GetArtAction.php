@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
@@ -31,7 +31,6 @@ class GetArtAction
      *
      * @param ServerRequest $request
      * @param Response $response
-     * @param FilesystemManager $filesystem
      * @param Entity\Repository\StationRepository $stationRepo
      * @param Entity\Repository\StationMediaRepository $mediaRepo
      * @param string $media_id
@@ -39,17 +38,14 @@ class GetArtAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        FilesystemManager $filesystem,
         Entity\Repository\StationRepository $stationRepo,
         Entity\Repository\StationMediaRepository $mediaRepo,
         string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $fs = $filesystem->getPrefixedAdapterForStation(
-            $station,
-            FilesystemManager::PREFIX_MEDIA,
-            true
-        );
+
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
         $defaultArtRedirect = $response->withRedirect($stationRepo->getDefaultAlbumArtUrl($station), 302);
 
@@ -68,8 +64,8 @@ class GetArtAction
             }
         }
 
-        if ($fs->has($mediaPath)) {
-            return $fs->streamToResponse($response, $mediaPath, null, 'inline');
+        if ($fsMedia->fileExists($mediaPath)) {
+            return $response->streamFilesystemFile($fsMedia, $mediaPath, null, 'inline');
         }
 
         return $defaultArtRedirect;

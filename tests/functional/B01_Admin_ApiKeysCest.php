@@ -14,7 +14,7 @@ class B01_Admin_ApiKeysCest extends CestAbstract
         $I->amOnPage('/api_keys');
         $I->see('My API Keys');
 
-        $I->click('add', '#content');
+        $I->click('Add API Key', '#content');
 
         $I->submitForm('.form', [
             'comment' => 'API Key Test',
@@ -34,7 +34,7 @@ class B01_Admin_ApiKeysCest extends CestAbstract
         $I->dontSee('API Key Test');
 
         // Create another API key and test its revocation from the admin side.
-        $I->click('add', '#content');
+        $I->click('Add API Key', '#content');
 
         $I->submitForm('.form', [
             'comment' => 'API Key Admin Test',

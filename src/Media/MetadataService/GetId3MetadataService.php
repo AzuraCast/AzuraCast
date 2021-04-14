@@ -33,6 +33,7 @@ class GetId3MetadataService
         $id3->encoding = 'UTF-8';
 
         $info = $id3->analyze($path);
+        $id3->CopyTagsToComments($info);
 
         if (!empty($info['error'])) {
             throw new CannotProcessMediaException(
@@ -50,13 +51,24 @@ class GetId3MetadataService
             $metadata->setDuration($info['playtime_seconds']);
         }
 
+        $metaTags = $metadata->getTags();
+
+        if (!empty($info['comments'])) {
+            foreach ($info['comments'] as $tagName => $tagContents) {
+                if (!empty($tagContents[0]) && !$metaTags->containsKey($tagName)) {
+                    $tagValue = $tagContents[0];
+                    if (is_array($tagValue)) {
+                        $flatValue = Utilities\Arrays::flattenArray($tagValue);
+                        $tagValue = implode(', ', $flatValue);
+                    }
+
+                    $metaTags->set($tagName, $this->cleanUpString($tagValue));
+                }
+            }
+        }
+
         if (!empty($info['tags'])) {
-            $metaTags = $metadata->getTags();
-
-            // Reverse array of tags to prefer ID3v2 tags instead of ID3v1
-            $infoTags = array_reverse($info['tags']);
-
-            foreach ($infoTags as $tagType => $tagData) {
+            foreach ($info['tags'] as $tagType => $tagData) {
                 foreach ($tagData as $tagName => $tagContents) {
                     if (!empty($tagContents[0]) && !$metaTags->containsKey($tagName)) {
                         $tagValue = $tagContents[0];
@@ -107,6 +119,37 @@ class GetId3MetadataService
 
         $tagwriter = new \getid3_writetags();
         $tagwriter->filename = $path;
+
+        $pathExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        switch ($pathExt) {
+            case 'mp3':
+            case 'mp2':
+            case 'mp1':
+            case 'riff':
+                $tagwriter->tagformats = ['id3v1', 'id3v2.3'];
+                break;
+
+            case 'mpc':
+                $tagwriter->tagformats = ['ape'];
+                break;
+
+            case 'flac':
+                $tagwriter->tagformats = ['metaflac'];
+                break;
+
+            case 'real':
+                $tagwriter->tagformats = ['real'];
+                break;
+
+            case 'ogg':
+                $tagwriter->tagformats = ['vorbiscomment'];
+                break;
+
+            default:
+                // The getid3 library can't write to this format, so just skip the writing process.
+                return false;
+        }
 
         $tagwriter->tagformats = ['id3v1', 'id3v2.3'];
         $tagwriter->overwrite_tags = true;

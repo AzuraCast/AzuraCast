@@ -313,10 +313,44 @@ return [
             ],
         ],
 
-        'thirdPartyServices' => [
+        'avatarServices' => [
             'tab' => 'services',
             'use_grid' => true,
-            'legend' => __('Third-Party Services'),
+            'legend' => __('Avatar Services'),
+
+            'elements' => [
+
+                'avatarService' => [
+                    'radio',
+                    [
+                        'label' => __('Avatar Service'),
+
+                        'choices' => [
+                            App\Service\Avatar::SERVICE_LIBRAVATAR => 'Libravatar',
+                            App\Service\Avatar::SERVICE_GRAVATAR => 'Gravatar',
+                            App\Service\Avatar::SERVICE_DISABLED => __('Disabled'),
+                        ],
+                        'default' => App\Service\Avatar::DEFAULT_SERVICE,
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'avatarDefaultUrl' => [
+                    'text',
+                    [
+                        'label' => __('Default Avatar URL'),
+                        'default' => App\Service\Avatar::DEFAULT_AVATAR,
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+            ],
+        ],
+
+        'albumArtServices' => [
+            'tab' => 'services',
+            'use_grid' => true,
+            'legend' => __('Album Art Services'),
 
             'elements' => [
 

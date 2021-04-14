@@ -75,12 +75,8 @@ class CheckRequests extends AbstractTask
 
         if (!$sq instanceof Entity\StationQueue) {
             // Log the item in SongHistory.
-            $media = $request->getTrack();
-
-            $sq = new Entity\StationQueue($station, $media);
+            $sq = Entity\StationQueue::fromRequest($request);
             $sq->setTimestampCued(time());
-            $sq->setMedia($media);
-            $sq->setRequest($request);
             $sq->sentToAutodj();
 
             $this->em->persist($sq);

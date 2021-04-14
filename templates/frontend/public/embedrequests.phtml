@@ -10,18 +10,13 @@ $this->layout(
     ]
 );
 
+$props = [
+    'customFields' => $customFields,
+    'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]),
+];
+
 /** @var \App\Assets $assets */
-$assets
-    ->load('SongRequest')
-    ->addInlineJs(
-        $this->fetch(
-            'frontend/public/embedrequests.js',
-            [
-                'station' => $station,
-                'customFields' => $customFields,
-            ]
-        )
-    );
+$assets->addVueRender('Vue_PublicRequests', '#song-requests', $props);
 ?>
 
 <div id="song-requests"></div>

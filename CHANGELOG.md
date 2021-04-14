@@ -5,15 +5,60 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no new features since the last stable release.
-
 ## Code Quality/Technical Changes
-
-There have been no technical changes since the last stable release.
 
 ## Bug Fixes
 
-There have been no new bug fixes since the last stable release.
+There have been no changes since the latest stable release.
+
+---
+
+# AzuraCast 0.12.3 (Apr 14, 2021)
+
+## New Features/Changes
+
+- **Twitter Player Preview**: If you include the URL of your station's public player page in a tweet, a player component
+  will automatically appear in the tweet that includes an embedded player for your station.
+
+- **Embed Widgets**: A new "Embed Widgets" modal has been added to the station profile that will let you customize your
+  embeddable widgets and show you a preview of their rendered status.
+
+- You can now embed playback history as a standalone component in your web site.
+
+- By default, avatars will be served from the free and open-source [Libravatar](https://libravatar.org) service. You can
+  configure the external avatar service from the system settings, along with the default avatar URL.
+
+- The "Average Listeners" and "Unique Listeners" charts on the dashboard are now "zoomed in" to show the last 30 days;
+  if you want to view older data, simply click and drag the chart to view older data.
+
+- The SoundExchange report will once again automatically retrieve the ISRCs for tracks with no ISRC assigned (now using
+  the open MusicBrainz API database).
+
+## Code Quality/Technical Changes
+
+- In preparation to support PHP 8.0, we have updated to version 2.0 of the Flysystem filesystem abstraction library.
+
+- We've switched from the `material-icons` library to the `@material-icons/font` library. In particular, we are using
+  the "two-toned" version of the Material Design icons across the application.
+
+- Instances of the "Pause" icon across the system have been replaced with the "Stop" icon to more properly indicate what
+  they do.
+
+- Heavy performance optimizations have been made in the following areas:
+    - Looping through, and processing, station media (5-minute sync)
+    - Processing listeners for stations with large listener counts
+    - The AutoDJ queue building process
+
+## Bug Fixes
+
+- Fixed a minor bug with the `is_now` parameter on the Schedule API endpoint.
+
+- Fixed a number of bugs relating to how the AutoDJ queue is built.
+
+- Fixed bugs relating to playlist folder auto-assignment.
+
+- When saving changes to a file that does not use ID3 metadata, users will no longer encounter a processing error
+  (#3798).
 
 ---
 

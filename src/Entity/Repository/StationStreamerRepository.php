@@ -6,7 +6,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Radio\Adapters;
 use App\Radio\AutoDJ\Scheduler;
 use Psr\Log\LoggerInterface;
@@ -18,22 +18,18 @@ class StationStreamerRepository extends Repository
 
     protected StationStreamerBroadcastRepository $broadcastRepo;
 
-    protected FilesystemManager $filesystem;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
         Scheduler $scheduler,
-        StationStreamerBroadcastRepository $broadcastRepo,
-        FilesystemManager $filesystem
+        StationStreamerBroadcastRepository $broadcastRepo
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
 
         $this->scheduler = $scheduler;
         $this->broadcastRepo = $broadcastRepo;
-        $this->filesystem = $filesystem;
     }
 
     /**
@@ -94,8 +90,10 @@ class StationStreamerRepository extends Repository
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $fs = $this->filesystem->getForStation($station);
-                return $fs->getFullPath(FilesystemManager::PREFIX_TEMP . '://' . $recordingPath);
+                $fsStations = new StationFilesystems($station);
+                $fsTemp = $fsStations->getTempFilesystem();
+
+                return $fsTemp->getLocalPath($recordingPath);
             }
         }
 
@@ -105,17 +103,18 @@ class StationStreamerRepository extends Repository
 
     public function onDisconnect(Entity\Station $station): bool
     {
-        $fs = $this->filesystem->getForStation($station);
+        $fs = new StationFilesystems($station);
+        $fsTemp = $fs->getTempFilesystem();
+        $fsRecordings = $fs->getRecordingsFilesystem();
+
         $broadcasts = $this->broadcastRepo->getActiveBroadcasts($station);
 
         foreach ($broadcasts as $broadcast) {
             $broadcastPath = $broadcast->getRecordingPath();
 
-            $tempPath = FilesystemManager::PREFIX_TEMP . '://' . $broadcastPath;
-            $destPath = FilesystemManager::PREFIX_RECORDINGS . '://' . $broadcastPath;
-
-            if ($fs->has($tempPath)) {
-                $fs->move($tempPath, $destPath);
+            if ((null !== $broadcastPath) && $fsTemp->fileExists($broadcastPath)) {
+                $tempPath = $fsTemp->getLocalPath($broadcastPath);
+                $fsRecordings->uploadAndDeleteOriginal($tempPath, $broadcastPath);
             }
 
             $broadcast->setTimestampEnd(time());

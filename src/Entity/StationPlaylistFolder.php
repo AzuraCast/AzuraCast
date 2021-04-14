@@ -33,7 +33,7 @@ class StationPlaylistFolder implements PathAwareInterface
     protected $station;
 
     /**
-     * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="media_items", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="folders", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
      * })

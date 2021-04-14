@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\Auth;
 use App\Normalizer\Annotation\DeepNormalize;
-use App\Service\Gravatar;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -300,10 +299,5 @@ class User
     public function getApiKeys(): Collection
     {
         return $this->api_keys;
-    }
-
-    public function getAvatar(int $size = 50): string
-    {
-        return Gravatar::get($this->email, $size, 'https://www.azuracast.com/img/avatar.png');
     }
 }

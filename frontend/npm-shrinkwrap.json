@@ -2135,6 +2135,14 @@
         "chart.js": "^2.5.0"
       }
     },
+    "chartjs-plugin-zoom": {
+      "version": "0.7.7",
+      "resolved": "https://registry.npmjs.org/chartjs-plugin-zoom/-/chartjs-plugin-zoom-0.7.7.tgz",
+      "integrity": "sha512-8fOHPPiZTT2+K0w278TQWYs/DtPg06s1OpTqdXxPpdfH7QQbl6Io/WuE1FjPehDWVCxpe3tSTts+dPbxgq2Z5g==",
+      "requires": {
+        "hammerjs": "^2.0.8"
+      }
+    },
     "cheerio": {
       "version": "1.0.0-rc.3",
       "resolved": "https://registry.npmjs.org/cheerio/-/cheerio-1.0.0-rc.3.tgz",
@@ -4129,6 +4137,11 @@
         "glogg": "^1.0.0"
       }
     },
+    "hammerjs": {
+      "version": "2.0.8",
+      "resolved": "https://registry.npmjs.org/hammerjs/-/hammerjs-2.0.8.tgz",
+      "integrity": "sha1-BO93hiz/K7edMPdpIJWTAiK/YPE="
+    },
     "has": {
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/has/-/has-1.0.3.tgz",
@@ -4962,9 +4975,9 @@
       }
     },
     "material-icons": {
-      "version": "0.3.1",
-      "resolved": "https://registry.npmjs.org/material-icons/-/material-icons-0.3.1.tgz",
-      "integrity": "sha512-5Hbj76A6xDPcDZEbM4oxTknhWuMwGWnAHVLLPCEq9eVlcHb0fn4koU9ZeyMy1wjARtDEPAHfd5ZdL2Re5hf0zQ=="
+      "version": "0.5.4",
+      "resolved": "https://registry.npmjs.org/material-icons/-/material-icons-0.5.4.tgz",
+      "integrity": "sha512-5ycazkNmIOtV78Ff3WgvxQESoJuujdRm0cNbf18fmyJN20jHyqp9rpwi4EfQyGimag0ZLElxtVg3H9enIKdOOw=="
     },
     "md5.js": {
       "version": "1.3.5",

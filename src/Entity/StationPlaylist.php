@@ -266,7 +266,13 @@ class StationPlaylist
     protected $media_items;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="playlist")
+     * @ORM\OneToMany(targetEntity="StationPlaylistFolder", mappedBy="playlist", fetch="EXTRA_LAZY")
+     * @var Collection
+     */
+    protected $folders;
+
+    /**
+     * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @var Collection
      *
      * @DeepNormalize(true)
@@ -282,6 +288,7 @@ class StationPlaylist
         $this->station = $station;
 
         $this->media_items = new ArrayCollection();
+        $this->folders = new ArrayCollection();
         $this->schedule_items = new ArrayCollection();
     }
 
@@ -521,16 +528,6 @@ class StationPlaylist
             'title' => $media->getTitle(),
         ];
 
-        if (self::ORDER_SEQUENTIAL !== $this->getOrder()) {
-            shuffle($queue);
-
-            $newQueue = [];
-            foreach ($queue as $row) {
-                $newQueue[$row['id']] = $row;
-            }
-            $queue = $newQueue;
-        }
-
         $this->setQueue($queue);
     }
 
@@ -540,6 +537,14 @@ class StationPlaylist
     public function getMediaItems(): Collection
     {
         return $this->media_items;
+    }
+
+    /**
+     * @return Collection|StationPlaylistFolder[]
+     */
+    public function getFolders(): Collection
+    {
+        return $this->folders;
     }
 
     /**

@@ -5,7 +5,6 @@ namespace App\Console\Command\Internal;
 use App\Console\Application;
 use App\Console\Command\CommandAbstract;
 use App\Entity;
-use App\Flysystem\FilesystemManager;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -18,19 +17,15 @@ class SftpUploadCommand extends CommandAbstract
 
     protected LoggerInterface $logger;
 
-    protected FilesystemManager $filesystem;
-
     public function __construct(
         Application $application,
         MessageBus $messageBus,
-        LoggerInterface $logger,
-        FilesystemManager $filesystem
+        LoggerInterface $logger
     ) {
         parent::__construct($application);
 
         $this->messageBus = $messageBus;
         $this->logger = $logger;
-        $this->filesystem = $filesystem;
     }
 
     public function __invoke(
@@ -70,16 +65,7 @@ class SftpUploadCommand extends CommandAbstract
             return 1;
         }
 
-        $this->flushCache($storageLocation);
-
         return $this->handleNewUpload($storageLocation, $path);
-    }
-
-    protected function flushCache(Entity\StorageLocation $storageLocation): void
-    {
-        $adapter = $storageLocation->getStorageAdapter();
-        $fs = $this->filesystem->getFilesystemForAdapter($adapter, true);
-        $fs->clearCache(false);
     }
 
     protected function handleNewUpload(Entity\StorageLocation $storageLocation, $path): int

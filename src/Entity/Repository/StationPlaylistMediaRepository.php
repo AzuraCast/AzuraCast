@@ -72,11 +72,11 @@ class StationPlaylistMediaRepository extends Repository
             $record = new Entity\StationPlaylistMedia($playlist, $media);
             $record->setWeight($weight);
             $this->em->persist($record);
-        }
 
-        // Add the newly added song into the cached queue.
-        $playlist->addToQueue($media);
-        $this->em->persist($playlist);
+            // Add the newly added song into the cached queue.
+            $playlist->addToQueue($media);
+            $this->em->persist($playlist);
+        }
 
         return $weight;
     }

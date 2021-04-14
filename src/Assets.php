@@ -77,6 +77,8 @@ class Assets
     {
         if (!empty($vueComponents['entrypoints'])) {
             foreach ($vueComponents['entrypoints'] as $componentName => $componentDeps) {
+                $componentName = 'Vue_' . $componentName;
+
                 $library = $this->libraries[$componentName] ?? [
                         'order' => 10,
                         'require' => [],
@@ -254,6 +256,31 @@ class Assets
                     'js' => (is_array($js_script)) ? $js_script : [$js_script],
                 ],
             ]
+        );
+
+        return $this;
+    }
+
+    public function addVueRender(string $name, string $elementId, array $props = []): self
+    {
+        $this->load($name);
+
+        $nameWithoutPrefix = str_replace('Vue_', '', $name);
+        $propsJson = json_encode($props, JSON_THROW_ON_ERROR);
+
+        $this->addInlineJs(
+            <<<JS
+                $(function () {
+                    new Vue({
+                        el: '${elementId}',
+                        render: function (createElement) {
+                            return createElement(${nameWithoutPrefix}.default, {
+                                props: ${propsJson}
+                            });
+                        }
+                    });
+                });
+            JS
         );
 
         return $this;

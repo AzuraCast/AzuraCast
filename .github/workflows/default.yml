@@ -14,12 +14,14 @@ on :
       - ci-testing
       - main
       - stable
+    tags :
+      - '*'
   schedule :
     - cron : '0 2 * * 0' # Weekly on Sundays at 02:00
 
 jobs :
   build :
-    name : Build, Test and Publish
+    name : Build and Test
     runs-on : ubuntu-latest
     steps :
       - uses : actions/checkout@master
@@ -37,6 +39,7 @@ jobs :
       - name : Set console permissions and clear static assets.
         run : |
           rm -rf web/static/dist
+          rm -rf web/static/webpack.json
           rm -rf web/static/assets.json
           chmod a+x bin/console
 
@@ -72,19 +75,20 @@ jobs :
 
       - name : Set up functional test environment.
         run : |
-          docker pull azuracast/azuracast_web_v2:latest
-          docker build --cache-from azuracast/azuracast_web_v2:latest -t azuracast/azuracast_web_v2:latest .
-
+          cp sample.env .env
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
-          cp docker-compose.testing.yml docker-compose.override.yml
+          docker-compose pull web
 
+          cp docker-compose.testing.yml docker-compose.override.yml
           docker-compose build web
+
           docker-compose run --rm --user="azuracast" web azuracast_install
 
       - name : Run functional test suite.
         run : |
           chmod 777 tests/_output/
+          chmod 777 tests/_support/_generated
           docker-compose run --rm --user="azuracast" web composer dev-test
 
       - name : Stop all running containers.
@@ -96,24 +100,68 @@ jobs :
         run : |
           cat tests/_output/*
 
-      - name : Determine Tag Name
-        if : github.event_name == 'push' || github.event_name == 'schedule'
-        id : tag
-        run : |
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
-          if [ $BRANCH_NAME == 'main' ]; then
-            BRANCH_NAME="latest"
-          fi
+      - name : Upload built static assets and translations
+        uses : actions/upload-artifact@v2
+        with :
+          name : assets
+          if-no-files-found : error
+          path : |
+            resources/locale/compiled
+            resources/locale/translations.json
+            web/static/dist
+            web/static/webpack.json
+            web/static/assets.json
 
-          echo "::set-output name=TAG::${BRANCH_NAME}"
+  publish :
+    name : Publish
+    needs : build
+    runs-on : ubuntu-latest
+    if : github.event_name == 'push' || github.event_name == 'schedule'
+    steps :
+      - uses : actions/checkout@master
+
+      - name : Download built static assets from previous step
+        uses : actions/download-artifact@v2
+        with :
+          name : assets
+
+      # - name : Set up QEMU
+      #  uses : docker/setup-qemu-action@v1
+
+      - name : Set up Docker Buildx
+        uses : docker/setup-buildx-action@v1
+
+      - name : Login to DockerHub
+        uses : docker/login-action@v1
+        with :
+          username : ${{ secrets.DOCKERHUB_USERNAME }}
+          password : ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name : Login to GitHub Container Registry
+        uses : docker/login-action@v1
+        with :
+          registry : ghcr.io
+          username : ${{ github.repository_owner }}
+          password : ${{ secrets.GITHUB_TOKEN }}
+
+      - name : Build Docker Metadata
+        id : meta
+        uses : crazy-max/ghaction-docker-meta@v2
+        with :
+          images : |
+            azuracast/azuracast_web_v2
+            ghcr.io/azuracast/web
+          tags : |
+            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
+            type=ref,event=branch
+            type=semver,pattern={{version}}
 
       - name : Publish to Docker Hub
-        uses : docker/build-push-action@v1
-        if : github.event_name == 'push' || github.event_name == 'schedule'
+        uses : docker/build-push-action@v2
         with :
-          username : ${{ secrets.DOCKER_USERNAME }}
-          password : ${{ secrets.DOCKER_PASSWORD }}
-          repository : azuracast/azuracast_web_v2
-          cache_froms : azuracast/azuracast_web_v2:latest
-          tags : ${{ steps.tag.outputs.TAG }}
+          context : .
+          # platforms : linux/amd64,linux/arm64
+          cache-from : type=registry,ref=azuracast/azuracast_web_v2:latest
           push : true
+          tags : ${{ steps.meta.outputs.tags }}
+          labels : ${{ steps.meta.outputs.labels }}

@@ -2,19 +2,19 @@
 
 namespace App\Controller\Api\Stations\Files;
 
+use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Flysystem\Filesystem;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
+use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
-use Jhofm\FlysystemIterator\Filter\FilterFactory;
-use Jhofm\FlysystemIterator\Options\Options;
+use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Throwable;
@@ -60,27 +60,29 @@ class BatchAction
     ): ResponseInterface {
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
-        $fs = $storageLocation->getFilesystem();
+
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
         switch ($request->getParam('do')) {
             case 'delete':
-                $result = $this->doDelete($request, $station, $storageLocation, $fs);
+                $result = $this->doDelete($request, $station, $storageLocation, $fsMedia);
                 break;
 
             case 'playlist':
-                $result = $this->doPlaylist($request, $station, $storageLocation, $fs);
+                $result = $this->doPlaylist($request, $station, $storageLocation, $fsMedia);
                 break;
 
             case 'move':
-                $result = $this->doMove($request, $station, $storageLocation, $fs);
+                $result = $this->doMove($request, $station, $storageLocation, $fsMedia);
                 break;
 
             case 'queue':
-                $result = $this->doQueue($request, $station, $storageLocation, $fs);
+                $result = $this->doQueue($request, $station, $storageLocation, $fsMedia);
                 break;
 
             case 'reprocess':
-                $result = $this->doReprocess($request, $station, $storageLocation, $fs);
+                $result = $this->doReprocess($request, $station, $storageLocation, $fsMedia);
                 break;
 
             default:
@@ -102,7 +104,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        Filesystem $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -146,7 +148,7 @@ class BatchAction
             }
 
             try {
-                $fs->deleteDir($dir);
+                $fs->deleteDirectory($dir);
             } catch (Throwable $e) {
                 $result->errors[] = $dir . ': ' . $e->getMessage();
             }
@@ -163,7 +165,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        Filesystem $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -253,7 +255,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        Filesystem $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, false);
 
@@ -272,10 +274,9 @@ class BatchAction
                 $newPath = File::renameDirectoryInPath($oldPath, $from, $to);
 
                 try {
-                    if ($fs->rename($oldPath, $newPath)) {
-                        $record->setPath($newPath);
-                        $this->em->persist($record);
-                    }
+                    $fs->move($oldPath, $newPath);
+                    $record->setPath($newPath);
+                    $this->em->persist($record);
                 } catch (Throwable $e) {
                     $result->errors[] = $oldPath . ': ' . $e->getMessage();
                 }
@@ -284,25 +285,24 @@ class BatchAction
 
         foreach ($result->directories as $dirPath) {
             $newDirPath = File::renameDirectoryInPath($dirPath, $from, $to);
+            $fs->move($dirPath, $newDirPath);
 
-            if ($fs->rename($dirPath, $newDirPath)) {
-                $toMove = [
-                    $this->iterateMediaInDirectory($storageLocation, $dirPath),
-                    $this->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
-                    $this->iteratePlaylistFoldersInDirectory($station, $dirPath),
-                ];
+            $toMove = [
+                $this->iterateMediaInDirectory($storageLocation, $dirPath),
+                $this->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
+                $this->iteratePlaylistFoldersInDirectory($station, $dirPath),
+            ];
 
-                foreach ($toMove as $iterator) {
-                    foreach ($iterator as $record) {
-                        /** @var Entity\PathAwareInterface $record */
-                        try {
-                            $record->setPath(
-                                File::renameDirectoryInPath($record->getPath(), $from, $to)
-                            );
-                            $this->em->persist($record);
-                        } catch (Throwable $e) {
-                            $result->errors[] = $record->getPath() . ': ' . $e->getMessage();
-                        }
+            foreach ($toMove as $iterator) {
+                foreach ($iterator as $record) {
+                    /** @var Entity\PathAwareInterface $record */
+                    try {
+                        $record->setPath(
+                            File::renameDirectoryInPath($record->getPath(), $from, $to)
+                        );
+                        $this->em->persist($record);
+                    } catch (Throwable $e) {
+                        $result->errors[] = $record->getPath() . ': ' . $e->getMessage();
                     }
                 }
             }
@@ -315,7 +315,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        Filesystem $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -324,8 +324,7 @@ class BatchAction
                 /** @var Entity\Station $stationRef */
                 $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
 
-                $newQueue = new Entity\StationQueue($stationRef, $media);
-                $newQueue->setMedia($media);
+                $newQueue = Entity\StationQueue::fromMedia($stationRef, $media);
                 $newQueue->setTimestampCued(time());
 
                 $this->em->persist($newQueue);
@@ -341,7 +340,7 @@ class BatchAction
         ServerRequest $request,
         Entity\Station $station,
         Entity\StorageLocation $storageLocation,
-        Filesystem $fs
+        ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
@@ -389,7 +388,7 @@ class BatchAction
 
     protected function parseRequest(
         ServerRequest $request,
-        Filesystem $fs,
+        ExtendedFilesystemInterface $fs,
         bool $recursive = false
     ): Entity\Api\BatchResult {
         $files = array_values((array)$request->getParam('files', []));
@@ -397,12 +396,10 @@ class BatchAction
 
         if ($recursive) {
             foreach ($directories as $dir) {
-                $dirIterator = $fs->createIterator(
-                    $dir,
-                    [
-                        Options::OPTION_IS_RECURSIVE => true,
-                        Options::OPTION_FILTER => FilterFactory::isFile(),
-                    ]
+                $dirIterator = $fs->listContents($dir, true)->filter(
+                    function (StorageAttributes $attrs) {
+                        return $attrs->isFile();
+                    }
                 );
 
                 foreach ($dirIterator as $subDirMeta) {
@@ -430,7 +427,7 @@ class BatchAction
      */
     protected function iterateMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
     {
-        return SimpleBatchIteratorAggregate::fromTraversableResult(
+        return BatchIteratorAggregate::fromTraversableResult(
             $this->mediaRepo->iteratePaths($paths, $storageLocation),
             $this->em,
             25
@@ -455,7 +452,7 @@ class BatchAction
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
 
-        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+        return BatchIteratorAggregate::fromQuery($query, 25);
     }
 
     /**
@@ -470,7 +467,7 @@ class BatchAction
      */
     protected function iterateUnprocessableMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
     {
-        return SimpleBatchIteratorAggregate::fromTraversableResult(
+        return BatchIteratorAggregate::fromTraversableResult(
             $this->unprocessableMediaRepo->iteratePaths($paths, $storageLocation),
             $this->em,
             25
@@ -497,7 +494,7 @@ class BatchAction
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
 
-        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+        return BatchIteratorAggregate::fromQuery($query, 25);
     }
 
     /**
@@ -518,7 +515,7 @@ class BatchAction
         )->setParameter('station', $station)
             ->setParameter('path', $dir . '%');
 
-        return SimpleBatchIteratorAggregate::fromQuery($query, 25);
+        return BatchIteratorAggregate::fromQuery($query, 25);
     }
 
     protected function writePlaylistChanges(

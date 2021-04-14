@@ -21,10 +21,10 @@ $(function () {
             };
         },
         formatters: {
-            "datetime": function (column, row) {
+            'datetime': function (column, row) {
                 return formatTimestamp(row.played_at);
             },
-            "delta": function (column, row) {
+            'delta': function (column, row) {
                 if (row.delta_total > 0) {
                     return '<big><span class="text-success"><i class="material-icons" aria-hidden="true">trending_up</i> ' + row.delta_total + '</span></big>';
                 } else if (row.delta_total < 0) {
@@ -33,7 +33,7 @@ $(function () {
                     return '<big>0</big>';
                 }
             },
-            "song_title": function (column, row) {
+            'song_title': function (column, row) {
                 if (row.song_title) {
                     return '<b>' + row.song_title + '</b><br>' + row.song_artist;
                 } else {

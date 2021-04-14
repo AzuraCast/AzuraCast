@@ -16,7 +16,7 @@ class C03_Station_MountPointsCest extends CestAbstract
         $I->amOnPage('/station/' . $station_id . '/mounts');
 
         $I->see('Mount Points');
-        $I->click('add', '#content');
+        $I->click('Add Mount Point', '#content');
 
         $I->submitForm('.form', [
             'name' => '/test.mp3',

@@ -1,15 +1,32 @@
 <?php
-$this->layout('minimal', [
-    'page_class' => 'dj station-' . $station->getShortName(),
-    'title' => 'Web DJ - ' . $this->e($station->getName()),
-    'hide_footer' => true,
-]);
+
+$this->layout(
+    'minimal',
+    [
+        'page_class' => 'dj station-' . $station->getShortName(),
+        'title' => 'Web DJ - ' . $this->e($station->getName()),
+        'hide_footer' => true,
+    ]
+);
 
 /** @var \App\Assets $assets */
-$assets
-    ->load('vue')
-    ->load('Webcaster')
-    ->addInlineJs($this->fetch('frontend/public/dj.js', ['station' => $station, 'base_uri' => $base_uri]));
+
+$libUrls = [];
+$lib = $assets->getLibrary('Vue_PublicWebDJ');
+
+$scripts = array_slice($lib['files']['js'], 0, -1);
+
+foreach ($scripts as $script) {
+    $libUrls[] = $router->getBaseUrl() . $assets->getUrl($script['src']);
+}
+
+$props = [
+    'stationName' => $station->getName(),
+    'libUrls' => $libUrls,
+    'baseUri' => $base_uri,
+];
+
+$assets->addVueRender('Vue_PublicWebDJ', '#web_dj', $props);
 ?>
 <section id="content" role="main" style="height: 100vh;">
     <div class="container pt-5">

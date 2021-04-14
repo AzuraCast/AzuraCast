@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr;
-use Jhofm\FlysystemIterator\Options\Options;
+use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 
@@ -23,19 +23,15 @@ class ListAction
         Response $response,
         EntityManagerInterface $em,
         CacheInterface $cache,
-        FilesystemManager $filesystem,
         Entity\Repository\StationRepository $stationRepo
     ): ResponseInterface {
-        $station = $request->getStation();
         $router = $request->getRouter();
 
+        $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
-        $fs = $filesystem->getFilesystemForAdapter($storageLocation->getStorageAdapter(), true);
 
-        $flushCache = (bool)$request->getParam('flushCache', false);
-        if ($flushCache) {
-            $fs->clearCache();
-        }
+        $fsStation = new StationFilesystems($station);
+        $fs = $fsStation->getMediaFilesystem();
 
         $currentDir = $request->getParam('currentDirectory', '');
 
@@ -54,6 +50,8 @@ class ListAction
 
         $cacheKey = implode('.', $cacheKeyParts);
 
+        $flushCache = (bool)$request->getParam('flushCache', false);
+
         if (!$flushCache && $cache->has($cacheKey)) {
             $result = $cache->get($cacheKey);
         } else {
@@ -63,13 +61,8 @@ class ListAction
                 ? '%'
                 : $currentDir . '/%';
 
-            $mediaQuery = $em->createQueryBuilder()
-                ->select(
-                    'partial sm.{id, song_id, unique_id, art_updated_at, path, length, length_text, '
-                    . 'artist, title, album, genre}'
-                )
-                ->addSelect('partial spm.{id}, partial sp.{id, name}')
-                ->addSelect('partial smcf.{id, field_id, value}')
+            $mediaQueryBuilder = $em->createQueryBuilder()
+                ->select(['sm', 'spm', 'sp', 'smcf'])
                 ->from(Entity\StationMedia::class, 'sm')
                 ->leftJoin('sm.custom_fields', 'smcf')
                 ->leftJoin('sm.playlists', 'spm')
@@ -83,7 +76,7 @@ class ListAction
             // Apply searching
             $foldersInDirQuery = $em->createQuery(
                 <<<'DQL'
-                    SELECT spf, partial sp.{id, name}
+                    SELECT spf, sp
                     FROM App\Entity\StationPlaylistFolder spf
                     JOIN spf.playlist sp
                     WHERE spf.station = :station
@@ -106,11 +99,14 @@ class ListAction
                 if ('special:unprocessable' === $searchPhrase) {
                     $mediaInDirRaw = [];
 
-                    $unprocessableMediaRaw = $unprocessableMediaQuery->getArrayResult();
+                    $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
+                        [],
+                        $unprocessableMediaQuery::HYDRATE_ARRAY
+                    );
                 } else {
                     if ('special:duplicates' === $searchPhrase) {
-                        $mediaQuery->andWhere(
-                            $mediaQuery->expr()->in(
+                        $mediaQueryBuilder->andWhere(
+                            $mediaQueryBuilder->expr()->in(
                                 'sm.song_id',
                                 <<<'DQL'
                                     SELECT sm2.song_id FROM
@@ -124,14 +120,15 @@ class ListAction
                     } elseif (0 === strpos($searchPhrase, 'playlist:')) {
                         [, $playlistName] = explode(':', $searchPhrase, 2);
 
-                        $mediaQuery->andWhere('sp.name = :playlist_name')
+                        $mediaQueryBuilder->andWhere('sp.name = :playlist_name')
                             ->setParameter('playlist_name', $playlistName);
                     } else {
-                        $mediaQuery->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                        $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
                             ->setParameter('query', '%' . $searchPhrase . '%');
                     }
 
-                    $mediaInDirRaw = $mediaQuery->getQuery()->getArrayResult();
+                    $mediaQuery = $mediaQueryBuilder->getQuery();
+                    $mediaInDirRaw = $mediaQuery->getArrayResult();
 
                     $unprocessableMediaRaw = [];
                 }
@@ -139,13 +136,18 @@ class ListAction
                 $foldersInDirRaw = [];
             } else {
                 // Avoid loading subfolder media.
-                $mediaQuery->andWhere('sm.path NOT LIKE :pathWithSubfolders')
+                $mediaQueryBuilder->andWhere('sm.path NOT LIKE :pathWithSubfolders')
                     ->setParameter('pathWithSubfolders', $pathLike . '/%');
 
-                $mediaInDirRaw = $mediaQuery->getQuery()->getArrayResult();
+                $mediaQuery = $mediaQueryBuilder->getQuery();
+                $mediaInDirRaw = $mediaQuery->getArrayResult();
 
                 $foldersInDirRaw = $foldersInDirQuery->getArrayResult();
-                $unprocessableMediaRaw = $unprocessableMediaQuery->getArrayResult();
+
+                $unprocessableMediaRaw = $unprocessableMediaQuery->toIterable(
+                    [],
+                    $unprocessableMediaQuery::HYDRATE_ARRAY
+                );
             }
 
             // Process all database results.
@@ -174,7 +176,7 @@ class ListAction
                         ]
                     );
 
-                foreach ($row['custom_fields'] as $custom_field) {
+                foreach ((array)$row['custom_fields'] as $custom_field) {
                     $media->custom_fields[$custom_field['field_id']] = $custom_field['value'];
                 }
 
@@ -244,34 +246,33 @@ class ListAction
                     $files = array_keys($mediaInDir);
                 }
             } else {
-                $filesIterator = $fs->createIterator(
-                    $currentDir,
-                    [
-                        Options::OPTION_IS_RECURSIVE => false,
-                    ]
-                );
-
                 $protectedPaths = [Entity\StationMedia::DIR_ALBUM_ART, Entity\StationMedia::DIR_WAVEFORMS];
 
-                $files = [];
-                foreach ($filesIterator as $fileRow) {
-                    if ($currentDir === '' && in_array($fileRow['path'], $protectedPaths, true)) {
-                        continue;
+                $files = $fs->listContents($currentDir, false)->filter(
+                    function (StorageAttributes $attributes) use ($currentDir, $protectedPaths) {
+                        return !($currentDir === '' && in_array($attributes->path(), $protectedPaths, true));
                     }
-
-                    $files[] = $fileRow['path'];
-                }
+                );
             }
 
-            foreach ($files as $path) {
-                $meta = $fs->getMetadata($path);
-
+            foreach ($files as $file) {
                 $row = new Entity\Api\FileList();
-                $row->path = $path;
+
+                if ($file instanceof StorageAttributes) {
+                    $row->path = $file->path();
+                    $row->timestamp = $file->lastModified() ?? 0;
+                    $row->is_dir = $file->isDir();
+                } else {
+                    $row->path = $file;
+                    $row->timestamp = $fs->lastModified($file) ?? 0;
+                    $row->is_dir = false;
+                }
+
+                $row->size = ($row->is_dir) ? 0 : $fs->fileSize($row->path);
 
                 $shortname = (!empty($searchPhrase))
-                    ? $path
-                    : basename($path);
+                    ? $row->path
+                    : basename($row->path);
 
                 $max_length = 60;
                 if (mb_strlen($shortname) > $max_length) {
@@ -279,26 +280,22 @@ class ListAction
                 }
                 $row->path_short = $shortname;
 
-                $row->timestamp = $meta['timestamp'] ?? 0;
-                $row->size = $meta['size'];
-                $row->is_dir = ('dir' === $meta['type']);
-
                 $row->media = new Entity\Api\FileListMedia();
 
-                if (isset($mediaInDir[$path])) {
-                    $row->media = $mediaInDir[$path]['media'];
+                if (isset($mediaInDir[$row->path])) {
+                    $row->media = $mediaInDir[$row->path]['media'];
                     $row->text = $row->media->text;
-                    $row->playlists = (array)$mediaInDir[$path]['playlists'];
-                } elseif ('dir' === $meta['type']) {
+                    $row->playlists = (array)$mediaInDir[$row->path]['playlists'];
+                } elseif ($row->is_dir) {
                     $row->text = __('Directory');
 
-                    if (isset($foldersInDir[$path])) {
-                        $row->playlists = (array)$foldersInDir[$path]['playlists'];
+                    if (isset($foldersInDir[$row->path])) {
+                        $row->playlists = (array)$foldersInDir[$row->path]['playlists'];
                     }
-                } elseif (isset($unprocessableMedia[$path])) {
+                } elseif (isset($unprocessableMedia[$row->path])) {
                     $row->text = __(
                         'File Not Processed: %s',
-                        Utilities\Strings::truncateText($unprocessableMedia[$path])
+                        Utilities\Strings::truncateText($unprocessableMedia[$row->path])
                     );
                 } else {
                     $row->text = __('File Processing');
@@ -308,12 +305,12 @@ class ListAction
                     'download' => (string)$router->named(
                         'api:stations:files:download',
                         ['station_id' => $station->getId()],
-                        ['file' => $path]
+                        ['file' => $row->path]
                     ),
                     'rename' => (string)$router->named(
                         'api:stations:files:rename',
                         ['station_id' => $station->getId()],
-                        ['file' => $path]
+                        ['file' => $row->path]
                     ),
                 ];
 

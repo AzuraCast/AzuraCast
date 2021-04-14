@@ -10,10 +10,14 @@ $this->layout('main', ['title' => __('My Account'), 'manual' => true]);
         <div class="card mb-4">
             <div class="card-body">
                 <div class="media">
-                    <a class="align-self-center" href="http://www.gravatar.com/" target="_blank">
-                        <img src="<?=$user->getAvatar(64)?>" style="width: 64px; height: auto;" alt="">
-                    </a>
-                    <div class="media-body ml-3">
+                    <?php
+                    if ('' !== $avatarServiceUrl): ?>
+                        <a class="align-self-center mr-3" href="<?=$avatarServiceUrl?>" target="_blank">
+                            <img src="<?=$avatar?>" style="width: 64px; height: auto;" alt="">
+                        </a>
+                    <?php
+                    endif; ?>
+                    <div class="media-body">
                         <h2 class="card-title mt-2">
                             <?php
                             if (!empty($user->getName())): ?>

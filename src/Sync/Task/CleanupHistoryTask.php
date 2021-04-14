@@ -10,6 +10,8 @@ class CleanupHistoryTask extends AbstractTask
 {
     protected Entity\Repository\SongHistoryRepository $historyRepo;
 
+    protected Entity\Repository\StationQueueRepository $queueRepo;
+
     protected Entity\Repository\ListenerRepository $listenerRepo;
 
     protected Entity\Repository\SettingsRepository $settingsRepo;
@@ -19,12 +21,14 @@ class CleanupHistoryTask extends AbstractTask
         LoggerInterface $logger,
         Entity\Repository\SettingsRepository $settingsRepo,
         Entity\Repository\SongHistoryRepository $historyRepo,
+        Entity\Repository\StationQueueRepository $queueRepo,
         Entity\Repository\ListenerRepository $listenerRepo
     ) {
         parent::__construct($em, $logger);
 
         $this->settingsRepo = $settingsRepo;
         $this->historyRepo = $historyRepo;
+        $this->queueRepo = $queueRepo;
         $this->listenerRepo = $listenerRepo;
     }
 
@@ -35,6 +39,7 @@ class CleanupHistoryTask extends AbstractTask
 
         if ($daysToKeep !== 0) {
             $this->historyRepo->cleanup($daysToKeep);
+            $this->queueRepo->cleanup($daysToKeep);
             $this->listenerRepo->cleanup($daysToKeep);
         }
     }

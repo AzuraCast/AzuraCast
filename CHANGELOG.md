@@ -5,6 +5,18 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+There have been no changes since the latest stable release.
+
+---
+
+# AzuraCast 0.12.3 (Apr 14, 2021)
+
+## New Features/Changes
+
 - **Twitter Player Preview**: If you include the URL of your station's public player page in a tweet, a player component
   will automatically appear in the tweet that includes an embedded player for your station.
 

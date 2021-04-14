@@ -144,7 +144,7 @@ jobs :
           username : ${{ github.repository_owner }}
           password : ${{ secrets.GITHUB_TOKEN }}
 
-      - name : Docker meta
+      - name : Build Docker Metadata
         id : meta
         uses : crazy-max/ghaction-docker-meta@v2
         with :
@@ -161,7 +161,7 @@ jobs :
         with :
           context : .
           # platforms : linux/amd64,linux/arm64
-          cache-from : type=registry,ref=azuracast/azuracast_web_v2:${{ steps.tag.outputs.TAG }}
+          cache-from : type=registry,ref=azuracast/azuracast_web_v2:latest
           push : true
           tags : ${{ steps.meta.outputs.tags }}
           labels : ${{ steps.meta.outputs.labels }}

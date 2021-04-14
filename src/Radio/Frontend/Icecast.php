@@ -36,10 +36,7 @@ class Icecast extends AbstractFrontend
 
         $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
-        $npAdapter = $this->adapterFactory->getAdapter(
-            AdapterFactory::ADAPTER_ICECAST,
-            $baseUrl
-        );
+        $npAdapter = $this->adapterFactory->getIcecastAdapter($baseUrl);
 
         $npAdapter->setAdminPassword($feConfig->getAdminPassword());
 

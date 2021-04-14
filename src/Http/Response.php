@@ -2,6 +2,10 @@
 
 namespace App\Http;
 
+use Azura\Files\Adapter\LocalAdapterInterface;
+use Azura\Files\ExtendedFilesystemInterface;
+use Azura\Files\FilesystemInterface;
+use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -159,5 +163,55 @@ final class Response extends \Slim\Http\Response
         $response = $response->withBody($fileStream);
 
         return new static($response, $this->streamFactory);
+    }
+
+    public function streamFilesystemFile(
+        ExtendedFilesystemInterface $filesystem,
+        string $path,
+        string $fileName = null,
+        string $disposition = 'attachment'
+    ): ResponseInterface {
+        /** @var FileAttributes $fileMeta */
+        $fileMeta = $filesystem->getMetadata($path);
+        if (!$fileMeta->isFile()) {
+            throw new \InvalidArgumentException('Specified file is not a file!');
+        }
+
+        $fileName ??= basename($path);
+
+        if ('attachment' === $disposition) {
+            /*
+             * The regex used below is to ensure that the $fileName contains only
+             * characters ranging from ASCII 128-255 and ASCII 0-31 and 127 are replaced with an empty string
+             */
+            $disposition .= '; filename="' . preg_replace('/[\x00-\x1F\x7F\"]/', ' ', $fileName) . '"';
+            $disposition .= "; filename*=UTF-8''" . rawurlencode($fileName);
+        }
+
+        $response = $this->withHeader('Content-Disposition', $disposition)
+            ->withHeader('Content-Length', $fileMeta->fileSize())
+            ->withHeader('X-Accel-Buffering', 'no');
+
+        $adapter = $filesystem->getAdapter();
+        if ($adapter instanceof LocalAdapterInterface) {
+            $localPath = $filesystem->getLocalPath($path);
+
+            // Special internal nginx routes to use X-Accel-Redirect for far more performant file serving.
+            $specialPaths = [
+                '/var/azuracast/backups' => '/internal/backups',
+                '/var/azuracast/stations' => '/internal/stations',
+            ];
+
+            foreach ($specialPaths as $diskPath => $nginxPath) {
+                if (0 === strpos($localPath, $diskPath)) {
+                    $accelPath = str_replace($diskPath, $nginxPath, $localPath);
+
+                    return $response->withHeader('Content-Type', $fileMeta->mimeType())
+                        ->withHeader('X-Accel-Redirect', $accelPath);
+                }
+            }
+        }
+
+        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType());
     }
 }

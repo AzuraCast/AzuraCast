@@ -26,11 +26,11 @@ class GetSyncTasks
     }
 
     /**
-     * @return AbstractTask[]
+     * @return \Generator|AbstractTask[]
      */
-    public function getTasks(): array
+    public function getTasks(): \Generator
     {
-        return $this->tasks;
+        yield from $this->tasks;
     }
 
     public function addTask(AbstractTask $task, ?string $key = null): void

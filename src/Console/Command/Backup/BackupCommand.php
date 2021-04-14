@@ -167,7 +167,7 @@ class BackupCommand extends CommandAbstract
 
         if (null !== $storageLocation) {
             $fs = $storageLocation->getFilesystem();
-            $fs->putFromLocal($tmpPath, $path);
+            $fs->uploadAndDeleteOriginal($tmpPath, $path);
         }
 
         $io->newLine();

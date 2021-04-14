@@ -6,7 +6,6 @@ use App\Config;
 use App\Controller\AbstractLogViewerController;
 use App\Entity;
 use App\Exception\NotFoundException;
-use App\Flysystem\Filesystem;
 use App\Form\BackupSettingsForm;
 use App\Form\Form;
 use App\Http\Response;
@@ -15,6 +14,10 @@ use App\Message\BackupMessage;
 use App\Session\Flash;
 use App\Sync\Task\RunBackupTask;
 use App\Utilities\File;
+use Azura\Files\Attributes\FileAttributes;
+use Azura\Files\ExtendedFilesystemInterface;
+use InvalidArgumentException;
+use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -49,10 +52,24 @@ class BackupsController extends AbstractLogViewerController
         $storageLocations = $this->storageLocationRepo->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
         foreach ($storageLocations as $storageLocation) {
             $fs = $storageLocation->getFilesystem();
+
+            /** @var StorageAttributes $file */
             foreach ($fs->listContents('', true) as $file) {
-                $file['storageLocationId'] = $storageLocation->getId();
-                $file['pathEncoded'] = base64_encode($storageLocation->getId() . '|' . $file['path']);
-                $backups[] = $file;
+                if ($file->isDir()) {
+                    continue;
+                }
+
+                /** @var FileAttributes $file */
+                $filename = $file->path();
+
+                $backups[] = [
+                    'path' => $filename,
+                    'basename' => basename($filename),
+                    'pathEncoded' => base64_encode($storageLocation->getId() . '|' . $filename),
+                    'timestamp' => $file->lastModified(),
+                    'size' => $file->fileSize(),
+                    'storageLocationId' => $storageLocation->getId(),
+                ];
             }
         }
         $backups = array_reverse($backups);
@@ -167,8 +184,10 @@ class BackupsController extends AbstractLogViewerController
     ): ResponseInterface {
         [$path, $fs] = $this->getFile($path);
 
-        /** @var Filesystem $fs */
-        return $fs->streamToResponse($response->withNoCache(), $path);
+        /** @var ExtendedFilesystemInterface $fs */
+        return $response
+            ->withNoCache()
+            ->streamFilesystemFile($fs, $path);
     }
 
     public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface
@@ -177,7 +196,7 @@ class BackupsController extends AbstractLogViewerController
 
         [$path, $fs] = $this->getFile($path);
 
-        /** @var Filesystem $fs */
+        /** @var ExtendedFilesystemInterface $fs */
         $fs->delete($path);
 
         $request->getFlash()->addMessage('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
@@ -187,8 +206,7 @@ class BackupsController extends AbstractLogViewerController
     /**
      * @param string $rawPath
      *
-     * @return array{0: string, 1: Filesystem}
-     * @throws NotFoundException
+     * @return array{0: string, 1: ExtendedFilesystemInterface}
      */
     protected function getFile(string $rawPath): array
     {
@@ -202,12 +220,12 @@ class BackupsController extends AbstractLogViewerController
 
 
         if (!($storageLocation instanceof Entity\StorageLocation)) {
-            throw new \InvalidArgumentException('Invalid storage location.');
+            throw new InvalidArgumentException('Invalid storage location.');
         }
 
         $fs = $storageLocation->getFilesystem();
 
-        if (!$fs->has($path)) {
+        if (!$fs->fileExists($path)) {
             throw new NotFoundException(__('Backup not found.'));
         }
 

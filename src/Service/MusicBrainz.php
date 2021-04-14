@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity;
 use App\Exception\RateLimitExceededException;
 use App\LockFactory;
 use App\Version;
@@ -80,6 +81,64 @@ class MusicBrainz
 
         $responseBody = (string)$response->getBody();
         return json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function findRecordingsForSong(
+        Entity\SongInterface $song,
+        string $include = 'releases'
+    ): array {
+        $query = [];
+
+        $query[] = $this->quoteQuery($song->getTitle());
+
+        if (!empty($song->getArtist())) {
+            $query[] = 'artist:' . $this->quoteQuery($song->getArtist());
+        }
+
+        if ($song instanceof Entity\StationMedia) {
+            $advancedQuery = $query;
+
+            if (!empty($song->getAlbum())) {
+                $advancedQuery[] = 'release:' . $this->quoteQuery($song->getAlbum());
+            }
+            if (!empty($song->getIsrc())) {
+                $advancedQuery[] = 'isrc:' . $this->quoteQuery($song->getIsrc());
+            }
+
+            if (count($advancedQuery) > count($query)) {
+                $response = $this->makeRequest(
+                    'recording/',
+                    [
+                        'query' => implode(' AND ', $advancedQuery),
+                        'inc' => $include,
+                        'limit' => 5,
+                    ]
+                );
+
+                if (!empty($response['recordings'])) {
+                    return $response['recordings'];
+                }
+            }
+        }
+
+        $response = $this->makeRequest(
+            'recording/',
+            [
+                'query' => implode(' AND ', $query),
+                'inc' => $include,
+                'limit' => 5,
+            ]
+        );
+
+        return $response['recordings'];
+    }
+
+    protected function quoteQuery(string $query): string
+    {
+        return '"' . str_replace('"', '\'', $query) . '"';
     }
 
     public function getCoverArt(

@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity\Api\Error;
-use App\Flysystem\FilesystemManager;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -12,22 +12,21 @@ class DownloadAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        FilesystemManager $filesystem
+        Response $response
     ): ResponseInterface {
         set_time_limit(600);
 
         $station = $request->getStation();
-        $storageLocation = $station->getMediaStorageLocation();
-        $fs = $storageLocation->getFilesystem();
+        $fsStation = new StationFilesystems($station);
+        $fsMedia = $fsStation->getMediaFilesystem();
 
         $path = $request->getParam('file');
 
-        if (!$fs->has($path)) {
+        if (!$fsMedia->fileExists($path)) {
             return $response->withStatus(404)
                 ->withJson(new Error(404, 'File not found.'));
         }
 
-        return $fs->streamToResponse($response, $path);
+        return $response->streamFilesystemFile($fsMedia, $path);
     }
 }

@@ -3,13 +3,13 @@
 namespace App\Controller\Api\Stations;
 
 use App;
+use App\Doctrine\BatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Utilities\Csv;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
@@ -106,7 +106,7 @@ class HistoryController
                 'Streamer',
             ];
 
-            $iterator = SimpleBatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
+            $iterator = BatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
 
             foreach ($iterator as $sh) {
                 /** @var Entity\SongHistory $sh */

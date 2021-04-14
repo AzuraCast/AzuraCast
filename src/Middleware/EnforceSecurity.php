@@ -55,6 +55,12 @@ class EnforceSecurity implements MiddlewareInterface
             $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
         }
 
+        // Deny crawling on any pages that don't explicitly allow it.
+        $robotsHeader = $response->getHeaderLine('X-Robots-Tag');
+        if ('' === $robotsHeader) {
+            $response = $response->withHeader('X-Robots-Tag', 'noindex, nofollow');
+        }
+
         // Set frame-deny header before next middleware, so it can be overwritten.
         $frameOptions = $response->getHeaderLine('X-Frame-Options');
         if ('*' === $frameOptions) {

@@ -26,6 +26,8 @@ $page_class .= ' theme-' . $customization->getTheme();
 
     <?=$this->fetch('partials/icons')?>
 
+    <?=$this->section('head')?>
+
     <?php
     $assets
         ->load('main')

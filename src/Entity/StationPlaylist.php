@@ -272,7 +272,7 @@ class StationPlaylist
     protected $folders;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="playlist")
+     * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @var Collection
      *
      * @DeepNormalize(true)

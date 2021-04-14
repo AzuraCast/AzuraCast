@@ -8,7 +8,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
-use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
 
 abstract class AbstractRemote

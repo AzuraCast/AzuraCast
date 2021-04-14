@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Config;
 use App\Entity;
 use App\Environment;
-use App\Flysystem\FilesystemManager;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
@@ -23,8 +22,6 @@ class StationCloneForm extends StationForm
 
     protected CheckMediaTask $media_sync;
 
-    protected FilesystemManager $filesystem;
-
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
@@ -36,8 +33,7 @@ class StationCloneForm extends StationForm
         Environment $environment,
         Adapters $adapters,
         Configuration $configuration,
-        CheckMediaTask $media_sync,
-        FilesystemManager $filesystem
+        CheckMediaTask $media_sync
     ) {
         parent::__construct(
             $em,
@@ -56,7 +52,6 @@ class StationCloneForm extends StationForm
 
         $this->configuration = $configuration;
         $this->media_sync = $media_sync;
-        $this->filesystem = $filesystem;
     }
 
     /**

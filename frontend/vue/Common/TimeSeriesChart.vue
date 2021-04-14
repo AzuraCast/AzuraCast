@@ -34,6 +34,13 @@ export default {
                 options: {
                     aspectRatio: 3,
                     plugins: {
+                        zoom: {
+                            // Container for pan options
+                            pan: {
+                                enabled: true,
+                                mode: 'x'
+                            }
+                        },
                         colorschemes: {
                             scheme: 'tableau.Tableau20'
                         }
@@ -47,7 +54,8 @@ export default {
                             },
                             ticks: {
                                 source: 'data',
-                                autoSkip: true
+                                autoSkip: true,
+                                min: moment().subtract(30, 'days')
                             }
                         }],
                         yAxes: [{

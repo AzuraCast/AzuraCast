@@ -49,7 +49,7 @@ class ListenerRepository extends Repository
     public function update(Entity\Station $station, array $clients): void
     {
         $this->em->transactional(
-            function () use ($station, $clients) {
+            function () use ($station, $clients): void {
                 $existingClientsRaw = $this->em->createQuery(
                     <<<'DQL'
                 SELECT l.id, l.listener_uid, l.listener_hash

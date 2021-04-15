@@ -3510,7 +3510,7 @@ msgstr "Wunsch löschen?"
 
 #: /github/workspace/templates/stations/reports/overview.phtml:56
 msgid "Best Performing Songs"
-msgstr "Best laufende Lider"
+msgstr "Best laufende Lieder"
 
 #: /github/workspace/templates/stations/reports/overview.phtml:57
 #: /github/workspace/templates/stations/reports/overview.phtml:100

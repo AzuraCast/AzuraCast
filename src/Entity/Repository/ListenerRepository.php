@@ -52,11 +52,11 @@ class ListenerRepository extends Repository
             function () use ($station, $clients): void {
                 $existingClientsRaw = $this->em->createQuery(
                     <<<'DQL'
-                SELECT l.id, l.listener_uid, l.listener_hash
-                FROM App\Entity\Listener l
-                WHERE l.station = :station
-                AND l.timestamp_end = 0
-            DQL
+                        SELECT l.id, l.listener_uid, l.listener_hash
+                        FROM App\Entity\Listener l
+                        WHERE l.station = :station
+                        AND l.timestamp_end = 0
+                    DQL
                 )->setParameter('station', $station);
 
                 $existingClientsIterator = $existingClientsRaw->toIterable([], $existingClientsRaw::HYDRATE_ARRAY);
@@ -113,10 +113,10 @@ class ListenerRepository extends Repository
                 if (!empty($existingClients)) {
                     $this->em->createQuery(
                         <<<'DQL'
-                    UPDATE App\Entity\Listener l
-                    SET l.timestamp_end = :time
-                    WHERE l.id IN (:ids)
-                DQL
+                            UPDATE App\Entity\Listener l
+                            SET l.timestamp_end = :time
+                            WHERE l.id IN (:ids)
+                        DQL
                     )->setParameter('time', time())
                         ->setParameter('ids', array_values($existingClients))
                         ->execute();

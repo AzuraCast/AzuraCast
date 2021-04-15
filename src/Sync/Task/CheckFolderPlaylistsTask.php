@@ -37,10 +37,9 @@ class CheckFolderPlaylistsTask extends AbstractTask
             1
         );
 
+        /** @var Entity\Station $station */
         foreach ($stations as $station) {
-            /** @var Entity\Station $station */
             $this->syncPlaylistFolders($station);
-            gc_collect_cycles();
         }
     }
 
@@ -127,7 +126,5 @@ class CheckFolderPlaylistsTask extends AbstractTask
 
             $this->em->flush();
         }
-
-        $this->em->clear();
     }
 }

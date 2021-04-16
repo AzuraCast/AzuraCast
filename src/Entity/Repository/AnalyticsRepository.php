@@ -5,6 +5,7 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use DateTimeInterface;
 
 class AnalyticsRepository extends Repository
@@ -26,17 +27,6 @@ class AnalyticsRepository extends Repository
             ->setParameter('type', $type)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
-    }
-
-    public function clearAllAfterTime(
-        DateTimeInterface $threshold
-    ): void {
-        $this->em->createQuery(
-            <<<'DQL'
-                DELETE FROM App\Entity\Analytics a WHERE a.moment >= :threshold
-            DQL
-        )->setParameter('threshold', $threshold)
-            ->execute();
     }
 
     public function clearAll(): void
@@ -61,5 +51,32 @@ class AnalyticsRepository extends Repository
         )->setParameter('type', Entity\Analytics::INTERVAL_HOURLY)
             ->setParameter('threshold', $hourlyRetention)
             ->execute();
+    }
+
+    public function clearSingleMetric(
+        string $type,
+        CarbonInterface $moment,
+        ?Entity\Station $station = null
+    ): void {
+        if (null === $station) {
+            $this->em->createQuery(
+                <<<'DQL'
+                    DELETE FROM App\Entity\Analytics a
+                    WHERE a.station IS NULL AND a.type = :type AND a.moment = :moment
+                DQL
+            )->setParameter('type', $type)
+                ->setParameter('moment', $moment)
+                ->execute();
+        } else {
+            $this->em->createQuery(
+                <<<'DQL'
+                    DELETE FROM App\Entity\Analytics a
+                    WHERE a.station = :station AND a.type = :type AND a.moment = :moment
+                DQL
+            )->setParameter('station', $station)
+                ->setParameter('type', $type)
+                ->setParameter('moment', $moment)
+                ->execute();
+        }
     }
 }

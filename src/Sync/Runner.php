@@ -109,9 +109,7 @@ class Runner
             $event = new GetSyncTasks($type);
             $this->eventDispatcher->dispatch($event);
 
-            $tasks = $event->getTasks();
-
-            foreach ($tasks as $taskClass => $task) {
+            foreach ($event->getTasks() as $taskClass => $task) {
                 if (!$force && !$lock->isAcquired()) {
                     $this->logger->error(
                         sprintf('Lock timed out before task %s can run.', $taskClass)
@@ -119,10 +117,12 @@ class Runner
                     return;
                 }
 
-                $this->logger->debug(sprintf(
-                    'Starting sub-task: %s',
-                    $taskClass
-                ));
+                $this->logger->debug(
+                    sprintf(
+                        'Starting sub-task: %s',
+                        $taskClass
+                    )
+                );
 
                 $start_time = microtime(true);
 

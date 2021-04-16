@@ -6,7 +6,6 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
-use App\Event\SendWebhooks;
 use App\EventDispatcher;
 use App\Http\RouterInterface;
 use App\LockFactory;
@@ -115,11 +114,13 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
      */
     protected function loadNowPlaying(bool $force = false): array
     {
-        $stations = $this->em->getRepository(Entity\Station::class)
-            ->findBy(['is_enabled' => 1]);
-
         $nowplaying = [];
-        foreach ($stations as $station) {
+
+        foreach ($this->iterateStations() as $station) {
+            if (!$station->isEnabled()) {
+                continue;
+            }
+
             $nowplaying[] = $this->processStation($station);
         }
 

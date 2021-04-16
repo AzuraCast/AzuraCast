@@ -22,3 +22,7 @@ chdir = /
 clear_env=No
 catch_workers_output = yes
 decorate_workers_output = no
+
+{{if eq .Env.APPLICATION_ENV "development"}}
+process.dumpable = yes
+{{end}}

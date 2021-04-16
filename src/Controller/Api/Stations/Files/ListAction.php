@@ -62,7 +62,29 @@ class ListAction
                 : $currentDir . '/%';
 
             $mediaQueryBuilder = $em->createQueryBuilder()
-                ->select(['sm', 'spm', 'sp', 'smcf'])
+                ->select([
+                    'sm.song_id',
+                    'sm.title',
+                    'sm.artist',
+                    'sm.album',
+                    'sm.genre',
+                    'sm.length',
+                    'sm.length_text',
+                    'sm.art_updated_at',
+                    'sm.unique_id',
+                    'sm.path',
+                ])
+                ->addSelect([
+                    'spm.id',
+                ])
+                ->addSelect([
+                    'sp.id',
+                    'sp.name',
+                ])
+                ->addSelect([
+                    'smcf.field_id',
+                    'smcf.value',
+                ])
                 ->from(Entity\StationMedia::class, 'sm')
                 ->leftJoin('sm.custom_fields', 'smcf')
                 ->leftJoin('sm.playlists', 'spm')
@@ -76,7 +98,7 @@ class ListAction
             // Apply searching
             $foldersInDirQuery = $em->createQuery(
                 <<<'DQL'
-                    SELECT spf, sp
+                    SELECT spf.path, sp.id, sp.name
                     FROM App\Entity\StationPlaylistFolder spf
                     JOIN spf.playlist sp
                     WHERE spf.station = :station
@@ -87,7 +109,7 @@ class ListAction
 
             $unprocessableMediaQuery = $em->createQuery(
                 <<<'DQL'
-                    SELECT upm
+                    SELECT upm.path, upm.error
                     FROM App\Entity\UnprocessableMedia upm
                     WHERE upm.storage_location = :storageLocation
                     AND upm.path LIKE :path

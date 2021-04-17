@@ -251,14 +251,6 @@ class StationPlaylist
     protected $played_at = 0;
 
     /**
-     * @ORM\Column(name="queue", type="array", nullable=true)
-     * @AuditLog\AuditIgnore
-     *
-     * @var array|null The current queue of unplayed songs for this playlist.
-     */
-    protected $queue;
-
-    /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"weight" = "ASC"})
      * @var Collection
@@ -337,11 +329,6 @@ class StationPlaylist
 
     public function setSource(string $source): void
     {
-        // Reset the playback queue if source is changed.
-        if ($source !== $this->source) {
-            $this->queue = null;
-        }
-
         $this->source = $source;
     }
 
@@ -352,11 +339,6 @@ class StationPlaylist
 
     public function setOrder(string $order): void
     {
-        // Reset the playback queue if order is changed.
-        if ($order !== $this->order) {
-            $this->queue = null;
-        }
-
         $this->order = $order;
     }
 
@@ -480,55 +462,6 @@ class StationPlaylist
     public function setPlayedAt(int $played_at): void
     {
         $this->played_at = $played_at;
-    }
-
-    /**
-     * @return mixed[]|null
-     */
-    public function getQueue(): ?array
-    {
-        if (null === $this->queue) {
-            return null;
-        }
-
-        // Ensure queue is always formatted correctly.
-        $newQueue = [];
-        foreach ($this->queue as $media) {
-            $newQueue[$media['id']] = $media;
-        }
-        return $newQueue;
-    }
-
-    public function setQueue(?array $queue): void
-    {
-        $this->queue = $queue;
-    }
-
-    public function removeFromQueue(StationMedia $media): void
-    {
-        $queue = $this->getQueue();
-
-        if (null !== $queue) {
-            unset($queue[$media->getId()]);
-            $this->queue = $queue;
-        }
-    }
-
-    public function addToQueue(StationMedia $media): void
-    {
-        $queue = $this->getQueue();
-        if (null === $queue) {
-            return;
-        }
-
-        $queue[$media->getId()] = [
-            'id' => $media->getId(),
-            'song_id' => $media->getSongId(),
-            'artist' => $media->getArtist(),
-            'title' => $media->getTitle(),
-        ];
-
-        $this->setQueue($queue);
     }
 
     /**

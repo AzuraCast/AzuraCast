@@ -208,15 +208,13 @@ class StationRequestRepository extends Repository
             ->setParameter('threshold', $lastPlayThreshold)
             ->getArrayResult();
 
+        $eligibleTrack = new Entity\Api\StationPlaylistQueue();
+        $eligibleTrack->media_id = $media->getId();
+        $eligibleTrack->song_id = $media->getSongId();
+        $eligibleTrack->title = $media->getTitle() ?? '';
+        $eligibleTrack->artist = $media->getArtist() ?? '';
 
-        $eligibleTracks = [
-            $media->getId() => [
-                'title' => $media->getTitle(),
-                'artist' => $media->getArtist(),
-            ],
-        ];
-
-        $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack($eligibleTracks, $recentTracks));
+        $isDuplicate = (null === AutoDJ\Queue::getDistinctTrack([$eligibleTrack], $recentTracks));
 
         if ($isDuplicate) {
             throw new Exception(

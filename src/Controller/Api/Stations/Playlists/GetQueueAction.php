@@ -13,6 +13,7 @@ class GetQueueAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
@@ -25,7 +26,7 @@ class GetQueueAction extends AbstractPlaylistsAction
             throw new \InvalidArgumentException('This playlist is always shuffled and has no visible queue.');
         }
 
-        $queue = (array)$record->getQueue();
+        $queue = $spmRepo->getQueue($record);
         $paginator = Paginator::fromArray($queue, $request);
 
         return $paginator->write($response);

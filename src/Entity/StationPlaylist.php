@@ -251,14 +251,6 @@ class StationPlaylist
     protected $played_at = 0;
 
     /**
-     * @ORM\Column(name="queue", type="array", nullable=true)
-     * @AuditLog\AuditIgnore
-     *
-     * @var array|null The current queue of unplayed songs for this playlist.
-     */
-    protected $queue;
-
-    /**
      * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"weight" = "ASC"})
      * @var Collection
@@ -487,48 +479,12 @@ class StationPlaylist
      */
     public function getQueue(): ?array
     {
-        if (null === $this->queue) {
-            return null;
-        }
-
-        // Ensure queue is always formatted correctly.
-        $newQueue = [];
-        foreach ($this->queue as $media) {
-            $newQueue[$media['id']] = $media;
-        }
-        return $newQueue;
+        // TODO: Remove
     }
 
     public function setQueue(?array $queue): void
     {
-        $this->queue = $queue;
-    }
-
-    public function removeFromQueue(StationMedia $media): void
-    {
-        $queue = $this->getQueue();
-
-        if (null !== $queue) {
-            unset($queue[$media->getId()]);
-            $this->queue = $queue;
-        }
-    }
-
-    public function addToQueue(StationMedia $media): void
-    {
-        $queue = $this->getQueue();
-        if (null === $queue) {
-            return;
-        }
-
-        $queue[$media->getId()] = [
-            'id' => $media->getId(),
-            'song_id' => $media->getSongId(),
-            'artist' => $media->getArtist(),
-            'title' => $media->getTitle(),
-        ];
-
-        $this->setQueue($queue);
+        // TODO: Remove
     }
 
     /**

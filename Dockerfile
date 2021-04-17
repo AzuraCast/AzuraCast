@@ -56,7 +56,8 @@ ENV LANG="en_US.UTF-8" \
     MYSQL_DATABASE="azuracast" \
     PREFER_RELEASE_BUILDS="false" \
     COMPOSER_PLUGIN_MODE="false" \
-    ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0
+    ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0 \
+    PROFILING_EXTENSION_ENABLED=0
 
 # Entrypoint and default command
 ENTRYPOINT ["/usr/local/bin/uptime_wait"]

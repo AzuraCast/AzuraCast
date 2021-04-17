@@ -14,10 +14,10 @@ opcache.enable_cli=1
 opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "60" }}
 {{end}}
 
-{{if eq .Env.APPLICATION_ENV "development"}}
+{{if eq .Env.PROFILING_EXTENSION_ENABLED "1"}}
 spx.http_enabled=1
-spx.http_key="dev"
-spx.http_ip_whitelist="*"
+spx.http_key={{ default .Env.PROFILING_EXTENSION_HTTP_KEY "dev" }}
+spx.http_ip_whitelist={{ default .Env.PROFILING_EXTENSION_HTTP_IP_WHITELIST "*" }}
 spx.http_profiling_enabled=1
-zlib.output_compression = 0
+zlib.output_compression=0
 {{end}}

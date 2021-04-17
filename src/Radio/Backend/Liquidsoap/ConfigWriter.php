@@ -588,8 +588,8 @@ class ConfigWriter implements EventSubscriberInterface
 
         $mediaIterator = $mediaQuery->toIterable();
 
+        /** @var Entity\StationMedia $mediaFile */
         foreach ($mediaIterator as $mediaFile) {
-            /** @var Entity\StationMedia $mediaFile */
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
             $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
 
@@ -606,9 +606,6 @@ class ConfigWriter implements EventSubscriberInterface
             }
 
             $playlistFile[] = 'annotate:' . implode(',', $annotations_str) . ':' . $mediaFilePath;
-
-            $this->em->detach($mediaFile);
-            unset($mediaFile);
         }
 
         $playlistFilePath = $playlistPath . '/' . $playlistVarName . '.m3u';

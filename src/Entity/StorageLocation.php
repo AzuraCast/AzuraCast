@@ -483,14 +483,16 @@ class StorageLocation
         switch ($this->adapter) {
             case self::ADAPTER_S3:
                 $client = $this->getS3Client();
-                return new AwsS3Adapter($client, $this->s3Bucket, $this->path);
+                $validPrefixPath = trim($this->path, '/');
+                return new AwsS3Adapter($client, $this->s3Bucket, $validPrefixPath);
 
             case self::ADAPTER_DROPBOX:
-                return new DropboxAdapter($this->getDropboxClient(), $this->path);
+                $validPrefixPath = trim($this->path, '/');
+                return new DropboxAdapter($this->getDropboxClient(), $validPrefixPath);
 
             case self::ADAPTER_LOCAL:
             default:
-                return new LocalFilesystemAdapter($this->path);
+                return new LocalFilesystemAdapter(rtrim($this->path, '/'));
         }
     }
 

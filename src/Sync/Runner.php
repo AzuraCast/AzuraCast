@@ -8,6 +8,7 @@ use App\Event\GetSyncTasks;
 use App\EventDispatcher;
 use App\LockFactory;
 use App\Message;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
@@ -27,18 +28,22 @@ class Runner
 
     protected EventDispatcher $eventDispatcher;
 
+    protected EntityManagerInterface $em;
+
     public function __construct(
         SettingsRepository $settingsRepo,
         Environment $environment,
         Logger $logger,
         LockFactory $lockFactory,
-        EventDispatcher $eventDispatcher
+        EventDispatcher $eventDispatcher,
+        EntityManagerInterface $em
     ) {
         $this->settingsRepo = $settingsRepo;
         $this->environment = $environment;
         $this->logger = $logger;
         $this->lockFactory = $lockFactory;
         $this->eventDispatcher = $eventDispatcher;
+        $this->em = $em;
     }
 
     public function __invoke(Message\AbstractMessage $message): void
@@ -104,9 +109,7 @@ class Runner
             $event = new GetSyncTasks($type);
             $this->eventDispatcher->dispatch($event);
 
-            $tasks = $event->getTasks();
-
-            foreach ($tasks as $taskClass => $task) {
+            foreach ($event->getTasks() as $taskClass => $task) {
                 if (!$force && !$lock->isAcquired()) {
                     $this->logger->error(
                         sprintf('Lock timed out before task %s can run.', $taskClass)
@@ -114,10 +117,12 @@ class Runner
                     return;
                 }
 
-                $this->logger->debug(sprintf(
-                    'Starting sub-task: %s',
-                    $taskClass
-                ));
+                $this->logger->debug(
+                    sprintf(
+                        'Starting sub-task: %s',
+                        $taskClass
+                    )
+                );
 
                 $start_time = microtime(true);
 
@@ -135,6 +140,8 @@ class Runner
                 );
 
                 unset($task);
+                $this->em->clear();
+
                 gc_collect_cycles();
             }
 

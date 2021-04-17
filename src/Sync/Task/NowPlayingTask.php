@@ -6,7 +6,6 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
-use App\Event\SendWebhooks;
 use App\EventDispatcher;
 use App\Http\RouterInterface;
 use App\LockFactory;
@@ -115,11 +114,13 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
      */
     protected function loadNowPlaying(bool $force = false): array
     {
-        $stations = $this->em->getRepository(Entity\Station::class)
-            ->findBy(['is_enabled' => 1]);
-
         $nowplaying = [];
-        foreach ($stations as $station) {
+
+        foreach ($this->iterateStations() as $station) {
+            if (!$station->isEnabled()) {
+                continue;
+            }
+
             $nowplaying[] = $this->processStation($station);
         }
 
@@ -285,9 +286,14 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     public function loadRawFromFrontend(GenerateRawNowPlaying $event): void
     {
-        $result = $event
-            ->getFrontend()
-            ->getNowPlaying($event->getStation(), $event->includeClients());
+        try {
+            $result = $event
+                ->getFrontend()
+                ->getNowPlaying($event->getStation(), $event->includeClients());
+        } catch (Exception $e) {
+            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            return;
+        }
 
         $event->setResult($result);
     }
@@ -298,11 +304,16 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
         // Loop through all remotes and update NP data accordingly.
         foreach ($event->getRemotes() as $ra_proxy) {
-            $result = $ra_proxy->getAdapter()->updateNowPlaying(
-                $result,
-                $ra_proxy->getRemote(),
-                $event->includeClients()
-            );
+            try {
+                $result = $ra_proxy->getAdapter()->updateNowPlaying(
+                    $result,
+                    $ra_proxy->getRemote(),
+                    $event->includeClients()
+                );
+            } catch (Exception $e) {
+                $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+                continue;
+            }
         }
 
         $event->setResult($result);

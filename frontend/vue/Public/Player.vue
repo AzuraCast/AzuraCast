@@ -238,6 +238,10 @@ export const radioPlayerProps = {
         showAlbumArt: {
             type: Boolean,
             default: true
+        },
+        autoplay: {
+            type: Boolean,
+            default: false
         }
     }
 };
@@ -261,6 +265,10 @@ export default {
     mounted () {
         this.is_mounted = true;
         this.clock_interval = setInterval(this.iterateTimer, 1000);
+
+        if (this.autoplay) {
+            this.play();
+        }
     },
     computed: {
         lang_play_btn () {

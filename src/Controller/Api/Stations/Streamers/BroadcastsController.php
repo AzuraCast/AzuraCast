@@ -63,7 +63,7 @@ class BroadcastsController extends AbstractApiCrudController
 
                 $recordingPath = $row->getRecordingPath();
 
-                if ($fsRecordings->fileExists($recordingPath)) {
+                if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
                     $return['recording'] = [
                         'path' => $recordingPath,
                         'size' => $fsRecordings->fileSize($recordingPath),

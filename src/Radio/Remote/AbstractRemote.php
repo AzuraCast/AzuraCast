@@ -8,7 +8,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
-use NowPlaying\Adapter\AdapterFactory;
+use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
 
 abstract class AbstractRemote
@@ -66,20 +66,20 @@ abstract class AbstractRemote
                     $client->mount = 'remote_' . $remote->getId();
                 }
             }
-
-            $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
-
-            $remote->setListenersTotal($result->listeners->total);
-            $remote->setListenersUnique($result->listeners->unique);
-            $this->em->persist($remote);
-            $this->em->flush();
-
-            return $np->merge($result);
         } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+
+            $result = Result::blank();
         }
 
-        return $np;
+        $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
+
+        $remote->setListenersTotal($result->listeners->total);
+        $remote->setListenersUnique($result->listeners->unique);
+        $this->em->persist($remote);
+        $this->em->flush();
+
+        return $np->merge($result);
     }
 
     abstract protected function getAdapterType(): string;

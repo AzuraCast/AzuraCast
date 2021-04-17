@@ -2,7 +2,6 @@
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
@@ -72,18 +71,9 @@ class CheckMediaTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sl
-                FROM App\Entity\StorageLocation sl
-                WHERE sl.type = :type
-            DQL
-        )->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
-
-        $storageLocations = BatchIteratorAggregate::fromQuery($query, 1);
+        $storageLocations = $this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_MEDIA);
 
         foreach ($storageLocations as $storageLocation) {
-            /** @var Entity\StorageLocation $storageLocation */
             $this->logger->info(
                 sprintf(
                     'Processing media for storage location %s...',
@@ -193,7 +183,7 @@ class CheckMediaTask extends AbstractTask
     ): void {
         $existingMediaQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT partial sm.{ id, path, mtime, unique_id }
+                SELECT sm.id, sm.path, sm.mtime, sm.unique_id
                 FROM App\Entity\StationMedia sm
                 WHERE sm.storage_location = :storageLocation
             DQL
@@ -249,7 +239,7 @@ class CheckMediaTask extends AbstractTask
     ): void {
         $unprocessableMediaQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT partial upm.{ id, path, mtime }
+                SELECT upm.id, upm.path, upm.mtime
                 FROM App\Entity\UnprocessableMedia upm
                 WHERE upm.storage_location = :storageLocation
             DQL

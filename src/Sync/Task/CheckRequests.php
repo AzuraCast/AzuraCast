@@ -39,10 +39,7 @@ class CheckRequests extends AbstractTask
      */
     public function run(bool $force = false): void
     {
-        /** @var Entity\Station[] $stations */
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
-
-        foreach ($stations as $station) {
+        foreach ($this->iterateStations() as $station) {
             if (!$station->useManualAutoDJ()) {
                 continue;
             }

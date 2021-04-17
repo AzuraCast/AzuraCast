@@ -63,19 +63,7 @@ class SoundExchangeController
 
             $all_media = $this->em->createQuery(
                 <<<'DQL'
-                    SELECT PARTIAL sm.{
-                        id,
-                        unique_id,
-                        art_updated_at,
-                        path,
-                        length,
-                        length_text,
-                        isrc,
-                        artist,
-                        title,
-                        album,
-                        genre
-                    }, PARTIAL spm.{id}, PARTIAL sp.{id, name}, PARTIAL smcf.{id, field_id, value}
+                    SELECT sm, spm, sp, smcf
                     FROM App\Entity\StationMedia sm
                     LEFT JOIN sm.custom_fields smcf
                     LEFT JOIN sm.playlists spm
@@ -87,11 +75,7 @@ class SoundExchangeController
                 ->setParameter('storageLocation', $station->getMediaStorageLocation())
                 ->getArrayResult();
 
-            $media_by_id = [];
-            foreach ($all_media as $media_row) {
-                $mediaId = $media_row['id'];
-                $media_by_id[$mediaId] = $media_row;
-            }
+            $media_by_id = array_column($all_media, null, 'id');
 
             $history_rows = $this->em->createQuery(
                 <<<'DQL'
@@ -108,10 +92,7 @@ class SoundExchangeController
                 ->setParameter('time_end', $end_date)
                 ->getArrayResult();
 
-            $history_rows_by_id = [];
-            foreach ($history_rows as $history_row) {
-                $history_rows_by_id[$history_row['media_id']] = $history_row;
-            }
+            $history_rows_by_id = array_column($history_rows, null, 'media_id');
 
             // Remove any reference to the "Stream Offline" song.
             $offlineSong = Entity\Song::createOffline();

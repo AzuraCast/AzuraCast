@@ -270,8 +270,10 @@ class Assets
 
         $this->addInlineJs(
             <<<JS
+                let ${name};
+
                 $(function () {
-                    new Vue({
+                    ${name} = new Vue({
                         el: '${elementId}',
                         render: function (createElement) {
                             return createElement(${nameWithoutPrefix}.default, {

@@ -9,7 +9,7 @@ return function (App $app) {
     $app->group(
         '/public/{station_id}',
         function (RouteCollectorProxy $group) {
-            $group->get('[/{embed:embed}]', Controller\Frontend\PublicPages\PlayerAction::class)
+            $group->get('[/{embed:embed|social}]', Controller\Frontend\PublicPages\PlayerAction::class)
                 ->setName('public:index');
 
             $group->get('/embed-requests', Controller\Frontend\PublicPages\RequestsAction::class)

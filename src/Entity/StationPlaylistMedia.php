@@ -58,6 +58,13 @@ class StationPlaylistMedia implements JsonSerializable
     protected $weight;
 
     /**
+     * @ORM\Column(name="is_queued", type="boolean")
+     *
+     * @var bool
+     */
+    protected $is_queued = true;
+
+    /**
      * @ORM\Column(name="last_played", type="integer")
      * @var int
      */
@@ -104,6 +111,7 @@ class StationPlaylistMedia implements JsonSerializable
     public function played(int $timestamp = null): void
     {
         $this->last_played = $timestamp ?? time();
+        $this->is_queued = false;
     }
 
     /**

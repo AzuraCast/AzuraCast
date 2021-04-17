@@ -126,10 +126,11 @@ return [
                         'belongsTo' => 'config',
                         'required' => true,
                         'default' => __(
-                            'Now playing on %s: %s by %s! Tune in now.',
+                            'Now playing on %s: %s by %s! Tune in now: %s',
                             '{{ station.name }}',
                             '{{ now_playing.song.title }}',
-                            '{{ now_playing.song.artist }}'
+                            '{{ now_playing.song.artist }}',
+                            '{{ station.public_player_url }}'
                         ),
                         'description' => __(
                             'Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.',

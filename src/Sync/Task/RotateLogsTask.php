@@ -45,19 +45,13 @@ class RotateLogsTask extends AbstractTask
     public function run(bool $force = false): void
     {
         // Rotate logs for individual stations.
-        $station_repo = $this->em->getRepository(Entity\Station::class);
+        foreach ($this->iterateStations() as $station) {
+            $this->logger->info(
+                'Processing logs for station.',
+                ['id' => $station->getId(), 'name' => $station->getName()]
+            );
 
-        $stations = $station_repo->findAll();
-        if (!empty($stations)) {
-            foreach ($stations as $station) {
-                /** @var Entity\Station $station */
-                $this->logger->info(
-                    'Processing logs for station.',
-                    ['id' => $station->getId(), 'name' => $station->getName()]
-                );
-
-                $this->rotateStationLogs($station);
-            }
+            $this->rotateStationLogs($station);
         }
 
         // Rotate the automated backups.

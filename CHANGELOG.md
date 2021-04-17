@@ -5,8 +5,23 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-- A new "Embed Widgets" modal has been added to the station profile that will let you customize your embeddable widgets
-  and show you a preview of their rendered status.
+## Code Quality/Technical Changes
+
+## Bug Fixes
+
+There have been no changes since the latest stable release.
+
+---
+
+# AzuraCast 0.12.3 (Apr 14, 2021)
+
+## New Features/Changes
+
+- **Twitter Player Preview**: If you include the URL of your station's public player page in a tweet, a player component
+  will automatically appear in the tweet that includes an embedded player for your station.
+
+- **Embed Widgets**: A new "Embed Widgets" modal has been added to the station profile that will let you customize your
+  embeddable widgets and show you a preview of their rendered status.
 
 - You can now embed playback history as a standalone component in your web site.
 
@@ -28,6 +43,11 @@ release channel, you can take advantage of these new features and fixes.
 
 - Instances of the "Pause" icon across the system have been replaced with the "Stop" icon to more properly indicate what
   they do.
+
+- Heavy performance optimizations have been made in the following areas:
+    - Looping through, and processing, station media (5-minute sync)
+    - Processing listeners for stations with large listener counts
+    - The AutoDJ queue building process
 
 ## Bug Fixes
 

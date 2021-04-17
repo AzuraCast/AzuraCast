@@ -72,10 +72,6 @@ class StationPlaylistMediaRepository extends Repository
             $record = new Entity\StationPlaylistMedia($playlist, $media);
             $record->setWeight($weight);
             $this->em->persist($record);
-
-            // Add the newly added song into the cached queue.
-            $playlist->addToQueue($media);
-            $this->em->persist($playlist);
         }
 
         return $weight;
@@ -124,10 +120,6 @@ class StationPlaylistMediaRepository extends Repository
 
         foreach ($playlists as $spmRow) {
             $playlist = $spmRow->getPlaylist();
-
-            $playlist->removeFromQueue($media);
-            $this->em->persist($playlist);
-
             $affectedPlaylists[$playlist->getId()] = $playlist;
 
             $this->queueRepo->clearForMediaAndPlaylist($media, $playlist);
@@ -159,43 +151,109 @@ class StationPlaylistMediaRepository extends Repository
             DQL
         )->setParameter('playlist_id', $playlist->getId());
 
-        foreach ($mapping as $id => $weight) {
-            $update_query->setParameter('id', $id)
-                ->setParameter('weight', $weight)
-                ->execute();
-        }
-
-        // Clear the playback queue.
-        $playlist->setQueue($this->getPlayableMedia($playlist));
-        $this->em->persist($playlist);
-        $this->em->flush();
+        $this->em->transactional(
+            function () use ($update_query, $mapping): void {
+                foreach ($mapping as $id => $weight) {
+                    $update_query->setParameter('id', $id)
+                        ->setParameter('weight', $weight)
+                        ->execute();
+                }
+            }
+        );
     }
 
     /**
-     * @return mixed[]
+     * @return Entity\Api\StationPlaylistQueue[]
      */
-    public function getPlayableMedia(Entity\StationPlaylist $playlist): array
+    public function resetQueue(StationPlaylist $playlist): array
     {
-        $all_media = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sm.id, sm.song_id, sm.artist, sm.title
-                FROM App\Entity\StationMedia sm
-                JOIN sm.playlists spm
-                WHERE spm.playlist_id = :playlist_id
-                ORDER BY spm.weight ASC
-            DQL
-        )->setParameter('playlist_id', $playlist->getId())
-            ->getArrayResult();
-
-        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
-            shuffle($all_media);
+        if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
+            throw new \InvalidArgumentException('Playlist must contain songs.');
         }
 
-        $media_queue = [];
-        foreach ($all_media as $media_row) {
-            $media_queue[$media_row['id']] = $media_row;
+        if ($playlist::ORDER_SEQUENTIAL === $playlist->getOrder()) {
+            $this->em->createQuery(
+                <<<'DQL'
+                    UPDATE App\Entity\StationPlaylistMedia spm
+                    SET spm.is_queued = 1
+                    WHERE spm.playlist = :playlist
+                DQL
+            )->setParameter('playlist', $playlist)
+                ->execute();
+        } elseif ($playlist::ORDER_SHUFFLE === $playlist->getOrder()) {
+            $this->em->transactional(
+                function () use ($playlist): void {
+                    $allSpmRecordsQuery = $this->em->createQuery(
+                        <<<'DQL'
+                            SELECT spm.id
+                            FROM App\Entity\StationPlaylistMedia spm
+                            WHERE spm.playlist = :playlist
+                            ORDER BY RAND()
+                        DQL
+                    )->setParameter('playlist', $playlist);
+
+                    $updateSpmWeightQuery = $this->em->createQuery(
+                        <<<'DQL'
+                            UPDATE App\Entity\StationPlaylistMedia spm
+                            SET spm.weight=:weight, spm.is_queued=1
+                            WHERE spm.id = :id
+                        DQL
+                    );
+
+                    $allSpmRecords = $allSpmRecordsQuery->toIterable([], $allSpmRecordsQuery::HYDRATE_SCALAR);
+                    $weight = 1;
+
+                    foreach ($allSpmRecords as $spmId) {
+                        $updateSpmWeightQuery->setParameter('id', $spmId)
+                            ->setParameter('weight', $weight)
+                            ->execute();
+
+                        $weight++;
+                    }
+                }
+            );
         }
 
-        return $media_queue;
+        return $this->getQueue($playlist);
+    }
+
+    /**
+     * @return Entity\Api\StationPlaylistQueue[]
+     */
+    public function getQueue(StationPlaylist $playlist): array
+    {
+        if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
+            throw new \InvalidArgumentException('Playlist must contain songs.');
+        }
+
+        $queuedMediaQuery = $this->em->createQueryBuilder()
+            ->select(['spm.id AS spm_id', 'sm.id', 'sm.song_id', 'sm.artist', 'sm.title'])
+            ->from(Entity\StationMedia::class, 'sm')
+            ->join('sm.playlists', 'spm')
+            ->where('spm.playlist = :playlist')
+            ->setParameter('playlist', $playlist);
+
+        if ($playlist::ORDER_RANDOM === $playlist->getOrder()) {
+            $queuedMediaQuery = $queuedMediaQuery->orderBy('RAND()');
+        } else {
+            $queuedMediaQuery = $queuedMediaQuery->andWhere('spm.is_queued = 1')
+                ->orderBy('spm.weight', 'ASC');
+        }
+
+        $queuedMedia = $queuedMediaQuery->getQuery()->getArrayResult();
+
+        return array_map(
+            function ($val): Entity\Api\StationPlaylistQueue {
+                $record = new Entity\Api\StationPlaylistQueue();
+                $record->spm_id = $val['spm_id'];
+                $record->media_id = $val['id'];
+                $record->song_id = $val['song_id'];
+                $record->artist = $val['artist'] ?? '';
+                $record->title = $val['title'] ?? '';
+
+                return $record;
+            },
+            $queuedMedia
+        );
     }
 }

@@ -152,7 +152,7 @@ class StationPlaylistMediaRepository extends Repository
         )->setParameter('playlist_id', $playlist->getId());
 
         $this->em->transactional(
-            function () use ($update_query, $mapping) {
+            function () use ($update_query, $mapping): void {
                 foreach ($mapping as $id => $weight) {
                     $update_query->setParameter('id', $id)
                         ->setParameter('weight', $weight)
@@ -182,7 +182,7 @@ class StationPlaylistMediaRepository extends Repository
                 ->execute();
         } elseif ($playlist::ORDER_SHUFFLE === $playlist->getOrder()) {
             $this->em->transactional(
-                function () use ($playlist) {
+                function () use ($playlist): void {
                     $allSpmRecordsQuery = $this->em->createQuery(
                         <<<'DQL'
                             SELECT spm.id
@@ -192,12 +192,23 @@ class StationPlaylistMediaRepository extends Repository
                         DQL
                     )->setParameter('playlist', $playlist);
 
-                    $weight = 1;
-                    $allSpmRecords = $allSpmRecordsQuery->toIterable([], $allSpmRecordsQuery::HYDRATE_SCALAR);
+                    $updateSpmWeightQuery = $this->em->createQuery(
+                        <<<'DQL'
+                            UPDATE App\Entity\StationPlaylistMedia spm
+                            SET spm.weight=:weight, spm.is_queued=1
+                            WHERE spm.id = :id
+                        DQL
+                    );
 
-                    foreach ($allSpmRecords as $row) {
-                        var_dump($row);
-                        exit;
+                    $allSpmRecords = $allSpmRecordsQuery->toIterable([], $allSpmRecordsQuery::HYDRATE_SCALAR);
+                    $weight = 1;
+
+                    foreach ($allSpmRecords as $spmId) {
+                        $updateSpmWeightQuery->setParameter('id', $spmId)
+                            ->setParameter('weight', $weight)
+                            ->execute();
+
+                        $weight++;
                     }
                 }
             );
@@ -232,13 +243,15 @@ class StationPlaylistMediaRepository extends Repository
         $queuedMedia = $queuedMediaQuery->getQuery()->getArrayResult();
 
         return array_map(
-            function ($val) {
+            function ($val): Entity\Api\StationPlaylistQueue {
                 $record = new Entity\Api\StationPlaylistQueue();
                 $record->spm_id = $val['spm_id'];
                 $record->media_id = $val['id'];
                 $record->song_id = $val['song_id'];
-                $record->artist = $val['artist'];
-                $record->title = $val['title'];
+                $record->artist = $val['artist'] ?? '';
+                $record->title = $val['title'] ?? '';
+
+                return $record;
             },
             $queuedMedia
         );

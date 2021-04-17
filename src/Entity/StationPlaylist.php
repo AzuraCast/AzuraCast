@@ -329,11 +329,6 @@ class StationPlaylist
 
     public function setSource(string $source): void
     {
-        // Reset the playback queue if source is changed.
-        if ($source !== $this->source) {
-            $this->queue = null;
-        }
-
         $this->source = $source;
     }
 
@@ -344,11 +339,6 @@ class StationPlaylist
 
     public function setOrder(string $order): void
     {
-        // Reset the playback queue if order is changed.
-        if ($order !== $this->order) {
-            $this->queue = null;
-        }
-
         $this->order = $order;
     }
 
@@ -472,19 +462,6 @@ class StationPlaylist
     public function setPlayedAt(int $played_at): void
     {
         $this->played_at = $played_at;
-    }
-
-    /**
-     * @return mixed[]|null
-     */
-    public function getQueue(): ?array
-    {
-        // TODO: Remove
-    }
-
-    public function setQueue(?array $queue): void
-    {
-        // TODO: Remove
     }
 
     /**

@@ -12,14 +12,12 @@ class DeleteQueueAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
+        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 
-        $record->setQueue(null);
-        $this->em->persist($record);
-
-        $this->em->flush();
+        $spmRepo->resetQueue($record);
 
         return $response->withJson(
             new Entity\Api\Status(

@@ -8,6 +8,7 @@ use App\Radio\PlaylistParser;
 use Carbon\CarbonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Queue implements EventSubscriberInterface
@@ -37,10 +38,13 @@ class Queue implements EventSubscriberInterface
 
     protected Entity\Repository\SongHistoryRepository $historyRepo;
 
+    protected CacheInterface $cache;
+
     public function __construct(
         EntityManagerInterface $em,
         LoggerInterface $logger,
         Scheduler $scheduler,
+        CacheInterface $cache,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
         Entity\Repository\StationRequestRepository $requestRepo,
         Entity\Repository\StationQueueRepository $queueRepo,
@@ -49,6 +53,8 @@ class Queue implements EventSubscriberInterface
         $this->em = $em;
         $this->logger = $logger;
         $this->scheduler = $scheduler;
+        $this->cache = $cache;
+
         $this->spmRepo = $spmRepo;
         $this->requestRepo = $requestRepo;
         $this->queueRepo = $queueRepo;
@@ -403,23 +409,21 @@ class Queue implements EventSubscriberInterface
         }
 
         // Handle a remote playlist containing songs or streams.
-        $mediaQueue = $playlist->getQueue();
+        $queueCacheKey = 'playlist_queue.' . $playlist->getId();
 
+        $mediaQueue = $this->cache->get($queueCacheKey, null);
         if (empty($mediaQueue)) {
             $playlistRaw = file_get_contents($playlist->getRemoteUrl());
             $mediaQueue = PlaylistParser::getSongs($playlistRaw);
         }
 
         $mediaId = null;
-
         if (!empty($mediaQueue)) {
             $mediaId = array_shift($mediaQueue);
         }
 
         // Save the modified cache, sans the now-missing entry.
-        $playlist->setQueue($mediaQueue);
-        $this->em->persist($playlist);
-        $this->em->flush();
+        $this->cache->set($queueCacheKey, $mediaQueue, 6000);
 
         return ($mediaId)
             ? [$mediaId, 0]
@@ -598,7 +602,6 @@ class Queue implements EventSubscriberInterface
      * @param Entity\Api\StationPlaylistQueue[] $eligibleTracks
      * @param array $playedTracks
      *
-     * @return Entity\Api\StationPlaylistQueue|null
      */
     public static function getDistinctTrack(
         array $eligibleTracks,

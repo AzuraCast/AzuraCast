@@ -151,7 +151,6 @@ class GetId3MetadataService
                 return false;
         }
 
-        $tagwriter->tagformats = ['id3v1', 'id3v2.3'];
         $tagwriter->overwrite_tags = true;
         $tagwriter->tag_encoding = 'UTF8';
         $tagwriter->remove_other_tags = true;

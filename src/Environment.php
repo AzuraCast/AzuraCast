@@ -48,6 +48,10 @@ class Environment
 
     public const LOG_LEVEL = 'LOG_LEVEL';
 
+    public const PROFILING_EXTENSION_ENABLED = 'PROFILING_EXTENSION_ENABLED';
+    public const PROFILING_EXTENSION_ALWAYS_ON = 'PROFILING_EXTENSION_ALWAYS_ON';
+    public const PROFILING_EXTENSION_HTTP_KEY = 'PROFILING_EXTENSION_HTTP_KEY';
+
     // Database and Cache Configuration Variables
     public const DB_HOST = 'MYSQL_HOST';
     public const DB_PORT = 'MYSQL_PORT';
@@ -289,5 +293,20 @@ class Environment
             'port' => (int)($this->data[self::REDIS_PORT] ?? 6379),
             'db' => (int)($this->data[self::REDIS_DB] ?? 1),
         ];
+    }
+
+    public function isProfilingExtensionEnabled(): bool
+    {
+        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ENABLED] ?? 0));
+    }
+
+    public function isProfilingExtensionAlwaysOn(): bool
+    {
+        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? 0));
+    }
+
+    public function getProfilingExtensionHttpKey(): string
+    {
+        return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
     }
 }

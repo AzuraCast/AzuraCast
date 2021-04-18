@@ -7,6 +7,7 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use Azura\Files\ExtendedFilesystemInterface;
 use Doctrine\ORM\Query;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
 
 class CheckFolderPlaylistsTask extends AbstractTask
@@ -103,7 +104,9 @@ class CheckFolderPlaylistsTask extends AbstractTask
             $path = $folder->getPath();
 
             // Verify the folder still exists.
-            if (!$fsMedia->isDir($path)) {
+            try {
+                $fsMedia->isDir($path);
+            } catch (UnableToRetrieveMetadata $exception) {
                 $this->em->remove($folder);
                 continue;
             }

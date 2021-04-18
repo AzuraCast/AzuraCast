@@ -150,22 +150,15 @@ return [
         Psr\Log\LoggerInterface $logger,
         ContainerInterface $di
     ) {
-        $arrayAdapter = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        $arrayAdapter->setLogger($logger);
-
         if ($environment->isTesting()) {
+            $arrayAdapter = new Symfony\Component\Cache\Adapter\ArrayAdapter();
+            $arrayAdapter->setLogger($logger);
             return $arrayAdapter;
         }
 
         $redisAdapter = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
         $redisAdapter->setLogger($logger);
-
-        return new Symfony\Component\Cache\Adapter\ChainAdapter(
-            [
-                $arrayAdapter,
-                $redisAdapter,
-            ]
-        );
+        return $redisAdapter;
     },
 
     Psr\Cache\CacheItemPoolInterface::class => DI\get(

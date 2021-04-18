@@ -22,3 +22,7 @@ chdir = /
 clear_env=No
 catch_workers_output = yes
 decorate_workers_output = no
+
+{{if eq .Env.PROFILING_EXTENSION_ENABLED "1"}}
+process.dumpable = yes
+{{end}}

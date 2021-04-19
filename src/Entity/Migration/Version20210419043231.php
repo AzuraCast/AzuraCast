@@ -13,7 +13,7 @@ use Ramsey\Uuid\Uuid;
  */
 final class Version20210419043231 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Settings entity migration, part 2';
     }
@@ -26,7 +26,7 @@ final class Version20210419043231 extends AbstractMigration
             'SELECT setting_key, setting_value FROM old_settings'
         );
 
-        foreach($oldSettingsRaw as $row) {
+        foreach ($oldSettingsRaw as $row) {
             $key = $row['setting_key'];
             $key = preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $key);
             $key = mb_strtolower($key);
@@ -111,7 +111,7 @@ final class Version20210419043231 extends AbstractMigration
             'geolite_last_run',
         ];
 
-        foreach($textFields as $field) {
+        foreach ($textFields as $field) {
             $value = $oldSettings[$field] ?? null;
             if (null === $value) {
                 continue;
@@ -120,7 +120,7 @@ final class Version20210419043231 extends AbstractMigration
             $newSettings[$field] = $value;
         }
 
-        foreach($stringFields as $field => $length) {
+        foreach ($stringFields as $field => $length) {
             $value = $oldSettings[$field] ?? null;
             if (null === $value) {
                 continue;
@@ -129,7 +129,7 @@ final class Version20210419043231 extends AbstractMigration
             $newSettings[$field] = mb_substr($value, 0, $length, 'UTF-8');
         }
 
-        foreach($boolFields as $field) {
+        foreach ($boolFields as $field) {
             $value = $oldSettings[$field] ?? null;
             if (null === $value) {
                 $newSettings[$field] = 0;
@@ -139,7 +139,7 @@ final class Version20210419043231 extends AbstractMigration
             $newSettings[$field] = $field ? 1 : 0;
         }
 
-        foreach($smallIntFields as $field) {
+        foreach ($smallIntFields as $field) {
             $value = $oldSettings[$field] ?? null;
             if (null === $value) {
                 continue;
@@ -153,7 +153,7 @@ final class Version20210419043231 extends AbstractMigration
             $newSettings[$field] = $value;
         }
 
-        foreach($intFields as $field) {
+        foreach ($intFields as $field) {
             $value = $oldSettings[$field] ?? null;
             if (null === $value) {
                 continue;
@@ -166,13 +166,13 @@ final class Version20210419043231 extends AbstractMigration
         $this->connection->insert('new_settings', $newSettings);
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $this->addSql('RENAME TABLE new_settings TO settings');
         $this->addSql('DROP TABLE old_settings');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->addSql('RENAME TABLE settings TO new_settings');
         $this->addSql('CREATE TABLE old_settings (setting_key VARCHAR(64) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_general_ci`, setting_value LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci` COMMENT \'(DC2Type:json)\', PRIMARY KEY(setting_key)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');

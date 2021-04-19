@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Admin;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
 use App\Exception\ValidationException;
 use App\Http\Response;
@@ -12,25 +13,18 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SettingsController
+class SettingsController extends AbstractApiCrudController
 {
-    protected EntityManagerInterface $em;
-
-    protected Serializer $serializer;
-
-    protected ValidatorInterface $validator;
-
     protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
         Serializer $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $this->em = $em;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
+        parent::__construct($em, $serializer, $validator);
+
         $this->settingsRepo = $settingsRepo;
     }
 
@@ -51,7 +45,7 @@ class SettingsController
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $settings = $this->settingsRepo->readSettings();
-        return $response->withJson($this->serializer->normalize($settings, null));
+        return $response->withJson($this->toArray($settings));
     }
 
     /**
@@ -75,7 +69,8 @@ class SettingsController
      */
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $this->settingsRepo->writeSettings($request->getParsedBody());
+        $settings = $this->settingsRepo->readSettings();
+        $this->editRecord($request->getParsedBody(), $settings);
 
         return $response->withJson(new Entity\Api\Status());
     }

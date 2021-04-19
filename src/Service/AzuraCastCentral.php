@@ -8,7 +8,6 @@ use App\Version;
 use Exception;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 
 class AzuraCastCentral
 {
@@ -80,16 +79,7 @@ class AzuraCastCentral
     public function getUniqueIdentifier(): string
     {
         $settings = $this->settingsRepo->readSettings();
-        $appUuid = $settings->getAppUniqueIdentifier();
-
-        if (empty($appUuid)) {
-            $appUuid = Uuid::uuid4()->toString();
-
-            $settings->setAppUniqueIdentifier($appUuid);
-            $this->settingsRepo->writeSettings($settings);
-        }
-
-        return $appUuid;
+        return $settings->getAppUniqueIdentifier();
     }
 
     /**

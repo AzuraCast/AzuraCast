@@ -73,7 +73,7 @@ class SetupCommand extends CommandAbstract
 
         $this->runCommand($output, 'queue:clear');
 
-        $settings = $settingsRepo->readSettings(true);
+        $settings = $settingsRepo->readSettings();
         $settings->setNowplaying(null);
 
         $stationRepo->clearNowPlaying();
@@ -90,10 +90,6 @@ class SetupCommand extends CommandAbstract
 
         if ('127.0.0.1' !== $settings->getExternalIp()) {
             $settings->setExternalIp(null);
-        }
-
-        if (!$update) {
-            $settings->setAppUniqueIdentifier(null);
         }
 
         $settingsRepo->writeSettings($settings);

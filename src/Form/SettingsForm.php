@@ -33,6 +33,7 @@ class SettingsForm extends AbstractSettingsForm
         parent::__construct($em, $serializer, $validator, $settingsRepo, $environment, $formConfig);
     }
 
+    /** @inheritDoc */
     public function process(ServerRequest $request, $record = null)
     {
         if ('https' !== $request->getUri()->getScheme()) {

@@ -43,14 +43,6 @@ class SettingsRepository extends Repository
     }
 
     /**
-     * @return mixed[]
-     */
-    public function readSettingsArray(): array
-    {
-        return $this->toArray($this->readSettings());
-    }
-
-    /**
      * @param Entity\Settings|array $settingsObj
      */
     public function writeSettings($settingsObj): void
@@ -58,6 +50,8 @@ class SettingsRepository extends Repository
         if (is_array($settingsObj)) {
             $settings = $this->readSettings();
             $settings = $this->fromArray($settingsObj, $settings);
+        } else {
+            $settings = $settingsObj;
         }
 
         $errors = $this->validator->validate($settingsObj);

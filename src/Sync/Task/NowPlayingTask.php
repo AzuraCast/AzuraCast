@@ -102,7 +102,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
         $this->cache->set('nowplaying', $nowplaying, 120);
 
-        $settings = $this->settingsRepo->readSettings(true);
+        $settings = $this->settingsRepo->readSettings();
         $settings->setNowplaying($nowplaying);
         $this->settingsRepo->writeSettings($settings);
     }

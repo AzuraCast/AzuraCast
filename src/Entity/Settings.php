@@ -7,7 +7,6 @@ use App\Customization;
 use App\Entity;
 use App\Event\GetSyncTasks;
 use App\Service\Avatar;
-use App\Traits\AvailableStaticallyTrait;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
@@ -23,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Settings
 {
-    use AvailableStaticallyTrait, Entity\Traits\TruncateStrings, Entity\Traits\TruncateInts;
+    use Entity\Traits\TruncateStrings;
+    use Entity\Traits\TruncateInts;
 
     /**
      * @ORM\Id
@@ -269,7 +269,7 @@ class Settings
         $this->update_last_run = $updateLastRun;
     }
 
-    public function updateLastRun(): void
+    public function updateUpdateLastRun(): void
     {
         $this->setUpdateLastRun(time());
     }

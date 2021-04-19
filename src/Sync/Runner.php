@@ -145,7 +145,7 @@ class Runner
                 gc_collect_cycles();
             }
 
-            $settings = $this->settingsRepo->readSettings(true);
+            $settings = $this->settingsRepo->readSettings();
             $settings->updateSyncLastRunTime($type);
             $this->settingsRepo->writeSettings($settings);
         } finally {

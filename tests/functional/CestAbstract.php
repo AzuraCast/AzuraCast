@@ -48,7 +48,7 @@ abstract class CestAbstract
     {
         $I->wantTo('Start with an incomplete setup.');
 
-        $settings = $this->settingsRepo->readSettings(true);
+        $settings = $this->settingsRepo->readSettings();
         $settings->setSetupCompleteTime(0);
 
         $this->settingsRepo->writeSettings($settings);
@@ -93,7 +93,7 @@ abstract class CestAbstract
         $this->test_station = $this->stationRepo->create($test_station);
 
         // Set settings.
-        $settings = $this->settingsRepo->readSettings(true);
+        $settings = $this->settingsRepo->readSettings();
         $settings->updateSetupComplete();
         $settings->setBaseUrl('localhost');
         $this->settingsRepo->writeSettings($settings);

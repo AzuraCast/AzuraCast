@@ -7,15 +7,15 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="settings")
+ * @ORM\Table(name="old_settings")
  * @ORM\Entity()
  */
 class SettingsTable
 {
     /**
-     * @ORM\Column(name="setting_key", type="string", length=64)
+     * @ORM\Column(name="setting_key", type="guid")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="UUID")
      * @var string
      */
     protected $setting_key;

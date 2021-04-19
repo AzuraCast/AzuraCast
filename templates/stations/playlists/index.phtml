@@ -11,7 +11,7 @@ $this->layout(
 $props = [
     'listUrl' => $router->fromHere('api:stations:playlists'),
     'scheduleUrl' => $router->fromHere('api:stations:playlists:schedule'),
-    'locale' => substr($customization->getLocale(), 0, 2),
+    'locale' => substr($customization->getLocale()->getLocale(), 0, 2),
     'filesUrl' => $router->fromHere('stations:files:index'),
     'stationTimeZone' => $station_tz,
     'enableAdvancedFeatures' => $enableAdvancedFeatures,

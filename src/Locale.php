@@ -113,4 +113,9 @@ class Locale
         // Register translation superglobal functions
         setlocale(LC_ALL, $this->locale);
     }
+
+    public function __toString(): string
+    {
+        return $this->locale;
+    }
 }

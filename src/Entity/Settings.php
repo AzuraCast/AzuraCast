@@ -15,10 +15,11 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="new_settings")
+ * @ORM\Table(name="settings")
  * @ORM\Entity()
  *
  * @OA\Schema(type="object", schema="Settings")
+ * @AuditLog\Auditable
  */
 class Settings
 {

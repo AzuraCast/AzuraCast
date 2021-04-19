@@ -2,84 +2,52 @@
 
 namespace App\Entity\Repository;
 
-use App\Annotations\AuditLog\AuditIgnore;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
 use App\Exception\ValidationException;
-use Doctrine\Common\Annotations\Reader;
 use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
-use ReflectionObject;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SettingsRepository extends Repository
 {
-    protected static ?Entity\Settings $instance = null;
-
-    protected const CACHE_KEY = 'settings';
-
-    protected const CACHE_TTL = 600;
-
-    protected CacheInterface $cache;
-
     protected ValidatorInterface $validator;
 
-    protected Reader $annotationReader;
-
-    protected string $entityClass = Entity\SettingsTable::class;
+    protected string $entityClass = Entity\Settings::class;
 
     public function __construct(
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        CacheInterface $cache,
-        ValidatorInterface $validator,
-        Reader $annotationReader
+        ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
 
-        $this->cache = $cache;
         $this->validator = $validator;
-        $this->annotationReader = $annotationReader;
     }
 
-    public function readSettings(bool $reload = false): Entity\Settings
+    public function readSettings(): Entity\Settings
     {
-        if ($reload || null === self::$instance) {
-            self::$instance = $this->arrayToObject($this->readSettingsArray());
+        $settings = $this->repository->findOneBy([]);
+
+        if (!($settings instanceof Entity\Settings)) {
+            $settings = new Entity\Settings();
+            $this->em->persist($settings);
+            $this->em->flush();
         }
 
-        return self::$instance;
-    }
-
-    public function clearSettingsInstance(): void
-    {
-        self::$instance = null;
+        return $settings;
     }
 
     /**
      * @return mixed[]
      */
-    public function readSettingsArray(bool $reload = false): array
+    public function readSettingsArray(): array
     {
-        $allRecords = $this->cache->get(self::CACHE_KEY);
-
-        if ($reload || null === $allRecords) {
-            $allRecords = [];
-            foreach ($this->repository->findAll() as $record) {
-                /** @var Entity\SettingsTable $record */
-                $allRecords[$record->getSettingKey()] = $record->getSettingValue();
-            }
-
-            $this->cache->set(self::CACHE_KEY, $allRecords, self::CACHE_TTL);
-        }
-
-        return $allRecords;
+        return $this->toArray($this->readSettings());
     }
 
     /**
@@ -88,7 +56,8 @@ class SettingsRepository extends Repository
     public function writeSettings($settingsObj): void
     {
         if (is_array($settingsObj)) {
-            $settingsObj = $this->arrayToObject($settingsObj, $this->readSettings(true));
+            $settings = $this->readSettings();
+            $settings = $this->fromArray($settingsObj, $settings);
         }
 
         $errors = $this->validator->validate($settingsObj);
@@ -98,102 +67,7 @@ class SettingsRepository extends Repository
             throw $e;
         }
 
-        $settings = $this->objectToArray($settingsObj);
-
-        $currentRecords = $this->repository->findAll();
-        $allRecords = [];
-        foreach ($currentRecords as $record) {
-            /** @var Entity\SettingsTable $record */
-            $allRecords[$record->getSettingKey()] = $record;
-        }
-
-        $changes = [];
-        foreach ($settings as $settingKey => $settingValue) {
-            if (isset($allRecords[$settingKey])) {
-                $record = $allRecords[$settingKey];
-                $prev = $record->getSettingValue();
-            } else {
-                $record = new Entity\SettingsTable($settingKey);
-                $prev = null;
-            }
-
-            $record->setSettingValue($settingValue);
-            $this->em->persist($record);
-
-            // Include change in audit log.
-            if ($prev !== $settingValue) {
-                $changes[$settingKey] = [$prev, $settingValue];
-            }
-        }
-
-        if (!empty($changes)) {
-            // Ignore any properties tagged with "AuditIgnore".
-            $reflectionClass = new ReflectionObject($settingsObj);
-            $loggableChanges = array_filter(
-                $changes,
-                function ($settingKey) use ($reflectionClass) {
-                    $reflectionProp = $reflectionClass->getProperty($settingKey);
-                    $ignoreAnnotation = $this->annotationReader->getPropertyAnnotation(
-                        $reflectionProp,
-                        AuditIgnore::class
-                    );
-                    return (null === $ignoreAnnotation);
-                },
-                ARRAY_FILTER_USE_KEY
-            );
-
-            if (!empty($loggableChanges)) {
-                $auditLog = new Entity\AuditLog(
-                    Entity\AuditLog::OPER_UPDATE,
-                    Entity\SettingsTable::class,
-                    'Settings',
-                    null,
-                    null,
-                    $loggableChanges
-                );
-
-                $this->em->persist($auditLog);
-            }
-        }
-
+        $this->em->persist($settings);
         $this->em->flush();
-        $this->cache->delete(self::CACHE_KEY);
-    }
-
-    /**
-     * @param Entity\Settings $settings
-     *
-     * @return mixed[]
-     */
-    protected function objectToArray(Entity\Settings $settings): array
-    {
-        $reflectionClass = new ReflectionObject($settings);
-        $array = $this->serializer->normalize($settings, null);
-
-        // Prevent serializer from returning things that aren't actually properties on the class.
-        return array_filter(
-            $array,
-            function ($key) use ($reflectionClass) {
-                return $reflectionClass->hasProperty($key);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-    }
-
-    protected function arrayToObject(array $settings, ?Entity\Settings $existingSettings = null): Entity\Settings
-    {
-        $settings = array_filter(
-            $settings,
-            function ($value) {
-                return null !== $value;
-            }
-        );
-
-        $context = [];
-        if (null !== $existingSettings) {
-            $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $existingSettings;
-        }
-
-        return $this->serializer->denormalize($settings, Entity\Settings::class, null, $context);
     }
 }

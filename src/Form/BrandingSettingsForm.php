@@ -6,11 +6,15 @@ use App\Config;
 use App\Entity;
 use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BrandingSettingsForm extends AbstractSettingsForm
 {
     public function __construct(
         EntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
         Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Config $config
@@ -22,11 +26,6 @@ class BrandingSettingsForm extends AbstractSettingsForm
             ]
         );
 
-        parent::__construct(
-            $em,
-            $settingsRepo,
-            $environment,
-            $formConfig
-        );
+        parent::__construct($em, $serializer, $validator, $settingsRepo, $environment, $formConfig);
     }
 }

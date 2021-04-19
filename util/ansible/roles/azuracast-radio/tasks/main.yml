@@ -151,3 +151,15 @@
     name : audiowaveform
     state : latest
     install_recommends : no
+
+- name : Install Flac
+  apt :
+    name : flac
+    state : latest
+    install_recommends : no
+
+- name : Install Vorbis-Tools
+  apt :
+    name : vorbis-tools
+    state : latest
+    install_recommends : no

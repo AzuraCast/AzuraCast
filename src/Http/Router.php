@@ -22,7 +22,7 @@ class Router implements RouterInterface
 
     protected ?ServerRequestInterface $currentRequest = null;
 
-    protected Entity\Settings $settings;
+    protected Entity\Repository\SettingsRepository $settingsRepo;
 
     public function __construct(
         Environment $environment,
@@ -30,7 +30,7 @@ class Router implements RouterInterface
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
         $this->environment = $environment;
-        $this->settings = $settingsRepo->readSettings();
+        $this->settingsRepo = $settingsRepo;
         $this->routeParser = $app->getRouteCollector()->getRouteParser();
     }
 
@@ -155,7 +155,9 @@ class Router implements RouterInterface
 
     public function getBaseUrl(bool $useRequest = true): UriInterface
     {
-        $settingsBaseUrl = $this->settings->getBaseUrl();
+        $settings = $this->settingsRepo->readSettings();
+
+        $settingsBaseUrl = $settings->getBaseUrl();
         if (!empty($settingsBaseUrl)) {
             if (strpos($settingsBaseUrl, 'http') !== 0) {
                 $settingsBaseUrl = 'http://' . $settingsBaseUrl;
@@ -166,7 +168,7 @@ class Router implements RouterInterface
             $baseUrl = new Uri('');
         }
 
-        $useHttps = $this->settings->getAlwaysUseSsl();
+        $useHttps = $settings->getAlwaysUseSsl();
 
         if ($useRequest && $this->currentRequest instanceof ServerRequestInterface) {
             $currentUri = $this->currentRequest->getUri();
@@ -175,7 +177,7 @@ class Router implements RouterInterface
                 $useHttps = true;
             }
 
-            $preferBrowserUrl = $this->settings->getPreferBrowserUrl();
+            $preferBrowserUrl = $settings->getPreferBrowserUrl();
             if ($preferBrowserUrl || $baseUrl->getHost() === '') {
                 $ignoredHosts = ['web', 'nginx', 'localhost'];
                 if (!in_array($currentUri->getHost(), $ignoredHosts, true)) {

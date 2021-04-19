@@ -37,7 +37,7 @@ class SettingsForm extends AbstractSettingsForm
     public function process(ServerRequest $request, $record = null)
     {
         if ('https' !== $request->getUri()->getScheme()) {
-            $alwaysUseSsl = $this->getField('alwaysUseSsl');
+            $alwaysUseSsl = $this->getField('always_use_ssl');
             $alwaysUseSsl->setAttribute('disabled', 'disabled');
             $alwaysUseSsl->setOption(
                 'description',

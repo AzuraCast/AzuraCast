@@ -58,6 +58,13 @@ class AzuraCastCentral
             $request_body['release'] = Version::FALLBACK_VERSION;
         }
 
+        $this->logger->debug(
+            'Update request body',
+            [
+                'body' => $request_body,
+            ]
+        );
+
         try {
             $response = $this->httpClient->request(
                 'POST',
@@ -79,7 +86,7 @@ class AzuraCastCentral
     public function getUniqueIdentifier(): string
     {
         $settings = $this->settingsRepo->readSettings();
-        return $settings->getAppUniqueIdentifier();
+        return (string)$settings->getAppUniqueIdentifier();
     }
 
     /**

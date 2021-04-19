@@ -1057,4 +1057,13 @@ class Settings
     {
         $this->avatar_default_url = $avatarDefaultUrl;
     }
+
+    /**
+     * AuditIdentifier filler function
+     * @AuditLog\AuditIdentifier
+     */
+    public function getAuditIdentifier(): string
+    {
+        return 'Settings';
+    }
 }

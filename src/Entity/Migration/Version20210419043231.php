@@ -142,6 +142,7 @@ final class Version20210419043231 extends AbstractMigration
         foreach ($smallIntFields as $field) {
             $value = $oldSettings[$field] ?? null;
             if (null === $value) {
+                $newSettings[$field] = 0;
                 continue;
             }
 
@@ -156,7 +157,7 @@ final class Version20210419043231 extends AbstractMigration
         foreach ($intFields as $field) {
             $value = $oldSettings[$field] ?? null;
             if (null === $value) {
-                continue;
+                $value = 0;
             }
 
             $newSettings[$field] = (int)$value;

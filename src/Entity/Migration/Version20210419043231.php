@@ -136,7 +136,7 @@ final class Version20210419043231 extends AbstractMigration
                 continue;
             }
 
-            $newSettings[$field] = $field ? 1 : 0;
+            $newSettings[$field] = $value ? 1 : 0;
         }
 
         foreach ($smallIntFields as $field) {

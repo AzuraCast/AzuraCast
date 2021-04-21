@@ -389,7 +389,7 @@ export default {
                 this.flushCache = false;
                 this.totalRows = 0;
 
-                console.error(err.data.message);
+                console.error(err.response.data.message);
                 callback([]);
             });
         },

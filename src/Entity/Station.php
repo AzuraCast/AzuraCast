@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @OA\Schema(type="object", schema="Station")
  * @AppAssert\StationPortChecker()
+ * @AppAssert\UniqueEntity(fields={"short_name"})
  */
 class Station
 {

@@ -5,6 +5,7 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog\Auditable;
+use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,6 +16,8 @@ use const PASSWORD_ARGON2ID;
  *     @ORM\UniqueConstraint(name="username_idx", columns={"username"})
  * })
  * @ORM\Entity()
+ *
+ * @UniqueEntity(fields={"username"})
  *
  * @Auditable()
  */

@@ -41,7 +41,7 @@ class RunBackupTask extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
-            $settings = $this->settingsRepo->readSettings(true);
+            $settings = $this->settingsRepo->readSettings();
             $settings->updateBackupLastRun();
 
             $this->settingsRepo->writeSettings($settings);
@@ -53,7 +53,7 @@ class RunBackupTask extends AbstractTask
                 $message->storageLocationId
             );
 
-            $settings = $this->settingsRepo->readSettings(true);
+            $settings = $this->settingsRepo->readSettings();
             $settings->setBackupLastResult($result_code);
             $settings->setBackupLastOutput($result_output);
             $this->settingsRepo->writeSettings($settings);

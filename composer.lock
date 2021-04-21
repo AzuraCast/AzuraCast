@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86025d9340610c6ae8f5853b3fa5e2bf",
+    "content-hash": "17f74c9a9115bff2e514f58d32a7f93f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -5669,6 +5669,58 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "ramsey/uuid-doctrine",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ramsey/uuid-doctrine.git",
+                "reference": "9facc4689547e72e03c1e18df4a0ee162b2778b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ramsey/uuid-doctrine/zipball/9facc4689547e72e03c1e18df4a0ee162b2778b0",
+                "reference": "9facc4689547e72e03c1e18df4a0ee162b2778b0",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.5",
+                "php": "^5.4 | ^7 | ^8",
+                "ramsey/uuid": "^3.5 | ^4"
+            },
+            "require-dev": {
+                "jakub-onderka/php-parallel-lint": "^1",
+                "mockery/mockery": "^0.9 | ^1",
+                "phpunit/phpunit": "^4.8.36 | ^5.7 | ^6.5 | ^7",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ramsey\\Uuid\\Doctrine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Allow the use of ramsey/uuid as a Doctrine field type.",
+            "homepage": "https://github.com/ramsey/uuid-doctrine",
+            "keywords": [
+                "database",
+                "doctrine",
+                "guid",
+                "identifier",
+                "uuid"
+            ],
+            "support": {
+                "issues": "https://github.com/ramsey/uuid-doctrine/issues",
+                "rss": "https://github.com/ramsey/uuid-doctrine/releases.atom",
+                "source": "https://github.com/ramsey/uuid-doctrine",
+                "wiki": "https://github.com/ramsey/uuid/wiki"
+            },
+            "time": "2020-01-27T05:09:17+00:00"
         },
         {
             "name": "rlanvin/php-ip",

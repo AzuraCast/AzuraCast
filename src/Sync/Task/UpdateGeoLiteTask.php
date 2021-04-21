@@ -62,7 +62,7 @@ class UpdateGeoLiteTask extends AbstractTask
             );
         }
 
-        $settings = $this->settingsRepo->readSettings(true);
+        $settings = $this->settingsRepo->readSettings();
         $settings->updateGeoliteLastRun();
         $this->settingsRepo->writeSettings($settings);
     }

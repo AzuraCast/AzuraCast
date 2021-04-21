@@ -8,11 +8,15 @@ use App\Environment;
 use App\Http\ServerRequest;
 use App\Version;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SettingsForm extends AbstractSettingsForm
 {
     public function __construct(
         EntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
         Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Version $version,
@@ -26,18 +30,14 @@ class SettingsForm extends AbstractSettingsForm
             ]
         );
 
-        parent::__construct(
-            $em,
-            $settingsRepo,
-            $environment,
-            $formConfig
-        );
+        parent::__construct($em, $serializer, $validator, $settingsRepo, $environment, $formConfig);
     }
 
-    public function process(ServerRequest $request): bool
+    /** @inheritDoc */
+    public function process(ServerRequest $request, $record = null)
     {
         if ('https' !== $request->getUri()->getScheme()) {
-            $alwaysUseSsl = $this->getField('alwaysUseSsl');
+            $alwaysUseSsl = $this->getField('always_use_ssl');
             $alwaysUseSsl->setAttribute('disabled', 'disabled');
             $alwaysUseSsl->setOption(
                 'description',
@@ -45,6 +45,6 @@ class SettingsForm extends AbstractSettingsForm
             );
         }
 
-        return parent::process($request);
+        return parent::process($request, $record);
     }
 }

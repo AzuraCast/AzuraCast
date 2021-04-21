@@ -28,7 +28,7 @@ return [
             'tab' => 'system',
 
             'elements' => [
-                'baseUrl' => [
+                'base_url' => [
                     'url',
                     [
                         'label' => __('Site Base URL'),
@@ -40,7 +40,7 @@ return [
                     ],
                 ],
 
-                'instanceName' => [
+                'instance_name' => [
                     'text',
                     [
                         'label' => __('AzuraCast Instance Name'),
@@ -51,7 +51,7 @@ return [
                     ],
                 ],
 
-                'preferBrowserUrl' => [
+                'prefer_browser_url' => [
                     'toggle',
                     [
                         'label' => __('Prefer Browser URL (If Available)'),
@@ -65,7 +65,7 @@ return [
                     ],
                 ],
 
-                'useRadioProxy' => [
+                'use_radio_proxy' => [
                     'toggle',
                     [
                         'label' => __('Use Web Proxy for Radio'),
@@ -79,7 +79,7 @@ return [
                     ],
                 ],
 
-                'historyKeepDays' => [
+                'history_keep_days' => [
                     'radio',
                     [
                         'label' => __('Days of Playback History to Keep'),
@@ -99,7 +99,7 @@ return [
                     ],
                 ],
 
-                'enableWebsockets' => [
+                'enable_websockets' => [
                     'toggle',
                     [
                         'label' => __('Use WebSockets for Now Playing Updates'),
@@ -113,7 +113,7 @@ return [
                     ],
                 ],
 
-                'enableAdvancedFeatures' => [
+                'enable_advanced_features' => [
                     'toggle',
                     [
                         'label' => __('Enable Advanced Features'),
@@ -136,7 +136,7 @@ return [
 
             'elements' => [
 
-                'alwaysUseSsl' => [
+                'always_use_ssl' => [
                     'toggle',
                     [
                         'label' => __('Always Use HTTPS'),
@@ -150,7 +150,7 @@ return [
                     ],
                 ],
 
-                'apiAccessControl' => [
+                'api_access_control' => [
                     'text',
                     [
                         'label' => __('API "Access-Control-Allow-Origin" header'),
@@ -212,7 +212,7 @@ return [
                     ],
                 ],
 
-                'checkForUpdates' => [
+                'check_for_updates' => [
                     'toggle',
                     [
                         'label' => __('Show Update Announcements'),
@@ -232,7 +232,7 @@ return [
 
             'elements' => [
 
-                'mailEnabled' => [
+                'mail_enabled' => [
                     'toggle',
                     [
                         'label' => __('Enable Mail Delivery'),
@@ -243,7 +243,7 @@ return [
                     ],
                 ],
 
-                'mailSenderName' => [
+                'mail_sender_name' => [
                     'text',
                     [
                         'label' => __('Sender Name'),
@@ -252,7 +252,7 @@ return [
                     ],
                 ],
 
-                'mailSenderEmail' => [
+                'mail_sender_email' => [
                     'email',
                     [
                         'label' => __('Sender E-mail Address'),
@@ -262,7 +262,7 @@ return [
                     ],
                 ],
 
-                'mailSmtpHost' => [
+                'mail_smtp_host' => [
                     'text',
                     [
                         'label' => __('SMTP Host'),
@@ -271,7 +271,7 @@ return [
                     ],
                 ],
 
-                'mailSmtpPort' => [
+                'mail_smtp_port' => [
                     'number',
                     [
                         'label' => __('SMTP Port'),
@@ -280,7 +280,7 @@ return [
                     ],
                 ],
 
-                'mailSmtpSecure' => [
+                'mail_smtp_secure' => [
                     'toggle',
                     [
                         'label' => __('Use Secure (TLS) SMTP Connection'),
@@ -293,7 +293,7 @@ return [
                     ],
                 ],
 
-                'mailSmtpUsername' => [
+                'mail_smtp_username' => [
                     'text',
                     [
                         'label' => __('SMTP Username'),
@@ -302,7 +302,7 @@ return [
                     ],
                 ],
 
-                'mailSmtpPassword' => [
+                'mail_smtp_password' => [
                     'password',
                     [
                         'label' => __('SMTP Password'),
@@ -320,7 +320,7 @@ return [
 
             'elements' => [
 
-                'avatarService' => [
+                'avatar_service' => [
                     'radio',
                     [
                         'label' => __('Avatar Service'),
@@ -335,7 +335,7 @@ return [
                     ],
                 ],
 
-                'avatarDefaultUrl' => [
+                'avatar_default_url' => [
                     'text',
                     [
                         'label' => __('Default Avatar URL'),
@@ -354,7 +354,7 @@ return [
 
             'elements' => [
 
-                'useExternalAlbumArtInApis' => [
+                'use_external_album_art_in_apis' => [
                     'toggle',
                     [
                         'label' => __('Check Web Services for Album Art for "Now Playing" Tracks'),
@@ -365,7 +365,7 @@ return [
                     ],
                 ],
 
-                'useExternalAlbumArtWhenProcessingMedia' => [
+                'use_external_album_art_when_processing_media' => [
                     'toggle',
                     [
                         'label' => __('Check Web Services for Album Art When Uploading Media'),
@@ -376,7 +376,7 @@ return [
                     ],
                 ],
 
-                'lastFmApiKey' => [
+                'last_fm_api_key' => [
                     'text',
                     [
                         'label' => __('Last.fm API Key'),

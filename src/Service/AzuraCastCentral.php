@@ -8,7 +8,6 @@ use App\Version;
 use Exception;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid;
 
 class AzuraCastCentral
 {
@@ -59,6 +58,13 @@ class AzuraCastCentral
             $request_body['release'] = Version::FALLBACK_VERSION;
         }
 
+        $this->logger->debug(
+            'Update request body',
+            [
+                'body' => $request_body,
+            ]
+        );
+
         try {
             $response = $this->httpClient->request(
                 'POST',
@@ -80,16 +86,7 @@ class AzuraCastCentral
     public function getUniqueIdentifier(): string
     {
         $settings = $this->settingsRepo->readSettings();
-        $appUuid = $settings->getAppUniqueIdentifier();
-
-        if (empty($appUuid)) {
-            $appUuid = Uuid::uuid4()->toString();
-
-            $settings->setAppUniqueIdentifier($appUuid);
-            $this->settingsRepo->writeSettings($settings);
-        }
-
-        return $appUuid;
+        return (string)$settings->getAppUniqueIdentifier();
     }
 
     /**

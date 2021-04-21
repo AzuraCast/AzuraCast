@@ -60,7 +60,7 @@ class LocalWebhookHandler
 
                 $this->cache->set('nowplaying', $np_new, 120);
 
-                $settings = $this->settingsRepo->readSettings(true);
+                $settings = $this->settingsRepo->readSettings();
                 $settings->setNowplaying($np_new);
                 $this->settingsRepo->writeSettings($settings);
             }

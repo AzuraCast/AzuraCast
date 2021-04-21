@@ -56,6 +56,7 @@
         "psr/http-factory": "^1.0",
         "psr/simple-cache": "^1.0",
         "ramsey/uuid": "^4.0",
+        "ramsey/uuid-doctrine": "^1.6",
         "rlanvin/php-ip": "^2.0",
         "slim/http": "^1.1",
         "slim/slim": "^4.2",

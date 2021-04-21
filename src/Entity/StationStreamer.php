@@ -25,7 +25,7 @@ use const PASSWORD_ARGON2ID;
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
  *
- * @UniqueEntity(fields={"station_id", "streamer_username"})
+ * @UniqueEntity(fields={"station", "streamer_username"})
  *
  * @AuditLog\Auditable
  *

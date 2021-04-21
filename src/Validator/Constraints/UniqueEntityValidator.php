@@ -162,7 +162,7 @@ class UniqueEntityValidator extends ConstraintValidator
             return;
         }
 
-        $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
+        $errorPath = $constraint->errorPath ?? $fields[0];
         $invalidValue = $criteria[$errorPath] ?? $criteria[$fields[0]];
 
         $message = __('This value is already used.');

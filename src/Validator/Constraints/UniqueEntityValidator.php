@@ -165,7 +165,9 @@ class UniqueEntityValidator extends ConstraintValidator
         $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
         $invalidValue = $criteria[$errorPath] ?? $criteria[$fields[0]];
 
-        $this->context->buildViolation($constraint->message)
+        $message = __('This value is already used.');
+
+        $this->context->buildViolation($message)
             ->atPath($errorPath)
             ->setParameter('{{ value }}', $this->formatWithIdentifiers($this->em, $class, $invalidValue))
             ->setInvalidValue($invalidValue)

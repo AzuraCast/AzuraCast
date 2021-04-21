@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueEntity extends Constraint
 {
-    public $message = 'This value is already used.';
     public $entityClass = null;
     public $repositoryMethod = 'findBy';
     public $fields = [];
@@ -57,8 +56,6 @@ class UniqueEntity extends Constraint
         $this->repositoryMethod = $repositoryMethod ?? $this->repositoryMethod;
         $this->errorPath = $errorPath ?? $this->errorPath;
         $this->ignoreNull = $ignoreNull ?? $this->ignoreNull;
-
-        $this->message = __('This value is already used.');
     }
 
     /**

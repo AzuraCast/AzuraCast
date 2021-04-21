@@ -30,7 +30,9 @@ class StorageLocationValidator extends ConstraintValidator
         try {
             $storageLocation->validate();
         } catch (\Exception $e) {
-            $this->context->buildViolation($constraint->message)
+            $message = __('This storage location could not be validated: %s', '{{ error }}');
+
+            $this->context->buildViolation($message)
                 ->setParameter('{{ error }}', $e->getMessage())
                 ->addViolation();
         }

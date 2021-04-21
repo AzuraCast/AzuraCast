@@ -61,7 +61,10 @@ class UniqueEntity extends Constraint
         $this->message = __('This value is already used.');
     }
 
-    public function getRequiredOptions()
+    /**
+     * @return string[]
+     */
+    public function getRequiredOptions(): array
     {
         return ['fields'];
     }
@@ -74,7 +77,7 @@ class UniqueEntity extends Constraint
         return self::CLASS_CONSTRAINT;
     }
 
-    public function getDefaultOption()
+    public function getDefaultOption(): string
     {
         return 'fields';
     }

@@ -37,7 +37,7 @@ class UniqueEntityValidator extends ConstraintValidator
      * @throws UnexpectedTypeException
      * @throws ConstraintDefinitionException
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueEntity) {
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);
@@ -119,7 +119,8 @@ class UniqueEntityValidator extends ConstraintValidator
             if (!$entity instanceof $supportedClass) {
                 throw new ConstraintDefinitionException(
                     sprintf(
-                        'The "%s" entity repository does not support the "%s" entity. The entity should be an instance of or extend "%s".',
+                        'The "%s" entity repository does not support the "%s" entity. The entity should be '
+                        . 'an instance of or extend "%s".',
                         $constraint->entityClass,
                         $class->getName(),
                         $supportedClass
@@ -172,7 +173,7 @@ class UniqueEntityValidator extends ConstraintValidator
             ->addViolation();
     }
 
-    private function formatWithIdentifiers($em, $class, $value)
+    private function formatWithIdentifiers($em, $class, $value): string
     {
         if (!\is_object($value) || $value instanceof \DateTimeInterface) {
             return $this->formatValue($value, self::PRETTY_DATE);
@@ -201,7 +202,7 @@ class UniqueEntityValidator extends ConstraintValidator
 
         array_walk(
             $identifiers,
-            function (&$id, $field) {
+            function (&$id, $field): void {
                 if (!\is_object($id) || $id instanceof \DateTimeInterface) {
                     $idAsString = $this->formatValue($id, self::PRETTY_DATE);
                 } else {

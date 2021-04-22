@@ -20,7 +20,7 @@ echo "(Environment: $APPLICATION_ENV)"
 
 if [ "$APPLICATION_ENV" = "production" ]; then
     if bool "$COMPOSER_PLUGIN_MODE"; then
-        composer update --ignore-platform-req=php --no-dev --optimize-autoloader
+        composer update --no-dev --optimize-autoloader
     fi
 else
     if [ "$APPLICATION_ENV" = "testing" ]; then
@@ -29,7 +29,7 @@ else
         sudo chown -R azuracast:azuracast vendor
     fi
 
-    composer install --ignore-platform-req=php
+    composer install
 fi
 
 azuracast_cli azuracast:setup "$@"

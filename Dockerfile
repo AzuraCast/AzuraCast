@@ -25,8 +25,7 @@ RUN composer install \
     --no-dev \
     --no-ansi \
     --no-autoloader \
-    --no-interaction \
-    --ignore-platform-req=php
+    --no-interaction
 
 COPY --chown=azuracast:azuracast . .
 

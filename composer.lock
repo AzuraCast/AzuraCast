@@ -171,12 +171,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/flysystem-v2-extensions.git",
-                "reference": "dc36112acca80f0cdfe0e67949d4b90f6da0bc42"
+                "reference": "91677074ea20c57dcbb3c51084858cc24b03a8b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/dc36112acca80f0cdfe0e67949d4b90f6da0bc42",
-                "reference": "dc36112acca80f0cdfe0e67949d4b90f6da0bc42",
+                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/91677074ea20c57dcbb3c51084858cc24b03a8b7",
+                "reference": "91677074ea20c57dcbb3c51084858cc24b03a8b7",
                 "shasum": ""
             },
             "require": {
@@ -226,7 +226,7 @@
                 "issues": "https://github.com/AzuraCast/flysystem-v2-extensions/issues",
                 "source": "https://github.com/AzuraCast/flysystem-v2-extensions/tree/main"
             },
-            "time": "2021-04-21T07:48:30+00:00"
+            "time": "2021-04-22T21:08:03+00:00"
         },
         {
             "name": "azuracast/nowplaying",

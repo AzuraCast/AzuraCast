@@ -44,33 +44,46 @@
       - php7.2-mbstring
       - php7.2-intl
       - php7.2-redis
-
-- name: Install PHP 7.4
-  apt:
-    name: "{{ packages }}"
-    state: latest
-  vars:
-    packages:
       - php7.4-fpm
       - php7.4-cli
       - php7.4-gd
       - php7.4-curl
-      - php7.4-xml         # IceCast XML config
-      - php7.4-zip         # Composer installs
-      - php7.4-mysqlnd     # MySQL Native Driver (Doctrine)
-      - php7.4-mbstring    # Codeception Tests
-      - php7.4-intl        # Localization
-      - php7.4-redis       # Cache
-      - php7.4-bcmath      # BigInteger
-      - php7.4-gmp         # BigInteger and PHP-IP
-      - php7.4-maxminddb   # Maxmind (GeoIP) DB native ext
+      - php7.4-xml
+      - php7.4-zip
+      - php7.4-mysqlnd
+      - php7.4-mbstring
+      - php7.4-intl
+      - php7.4-redis
+      - php7.4-bcmath
+      - php7.4-gmp
+      - php7.4-maxminddb
+
+- name : Install PHP 8.0
+  apt :
+    name : "{{ packages }}"
+    state : latest
+  vars :
+    packages :
+      - php8.0-fpm
+      - php8.0-cli
+      - php8.0-gd
+      - php8.0-curl
+      - php8.0-xml         # IceCast XML config
+      - php8.0-zip         # Composer installs
+      - php8.0-mysqlnd     # MySQL Native Driver (Doctrine)
+      - php8.0-mbstring    # Codeception Tests
+      - php8.0-intl        # Localization
+      - php8.0-redis       # Cache
+      - php8.0-bcmath      # BigInteger
+      - php8.0-gmp         # BigInteger and PHP-IP
+      - php8.0-maxminddb   # Maxmind (GeoIP) DB native ext
 
 - name: Configure PHP FPM Pool
-  template: src=fpmpool.j2 dest=/etc/php/7.4/fpm/pool.d/www.conf force=true
+  template : src=fpmpool.j2 dest=/etc/php/8.0/fpm/pool.d/www.conf force=true
 
 - name: Configure php-fpm php.ini
   ini_file:
-    dest: /etc/php/7.4/fpm/php.ini
+    dest : /etc/php/8.0/fpm/php.ini
     section: PHP
     option: "{{ item.option }}"
     value: "{{ item.value }}"
@@ -81,7 +94,7 @@
 
 - name: Configure php-cli php.ini
   ini_file:
-    dest: /etc/php/7.4/cli/php.ini
+    dest : /etc/php/8.0/cli/php.ini
     section: PHP
     option: "{{ item.option }}"
     value: "{{ item.value }}"

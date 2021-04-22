@@ -69,7 +69,12 @@ class RolePermissionRepository extends Repository
             ->execute();
 
         foreach ($post_values as $post_key => $post_value) {
-            [$post_key_action, $post_key_id] = explode('_', $post_key);
+            if (str_contains($post_key, '_')) {
+                [$post_key_action, $post_key_id] = explode('_', $post_key);
+            } else {
+                $post_key_action = $post_key;
+                $post_key_id = null;
+            }
 
             if ($post_key_action !== 'actions' || empty($post_value)) {
                 continue;

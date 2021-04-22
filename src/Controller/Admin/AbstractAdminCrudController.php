@@ -33,9 +33,8 @@ abstract class AbstractAdminCrudController
      * @param ServerRequest $request
      * @param string|int|null $id
      *
-     * @return object|bool|null
      */
-    protected function doEdit(ServerRequest $request, $id = null)
+    protected function doEdit(ServerRequest $request, $id = null): object|bool|null
     {
         $record = $this->getRecord($id);
         return $this->form->process($request, $record);

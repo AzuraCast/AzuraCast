@@ -82,7 +82,7 @@ class EntityForm extends Form
      *
      * @return object|bool The modified object if edited/created, or `false` if not processed.
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if (!isset($this->entityClass)) {
             throw new Exception('Entity class name is not specified.');
@@ -169,9 +169,8 @@ class EntityForm extends Form
     /**
      * @param object $object
      *
-     * @return mixed
      */
-    protected function displayShortenedObject($object)
+    protected function displayShortenedObject($object): mixed
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();

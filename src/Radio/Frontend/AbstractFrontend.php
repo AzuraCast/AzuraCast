@@ -185,7 +185,7 @@ abstract class AbstractFrontend extends AbstractAdapter
      *
      * @return mixed[]|bool
      */
-    protected function processCustomConfig(?string $custom_config_raw)
+    protected function processCustomConfig(?string $custom_config_raw): array|bool
     {
         $custom_config = [];
 

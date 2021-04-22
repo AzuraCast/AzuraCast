@@ -134,9 +134,8 @@ class Relay
     }
 
     /**
-     * @return mixed|null
      */
-    public function getNowplaying()
+    public function getNowplaying(): mixed
     {
         return $this->nowplaying;
     }

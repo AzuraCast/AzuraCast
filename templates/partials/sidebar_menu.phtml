@@ -1,4 +1,5 @@
 <?php
+
 /** @var \App\Assets $assets */
 $assets->addInlineJs($this->fetch('partials/sidebar_menu.js'), 99);
 
@@ -7,11 +8,14 @@ $assets->addInlineJs($this->fetch('partials/sidebar_menu.js'), 99);
  * @var string $active
  * @var \App\Http\Router $router
  */
+
+$active ??= null;
 ?>
 <ul class="navdrawer-nav">
-    <?php foreach ($menu as $category_id => $category): ?>
+    <?php
+    foreach ($menu as $category_id => $category): ?>
         <li class="nav-item">
-            <a class="nav-link <?=$category['class']?> <?php
+            <a class="nav-link <?=($category['class'] ?? '')?> <?php
             if ($active === $category_id): ?>active<?php
             endif; ?>"
                <?php
@@ -19,7 +23,7 @@ $assets->addInlineJs($this->fetch('partials/sidebar_menu.js'), 99);
                else: ?>data-toggle="collapse" href="#sidebar-submenu-<?=$category_id?>"<?php
             endif; ?>
                <?php
-               if ($category['external']): ?>target="_blank"<?php
+               if ($category['external'] ?? false): ?>target="_blank"<?php
             endif; ?>
                <?php
                if (isset($category['confirm'])): ?>data-confirm-title="<?=$this->e($category['confirm'])?>"<?php
@@ -30,7 +34,7 @@ $assets->addInlineJs($this->fetch('partials/sidebar_menu.js'), 99);
                 <i class="navdrawer-nav-icon material-icons" aria-hidden="true"><?=$category['icon']?></i>
                 <?=$category['label']?>
                 <?php
-                if ($category['external']): ?>
+                if ($category['external'] ?? false): ?>
                     <i class="material-icons sm">open_in_new</i>
                 <?php
                 endif; ?>
@@ -42,11 +46,19 @@ $assets->addInlineJs($this->fetch('partials/sidebar_menu.js'), 99);
                         <?php
                         foreach ($category['items'] as $item_id => $item): ?>
                             <li class="nav-item">
-                                <a class="nav-link pl-4 py-2 text-muted <?=$item['class']?>"
+                                <a class="nav-link pl-4 py-2 text-muted <?=($item['class'] ?? '')?>"
                                    href="<?=$item['url']?>"
-                                   <?php if ($item['external']): ?>target="_blank"<?php endif; ?>
-                                   <?php if (isset($item['confirm'])): ?>data-confirm-title="<?=$this->e($item['confirm'])?>"<?php endif; ?>
-                                   <?php if (isset($item['title'])): ?>title="<?=$this->e($item['title'])?>"<?php endif; ?>>
+                                   <?php
+                                   if ($item['external'] ?? false): ?>target="_blank"<?php
+                                endif; ?>
+                                   <?php
+                                   if (isset($item['confirm'])): ?>data-confirm-title="<?=$this->e(
+                                       $item['confirm']
+                                   )?>"<?php
+                                endif; ?>
+                                   <?php
+                                   if (isset($item['title'])): ?>title="<?=$this->e($item['title'])?>"<?php
+                                endif; ?>>
                                     <?=$item['label']?>
                                 </a>
                             </li>

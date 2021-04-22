@@ -53,7 +53,7 @@ class Flow
         ServerRequest $request,
         Response $response,
         string $temp_dir = null
-    ) {
+    ): array|ResponseInterface|null {
         if (null === $temp_dir) {
             $temp_dir = sys_get_temp_dir() . '/uploads/';
         }

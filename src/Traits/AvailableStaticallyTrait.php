@@ -10,7 +10,7 @@ trait AvailableStaticallyTrait
     /**
      * @return static
      */
-    public static function getInstance()
+    public static function getInstance(): static
     {
         return self::$instance;
     }

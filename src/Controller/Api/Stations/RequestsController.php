@@ -97,7 +97,7 @@ class RequestsController
                 ->addOrderBy('sm.title', 'ASC');
         }
 
-        $search_phrase = trim($params['searchPhrase']);
+        $search_phrase = trim($params['searchPhrase'] ?? '');
         if (!empty($search_phrase)) {
             $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');

@@ -4,7 +4,7 @@
     "license": "Apache-2.0",
     "type": "project",
     "require": {
-        "php": ">=7.4 || ^8.0",
+        "php": "^8.0",
         "ext-PDO": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",

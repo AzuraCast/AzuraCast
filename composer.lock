@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17f74c9a9115bff2e514f58d32a7f93f",
+    "content-hash": "7fae5c37bbe35c8f85d1027540a1a937",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "16da3c4c2ca17d2b5e89d1569f9ef39f58e7e95c"
+                "reference": "ed1aaa82c684ebd2a748a6e834fd307f3618bd48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/16da3c4c2ca17d2b5e89d1569f9ef39f58e7e95c",
-                "reference": "16da3c4c2ca17d2b5e89d1569f9ef39f58e7e95c",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/ed1aaa82c684ebd2a748a6e834fd307f3618bd48",
+                "reference": "ed1aaa82c684ebd2a748a6e834fd307f3618bd48",
                 "shasum": ""
             },
             "require": {
@@ -163,7 +163,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-04-06T22:53:26+00:00"
+            "time": "2021-04-22T09:53:37+00:00"
         },
         {
             "name": "azuracast/flysystem-v2-extensions",
@@ -12987,7 +12987,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4 || ^8.0",
+        "php": "^8.0",
         "ext-pdo": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",

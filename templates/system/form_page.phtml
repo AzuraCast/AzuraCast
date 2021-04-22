@@ -9,8 +9,8 @@
  */
 
 $this->layout('main', [
-    'title' => $title,
-    'header' => $header,
+    'title' => $title ?? null,
+    'header' => $header ?? null,
     'manual' => true,
 ]);
 

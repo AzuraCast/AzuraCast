@@ -67,9 +67,8 @@ class StationRepository extends Repository
     }
 
     /**
-     * @return mixed
      */
-    public function fetchAll()
+    public function fetchAll(): mixed
     {
         return $this->em->createQuery(
             <<<'DQL'

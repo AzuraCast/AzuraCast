@@ -1,4 +1,9 @@
-FROM azuracast/azuracast_testing:latest
+FROM php:8.0-cli-alpine
+
+RUN apk add --no-cache npm
+
+RUN mkdir /app
+WORKDIR /app
 
 USER root
 

@@ -7,9 +7,31 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- The PHP-SPX (Simple Profiling eXtension) extension has been added and can be enabled via a new environment variable in
+  `azuracast.env`; this will allow very simple visual profiling of the application and its memory/CPU usage over time.
+
+- Several high-traffic transactions (such as saving updated listeners) are now transactional, resulting in a significant
+  performance boost for larger stations.
+
+- To improve performance, the internal queue used for station playlists has been moved from a standalone array to being
+  attached to the `StationPlaylistMedia` entity.
+
+- To improve performance and fix several race condition errors, settings has been migrated from its previous structure
+  to a single flat database row that uses regular Doctrine EntityManager functionality, greatly simplifying the relevant
+  code.
+
 ## Bug Fixes
 
-There have been no changes since the latest stable release.
+- An issue preventing broadcast recordings from saving correctly has been identified and fixed (#4055).
+
+- Various issues where errors weren't shown on Vue-powered pages have been fixed.
+
+- Errors with retrieving Now Playing data are now more consistently handled across the system.
+
+- AzuraCast can now properly read _and write_ metadata to/from Flac and Ogg Vorbis files without issue.
+
+- Disabled HTML5 in-browser validation for multi-tab forms, preventing a condition where you could not submit a form but
+  could not currently see the invalid form control that prevented submission.
 
 ---
 

@@ -918,16 +918,16 @@ class Settings
      * @ORM\Column(name="mail_sender_email", type="string", length=255, nullable=true)
      *
      * @OA\Property(example="example@example.com")
-     * @var string The e-mail address of the sender of system e-mails.
+     * @var string|null The e-mail address of the sender of system e-mails.
      */
-    protected string $mail_sender_email = '';
+    protected $mail_sender_email = '';
 
     public function getMailSenderEmail(): string
     {
         return $this->mail_sender_email;
     }
 
-    public function setMailSenderEmail(string $mailSenderEmail): void
+    public function setMailSenderEmail(?string $mailSenderEmail): void
     {
         $this->mail_sender_email = $mailSenderEmail;
     }

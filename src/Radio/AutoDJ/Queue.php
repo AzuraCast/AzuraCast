@@ -276,28 +276,20 @@ class Queue implements EventSubscriberInterface
             return $this->getSongFromRemotePlaylist($playlist, $now);
         }
 
-        switch ($playlist->getOrder()) {
-            case Entity\StationPlaylist::ORDER_RANDOM:
-                $validTrack = $this->getRandomMediaIdFromPlaylist(
-                    $playlist,
-                    $recentSongHistory,
-                    $allowDuplicates
-                );
-                break;
-
-            case Entity\StationPlaylist::ORDER_SEQUENTIAL:
-                $validTrack = $this->getSequentialMediaIdFromPlaylist($playlist);
-                break;
-
-            case Entity\StationPlaylist::ORDER_SHUFFLE:
-            default:
-                $validTrack = $this->getShuffledMediaIdFromPlaylist(
-                    $playlist,
-                    $recentSongHistory,
-                    $allowDuplicates
-                );
-                break;
-        }
+        $validTrack = match ($playlist->getOrder()) {
+            $playlist::ORDER_RANDOM => $this->getRandomMediaIdFromPlaylist(
+                $playlist,
+                $recentSongHistory,
+                $allowDuplicates
+            ),
+            $playlist::ORDER_SEQUENTIAL => $this->getSequentialMediaIdFromPlaylist($playlist),
+            $playlist::ORDER_SHUFFLE => $this->getShuffledMediaIdFromPlaylist(
+                $playlist,
+                $recentSongHistory,
+                $allowDuplicates
+            ),
+            default => null
+        };
 
         if (null === $validTrack) {
             $this->logger->warning(

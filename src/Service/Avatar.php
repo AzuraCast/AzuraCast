@@ -29,17 +29,11 @@ class Avatar
     {
         $settings = $this->settingsRepo->readSettings();
 
-        switch ($settings->getAvatarService()) {
-            case self::SERVICE_LIBRAVATAR:
-                return new Libravatar();
-
-            case self::SERVICE_GRAVATAR:
-                return new Gravatar();
-
-            case self::SERVICE_DISABLED:
-            default:
-                return new Disabled();
-        }
+        return match ($settings->getAvatarService()) {
+            self::SERVICE_LIBRAVATAR => new Libravatar(),
+            self::SERVICE_GRAVATAR => new Gravatar(),
+            default => new Disabled()
+        };
     }
 
     public function getAvatar(string $email, int $size = self::DEFAULT_SIZE): string

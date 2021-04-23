@@ -122,35 +122,20 @@ class GetId3MetadataService
 
         $pathExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-        switch ($pathExt) {
-            case 'mp3':
-            case 'mp2':
-            case 'mp1':
-            case 'riff':
-                $tagwriter->tagformats = ['id3v1', 'id3v2.3'];
-                break;
+        $tagFormats = match ($pathExt) {
+            'mp3', 'mp2', 'mp1', 'riff' => ['id3v1', 'id3v2.3'],
+            'mpc' => ['ape'],
+            'flac' => ['metaflac'],
+            'real' => ['real'],
+            'ogg' => ['vorbiscomment'],
+            default => null
+        };
 
-            case 'mpc':
-                $tagwriter->tagformats = ['ape'];
-                break;
-
-            case 'flac':
-                $tagwriter->tagformats = ['metaflac'];
-                break;
-
-            case 'real':
-                $tagwriter->tagformats = ['real'];
-                break;
-
-            case 'ogg':
-                $tagwriter->tagformats = ['vorbiscomment'];
-                break;
-
-            default:
-                // The getid3 library can't write to this format, so just skip the writing process.
-                return false;
+        if (null === $tagFormats) {
+            return false;
         }
 
+        $tagwriter->tagformats = $tagFormats;
         $tagwriter->overwrite_tags = true;
         $tagwriter->tag_encoding = 'UTF8';
         $tagwriter->remove_other_tags = true;

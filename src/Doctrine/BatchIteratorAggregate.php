@@ -146,7 +146,7 @@ final class BatchIteratorAggregate implements IteratorAggregate
      * @param mixed $value
      *
      */
-    private function getObjectFromValue($value): mixed
+    private function getObjectFromValue(mixed $value): mixed
     {
         if ($this->customFetchFunction instanceof Closure) {
             return ($this->customFetchFunction)($value, $this->entityManager);

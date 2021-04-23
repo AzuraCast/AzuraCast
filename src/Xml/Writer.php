@@ -54,7 +54,7 @@ class Writer extends Xml
 
         foreach ($config as $sectionName => $data) {
             if (!is_array($data)) {
-                if (strpos($sectionName, '@') === 0) {
+                if (str_starts_with($sectionName, '@')) {
                     $writer->writeAttribute(substr($sectionName, 1), (string)$data);
                 } else {
                     $writer->writeElement($sectionName, (string)$data);
@@ -106,7 +106,7 @@ class Writer extends Xml
                 }
             } elseif (is_array($value)) {
                 $this->addBranch($key, $value, $writer);
-            } elseif (substr($key, 0, 1) == '@') {
+            } elseif (str_starts_with($key, '@')) {
                 $writer->writeAttribute(substr($key, 1), (string)$value);
             } else {
                 $writer->writeElement($key, (string)$value);
@@ -120,11 +120,11 @@ class Writer extends Xml
 
     protected function attributesFirst($a, $b): int
     {
-        if (strpos($a, '@') === 0) {
+        if (str_starts_with($a, '@')) {
             return -1;
         }
 
-        if (substr($b, 0, 1) == '@') {
+        if (str_starts_with($b, '@')) {
             return 1;
         }
 

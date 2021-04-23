@@ -523,7 +523,7 @@ class StationPlaylist
     /**
      * @param array $backend_options
      */
-    public function setBackendOptions($backend_options): void
+    public function setBackendOptions(array $backend_options): void
     {
         $this->backend_options = implode(',', (array)$backend_options);
     }

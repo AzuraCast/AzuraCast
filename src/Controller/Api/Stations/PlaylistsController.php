@@ -176,7 +176,7 @@ class PlaylistsController extends AbstractScheduledEntityController
     /**
      * @return mixed[]
      */
-    protected function viewRecord($record, ServerRequest $request): array
+    protected function viewRecord(object $record, ServerRequest $request): array
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -234,7 +234,7 @@ class PlaylistsController extends AbstractScheduledEntityController
     /**
      * @return mixed[]
      */
-    protected function toArray($record, array $context = []): array
+    protected function toArray(object $record, array $context = []): array
     {
         return parent::toArray(
             $record,

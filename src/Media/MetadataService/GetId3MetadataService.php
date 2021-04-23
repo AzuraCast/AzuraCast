@@ -7,6 +7,8 @@ use App\Event\Media\ReadMetadata;
 use App\Event\Media\WriteMetadata;
 use App\Exception\CannotProcessMediaException;
 use App\Utilities;
+use getID3;
+use getid3_writetags;
 use Symfony\Contracts\EventDispatcher\Event;
 use voku\helper\UTF8;
 
@@ -26,7 +28,7 @@ class GetId3MetadataService
 
     public function readMetadata(string $path): Entity\Metadata
     {
-        $id3 = new \getID3();
+        $id3 = new getID3();
 
         $id3->option_md5_data = true;
         $id3->option_md5_data_source = true;
@@ -114,10 +116,10 @@ class GetId3MetadataService
 
     public function writeMetadata(Entity\Metadata $metadata, string $path): bool
     {
-        $getID3 = new \getID3();
+        $getID3 = new getID3();
         $getID3->setOption(['encoding' => 'UTF8']);
 
-        $tagwriter = new \getid3_writetags();
+        $tagwriter = new getid3_writetags();
         $tagwriter->filename = $path;
 
         $pathExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));

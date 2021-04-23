@@ -150,7 +150,7 @@ class RequestsController
      *
      * @throws Exception\InvalidRequestAttribute
      */
-    public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface
+    public function submitAction(ServerRequest $request, Response $response, mixed $media_id): ResponseInterface
     {
         $station = $request->getStation();
 

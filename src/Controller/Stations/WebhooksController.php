@@ -41,9 +41,12 @@ class WebhooksController extends AbstractStationCrudController
         $view = $request->getView();
         if ($type === null) {
             return $view->renderToResponse($response, 'stations/webhooks/add', [
-                'connectors' => array_filter($this->webhook_config['webhooks'], function ($webhook) {
-                    return !empty($webhook['name']);
-                }),
+                'connectors' => array_filter(
+                    $this->webhook_config['webhooks'],
+                    static function ($webhook) {
+                        return !empty($webhook['name']);
+                    }
+                ),
             ]);
         }
 

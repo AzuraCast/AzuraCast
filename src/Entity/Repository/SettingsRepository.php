@@ -45,7 +45,7 @@ class SettingsRepository extends Repository
     /**
      * @param Entity\Settings|array $settingsObj
      */
-    public function writeSettings($settingsObj): void
+    public function writeSettings(Entity\Settings|array $settingsObj): void
     {
         if (is_array($settingsObj)) {
             $settings = $this->readSettings();

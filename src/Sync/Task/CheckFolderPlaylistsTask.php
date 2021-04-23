@@ -110,10 +110,13 @@ class CheckFolderPlaylistsTask extends AbstractTask
 
                 if (!isset($mediaInPlaylist[$mediaId])) {
                     $media = $this->em->find(Entity\StationMedia::class, $mediaId);
-                    $this->spmRepo->addMediaToPlaylist($media, $playlist);
 
-                    $mediaInPlaylist[$mediaId] = $mediaId;
-                    $addedRecords++;
+                    if ($media instanceof Entity\StationMedia) {
+                        $this->spmRepo->addMediaToPlaylist($media, $playlist);
+
+                        $mediaInPlaylist[$mediaId] = $mediaId;
+                        $addedRecords++;
+                    }
                 }
             }
 

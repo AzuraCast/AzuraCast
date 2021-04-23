@@ -18,6 +18,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionProperty;
+use ReflectionUnionType;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
@@ -137,7 +138,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string|null $format
      * @param array $context
      */
-    public function denormalize($data, $class, string $format = null, array $context = []): object
+    public function denormalize($data, string $class, string $format = null, array $context = []): object
     {
         $object = $this->instantiateObject($data, $class, $context, new ReflectionClass($class), false, $format);
 
@@ -248,7 +249,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param array $context
      *
      */
-    protected function getAttributeValue($object, $prop_name, $format = null, array $context = []): mixed
+    protected function getAttributeValue(object $object, string $prop_name, $format = null, array $context = []): mixed
     {
         $form_mode = $context[self::NORMALIZE_TO_IDENTIFIERS] ?? false;
 
@@ -306,7 +307,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string $key
      *
      */
-    protected function getProperty($entity, $key): mixed
+    protected function getProperty(object $entity, string $key): mixed
     {
         // Default to "getStatus", "getConfig", etc...
         $getter_method = $this->getMethodName($key, 'get');
@@ -329,7 +330,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string $var
      * @param string $prefix
      */
-    protected function getMethodName($var, $prefix = ''): string
+    protected function getMethodName(string $var, $prefix = ''): string
     {
         return $this->inflector->camelize(($prefix ? $prefix . '_' : '') . $var);
     }
@@ -341,8 +342,13 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string|null $format
      * @param array $context
      */
-    protected function setAttributeValue($object, $field, $value, $format = null, array $context = []): void
-    {
+    protected function setAttributeValue(
+        object $object,
+        string $field,
+        mixed $value,
+        $format = null,
+        array $context = []
+    ): void {
         if (isset($context[self::ASSOCIATION_MAPPINGS][$field])) {
             // Handle a mapping to another entity.
             $mapping = $context[self::ASSOCIATION_MAPPINGS][$field];
@@ -380,7 +386,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param mixed $value
      *
      */
-    protected function setProperty($entity, $key, $value): mixed
+    protected function setProperty(object $entity, string $key, mixed $value): mixed
     {
         $method_name = $this->getMethodName($key, 'set');
 
@@ -392,9 +398,16 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         $first_param = $method->getParameters()[0];
 
         if ($first_param->hasType()) {
-            /** @var ReflectionNamedType $firstParamTypeObj */
             $firstParamTypeObj = $first_param->getType();
-            $first_param_type = $firstParamTypeObj->getName();
+
+            if ($firstParamTypeObj instanceof ReflectionNamedType) {
+                $first_param_type = $firstParamTypeObj->getName();
+            } elseif ($firstParamTypeObj instanceof ReflectionUnionType) {
+                $types = $firstParamTypeObj->getTypes();
+                $first_param_type = $types[0]->getName();
+            } else {
+                $first_param_type = null;
+            }
 
             switch ($first_param_type) {
                 case 'DateTime':
@@ -447,7 +460,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /**
      * @param object|string $class
      */
-    protected function isEntity($class): bool
+    protected function isEntity(object|string $class): bool
     {
         if (is_object($class)) {
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)

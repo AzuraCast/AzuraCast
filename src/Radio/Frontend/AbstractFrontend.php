@@ -173,9 +173,9 @@ abstract class AbstractFrontend extends AbstractAdapter
     {
         $custom_config = [];
 
-        if (strpos($custom_config_raw, '{') === 0) {
+        if (str_starts_with($custom_config_raw, '{')) {
             $custom_config = @json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
-        } elseif (strpos($custom_config_raw, '<') === 0) {
+        } elseif (str_starts_with($custom_config_raw, '<')) {
             $reader = new Reader();
             $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
         }
@@ -195,7 +195,7 @@ abstract class AbstractFrontend extends AbstractAdapter
 
             foreach ($ipsRaw as $ip) {
                 try {
-                    if (false === strpos($ip, '/')) {
+                    if (!str_contains($ip, '/')) {
                         $ipObj = IP::create($ip);
                         $ips[] = (string)$ipObj;
                     } else {

@@ -98,7 +98,7 @@ class RelaysController
 
         return array_filter(
             $all_stations,
-            function (Entity\Station $station) use ($acl) {
+            static function (Entity\Station $station) use ($acl) {
                 return $acl->isAllowed(Acl::STATION_BROADCASTING, $station->getId());
             }
         );

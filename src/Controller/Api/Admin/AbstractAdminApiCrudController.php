@@ -38,9 +38,9 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     /**
      * @param array $data
      */
-    protected function createRecord($data): object
+    protected function createRecord(array $data): object
     {
-        return $this->editRecord($data, null);
+        return $this->editRecord($data);
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param Response $response
      * @param mixed $id
      */
-    public function getAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function getAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
     {
         $record = $this->getRecord($id);
 
@@ -68,7 +68,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @throws OptimisticLockException
      * @throws TransactionRequiredException
      */
-    protected function getRecord($id): ?object
+    protected function getRecord(mixed $id): ?object
     {
         return $this->em->find($this->entityClass, $id);
     }
@@ -78,7 +78,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param Response $response
      * @param mixed $id
      */
-    public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
     {
         $record = $this->getRecord($id);
 
@@ -97,7 +97,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      * @param Response $response
      * @param mixed $id
      */
-    public function deleteAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
     {
         $record = $this->getRecord($id);
 

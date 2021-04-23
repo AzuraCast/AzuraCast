@@ -4,10 +4,7 @@ namespace App\Traits;
 
 trait LoadFromParentObject
 {
-    /**
-     * @param array|object $obj
-     */
-    public function fromParentObject($obj): void
+    public function fromParentObject(object|array $obj): void
     {
         if (is_object($obj)) {
             foreach (get_object_vars($obj) as $key => $value) {

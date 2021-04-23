@@ -8,6 +8,7 @@ use App\Entity;
 use App\Entity\StationPlaylist;
 use App\Environment;
 use Doctrine\ORM\NoResultException;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
@@ -140,7 +141,7 @@ class StationPlaylistMediaRepository extends Repository
      * @param Entity\StationPlaylist $playlist
      * @param array $mapping
      */
-    public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping): void
+    public function setMediaOrder(Entity\StationPlaylist $playlist, array $mapping): void
     {
         $update_query = $this->em->createQuery(
             <<<'DQL'
@@ -168,7 +169,7 @@ class StationPlaylistMediaRepository extends Repository
     public function resetQueue(StationPlaylist $playlist): array
     {
         if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
-            throw new \InvalidArgumentException('Playlist must contain songs.');
+            throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
         if ($playlist::ORDER_SEQUENTIAL === $playlist->getOrder()) {
@@ -223,7 +224,7 @@ class StationPlaylistMediaRepository extends Repository
     public function getQueue(StationPlaylist $playlist): array
     {
         if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
-            throw new \InvalidArgumentException('Playlist must contain songs.');
+            throw new InvalidArgumentException('Playlist must contain songs.');
         }
 
         $queuedMediaQuery = $this->em->createQueryBuilder()
@@ -243,7 +244,7 @@ class StationPlaylistMediaRepository extends Repository
         $queuedMedia = $queuedMediaQuery->getQuery()->getArrayResult();
 
         return array_map(
-            function ($val): Entity\Api\StationPlaylistQueue {
+            static function ($val): Entity\Api\StationPlaylistQueue {
                 $record = new Entity\Api\StationPlaylistQueue();
                 $record->spm_id = $val['spm_id'];
                 $record->media_id = $val['id'];

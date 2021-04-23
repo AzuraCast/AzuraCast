@@ -49,7 +49,7 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
     /**
      * @inheritDoc
      */
-    public function refetch($entity)
+    public function refetch(mixed $entity)
     {
         // phpcs:enable
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));
@@ -65,7 +65,7 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
     /**
      * @inheritDoc
      */
-    public function refetchAsReference($entity)
+    public function refetchAsReference(mixed $entity)
     {
         // phpcs:enable
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));

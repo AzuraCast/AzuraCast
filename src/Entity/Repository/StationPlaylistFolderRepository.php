@@ -17,7 +17,7 @@ class StationPlaylistFolderRepository extends Repository
         array $playlists,
         string $path
     ): void {
-        if (strpos($path, '://') !== false) {
+        if (str_contains($path, '://')) {
             [, $path] = explode('://', $path, 2);
         }
 

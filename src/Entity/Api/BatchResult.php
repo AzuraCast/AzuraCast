@@ -2,7 +2,9 @@
 
 namespace App\Entity\Api;
 
-class BatchResult implements \JsonSerializable
+use JsonSerializable;
+
+class BatchResult implements JsonSerializable
 {
     public array $files = [];
 

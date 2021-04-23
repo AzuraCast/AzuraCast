@@ -10,6 +10,7 @@ use App\Http\ServerRequest;
 use App\Service\MusicBrainz;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
@@ -173,7 +174,7 @@ class SoundExchangeController
                 }
             }
             return null;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return null;
         }
     }

@@ -64,7 +64,7 @@ class Locale
 
             // Use approximate match if available.
             foreach ($supportedLocales as $langCode => $langName) {
-                if (strpos($locale, substr($langCode, 0, 2)) === 0) {
+                if (str_starts_with($locale, substr($langCode, 0, 2))) {
                     return $langCode;
                 }
             }

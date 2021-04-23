@@ -105,50 +105,60 @@ class RolesController extends AbstractAdminApiCrudController
      * @inheritdoc
      */
 
-    protected function fromArray($data, $record = null, array $context = []): object
+    protected function fromArray(array $data, $record = null, array $context = []): object
     {
-        return parent::fromArray($data, $record, array_merge($context, [
-            AbstractNormalizer::CALLBACKS => [
-                'permissions' => function (array $value, $record) {
-                    if ($record instanceof Entity\Role) {
-                        $perms = $record->getPermissions();
+        return parent::fromArray(
+            $data,
+            $record,
+            array_merge(
+                $context,
+                [
+                    AbstractNormalizer::CALLBACKS => [
+                        'permissions' => function (array $value, Entity\Role $record) {
+                            $this->doUpdatePermissions($record, $value);
+                            return null;
+                        },
+                    ],
+                ]
+            )
+        );
+    }
 
-                        if ($perms->count() > 0) {
-                            foreach ($perms as $existing_perm) {
-                                $this->em->remove($existing_perm);
-                            }
-                            $perms->clear();
-                        }
+    protected function doUpdatePermissions(Entity\Role $role, array $newPermissions): void
+    {
+        $perms = $role->getPermissions();
 
-                        if (!empty($value['global'])) {
-                            foreach ($value['global'] as $perm_name) {
-                                if ($this->acl->isValidPermission($perm_name, true)) {
-                                    $perm_record = new Entity\RolePermission($record, null, $perm_name);
-                                    $this->em->persist($perm_record);
-                                    $perms->add($perm_record);
-                                }
-                            }
-                        }
+        if ($perms->count() > 0) {
+            foreach ($perms as $existing_perm) {
+                $this->em->remove($existing_perm);
+            }
+            $perms->clear();
+        }
 
-                        if (!empty($value['station'])) {
-                            foreach ($value['station'] as $station_id => $station_perms) {
-                                $station = $this->em->find(Entity\Station::class, $station_id);
+        if (!empty($newPermissions['global'])) {
+            foreach ($newPermissions['global'] as $perm_name) {
+                if ($this->acl->isValidPermission($perm_name, true)) {
+                    $perm_record = new Entity\RolePermission($role, null, $perm_name);
+                    $this->em->persist($perm_record);
+                    $perms->add($perm_record);
+                }
+            }
+        }
 
-                                if ($station instanceof Entity\Station) {
-                                    foreach ($station_perms as $perm_name) {
-                                        if ($this->acl->isValidPermission($perm_name, false)) {
-                                            $perm_record = new Entity\RolePermission($record, $station, $perm_name);
-                                            $this->em->persist($perm_record);
-                                            $perms->add($perm_record);
-                                        }
-                                    }
-                                }
-                            }
+        if (!empty($newPermissions['station'])) {
+            foreach ($newPermissions['station'] as $station_id => $station_perms) {
+                $station = $this->em->find(Entity\Station::class, $station_id);
+
+                if ($station instanceof Entity\Station) {
+                    foreach ($station_perms as $perm_name) {
+                        if ($this->acl->isValidPermission($perm_name, false)) {
+                            $perm_record = new Entity\RolePermission($role, $station, $perm_name);
+                            $this->em->persist($perm_record);
+                            $perms->add($perm_record);
                         }
                     }
-                    return null;
-                },
-            ],
-        ]));
+                }
+            }
+        }
     }
 }

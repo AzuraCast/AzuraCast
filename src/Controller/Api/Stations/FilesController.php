@@ -177,8 +177,12 @@ class FilesController extends AbstractStationApiCrudController
         return $response->withJson($return);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
-    {
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id,
+        int|string $id
+    ): ResponseInterface {
         $station = $this->getStation($request);
         $record = $this->getRecord($station, $id);
 
@@ -288,7 +292,7 @@ class FilesController extends AbstractStationApiCrudController
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
 
-    protected function createRecord($data, Entity\Station $station): object
+    protected function createRecord(array $data, Entity\Station $station): object
     {
         $mediaStorage = $station->getMediaStorageLocation();
 
@@ -306,7 +310,7 @@ class FilesController extends AbstractStationApiCrudController
         );
     }
 
-    protected function getRecord(Entity\Station $station, $id): ?object
+    protected function getRecord(Entity\Station $station, int|string $id): ?object
     {
         $mediaStorage = $station->getMediaStorageLocation();
         $repo = $this->em->getRepository($this->entityClass);
@@ -329,7 +333,7 @@ class FilesController extends AbstractStationApiCrudController
     }
 
     /** @inheritDoc */
-    protected function toArray($record, array $context = []): array
+    protected function toArray(object $record, array $context = []): array
     {
         $row = parent::toArray($record, $context);
 
@@ -342,7 +346,7 @@ class FilesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function deleteRecord($record): void
+    protected function deleteRecord(object $record): void
     {
         if (!($record instanceof Entity\StationMedia)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

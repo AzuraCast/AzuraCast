@@ -15,6 +15,7 @@ use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Traversable;
 
 class Paginator
 {
@@ -112,7 +113,7 @@ class Paginator
         $this->isDisabled = $isDisabled;
     }
 
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         return $this->paginator->getIterator();
     }

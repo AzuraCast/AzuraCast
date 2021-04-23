@@ -107,7 +107,7 @@ class Repository
      * @param object $entity
      * @param array $source
      */
-    public function fromArray($entity, array $source): object
+    public function fromArray(object $entity, array $source): object
     {
         return $this->serializer->denormalize(
             $source,
@@ -128,7 +128,7 @@ class Repository
      *
      * @return mixed[]
      */
-    public function toArray($entity, $deep = false, $form_mode = false): array
+    public function toArray(object $entity, $deep = false, $form_mode = false): array
     {
         return $this->serializer->normalize(
             $entity,

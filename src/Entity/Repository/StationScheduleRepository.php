@@ -32,7 +32,7 @@ class StationScheduleRepository extends Repository
      * @param Entity\StationPlaylist|Entity\StationStreamer $relation
      * @param array|null $items
      */
-    public function setScheduleItems($relation, ?array $items): void
+    public function setScheduleItems(Entity\StationPlaylist|Entity\StationStreamer $relation, ?array $items): void
     {
         $rawScheduleItems = $this->findByRelation($relation);
 
@@ -70,7 +70,7 @@ class StationScheduleRepository extends Repository
      *
      * @return Entity\StationSchedule[]
      */
-    public function findByRelation($relation): array
+    public function findByRelation(Entity\StationPlaylist|Entity\StationStreamer $relation): array
     {
         if ($relation instanceof Entity\StationPlaylist) {
             return $this->repository->findBy(['playlist' => $relation]);
@@ -162,7 +162,7 @@ class StationScheduleRepository extends Repository
 
         usort(
             $events,
-            function ($a, $b) {
+            static function ($a, $b) {
                 return $a->start_timestamp <=> $b->start_timestamp;
             }
         );

@@ -58,7 +58,7 @@ class RolePermissionRepository extends Repository
      * @param Entity\Role $role
      * @param array $post_values
      */
-    public function setActionsForRole(Entity\Role $role, $post_values): void
+    public function setActionsForRole(Entity\Role $role, array $post_values): void
     {
         $this->em->createQuery(
             <<<'DQL'

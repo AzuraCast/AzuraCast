@@ -121,7 +121,7 @@ class StationStreamerRepository extends Repository
         }
 
         $station->setIsStreamerLive(false);
-        $station->setCurrentStreamer(null);
+        $station->setCurrentStreamer();
         $this->em->persist($station);
         $this->em->flush();
         return true;

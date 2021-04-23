@@ -58,7 +58,7 @@ class Liquidsoap extends AbstractBackend
      */
     public function getCurrentConfiguration(Entity\Station $station): ?string
     {
-        return $this->doGetConfiguration($station, false);
+        return $this->doGetConfiguration($station);
     }
 
     public function getEditableConfiguration(Entity\Station $station): string
@@ -162,7 +162,7 @@ class Liquidsoap extends AbstractBackend
             $prop = self::annotateString($prop);
 
             // Convert Liquidsoap-specific annotations to floats.
-            if ('duration' === $annotation_name || 0 === strpos($annotation_name, 'liq')) {
+            if ('duration' === $annotation_name || str_starts_with($annotation_name, 'liq')) {
                 $prop = Liquidsoap\ConfigWriter::toFloat($prop);
             }
 
@@ -192,7 +192,7 @@ class Liquidsoap extends AbstractBackend
      *
      * @throws Exception
      */
-    public function command(Entity\Station $station, $command_str): array
+    public function command(Entity\Station $station, string $command_str): array
     {
         $hostname = ($this->environment->isDocker() ? 'stations' : 'localhost');
         $fp = stream_socket_client(

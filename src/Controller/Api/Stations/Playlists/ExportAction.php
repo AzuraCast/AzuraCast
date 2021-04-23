@@ -4,6 +4,7 @@ namespace App\Controller\Api\Stations\Playlists;
 
 use App\Http\Response;
 use App\Http\ServerRequest;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
 class ExportAction extends AbstractPlaylistsAction
@@ -48,7 +49,7 @@ class ExportAction extends AbstractPlaylistsAction
                 break;
 
             default:
-                throw new \InvalidArgumentException('Invalid format specified.');
+                throw new InvalidArgumentException('Invalid format specified.');
         }
 
         $response->getBody()->write(implode("\n", $exportLines));

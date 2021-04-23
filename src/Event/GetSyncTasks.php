@@ -3,6 +3,7 @@
 namespace App\Event;
 
 use App\Sync\Task\AbstractTask;
+use Generator;
 
 class GetSyncTasks
 {
@@ -24,9 +25,9 @@ class GetSyncTasks
     }
 
     /**
-     * @return \Generator|AbstractTask[]
+     * @return Generator|AbstractTask[]
      */
-    public function getTasks(): \Generator
+    public function getTasks(): Generator
     {
         yield from $this->tasks;
     }

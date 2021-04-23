@@ -47,7 +47,7 @@ class StationForm extends EntityForm
                     $elementOptions = (array)$element[1];
                     $class = $elementOptions['label_class'] ?? '';
 
-                    if (false !== strpos($class, 'advanced')) {
+                    if (str_contains($class, 'advanced')) {
                         unset($options['groups'][$groupId]['elements'][$elementKey]);
                     }
                 }

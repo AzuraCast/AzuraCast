@@ -43,7 +43,7 @@ class PermissionsForm extends EntityForm
 
             foreach ($this->fields as $field_id => $field) {
                 $attrs = $field->getAttributes();
-                if (isset($attrs['class']) && strpos($attrs['class'], 'permission-select') !== false) {
+                if (isset($attrs['class']) && str_contains($attrs['class'], 'permission-select')) {
                     unset($this->fields[$field_id]);
                 }
             }
@@ -52,7 +52,7 @@ class PermissionsForm extends EntityForm
         return parent::process($request, $record);
     }
 
-    protected function denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function denormalizeToRecord(array $data, $record = null, array $context = []): object
     {
         $record = parent::denormalizeToRecord($data, $record, $context);
 
@@ -69,7 +69,7 @@ class PermissionsForm extends EntityForm
     /**
      * @inheritDoc
      */
-    protected function normalizeRecord($record, array $context = []): array
+    protected function normalizeRecord(object $record, array $context = []): array
     {
         $data = parent::normalizeRecord($record, $context);
 

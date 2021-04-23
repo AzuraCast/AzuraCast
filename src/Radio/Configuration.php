@@ -374,7 +374,7 @@ class Configuration
         if (null !== $except_station && null !== $except_station->getId()) {
             return array_filter(
                 $used_ports,
-                function ($station_reference) use ($except_station) {
+                static function ($station_reference) use ($except_station) {
                     return ($station_reference['id'] !== $except_station->getId());
                 }
             );

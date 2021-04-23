@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,19 +47,19 @@ class MessengerMessage
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
-     * @var \DateTime
+     * @var DateTime
      */
     protected $createdAt;
 
     /**
      * @ORM\Column(name="available_at", type="datetime")
-     * @var \DateTime
+     * @var DateTime
      */
     protected $availableAt;
 
     /**
      * @ORM\Column(name="delivered_at", type="datetime", nullable=true)
-     * @var \DateTime
+     * @var DateTime
      */
     protected $deliveredAt;
 }

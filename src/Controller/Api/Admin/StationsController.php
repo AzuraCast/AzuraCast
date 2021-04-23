@@ -105,9 +105,11 @@ class StationsController extends AbstractAdminApiCrudController
      */
 
     /** @inheritDoc */
-    protected function toArray($record, array $context = []): array
+    protected function toArray(object $record, array $context = []): array
     {
-        return parent::toArray($record, $context + [
+        return parent::toArray(
+            $record,
+            $context + [
                 DoctrineEntityNormalizer::IGNORED_ATTRIBUTES => [
                     'adapter_api_key',
                     'nowplaying',
@@ -116,11 +118,12 @@ class StationsController extends AbstractAdminApiCrudController
                     'needs_restart',
                     'has_started',
                 ],
-            ]);
+            ]
+        );
     }
 
     /** @inheritDoc */
-    protected function editRecord($data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, $record = null, array $context = []): object
     {
         $create_mode = (null === $record);
 
@@ -148,7 +151,7 @@ class StationsController extends AbstractAdminApiCrudController
     }
 
     /** @inheritDoc */
-    protected function deleteRecord($record): void
+    protected function deleteRecord(object $record): void
     {
         $this->station_repo->destroy($record);
     }

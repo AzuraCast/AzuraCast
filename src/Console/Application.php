@@ -16,7 +16,7 @@ class Application extends \Silly\Edition\PhpDi\Application
      *
      * @return mixed[] [int $return_code, string $return_output]
      */
-    public function runCommandWithArgs($command, array $args = [], string $outputFile = 'php://temp'): array
+    public function runCommandWithArgs(string $command, array $args = [], string $outputFile = 'php://temp'): array
     {
         $input = new ArrayInput(array_merge(['command' => $command], $args));
         $input->setInteractive(false);

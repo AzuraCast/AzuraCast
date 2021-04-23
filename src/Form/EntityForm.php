@@ -130,20 +130,23 @@ class EntityForm extends Form
      *
      * @return mixed[]
      */
-    protected function normalizeRecord($record, array $context = []): array
+    protected function normalizeRecord(object $record, array $context = []): array
     {
-        $context = array_merge($this->defaultContext, $context, [
-            DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,
-            ObjectNormalizer::ENABLE_MAX_DEPTH => true,
-            ObjectNormalizer::MAX_DEPTH_HANDLER => function (
-                $innerObject,
-                $outerObject,
-                string $attributeName,
-                string $format = null,
-                array $context = []
-            ) {
-                return $this->displayShortenedObject($innerObject);
-            },
+        $context = array_merge(
+            $this->defaultContext,
+            $context,
+            [
+                DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,
+                ObjectNormalizer::ENABLE_MAX_DEPTH => true,
+                ObjectNormalizer::MAX_DEPTH_HANDLER => function (
+                    $innerObject,
+                    $outerObject,
+                    string $attributeName,
+                    string $format = null,
+                    array $context = []
+                ) {
+                    return $this->displayShortenedObject($innerObject);
+                },
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
                 $object,
                 string $format = null,
@@ -151,7 +154,8 @@ class EntityForm extends Form
             ) {
                 return $this->displayShortenedObject($object);
             },
-        ]);
+            ]
+        );
 
         return $this->serializer->normalize($record, null, $context);
     }
@@ -160,7 +164,7 @@ class EntityForm extends Form
      * @param object $object
      *
      */
-    protected function displayShortenedObject($object): mixed
+    protected function displayShortenedObject(object $object): mixed
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();
@@ -176,7 +180,7 @@ class EntityForm extends Form
      * @param object|null $record
      * @param array $context
      */
-    protected function denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function denormalizeToRecord(array $data, $record = null, array $context = []): object
     {
         $context = array_merge($this->defaultContext, $context);
 
@@ -190,10 +194,10 @@ class EntityForm extends Form
     /**
      * Modify the default context sent to all normalization/denormalization functions.
      *
-     * @param string|int $key
+     * @param int|string $key
      * @param null $value
      */
-    public function setDefaultContext($key, $value = null): void
+    public function setDefaultContext(int|string $key, $value = null): void
     {
         $this->defaultContext[$key] = $value;
     }

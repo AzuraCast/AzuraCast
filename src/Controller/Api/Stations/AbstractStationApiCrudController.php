@@ -57,15 +57,19 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param array $data
      * @param Entity\Station $station
      */
-    protected function createRecord($data, Entity\Station $station): object
+    protected function createRecord(array $data, Entity\Station $station): object
     {
-        return $this->editRecord($data, null, [
-            AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
-                $this->entityClass => [
-                    'station' => $station,
+        return $this->editRecord(
+            $data,
+            null,
+            [
+                AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
+                    $this->entityClass => [
+                        'station' => $station,
+                    ],
                 ],
-            ],
-        ]);
+            ]
+        );
     }
 
     /**
@@ -76,8 +80,12 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      *
      * @throws Exception
      */
-    public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
-    {
+    public function getAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id,
+        int|string $id
+    ): ResponseInterface {
         $station = $this->getStation($request);
         $record = $this->getRecord($station, $id);
 
@@ -94,13 +102,15 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param Entity\Station $station
      * @param int|string $id
      */
-    protected function getRecord(Entity\Station $station, $id): ?object
+    protected function getRecord(Entity\Station $station, int|string $id): ?object
     {
         $repo = $this->em->getRepository($this->entityClass);
-        return $repo->findOneBy([
-            'station' => $station,
-            'id' => $id,
-        ]);
+        return $repo->findOneBy(
+            [
+                'station' => $station,
+                'id' => $id,
+            ]
+        );
     }
 
     /**
@@ -109,8 +119,12 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param int|string $station_id
      * @param int|string $id
      */
-    public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
-    {
+    public function editAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id,
+        int|string $id
+    ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 
         if (null === $record) {
@@ -129,8 +143,12 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      * @param int|string $station_id
      * @param int|string $id
      */
-    public function deleteAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id,
+        int|string $id
+    ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);
 
         if (null === $record) {

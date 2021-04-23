@@ -117,7 +117,7 @@ class ListAction
                                 DQL
                             )
                         );
-                    } elseif (0 === strpos($searchPhrase, 'playlist:')) {
+                    } elseif (str_starts_with($searchPhrase, 'playlist:')) {
                         [, $playlistName] = explode(':', $searchPhrase, 2);
 
                         $mediaQueryBuilder->andWhere('sp.name = :playlist_name')
@@ -330,7 +330,7 @@ class ListAction
 
         if ($isInternal || !empty($sort)) {
             $result = array_map(
-                function (Entity\Api\FileList $row) {
+                static function (Entity\Api\FileList $row) {
                     $playlists = $row->playlists;
                     $row->playlists = [];
 

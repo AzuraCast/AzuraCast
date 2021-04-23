@@ -88,7 +88,6 @@ class UpdateCheck
             $notification->actionUrl = $actionUrl;
 
             $event->addNotification($notification);
-            return;
         }
     }
 }

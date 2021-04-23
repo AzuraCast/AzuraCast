@@ -24,7 +24,7 @@ class ResetPasswordCommand extends CommandAbstract
             $temp_pw = Utilities\Strings::generatePassword(15);
 
             $user->setNewPassword($temp_pw);
-            $user->setTwoFactorSecret(null);
+            $user->setTwoFactorSecret();
 
             $em->persist($user);
             $em->flush();

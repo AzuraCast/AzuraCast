@@ -293,7 +293,7 @@ class StationRemote implements StationMountInterface
 
     public function setCustomListenUrl(string $custom_listen_url = null): void
     {
-        $this->custom_listen_url = $this->truncateString($custom_listen_url, 255);
+        $this->custom_listen_url = $this->truncateString($custom_listen_url);
     }
 
     /** @inheritdoc */
@@ -409,7 +409,7 @@ class StationRemote implements StationMountInterface
 
     public function setUrl(?string $url): void
     {
-        if (!empty($url) && substr($url, 0, 4) !== 'http') {
+        if (!empty($url) && !str_starts_with($url, 'http')) {
             $url = 'http://' . $url;
         }
 
@@ -423,11 +423,7 @@ class StationRemote implements StationMountInterface
     /** @inheritdoc */
     public function getAutodjPort(): ?int
     {
-        if (!empty($this->getSourcePort())) {
-            return $this->getSourcePort();
-        }
-
-        return parse_url($this->getUrl(), PHP_URL_PORT);
+        return $this->getSourcePort() ?? parse_url($this->getUrl(), PHP_URL_PORT);
     }
 
     public function getSourcePort(): ?int

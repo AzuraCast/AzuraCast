@@ -66,7 +66,7 @@ abstract class AbstractStationCrudController
 
     /**
      * @param ServerRequest $request
-     * @param string|int $id
+     * @param int|string $id
      * @param string $csrf
      *
      * @throws NotFoundException
@@ -75,7 +75,7 @@ abstract class AbstractStationCrudController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    protected function doDelete(ServerRequest $request, $id, $csrf): void
+    protected function doDelete(ServerRequest $request, int|string $id, string $csrf): void
     {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 

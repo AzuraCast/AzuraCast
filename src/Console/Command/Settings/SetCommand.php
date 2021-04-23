@@ -23,7 +23,7 @@ class SetCommand extends CommandAbstract
             return 0;
         }
 
-        if (0 === strpos($settingValue, '{')) {
+        if (str_starts_with($settingValue, '{')) {
             $settingValue = json_decode($settingValue, true, 512, JSON_THROW_ON_ERROR);
         }
 

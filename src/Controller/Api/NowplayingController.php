@@ -112,7 +112,7 @@ class NowplayingController implements EventSubscriberInterface
         if ($request->getAttribute('user') === null) {
             $np = array_filter(
                 $np,
-                function ($np_row) {
+                static function ($np_row) {
                     return $np_row->station->is_public;
                 }
             );

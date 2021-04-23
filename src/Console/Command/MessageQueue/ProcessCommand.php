@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Worker;
+use Throwable;
 
 class ProcessCommand extends CommandAbstract
 {
@@ -54,7 +55,7 @@ class ProcessCommand extends CommandAbstract
         try {
             $worker = new Worker($receivers, $messageBus, $eventDispatcher, $logger);
             $worker->run();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $logger->error(
                 sprintf('Message queue error: %s', $e->getMessage()),
                 [

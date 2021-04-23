@@ -11,11 +11,21 @@
 
 namespace App\Validator\Constraints;
 
+use Countable;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Iterator;
+use IteratorAggregate;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
+use function count;
+use function get_class;
+use function is_array;
+use function is_object;
+use function is_string;
 
 /**
  * Unique Entity Validator checks if one or a set of fields contain unique values.
@@ -43,17 +53,17 @@ class UniqueEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);
         }
 
-        if (!\is_array($constraint->fields) && !\is_string($constraint->fields)) {
+        if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
             throw new UnexpectedTypeException($constraint->fields, 'array');
         }
 
-        if (null !== $constraint->errorPath && !\is_string($constraint->errorPath)) {
+        if (null !== $constraint->errorPath && !is_string($constraint->errorPath)) {
             throw new UnexpectedTypeException($constraint->errorPath, 'string or null');
         }
 
         $fields = (array)$constraint->fields;
 
-        if (0 === \count($fields)) {
+        if (0 === count($fields)) {
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 
@@ -61,7 +71,7 @@ class UniqueEntityValidator extends ConstraintValidator
             return;
         }
 
-        $class = $this->em->getClassMetadata(\get_class($entity));
+        $class = $this->em->getClassMetadata(get_class($entity));
 
         $criteria = [];
         $hasNullValue = false;
@@ -128,12 +138,12 @@ class UniqueEntityValidator extends ConstraintValidator
                 );
             }
         } else {
-            $repository = $this->em->getRepository(\get_class($entity));
+            $repository = $this->em->getRepository(get_class($entity));
         }
 
         $result = $repository->{$constraint->repositoryMethod}($criteria);
 
-        if ($result instanceof \IteratorAggregate) {
+        if ($result instanceof IteratorAggregate) {
             $result = $result->getIterator();
         }
 
@@ -141,14 +151,14 @@ class UniqueEntityValidator extends ConstraintValidator
          * element. Rewinding should have no ill effect if $result is another
          * iterator implementation.
          */
-        if ($result instanceof \Iterator) {
+        if ($result instanceof Iterator) {
             $result->rewind();
-            if ($result instanceof \Countable && 1 < \count($result)) {
+            if ($result instanceof Countable && 1 < count($result)) {
                 $result = [$result->current(), $result->current()];
             } else {
                 $result = $result->valid() && null !== $result->current() ? [$result->current()] : [];
             }
-        } elseif (\is_array($result)) {
+        } elseif (is_array($result)) {
             reset($result);
         } else {
             $result = null === $result ? [] : [$result];
@@ -158,7 +168,7 @@ class UniqueEntityValidator extends ConstraintValidator
          * which is the same as the entity being validated, the criteria is
          * unique.
          */
-        if (!$result || (1 === \count($result) && current($result) === $entity)) {
+        if (!$result || (1 === count($result) && current($result) === $entity)) {
             return;
         }
 
@@ -177,7 +187,7 @@ class UniqueEntityValidator extends ConstraintValidator
 
     private function formatWithIdentifiers($em, $class, $value): string
     {
-        if (!\is_object($value) || $value instanceof \DateTimeInterface) {
+        if (!is_object($value) || $value instanceof DateTimeInterface) {
             return $this->formatValue($value, self::PRETTY_DATE);
         }
 
@@ -185,7 +195,7 @@ class UniqueEntityValidator extends ConstraintValidator
             return (string)$value;
         }
 
-        if ($class->getName() !== $idClass = \get_class($value)) {
+        if ($class->getName() !== $idClass = get_class($value)) {
             // non unique value might be a composite PK that consists of other entity objects
             if ($em->getMetadataFactory()->hasMetadataFor($idClass)) {
                 $identifiers = $em->getClassMetadata($idClass)->getIdentifierValues($value);
@@ -205,10 +215,10 @@ class UniqueEntityValidator extends ConstraintValidator
         array_walk(
             $identifiers,
             function (&$id, $field): void {
-                if (!\is_object($id) || $id instanceof \DateTimeInterface) {
+                if (!is_object($id) || $id instanceof DateTimeInterface) {
                     $idAsString = $this->formatValue($id, self::PRETTY_DATE);
                 } else {
-                    $idAsString = sprintf('object("%s")', \get_class($id));
+                    $idAsString = sprintf('object("%s")', get_class($id));
                 }
 
                 $id = sprintf('%s => %s', $field, $idAsString);

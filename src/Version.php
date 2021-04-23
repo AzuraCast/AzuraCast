@@ -131,7 +131,7 @@ class Version
      * @param array $proc
      * @param string $default
      */
-    protected function runProcess($proc, $default = ''): string
+    protected function runProcess(array $proc, $default = ''): string
     {
         $process = new Process($proc);
         $process->setWorkingDirectory($this->repoDir);

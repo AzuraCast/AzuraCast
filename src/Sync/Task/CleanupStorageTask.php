@@ -3,6 +3,7 @@
 namespace App\Sync\Task;
 
 use App\Entity;
+use Exception;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Finder\Finder;
 
@@ -87,7 +88,7 @@ class CleanupStorageTask extends AbstractTask
                         $removed[$key]++;
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error(
                     sprintf('Filesystem error: %s', $e->getMessage()),
                     [

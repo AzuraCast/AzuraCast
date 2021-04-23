@@ -17,7 +17,7 @@ class DisableTwoFactorAction
     ): ResponseInterface {
         $user = $request->getUser();
 
-        $user->setTwoFactorSecret(null);
+        $user->setTwoFactorSecret();
 
         $em->persist($user);
         $em->flush();

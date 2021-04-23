@@ -7,6 +7,7 @@ use App\Event\Media\GetAlbumArt;
 use App\EventDispatcher;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use Throwable;
 
 class RemoteAlbumArt
 {
@@ -84,7 +85,7 @@ class RemoteAlbumArt
                     self::CACHE_LIFETIME
                 );
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $albumArtUrl = null;
 
             $this->cache->set(

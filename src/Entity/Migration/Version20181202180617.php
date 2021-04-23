@@ -23,7 +23,7 @@ final class Version20181202180617 extends AbstractMigration
 
             $base_dir = $station['radio_base_dir'];
             $art_dir = $base_dir . '/album_art';
-            if (!mkdir($art_dir, 0777) && !is_dir($art_dir)) {
+            if (!mkdir($art_dir) && !is_dir($art_dir)) {
                 throw new RuntimeException(sprintf('Directory "%s" was not created', $art_dir));
             }
 

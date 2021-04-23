@@ -26,7 +26,8 @@ final class Version20201204043539 extends AbstractMigration
             $settings[$row['setting_key']] = json_decode($row['setting_value'], true, 512, JSON_THROW_ON_ERROR);
         }
 
-        $newSettings = array_filter([
+        $newSettings = array_filter(
+            [
             'baseUrl' => $settings['base_url'] ?? null,
             'instanceName' => $settings['instance_name'] ?? null,
             'preferBrowserUrl' => $this->toBool($settings['prefer_browser_url'] ?? null),
@@ -55,19 +56,23 @@ final class Version20201204043539 extends AbstractMigration
             'backupStorageLocation' => $this->toInt($settings['backup_storage_location'] ?? null),
             'backupLastRun' => $this->toInt($settings['backup_last_run'] ?? null),
             'backupLastResult' => $settings['backup_last_result'] ?? null,
-            'backupLastOutput' => $settings['backup_last_output'] ?? null,
-            'setupCompleteTime' => $this->toInt($settings['setup_complete'] ?? null),
-            'nowplaying' => $settings['nowplaying'] ?? null,
-            'syncNowplayingLastRun' => $this->toInt($settings['nowplaying_last_run'] ?? null),
-            'syncShortLastRun' => $this->toInt($settings['sync_fast_last_run'] ?? null),
-            'syncMediumLastRun' => $this->toInt($settings['sync_last_run'] ?? null),
-            'syncLongLastRun' => $this->toInt($settings['sync_slow_last_run'] ?? null),
-            'externalIp' => $settings['external_ip'] ?? null,
-            'geoliteLicenseKey' => $settings['geolite_license_key'] ?? null,
-            'geoliteLastRun' => $this->toInt($settings['geolite_last_run'] ?? null),
-        ], function ($value) {
-            return null !== $value;
-        });
+                                        'backupLastOutput' => $settings['backup_last_output'] ?? null,
+                                        'setupCompleteTime' => $this->toInt($settings['setup_complete'] ?? null),
+                                        'nowplaying' => $settings['nowplaying'] ?? null,
+                                        'syncNowplayingLastRun' => $this->toInt(
+                                            $settings['nowplaying_last_run'] ?? null
+                                        ),
+                                        'syncShortLastRun' => $this->toInt($settings['sync_fast_last_run'] ?? null),
+                                        'syncMediumLastRun' => $this->toInt($settings['sync_last_run'] ?? null),
+                                        'syncLongLastRun' => $this->toInt($settings['sync_slow_last_run'] ?? null),
+                                        'externalIp' => $settings['external_ip'] ?? null,
+                                        'geoliteLicenseKey' => $settings['geolite_license_key'] ?? null,
+                                        'geoliteLastRun' => $this->toInt($settings['geolite_last_run'] ?? null),
+                                    ],
+            static function ($value) {
+                return null !== $value;
+            }
+        );
 
         $this->connection->delete('settings', [1 => 1]);
 

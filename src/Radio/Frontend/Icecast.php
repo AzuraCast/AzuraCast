@@ -90,7 +90,7 @@ class Icecast extends AbstractFrontend
         $settings = $this->settingsRepo->readSettings();
 
         $settingsBaseUrl = $settings->getBaseUrl() ?: 'http://localhost';
-        if (strpos($settingsBaseUrl, 'http') !== 0) {
+        if (!str_starts_with($settingsBaseUrl, 'http')) {
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }
         $baseUrl = new Uri($settingsBaseUrl);

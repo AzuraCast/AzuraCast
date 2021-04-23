@@ -69,7 +69,7 @@ class GetCurrentUser implements MiddlewareInterface
 
         $response = $handler->handle($request);
 
-        Entity\AuditLog::setCurrentUser(null);
+        Entity\AuditLog::setCurrentUser();
 
         return $response;
     }

@@ -9,6 +9,8 @@ use App\EventDispatcher;
 use App\LockFactory;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
@@ -60,7 +62,7 @@ class Runner
         $allSyncInfo = $this->getSyncTimes();
 
         if (!isset($allSyncInfo[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid sync task: %s', $type));
+            throw new InvalidArgumentException(sprintf('Invalid sync task: %s', $type));
         }
 
         $syncInfo = $allSyncInfo[$type];
@@ -80,7 +82,7 @@ class Runner
             $this->lockFactory->clearQueue('sync_' . $type);
             try {
                 $lock->acquire($force);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Noop
             }
         } elseif (!$lock->acquire()) {

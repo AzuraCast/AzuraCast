@@ -24,7 +24,7 @@ class StationsAction
         /** @var Entity\Station[] $stations */
         $stations = array_filter(
             $em->getRepository(Entity\Station::class)->findAll(),
-            function ($station) use ($acl) {
+            static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
                 return $station->isEnabled() &&
                     $acl->isAllowed(Acl::STATION_VIEW, $station->getId());
@@ -51,7 +51,7 @@ class StationsAction
         if (!empty($searchPhrase)) {
             $viewStations = array_filter(
                 $viewStations,
-                function (Entity\Api\Dashboard $row) use ($searchPhrase) {
+                static function (Entity\Api\Dashboard $row) use ($searchPhrase) {
                     return false !== mb_stripos($row->station->name, $searchPhrase);
                 }
             );
@@ -60,7 +60,7 @@ class StationsAction
         $sort = $request->getParam('sort');
         usort(
             $viewStations,
-            function (Entity\Api\Dashboard $a, Entity\Api\Dashboard $b) use ($sort) {
+            static function (Entity\Api\Dashboard $a, Entity\Api\Dashboard $b) use ($sort) {
                 if ('listeners' === $sort) {
                     return $a->listeners->current <=> $b->listeners->current;
                 }

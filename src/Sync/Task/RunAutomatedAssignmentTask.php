@@ -106,7 +106,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
         // Remove songs that weren't already in auto-assigned playlists.
         $mediaReport = array_filter(
             $mediaReport,
-            function ($media) use ($mediaToUpdate) {
+            static function ($media) use ($mediaToUpdate) {
                 return (isset($mediaToUpdate[$media['id']]));
             }
         );
@@ -121,7 +121,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
         // Sort songs by ratio descending.
         uasort(
             $mediaReport,
-            function ($a_media, $b_media) {
+            static function ($a_media, $b_media) {
                 return (int)$b_media['ratio'] <=> (int)$a_media['ratio'];
             }
         );

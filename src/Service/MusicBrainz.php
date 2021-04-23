@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\UriResolver;
 use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
+use JsonException;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Lock\Exception\LockConflictedException;
 
@@ -32,7 +33,7 @@ class MusicBrainz
      * @return mixed[] The decoded JSON response.
      */
     public function makeRequest(
-        $uri,
+        UriInterface|string $uri,
         array $query = []
     ): array {
         $rateLimitLock = $this->lockFactory->createLock(
@@ -171,7 +172,7 @@ class MusicBrainz
 
         try {
             $jsonBody = json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
+        } catch (JsonException $e) {
             return null;
         }
 

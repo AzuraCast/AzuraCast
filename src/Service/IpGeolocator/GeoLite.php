@@ -26,7 +26,7 @@ class GeoLite extends AbstractIpGeolocator
     {
         return __(
             'This product includes GeoLite2 data created by MaxMind, available from %s.',
-            '<a href="http://www.maxmind.com">http://www.maxmind.com</a>'
+            '<a href="https://www.maxmind.com">https://www.maxmind.com</a>'
         );
     }
 }

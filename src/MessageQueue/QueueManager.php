@@ -4,6 +4,7 @@ namespace App\MessageQueue;
 
 use App\Message\AbstractMessage;
 use Doctrine\DBAL\Connection;
+use Generator;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection as MessengerConnection;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
 use Symfony\Component\Messenger\Envelope;
@@ -71,9 +72,9 @@ class QueueManager implements SendersLocatorInterface
     /**
      * @param string $queueName
      *
-     * @return \Generator|AbstractMessage[]
+     * @return Generator|AbstractMessage[]
      */
-    public function getMessagesInTransport(string $queueName): \Generator
+    public function getMessagesInTransport(string $queueName): Generator
     {
         $transport = $this->getTransport($queueName);
         foreach ($transport->all() as $envelope) {

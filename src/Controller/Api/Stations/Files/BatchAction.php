@@ -14,6 +14,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
 use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
+use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
@@ -48,7 +49,7 @@ class BatchAction
             'move' => $this->doMove($request, $station, $storageLocation, $fsMedia),
             'queue' => $this->doQueue($request, $station, $storageLocation, $fsMedia),
             'reprocess' => $this->doReprocess($request, $station, $storageLocation, $fsMedia),
-            default => throw new \InvalidArgumentException('Invalid batch action specified.')
+            default => throw new InvalidArgumentException('Invalid batch action specified.')
         };
 
         if ($this->em->isOpen()) {
@@ -219,7 +220,7 @@ class BatchAction
         Entity\StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
-        $result = $this->parseRequest($request, $fs, false);
+        $result = $this->parseRequest($request, $fs);
 
         $from = $request->getParam('currentDirectory', '');
         $to = $request->getParam('directory', '');

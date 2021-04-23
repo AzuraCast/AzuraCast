@@ -215,7 +215,7 @@ class Queue implements EventSubscriberInterface
 
         array_walk(
             $new,
-            function (&$value, $key) use ($max): void {
+            static function (&$value, $key) use ($max): void {
                 $value = (mt_rand() * $max) ** (1.0 / $value);
             }
         );
@@ -224,7 +224,7 @@ class Queue implements EventSubscriberInterface
 
         array_walk(
             $new,
-            function (&$value, $key) use ($original): void {
+            static function (&$value, $key) use ($original): void {
                 $value = $original[$key];
             }
         );
@@ -378,7 +378,7 @@ class Queue implements EventSubscriberInterface
         // Handle a remote playlist containing songs or streams.
         $queueCacheKey = 'playlist_queue.' . $playlist->getId();
 
-        $mediaQueue = $this->cache->get($queueCacheKey, null);
+        $mediaQueue = $this->cache->get($queueCacheKey);
         if (empty($mediaQueue)) {
             $playlistRaw = file_get_contents($playlist->getRemoteUrl());
             $mediaQueue = PlaylistParser::getSongs($playlistRaw);

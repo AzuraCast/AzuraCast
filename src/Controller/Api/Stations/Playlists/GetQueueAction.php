@@ -6,6 +6,7 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
 class GetQueueAction extends AbstractPlaylistsAction
@@ -19,11 +20,11 @@ class GetQueueAction extends AbstractPlaylistsAction
         $record = $this->requireRecord($request->getStation(), $id);
 
         if (Entity\StationPlaylist::SOURCE_SONGS !== $record->getSource()) {
-            throw new \InvalidArgumentException('This playlist does not have songs as its primary source.');
+            throw new InvalidArgumentException('This playlist does not have songs as its primary source.');
         }
 
         if (Entity\StationPlaylist::ORDER_RANDOM === $record->getOrder()) {
-            throw new \InvalidArgumentException('This playlist is always shuffled and has no visible queue.');
+            throw new InvalidArgumentException('This playlist is always shuffled and has no visible queue.');
         }
 
         $queue = $spmRepo->getQueue($record);

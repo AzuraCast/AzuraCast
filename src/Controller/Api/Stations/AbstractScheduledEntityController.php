@@ -9,6 +9,7 @@ use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -73,10 +74,10 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         return $response->withJson($events);
     }
 
-    protected function editRecord($data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, $record = null, array $context = []): object
     {
         if (null === $data) {
-            throw new \InvalidArgumentException('Could not parse input data.');
+            throw new InvalidArgumentException('Could not parse input data.');
         }
 
         $scheduleItems = $data['schedule_items'] ?? null;

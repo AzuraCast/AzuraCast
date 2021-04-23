@@ -21,13 +21,13 @@ class Arrays
      *
      * This function is used to create replacements for variables in strings.
      *
-     * @param array|object $array
+     * @param object|array $array
      * @param string $separator
      * @param null $prefix
      *
      * @return mixed[]
      */
-    public static function flattenArray($array, $separator = '.', $prefix = null): array
+    public static function flattenArray(object|array $array, $separator = '.', $prefix = null): array
     {
         if (!is_array($array)) {
             if (is_object($array)) {

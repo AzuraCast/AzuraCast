@@ -24,13 +24,13 @@ final class Version20190429025906 extends AbstractMigration
         foreach ($playlists as $playlist) {
             $backend_options = [];
 
-            if ((bool)$playlist['interrupt_other_songs']) {
+            if ($playlist['interrupt_other_songs']) {
                 $backend_options[] = 'interrupt';
             }
-            if ((bool)$playlist['loop_playlist_once']) {
+            if ($playlist['loop_playlist_once']) {
                 $backend_options[] = 'loop_once';
             }
-            if ((bool)$playlist['play_single_track']) {
+            if ($playlist['play_single_track']) {
                 $backend_options[] = 'single_track';
             }
 

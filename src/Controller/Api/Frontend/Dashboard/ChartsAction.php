@@ -35,7 +35,7 @@ class ChartsAction
         /** @var Entity\Station[] $stations */
         $stations = array_filter(
             $em->getRepository(Entity\Station::class)->findAll(),
-            function ($station) use ($acl) {
+            static function ($station) use ($acl) {
                 /** @var Entity\Station $station */
                 return $station->isEnabled() &&
                     $acl->isAllowed(Acl::STATION_VIEW, $station->getId());

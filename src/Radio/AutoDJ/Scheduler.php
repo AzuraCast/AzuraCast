@@ -208,17 +208,21 @@ class Scheduler
                 $scheduleName = (string)$scheduleItem;
 
                 if ($this->shouldSchedulePlayNow($scheduleItem, $now)) {
-                    $this->logger->debug(sprintf(
-                        '%s - Should Play Now',
-                        $scheduleName
-                    ));
+                    $this->logger->debug(
+                        sprintf(
+                            '%s - Should Play Now',
+                            $scheduleName
+                        )
+                    );
                     return $scheduleItem;
-                } else {
-                    $this->logger->debug(sprintf(
+                }
+
+                $this->logger->debug(
+                    sprintf(
                         '%s - Not Eligible to Play Now',
                         $scheduleName
-                    ));
-                }
+                    )
+                );
             }
         }
         return null;
@@ -285,7 +289,7 @@ class Scheduler
 
         if (!empty($startDate)) {
             $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone())
-                ->setTime(0, 0, 0);
+                ->setTime(0, 0);
 
             if ($now->lt($startDate)) {
                 return false;

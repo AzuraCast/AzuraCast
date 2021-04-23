@@ -66,7 +66,7 @@ class StationMediaRepository extends Repository
      * @param Entity\Station|Entity\StorageLocation $source
      *
      */
-    public function find($id, $source): ?Entity\StationMedia
+    public function find(mixed $id, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
     {
         if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
             $media = $this->findByUniqueId($id, $source);
@@ -93,7 +93,7 @@ class StationMediaRepository extends Repository
      * @param Entity\Station|Entity\StorageLocation $source
      *
      */
-    public function findByPath(string $path, $source): ?Entity\StationMedia
+    public function findByPath(string $path, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
     {
         $storageLocation = $this->getStorageLocation($source);
 
@@ -125,8 +125,10 @@ class StationMediaRepository extends Repository
      * @param Entity\Station|Entity\StorageLocation $source
      *
      */
-    public function findByUniqueId(string $uniqueId, $source): ?Entity\StationMedia
-    {
+    public function findByUniqueId(
+        string $uniqueId,
+        Entity\Station|Entity\StorageLocation $source
+    ): ?Entity\StationMedia {
         $storageLocation = $this->getStorageLocation($source);
 
         /** @var Entity\StationMedia|null $media */
@@ -144,7 +146,7 @@ class StationMediaRepository extends Repository
      * @param Entity\Station|Entity\StorageLocation $source
      *
      */
-    protected function getStorageLocation($source): Entity\StorageLocation
+    protected function getStorageLocation(Entity\Station|Entity\StorageLocation $source): Entity\StorageLocation
     {
         if ($source instanceof Entity\StorageLocation) {
             return $source;
@@ -164,7 +166,7 @@ class StationMediaRepository extends Repository
      * @throws Exception
      */
     public function getOrCreate(
-        $source,
+        Entity\Station|Entity\StorageLocation $source,
         string $path,
         ?string $uploadedFrom = null
     ): Entity\StationMedia {
@@ -293,7 +295,7 @@ class StationMediaRepository extends Repository
         if (!empty($artwork)) {
             try {
                 $this->writeAlbumArt($media, $artwork, $fs);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->logger->error(
                     sprintf(
                         'Album Artwork for "%s" could not be processed: "%s"',
@@ -354,7 +356,7 @@ class StationMediaRepository extends Repository
         );
 
         $albumArtPath = Entity\StationMedia::getArtPath($media->getUniqueId());
-        $albumArtStream = $albumArt->stream('jpg', 90);
+        $albumArtStream = $albumArt->stream('jpg');
 
         $fs->writeStream($albumArtPath, $albumArtStream->detach());
     }

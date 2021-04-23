@@ -39,11 +39,14 @@ class Router implements RouterInterface
      * this function's parameters indicate an absolute URL is necessary
      *
      * @param UriInterface $base
-     * @param UriInterface|string $rel
+     * @param string|UriInterface $rel
      * @param bool $absolute
      */
-    public static function resolveUri(UriInterface $base, $rel, bool $absolute = false): UriInterface
-    {
+    public static function resolveUri(
+        UriInterface $base,
+        UriInterface|string $rel,
+        bool $absolute = false
+    ): UriInterface {
         if (!$rel instanceof UriInterface) {
             $rel = new Uri($rel);
         }
@@ -144,8 +147,12 @@ class Router implements RouterInterface
      * @param array $query_params
      * @param boolean $absolute Whether to include the full URL.
      */
-    public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): UriInterface
-    {
+    public function named(
+        string $route_name,
+        $route_params = [],
+        array $query_params = [],
+        $absolute = false
+    ): UriInterface {
         return self::resolveUri(
             $this->getBaseUrl(),
             $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params),
@@ -159,7 +166,7 @@ class Router implements RouterInterface
 
         $settingsBaseUrl = $settings->getBaseUrl();
         if (!empty($settingsBaseUrl)) {
-            if (strpos($settingsBaseUrl, 'http') !== 0) {
+            if (!str_starts_with($settingsBaseUrl, 'http')) {
                 $settingsBaseUrl = 'http://' . $settingsBaseUrl;
             }
 

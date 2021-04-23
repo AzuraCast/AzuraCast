@@ -94,7 +94,7 @@ class StationSchedule
     /**
      * @param StationPlaylist|StationStreamer $relation
      */
-    public function __construct($relation)
+    public function __construct(StationPlaylist|StationStreamer $relation)
     {
         if ($relation instanceof StationPlaylist) {
             $this->playlist = $relation;
@@ -249,10 +249,10 @@ class StationSchedule
     /**
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
-     * @param string|int $timeCode
+     * @param int|string $timeCode
      * @param CarbonInterface|null $now
      */
-    public static function getDateTime($timeCode, CarbonInterface $now = null): CarbonInterface
+    public static function getDateTime(int|string $timeCode, CarbonInterface $now = null): CarbonInterface
     {
         if (null === $now) {
             $now = CarbonImmutable::now(new DateTimeZone('UTC'));

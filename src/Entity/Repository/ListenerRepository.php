@@ -17,8 +17,11 @@ class ListenerRepository extends Repository
      * @param DateTimeInterface|int $start
      * @param DateTimeInterface|int $end
      */
-    public function getUniqueListeners(Entity\Station $station, $start, $end): int
-    {
+    public function getUniqueListeners(
+        Entity\Station $station,
+        DateTimeInterface|int $start,
+        DateTimeInterface|int $end
+    ): int {
         if ($start instanceof DateTimeInterface) {
             $start = $start->getTimestamp();
         }

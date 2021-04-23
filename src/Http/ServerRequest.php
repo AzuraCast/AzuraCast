@@ -126,15 +126,17 @@ final class ServerRequest extends \Slim\Http\ServerRequest
      *
      * @throws Exception\InvalidRequestAttribute
      */
-    protected function getAttributeOfClass($attr, $class_name): mixed
+    protected function getAttributeOfClass(string $attr, string $class_name): mixed
     {
         $object = $this->serverRequest->getAttribute($attr);
 
         if (empty($object)) {
-            throw new Exception\InvalidRequestAttribute(sprintf(
-                'Attribute "%s" is required and is empty in this request',
-                $attr
-            ));
+            throw new Exception\InvalidRequestAttribute(
+                sprintf(
+                    'Attribute "%s" is required and is empty in this request',
+                    $attr
+                )
+            );
         }
 
         if (!($object instanceof $class_name)) {

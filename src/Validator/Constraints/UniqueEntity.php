@@ -13,6 +13,9 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+use function is_array;
+use function is_string;
+
 /**
  * Constraint for the Unique Entity validator.
  *
@@ -44,7 +47,7 @@ class UniqueEntity extends Constraint
         $payload = null,
         array $options = []
     ) {
-        if (\is_array($fields) && \is_string(key($fields))) {
+        if (is_array($fields) && is_string(key($fields))) {
             $options = array_merge($fields, $options);
         } elseif (null !== $fields) {
             $options['fields'] = $fields;

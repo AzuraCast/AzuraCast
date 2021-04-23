@@ -42,8 +42,7 @@ class OverviewController
         // Statistics by day.
         $dailyStats = $this->analyticsRepo->findForStationAfterTime(
             $station,
-            $statisticsThreshold,
-            Entity\Analytics::INTERVAL_DAILY
+            $statisticsThreshold
         );
 
         $daily_chart = new stdClass();
@@ -233,7 +232,7 @@ class OverviewController
 
         usort(
             $songs,
-            function ($a_arr, $b_arr) {
+            static function ($a_arr, $b_arr) {
                 $a = $a_arr['stat_delta'];
                 $b = $b_arr['stat_delta'];
 

@@ -63,7 +63,7 @@ abstract class AbstractApiCrudController
      * @param ServerRequest $request
      *
      */
-    protected function viewRecord($record, ServerRequest $request): mixed
+    protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -86,7 +86,7 @@ abstract class AbstractApiCrudController
      *
      * @return mixed[]
      */
-    protected function toArray($record, array $context = []): array
+    protected function toArray(object $record, array $context = []): array
     {
         return $this->serializer->normalize(
             $record,
@@ -120,7 +120,7 @@ abstract class AbstractApiCrudController
      * @param object $object
      *
      */
-    protected function displayShortenedObject($object): mixed
+    protected function displayShortenedObject(object $object): mixed
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();
@@ -134,7 +134,7 @@ abstract class AbstractApiCrudController
      * @param object|null $record
      * @param array $context
      */
-    protected function editRecord($data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
@@ -160,7 +160,7 @@ abstract class AbstractApiCrudController
      * @param object|null $record
      * @param array $context
      */
-    protected function fromArray($data, $record = null, array $context = []): object
+    protected function fromArray(array $data, $record = null, array $context = []): object
     {
         if (null !== $record) {
             $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;
@@ -175,7 +175,7 @@ abstract class AbstractApiCrudController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    protected function deleteRecord($record): void
+    protected function deleteRecord(object $record): void
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

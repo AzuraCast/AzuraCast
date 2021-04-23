@@ -15,20 +15,11 @@ use function array_slice;
 
 class OverviewController
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\AnalyticsRepository $analyticsRepo;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\AnalyticsRepository $analyticsRepo
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\AnalyticsRepository $analyticsRepo
     ) {
-        $this->em = $em;
-        $this->settings = $settingsRepo->readSettings();
-        $this->analyticsRepo = $analyticsRepo;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -37,7 +28,8 @@ class OverviewController
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        $analytics_level = $this->settings->getAnalytics();
+        $settings = $this->settingsRepo->readSettings();
+        $analytics_level = $settings->getAnalytics();
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.

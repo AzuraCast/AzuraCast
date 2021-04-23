@@ -7,11 +7,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildConsoleCommands extends Event
 {
-    protected Application $cli;
-
-    public function __construct(Application $cli)
-    {
-        $this->cli = $cli;
+    public function __construct(
+        protected Application $cli
+    ) {
     }
 
     public function getConsole(): Application

@@ -13,24 +13,14 @@ use Symfony\Component\Messenger\MessageBus;
 
 class RunBackupTask extends AbstractTask
 {
-    protected MessageBus $messageBus;
-
-    protected Application $console;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
+        protected MessageBus $messageBus,
+        protected Application $console,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        MessageBus $messageBus,
-        Application $console,
-        Entity\Repository\SettingsRepository $settingsRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->messageBus = $messageBus;
-        $this->console = $console;
-        $this->settingsRepo = $settingsRepo;
     }
 
     /**

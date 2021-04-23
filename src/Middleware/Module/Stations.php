@@ -16,14 +16,10 @@ use Slim\Routing\RouteContext;
  */
 class Stations
 {
-    protected EventDispatcher $dispatcher;
-
-    protected SettingsRepository $settingsRepo;
-
-    public function __construct(EventDispatcher $dispatcher, SettingsRepository $settingsRepo)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->settingsRepo = $settingsRepo;
+    public function __construct(
+        protected EventDispatcher $dispatcher,
+        protected SettingsRepository $settingsRepo
+    ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
@@ -44,7 +40,7 @@ class Stations
 
         $settings = $this->settingsRepo->readSettings();
 
-        $event = new Event\BuildStationMenu($request, $settings, $station);
+        $event = new Event\BuildStationMenu($station, $request, $settings);
         $this->dispatcher->dispatch($event);
 
         $active_tab = null;

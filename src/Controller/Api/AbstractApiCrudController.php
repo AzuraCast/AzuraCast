@@ -19,23 +19,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractApiCrudController
 {
-    protected EntityManagerInterface $em;
-
-    protected Serializer $serializer;
-
-    protected ValidatorInterface $validator;
-
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
     /** @var string The route name used to generate the "self" links for each record. */
     protected string $resourceRouteName;
 
-    public function __construct(EntityManagerInterface $em, Serializer $serializer, ValidatorInterface $validator)
-    {
-        $this->em = $em;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Serializer $serializer,
+        protected ValidatorInterface $validator
+    ) {
     }
 
     protected function listPaginatedFromQuery(

@@ -10,11 +10,9 @@ use App\Session\Flash;
 
 class ProfilerAdvisorCheck
 {
-    protected Environment $environment;
-
-    public function __construct(Environment $environment)
-    {
-        $this->environment = $environment;
+    public function __construct(
+        protected Environment $environment
+    ) {
     }
 
     public function __invoke(GetNotifications $event): void

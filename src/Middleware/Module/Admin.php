@@ -16,14 +16,10 @@ use Slim\Routing\RouteContext;
  */
 class Admin
 {
-    protected EventDispatcher $dispatcher;
-
-    protected SettingsRepository $settingsRepo;
-
-    public function __construct(EventDispatcher $dispatcher, SettingsRepository $settingsRepo)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->settingsRepo = $settingsRepo;
+    public function __construct(
+        protected EventDispatcher $dispatcher,
+        protected SettingsRepository $settingsRepo
+    ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface

@@ -6,13 +6,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildDoctrineMappingPaths extends Event
 {
-    protected array $mappingClassesPaths;
-    protected string $baseDir;
-
-    public function __construct(array $mappingClassesPaths, string $baseDir)
-    {
-        $this->mappingClassesPaths = $mappingClassesPaths;
-        $this->baseDir = $baseDir;
+    public function __construct(
+        protected array $mappingClassesPaths,
+        protected string $baseDir
+    ) {
     }
 
     /**

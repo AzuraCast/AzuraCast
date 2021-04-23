@@ -16,12 +16,6 @@ class Auth
     /** @var int The window of valid one-time passwords outside the current timestamp. */
     public const TOTP_WINDOW = 5;
 
-    protected SessionInterface $session;
-
-    protected UserRepository $userRepo;
-
-    protected Environment $environment;
-
     /** @var User|bool|null */
     protected $user;
 
@@ -29,13 +23,10 @@ class Auth
     protected $masqueraded_user;
 
     public function __construct(
-        UserRepository $userRepo,
-        SessionInterface $session,
-        Environment $environment
+        protected UserRepository $userRepo,
+        protected SessionInterface $session,
+        protected Environment $environment
     ) {
-        $this->userRepo = $userRepo;
-        $this->session = $session;
-        $this->environment = $environment;
     }
 
     /**

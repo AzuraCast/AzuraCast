@@ -18,32 +18,14 @@ use Psr\Log\LogLevel;
  */
 class Runner
 {
-    protected Logger $logger;
-
-    protected Environment $environment;
-
-    protected SettingsRepository $settingsRepo;
-
-    protected LockFactory $lockFactory;
-
-    protected EventDispatcher $eventDispatcher;
-
-    protected EntityManagerInterface $em;
-
     public function __construct(
-        SettingsRepository $settingsRepo,
-        Environment $environment,
-        Logger $logger,
-        LockFactory $lockFactory,
-        EventDispatcher $eventDispatcher,
-        EntityManagerInterface $em
+        protected SettingsRepository $settingsRepo,
+        protected Environment $environment,
+        protected Logger $logger,
+        protected LockFactory $lockFactory,
+        protected EventDispatcher $eventDispatcher,
+        protected EntityManagerInterface $em
     ) {
-        $this->settingsRepo = $settingsRepo;
-        $this->environment = $environment;
-        $this->logger = $logger;
-        $this->lockFactory = $lockFactory;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->em = $em;
     }
 
     public function __invoke(Message\AbstractMessage $message): void

@@ -14,20 +14,13 @@ class LastFm
 {
     public const API_BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 
-    protected Client $httpClient;
-
-    protected LockFactory $lockFactory;
-
     protected ?string $apiKey = null;
 
     public function __construct(
-        Client $client,
-        LockFactory $lockFactory,
+        protected Client $httpClient,
+        protected LockFactory $lockFactory,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $this->httpClient = $client;
-        $this->lockFactory = $lockFactory;
-
         $settings = $settingsRepo->readSettings();
         $this->apiKey = $settings->getLastFmApiKey();
     }

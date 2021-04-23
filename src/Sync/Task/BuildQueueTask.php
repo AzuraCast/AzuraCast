@@ -10,20 +10,13 @@ use Psr\Log\LoggerInterface;
 
 class BuildQueueTask extends AbstractTask
 {
-    protected AutoDJ $autoDJ;
-
-    protected LockFactory $lockFactory;
-
     public function __construct(
+        protected AutoDJ $autoDJ,
+        protected LockFactory $lockFactory,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        AutoDJ $autoDJ,
-        LockFactory $lockFactory
     ) {
         parent::__construct($em, $logger);
-
-        $this->autoDJ = $autoDJ;
-        $this->lockFactory = $lockFactory;
     }
 
     public function run(bool $force = false): void

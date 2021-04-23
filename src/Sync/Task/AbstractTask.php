@@ -9,16 +9,10 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractTask
 {
-    protected ReloadableEntityManagerInterface $em;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
-        ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger
+        protected ReloadableEntityManagerInterface $em,
+        protected LoggerInterface $logger
     ) {
-        $this->em = $em;
-        $this->logger = $logger;
     }
 
     abstract public function run(bool $force = false): void;

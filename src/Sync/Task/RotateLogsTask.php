@@ -13,33 +13,16 @@ use Symfony\Component\Finder\Finder;
 
 class RotateLogsTask extends AbstractTask
 {
-    protected Environment $environment;
-
-    protected Adapters $adapters;
-
-    protected Supervisor $supervisor;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
     public function __construct(
+        protected Environment $environment,
+        protected Adapters $adapters,
+        protected Supervisor $supervisor,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Environment $environment,
-        Adapters $adapters,
-        Supervisor $supervisor,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->environment = $environment;
-        $this->adapters = $adapters;
-        $this->supervisor = $supervisor;
-
-        $this->settingsRepo = $settingsRepo;
-        $this->storageLocationRepo = $storageLocationRepo;
     }
 
     public function run(bool $force = false): void

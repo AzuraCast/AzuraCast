@@ -13,16 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class RelaysController
 {
-    protected EntityManagerInterface $em;
-
-    protected Adapters $adapters;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Adapters $adapters
+        protected EntityManagerInterface $em,
+        protected Adapters $adapters
     ) {
-        $this->em = $em;
-        $this->adapters = $adapters;
     }
 
     /**

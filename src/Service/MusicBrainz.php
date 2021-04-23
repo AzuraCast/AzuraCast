@@ -19,14 +19,10 @@ class MusicBrainz
 
     public const COVER_ART_ARCHIVE_BASE_URL = 'https://coverartarchive.org/';
 
-    protected Client $httpClient;
-
-    protected LockFactory $lockFactory;
-
-    public function __construct(Client $httpClient, LockFactory $lockFactory)
-    {
-        $this->httpClient = $httpClient;
-        $this->lockFactory = $lockFactory;
+    public function __construct(
+        protected Client $httpClient,
+        protected LockFactory $lockFactory
+    ) {
     }
 
     /**

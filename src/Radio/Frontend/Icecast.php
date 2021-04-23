@@ -8,7 +8,6 @@ use App\Utilities;
 use App\Xml\Writer;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
-use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 
@@ -88,7 +87,9 @@ class Icecast extends AbstractFrontend
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
 
-        $settingsBaseUrl = $this->settings->getBaseUrl() ?: 'http://localhost';
+        $settings = $this->settingsRepo->readSettings();
+
+        $settingsBaseUrl = $settings->getBaseUrl() ?: 'http://localhost';
         if (strpos($settingsBaseUrl, 'http') !== 0) {
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }

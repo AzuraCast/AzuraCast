@@ -10,19 +10,12 @@ class Locale
 {
     public const DEFAULT_LOCALE = 'en_US.UTF-8';
 
-    protected Environment $environment;
-
-    protected ?ServerRequestInterface $request = null;
-
     protected string $locale = self::DEFAULT_LOCALE;
 
     public function __construct(
-        Environment $environment,
-        ?ServerRequestInterface $request = null
+        protected Environment $environment,
+        protected ?ServerRequestInterface $request = null
     ) {
-        $this->environment = $environment;
-        $this->request = $request;
-
         $this->locale = $this->determineLocale();
     }
 

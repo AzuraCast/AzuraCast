@@ -43,14 +43,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /** @var SerializerInterface|NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
-    protected EntityManagerInterface $em;
-
     protected Reader $annotationReader;
 
     protected Inflector $inflector;
 
     public function __construct(
-        EntityManagerInterface $em,
+        protected EntityManagerInterface $em,
         Reader $annotationReader = null,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
@@ -68,7 +66,6 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         parent::__construct($classMetadataFactory, $nameConverter, $defaultContext);
 
-        $this->em = $em;
         $this->annotationReader = $annotationReader;
         $this->inflector = InflectorFactory::create()->build();
     }

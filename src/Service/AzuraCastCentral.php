@@ -13,28 +13,13 @@ class AzuraCastCentral
 {
     protected const BASE_URL = 'https://central.azuracast.com';
 
-    protected Environment $environment;
-
-    protected Client $httpClient;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Version $version;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
-        Environment $environment,
-        Version $version,
-        Client $httpClient,
-        LoggerInterface $logger,
-        Entity\Repository\SettingsRepository $settingsRepo
+        protected Environment $environment,
+        protected Version $version,
+        protected Client $httpClient,
+        protected LoggerInterface $logger,
+        protected Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $this->environment = $environment;
-        $this->version = $version;
-        $this->httpClient = $httpClient;
-        $this->logger = $logger;
-        $this->settingsRepo = $settingsRepo;
     }
 
     /**

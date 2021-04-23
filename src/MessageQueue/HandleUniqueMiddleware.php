@@ -13,11 +13,9 @@ use Symfony\Component\Messenger\Stamp\ConsumedByWorkerStamp;
 
 final class HandleUniqueMiddleware implements MiddlewareInterface
 {
-    protected LockFactory $lockFactory;
-
-    public function __construct(LockFactory $lockFactory)
-    {
-        $this->lockFactory = $lockFactory;
+    public function __construct(
+        protected LockFactory $lockFactory
+    ) {
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

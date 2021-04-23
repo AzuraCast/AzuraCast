@@ -11,14 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class PerformanceController
 {
-    protected EntityManagerInterface $em;
-
-    protected RunAutomatedAssignmentTask $sync_automation;
-
-    public function __construct(EntityManagerInterface $em, RunAutomatedAssignmentTask $sync_automation)
-    {
-        $this->em = $em;
-        $this->sync_automation = $sync_automation;
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected RunAutomatedAssignmentTask $sync_automation
+    ) {
     }
 
     public function __invoke(

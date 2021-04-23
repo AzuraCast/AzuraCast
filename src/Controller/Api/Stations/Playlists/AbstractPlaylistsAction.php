@@ -8,11 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractPlaylistsAction
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        protected EntityManagerInterface $em
+    ) {
     }
 
     protected function requireRecord(Entity\Station $station, int $id): Entity\StationPlaylist

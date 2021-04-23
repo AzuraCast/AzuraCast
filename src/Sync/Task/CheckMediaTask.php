@@ -18,32 +18,16 @@ use Symfony\Component\Messenger\MessageBus;
 
 class CheckMediaTask extends AbstractTask
 {
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
-    protected Entity\Repository\StationMediaRepository $mediaRepo;
-
-    protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo;
-
-    protected MessageBus $messageBus;
-
-    protected QueueManager $queueManager;
-
     public function __construct(
+        protected Entity\Repository\StationMediaRepository $mediaRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        protected MessageBus $messageBus,
+        protected QueueManager $queueManager,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        MessageBus $messageBus,
-        QueueManager $queueManager
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->storageLocationRepo = $storageLocationRepo;
-        $this->mediaRepo = $mediaRepo;
-        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
-        $this->messageBus = $messageBus;
-        $this->queueManager = $queueManager;
     }
 
     /**

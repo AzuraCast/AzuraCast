@@ -16,28 +16,13 @@ class Configuration
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
 
-    protected EntityManagerInterface $em;
-
-    protected Adapters $adapters;
-
-    protected Supervisor $supervisor;
-
-    protected Logger $logger;
-
-    protected Environment $environment;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Adapters $adapters,
-        Supervisor $supervisor,
-        Logger $logger,
-        Environment $environment
+        protected EntityManagerInterface $em,
+        protected Adapters $adapters,
+        protected Supervisor $supervisor,
+        protected Logger $logger,
+        protected Environment $environment
     ) {
-        $this->em = $em;
-        $this->adapters = $adapters;
-        $this->supervisor = $supervisor;
-        $this->logger = $logger;
-        $this->environment = $environment;
     }
 
     public function initializeConfiguration(Station $station): void

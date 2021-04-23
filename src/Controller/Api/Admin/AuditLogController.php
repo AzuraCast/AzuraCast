@@ -15,11 +15,9 @@ use const JSON_PRETTY_PRINT;
 
 class AuditLogController
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        protected EntityManagerInterface $em
+    ) {
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface

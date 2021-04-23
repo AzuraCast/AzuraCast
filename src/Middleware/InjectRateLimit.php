@@ -14,11 +14,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class InjectRateLimit implements MiddlewareInterface
 {
-    protected RateLimit $rateLimit;
-
-    public function __construct(RateLimit $rateLimit)
-    {
-        $this->rateLimit = $rateLimit;
+    public function __construct(
+        protected RateLimit $rateLimit
+    ) {
     }
 
     /**

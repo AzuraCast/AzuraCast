@@ -21,11 +21,9 @@ class Flash
 
     protected ?array $messages = null;
 
-    protected SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
+    public function __construct(
+        protected SessionInterface $session
+    ) {
     }
 
     /**

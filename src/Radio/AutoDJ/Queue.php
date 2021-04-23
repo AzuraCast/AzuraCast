@@ -24,41 +24,16 @@ class Queue implements EventSubscriberInterface
         Entity\StationPlaylist::TYPE_DEFAULT . '_unscheduled',
     ];
 
-    protected EntityManagerInterface $em;
-
-    protected LoggerInterface $logger;
-
-    protected Scheduler $scheduler;
-
-    protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
-
-    protected Entity\Repository\StationRequestRepository $requestRepo;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
-    protected Entity\Repository\SongHistoryRepository $historyRepo;
-
-    protected CacheInterface $cache;
-
     public function __construct(
-        EntityManagerInterface $em,
-        LoggerInterface $logger,
-        Scheduler $scheduler,
-        CacheInterface $cache,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        Entity\Repository\StationRequestRepository $requestRepo,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        Entity\Repository\SongHistoryRepository $historyRepo
+        protected EntityManagerInterface $em,
+        protected LoggerInterface $logger,
+        protected Scheduler $scheduler,
+        protected CacheInterface $cache,
+        protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        protected Entity\Repository\StationRequestRepository $requestRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected Entity\Repository\SongHistoryRepository $historyRepo
     ) {
-        $this->em = $em;
-        $this->logger = $logger;
-        $this->scheduler = $scheduler;
-        $this->cache = $cache;
-
-        $this->spmRepo = $spmRepo;
-        $this->requestRepo = $requestRepo;
-        $this->queueRepo = $queueRepo;
-        $this->historyRepo = $historyRepo;
     }
 
     /**

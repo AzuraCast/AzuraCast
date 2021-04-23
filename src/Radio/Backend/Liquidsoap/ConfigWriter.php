@@ -28,28 +28,13 @@ class ConfigWriter implements EventSubscriberInterface
     public const CROSSFADE_DISABLED = 'none';
     public const CROSSFADE_SMART = 'smart';
 
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Liquidsoap $liquidsoap;
-
-    protected Environment $environment;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Liquidsoap $liquidsoap,
-        Environment $environment,
-        LoggerInterface $logger
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Liquidsoap $liquidsoap,
+        protected Environment $environment,
+        protected LoggerInterface $logger
     ) {
-        $this->em = $em;
-        $this->settingsRepo = $settingsRepo;
-        $this->liquidsoap = $liquidsoap;
-        $this->environment = $environment;
-        $this->logger = $logger;
     }
 
     /**

@@ -15,17 +15,13 @@ class RolesController extends AbstractAdminApiCrudController
     protected string $entityClass = Entity\Role::class;
     protected string $resourceRouteName = 'api:admin:role';
 
-    protected Acl $acl;
-
     public function __construct(
+        protected Acl $acl,
         EntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator,
-        Acl $acl
+        ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->acl = $acl;
     }
 
     /**

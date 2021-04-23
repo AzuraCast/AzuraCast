@@ -7,13 +7,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ReadMetadata extends Event
 {
-    protected string $path;
-
     protected ?Entity\Metadata $metadata = null;
 
-    public function __construct(string $path)
-    {
-        $this->path = $path;
+    public function __construct(
+        protected string $path
+    ) {
     }
 
     public function getPath(): string

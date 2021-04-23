@@ -11,8 +11,6 @@ use Azura\Files\RemoteFilesystem;
 
 class StationFilesystems
 {
-    protected Entity\Station $station;
-
     protected ExtendedFilesystemInterface $fsMedia;
 
     protected ExtendedFilesystemInterface $fsRecordings;
@@ -23,9 +21,9 @@ class StationFilesystems
 
     protected LocalFilesystem $fsTemp;
 
-    public function __construct(Entity\Station $station)
-    {
-        $this->station = $station;
+    public function __construct(
+        protected Entity\Station $station
+    ) {
     }
 
     public function getMediaFilesystem(): ExtendedFilesystemInterface

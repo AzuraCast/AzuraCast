@@ -9,11 +9,9 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class ResetArrayCacheMiddleware implements EventSubscriberInterface
 {
-    protected CacheInterface $cache;
-
-    public function __construct(CacheInterface $cache)
-    {
-        $this->cache = $cache;
+    public function __construct(
+        protected CacheInterface $cache
+    ) {
     }
 
     /**

@@ -15,14 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class ServicesController
 {
-    protected EntityManagerInterface $em;
-
-    protected Configuration $configuration;
-
-    public function __construct(EntityManagerInterface $em, Configuration $configuration)
-    {
-        $this->em = $em;
-        $this->configuration = $configuration;
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Configuration $configuration
+    ) {
     }
 
     /**

@@ -26,16 +26,12 @@ class Version
     public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md';
     // phpcs:enable
 
-    protected CacheInterface $cache;
-
     protected string $repoDir;
 
-    protected Environment $environment;
-
-    public function __construct(CacheInterface $cache, Environment $environment)
-    {
-        $this->cache = $cache;
-        $this->environment = $environment;
+    public function __construct(
+        protected CacheInterface $cache,
+        protected Environment $environment
+    ) {
         $this->repoDir = $environment->getBaseDirectory();
     }
 

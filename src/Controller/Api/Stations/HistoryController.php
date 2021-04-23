@@ -15,16 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class HistoryController
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator
+        protected EntityManagerInterface $em,
+        protected Entity\ApiGenerator\SongHistoryApiGenerator $songHistoryApiGenerator
     ) {
-        $this->em = $em;
-        $this->songHistoryApiGenerator = $songHistoryApiGenerator;
     }
 
     /**

@@ -12,17 +12,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PermissionsForm extends EntityForm
 {
-    protected Entity\Repository\RolePermissionRepository $permissions_repo;
-
     protected bool $set_permissions = true;
 
     public function __construct(
+        protected Entity\Repository\RolePermissionRepository $permissions_repo,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config,
         Entity\Repository\StationRepository $stations_repo,
-        Entity\Repository\RolePermissionRepository $permissions_repo,
         Acl $acl
     ) {
         $form_config = $config->get('forms/role', [
@@ -33,7 +31,6 @@ class PermissionsForm extends EntityForm
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\Role::class;
-        $this->permissions_repo = $permissions_repo;
     }
 
     /**

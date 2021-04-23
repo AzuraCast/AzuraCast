@@ -6,13 +6,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildMigrationConfigurationArray extends Event
 {
-    protected array $migrationConfigurations;
-    protected string $baseDir;
-
-    public function __construct(array $migrationConfigurations, string $baseDir)
-    {
-        $this->migrationConfigurations = $migrationConfigurations;
-        $this->baseDir = $baseDir;
+    public function __construct(
+        protected array $migrationConfigurations,
+        protected string $baseDir
+    ) {
     }
 
     /**

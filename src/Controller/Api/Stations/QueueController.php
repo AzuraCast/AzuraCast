@@ -18,21 +18,14 @@ class QueueController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationQueue::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
-    protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
     public function __construct(
+        protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
-        Entity\Repository\StationQueueRepository $queueRepo
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->queueApiGenerator = $queueApiGenerator;
-        $this->queueRepo = $queueRepo;
     }
 
     /**

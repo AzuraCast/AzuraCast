@@ -10,16 +10,10 @@ use App\Sync\Runner;
 
 class SyncTaskCheck
 {
-    protected Runner $syncRunner;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
-        Runner $syncRunner,
-        Entity\Repository\SettingsRepository $settingsRepo
+        protected Runner $syncRunner,
+        protected Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $this->syncRunner = $syncRunner;
-        $this->settingsRepo = $settingsRepo;
     }
 
     public function __invoke(GetNotifications $event): void

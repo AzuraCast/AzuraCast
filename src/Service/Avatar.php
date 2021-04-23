@@ -20,11 +20,9 @@ class Avatar
 
     public const DEFAULT_SERVICE = self::SERVICE_LIBRAVATAR;
 
-    protected SettingsRepository $settingsRepo;
-
-    public function __construct(SettingsRepository $settingsRepo)
-    {
-        $this->settingsRepo = $settingsRepo;
+    public function __construct(
+        protected SettingsRepository $settingsRepo
+    ) {
     }
 
     public function getAvatarService(): AvatarServiceInterface

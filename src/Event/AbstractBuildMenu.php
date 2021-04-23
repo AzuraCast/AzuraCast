@@ -8,16 +8,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractBuildMenu extends Event
 {
-    protected ServerRequest $request;
-
-    protected Settings $settings;
-
     protected array $menu = [];
 
-    public function __construct(ServerRequest $request, Settings $settings)
-    {
-        $this->request = $request;
-        $this->settings = $settings;
+    public function __construct(
+        protected ServerRequest $request,
+        protected Settings $settings
+    ) {
     }
 
     public function getRequest(): ServerRequest

@@ -16,36 +16,15 @@ use Monolog\Logger;
 
 class AutoDJ
 {
-    protected ReloadableEntityManagerInterface $em;
-
-    protected Entity\Repository\SongHistoryRepository $songHistoryRepo;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
-    protected EventDispatcher $dispatcher;
-
-    protected Logger $logger;
-
-    protected Scheduler $scheduler;
-
-    protected Environment $environment;
-
     public function __construct(
-        ReloadableEntityManagerInterface $em,
-        Entity\Repository\SongHistoryRepository $songHistoryRepo,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        EventDispatcher $dispatcher,
-        Logger $logger,
-        Scheduler $scheduler,
-        Environment $environment
+        protected ReloadableEntityManagerInterface $em,
+        protected Entity\Repository\SongHistoryRepository $songHistoryRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected EventDispatcher $dispatcher,
+        protected Logger $logger,
+        protected Scheduler $scheduler,
+        protected Environment $environment
     ) {
-        $this->em = $em;
-        $this->songHistoryRepo = $songHistoryRepo;
-        $this->queueRepo = $queueRepo;
-        $this->dispatcher = $dispatcher;
-        $this->logger = $logger;
-        $this->scheduler = $scheduler;
-        $this->environment = $environment;
     }
 
     /**

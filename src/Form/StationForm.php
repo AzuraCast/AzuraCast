@@ -15,34 +15,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationForm extends EntityForm
 {
-    protected Entity\Repository\StationRepository $stationRepo;
-
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Environment $environment;
-
-    protected Adapters $adapters;
-
     public function __construct(
+        protected Entity\Repository\StationRepository $stationRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Environment $environment,
+        protected Adapters $adapters,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Config $config,
-        Environment $environment,
-        Adapters $adapters
+        Config $config
     ) {
         $this->entityClass = Entity\Station::class;
-        $this->stationRepo = $stationRepo;
-        $this->storageLocationRepo = $storageLocationRepo;
-        $this->settingsRepo = $settingsRepo;
-
-        $this->environment = $environment;
-        $this->adapters = $adapters;
 
         $form_config = $config->get(
             'forms/station',

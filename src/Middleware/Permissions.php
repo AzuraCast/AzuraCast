@@ -13,16 +13,10 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class Permissions
 {
-    protected string $action;
-
-    protected bool $use_station;
-
     public function __construct(
-        string $action,
-        bool $use_station = false
+        protected string $action,
+        protected bool $use_station = false
     ) {
-        $this->action = $action;
-        $this->use_station = $use_station;
     }
 
     /**

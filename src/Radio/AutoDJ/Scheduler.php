@@ -11,11 +11,9 @@ use Monolog\Logger;
 
 class Scheduler
 {
-    protected Logger $logger;
-
-    public function __construct(Logger $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        protected Logger $logger
+    ) {
     }
 
     public function shouldPlaylistPlayNow(
@@ -23,13 +21,15 @@ class Scheduler
         CarbonInterface $now = null,
         array $recentPlaylistHistory = []
     ): bool {
-        $this->logger->pushProcessor(function ($record) use ($playlist) {
-            $record['extra']['playlist'] = [
-                'id' => $playlist->getId(),
+        $this->logger->pushProcessor(
+            function ($record) use ($playlist) {
+                $record['extra']['playlist'] = [
+                    'id' => $playlist->getId(),
                 'name' => $playlist->getName(),
-            ];
-            return $record;
-        });
+                ];
+                return $record;
+            }
+        );
 
         if (null === $now) {
             $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());

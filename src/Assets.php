@@ -40,14 +40,11 @@ class Assets
     /** @var ServerRequestInterface|null The current request (if it's available) */
     protected ?ServerRequestInterface $request = null;
 
-    protected Environment $environment;
-
     public function __construct(
-        Environment $environment,
+        protected Environment $environment,
         Config $config,
-        ?ServerRequestInterface $request
+        ?ServerRequestInterface $request = null
     ) {
-        $this->environment = $environment;
         $this->request = $request;
 
         $libraries = $config->get('assets');

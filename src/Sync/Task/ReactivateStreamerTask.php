@@ -8,16 +8,12 @@ use Psr\Log\LoggerInterface;
 
 class ReactivateStreamerTask extends AbstractTask
 {
-    protected Entity\Repository\StationStreamerRepository $streamerRepo;
-
     public function __construct(
+        protected Entity\Repository\StationStreamerRepository $streamerRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\StationStreamerRepository $streamerRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->streamerRepo = $streamerRepo;
     }
 
     public function run(bool $force = false): void

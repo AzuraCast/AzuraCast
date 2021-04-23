@@ -14,22 +14,15 @@ use Psr\Http\Message\ResponseInterface;
 
 class ApiKeysController
 {
-    protected EntityManagerInterface $em;
-
     protected string $csrf_namespace = 'frontend_api_keys';
-
-    protected Entity\Repository\ApiKeyRepository $record_repo;
 
     protected array $form_config;
 
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\ApiKeyRepository $apiKeyRepository,
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\ApiKeyRepository $record_repo,
         Config $config
     ) {
-        $this->em = $em;
-        $this->record_repo = $apiKeyRepository;
-
         $this->form_config = $config->get('forms/api_key');
     }
 

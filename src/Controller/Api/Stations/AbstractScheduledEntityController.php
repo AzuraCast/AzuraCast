@@ -15,21 +15,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController
 {
-    protected Entity\Repository\StationScheduleRepository $scheduleRepo;
-
-    protected Scheduler $scheduler;
-
     public function __construct(
+        protected Entity\Repository\StationScheduleRepository $scheduleRepo,
+        protected Scheduler $scheduler,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\StationScheduleRepository $scheduleRepo,
-        Scheduler $scheduler
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->scheduleRepo = $scheduleRepo;
-        $this->scheduler = $scheduler;
     }
 
     protected function renderEvents(

@@ -16,24 +16,12 @@ class LocalWebhookHandler
 {
     public const NAME = 'local';
 
-    protected Client $httpClient;
-
-    protected Logger $logger;
-
-    protected CacheInterface $cache;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
-        Logger $logger,
-        Client $httpClient,
-        CacheInterface $cache,
-        Entity\Repository\SettingsRepository $settingsRepo
+        protected Logger $logger,
+        protected Client $httpClient,
+        protected CacheInterface $cache,
+        protected Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $this->logger = $logger;
-        $this->httpClient = $httpClient;
-        $this->cache = $cache;
-        $this->settingsRepo = $settingsRepo;
     }
 
     public function dispatch(

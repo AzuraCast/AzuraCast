@@ -15,8 +15,6 @@ use Doctrine\Persistence\ObjectRepository;
 
 abstract class AbstractStationCrudController
 {
-    protected EntityForm $form;
-
     protected EntityManagerInterface $em;
 
     protected string $entity_class;
@@ -25,10 +23,9 @@ abstract class AbstractStationCrudController
 
     protected string $csrf_namespace;
 
-    public function __construct(EntityForm $form)
-    {
-        $this->form = $form;
-
+    public function __construct(
+        protected EntityForm $form
+    ) {
         $this->em = $form->getEntityManager();
         $this->entity_class = $form->getEntityClass();
         $this->record_repo = $form->getEntityRepository();

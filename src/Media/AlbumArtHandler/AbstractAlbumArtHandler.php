@@ -9,11 +9,9 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractAlbumArtHandler
 {
-    protected LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        protected LoggerInterface $logger
+    ) {
     }
 
     public function __invoke(GetAlbumArt $event): void

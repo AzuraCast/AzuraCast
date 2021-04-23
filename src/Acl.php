@@ -32,25 +32,15 @@ class Acl
     public const STATION_AUTOMATION = 'manage station automation';
     public const STATION_WEB_HOOKS = 'manage station web hooks';
 
-    protected Entity\Repository\RolePermissionRepository $permissionRepo;
-
-    protected EventDispatcher $dispatcher;
-
     protected array $permissions;
 
     protected ?array $actions;
 
-    protected ?Entity\User $user;
-
     public function __construct(
-        Entity\Repository\RolePermissionRepository $rolePermissionRepository,
-        EventDispatcher $dispatcher,
-        ?Entity\User $user = null
+        protected Entity\Repository\RolePermissionRepository $permissionRepo,
+        protected EventDispatcher $dispatcher,
+        protected ?Entity\User $user = null
     ) {
-        $this->permissionRepo = $rolePermissionRepository;
-        $this->dispatcher = $dispatcher;
-        $this->setUser($user);
-
         $this->permissions = $this->listPermissions();
         $this->reload();
     }

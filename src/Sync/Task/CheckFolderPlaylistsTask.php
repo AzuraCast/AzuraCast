@@ -11,20 +11,13 @@ use Psr\Log\LoggerInterface;
 
 class CheckFolderPlaylistsTask extends AbstractTask
 {
-    protected Entity\Repository\StationPlaylistFolderRepository $folderRepo;
-
-    protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
-
     public function __construct(
+        protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        protected Entity\Repository\StationPlaylistFolderRepository $folderRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        Entity\Repository\StationPlaylistFolderRepository $folderRepo
     ) {
         parent::__construct($em, $logger);
-
-        $this->spmRepo = $spmRepo;
-        $this->folderRepo = $folderRepo;
     }
 
     public function run(bool $force = false): void

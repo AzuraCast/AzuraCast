@@ -22,36 +22,19 @@ use Supervisor\Supervisor;
 
 abstract class AbstractFrontend extends AbstractAdapter
 {
-    protected AdapterFactory $adapterFactory;
-
-    protected Client $http_client;
-
-    protected Router $router;
-
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\StationMountRepository $stationMountRepo;
-
     public function __construct(
+        protected AdapterFactory $adapterFactory,
+        protected Client $http_client,
+        protected Router $router,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\StationMountRepository $stationMountRepo,
         Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
-        LoggerInterface $logger,
-        AdapterFactory $adapterFactory,
-        Client $client,
-        Router $router,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StationMountRepository $stationMountRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
-
-        $this->adapterFactory = $adapterFactory;
-        $this->http_client = $client;
-        $this->router = $router;
-
-        $this->stationMountRepo = $stationMountRepo;
-        $this->settings = $settingsRepo->readSettings();
     }
 
     /**
@@ -139,7 +122,8 @@ abstract class AbstractFrontend extends AbstractAdapter
             $base_url = $this->router->getBaseUrl();
         }
 
-        $use_radio_proxy = $this->settings->getUseRadioProxy();
+        $settings = $this->settingsRepo->readSettings();
+        $use_radio_proxy = $settings->getUseRadioProxy();
 
         if (
             $use_radio_proxy

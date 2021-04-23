@@ -18,20 +18,11 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class ListAction
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\CustomFieldRepository $customFieldRepo;
-
-    protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\CustomFieldRepository $customFieldRepo,
-        Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\CustomFieldRepository $customFieldRepo,
+        protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator
     ) {
-        $this->em = $em;
-        $this->customFieldRepo = $customFieldRepo;
-        $this->songApiGenerator = $songApiGenerator;
     }
 
     public function __invoke(

@@ -24,34 +24,17 @@ class FilesController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationMedia::class;
     protected string $resourceRouteName = 'api:stations:file';
 
-    protected Adapters $adapters;
-
-    protected MessageBus $messageBus;
-
-    protected Entity\Repository\CustomFieldRepository $customFieldsRepo;
-
-    protected Entity\Repository\StationMediaRepository $mediaRepo;
-
-    protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo;
-
     public function __construct(
+        protected Adapters $adapters,
+        protected MessageBus $messageBus,
+        protected Entity\Repository\CustomFieldRepository $customFieldsRepo,
+        protected Entity\Repository\StationMediaRepository $mediaRepo,
+        protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         EntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator,
-        Adapters $adapters,
-        MessageBus $messageBus,
-        Entity\Repository\CustomFieldRepository $customFieldsRepo,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo
+        ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->adapters = $adapters;
-        $this->messageBus = $messageBus;
-
-        $this->customFieldsRepo = $customFieldsRepo;
-        $this->mediaRepo = $mediaRepo;
-        $this->playlistMediaRepo = $playlistMediaRepo;
     }
 
     /**

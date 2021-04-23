@@ -11,29 +11,16 @@ use Symfony\Component\Serializer\Serializer;
 
 class Repository
 {
-    protected ReloadableEntityManagerInterface $em;
-
     protected string $entityClass;
 
     protected ObjectRepository $repository;
 
-    protected Serializer $serializer;
-
-    protected Environment $environment;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
-        ReloadableEntityManagerInterface $em,
-        Serializer $serializer,
-        Environment $environment,
-        LoggerInterface $logger
+        protected ReloadableEntityManagerInterface $em,
+        protected Serializer $serializer,
+        protected Environment $environment,
+        protected LoggerInterface $logger
     ) {
-        $this->em = $em;
-        $this->serializer = $serializer;
-        $this->environment = $environment;
-        $this->logger = $logger;
-
         if (!isset($this->entityClass)) {
             $this->entityClass = $this->getEntityClass();
         }

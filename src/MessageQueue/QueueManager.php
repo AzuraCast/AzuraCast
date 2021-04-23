@@ -17,13 +17,11 @@ class QueueManager implements SendersLocatorInterface
     public const QUEUE_LOW_PRIORITY = 'low_priority';
     public const QUEUE_MEDIA = 'media';
 
-    protected Connection $db;
-
     protected string $workerName = 'app';
 
-    public function __construct(Connection $db)
-    {
-        $this->db = $db;
+    public function __construct(
+        protected Connection $db
+    ) {
     }
 
     public function setWorkerName(string $workerName): void

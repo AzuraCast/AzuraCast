@@ -16,11 +16,9 @@ use ReflectionObject;
  */
 class StationRequiresRestart implements EventSubscriber
 {
-    protected Reader $reader;
-
-    public function __construct(Reader $reader)
-    {
-        $this->reader = $reader;
+    public function __construct(
+        protected Reader $reader
+    ) {
     }
 
     /**

@@ -11,14 +11,10 @@ use Symfony\Component\Mime\RawMessage;
 
 class Mail implements MailerInterface
 {
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected MailerInterface $mailer;
-
-    public function __construct(Entity\Repository\SettingsRepository $settingsRepo, MailerInterface $mailer)
-    {
-        $this->settingsRepo = $settingsRepo;
-        $this->mailer = $mailer;
+    public function __construct(
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected MailerInterface $mailer
+    ) {
     }
 
     public function isEnabled(): bool

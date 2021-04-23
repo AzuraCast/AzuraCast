@@ -12,21 +12,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GeoLiteSettingsForm extends AbstractSettingsForm
 {
-    protected UpdateGeoLiteTask $syncTask;
-
     public function __construct(
+        protected UpdateGeoLiteTask $syncTask,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Config $config,
-        UpdateGeoLiteTask $syncTask
     ) {
         $formConfig = $config->get('forms/install_geolite');
 
-        parent::__construct($em, $serializer, $validator, $settingsRepo, $environment, $formConfig);
-
-        $this->syncTask = $syncTask;
+        parent::__construct($settingsRepo, $environment, $em, $serializer, $validator, $formConfig);
     }
 }

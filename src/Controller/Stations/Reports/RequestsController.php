@@ -11,13 +11,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
-    protected EntityManagerInterface $em;
-
     protected string $csrf_namespace = 'stations_requests';
 
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        protected EntityManagerInterface $em
+    ) {
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface

@@ -23,27 +23,14 @@ use Symfony\Component\Messenger\MessageBus;
 
 class BackupsController extends AbstractLogViewerController
 {
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
-    protected RunBackupTask $backupTask;
-
-    protected MessageBus $messageBus;
-
     protected string $csrfNamespace = 'admin_backups';
 
     public function __construct(
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        RunBackupTask $backup_task,
-        MessageBus $messageBus
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected RunBackupTask $backup_task,
+        protected MessageBus $messageBus
     ) {
-        $this->storageLocationRepo = $storageLocationRepo;
-        $this->settings = $settingsRepo->readSettings();
-
-        $this->backupTask = $backup_task;
-        $this->messageBus = $messageBus;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -74,15 +61,17 @@ class BackupsController extends AbstractLogViewerController
         }
         $backups = array_reverse($backups);
 
+        $settings = $this->settingsRepo->readSettings();
+
         return $request->getView()->renderToResponse(
             $response,
             'admin/backups/index',
             [
                 'backups' => $backups,
-                'is_enabled' => $this->settings->isBackupEnabled(),
-                'last_run' => $this->settings->getBackupLastRun(),
-                'last_result' => $this->settings->getBackupLastResult(),
-                'last_output' => $this->settings->getBackupLastOutput(),
+                'is_enabled' => $settings->isBackupEnabled(),
+                'last_run' => $settings->getBackupLastRun(),
+                'last_result' => $settings->getBackupLastResult(),
+                'last_output' => $settings->getBackupLastOutput(),
                 'csrf' => $request->getCsrf()->generate($this->csrfNamespace),
             ]
         );

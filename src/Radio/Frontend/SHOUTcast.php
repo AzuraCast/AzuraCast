@@ -4,7 +4,6 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use Exception;
-use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;

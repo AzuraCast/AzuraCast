@@ -12,14 +12,10 @@ use function OpenApi\scan;
 
 class OpenApiController
 {
-    protected Environment $environment;
-
-    protected Version $version;
-
-    public function __construct(Environment $environment, Version $version)
-    {
-        $this->environment = $environment;
-        $this->version = $version;
+    public function __construct(
+        protected Environment $environment,
+        protected Version $version
+    ) {
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface

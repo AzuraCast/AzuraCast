@@ -6,11 +6,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildPermissions extends Event
 {
-    protected array $permissions;
-
-    public function __construct(array $permissions)
-    {
-        $this->permissions = $permissions;
+    public function __construct(
+        protected array $permissions
+    ) {
     }
 
     /**

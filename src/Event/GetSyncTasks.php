@@ -11,13 +11,11 @@ class GetSyncTasks
     public const SYNC_MEDIUM = 'medium';
     public const SYNC_LONG = 'long';
 
-    protected string $type;
-
     protected array $tasks = [];
 
-    public function __construct(string $type)
-    {
-        $this->type = $type;
+    public function __construct(
+        protected string $type
+    ) {
     }
 
     public function getType(): string

@@ -12,24 +12,14 @@ use Psr\Log\LoggerInterface;
 
 class CheckRequests extends AbstractTask
 {
-    protected Adapters $adapters;
-
-    protected EventDispatcher $dispatcher;
-
-    protected Entity\Repository\StationRequestRepository $requestRepo;
-
     public function __construct(
+        protected Entity\Repository\StationRequestRepository $requestRepo,
+        protected Adapters $adapters,
+        protected EventDispatcher $dispatcher,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\StationRequestRepository $requestRepo,
-        Adapters $adapters,
-        EventDispatcher $dispatcher
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->requestRepo = $requestRepo;
-        $this->dispatcher = $dispatcher;
-        $this->adapters = $adapters;
     }
 
     /**

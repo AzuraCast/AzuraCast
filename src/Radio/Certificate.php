@@ -4,14 +4,10 @@ namespace App\Radio;
 
 class Certificate
 {
-    protected string $keyPath;
-
-    protected string $certPath;
-
-    public function __construct(string $keyPath, string $certPath)
-    {
-        $this->keyPath = $keyPath;
-        $this->certPath = $certPath;
+    public function __construct(
+        protected string $keyPath,
+        protected string $certPath
+    ) {
     }
 
     public function getKeyPath(): string

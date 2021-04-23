@@ -24,12 +24,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EntityForm extends Form
 {
-    protected EntityManagerInterface $em;
-
-    protected Serializer $serializer;
-
-    protected ValidatorInterface $validator;
-
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
@@ -39,17 +33,13 @@ class EntityForm extends Form
     protected ?Station $station = null;
 
     public function __construct(
-        EntityManagerInterface $em,
-        Serializer $serializer,
-        ValidatorInterface $validator,
+        protected EntityManagerInterface $em,
+        protected Serializer $serializer,
+        protected ValidatorInterface $validator,
         array $options = [],
         ?array $defaults = null
     ) {
         parent::__construct($options, $defaults);
-
-        $this->em = $em;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
     }
 
     public function getEntityClass(): string

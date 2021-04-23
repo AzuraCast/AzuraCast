@@ -14,19 +14,15 @@ use Supervisor\Supervisor;
 
 class Liquidsoap extends AbstractBackend
 {
-    protected Entity\Repository\StationStreamerRepository $streamerRepo;
-
     public function __construct(
+        protected Entity\Repository\StationStreamerRepository $streamerRepo,
         Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
-        LoggerInterface $logger,
-        Entity\Repository\StationStreamerRepository $streamerRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
-
-        $this->streamerRepo = $streamerRepo;
     }
 
     public function supportsMedia(): bool

@@ -18,17 +18,13 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     protected string $entityClass = Entity\StorageLocation::class;
     protected string $resourceRouteName = 'api:admin:storage_location';
 
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
     public function __construct(
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         EntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo
+        ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->storageLocationRepo = $storageLocationRepo;
     }
 
     /**

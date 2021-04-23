@@ -9,11 +9,9 @@ use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
 
 class ClearEntityManagerSubscriber implements EventSubscriberInterface
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        protected EntityManagerInterface $em
+    ) {
     }
 
     /**

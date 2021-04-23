@@ -9,13 +9,10 @@ use function is_string;
 
 class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
 {
-    protected CallableResolverInterface $callableResolver;
-
-    public function __construct(CallableResolverInterface $callableResolver)
-    {
+    public function __construct(
+        protected CallableResolverInterface $callableResolver
+    ) {
         parent::__construct();
-
-        $this->callableResolver = $callableResolver;
     }
 
     /**

@@ -18,28 +18,13 @@ use Supervisor\Supervisor;
 
 abstract class AbstractAdapter
 {
-    protected Supervisor $supervisor;
-
-    protected Environment $environment;
-
-    protected EntityManagerInterface $em;
-
-    protected EventDispatcher $dispatcher;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
-        Environment $environment,
-        EntityManagerInterface $em,
-        Supervisor $supervisor,
-        EventDispatcher $dispatcher,
-        LoggerInterface $logger
+        protected Environment $environment,
+        protected EntityManagerInterface $em,
+        protected Supervisor $supervisor,
+        protected EventDispatcher $dispatcher,
+        protected LoggerInterface $logger
     ) {
-        $this->environment = $environment;
-        $this->em = $em;
-        $this->supervisor = $supervisor;
-        $this->dispatcher = $dispatcher;
-        $this->logger = $logger;
     }
 
     /**

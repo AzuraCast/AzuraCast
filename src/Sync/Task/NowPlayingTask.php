@@ -25,58 +25,22 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 {
-    protected CacheInterface $cache;
-
-    protected Adapters $adapters;
-
-    protected AutoDJ $autodj;
-
-    protected EventDispatcher $eventDispatcher;
-
-    protected MessageBus $messageBus;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
-    protected Entity\Repository\ListenerRepository $listenerRepo;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected LockFactory $lockFactory;
-
-    protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator;
-
-    protected RouterInterface $router;
-
     public function __construct(
+        protected Adapters $adapters,
+        protected AutoDJ $autodj,
+        protected CacheInterface $cache,
+        protected EventDispatcher $eventDispatcher,
+        protected MessageBus $messageBus,
+        protected LockFactory $lockFactory,
+        protected RouterInterface $router,
+        protected Entity\Repository\ListenerRepository $listenerRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        Adapters $adapters,
-        AutoDJ $autodj,
-        CacheInterface $cache,
-        EventDispatcher $event_dispatcher,
-        MessageBus $messageBus,
-        LockFactory $lockFactory,
-        RouterInterface $router,
-        Entity\Repository\ListenerRepository $listenerRepository,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGenerator
     ) {
         parent::__construct($em, $logger);
-
-        $this->adapters = $adapters;
-        $this->autodj = $autodj;
-        $this->cache = $cache;
-        $this->eventDispatcher = $event_dispatcher;
-        $this->messageBus = $messageBus;
-        $this->lockFactory = $lockFactory;
-        $this->router = $router;
-
-        $this->listenerRepo = $listenerRepository;
-        $this->queueRepo = $queueRepo;
-        $this->settingsRepo = $settingsRepo;
-
-        $this->nowPlayingApiGenerator = $nowPlayingApiGenerator;
     }
 
     /**

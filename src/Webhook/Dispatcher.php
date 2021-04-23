@@ -4,7 +4,6 @@ namespace App\Webhook;
 
 use App\Entity;
 use App\Environment;
-use App\Event\SendWebhooks;
 use App\Exception;
 use App\Http\RouterInterface;
 use App\Message;
@@ -15,40 +14,16 @@ use Symfony\Component\Messenger\MessageBus;
 
 class Dispatcher
 {
-    protected Environment $environment;
-
-    protected Logger $logger;
-
-    protected MessageBus $messageBus;
-
-    protected LocalWebhookHandler $localHandler;
-
-    protected ConnectorLocator $connectors;
-
-    protected RouterInterface $router;
-
-    protected EntityManagerInterface $em;
-
-    protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen;
-
     public function __construct(
-        Environment $environment,
-        Logger $logger,
-        EntityManagerInterface $em,
-        MessageBus $messageBus,
-        RouterInterface $router,
-        LocalWebhookHandler $localHandler,
-        ConnectorLocator $connectors,
-        Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen
+        protected Environment $environment,
+        protected Logger $logger,
+        protected EntityManagerInterface $em,
+        protected MessageBus $messageBus,
+        protected RouterInterface $router,
+        protected LocalWebhookHandler $localHandler,
+        protected ConnectorLocator $connectors,
+        protected Entity\ApiGenerator\NowPlayingApiGenerator $nowPlayingApiGen
     ) {
-        $this->environment = $environment;
-        $this->logger = $logger;
-        $this->em = $em;
-        $this->messageBus = $messageBus;
-        $this->router = $router;
-        $this->localHandler = $localHandler;
-        $this->connectors = $connectors;
-        $this->nowPlayingApiGen = $nowPlayingApiGen;
     }
 
     /**

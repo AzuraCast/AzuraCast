@@ -14,20 +14,13 @@ class RunAutomatedAssignmentTask extends AbstractTask
 {
     public const DEFAULT_THRESHOLD_DAYS = 14;
 
-    protected Entity\Repository\StationMediaRepository $mediaRepo;
-
-    protected Adapters $adapters;
-
     public function __construct(
+        protected Entity\Repository\StationMediaRepository $mediaRepo,
+        protected Adapters $adapters,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        Adapters $adapters
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->mediaRepo = $mediaRepo;
-        $this->adapters = $adapters;
     }
 
     /**

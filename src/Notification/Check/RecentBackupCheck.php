@@ -11,16 +11,10 @@ use Carbon\CarbonImmutable;
 
 class RecentBackupCheck
 {
-    protected Environment $environment;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
-        Environment $environment,
-        Entity\Repository\SettingsRepository $settingsRepo
+        protected Environment $environment,
+        protected Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $this->environment = $environment;
-        $this->settingsRepo = $settingsRepo;
     }
 
     public function __invoke(GetNotifications $event): void

@@ -13,14 +13,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class ReopenEntityManagerMiddleware implements MiddlewareInterface
 {
-    protected DecoratedEntityManager $em;
-
-    protected Environment $environment;
-
-    public function __construct(DecoratedEntityManager $em, Environment $environment)
-    {
-        $this->em = $em;
-        $this->environment = $environment;
+    public function __construct(
+        protected DecoratedEntityManager $em,
+        protected Environment $environment
+    ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

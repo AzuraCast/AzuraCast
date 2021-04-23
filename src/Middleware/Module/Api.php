@@ -19,20 +19,11 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 class Api
 {
-    protected Entity\Repository\ApiKeyRepository $api_repo;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Environment $environment;
-
     public function __construct(
-        Entity\Repository\ApiKeyRepository $apiKeyRepository,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Environment $environment
+        protected Entity\Repository\ApiKeyRepository $api_repo,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Environment $environment
     ) {
-        $this->api_repo = $apiKeyRepository;
-        $this->settingsRepo = $settingsRepo;
-        $this->environment = $environment;
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface

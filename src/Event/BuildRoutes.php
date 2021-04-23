@@ -7,11 +7,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildRoutes extends Event
 {
-    protected App $app;
-
-    public function __construct(App $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        protected App $app
+    ) {
     }
 
     public function getApp(): App

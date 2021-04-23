@@ -32,6 +32,6 @@ class BackupSettingsForm extends AbstractSettingsForm
             ]
         );
 
-        parent::__construct($em, $serializer, $validator, $settingsRepo, $environment, $formConfig);
+        parent::__construct($settingsRepo, $environment, $em, $serializer, $validator, $formConfig);
     }
 }

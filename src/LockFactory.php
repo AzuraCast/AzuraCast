@@ -12,16 +12,10 @@ use Symfony\Component\Lock\Store\RetryTillSaveStore;
 
 class LockFactory
 {
-    protected Redis $redis;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
-        Redis $redis,
-        LoggerInterface $logger
+        protected Redis $redis,
+        protected LoggerInterface $logger
     ) {
-        $this->redis = $redis;
-        $this->logger = $logger;
     }
 
     public function createLock(

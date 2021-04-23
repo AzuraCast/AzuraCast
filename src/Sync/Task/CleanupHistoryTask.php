@@ -8,28 +8,15 @@ use Psr\Log\LoggerInterface;
 
 class CleanupHistoryTask extends AbstractTask
 {
-    protected Entity\Repository\SongHistoryRepository $historyRepo;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
-    protected Entity\Repository\ListenerRepository $listenerRepo;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\SongHistoryRepository $historyRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected Entity\Repository\ListenerRepository $listenerRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\SongHistoryRepository $historyRepo,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        Entity\Repository\ListenerRepository $listenerRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->settingsRepo = $settingsRepo;
-        $this->historyRepo = $historyRepo;
-        $this->queueRepo = $queueRepo;
-        $this->listenerRepo = $listenerRepo;
     }
 
     public function run(bool $force = false): void

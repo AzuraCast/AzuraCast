@@ -13,28 +13,13 @@ use NowPlaying\Result\Result;
 
 abstract class AbstractRemote
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Settings $settings;
-
-    protected Client $http_client;
-
-    protected Logger $logger;
-
-    protected AdapterFactory $adapterFactory;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Client $http_client,
-        Logger $logger,
-        AdapterFactory $adapterFactory
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Client $http_client,
+        protected Logger $logger,
+        protected AdapterFactory $adapterFactory
     ) {
-        $this->em = $em;
-        $this->settings = $settingsRepo->readSettings();
-        $this->http_client = $http_client;
-        $this->logger = $logger;
-        $this->adapterFactory = $adapterFactory;
     }
 
     /**

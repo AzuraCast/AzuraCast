@@ -13,20 +13,13 @@ class CheckUpdatesTask extends AbstractTask
 {
     protected const UPDATE_THRESHOLD = 3780;
 
-    protected AzuraCastCentral $azuracastCentral;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected AzuraCastCentral $azuracastCentral,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        AzuraCastCentral $azuracastCentral
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->settingsRepo = $settingsRepo;
-        $this->azuracastCentral = $azuracastCentral;
     }
 
     public function run(bool $force = false): void

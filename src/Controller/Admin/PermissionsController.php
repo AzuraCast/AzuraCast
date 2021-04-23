@@ -11,14 +11,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController
 {
-    protected Acl $acl;
-
-    public function __construct(PermissionsForm $form, Acl $acl)
-    {
+    public function __construct(
+        protected Acl $acl,
+        PermissionsForm $form,
+    ) {
         parent::__construct($form);
 
         $this->csrf_namespace = 'admin_permissions';
-        $this->acl = $acl;
     }
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface

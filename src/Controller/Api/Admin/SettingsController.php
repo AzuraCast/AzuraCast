@@ -15,17 +15,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SettingsController extends AbstractApiCrudController
 {
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
+        protected Entity\Repository\SettingsRepository $settingsRepo,
         EntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator,
-        Entity\Repository\SettingsRepository $settingsRepo
+        ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->settingsRepo = $settingsRepo;
     }
 
     /**

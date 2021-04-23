@@ -18,16 +18,10 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class InjectSession implements MiddlewareInterface
 {
-    protected SessionPersistenceInterface $sessionPersistence;
-
-    protected Environment $environment;
-
     public function __construct(
-        SessionPersistenceInterface $sessionPersistence,
-        Environment $environment
+        protected SessionPersistenceInterface $sessionPersistence,
+        protected Environment $environment
     ) {
-        $this->sessionPersistence = $sessionPersistence;
-        $this->environment = $environment;
     }
 
     /**

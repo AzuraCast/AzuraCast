@@ -15,20 +15,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class SetupController
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Environment $environment;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepository,
-        Environment $environment
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Environment $environment
     ) {
-        $this->em = $em;
-        $this->settingsRepo = $settingsRepository;
-        $this->environment = $environment;
     }
 
     /**

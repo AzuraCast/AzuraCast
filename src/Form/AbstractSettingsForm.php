@@ -11,24 +11,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractSettingsForm extends EntityForm
 {
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Environment $environment;
-
     public function __construct(
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Environment $environment,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Environment $environment,
         array $options = [],
         ?array $defaults = null
     ) {
         parent::__construct($em, $serializer, $validator, $options, $defaults);
 
         $this->entityClass = Entity\Settings::class;
-        $this->settingsRepo = $settingsRepo;
-        $this->environment = $environment;
     }
 
     public function getSettingsRepository(): Entity\Repository\SettingsRepository

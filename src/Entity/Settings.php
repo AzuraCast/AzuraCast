@@ -924,7 +924,7 @@ class Settings
 
     public function getMailSenderEmail(): string
     {
-        return $this->mail_sender_email;
+        return $this->mail_sender_email ?? '';
     }
 
     public function setMailSenderEmail(?string $mailSenderEmail): void

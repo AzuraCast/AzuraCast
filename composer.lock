@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17f74c9a9115bff2e514f58d32a7f93f",
+    "content-hash": "e86fbe854cbc0f8ea151f1c5c9fee013",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "16da3c4c2ca17d2b5e89d1569f9ef39f58e7e95c"
+                "reference": "ed1aaa82c684ebd2a748a6e834fd307f3618bd48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/16da3c4c2ca17d2b5e89d1569f9ef39f58e7e95c",
-                "reference": "16da3c4c2ca17d2b5e89d1569f9ef39f58e7e95c",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/ed1aaa82c684ebd2a748a6e834fd307f3618bd48",
+                "reference": "ed1aaa82c684ebd2a748a6e834fd307f3618bd48",
                 "shasum": ""
             },
             "require": {
@@ -163,7 +163,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-04-06T22:53:26+00:00"
+            "time": "2021-04-22T09:53:37+00:00"
         },
         {
             "name": "azuracast/flysystem-v2-extensions",
@@ -862,40 +862,39 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "1.10.2",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "13e3381b25847283a91948d04640543941309727"
+                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/13e3381b25847283a91948d04640543941309727",
-                "reference": "13e3381b25847283a91948d04640543941309727",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
+                "reference": "a9c1b59eba5a08ca2770a76eddb88922f504e8e0",
                 "shasum": ""
             },
             "require": {
                 "php": "~7.1 || ^8.0"
             },
             "conflict": {
-                "doctrine/common": ">2.2,<2.4"
+                "doctrine/common": ">2.2,<2.4",
+                "psr/cache": ">=3"
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
-                "doctrine/coding-standard": "^6.0",
+                "cache/integration-tests": "dev-master",
+                "doctrine/coding-standard": "^8.0",
                 "mongodb/mongodb": "^1.1",
-                "phpunit/phpunit": "^7.0",
-                "predis/predis": "~1.0"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "predis/predis": "~1.0",
+                "psr/cache": "^1.0 || ^2.0",
+                "symfony/cache": "^4.4 || ^5.2"
             },
             "suggest": {
                 "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.9.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
@@ -942,7 +941,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/1.10.x"
+                "source": "https://github.com/doctrine/cache/tree/1.11.0"
             },
             "funding": [
                 {
@@ -958,7 +957,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-07T18:54:01+00:00"
+            "time": "2021-04-13T14:46:17+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -3481,31 +3480,24 @@
         },
         {
             "name": "lstrojny/fxmlrpc",
-            "version": "dev-master",
+            "version": "dev-php8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/lstrojny/fxmlrpc.git",
-                "reference": "968c92c12a950146551f228f709170c52ca35911"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lstrojny/fxmlrpc/zipball/968c92c12a950146551f228f709170c52ca35911",
-                "reference": "968c92c12a950146551f228f709170c52ca35911",
-                "shasum": ""
+                "url": "https://github.com/VincentLanglet/fxmlrpc.git",
+                "reference": "8f053ee53d27da796adff3e1ca929f48e7171c1f"
             },
             "require": {
-                "php": "~7.1",
+                "php": "^7.2 || ^8.0",
                 "php-http/discovery": "^1.0"
             },
             "require-dev": {
-                "internations/kodierungsregelwerksammlung": "dev-master",
-                "lstrojny/hmmmath": "dev-master",
+                "lstrojny/hmmmath": "^0.8",
                 "monolog/monolog": "~1",
-                "php-http/guzzle6-adapter": "^1.0 || ^2.0",
+                "php-http/guzzle7-adapter": "^0.1",
                 "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message": "^1.2",
                 "php-http/message-factory": "^1.0",
-                "phpunit/phpunit": "~7",
+                "phpunit/phpunit": "^8.5",
                 "psr/http-factory": "*",
                 "psr/log": "*",
                 "symfony/process": "~2.1",
@@ -3518,11 +3510,11 @@
                 "php-http/curl-client": "A simple PSR-7 compatible HTTP client",
                 "php-http/guzzle5-adapter": "Guzzle 5 PSR-7 adapter",
                 "php-http/guzzle6-adapter": "Guzzle 6 PSR-7 adapter",
+                "php-http/guzzle7-adapter": "Guzzle 7 PSR-7 adapter",
                 "php-http/message": "For PSR-7 message factories",
                 "zendframework/zend-log": "To use ZF2 Zend\\Log\\Logger as a logger",
                 "zendframework/zendframework1": "To use ZF1 Log"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3534,7 +3526,11 @@
                     "fXmlRpc\\": "src/fXmlRpc"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "fXmlRpc\\": "tests/fXmlRpc"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -3553,11 +3549,7 @@
                 "xml",
                 "xmlrpc"
             ],
-            "support": {
-                "issues": "https://github.com/lstrojny/fxmlrpc/issues",
-                "source": "https://github.com/lstrojny/fxmlrpc/tree/master"
-            },
-            "time": "2020-11-23T14:42:43+00:00"
+            "time": "2020-12-17T18:20:51+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -5724,25 +5716,26 @@
         },
         {
             "name": "rlanvin/php-ip",
-            "version": "v2.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rlanvin/php-ip.git",
-                "reference": "1bea521987f3c7db5f4b9f17f321e90feaefad11"
+                "reference": "6b74d8bc8f054e2f2da8b636e772b8155b8f1b97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rlanvin/php-ip/zipball/1bea521987f3c7db5f4b9f17f321e90feaefad11",
-                "reference": "1bea521987f3c7db5f4b9f17f321e90feaefad11",
+                "url": "https://api.github.com/repos/rlanvin/php-ip/zipball/6b74d8bc8f054e2f2da8b636e772b8155b8f1b97",
+                "reference": "6b74d8bc8f054e2f2da8b636e772b8155b8f1b97",
                 "shasum": ""
             },
             "require": {
                 "ext-gmp": "*",
-                "php": "~7.0"
+                "php": ">=7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=6.5 <8.1"
+                "phpunit/phpunit": "^6.5|^8.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5762,9 +5755,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rlanvin/php-ip/issues",
-                "source": "https://github.com/rlanvin/php-ip/tree/v2.1.0"
+                "source": "https://github.com/rlanvin/php-ip/tree/v3.0.0-rc1"
             },
-            "time": "2020-10-31T12:31:56+00:00"
+            "time": "2021-04-18T09:53:09+00:00"
         },
         {
             "name": "slim/http",
@@ -7492,89 +7485,6 @@
                 }
             ],
             "time": "2021-01-22T09:19:47+00:00"
-        },
-        {
-            "name": "symfony/polyfill-php80",
-            "version": "v1.22.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/dc3063ba22c2a1fd2f45ed856374d79114998f91",
-                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.22-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
-                "files": [
-                    "bootstrap.php"
-                ],
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ion Bazan",
-                    "email": "ion.bazan@gmail.com"
-                },
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.22.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "symfony/process",
@@ -12973,13 +12883,21 @@
             "time": "2021-03-09T10:59:23+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "lstrojny/fxmlrpc",
+            "version": "dev-php8",
+            "alias": "0.13",
+            "alias_normalized": "0.13.0.0"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "azuracast/azuraforms": 20,
         "azuracast/flysystem-v2-extensions": 20,
         "azuracast/nowplaying": 20,
         "lstrojny/fxmlrpc": 20,
+        "rlanvin/php-ip": 20,
         "supervisorphp/supervisor": 20,
         "wikimedia/composer-merge-plugin": 20,
         "roave/security-advisories": 20
@@ -12987,7 +12905,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4 || ^8.0",
+        "php": "^8.0",
         "ext-pdo": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",

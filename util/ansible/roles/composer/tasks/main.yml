@@ -28,7 +28,7 @@
 - name: Install Composer Dependencies (Development)
   become: true
   become_user: azuracast
-  shell: composer install
+  shell : composer install --ignore-platform-req=php
   args:
     chdir: "{{ www_base }}"
   when: app_env == "development"
@@ -36,7 +36,7 @@
 - name: Install Composer Dependencies (Production)
   become: true
   become_user: azuracast
-  shell: composer install --no-dev --optimize-autoloader
+  shell : composer install --ignore-platform-req=php --no-dev --optimize-autoloader
   args:
     chdir: "{{ www_base }}"
   when: app_env == "production"

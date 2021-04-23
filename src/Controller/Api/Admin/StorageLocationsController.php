@@ -129,7 +129,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     }
 
     /** @inheritDoc */
-    protected function viewRecord($record, ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request): mixed
     {
         /** @var Entity\StorageLocation $record */
         $original = parent::viewRecord($record, $request);

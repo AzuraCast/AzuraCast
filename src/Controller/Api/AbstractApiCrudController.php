@@ -68,9 +68,8 @@ abstract class AbstractApiCrudController
      * @param object $record
      * @param ServerRequest $request
      *
-     * @return mixed
      */
-    protected function viewRecord($record, ServerRequest $request)
+    protected function viewRecord($record, ServerRequest $request): mixed
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -126,9 +125,8 @@ abstract class AbstractApiCrudController
     /**
      * @param object $object
      *
-     * @return mixed
      */
-    protected function displayShortenedObject($object)
+    protected function displayShortenedObject($object): mixed
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();

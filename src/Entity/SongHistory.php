@@ -348,9 +348,8 @@ class SongHistory implements SongInterface
     }
 
     /**
-     * @return mixed
      */
-    public function getDeltaPoints()
+    public function getDeltaPoints(): mixed
     {
         return $this->delta_points;
     }

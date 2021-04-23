@@ -38,9 +38,8 @@ abstract class AbstractStationCrudController
      * @param ServerRequest $request
      * @param string|int|null $id
      *
-     * @return object|bool|null
      */
-    protected function doEdit(ServerRequest $request, $id = null)
+    protected function doEdit(ServerRequest $request, $id = null): object|bool|null
     {
         $station = $request->getStation();
         $this->form->setStation($station);

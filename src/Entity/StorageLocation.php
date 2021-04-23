@@ -426,9 +426,9 @@ class StorageLocation
     }
 
     /**
-     * @return StationMedia[]|Collection
+     * @return Collection|StationMedia[]
      */
-    public function getMedia()
+    public function getMedia(): Collection
     {
         return $this->media;
     }

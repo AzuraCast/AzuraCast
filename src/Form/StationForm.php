@@ -76,7 +76,7 @@ class StationForm extends EntityForm
     /**
      * @inheritDoc
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         // Check for administrative permissions and hide admin fields otherwise.
         $acl = $request->getAcl();

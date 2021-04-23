@@ -34,9 +34,8 @@ class Xml
      *
      * @param array $array
      *
-     * @return mixed
      */
-    public static function arrayToXml($array)
+    public static function arrayToXml($array): mixed
     {
         $xml_info = new SimpleXMLElement('<?xml version="1.0"?><return></return>');
         self::arrToXml($array, $xml_info);

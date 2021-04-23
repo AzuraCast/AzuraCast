@@ -33,9 +33,8 @@ class DeferredCallable
     }
 
     /**
-     * @return mixed
      */
-    public function __invoke(...$args)
+    public function __invoke(...$args): mixed
     {
         /** @var callable $callable */
         $callable = $this->callable;

@@ -57,7 +57,7 @@ class StationCloneForm extends StationForm
     /**
      * @inheritDoc
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if (!$record instanceof Entity\Station) {
             throw new InvalidArgumentException('Record must be a station.');

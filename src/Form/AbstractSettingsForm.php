@@ -42,7 +42,7 @@ abstract class AbstractSettingsForm extends EntityForm
     }
 
     /** @inheritDoc */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if (null === $record) {
             $record = $this->settingsRepo->readSettings();

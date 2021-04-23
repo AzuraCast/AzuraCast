@@ -21,9 +21,8 @@ trait UniqueId
     protected $unique_id;
 
     /**
-     * @return mixed
      */
-    public function getUniqueId()
+    public function getUniqueId(): mixed
     {
         return $this->unique_id;
     }

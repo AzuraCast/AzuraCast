@@ -94,9 +94,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string|null $format
      * @param array $context
      *
-     * @return mixed
      */
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, string $format = null, array $context = []): mixed
     {
         if ($this->isCircularReference($object, $context)) {
             return $this->handleCircularReference($object, $format, $context);
@@ -214,7 +213,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return bool|string[]|AttributeMetadataInterface[]
      */
-    protected function getAllowedAttributes($classOrObject, array $context, $attributesAsString = false)
+    protected function getAllowedAttributes($classOrObject, array $context, $attributesAsString = false): bool|array
     {
         $meta = $this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata();
 
@@ -251,9 +250,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param null $format
      * @param array $context
      *
-     * @return mixed
      */
-    protected function getAttributeValue($object, $prop_name, $format = null, array $context = [])
+    protected function getAttributeValue($object, $prop_name, $format = null, array $context = []): mixed
     {
         $form_mode = $context[self::NORMALIZE_TO_IDENTIFIERS] ?? false;
 
@@ -310,9 +308,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param object $entity
      * @param string $key
      *
-     * @return mixed|null
      */
-    protected function getProperty($entity, $key)
+    protected function getProperty($entity, $key): mixed
     {
         // Default to "getStatus", "getConfig", etc...
         $getter_method = $this->getMethodName($key, 'get');
@@ -385,9 +382,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string $key
      * @param mixed $value
      *
-     * @return mixed|null
      */
-    protected function setProperty($entity, $key, $value)
+    protected function setProperty($entity, $key, $value): mixed
     {
         $method_name = $this->getMethodName($key, 'set');
 

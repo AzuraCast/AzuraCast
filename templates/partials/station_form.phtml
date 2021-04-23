@@ -8,4 +8,11 @@
 
 $assets->addInlineJs($this->fetch('partials/station_form.js'), 99);
 
-echo $this->fetch('system/form_page', ['title' => $title, 'header' => $header, 'form' => $form]);
+echo $this->fetch(
+    'system/form_page',
+    [
+        'title' => $title ?? null,
+        'header' => $header ?? null,
+        'form' => $form,
+    ]
+);

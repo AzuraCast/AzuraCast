@@ -45,8 +45,10 @@ class IndexController
         $meminfoRaw = explode("\n", file_get_contents("/proc/meminfo"));
         $meminfo = [];
         foreach ($meminfoRaw as $line) {
-            [$key, $val] = explode(":", $line);
-            $meminfo[$key] = trim($val);
+            if (str_contains($line, ':')) {
+                [$key, $val] = explode(":", $line);
+                $meminfo[$key] = trim($val);
+            }
         }
 
         $memoryTotal = Quota::convertFromReadableSize($meminfo['MemTotal']) ?? BigInteger::zero();

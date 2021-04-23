@@ -2,6 +2,8 @@ version : '2.2'
 
 services :
   web :
+    build :
+      context : .
     environment :
       APPLICATION_ENV : 'testing'
     volumes :

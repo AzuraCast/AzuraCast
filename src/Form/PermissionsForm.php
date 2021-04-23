@@ -39,7 +39,7 @@ class PermissionsForm extends EntityForm
     /**
      * @inheritDoc
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if ($record instanceof Entity\Role && Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID === $record->getId()) {
             $this->set_permissions = false;

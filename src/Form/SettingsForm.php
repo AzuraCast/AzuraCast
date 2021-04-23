@@ -34,7 +34,7 @@ class SettingsForm extends AbstractSettingsForm
     }
 
     /** @inheritDoc */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if ('https' !== $request->getUri()->getScheme()) {
             $alwaysUseSsl = $this->getField('always_use_ssl');

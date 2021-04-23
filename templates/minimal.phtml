@@ -46,6 +46,7 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
 <?=$this->section('content')?>
 
 <?php
+$hide_footer ??= false;
 if (!$customization->hideProductName() && !$hide_footer): ?>
     <footer id="footer" class="footer-alt" role="contentinfo">
         <?=sprintf(

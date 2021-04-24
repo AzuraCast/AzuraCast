@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.178.7",
+            "version": "3.178.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "9443aecbf56eb43e0c7a409494ae4c09f4cebf5f"
+                "reference": "89710500988a8a7d77f1282fcf6a1d0ad8297eaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9443aecbf56eb43e0c7a409494ae4c09f4cebf5f",
-                "reference": "9443aecbf56eb43e0c7a409494ae4c09f4cebf5f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/89710500988a8a7d77f1282fcf6a1d0ad8297eaf",
+                "reference": "89710500988a8a7d77f1282fcf6a1d0ad8297eaf",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.178.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.178.9"
             },
-            "time": "2021-04-21T18:37:31+00:00"
+            "time": "2021-04-23T18:28:02+00:00"
         },
         {
             "name": "azuracast/azuraforms",
@@ -2808,16 +2808,16 @@
         },
         {
             "name": "laminas/laminas-code",
-            "version": "4.2.0",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-code.git",
-                "reference": "e7e8f8a9c267520051d8026ff1da74823a3d8b97"
+                "reference": "a1e7f8b6467ac7f277b8e027e8537fa13664a8d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/e7e8f8a9c267520051d8026ff1da74823a3d8b97",
-                "reference": "e7e8f8a9c267520051d8026ff1da74823a3d8b97",
+                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/a1e7f8b6467ac7f277b8e027e8537fa13664a8d8",
+                "reference": "a1e7f8b6467ac7f277b8e027e8537fa13664a8d8",
                 "shasum": ""
             },
             "require": {
@@ -2875,7 +2875,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-04-14T22:05:06+00:00"
+            "time": "2021-04-23T11:54:51+00:00"
         },
         {
             "name": "laminas/laminas-config",
@@ -9242,16 +9242,16 @@
         },
         {
             "name": "codeception/lib-innerbrowser",
-            "version": "1.4.2",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/lib-innerbrowser.git",
-                "reference": "4ffb91c18e4cacd073ff2914c07e5ccaf5efe449"
+                "reference": "4b0d89b37fe454e060a610a85280a87ab4f534f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/lib-innerbrowser/zipball/4ffb91c18e4cacd073ff2914c07e5ccaf5efe449",
-                "reference": "4ffb91c18e4cacd073ff2914c07e5ccaf5efe449",
+                "url": "https://api.github.com/repos/Codeception/lib-innerbrowser/zipball/4b0d89b37fe454e060a610a85280a87ab4f534f1",
+                "reference": "4b0d89b37fe454e060a610a85280a87ab4f534f1",
                 "shasum": ""
             },
             "require": {
@@ -9296,9 +9296,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/lib-innerbrowser/issues",
-                "source": "https://github.com/Codeception/lib-innerbrowser/tree/1.4.2"
+                "source": "https://github.com/Codeception/lib-innerbrowser/tree/1.5.0"
             },
-            "time": "2021-04-06T05:26:49+00:00"
+            "time": "2021-04-23T06:18:29+00:00"
         },
         {
             "name": "codeception/module-asserts",
@@ -9520,16 +9520,16 @@
         },
         {
             "name": "codeception/module-rest",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-rest.git",
-                "reference": "2cd9901c08a143dc80985696dcbe3cefc9f23ab9"
+                "reference": "293a0103d5257b7c884ef276147a9a06914e878f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-rest/zipball/2cd9901c08a143dc80985696dcbe3cefc9f23ab9",
-                "reference": "2cd9901c08a143dc80985696dcbe3cefc9f23ab9",
+                "url": "https://api.github.com/repos/Codeception/module-rest/zipball/293a0103d5257b7c884ef276147a9a06914e878f",
+                "reference": "293a0103d5257b7c884ef276147a9a06914e878f",
                 "shasum": ""
             },
             "require": {
@@ -9568,9 +9568,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-rest/issues",
-                "source": "https://github.com/Codeception/module-rest/tree/1.3.0"
+                "source": "https://github.com/Codeception/module-rest/tree/1.3.1"
             },
-            "time": "2021-04-08T08:23:09+00:00"
+            "time": "2021-04-23T08:12:24+00:00"
         },
         {
             "name": "codeception/phpunit-wrapper",
@@ -10986,12 +10986,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "593c4de369ca852cf3b86037f19435d47c136448"
+                "reference": "3c97c13698c448fdbbda20acb871884a2d8f45b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/593c4de369ca852cf3b86037f19435d47c136448",
-                "reference": "593c4de369ca852cf3b86037f19435d47c136448",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3c97c13698c448fdbbda20acb871884a2d8f45b1",
+                "reference": "3c97c13698c448fdbbda20acb871884a2d8f45b1",
                 "shasum": ""
             },
             "conflict": {
@@ -11122,7 +11122,7 @@
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "openid/php-openid": "<2.3",
-                "openmage/magento-lts": "<19.4.8|>=20,<20.0.4",
+                "openmage/magento-lts": "<=19.4.12|>=20,<=20.0.8",
                 "orchid/platform": ">=9,<9.4.4",
                 "oro/crm": ">=1.7,<1.7.4",
                 "oro/platform": ">=1.7,<1.7.4",
@@ -11131,7 +11131,7 @@
                 "paragonie/random_compat": "<2",
                 "passbolt/passbolt_api": "<2.11",
                 "paypal/merchant-sdk-php": "<3.12",
-                "pear/archive_tar": "<1.4.12",
+                "pear/archive_tar": "<1.4.13",
                 "personnummer/personnummer": "<3.0.2",
                 "phpfastcache/phpfastcache": ">=5,<5.0.13",
                 "phpmailer/phpmailer": "<6.1.6",
@@ -11325,7 +11325,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-16T20:01:44+00:00"
+            "time": "2021-04-22T17:19:04+00:00"
         },
         {
             "name": "sebastian/cli-parser",

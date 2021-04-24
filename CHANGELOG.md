@@ -7,6 +7,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Both Ansible and Docker installations have been upgraded to PHP 8.0.
+
 - The PHP-SPX (Simple Profiling eXtension) extension has been added and can be enabled via a new environment variable in
   `azuracast.env`; this will allow very simple visual profiling of the application and its memory/CPU usage over time.
 

@@ -148,7 +148,7 @@
                     <b-row>
                         <b-form-group class="col-md-12" label-for="form_edit_dropboxAuthToken">
                             <template v-slot:label>
-                                <translate key="lang_form_edit_dropboxAuthToken">Dropbox Auth Token</translate>
+                                <translate key="lang_form_edit_dropboxAuthToken">Dropbox Generated Access Token</translate>
                             </template>
                             <template v-slot:description>
                                 <a href="https://dropbox.tech/developers/generate-an-access-token-for-your-own-account" target="_blank" v-translate key="lang_form_edit_dropboxAuthToken_desc">Learn More about Dropbox Auth Tokens</a>

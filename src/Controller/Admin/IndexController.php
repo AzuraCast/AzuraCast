@@ -37,8 +37,16 @@ class IndexController
 
         $stationsBaseDir = $environment->getStationDirectory();
 
-        $spaceTotal = BigInteger::of(disk_total_space($stationsBaseDir));
-        $spaceFree = BigInteger::of(disk_free_space($stationsBaseDir));
+        $spaceTotalFloat = disk_total_space($stationsBaseDir);
+        $spaceTotal = (is_float($spaceTotalFloat))
+            ? BigInteger::of($spaceTotalFloat)
+            : BigInteger::zero();
+
+        $spaceFreeFloat = disk_free_space($stationsBaseDir);
+        $spaceFree = (is_float($spaceFreeFloat))
+            ? BigInteger::of($spaceFreeFloat)
+            : BigInteger::zero();
+
         $spaceUsed = $spaceTotal->minus($spaceFree);
 
         // Get memory info.

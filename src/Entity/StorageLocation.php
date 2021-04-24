@@ -305,7 +305,7 @@ class StorageLocation
     {
         $size = $this->storageQuota;
 
-        return (null !== $size)
+        return (null !== $size && '' !== $size)
             ? BigInteger::of($size)
             : null;
     }
@@ -329,11 +329,9 @@ class StorageLocation
     {
         $size = $this->storageUsed;
 
-        if (null === $size) {
-            return BigInteger::zero();
-        }
-
-        return BigInteger::of($size);
+        return (null !== $size && '' !== $size)
+            ? BigInteger::of($size)
+            : BigInteger::zero();
     }
 
     /**
@@ -386,20 +384,17 @@ class StorageLocation
 
         if ($this->isLocal()) {
             $localPath = $this->getPath();
-            $totalSpace = BigInteger::of(disk_total_space($localPath));
 
-            if (null === $quota || $quota->isGreaterThan($totalSpace)) {
-                return $totalSpace;
+            $totalSpaceFloat = disk_total_space($localPath);
+            if (is_float($totalSpaceFloat)) {
+                $totalSpace = BigInteger::of($totalSpaceFloat);
+                if (null === $quota || $quota->isGreaterThan($totalSpace)) {
+                    return $totalSpace;
+                }
             }
-
-            return $quota;
         }
 
-        if (null !== $quota) {
-            return $quota;
-        }
-
-        return null;
+        return $quota ?? null;
     }
 
     public function isStorageFull(): bool

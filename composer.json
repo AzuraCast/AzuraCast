@@ -124,6 +124,14 @@
             "@phpcbf",
             "@dev-test"
         ],
+        "ci-test-early": [
+            "@phplint",
+            "@phpstan",
+            "@phpcs"
+        ],
+        "ci-test-late": [
+            "@codeception-no-coverage"
+        ],
         "dev-test": [
             "@phplint",
             "@phpstan",

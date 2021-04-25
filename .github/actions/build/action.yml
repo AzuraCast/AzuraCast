@@ -1,5 +1,0 @@
-name: AzuraCast Build and Test
-description: Import translated locales, build static assets and run unit tests.
-runs:
-  using: 'docker'
-  image: 'Dockerfile'

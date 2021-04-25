@@ -1,5 +1,0 @@
-name: AzuraCast Generate Locales
-description: Generate new translatable strings from the application frontend and backend.
-runs:
-  using: 'docker'
-  image: 'Dockerfile'

@@ -37,7 +37,7 @@ jobs :
         with :
           php-version : '8.0'
           extensions : intl, maxminddb
-          tools : composer:v2, cs2pr, phpstan, phpcs
+          tools : composer:v2, cs2pr
 
       - name : Cache PHP dependencies
         uses : actions/cache@v2
@@ -62,11 +62,11 @@ jobs :
 
       - name : Run PHPStan
         run : |
-          phpstan analyze --error-format=checkstyle | cs2pr
+          vendor/bin/phpstan analyze --error-format=checkstyle | cs2pr
 
       - name : Run PHP Code Sniffer
         run : |
-          phpcs -q --report=checkstyle . | cs2pr
+          vendor/bin/phpcs --report=checkstyle | cs2pr
 
       - name : Clear existing locales.
         if : github.event_name == 'push' || github.event_name == 'schedule'

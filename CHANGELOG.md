@@ -7,6 +7,12 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- **NowPlaying API Change**: Previously, we maintained 3 values for listener counts: current, unique, and total. Since
+  these three data sources came from 2 actual measurement units (total and unique), this was often confusing to our
+  users. We have simplified our implementation of this to simply show `total` (all listeners, not filtered for
+  uniqueness) and `unique` (the total distinct number of listeners). For legacy purposes, the `current` variable remains
+  in responses, but is equal to the `total` variable.
+
 - Both Ansible and Docker installations have been upgraded to PHP 8.0.
 
 - The PHP-SPX (Simple Profiling eXtension) extension has been added and can be enabled via a new environment variable in

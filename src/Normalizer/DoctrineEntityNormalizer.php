@@ -456,7 +456,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         return $entity->$method_name($value);
     }
-    
+
     protected function isEntity(mixed $class): bool
     {
         if (is_object($class)) {

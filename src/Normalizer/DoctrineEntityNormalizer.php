@@ -456,11 +456,8 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
         return $entity->$method_name($value);
     }
-
-    /**
-     * @param object|string $class
-     */
-    protected function isEntity(object|string $class): bool
+    
+    protected function isEntity(mixed $class): bool
     {
         if (is_object($class)) {
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)

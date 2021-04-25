@@ -57,11 +57,8 @@ class NowPlayingApiGenerator
         $np->is_online = $npResult->meta->online;
         $np->station = ($this->stationApiGenerator)($station, $baseUri);
         $np->listeners = new Entity\Api\NowPlayingListeners(
-            [
-                'current' => $npResult->listeners->current,
-                'unique' => $npResult->listeners->unique,
-                'total' => $npResult->listeners->total,
-            ]
+            total: $npResult->listeners->total,
+            unique: $npResult->listeners->unique
         );
 
         // Pull from current NP data if song details haven't changed .

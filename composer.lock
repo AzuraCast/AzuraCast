@@ -234,12 +234,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "511403a915d7f54edbd79876f53a58463aed0280"
+                "reference": "f159715c22b8c7878eb08381577fc5c4765e53f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/511403a915d7f54edbd79876f53a58463aed0280",
-                "reference": "511403a915d7f54edbd79876f53a58463aed0280",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/f159715c22b8c7878eb08381577fc5c4765e53f3",
+                "reference": "f159715c22b8c7878eb08381577fc5c4765e53f3",
                 "shasum": ""
             },
             "require": {
@@ -297,7 +297,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-04-11T22:23:09+00:00"
+            "time": "2021-04-25T01:42:46+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",

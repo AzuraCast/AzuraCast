@@ -60,7 +60,7 @@ abstract class AbstractRemote
         $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
 
         $remote->setListenersTotal($result->listeners->total);
-        $remote->setListenersUnique($result->listeners->unique);
+        $remote->setListenersUnique($result->listeners->unique ?? 0);
         $this->em->persist($remote);
         $this->em->flush();
 

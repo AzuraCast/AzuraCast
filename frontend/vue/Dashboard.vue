@@ -131,7 +131,7 @@
                             </a>
                         </td>
                         <td class="text-center">
-                            <span class="nowplaying-listeners">{{ item.listeners.current }}</span>
+                            <span class="nowplaying-listeners">{{ item.listeners.total }}</span>
                         </td>
                         <td>
                             <div v-if="item.now_playing.song.title !== ''">

@@ -10,11 +10,11 @@ use OpenApi\Annotations as OA;
 class NowPlayingListeners
 {
     /**
-     * Current listeners, either unique (if supplied) or total (non-unique)
-     * @OA\Property(example=15)
+     * Total non-unique current listeners
+     * @OA\Property(example=20)
      * @var int
      */
-    public int $current = 0;
+    public int $total = 0;
 
     /**
      * Total unique current listeners
@@ -24,21 +24,19 @@ class NowPlayingListeners
     public int $unique = 0;
 
     /**
-     * Total non-unique current listeners
+     * Total non-unique current listeners (Legacy field, may be retired in the future.)
      * @OA\Property(example=20)
      * @var int
      */
-    public int $total = 0;
+    public int $current = 0;
 
-    public function __construct(?array $listeners = [])
-    {
-        if (isset($listeners['current'])) {
-            $this->current = (int)$listeners['current'];
-        } else {
-            $this->current = (int)($listeners['unique'] ?? $listeners['total'] ?? 0);
-        }
+    public function __construct(
+        int $total = 0,
+        ?int $unique = null
+    ) {
+        $this->total = $total;
+        $this->current = $total;
 
-        $this->unique = (int)($listeners['unique'] ?? $listeners['current'] ?? 0);
-        $this->total = (int)($listeners['total'] ?? $listeners['current'] ?? 0);
+        $this->unique = $unique ?? 0;
     }
 }

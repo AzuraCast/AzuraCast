@@ -86,7 +86,7 @@ class SHOUTcast extends AbstractFrontend
             }
 
             $mount->setListenersTotal($result->listeners->total);
-            $mount->setListenersUnique($result->listeners->unique);
+            $mount->setListenersUnique($result->listeners->unique ?? 0);
             $this->em->persist($mount);
 
             if ($mount->getIsDefault()) {

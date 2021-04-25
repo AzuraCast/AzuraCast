@@ -498,10 +498,8 @@ class StationRemote implements StationMountInterface
         $response->url = $adapter->getPublicUrl($this);
 
         $response->listeners = new Api\NowPlayingListeners(
-            [
-                'unique' => $this->listeners_unique,
-                'total' => $this->listeners_total,
-            ]
+            total: $this->listeners_total,
+            unique: $this->listeners_unique
         );
 
         if ($this->enable_autodj || (Adapters::REMOTE_AZURARELAY === $this->type)) {

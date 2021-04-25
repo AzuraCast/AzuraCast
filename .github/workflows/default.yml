@@ -62,7 +62,7 @@ jobs :
 
       - name : Run PHPStan
         run : |
-          phpstan analyze --error-format=checkstyle . | cs2pr
+          phpstan analyze --error-format=checkstyle | cs2pr
 
       - name : Run PHP Code Sniffer
         run : |

@@ -7,7 +7,6 @@ use App\Exception\NotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\Adapters;
-use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractLogViewerController
 {
@@ -18,7 +17,7 @@ abstract class AbstractLogViewerController
         Response $response,
         $log_path,
         $tail_file = true
-    ): ResponseInterface {
+    ): void {
         clearstatcache();
 
         if (!file_exists($log_path)) {

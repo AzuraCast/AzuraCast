@@ -205,10 +205,10 @@ class AppFactory
         $environment[Environment::CONFIG_DIR] ??= $environment[Environment::BASE_DIR] . '/config';
         $environment[Environment::VIEWS_DIR] ??= $environment[Environment::BASE_DIR] . '/templates';
 
-        if ($environment[Environment::IS_DOCKER]) {
-            $_ENV = getenv();
-        } elseif (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
+        if (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
             $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
+        } else {
+            $_ENV = getenv();
         }
 
         $environment = array_merge(array_filter($_ENV), $environment);

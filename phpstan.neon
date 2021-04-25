@@ -5,7 +5,7 @@ parameters:
         - src
 
     bootstrapFiles:
-        - %rootDir%/../../../util/phpstan.php
+        - ./util/phpstan.php
 
     universalObjectCratesClasses:
         - App\Session\NamespaceInterface

@@ -49,7 +49,7 @@ class SettingsRepository extends Repository
     {
         if (is_array($settingsObj)) {
             $settings = $this->readSettings();
-            $settings = $this->fromArray($settingsObj, $settings);
+            $settings = $this->fromArray($settings, $settingsObj);
         } else {
             $settings = $settingsObj;
         }

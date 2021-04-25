@@ -24,32 +24,17 @@ class Form extends \AzuraForms\Form
         );
     }
 
-    public function openForm(): string
+    /**
+     * @return string[]
+     */
+    protected function getFormAttributes(): array
     {
-        $attrs = [
-            'id' => $this->name,
-            'method' => $this->method,
-            'action' => $this->action,
-            'class' => 'form ' . ($this->options['class'] ?? ''),
-            'accept-charset' => 'UTF-8',
-        ];
-
-        foreach ($this->fields as $field) {
-            if ($field instanceof Field\File) {
-                $attrs['enctype'] = 'multipart/form-data';
-                break;
-            }
-        }
+        $attrs = parent::getFormAttributes();
 
         if (!empty($this->options['tabs'])) {
             $attrs['novalidate'] = 'novalidate';
         }
 
-        $attrsAsHtml = [];
-        foreach ($attrs as $key => $val) {
-            $attrsAsHtml[] = $key . '="' . $val . '"';
-        }
-
-        return '<form ' . implode(' ', $attrsAsHtml) . '>';
+        return $attrs;
     }
 }

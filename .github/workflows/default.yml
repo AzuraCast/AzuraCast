@@ -23,12 +23,21 @@ jobs :
   build :
     name : Build and Test
     runs-on : ubuntu-latest
+    env :
+      APPLICATION_ENV : testing
     steps :
       - uses : actions/checkout@master
 
       - name : Reduce Git repository size.
         run : |
           git gc --prune=now --aggressive
+
+      - name : Setup PHP
+        uses : shivammathur/setup-php@v2
+        with :
+          php-version : '8.0'
+          extensions : intl, maxminddb
+          tools : composer:v2
 
       - name : Cache PHP dependencies
         uses : actions/cache@v2
@@ -43,6 +52,11 @@ jobs :
           rm -rf web/static/assets.json
           chmod a+x bin/console
 
+      - name : Run early test suite
+        run : |
+          composer install --no-interaction --ignore-platform-reqs
+          composer run ci-test-early
+
       - name : Clear existing locales.
         if : github.event_name == 'push' || github.event_name == 'schedule'
         run : |
@@ -53,7 +67,11 @@ jobs :
 
       - name : Generate new translations from existing code.
         if : github.event_name == 'push' || github.event_name == 'schedule'
-        uses : ./.github/actions/generate-locales
+        run : |
+          bin/console locale:generate
+          cd frontend
+          npm ci
+          npm run generate-locales
 
       - name : Pull latest translations.
         if : github.event_name == 'push' || github.event_name == 'schedule'
@@ -71,7 +89,13 @@ jobs :
           CROWDIN_PERSONAL_TOKEN : ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
       - name : Import locales, build static assets.
-        uses : ./.github/actions/build
+        run : |
+          bin/console locale:import
+
+          cd frontend
+          npm ci
+          npm run import-locales
+          npm run build
 
       - name : Set up functional test environment.
         run : |
@@ -89,7 +113,7 @@ jobs :
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose run --rm --user="azuracast" web composer dev-test
+          docker-compose run --rm --user="azuracast" web composer ci-test-late
 
       - name : Stop all running containers.
         run : |

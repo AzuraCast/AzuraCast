@@ -194,6 +194,14 @@ class StorageLocation
         return $this->path;
     }
 
+    public function getFilteredPath(): ?string
+    {
+        return match ($this->adapter) {
+            self::ADAPTER_S3, self::ADAPTER_DROPBOX => trim($this->path, '/'),
+            default => rtrim($this->path, '/')
+        };
+    }
+
     public function applyPath(?string $suffix = null): string
     {
         $suffix = (null !== $suffix)
@@ -475,20 +483,13 @@ class StorageLocation
 
     public function getStorageAdapter(): ExtendedAdapterInterface
     {
-        switch ($this->adapter) {
-            case self::ADAPTER_S3:
-                $client = $this->getS3Client();
-                $validPrefixPath = trim($this->path, '/');
-                return new AwsS3Adapter($client, $this->s3Bucket, $validPrefixPath);
+        $filteredPath = $this->getFilteredPath();
 
-            case self::ADAPTER_DROPBOX:
-                $validPrefixPath = trim($this->path, '/');
-                return new DropboxAdapter($this->getDropboxClient(), $validPrefixPath);
-
-            case self::ADAPTER_LOCAL:
-            default:
-                return new LocalFilesystemAdapter(rtrim($this->path, '/'));
-        }
+        return match ($this->adapter) {
+            self::ADAPTER_S3 => new AwsS3Adapter($this->getS3Client(), $this->s3Bucket, $filteredPath),
+            self::ADAPTER_DROPBOX => new DropboxAdapter($this->getDropboxClient(), $filteredPath),
+            default => new LocalFilesystemAdapter($filteredPath)
+        };
     }
 
     protected function getS3Client(): S3Client

@@ -23,6 +23,8 @@ jobs :
   build :
     name : Build and Test
     runs-on : ubuntu-latest
+    env :
+      APPLICATION_ENV : testing
     steps :
       - uses : actions/checkout@master
 

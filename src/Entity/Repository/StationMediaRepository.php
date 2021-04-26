@@ -15,7 +15,6 @@ use Exception;
 use Generator;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
-use InvalidArgumentException;
 use League\Flysystem\FilesystemException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -142,20 +141,13 @@ class StationMediaRepository extends Repository
         return $media;
     }
 
-    /**
-     * @param Entity\Station|Entity\StorageLocation $source
-     *
-     */
     protected function getStorageLocation(Entity\Station|Entity\StorageLocation $source): Entity\StorageLocation
     {
-        if ($source instanceof Entity\StorageLocation) {
-            return $source;
-        }
         if ($source instanceof Entity\Station) {
             return $source->getMediaStorageLocation();
         }
 
-        throw new InvalidArgumentException('Parameter must be a station or storage location.');
+        return $source;
     }
 
     /**

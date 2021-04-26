@@ -51,11 +51,6 @@ class MigrateConfigCommand extends CommandAbstract
         ];
 
         foreach ($settingsToMigrate as $oldSetting => $newSetting) {
-            // In the future, if the env vars change, disregard this migration.
-            if ($oldSetting === $newSetting) {
-                continue;
-            }
-
             if (!empty($envSettings[$oldSetting])) {
                 $envSettings[$newSetting] ??= $envSettings[$oldSetting];
                 unset($envSettings[$oldSetting]);

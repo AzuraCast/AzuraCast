@@ -3,7 +3,19 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+<!--
 ## New Features/Changes
+
+There have been no changes since the last stable release.
+
+## Code Quality/Technical Changes
+
+There have been no changes since the last stable release.
+
+## Bug Fixes
+
+There have been no changes since the last stable release.
+-->
 
 ## Code Quality/Technical Changes
 
@@ -29,6 +41,8 @@ release channel, you can take advantage of these new features and fixes.
   code.
 
 ## Bug Fixes
+
+- Issues with Dropbox filesystems used as Storage Locations have been resolved (#4026, #4057).
 
 - An issue preventing broadcast recordings from saving correctly has been identified and fixed (#4055).
 

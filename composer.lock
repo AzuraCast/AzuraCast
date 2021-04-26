@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "75916f552330b562a8d6acdebc1251939575aee4"
+                "reference": "6fb50189f7286bdf6bca63047bc145867051c0a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/75916f552330b562a8d6acdebc1251939575aee4",
-                "reference": "75916f552330b562a8d6acdebc1251939575aee4",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/6fb50189f7286bdf6bca63047bc145867051c0a1",
+                "reference": "6fb50189f7286bdf6bca63047bc145867051c0a1",
                 "shasum": ""
             },
             "require": {
@@ -115,7 +115,8 @@
                 "php": ">=7.4"
             },
             "require-dev": {
-                "overtrue/phplint": "^2.0",
+                "php-parallel-lint/php-console-highlighter": "^0.5.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
                 "phpstan/phpstan": "^0.12",
                 "roave/security-advisories": "dev-master"
             },
@@ -164,7 +165,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-04-25T13:21:28+00:00"
+            "time": "2021-04-26T10:41:32+00:00"
         },
         {
             "name": "azuracast/flysystem-v2-extensions",
@@ -172,12 +173,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/flysystem-v2-extensions.git",
-                "reference": "91677074ea20c57dcbb3c51084858cc24b03a8b7"
+                "reference": "d5fd3753a3aa9b1551edff9efc61e6403c7d535a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/91677074ea20c57dcbb3c51084858cc24b03a8b7",
-                "reference": "91677074ea20c57dcbb3c51084858cc24b03a8b7",
+                "url": "https://api.github.com/repos/AzuraCast/flysystem-v2-extensions/zipball/d5fd3753a3aa9b1551edff9efc61e6403c7d535a",
+                "reference": "d5fd3753a3aa9b1551edff9efc61e6403c7d535a",
                 "shasum": ""
             },
             "require": {
@@ -186,7 +187,8 @@
             },
             "require-dev": {
                 "league/flysystem-aws-s3-v3": "^2.0",
-                "overtrue/phplint": "^2.0",
+                "php-parallel-lint/php-console-highlighter": "^0.5.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
                 "phpstan/phpstan": "^0.12.26",
                 "roave/security-advisories": "dev-latest",
                 "spatie/flysystem-dropbox": "^2.0"
@@ -227,7 +229,21 @@
                 "issues": "https://github.com/AzuraCast/flysystem-v2-extensions/issues",
                 "source": "https://github.com/AzuraCast/flysystem-v2-extensions/tree/main"
             },
-            "time": "2021-04-22T21:08:03+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/AzuraCast",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/azuracast",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/AzuraCast",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-04-26T02:53:08+00:00"
         },
         {
             "name": "azuracast/nowplaying",
@@ -235,12 +251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/nowplaying.git",
-                "reference": "f159715c22b8c7878eb08381577fc5c4765e53f3"
+                "reference": "a5ca13a8e4eece54e53ceac6cc6763b78202d091"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/f159715c22b8c7878eb08381577fc5c4765e53f3",
-                "reference": "f159715c22b8c7878eb08381577fc5c4765e53f3",
+                "url": "https://api.github.com/repos/AzuraCast/nowplaying/zipball/a5ca13a8e4eece54e53ceac6cc6763b78202d091",
+                "reference": "a5ca13a8e4eece54e53ceac6cc6763b78202d091",
                 "shasum": ""
             },
             "require": {
@@ -256,10 +272,10 @@
             "require-dev": {
                 "guzzlehttp/guzzle": "^7",
                 "http-interop/http-factory-guzzle": "^1.0",
-                "overtrue/phplint": "^1.1",
                 "php-http/discovery": "^1.9",
-                "phpstan/phpstan": "^0.11.1",
-                "phpstan/phpstan-strict-rules": "^0.11.0",
+                "php-parallel-lint/php-console-highlighter": "^0.5.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpstan/phpstan": "^0.12",
                 "roave/security-advisories": "dev-master"
             },
             "default-branch": true,
@@ -298,7 +314,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-04-25T01:42:46+00:00"
+            "time": "2021-04-26T10:27:54+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1686,21 +1702,21 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "e543224170a61ffe49fcadb8e7339c345df1baa2"
+                "reference": "1c2780df6b58998f411e64973cfa464ba0a06e00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/e543224170a61ffe49fcadb8e7339c345df1baa2",
-                "reference": "e543224170a61ffe49fcadb8e7339c345df1baa2",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/1c2780df6b58998f411e64973cfa464ba0a06e00",
+                "reference": "1c2780df6b58998f411e64973cfa464ba0a06e00",
                 "shasum": ""
             },
             "require": {
                 "composer/package-versions-deprecated": "^1.8",
-                "doctrine/dbal": "^2.10",
+                "doctrine/dbal": "^2.11",
                 "doctrine/event-manager": "^1.0",
                 "friendsofphp/proxy-manager-lts": "^1.0",
                 "php": "^7.2 || ^8.0",
@@ -1733,9 +1749,6 @@
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                },
                 "composer-normalize": {
                     "indent-size": 4,
                     "indent-style": "space"
@@ -1773,7 +1786,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/migrations/issues",
-                "source": "https://github.com/doctrine/migrations/tree/3.1.1"
+                "source": "https://github.com/doctrine/migrations/tree/3.1.2"
             },
             "funding": [
                 {
@@ -1789,7 +1802,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-14T11:10:58+00:00"
+            "time": "2021-04-24T12:54:34+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -2539,16 +2552,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
                 "shasum": ""
             },
             "require": {
@@ -2608,9 +2621,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.2"
             },
-            "time": "2021-03-21T16:25:00+00:00"
+            "time": "2021-04-26T09:17:50+00:00"
         },
         {
             "name": "http-interop/http-factory-guzzle",
@@ -6050,12 +6063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/supervisorphp/supervisor.git",
-                "reference": "df2d05e658de38edc7ff0167b0fa047e2dc1d0c1"
+                "reference": "8c84b069a4352aeea62dec53cf203fc62b43cd79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/df2d05e658de38edc7ff0167b0fa047e2dc1d0c1",
-                "reference": "df2d05e658de38edc7ff0167b0fa047e2dc1d0c1",
+                "url": "https://api.github.com/repos/supervisorphp/supervisor/zipball/8c84b069a4352aeea62dec53cf203fc62b43cd79",
+                "reference": "8c84b069a4352aeea62dec53cf203fc62b43cd79",
                 "shasum": ""
             },
             "require": {
@@ -6073,6 +6086,8 @@
                 "php-http/guzzle6-adapter": "^2.0",
                 "php-http/httplug": "^2.1",
                 "php-http/message": "^1.8",
+                "php-parallel-lint/php-console-highlighter": "^0.5.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
                 "phpspec/phpspec": "^6.2",
                 "phpstan/phpstan": "^0.12.32",
                 "phpstan/phpstan-strict-rules": "^0.12.2",
@@ -6110,7 +6125,7 @@
                 "issues": "https://github.com/supervisorphp/supervisor/issues",
                 "source": "https://github.com/supervisorphp/supervisor/tree/main"
             },
-            "time": "2020-12-14T17:53:47+00:00"
+            "time": "2021-04-26T11:08:05+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -9618,16 +9633,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.12.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "d501fd2658d55491a2295ff600ae5978eaad7403"
+                "reference": "c13c0be93cff50f88bbd70827d993026821914dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/d501fd2658d55491a2295ff600ae5978eaad7403",
-                "reference": "d501fd2658d55491a2295ff600ae5978eaad7403",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/c13c0be93cff50f88bbd70827d993026821914dd",
+                "reference": "c13c0be93cff50f88bbd70827d993026821914dd",
                 "shasum": ""
             },
             "require": {
@@ -9677,7 +9692,7 @@
             ],
             "support": {
                 "issues": "https://github.com/filp/whoops/issues",
-                "source": "https://github.com/filp/whoops/tree/2.12.0"
+                "source": "https://github.com/filp/whoops/tree/2.12.1"
             },
             "funding": [
                 {
@@ -9685,7 +9700,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-30T12:00:00+00:00"
+            "time": "2021-04-25T12:00:00+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",

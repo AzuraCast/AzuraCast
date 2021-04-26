@@ -2,6 +2,8 @@
 
 namespace App\Entity\Api;
 
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Schema(type="object", schema="Api_StationPlaylistQueue")
  */

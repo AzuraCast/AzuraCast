@@ -9,7 +9,6 @@ use App\EventDispatcher;
 use App\LockFactory;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -76,16 +75,13 @@ class Runner
             ]
         );
 
-        $lock = $this->lockFactory->createLock('sync_' . $type, $syncInfo['timeout']);
+        $lock = $this->lockFactory->createAndAcquireLock(
+            resource: 'sync_' . $type,
+            ttl: $syncInfo['timeout'],
+            force: $force
+        );
 
-        if ($force) {
-            $this->lockFactory->clearQueue('sync_' . $type);
-            try {
-                $lock->acquire($force);
-            } catch (Exception $e) {
-                // Noop
-            }
-        } elseif (!$lock->acquire()) {
+        if (false === $lock) {
             return;
         }
 
@@ -94,11 +90,10 @@ class Runner
             $this->eventDispatcher->dispatch($event);
 
             foreach ($event->getTasks() as $taskClass => $task) {
-                if (!$force && !$lock->isAcquired()) {
-                    $this->logger->error(
-                        sprintf('Lock timed out before task %s can run.', $taskClass)
-                    );
-                    return;
+                try {
+                    $lock->refresh($syncInfo['timeout']);
+                } catch (\Exception) {
+                    // Noop
                 }
 
                 $this->logger->debug(

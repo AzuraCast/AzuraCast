@@ -19,7 +19,6 @@ use NowPlaying\Result\Result;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Lock\LockInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
@@ -85,7 +84,10 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                 continue;
             }
 
-            $nowplaying[] = $this->processStation($station);
+            $nowplaying[] = $this->processStation(
+                station: $station,
+                force: $force
+            );
         }
 
         return $nowplaying;
@@ -93,10 +95,18 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     public function processStation(
         Entity\Station $station,
-        bool $standalone = false
+        bool $standalone = false,
+        bool $force = false
     ): Entity\Api\NowPlaying {
-        $lock = $this->getLockForStation($station);
-        $lock->acquire(true);
+        $lock = $this->lockFactory->createAndAcquireLock(
+            resource: 'nowplaying_station_' . $station->getId(),
+            ttl: 600,
+            force: $force
+        );
+
+        if (false === $lock) {
+            return $this->nowPlayingApiGenerator->currentOrEmpty($station);
+        }
 
         try {
             /** @var Logger $logger */
@@ -182,54 +192,44 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
      */
     public function queueStation(Entity\Station $station, array $extra_metadata = []): void
     {
-        $lock = $this->getLockForStation($station);
-
-        if (!$lock->acquire(true)) {
-            return;
-        }
-
-        try {
-            // Process extra metadata sent by Liquidsoap (if it exists).
-            if (!empty($extra_metadata['media_id'])) {
-                $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
-                if (!$media instanceof Entity\StationMedia) {
-                    return;
-                }
-
-                $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
-
-                if (!$sq instanceof Entity\StationQueue) {
-                    $sq = Entity\StationQueue::fromMedia($station, $media);
-                } elseif (null === $sq->getMedia()) {
-                    $sq->setMedia($media);
-                }
-
-                if (!empty($extra_metadata['playlist_id']) && null === $sq->getPlaylist()) {
-                    $playlist = $this->em->find(Entity\StationPlaylist::class, $extra_metadata['playlist_id']);
-                    if ($playlist instanceof Entity\StationPlaylist) {
-                        $sq->setPlaylist($playlist);
-                    }
-                }
-
-                $sq->sentToAutodj();
-
-                $this->em->persist($sq);
-                $this->em->flush();
+        // Process extra metadata sent by Liquidsoap (if it exists).
+        if (!empty($extra_metadata['media_id'])) {
+            $media = $this->em->find(Entity\StationMedia::class, $extra_metadata['media_id']);
+            if (!$media instanceof Entity\StationMedia) {
+                return;
             }
 
-            // Trigger a delayed Now Playing update.
-            $message = new Message\UpdateNowPlayingMessage();
-            $message->station_id = $station->getId();
+            $sq = $this->queueRepo->findRecentlyCuedSong($station, $media);
 
-            $this->messageBus->dispatch(
-                $message,
-                [
-                    new DelayStamp(2000),
-                ]
-            );
-        } finally {
-            $lock->release();
+            if (!$sq instanceof Entity\StationQueue) {
+                $sq = Entity\StationQueue::fromMedia($station, $media);
+            } elseif (null === $sq->getMedia()) {
+                $sq->setMedia($media);
+            }
+
+            if (!empty($extra_metadata['playlist_id']) && null === $sq->getPlaylist()) {
+                $playlist = $this->em->find(Entity\StationPlaylist::class, $extra_metadata['playlist_id']);
+                if ($playlist instanceof Entity\StationPlaylist) {
+                    $sq->setPlaylist($playlist);
+                }
+            }
+
+            $sq->sentToAutodj();
+
+            $this->em->persist($sq);
+            $this->em->flush();
         }
+
+        // Trigger a delayed Now Playing update.
+        $message = new Message\UpdateNowPlayingMessage();
+        $message->station_id = $station->getId();
+
+        $this->messageBus->dispatch(
+            $message,
+            [
+                new DelayStamp(2000),
+            ]
+        );
     }
 
     /**
@@ -243,7 +243,10 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             $station = $this->em->find(Entity\Station::class, $message->station_id);
 
             if ($station instanceof Entity\Station) {
-                $this->processStation($station, true);
+                $this->processStation(
+                    station: $station,
+                    standalone: true
+                );
             }
         }
     }
@@ -329,10 +332,5 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         $message->is_standalone = $isStandalone;
 
         $this->messageBus->dispatch($message);
-    }
-
-    protected function getLockForStation(Entity\Station $station): LockInterface
-    {
-        return $this->lockFactory->createLock('nowplaying_station_' . $station->getId(), 600);
     }
 }

@@ -38,16 +38,6 @@ class BuildQueueTask extends AbstractTask
             return;
         }
 
-        $lock = $this->lockFactory->createLock('autodj_queue_' . $station->getId(), 60);
-
-        if (!$lock->acquire($force)) {
-            return;
-        }
-
-        try {
-            $this->autoDJ->buildQueue($station);
-        } finally {
-            $lock->release();
-        }
+        $this->autoDJ->buildQueue($station, $force);
     }
 }

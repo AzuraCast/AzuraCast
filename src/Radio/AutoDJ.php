@@ -8,6 +8,7 @@ use App\Environment;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\BuildQueue;
 use App\EventDispatcher;
+use App\LockFactory;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -23,7 +24,8 @@ class AutoDJ
         protected EventDispatcher $dispatcher,
         protected Logger $logger,
         protected Scheduler $scheduler,
-        protected Environment $environment
+        protected Environment $environment,
+        protected LockFactory $lockFactory
     ) {
     }
 
@@ -97,75 +99,91 @@ class AutoDJ
         return $event->buildAnnotations();
     }
 
-    public function buildQueue(Entity\Station $station): void
-    {
-        $this->logger->pushProcessor(
-            function ($record) use ($station) {
-                $record['extra']['station'] = [
-                    'id' => $station->getId(),
-                    'name' => $station->getName(),
-                ];
-                return $record;
-            }
+    public function buildQueue(
+        Entity\Station $station,
+        bool $force = false
+    ): void {
+        $lock = $this->lockFactory->createAndAcquireLock(
+            resource: 'autodj_queue_' . $station->getId(),
+            ttl: 60,
+            force: $force
         );
 
-        // Adjust "now" time from current queue.
-        $now = $this->getNowFromCurrentSong($station);
-
-        $backendOptions = $station->getBackendConfig();
-        $maxQueueLength = $backendOptions->getAutoDjQueueLength();
-        if ($maxQueueLength < 1) {
-            $maxQueueLength = 1;
+        if (false === $lock) {
+            return;
         }
 
-        $stationTz = $station->getTimezoneObject();
+        try {
+            $this->logger->pushProcessor(
+                function ($record) use ($station) {
+                    $record['extra']['station'] = [
+                        'id' => $station->getId(),
+                        'name' => $station->getName(),
+                    ];
+                    return $record;
+                }
+            );
 
-        $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
+            // Adjust "now" time from current queue.
+            $now = $this->getNowFromCurrentSong($station);
 
-        $lastSongId = null;
-        $queueLength = 0;
-
-        foreach ($upcomingQueue as $queueRow) {
-            // Prevent the exact same track from being played twice during this loop
-            if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
-                $this->em->remove($queueRow);
-                continue;
+            $backendOptions = $station->getBackendConfig();
+            $maxQueueLength = $backendOptions->getAutoDjQueueLength();
+            if ($maxQueueLength < 1) {
+                $maxQueueLength = 1;
             }
 
-            $queueLength++;
-            $lastSongId = $queueRow->getSongId();
+            $stationTz = $station->getTimezoneObject();
 
-            $queueRow->setTimestampCued($now->getTimestamp());
-            $this->em->persist($queueRow);
+            $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
 
-            $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
-            $now = $this->getAdjustedNow($station, $timestampCued, $queueRow->getDuration() ?? 1);
-        }
+            $lastSongId = null;
+            $queueLength = 0;
 
-        $this->em->flush();
-
-        // Build the remainder of the queue.
-        while ($queueLength < $maxQueueLength) {
-            $queueRow = $this->cueNextSong($station, $now);
-            if ($queueRow instanceof Entity\StationQueue) {
-                $this->em->persist($queueRow);
-
+            foreach ($upcomingQueue as $queueRow) {
                 // Prevent the exact same track from being played twice during this loop
                 if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
                     $this->em->remove($queueRow);
-                } else {
-                    $lastSongId = $queueRow->getSongId();
-                    $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration() ?? 1);
+                    continue;
                 }
-            } else {
-                break;
+
+                $queueLength++;
+                $lastSongId = $queueRow->getSongId();
+
+                $queueRow->setTimestampCued($now->getTimestamp());
+                $this->em->persist($queueRow);
+
+                $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
+                $now = $this->getAdjustedNow($station, $timestampCued, $queueRow->getDuration() ?? 1);
             }
 
             $this->em->flush();
-            $queueLength++;
-        }
 
-        $this->logger->popProcessor();
+            // Build the remainder of the queue.
+            while ($queueLength < $maxQueueLength) {
+                $queueRow = $this->cueNextSong($station, $now);
+                if ($queueRow instanceof Entity\StationQueue) {
+                    $this->em->persist($queueRow);
+
+                    // Prevent the exact same track from being played twice during this loop
+                    if (null !== $lastSongId && $lastSongId === $queueRow->getSongId()) {
+                        $this->em->remove($queueRow);
+                    } else {
+                        $lastSongId = $queueRow->getSongId();
+                        $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration() ?? 1);
+                    }
+                } else {
+                    break;
+                }
+
+                $this->em->flush();
+                $queueLength++;
+            }
+
+            $this->logger->popProcessor();
+        } finally {
+            $lock->release();
+        }
     }
 
     protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface

@@ -35,6 +35,30 @@ class LockFactory
         return $lock;
     }
 
+    public function createAndAcquireLock(
+        string $resource,
+        ?float $ttl = 300.0,
+        bool $autoRelease = true,
+        int $retrySleep = 1000,
+        int $retryCount = 30,
+        bool $force = false
+    ): LockInterface|bool {
+        $lock = $this->createLock($resource, $ttl, $autoRelease, $retrySleep, $retryCount);
+
+        if ($force) {
+            $this->clearQueue($resource);
+            try {
+                $lock->acquire(true);
+            } catch (Exception $e) {
+                return false;
+            }
+        } elseif (!$lock->acquire()) {
+            return false;
+        }
+
+        return $lock;
+    }
+
     public function clearQueue(string $resource): void
     {
         $this->redis->del($this->getPrefixedResourceName($resource));

@@ -109,7 +109,7 @@ class DebugController extends AbstractLogViewerController
 
         $this->logger->debug('Current queue cleared.');
 
-        $autoDJ->buildQueue($station);
+        $autoDJ->buildQueue($station, true);
 
         $this->logger->popHandler();
 

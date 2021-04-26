@@ -2,6 +2,9 @@
 
 namespace App\Entity\Api;
 
+/**
+ * @OA\Schema(type="object", schema="Api_StationPlaylistQueue")
+ */
 class StationPlaylistQueue
 {
     /**

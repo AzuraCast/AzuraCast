@@ -109,6 +109,7 @@ class StationWebhook
      * @ORM\Column(name="metadata", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
+     * @AuditLog\AuditIgnore
      *
      * @var array Internal details used by the webhook to preserve state.
      */

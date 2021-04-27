@@ -3,7 +3,6 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
-<!--
 ## New Features/Changes
 
 There have been no changes since the last stable release.
@@ -15,7 +14,10 @@ There have been no changes since the last stable release.
 ## Bug Fixes
 
 There have been no changes since the last stable release.
--->
+
+---
+
+# AzuraCast 0.12.4 (Apr 27, 2021)
 
 ## Code Quality/Technical Changes
 

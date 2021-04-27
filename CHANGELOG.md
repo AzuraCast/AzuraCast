@@ -42,6 +42,9 @@ There have been no changes since the last stable release.
 
 ## Bug Fixes
 
+- In the Media Manager, when listing media in a single playlist, the manager will show other playlists associated with
+  the media (#4079, .
+
 - Issues with Dropbox filesystems used as Storage Locations have been resolved (#4026, #4057).
 
 - An issue preventing broadcast recordings from saving correctly has been identified and fixed (#4055).

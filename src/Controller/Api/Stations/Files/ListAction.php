@@ -120,8 +120,23 @@ class ListAction
                     } elseif (str_starts_with($searchPhrase, 'playlist:')) {
                         [, $playlistName] = explode(':', $searchPhrase, 2);
 
-                        $mediaQueryBuilder->andWhere('sp.name = :playlist_name')
-                            ->setParameter('playlist_name', $playlistName);
+                        $playlist = $em->getRepository(Entity\StationPlaylist::class)
+                            ->findOneBy(
+                                [
+                                    'station' => $station,
+                                    'name' => $playlistName,
+                                ]
+                            );
+
+                        if (!$playlist instanceof Entity\StationPlaylist) {
+                            return $response->withStatus(400)
+                                ->withJson(new Entity\Api\Error('Playlist not found.'));
+                        }
+
+                        $mediaQueryBuilder->andWhere(
+                            'sm.id IN (SELECT spm2.media_id FROM App\Entity\StationPlaylistMedia spm2 '
+                            . 'WHERE spm2.playlist = :playlist)'
+                        )->setParameter('playlist', $playlist);
                     } else {
                         $mediaQueryBuilder->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
                             ->setParameter('query', '%' . $searchPhrase . '%');

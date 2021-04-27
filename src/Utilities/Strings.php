@@ -11,7 +11,7 @@ class Strings
      * @param int $limit
      * @param string $pad
      */
-    public static function truncateText($text, $limit = 80, $pad = '...'): string
+    public static function truncateText(string $text, $limit = 80, $pad = '...'): string
     {
         mb_internal_encoding('UTF-8');
 
@@ -62,7 +62,7 @@ class Strings
      * @param string $break
      * @param bool $cut
      */
-    public static function mbWordwrap($str, $width = 75, $break = "\n", $cut = false): string
+    public static function mbWordwrap(string $str, $width = 75, $break = "\n", $cut = false): string
     {
         $lines = explode($break, $str);
         foreach ($lines as &$line) {
@@ -102,7 +102,7 @@ class Strings
      * @param string $url
      * @param int $length
      */
-    public static function truncateUrl($url, $length = 40): string
+    public static function truncateUrl(string $url, $length = 40): string
     {
         $url = str_replace(['http://', 'https://', 'www.'], '', $url);
 

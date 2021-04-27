@@ -18,8 +18,6 @@ class Customization
 
     protected Entity\Settings $settings;
 
-    protected Environment $environment;
-
     protected Locale $locale;
 
     protected string $theme = self::DEFAULT_THEME;
@@ -29,12 +27,11 @@ class Customization
     protected string $instanceName = '';
 
     public function __construct(
+        protected Environment $environment,
         Entity\Repository\SettingsRepository $settingsRepo,
-        Environment $environment,
         ServerRequestInterface $request
     ) {
         $this->settings = $settingsRepo->readSettings();
-        $this->environment = $environment;
 
         $this->instanceName = $this->settings->getInstanceName() ?? '';
 

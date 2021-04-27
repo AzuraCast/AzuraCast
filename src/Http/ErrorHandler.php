@@ -30,24 +30,14 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
 
     protected string $loggerLevel = LogLevel::ERROR;
 
-    protected Router $router;
-
-    protected FactoryInterface $factory;
-
-    protected Environment $environment;
-
     public function __construct(
+        protected FactoryInterface $factory,
+        protected Router $router,
+        protected Environment $environment,
         App $app,
-        FactoryInterface $factory,
         Logger $logger,
-        Router $router,
-        Environment $environment
     ) {
         parent::__construct($app->getCallableResolver(), $app->getResponseFactory(), $logger);
-
-        $this->environment = $environment;
-        $this->factory = $factory;
-        $this->router = $router;
     }
 
     public function __invoke(

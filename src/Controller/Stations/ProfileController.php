@@ -11,22 +11,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class ProfileController
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\StationRepository $station_repo;
-
-    protected StationForm $station_form;
-
     protected string $csrf_namespace = 'stations_profile';
 
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\StationRepository $station_repo,
-        StationForm $station_form
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\StationRepository $station_repo,
+        protected StationForm $station_form
     ) {
-        $this->em = $em;
-        $this->station_repo = $station_repo;
-        $this->station_form = $station_form;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface

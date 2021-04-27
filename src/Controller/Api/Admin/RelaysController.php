@@ -13,16 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class RelaysController
 {
-    protected EntityManagerInterface $em;
-
-    protected Adapters $adapters;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Adapters $adapters
+        protected EntityManagerInterface $em,
+        protected Adapters $adapters
     ) {
-        $this->em = $em;
-        $this->adapters = $adapters;
     }
 
     /**
@@ -104,7 +98,7 @@ class RelaysController
 
         return array_filter(
             $all_stations,
-            function (Entity\Station $station) use ($acl) {
+            static function (Entity\Station $station) use ($acl) {
                 return $acl->isAllowed(Acl::STATION_BROADCASTING, $station->getId());
             }
         );

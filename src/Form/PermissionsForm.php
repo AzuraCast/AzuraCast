@@ -12,17 +12,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PermissionsForm extends EntityForm
 {
-    protected Entity\Repository\RolePermissionRepository $permissions_repo;
-
     protected bool $set_permissions = true;
 
     public function __construct(
+        protected Entity\Repository\RolePermissionRepository $permissions_repo,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config,
         Entity\Repository\StationRepository $stations_repo,
-        Entity\Repository\RolePermissionRepository $permissions_repo,
         Acl $acl
     ) {
         $form_config = $config->get('forms/role', [
@@ -33,20 +31,19 @@ class PermissionsForm extends EntityForm
         parent::__construct($em, $serializer, $validator, $form_config);
 
         $this->entityClass = Entity\Role::class;
-        $this->permissions_repo = $permissions_repo;
     }
 
     /**
      * @inheritDoc
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if ($record instanceof Entity\Role && Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID === $record->getId()) {
             $this->set_permissions = false;
 
             foreach ($this->fields as $field_id => $field) {
                 $attrs = $field->getAttributes();
-                if (isset($attrs['class']) && strpos($attrs['class'], 'permission-select') !== false) {
+                if (isset($attrs['class']) && str_contains($attrs['class'], 'permission-select')) {
                     unset($this->fields[$field_id]);
                 }
             }
@@ -55,7 +52,7 @@ class PermissionsForm extends EntityForm
         return parent::process($request, $record);
     }
 
-    protected function denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function denormalizeToRecord(array $data, $record = null, array $context = []): object
     {
         $record = parent::denormalizeToRecord($data, $record, $context);
 
@@ -72,7 +69,7 @@ class PermissionsForm extends EntityForm
     /**
      * @inheritDoc
      */
-    protected function normalizeRecord($record, array $context = []): array
+    protected function normalizeRecord(object $record, array $context = []): array
     {
         $data = parent::normalizeRecord($record, $context);
 

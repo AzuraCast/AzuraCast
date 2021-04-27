@@ -48,12 +48,12 @@ abstract class CestAbstract
     {
         $I->wantTo('Start with an incomplete setup.');
 
-        $settings = $this->settingsRepo->readSettings(true);
+        $this->_cleanTables();
+
+        $settings = $this->settingsRepo->readSettings();
         $settings->setSetupCompleteTime(0);
 
         $this->settingsRepo->writeSettings($settings);
-
-        $this->_cleanTables();
     }
 
     protected function setupComplete(FunctionalTester $I): void
@@ -93,9 +93,9 @@ abstract class CestAbstract
         $this->test_station = $this->stationRepo->create($test_station);
 
         // Set settings.
-        $settings = $this->settingsRepo->readSettings(true);
+        $settings = $this->settingsRepo->readSettings();
         $settings->updateSetupComplete();
-        $settings->setBaseUrl('localhost');
+        $settings->setBaseUrl('http://localhost');
         $this->settingsRepo->writeSettings($settings);
     }
 
@@ -136,11 +136,14 @@ abstract class CestAbstract
             Entity\User::class,
             Entity\Role::class,
             Entity\Station::class,
+            Entity\Settings::class,
         ];
 
         foreach ($clean_tables as $clean_table) {
             $this->em->createQuery('DELETE FROM ' . $clean_table . ' t')->execute();
         }
+
+        $this->em->clear();
     }
 
     protected function login(FunctionalTester $I): void

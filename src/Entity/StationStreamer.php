@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Normalizer\Annotation\DeepNormalize;
+use App\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,8 @@ use const PASSWORD_ARGON2ID;
  * })
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
+ *
+ * @UniqueEntity(fields={"station", "streamer_username"})
  *
  * @AuditLog\Auditable
  *

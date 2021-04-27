@@ -15,8 +15,26 @@ class Form extends \AzuraForms\Form
 
     protected function addCsrfField(): void
     {
-        $this->addField(self::CSRF_FIELD_NAME, Field\Csrf::class, [
-            'csrf_key' => $this->name,
-        ]);
+        $this->addField(
+            self::CSRF_FIELD_NAME,
+            Field\Csrf::class,
+            [
+                'csrf_key' => $this->name,
+            ]
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFormAttributes(): array
+    {
+        $attrs = parent::getFormAttributes();
+
+        if (!empty($this->options['tabs'])) {
+            $attrs['novalidate'] = 'novalidate';
+        }
+
+        return $attrs;
     }
 }

@@ -15,20 +15,11 @@ use function array_slice;
 
 class OverviewController
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\AnalyticsRepository $analyticsRepo;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\AnalyticsRepository $analyticsRepo
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\AnalyticsRepository $analyticsRepo
     ) {
-        $this->em = $em;
-        $this->settings = $settingsRepo->readSettings();
-        $this->analyticsRepo = $analyticsRepo;
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
@@ -37,7 +28,8 @@ class OverviewController
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        $analytics_level = $this->settings->getAnalytics();
+        $settings = $this->settingsRepo->readSettings();
+        $analytics_level = $settings->getAnalytics();
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
@@ -50,8 +42,7 @@ class OverviewController
         // Statistics by day.
         $dailyStats = $this->analyticsRepo->findForStationAfterTime(
             $station,
-            $statisticsThreshold,
-            Entity\Analytics::INTERVAL_DAILY
+            $statisticsThreshold
         );
 
         $daily_chart = new stdClass();
@@ -160,7 +151,7 @@ class OverviewController
 
         for ($i = 0; $i < 24; $i++) {
             $hourly_labels[] = $i . ':00';
-            $totals = $totals_by_hour[$i] ?: [0];
+            $totals = $totals_by_hour[$i] ?? [0];
 
             $stat_value = round(array_sum($totals) / count($totals), 2);
             $hourly_rows[] = $stat_value;
@@ -197,11 +188,13 @@ class OverviewController
         $song_totals = [];
 
         foreach ($song_totals_raw as $total_type => $total_records) {
+            $song_totals[$total_type] = [];
+
             foreach ($total_records as $total_record) {
                 $song_totals[$total_type][] = $total_record;
             }
 
-            $song_totals[$total_type] = array_slice((array)$song_totals[$total_type], 0, 10, true);
+            $song_totals[$total_type] = array_slice($song_totals[$total_type], 0, 10, true);
         }
 
         /* Song "Deltas" (Changes in Listener Count) */
@@ -239,7 +232,7 @@ class OverviewController
 
         usort(
             $songs,
-            function ($a_arr, $b_arr) {
+            static function ($a_arr, $b_arr) {
                 $a = $a_arr['stat_delta'];
                 $b = $b_arr['stat_delta'];
 

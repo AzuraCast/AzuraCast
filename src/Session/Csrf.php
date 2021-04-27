@@ -14,14 +14,10 @@ class Csrf
     public const CODE_LENGTH = 10;
     public const DEFAULT_NAMESPACE = 'general';
 
-    protected SessionInterface $session;
-
-    protected Environment $environment;
-
-    public function __construct(SessionInterface $session, Environment $environment)
-    {
-        $this->session = $session;
-        $this->environment = $environment;
+    public function __construct(
+        protected SessionInterface $session,
+        protected Environment $environment
+    ) {
     }
 
     /**

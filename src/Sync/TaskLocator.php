@@ -7,14 +7,11 @@ use Psr\Container\ContainerInterface;
 
 class TaskLocator
 {
-    protected ContainerInterface $di;
-
     protected array $tasks;
 
-    public function __construct(ContainerInterface $di)
-    {
-        $this->di = $di;
-
+    public function __construct(
+        protected ContainerInterface $di
+    ) {
         $this->tasks = [
             GetSyncTasks::SYNC_NOWPLAYING => [
                 Task\BuildQueueTask::class,

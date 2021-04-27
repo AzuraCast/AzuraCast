@@ -32,25 +32,15 @@ class Acl
     public const STATION_AUTOMATION = 'manage station automation';
     public const STATION_WEB_HOOKS = 'manage station web hooks';
 
-    protected Entity\Repository\RolePermissionRepository $permissionRepo;
-
-    protected EventDispatcher $dispatcher;
-
     protected array $permissions;
 
     protected ?array $actions;
 
-    protected ?Entity\User $user;
-
     public function __construct(
-        Entity\Repository\RolePermissionRepository $rolePermissionRepository,
-        EventDispatcher $dispatcher,
-        ?Entity\User $user = null
+        protected Entity\Repository\RolePermissionRepository $permissionRepo,
+        protected EventDispatcher $dispatcher,
+        protected ?Entity\User $user = null
     ) {
-        $this->permissionRepo = $rolePermissionRepository;
-        $this->dispatcher = $dispatcher;
-        $this->setUser($user);
-
         $this->permissions = $this->listPermissions();
         $this->reload();
     }
@@ -72,7 +62,7 @@ class Acl
      * @param string $permission_name
      * @param bool $is_global
      */
-    public function isValidPermission($permission_name, $is_global): bool
+    public function isValidPermission(string $permission_name, bool $is_global): bool
     {
         return $is_global
             ? isset($this->permissions['global'][$permission_name])
@@ -119,18 +109,16 @@ class Acl
         $buildPermissionsEvent = new Event\BuildPermissions($permissions);
         $this->dispatcher->dispatch($buildPermissionsEvent);
 
-        $permissions = $buildPermissionsEvent->getPermissions();
-
-        return $permissions;
+        return $buildPermissionsEvent->getPermissions();
     }
 
     /**
      * Check if the current user associated with the request has the specified permission.
      *
-     * @param string|array $action
+     * @param array|string $action
      * @param int|Entity\Station|null $stationId
      */
-    public function isAllowed($action, $stationId = null): bool
+    public function isAllowed(array|string $action, $stationId = null): bool
     {
         return $this->userAllowed($this->user, $action, $stationId);
     }
@@ -139,10 +127,10 @@ class Acl
      * Check if a specified User entity is allowed to perform an action (or array of actions).
      *
      * @param Entity\User|null $user
-     * @param string|array $action
+     * @param array|string $action
      * @param int|Entity\Station|null $stationId
      */
-    public function userAllowed(?Entity\User $user = null, $action, $stationId = null): bool
+    public function userAllowed(?Entity\User $user = null, array|string $action, $stationId = null): bool
     {
         if (!($user instanceof Entity\User)) {
             return false;
@@ -175,11 +163,11 @@ class Acl
     /**
      * Check if a role (or array of roles) is allowed to perform an action (or array of actions).
      *
-     * @param int|array $role_id
-     * @param string|array $action
+     * @param array|int $role_id
+     * @param array|string $action
      * @param int|Entity\Station|null $station_id
      */
-    public function roleAllowed($role_id, $action, $station_id = null): bool
+    public function roleAllowed(array|int $role_id, array|string $action, $station_id = null): bool
     {
         if ($station_id instanceof Entity\Station) {
             $station_id = $station_id->getId();

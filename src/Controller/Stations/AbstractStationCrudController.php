@@ -15,8 +15,6 @@ use Doctrine\Persistence\ObjectRepository;
 
 abstract class AbstractStationCrudController
 {
-    protected EntityForm $form;
-
     protected EntityManagerInterface $em;
 
     protected string $entity_class;
@@ -25,10 +23,9 @@ abstract class AbstractStationCrudController
 
     protected string $csrf_namespace;
 
-    public function __construct(EntityForm $form)
-    {
-        $this->form = $form;
-
+    public function __construct(
+        protected EntityForm $form
+    ) {
         $this->em = $form->getEntityManager();
         $this->entity_class = $form->getEntityClass();
         $this->record_repo = $form->getEntityRepository();
@@ -38,9 +35,8 @@ abstract class AbstractStationCrudController
      * @param ServerRequest $request
      * @param string|int|null $id
      *
-     * @return object|bool|null
      */
-    protected function doEdit(ServerRequest $request, $id = null)
+    protected function doEdit(ServerRequest $request, $id = null): object|bool|null
     {
         $station = $request->getStation();
         $this->form->setStation($station);
@@ -70,7 +66,7 @@ abstract class AbstractStationCrudController
 
     /**
      * @param ServerRequest $request
-     * @param string|int $id
+     * @param int|string $id
      * @param string $csrf
      *
      * @throws NotFoundException
@@ -79,7 +75,7 @@ abstract class AbstractStationCrudController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    protected function doDelete(ServerRequest $request, $id, $csrf): void
+    protected function doDelete(ServerRequest $request, int|string $id, string $csrf): void
     {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 

@@ -20,10 +20,7 @@ trait UniqueId
      */
     protected $unique_id;
 
-    /**
-     * @return mixed
-     */
-    public function getUniqueId()
+    public function getUniqueId(): string
     {
         return $this->unique_id;
     }

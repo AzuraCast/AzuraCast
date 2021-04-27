@@ -5,6 +5,7 @@ namespace App\Http;
 use Azura\Files\Adapter\LocalAdapterInterface;
 use Azura\Files\ExtendedFilesystemInterface;
 use Azura\Files\FilesystemInterface;
+use InvalidArgumentException;
 use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -21,7 +22,7 @@ final class Response extends \Slim\Http\Response
      * Send headers that expire the content immediately and prevent caching.
      * @return static
      */
-    public function withNoCache()
+    public function withNoCache(): static
     {
         $response = $this->response
             ->withHeader('Pragma', 'no-cache')
@@ -39,7 +40,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function withCacheLifetime(int $seconds = self::CACHE_ONE_MONTH)
+    public function withCacheLifetime(int $seconds = self::CACHE_ONE_MONTH): static
     {
         $response = $this->response
             ->withHeader('Pragma', '')
@@ -56,10 +57,10 @@ final class Response extends \Slim\Http\Response
     public function hasCacheLifetime(): bool
     {
         if ($this->response->hasHeader('Pragma')) {
-            return (false === strpos($this->response->getHeaderLine('Pragma'), 'no-cache'));
+            return (!str_contains($this->response->getHeaderLine('Pragma'), 'no-cache'));
         }
 
-        return (false === strpos($this->response->getHeaderLine('Cache-Control'), 'no-cache'));
+        return (!str_contains($this->response->getHeaderLine('Cache-Control'), 'no-cache'));
     }
 
     /**
@@ -86,7 +87,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function renderFile($file_path, $file_name = null)
+    public function renderFile(string $file_path, $file_name = null): static
     {
         set_time_limit(600);
 
@@ -117,7 +118,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function renderStringAsFile($file_data, $content_type, $file_name = null)
+    public function renderStringAsFile(string $file_data, string $content_type, $file_name = null): static
     {
         $response = $this->response
             ->withHeader('Pragma', 'public')
@@ -147,7 +148,7 @@ final class Response extends \Slim\Http\Response
         StreamInterface $fileStream,
         string $contentType,
         ?string $fileName = null
-    ) {
+    ): static {
         set_time_limit(600);
 
         $response = $this->response
@@ -174,7 +175,7 @@ final class Response extends \Slim\Http\Response
         /** @var FileAttributes $fileMeta */
         $fileMeta = $filesystem->getMetadata($path);
         if (!$fileMeta->isFile()) {
-            throw new \InvalidArgumentException('Specified file is not a file!');
+            throw new InvalidArgumentException('Specified file is not a file!');
         }
 
         $fileName ??= basename($path);
@@ -203,7 +204,7 @@ final class Response extends \Slim\Http\Response
             ];
 
             foreach ($specialPaths as $diskPath => $nginxPath) {
-                if (0 === strpos($localPath, $diskPath)) {
+                if (str_starts_with($localPath, $diskPath)) {
                     $accelPath = str_replace($diskPath, $nginxPath, $localPath);
 
                     return $response->withHeader('Content-Type', $fileMeta->mimeType())

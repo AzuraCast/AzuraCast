@@ -14,20 +14,13 @@ class RunAutomatedAssignmentTask extends AbstractTask
 {
     public const DEFAULT_THRESHOLD_DAYS = 14;
 
-    protected Entity\Repository\StationMediaRepository $mediaRepo;
-
-    protected Adapters $adapters;
-
     public function __construct(
+        protected Entity\Repository\StationMediaRepository $mediaRepo,
+        protected Adapters $adapters,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        Adapters $adapters
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->mediaRepo = $mediaRepo;
-        $this->adapters = $adapters;
     }
 
     /**
@@ -37,19 +30,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
      */
     public function run(bool $force = false): void
     {
-        // Check all stations for automation settings.
-        // Use this to avoid detached entity errors.
-        $stations = BatchIteratorAggregate::fromQuery(
-            $this->em->createQuery(
-                <<<'DQL'
-                    SELECT s FROM App\Entity\Station s
-                DQL
-            ),
-            1
-        );
-
-        foreach ($stations as $station) {
-            /** @var Entity\Station $station */
+        foreach ($this->iterateStations() as $station) {
             try {
                 if ($this->runStation($station)) {
                     $this->logger->info('Automated assignment [' . $station->getName() . ']: Successfully run.');
@@ -79,7 +60,6 @@ class RunAutomatedAssignmentTask extends AbstractTask
         if (!$force && $station->getAutomationTimestamp() >= $threshold) {
             return false;
         } // No error, but no need to run assignment.
-
 
         // Pull songs in current playlists, then clear those playlists.
         $getSongsInPlaylistQuery = $this->em->createQuery(
@@ -126,7 +106,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
         // Remove songs that weren't already in auto-assigned playlists.
         $mediaReport = array_filter(
             $mediaReport,
-            function ($media) use ($mediaToUpdate) {
+            static function ($media) use ($mediaToUpdate) {
                 return (isset($mediaToUpdate[$media['id']]));
             }
         );
@@ -141,7 +121,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
         // Sort songs by ratio descending.
         uasort(
             $mediaReport,
-            function ($a_media, $b_media) {
+            static function ($a_media, $b_media) {
                 return (int)$b_media['ratio'] <=> (int)$a_media['ratio'];
             }
         );
@@ -187,10 +167,9 @@ class RunAutomatedAssignmentTask extends AbstractTask
 
         $this->em->clear();
 
-        /** @var Entity\Station $station */
-        $station = $this->em->find(Entity\Station::class, $station->getId());
-
+        $station = $this->em->refetch($station);
         $station->setAutomationTimestamp(time());
+
         $this->em->persist($station);
         $this->em->flush();
 
@@ -250,8 +229,8 @@ class RunAutomatedAssignmentTask extends AbstractTask
         $iterator = BatchIteratorAggregate::fromQuery($mediaQuery, 100);
         $report = [];
 
+        /** @var Entity\StationMedia $row */
         foreach ($iterator as $row) {
-            /** @var Entity\StationMedia $row */
             $songId = $row->getSongId();
 
             $media = [
@@ -278,8 +257,8 @@ class RunAutomatedAssignmentTask extends AbstractTask
             ];
 
             if ($row->getPlaylists()->count() > 0) {
+                /** @var Entity\StationPlaylistMedia $playlist_item */
                 foreach ($row->getPlaylists() as $playlist_item) {
-                    /** @var Entity\StationPlaylistMedia $playlist_item */
                     $playlist = $playlist_item->getPlaylist();
                     $media['playlists'][] = $playlist->getName();
                 }

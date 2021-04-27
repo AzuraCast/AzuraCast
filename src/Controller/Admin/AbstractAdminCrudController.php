@@ -10,8 +10,6 @@ use Doctrine\Persistence\ObjectRepository;
 
 abstract class AbstractAdminCrudController
 {
-    protected EntityForm $form;
-
     protected EntityManagerInterface $em;
 
     protected string $entity_class;
@@ -20,10 +18,9 @@ abstract class AbstractAdminCrudController
 
     protected string $csrf_namespace;
 
-    public function __construct(EntityForm $form)
-    {
-        $this->form = $form;
-
+    public function __construct(
+        protected EntityForm $form
+    ) {
         $this->em = $form->getEntityManager();
         $this->entity_class = $form->getEntityClass();
         $this->record_repo = $form->getEntityRepository();
@@ -33,9 +30,8 @@ abstract class AbstractAdminCrudController
      * @param ServerRequest $request
      * @param string|int|null $id
      *
-     * @return object|bool|null
      */
-    protected function doEdit(ServerRequest $request, $id = null)
+    protected function doEdit(ServerRequest $request, $id = null): object|bool|null
     {
         $record = $this->getRecord($id);
         return $this->form->process($request, $record);
@@ -61,10 +57,10 @@ abstract class AbstractAdminCrudController
 
     /**
      * @param ServerRequest $request
-     * @param string|int $id
+     * @param int|string $id
      * @param string $csrf
      */
-    protected function doDelete(ServerRequest $request, $id, $csrf): void
+    protected function doDelete(ServerRequest $request, int|string $id, string $csrf): void
     {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 

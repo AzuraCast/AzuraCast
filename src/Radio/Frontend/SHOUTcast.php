@@ -4,7 +4,6 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use Exception;
-use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Process\Process;
@@ -68,11 +67,11 @@ class SHOUTcast extends AbstractFrontend
         $defaultResult = Result::blank();
         $otherResults = [];
 
-        try {
-            $sid = 0;
-            foreach ($station->getMounts() as $mount) {
-                $sid++;
+        $sid = 0;
+        foreach ($station->getMounts() as $mount) {
+            $sid++;
 
+            try {
                 $result = $npAdapter->getNowPlaying((string)$sid, $includeClients);
 
                 if (!empty($result->clients)) {
@@ -80,25 +79,27 @@ class SHOUTcast extends AbstractFrontend
                         $client->mount = 'local_' . $mount->getId();
                     }
                 }
+            } catch (Exception $e) {
+                $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
 
-                $mount->setListenersTotal($result->listeners->total);
-                $mount->setListenersUnique($result->listeners->unique);
-                $this->em->persist($mount);
-
-                if ($mount->getIsDefault()) {
-                    $defaultResult = $result;
-                } else {
-                    $otherResults[] = $result;
-                }
+                $result = Result::blank();
             }
 
-            $this->em->flush();
+            $mount->setListenersTotal($result->listeners->total);
+            $mount->setListenersUnique($result->listeners->unique ?? 0);
+            $this->em->persist($mount);
 
-            foreach ($otherResults as $otherResult) {
-                $defaultResult = $defaultResult->merge($otherResult);
+            if ($mount->getIsDefault()) {
+                $defaultResult = $result;
+            } else {
+                $otherResults[] = $result;
             }
-        } catch (Exception $e) {
-            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+        }
+
+        $this->em->flush();
+
+        foreach ($otherResults as $otherResult) {
+            $defaultResult = $defaultResult->merge($otherResult);
         }
 
         return $defaultResult;

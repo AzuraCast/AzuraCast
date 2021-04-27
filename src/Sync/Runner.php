@@ -9,6 +9,7 @@ use App\EventDispatcher;
 use App\LockFactory;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
@@ -18,32 +19,14 @@ use Psr\Log\LogLevel;
  */
 class Runner
 {
-    protected Logger $logger;
-
-    protected Environment $environment;
-
-    protected SettingsRepository $settingsRepo;
-
-    protected LockFactory $lockFactory;
-
-    protected EventDispatcher $eventDispatcher;
-
-    protected EntityManagerInterface $em;
-
     public function __construct(
-        SettingsRepository $settingsRepo,
-        Environment $environment,
-        Logger $logger,
-        LockFactory $lockFactory,
-        EventDispatcher $eventDispatcher,
-        EntityManagerInterface $em
+        protected SettingsRepository $settingsRepo,
+        protected Environment $environment,
+        protected Logger $logger,
+        protected LockFactory $lockFactory,
+        protected EventDispatcher $eventDispatcher,
+        protected EntityManagerInterface $em
     ) {
-        $this->settingsRepo = $settingsRepo;
-        $this->environment = $environment;
-        $this->logger = $logger;
-        $this->lockFactory = $lockFactory;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->em = $em;
     }
 
     public function __invoke(Message\AbstractMessage $message): void
@@ -78,7 +61,7 @@ class Runner
         $allSyncInfo = $this->getSyncTimes();
 
         if (!isset($allSyncInfo[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid sync task: %s', $type));
+            throw new InvalidArgumentException(sprintf('Invalid sync task: %s', $type));
         }
 
         $syncInfo = $allSyncInfo[$type];
@@ -92,16 +75,13 @@ class Runner
             ]
         );
 
-        $lock = $this->lockFactory->createLock('sync_' . $type, $syncInfo['timeout']);
+        $lock = $this->lockFactory->createAndAcquireLock(
+            resource: 'sync_' . $type,
+            ttl: $syncInfo['timeout'],
+            force: $force
+        );
 
-        if ($force) {
-            $this->lockFactory->clearQueue('sync_' . $type);
-            try {
-                $lock->acquire($force);
-            } catch (\Exception $e) {
-                // Noop
-            }
-        } elseif (!$lock->acquire()) {
+        if (false === $lock) {
             return;
         }
 
@@ -109,20 +89,19 @@ class Runner
             $event = new GetSyncTasks($type);
             $this->eventDispatcher->dispatch($event);
 
-            $tasks = $event->getTasks();
-
-            foreach ($tasks as $taskClass => $task) {
-                if (!$force && !$lock->isAcquired()) {
-                    $this->logger->error(
-                        sprintf('Lock timed out before task %s can run.', $taskClass)
-                    );
-                    return;
+            foreach ($event->getTasks() as $taskClass => $task) {
+                try {
+                    $lock->refresh($syncInfo['timeout']);
+                } catch (\Exception) {
+                    // Noop
                 }
 
-                $this->logger->debug(sprintf(
-                    'Starting sub-task: %s',
-                    $taskClass
-                ));
+                $this->logger->debug(
+                    sprintf(
+                        'Starting sub-task: %s',
+                        $taskClass
+                    )
+                );
 
                 $start_time = microtime(true);
 
@@ -145,7 +124,7 @@ class Runner
                 gc_collect_cycles();
             }
 
-            $settings = $this->settingsRepo->readSettings(true);
+            $settings = $this->settingsRepo->readSettings();
             $settings->updateSyncLastRunTime($type);
             $this->settingsRepo->writeSettings($settings);
         } finally {

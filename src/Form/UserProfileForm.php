@@ -34,7 +34,7 @@ class UserProfileForm extends EntityForm
     /**
      * @inheritDoc
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         $user = $request->getUser();
 

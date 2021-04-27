@@ -13,24 +13,14 @@ use Symfony\Component\Messenger\MessageBus;
 
 class RunBackupTask extends AbstractTask
 {
-    protected MessageBus $messageBus;
-
-    protected Application $console;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
+        protected MessageBus $messageBus,
+        protected Application $console,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        MessageBus $messageBus,
-        Application $console,
-        Entity\Repository\SettingsRepository $settingsRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->messageBus = $messageBus;
-        $this->console = $console;
-        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -41,7 +31,7 @@ class RunBackupTask extends AbstractTask
     public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof Message\BackupMessage) {
-            $settings = $this->settingsRepo->readSettings(true);
+            $settings = $this->settingsRepo->readSettings();
             $settings->updateBackupLastRun();
 
             $this->settingsRepo->writeSettings($settings);
@@ -53,7 +43,7 @@ class RunBackupTask extends AbstractTask
                 $message->storageLocationId
             );
 
-            $settings = $this->settingsRepo->readSettings(true);
+            $settings = $this->settingsRepo->readSettings();
             $settings->setBackupLastResult($result_code);
             $settings->setBackupLastOutput($result_output);
             $this->settingsRepo->writeSettings($settings);

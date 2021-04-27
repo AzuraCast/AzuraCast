@@ -7,13 +7,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class GetAlbumArt extends Event
 {
-    protected Entity\SongInterface $song;
-
     protected ?string $albumArt = null;
 
-    public function __construct(Entity\SongInterface $song)
-    {
-        $this->song = $song;
+    public function __construct(
+        protected Entity\SongInterface $song
+    ) {
     }
 
     public function getSong(): Entity\SongInterface

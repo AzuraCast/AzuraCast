@@ -26,16 +26,15 @@ class DeferredCallable
      * @param callable|string $callable
      * @param CallableResolverInterface|null $resolver
      */
-    public function __construct($callable, ?CallableResolverInterface $resolver = null)
+    public function __construct(callable|string $callable, ?CallableResolverInterface $resolver = null)
     {
         $this->callable = $callable;
         $this->callableResolver = $resolver;
     }
 
     /**
-     * @return mixed
      */
-    public function __invoke(...$args)
+    public function __invoke(...$args): mixed
     {
         /** @var callable $callable */
         $callable = $this->callable;

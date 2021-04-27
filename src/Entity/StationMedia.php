@@ -300,7 +300,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     /**
      * @param int $length
      */
-    public function setLength($length): void
+    public function setLength(int $length): void
     {
         $length_min = floor($length / 60);
         $length_sec = $length % 60;
@@ -420,7 +420,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
             return null;
         }
 
-        if (false !== strpos($seconds, ':')) {
+        if (str_contains($seconds, ':')) {
             $sec = 0;
             foreach (array_reverse(explode(':', $seconds)) as $k => $v) {
                 $sec += (60 ** (int)$k) * (int)$v;
@@ -458,22 +458,6 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public function setArtUpdatedAt(int $art_updated_at): void
     {
         $this->art_updated_at = $art_updated_at;
-    }
-
-    public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
-    {
-        $item = $this->playlists->filter(
-            function ($spm) use ($playlist) {
-                /** @var StationPlaylistMedia $spm */
-                return $spm->getPlaylist()->getId() === $playlist->getId();
-            }
-        );
-
-        $firstItem = $item->first();
-
-        return ($firstItem instanceof StationPlaylistMedia)
-            ? $firstItem
-            : null;
     }
 
     public function getCustomFields(): Collection

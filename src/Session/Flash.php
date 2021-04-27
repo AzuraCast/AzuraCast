@@ -21,11 +21,9 @@ class Flash
 
     protected ?array $messages = null;
 
-    protected SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
+    public function __construct(
+        protected SessionInterface $session
+    ) {
     }
 
     /**
@@ -35,7 +33,7 @@ class Flash
      * @param string $level
      * @param bool $saveInSession
      */
-    public function alert($message, $level = self::INFO, $saveInSession = true): void
+    public function alert(string $message, $level = self::INFO, $saveInSession = true): void
     {
         $this->addMessage($message, $level, $saveInSession);
     }
@@ -47,7 +45,7 @@ class Flash
      * @param string $level
      * @param bool $saveInSession
      */
-    public function addMessage($message, $level = self::INFO, $saveInSession = true): void
+    public function addMessage(string $message, $level = self::INFO, $saveInSession = true): void
     {
         $colorChart = [
             'green' => self::SUCCESS,

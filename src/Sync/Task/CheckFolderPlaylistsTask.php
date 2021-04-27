@@ -2,45 +2,28 @@
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
+use Azura\Files\ExtendedFilesystemInterface;
+use Doctrine\ORM\Query;
 use Psr\Log\LoggerInterface;
 
 class CheckFolderPlaylistsTask extends AbstractTask
 {
-    protected Entity\Repository\StationPlaylistFolderRepository $folderRepo;
-
-    protected Entity\Repository\StationPlaylistMediaRepository $spmRepo;
-
     public function __construct(
+        protected Entity\Repository\StationPlaylistMediaRepository $spmRepo,
+        protected Entity\Repository\StationPlaylistFolderRepository $folderRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        Entity\Repository\StationPlaylistFolderRepository $folderRepo
     ) {
         parent::__construct($em, $logger);
-
-        $this->spmRepo = $spmRepo;
-        $this->folderRepo = $folderRepo;
     }
 
     public function run(bool $force = false): void
     {
-        $stations = BatchIteratorAggregate::fromQuery(
-            $this->em->createQuery(
-                <<<'DQL'
-                    SELECT s FROM App\Entity\Station s
-                DQL
-            ),
-            1
-        );
-
-        foreach ($stations as $station) {
-            /** @var Entity\Station $station */
+        foreach ($this->iterateStations() as $station) {
             $this->syncPlaylistFolders($station);
-            gc_collect_cycles();
         }
     }
 
@@ -78,56 +61,76 @@ class CheckFolderPlaylistsTask extends AbstractTask
                 continue;
             }
 
-            $folders = $playlist->getFolders();
-            if (0 === $folders->count()) {
+            $this->em->transactional(
+                function () use ($station, $playlist, $fsMedia, $mediaInPlaylistQuery, $mediaInFolderQuery): void {
+                    $this->processPlaylist(
+                        $station,
+                        $playlist,
+                        $fsMedia,
+                        $mediaInPlaylistQuery,
+                        $mediaInFolderQuery
+                    );
+                }
+            );
+        }
+    }
+
+    protected function processPlaylist(
+        Entity\Station $station,
+        Entity\StationPlaylist $playlist,
+        ExtendedFilesystemInterface $fsMedia,
+        Query $mediaInPlaylistQuery,
+        Query $mediaInFolderQuery
+    ): void {
+        $folders = $playlist->getFolders();
+        if (0 === $folders->count()) {
+            return;
+        }
+
+        // Get all media IDs that are already in the playlist.
+        $mediaInPlaylistRaw = $mediaInPlaylistQuery->setParameter('playlist_id', $playlist->getId())
+            ->getArrayResult();
+        $mediaInPlaylist = array_column($mediaInPlaylistRaw, 'media_id', 'media_id');
+
+        foreach ($folders as $folder) {
+            $path = $folder->getPath();
+
+            // Verify the folder still exists.
+            if (!$fsMedia->isDir($path)) {
+                $this->em->remove($folder);
                 continue;
             }
 
-            // Get all media IDs that are already in the playlist.
-            $mediaInPlaylistRaw = $mediaInPlaylistQuery->setParameter('playlist_id', $playlist->getId())
+            $mediaInFolderRaw = $mediaInFolderQuery->setParameter('path', $path . '/%')
                 ->getArrayResult();
-            $mediaInPlaylist = array_column($mediaInPlaylistRaw, 'media_id', 'media_id');
 
-            foreach ($folders as $folder) {
-                $path = $folder->getPath();
+            $addedRecords = 0;
+            foreach ($mediaInFolderRaw as $row) {
+                $mediaId = $row['id'];
 
-                // Verify the folder still exists.
-                if (!$fsMedia->isDir($path)) {
-                    $this->em->remove($folder);
-                }
+                if (!isset($mediaInPlaylist[$mediaId])) {
+                    $media = $this->em->find(Entity\StationMedia::class, $mediaId);
 
-                $mediaInFolderRaw = $mediaInFolderQuery->setParameter('path', $path . '/%')
-                    ->getArrayResult();
-
-                $addedRecords = 0;
-                foreach ($mediaInFolderRaw as $row) {
-                    $mediaId = $row['id'];
-
-                    if (!isset($mediaInPlaylist[$mediaId])) {
-                        $media = $this->em->find(Entity\StationMedia::class, $mediaId);
+                    if ($media instanceof Entity\StationMedia) {
                         $this->spmRepo->addMediaToPlaylist($media, $playlist);
 
                         $mediaInPlaylist[$mediaId] = $mediaId;
                         $addedRecords++;
                     }
                 }
-
-                $logMessage = (0 === $addedRecords)
-                    ? 'No changes detected in folder.'
-                    : sprintf('%d media records added from folder.', $addedRecords);
-
-                $this->logger->debug(
-                    $logMessage,
-                    [
-                        'playlist' => $playlist->getName(),
-                        'folder' => $folder->getPath(),
-                    ]
-                );
             }
 
-            $this->em->flush();
-        }
+            $logMessage = (0 === $addedRecords)
+                ? 'No changes detected in folder.'
+                : sprintf('%d media records added from folder.', $addedRecords);
 
-        $this->em->clear();
+            $this->logger->debug(
+                $logMessage,
+                [
+                    'playlist' => $playlist->getName(),
+                    'folder' => $folder->getPath(),
+                ]
+            );
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Entity\Api;
 
 use App\Exception;
 use OpenApi\Annotations as OA;
+use Throwable;
 
 /**
  * @OA\Schema(type="object", schema="Api_Error")
@@ -63,7 +64,7 @@ class Error
         $this->success = false;
     }
 
-    public static function fromException(\Throwable $e, bool $includeTrace = false): self
+    public static function fromException(Throwable $e, bool $includeTrace = false): self
     {
         $code = (int)$e->getCode();
         if (0 === $code) {

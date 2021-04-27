@@ -14,20 +14,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class InternalController
 {
-    protected NowPlayingTask $syncNowPlaying;
-
-    protected AutoDJ $autodj;
-
-    protected Logger $logger;
-
     public function __construct(
-        NowPlayingTask $syncNowPlaying,
-        AutoDJ $autodj,
-        Logger $logger
+        protected NowPlayingTask $syncNowPlaying,
+        protected AutoDJ $autodj,
+        protected Logger $logger
     ) {
-        $this->syncNowPlaying = $syncNowPlaying;
-        $this->autodj = $autodj;
-        $this->logger = $logger;
     }
 
     public function authAction(ServerRequest $request, Response $response): ResponseInterface

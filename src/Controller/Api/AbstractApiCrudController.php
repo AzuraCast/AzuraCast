@@ -19,23 +19,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractApiCrudController
 {
-    protected EntityManagerInterface $em;
-
-    protected Serializer $serializer;
-
-    protected ValidatorInterface $validator;
-
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
     /** @var string The route name used to generate the "self" links for each record. */
     protected string $resourceRouteName;
 
-    public function __construct(EntityManagerInterface $em, Serializer $serializer, ValidatorInterface $validator)
-    {
-        $this->em = $em;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Serializer $serializer,
+        protected ValidatorInterface $validator
+    ) {
     }
 
     protected function listPaginatedFromQuery(
@@ -68,9 +62,8 @@ abstract class AbstractApiCrudController
      * @param object $record
      * @param ServerRequest $request
      *
-     * @return mixed
      */
-    protected function viewRecord($record, ServerRequest $request)
+    protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
@@ -93,7 +86,7 @@ abstract class AbstractApiCrudController
      *
      * @return mixed[]
      */
-    protected function toArray($record, array $context = []): array
+    protected function toArray(object $record, array $context = []): array
     {
         return $this->serializer->normalize(
             $record,
@@ -126,9 +119,8 @@ abstract class AbstractApiCrudController
     /**
      * @param object $object
      *
-     * @return mixed
      */
-    protected function displayShortenedObject($object)
+    protected function displayShortenedObject(object $object): mixed
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();
@@ -142,7 +134,7 @@ abstract class AbstractApiCrudController
      * @param object|null $record
      * @param array $context
      */
-    protected function editRecord($data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
@@ -168,7 +160,7 @@ abstract class AbstractApiCrudController
      * @param object|null $record
      * @param array $context
      */
-    protected function fromArray($data, $record = null, array $context = []): object
+    protected function fromArray(array $data, $record = null, array $context = []): object
     {
         if (null !== $record) {
             $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;
@@ -183,7 +175,7 @@ abstract class AbstractApiCrudController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    protected function deleteRecord($record): void
+    protected function deleteRecord(object $record): void
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

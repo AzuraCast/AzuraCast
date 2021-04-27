@@ -3,32 +3,27 @@
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
+use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController
 {
-    protected Entity\Repository\StationScheduleRepository $scheduleRepo;
-
-    protected Scheduler $scheduler;
-
     public function __construct(
+        protected Entity\Repository\StationScheduleRepository $scheduleRepo,
+        protected Scheduler $scheduler,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\Repository\StationScheduleRepository $scheduleRepo,
-        Scheduler $scheduler
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->scheduleRepo = $scheduleRepo;
-        $this->scheduler = $scheduler;
     }
 
     protected function renderEvents(
@@ -79,23 +74,29 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         return $response->withJson($events);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function fromArray($data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, $record = null, array $context = []): object
     {
+        if (null === $data) {
+            throw new InvalidArgumentException('Could not parse input data.');
+        }
+
         $scheduleItems = $data['schedule_items'] ?? null;
         unset($data['schedule_items']);
 
-        $record = parent::fromArray($data, $record, $context);
+        $record = $this->fromArray($data, $record, $context);
 
-        if ($record instanceof $this->entityClass) {
-            $this->em->persist($record);
-            $this->em->flush();
+        $errors = $this->validator->validate($record);
+        if (count($errors) > 0) {
+            $e = new ValidationException((string)$errors);
+            $e->setDetailedErrors($errors);
+            throw $e;
+        }
 
-            if (null !== $scheduleItems) {
-                $this->scheduleRepo->setScheduleItems($record, $scheduleItems);
-            }
+        $this->em->persist($record);
+        $this->em->flush();
+
+        if (null !== $scheduleItems) {
+            $this->scheduleRepo->setScheduleItems($record, $scheduleItems);
         }
 
         return $record;

@@ -8,7 +8,6 @@ use App\Utilities;
 use App\Xml\Writer;
 use Exception;
 use GuzzleHttp\Psr7\Uri;
-use NowPlaying\Adapter\AdapterFactory;
 use NowPlaying\Result\Result;
 use Psr\Http\Message\UriInterface;
 
@@ -43,8 +42,8 @@ class Icecast extends AbstractFrontend
         $defaultResult = Result::blank();
         $otherResults = [];
 
-        try {
-            foreach ($station->getMounts() as $mount) {
+        foreach ($station->getMounts() as $mount) {
+            try {
                 $result = $npAdapter->getNowPlaying($mount->getName(), $includeClients);
 
                 if (!empty($result->clients)) {
@@ -52,25 +51,27 @@ class Icecast extends AbstractFrontend
                         $client->mount = 'local_' . $mount->getId();
                     }
                 }
+            } catch (Exception $e) {
+                $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
 
-                $mount->setListenersTotal($result->listeners->total);
-                $mount->setListenersUnique($result->listeners->unique);
-                $this->em->persist($mount);
-
-                if ($mount->getIsDefault()) {
-                    $defaultResult = $result;
-                } else {
-                    $otherResults[] = $result;
-                }
+                $result = Result::blank();
             }
 
-            $this->em->flush();
+            $mount->setListenersTotal($result->listeners->total);
+            $mount->setListenersUnique($result->listeners->unique ?? 0);
+            $this->em->persist($mount);
 
-            foreach ($otherResults as $otherResult) {
-                $defaultResult = $defaultResult->merge($otherResult);
+            if ($mount->getIsDefault()) {
+                $defaultResult = $result;
+            } else {
+                $otherResults[] = $result;
             }
-        } catch (Exception $e) {
-            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+        }
+
+        $this->em->flush();
+
+        foreach ($otherResults as $otherResult) {
+            $defaultResult = $defaultResult->merge($otherResult);
         }
 
         return $defaultResult;
@@ -86,8 +87,10 @@ class Icecast extends AbstractFrontend
         $frontendConfig = $station->getFrontendConfig();
         $configDir = $station->getRadioConfigDir();
 
-        $settingsBaseUrl = $this->settings->getBaseUrl() ?: 'http://localhost';
-        if (strpos($settingsBaseUrl, 'http') !== 0) {
+        $settings = $this->settingsRepo->readSettings();
+
+        $settingsBaseUrl = $settings->getBaseUrl() ?: 'http://localhost';
+        if (!str_starts_with($settingsBaseUrl, 'http')) {
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }
         $baseUrl = new Uri($settingsBaseUrl);

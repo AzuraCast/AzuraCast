@@ -10,20 +10,13 @@ use Psr\Log\LoggerInterface;
 
 class BuildQueueTask extends AbstractTask
 {
-    protected AutoDJ $autoDJ;
-
-    protected LockFactory $lockFactory;
-
     public function __construct(
+        protected AutoDJ $autoDJ,
+        protected LockFactory $lockFactory,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        AutoDJ $autoDJ,
-        LockFactory $lockFactory
     ) {
         parent::__construct($em, $logger);
-
-        $this->autoDJ = $autoDJ;
-        $this->lockFactory = $lockFactory;
     }
 
     public function run(bool $force = false): void
@@ -45,16 +38,6 @@ class BuildQueueTask extends AbstractTask
             return;
         }
 
-        $lock = $this->lockFactory->createLock('autodj_queue_' . $station->getId(), 60);
-
-        if (!$lock->acquire($force)) {
-            return;
-        }
-
-        try {
-            $this->autoDJ->buildQueue($station);
-        } finally {
-            $lock->release();
-        }
+        $this->autoDJ->buildQueue($station, $force);
     }
 }

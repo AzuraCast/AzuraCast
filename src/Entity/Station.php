@@ -14,8 +14,10 @@ use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use OpenApi\Annotations as OA;
+use RuntimeException;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,6 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @OA\Schema(type="object", schema="Station")
  * @AppAssert\StationPortChecker()
+ * @AppAssert\UniqueEntity(fields={"short_name"})
  */
 class Station
 {
@@ -473,8 +476,10 @@ class Station
      * @param array|StationFrontendConfiguration $frontend_config
      * @param bool $force_overwrite
      */
-    public function setFrontendConfig($frontend_config, bool $force_overwrite = false): void
-    {
+    public function setFrontendConfig(
+        StationFrontendConfiguration|array $frontend_config,
+        bool $force_overwrite = false
+    ): void {
         if (!($frontend_config instanceof StationFrontendConfiguration)) {
             $config = new StationFrontendConfiguration(
                 ($force_overwrite) ? [] : (array)$this->frontend_config,
@@ -539,8 +544,10 @@ class Station
      * @param array|StationBackendConfiguration $backend_config
      * @param bool $force_overwrite
      */
-    public function setBackendConfig($backend_config, bool $force_overwrite = false): void
-    {
+    public function setBackendConfig(
+        StationBackendConfiguration|array $backend_config,
+        bool $force_overwrite = false
+    ): void {
         if (!($backend_config instanceof StationBackendConfiguration)) {
             $config = new StationBackendConfiguration(
                 ($force_overwrite) ? [] : (array)$this->backend_config
@@ -580,7 +587,7 @@ class Station
      *
      * @param string $api_key
      */
-    public function validateAdapterApiKey($api_key): bool
+    public function validateAdapterApiKey(string $api_key): bool
     {
         return hash_equals($api_key, $this->adapter_api_key);
     }
@@ -635,7 +642,7 @@ class Station
     public function ensureDirectoriesExist(): void
     {
         if (null === $this->radio_base_dir) {
-            $this->setRadioBaseDir(null);
+            $this->setRadioBaseDir();
         }
 
         // Flysystem adapters will automatically create the main directory.
@@ -680,7 +687,7 @@ class Station
         $visibilityConverter = new PortableVisibilityConverter();
         $visibility = $visibilityConverter->defaultForDirectories();
         if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $dirname));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
         }
 
         clearstatcache(false, $dirname);
@@ -817,7 +824,7 @@ class Station
 
     public function getEnablePublicPage(): bool
     {
-        return (bool)$this->enable_public_page && $this->isEnabled();
+        return $this->enable_public_page && $this->isEnabled();
     }
 
     public function setEnablePublicPage(bool $enable_public_page): void
@@ -942,7 +949,7 @@ class Station
     public function setMediaStorageLocation(StorageLocation $storageLocation): void
     {
         if (StorageLocation::TYPE_STATION_MEDIA !== $storageLocation->getType()) {
-            throw new \InvalidArgumentException('Storage location must be for station media.');
+            throw new InvalidArgumentException('Storage location must be for station media.');
         }
 
         $this->media_storage_location = $storageLocation;
@@ -956,7 +963,7 @@ class Station
     public function setRecordingsStorageLocation(StorageLocation $storageLocation): void
     {
         if (StorageLocation::TYPE_STATION_RECORDINGS !== $storageLocation->getType()) {
-            throw new \InvalidArgumentException('Storage location must be for station live recordings.');
+            throw new InvalidArgumentException('Storage location must be for station live recordings.');
         }
 
         $this->recordings_storage_location = $storageLocation;

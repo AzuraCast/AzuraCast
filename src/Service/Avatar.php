@@ -20,28 +20,20 @@ class Avatar
 
     public const DEFAULT_SERVICE = self::SERVICE_LIBRAVATAR;
 
-    protected SettingsRepository $settingsRepo;
-
-    public function __construct(SettingsRepository $settingsRepo)
-    {
-        $this->settingsRepo = $settingsRepo;
+    public function __construct(
+        protected SettingsRepository $settingsRepo
+    ) {
     }
 
     public function getAvatarService(): AvatarServiceInterface
     {
         $settings = $this->settingsRepo->readSettings();
 
-        switch ($settings->getAvatarService()) {
-            case self::SERVICE_LIBRAVATAR:
-                return new Libravatar();
-
-            case self::SERVICE_GRAVATAR:
-                return new Gravatar();
-
-            case self::SERVICE_DISABLED:
-            default:
-                return new Disabled();
-        }
+        return match ($settings->getAvatarService()) {
+            self::SERVICE_LIBRAVATAR => new Libravatar(),
+            self::SERVICE_GRAVATAR => new Gravatar(),
+            default => new Disabled()
+        };
     }
 
     public function getAvatar(string $email, int $size = self::DEFAULT_SIZE): string

@@ -22,36 +22,19 @@ use Supervisor\Supervisor;
 
 abstract class AbstractFrontend extends AbstractAdapter
 {
-    protected AdapterFactory $adapterFactory;
-
-    protected Client $http_client;
-
-    protected Router $router;
-
-    protected Entity\Settings $settings;
-
-    protected Entity\Repository\StationMountRepository $stationMountRepo;
-
     public function __construct(
+        protected AdapterFactory $adapterFactory,
+        protected Client $http_client,
+        protected Router $router,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\StationMountRepository $stationMountRepo,
         Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
         EventDispatcher $dispatcher,
-        LoggerInterface $logger,
-        AdapterFactory $adapterFactory,
-        Client $client,
-        Router $router,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StationMountRepository $stationMountRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
-
-        $this->adapterFactory = $adapterFactory;
-        $this->http_client = $client;
-        $this->router = $router;
-
-        $this->stationMountRepo = $stationMountRepo;
-        $this->settings = $settingsRepo->readSettings();
     }
 
     /**
@@ -139,7 +122,8 @@ abstract class AbstractFrontend extends AbstractAdapter
             $base_url = $this->router->getBaseUrl();
         }
 
-        $use_radio_proxy = $this->settings->getUseRadioProxy();
+        $settings = $this->settingsRepo->readSettings();
+        $use_radio_proxy = $settings->getUseRadioProxy();
 
         if (
             $use_radio_proxy
@@ -185,13 +169,13 @@ abstract class AbstractFrontend extends AbstractAdapter
      *
      * @return mixed[]|bool
      */
-    protected function processCustomConfig(?string $custom_config_raw)
+    protected function processCustomConfig(?string $custom_config_raw): array|bool
     {
         $custom_config = [];
 
-        if (strpos($custom_config_raw, '{') === 0) {
+        if (str_starts_with($custom_config_raw, '{')) {
             $custom_config = @json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
-        } elseif (strpos($custom_config_raw, '<') === 0) {
+        } elseif (str_starts_with($custom_config_raw, '<')) {
             $reader = new Reader();
             $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
         }
@@ -211,7 +195,7 @@ abstract class AbstractFrontend extends AbstractAdapter
 
             foreach ($ipsRaw as $ip) {
                 try {
-                    if (false === strpos($ip, '/')) {
+                    if (!str_contains($ip, '/')) {
                         $ipObj = IP::create($ip);
                         $ips[] = (string)$ipObj;
                     } else {

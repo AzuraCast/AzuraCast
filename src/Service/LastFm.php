@@ -8,26 +8,21 @@ use App\LockFactory;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Lock\Exception\LockConflictedException;
 
 class LastFm
 {
     public const API_BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 
-    protected Client $httpClient;
-
-    protected LockFactory $lockFactory;
-
     protected ?string $apiKey = null;
 
     public function __construct(
-        Client $client,
-        LockFactory $lockFactory,
+        protected Client $httpClient,
+        protected LockFactory $lockFactory,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $this->httpClient = $client;
-        $this->lockFactory = $lockFactory;
-
         $settings = $settingsRepo->readSettings();
         $this->apiKey = $settings->getLastFmApiKey();
     }
@@ -49,7 +44,7 @@ class LastFm
     ): array {
         $apiKey = $this->apiKey;
         if (empty($apiKey)) {
-            throw new \InvalidArgumentException('No last.fm API key provided.');
+            throw new InvalidArgumentException('No last.fm API key provided.');
         }
 
         $rateLimitLock = $this->lockFactory->createLock(
@@ -93,7 +88,7 @@ class LastFm
 
         if (!empty($responseJson['error'])) {
             if (!empty($responseJson['message'])) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     'last.fm API error: ' . $responseJson['message'],
                     (int)$responseJson['error']
                 );
@@ -105,7 +100,7 @@ class LastFm
         return $responseJson;
     }
 
-    protected function createExceptionFromErrorCode(int $errorCode): \RuntimeException
+    protected function createExceptionFromErrorCode(int $errorCode): RuntimeException
     {
         $errorDescriptions = [
             2 => 'Invalid service - This service does not exist',
@@ -124,7 +119,7 @@ class LastFm
             29 => 'Rate limit exceeded - Your IP has made too many requests in a short period',
         ];
 
-        return new \RuntimeException(
+        return new RuntimeException(
             'last.fm API error: ' . ($errorDescriptions[$errorCode] ?? 'Unknown Error'),
             $errorCode
         );

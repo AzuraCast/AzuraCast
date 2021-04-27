@@ -18,17 +18,13 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     protected string $entityClass = Entity\StorageLocation::class;
     protected string $resourceRouteName = 'api:admin:storage_location';
 
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
     public function __construct(
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         EntityManagerInterface $em,
         Serializer $serializer,
-        ValidatorInterface $validator,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo
+        ValidatorInterface $validator
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->storageLocationRepo = $storageLocationRepo;
     }
 
     /**
@@ -117,7 +113,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
         $qb->select('sl')
             ->from(Entity\StorageLocation::class, 'sl');
 
-        $type = $request->getQueryParam('type', null);
+        $type = $request->getQueryParam('type');
         if (!empty($type)) {
             $qb->andWhere('sl.type = :type')
                 ->setParameter('type', $type);
@@ -129,7 +125,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     }
 
     /** @inheritDoc */
-    protected function viewRecord($record, ServerRequest $request)
+    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\Admin\StorageLocation
     {
         /** @var Entity\StorageLocation $record */
         $original = parent::viewRecord($record, $request);
@@ -149,7 +145,7 @@ class StorageLocationsController extends AbstractAdminApiCrudController
         return $return;
     }
 
-    protected function deleteRecord($record): void
+    protected function deleteRecord(object $record): void
     {
         if (!($record instanceof Entity\StorageLocation)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

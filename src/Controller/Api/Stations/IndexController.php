@@ -13,16 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class IndexController
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\ApiGenerator\StationApiGenerator $stationApiGenerator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
+        protected EntityManagerInterface $em,
+        protected Entity\ApiGenerator\StationApiGenerator $stationApiGenerator
     ) {
-        $this->em = $em;
-        $this->stationApiGenerator = $stationApiGenerator;
     }
 
     /**

@@ -8,16 +8,12 @@ use Psr\Log\LoggerInterface;
 
 class CleanupLoginTokensTask extends AbstractTask
 {
-    protected Entity\Repository\UserLoginTokenRepository $loginTokenRepo;
-
     public function __construct(
+        protected Entity\Repository\UserLoginTokenRepository $loginTokenRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\UserLoginTokenRepository $loginTokenRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->loginTokenRepo = $loginTokenRepo;
     }
 
     public function run(bool $force = false): void

@@ -14,20 +14,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class RequestsController
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\StationRequestRepository $requestRepo;
-
-    protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\StationRequestRepository $requestRepo,
-        Entity\ApiGenerator\SongApiGenerator $songApiGenerator
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\StationRequestRepository $requestRepo,
+        protected Entity\ApiGenerator\SongApiGenerator $songApiGenerator
     ) {
-        $this->em = $em;
-        $this->requestRepo = $requestRepo;
-        $this->songApiGenerator = $songApiGenerator;
     }
 
     /**
@@ -97,7 +88,7 @@ class RequestsController
                 ->addOrderBy('sm.title', 'ASC');
         }
 
-        $search_phrase = trim($params['searchPhrase']);
+        $search_phrase = trim($params['searchPhrase'] ?? '');
         if (!empty($search_phrase)) {
             $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');
@@ -159,7 +150,7 @@ class RequestsController
      *
      * @throws Exception\InvalidRequestAttribute
      */
-    public function submitAction(ServerRequest $request, Response $response, $media_id): ResponseInterface
+    public function submitAction(ServerRequest $request, Response $response, mixed $media_id): ResponseInterface
     {
         $station = $request->getStation();
 

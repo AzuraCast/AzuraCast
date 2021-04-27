@@ -149,12 +149,12 @@ class StreamersController extends AbstractScheduledEntityController
     }
 
     /**
-     * @param mixed $record
+     * @param object $record
      * @param ServerRequest $request
      *
      * @return mixed[]
      */
-    protected function viewRecord($record, ServerRequest $request): array
+    protected function viewRecord(object $record, ServerRequest $request): array
     {
         $return = parent::viewRecord($record, $request);
 

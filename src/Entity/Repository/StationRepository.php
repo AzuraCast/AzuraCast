@@ -67,9 +67,8 @@ class StationRepository extends Repository
     }
 
     /**
-     * @return mixed
      */
-    public function fetchAll()
+    public function fetchAll(): mixed
     {
         return $this->em->createQuery(
             <<<'DQL'
@@ -111,7 +110,7 @@ class StationRepository extends Repository
     /**
      * @param string $short_code
      */
-    public function findByShortCode($short_code): ?Entity\Station
+    public function findByShortCode(string $short_code): ?Entity\Station
     {
         return $this->repository->findOneBy(['short_name' => $short_code]);
     }

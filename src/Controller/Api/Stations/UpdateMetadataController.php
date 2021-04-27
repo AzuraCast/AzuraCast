@@ -35,9 +35,13 @@ class UpdateMetadataController
             'liq_cue_out',
         ];
 
-        $metadata = array_filter($request->getParams(), function ($key) use ($allowedMetaFields) {
-            return in_array($key, $allowedMetaFields, true);
-        }, ARRAY_FILTER_USE_KEY);
+        $metadata = array_filter(
+            $request->getParams(),
+            static function ($key) use ($allowedMetaFields) {
+                return in_array($key, $allowedMetaFields, true);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
 
         $output = $backend->updateMetadata($station, $metadata);
 

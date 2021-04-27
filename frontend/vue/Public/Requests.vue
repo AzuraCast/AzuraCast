@@ -90,9 +90,8 @@ export default {
                 notify('<b>' + resp.data.message + '</b>', 'success');
                 this.$emit('submitted');
             }).catch((err) => {
-                console.error(err);
-                if (err.response.message) {
-                    notify('<b>' + err.response.message + '</b>', 'danger');
+                if (err.response.data.message) {
+                    notify('<b>' + err.response.data.message + '</b>', 'danger');
                 }
                 this.$emit('submitted');
             });

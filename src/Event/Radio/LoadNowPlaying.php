@@ -16,9 +16,12 @@ class LoadNowPlaying extends Event
      */
     public function setNowPlaying(array $np_raw, $source = null): void
     {
-        $np = array_filter($np_raw, function ($np_row) {
-            return $np_row instanceof NowPlaying;
-        });
+        $np = array_filter(
+            $np_raw,
+            static function ($np_row) {
+                return $np_row instanceof NowPlaying;
+            }
+        );
 
         if (0 !== count($np)) {
             if ($source !== null) {

@@ -4,6 +4,7 @@ namespace App\Validator\Constraints;
 
 use App\Entity;
 use App\Radio\Configuration;
+use Exception;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -29,8 +30,10 @@ class StorageLocationValidator extends ConstraintValidator
 
         try {
             $storageLocation->validate();
-        } catch (\Exception $e) {
-            $this->context->buildViolation($constraint->message)
+        } catch (Exception $e) {
+            $message = __('This storage location could not be validated: %s', '{{ error }}');
+
+            $this->context->buildViolation($message)
                 ->setParameter('{{ error }}', $e->getMessage())
                 ->addViolation();
         }

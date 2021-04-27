@@ -3,6 +3,7 @@
 namespace App\Event;
 
 use App\Sync\Task\AbstractTask;
+use Generator;
 
 class GetSyncTasks
 {
@@ -11,13 +12,11 @@ class GetSyncTasks
     public const SYNC_MEDIUM = 'medium';
     public const SYNC_LONG = 'long';
 
-    protected string $type;
-
     protected array $tasks = [];
 
-    public function __construct(string $type)
-    {
-        $this->type = $type;
+    public function __construct(
+        protected string $type
+    ) {
     }
 
     public function getType(): string
@@ -26,9 +25,9 @@ class GetSyncTasks
     }
 
     /**
-     * @return \Generator|AbstractTask[]
+     * @return Generator|AbstractTask[]
      */
-    public function getTasks(): \Generator
+    public function getTasks(): Generator
     {
         yield from $this->tasks;
     }

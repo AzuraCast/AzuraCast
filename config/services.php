@@ -108,6 +108,10 @@ return [
 
             $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
 
+            if (!Doctrine\DBAL\Types\Type::hasType('uuid')) {
+                Doctrine\DBAL\Types\Type::addType('uuid', Ramsey\Uuid\Doctrine\UuidType::class);
+            }
+
             if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
                 Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
             }
@@ -151,13 +155,14 @@ return [
         ContainerInterface $di
     ) {
         if ($environment->isTesting()) {
-            $adapter = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-        } else {
-            $adapter = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
+            $arrayAdapter = new Symfony\Component\Cache\Adapter\ArrayAdapter();
+            $arrayAdapter->setLogger($logger);
+            return $arrayAdapter;
         }
 
-        $adapter->setLogger($logger);
-        return $adapter;
+        $redisAdapter = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
+        $redisAdapter->setLogger($logger);
+        return $redisAdapter;
     },
 
     Psr\Cache\CacheItemPoolInterface::class => DI\get(

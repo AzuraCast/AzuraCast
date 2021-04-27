@@ -37,16 +37,26 @@ class IndexController
 
         $stationsBaseDir = $environment->getStationDirectory();
 
-        $spaceTotal = BigInteger::of(disk_total_space($stationsBaseDir));
-        $spaceFree = BigInteger::of(disk_free_space($stationsBaseDir));
+        $spaceTotalFloat = disk_total_space($stationsBaseDir);
+        $spaceTotal = (is_float($spaceTotalFloat))
+            ? BigInteger::of($spaceTotalFloat)
+            : BigInteger::zero();
+
+        $spaceFreeFloat = disk_free_space($stationsBaseDir);
+        $spaceFree = (is_float($spaceFreeFloat))
+            ? BigInteger::of($spaceFreeFloat)
+            : BigInteger::zero();
+
         $spaceUsed = $spaceTotal->minus($spaceFree);
 
         // Get memory info.
         $meminfoRaw = explode("\n", file_get_contents("/proc/meminfo"));
         $meminfo = [];
         foreach ($meminfoRaw as $line) {
-            [$key, $val] = explode(":", $line);
-            $meminfo[$key] = trim($val);
+            if (str_contains($line, ':')) {
+                [$key, $val] = explode(":", $line);
+                $meminfo[$key] = trim($val);
+            }
         }
 
         $memoryTotal = Quota::convertFromReadableSize($meminfo['MemTotal']) ?? BigInteger::zero();

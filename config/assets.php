@@ -467,7 +467,7 @@ return [
 
     'Vue_PublicFullPlayer' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment', 'fancybox'],
         // Auto-managed by Assets
     ],
 

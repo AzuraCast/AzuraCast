@@ -19,14 +19,14 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param string|int $station_id
+     * @param int|string $station_id
      * @param int $id
      */
     public function listAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
-        $id
+        int|string $station_id,
+        int $id
     ): ResponseInterface {
         $station = $request->getStation();
         $streamer = $this->getStreamer($station, $id);
@@ -63,7 +63,7 @@ class BroadcastsController extends AbstractApiCrudController
 
                 $recordingPath = $row->getRecordingPath();
 
-                if ($fsRecordings->fileExists($recordingPath)) {
+                if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
                     $return['recording'] = [
                         'path' => $recordingPath,
                         'size' => $fsRecordings->fileSize($recordingPath),
@@ -100,16 +100,16 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param string|int $station_id
+     * @param int|string $station_id
      * @param int $id
      * @param int $broadcast_id
      */
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
-        $id,
-        $broadcast_id
+        int|string $station_id,
+        int $id,
+        int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
         $broadcast = $this->getRecord($station, $broadcast_id);

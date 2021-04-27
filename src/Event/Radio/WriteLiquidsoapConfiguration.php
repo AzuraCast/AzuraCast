@@ -7,17 +7,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class WriteLiquidsoapConfiguration extends Event
 {
-    protected array $configLines;
+    protected array $configLines = [];
 
-    protected Station $station;
-
-    protected bool $forEditing;
-
-    public function __construct(Station $station, bool $forEditing = false)
-    {
-        $this->station = $station;
-        $this->configLines = [];
-        $this->forEditing = $forEditing;
+    public function __construct(
+        protected Station $station,
+        protected bool $forEditing = false
+    ) {
     }
 
     public function getStation(): Station

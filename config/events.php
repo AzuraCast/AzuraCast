@@ -150,6 +150,10 @@ return function (App\EventDispatcher $dispatcher) {
         Event\GetNotifications::class,
         App\Notification\Check\SyncTaskCheck::class
     );
+    $dispatcher->addCallableListener(
+        Event\GetNotifications::class,
+        App\Notification\Check\ProfilerAdvisorCheck::class
+    );
 
     $dispatcher->addCallableListener(
         Event\Media\GetAlbumArt::class,

@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use App\Auth;
 use App\Normalizer\Annotation\DeepNormalize;
+use App\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,8 @@ use const PASSWORD_BCRYPT;
  * @ORM\HasLifecycleCallbacks
  *
  * @AuditLog\Auditable
+ *
+ * @UniqueEntity(fields={"email"})
  *
  * @OA\Schema(type="object")
  */

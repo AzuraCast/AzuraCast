@@ -18,7 +18,7 @@ interface ReloadableEntityManagerInterface extends EntityManagerInterface
      *
      * @return T
      */
-    public function refetch($entity);
+    public function refetch(mixed $entity);
 
     /**
      * Fetch a fresh reference to an entity object, even if the EntityManager has been cleared.
@@ -29,5 +29,5 @@ interface ReloadableEntityManagerInterface extends EntityManagerInterface
      *
      * @return T
      */
-    public function refetchAsReference($entity);
+    public function refetchAsReference(mixed $entity);
 }

@@ -22,20 +22,13 @@ use Symfony\Component\Messenger\MessageBus;
 
 class DebugController extends AbstractLogViewerController
 {
-    protected Logger $logger;
-
     protected TestHandler $testHandler;
 
-    protected Application $console;
-
-    protected MessageBus $messageBus;
-
-    public function __construct(Logger $logger, Application $console, MessageBus $messageBus)
-    {
-        $this->logger = $logger;
-        $this->console = $console;
-        $this->messageBus = $messageBus;
-
+    public function __construct(
+        protected Logger $logger,
+        protected Application $console,
+        protected MessageBus $messageBus
+    ) {
         $this->testHandler = new TestHandler(Logger::DEBUG, false);
     }
 
@@ -116,7 +109,7 @@ class DebugController extends AbstractLogViewerController
 
         $this->logger->debug('Current queue cleared.');
 
-        $autoDJ->buildQueue($station);
+        $autoDJ->buildQueue($station, true);
 
         $this->logger->popHandler();
 

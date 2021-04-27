@@ -27,11 +27,9 @@ use ReflectionObject;
  */
 class AuditLog implements EventSubscriber
 {
-    protected Reader $reader;
-
-    public function __construct(Reader $reader)
-    {
-        $this->reader = $reader;
+    public function __construct(
+        protected Reader $reader
+    ) {
     }
 
     /**
@@ -224,9 +222,9 @@ class AuditLog implements EventSubscriber
 
     /**
      * @param EntityManagerInterface $em
-     * @param object|string $class
+     * @param mixed $class
      */
-    protected function isEntity(EntityManagerInterface $em, $class): bool
+    protected function isEntity(EntityManagerInterface $em, mixed $class): bool
     {
         if (is_object($class)) {
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
@@ -249,7 +247,7 @@ class AuditLog implements EventSubscriber
      * @param ReflectionClass $reflectionClass
      * @param object $entity
      */
-    protected function getIdentifier(ReflectionClass $reflectionClass, $entity): ?string
+    protected function getIdentifier(ReflectionClass $reflectionClass, object $entity): ?string
     {
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
             $isIdentifier = $this->reader->getMethodAnnotation($reflectionMethod, AuditIdentifier::class);

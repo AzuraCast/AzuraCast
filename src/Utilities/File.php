@@ -2,9 +2,12 @@
 
 namespace App\Utilities;
 
+use InvalidArgumentException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+
+use function stripos;
 
 /**
  * Static class that facilitates the uploading, reading and deletion of files in a controlled directory.
@@ -58,11 +61,11 @@ class File
         $fullPath = realpath($tempDir . '/' . $path);
 
         if (false === $fullPath) {
-            throw new \InvalidArgumentException(sprintf('Invalid path: "%s"', $path));
+            throw new InvalidArgumentException(sprintf('Invalid path: "%s"', $path));
         }
 
-        if (0 !== strpos($fullPath, $tempDir)) {
-            throw new \InvalidArgumentException(
+        if (!str_starts_with($fullPath, $tempDir)) {
+            throw new InvalidArgumentException(
                 sprintf('Path "%s" is not within "%s".', $fullPath, $tempDir)
             );
         }
@@ -111,7 +114,7 @@ class File
             return $toDir . '/' . $path;
         }
 
-        if (0 === \stripos($path, $fromDir)) {
+        if (0 === stripos($path, $fromDir)) {
             $newBasePath = ltrim(substr($path, strlen($fromDir)), '/');
             if ('' !== $toDir) {
                 return $toDir . '/' . $newBasePath;

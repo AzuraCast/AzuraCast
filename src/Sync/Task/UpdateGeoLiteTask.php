@@ -17,24 +17,14 @@ class UpdateGeoLiteTask extends AbstractTask
 {
     protected const UPDATE_THRESHOLD = 86000;
 
-    protected Client $httpClient;
-
-    protected IpGeolocation $geoLite;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
+        protected Client $httpClient,
+        protected IpGeolocation $geoLite,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        Client $httpClient,
-        IpGeolocation $geoLite,
-        Entity\Repository\SettingsRepository $settingsRepo
     ) {
         parent::__construct($em, $logger);
-
-        $this->httpClient = $httpClient;
-        $this->geoLite = $geoLite;
-        $this->settingsRepo = $settingsRepo;
     }
 
     public function run(bool $force = false): void
@@ -62,7 +52,7 @@ class UpdateGeoLiteTask extends AbstractTask
             );
         }
 
-        $settings = $this->settingsRepo->readSettings(true);
+        $settings = $this->settingsRepo->readSettings();
         $settings->updateGeoliteLastRun();
         $this->settingsRepo->writeSettings($settings);
     }

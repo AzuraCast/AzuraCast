@@ -58,7 +58,7 @@ class RolePermissionRepository extends Repository
      * @param Entity\Role $role
      * @param array $post_values
      */
-    public function setActionsForRole(Entity\Role $role, $post_values): void
+    public function setActionsForRole(Entity\Role $role, array $post_values): void
     {
         $this->em->createQuery(
             <<<'DQL'
@@ -69,7 +69,12 @@ class RolePermissionRepository extends Repository
             ->execute();
 
         foreach ($post_values as $post_key => $post_value) {
-            [$post_key_action, $post_key_id] = explode('_', $post_key);
+            if (str_contains($post_key, '_')) {
+                [$post_key_action, $post_key_id] = explode('_', $post_key);
+            } else {
+                $post_key_action = $post_key;
+                $post_key_id = null;
+            }
 
             if ($post_key_action !== 'actions' || empty($post_value)) {
                 continue;

@@ -26,7 +26,7 @@ class InstallGeoLiteController
             $flash = $request->getFlash();
 
             try {
-                $settings = $form->getEntityRepository()->readSettings();
+                $settings = $form->getSettingsRepository()->readSettings();
                 $syncTask->updateDatabase($settings->getGeoliteLicenseKey() ?? '');
                 $flash->addMessage(__('Changes saved.'), Flash::SUCCESS);
             } catch (Exception $e) {

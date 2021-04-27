@@ -9,12 +9,10 @@ use Psr\Container\ContainerInterface;
 
 class ConnectorLocator
 {
-    protected ContainerInterface $di;
-
     protected array $connectors;
 
     public function __construct(
-        ContainerInterface $di,
+        protected ContainerInterface $di,
         Config $config
     ) {
         $webhooks = $config->get('webhooks');
@@ -23,7 +21,6 @@ class ConnectorLocator
             $connectors[$webhook_key] = $webhook_info['class'];
         }
 
-        $this->di = $di;
         $this->connectors = $connectors;
     }
 

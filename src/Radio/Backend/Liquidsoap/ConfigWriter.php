@@ -28,28 +28,13 @@ class ConfigWriter implements EventSubscriberInterface
     public const CROSSFADE_DISABLED = 'none';
     public const CROSSFADE_SMART = 'smart';
 
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Liquidsoap $liquidsoap;
-
-    protected Environment $environment;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Liquidsoap $liquidsoap,
-        Environment $environment,
-        LoggerInterface $logger
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Liquidsoap $liquidsoap,
+        protected Environment $environment,
+        protected LoggerInterface $logger
     ) {
-        $this->em = $em;
-        $this->settingsRepo = $settingsRepo;
-        $this->liquidsoap = $liquidsoap;
-        $this->environment = $environment;
-        $this->logger = $logger;
     }
 
     /**
@@ -63,7 +48,7 @@ class ConfigWriter implements EventSubscriberInterface
             $playlist = $this->em->find(Entity\StationPlaylist::class, $message->playlist_id);
 
             if ($playlist instanceof Entity\StationPlaylist) {
-                $this->writePlaylistFile($playlist, true);
+                $this->writePlaylistFile($playlist);
             }
         }
     }
@@ -588,8 +573,8 @@ class ConfigWriter implements EventSubscriberInterface
 
         $mediaIterator = $mediaQuery->toIterable();
 
+        /** @var Entity\StationMedia $mediaFile */
         foreach ($mediaIterator as $mediaFile) {
-            /** @var Entity\StationMedia $mediaFile */
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
             $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
 
@@ -606,9 +591,6 @@ class ConfigWriter implements EventSubscriberInterface
             }
 
             $playlistFile[] = 'annotate:' . implode(',', $annotations_str) . ':' . $mediaFilePath;
-
-            $this->em->detach($mediaFile);
-            unset($mediaFile);
         }
 
         $playlistFilePath = $playlistPath . '/' . $playlistVarName . '.m3u';
@@ -700,7 +682,7 @@ class ConfigWriter implements EventSubscriberInterface
      * @param string $endpoint
      * @param array $params
      */
-    protected function getApiUrlCommand(Entity\Station $station, $endpoint, $params = []): string
+    protected function getApiUrlCommand(Entity\Station $station, string $endpoint, $params = []): string
     {
         // Docker cURL-based API URL call with API authentication.
         if ($this->environment->isDocker()) {
@@ -1159,7 +1141,7 @@ class ConfigWriter implements EventSubscriberInterface
      * @param float|int|string $number
      * @param int $decimals
      */
-    public static function toFloat($number, $decimals = 2): string
+    public static function toFloat(float|int|string $number, $decimals = 2): string
     {
         return number_format((float)$number, $decimals, '.', '');
     }

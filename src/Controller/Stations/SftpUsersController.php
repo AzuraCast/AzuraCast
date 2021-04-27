@@ -14,16 +14,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class SftpUsersController extends AbstractStationCrudController
 {
-    protected AzuraCastCentral $ac_central;
-
-    protected Environment $environment;
-
-    public function __construct(SftpUserForm $form, AzuraCastCentral $ac_central, Environment $environment)
-    {
+    public function __construct(
+        protected AzuraCastCentral $ac_central,
+        protected Environment $environment,
+        SftpUserForm $form
+    ) {
         parent::__construct($form);
-
-        $this->ac_central = $ac_central;
-        $this->environment = $environment;
 
         $this->csrf_namespace = 'stations_sftp_users';
     }

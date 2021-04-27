@@ -53,7 +53,7 @@ class Flow
         ServerRequest $request,
         Response $response,
         string $temp_dir = null
-    ) {
+    ): array|ResponseInterface|null {
         if (null === $temp_dir) {
             $temp_dir = sys_get_temp_dir() . '/uploads/';
         }
@@ -97,10 +97,8 @@ class Flow
                 }
 
                 // the file is stored in a temporary directory
-                if (!is_dir($chunkBaseDir)) {
-                    if (!mkdir($chunkBaseDir, 0777, true) && !is_dir($chunkBaseDir)) {
-                        throw new RuntimeException(sprintf('Directory "%s" was not created', $chunkBaseDir));
-                    }
+                if (!is_dir($chunkBaseDir) && !mkdir($chunkBaseDir, 0777, true) && !is_dir($chunkBaseDir)) {
+                    throw new RuntimeException(sprintf('Directory "%s" was not created', $chunkBaseDir));
                 }
 
                 if ($file->getSize() !== $currentChunkSize) {
@@ -218,7 +216,7 @@ class Flow
      *
      * @link http://php.net/manual/en/function.rmdir.php
      */
-    protected static function rrmdir($dir): void
+    protected static function rrmdir(string $dir): void
     {
         if (is_dir($dir)) {
             $objects = array_diff(scandir($dir, SCANDIR_SORT_NONE), ['.', '..']);

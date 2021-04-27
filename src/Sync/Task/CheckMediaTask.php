@@ -2,7 +2,6 @@
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
@@ -19,32 +18,16 @@ use Symfony\Component\Messenger\MessageBus;
 
 class CheckMediaTask extends AbstractTask
 {
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
-    protected Entity\Repository\StationMediaRepository $mediaRepo;
-
-    protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo;
-
-    protected MessageBus $messageBus;
-
-    protected QueueManager $queueManager;
-
     public function __construct(
+        protected Entity\Repository\StationMediaRepository $mediaRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
+        protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
+        protected MessageBus $messageBus,
+        protected QueueManager $queueManager,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
-        Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
-        MessageBus $messageBus,
-        QueueManager $queueManager
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->storageLocationRepo = $storageLocationRepo;
-        $this->mediaRepo = $mediaRepo;
-        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
-        $this->messageBus = $messageBus;
-        $this->queueManager = $queueManager;
     }
 
     /**
@@ -72,18 +55,9 @@ class CheckMediaTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sl
-                FROM App\Entity\StorageLocation sl
-                WHERE sl.type = :type
-            DQL
-        )->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
-
-        $storageLocations = BatchIteratorAggregate::fromQuery($query, 1);
+        $storageLocations = $this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_MEDIA);
 
         foreach ($storageLocations as $storageLocation) {
-            /** @var Entity\StorageLocation $storageLocation */
             $this->logger->info(
                 sprintf(
                     'Processing media for storage location %s...',
@@ -118,8 +92,8 @@ class CheckMediaTask extends AbstractTask
             $fsIterator = $fs->listContents('/', true)->filter(
                 function (StorageAttributes $attrs) {
                     return ($attrs->isFile()
-                        && 0 !== strpos($attrs->path(), Entity\StationMedia::DIR_ALBUM_ART)
-                        && 0 !== strpos($attrs->path(), Entity\StationMedia::DIR_WAVEFORMS));
+                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_ALBUM_ART)
+                        && !str_starts_with($attrs->path(), Entity\StationMedia::DIR_WAVEFORMS));
                 }
             );
         } catch (FilesystemException $e) {
@@ -365,7 +339,7 @@ class CheckMediaTask extends AbstractTask
 
             foreach ($playlist_lines as $line_raw) {
                 $line = trim($line_raw);
-                if (empty($line) || strpos($line, '#') === 0) {
+                if (empty($line) || str_starts_with($line, '#')) {
                     continue;
                 }
 

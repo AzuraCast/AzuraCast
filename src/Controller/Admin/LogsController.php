@@ -13,14 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class LogsController extends AbstractLogViewerController
 {
-    protected EntityManagerInterface $em;
-
-    protected Environment $environment;
-
-    public function __construct(EntityManagerInterface $em, Environment $environment)
-    {
-        $this->em = $em;
-        $this->environment = $environment;
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected Environment $environment
+    ) {
     }
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface

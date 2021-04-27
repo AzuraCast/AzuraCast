@@ -13,7 +13,7 @@ class Xml
      *
      * @return mixed[]
      */
-    public static function xmlToArray($xml): array
+    public static function xmlToArray(string $xml): array
     {
         $values = $index = $array = [];
         $parser = xml_parser_create();
@@ -34,9 +34,8 @@ class Xml
      *
      * @param array $array
      *
-     * @return mixed
      */
-    public static function arrayToXml($array)
+    public static function arrayToXml(array $array): string|bool
     {
         $xml_info = new SimpleXMLElement('<?xml version="1.0"?><return></return>');
         self::arrToXml($array, $xml_info);
@@ -51,13 +50,13 @@ class Xml
     {
         $child = [];
         if (isset($values[$i]['value'])) {
-            array_push($child, $values[$i]['value']);
+            $child[] = $values[$i]['value'];
         }
 
         while ($i++ < count($values)) {
             switch ($values[$i]['type']) {
                 case 'cdata':
-                    array_push($child, $values[$i]['value']);
+                    $child[] = $values[$i]['value'];
                     break;
 
                 case 'complete':
@@ -85,13 +84,12 @@ class Xml
     protected static function arrToXml($array, &$xml): void
     {
         foreach ((array)$array as $key => $value) {
+            $key = is_numeric($key) ? "item$key" : $key;
             if (is_array($value)) {
-                $key = is_numeric($key) ? "item$key" : $key;
                 $subnode = $xml->addChild((string)$key);
 
                 self::arrToXml($value, $subnode);
             } else {
-                $key = is_numeric($key) ? "item$key" : $key;
                 $xml->addChild((string)$key, htmlspecialchars($value));
             }
         }

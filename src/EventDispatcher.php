@@ -9,19 +9,16 @@ use function is_string;
 
 class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
 {
-    protected CallableResolverInterface $callableResolver;
-
-    public function __construct(CallableResolverInterface $callableResolver)
-    {
+    public function __construct(
+        protected CallableResolverInterface $callableResolver
+    ) {
         parent::__construct();
-
-        $this->callableResolver = $callableResolver;
     }
 
     /**
-     * @param class-string|class-string[] $className
+     * @param array|class-string $className
      */
-    public function addServiceSubscriber($className): void
+    public function addServiceSubscriber(array|string $className): void
     {
         if (is_array($className)) {
             foreach ($className as $service) {
@@ -58,9 +55,9 @@ class EventDispatcher extends \Symfony\Component\EventDispatcher\EventDispatcher
     }
 
     /**
-     * @param class-string|class-string[] $className
+     * @param array|class-string $className
      */
-    public function removeServiceSubscriber($className): void
+    public function removeServiceSubscriber(array|string $className): void
     {
         if (is_array($className)) {
             foreach ($className as $service) {

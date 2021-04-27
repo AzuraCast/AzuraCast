@@ -13,51 +13,28 @@ use Symfony\Component\Finder\Finder;
 
 class RotateLogsTask extends AbstractTask
 {
-    protected Environment $environment;
-
-    protected Adapters $adapters;
-
-    protected Supervisor $supervisor;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Entity\Repository\StorageLocationRepository $storageLocationRepo;
-
     public function __construct(
+        protected Environment $environment,
+        protected Adapters $adapters,
+        protected Supervisor $supervisor,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         ReloadableEntityManagerInterface $em,
-        LoggerInterface $logger,
-        Environment $environment,
-        Adapters $adapters,
-        Supervisor $supervisor,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo
+        LoggerInterface $logger
     ) {
         parent::__construct($em, $logger);
-
-        $this->environment = $environment;
-        $this->adapters = $adapters;
-        $this->supervisor = $supervisor;
-
-        $this->settingsRepo = $settingsRepo;
-        $this->storageLocationRepo = $storageLocationRepo;
     }
 
     public function run(bool $force = false): void
     {
         // Rotate logs for individual stations.
-        $station_repo = $this->em->getRepository(Entity\Station::class);
+        foreach ($this->iterateStations() as $station) {
+            $this->logger->info(
+                'Processing logs for station.',
+                ['id' => $station->getId(), 'name' => $station->getName()]
+            );
 
-        $stations = $station_repo->findAll();
-        if (!empty($stations)) {
-            foreach ($stations as $station) {
-                /** @var Entity\Station $station */
-                $this->logger->info(
-                    'Processing logs for station.',
-                    ['id' => $station->getId(), 'name' => $station->getName()]
-                );
-
-                $this->rotateStationLogs($station);
-            }
+            $this->rotateStationLogs($station);
         }
 
         // Rotate the automated backups.

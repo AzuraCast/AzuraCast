@@ -7,28 +7,17 @@ use App\Event\Media\ReadMetadata;
 use App\Event\Media\WriteMetadata;
 use App\EventDispatcher;
 use App\Exception\CannotProcessMediaException;
-use App\Media\AlbumArtHandler\AlbumArtServiceInterface;
-use App\Media\MetadataService\MetadataServiceInterface;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
 class MetadataManager
 {
-    protected EventDispatcher $eventDispatcher;
-
-    protected Client $httpClient;
-
-    protected RemoteAlbumArt $remoteAlbumArt;
-
     public function __construct(
-        EventDispatcher $eventDispatcher,
-        Client $httpClient,
-        RemoteAlbumArt $remoteAlbumArt
+        protected EventDispatcher $eventDispatcher,
+        protected Client $httpClient,
+        protected RemoteAlbumArt $remoteAlbumArt
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->httpClient = $httpClient;
-        $this->remoteAlbumArt = $remoteAlbumArt;
     }
 
     public function getMetadata(Entity\StationMedia $media, string $filePath): Entity\Metadata

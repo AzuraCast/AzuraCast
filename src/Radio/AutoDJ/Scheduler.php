@@ -11,11 +11,9 @@ use Monolog\Logger;
 
 class Scheduler
 {
-    protected Logger $logger;
-
-    public function __construct(Logger $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        protected Logger $logger
+    ) {
     }
 
     public function shouldPlaylistPlayNow(
@@ -23,13 +21,15 @@ class Scheduler
         CarbonInterface $now = null,
         array $recentPlaylistHistory = []
     ): bool {
-        $this->logger->pushProcessor(function ($record) use ($playlist) {
-            $record['extra']['playlist'] = [
-                'id' => $playlist->getId(),
+        $this->logger->pushProcessor(
+            function ($record) use ($playlist) {
+                $record['extra']['playlist'] = [
+                    'id' => $playlist->getId(),
                 'name' => $playlist->getName(),
-            ];
-            return $record;
-        });
+                ];
+                return $record;
+            }
+        );
 
         if (null === $now) {
             $now = CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
@@ -208,17 +208,21 @@ class Scheduler
                 $scheduleName = (string)$scheduleItem;
 
                 if ($this->shouldSchedulePlayNow($scheduleItem, $now)) {
-                    $this->logger->debug(sprintf(
-                        '%s - Should Play Now',
-                        $scheduleName
-                    ));
+                    $this->logger->debug(
+                        sprintf(
+                            '%s - Should Play Now',
+                            $scheduleName
+                        )
+                    );
                     return $scheduleItem;
-                } else {
-                    $this->logger->debug(sprintf(
+                }
+
+                $this->logger->debug(
+                    sprintf(
                         '%s - Not Eligible to Play Now',
                         $scheduleName
-                    ));
-                }
+                    )
+                );
             }
         }
         return null;
@@ -285,7 +289,7 @@ class Scheduler
 
         if (!empty($startDate)) {
             $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone())
-                ->setTime(0, 0, 0);
+                ->setTime(0, 0);
 
             if ($now->lt($startDate)) {
                 return false;

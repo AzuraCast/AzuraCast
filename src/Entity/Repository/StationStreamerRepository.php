@@ -61,9 +61,8 @@ class StationStreamerRepository extends Repository
      * @param Entity\Station $station
      * @param string $username
      *
-     * @return string|bool
      */
-    public function onConnect(Entity\Station $station, string $username = '')
+    public function onConnect(Entity\Station $station, string $username = ''): string|bool
     {
         // End all current streamer sessions.
         $this->broadcastRepo->endAllActiveBroadcasts($station);
@@ -122,7 +121,7 @@ class StationStreamerRepository extends Repository
         }
 
         $station->setIsStreamerLive(false);
-        $station->setCurrentStreamer(null);
+        $station->setCurrentStreamer();
         $this->em->persist($station);
         $this->em->flush();
         return true;

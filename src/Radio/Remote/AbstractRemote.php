@@ -13,28 +13,13 @@ use NowPlaying\Result\Result;
 
 abstract class AbstractRemote
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Settings $settings;
-
-    protected Client $http_client;
-
-    protected Logger $logger;
-
-    protected AdapterFactory $adapterFactory;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Client $http_client,
-        Logger $logger,
-        AdapterFactory $adapterFactory
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Client $http_client,
+        protected Logger $logger,
+        protected AdapterFactory $adapterFactory
     ) {
-        $this->em = $em;
-        $this->settings = $settingsRepo->readSettings();
-        $this->http_client = $http_client;
-        $this->logger = $logger;
-        $this->adapterFactory = $adapterFactory;
     }
 
     /**
@@ -66,20 +51,20 @@ abstract class AbstractRemote
                     $client->mount = 'remote_' . $remote->getId();
                 }
             }
-
-            $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
-
-            $remote->setListenersTotal($result->listeners->total);
-            $remote->setListenersUnique($result->listeners->unique);
-            $this->em->persist($remote);
-            $this->em->flush();
-
-            return $np->merge($result);
         } catch (Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+
+            $result = Result::blank();
         }
 
-        return $np;
+        $this->logger->debug('NowPlaying adapter response', ['response' => $result]);
+
+        $remote->setListenersTotal($result->listeners->total);
+        $remote->setListenersUnique($result->listeners->unique ?? 0);
+        $this->em->persist($remote);
+        $this->em->flush();
+
+        return $np->merge($result);
     }
 
     abstract protected function getAdapterType(): string;

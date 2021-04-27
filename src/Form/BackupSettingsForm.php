@@ -6,14 +6,18 @@ use App\Config;
 use App\Entity;
 use App\Environment;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BackupSettingsForm extends AbstractSettingsForm
 {
     public function __construct(
         EntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
         Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Environment $environment,
+        Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Config $config
     ) {
         $formConfig = $config->get(
@@ -28,11 +32,6 @@ class BackupSettingsForm extends AbstractSettingsForm
             ]
         );
 
-        parent::__construct(
-            $em,
-            $settingsRepo,
-            $environment,
-            $formConfig
-        );
+        parent::__construct($settingsRepo, $environment, $em, $serializer, $validator, $formConfig);
     }
 }

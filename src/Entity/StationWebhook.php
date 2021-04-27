@@ -109,6 +109,7 @@ class StationWebhook
      * @ORM\Column(name="metadata", type="json", nullable=true)
      *
      * @OA\Property(@OA\Items())
+     * @AuditLog\AuditIgnore
      *
      * @var array Internal details used by the webhook to preserve state.
      */
@@ -211,9 +212,8 @@ class StationWebhook
      * @param string $key
      * @param mixed|null $default
      *
-     * @return mixed|null
      */
-    public function getMetadataKey(string $key, $default = null)
+    public function getMetadataKey(string $key, $default = null): mixed
     {
         return $this->metadata[$key] ?? $default;
     }

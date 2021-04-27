@@ -215,7 +215,7 @@ class Listener
     {
         return array_filter(
             $clients,
-            function ($client) {
+            static function ($client) {
                 // Ignore clients with the "Icecast" UA as those are relays and not listeners.
                 return !(false !== stripos($client['user_agent'], 'Icecast'));
             }
@@ -227,7 +227,7 @@ class Listener
         // Sort by start time.
         usort(
             $intervals,
-            function ($a, $b) {
+            static function ($a, $b) {
                 return $a['start'] <=> $b['start'];
             }
         );

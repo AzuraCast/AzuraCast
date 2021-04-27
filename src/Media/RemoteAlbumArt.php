@@ -5,32 +5,20 @@ namespace App\Media;
 use App\Entity;
 use App\Event\Media\GetAlbumArt;
 use App\EventDispatcher;
-use App\Media\AlbumArtHandler\AlbumArtServiceInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use Throwable;
 
 class RemoteAlbumArt
 {
     public const CACHE_LIFETIME = 86400 * 14; // Two Weeks
 
-    protected LoggerInterface $logger;
-
-    protected CacheInterface $cache;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected EventDispatcher $eventDispatcher;
-
     public function __construct(
-        LoggerInterface $logger,
-        CacheInterface $cache,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        EventDispatcher $eventDispatcher
+        protected LoggerInterface $logger,
+        protected CacheInterface $cache,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected EventDispatcher $eventDispatcher
     ) {
-        $this->logger = $logger;
-        $this->cache = $cache;
-        $this->settingsRepo = $settingsRepo;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function enableForApis(): bool
@@ -97,7 +85,7 @@ class RemoteAlbumArt
                     self::CACHE_LIFETIME
                 );
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $albumArtUrl = null;
 
             $this->cache->set(

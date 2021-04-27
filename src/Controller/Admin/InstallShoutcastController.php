@@ -19,14 +19,11 @@ class InstallShoutcastController
 {
     protected array $form_config;
 
-    protected SHOUTcast $adapter;
-
     public function __construct(
-        Config $config,
-        SHOUTcast $adapter
+        protected SHOUTcast $adapter,
+        Config $config
     ) {
         $this->form_config = $config->get('forms/install_shoutcast');
-        $this->adapter = $adapter;
     }
 
     public function __invoke(

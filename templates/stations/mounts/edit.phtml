@@ -4,8 +4,8 @@ $assets
     ->addInlineJs($this->fetch('stations/mounts/edit.js'), 99);
 
 echo $this->fetch('system/form_page', [
-    'title' => $title,
-    'header' => $header,
+    'title' => $title ?? null,
+    'header' => $header ?? null,
     'form' => $form,
-    'render_mode' => 'edit'
+    'render_mode' => 'edit',
 ]);

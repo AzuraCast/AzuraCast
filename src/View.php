@@ -70,7 +70,7 @@ class View extends Engine
         $this->registerFunction(
             'escapeJs',
             function ($string) {
-                return json_encode($string, JSON_THROW_ON_ERROR, 512);
+                return json_encode($string, JSON_THROW_ON_ERROR);
             }
         );
 
@@ -128,7 +128,7 @@ class View extends Engine
         $this->registerFunction(
             'link',
             function ($url, $external = true, $truncate = true) {
-                $url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+                $url = htmlspecialchars($url, ENT_QUOTES);
 
                 $a = ['href="' . $url . '"'];
                 if ($external) {

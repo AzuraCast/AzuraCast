@@ -12,22 +12,15 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class AnnotateNextSong extends Event
 {
-    protected Entity\StationQueue $queue;
-
     protected ?string $songPath;
-
-    /** @var bool Whether the request is going to the AutoDJ or being used for testing. */
-    protected bool $asAutoDj = false;
 
     /** @var array Custom annotations that should be sent along with the AutoDJ response. */
     protected array $annotations = [];
 
     public function __construct(
-        Entity\StationQueue $queue,
-        bool $asAutoDj = false
+        protected Entity\StationQueue $queue,
+        protected bool $asAutoDj = false
     ) {
-        $this->queue = $queue;
-        $this->asAutoDj = $asAutoDj;
     }
 
     public function getQueue(): ?Entity\StationQueue

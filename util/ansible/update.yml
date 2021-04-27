@@ -18,7 +18,7 @@
     - { role : mariadb, when : update_revision|int < 15 }
     - { role : nginx, when : update_revision|int < 60 }
     - { role : redis, when : update_revision|int < 57 }
-    - { role : php, when : update_revision|int < 61 }
+    - { role : php, when : update_revision|int < 62 }
     - composer
     - { role : influxdb, when : update_revision|int < 58 }
     - { role : ufw, when : update_revision|int < 12 }

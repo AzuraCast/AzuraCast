@@ -40,14 +40,11 @@ class Assets
     /** @var ServerRequestInterface|null The current request (if it's available) */
     protected ?ServerRequestInterface $request = null;
 
-    protected Environment $environment;
-
     public function __construct(
-        Environment $environment,
+        protected Environment $environment,
         Config $config,
-        ?ServerRequestInterface $request
+        ?ServerRequestInterface $request = null
     ) {
-        $this->environment = $environment;
         $this->request = $request;
 
         $libraries = $config->get('assets');
@@ -155,9 +152,9 @@ class Assets
     /**
      * Add a single javascript file.
      *
-     * @param string|array $js_script
+     * @param array|string $js_script
      */
-    public function addJs($js_script): self
+    public function addJs(array|string $js_script): self
     {
         $this->load(
             [
@@ -178,7 +175,7 @@ class Assets
      *
      * @param mixed $data Name or array definition of library/asset.
      */
-    public function load($data): self
+    public function load(mixed $data): self
     {
         if (is_array($data)) {
             $item = [
@@ -244,10 +241,10 @@ class Assets
     /**
      * Add a single javascript inline script.
      *
-     * @param string|array $js_script
+     * @param array|string $js_script
      * @param int $order
      */
-    public function addInlineJs($js_script, int $order = 100): self
+    public function addInlineJs(array|string $js_script, int $order = 100): self
     {
         $this->load(
             [
@@ -270,8 +267,10 @@ class Assets
 
         $this->addInlineJs(
             <<<JS
+                let ${name};
+
                 $(function () {
-                    new Vue({
+                    ${name} = new Vue({
                         el: '${elementId}',
                         render: function (createElement) {
                             return createElement(${nameWithoutPrefix}.default, {
@@ -289,10 +288,10 @@ class Assets
     /**
      * Add a single CSS file.
      *
-     * @param string|array $css_script
+     * @param array|string $css_script
      * @param int $order
      */
-    public function addCss($css_script, int $order = 100): self
+    public function addCss(array|string $css_script, int $order = 100): self
     {
         $this->load(
             [
@@ -311,9 +310,9 @@ class Assets
     /**
      * Add a single inline CSS file[s].
      *
-     * @param string|array $css_script
+     * @param array|string $css_script
      */
-    public function addInlineCss($css_script): self
+    public function addInlineCss(array|string $css_script): self
     {
         $this->load(
             [
@@ -435,7 +434,7 @@ class Assets
         if (!$this->is_sorted) {
             uasort(
                 $this->loaded,
-                function ($a, $b): int {
+                static function ($a, $b): int {
                     return $a['order'] <=> $b['order']; // SPACESHIP!
                 }
             );
@@ -490,7 +489,7 @@ class Assets
      *
      * @return string The resolved resource URL.
      */
-    public function getUrl($resource_uri): string
+    public function getUrl(string $resource_uri): string
     {
         if (isset($this->versioned_files[$resource_uri])) {
             $resource_uri = $this->versioned_files[$resource_uri];
@@ -509,7 +508,7 @@ class Assets
      *
      * @param string $src
      */
-    protected function addDomainToCsp($src): void
+    protected function addDomainToCsp(string $src): void
     {
         $src_parts = parse_url($src);
 

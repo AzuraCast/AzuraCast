@@ -13,7 +13,7 @@ use Symfony\Component\Process\Process;
 class Version
 {
     /** @var string Version that is displayed if no Git repository information is present. */
-    public const FALLBACK_VERSION = '0.12.3';
+    public const FALLBACK_VERSION = '0.12.4';
 
     public const RELEASE_CHANNEL_ROLLING = 'rolling';
     public const RELEASE_CHANNEL_STABLE = 'stable';
@@ -26,16 +26,12 @@ class Version
     public const CHANGELOG_URL = 'https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md';
     // phpcs:enable
 
-    protected CacheInterface $cache;
-
     protected string $repoDir;
 
-    protected Environment $environment;
-
-    public function __construct(CacheInterface $cache, Environment $environment)
-    {
-        $this->cache = $cache;
-        $this->environment = $environment;
+    public function __construct(
+        protected CacheInterface $cache,
+        protected Environment $environment
+    ) {
         $this->repoDir = $environment->getBaseDirectory();
     }
 
@@ -135,7 +131,7 @@ class Version
      * @param array $proc
      * @param string $default
      */
-    protected function runProcess($proc, $default = ''): string
+    protected function runProcess(array $proc, $default = ''): string
     {
         $process = new Process($proc);
         $process->setWorkingDirectory($this->repoDir);

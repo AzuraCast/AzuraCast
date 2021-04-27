@@ -12,20 +12,17 @@ use Psr\Http\Message\ResponseInterface;
 
 class WebhooksController extends AbstractStationCrudController
 {
-    protected Dispatcher $dispatcher;
-
     protected array $webhook_config;
 
     public function __construct(
-        StationWebhookForm $form,
-        Dispatcher $dispatcher
+        protected Dispatcher $dispatcher,
+        StationWebhookForm $form
     ) {
         parent::__construct($form);
 
         $this->webhook_config = $form->getConfig();
 
         $this->csrf_namespace = 'stations_webhooks';
-        $this->dispatcher = $dispatcher;
     }
 
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
@@ -44,9 +41,12 @@ class WebhooksController extends AbstractStationCrudController
         $view = $request->getView();
         if ($type === null) {
             return $view->renderToResponse($response, 'stations/webhooks/add', [
-                'connectors' => array_filter($this->webhook_config['webhooks'], function ($webhook) {
-                    return !empty($webhook['name']);
-                }),
+                'connectors' => array_filter(
+                    $this->webhook_config['webhooks'],
+                    static function ($webhook) {
+                        return !empty($webhook['name']);
+                    }
+                ),
             ]);
         }
 

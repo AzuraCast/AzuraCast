@@ -22,7 +22,12 @@ interface RouterInterface
      * @param array $query_params
      * @param boolean $absolute Whether to include the full URL.
      */
-    public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): UriInterface;
+    public function named(
+        string $route_name,
+        $route_params = [],
+        array $query_params = [],
+        $absolute = false
+    ): UriInterface;
 
     /**
      * Dynamically calculate the base URL the first time it's called, if it is at all in the request.

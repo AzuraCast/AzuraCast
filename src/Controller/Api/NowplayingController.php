@@ -15,24 +15,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NowplayingController implements EventSubscriberInterface
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Settings $settings;
-
-    protected CacheInterface $cache;
-
-    protected EventDispatcher $dispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        CacheInterface $cache,
-        EventDispatcher $dispatcher
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected CacheInterface $cache,
+        protected EventDispatcher $dispatcher
     ) {
-        $this->em = $em;
-        $this->settings = $settingsRepo->readSettings();
-        $this->cache = $cache;
-        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -124,7 +112,7 @@ class NowplayingController implements EventSubscriberInterface
         if ($request->getAttribute('user') === null) {
             $np = array_filter(
                 $np,
-                function ($np_row) {
+                static function ($np_row) {
                     return $np_row->station->is_public;
                 }
             );
@@ -148,7 +136,8 @@ class NowplayingController implements EventSubscriberInterface
 
     public function loadFromSettings(LoadNowPlaying $event): void
     {
-        $event->setNowPlaying((array)$this->settings->getNowplaying(), 'settings');
+        $settings = $this->settingsRepo->readSettings();
+        $event->setNowPlaying((array)$settings->getNowplaying(), 'settings');
     }
 
     public function loadFromStations(LoadNowPlaying $event): void

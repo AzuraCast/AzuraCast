@@ -10,13 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController
 {
-    protected Acl $acl;
-
-    public function __construct(Acl $acl)
-    {
-        $this->acl = $acl;
-    }
-
     /**
      * @OA\Get(path="/admin/permissions",
      *   tags={"Administration: Roles"},
@@ -32,10 +25,13 @@ class PermissionsController
      * @param ServerRequest $request
      * @param Response $response
      */
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        Acl $acl
+    ): ResponseInterface {
         $permissions = [];
-        foreach ($this->acl->listPermissions() as $group => $actions) {
+        foreach ($acl->listPermissions() as $group => $actions) {
             foreach ($actions as $action_id => $action_name) {
                 $permissions[$group][] = [
                     'id' => $action_id,

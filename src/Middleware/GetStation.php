@@ -17,22 +17,16 @@ use Slim\Routing\RouteContext;
  */
 class GetStation implements MiddlewareInterface
 {
-    protected StationRepository $station_repo;
-
-    protected Adapters $adapters;
-
     public function __construct(
-        StationRepository $station_repo,
-        Adapters $adapters
+        protected StationRepository $station_repo,
+        protected Adapters $adapters
     ) {
-        $this->station_repo = $station_repo;
-        $this->adapters = $adapters;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeContext = RouteContext::fromRequest($request);
-        $route_args = $routeContext->getRoute()->getArguments();
+        $route_args = $routeContext->getRoute()?->getArguments();
 
         $id = $route_args['station_id'] ?? null;
 

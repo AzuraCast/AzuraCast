@@ -23,6 +23,12 @@ use Slim\Interfaces\MiddlewareDispatcherInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteResolverInterface;
 
+use const E_COMPILE_ERROR;
+use const E_CORE_ERROR;
+use const E_ERROR;
+use const E_PARSE;
+use const E_USER_ERROR;
+
 class AppFactory
 {
     public static function createApp($autoloader = null, $appEnvironment = [], $diDefinitions = []): App
@@ -155,18 +161,18 @@ class AppFactory
         $logger = $di->get(LoggerInterface::class);
 
         register_shutdown_function(
-            function (LoggerInterface $logger): void {
+            static function (LoggerInterface $logger): void {
                 $error = error_get_last();
                 if (null === $error) {
                     return;
                 }
 
-                $errno = $error["type"] ?? \E_ERROR;
+                $errno = $error["type"] ?? E_ERROR;
                 $errfile = $error["file"] ?? 'unknown';
                 $errline = $error["line"] ?? 0;
                 $errstr = $error["message"] ?? 'Shutdown';
 
-                if ($errno &= \E_PARSE | \E_ERROR | \E_USER_ERROR | \E_CORE_ERROR | \E_COMPILE_ERROR) {
+                if ($errno &= E_PARSE | E_ERROR | E_USER_ERROR | E_CORE_ERROR | E_COMPILE_ERROR) {
                     $logger->critical(
                         sprintf(
                             'Fatal error: %s in %s on line %d',
@@ -199,10 +205,10 @@ class AppFactory
         $environment[Environment::CONFIG_DIR] ??= $environment[Environment::BASE_DIR] . '/config';
         $environment[Environment::VIEWS_DIR] ??= $environment[Environment::BASE_DIR] . '/templates';
 
-        if ($environment[Environment::IS_DOCKER]) {
-            $_ENV = getenv();
-        } elseif (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
+        if (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
             $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
+        } else {
+            $_ENV = getenv();
         }
 
         $environment = array_merge(array_filter($_ENV), $environment);

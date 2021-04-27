@@ -8,14 +8,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class GetNotifications extends Event
 {
-    protected ServerRequest $request;
+    protected array $notifications = [];
 
-    protected array $notifications;
-
-    public function __construct(ServerRequest $request)
-    {
-        $this->request = $request;
-        $this->notifications = [];
+    public function __construct(
+        protected ServerRequest $request
+    ) {
     }
 
     public function getRequest(): ServerRequest

@@ -2,8 +2,8 @@
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
 use App\Entity;
+use Exception;
 use League\Flysystem\StorageAttributes;
 use Symfony\Component\Finder\Finder;
 
@@ -11,28 +11,12 @@ class CleanupStorageTask extends AbstractTask
 {
     public function run(bool $force = false): void
     {
-        $stationsQuery = $this->em->createQuery(
-            <<<'DQL'
-                SELECT s FROM App\Entity\Station s
-            DQL
-        );
-
-        $stations = BatchIteratorAggregate::fromQuery($stationsQuery, 1);
-        foreach ($stations as $station) {
+        foreach ($this->iterateStations() as $station) {
             /** @var Entity\Station $station */
             $this->cleanStationTempFiles($station);
         }
 
-        // Check all stations for automation settings.
-        // Use this to avoid detached entity errors.
-        $storageLocationsQuery = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sl FROM App\Entity\StorageLocation sl
-                WHERE sl.type = :type
-            DQL
-        )->setParameter('type', Entity\StorageLocation::TYPE_STATION_MEDIA);
-
-        $storageLocations = BatchIteratorAggregate::fromQuery($storageLocationsQuery, 1);
+        $storageLocations = $this->iterateStorageLocations(Entity\StorageLocation::TYPE_STATION_MEDIA);
         foreach ($storageLocations as $storageLocation) {
             /** @var Entity\StorageLocation $storageLocation */
             $this->cleanMediaStorageLocation($storageLocation);
@@ -104,7 +88,7 @@ class CleanupStorageTask extends AbstractTask
                         $removed[$key]++;
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error(
                     sprintf('Filesystem error: %s', $e->getMessage()),
                     [

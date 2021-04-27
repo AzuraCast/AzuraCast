@@ -18,46 +18,39 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationCloneForm extends StationForm
 {
-    protected Configuration $configuration;
-
-    protected CheckMediaTask $media_sync;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Serializer $serializer,
-        ValidatorInterface $validator,
+        protected Configuration $configuration,
+        protected CheckMediaTask $media_sync,
         Entity\Repository\StationRepository $stationRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Entity\Repository\SettingsRepository $settingsRepo,
-        Config $config,
         Environment $environment,
         Adapters $adapters,
-        Configuration $configuration,
-        CheckMediaTask $media_sync
+        EntityManagerInterface $em,
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        Config $config
     ) {
         parent::__construct(
-            $em,
-            $serializer,
-            $validator,
             $stationRepo,
             $storageLocationRepo,
             $settingsRepo,
-            $config,
             $environment,
-            $adapters
+            $adapters,
+            $em,
+            $serializer,
+            $validator,
+            $config
         );
 
         $form_config = $config->get('forms/station_clone');
         $this->configure($form_config);
-
-        $this->configuration = $configuration;
-        $this->media_sync = $media_sync;
     }
 
     /**
      * @inheritDoc
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if (!$record instanceof Entity\Station) {
             throw new InvalidArgumentException('Record must be a station.');

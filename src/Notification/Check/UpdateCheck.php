@@ -10,14 +10,10 @@ use App\Version;
 
 class UpdateCheck
 {
-    protected Version $version;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    public function __construct(Version $version, Entity\Repository\SettingsRepository $settingsRepo)
-    {
-        $this->version = $version;
-        $this->settingsRepo = $settingsRepo;
+    public function __construct(
+        protected Version $version,
+        protected Entity\Repository\SettingsRepository $settingsRepo
+    ) {
     }
 
     public function __invoke(GetNotifications $event): void
@@ -92,7 +88,6 @@ class UpdateCheck
             $notification->actionUrl = $actionUrl;
 
             $event->addNotification($notification);
-            return;
         }
     }
 }

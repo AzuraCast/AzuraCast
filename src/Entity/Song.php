@@ -22,9 +22,9 @@ class Song implements SongInterface
     }
 
     /**
-     * @param array|CurrentSong|self|string $songText
+     * @param array|string|CurrentSong|self $songText
      */
-    public static function getSongHash($songText): string
+    public static function getSongHash(Song|array|string|CurrentSong $songText): string
     {
         // Handle various input types.
         if ($songText instanceof self) {

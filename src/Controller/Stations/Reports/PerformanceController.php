@@ -11,14 +11,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class PerformanceController
 {
-    protected EntityManagerInterface $em;
-
-    protected RunAutomatedAssignmentTask $sync_automation;
-
-    public function __construct(EntityManagerInterface $em, RunAutomatedAssignmentTask $sync_automation)
-    {
-        $this->em = $em;
-        $this->sync_automation = $sync_automation;
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected RunAutomatedAssignmentTask $sync_automation
+    ) {
     }
 
     public function __invoke(
@@ -35,13 +31,16 @@ class PerformanceController
         $report_data = $this->sync_automation->generateReport($station, $threshold_days);
 
         // Do not show songs that are not in playlists.
-        $report_data = array_filter($report_data, function ($media) {
-            if (empty($media['playlists'])) {
-                return false;
-            }
+        $report_data = array_filter(
+            $report_data,
+            static function ($media) {
+                if (empty($media['playlists'])) {
+                    return false;
+                }
 
-            return true;
-        });
+                return true;
+            }
+        );
 
         if ($format === 'csv') {
             $export_csv = [

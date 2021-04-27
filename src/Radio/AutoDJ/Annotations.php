@@ -11,24 +11,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Annotations implements EventSubscriberInterface
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
-    protected Entity\Repository\StationStreamerRepository $streamerRepo;
-
-    protected Adapters $adapters;
-
     public function __construct(
-        EntityManagerInterface $em,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        Entity\Repository\StationStreamerRepository $streamerRepo,
-        Adapters $adapters
+        protected EntityManagerInterface $em,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected Entity\Repository\StationStreamerRepository $streamerRepo,
+        protected Adapters $adapters
     ) {
-        $this->em = $em;
-        $this->queueRepo = $queueRepo;
-        $this->streamerRepo = $streamerRepo;
-        $this->adapters = $adapters;
     }
 
     /**

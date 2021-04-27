@@ -112,24 +112,12 @@ class StationStreamerBroadcast
 
     public function generateRecordingPath(string $format = StationMountInterface::FORMAT_MP3): string
     {
-        switch (strtolower($format)) {
-            case StationMountInterface::FORMAT_AAC:
-                $ext = 'mp4';
-                break;
-
-            case StationMountInterface::FORMAT_OGG:
-                $ext = 'ogg';
-                break;
-
-            case StationMountInterface::FORMAT_OPUS:
-                $ext = 'opus';
-                break;
-
-            case StationMountInterface::FORMAT_MP3:
-            default:
-                $ext = 'mp3';
-                break;
-        }
+        $ext = match (strtolower($format)) {
+            StationMountInterface::FORMAT_AAC => 'mp4',
+            StationMountInterface::FORMAT_OGG => 'ogg',
+            StationMountInterface::FORMAT_OPUS => 'opus',
+            default => 'mp3',
+        };
 
         $now = CarbonImmutable::createFromTimestamp(
             $this->timestampStart,

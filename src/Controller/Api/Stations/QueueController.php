@@ -18,21 +18,14 @@ class QueueController extends AbstractStationApiCrudController
     protected string $entityClass = Entity\StationQueue::class;
     protected string $resourceRouteName = 'api:stations:queue:record';
 
-    protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
     public function __construct(
+        protected Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        Entity\ApiGenerator\StationQueueApiGenerator $queueApiGenerator,
-        Entity\Repository\StationQueueRepository $queueRepo
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->queueApiGenerator = $queueApiGenerator;
-        $this->queueRepo = $queueRepo;
     }
 
     /**
@@ -105,10 +98,10 @@ class QueueController extends AbstractStationApiCrudController
      */
 
     /**
-     * @param mixed $record
+     * @param object $record
      * @param ServerRequest $request
      */
-    protected function viewRecord($record, ServerRequest $request): Entity\Api\StationQueueDetailed
+    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\StationQueueDetailed
     {
         if (!($record instanceof $this->entityClass)) {
             throw new InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));

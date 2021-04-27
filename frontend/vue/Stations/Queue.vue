@@ -102,8 +102,8 @@ export default {
                         this.$refs.datatable.refresh();
                     }).catch((err) => {
                         console.error(err);
-                        if (err.response.message) {
-                            notify('<b>' + err.response.message + '</b>', 'danger');
+                        if (err.response.data.message) {
+                            notify('<b>' + err.response.data.message + '</b>', 'danger');
                         }
                     });
                 }

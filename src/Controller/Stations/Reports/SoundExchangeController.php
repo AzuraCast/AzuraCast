@@ -10,23 +10,20 @@ use App\Http\ServerRequest;
 use App\Service\MusicBrainz;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 /**
  * Produce a report in SoundExchange (the US webcaster licensing agency) format.
  */
 class SoundExchangeController
 {
-    protected EntityManagerInterface $em;
-
-    protected MusicBrainz $musicBrainz;
-
     protected array $form_config;
 
-    public function __construct(EntityManagerInterface $em, MusicBrainz $musicBrainz, Config $config)
-    {
-        $this->em = $em;
-        $this->musicBrainz = $musicBrainz;
-
+    public function __construct(
+        protected EntityManagerInterface $em,
+        protected MusicBrainz $musicBrainz,
+        Config $config
+    ) {
         $this->form_config = $config->get('forms/report/soundexchange');
     }
 
@@ -35,10 +32,12 @@ class SoundExchangeController
         $station = $request->getStation();
 
         $form = new Form($this->form_config);
-        $form->populate([
-            'start_date' => date('Y-m-d', strtotime('first day of last month')),
+        $form->populate(
+            [
+                'start_date' => date('Y-m-d', strtotime('first day of last month')),
             'end_date' => date('Y-m-d', strtotime('last day of last month')),
-        ]);
+            ]
+        );
 
         if ($request->isPost() && $form->isValid($request->getParsedBody())) {
             $data = $form->getValues();
@@ -175,7 +174,7 @@ class SoundExchangeController
                 }
             }
             return null;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return null;
         }
     }

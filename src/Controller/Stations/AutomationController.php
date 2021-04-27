@@ -14,19 +14,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class AutomationController
 {
-    protected EntityManagerInterface $em;
-
-    protected RunAutomatedAssignmentTask $sync_task;
-
     protected array $form_config;
 
     public function __construct(
-        EntityManagerInterface $em,
-        RunAutomatedAssignmentTask $sync_task,
+        protected EntityManagerInterface $em,
+        protected RunAutomatedAssignmentTask $sync_task,
         Config $config
     ) {
-        $this->em = $em;
-        $this->sync_task = $sync_task;
         $this->form_config = $config->get('forms/automation');
     }
 

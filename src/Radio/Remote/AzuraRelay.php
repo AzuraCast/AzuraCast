@@ -73,12 +73,13 @@ class AzuraRelay extends AbstractRemote
         $fe_config = $station->getFrontendConfig();
         $radio_port = $fe_config->getPort();
 
-        $use_radio_proxy = $this->settings->getUseRadioProxy();
+        $settings = $this->settingsRepo->readSettings();
+        $use_radio_proxy = $settings->getUseRadioProxy();
 
         if (
             $use_radio_proxy
-            || (!Environment::getInstance()->isProduction() && !Environment::getInstance()->isDocker())
             || 'https' === $base_url->getScheme()
+            || (!Environment::getInstance()->isProduction() && !Environment::getInstance()->isDocker())
         ) {
             // Web proxy support.
             return (string)$base_url

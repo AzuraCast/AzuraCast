@@ -8,13 +8,11 @@ use Psr\Log\LoggerInterface;
 
 class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
 {
-    protected MusicBrainz $musicBrainz;
-
-    public function __construct(MusicBrainz $musicBrainz, LoggerInterface $logger)
-    {
+    public function __construct(
+        protected MusicBrainz $musicBrainz,
+        LoggerInterface $logger
+    ) {
         parent::__construct($logger);
-
-        $this->musicBrainz = $musicBrainz;
     }
 
     protected function getServiceName(): string

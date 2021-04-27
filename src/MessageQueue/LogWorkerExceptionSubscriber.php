@@ -8,11 +8,9 @@ use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 
 class LogWorkerExceptionSubscriber implements EventSubscriberInterface
 {
-    protected LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        protected LoggerInterface $logger
+    ) {
     }
 
     /**

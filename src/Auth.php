@@ -16,26 +16,15 @@ class Auth
     /** @var int The window of valid one-time passwords outside the current timestamp. */
     public const TOTP_WINDOW = 5;
 
-    protected SessionInterface $session;
+    protected bool|User|null $user = null;
 
-    protected UserRepository $userRepo;
-
-    protected Environment $environment;
-
-    /** @var User|bool|null */
-    protected $user;
-
-    /** @var User|bool|null */
-    protected $masqueraded_user;
+    protected bool|User|null $masqueraded_user = null;
 
     public function __construct(
-        UserRepository $userRepo,
-        SessionInterface $session,
-        Environment $environment
+        protected UserRepository $userRepo,
+        protected SessionInterface $session,
+        protected Environment $environment
     ) {
-        $this->userRepo = $userRepo;
-        $this->session = $session;
-        $this->environment = $environment;
     }
 
     /**
@@ -210,9 +199,9 @@ class Auth
     /**
      * Become a different user across the application.
      *
-     * @param User|array $user_info
+     * @param array|User $user_info
      */
-    public function masqueradeAsUser($user_info): void
+    public function masqueradeAsUser(User|array $user_info): void
     {
         if (!($user_info instanceof User)) {
             $user_info = $this->userRepo->getRepository()->findOneBy($user_info);

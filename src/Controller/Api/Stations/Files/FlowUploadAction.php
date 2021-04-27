@@ -61,7 +61,7 @@ class FlowUploadAction
             if (!empty($params['searchPhrase'])) {
                 $search_phrase = $params['searchPhrase'];
 
-                if (0 === strpos($search_phrase, 'playlist:')) {
+                if (str_starts_with($search_phrase, 'playlist:')) {
                     $playlist_name = substr($search_phrase, 9);
 
                     $playlist = $em->getRepository(Entity\StationPlaylist::class)->findOneBy(

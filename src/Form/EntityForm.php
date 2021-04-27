@@ -24,12 +24,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EntityForm extends Form
 {
-    protected EntityManagerInterface $em;
-
-    protected Serializer $serializer;
-
-    protected ValidatorInterface $validator;
-
     /** @var string The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
@@ -39,17 +33,13 @@ class EntityForm extends Form
     protected ?Station $station = null;
 
     public function __construct(
-        EntityManagerInterface $em,
-        Serializer $serializer,
-        ValidatorInterface $validator,
+        protected EntityManagerInterface $em,
+        protected Serializer $serializer,
+        protected ValidatorInterface $validator,
         array $options = [],
         ?array $defaults = null
     ) {
         parent::__construct($options, $defaults);
-
-        $this->em = $em;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
     }
 
     public function getEntityClass(): string
@@ -82,7 +72,7 @@ class EntityForm extends Form
      *
      * @return object|bool The modified object if edited/created, or `false` if not processed.
      */
-    public function process(ServerRequest $request, $record = null)
+    public function process(ServerRequest $request, $record = null): object|bool
     {
         if (!isset($this->entityClass)) {
             throw new Exception('Entity class name is not specified.');
@@ -140,20 +130,23 @@ class EntityForm extends Form
      *
      * @return mixed[]
      */
-    protected function normalizeRecord($record, array $context = []): array
+    protected function normalizeRecord(object $record, array $context = []): array
     {
-        $context = array_merge($this->defaultContext, $context, [
-            DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,
-            ObjectNormalizer::ENABLE_MAX_DEPTH => true,
-            ObjectNormalizer::MAX_DEPTH_HANDLER => function (
-                $innerObject,
-                $outerObject,
-                string $attributeName,
-                string $format = null,
-                array $context = []
-            ) {
-                return $this->displayShortenedObject($innerObject);
-            },
+        $context = array_merge(
+            $this->defaultContext,
+            $context,
+            [
+                DoctrineEntityNormalizer::NORMALIZE_TO_IDENTIFIERS => true,
+                ObjectNormalizer::ENABLE_MAX_DEPTH => true,
+                ObjectNormalizer::MAX_DEPTH_HANDLER => function (
+                    $innerObject,
+                    $outerObject,
+                    string $attributeName,
+                    string $format = null,
+                    array $context = []
+                ) {
+                    return $this->displayShortenedObject($innerObject);
+                },
             ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
                 $object,
                 string $format = null,
@@ -161,7 +154,8 @@ class EntityForm extends Form
             ) {
                 return $this->displayShortenedObject($object);
             },
-        ]);
+            ]
+        );
 
         return $this->serializer->normalize($record, null, $context);
     }
@@ -169,9 +163,8 @@ class EntityForm extends Form
     /**
      * @param object $object
      *
-     * @return mixed
      */
-    protected function displayShortenedObject($object)
+    protected function displayShortenedObject(object $object): mixed
     {
         if (method_exists($object, 'getName')) {
             return $object->getName();
@@ -187,7 +180,7 @@ class EntityForm extends Form
      * @param object|null $record
      * @param array $context
      */
-    protected function denormalizeToRecord($data, $record = null, array $context = []): object
+    protected function denormalizeToRecord(array $data, $record = null, array $context = []): object
     {
         $context = array_merge($this->defaultContext, $context);
 
@@ -201,10 +194,10 @@ class EntityForm extends Form
     /**
      * Modify the default context sent to all normalization/denormalization functions.
      *
-     * @param string|int $key
+     * @param int|string $key
      * @param null $value
      */
-    public function setDefaultContext($key, $value = null): void
+    public function setDefaultContext(int|string $key, $value = null): void
     {
         $this->defaultContext[$key] = $value;
     }

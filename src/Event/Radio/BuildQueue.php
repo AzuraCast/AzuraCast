@@ -11,14 +11,12 @@ class BuildQueue extends Event
 {
     protected ?Entity\StationQueue $next_song = null;
 
-    protected Entity\Station $station;
-
     protected CarbonInterface $now;
 
-    public function __construct(Entity\Station $station, ?CarbonInterface $now = null)
-    {
-        $this->station = $station;
-
+    public function __construct(
+        protected Entity\Station $station,
+        ?CarbonInterface $now = null
+    ) {
         $this->now = $now ?? CarbonImmutable::now($station->getTimezoneObject());
     }
 

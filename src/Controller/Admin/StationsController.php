@@ -13,19 +13,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class StationsController extends AbstractAdminCrudController
 {
-    protected StationRepository $stationRepo;
-
-    protected Form\StationCloneForm $clone_form;
-
     public function __construct(
-        StationRepository $stationRepository,
-        Form\StationForm $form,
-        Form\StationCloneForm $clone_form
+        protected StationRepository $stationRepo,
+        protected Form\StationCloneForm $clone_form,
+        Form\StationForm $form
     ) {
         parent::__construct($form);
 
-        $this->stationRepo = $stationRepository;
-        $this->clone_form = $clone_form;
         $this->csrf_namespace = 'admin_stations';
     }
 

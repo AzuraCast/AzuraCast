@@ -1,3 +1,5 @@
 #!/bin/bash
 
-/usr/sbin/php-fpm7.4 -F --fpm-config /etc/php/7.4/fpm/php-fpm.conf -c /etc/php/7.4/fpm/
+source /etc/php/.version
+
+/usr/sbin/php-fpm${PHP_VERSION} -F --fpm-config /etc/php/${PHP_VERSION}/fpm/php-fpm.conf -c /etc/php/${PHP_VERSION}/fpm/

@@ -14,6 +14,7 @@ use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
 use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
+use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Messenger\MessageBus;
@@ -21,37 +22,15 @@ use Throwable;
 
 class BatchAction
 {
-    protected ReloadableEntityManagerInterface $em;
-
-    protected MessageBus $messageBus;
-
-    protected QueueManager $queueManager;
-
-    protected Entity\Repository\StationMediaRepository $mediaRepo;
-
-    protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo;
-
-    protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo;
-
-    protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo;
-
     public function __construct(
-        ReloadableEntityManagerInterface $em,
-        MessageBus $messageBus,
-        QueueManager $queueManager,
-        Entity\Repository\StationMediaRepository $mediaRepo,
-        Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
-        Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo
+        protected ReloadableEntityManagerInterface $em,
+        protected MessageBus $messageBus,
+        protected QueueManager $queueManager,
+        protected Entity\Repository\StationMediaRepository $mediaRepo,
+        protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
+        protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
+        protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo
     ) {
-        $this->em = $em;
-        $this->messageBus = $messageBus;
-        $this->queueManager = $queueManager;
-
-        $this->mediaRepo = $mediaRepo;
-        $this->playlistMediaRepo = $playlistMediaRepo;
-        $this->playlistFolderRepo = $playlistFolderRepo;
-        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
     }
 
     public function __invoke(
@@ -64,30 +43,14 @@ class BatchAction
         $fsStation = new StationFilesystems($station);
         $fsMedia = $fsStation->getMediaFilesystem();
 
-        switch ($request->getParam('do')) {
-            case 'delete':
-                $result = $this->doDelete($request, $station, $storageLocation, $fsMedia);
-                break;
-
-            case 'playlist':
-                $result = $this->doPlaylist($request, $station, $storageLocation, $fsMedia);
-                break;
-
-            case 'move':
-                $result = $this->doMove($request, $station, $storageLocation, $fsMedia);
-                break;
-
-            case 'queue':
-                $result = $this->doQueue($request, $station, $storageLocation, $fsMedia);
-                break;
-
-            case 'reprocess':
-                $result = $this->doReprocess($request, $station, $storageLocation, $fsMedia);
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Invalid batch action specified.');
-        }
+        $result = match ($request->getParam('do')) {
+            'delete' => $this->doDelete($request, $station, $storageLocation, $fsMedia),
+            'playlist' => $this->doPlaylist($request, $station, $storageLocation, $fsMedia),
+            'move' => $this->doMove($request, $station, $storageLocation, $fsMedia),
+            'queue' => $this->doQueue($request, $station, $storageLocation, $fsMedia),
+            'reprocess' => $this->doReprocess($request, $station, $storageLocation, $fsMedia),
+            default => throw new InvalidArgumentException('Invalid batch action specified.')
+        };
 
         if ($this->em->isOpen()) {
             $this->em->clear(Entity\StationMedia::class);
@@ -257,7 +220,7 @@ class BatchAction
         Entity\StorageLocation $storageLocation,
         ExtendedFilesystemInterface $fs
     ): Entity\Api\BatchResult {
-        $result = $this->parseRequest($request, $fs, false);
+        $result = $this->parseRequest($request, $fs);
 
         $from = $request->getParam('currentDirectory', '');
         $to = $request->getParam('directory', '');

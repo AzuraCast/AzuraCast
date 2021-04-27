@@ -8,13 +8,12 @@ use App\Http\ServerRequest;
 
 class BuildStationMenu extends AbstractBuildMenu
 {
-    protected Station $station;
-
-    public function __construct(ServerRequest $request, Settings $settings, Station $station)
-    {
+    public function __construct(
+        protected Station $station,
+        ServerRequest $request,
+        Settings $settings
+    ) {
         parent::__construct($request, $settings);
-
-        $this->station = $station;
     }
 
     public function getStation(): Station

@@ -8,11 +8,12 @@ use App\Environment;
 use App\EventDispatcher;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
 use App\MessageQueue\QueueManager;
-use App\MessageQueue\ReloadSettingsMiddleware;
+use App\MessageQueue\ResetArrayCacheMiddleware;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Worker;
+use Throwable;
 
 class ProcessCommand extends CommandAbstract
 {
@@ -41,7 +42,7 @@ class ProcessCommand extends CommandAbstract
 
         $eventDispatcher->addServiceSubscriber(ClearEntityManagerSubscriber::class);
         $eventDispatcher->addServiceSubscriber(LogWorkerExceptionSubscriber::class);
-        $eventDispatcher->addServiceSubscriber(ReloadSettingsMiddleware::class);
+        $eventDispatcher->addServiceSubscriber(ResetArrayCacheMiddleware::class);
 
         if ($runtime <= 0) {
             $runtime = $environment->isProduction()
@@ -54,7 +55,7 @@ class ProcessCommand extends CommandAbstract
         try {
             $worker = new Worker($receivers, $messageBus, $eventDispatcher, $logger);
             $worker->run();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $logger->error(
                 sprintf('Message queue error: %s', $e->getMessage()),
                 [

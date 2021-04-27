@@ -8,13 +8,11 @@ use Psr\Log\LoggerInterface;
 
 class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
 {
-    protected LastFm $lastFm;
-
-    public function __construct(LastFm $lastFm, LoggerInterface $logger)
-    {
+    public function __construct(
+        protected LastFm $lastFm,
+        LoggerInterface $logger
+    ) {
         parent::__construct($logger);
-
-        $this->lastFm = $lastFm;
     }
 
     protected function getServiceName(): string

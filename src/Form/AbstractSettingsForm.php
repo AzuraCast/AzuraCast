@@ -6,34 +6,26 @@ use App\Entity;
 use App\Environment;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class AbstractSettingsForm extends Form
+abstract class AbstractSettingsForm extends EntityForm
 {
-    protected EntityManagerInterface $em;
-
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
-    protected Environment $environment;
-
     public function __construct(
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Environment $environment,
         EntityManagerInterface $em,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Environment $environment,
-        array $formConfig
+        Serializer $serializer,
+        ValidatorInterface $validator,
+        array $options = [],
+        ?array $defaults = null
     ) {
-        parent::__construct($formConfig);
+        parent::__construct($em, $serializer, $validator, $options, $defaults);
 
-        $this->em = $em;
-        $this->environment = $environment;
-        $this->settingsRepo = $settingsRepo;
+        $this->entityClass = Entity\Settings::class;
     }
 
-    public function getEntityManager(): EntityManagerInterface
-    {
-        return $this->em;
-    }
-
-    public function getEntityRepository(): Entity\Repository\SettingsRepository
+    public function getSettingsRepository(): Entity\Repository\SettingsRepository
     {
         return $this->settingsRepo;
     }
@@ -43,26 +35,19 @@ abstract class AbstractSettingsForm extends Form
         return $this->environment;
     }
 
-    public function process(ServerRequest $request): bool
+    /** @inheritDoc */
+    public function process(ServerRequest $request, $record = null): object|bool
     {
-        // Populate the form with existing values (if they exist).
-        $defaults = $this->settingsRepo->readSettingsArray();
+        if (null === $record) {
+            $record = $this->settingsRepo->readSettings();
+        }
 
-        // Use current URI from request if the base URL isn't set.
-        if (empty($defaults['baseUrl'])) {
+        /** @var Entity\Settings $record */
+        if (empty($record->getBaseUrl())) {
             $currentUri = $request->getUri()->withPath('');
-            $defaults['baseUrl'] = (string)$currentUri;
+            $record->setBaseUrl((string)$currentUri);
         }
 
-        $this->populate($defaults);
-
-        // Handle submission.
-        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
-            $data = $this->getValues();
-            $this->settingsRepo->writeSettings($data);
-            return true;
-        }
-
-        return false;
+        return parent::process($request, $record);
     }
 }

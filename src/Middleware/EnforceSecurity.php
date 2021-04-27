@@ -17,14 +17,11 @@ class EnforceSecurity implements MiddlewareInterface
 {
     protected ResponseFactoryInterface $responseFactory;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
-
     public function __construct(
-        App $app,
-        Entity\Repository\SettingsRepository $settingsRepo
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        App $app
     ) {
         $this->responseFactory = $app->getResponseFactory();
-        $this->settingsRepo = $settingsRepo;
     }
 
     /**

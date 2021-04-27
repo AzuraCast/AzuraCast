@@ -6,14 +6,14 @@ use App\Entity;
 use App\Event\Media\GetAlbumArt;
 use App\Exception\RateLimitExceededException;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Throwable;
 
 abstract class AbstractAlbumArtHandler
 {
-    protected LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    public function __construct(
+        protected LoggerInterface $logger
+    ) {
     }
 
     public function __invoke(GetAlbumArt $event): void
@@ -37,7 +37,7 @@ abstract class AbstractAlbumArtHandler
             if (!empty($albumArt)) {
                 $event->setAlbumArt($albumArt);
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger->error(
                 sprintf('%s Album Art Error: %s', $serviceName, $e->getMessage()),
                 [
@@ -54,7 +54,7 @@ abstract class AbstractAlbumArtHandler
                 return;
             }
 
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf('%s Album Art Error: %s', $serviceName, $e->getMessage()),
                 $e->getCode(),
                 $e

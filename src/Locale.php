@@ -10,19 +10,12 @@ class Locale
 {
     public const DEFAULT_LOCALE = 'en_US.UTF-8';
 
-    protected Environment $environment;
-
-    protected ?ServerRequestInterface $request = null;
-
     protected string $locale = self::DEFAULT_LOCALE;
 
     public function __construct(
-        Environment $environment,
-        ?ServerRequestInterface $request = null
+        protected Environment $environment,
+        protected ?ServerRequestInterface $request = null
     ) {
-        $this->environment = $environment;
-        $this->request = $request;
-
         $this->locale = $this->determineLocale();
     }
 
@@ -71,7 +64,7 @@ class Locale
 
             // Use approximate match if available.
             foreach ($supportedLocales as $langCode => $langName) {
-                if (strpos($locale, substr($langCode, 0, 2)) === 0) {
+                if (str_starts_with($locale, substr($langCode, 0, 2))) {
                     return $langCode;
                 }
             }
@@ -112,5 +105,10 @@ class Locale
 
         // Register translation superglobal functions
         setlocale(LC_ALL, $this->locale);
+    }
+
+    public function __toString(): string
+    {
+        return $this->locale;
     }
 }

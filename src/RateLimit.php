@@ -7,14 +7,10 @@ use Redis;
 
 class RateLimit
 {
-    protected Redis $redis;
-
-    protected Environment $environment;
-
-    public function __construct(Redis $redis, Environment $environment)
-    {
-        $this->redis = $redis;
-        $this->environment = $environment;
+    public function __construct(
+        protected Redis $redis,
+        protected Environment $environment
+    ) {
     }
 
     /**

@@ -99,7 +99,7 @@ class RemotesController extends AbstractStationApiCrudController
     /**
      * @inheritDoc
      */
-    protected function getRecord(Entity\Station $station, $id): ?object
+    protected function getRecord(Entity\Station $station, int|string $id): ?object
     {
         $record = parent::getRecord($station, $id);
 

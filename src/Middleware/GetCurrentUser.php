@@ -18,11 +18,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class GetCurrentUser implements MiddlewareInterface
 {
-    protected FactoryInterface $factory;
-
-    public function __construct(FactoryInterface $factory)
-    {
-        $this->factory = $factory;
+    public function __construct(
+        protected FactoryInterface $factory
+    ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -71,7 +69,7 @@ class GetCurrentUser implements MiddlewareInterface
 
         $response = $handler->handle($request);
 
-        Entity\AuditLog::setCurrentUser(null);
+        Entity\AuditLog::setCurrentUser();
 
         return $response;
     }

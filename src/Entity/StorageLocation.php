@@ -20,6 +20,7 @@ use Brick\Math\BigInteger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Spatie\Dropbox\Client;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -193,6 +194,14 @@ class StorageLocation
         return $this->path;
     }
 
+    public function getFilteredPath(): ?string
+    {
+        return match ($this->adapter) {
+            self::ADAPTER_S3, self::ADAPTER_DROPBOX => trim($this->path, '/'),
+            default => rtrim($this->path, '/')
+        };
+    }
+
     public function applyPath(?string $suffix = null): string
     {
         $suffix = (null !== $suffix)
@@ -204,7 +213,7 @@ class StorageLocation
 
     public function setPath(?string $path): void
     {
-        $this->path = $this->truncateString($path, 255);
+        $this->path = $this->truncateString($path);
     }
 
     public function getS3CredentialKey(): ?string
@@ -214,7 +223,7 @@ class StorageLocation
 
     public function setS3CredentialKey(?string $s3CredentialKey): void
     {
-        $this->s3CredentialKey = $this->truncateString($s3CredentialKey, 255);
+        $this->s3CredentialKey = $this->truncateString($s3CredentialKey);
     }
 
     public function getS3CredentialSecret(): ?string
@@ -224,7 +233,7 @@ class StorageLocation
 
     public function setS3CredentialSecret(?string $s3CredentialSecret): void
     {
-        $this->s3CredentialSecret = $this->truncateString($s3CredentialSecret, 255);
+        $this->s3CredentialSecret = $this->truncateString($s3CredentialSecret);
     }
 
     public function getS3Region(): ?string
@@ -264,7 +273,7 @@ class StorageLocation
 
     public function setS3Endpoint(?string $s3Endpoint): void
     {
-        $this->s3Endpoint = $this->truncateString($s3Endpoint, 255);
+        $this->s3Endpoint = $this->truncateString($s3Endpoint);
     }
 
     public function getDropboxAuthToken(): ?string
@@ -292,9 +301,9 @@ class StorageLocation
     }
 
     /**
-     * @param BigInteger|string|null $storageQuota
+     * @param string|BigInteger|null $storageQuota
      */
-    public function setStorageQuota($storageQuota): void
+    public function setStorageQuota(BigInteger|string|null $storageQuota): void
     {
         $storageQuota = (string)Quota::convertFromReadableSize($storageQuota);
         $this->storageQuota = !empty($storageQuota) ? $storageQuota : null;
@@ -304,7 +313,7 @@ class StorageLocation
     {
         $size = $this->storageQuota;
 
-        return (null !== $size)
+        return (null !== $size && '' !== $size)
             ? BigInteger::of($size)
             : null;
     }
@@ -316,9 +325,9 @@ class StorageLocation
     }
 
     /**
-     * @param BigInteger|string|null $storageUsed
+     * @param string|BigInteger|null $storageUsed
      */
-    public function setStorageUsed($storageUsed): void
+    public function setStorageUsed(BigInteger|string|null $storageUsed): void
     {
         $storageUsed = (string)Quota::convertFromReadableSize($storageUsed);
         $this->storageUsed = !empty($storageUsed) ? $storageUsed : null;
@@ -328,19 +337,17 @@ class StorageLocation
     {
         $size = $this->storageUsed;
 
-        if (null === $size) {
-            return BigInteger::zero();
-        }
-
-        return BigInteger::of($size);
+        return (null !== $size && '' !== $size)
+            ? BigInteger::of($size)
+            : BigInteger::zero();
     }
 
     /**
      * Increment the current used storage total.
      *
-     * @param BigInteger|string|int $newStorageAmount
+     * @param int|string|BigInteger $newStorageAmount
      */
-    public function addStorageUsed($newStorageAmount): void
+    public function addStorageUsed(BigInteger|int|string $newStorageAmount): void
     {
         if (empty($newStorageAmount)) {
             return;
@@ -353,9 +360,9 @@ class StorageLocation
     /**
      * Decrement the current used storage total.
      *
-     * @param BigInteger|string|int $amountToRemove
+     * @param int|string|BigInteger $amountToRemove
      */
-    public function removeStorageUsed($amountToRemove): void
+    public function removeStorageUsed(BigInteger|int|string $amountToRemove): void
     {
         if (empty($amountToRemove)) {
             return;
@@ -385,20 +392,17 @@ class StorageLocation
 
         if ($this->isLocal()) {
             $localPath = $this->getPath();
-            $totalSpace = BigInteger::of(disk_total_space($localPath));
 
-            if (null === $quota || $quota->isGreaterThan($totalSpace)) {
-                return $totalSpace;
+            $totalSpaceFloat = disk_total_space($localPath);
+            if (is_float($totalSpaceFloat)) {
+                $totalSpace = BigInteger::of($totalSpaceFloat);
+                if (null === $quota || $quota->isGreaterThan($totalSpace)) {
+                    return $totalSpace;
+                }
             }
-
-            return $quota;
         }
 
-        if (null !== $quota) {
-            return $quota;
-        }
-
-        return null;
+        return $quota ?? null;
     }
 
     public function isStorageFull(): bool
@@ -426,9 +430,9 @@ class StorageLocation
     }
 
     /**
-     * @return StationMedia[]|Collection
+     * @return Collection|StationMedia[]
      */
-    public function getMedia()
+    public function getMedia(): Collection
     {
         return $this->media;
     }
@@ -437,28 +441,27 @@ class StorageLocation
     {
         $path = $this->applyPath($suffix);
 
-        switch ($this->adapter) {
-            case self::ADAPTER_S3:
-                try {
-                    $client = $this->getS3Client();
-                    if (empty($path)) {
-                        $objectUrl = $client->getObjectUrl($this->s3Bucket, '/');
-                        return rtrim($objectUrl, '/');
-                    }
+        return match ($this->adapter) {
+            self::ADAPTER_S3 => $this->getS3ObjectUri($suffix),
+            self::ADAPTER_DROPBOX => 'dropbox://' . $this->dropboxAuthToken . ltrim($path, '/'),
+            default => $path,
+        };
+    }
 
-                    return $client->getObjectUrl($this->s3Bucket, ltrim($path, '/'));
-                } catch (\InvalidArgumentException $e) {
-                    return 'Invalid URI (' . $e->getMessage() . ')';
-                }
-                break;
+    protected function getS3ObjectUri(?string $suffix = null): string
+    {
+        $path = $this->applyPath($suffix);
 
-            case self::ADAPTER_DROPBOX:
-                return 'dropbox://' . $this->dropboxAuthToken . ltrim($path, '/');
-                break;
+        try {
+            $client = $this->getS3Client();
+            if (empty($path)) {
+                $objectUrl = $client->getObjectUrl($this->s3Bucket, '/');
+                return rtrim($objectUrl, '/');
+            }
 
-            case self::ADAPTER_LOCAL:
-            default:
-                return $path;
+            return $client->getObjectUrl($this->s3Bucket, ltrim($path, '/'));
+        } catch (InvalidArgumentException $e) {
+            return 'Invalid URI (' . $e->getMessage() . ')';
         }
     }
 
@@ -480,26 +483,19 @@ class StorageLocation
 
     public function getStorageAdapter(): ExtendedAdapterInterface
     {
-        switch ($this->adapter) {
-            case self::ADAPTER_S3:
-                $client = $this->getS3Client();
-                $validPrefixPath = trim($this->path, '/');
-                return new AwsS3Adapter($client, $this->s3Bucket, $validPrefixPath);
+        $filteredPath = $this->getFilteredPath();
 
-            case self::ADAPTER_DROPBOX:
-                $validPrefixPath = trim($this->path, '/');
-                return new DropboxAdapter($this->getDropboxClient(), $validPrefixPath);
-
-            case self::ADAPTER_LOCAL:
-            default:
-                return new LocalFilesystemAdapter(rtrim($this->path, '/'));
-        }
+        return match ($this->adapter) {
+            self::ADAPTER_S3 => new AwsS3Adapter($this->getS3Client(), $this->s3Bucket, $filteredPath),
+            self::ADAPTER_DROPBOX => new DropboxAdapter($this->getDropboxClient(), $filteredPath),
+            default => new LocalFilesystemAdapter($filteredPath)
+        };
     }
 
     protected function getS3Client(): S3Client
     {
         if (self::ADAPTER_S3 !== $this->adapter) {
-            throw new \InvalidArgumentException('This storage location is not using the S3 adapter.');
+            throw new InvalidArgumentException('This storage location is not using the S3 adapter.');
         }
 
         $s3Options = array_filter(
@@ -519,7 +515,7 @@ class StorageLocation
     protected function getDropboxClient(): Client
     {
         if (self::ADAPTER_DROPBOX !== $this->adapter) {
-            throw new \InvalidArgumentException('This storage location is not using the Dropbox adapter.');
+            throw new InvalidArgumentException('This storage location is not using the Dropbox adapter.');
         }
 
         return new Client($this->dropboxAuthToken);

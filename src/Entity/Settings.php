@@ -866,16 +866,16 @@ class Settings
      * @OA\Property(example=false)
      * @var bool Whether to enable "advanced" functionality in the system that is intended for power users.
      */
-    protected $enableAdvancedFeatures = false;
+    protected $enable_advanced_features = false;
 
     public function getEnableAdvancedFeatures(): bool
     {
-        return $this->enableAdvancedFeatures;
+        return $this->enable_advanced_features;
     }
 
     public function setEnableAdvancedFeatures(bool $enableAdvancedFeatures): void
     {
-        $this->enableAdvancedFeatures = $enableAdvancedFeatures;
+        $this->enable_advanced_features = $enableAdvancedFeatures;
     }
 
     /**

@@ -169,7 +169,7 @@ export default {
                 }).then((resp) => {
                     if (resp.data.success) {
                         let allItemNames = _.map(this.selectedItems.all, 'path_short');
-                        notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success', false);
+                        notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success');
                     } else {
                         notify('<b>' + this.langErrors + '</b><br>' + resp.data.errors.join('<br>'), 'danger');
                     }

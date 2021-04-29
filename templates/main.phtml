@@ -189,29 +189,5 @@ endif; ?> role="contentinfo">
 </footer>
 
 <div id="radio-player"></div>
-
-<?php
-if (null !== $flash && $flash->hasMessages()): ?>
-    <script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
-        $(function () {
-            <?php foreach($flash->getMessages() as $message): ?>
-            notify("<?=str_replace(
-                ['"', "\n"],
-                ['\'', '<br>'],
-                $message['text']
-            ) ?>", '<?=$message['color'] ?>', false);
-            <?php endforeach; ?>
-        });
-    </script>
-<?php
-endif; ?>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
-    let currentTheme = document.documentElement.getAttribute('data-theme');
-    if (currentTheme === 'browser') {
-        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-    }
-</script>
 </body>
 </html>

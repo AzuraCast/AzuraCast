@@ -62,7 +62,7 @@ export default {
         },
         doClear () {
             axios.delete(this.queueUrl).then((resp) => {
-                notify('<b>' + this.$gettext('Playlist queue cleared.') + '</b>', 'success', false);
+                notify('<b>' + this.$gettext('Playlist queue cleared.') + '</b>', 'success');
                 this.close();
             }).catch((err) => {
                 this.handleError(err);

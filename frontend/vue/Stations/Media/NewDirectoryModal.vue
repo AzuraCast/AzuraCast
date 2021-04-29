@@ -66,7 +66,7 @@ export default {
                 'name': this.newDirectory
             }).then((resp) => {
                 let notifyMessage = this.$gettext('New directory created.');
-                notify('<b>' + notifyMessage + '</b>', 'success', false);
+                notify('<b>' + notifyMessage + '</b>', 'success');
 
                 this.$emit('relist');
                 this.close();
@@ -74,7 +74,7 @@ export default {
                 console.error(err);
 
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+                notify('<b>' + notifyMessage + '</b>', 'danger');
 
                 this.$emit('relist');
                 this.close();

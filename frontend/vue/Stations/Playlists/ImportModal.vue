@@ -55,9 +55,9 @@ export default {
 
             axios.post(this.importPlaylistUrl, formData).then((resp) => {
                 if (resp.data.success) {
-                    notify('<b>' + resp.data.message + '</b>', 'success', false);
+                    notify('<b>' + resp.data.message + '</b>', 'success');
                 } else {
-                    notify('<b>' + resp.data.message + '</b>', 'danger', false);
+                    notify('<b>' + resp.data.message + '</b>', 'danger');
                 }
 
                 this.$emit('relist');
@@ -66,7 +66,7 @@ export default {
                 console.error(err);
 
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+                notify('<b>' + notifyMessage + '</b>', 'danger');
 
                 this.$emit('relist');
                 this.close();

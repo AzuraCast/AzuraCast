@@ -100,7 +100,7 @@ export default {
             });
 
             axios.put(this.reorderUrl, { 'order': newOrder }).then((resp) => {
-                notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success', false);
+                notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success');
             }).catch((err) => {
                 this.handleError(err);
             });

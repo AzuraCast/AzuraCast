@@ -140,7 +140,7 @@ export default {
                     console.log('Error', error.message);
                 }
 
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+                notify('<b>' + notifyMessage + '</b>', 'danger');
                 this.close();
             });
         },
@@ -162,7 +162,7 @@ export default {
                 data: this.form
             }).then((resp) => {
                 let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success', false);
+                notify('<b>' + notifyMessage + '</b>', 'success');
 
                 this.$emit('relist');
                 this.close();

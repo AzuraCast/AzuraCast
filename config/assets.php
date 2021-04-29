@@ -2,7 +2,6 @@
 
 use App\Environment;
 use App\Http\ServerRequest;
-use App\Locale;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -132,6 +131,29 @@ return [
         ],
         'inline' => [
             'js' => [
+                <<<'JS'
+                    let currentTheme = document.documentElement.getAttribute('data-theme');
+                    if (currentTheme === 'browser') {
+                        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+                        document.documentElement.setAttribute('data-theme', currentTheme);
+                    }
+                JS,
+                function (Request $request) {
+                    /** @var App\Session\Flash|null $flashObj */
+                    $flashObj = $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
+
+                    if (null === $flashObj || !$flashObj->hasMessages()) {
+                        return null;
+                    }
+
+                    $notifies = [];
+                    foreach ($flashObj->getMessages() as $message) {
+                        $notifyMessage = str_replace(['"', "\n"], ['\'', '<br>'], $message['text']);
+                        $notifies[] = 'notify("' . $notifyMessage . '", "' . $message['color'] . '");';
+                    }
+
+                    return '$(function () { ' . implode('', $notifies) . ' });';
+                },
                 function (Request $request) {
                     /** @var Locale|null $locale */
                     $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);

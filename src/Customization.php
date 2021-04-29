@@ -9,8 +9,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Customization
 {
-    public const DEFAULT_THEME = 'light';
+    public const DEFAULT_THEME = 'browser';
 
+    public const THEME_BROWSER = 'browser';
     public const THEME_LIGHT = 'light';
     public const THEME_DARK = 'dark';
 

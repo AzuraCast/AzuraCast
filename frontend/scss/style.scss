@@ -3,12 +3,12 @@
   @import 'common';
 }
 
-body.theme-light {
+@at-root {
   $theme: 'light';
   @import 'common-colors';
 }
 
-body.theme-dark {
+[data-theme="dark"] {
   $theme: 'dark';
   @import 'common-colors';
 }

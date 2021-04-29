@@ -58,31 +58,6 @@ class UserProfileForm extends EntityForm
         return parent::process($request, $user);
     }
 
-    public function switchTheme(ServerRequest $request): void
-    {
-        $user = $request->getUser();
-
-        $themeField = $this->getField('theme');
-
-        $themeFieldOptions = $themeField->getOptions();
-        $themeOptions = array_keys($themeFieldOptions['choices']);
-
-        $currentTheme = $user->getTheme();
-        if (empty($currentTheme)) {
-            $currentTheme = $themeField->getValue();
-        }
-
-        foreach ($themeOptions as $theme) {
-            if ($theme !== $currentTheme) {
-                $user->setTheme($theme);
-                break;
-            }
-        }
-
-        $this->em->persist($user);
-        $this->em->flush();
-    }
-
     public function getView(ServerRequest $request): string
     {
         $user = $request->getUser();

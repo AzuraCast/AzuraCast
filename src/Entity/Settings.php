@@ -278,7 +278,7 @@ class Settings
      * @ORM\Column(name="public_theme", type="string", length=50, nullable=true)
      *
      * @OA\Property(example="light")
-     * @Assert\Choice({Customization::THEME_LIGHT, Customization::THEME_DARK})
+     * @Assert\Choice({Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK})
      * @var string|null Base Theme for Public Pages
      */
     protected $public_theme = Customization::DEFAULT_THEME;

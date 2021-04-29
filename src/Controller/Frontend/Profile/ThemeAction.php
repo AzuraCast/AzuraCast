@@ -2,9 +2,10 @@
 
 namespace App\Controller\Frontend\Profile;
 
-use App\Form\UserProfileForm;
+use App\Customization;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class ThemeAction
@@ -12,9 +13,23 @@ class ThemeAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        UserProfileForm $userProfileForm
+        EntityManagerInterface $em
     ): ResponseInterface {
-        $userProfileForm->switchTheme($request);
+        $user = $request->getUser();
+
+        $currentTheme = $user->getTheme();
+        if (empty($currentTheme)) {
+            $currentTheme = Customization::DEFAULT_THEME;
+        }
+
+        $user->setTheme(
+            (Customization::THEME_LIGHT === $currentTheme)
+                ? Customization::THEME_DARK
+                : Customization::THEME_LIGHT
+        );
+
+        $em->persist($user);
+        $em->flush();
 
         $referrer = $request->getHeaderLine('Referer');
         return $response->withRedirect(

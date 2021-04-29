@@ -5,7 +5,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no changes since the last stable release.
+- **Automatic Theme Selection:** If you haven't set a default theme for either your user account or the AzuraCast public
+  pages, the theme will automatically be determined by the user's browser based on their OS's theme preference (dark or
+  light). You can override this by selecting a default theme in the "Branding" settings, or reset to using browser
+  preference by selecting the "Prefer System Default" option.
 
 ## Code Quality/Technical Changes
 

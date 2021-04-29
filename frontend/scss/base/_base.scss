@@ -3,20 +3,6 @@
     --breakpoint-#{$bp}: #{$value};
   }
 
-  @each $color, $value in $colors {
-    --#{$color}: #{$value};
-  }
-
-  @each $color, $values in $theme-colors {
-    @each $level, $value in $values {
-      @if $level == 'color' {
-        --#{$color}: #{$value};
-      } @else {
-        --#{$color}-#{$level}: #{$value};
-      }
-    }
-  }
-
   --font-family-monospace: #{inspect($font-family-monospace)};
   --font-family-sans-serif: #{inspect($font-family-sans-serif)};
   --font-family-serif: #{inspect($font-family-serif)};
@@ -57,8 +43,6 @@ section {
 body {
   @include text-align(left);
 
-  background-color: $body-bg;
-  color: $body-color;
   font-family: $font-family-base;
   font-size: $font-size-base;
   -moz-osx-font-smoothing: grayscale;
@@ -188,14 +172,12 @@ input {
 label {
   @include typography-subheading;
 
-  color: $textfield-hint-color;
   display: inline-block;
 }
 
 legend {
   @include typography-headline;
 
-  color: inherit;
   display: block;
   margin-bottom: $headings-margin-y;
   max-width: 100%;
@@ -271,23 +253,18 @@ summary {
 // Link
 
 a {
-  background-color: transparent;
-  color: $link-color;
   text-decoration: $link-decoration;
   -webkit-text-decoration-skip: objects;
 
   @include active-focus-hover {
-    color: $link-color-hover;
     text-decoration: $link-decoration-hover;
   }
 }
 
 a:not([href]):not([tabindex]) {
-  color: inherit;
   text-decoration: none;
 
   @include active-focus-hover {
-    color: inherit;
     text-decoration: none;
   }
 
@@ -309,7 +286,6 @@ caption {
   @include typography-caption;
 
   caption-side: bottom;
-  color: $table-caption-color;
   min-height: $table-thead-cell-height;
   padding: $table-thead-padding-y $table-cell-padding-x-alt;
 }
@@ -376,11 +352,6 @@ h5,
 h6 {
   margin-top: 0;
   margin-bottom: $headings-margin-y;
-}
-
-mark {
-  background-color: $mark-bg;
-  color: $mark-color;
 }
 
 ol ol,

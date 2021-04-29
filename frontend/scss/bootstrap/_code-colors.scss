@@ -1,0 +1,21 @@
+code {
+  background-color: $code-bg;
+  color: $code-color;
+
+  a > & {
+    color: inherit;
+  }
+}
+
+kbd {
+  background-color: $kbd-bg;
+  color: $kbd-color;
+}
+
+pre {
+  color: $pre-color;
+
+  code {
+    color: inherit;
+  }
+}

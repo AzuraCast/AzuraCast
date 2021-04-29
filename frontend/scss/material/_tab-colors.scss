@@ -1,0 +1,33 @@
+.nav-tabs {
+  box-shadow: inset 0 ($nav-tab-border-width * -2) 0 ($nav-tab-border-width * -1) $nav-tab-border-color;
+
+  .nav-link {
+    color: $nav-tab-color;
+
+    @include active-focus-hover {
+      background-color: $nav-tab-bg-hover;
+    }
+
+    &.active {
+      color: $nav-tab-color-active;
+    }
+
+    &.disabled {
+      color: $nav-tab-color-disabled;
+    }
+
+    &::before {
+      background-color: $nav-tab-indicator-bg;
+    }
+  }
+
+  .nav-item.show .nav-link {
+    background-color: $nav-tab-bg-hover;
+  }
+}
+
+.nav-tabs-material {
+  .nav-tabs-indicator {
+    background-color: $nav-tab-indicator-bg;
+  }
+}

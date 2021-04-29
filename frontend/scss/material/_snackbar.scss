@@ -2,8 +2,6 @@
 
 .snackbar {
   align-items: center;
-  background-color: $snackbar-bg;
-  color: $snackbar-color;
   display: flex;
   font-size: $snackbar-font-size;
   line-height: $snackbar-line-height;
@@ -64,7 +62,6 @@
   background-color: transparent;
   background-image: none;
   border: 0;
-  color: $snackbar-btn-color;
   cursor: pointer;
   display: block;
   flex-shrink: 0;
@@ -77,7 +74,6 @@
   white-space: nowrap;
 
   @include focus-hover {
-    color: $snackbar-btn-color-hover;
     text-decoration: none;
   }
 

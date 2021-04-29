@@ -31,7 +31,6 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
     <?php
     $assets
         ->load('minimal')
-        ->load('theme_' . $customization->getPublicTheme())
         ->addInlineCss($customization->getCustomPublicCss())
         ->addInlineJs($customization->getCustomPublicJs());
 

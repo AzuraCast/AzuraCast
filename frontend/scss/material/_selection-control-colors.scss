@@ -1,0 +1,59 @@
+.custom-control-label {
+  color: inherit;
+
+  &::before {
+    color: $selection-control-color;
+  }
+}
+
+.custom-control-input {
+  &:checked ~ {
+    .custom-control-label {
+      &::before {
+        background-color: $selection-control-color-active;
+      }
+    }
+  }
+
+  &:disabled ~ {
+    .custom-control-label {
+      background-color: $selection-control-color-disabled;
+    }
+  }
+}
+
+.custom-switch {
+  .custom-control-label {
+    &::after {
+      background-color: $selection-control-thumb-bg;
+    }
+  }
+
+  .custom-control-input {
+    &:checked {
+      ~ .custom-control-label {
+        &::after {
+          background-color: $selection-control-color-active;
+        }
+      }
+
+      ~ .custom-control-track {
+        background-color: rgba($selection-control-color-active, $selection-control-track-opacity);
+      }
+    }
+
+    &:disabled {
+      ~ .custom-control-label::after {
+        background-color: $selection-control-thumb-bg-disabled;
+      }
+
+      ~ .custom-control-track {
+        background-color: $selection-control-track-bg-disabled;
+      }
+    }
+  }
+
+  .custom-control-track {
+    background-color: $selection-control-track-bg;
+  }
+}

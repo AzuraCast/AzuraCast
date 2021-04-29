@@ -1,0 +1,25 @@
+@each $color, $values in $theme-colors {
+  .alert-#{$color} {
+    background-color: theme-color-light($color);
+    color: color-yiq(theme-color-light($color));
+  }
+}
+
+.alert-dismissible {
+  .close {
+    color: inherit;
+  }
+}
+
+.alert-heading {
+  color: inherit;
+}
+
+.alert-link {
+  color: inherit;
+
+  @include active-focus-hover {
+    color: inherit;
+  }
+}
+

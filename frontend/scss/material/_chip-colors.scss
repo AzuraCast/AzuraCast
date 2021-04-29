@@ -1,0 +1,27 @@
+.chip {
+  background-color: $chip-bg;
+  color: $chip-color;
+}
+
+@each $color, $values in $theme-colors {
+  .chip-#{$color} {
+    background-color: theme-color($color);
+    color: color-yiq(theme-color($color));
+  }
+}
+
+.chip-action {
+  @include active-focus-hover {
+    box-shadow: map-get($chip-elevation-shadow-hover, shadow);
+    color: $chip-color;
+  }
+
+  &:active {
+    background-color: $chip-bg-active;
+  }
+}
+
+.chip-icon {
+  background-color: $chip-icon-bg;
+  color: color-yiq($chip-icon-bg);
+}

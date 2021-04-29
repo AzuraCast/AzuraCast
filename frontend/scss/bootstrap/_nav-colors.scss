@@ -1,0 +1,27 @@
+.nav-link {
+  &.disabled {
+    color: $nav-link-color-disabled;
+  }
+}
+
+.nav-pills {
+  .nav-link {
+    color: $nav-pills-color;
+
+    @include active-focus-hover {
+      background-color: $nav-pills-bg-hover;
+    }
+
+    &.active {
+      color: $nav-pills-color-active;
+    }
+
+    &.disabled {
+      color: $nav-link-color-disabled;
+    }
+  }
+
+  .show > .nav-link {
+    background-color: $nav-pills-bg-hover;
+  }
+}

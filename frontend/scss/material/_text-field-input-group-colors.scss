@@ -1,0 +1,16 @@
+.input-group-text {
+  color: inherit;
+}
+
+.input-group-icon {
+  color: $textfield-border-color;
+
+  @include hover {
+    color: $textfield-border-color-hover;
+  }
+
+  .floating-label.is-focused ~ &,
+  .form-control:focus ~ & {
+    color: $textfield-border-color-focus;
+  }
+}

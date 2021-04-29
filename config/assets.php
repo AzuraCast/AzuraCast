@@ -125,6 +125,9 @@ return [
                 [
                     'href' => 'dist/lib/roboto-fontface/css/roboto/roboto-fontface.css',
                 ],
+                [
+                    'href' => 'dist/style.css',
+                ],
             ],
         ],
         'inline' => [
@@ -171,30 +174,6 @@ return [
                 [
                     'src' => 'dist/lib/autosize/autosize.min.js',
                     'defer' => true,
-                ],
-            ],
-        ],
-    ],
-
-    /*
-     * Themes
-     */
-    'theme_dark' => [
-        'order' => 50,
-        'files' => [
-            'css' => [
-                [
-                    'href' => 'dist/dark.css',
-                ],
-            ],
-        ],
-    ],
-    'theme_light' => [
-        'order' => 50,
-        'files' => [
-            'css' => [
-                [
-                    'href' => 'dist/light.css',
                 ],
             ],
         ],

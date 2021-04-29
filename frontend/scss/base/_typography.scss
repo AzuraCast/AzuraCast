@@ -3,7 +3,6 @@
 .blockquote {
   @include typography-title;
 
-  border-left: $blockquote-border-width solid $blockquote-border-color;
   margin-bottom: $paragraph-margin-y;
   padding: 0 $spacer;
 }
@@ -11,7 +10,6 @@
 .blockquote-footer {
   @include typography-caption;
 
-  color: $blockquote-small-color;
   display: block;
   margin-top: $spacer-xs;
 
@@ -24,8 +22,6 @@
 
 mark,
 .mark {
-  background-color: $mark-bg;
-  color: $mark-color;
   padding: $mark-padding;
 }
 
@@ -101,7 +97,6 @@ h6,
 .h4,
 .h5,
 .h6 {
-  color: $headings-color;
   font-family: $headings-font-family;
   margin-bottom: $headings-margin-y;
 }
@@ -160,7 +155,6 @@ h6,
 
 hr {
   border: 0;
-  border-top: $hr-border-width solid $hr-border-color;
   margin-top: $paragraph-margin-y;
   margin-bottom: $paragraph-margin-y;
 }

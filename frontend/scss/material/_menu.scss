@@ -10,7 +10,6 @@
   @include text-align(left);
 
   background-color: transparent;
-  color: inherit;
   display: none;
   float: left;
   font-size: $menu-font-size;
@@ -70,7 +69,6 @@
   &::before {
     @include border-radius($menu-border-radius);
 
-    background-color: $menu-bg;
     box-shadow: map-get($menu-elevation-shadow, shadow);
     content: '';
     display: block;
@@ -381,16 +379,9 @@
   }
 }
 
-// Divider
-
-.dropdown-divider {
-  @include nav-divider($menu-divider-bg);
-}
-
 // Header
 
 .dropdown-header {
-  color: $menu-header-color;
   display: block;
   font-size: $menu-font-size;
   font-weight: bolder;
@@ -415,7 +406,6 @@
   background: none;
   border: 0;
   clear: both;
-  color: $menu-link-color;
   display: block;
   font-weight: inherit;
   padding: $menu-link-padding-y $menu-link-padding-x;
@@ -426,19 +416,11 @@
   width: 100%;
 
   @include active-focus-hover {
-    background-color: $menu-link-bg-hover;
-    color: $menu-link-color;
     text-decoration: none;
-  }
-
-  &.active {
-    background-color: $menu-link-bg-hover;
   }
 
   &.disabled,
   &:disabled {
-    background-color: transparent;
-    color: $menu-link-color-disabled;
     pointer-events: none;
   }
 
@@ -449,7 +431,6 @@
 }
 
 .dropdown-item-text {
-  color: $menu-link-color;
   display: block;
   font-weight: inherit;
   padding: $menu-link-padding-y $menu-link-padding-x;
@@ -469,25 +450,6 @@
     margin-left: $caret-spacing;
     vertical-align: $caret-vertical-align;
     content: "";
-
-    border-top: $caret-width solid $text-color;
-    border-right: $caret-width solid transparent;
-    border-bottom: 0;
-    border-left: $caret-width solid transparent;
-
-    .dropright & {
-      border-top: $caret-width solid transparent;
-      border-right: 0;
-      border-bottom: $caret-width solid transparent;
-      border-left: $caret-width solid $text-color;
-    }
-
-    .dropup & {
-      border-top: 0;
-      border-right: $caret-width solid transparent;
-      border-bottom: $caret-width solid $text-color;
-      border-left: $caret-width solid transparent;
-    }
   }
 
   &:empty::after {
@@ -504,11 +466,6 @@
       margin-right: $caret-spacing;
       vertical-align: $caret-vertical-align;
       content: "";
-
-      border-top: $caret-width solid transparent;
-      border-right: $caret-width solid $text-color;
-      border-bottom: $caret-width solid transparent;
-      border-left: 0;
     }
   }
 }

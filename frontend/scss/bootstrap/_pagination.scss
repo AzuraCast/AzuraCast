@@ -1,5 +1,4 @@
 .pagination {
-  background-color: $pagination-bg;
   display: flex;
   list-style: none;
   padding: $pagination-padding-y $pagination-padding-x;
@@ -13,7 +12,6 @@
   background-image: none;
   border: 0;
 
-  color: $pagination-color;
   display: block;
   font-size: $btn-font-size;
   font-weight: $btn-font-weight;
@@ -25,7 +23,6 @@
   white-space: nowrap;
 
   @include active-focus-hover {
-    color: $pagination-color;
     text-decoration: none;
   }
 
@@ -35,7 +32,6 @@
 
   &.active,
   &:active {
-    background-color: $btn-bg-active;
     background-image: none;
   }
 
@@ -51,13 +47,8 @@
     margin-left: 0;
   }
 
-  .page-item.active & {
-    background-color: $btn-bg-active;
-  }
-
   .page-item.disabled & {
     background-color: transparent;
-    color: $pagination-color-disabled;
     cursor: auto;
     pointer-events: none;
   }

@@ -1,0 +1,14 @@
+@at-root {
+  $theme: 'light';
+  @import 'common';
+}
+
+body.theme-light {
+  $theme: 'light';
+  @import 'common-colors';
+}
+
+body.theme-dark {
+  $theme: 'dark';
+  @import 'common-colors';
+}

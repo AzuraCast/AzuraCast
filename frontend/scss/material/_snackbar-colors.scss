@@ -1,0 +1,12 @@
+.snackbar {
+  background-color: $snackbar-bg;
+  color: $snackbar-color;
+}
+
+.snackbar-btn {
+  color: $snackbar-btn-color;
+
+  @include focus-hover {
+    color: $snackbar-btn-color-hover;
+  }
+}

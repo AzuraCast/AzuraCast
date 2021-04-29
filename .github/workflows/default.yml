@@ -25,6 +25,7 @@ jobs :
     runs-on : ubuntu-latest
     env :
       APPLICATION_ENV : testing
+      NODE_ENV : production
     steps :
       - uses : actions/checkout@master
 

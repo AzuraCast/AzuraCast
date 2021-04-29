@@ -1,0 +1,27 @@
+@include text-emphasis-variant('.text-black', $black);
+@include text-emphasis-variant('.text-black-primary', $black-primary);
+@include text-emphasis-variant('.text-black-secondary', $black-secondary);
+@include text-emphasis-variant('.text-black-hint', $black-hint);
+@include text-emphasis-variant('.text-black-divider', $black-divider);
+@include text-emphasis-variant('.text-white', $white);
+@include text-emphasis-variant('.text-white-primary', $white-primary);
+@include text-emphasis-variant('.text-white-secondary', $white-secondary);
+@include text-emphasis-variant('.text-white-hint', $white-hint);
+@include text-emphasis-variant('.text-white-divider', $white-divider);
+@include text-emphasis-variant('.text-muted', $text-muted);
+
+@each $color, $values in $theme-colors {
+  @include text-emphasis-variant('.text-#{$color}', theme-color($color), theme-color-dark($color));
+}
+
+.text-black-50 {
+  color: rgba($black, 0.5) !important;
+}
+
+.text-body {
+  color: $body-color !important;
+}
+
+.text-white-50 {
+  color: rgba($white, 0.5) !important;
+}

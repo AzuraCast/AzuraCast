@@ -1,0 +1,70 @@
+.btn {
+  background-color: transparent;
+  color: $btn-color;
+
+  @include active-focus-hover {
+    color: $btn-color;
+  }
+
+  @include focus-hover {
+    background-image: linear-gradient(to bottom, $btn-overlay, $btn-overlay);
+  }
+
+  &.active,
+  &:active {
+    background-color: $btn-bg-active;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $btn-bg-disabled;
+    color: $btn-color-disabled;
+  }
+
+  .show > &.dropdown-toggle {
+    background-image: linear-gradient(to bottom, $btn-overlay, $btn-overlay);
+  }
+}
+
+@each $color, $values in $theme-colors {
+  .btn-#{$color} {
+    background-color: theme-color($color);
+    color: color-yiq(theme-color($color));
+
+    @include active-focus-hover {
+      color: color-yiq(theme-color($color));
+    }
+
+    &.active,
+    &:active {
+      background-color: theme-color-dark($color);
+    }
+
+    &.disabled,
+    &:disabled {
+      background-color: $btn-bg-disabled;
+      color: $btn-color-disabled;
+    }
+  }
+}
+
+[class*='bg-dark'] :not([class*='bg-light']) .btn {
+  &.disabled,
+  &:disabled {
+    background-color: $btn-bg-disabled-inverse;
+    color: $btn-color-disabled-inverse;
+  }
+}
+
+.btn-link {
+  color: $link-color;
+
+  @include active-focus-hover {
+    color: $link-color-hover;
+  }
+
+  &.disabled,
+  &:disabled {
+    color: $btn-color-disabled;
+  }
+}

@@ -1,6 +1,4 @@
 .nav-tabs {
-  box-shadow: inset 0 ($nav-tab-border-width * -2) 0 ($nav-tab-border-width * -1) $nav-tab-border-color;
-
   &.border-0,
   &.border-bottom-0 {
     box-shadow: none;
@@ -9,7 +7,6 @@
   .nav-link {
     @include transition-standard(background-color, color, opacity);
 
-    color: $nav-tab-color;
     font-size: $nav-tab-font-size;
     font-weight: $nav-tab-font-weight;
     line-height: $nav-tab-line-height;
@@ -19,18 +16,12 @@
     position: relative;
     text-transform: uppercase;
 
-    @include active-focus-hover {
-      background-color: $nav-tab-bg-hover;
-    }
-
     &.active,
     &:active {
       opacity: 1;
     }
 
     &.active {
-      color: $nav-tab-color-active;
-
       &::before {
         opacity: 1;
       }
@@ -38,14 +29,12 @@
 
     &.disabled {
       background-color: transparent;
-      color: $nav-tab-color-disabled;
       opacity: 1;
     }
 
     &::before {
       @include transition-standard(opacity);
 
-      background-color: $nav-tab-indicator-bg;
       content: '';
       display: block;
       height: $nav-tab-indicator-height;
@@ -58,7 +47,6 @@
   }
 
   .nav-item.show .nav-link {
-    background-color: $nav-tab-bg-hover;
     opacity: 1;
   }
 }
@@ -81,7 +69,6 @@
   }
 
   .nav-tabs-indicator {
-    background-color: $nav-tab-indicator-bg;
     display: none;
     height: $nav-tab-indicator-height;
     position: absolute;

@@ -34,6 +34,12 @@
     </b-modal>
 </template>
 
+<style lang="scss">
+table.sortable {
+    cursor: pointer;
+}
+</style>
+
 <script>
 import axios from 'axios';
 import Draggable from 'vuedraggable';

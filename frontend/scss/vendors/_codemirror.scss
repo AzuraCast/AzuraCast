@@ -1,13 +1,5 @@
 .CodeMirror {
-  background: $card-bg;
-  border: 1px solid $textfield-border-color;
   border-radius: 4px;
-  color: $textfield-color;
-
-  .CodeMirror-gutters {
-    background: $navdrawer-header-bg;
-    border-right: 1px solid $textfield-border-color;
-  }
 
   .CodeMirror-scroll {
     padding-top: 10px;
@@ -22,7 +14,6 @@
   .CodeMirror-guttermarker,
   .CodeMirror-guttermarker-subtle,
   .CodeMirror-linenumber {
-    color: $textfield-color;
     font-size: .8rem;
   }
 

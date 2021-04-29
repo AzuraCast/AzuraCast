@@ -31,7 +31,6 @@ $page_class .= ' theme-' . $customization->getTheme();
     <?php
     $assets
         ->load('main')
-        ->load('theme_' . $customization->getTheme())
         ->addInlineCss($customization->getCustomInternalCss());
 
     echo $assets->css();

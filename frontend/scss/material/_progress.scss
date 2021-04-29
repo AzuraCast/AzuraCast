@@ -10,21 +10,7 @@
 }
 
 .progress-bar {
-  border-bottom: $progress-bar-height solid $progress-bar-bg;
-
-  @each $color, $values in $theme-colors {
-    &.bg-#{$color} {
-      background-color: transparent !important; // stylelint-disable-line declaration-no-important
-      border-bottom-color: theme-color($color);
-
-      &::after {
-        background-color: theme-color-light($color);
-      }
-    }
-  }
-
   &::after {
-    background-color: $progress-bg;
     content: '';
     display: block;
     height: $progress-bar-height;
@@ -61,16 +47,6 @@
   box-sizing: content-box;
   position: relative;
 
-  @each $color, $values in $theme-colors {
-    &.bg-#{$color}::before {
-      // stylelint-disable value-no-vendor-prefix
-      background-image: repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, theme-color-light($color), theme-color-light($color) #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
-      background-image: -webkit-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, theme-color-light($color), theme-color-light($color) #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
-      background-image: -moz-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, theme-color-light($color), theme-color-light($color) #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
-      // stylelint-enable
-    }
-  }
-
   &::after {
     @include border-right-radius($progress-bar-border-radius);
 
@@ -79,11 +55,6 @@
   }
 
   &::before {
-    // stylelint-disable value-no-vendor-prefix
-    background-image: repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, #{$progress-bg}, #{$progress-bg} #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
-    background-image: -webkit-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, #{$progress-bg}, #{$progress-bg} #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
-    background-image: -moz-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, #{$progress-bg}, #{$progress-bg} #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
-    // stylelint-enable
     background-position: 0 0;
     background-repeat: repeat-x;
     background-size: ($progress-bar-height * 3) ($progress-bar-height * 3);
@@ -111,24 +82,8 @@
 // Indeterminate
 
 .progress-bar-indeterminate {
-  border-bottom-color: $progress-bg;
   position: relative;
   width: 100%;
-
-  @each $color, $values in $theme-colors {
-    &.bg-#{$color} {
-      border-bottom-color: theme-color-light($color);
-
-      &::after,
-      &::before {
-        background-color: theme-color($color);
-      }
-
-      &::before {
-        background-image: none;
-      }
-    }
-  }
 
   &::after,
   &::before {
@@ -137,7 +92,6 @@
     animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    background-color: $progress-bar-bg;
     width: 0%;
   }
 

@@ -1,0 +1,24 @@
+.progress-circular-gap {
+  border-top: ($progress-circular-spinner-width / 2) solid $progress-circular-bg;
+}
+
+.progress-circular-spinner {
+  border: $progress-circular-spinner-width solid $progress-circular-bg;
+}
+
+@each $color, $values in $theme-colors {
+  .progress-circular-#{$color} {
+    .progress-circular-gap,
+    .progress-circular-spinner {
+      border-top-color: theme-color($color);
+    }
+
+    .progress-circular-left .progress-circular-spinner {
+      border-left-color: theme-color($color);
+    }
+
+    .progress-circular-right .progress-circular-spinner {
+      border-right-color: theme-color($color);
+    }
+  }
+}

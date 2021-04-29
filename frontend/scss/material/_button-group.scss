@@ -2,20 +2,9 @@
 .btn-group-vertical {
   @include border-radius($btn-border-radius);
 
-  background-color: $btn-group-bg;
   display: inline-flex;
   position: relative;
   vertical-align: middle;
-
-  @each $color, $values in $theme-colors {
-    > .btn-#{$color} {
-      &.disabled,
-      &:disabled {
-        background-color: theme-color-light($color);
-        color: color-yiq(theme-color-light($color));
-      }
-    }
-  }
 
   > .btn {
     @include transition-standard(border-color, opacity);

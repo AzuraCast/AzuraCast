@@ -1,0 +1,55 @@
+%form-control {
+  border-color: $textfield-border-color;
+  color: $textfield-color;
+
+  @include hover {
+    border-color: $textfield-border-color-hover;
+  }
+
+  &::placeholder {
+    color: $textfield-hint-color;
+  }
+
+  &:disabled,
+  &[readonly] {
+    color: $textfield-color-disabled;
+
+    @include focus-hover {
+      border-color: $textfield-border-color;
+    }
+  }
+
+  &:focus {
+    border-color: $textfield-border-color-focus;
+  }
+}
+
+%form-select {
+  @include media-moz-webkit {
+    background-image: $caret-bg;
+    background-size: $textfield-select-bg-size $textfield-select-bg-size;
+    padding-right: $textfield-select-bg-size;
+  }
+}
+
+.custom-file-input {
+  @include focus-hover {
+    ~ .custom-file-label {
+      border-bottom-color: $textfield-border-color-focus;
+      box-shadow: inset 0 ($textfield-border-width-focus * -1) 0 ($textfield-border-width * -1) $textfield-border-color-focus;
+    }
+  }
+}
+
+.custom-file-label {
+  border-bottom: $textfield-border-width solid $textfield-border-color;
+  color: $textfield-hint-color;
+
+  &::after {
+    @include setup-material-icons-bg();
+    @include material-icons-bg($custom-file-button-icon);
+  }
+}
+
+@include form-validation-state('invalid', $form-feedback-invalid-color);
+@include form-validation-state('valid', $form-feedback-valid-color);

@@ -1,0 +1,14 @@
+.btn-group,
+.btn-group-vertical {
+  background-color: $btn-group-bg;
+
+  @each $color, $values in $theme-colors {
+    > .btn-#{$color} {
+      &.disabled,
+      &:disabled {
+        background-color: theme-color-light($color);
+        color: color-yiq(theme-color-light($color));
+      }
+    }
+  }
+}

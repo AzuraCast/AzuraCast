@@ -1,0 +1,87 @@
+.navbar {
+  color: $toolbar-color;
+
+  .form-control {
+    background-color: $toolbar-element-bg;
+    color: inherit;
+  }
+
+  .input-group {
+    background-color: $toolbar-element-bg;
+  }
+}
+
+.navbar-dark {
+  color: $toolbar-dark-color;
+
+  .form-control,
+  .input-group,
+  .navbar-brand::before,
+  .navbar-nav .show > .nav-link,
+  .navbar-toggler::before {
+    background-color: $toolbar-dark-element-bg;
+  }
+
+  .form-control::placeholder,
+  .navbar-nav .nav-link.disabled {
+    color: $toolbar-dark-color-lighter;
+  }
+}
+
+.toolbar-waterfall {
+  &.waterfall {
+    background-color: $toolbar-waterfall-bg;
+  }
+}
+
+// Misc
+
+.navbar-brand {
+  color: inherit;
+
+  &::before {
+    background-color: $toolbar-element-bg;
+  }
+
+  @include active-focus-hover {
+    color: inherit;
+  }
+}
+
+.navbar-text {
+  color: inherit;
+}
+
+.navbar-nav {
+  .nav-link {
+    color: inherit;
+
+    @include active-focus-hover {
+      background-color: $toolbar-element-bg;
+    }
+
+    &.disabled {
+      color: $toolbar-color-lighter;
+    }
+  }
+
+  .show > .nav-link {
+    background-color: $toolbar-element-bg;
+  }
+}
+
+.navbar-toggler {
+  color: inherit;
+
+  &::before {
+    background-color: $toolbar-element-bg;
+  }
+
+  @include active-focus-hover {
+    color: inherit;
+  }
+}
+
+.navbar-toggler-icon {
+  @include material-icons-bg($toolbar-toggler-icon);
+}

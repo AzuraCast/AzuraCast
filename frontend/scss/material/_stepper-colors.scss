@@ -1,0 +1,54 @@
+.stepper {
+  background-color: $stepper-bg;
+
+  &::after,
+  &::before {
+    border-top: $stepper-border-width solid $stepper-border-color;
+  }
+}
+
+.stepper-horiz {
+  background-color: $stepper-bg;
+
+  &::before {
+    border-top: $stepper-border-width solid $stepper-border-color;
+  }
+
+  .stepper {
+    &::after,
+    &::before {
+      border-top: $stepper-border-width solid $stepper-border-color;
+    }
+  }
+}
+
+.stepper-vert {
+  background-color: $stepper-bg;
+
+  .stepper {
+    &::after,
+    &::before {
+      border-left: $stepper-border-width solid $stepper-border-color;
+    }
+  }
+}
+
+.stepper-icon {
+  background-color: $stepper-icon-bg;
+  color: $stepper-icon-color;
+
+  .stepper.active &,
+  .stepper.done & {
+    background-color: $stepper-icon-bg-active;
+    color: color-yiq($stepper-icon-bg-active);
+  }
+}
+
+.stepper-text {
+  color: $stepper-text-color;
+
+  .stepper.active &,
+  .stepper.done & {
+    color: $stepper-text-color-active;
+  }
+}

@@ -6,6 +6,40 @@
   }
 }
 
+// Checkbox
+
+.custom-checkbox {
+  .custom-control-label::after {
+    @include setup-material-icons-bg;
+    @include material-icons-bg($selection-control-checkbox-icon);
+  }
+
+  .custom-control-input {
+    &:checked ~ .custom-control-label::after {
+      @include material-icons-bg($selection-control-checkbox-icon-checked);
+    }
+
+    &:indeterminate ~ .custom-control-label::after {
+      @include material-icons-bg($selection-control-checkbox-icon-indeterminate);
+    }
+  }
+}
+
+// Radio button
+
+.custom-radio {
+  .custom-control-label::after {
+    @include setup-material-icons-bg;
+    @include material-icons-bg($selection-control-radio-icon);
+  }
+
+  .custom-control-input {
+    &:checked ~ .custom-control-label::after {
+      @include material-icons-bg($selection-control-radio-icon-checked);
+    }
+  }
+}
+
 .custom-control-input {
   &:checked ~ {
     .custom-control-label {

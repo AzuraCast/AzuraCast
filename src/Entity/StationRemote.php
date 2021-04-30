@@ -440,6 +440,18 @@ class StationRemote implements StationMountInterface
         $this->source_port = $source_port;
     }
 
+    public function getAutodjProtocol(): ?string
+    {
+        if (Adapters::REMOTE_SHOUTCAST2 === $this->getAutodjAdapterType()) {
+            return self::PROTOCOL_ICY;
+        }
+
+        $urlScheme = parse_url($this->getUrl(), PHP_URL_SCHEME);
+        return ('https' === $urlScheme)
+            ? self::PROTOCOL_HTTPS
+            : self::PROTOCOL_HTTP;
+    }
+
     public function getAutodjAdapterType(): string
     {
         return $this->getType();

@@ -1037,9 +1037,10 @@ class ConfigWriter implements EventSubscriberInterface
         }
         $output_params[] = 'password = "' . $password . '"';
 
-        $isShoutcastMode = Adapters::REMOTE_ICECAST !== $mount->getAutodjAdapterType();
+        $protocol = $mount->getAutodjProtocol();
+
         if (!empty($mount->getAutodjMount())) {
-            if ($isShoutcastMode) {
+            if ($mount::PROTOCOL_ICY === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;
             } else {
                 $output_params[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
@@ -1057,8 +1058,8 @@ class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
         $output_params[] = 'encoding = "' . $charset . '"';
 
-        if ($isShoutcastMode) {
-            $output_params[] = 'protocol="icy"';
+        if (null !== $protocol) {
+            $output_params[] = 'protocol="' . $protocol . '"';
         }
 
         if (Entity\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {

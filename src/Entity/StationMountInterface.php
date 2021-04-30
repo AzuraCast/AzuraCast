@@ -9,6 +9,10 @@ interface StationMountInterface
     public const FORMAT_AAC = 'aac';
     public const FORMAT_OPUS = 'opus';
 
+    public const PROTOCOL_ICY = 'icy';
+    public const PROTOCOL_HTTP = 'http';
+    public const PROTOCOL_HTTPS = 'https';
+
     public function getEnableAutodj(): bool;
 
     public function getAutodjUsername(): ?string;
@@ -22,6 +26,8 @@ interface StationMountInterface
     public function getAutodjHost(): ?string;
 
     public function getAutodjPort(): ?int;
+
+    public function getAutodjProtocol(): ?string;
 
     public function getAutodjMount(): ?string;
 

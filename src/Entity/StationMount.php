@@ -373,6 +373,13 @@ class StationMount implements StationMountInterface
         return $fe_settings->getPort();
     }
 
+    public function getAutodjProtocol(): ?string
+    {
+        return Adapters::FRONTEND_SHOUTCAST === $this->getAutodjAdapterType()
+            ? self::PROTOCOL_ICY
+            : null;
+    }
+
     public function getAutodjUsername(): ?string
     {
         return '';

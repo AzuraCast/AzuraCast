@@ -400,6 +400,13 @@ return function (App $app) {
                         ->setName('api:stations:streamers:schedule')
                         ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
+                    $group->get(
+                        '/streamers/broadcasts',
+                        Controller\Api\Stations\Streamers\BroadcastsController::class . ':listAction'
+                    )
+                        ->setName('api:stations:streamer:broadcasts')
+                        ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
+
                     $group->group(
                         '/streamer/{id}',
                         function (RouteCollectorProxy $group) {

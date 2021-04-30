@@ -12,7 +12,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
-There have been no changes since the last stable release.
+- When streaming to a Remote Relay with a URL beginning in "https://", Liquidsoap will properly use the "https" protocol
+  when broadcasting to it.
 
 ## Bug Fixes
 

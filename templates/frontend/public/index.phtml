@@ -40,6 +40,11 @@ $assets
 
 $this->push('head');
 ?>
+
+<meta property="og:title" content="<?=$this->e($station->getName())?>">
+<meta property="og:url" content="<?=$this->e($station->getUrl())?>">
+<meta property="og:image" content="<?=$defaultAlbumArt?>">
+
 <meta property="twitter:card" content="player">
 <meta property="twitter:player" content="<?=(string)$router->named(
     'public:index',
@@ -49,9 +54,7 @@ $this->push('head');
 )?>">
 <meta property="twitter:player:width" content="400">
 <meta property="twitter:player:height" content="125">
-<meta property="twitter:title" content="<?=$this->e($station->getName())?>">
-<meta property="twitter:site" content="<?=$this->e($station->getUrl())?>">
-<meta property="twitter:image" content="<?=$defaultAlbumArt?>">
+
 <?php
 $this->end();
 ?>

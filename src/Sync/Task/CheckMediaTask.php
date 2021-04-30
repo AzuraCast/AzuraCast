@@ -188,11 +188,11 @@ class CheckMediaTask extends AbstractTask
                 }
 
                 $fileInfo = $musicFiles[$pathHash];
-                $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED];
+                $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
                 if (
                     empty($mediaRow['unique_id'])
-                    || Entity\StationMedia::needsReprocessing($mtime, $mediaRow['mtime'])
+                    || Entity\StationMedia::needsReprocessing($mtime, $mediaRow['mtime'] ?? 0)
                 ) {
                     $message = new Message\ReprocessMediaMessage();
                     $message->media_id = $mediaRow['id'];
@@ -236,9 +236,9 @@ class CheckMediaTask extends AbstractTask
 
             if (isset($musicFiles[$pathHash])) {
                 $fileInfo = $musicFiles[$pathHash];
-                $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED];
+                $mtime = $fileInfo[StorageAttributes::ATTRIBUTE_LAST_MODIFIED] ?? 0;
 
-                if (Entity\UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'])) {
+                if (Entity\UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
                     $message = new Message\AddNewMediaMessage();
                     $message->storage_location_id = $storageLocation->getId();
                     $message->path = $unprocessableRow['path'];

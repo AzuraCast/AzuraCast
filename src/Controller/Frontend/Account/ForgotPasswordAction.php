@@ -81,7 +81,7 @@ class ForgotPasswordAction
                 Flash::SUCCESS
             );
 
-            return $response->withRedirect($request->getRouter()->named('home'));
+            return $response->withRedirect($request->getRouter()->named('account:login'));
         }
 
         return $view->renderToResponse($response, 'frontend/account/forgot');

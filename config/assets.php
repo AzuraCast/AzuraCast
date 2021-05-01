@@ -158,8 +158,8 @@ return [
                     /** @var Locale|null $locale */
                     $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
 
-                    $locale = ($localeObj instanceof Locale)
-                        ? $localeObj->getLocale()
+                    $locale = ($localeObj instanceof App\Locale)
+                        ? (string)$localeObj
                         : Locale::DEFAULT_LOCALE;
 
                     $locale = explode('.', $locale)[0];

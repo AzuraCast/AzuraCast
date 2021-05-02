@@ -306,7 +306,9 @@ install() {
 # Usage: ./docker.sh update
 #
 update() {
-  if ask "Please make sure your AzuraCast installation is backed up before updating. Continue?" Y; then
+	echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
+		if ask "Are you ready to continue with the update?" Y; then
+
     # Check for a new Docker Utility Script.
     curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker.sh -o docker.new.sh
 

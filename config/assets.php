@@ -131,13 +131,6 @@ return [
         ],
         'inline' => [
             'js' => [
-                <<<'JS'
-                    let currentTheme = document.documentElement.getAttribute('data-theme');
-                    if (currentTheme === 'browser') {
-                        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-                        document.documentElement.setAttribute('data-theme', currentTheme);
-                    }
-                JS,
                 function (Request $request) {
                     /** @var App\Session\Flash|null $flashObj */
                     $flashObj = $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
@@ -180,6 +173,15 @@ return [
 
                     return 'let App = ' . json_encode($app) . ';';
                 },
+                <<<'JS'
+                    let currentTheme = document.documentElement.getAttribute('data-theme');
+                    if (currentTheme === 'browser') {
+                        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+                        document.documentElement.setAttribute('data-theme', currentTheme);
+                    }
+
+                    App.theme = currentTheme;
+                JS,
             ],
         ],
     ],

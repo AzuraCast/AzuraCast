@@ -162,6 +162,10 @@ export default {
             type: Boolean,
             default: true
         },
+        pageOptions: {
+            type: Array,
+            default: [10, 25, 50, 0]
+        },
         defaultPerPage: {
             type: Number,
             default: 10
@@ -201,7 +205,6 @@ export default {
             storeKey: 'datatable_' + this.id + '_settings',
             filter: null,
             perPage: (this.paginated) ? this.defaultPerPage : 0,
-            pageOptions: [10, 25, 50, 0],
             currentPage: 1,
             totalRows: 0,
             flushCache: false

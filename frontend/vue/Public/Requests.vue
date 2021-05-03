@@ -1,6 +1,6 @@
 <template>
-    <data-table ref="datatable" id="song_requests" paginated select-fields :fields="fields" :responsive="false"
-                :api-url="requestListUri">
+    <data-table ref="datatable" id="song_requests" paginated select-fields :page-options="pageOptions" :fields="fields"
+                :responsive="false" :api-url="requestListUri">
         <template v-slot:cell(name)="row">
             <a :href="row.item.song_art" class="album-art float-left pr-3" target="_blank"
                v-if="row.item.song_art" data-fancybox="gallery">
@@ -76,7 +76,10 @@ export default {
         );
 
         return {
-            fields: fields
+            fields: fields,
+            pageOptions: [
+                10, 25
+            ]
         };
     },
     computed: {

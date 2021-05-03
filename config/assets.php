@@ -549,4 +549,10 @@ return [
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
         // Auto-managed by Assets
     ],
+
+    'Vue_StationsReportsOverview' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'chartjs'],
+        // Auto-managed by Assets
+    ],
 ];

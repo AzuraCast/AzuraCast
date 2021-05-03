@@ -18,7 +18,8 @@ module.exports = {
     StationsPlaylists: './vue/Stations/Playlists.vue',
     StationsProfile: './vue/Stations/Profile.vue',
     StationsQueue: './vue/Stations/Queue.vue',
-    StationsStreamers: './vue/Stations/Streamers.vue'
+    StationsStreamers: './vue/Stations/Streamers.vue',
+    StationsReportsOverview: './vue/Stations/Reports/Overview.vue'
   },
   resolve: {
     extensions: ['*', '.js', '.vue', '.json']

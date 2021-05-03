@@ -393,6 +393,26 @@ return function (App $app) {
                         }
                     )->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+                    $group->group(
+                        '/reports',
+                        function (RouteCollectorProxy $group) {
+                            $group->get(
+                                '/overview/charts',
+                                Controller\Api\Stations\Reports\Overview\ChartsAction::class
+                            )->setName('api:stations:reports:overview-charts');
+
+                            $group->get(
+                                '/overview/best-and-worst',
+                                Controller\Api\Stations\Reports\Overview\BestAndWorstAction::class
+                            )->setName('api:stations:reports:best-and-worst');
+
+                            $group->get(
+                                '/overview/most-played',
+                                Controller\Api\Stations\Reports\Overview\MostPlayedAction::class
+                            )->setName('api:stations:reports:most-played');
+                        }
+                    )->add(new Middleware\Permissions(Acl::STATION_REPORTS, true));
+
                     $group->get(
                         '/streamers/schedule',
                         Controller\Api\Stations\StreamersController::class . ':scheduleAction'

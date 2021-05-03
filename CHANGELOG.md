@@ -12,12 +12,28 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- The embeddable data on each station's public player is now "OpenGraph" compatible, which should work across multiple
+  social media platforms, including the existing Twitter player implementation.
+
+- Unauthenticated users viewing paginated data (i.e. requestable tracks) are limited to viewing 25 rows per page to
+  avoid excessive server load.
+
 - When streaming to a Remote Relay with a URL beginning in "https://", Liquidsoap will properly use the "https" protocol
   when broadcasting to it.
 
+- The reports available via the "Reports Overview" page are now also available as API calls to authenticated users with
+  access to the reports pages themselves, via the following URLs:
+    - Charts: `/api/station/{id}/reports/overview/charts`
+    - Best and Worst Performing Tracks: `/api/station/{id}/reports/overview/best-and-worst`
+    - Most Played Tracks: `/api/station/{id}/reports/overview/most-played`
+
+- A new API endpoint is available to view _all_ broadcasts for a station, not just for a specific streamer:
+    - `/api/station/{id}/streamers/broadcasts`
+
 ## Bug Fixes
 
-There have been no changes since the last stable release.
+- Some issues causing errors about type mismatches (caused by recent implementations of strict typing) have been
+  resolved.
 
 ---
 

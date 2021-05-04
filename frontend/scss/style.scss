@@ -12,3 +12,10 @@
   $theme: 'dark';
   @import 'common-colors';
 }
+
+@media screen and (prefers-color-scheme: dark) {
+  [data-theme="browser"] {
+    $theme: 'dark';
+    @import 'common-colors';
+  }
+}

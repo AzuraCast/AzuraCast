@@ -177,9 +177,7 @@ return [
                     let currentTheme = document.documentElement.getAttribute('data-theme');
                     if (currentTheme === 'browser') {
                         currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-                        document.documentElement.setAttribute('data-theme', currentTheme);
                     }
-
                     App.theme = currentTheme;
                 JS,
             ],

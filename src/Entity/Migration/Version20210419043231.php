@@ -126,7 +126,7 @@ final class Version20210419043231 extends AbstractMigration
                 continue;
             }
 
-            $newSettings[$field] = mb_substr($value, 0, $length, 'UTF-8');
+            $newSettings[$field] = mb_substr((string)$value, 0, $length, 'UTF-8');
         }
 
         foreach ($boolFields as $field) {

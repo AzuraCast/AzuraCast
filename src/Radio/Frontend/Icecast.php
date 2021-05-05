@@ -134,8 +134,10 @@ class Icecast extends AbstractFrontend
                 'adminroot' => '/usr/local/share/icecast/admin',
                 'pidfile' => $configDir . '/icecast.pid',
                 'alias' => [
-                    '@source' => '/',
-                    '@dest' => '/status.xsl',
+                    [
+                        '@source' => '/',
+                        '@dest' => '/status.xsl',
+                    ],
                 ],
                 'ssl-private-key' => $certPaths->getKeyPath(),
                 'ssl-certificate' => $certPaths->getCertPath(),
@@ -187,10 +189,10 @@ class Icecast extends AbstractFrontend
                 $mount['fallback-override'] = 1;
             }
 
-            if ($mount_row->getFrontendConfig()) {
-                $mount_conf = $this->processCustomConfig($mount_row->getFrontendConfig());
-
-                if (!empty($mount_conf)) {
+            $mountFrontendConfig = trim($mount_row->getFrontendConfig() ?? '');
+            if (!empty($mountFrontendConfig)) {
+                $mount_conf = $this->processCustomConfig($mountFrontendConfig);
+                if (false !== $mount_conf) {
                     $mount = Utilities\Arrays::arrayMergeRecursiveDistinct($mount, $mount_conf);
                 }
             }
@@ -209,10 +211,11 @@ class Icecast extends AbstractFrontend
             $config['mount'][] = $mount;
         }
 
-        $customConfig = $frontendConfig->getCustomConfiguration();
+        $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
             $custom_conf = $this->processCustomConfig($customConfig);
-            if (!empty($custom_conf)) {
+
+            if (false !== $custom_conf) {
                 $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $custom_conf);
             }
         }

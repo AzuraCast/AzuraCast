@@ -165,22 +165,32 @@ abstract class AbstractFrontend extends AbstractAdapter
     }
 
     /**
-     * @param string|null $custom_config_raw
+     * @param string $custom_config_raw
      *
      * @return mixed[]|bool
      */
-    protected function processCustomConfig(?string $custom_config_raw): array|bool
+    protected function processCustomConfig(string $custom_config_raw): array|bool
     {
-        $custom_config = [];
+        try {
+            if (str_starts_with($custom_config_raw, '{')) {
+                return json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
+            }
 
-        if (str_starts_with($custom_config_raw, '{')) {
-            $custom_config = @json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
-        } elseif (str_starts_with($custom_config_raw, '<')) {
-            $reader = new Reader();
-            $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+            if (str_starts_with($custom_config_raw, '<')) {
+                $reader = new Reader();
+                return $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+            }
+        } catch (\Exception $e) {
+            $this->logger->error(
+                'Could not parse custom configuration.',
+                [
+                    'config' => $custom_config_raw,
+                    'exception' => $e,
+                ]
+            );
         }
 
-        return $custom_config;
+        return false;
     }
 
     protected function writeIpBansFile(Entity\Station $station): string

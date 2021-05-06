@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @AuditLog\Auditable
  * @AppAssert\StorageLocation()
  */
-class StorageLocation
+class StorageLocation implements \Stringable
 {
     use Traits\TruncateStrings;
 

@@ -5,7 +5,6 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Entity\StationPlaylist;
 use App\Environment;
 use App\Exception\CannotProcessMediaException;
 use App\Media\MetadataManager;
@@ -436,7 +435,7 @@ class StationMediaRepository extends Repository
      * @param bool $deleteFile Whether to remove the media file itself (disabled for batch operations).
      * @param ExtendedFilesystemInterface|null $fs
      *
-     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
+     * @return Entity\StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function remove(
         Entity\StationMedia $media,

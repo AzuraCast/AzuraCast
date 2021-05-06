@@ -5,7 +5,6 @@ namespace App\Entity\Repository;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
-use App\Entity\StationPlaylist;
 use App\Environment;
 use Doctrine\ORM\NoResultException;
 use InvalidArgumentException;
@@ -102,7 +101,7 @@ class StationPlaylistMediaRepository extends Repository
      * @param Entity\StationMedia $media
      * @param Entity\Station|null $station
      *
-     * @return StationPlaylist[] The IDs as keys and records as values for all affected playlists.
+     * @return Entity\StationPlaylist[] The IDs as keys and records as values for all affected playlists.
      */
     public function clearPlaylistsFromMedia(
         Entity\StationMedia $media,
@@ -166,7 +165,7 @@ class StationPlaylistMediaRepository extends Repository
     /**
      * @return Entity\Api\StationPlaylistQueue[]
      */
-    public function resetQueue(StationPlaylist $playlist): array
+    public function resetQueue(Entity\StationPlaylist $playlist): array
     {
         if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
@@ -221,7 +220,7 @@ class StationPlaylistMediaRepository extends Repository
     /**
      * @return Entity\Api\StationPlaylistQueue[]
      */
-    public function getQueue(StationPlaylist $playlist): array
+    public function getQueue(Entity\StationPlaylist $playlist): array
     {
         if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');

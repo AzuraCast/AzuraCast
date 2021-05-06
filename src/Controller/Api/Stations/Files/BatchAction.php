@@ -2,12 +2,12 @@
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Media\BatchUtilities;
 use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Backend\Liquidsoap;
@@ -23,13 +23,12 @@ use Throwable;
 class BatchAction
 {
     public function __construct(
+        protected BatchUtilities $batchUtilities,
         protected ReloadableEntityManagerInterface $em,
         protected MessageBus $messageBus,
         protected QueueManager $queueManager,
-        protected Entity\Repository\StationMediaRepository $mediaRepo,
         protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
-        protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo
     ) {
     }
 
@@ -71,32 +70,6 @@ class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        $affectedPlaylists = [];
-
-        /*
-         * NOTE: This iteration clears the entity manager.
-         */
-        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
-            try {
-                $mediaPlaylists = $this->mediaRepo->remove($media, false, $fs);
-
-                foreach ($mediaPlaylists as $playlistId => $playlist) {
-                    if (!isset($affectedPlaylists[$playlistId])) {
-                        $affectedPlaylists[$playlistId] = $playlist;
-                    }
-                }
-            } catch (Throwable $e) {
-                $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
-            }
-        }
-
-        /*
-         * NOTE: This iteration clears the entity manager.
-         */
-        foreach ($this->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessableMedia) {
-            $this->em->remove($unprocessableMedia);
-        }
-
         foreach ($result->files as $file) {
             try {
                 $fs->delete($file);
@@ -106,10 +79,6 @@ class BatchAction
         }
 
         foreach ($result->directories as $dir) {
-            foreach ($this->iteratePlaylistFoldersInDirectory($station, $dir) as $playlistFolder) {
-                $this->em->remove($playlistFolder);
-            }
-
             try {
                 $fs->deleteDirectory($dir);
             } catch (Throwable $e) {
@@ -117,7 +86,12 @@ class BatchAction
             }
         }
 
-        $this->em->flush();
+        $affectedPlaylists = $this->batchUtilities->handleDelete(
+            $result->files,
+            $result->directories,
+            $storageLocation,
+            $fs
+        );
 
         $this->writePlaylistChanges($request, $affectedPlaylists);
 
@@ -172,7 +146,7 @@ class BatchAction
         /*
          * NOTE: This iteration clears the entity manager.
          */
-        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+        foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
             try {
                 $mediaPlaylists = $this->playlistMediaRepo->clearPlaylistsFromMedia($media, $station);
                 foreach ($mediaPlaylists as $playlistId => $playlistRecord) {
@@ -226,8 +200,8 @@ class BatchAction
         $to = $request->getParam('directory', '');
 
         $toMove = [
-            $this->iterateMedia($storageLocation, $result->files),
-            $this->iterateUnprocessableMedia($storageLocation, $result->files),
+            $this->batchUtilities->iterateMedia($storageLocation, $result->files),
+            $this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files),
         ];
 
         foreach ($toMove as $iterator) {
@@ -251,9 +225,9 @@ class BatchAction
             $fs->move($dirPath, $newDirPath);
 
             $toMove = [
-                $this->iterateMediaInDirectory($storageLocation, $dirPath),
-                $this->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
-                $this->iteratePlaylistFoldersInDirectory($station, $dirPath),
+                $this->batchUtilities->iterateMediaInDirectory($storageLocation, $dirPath),
+                $this->batchUtilities->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
+                $this->batchUtilities->iteratePlaylistFoldersInDirectory($station, $dirPath),
             ];
 
             foreach ($toMove as $iterator) {
@@ -282,7 +256,7 @@ class BatchAction
     ): Entity\Api\BatchResult {
         $result = $this->parseRequest($request, $fs, true);
 
-        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+        foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
             try {
                 /** @var Entity\Station $stationRef */
                 $stationRef = $this->em->getReference(Entity\Station::class, $station->getId());
@@ -322,7 +296,7 @@ class BatchAction
             }
         }
 
-        foreach ($this->iterateMedia($storageLocation, $result->files) as $media) {
+        foreach ($this->batchUtilities->iterateMedia($storageLocation, $result->files) as $media) {
             $mediaId = (int)$media->getId();
 
             if (!isset($queuedMediaUpdates[$mediaId])) {
@@ -334,7 +308,7 @@ class BatchAction
             }
         }
 
-        foreach ($this->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
+        foreach ($this->batchUtilities->iterateUnprocessableMedia($storageLocation, $result->files) as $unprocessable) {
             $path = $unprocessable->getPath();
 
             if (!isset($queuedNewFiles[$path])) {
@@ -376,109 +350,6 @@ class BatchAction
         $result->directories = $directories;
 
         return $result;
-    }
-
-    /**
-     * Iterate through the found media records, while occasionally flushing and clearing the entity manager.
-     *
-     * @note This function flushes the entity manager.
-     *
-     * @param Entity\StorageLocation $storageLocation
-     * @param array $paths
-     *
-     * @return iterable|Entity\StationMedia[]
-     */
-    protected function iterateMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
-    {
-        return BatchIteratorAggregate::fromTraversableResult(
-            $this->mediaRepo->iteratePaths($paths, $storageLocation),
-            $this->em,
-            25
-        );
-    }
-
-    /**
-     * @param Entity\StorageLocation $storageLocation
-     * @param string $dir
-     *
-     * @return iterable|Entity\StationMedia[]
-     */
-    protected function iterateMediaInDirectory(Entity\StorageLocation $storageLocation, string $dir): iterable
-    {
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT sm
-                FROM App\Entity\StationMedia sm
-                WHERE sm.storage_location = :storageLocation
-                AND sm.path LIKE :path
-            DQL
-        )->setParameter('storageLocation', $storageLocation)
-            ->setParameter('path', $dir . '/%');
-
-        return BatchIteratorAggregate::fromQuery($query, 25);
-    }
-
-    /**
-     * Iterate through unprocessable media, while occasionally flushing and clearing the entity manager.
-     *
-     * @note This function flushes the entity manager.
-     *
-     * @param Entity\StorageLocation $storageLocation
-     * @param array $paths
-     *
-     * @return iterable|Entity\UnprocessableMedia[]
-     */
-    protected function iterateUnprocessableMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
-    {
-        return BatchIteratorAggregate::fromTraversableResult(
-            $this->unprocessableMediaRepo->iteratePaths($paths, $storageLocation),
-            $this->em,
-            25
-        );
-    }
-
-    /**
-     * @param Entity\StorageLocation $storageLocation
-     * @param string $dir
-     *
-     * @return iterable|Entity\UnprocessableMedia[]
-     */
-    protected function iterateUnprocessableMediaInDirectory(
-        Entity\StorageLocation $storageLocation,
-        string $dir
-    ): iterable {
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT upm
-                FROM App\Entity\UnprocessableMedia upm
-                WHERE upm.storage_location = :storageLocation
-                AND upm.path LIKE :path
-            DQL
-        )->setParameter('storageLocation', $storageLocation)
-            ->setParameter('path', $dir . '/%');
-
-        return BatchIteratorAggregate::fromQuery($query, 25);
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @param string $dir
-     *
-     * @return iterable|Entity\StationPlaylistFolder[]
-     */
-    protected function iteratePlaylistFoldersInDirectory(Entity\Station $station, string $dir): iterable
-    {
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT spf
-                FROM App\Entity\StationPlaylistFolder spf
-                WHERE spf.station = :station
-                AND spf.path LIKE :path
-            DQL
-        )->setParameter('station', $station)
-            ->setParameter('path', $dir . '%');
-
-        return BatchIteratorAggregate::fromQuery($query, 25);
     }
 
     protected function writePlaylistChanges(

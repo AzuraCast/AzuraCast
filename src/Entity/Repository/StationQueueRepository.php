@@ -109,6 +109,15 @@ class StationQueueRepository extends Repository
             ->getOneOrNullResult();
     }
 
+    public function getLastCuedSong(Entity\Station $station): ?Entity\StationQueue
+    {
+        return $this->getRecentBaseQuery($station)
+            ->andWhere('sq.sent_to_autodj = 1')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
     public function findRecentlyCuedSong(Entity\Station $station, Entity\SongInterface $song): ?Entity\StationQueue
     {
         return $this->getRecentBaseQuery($station)

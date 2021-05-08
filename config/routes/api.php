@@ -424,7 +424,7 @@ return function (App $app) {
                         '/streamers/broadcasts',
                         Controller\Api\Stations\Streamers\BroadcastsController::class . ':listAction'
                     )
-                        ->setName('api:stations:streamer:broadcasts')
+                        ->setName('api:stations:streamers:broadcasts')
                         ->add(new Middleware\Permissions(Acl::STATION_STREAMERS, true));
 
                     $group->group(

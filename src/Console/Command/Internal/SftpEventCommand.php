@@ -7,7 +7,6 @@ use App\Console\Command\CommandAbstract;
 use App\Entity;
 use App\Media\BatchUtilities;
 use App\Message;
-use App\Utilities\File;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\PathPrefixer;
 use Psr\Log\LoggerInterface;
@@ -82,6 +81,7 @@ class SftpEventCommand extends CommandAbstract
         $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
         $relativePath = $pathPrefixer->stripPrefix($path);
 
+        /*
         $sanitizedRelativePath = File::sanitizeFileName($relativePath);
 
         if ($relativePath !== $sanitizedRelativePath) {
@@ -91,6 +91,7 @@ class SftpEventCommand extends CommandAbstract
 
             $relativePath = $sanitizedRelativePath;
         }
+        */
 
         $this->logger->notice(
             'Processing new SFTP upload.',
@@ -157,6 +158,7 @@ class SftpEventCommand extends CommandAbstract
         $from = $pathPrefixer->stripPrefix($path);
         $to = $pathPrefixer->stripPrefix($newPath);
 
+        /*
         $sanitizedTo = File::sanitizeFileName($to);
 
         if ($to !== $sanitizedTo) {
@@ -165,6 +167,7 @@ class SftpEventCommand extends CommandAbstract
 
             $to = $sanitizedTo;
         }
+        */
 
         $this->logger->notice(
             'Processing SFTP file/folder rename.',

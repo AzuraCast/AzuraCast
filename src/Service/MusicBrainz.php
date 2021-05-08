@@ -191,7 +191,8 @@ class MusicBrainz
                 ?? null;
 
             if (!empty($imageUrl)) {
-                return $imageUrl;
+                $imageUri = Utils::uriFor($imageUrl);
+                return (string)($imageUri->withScheme('https'));
             }
         }
 

@@ -59,7 +59,13 @@ class BackupsController extends AbstractLogViewerController
                 ];
             }
         }
-        $backups = array_reverse($backups);
+
+        uasort(
+            $backups,
+            static function ($a, $b) {
+                return $b['timestamp'] <=> $a['timestamp'];
+            }
+        );
 
         $settings = $this->settingsRepo->readSettings();
 

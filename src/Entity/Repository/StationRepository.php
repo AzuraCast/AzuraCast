@@ -9,7 +9,6 @@ use App\Environment;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use App\Radio\Frontend\AbstractFrontend;
-use App\Sync\Task\CheckMediaTask;
 use App\Utilities;
 use Closure;
 use Exception;
@@ -21,38 +20,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationRepository extends Repository
 {
-    protected CheckMediaTask $mediaSync;
-
-    protected Adapters $adapters;
-
-    protected Configuration $configuration;
-
-    protected ValidatorInterface $validator;
-
-    protected StorageLocationRepository $storageLocationRepo;
-
-    protected SettingsRepository $settingsRepo;
-
     public function __construct(
+        protected SettingsRepository $settingsRepo,
+        protected StorageLocationRepository $storageLocationRepo,
+        protected LoggerInterface $logger,
+        protected Adapters $adapters,
+        protected Configuration $configuration,
+        protected ValidatorInterface $validator,
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
-        SettingsRepository $settingsRepo,
-        StorageLocationRepository $storageLocationRepo,
-        LoggerInterface $logger,
-        CheckMediaTask $mediaSync,
-        Adapters $adapters,
-        Configuration $configuration,
-        ValidatorInterface $validator
     ) {
-        $this->mediaSync = $mediaSync;
-        $this->adapters = $adapters;
-        $this->configuration = $configuration;
-        $this->validator = $validator;
-
-        $this->settingsRepo = $settingsRepo;
-        $this->storageLocationRepo = $storageLocationRepo;
-
         parent::__construct($em, $serializer, $environment, $logger);
     }
 
@@ -225,19 +203,8 @@ class StationRepository extends Repository
     public function create(Entity\Station $station): Entity\Station
     {
         $station->generateAdapterApiKey();
+
         $this->configuration->initializeConfiguration($station);
-
-        // Scan directory for any existing files.
-        set_time_limit(600);
-        $this->mediaSync->importMusic($station->getMediaStorageLocation());
-
-        /** @var Entity\Station $station */
-        $station = $this->em->find(Entity\Station::class, $station->getId());
-
-        $this->mediaSync->importPlaylists($station);
-
-        /** @var Entity\Station $station */
-        $station = $this->em->find(Entity\Station::class, $station->getId());
 
         // Create default mountpoints if station supports them.
         $frontend_adapter = $this->adapters->getFrontendAdapter($station);

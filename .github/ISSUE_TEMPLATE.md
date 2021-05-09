@@ -1,7 +1,3 @@
----
-name: Bug Report about: Report an error you're encountering with your AzuraCast installation.
----
-
 <!--
 Notes:
 - This template is only to be used for bug/error reports. For feature requests, visit https://features.azuracast.com/
@@ -42,6 +38,7 @@ Steps to reproduce the behavior:
 <!-- If applicable, add screenshots to help explain your problem. -->
 
 **Device(s):**
+
 - Device: <!-- [e.g. Desktop, iPhone6] -->
 - OS: <!-- [e.g. iOS] -->
 - Browser: <!-- [e.g. chrome, safari] -->

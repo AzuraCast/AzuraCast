@@ -134,6 +134,7 @@ jobs :
       - name : Echo test output directory
         if : failure()
         run : |
+          docker-compose logs
           cat tests/_output/*
 
       - name : Upload built static assets and translations

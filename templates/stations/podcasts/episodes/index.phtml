@@ -1,0 +1,22 @@
+<?php
+$this->layout('main', [
+    'title' => __('Podcast Episodes'),
+    'manual' => true,
+    'page_class' => 'page-file-manager',
+]);
+
+$props = [
+    'listUrl' => $router->fromHere('api:stations:episodes', [$stationId, $podcast->getId()]),
+    'podcastMediaUrl' => $router->fromHere('api:stations:podcast-files:list', [$stationId]),
+    'uploadUrl' => $router->fromHere('api:stations:podcast-files:upload', [$stationId]),
+    'assignableEpisodesUrl' => $router->fromHere('api:stations:episodes:assignable', [$stationId, $podcast->getId()]),
+    'locale' => substr($customization->getLocale(), 0, 2),
+    'stationTimeZone' => $stationTz,
+    'podcast' => $podcast,
+];
+
+/** @var \App\Assets $assets */
+$assets->addVueRender('Vue_StationsPodcastEpisodes', '#station-podcast-episodes', $props);
+?>
+
+<div id="station-podcast-episodes"></div>

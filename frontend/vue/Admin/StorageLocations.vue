@@ -7,6 +7,7 @@
             <b-tabs pills card lazy>
                 <b-tab :active="activeType === 'station_media'" @click="setType('station_media')" :title="langStationMediaTab" no-body></b-tab>
                 <b-tab :active="activeType === 'station_recordings'" @click="setType('station_recordings')" :title="langStationRecordingsTab" no-body></b-tab>
+                <b-tab :active="activeType === 'station_podcasts'" @click="setType('station_podcasts')" :title="langStationPodcastsTab" no-body></b-tab>
                 <b-tab :active="activeType === 'backup'" @click="setType('backup')" :title="langBackupsTab" no-body></b-tab>
             </b-tabs>
 
@@ -71,6 +72,9 @@ export default {
         },
         langStationRecordingsTab () {
             return this.$gettext('Station Recordings');
+        },
+        langStationPodcastsTab () {
+            return this.$gettext('Station Podcasts');
         },
         langBackupsTab () {
             return this.$gettext('Backups');

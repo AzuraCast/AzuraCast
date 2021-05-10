@@ -31,6 +31,7 @@ class Acl
     public const STATION_MEDIA = 'manage station media';
     public const STATION_AUTOMATION = 'manage station automation';
     public const STATION_WEB_HOOKS = 'manage station web hooks';
+    public const STATION_PODCASTS = 'manage station podcasts';
 
     protected array $permissions;
 
@@ -103,6 +104,7 @@ class Acl
                 self::STATION_MEDIA => __('Manage Station Media'),
                 self::STATION_AUTOMATION => __('Manage Station Automation'),
                 self::STATION_WEB_HOOKS => __('Manage Station Web Hooks'),
+                self::STATION_PODCASTS => __('Manage Station Podcasts'),
             ],
         ];
 

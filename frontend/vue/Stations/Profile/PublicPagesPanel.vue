@@ -31,6 +31,12 @@
                         <a :href="publicOnDemandUri">{{ publicOnDemandUri }}</a>
                     </td>
                 </tr>
+                <tr>
+                    <td key="lang_profile_podcasts" v-translate>Podcasts</td>
+                    <td>
+                        <a :href="publicPodcastsUri">{{ publicPodcastsUri }}</a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <div class="card-actions" v-if="userCanManageProfile">
@@ -78,6 +84,7 @@ export const profilePublicProps = {
         publicPageUri: String,
         publicWebDjUri: String,
         publicOnDemandUri: String,
+        publicPodcastsUri: String,
         togglePublicPageUri: String
     }
 };

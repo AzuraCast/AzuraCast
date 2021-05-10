@@ -38,6 +38,7 @@ class StorageLocation implements \Stringable
     public const TYPE_BACKUP = 'backup';
     public const TYPE_STATION_MEDIA = 'station_media';
     public const TYPE_STATION_RECORDINGS = 'station_recordings';
+    public const TYPE_STATION_PODCASTS = 'station_podcasts';
 
     public const ADAPTER_LOCAL = 'local';
     public const ADAPTER_S3 = 's3';

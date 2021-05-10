@@ -267,6 +267,94 @@ return function (App $app) {
                     $group->delete('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\Art\DeleteArtAction::class)
                         ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+                    $group->get('/podcast/{podcast_id}/art', Controller\Api\Stations\PodcastsController::class . ':getArtworkAction')
+                        ->setName('api:stations:podcast:art')
+                        ->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class);
+
+                    $group->delete('/podcast/{podcast_id}/art', Controller\Api\Stations\PodcastsController::class . ':clearPodcastArtworkAction')
+                        ->setName('api:stations:podcast:art')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcasts', Controller\Api\Stations\PodcastsController::class . ':listAction')
+                        ->setName('api:stations:podcasts')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->post('/podcasts', Controller\Api\Stations\PodcastsController::class . ':createAction')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcast/{id}', Controller\Api\Stations\PodcastsController::class . ':getAction')
+                        ->setName('api:stations:podcast')
+                        ->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class);
+
+                    $group->post('/podcast/{id}', Controller\Api\Stations\PodcastsController::class . ':editAction')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->delete('/podcast/{id}', Controller\Api\Stations\PodcastsController::class . ':deleteAction')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcast/{podcast_id}/episodes', Controller\Api\Stations\PodcastEpisodesController::class . ':listAction')
+                        ->setName('api:stations:episodes')
+                        ->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class);
+
+                    $group->post('/podcast/{podcast_id}/episodes', Controller\Api\Stations\PodcastEpisodesController::class . ':createAction')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcast/{podcast_id}/episode/{id}', Controller\Api\Stations\PodcastEpisodesController::class . ':getAction')
+                        ->setName('api:stations:episode')
+                        ->add(Middleware\RequirePodcastEpisodePublishedMiddleware::class);
+
+                    $group->post('/podcast/{podcast_id}/episode/{id}', Controller\Api\Stations\PodcastEpisodesController::class . ':editAction')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->delete('/podcast/{podcast_id}/episode/{id}', Controller\Api\Stations\PodcastEpisodesController::class . ':deleteAction')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcast/{podcast_id}/episodes/assignable', Controller\Api\Stations\PodcastEpisodesController::class . ':listAssignableAction')
+                        ->setName('api:stations:episodes:assignable')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcast/{podcast_id}/episode/{episode_id}/art', Controller\Api\Stations\PodcastEpisodesController::class . ':getArtworkAction')
+                        ->setName('api:stations:episode:art')
+                        ->add(Middleware\RequirePublishedPodcastEpisodeMiddleware::class);
+
+                    $group->delete('/podcast/{podcast_id}/episode/{episode_id}/art', Controller\Api\Stations\PodcastEpisodesController::class . ':clearEpisodeArtworkAction')
+                        ->setName('api:stations:episode:art')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->put('/podcast/episode/{episode_id}/media/{podcast_media_id:[a-zA-Z0-9\-]+}', Controller\Api\Stations\PodcastEpisodesController::class . ':assignPodcastMediaAction')
+                        ->setName('api:stations:episode:media:assign')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcast/media/art/{podcast_media_id:[a-zA-Z0-9\-]+}.jpg', Controller\Api\Stations\Art\GetPodcastMediaArtAction::class)
+                        ->setName('api:stations:podcast-media:art')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->group('/podcast/files', function (RouteCollectorProxy $group) {
+                        $group->get('/list', Controller\Api\Stations\Podcasts\Files\ListAction::class)
+                            ->setName('api:stations:podcast-files:list')
+                            ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                        $group->map(['GET', 'POST'], '/upload', Controller\Api\Stations\Podcasts\Files\FlowUploadAction::class)
+                            ->setName('api:stations:podcast-files:upload')
+                            ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                        $group->delete('/{podcast_media_id}', Controller\Api\Stations\Podcasts\Files\DeleteAction::class)
+                            ->setName('api:stations:podcast-files:delete')
+                            ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                        $group->get('/download/{podcast_media_id}', Controller\Api\Stations\Podcasts\Files\DownloadAction::class)
+                            ->setName('api:stations:podcast-files:download')
+                            ->add(Middleware\RequirePodcastMediaAssignedToPublishedEpisodeMiddleware::class);
+                    });
+
+                    $group->get('/podcast-categories', Controller\Api\Stations\PodcastCategoriesController::class . ':listAction')
+                        ->setName('api:stations:podcast-categories')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
+                    $group->get('/podcast-category/{id}', Controller\Api\Stations\PodcastCategoriesController::class . ':getAction')
+                        ->setName('api:stations:podcast-category')
+                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
                     $station_api_endpoints = [
                         ['file', 'files', Controller\Api\Stations\FilesController::class, Acl::STATION_MEDIA],
                         ['mount', 'mounts', Controller\Api\Stations\MountsController::class, Acl::STATION_MOUNTS],

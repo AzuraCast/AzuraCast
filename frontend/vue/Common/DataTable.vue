@@ -164,7 +164,9 @@ export default {
         },
         pageOptions: {
             type: Array,
-            default: () => [10, 25, 50, 0]
+            default: () => {
+                return [10, 25, 50, 0];
+            }
         },
         defaultPerPage: {
             type: Number,

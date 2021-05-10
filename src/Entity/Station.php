@@ -342,6 +342,19 @@ class Station
     protected $recordings_storage_location;
 
     /**
+     * @ORM\ManyToOne(targetEntity="StorageLocation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="podcasts_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     *
+     * @DeepNormalize(true)
+     * @Serializer\MaxDepth(1)
+     *
+     * @var StorageLocation
+     */
+    protected $podcasts_storage_location;
+
+    /**
      * @ORM\OneToMany(targetEntity="StationStreamer", mappedBy="station")
      * @var Collection
      */
@@ -967,6 +980,20 @@ class Station
         }
 
         $this->recordings_storage_location = $storageLocation;
+    }
+
+    public function getPodcastsStorageLocation(): StorageLocation
+    {
+        return $this->podcasts_storage_location;
+    }
+
+    public function setPodcastsStorageLocation(StorageLocation $storageLocation): void
+    {
+        if (StorageLocation::TYPE_STATION_PODCASTS !== $storageLocation->getType()) {
+            throw new InvalidArgumentException('Storage location must be for station podcasts.');
+        }
+
+        $this->podcasts_storage_location = $storageLocation;
     }
 
     public function getPermissions(): Collection

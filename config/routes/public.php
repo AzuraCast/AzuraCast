@@ -26,6 +26,18 @@ return function (App $app) {
 
             $group->get('/ondemand[/{embed:embed}]', Controller\Frontend\PublicPages\OnDemandAction::class)
                 ->setName('public:ondemand');
+
+            $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsController::class)
+                ->setName('public:podcasts');
+
+            $group->get('/podcast/{podcast_id}/episodes', Controller\Frontend\PublicPages\PodcastEpisodesController::class)
+                ->setName('public:podcast:episodes');
+
+            $group->get('/podcast/{podcast_id}/episode/{episode_id}', Controller\Frontend\PublicPages\PodcastEpisodeController::class)
+                ->setName('public:podcast:episode');
+
+            $group->get('/podcast/{podcast_id}/feed', Controller\Frontend\PublicPages\PodcastFeedController::class)
+                ->setName('public:podcast:feed');
         }
     )
         ->add(Middleware\GetStation::class)

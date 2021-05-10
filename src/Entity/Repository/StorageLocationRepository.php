@@ -95,6 +95,11 @@ class StorageLocationRepository extends Repository
                     ->setParameter('storageLocation', $storageLocation);
                 break;
 
+            case Entity\StorageLocation::TYPE_STATION_PODCASTS:
+                $qb->where('s.podcasts_storage_location = :storageLocation')
+                    ->setParameter('storageLocation', $storageLocation);
+                break;
+
             case Entity\StorageLocation::TYPE_BACKUP:
             default:
                 return [];

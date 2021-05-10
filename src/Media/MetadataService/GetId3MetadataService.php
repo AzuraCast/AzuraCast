@@ -95,6 +95,8 @@ class GetId3MetadataService
             $metadata->setArtwork($info['id3v2']['PIC'][0]['data']);
         }
 
+        $metadata->setMimeType($info['mime_type']);
+
         return $metadata;
     }
 

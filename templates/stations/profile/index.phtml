@@ -66,6 +66,12 @@ $props = [
         [],
         true
     ),
+    'publicPodcastsUri' => (string)$router->named(
+        'public:podcasts',
+        ['station_id' => $station->getShortName()],
+        [],
+        true
+    ),
     'publicOnDemandEmbedUri' => (string)$router->named(
         'public:ondemand',
         ['station_id' => $station->getShortName(), 'embed' => 'embed'],

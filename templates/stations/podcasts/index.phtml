@@ -1,0 +1,21 @@
+<?php
+$this->layout('main', [
+    'title' => __('Podcasts'),
+    'manual' => true,
+]);
+
+$props = [
+    'listUrl' => $router->fromHere('api:stations:podcasts'),
+    'categoriesUrl' => $router->fromHere('api:stations:podcast-categories'),
+    'stationUrl' => $router->fromHere('stations:index:index', [$stationId]),
+    'locale' => substr($customization->getLocale(), 0, 2),
+    'stationTimeZone' => $stationTz,
+    'languageOptions' => $languageOptions,
+    'categoriesOptions' => $categoriesOptions,
+];
+
+/** @var \App\Assets $assets */
+$assets->addVueRender('Vue_StationsPodcasts', '#station-podcasts', $props);
+?>
+
+<div id="station-podcasts"></div>

@@ -47,7 +47,7 @@ class MostPlayedAction
             ->setMaxResults(10)
             ->getArrayResult();
 
-        $baseUrl = $request->getRouter()->getBaseUrl(true);
+        $baseUrl = $request->getRouter()->getBaseUrl();
 
         $stats = array_map(
             function ($row) use ($songApiGenerator, $station, $baseUrl) {

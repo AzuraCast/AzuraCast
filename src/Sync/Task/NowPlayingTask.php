@@ -293,7 +293,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
     ): void {
         /** @var Entity\Api\NowPlaying $np */
         $np = (new DeepCopy())->copy($npOriginal);
-        $np->resolveUrls($this->router->getBaseUrl(false));
+        $np->resolveUrls($this->router->getBaseUrl());
         $np->cache = 'event';
 
         $npOld = $station->getNowplaying();

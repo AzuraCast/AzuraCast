@@ -32,7 +32,7 @@ class SftpUsersController extends AbstractStationCrudController
             throw new StationUnsupportedException(__('This feature is not currently supported on this station.'));
         }
 
-        $baseUrl = $request->getRouter()->getBaseUrl(false)
+        $baseUrl = $request->getRouter()->getBaseUrl()
             ->withScheme('sftp')
             ->withPort(null);
 

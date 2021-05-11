@@ -18,20 +18,69 @@ class Router implements RouterInterface
 {
     protected RouteParserInterface $routeParser;
 
-    protected Environment $environment;
-
     protected ?ServerRequestInterface $currentRequest = null;
 
-    protected Entity\Repository\SettingsRepository $settingsRepo;
+    protected UriInterface $baseUrl;
 
     public function __construct(
-        Environment $environment,
+        protected Environment $environment,
+        Entity\Repository\SettingsRepository $settingsRepo,
         App $app,
-        Entity\Repository\SettingsRepository $settingsRepo
+        ?ServerRequestInterface $request = null
     ) {
-        $this->environment = $environment;
-        $this->settingsRepo = $settingsRepo;
         $this->routeParser = $app->getRouteCollector()->getRouteParser();
+
+        $this->currentRequest = $request;
+        $this->baseUrl = $this->buildBaseUrl($settingsRepo);
+    }
+
+    protected function buildBaseUrl(
+        Entity\Repository\SettingsRepository $settingsRepo
+    ): UriInterface {
+        $settings = $settingsRepo->readSettings();
+
+        $settingsBaseUrl = $settings->getBaseUrl();
+        if (!empty($settingsBaseUrl)) {
+            if (!str_starts_with($settingsBaseUrl, 'http')) {
+                $settingsBaseUrl = 'http://' . $settingsBaseUrl;
+            }
+
+            $baseUrl = new Uri($settingsBaseUrl);
+        } else {
+            $baseUrl = new Uri('');
+        }
+
+        $useHttps = $settings->getAlwaysUseSsl();
+
+        if ($this->currentRequest instanceof ServerRequestInterface) {
+            $currentUri = $this->currentRequest->getUri();
+
+            if ('https' === $currentUri->getScheme()) {
+                $useHttps = true;
+            }
+
+            $preferBrowserUrl = $settings->getPreferBrowserUrl();
+            if ($preferBrowserUrl || $baseUrl->getHost() === '') {
+                $ignoredHosts = ['web', 'nginx', 'localhost'];
+                if (!in_array($currentUri->getHost(), $ignoredHosts, true)) {
+                    $baseUrl = (new Uri())
+                        ->withScheme($currentUri->getScheme())
+                        ->withHost($currentUri->getHost())
+                        ->withPort($currentUri->getPort());
+                }
+            }
+        }
+
+        if ($useHttps && $baseUrl->getScheme() !== '') {
+            $baseUrl = $baseUrl->withScheme('https');
+        }
+
+        // Filter the base URL so it doesn't say http://site:80 or https://site:443
+        if (Uri::isDefaultPort($baseUrl)) {
+            return $baseUrl->withPort(null);
+        }
+
+        return $baseUrl;
     }
 
     /**
@@ -67,17 +116,9 @@ class Router implements RouterInterface
         return UriResolver::resolve($base, $rel);
     }
 
-    public function getCurrentRequest(): ServerRequestInterface
+    public function getBaseUrl(bool $useRequest = true): UriInterface
     {
-        return $this->currentRequest;
-    }
-
-    /**
-     * @param ServerRequestInterface $currentRequest
-     */
-    public function setCurrentRequest(ServerRequestInterface $currentRequest): void
-    {
-        $this->currentRequest = $currentRequest;
+        return $this->baseUrl;
     }
 
     /**
@@ -158,53 +199,5 @@ class Router implements RouterInterface
             $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params),
             $absolute
         );
-    }
-
-    public function getBaseUrl(bool $useRequest = true): UriInterface
-    {
-        $settings = $this->settingsRepo->readSettings();
-
-        $settingsBaseUrl = $settings->getBaseUrl();
-        if (!empty($settingsBaseUrl)) {
-            if (!str_starts_with($settingsBaseUrl, 'http')) {
-                $settingsBaseUrl = 'http://' . $settingsBaseUrl;
-            }
-
-            $baseUrl = new Uri($settingsBaseUrl);
-        } else {
-            $baseUrl = new Uri('');
-        }
-
-        $useHttps = $settings->getAlwaysUseSsl();
-
-        if ($useRequest && $this->currentRequest instanceof ServerRequestInterface) {
-            $currentUri = $this->currentRequest->getUri();
-
-            if ('https' === $currentUri->getScheme()) {
-                $useHttps = true;
-            }
-
-            $preferBrowserUrl = $settings->getPreferBrowserUrl();
-            if ($preferBrowserUrl || $baseUrl->getHost() === '') {
-                $ignoredHosts = ['web', 'nginx', 'localhost'];
-                if (!in_array($currentUri->getHost(), $ignoredHosts, true)) {
-                    $baseUrl = (new Uri())
-                        ->withScheme($currentUri->getScheme())
-                        ->withHost($currentUri->getHost())
-                        ->withPort($currentUri->getPort());
-                }
-            }
-        }
-
-        if ($useHttps && $baseUrl->getScheme() !== '') {
-            $baseUrl = $baseUrl->withScheme('https');
-        }
-
-        // Filter the base URL so it doesn't say http://site:80 or https://site:443
-        if (Uri::isDefaultPort($baseUrl)) {
-            return $baseUrl->withPort(null);
-        }
-
-        return $baseUrl;
     }
 }

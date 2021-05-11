@@ -95,7 +95,7 @@ class Dispatcher
         $this->logger->pushHandler($handler);
 
         $np = $this->nowPlayingApiGen->currentOrEmpty($station);
-        $np->resolveUrls($this->router->getBaseUrl(false));
+        $np->resolveUrls($this->router->getBaseUrl());
         $np->cache = 'event';
 
         $connectorObj = $this->connectors->getConnector($webhook->getType());

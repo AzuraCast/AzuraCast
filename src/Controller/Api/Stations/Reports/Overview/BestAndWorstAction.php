@@ -53,7 +53,7 @@ class BestAndWorstAction
         ];
 
         $stats = [];
-        $baseUrl = $request->getRouter()->getBaseUrl(true);
+        $baseUrl = $request->getRouter()->getBaseUrl();
 
         foreach ($rawStats as $category => $rawRows) {
             $stats[$category] = array_map(

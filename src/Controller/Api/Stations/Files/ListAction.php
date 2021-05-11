@@ -306,7 +306,7 @@ class ListAction
             ? Criteria::DESC
             : Criteria::ASC;
 
-        uasort(
+        usort(
             $result,
             static function (Entity\Api\FileList $a, Entity\Api\FileList $b) use ($searchPhrase, $sort, $sortOrder) {
                 return self::sortRows($a, $b, $searchPhrase, $sort, $sortOrder);

@@ -47,6 +47,7 @@ class SftpUser
      *
      * @Assert\Length(min=1, max=32)
      * @Assert\NotBlank
+     * @Assert\Regex(pattern="/^[a-zA-Z0-9-_.~]+$/")
      */
     protected $username;
 

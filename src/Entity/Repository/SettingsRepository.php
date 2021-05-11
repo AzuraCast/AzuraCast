@@ -31,6 +31,15 @@ class SettingsRepository extends Repository
 
     public function readSettings(): Entity\Settings
     {
+        static $settingsId = null;
+
+        if (null !== $settingsId) {
+            $settings = $this->repository->find($settingsId);
+            if ($settings instanceof Entity\Settings) {
+                return $settings;
+            }
+        }
+
         $settings = $this->repository->findOneBy([]);
 
         if (!($settings instanceof Entity\Settings)) {
@@ -38,6 +47,8 @@ class SettingsRepository extends Repository
             $this->em->persist($settings);
             $this->em->flush();
         }
+
+        $settingsId = $settings->getAppUniqueIdentifier();
 
         return $settings;
     }

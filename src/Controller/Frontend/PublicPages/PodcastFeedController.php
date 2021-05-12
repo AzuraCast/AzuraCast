@@ -78,7 +78,7 @@ class PodcastFeedController
             throw new PodcastNotFoundException();
         }
 
-        $generatedRss = $this->generateRssFeed($podcast, $station);
+        $generatedRss = $this->generateRssFeed($podcast, $station, $request);
 
         $response->getBody()->write($generatedRss);
 
@@ -97,11 +97,14 @@ class PodcastFeedController
         return false;
     }
 
-    protected function generateRssFeed(StationPodcast $podcast, Station $station): string
-    {
+    protected function generateRssFeed(
+        StationPodcast $podcast,
+        Station $station,
+        ServerRequest $serverRequest
+    ): string {
         $rssWriter = $this->createRssWriter();
 
-        $channel = $this->buildRssChannelForPodcast($podcast, $station);
+        $channel = $this->buildRssChannelForPodcast($podcast, $station, $serverRequest);
 
         return $rssWriter->writeChannel($channel);
     }
@@ -120,8 +123,11 @@ class PodcastFeedController
         return $rssWriter;
     }
 
-    protected function buildRssChannelForPodcast(StationPodcast $podcast, Station $station): RssChannel
-    {
+    protected function buildRssChannelForPodcast(
+        StationPodcast $podcast,
+        Station $station,
+        ServerRequest $serverRequest
+    ): RssChannel {
         $channel = new RssChannel();
 
         $channel->setTtl(5);
@@ -155,7 +161,7 @@ class PodcastFeedController
         $channel->addExtension(new Slash());
         $channel->addExtension((new AtomLink())
             ->setRel('self')
-            ->setHref((string) $this->router->getCurrentRequest()->getUri())
+            ->setHref((string) $serverRequest->getUri())
             ->setType('application/rss+xml')
         );
         $channel->addExtension(new DublinCore());

@@ -201,6 +201,7 @@ class StationCloneForm extends StationForm
 
             $this->em->persist($new_record->getMediaStorageLocation());
             $this->em->persist($new_record->getRecordingsStorageLocation());
+            $this->em->persist($new_record->getPodcastsStorageLocation());
 
             foreach ($new_record->getMounts() as $subrecord) {
                 $this->em->persist($subrecord);

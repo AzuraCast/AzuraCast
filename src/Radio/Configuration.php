@@ -58,6 +58,7 @@ class Configuration
         $this->em->persist($station);
         $this->em->persist($station->getMediaStorageLocation());
         $this->em->persist($station->getRecordingsStorageLocation());
+        $this->em->persist($station->getPodcastsStorageLocation());
 
         $this->em->flush();
     }

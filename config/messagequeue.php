@@ -9,8 +9,8 @@ return [
     Message\AddNewMediaMessage::class => Task\CheckMediaTask::class,
     Message\ReprocessMediaMessage::class => Task\CheckMediaTask::class,
 
-    Message\AddNewPodcastMediaMessage::class => Task\PodcastMediaTask::class,
-    Message\ReprocessPodcastMediaMessage::class => Task\PodcastMediaTask::class,
+    Message\AddNewPodcastMediaMessage::class => Task\CheckPodcastMediaTask::class,
+    Message\ReprocessPodcastMediaMessage::class => Task\CheckPodcastMediaTask::class,
 
     Message\WritePlaylistFileMessage::class => Liquidsoap\ConfigWriter::class,
 

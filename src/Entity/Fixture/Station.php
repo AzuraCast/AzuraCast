@@ -24,16 +24,19 @@ class Station extends AbstractFixture
 
         $mediaStorage = $station->getMediaStorageLocation();
         $recordingsStorage = $station->getRecordingsStorageLocation();
+        $podcastsStorage = $station->getPodcastsStorageLocation();
 
         $stationQuota = getenv('INIT_STATION_QUOTA');
         if (!empty($stationQuota)) {
             $mediaStorage->setStorageQuota($stationQuota);
             $recordingsStorage->setStorageQuota($stationQuota);
+            $podcastsStorage->setStorageQuota($stationQuota);
         }
 
         $em->persist($station);
         $em->persist($mediaStorage);
         $em->persist($recordingsStorage);
+        $em->persist($podcastsStorage);
 
         $em->flush();
 

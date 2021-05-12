@@ -689,6 +689,19 @@ class Station
 
             $this->recordings_storage_location = $storageLocation;
         }
+
+        if (null === $this->podcasts_storage_location) {
+            $storageLocation = new StorageLocation(
+                StorageLocation::TYPE_STATION_PODCASTS,
+                StorageLocation::ADAPTER_LOCAL
+            );
+
+            $podcastsPath = $this->getRadioBaseDir() . '/podcasts';
+            $this->ensureDirectoryExists($podcastsPath);
+            $storageLocation->setPath($podcastsPath);
+
+            $this->podcasts_storage_location = $storageLocation;
+        }
     }
 
     protected function ensureDirectoryExists(string $dirname): void

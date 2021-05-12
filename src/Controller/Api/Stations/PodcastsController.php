@@ -16,6 +16,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Routing\RouteContext;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -95,7 +96,8 @@ class PodcastsController extends AbstractStationApiCrudController
 
         if ($podcastsFilesystem->fileExists($podcastArtworkPath)) {
             $podcastArtworkSrc = (string) $router->named(
-                'api:stations:podcast:art', [
+                'api:stations:podcast:art',
+                [
                     'station_id' => $station->getId(),
                     'podcast_id' => $podcast->getId(),
                 ],

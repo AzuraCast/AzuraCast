@@ -14,7 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class StationPodcastMedia
 {
-    use Traits\UniqueId, Traits\TruncateStrings;
+    use Traits\UniqueId;
+    use Traits\TruncateStrings;
 
     public const UNIQUE_ID_LENGTH = 24;
 
@@ -223,8 +224,6 @@ class StationPodcastMedia
 
     /**
      * @param string|float|null $seconds
-     *
-     * @return float|null
      */
     protected function parseSeconds($seconds = null): ?float
     {

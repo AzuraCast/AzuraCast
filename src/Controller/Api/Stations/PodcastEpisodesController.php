@@ -189,7 +189,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
                 $assignPodcastMediaActionUrl = (string) $router->named('api:stations:episode:media:assign', [
                     'station_id' => $station->getId(),
                     'episode_id' => $episode->getId(),
-                    'podcast_media_id' => $podcastMediaId
+                    'podcast_media_id' => $podcastMediaId,
                 ]);
 
                 $episodeData = [
@@ -272,7 +272,10 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         $routeArgs = $routeContext->getRoute()->getArguments();
         $episodeId = (int) $routeArgs['episode_id'];
 
-        $defaultArtRedirect = $response->withRedirect((string) $this->stationRepository->getDefaultAlbumArtUrl($station), 302);
+        $defaultArtRedirect = $response->withRedirect(
+            (string) $this->stationRepository->getDefaultAlbumArtUrl($station),
+            302
+        );
 
         $episodePath = '';
 
@@ -406,7 +409,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
     }
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      */
     protected function createRecord($data, Entity\Station $station): object
     {
@@ -427,6 +430,11 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         ]);
     }
 
+    /**
+     * @param mixed[] $data
+     *
+     * @return mixed[]
+     */
     protected function normalizeFormDataBooleans(array $data): array
     {
         // FormData only sends string values so booleans aren't correctly evaluated, this fixed that

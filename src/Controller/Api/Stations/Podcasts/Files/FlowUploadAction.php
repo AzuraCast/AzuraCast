@@ -56,7 +56,7 @@ class FlowUploadAction
                 $podcastsStorageLocation->addStorageUsed($flowResponse['size']);
                 $entityManager->flush();
 
-                return $response->withJson(new Entity\Api\Status);
+                return $response->withJson(new Entity\Api\Status());
             }
         } catch (Exception | Error $exception) {
             return $response->withStatus(500)

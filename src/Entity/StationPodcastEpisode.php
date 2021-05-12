@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
-use Plugin\AzuraCastPodcastPlugin\Flysystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,7 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class StationPodcastEpisode
 {
-    use Traits\UniqueId, Traits\TruncateStrings;
+    use Traits\UniqueId;
+    use Traits\TruncateStrings;
 
     public const DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
 

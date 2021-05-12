@@ -14,7 +14,8 @@ class PodcastEpisodesController
 {
     protected StationPodcastRepository $podcastRepository;
 
-    public function __construct(StationPodcastRepository $podcastRepository) {
+    public function __construct(StationPodcastRepository $podcastRepository)
+    {
         $this->podcastRepository = $podcastRepository;
     }
 

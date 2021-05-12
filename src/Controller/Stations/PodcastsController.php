@@ -40,7 +40,11 @@ class PodcastsController
         );
     }
 
-    protected function fetchCategoriesOptions(): array {
+    /**
+     * @return mixed[]
+     */
+    protected function fetchCategoriesOptions(): array
+    {
         $categoryOptions = [];
 
         $categories = $this->podcastCategoryRepository->fetchCategories();

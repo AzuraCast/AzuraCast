@@ -43,7 +43,10 @@ class RequirePodcastMediaAssignedToPublishedEpisodeMiddleware
 
         $podcastMediaId = $this->getPodcastMediaIdFromRequest($request);
 
-        if ($podcastMediaId === null || !$this->checkPodcastMediaAssignedToPublishedEpisodes($station, $podcastMediaId)) {
+        if (
+            $podcastMediaId === null
+            || !$this->checkPodcastMediaAssignedToPublishedEpisodes($station, $podcastMediaId)
+        ) {
             throw new PodcastMediaNotFoundException();
         }
 

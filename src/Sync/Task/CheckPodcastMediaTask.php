@@ -18,12 +18,18 @@ use App\MessageQueue\QueueManager;
 use App\Sync\PodcastMediaSyncStatistics;
 use App\Sync\QueuedPodcastMediaMessages;
 use App\Sync\Task\AbstractTask;
+use Brick\Math\Exception\MathException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
+use InvalidArgumentException;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
+use League\Flysystem\UnableToCheckFileExistence;
+use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
+use TypeError;
 
 class CheckPodcastMediaTask extends AbstractTask
 {
@@ -47,7 +53,7 @@ class CheckPodcastMediaTask extends AbstractTask
         $this->queueManager = $queueManager;
     }
 
-    public function __invoke(Message\AbstractMessage $message)
+    public function __invoke(Message\AbstractMessage $message): void
     {
         if ($message instanceof ReprocessPodcastMediaMessage) {
             $this->logger->debug(sprintf(
@@ -155,6 +161,9 @@ class CheckPodcastMediaTask extends AbstractTask
         return BatchIteratorAggregate::fromQuery($queryBuilder->getQuery(), 1);
     }
 
+    /**
+     * @return StorageAttributes[]
+     */
     protected function aggregateFilesToProcess(
         PodcastMediaSyncStatistics $syncStatistics,
         StorageLocation $storageLocation
@@ -192,8 +201,9 @@ class CheckPodcastMediaTask extends AbstractTask
         return $podcastFiles;
     }
 
-    protected function fetchAlreadyQueuedPodcastMediaMessages(StorageLocation $storageLocation): QueuedPodcastMediaMessages
-    {
+    protected function fetchAlreadyQueuedPodcastMediaMessages(
+        StorageLocation $storageLocation
+    ): QueuedPodcastMediaMessages {
         $queuedPodcastMediaMessages = new QueuedPodcastMediaMessages();
 
         foreach ($this->queueManager->getMessagesInTransport(QueueManager::QUEUE_PODCAST_MEDIA) as $message) {
@@ -210,6 +220,9 @@ class CheckPodcastMediaTask extends AbstractTask
         return $queuedPodcastMediaMessages;
     }
 
+    /**
+     * @return StorageAttributes[]
+     */
     protected function processExistingPodcastMediaRows(
         Station $station,
         PodcastMediaSyncStatistics $syncStatistics,
@@ -246,7 +259,7 @@ class CheckPodcastMediaTask extends AbstractTask
                 empty($podcastMediaRow['unique_id'])
                 || $file->lastModified() > $podcastMediaRow['modifiedTime']
             ) {
-                $message = new ReprocessPodcastMediaMessage;
+                $message = new ReprocessPodcastMediaMessage();
                 $message->podcastMediaId = $podcastMediaRow['id'];
                 $message->force = empty($podcastMediaRow['unique_id']);
 

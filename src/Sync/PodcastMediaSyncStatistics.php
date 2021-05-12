@@ -6,6 +6,8 @@ namespace App\Sync;
 
 use App\Radio\Quota;
 use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
+use InvalidArgumentException;
 use JsonSerializable;
 
 class PodcastMediaSyncStatistics implements JsonSerializable
@@ -23,6 +25,9 @@ class PodcastMediaSyncStatistics implements JsonSerializable
         $this->totalSize = BigInteger::zero();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function jsonSerialize(): array
     {
         return [

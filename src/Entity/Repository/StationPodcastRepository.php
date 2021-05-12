@@ -40,7 +40,8 @@ class StationPodcastRepository extends Repository
     /**
      * @return StationPodcast[]
      */
-    public function fetchPublishedPodcastsForStation(Station $station): array {
+    public function fetchPublishedPodcastsForStation(Station $station): array
+    {
         /** @var StationPodcast[] $podcasts */
         $podcasts = $this->em->createQueryBuilder()
             ->select('p')

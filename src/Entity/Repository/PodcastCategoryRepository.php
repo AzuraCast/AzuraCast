@@ -13,7 +13,8 @@ class PodcastCategoryRepository extends Repository
     /**
      * @return PodcastCategory[]
      */
-    public function fetchCategories(): array {
+    public function fetchCategories(): array
+    {
         return $this->repository->findAll();
     }
 
@@ -22,7 +23,8 @@ class PodcastCategoryRepository extends Repository
      *
      * @return PodcastCategory[]
      */
-    public function fetchCategoriesByIds(array $categoryIds): array {
+    public function fetchCategoriesByIds(array $categoryIds): array
+    {
         $queryBuilder = $this->em->createQueryBuilder();
 
         return $queryBuilder

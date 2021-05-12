@@ -37,6 +37,7 @@ use MarcW\RssWriter\Extension\Slash\SlashWriter;
 use MarcW\RssWriter\Extension\Sy\Sy;
 use MarcW\RssWriter\Extension\Sy\SyWriter;
 use MarcW\RssWriter\RssWriter;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Routing\RouteContext;
 
 class PodcastFeedController
@@ -54,7 +55,7 @@ class PodcastFeedController
         $this->podcastRepository = $podcastRepository;
     }
 
-    public function __invoke(ServerRequest $request, Response $response): Response
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $this->router = $request->getRouter();
 
@@ -162,8 +163,7 @@ class PodcastFeedController
         $channel->addExtension((new AtomLink())
             ->setRel('self')
             ->setHref((string) $serverRequest->getUri())
-            ->setType('application/rss+xml')
-        );
+            ->setType('application/rss+xml'));
         $channel->addExtension(new DublinCore());
 
         return $channel;
@@ -184,8 +184,7 @@ class PodcastFeedController
 
             if ($podcastCategory->getSubTitle() === null) {
                 $rssCategory->setTitle($podcastCategory->getTitle());
-            }
-            else {
+            } else {
                 $rssCategory->setTitle($podcastCategory->getSubTitle());
             }
 
@@ -266,8 +265,7 @@ class PodcastFeedController
             $itunesImage = $this->buildItunesImageForEpisode($episode, $station);
             $rssItem->addExtension((new ItunesItem())
                 ->setExplicit($episode->getExplicit())
-                ->setImage($itunesImage)
-            );
+                ->setImage($itunesImage));
 
             $rssItems[] = $rssItem;
         }

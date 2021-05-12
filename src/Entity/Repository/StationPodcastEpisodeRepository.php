@@ -40,15 +40,16 @@ class StationPodcastEpisodeRepository extends Repository
     /**
      * @return StationPodcastEpisode[]
      */
-    public function fetchPublishedEpisodesForPodcast(StationPodcast $podcast): array {
-        /** @var StationPodcastEpisode[] $episode */
+    public function fetchPublishedEpisodesForPodcast(StationPodcast $podcast): array
+    {
+        /** @var StationPodcastEpisode[] $episodes */
         $episodes = $this->em->createQueryBuilder()
-        ->select('pe')
-        ->from(StationPodcastEpisode::class, 'pe')
-        ->where('pe.podcast = :podcast')
-        ->setParameter('podcast', $podcast)
-        ->getQuery()
-        ->getResult();
+            ->select('pe')
+            ->from(StationPodcastEpisode::class, 'pe')
+            ->where('pe.podcast = :podcast')
+            ->setParameter('podcast', $podcast)
+            ->getQuery()
+            ->getResult();
 
         $publishedEpisodes = [];
 

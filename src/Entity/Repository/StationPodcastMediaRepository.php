@@ -48,13 +48,14 @@ class StationPodcastMediaRepository extends Repository
         Station $station,
         int $batchSize = 10
     ): BatchIteratorAggregate {
-        $podcastMediaQuery = $this->em->createQuery(/** @lang DQL */
-            'SELECT pm, e
+        $podcastMediaQuery = $this->em->createQuery(
+            <<<'DQL'
+                SELECT pm, e
                 FROM App\Entity\StationPodcastMedia pm
                 LEFT JOIN pm.episode e
                 WHERE pm.stationId = :stationId'
-            )
-            ->setParameter('stationId', $station->getId());
+            DQL
+        )->setParameter('stationId', $station->getId());
 
         return BatchIteratorAggregate::fromQuery($podcastMediaQuery, $batchSize);
     }
@@ -147,7 +148,9 @@ class StationPodcastMediaRepository extends Repository
         $podcastMedia->setMimeType($metadata->getMimeType());
 
         if (!in_array($podcastMedia->getMimeType(), ['audio/x-m4a', 'audio/mpeg'])) {
-            throw new InvalidPodcastMediaFileException('Invalid Podcast Media mime type: ' . $podcastMedia->getMimeType());
+            throw new InvalidPodcastMediaFileException(
+                'Invalid Podcast Media mime type: ' . $podcastMedia->getMimeType()
+            );
         }
 
         $artwork = $metadata->getArtwork();

@@ -11,6 +11,7 @@ use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Routing\RouteContext;
 
 class PodcastEpisodesController
@@ -26,7 +27,7 @@ class PodcastEpisodesController
         $this->episodeRepository = $episodeRepository;
     }
 
-    public function __invoke(ServerRequest $request, Response $response): Response
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $router = $request->getRouter();
         $station = $request->getStation();
@@ -48,7 +49,7 @@ class PodcastEpisodesController
         $publishedEpisodes = $this->episodeRepository->fetchPublishedEpisodesForPodcast($podcast);
 
         // Reverse sort order according to the calculated publishing timestamp
-        usort($publishedEpisodes, function($prevEpisode, $nextEpisode) {
+        usort($publishedEpisodes, function ($prevEpisode, $nextEpisode) {
             $prevPublishedAt = $prevEpisode->getPublishedAt ?? $prevEpisode->getCreatedAt();
             $nextPublishedAt = $nextEpisode->getPublishedAt ?? $nextEpisode->getCreatedAt();
 
@@ -67,7 +68,7 @@ class PodcastEpisodesController
 
         $feedLink = $router->named('public:podcast:feed', [
             'station_id' => $station->getId(),
-            'podcast_id' => $podcast->getId()
+            'podcast_id' => $podcast->getId(),
         ]);
 
         return $request->getView()->renderToResponse($response, 'frontend/public/podcast-episodes', [

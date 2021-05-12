@@ -8,6 +8,7 @@ use App\Entity\Repository\StationPodcastRepository;
 use App\Exception\StationNotFoundException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use Psr\Http\Message\ResponseInterface;
 
 class PodcastsController
 {
@@ -18,7 +19,7 @@ class PodcastsController
         $this->podcastRepository = $podcastRepository;
     }
 
-    public function __invoke(ServerRequest $request, Response $response): Response
+    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
 

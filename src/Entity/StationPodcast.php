@@ -8,8 +8,8 @@ use App\Entity\Traits;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use JsonSerializable;
-use Plugin\AzuraCastPodcastPlugin\Flysystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class StationPodcast implements JsonSerializable
 {
-    use Traits\UniqueId, Traits\TruncateStrings;
+    use Traits\UniqueId;
+    use Traits\TruncateStrings;
 
     public const UNIQUE_ID_LENGTH = 24;
 
@@ -181,7 +182,10 @@ class StationPodcast implements JsonSerializable
         return self::DIR_PODCAST_ARTWORK . '/' . $uniqueId . '.jpg';
     }
 
-    public function jsonSerialize()
+    /**
+     * @return mixed[]
+     */
+    public function jsonSerialize(): array
     {
         $return = [
             'id' => $this->id,

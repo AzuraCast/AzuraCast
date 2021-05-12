@@ -26,6 +26,7 @@ class TaskLocator
             GetSyncTasks::SYNC_MEDIUM => [
                 Task\CheckMediaTask::class,
                 Task\CheckFolderPlaylistsTask::class,
+                Task\CheckPodcastMediaTask::class,
                 Task\CheckUpdatesTask::class,
             ],
             GetSyncTasks::SYNC_LONG => [

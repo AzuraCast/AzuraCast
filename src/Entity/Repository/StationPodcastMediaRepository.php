@@ -50,7 +50,7 @@ class StationPodcastMediaRepository extends Repository
     ): BatchIteratorAggregate {
         $podcastMediaQuery = $this->em->createQuery(/** @lang DQL */
             'SELECT pm, e
-                FROM Plugin\AzuraCastPodcastPlugin\Entity\PodcastMedia pm
+                FROM App\Entity\StationPodcastMedia pm
                 LEFT JOIN pm.episode e
                 WHERE pm.stationId = :stationId'
             )

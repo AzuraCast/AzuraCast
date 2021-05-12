@@ -143,9 +143,14 @@ class PodcastFeedController
 
         $containsExplicitContent = $this->rssItemsContainsExplicitContent($rssItems);
 
-        $channel->addExtension((new ItunesChannel())
-            ->setExplicit($containsExplicitContent)
-        );
+        $itunesChannel = new ItunesChannel();
+        $itunesChannel->setExplicit($containsExplicitContent);
+
+        foreach ($categories as $category) {
+            $itunesChannel->addCategory($category->getTitle());
+        }
+
+        $channel->addExtension($itunesChannel);
         $channel->addExtension(new Sy());
         $channel->addExtension(new Slash());
         $channel->addExtension((new AtomLink())
@@ -165,13 +170,18 @@ class PodcastFeedController
     {
         $categories = [];
 
-        /** @var StationPodcastCategory $podcastCategory */
+        /** @var StationPodcastCategory $stationPodcastCategory */
         foreach ($podcast->getCategories() as $stationPodcastCategory) {
             $podcastCategory = $stationPodcastCategory->getCategory();
 
             $rssCategory = new RssCategory();
 
-            $rssCategory->setTitle($podcastCategory->getTitle());
+            if ($podcastCategory->getSubTitle() === null) {
+                $rssCategory->setTitle($podcastCategory->getTitle());
+            }
+            else {
+                $rssCategory->setTitle($podcastCategory->getSubTitle());
+            }
 
             $categories[] = $rssCategory;
         }

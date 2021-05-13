@@ -4,46 +4,34 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
-use App\Controller\Api\Stations\AbstractStationApiCrudController;
 use App\Entity;
-use App\Entity\Repository\PodcastCategoryRepository;
-use App\Entity\Repository\StationPodcastRepository;
+use App\Entity\Podcast;
+use App\Entity\PodcastCategory;
+use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
-use App\Entity\StationPodcast;
-use App\Entity\StationPodcastCategory;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use Slim\Routing\RouteContext;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PodcastsController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = StationPodcast::class;
+    protected string $entityClass = Podcast::class;
     protected string $resourceRouteName = 'api:stations:podcast';
-
-    protected StationRepository $stationRepository;
-    protected StationPodcastRepository $podcastRepository;
-    protected PodcastCategoryRepository $categoryRepository;
 
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
-        StationRepository $stationRepository,
-        StationPodcastRepository $podcastRepository,
-        PodcastCategoryRepository $categoryRepository
+        protected StationRepository $stationRepository,
+        protected PodcastRepository $podcastRepository
     ) {
         parent::__construct($em, $serializer, $validator);
-
-        $this->stationRepository = $stationRepository;
-        $this->podcastRepository = $podcastRepository;
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -55,7 +43,7 @@ class PodcastsController extends AbstractStationApiCrudController
 
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('p, pc, c')
-            ->from(StationPodcast::class, 'p')
+            ->from(Podcast::class, 'p')
             ->leftJoin('p.categories', 'pc')
             ->leftJoin('pc.category', 'c')
             ->where('p.station = :station')
@@ -71,12 +59,16 @@ class PodcastsController extends AbstractStationApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
 
-    public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
-    {
+    public function getAction(
+        ServerRequest $request,
+        Response $response,
+        $station_id,
+        $id
+    ): ResponseInterface {
         $station = $this->getStation($request);
         $router = $request->getRouter();
 
-        /** @var StationPodcast $podcast */
+        /** @var Podcast $podcast */
         $podcast = $this->getRecord($station, $id);
 
         $stationFilesystems = new StationFilesystems($station);
@@ -113,24 +105,23 @@ class PodcastsController extends AbstractStationApiCrudController
         return $response->withJson($return);
     }
 
-    public function getArtworkAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function getArtworkAction(
+        ServerRequest $request,
+        Response $response,
+        int $podcast_id,
+    ): ResponseInterface {
         $station = $request->getStation();
 
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $podcastId = (int) $routeArgs['podcast_id'];
-
         $defaultArtRedirect = $response->withRedirect(
-            (string) $this->stationRepository->getDefaultAlbumArtUrl($station),
+            (string)$this->stationRepository->getDefaultAlbumArtUrl($station),
             302
         );
 
         $podcastPath = '';
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
 
-        if ($podcast instanceof StationPodcast) {
+        if ($podcast instanceof Podcast) {
             $podcastPath = $podcast->getArtworkPath($podcast->getUniqueId());
         } else {
             return $defaultArtRedirect;
@@ -151,13 +142,8 @@ class PodcastsController extends AbstractStationApiCrudController
         $station = $this->getStation($request);
 
         $data = $request->getParsedBody();
-        $categoryIds = $data['categories'] ?? [];
 
-        $categories = $this->categoryRepository->fetchCategoriesByIds($categoryIds);
-
-        $data['categories'] = $categories;
-
-        /** @var StationPodcast $podcast */
+        /** @var Podcast $podcast */
         $podcast = $this->createRecord($data, $station);
 
         $files = $request->getUploadedFiles();
@@ -191,12 +177,6 @@ class PodcastsController extends AbstractStationApiCrudController
         $station = $this->getStation($request);
         $data = $request->getParsedBody();
 
-        $categoryIds = $data['categories'] ?? [];
-
-        $categories = $this->categoryRepository->fetchCategoriesByIds($categoryIds);
-
-        $data['categories'] = $categories;
-
         $this->editRecord($data, $podcast);
 
         $files = $request->getUploadedFiles();
@@ -216,15 +196,14 @@ class PodcastsController extends AbstractStationApiCrudController
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
 
-    public function clearPodcastArtworkAction(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function clearPodcastArtworkAction(
+        ServerRequest $request,
+        Response $response,
+        int $podcast_id,
+    ): ResponseInterface {
         $station = $request->getStation();
 
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $podcastId = (int) $routeArgs['podcast_id'];
-
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
 
         if ($podcast === null) {
             return $response->withStatus(404)
@@ -243,10 +222,9 @@ class PodcastsController extends AbstractStationApiCrudController
     {
         return parent::fromArray($data, $record, array_merge($context, [
             AbstractNormalizer::CALLBACKS => [
-                'categories' => function (array $category, $record) {
-                    if ($record instanceof StationPodcast) {
+                'categories' => function (array $newCategories, $record) {
+                    if ($record instanceof Podcast) {
                         $categories = $record->getCategories();
-
                         if ($categories->count() > 0) {
                             foreach ($categories as $existingCategories) {
                                 $this->em->remove($existingCategories);
@@ -254,8 +232,8 @@ class PodcastsController extends AbstractStationApiCrudController
                             $categories->clear();
                         }
 
-                        foreach ($category as $category) {
-                            $podcastCategory = new StationPodcastCategory($record, $category);
+                        foreach ($newCategories as $category) {
+                            $podcastCategory = new PodcastCategory($record, $category);
                             $this->em->persist($podcastCategory);
                             $categories->add($podcastCategory);
                         }

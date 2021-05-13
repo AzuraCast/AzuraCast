@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="station_podcast_episode")
+ * @ORM\Table(name="podcast_episode")
  * @ORM\Entity
  */
-class StationPodcastEpisode
+class PodcastEpisode
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -29,43 +29,19 @@ class StationPodcastEpisode
     protected $id;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
-     *
-     * @var int
-     */
-    protected $stationId;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Station")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     *
-     * @var Station
-     */
-    protected $station;
-
-    /**
-     * @ORM\Column(name="podcast_id", type="integer")
-     *
-     * @var int
-     */
-    protected $podcastId;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="StationPodcast", inversedBy="episodes")
+     * @ORM\ManyToOne(targetEntity="Podcast", inversedBy="episodes")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="podcast_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      *
-     * @var StationPodcast
+     * @var Podcast
      */
     protected $podcast;
 
     /**
-     * @ORM\OneToOne(targetEntity="StationPodcastMedia", mappedBy="episode")
+     * @ORM\OneToOne(targetEntity="PodcastMedia", mappedBy="episode")
      *
-     * @var StationPodcastMedia|null
+     * @var PodcastMedia|null
      */
     protected $podcastMedia;
 
@@ -99,7 +75,7 @@ class StationPodcastEpisode
      *
      * @var int|null Timestamp of when the episode should be published
      */
-    protected $publishAt;
+    protected $publish_at;
 
     /**
      * @ORM\Column(name="explicit", type="boolean")
@@ -113,15 +89,14 @@ class StationPodcastEpisode
      *
      * @var int Timestamp of when the episode was created
      */
-    protected $createdAt;
+    protected $created_at;
 
-    public function __construct(Station $station, StationPodcast $podcast)
+    public function __construct(Podcast $podcast, PodcastMedia $podcastMedia)
     {
-        $this->station = $station;
         $this->podcast = $podcast;
+        $this->podcastMedia = $podcastMedia;
 
-        $this->createdAt = time();
-
+        $this->created_at = time();
         $this->generateUniqueId();
     }
 
@@ -130,17 +105,12 @@ class StationPodcastEpisode
         return $this->id;
     }
 
-    public function getStation(): Station
-    {
-        return $this->station;
-    }
-
-    public function getPodcast(): StationPodcast
+    public function getPodcast(): Podcast
     {
         return $this->podcast;
     }
 
-    public function getPodcastMedia(): ?StationPodcastMedia
+    public function getPodcastMedia(): ?PodcastMedia
     {
         return $this->podcastMedia;
     }
@@ -183,12 +153,12 @@ class StationPodcastEpisode
 
     public function getPublishAt(): ?int
     {
-        return $this->publishAt;
+        return $this->publish_at;
     }
 
     public function setPublishAt(?int $publishAt): self
     {
-        $this->publishAt = $publishAt;
+        $this->publish_at = $publishAt;
 
         return $this;
     }
@@ -207,12 +177,12 @@ class StationPodcastEpisode
 
     public function getCreatedAt(): int
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     public function setCreatedAt(int $createdAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $createdAt;
 
         return $this;
     }

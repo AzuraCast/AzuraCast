@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Files;
 
-use App\Entity\Repository\StationPodcastMediaRepository;
+use App\Entity\Repository\PodcastMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -16,7 +16,7 @@ class DownloadAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        StationPodcastMediaRepository $podcastMediaRepository
+        PodcastMediaRepository $podcastMediaRepository
     ): ResponseInterface {
         set_time_limit(600);
 

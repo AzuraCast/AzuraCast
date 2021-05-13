@@ -32,7 +32,7 @@ $assets->addInlineJs(
             </div>
 
             <div class="row justify-content-center">
-                <?php /** @var App\Entity\StationPodcastEpisode $episode */ ?>
+                <?php /** @var App\Entity\PodcastEpisode $episode */ ?>
                 <?php foreach ($episodes as $episode) : ?>
                     <?php $episodePageLink = $router->named('public:podcast:episode', ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId(), 'episode_id' => $episode->getId()]) ?>
                     <div class="col-12 col-lg-8 mb-4">

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Acl;
-use App\Entity\Repository\StationPodcastRepository;
+use App\Entity\PodcastEpisode;
+use App\Entity\Repository\PodcastRepository;
 use App\Entity\Station;
-use App\Entity\StationPodcastEpisode;
 use App\Entity\User;
 use App\Exception\PodcastNotFoundException;
 use App\Http\Response;
@@ -22,11 +22,9 @@ use Slim\Routing\RouteContext;
  */
 class RequirePublishedPodcastEpisodeMiddleware
 {
-    protected StationPodcastRepository $podcastRepository;
-
-    public function __construct(StationPodcastRepository $podcastRepository)
-    {
-        $this->podcastRepository = $podcastRepository;
+    public function __construct(
+        protected PodcastRepository $podcastRepository
+    ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
@@ -93,7 +91,7 @@ class RequirePublishedPodcastEpisodeMiddleware
             return false;
         }
 
-        /** @var StationPodcastEpisode $episode */
+        /** @var PodcastEpisode $episode */
         foreach ($podcast->getEpisodes() as $episode) {
             if ($episode->isPublished()) {
                 return true;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Acl;
-use App\Entity\Repository\StationPodcastEpisodeRepository;
+use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Exception\PodcastEpisodeNotFoundException;
@@ -21,11 +21,9 @@ use Slim\Routing\RouteContext;
  */
 class RequirePodcastEpisodePublishedMiddleware
 {
-    protected StationPodcastEpisodeRepository $episodeRepository;
-
-    public function __construct(StationPodcastEpisodeRepository $episodeRepository)
-    {
-        $this->episodeRepository = $episodeRepository;
+    public function __construct(
+        protected PodcastEpisodeRepository $episodeRepository
+    ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Podcasts\Files;
 
+use App\Entity\PodcastMedia;
 use App\Entity\Repository\StationRepository;
-use App\Entity\StationPodcastMedia;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -31,7 +31,7 @@ class ListAction
 
         $podcastMediaQueryBuilder = $em->createQueryBuilder()
             ->select('pm, s, e')
-            ->from(StationPodcastMedia::class, 'pm')
+            ->from(PodcastMedia::class, 'pm')
             ->join('pm.station', 's')
             ->leftJoin('pm.episode', 'e')
             ->where('pm.stationId = :stationId')
@@ -45,20 +45,23 @@ class ListAction
         $paginator = Paginator::fromQueryBuilder($podcastMediaQueryBuilder, $request);
 
         $paginator->setPostprocessor(
-            function (StationPodcastMedia $podcastMedia) use ($station, $podcastsFilesystem, $stationRepo, $router) {
+            function (PodcastMedia $podcastMedia) use ($station, $podcastsFilesystem, $stationRepo, $router) {
                 $podcastMediaMetaData = $podcastsFilesystem->getMetadata(
                     $podcastMedia->getPath()
                 );
 
 
-                $podcastMediaArtSrc = (string) $stationRepo->getDefaultAlbumArtUrl($station);
+                $podcastMediaArtSrc = (string)$stationRepo->getDefaultAlbumArtUrl($station);
 
                 $podcastMediaArtworkPath = $podcastMedia->getArtworkPath($podcastMedia->getUniqueId());
                 if ($podcastsFilesystem->fileExists($podcastMediaArtworkPath)) {
-                    $podcastMediaArtSrc = (string) $router->named('api:stations:podcast-media:art', [
-                        'station_id' => $station->getId(),
-                        'podcast_media_id' => $podcastMedia->getUniqueId(),
-                    ]);
+                    $podcastMediaArtSrc = (string)$router->named(
+                        'api:stations:podcast-media:art',
+                        [
+                            'station_id' => $station->getId(),
+                            'podcast_media_id' => $podcastMedia->getUniqueId(),
+                        ]
+                    );
                 }
 
                 $podcastMediaPlayUrl = (string) $router->named(

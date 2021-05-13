@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Files;
 
 use App\Entity;
-use App\Entity\Repository\StationPodcastMediaRepository;
+use App\Entity\Repository\PodcastMediaRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Flow;
@@ -20,7 +20,7 @@ class FlowUploadAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $entityManager,
-        StationPodcastMediaRepository $podcastMediaRepository
+        PodcastMediaRepository $podcastMediaRepository
     ): ResponseInterface {
         $station = $request->getStation();
 

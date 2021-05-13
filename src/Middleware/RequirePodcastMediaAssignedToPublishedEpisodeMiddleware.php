@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Acl;
-use App\Entity\Repository\StationPodcastMediaRepository;
+use App\Entity\Repository\PodcastMediaRepository;
 use App\Entity\Station;
 use App\Entity\User;
 use App\Exception\PodcastMediaNotFoundException;
@@ -21,11 +21,9 @@ use Slim\Routing\RouteContext;
  */
 class RequirePodcastMediaAssignedToPublishedEpisodeMiddleware
 {
-    protected StationPodcastMediaRepository $podcastMediaRepository;
-
-    public function __construct(StationPodcastMediaRepository $podcastMediaRepository)
-    {
-        $this->podcastMediaRepository = $podcastMediaRepository;
+    public function __construct(
+        protected PodcastMediaRepository $podcastMediaRepository
+    ) {
     }
 
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface

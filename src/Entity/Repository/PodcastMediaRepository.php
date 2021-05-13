@@ -5,43 +5,48 @@ declare(strict_types=1);
 namespace App\Entity\Repository;
 
 use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
+use App\Entity\PodcastMedia;
 use App\Entity\Station;
-use App\Entity\StationPodcastMedia;
+use App\Entity\StorageLocation;
 use App\Environment;
 use App\Exception\InvalidPodcastMediaFileException;
 use App\Exception\PodcastMediaProcessingException;
-use App\Flysystem\StationFilesystems;
 use App\Media\MetadataService\GetId3MetadataService;
-use Doctrine\ORM\EntityManagerInterface;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
-class StationPodcastMediaRepository extends Repository
+class PodcastMediaRepository extends Repository
 {
-    protected GetId3MetadataService $metadataService;
-
-    protected ImageManager $imageManager;
-
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        GetId3MetadataService $metadataService,
-        ImageManager $imageManager
+        protected GetId3MetadataService $metadataService,
+        protected ImageManager $imageManager
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
-
-        $this->metadataService = $metadataService;
-        $this->imageManager = $imageManager;
     }
 
-    public function fetchPodcastMediaForStation(Station $station, int $podcastMediaId): ?StationPodcastMedia
+    public function fetchPodcastMediaForStation(Station $station, int $podcastMediaId): ?PodcastMedia
     {
-        return $this->repository->findOneBy(['id' => $podcastMediaId, 'station' => $station]);
+        return $this->fetchPodcastMediaForStorageLocation($station->getPodcastsStorageLocation(), $podcastMediaId);
+    }
+
+    public function fetchPodcastMediaForStorageLocation(
+        StorageLocation $storageLocation,
+        int $podcastMediaId
+    ): ?PodcastMedia {
+        return $this->repository->findOneBy(
+            [
+                'id' => $podcastMediaId,
+                'storage_location' => $storageLocation,
+            ]
+        );
     }
 
     public function buildSimpleBatchIteratorForAllStationPodcastMedia(
@@ -51,11 +56,11 @@ class StationPodcastMediaRepository extends Repository
         $podcastMediaQuery = $this->em->createQuery(
             <<<'DQL'
                 SELECT pm, e
-                FROM App\Entity\StationPodcastMedia pm
+                FROM App\Entity\PodcastMedia pm
                 LEFT JOIN pm.episode e
-                WHERE pm.stationId = :stationId'
+                WHERE pm.storage_location = :storageLocation
             DQL
-        )->setParameter('stationId', $station->getId());
+        )->setParameter('storageLocation', $station->getPodcastsStorageLocation());
 
         return BatchIteratorAggregate::fromQuery($podcastMediaQuery, $batchSize);
     }
@@ -64,15 +69,19 @@ class StationPodcastMediaRepository extends Repository
         Station $station,
         string $path,
         ?string $uploadPath = null
-    ): StationPodcastMedia {
-        $podcastMedia = $this->repository->findOneBy([
-            'stationId' => $station->getId(),
-            'path' => $path,
-        ]);
+    ): PodcastMedia {
+        $storageLocation = $station->getPodcastsStorageLocation();
+
+        $podcastMedia = $this->repository->findOneBy(
+            [
+                'storage_location' => $storageLocation,
+                'path' => $path,
+            ]
+        );
 
         $created = false;
-        if (!($podcastMedia instanceof StationPodcastMedia)) {
-            $podcastMedia = new StationPodcastMedia($station);
+        if (!($podcastMedia instanceof PodcastMedia)) {
+            $podcastMedia = new PodcastMedia($storageLocation);
             $podcastMedia->setPath($path);
             $podcastMedia->setModifiedTime(0);
             $podcastMedia->setOriginalName(pathinfo($path, PATHINFO_FILENAME));
@@ -91,24 +100,23 @@ class StationPodcastMediaRepository extends Repository
     }
 
     public function processPodcastMedia(
-        StationPodcastMedia $podcastMedia,
+        PodcastMedia $podcastMedia,
         bool $force = false,
         ?string $uploadPath = null
     ): bool {
         $podcastMediaPath = $podcastMedia->getPath();
 
-        $stationFilesystems = new StationFilesystems($podcastMedia->getStation());
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
+        $fsPodcasts = $podcastMedia->getStorageLocation()->getFilesystem();
 
         if ($uploadPath !== null) {
             try {
                 $this->loadFromFile($podcastMedia, $uploadPath);
             } finally {
-                $podcastsFilesystem->uploadAndDeleteOriginal($uploadPath, $podcastMediaPath);
+                $fsPodcasts->uploadAndDeleteOriginal($uploadPath, $podcastMediaPath);
             }
         }
 
-        if (!$podcastsFilesystem->fileExists($podcastMediaPath)) {
+        if (!$fsPodcasts->fileExists($podcastMediaPath)) {
             throw new PodcastMediaProcessingException(
                 sprintf(
                     'Podcast media path "%s" not found.',
@@ -117,7 +125,7 @@ class StationPodcastMediaRepository extends Repository
             );
         }
 
-        $podcastMediaMetadata = $podcastsFilesystem->getMetadata($podcastMediaPath);
+        $podcastMediaMetadata = $fsPodcasts->getMetadata($podcastMediaPath);
 
         $mediaModifiedTime = $podcastMediaMetadata->lastModified() ?? 0;
 
@@ -125,7 +133,7 @@ class StationPodcastMediaRepository extends Repository
             return false;
         }
 
-        $podcastsFilesystem->withLocalFile(
+        $fsPodcasts->withLocalFile(
             $podcastMediaPath,
             function ($localPodcastMediaPath) use ($podcastMedia): void {
                 $this->loadFromFile($podcastMedia, $localPodcastMediaPath);
@@ -139,7 +147,7 @@ class StationPodcastMediaRepository extends Repository
         return true;
     }
 
-    public function loadFromFile(StationPodcastMedia $podcastMedia, string $filePath): void
+    public function loadFromFile(PodcastMedia $podcastMedia, string $filePath): void
     {
         $metadata = $this->metadataService->readMetadata($filePath);
 
@@ -159,7 +167,7 @@ class StationPodcastMediaRepository extends Repository
         }
     }
 
-    public function writePodcastArtwork(StationPodcastMedia $podcastMedia, string $rawArtworkString): void
+    public function writePodcastArtwork(PodcastMedia $podcastMedia, string $rawArtworkString): void
     {
         $albumArtwork = $this->imageManager->make($rawArtworkString);
         $albumArtwork->fit(
@@ -170,24 +178,20 @@ class StationPodcastMediaRepository extends Repository
             }
         );
 
-        $stationFilesystems = new StationFilesystems($podcastMedia->getStation());
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
-
-        $albumArtworkPath = StationPodcastMedia::getArtworkPath($podcastMedia->getUniqueId());
+        $albumArtworkPath = PodcastMedia::getArtworkPath($podcastMedia->getUniqueId());
         $albumArtworkStream = $albumArtwork->stream('jpg');
 
-        $podcastsFilesystem->writeStream($albumArtworkPath, $albumArtworkStream->detach());
+        $fsPodcasts = $podcastMedia->getStorageLocation()->getFilesystem();
+        $fsPodcasts->writeStream($albumArtworkPath, $albumArtworkStream->detach());
     }
 
-    public function removePodcastArtwork(StationPodcastMedia $podcastMedia): void
+    public function removePodcastArtwork(PodcastMedia $podcastMedia): void
     {
-        $stationFilesystems = new StationFilesystems($podcastMedia->getStation());
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
+        $artworkPath = PodcastMedia::getArtworkPath($podcastMedia->getUniqueId());
 
-        $artworkPath = StationPodcastMedia::getArtworkPath($podcastMedia->getUniqueId());
-
-        if ($podcastsFilesystem->fileExists($artworkPath)) {
-            $podcastsFilesystem->delete($artworkPath);
+        $fsPodcasts = $podcastMedia->getStorageLocation()->getFilesystem();
+        if ($fsPodcasts->fileExists($artworkPath)) {
+            $fsPodcasts->delete($artworkPath);
         }
     }
 }

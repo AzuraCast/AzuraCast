@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Sync\Task;
 
 use App\Doctrine\BatchIteratorAggregate;
-use App\Entity\Repository\StationPodcastMediaRepository;
+use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Entity\Podcast;
+use App\Entity\PodcastEpisode;
+use App\Entity\PodcastMedia;
+use App\Entity\Repository\PodcastMediaRepository;
 use App\Entity\Station;
-use App\Entity\StationPodcast;
-use App\Entity\StationPodcastEpisode;
-use App\Entity\StationPodcastMedia;
 use App\Entity\StorageLocation;
 use App\Message;
 use App\Message\AddNewPodcastMediaMessage;
@@ -17,40 +18,22 @@ use App\Message\ReprocessPodcastMediaMessage;
 use App\MessageQueue\QueueManager;
 use App\Sync\PodcastMediaSyncStatistics;
 use App\Sync\QueuedPodcastMediaMessages;
-use App\Sync\Task\AbstractTask;
-use Brick\Math\Exception\MathException;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
-use InvalidArgumentException;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
-use League\Flysystem\UnableToCheckFileExistence;
-use League\Flysystem\UnableToDeleteFile;
-use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
-use TypeError;
 
 class CheckPodcastMediaTask extends AbstractTask
 {
-    protected StationPodcastMediaRepository $podcastMediaRepository;
-
-    protected MessageBus $messageBus;
-
-    protected QueueManager $queueManager;
-
     public function __construct(
-        EntityManagerInterface $em,
+        ReloadableEntityManagerInterface $em,
         LoggerInterface $logger,
-        StationPodcastMediaRepository $podcastMediaRepository,
-        MessageBus $messageBus,
-        QueueManager $queueManager
+        protected PodcastMediaRepository $podcastMediaRepository,
+        protected MessageBus $messageBus,
+        protected QueueManager $queueManager
     ) {
         parent::__construct($em, $logger);
-
-        $this->podcastMediaRepository = $podcastMediaRepository;
-        $this->messageBus = $messageBus;
-        $this->queueManager = $queueManager;
     }
 
     public function __invoke(Message\AbstractMessage $message): void
@@ -62,9 +45,9 @@ class CheckPodcastMediaTask extends AbstractTask
                 $message->podcastMediaId
             ));
 
-            $podcastMedia = $this->em->find(StationPodcastMedia::class, $message->podcastMediaId);
+            $podcastMedia = $this->em->find(PodcastMedia::class, $message->podcastMediaId);
 
-            if ($podcastMedia instanceof StationPodcastMedia) {
+            if ($podcastMedia instanceof PodcastMedia) {
                 $this->podcastMediaRepository->processPodcastMedia($podcastMedia, $message->force);
                 $this->em->flush();
             }
@@ -122,15 +105,12 @@ class CheckPodcastMediaTask extends AbstractTask
             $storageLocation
         );
 
-        /** @var Station $station */
-        foreach ($this->fetchStationsForStorageLocation($storageLocation->getId()) as $station) {
-            $podcastFiles = $this->processExistingPodcastMediaRows(
-                $station,
-                $syncStatistics,
-                $queuedPodcastMediaMessages,
-                $podcastFiles
-            );
-        }
+        $podcastFiles = $this->processExistingPodcastMediaRows(
+            $storageLocation,
+            $syncStatistics,
+            $queuedPodcastMediaMessages,
+            $podcastFiles
+        );
 
         $this->createNewPodcastMedia(
             $podcastFiles,
@@ -176,9 +156,9 @@ class CheckPodcastMediaTask extends AbstractTask
             function (StorageAttributes $attrs) {
                 return (
                     $attrs->isFile()
-                    && !str_starts_with($attrs->path(), StationPodcast::DIR_PODCAST_ARTWORK)
-                    && !str_starts_with($attrs->path(), StationPodcastEpisode::DIR_PODCAST_EPISODE_ARTWORK)
-                    && !str_starts_with($attrs->path(), StationPodcastMedia::DIR_PODCAST_MEDIA_ARTWORK)
+                    && !str_starts_with($attrs->path(), Podcast::DIR_PODCAST_ARTWORK)
+                    && !str_starts_with($attrs->path(), PodcastEpisode::DIR_PODCAST_EPISODE_ARTWORK)
+                    && !str_starts_with($attrs->path(), PodcastMedia::DIR_PODCAST_MEDIA_ARTWORK)
                 );
             }
         );
@@ -224,18 +204,18 @@ class CheckPodcastMediaTask extends AbstractTask
      * @return StorageAttributes[]
      */
     protected function processExistingPodcastMediaRows(
-        Station $station,
+        StorageLocation $storageLocation,
         PodcastMediaSyncStatistics $syncStatistics,
         QueuedPodcastMediaMessages $queuedPodcastMediaMessages,
         array $podcastFiles
     ): array {
         $existingPodcastMediaQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT spm.id, spm.path, spm.modifiedTime, spm.unique_id
-                FROM App\Entity\StationPodcastMedia spm
-                WHERE spm.station = :station
+                SELECT pm.id, pm.path, pm.modified_time, pm.unique_id
+                FROM App\Entity\PodcastMedia pm
+                WHERE pm.storage_location = :storageLocation
             DQL
-        )->setParameter('station', $station);
+        )->setParameter('storageLocation', $storageLocation);
 
         $podcastMediaRecords = $existingPodcastMediaQuery->toIterable([], Query::HYDRATE_ARRAY);
 
@@ -244,9 +224,8 @@ class CheckPodcastMediaTask extends AbstractTask
             $pathHash = md5($path);
 
             if (!isset($podcastFiles[$pathHash])) {
-                $podcastMedia = $this->em->find(StationPodcastMedia::class, $podcastMediaRow['id']);
+                $podcastMedia = $this->em->find(PodcastMedia::class, $podcastMediaRow['id']);
                 $this->removeDeletedPodcastMedia($podcastMedia, $syncStatistics);
-
                 continue;
             }
 
@@ -303,7 +282,7 @@ class CheckPodcastMediaTask extends AbstractTask
     }
 
     protected function removeDeletedPodcastMedia(
-        StationPodcastMedia $podcastMedia,
+        PodcastMedia $podcastMedia,
         PodcastMediaSyncStatistics $syncStatistics
     ): void {
         $this->podcastMediaRepository->removePodcastArtwork($podcastMedia);

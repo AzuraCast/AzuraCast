@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
-use App\Entity\Repository\StationPodcastRepository;
+use App\Entity\Podcast;
+use App\Entity\PodcastEpisode;
+use App\Entity\PodcastMedia;
+use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
-use App\Entity\StationPodcast;
-use App\Entity\StationPodcastCategory;
-use App\Entity\StationPodcastEpisode;
-use App\Entity\StationPodcastMedia;
 use App\Exception\PodcastNotFoundException;
 use App\Exception\StationNotFoundException;
 use App\Flysystem\StationFilesystems;
@@ -38,25 +37,22 @@ use MarcW\RssWriter\Extension\Sy\Sy;
 use MarcW\RssWriter\Extension\Sy\SyWriter;
 use MarcW\RssWriter\RssWriter;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Routing\RouteContext;
 
 class PodcastFeedController
 {
-    protected StationRepository $stationRepository;
-    protected StationPodcastRepository $podcastRepository;
-
     protected RouterInterface $router;
 
     public function __construct(
-        StationRepository $stationRepository,
-        StationPodcastRepository $podcastRepository
+        protected StationRepository $stationRepository,
+        protected PodcastRepository $podcastRepository
     ) {
-        $this->stationRepository = $stationRepository;
-        $this->podcastRepository = $podcastRepository;
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int $podcast_id,
+    ): ResponseInterface {
         $this->router = $request->getRouter();
 
         $station = $request->getStation();
@@ -65,11 +61,7 @@ class PodcastFeedController
             throw new StationNotFoundException();
         }
 
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $podcastId = (int) $routeArgs['podcast_id'];
-
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
 
         if ($podcast === null) {
             throw new PodcastNotFoundException();
@@ -86,9 +78,9 @@ class PodcastFeedController
         return $response->withHeader('Content-Type', 'application/rss+xml');
     }
 
-    protected function checkHasPublishedEpisodes(StationPodcast $podcast): bool
+    protected function checkHasPublishedEpisodes(Podcast $podcast): bool
     {
-        /** @var StationPodcastEpisode $episode */
+        /** @var PodcastEpisode $episode */
         foreach ($podcast->getEpisodes() as $episode) {
             if ($episode->isPublished()) {
                 return true;
@@ -99,7 +91,7 @@ class PodcastFeedController
     }
 
     protected function generateRssFeed(
-        StationPodcast $podcast,
+        Podcast $podcast,
         Station $station,
         ServerRequest $serverRequest
     ): string {
@@ -125,7 +117,7 @@ class PodcastFeedController
     }
 
     protected function buildRssChannelForPodcast(
-        StationPodcast $podcast,
+        Podcast $podcast,
         Station $station,
         ServerRequest $serverRequest
     ): RssChannel {
@@ -160,10 +152,12 @@ class PodcastFeedController
         $channel->addExtension($itunesChannel);
         $channel->addExtension(new Sy());
         $channel->addExtension(new Slash());
-        $channel->addExtension((new AtomLink())
-            ->setRel('self')
-            ->setHref((string) $serverRequest->getUri())
-            ->setType('application/rss+xml'));
+        $channel->addExtension(
+            (new AtomLink())
+                ->setRel('self')
+                ->setHref((string)$serverRequest->getUri())
+                ->setType('application/rss+xml')
+        );
         $channel->addExtension(new DublinCore());
 
         return $channel;
@@ -172,17 +166,13 @@ class PodcastFeedController
     /**
      * @return RssCategory[]
      */
-    protected function buildRssCategoriesForPodcast(StationPodcast $podcast): array
+    protected function buildRssCategoriesForPodcast(Podcast $podcast): array
     {
         $categories = [];
 
-        /** @var StationPodcastCategory $stationPodcastCategory */
-        foreach ($podcast->getCategories() as $stationPodcastCategory) {
-            $podcastCategory = $stationPodcastCategory->getCategory();
-
+        foreach ($podcast->getCategories() as $podcastCategory) {
             $rssCategory = new RssCategory();
-
-            if ($podcastCategory->getSubTitle() === null) {
+            if (null === $podcastCategory->getSubTitle()) {
                 $rssCategory->setTitle($podcastCategory->getTitle());
             } else {
                 $rssCategory->setTitle($podcastCategory->getSubTitle());
@@ -194,14 +184,14 @@ class PodcastFeedController
         return $categories;
     }
 
-    protected function buildRssImageForPodcast(StationPodcast $podcast, Station $station): RssImage
+    protected function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
     {
         $stationFilesystems = new StationFilesystems($station);
         $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
         $rssImage = new RssImage();
 
-        $podcastArtworkSrc = (string) UriResolver::resolve(
+        $podcastArtworkSrc = (string)UriResolver::resolve(
             $this->router->getBaseUrl(),
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
@@ -228,11 +218,11 @@ class PodcastFeedController
     /**
      * @return RssItem[]
      */
-    protected function buildRssItemsForPodcast(StationPodcast $podcast, Station $station): array
+    protected function buildRssItemsForPodcast(Podcast $podcast, Station $station): array
     {
         $rssItems = [];
 
-        /** @var StationPodcastEpisode $episode */
+        /** @var PodcastEpisode $episode */
         foreach ($podcast->getEpisodes() as $episode) {
             if (!$episode->isPublished()) {
                 continue;
@@ -263,9 +253,11 @@ class PodcastFeedController
             $rssItem->setEnclosure($rssEnclosure);
 
             $itunesImage = $this->buildItunesImageForEpisode($episode, $station);
-            $rssItem->addExtension((new ItunesItem())
-                ->setExplicit($episode->getExplicit())
-                ->setImage($itunesImage));
+            $rssItem->addExtension(
+                (new ItunesItem())
+                    ->setExplicit($episode->getExplicit())
+                    ->setImage($itunesImage)
+            );
 
             $rssItems[] = $rssItem;
         }
@@ -274,7 +266,7 @@ class PodcastFeedController
     }
 
     protected function buildRssEnclosureForPodcastMedia(
-        StationPodcastMedia $podcastMedia,
+        PodcastMedia $podcastMedia,
         Station $station
     ): RssEnclosure {
         $rssEnclosure = new RssEnclosure();
@@ -296,12 +288,12 @@ class PodcastFeedController
         return $rssEnclosure;
     }
 
-    protected function buildItunesImageForEpisode(StationPodcastEpisode $episode, Station $station): string
+    protected function buildItunesImageForEpisode(PodcastEpisode $episode, Station $station): string
     {
         $stationFilesystems = new StationFilesystems($station);
         $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
-        $episodeArtworkSrc = (string) UriResolver::resolve(
+        $episodeArtworkSrc = (string)UriResolver::resolve(
             $this->router->getBaseUrl(),
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );

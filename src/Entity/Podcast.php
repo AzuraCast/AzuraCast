@@ -8,15 +8,14 @@ use App\Entity\Traits;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="station_podcast")
+ * @ORM\Table(name="podcast")
  * @ORM\Entity
  */
-class StationPodcast implements JsonSerializable
+class Podcast implements JsonSerializable
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -35,21 +34,14 @@ class StationPodcast implements JsonSerializable
     protected $id;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
-     *
-     * @var int
-     */
-    protected $stationId;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Station")
+     * @ORM\ManyToOne(targetEntity="StorageLocation")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      *
-     * @var Station
+     * @var StorageLocation
      */
-    protected $station;
+    protected $storage_location;
 
     /**
      * @ORM\Column(name="title", type="string", length=255)
@@ -86,22 +78,22 @@ class StationPodcast implements JsonSerializable
     protected $language;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationPodcastCategory", mappedBy="podcast")
+     * @ORM\OneToMany(targetEntity="PodcastCategory", mappedBy="podcast")
      *
      * @var Collection
      */
     protected $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="StationPodcastEpisode", mappedBy="podcast")
+     * @ORM\OneToMany(targetEntity="PodcastEpisode", mappedBy="podcast")
      *
      * @var Collection
      */
     protected $episodes;
 
-    public function __construct(Station $station)
+    public function __construct(StorageLocation $storageLocation)
     {
-        $this->station = $station;
+        $this->storage_location = $storageLocation;
 
         $this->categories = new ArrayCollection();
         $this->episodes = new ArrayCollection();
@@ -114,9 +106,9 @@ class StationPodcast implements JsonSerializable
         return $this->id;
     }
 
-    public function getStation(): Station
+    public function getStorageLocation(): StorageLocation
     {
-        return $this->station;
+        return $this->storage_location;
     }
 
     public function getTitle(): string
@@ -167,11 +159,17 @@ class StationPodcast implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return Collection|PodcastCategory[]
+     */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
+    /**
+     * @return Collection|PodcastEpisode[]
+     */
     public function getEpisodes(): Collection
     {
         return $this->episodes;
@@ -190,7 +188,7 @@ class StationPodcast implements JsonSerializable
         $return = [
             'id' => $this->id,
             'unique_id' => $this->unique_id,
-            'station_id' => $this->stationId,
+            'storage_location_id' => $this->storage_location->getId(),
             'title' => $this->title,
             'link' => $this->link,
             'description' => $this->description,
@@ -199,12 +197,12 @@ class StationPodcast implements JsonSerializable
             'episodes' => [],
         ];
 
-        /** @var StationPodcastCategory $category */
+        /** @var PodcastCategory $category */
         foreach ($this->categories as $category) {
-            $return['categories'][] = $category->getCategory()->getId();
+            $return['categories'][] = $category->getCategory();
         }
 
-        /** @var StationPodcastEpisode $episode */
+        /** @var PodcastEpisode $episode */
         foreach ($this->episodes as $episode) {
             $return['episodes'][] = $episode->getId();
         }

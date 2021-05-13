@@ -10,20 +10,39 @@ $this->layout('minimal', [
     <div class="container pt-5 pb-5 h-100" style="flex: 1;">
         <div id="station_podcasts">
             <div class="row mb-4">
-                <h1 class="mx-auto"><?=$this->e($station->getName()) ?></h1>
+                <h1 class="mx-auto"><?=$this->e($station->getName())?></h1>
             </div>
 
             <div class="row justify-content-center">
-                <?php /** @var App\Entity\StationPodcast $podcast */ ?>
-                <?php foreach ($podcasts as $podcast) : ?>
-                    <?php $episodesPageLink = $router->named('public:podcast:episodes', ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId()]) ?>
-                    <?php $feedLink = $router->named('public:podcast:feed', ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId()]) ?>
+                <?php
+                /** @var App\Entity\Podcast $podcast */ ?>
+                <?php
+                foreach ($podcasts as $podcast) : ?>
+                    <?php
+                    $episodesPageLink = $router->named(
+                        'public:podcast:episodes',
+                        [
+                            'station_id' => $station->getId(),
+                            'podcast_id' => $podcast->getId(),
+                        ]
+                    ) ?>
+                    <?php
+                    $feedLink = $router->named(
+                        'public:podcast:feed',
+                        ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId()]
+                    ) ?>
                     <div class="col col-md-10 mb-4">
                         <div class="card">
                             <div class="row no-gutters">
                                 <div class="col-md-4">
-                                    <a href="<?=$this->e($episodesPageLink) ?>" title="<?=__('Episodes') ?>">
-                                        <img src="<?=$router->named('api:stations:podcast:art', ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId()]); ?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle()) ?>">
+                                    <a href="<?=$this->e($episodesPageLink)?>" title="<?=__('Episodes')?>">
+                                        <img src="<?=$router->named(
+                                            'api:stations:podcast:art',
+                                            [
+                                                'station_id' => $station->getId(),
+                                                'podcast_id' => $podcast->getId(),
+                                            ]
+                                        );?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle())?>">
                                     </a>
                                 </div>
 

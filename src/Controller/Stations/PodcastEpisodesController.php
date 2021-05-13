@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Stations;
 
-use App\Entity\Repository\StationPodcastRepository;
+use App\Entity\Repository\PodcastRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -12,9 +12,9 @@ use Slim\Routing\RouteContext;
 
 class PodcastEpisodesController
 {
-    protected StationPodcastRepository $podcastRepository;
+    protected PodcastRepository $podcastRepository;
 
-    public function __construct(StationPodcastRepository $podcastRepository)
+    public function __construct(PodcastRepository $podcastRepository)
     {
         $this->podcastRepository = $podcastRepository;
     }

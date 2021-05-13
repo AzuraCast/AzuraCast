@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
-use App\Entity\Repository\StationPodcastEpisodeRepository;
-use App\Entity\Repository\StationPodcastMediaRepository;
-use App\Entity\Repository\StationPodcastRepository;
+use App\Entity\PodcastEpisode;
+use App\Entity\Repository\PodcastEpisodeRepository;
+use App\Entity\Repository\PodcastMediaRepository;
+use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
-use App\Entity\StationPodcastEpisode;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -24,22 +24,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PodcastEpisodesController extends AbstractStationApiCrudController
 {
-    protected string $entityClass = StationPodcastEpisode::class;
+    protected string $entityClass = PodcastEpisode::class;
     protected string $resourceRouteName = 'api:stations:episode';
 
     protected StationRepository $stationRepository;
-    protected StationPodcastRepository $podcastRepository;
-    protected StationPodcastMediaRepository $podcastMediaRepository;
-    protected StationPodcastEpisodeRepository $episodeRepository;
+    protected PodcastRepository $podcastRepository;
+    protected PodcastMediaRepository $podcastMediaRepository;
+    protected PodcastEpisodeRepository $episodeRepository;
 
     public function __construct(
         EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         StationRepository $stationRepository,
-        StationPodcastRepository $podcastRepository,
-        StationPodcastMediaRepository $podcastMediaRepository,
-        StationPodcastEpisodeRepository $episodeRepository
+        PodcastRepository $podcastRepository,
+        PodcastMediaRepository $podcastMediaRepository,
+        PodcastEpisodeRepository $episodeRepository
     ) {
         parent::__construct($em, $serializer, $validator);
 
@@ -65,7 +65,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
 
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('e, s, p, pm')
-            ->from(StationPodcastEpisode::class, 'e')
+            ->from(PodcastEpisode::class, 'e')
             ->join('e.station', 's')
             ->join('e.podcast', 'p')
             ->leftJoin('e.podcastMedia', 'pm')
@@ -85,15 +85,18 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
         $paginator->setPostprocessor(
-            function (StationPodcastEpisode $episode) use ($station, $podcastsFilesystem, $router) {
-                $episodeArtworkSrc = (string) $this->stationRepository->getDefaultAlbumArtUrl($station);
+            function (PodcastEpisode $episode) use ($station, $podcastsFilesystem, $router) {
+                $episodeArtworkSrc = (string)$this->stationRepository->getDefaultAlbumArtUrl($station);
 
                 if ($podcastsFilesystem->fileExists($episode->getArtworkPath($episode->getUniqueId()))) {
-                    $episodeArtworkSrc = (string) $router->named('api:stations:episode:art', [
-                        'station_id' => $station->getId(),
-                        'podcast_id' => $episode->getPodcast()->getId(),
-                        'episode_id' => $episode->getId(),
-                    ]);
+                    $episodeArtworkSrc = (string)$router->named(
+                        'api:stations:episode:art',
+                        [
+                            'station_id' => $station->getId(),
+                            'podcast_id' => $episode->getPodcast()->getId(),
+                            'episode_id' => $episode->getId(),
+                        ]
+                    );
                 }
 
                 $episodeData = [
@@ -155,7 +158,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
 
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('e, s, p, pm')
-            ->from(StationPodcastEpisode::class, 'e')
+            ->from(PodcastEpisode::class, 'e')
             ->join('e.station', 's')
             ->join('e.podcast', 'p')
             ->leftJoin('e.podcastMedia', 'pm')
@@ -175,15 +178,18 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
         $paginator->setPostprocessor(
-            function (StationPodcastEpisode $episode) use ($station, $podcastsFilesystem, $router, $podcastMediaId) {
-                $episodeArtworkSrc = (string) $this->stationRepository->getDefaultAlbumArtUrl($station);
+            function (PodcastEpisode $episode) use ($station, $podcastsFilesystem, $router, $podcastMediaId) {
+                $episodeArtworkSrc = (string)$this->stationRepository->getDefaultAlbumArtUrl($station);
 
                 if ($podcastsFilesystem->fileExists($episode->getArtworkPath($episode->getUniqueId()))) {
-                    $episodeArtworkSrc = (string) $router->named('api:stations:episode:art', [
-                        'station_id' => $station->getId(),
-                        'podcast_id' => $episode->getPodcast()->getId(),
-                        'episode_id' => $episode->getId(),
-                    ]);
+                    $episodeArtworkSrc = (string)$router->named(
+                        'api:stations:episode:art',
+                        [
+                            'station_id' => $station->getId(),
+                            'podcast_id' => $episode->getPodcast()->getId(),
+                            'episode_id' => $episode->getId(),
+                        ]
+                    );
                 }
 
                 $assignPodcastMediaActionUrl = (string) $router->named('api:stations:episode:media:assign', [
@@ -233,7 +239,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         $station = $this->getStation($request);
         $router = $request->getRouter();
 
-        /** @var StationPodcastEpisode $episode */
+        /** @var PodcastEpisode $episode */
         $episode = $this->getRecord($station, $id);
 
         $stationFilesystems = new StationFilesystems($station);
@@ -281,7 +287,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
 
         $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episodeId);
 
-        if ($episode instanceof StationPodcastEpisode) {
+        if ($episode instanceof PodcastEpisode) {
             $episodePath = $episode->getArtworkPath($episode->getUniqueId());
         } else {
             return $defaultArtRedirect;
@@ -301,7 +307,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
     {
         $station = $this->getStation($request);
 
-        /** @var StationPodcastEpisode $episode */
+        /** @var PodcastEpisode $episode */
         $episode = $this->createRecord($request->getParsedBody(), $station);
 
         $files = $request->getUploadedFiles();

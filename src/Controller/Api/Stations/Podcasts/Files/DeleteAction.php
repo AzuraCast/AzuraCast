@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations\Podcasts\Files;
 
 use App\Entity;
-use App\Entity\Repository\StationPodcastMediaRepository;
-use App\Entity\StationPodcastMedia;
+use App\Entity\PodcastMedia;
+use App\Entity\Repository\PodcastMediaRepository;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -20,7 +20,7 @@ class DeleteAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $entityManager,
-        StationPodcastMediaRepository $podcastMediaRepository
+        PodcastMediaRepository $podcastMediaRepository
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -31,7 +31,7 @@ class DeleteAction
         $stationFilesystems = new StationFilesystems($station);
         $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
-        /** @var StationPodcastMedia $podcastMedia */
+        /** @var PodcastMedia $podcastMedia */
         $podcastMedia = $podcastMediaRepository->getRepository()->findOneBy([
             'station' => $station,
             'id' => $podcastMediaId,

@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="station_podcast_media")
+ * @ORM\Table(name="podcast_media")
  * @ORM\Entity()
  */
-class StationPodcastMedia
+class PodcastMedia
 {
     use Traits\UniqueId;
     use Traits\TruncateStrings;
@@ -31,36 +31,29 @@ class StationPodcastMedia
     protected $id;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
-     *
-     * @var int
-     */
-    protected $stationId;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Station")
+     * @ORM\ManyToOne(targetEntity="StorageLocation")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      *
-     * @var Station
+     * @var StorageLocation
      */
-    protected $station;
+    protected $storage_location;
 
     /**
      * @ORM\Column(name="episode_id", type="integer", nullable=true)
      *
      * @var int|null
      */
-    protected $episodeId;
+    protected $episode_id;
 
     /**
-     * @ORM\OneToOne(targetEntity="StationPodcastEpisode", inversedBy="podcastMedia")
+     * @ORM\OneToOne(targetEntity="PodcastEpisode", inversedBy="podcastMedia")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="episode_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      *
-     * @var StationPodcastEpisode|null
+     * @var PodcastEpisode|null
      */
     protected $episode;
 
@@ -71,7 +64,7 @@ class StationPodcastMedia
      *
      * @var string The original name of the podcast media file.
      */
-    protected $originalName;
+    protected $original_name;
 
     /**
      * @ORM\Column(name="length", type="decimal", precision=7, scale=2)
@@ -85,7 +78,7 @@ class StationPodcastMedia
      *
      * @var string The formatted podcast media's duration (in mm:ss format)
      */
-    protected $lengthText = '0:00';
+    protected $length_text = '0:00';
 
     /**
      * @ORM\Column(name="path", type="string", length=500)
@@ -103,19 +96,18 @@ class StationPodcastMedia
      *
      * @var string The mime type of the podcast media file.
      */
-    protected $mimeType;
+    protected $mime_type;
 
     /**
      * @ORM\Column(name="modified_time", type="integer")
      *
      * @var int Timestamp of when the podcast media was last modified
      */
-    protected $modifiedTime;
+    protected $modified_time;
 
-    public function __construct(Station $station)
+    public function __construct(StorageLocation $storageLocation)
     {
-        $this->station = $station;
-
+        $this->storage_location = $storageLocation;
         $this->generateUniqueId();
     }
 
@@ -124,17 +116,17 @@ class StationPodcastMedia
         return $this->id;
     }
 
-    public function getStation(): Station
+    public function getStorageLocation(): StorageLocation
     {
-        return $this->station;
+        return $this->storage_location;
     }
 
-    public function getEpisode(): ?StationPodcastEpisode
+    public function getEpisode(): ?PodcastEpisode
     {
         return $this->episode;
     }
 
-    public function setEpisode(?StationPodcastEpisode $episode): self
+    public function setEpisode(?PodcastEpisode $episode): self
     {
         $this->episode = $episode;
 
@@ -143,12 +135,12 @@ class StationPodcastMedia
 
     public function getOriginalName(): string
     {
-        return $this->originalName;
+        return $this->original_name;
     }
 
     public function setOriginalName(string $originalName): self
     {
-        $this->originalName = $this->truncateString($originalName);
+        $this->original_name = $this->truncateString($originalName);
 
         return $this;
     }
@@ -164,19 +156,19 @@ class StationPodcastMedia
         $lengthSec = $length % 60;
 
         $this->length = (float)$length;
-        $this->lengthText = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
+        $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
 
         return $this;
     }
 
     public function getLengthText(): string
     {
-        return $this->lengthText;
+        return $this->length_text;
     }
 
     public function setLengthText(string $lengthText): self
     {
-        $this->lengthText = $lengthText;
+        $this->length_text = $lengthText;
 
         return $this;
     }
@@ -195,24 +187,24 @@ class StationPodcastMedia
 
     public function getMimeType(): string
     {
-        return $this->mimeType;
+        return $this->mime_type;
     }
 
     public function setMimeType(string $mimeType): self
     {
-        $this->mimeType = $mimeType;
+        $this->mime_type = $mimeType;
 
         return $this;
     }
 
     public function getModifiedTime(): int
     {
-        return $this->modifiedTime;
+        return $this->modified_time;
     }
 
     public function setModifiedTime(int $modifiedTime): self
     {
-        $this->modifiedTime = $modifiedTime;
+        $this->modified_time = $modifiedTime;
 
         return $this;
     }

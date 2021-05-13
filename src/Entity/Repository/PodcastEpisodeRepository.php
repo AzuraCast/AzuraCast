@@ -1,0 +1,94 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity\Repository;
+
+use App\Doctrine\ReloadableEntityManagerInterface;
+use App\Doctrine\Repository;
+use App\Entity\Podcast;
+use App\Entity\PodcastEpisode;
+use App\Entity\Station;
+use App\Entity\StorageLocation;
+use App\Environment;
+use Intervention\Image\Constraint;
+use Intervention\Image\ImageManager;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Serializer;
+
+class PodcastEpisodeRepository extends Repository
+{
+    public function __construct(
+        ReloadableEntityManagerInterface $entityManager,
+        Serializer $serializer,
+        Environment $environment,
+        LoggerInterface $logger,
+        protected ImageManager $imageManager
+    ) {
+        parent::__construct($entityManager, $serializer, $environment, $logger);
+    }
+
+    public function fetchEpisodeForStation(Station $station, int $episodeId): ?PodcastEpisode
+    {
+        return $this->fetchEpisodeForStorageLocation(
+            $station->getPodcastsStorageLocation(),
+            $episodeId
+        );
+    }
+
+    public function fetchEpisodeForStorageLocation(
+        StorageLocation $storageLocation,
+        int $episodeId
+    ): ?PodcastEpisode {
+        return $this->repository->findOneBy(['id' => $episodeId, 'storage_location' => $storageLocation]);
+    }
+
+    /**
+     * @return PodcastEpisode[]
+     */
+    public function fetchPublishedEpisodesForPodcast(Podcast $podcast): array
+    {
+        $episodes = $this->em->createQueryBuilder()
+            ->select('pe')
+            ->from(PodcastEpisode::class, 'pe')
+            ->where('pe.podcast = :podcast')
+            ->setParameter('podcast', $podcast)
+            ->getQuery()
+            ->getResult();
+
+        return array_filter(
+            $episodes,
+            static function (PodcastEpisode $episode) {
+                return $episode->isPublished();
+            }
+        );
+    }
+
+    public function writeEpisodeArtwork(PodcastEpisode $episode, string $rawArtworkString): void
+    {
+        $episodeArtwork = $this->imageManager->make($rawArtworkString);
+        $episodeArtwork->fit(
+            3000,
+            3000,
+            function (Constraint $constraint): void {
+                $constraint->upsize();
+            }
+        );
+
+        $episodeArtworkPath = PodcastEpisode::getArtworkPath($episode->getUniqueId());
+        $episodeArtworkStream = $episodeArtwork->stream('jpg');
+
+        $fsPodcasts = $episode->getPodcast()->getStorageLocation()->getFilesystem();
+        $fsPodcasts->writeStream($episodeArtworkPath, $episodeArtworkStream->detach());
+    }
+
+    public function removeEpisodeArt(PodcastEpisode $episode): void
+    {
+        $artworkPath = PodcastEpisode::getArtworkPath($episode->getUniqueId());
+
+        $fsPodcasts = $episode->getPodcast()->getStorageLocation()->getFilesystem();
+        if ($fsPodcasts->fileExists($artworkPath)) {
+            $fsPodcasts->delete($artworkPath);
+        }
+    }
+}

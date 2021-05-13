@@ -13,6 +13,8 @@ use App\RateLimit;
 use App\Session;
 use App\View;
 use Mezzio\Session\SessionInterface;
+use Slim\Interfaces\RouteInterface;
+use Slim\Routing\RouteContext;
 
 final class ServerRequest extends \Slim\Http\ServerRequest
 {
@@ -140,14 +142,26 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         }
 
         if (!($object instanceof $class_name)) {
-            throw new Exception\InvalidRequestAttribute(sprintf(
-                'Attribute "%s" must be of type "%s".',
-                $attr,
-                $class_name
-            ));
+            throw new Exception\InvalidRequestAttribute(
+                sprintf(
+                    'Attribute "%s" must be of type "%s".',
+                    $attr,
+                    $class_name
+                )
+            );
         }
 
         return $object;
+    }
+
+    public function getRouteArgument(string $name, ?string $default = null): ?string
+    {
+        $routeContext = RouteContext::fromRequest($this->serverRequest);
+        $route = $routeContext->getRoute();
+
+        return ($route instanceof RouteInterface)
+            ? $route->getArgument($name, $default)
+            : $default;
     }
 
     /**

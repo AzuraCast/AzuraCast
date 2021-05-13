@@ -74,7 +74,7 @@ class RequirePodcastMediaAssignedToPublishedEpisodeMiddleware
     protected function getPodcastMediaIdFromRequest(ServerRequest $request): ?int
     {
         $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
+        $routeArgs = $routeContext->getRoute()?->getArguments();
 
         $podcastMediaId = $routeArgs['id'] ?? null;
 

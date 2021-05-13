@@ -17,7 +17,6 @@ use App\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use Slim\Routing\RouteContext;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -49,10 +48,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         $station = $request->getStation();
         $router = $request->getRouter();
 
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $podcastId = (int)$routeArgs['podcast_id'];
-
+        $podcastId = (int)($request->getRouteArgument('podcast_id'));
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         $queryBuilder = $this->em->createQueryBuilder()
@@ -361,10 +357,7 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
     {
         $station = $request->getStation();
 
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $episodeId = (int) $routeArgs['episode_id'];
-
+        $episodeId = (int)($request->getRouteArgument('episode_id'));
         $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episodeId);
 
         if ($episode === null) {

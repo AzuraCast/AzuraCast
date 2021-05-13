@@ -72,7 +72,7 @@ class RequirePublishedPodcastEpisodeMiddleware
     protected function getPodcastIdFromRequest(ServerRequest $request): ?int
     {
         $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
+        $routeArgs = $routeContext->getRoute()?->getArguments();
 
         $podcastId = $routeArgs['id'] ?? null;
 

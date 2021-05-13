@@ -8,31 +8,30 @@ use App\Entity\Repository\PodcastRepository;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Routing\RouteContext;
 
 class PodcastEpisodesController
 {
-    protected PodcastRepository $podcastRepository;
-
-    public function __construct(PodcastRepository $podcastRepository)
-    {
-        $this->podcastRepository = $podcastRepository;
+    public function __construct(
+        protected PodcastRepository $podcastRepository
+    ) {
     }
 
-    public function __invoke(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $podcastId = (int) $routeArgs['podcast_id'];
-
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int $podcast_id
+    ): ResponseInterface {
         $station = $request->getStation();
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
-
-        return $request->getView()->renderToResponse($response, 'stations/podcasts/episodes/index', [
-            'stationId' => $station->getId(),
-            'stationTz' => $station->getTimezone(),
-            'podcast' => $podcast,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/podcasts/episodes/index',
+            [
+                'stationId' => $station->getId(),
+                'stationTz' => $station->getTimezone(),
+                'podcast' => $podcast,
+            ]
+        );
     }
 }

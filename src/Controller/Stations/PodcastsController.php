@@ -15,7 +15,8 @@ class PodcastsController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
-        $userLocale = $request->getUser()->getLocale() ?? 'en';
+
+        $userLocale = (string)$request->getCustomization()->getLocale();
 
         $languageOptions = Languages::getNames($userLocale);
         $categoriesOptions = PodcastCategory::getAvailableCategories();

@@ -42,13 +42,12 @@ class PodcastsController extends AbstractStationApiCrudController
         $station = $request->getStation();
 
         $queryBuilder = $this->em->createQueryBuilder()
-            ->select('p, pc, c')
+            ->select('p, pc')
             ->from(Podcast::class, 'p')
             ->leftJoin('p.categories', 'pc')
-            ->leftJoin('pc.category', 'c')
-            ->where('p.station = :station')
+            ->where('p.storage_location = :storageLocation')
             ->orderBy('p.title', 'ASC')
-            ->setParameter('station', $station);
+            ->setParameter('storageLocation', $station->getPodcastsStorageLocation());
 
         $searchPhrase = trim($request->getParam('searchPhrase', ''));
         if (!empty($searchPhrase)) {
@@ -167,16 +166,15 @@ class PodcastsController extends AbstractStationApiCrudController
 
     public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $podcast = $this->getRecord($this->getStation($request), $id);
+        $station = $this->getStation($request);
+        $podcast = $this->getRecord($station, $id);
 
         if ($podcast === null) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $station = $this->getStation($request);
         $data = $request->getParsedBody();
-
         $this->editRecord($data, $podcast);
 
         $files = $request->getUploadedFiles();

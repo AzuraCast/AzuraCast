@@ -9,14 +9,14 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Routing\RouteContext;
 
 class DownloadAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        PodcastMediaRepository $podcastMediaRepository
+        PodcastMediaRepository $podcastMediaRepository,
+        int $podcast_media_id
     ): ResponseInterface {
         set_time_limit(600);
 
@@ -24,11 +24,7 @@ class DownloadAction
         $stationFilesystems = new StationFilesystems($station);
         $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $podcastMediaId = (int) $routeArgs['podcast_media_id'];
-
-        $podcastMedia = $podcastMediaRepository->fetchPodcastMediaForStation($station, $podcastMediaId);
+        $podcastMedia = $podcastMediaRepository->fetchPodcastMediaForStation($station, $podcast_media_id);
 
         $fileMeta = $podcastsFilesystem->getMetadata($podcastMedia->getPath());
 

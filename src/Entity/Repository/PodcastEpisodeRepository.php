@@ -40,7 +40,17 @@ class PodcastEpisodeRepository extends Repository
         StorageLocation $storageLocation,
         int $episodeId
     ): ?PodcastEpisode {
-        return $this->repository->findOneBy(['id' => $episodeId, 'storage_location' => $storageLocation]);
+        return $this->em->createQuery(
+            <<<'DQL'
+                SELECT pe
+                FROM App\Entity\PodcastEpisode pe
+                JOIN pe.podcast p
+                WHERE pe.id = :id
+                AND p.storage_location = :storageLocation
+            DQL
+        )->setParameter('id', $episodeId)
+            ->setParameter('storageLocation', $storageLocation)
+            ->getOneOrNullResult();
     }
 
     /**

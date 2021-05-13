@@ -12,7 +12,6 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Routing\RouteContext;
 
 class DeleteAction
 {
@@ -20,22 +19,21 @@ class DeleteAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $entityManager,
-        PodcastMediaRepository $podcastMediaRepository
+        PodcastMediaRepository $podcastMediaRepository,
+        int $podcast_media_id
     ): ResponseInterface {
         $station = $request->getStation();
-
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()->getArguments();
-        $podcastMediaId = (int) $routeArgs['podcast_media_id'];
 
         $stationFilesystems = new StationFilesystems($station);
         $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
         /** @var PodcastMedia $podcastMedia */
-        $podcastMedia = $podcastMediaRepository->getRepository()->findOneBy([
-            'station' => $station,
-            'id' => $podcastMediaId,
-        ]);
+        $podcastMedia = $podcastMediaRepository->getRepository()->findOneBy(
+            [
+                'station' => $station,
+                'id' => $podcast_media_id,
+            ]
+        );
 
         if (null === $podcastMedia) {
             return $response->withStatus(404)

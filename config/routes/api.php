@@ -347,12 +347,8 @@ return function (App $app) {
                             ->add(Middleware\RequirePodcastMediaAssignedToPublishedEpisodeMiddleware::class);
                     });
 
-                    $group->get('/podcast-categories', Controller\Api\Stations\PodcastCategoriesController::class . ':listAction')
+                    $group->get('/podcast-categories', Controller\Api\Stations\Podcasts\Categories\ListAction::class)
                         ->setName('api:stations:podcast-categories')
-                        ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
-
-                    $group->get('/podcast-category/{id}', Controller\Api\Stations\PodcastCategoriesController::class . ':getAction')
-                        ->setName('api:stations:podcast-category')
                         ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
 
                     $station_api_endpoints = [

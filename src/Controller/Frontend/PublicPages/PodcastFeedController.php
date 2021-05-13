@@ -247,7 +247,7 @@ class PodcastFeedController
             $rssItem->setPubDate($publishAtDateTime);
 
             $rssEnclosure = $this->buildRssEnclosureForPodcastMedia(
-                $episode->getPodcastMedia(),
+                $episode->getMedia(),
                 $station
             );
             $rssItem->setEnclosure($rssEnclosure);

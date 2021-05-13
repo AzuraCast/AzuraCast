@@ -48,7 +48,7 @@ class PodcastMedia
     protected $episode_id;
 
     /**
-     * @ORM\OneToOne(targetEntity="PodcastEpisode", inversedBy="podcastMedia")
+     * @ORM\OneToOne(targetEntity="PodcastEpisode", inversedBy="media")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="episode_id", referencedColumnName="id", onDelete="SET NULL")
      * })

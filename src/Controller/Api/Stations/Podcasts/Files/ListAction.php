@@ -30,15 +30,14 @@ class ListAction
         $searchPhrase = trim($request->getParam('searchPhrase', ''));
 
         $podcastMediaQueryBuilder = $em->createQueryBuilder()
-            ->select('pm, s, e')
+            ->select('pm, e')
             ->from(PodcastMedia::class, 'pm')
-            ->join('pm.station', 's')
             ->leftJoin('pm.episode', 'e')
-            ->where('pm.stationId = :stationId')
-            ->setParameter('stationId', $station->getId());
+            ->where('pm.storage_location = :storageLocation')
+            ->setParameter('storageLocation', $station->getPodcastsStorageLocation());
 
         if (!empty($searchPhrase)) {
-            $podcastMediaQueryBuilder->andWhere('(pm.originalName LIKE :query)')
+            $podcastMediaQueryBuilder->andWhere('(pm.original_name LIKE :query)')
                 ->setParameter('query', '%' . $searchPhrase . '%');
         }
 

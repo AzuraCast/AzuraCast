@@ -43,7 +43,7 @@ class PodcastEpisode
      *
      * @var PodcastMedia|null
      */
-    protected $podcastMedia;
+    protected $media;
 
     /**
      * @ORM\Column(name="title", type="string", length=255)
@@ -91,10 +91,9 @@ class PodcastEpisode
      */
     protected $created_at;
 
-    public function __construct(Podcast $podcast, PodcastMedia $podcastMedia)
+    public function __construct(Podcast $podcast)
     {
         $this->podcast = $podcast;
-        $this->podcastMedia = $podcastMedia;
 
         $this->created_at = time();
         $this->generateUniqueId();
@@ -110,9 +109,14 @@ class PodcastEpisode
         return $this->podcast;
     }
 
-    public function getPodcastMedia(): ?PodcastMedia
+    public function setMedia(?PodcastMedia $media): void
     {
-        return $this->podcastMedia;
+        $this->media = $media;
+    }
+
+    public function getMedia(): ?PodcastMedia
+    {
+        return $this->media;
     }
 
     public function getTitle(): string
@@ -198,7 +202,7 @@ class PodcastEpisode
             return false;
         }
 
-        if ($this->getPodcastMedia() === null) {
+        if ($this->getMedia() === null) {
             return false;
         }
 

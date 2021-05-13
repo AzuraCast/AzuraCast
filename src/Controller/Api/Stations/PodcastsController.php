@@ -164,6 +164,21 @@ class PodcastsController extends AbstractStationApiCrudController
         return $response->withJson($return);
     }
 
+    protected function createRecord(array $data, Entity\Station $station): object
+    {
+        return $this->editRecord(
+            $data,
+            null,
+            [
+                AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
+                    $this->entityClass => [
+                        'storageLocation' => $station->getPodcastsStorageLocation(),
+                    ],
+                ],
+            ]
+        );
+    }
+
     public function editAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
         $station = $this->getStation($request);

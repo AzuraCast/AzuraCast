@@ -236,7 +236,7 @@ class CheckPodcastMediaTask extends AbstractTask
                 $syncStatistics->alreadyQueued++;
             } elseif (
                 empty($podcastMediaRow['unique_id'])
-                || $file->lastModified() > $podcastMediaRow['modifiedTime']
+                || $file->lastModified() > $podcastMediaRow['modified_time']
             ) {
                 $message = new ReprocessPodcastMediaMessage();
                 $message->podcastMediaId = $podcastMediaRow['id'];

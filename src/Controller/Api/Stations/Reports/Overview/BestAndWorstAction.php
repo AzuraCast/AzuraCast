@@ -46,9 +46,9 @@ class BestAndWorstAction
             ->setMaxResults(5);
 
         $rawStats = [
-            'best' => $baseQuery->orderBy('sh.delta_total', 'DESC')
+            'best' => (clone $baseQuery)->orderBy('sh.delta_total', 'DESC')
                 ->getQuery()->getArrayResult(),
-            'worst' => $baseQuery->orderBy('sh.delta_total', 'ASC')
+            'worst' => (clone $baseQuery)->orderBy('sh.delta_total', 'ASC')
                 ->getQuery()->getArrayResult(),
         ];
 

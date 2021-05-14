@@ -104,6 +104,11 @@ class PodcastsController extends AbstractStationApiCrudController
         return $response->withJson($return);
     }
 
+    protected function getRecord(Entity\Station $station, int|string $id): ?object
+    {
+        return $this->podcastRepository->fetchPodcastForStation($station, (int)$id);
+    }
+
     public function getArtworkAction(
         ServerRequest $request,
         Response $response,

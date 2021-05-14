@@ -6,6 +6,7 @@ $this->layout('main', [
 ]);
 
 $props = [
+    'backUrl' => $router->fromHere('stations:podcasts:index'),
     'listUrl' => $router->fromHere('api:stations:episodes', [$stationId, $podcast->getId()]),
     'podcastMediaUrl' => $router->fromHere('api:stations:podcast-files:list', [$stationId]),
     'uploadUrl' => $router->fromHere('api:stations:podcast-files:upload', [$stationId]),

@@ -1,13 +1,17 @@
 <template>
     <div>
         <b-card no-body>
-            <b-card-header header-bg-variant="primary-dark">
-                <b-row class="align-items-center">
-                    <b-col md="6">
-                        <h2 class="card-title" key="lang_episodes" v-translate>Episodes</h2>
-                        <h4 class="card-subtitle text-muted">{{ podcast.title }}</h4>
-                    </b-col>
-                </b-row>
+            <b-card-header header-bg-variant="primary-dark" class="d-flex align-items-center">
+                <div class="flex-fill">
+                    <h2 class="card-title" key="lang_episodes" v-translate>Episodes</h2>
+                    <h4 class="card-subtitle text-muted">{{ podcast.title }}</h4>
+                </div>
+                <div class="flex-shrink-0">
+                    <a class="btn btn-bg" role="button" :href="backUrl">
+                        <icon icon="arrow_back"></icon>
+                        <translate key="lang_podcast_back">All Podcasts</translate>
+                    </a>
+                </div>
             </b-card-header>
 
             <b-tabs pills card lazy>
@@ -61,62 +65,64 @@
 </template>
 
 <script>
-    import DataTable from './../Common/DataTable';
-    import PodcastMedia from './Podcasts/PodcastMediaView';
-    import EditModal from './Podcasts/EpisodeEditModal';
-    import axios from 'axios';
+import DataTable from './../Common/DataTable';
+import PodcastMedia from './Podcasts/PodcastMediaView';
+import EditModal from './Podcasts/EpisodeEditModal';
+import axios from 'axios';
+import Icon from '../Common/Icon';
 
-    export default {
-        name: 'StationPodcastEpisodes',
-        components: { EditModal, PodcastMedia, DataTable },
-        props: {
-            listUrl: String,
-            podcastMediaUrl: String,
-            uploadUrl: String,
-            assignableEpisodesUrl: String,
-            locale: String,
-            stationTimeZone: String,
-            podcast: Object
+export default {
+    name: 'StationPodcastEpisodes',
+    components: { Icon, EditModal, PodcastMedia, DataTable },
+    props: {
+        backUrl: String,
+        listUrl: String,
+        podcastMediaUrl: String,
+        uploadUrl: String,
+        assignableEpisodesUrl: String,
+        locale: String,
+        stationTimeZone: String,
+        podcast: Object
+    },
+    data () {
+        return {
+            fields: [
+                { key: 'title', label: this.$gettext('Episode'), sortable: false },
+                { key: 'podcast_media', label: this.$gettext('File'), sortable: false },
+                { key: 'explicit', label: this.$gettext('Explicit'), sortable: false },
+                { key: 'actions', label: this.$gettext('Actions'), sortable: false }
+            ]
+        };
+    },
+    computed: {
+        langAllEpisodesTab () {
+            return this.$gettext('All Episodes');
         },
-        data () {
-            return {
-                fields: [
-                    { key: 'title', label: this.$gettext('Episode'), sortable: false },
-                    { key: 'podcast_media', label: this.$gettext('File'), sortable: false },
-                    { key: 'explicit', label: this.$gettext('Explicit'), sortable: false },
-                    { key: 'actions', label: this.$gettext('Actions'), sortable: false },
-                ]
-            };
+        langAllPodcastMediaTab () {
+            return this.$gettext('All Files');
+        }
+    },
+    mounted () {
+        moment.relativeTimeThreshold('ss', 1);
+        moment.relativeTimeRounding(function (value) {
+            return Math.round(value * 10) / 10;
+        });
+    },
+    methods: {
+        formatTime (time) {
+            return moment(time).tz(this.stationTimeZone).format('LT');
         },
-        computed: {
-            langAllEpisodesTab () {
-                return this.$gettext('All Episodes');
-            },
-            langAllPodcastMediaTab () {
-                return this.$gettext('All Files');
+        formatLength (length) {
+            return moment.duration(length, 'seconds').humanize();
+        },
+        relist () {
+            if (this.$refs.datatable) {
+                this.$refs.datatable.refresh();
             }
         },
-        mounted () {
-            moment.relativeTimeThreshold('ss', 1);
-            moment.relativeTimeRounding(function (value) {
-                return Math.round(value * 10) / 10;
-            });
+        doCreate () {
+            this.$refs.editEpisodeModal.create();
         },
-        methods: {
-            formatTime (time) {
-                return moment(time).tz(this.stationTimeZone).format('LT');
-            },
-            formatLength (length) {
-                return moment.duration(length, 'seconds').humanize();
-            },
-            relist () {
-                if (this.$refs.datatable) {
-                    this.$refs.datatable.refresh();
-                }
-            },
-            doCreate () {
-                this.$refs.editEpisodeModal.create();
-            },
             doEdit (url) {
                 this.$refs.editEpisodeModal.edit(url);
             },

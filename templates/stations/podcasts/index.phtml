@@ -6,7 +6,7 @@ $this->layout('main', [
 
 $props = [
     'listUrl' => $router->fromHere('api:stations:podcasts'),
-    'categoriesUrl' => $router->fromHere('api:stations:podcast-categories'),
+    'categoriesUrl' => $router->fromHere('api:stations:podcasts:categories'),
     'stationUrl' => $router->fromHere('stations:index:index', [$stationId]),
     'locale' => substr($customization->getLocale(), 0, 2),
     'stationTimeZone' => $stationTz,

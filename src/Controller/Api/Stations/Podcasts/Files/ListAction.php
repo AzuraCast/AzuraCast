@@ -52,13 +52,13 @@ class ListAction
 
                 $podcastMediaArtSrc = (string)$stationRepo->getDefaultAlbumArtUrl($station);
 
-                $podcastMediaArtworkPath = $podcastMedia->getArtworkPath($podcastMedia->getUniqueId());
+                $podcastMediaArtworkPath = PodcastMedia::getArtPath($podcastMedia->getId());
                 if ($podcastsFilesystem->fileExists($podcastMediaArtworkPath)) {
                     $podcastMediaArtSrc = (string)$router->named(
                         'api:stations:podcast-media:art',
                         [
                             'station_id' => $station->getId(),
-                            'podcast_media_id' => $podcastMedia->getUniqueId(),
+                            'podcast_media_id' => $podcastMedia->getId(),
                         ]
                     );
                 }
@@ -75,7 +75,6 @@ class ListAction
 
                 return [
                     'id' => $podcastMedia->getId(),
-                    'unique_id' => $podcastMedia->getUniqueId(),
                     'path' => $podcastMedia->getPath(),
                     'length' => $podcastMedia->getLength(),
                     'length_text' => $podcastMedia->getLengthText(),

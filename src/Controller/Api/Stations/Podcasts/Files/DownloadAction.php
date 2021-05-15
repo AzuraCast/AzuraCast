@@ -16,7 +16,7 @@ class DownloadAction
         ServerRequest $request,
         Response $response,
         PodcastMediaRepository $podcastMediaRepository,
-        int $podcast_media_id
+        string $podcast_media_id
     ): ResponseInterface {
         set_time_limit(600);
 

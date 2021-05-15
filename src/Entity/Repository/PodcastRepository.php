@@ -27,14 +27,14 @@ class PodcastRepository extends Repository
         parent::__construct($entityManager, $serializer, $environment, $logger);
     }
 
-    public function fetchPodcastForStation(Station $station, int $podcastId): ?Podcast
+    public function fetchPodcastForStation(Station $station, string $podcastId): ?Podcast
     {
         return $this->fetchPodcastForStorageLocation($station->getPodcastsStorageLocation(), $podcastId);
     }
 
     public function fetchPodcastForStorageLocation(
         StorageLocation $storageLocation,
-        int $podcastId
+        string $podcastId
     ): ?Podcast {
         return $this->repository->findOneBy(
             [
@@ -84,7 +84,7 @@ class PodcastRepository extends Repository
             }
         );
 
-        $podcastArtworkPath = Podcast::getArtworkPath($podcast->getUniqueId());
+        $podcastArtworkPath = Podcast::getArtPath($podcast->getId());
         $podcastArtworkStream = $podcastArtwork->stream('jpg');
 
         $fsPodcasts = $podcast->getStorageLocation()->getFilesystem();
@@ -93,11 +93,15 @@ class PodcastRepository extends Repository
 
     public function removePodcastArtwork(Podcast $podcast): void
     {
-        $artworkPath = Podcast::getArtworkPath($podcast->getUniqueId());
+        $artworkPath = Podcast::getArtPath($podcast->getId());
 
         $fsPodcasts = $podcast->getStorageLocation()->getFilesystem();
         if ($fsPodcasts->fileExists($artworkPath)) {
             $fsPodcasts->delete($artworkPath);
         }
+
+        $podcast->setArtUpdatedAt(0);
+        $this->em->persist($podcast);
+        $this->em->flush();
     }
 }

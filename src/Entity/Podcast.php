@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Traits;
+use App\Annotations\AuditLog;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,22 +14,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="podcast")
  * @ORM\Entity
+ *
+ * @AuditLog\Auditable
  */
 class Podcast implements JsonSerializable
 {
-    use Traits\UniqueId;
     use Traits\TruncateStrings;
-
-    public const UNIQUE_ID_LENGTH = 24;
 
     public const DIR_PODCAST_ARTWORK = '.podcast_art';
 
     /**
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="guid", unique=true)
+     * @ORM\GeneratedValue(strategy="UUID")
      *
-     * @var int|null
+     * @var string|null
      */
     protected $id;
 
@@ -78,6 +77,14 @@ class Podcast implements JsonSerializable
     protected $language;
 
     /**
+     * @ORM\Column(name="art_updated_at", type="integer")
+     * @AuditLog\AuditIgnore()
+     *
+     * @var int The latest time (UNIX timestamp) when album art was updated.
+     */
+    protected $art_updated_at = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="PodcastCategory", mappedBy="podcast")
      *
      * @var Collection
@@ -97,11 +104,9 @@ class Podcast implements JsonSerializable
 
         $this->categories = new ArrayCollection();
         $this->episodes = new ArrayCollection();
-
-        $this->generateUniqueId();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -159,6 +164,18 @@ class Podcast implements JsonSerializable
         return $this;
     }
 
+    public function getArtUpdatedAt(): int
+    {
+        return $this->art_updated_at;
+    }
+
+    public function setArtUpdatedAt(int $art_updated_at): self
+    {
+        $this->art_updated_at = $art_updated_at;
+
+        return $this;
+    }
+
     /**
      * @return Collection|PodcastCategory[]
      */
@@ -175,7 +192,7 @@ class Podcast implements JsonSerializable
         return $this->episodes;
     }
 
-    public static function getArtworkPath(string $uniqueId): string
+    public static function getArtPath(string $uniqueId): string
     {
         return self::DIR_PODCAST_ARTWORK . '/' . $uniqueId . '.jpg';
     }
@@ -187,7 +204,6 @@ class Podcast implements JsonSerializable
     {
         $return = [
             'id' => $this->id,
-            'unique_id' => $this->unique_id,
             'storage_location_id' => $this->storage_location->getId(),
             'title' => $this->title,
             'link' => $this->link,

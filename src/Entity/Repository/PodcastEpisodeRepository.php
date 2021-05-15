@@ -28,7 +28,7 @@ class PodcastEpisodeRepository extends Repository
         parent::__construct($entityManager, $serializer, $environment, $logger);
     }
 
-    public function fetchEpisodeForStation(Station $station, int $episodeId): ?PodcastEpisode
+    public function fetchEpisodeForStation(Station $station, string $episodeId): ?PodcastEpisode
     {
         return $this->fetchEpisodeForStorageLocation(
             $station->getPodcastsStorageLocation(),
@@ -38,7 +38,7 @@ class PodcastEpisodeRepository extends Repository
 
     public function fetchEpisodeForStorageLocation(
         StorageLocation $storageLocation,
-        int $episodeId
+        string $episodeId
     ): ?PodcastEpisode {
         return $this->em->createQuery(
             <<<'DQL'
@@ -85,20 +85,24 @@ class PodcastEpisodeRepository extends Repository
             }
         );
 
-        $episodeArtworkPath = PodcastEpisode::getArtworkPath($episode->getUniqueId());
+        $episodeArtworkPath = PodcastEpisode::getArtPath($episode->getId());
         $episodeArtworkStream = $episodeArtwork->stream('jpg');
 
         $fsPodcasts = $episode->getPodcast()->getStorageLocation()->getFilesystem();
         $fsPodcasts->writeStream($episodeArtworkPath, $episodeArtworkStream->detach());
+
+        $episode->setArtUpdatedAt(time());
     }
 
     public function removeEpisodeArt(PodcastEpisode $episode): void
     {
-        $artworkPath = PodcastEpisode::getArtworkPath($episode->getUniqueId());
+        $artworkPath = PodcastEpisode::getArtPath($episode->getId());
 
         $fsPodcasts = $episode->getPodcast()->getStorageLocation()->getFilesystem();
         if ($fsPodcasts->fileExists($artworkPath)) {
             $fsPodcasts->delete($artworkPath);
         }
+
+        $episode->setArtUpdatedAt(0);
     }
 }

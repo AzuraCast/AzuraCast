@@ -51,7 +51,7 @@ class PodcastFeedController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int $podcast_id,
+        string $podcast_id,
     ): ResponseInterface {
         $this->router = $request->getRouter();
 
@@ -196,8 +196,8 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists($podcast->getArtworkPath($podcast->getUniqueId()))) {
-            $podcastArtworkSrc = (string) $this->router->named(
+        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getId()))) {
+            $podcastArtworkSrc = (string)$this->router->named(
                 'api:stations:podcast:art',
                 [
                     'station_id' => $station->getId(),
@@ -231,7 +231,7 @@ class PodcastFeedController
             $rssItem = new RssItem();
 
             $rssGuid = new RssGuid();
-            $rssGuid->setGuid($episode->getUniqueId());
+            $rssGuid->setGuid($episode->getId());
 
             $rssItem->setGuid($rssGuid);
             $rssItem->setTitle($episode->getTitle());
@@ -298,8 +298,8 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists($episode->getArtworkPath($episode->getUniqueId()))) {
-            $episodeArtworkSrc = (string) $this->router->named(
+        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getId()))) {
+            $episodeArtworkSrc = (string)$this->router->named(
                 'api:stations:episode:art',
                 [
                     'station_id' => $station->getId(),

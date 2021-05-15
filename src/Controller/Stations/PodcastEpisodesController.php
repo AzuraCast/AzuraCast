@@ -19,7 +19,7 @@ class PodcastEpisodesController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int $podcast_id
+        string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);

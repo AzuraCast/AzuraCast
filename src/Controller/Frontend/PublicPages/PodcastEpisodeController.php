@@ -24,8 +24,8 @@ class PodcastEpisodeController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int $podcast_id,
-        int $episode_id
+        string $podcast_id,
+        string $episode_id
     ): ResponseInterface {
         $router = $request->getRouter();
         $station = $request->getStation();

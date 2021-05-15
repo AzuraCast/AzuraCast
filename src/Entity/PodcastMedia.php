@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,22 +12,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="podcast_media")
  * @ORM\Entity()
+ *
+ * @AuditLog\Auditable
  */
 class PodcastMedia
 {
-    use Traits\UniqueId;
     use Traits\TruncateStrings;
-
-    public const UNIQUE_ID_LENGTH = 24;
 
     public const DIR_PODCAST_MEDIA_ARTWORK = '.podcast_media_art';
 
     /**
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="guid", unique=true)
+     * @ORM\GeneratedValue(strategy="UUID")
      *
-     * @var int|null
+     * @var string|null
      */
     protected $id;
 
@@ -39,13 +39,6 @@ class PodcastMedia
      * @var StorageLocation
      */
     protected $storage_location;
-
-    /**
-     * @ORM\Column(name="episode_id", type="integer", nullable=true)
-     *
-     * @var int|null
-     */
-    protected $episode_id;
 
     /**
      * @ORM\OneToOne(targetEntity="PodcastEpisode", inversedBy="media")
@@ -105,13 +98,20 @@ class PodcastMedia
      */
     protected $modified_time;
 
+    /**
+     * @ORM\Column(name="art_updated_at", type="integer")
+     * @AuditLog\AuditIgnore()
+     *
+     * @var int The latest time (UNIX timestamp) when album art was updated.
+     */
+    protected $art_updated_at = 0;
+
     public function __construct(StorageLocation $storageLocation)
     {
         $this->storage_location = $storageLocation;
-        $this->generateUniqueId();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -209,7 +209,19 @@ class PodcastMedia
         return $this;
     }
 
-    public static function getArtworkPath(string $uniqueId): string
+    public function getArtUpdatedAt(): int
+    {
+        return $this->art_updated_at;
+    }
+
+    public function setArtUpdatedAt(int $art_updated_at): self
+    {
+        $this->art_updated_at = $art_updated_at;
+
+        return $this;
+    }
+
+    public static function getArtPath(string $uniqueId): string
     {
         return self::DIR_PODCAST_MEDIA_ARTWORK . '/' . $uniqueId . '.jpg';
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Annotations\AuditLog;
 use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,20 +12,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="podcast_episode")
  * @ORM\Entity
+ *
+ * @AuditLog\Auditable
  */
 class PodcastEpisode
 {
-    use Traits\UniqueId;
     use Traits\TruncateStrings;
 
     public const DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
 
     /**
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="guid", unique=true)
+     * @ORM\GeneratedValue(strategy="UUID")
      *
-     * @var int|null
+     * @var string|null
      */
     protected $id;
 
@@ -91,15 +93,21 @@ class PodcastEpisode
      */
     protected $created_at;
 
+    /**
+     * @ORM\Column(name="art_updated_at", type="integer")
+     * @AuditLog\AuditIgnore()
+     *
+     * @var int The latest time (UNIX timestamp) when album art was updated.
+     */
+    protected $art_updated_at = 0;
+
     public function __construct(Podcast $podcast)
     {
         $this->podcast = $podcast;
-
         $this->created_at = time();
-        $this->generateUniqueId();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -191,7 +199,19 @@ class PodcastEpisode
         return $this;
     }
 
-    public static function getArtworkPath(string $uniqueId): string
+    public function getArtUpdatedAt(): int
+    {
+        return $this->art_updated_at;
+    }
+
+    public function setArtUpdatedAt(int $art_updated_at): self
+    {
+        $this->art_updated_at = $art_updated_at;
+
+        return $this;
+    }
+
+    public static function getArtPath(string $uniqueId): string
     {
         return self::DIR_PODCAST_EPISODE_ARTWORK . '/' . $uniqueId . '.jpg';
     }

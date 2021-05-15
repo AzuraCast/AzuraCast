@@ -7,10 +7,13 @@ $this->layout('main', [
 
 $props = [
     'backUrl' => $router->fromHere('stations:podcasts:index'),
-    'listUrl' => $router->fromHere('api:stations:episodes', [$stationId, $podcast->getId()]),
-    'podcastMediaUrl' => $router->fromHere('api:stations:podcast-files:list', [$stationId]),
-    'uploadUrl' => $router->fromHere('api:stations:podcast-files:upload', [$stationId]),
-    'assignableEpisodesUrl' => $router->fromHere('api:stations:episodes:assignable', [$stationId, $podcast->getId()]),
+    'listUrl' => $router->fromHere('api:stations:podcast:episodes', [$stationId, $podcast->getId()]),
+    'podcastMediaUrl' => $router->fromHere('api:stations:podcasts:files:list', [$stationId]),
+    'uploadUrl' => $router->fromHere('api:stations:podcasts:files:upload', [$stationId]),
+    'assignableEpisodesUrl' => $router->fromHere(
+        'api:stations:podcast:episodes:assignable',
+        [$stationId, $podcast->getId()]
+    ),
     'locale' => substr($customization->getLocale(), 0, 2),
     'stationTimeZone' => $stationTz,
     'podcast' => $podcast,

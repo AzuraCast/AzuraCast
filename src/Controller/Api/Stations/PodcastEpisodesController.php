@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Acl;
 use App\Entity;
 use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Repository\PodcastMediaRepository;
 use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
-use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -46,9 +45,8 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         Response $response,
     ): ResponseInterface {
         $station = $request->getStation();
-        $router = $request->getRouter();
 
-        $podcastId = (int)($request->getRouteArgument('podcast_id'));
+        $podcastId = $request->getRouteArgument('podcast_id');
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         $queryBuilder = $this->em->createQueryBuilder()
@@ -66,70 +64,17 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
                 ->setParameter('title', '%' . $searchPhrase . '%');
         }
 
-        $paginator = Paginator::fromQueryBuilder($queryBuilder, $request);
-
-        $stationFilesystems = new StationFilesystems($station);
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
-
-        $paginator->setPostprocessor(
-            function (PodcastEpisode $episode) use ($station, $podcastsFilesystem, $router) {
-                $episodeArtworkSrc = (string)$this->stationRepository->getDefaultAlbumArtUrl($station);
-
-                if ($podcastsFilesystem->fileExists($episode->getArtworkPath($episode->getUniqueId()))) {
-                    $episodeArtworkSrc = (string)$router->named(
-                        'api:stations:episode:art',
-                        [
-                            'station_id' => $station->getId(),
-                            'podcast_id' => $episode->getPodcast()->getId(),
-                            'episode_id' => $episode->getId(),
-                        ]
-                    );
-                }
-
-                $episodeData = [
-                    'id' => $episode->getId(),
-                    'unique_id' => $episode->getUniqueId(),
-                    'title' => $episode->getTitle(),
-                    'description' => $episode->getDescription(),
-                    'explicit' => $episode->getExplicit(),
-                    'artwork_src' => $episodeArtworkSrc,
-                    'publish_at' => $episode->getPublishAt(),
-                    'has_media' => ($episode->getMedia() !== null),
-                    'podcast_media' => null,
-                    'links' => [
-                        'self' => $router->fromHere($this->resourceRouteName, ['id' => $episode->getId()]),
-                    ],
-                ];
-
-                $podcastMedia = $episode->getMedia();
-
-                if ($podcastMedia !== null) {
-                    $episodeData['podcast_media'] = [
-                        'id' => $podcastMedia->getId(),
-                        'unique_id' => $podcastMedia->getUniqueId(),
-                        'original_name' => $podcastMedia->getOriginalName(),
-                        'length' => $podcastMedia->getLength(),
-                        'length_text' => $podcastMedia->getLengthText(),
-                        'path' => $podcastMedia->getPath(),
-                    ];
-                }
-
-                return $episodeData;
-            }
-        );
-
-        return $paginator->write($response);
+        return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
 
     public function listAssignableAction(
         ServerRequest $request,
         Response $response,
-        int $podcast_id
+        string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
-        $router = $request->getRouter();
 
-        $podcastMediaId = (int)$request->getQueryParam('podcast_media_id', 0);
+        $podcastMediaId = $request->getQueryParam('podcast_media_id', 0);
         $podcastMedia = $this->podcastMediaRepository->fetchPodcastMediaForStation(
             $station,
             $podcastMediaId
@@ -157,172 +102,136 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
                 ->setParameter('title', '%' . $searchPhrase . '%');
         }
 
-        $paginator = Paginator::fromQueryBuilder($queryBuilder, $request);
+        return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
+    }
 
-        $stationFilesystems = new StationFilesystems($station);
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        if (!($record instanceof $this->entityClass)) {
+            throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
+        }
 
-        $paginator->setPostprocessor(
-            function (PodcastEpisode $episode) use ($station, $podcastsFilesystem, $router, $podcastMediaId) {
-                $episodeArtworkSrc = (string)$this->stationRepository->getDefaultAlbumArtUrl($station);
+        /** @var PodcastEpisode $record */
+        $return = $this->toArray($record);
 
-                if ($podcastsFilesystem->fileExists($episode->getArtworkPath($episode->getUniqueId()))) {
-                    $episodeArtworkSrc = (string)$router->named(
-                        'api:stations:episode:art',
-                        [
-                            'station_id' => $station->getId(),
-                            'podcast_id' => $episode->getPodcast()->getId(),
-                            'episode_id' => $episode->getId(),
-                        ]
-                    );
-                }
+        $isInternal = ('true' === $request->getParam('internal', 'false'));
+        $router = $request->getRouter();
+        $station = $request->getStation();
 
-                $assignPodcastMediaActionUrl = (string)$router->named(
-                    'api:stations:episode:media:assign',
-                    [
-                        'station_id' => $station->getId(),
-                        'episode_id' => $episode->getId(),
-                        'podcast_media_id' => $podcastMediaId,
-                    ]
-                );
-
-                $episodeData = [
-                    'id' => $episode->getId(),
-                    'unique_id' => $episode->getUniqueId(),
-                    'title' => $episode->getTitle(),
-                    'description' => $episode->getDescription(),
-                    'explicit' => $episode->getExplicit(),
-                    'artwork_src' => $episodeArtworkSrc,
-                    'publish_at' => $episode->getPublishAt(),
-                    'has_media' => ($episode->getMedia() !== null),
-                    'podcast_media' => null,
-                    'links' => [
-                        'self' => $router->fromHere($this->resourceRouteName, ['id' => $episode->getId()]),
-                        'assign' => $assignPodcastMediaActionUrl,
-                    ],
-                ];
-
-                $episodePodcastMedia = $episode->getMedia();
-
-                if ($episodePodcastMedia !== null) {
-                    $episodeData['podcast_media'] = [
-                        'id' => $episodePodcastMedia->getId(),
-                        'unique_id' => $episodePodcastMedia->getUniqueId(),
-                        'original_name' => $episodePodcastMedia->getOriginalName(),
-                        'length' => $episodePodcastMedia->getLength(),
-                        'length_text' => $episodePodcastMedia->getLengthText(),
-                        'path' => $episodePodcastMedia->getPath(),
-                    ];
-                }
-
-                return $episodeData;
-            }
+        $return['art'] = (string)$router->named(
+            'api:stations:podcast:episode:art',
+            [
+                'station_id' => $station->getId(),
+                'podcast_id' => $record->getPodcast()->getId(),
+                'episode_id' => $record->getId() . '-' . $record->getArtUpdatedAt(),
+            ]
         );
 
-        return $paginator->write($response);
+        $return['links'] = [
+            'self' => $router->fromHere(
+                $this->resourceRouteName,
+                ['episode_id' => $record->getId()],
+                [],
+                !$isInternal
+            ),
+            'public' => (string)$router->named(
+                'public:podcast:episode',
+                [
+                    'station_id' => $station->getId(),
+                    'podcast_id' => $record->getPodcast()->getId(),
+                    'episode_id' => $record->getId(),
+                ],
+                [],
+                !$isInternal
+            ),
+            'download' => (string)$router->named(
+                'api:stations:podcast:episode:download',
+                [
+                    'station_id' => $station->getId(),
+                    'podcast_id' => $record->getPodcast()->getId(),
+                    'episode_id' => $record->getId(),
+                ],
+                [],
+                !$isInternal
+            ),
+        ];
+
+        $acl = $request->getAcl();
+
+        if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
+            $return['links']['assign'] = (string)$router->named(
+                'api:stations:episode:media:assign',
+                [
+                    'station_id' => $station->getId(),
+                    'episode_id' => $record->getId(),
+                    'podcast_media_id' => $record->getMedia()?->getId(),
+                ]
+            );
+        }
+
+        /*
+        $episodeData = [
+            'id' => $episode->getId(),
+            'unique_id' => $episode->getUniqueId(),
+            'title' => $episode->getTitle(),
+            'description' => $episode->getDescription(),
+            'explicit' => $episode->getExplicit(),
+            'artwork_src' => $episodeArtworkSrc,
+            'publish_at' => $episode->getPublishAt(),
+            'has_media' => ($episode->getMedia() !== null),
+            'podcast_media' => null,
+        ];
+
+        $episodePodcastMedia = $episode->getMedia();
+
+        if ($episodePodcastMedia !== null) {
+            $episodeData['podcast_media'] = [
+                'id' => $episodePodcastMedia->getId(),
+                'unique_id' => $episodePodcastMedia->getUniqueId(),
+                'original_name' => $episodePodcastMedia->getOriginalName(),
+                'length' => $episodePodcastMedia->getLength(),
+                'length_text' => $episodePodcastMedia->getLengthText(),
+                'path' => $episodePodcastMedia->getPath(),
+            ];
+        }
+        */
+
+        return $return;
     }
 
     public function getAction(ServerRequest $request, Response $response, $station_id, $id): ResponseInterface
     {
-        $station = $this->getStation($request);
-        $router = $request->getRouter();
-
-        /** @var PodcastEpisode $episode */
+        $station = $request->getStation();
         $episode = $this->getRecord($station, $id);
-
-        $stationFilesystems = new StationFilesystems($station);
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
 
         if ($episode === null) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Episode not found!')));
         }
 
-        $return = $this->viewRecord($episode, $request);
-
-        $episodeArtworkSrc = (string) $this->stationRepository->getDefaultAlbumArtUrl($station);
-        $return['has_custom_artwork'] = false;
-
-        if ($podcastsFilesystem->fileExists($episode->getArtworkPath($episode->getUniqueId()))) {
-            $episodeArtworkSrc = (string)$router->named(
-                'api:stations:episode:art',
-                [
-                    'station_id' => $station->getId(),
-                    'podcast_id' => $episode->getPodcast()->getId(),
-                    'episode_id' => $episode->getId(),
-                ],
-                [],
-                true
-            );
-
-            $return['has_custom_artwork'] = true;
-        }
-
-        $return['artwork_src'] = $episodeArtworkSrc;
-
-        return $response->withJson($return);
+        return $response->withJson($this->viewRecord($episode, $request));
     }
 
     protected function getRecord(Entity\Station $station, int|string $id): ?object
     {
-        return $this->episodeRepository->fetchEpisodeForStation($station, (int)$id);
-    }
-
-    public function getArtworkAction(
-        ServerRequest $request,
-        Response $response,
-        int $episode_id
-    ): ResponseInterface {
-        $station = $request->getStation();
-
-        $defaultArtRedirect = $response->withRedirect(
-            (string)$this->stationRepository->getDefaultAlbumArtUrl($station),
-            302
-        );
-
-        $episodePath = '';
-        $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episode_id);
-
-        if ($episode instanceof PodcastEpisode) {
-            $episodePath = $episode->getArtworkPath($episode->getUniqueId());
-        } else {
-            return $defaultArtRedirect;
-        }
-
-        $stationFilesystems = new StationFilesystems($station);
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
-
-        if ($podcastsFilesystem->fileExists($episodePath)) {
-            return $response->streamFilesystemFile($podcastsFilesystem, $episodePath, null, 'inline');
-        }
-
-        return $defaultArtRedirect;
+        return $this->episodeRepository->fetchEpisodeForStation($station, $id);
     }
 
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->getStation($request);
 
-        /** @var PodcastEpisode $episode */
-        $episode = $this->createRecord($request->getParsedBody(), $station);
+        $data = $this->normalizeFormDataBooleans($request->getParsedBody());
 
         $files = $request->getUploadedFiles();
-
         if (!empty($files['artwork_file'])) {
-            /** @var UploadedFileInterface $file */
-            $file = $files['artwork_file'];
-
-            if ($file->getError() === UPLOAD_ERR_OK) {
-                $this->episodeRepository->writeEpisodeArtwork(
-                    $episode,
-                    $file->getStream()->getContents()
-                );
-            }
+            $data['artwork_file'] = $files['artwork_file'];
         }
 
-        $return = $this->viewRecord($episode, $request);
+        /** @var PodcastEpisode $episode */
+        $episode = $this->createRecord($data, $station);
 
-        return $response->withJson($return);
+        return $response->withJson($this->viewRecord($episode, $request));
     }
 
     /**
@@ -339,74 +248,14 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
 
         $data = $this->normalizeFormDataBooleans($request->getParsedBody());
 
+        $files = $request->getUploadedFiles();
+        if (!empty($files['artwork_file'])) {
+            $data['artwork_file'] = $files['artwork_file'];
+        }
+
         $this->editRecord($data, $episode);
 
-        $files = $request->getUploadedFiles();
-
-        if (!empty($files['artwork_file'])) {
-            /** @var UploadedFileInterface $file */
-            $file = $files['artwork_file'];
-
-            if ($file->getError() === UPLOAD_ERR_OK) {
-                $this->episodeRepository->writeEpisodeArtwork(
-                    $episode,
-                    $file->getStream()->getContents()
-                );
-            }
-        }
-
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
-    }
-
-    public function clearEpisodeArtworkAction(ServerRequest $request, Response $response): ResponseInterface
-    {
-        $station = $request->getStation();
-
-        $episodeId = (int)($request->getRouteArgument('episode_id'));
-        $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episodeId);
-
-        if ($episode === null) {
-            return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Episode not found!')));
-        }
-
-        $this->episodeRepository->removeEpisodeArt($episode);
-
-        $this->em->persist($episode);
-        $this->em->flush();
-
-        return $response->withJson(new Entity\Api\Status(true, __('Episode artwork successfully cleared.')));
-    }
-
-    public function assignPodcastMediaAction(
-        ServerRequest $request,
-        Response $response,
-        int $podcast_media_id,
-        int $episode_id,
-    ): ResponseInterface {
-        $station = $request->getStation();
-
-        $episode = $this->episodeRepository->fetchEpisodeForStation($station, $episode_id);
-        $podcastMedia = $this->podcastMediaRepository->fetchPodcastMediaForStation($station, $podcast_media_id);
-
-        if ($episode === null) {
-            return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Episode not found!')));
-        }
-
-        if ($podcastMedia === null) {
-            return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Podcast media not found!')));
-        }
-
-        $episode->setMedia($podcastMedia);
-        $this->em->persist($episode);
-
-        $podcastMedia->setEpisode($episode);
-        $this->em->persist($podcastMedia);
-        $this->em->flush();
-
-        return $response->withJson(new Entity\Api\Status(true, __('Podcast media successfully assigned to episode.')));
     }
 
     /**
@@ -418,13 +267,12 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
 
         $podcast = $this->podcastRepository->fetchPodcastForStation(
             $station,
-            (int) $data['podcast_id']
+            $data['podcast_id']
         );
 
         return $this->editRecord($data, null, [
             AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
                 $this->entityClass => [
-                    'station' => $station,
                     'podcast' => $podcast,
                 ],
             ],
@@ -446,5 +294,28 @@ class PodcastEpisodesController extends AbstractStationApiCrudController
         }
 
         return $data;
+    }
+
+    protected function fromArray($data, $record = null, array $context = []): object
+    {
+        return parent::fromArray(
+            $data,
+            $record,
+            array_merge(
+                $context,
+                [
+                    AbstractNormalizer::CALLBACKS => [
+                        'artwork_file' => function ($file, $record): void {
+                            if ($file instanceof UploadedFileInterface && UPLOAD_ERR_OK === $file->getError()) {
+                                $this->episodeRepository->writeEpisodeArtwork(
+                                    $record,
+                                    $file->getStream()->getContents()
+                                );
+                            }
+                        },
+                    ],
+                ]
+            )
+        );
     }
 }

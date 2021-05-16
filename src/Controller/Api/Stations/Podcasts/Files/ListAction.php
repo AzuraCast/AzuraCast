@@ -44,7 +44,7 @@ class ListAction
         $paginator = Paginator::fromQueryBuilder($podcastMediaQueryBuilder, $request);
 
         $paginator->setPostprocessor(
-            function (PodcastMedia $podcastMedia) use ($station, $podcastsFilesystem, $stationRepo, $router) {
+            function (PodcastMedia $podcastMedia) use ($station, $podcastsFilesystem, $router) {
                 return [
                     'id' => $podcastMedia->getId(),
                     'path' => $podcastMedia->getPath(),

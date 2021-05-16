@@ -7,7 +7,8 @@ release channel, you can take advantage of these new features and fixes.
 
 - **Podcast Management (Beta):** You can now upload and manage podcasts directly via the AzuraCast web interface. Via
   this interface, you can create and manage individual podcast episodes and associate them with uploaded media (which
-  can be managed in an interface similar to the Media Manager).
+  can be managed in an interface similar to the Media Manager). Podcasts have their own automatically generated public
+  pages and RSS feeds that are compatible with many major podcast aggregation services.
 
 - **Automatic Theme Selection:** If you haven't set a default theme for either your user account or the AzuraCast public
   pages, the theme will automatically be determined by the user's browser based on their OS's theme preference (dark or

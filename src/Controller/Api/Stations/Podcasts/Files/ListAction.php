@@ -45,47 +45,33 @@ class ListAction
 
         $paginator->setPostprocessor(
             function (PodcastMedia $podcastMedia) use ($station, $podcastsFilesystem, $stationRepo, $router) {
-                $podcastMediaMetaData = $podcastsFilesystem->getMetadata(
-                    $podcastMedia->getPath()
-                );
-
-
-                $podcastMediaArtSrc = (string)$stationRepo->getDefaultAlbumArtUrl($station);
-
-                $podcastMediaArtworkPath = PodcastMedia::getArtPath($podcastMedia->getId());
-                if ($podcastsFilesystem->fileExists($podcastMediaArtworkPath)) {
-                    $podcastMediaArtSrc = (string)$router->named(
-                        'api:stations:podcasts:media:art',
-                        [
-                            'station_id' => $station->getId(),
-                            'podcast_media_id' => $podcastMedia->getId(),
-                        ]
-                    );
-                }
-
-                $podcastMediaPlayUrl = (string) $router->named(
-                    'api:stations:podcasts:files:download',
-                    [
-                        'station_id' => $station->getId(),
-                        'podcast_media_id' => $podcastMedia->getId(),
-                    ],
-                    [],
-                    true
-                );
-
                 return [
                     'id' => $podcastMedia->getId(),
                     'path' => $podcastMedia->getPath(),
                     'length' => $podcastMedia->getLength(),
                     'length_text' => $podcastMedia->getLengthText(),
                     'original_name' => $podcastMedia->getOriginalName(),
-                    'art_src' => $podcastMediaArtSrc,
-                    'play_url' => $podcastMediaPlayUrl,
+                    'art' => (string)$router->named(
+                        'api:stations:podcasts:media:art',
+                        [
+                            'station_id' => $station->getId(),
+                            'podcast_media_id' => $podcastMedia->getId() . '|' . $podcastMedia->getArtUpdatedAt(),
+                        ]
+                    ),
                     'size' => $podcastsFilesystem->fileSize($podcastMedia->getPath()),
-                    'modified_at' => $podcastMediaMetaData->lastModified(),
+                    'modified_at' => $podcastMedia->getModifiedTime(),
                     'is_dir' => false,
                     'links' => [
-                        'self' => $router->fromHere(
+                        'play' => (string)$router->named(
+                            'api:stations:podcasts:files:download',
+                            [
+                                'station_id' => $station->getId(),
+                                'podcast_media_id' => $podcastMedia->getId(),
+                            ],
+                            [],
+                            true
+                        ),
+                        'delete' => $router->fromHere(
                             'api:stations:podcasts:files:delete',
                             ['podcast_media_id' => $podcastMedia->getId()]
                         ),

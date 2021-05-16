@@ -317,7 +317,7 @@ return function (App $app) {
 
                             $group->get(
                                 '/media/art/{podcast_media_id}.jpg',
-                                Controller\Api\Stations\Podcasts\Media\Art\GetArtAction::class
+                                Controller\Api\Stations\Podcasts\GetMediaArtAction::class
                             )->setName('api:stations:podcasts:media:art');
 
                             $group->get('/categories', Controller\Api\Stations\Podcasts\Categories\ListAction::class)

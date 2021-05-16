@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Stations\Podcasts\Media\Art;
+namespace App\Controller\Api\Stations\Podcasts;
 
 use App\Entity;
 use App\Flysystem\StationFilesystems;
@@ -10,28 +10,27 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class GetArtAction
+class GetMediaArtAction
 {
     public function __invoke(
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\PodcastRepository $podcastRepo,
-        string $podcast_id,
+        string $podcast_media_id,
     ): ResponseInterface {
         $station = $request->getStation();
 
         // If a timestamp delimiter is added, strip it automatically.
-        $podcast_id = explode('-', $podcast_id)[0];
-
-        $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
-        $podcastPath = Entity\Podcast::getArtPath($podcast_id);
+        $podcast_media_id = explode('|', $podcast_media_id)[0];
 
         $fsStation = new StationFilesystems($station);
         $fsPodcasts = $fsStation->getPodcastsFilesystem();
 
-        if ($fsPodcasts->fileExists($podcastPath)) {
-            return $response->streamFilesystemFile($fsPodcasts, $podcastPath, null, 'inline');
+        $artPath = Entity\PodcastMedia::getArtPath($podcast_media_id);
+        if ($fsPodcasts->fileExists($artPath)) {
+            return $response
+                ->withCacheLifetime(Response::CACHE_ONE_YEAR)
+                ->streamFilesystemFile($fsPodcasts, $artPath, null, 'inline');
         }
 
         return $response->withRedirect(

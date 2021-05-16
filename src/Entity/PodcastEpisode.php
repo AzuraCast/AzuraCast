@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AuditLog\Auditable
  */
-class PodcastEpisode
+class PodcastEpisode implements \JsonSerializable
 {
     use Traits\TruncateStrings;
 
@@ -227,5 +227,36 @@ class PodcastEpisode
         }
 
         return true;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function jsonSerialize(): array
+    {
+        $return = [
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'explicit' => $this->getExplicit(),
+            'publish_at' => $this->getPublishAt(),
+            'has_media' => ($this->getMedia() !== null),
+            'podcast_media' => null,
+            'has_custom_art' => (0 !== $this->getArtUpdatedAt()),
+        ];
+
+        $episodePodcastMedia = $this->getMedia();
+
+        if ($episodePodcastMedia !== null) {
+            $return['podcast_media'] = [
+                'id' => $episodePodcastMedia->getId(),
+                'original_name' => $episodePodcastMedia->getOriginalName(),
+                'length' => $episodePodcastMedia->getLength(),
+                'length_text' => $episodePodcastMedia->getLengthText(),
+                'path' => $episodePodcastMedia->getPath(),
+            ];
+        }
+
+        return $return;
     }
 }

@@ -14,7 +14,7 @@ $props = [
         'api:stations:podcast:episodes:assignable',
         [$stationId, $podcast->getId()]
     ),
-    'locale' => substr($customization->getLocale(), 0, 2),
+    'locale' => substr((string)$customization->getLocale(), 0, 2),
     'stationTimeZone' => $stationTz,
     'podcast' => $podcast,
 ];

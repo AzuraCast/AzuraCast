@@ -532,13 +532,13 @@ return [
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcastEpisodes' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 

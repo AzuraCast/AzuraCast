@@ -15,12 +15,12 @@ class QueuedPodcastMediaMessages
         $this->queuedNewPodcastMediaFiles = [];
     }
 
-    public function isPodcastMediaUpdateQueued(int $podcastMediaId): bool
+    public function isPodcastMediaUpdateQueued(string $podcastMediaId): bool
     {
         return isset($this->queuedUpdatePodcastMedia[$podcastMediaId]);
     }
 
-    public function addQueuedUpdatePodcastMedia(int $podcastMediaId): void
+    public function addQueuedUpdatePodcastMedia(string $podcastMediaId): void
     {
         $this->queuedUpdatePodcastMedia[$podcastMediaId] = true;
     }

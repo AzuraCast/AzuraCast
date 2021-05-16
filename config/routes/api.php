@@ -299,7 +299,7 @@ return function (App $app) {
 
                                     $group->get(
                                         '/download',
-                                        Controller\Api\Stations\PodcastEpisodesController::class . ':downloadAction'
+                                        Controller\Api\Stations\Podcasts\Episodes\DownloadAction::class
                                     )->setName('api:stations:podcast:episode:download');
                                 }
                             );

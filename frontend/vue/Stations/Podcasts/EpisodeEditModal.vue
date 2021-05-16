@@ -95,7 +95,7 @@
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
             <template v-if="hasCustomArtwork">
-                <b-button variant="danger" type="button" @click="clearArtwork(artworkSrc)">
+                <b-button variant="danger" type="button" @click="clearArtwork(clearArtUrl)">
                     <translate key="lang_btn_clear_artwork">Clear Art</translate>
                 </b-button>
             </template>
@@ -107,72 +107,73 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import { validationMixin } from 'vuelidate';
-    import required from 'vuelidate/src/validators/required';
-    import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
+import axios from 'axios';
+import { validationMixin } from 'vuelidate';
+import required from 'vuelidate/src/validators/required';
+import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 
-    export default {
-        name: 'EditModal',
-        components: { InvisibleSubmitButton },
-        mixins: [validationMixin],
-        props: {
-            createUrl: String,
-            stationTimeZone: String,
-            locale: String,
-            podcastId: Number
+export default {
+    name: 'EditModal',
+    components: { InvisibleSubmitButton },
+    mixins: [validationMixin],
+    props: {
+        createUrl: String,
+        stationTimeZone: String,
+        locale: String,
+        podcastId: String
+    },
+    data () {
+        return {
+            loading: true,
+            editUrl: null,
+            clearArtUrl: null,
+            hasCustomArtwork: false,
+            artworkSrc: null,
+            form: {}
+        };
+    },
+    computed: {
+        langTitle () {
+            return this.isEditMode
+                ? this.$gettext('Edit Episode')
+                : this.$gettext('Add Episode');
         },
-        data () {
-            return {
-                loading: true,
-                editUrl: null,
-                hasCustomArtwork: false,
-                artworkSrc: null,
-                form: {}
-            };
-        },
-        computed: {
-            langTitle () {
-                return this.isEditMode
-                    ? this.$gettext('Edit Episode')
-                    : this.$gettext('Add Episode');
-            },
-            isEditMode () {
-                return this.editUrl !== null;
+        isEditMode () {
+            return this.editUrl !== null;
+        }
+    },
+    validations: {
+        form: {
+            'title': { required },
+            'link': {},
+            'description': { required },
+            'publish_date': {},
+            'publish_time': {},
+            'explicit': {},
+            'artwork_file': {}
+        }
+    },
+    methods: {
+        updatePreviewArtwork (file) {
+            if (!(file instanceof File)) {
+                return;
             }
+            let vueThis = this;
+            let fileReader = new FileReader();
+            fileReader.addEventListener('load', function () {
+                vueThis.artworkSrc = fileReader.result;
+            }, false);
+            fileReader.readAsDataURL(file);
         },
-        validations: {
-            form: {
-                'title': { required },
-                'link': {},
-                'description': { required },
-                'publish_date': {},
-                'publish_time': {},
-                'explicit': {},
-                'artwork_file': {}
-            }
-        },
-        methods: {
-            updatePreviewArtwork (file) {
-                if (!(file instanceof File)) {
-                    return;
-                }
-                let vueThis = this;
-                let fileReader = new FileReader();
-                fileReader.addEventListener('load', function () {
-                    vueThis.artworkSrc = fileReader.result;
-                }, false);
-                fileReader.readAsDataURL(file);
-            },
-            resetForm () {
-                this.form = {
-                    'title': '',
-                    'link': '',
-                    'description': '',
-                    'publish_date': '',
-                    'publish_time': '',
-                    'explicit': false,
-                    'artwork_file': null
+        resetForm () {
+            this.form = {
+                'title': '',
+                'link': '',
+                'description': '',
+                'publish_date': '',
+                'publish_time': '',
+                'explicit': false,
+                'artwork_file': null
                 };
             },
             create () {
@@ -209,8 +210,9 @@
                         'explicit': d.explicit
                     };
 
-                    this.artworkSrc = d.artwork_src;
-                    this.hasCustomArtwork = d.has_custom_artwork;
+                    this.clearArtUrl = d.links.art;
+                    this.artworkSrc = d.art;
+                    this.hasCustomArtwork = d.has_custom_art;
 
                     this.loading = false;
                 }).catch((err) => {
@@ -274,11 +276,12 @@
                     confirmButtonColor: '#e64942',
                     showCancelButton: true,
                     focusCancel: true
-                }).then((value) => {
-                    if (value) {
+                }).then((result) => {
+                    if (result.value) {
                         axios.delete(url).then((resp) => {
                             notify('<b>' + resp.data.message + '</b>', 'success');
 
+                            this.$emit('relist');
                             this.close();
                         }).catch((err) => {
                             console.error(err);
@@ -292,6 +295,10 @@
             close () {
                 this.loading = false;
                 this.editUrl = null;
+                this.clearArtUrl = null;
+                this.artworkSrc = null;
+                this.hasCustomArtwork = false;
+
                 this.resetForm();
 
                 this.$v.form.$reset();

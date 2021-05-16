@@ -48,7 +48,7 @@ class FlowUploadAction
                     : $directory . '/' . $sanitizedName;
 
                 $podcastMediaRepository->getOrCreate(
-                    $station,
+                    $station->getPodcastsStorageLocation(),
                     $finalPath,
                     $flowResponse['path']
                 );

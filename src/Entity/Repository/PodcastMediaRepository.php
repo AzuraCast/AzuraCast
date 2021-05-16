@@ -66,12 +66,10 @@ class PodcastMediaRepository extends Repository
     }
 
     public function getOrCreate(
-        Station $station,
+        StorageLocation $storageLocation,
         string $path,
         ?string $uploadPath = null
     ): PodcastMedia {
-        $storageLocation = $station->getPodcastsStorageLocation();
-
         $podcastMedia = $this->repository->findOneBy(
             [
                 'storage_location' => $storageLocation,
@@ -87,14 +85,16 @@ class PodcastMediaRepository extends Repository
             $podcastMedia->setOriginalName(pathinfo($path, PATHINFO_FILENAME));
 
             $created = true;
+
+            // Trigger ID creation.
+            $this->em->persist($podcastMedia);
+            $this->em->flush();
         }
 
         $this->processPodcastMedia($podcastMedia, $created, $uploadPath);
 
-        if ($created) {
-            $this->em->persist($podcastMedia);
-            $this->em->flush();
-        }
+        $this->em->persist($podcastMedia);
+        $this->em->flush();
 
         return $podcastMedia;
     }

@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity\Podcast;
 use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Entity\Repository\PodcastMediaRepository;
-use App\Entity\Station;
 use App\Entity\StorageLocation;
 use App\Message;
 use App\Message\AddNewPodcastMediaMessage;
@@ -52,16 +50,18 @@ class CheckPodcastMediaTask extends AbstractTask
                 $this->em->flush();
             }
         } elseif ($message instanceof AddNewPodcastMediaMessage) {
-            $this->logger->debug(sprintf(
-                'Processing message of type "%s" with Storage Location ID "%s" and Path "%s"',
-                AddNewPodcastMediaMessage::class,
-                $message->storageLocationId,
-                $message->path
-            ));
+            $this->logger->debug(
+                sprintf(
+                    'Processing message of type "%s" with Storage Location ID "%s" and Path "%s"',
+                    AddNewPodcastMediaMessage::class,
+                    $message->storageLocationId,
+                    $message->path
+                )
+            );
 
-            /** @var Station $station */
-            foreach ($this->fetchStationsForStorageLocation($message->storageLocationId) as $station) {
-                $this->podcastMediaRepository->getOrCreate($station, $message->path);
+            $storageLocation = $this->em->find(StorageLocation::class, $message->storageLocationId);
+            if ($storageLocation instanceof StorageLocation) {
+                $this->podcastMediaRepository->getOrCreate($storageLocation, $message->path);
             }
         }
     }
@@ -126,19 +126,6 @@ class CheckPodcastMediaTask extends AbstractTask
             ),
             $syncStatistics->jsonSerialize()
         );
-    }
-
-    protected function fetchStationsForStorageLocation(int $storageLocationId): BatchIteratorAggregate
-    {
-        $storageLocation = $this->em->find(StorageLocation::class, $storageLocationId);
-
-        $queryBuilder = $this->em->createQueryBuilder()
-            ->select('s')
-            ->from(Station::class, 's')
-            ->where('s.podcasts_storage_location = :storageLocation')
-            ->setParameter('storageLocation', $storageLocation);
-
-        return BatchIteratorAggregate::fromQuery($queryBuilder->getQuery(), 1);
     }
 
     /**
@@ -211,7 +198,7 @@ class CheckPodcastMediaTask extends AbstractTask
     ): array {
         $existingPodcastMediaQuery = $this->em->createQuery(
             <<<'DQL'
-                SELECT pm.id, pm.path, pm.modified_time, pm.unique_id
+                SELECT pm.id, pm.path, pm.modified_time
                 FROM App\Entity\PodcastMedia pm
                 WHERE pm.storage_location = :storageLocation
             DQL
@@ -234,13 +221,9 @@ class CheckPodcastMediaTask extends AbstractTask
 
             if ($queuedPodcastMediaMessages->isPodcastMediaUpdateQueued($podcastMediaRow['id'])) {
                 $syncStatistics->alreadyQueued++;
-            } elseif (
-                empty($podcastMediaRow['unique_id'])
-                || $file->lastModified() > $podcastMediaRow['modified_time']
-            ) {
+            } elseif ($file->lastModified() > $podcastMediaRow['modified_time']) {
                 $message = new ReprocessPodcastMediaMessage();
                 $message->podcastMediaId = $podcastMediaRow['id'];
-                $message->force = empty($podcastMediaRow['unique_id']);
 
                 $this->messageBus->dispatch($message);
 

@@ -14,10 +14,11 @@ $assets->addInlineJs(
 );
 
 $episodeAudioSrc = (string) $router->named(
-    'api:stations:podcast-files:download',
+    'api:stations:podcast:episode:download',
     [
         'station_id' => $station->getId(),
-        'podcast_media_id' => $episode->getPodcastMedia()->getId(),
+        'podcast_id' => $episode->getPodcast()->getId(),
+        'episode_id' => $episode->getId(),
     ],
     [],
     true
@@ -38,8 +39,12 @@ if ($episode->getPublishAt() !== null) {
             </div>
 
             <div class="row justify-content-center mb-4">
-                <a href="<?=$podcastEpisodesLink ?>" class="btn btn-primary mr-2"><span class="material-icons">chevron_left</span><?=__('Back') ?></a>
-                <a href="<?=$feedLink ?>" class="btn btn-warning" target="_blank"><span class="material-icons">rss_feed</span> <?=__('RSS Feed') ?></a>
+                <a href="<?=$podcastEpisodesLink?>" class="btn btn-primary mr-2"><span class="material-icons">chevron_left</span><?=__(
+                        'Back'
+                    )?></a>
+                <a href="<?=$feedLink?>" class="btn btn-warning" target="_blank"><span class="material-icons">rss_feed</span> <?=__(
+                        'RSS Feed'
+                    )?></a>
             </div>
 
             <div class="row justify-content-center mb-4">
@@ -47,17 +52,27 @@ if ($episode->getPublishAt() !== null) {
                     <div class="card">
                         <div class="row no-gutters">
                             <div class="col-3 col-lg-2">
-                                <img src="<?=$router->named('api:stations:episode:art', ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId(), 'episode_id' => $episode->getId()]); ?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle()) ?>">
+                                <img src="<?=$router->named(
+                                    'api:stations:podcast:episode:art',
+                                    [
+                                        'station_id' => $station->getId(),
+                                        'podcast_id' => $podcast->getId(),
+                                        'episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt(),
+                                    ]
+                                );?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle())?>">
                             </div>
 
                             <div class="col-9 col-lg-10">
                                 <div class="card-body d-flex flex-column h-100">
                                     <div class="row justify-content-between">
                                         <div class="col-6">
-                                            <span class="badge badge-pill badge-dark" data-toggle="tooltip" data-placement="right" data-html="true" title="<span class='material-icons'>schedule</span> <?=$publishedAt->format('H:i') ?>"><?=$publishedAt->format('d. M. Y') ?></span>
+                                            <span class="badge badge-pill badge-dark" data-toggle="tooltip" data-placement="right" data-html="true" title="<span class='material-icons'>schedule</span> <?=$publishedAt->format(
+                                                'H:i'
+                                            )?>"><?=$publishedAt->format('d. M. Y')?></span>
                                         </div>
 
-                                        <?php if ($episode->getExplicit()) : ?>
+                                        <?php
+                                        if ($episode->getExplicit()) : ?>
                                             <div class="col-6 text-right">
                                                 <span class="badge badge-pill badge-danger"><?=__('Explicit') ?></span>
                                             </div>

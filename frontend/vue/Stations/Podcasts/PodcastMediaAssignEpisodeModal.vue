@@ -29,20 +29,20 @@
 </template>
 
 <script>
-    import DataTable from '../../Common/DataTable';
-    import axios from 'axios';
+import DataTable from '../../Common/DataTable';
+import axios from 'axios';
 
-    export default {
-        name: 'AssignModal',
-        components: {
-            DataTable
-        },
-        props: {
-            listUrl: String,
-            stationTimeZone: String
-        },
-        data () {
-            return {
+export default {
+    name: 'AssignModal',
+    components: {
+        DataTable
+    },
+    props: {
+        listUrl: String,
+        stationTimeZone: String
+    },
+    data () {
+        return {
                 fields: [
                     { key: 'title', label: this.$gettext('Episode'), sortable: false },
                     { key: 'podcast_media', label: this.$gettext('File'), sortable: false },
@@ -78,8 +78,8 @@
                     confirmButtonColor: '#2296f3',
                     showCancelButton: true,
                     focusCancel: true
-                }).then((value) => {
-                    if (value) {
+                }).then((result) => {
+                    if (result.value) {
                         axios.put(url).then((resp) => {
                             notify('<b>' + resp.data.message + '</b>', 'success');
 

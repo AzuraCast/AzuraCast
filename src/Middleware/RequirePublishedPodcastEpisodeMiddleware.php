@@ -69,7 +69,7 @@ class RequirePublishedPodcastEpisodeMiddleware
         return $acl->userAllowed($user, Acl::STATION_PODCASTS, $station->getId());
     }
 
-    protected function getPodcastIdFromRequest(ServerRequest $request): ?int
+    protected function getPodcastIdFromRequest(ServerRequest $request): ?string
     {
         $routeContext = RouteContext::fromRequest($request);
         $routeArgs = $routeContext->getRoute()?->getArguments();
@@ -80,10 +80,10 @@ class RequirePublishedPodcastEpisodeMiddleware
             $podcastId = $routeArgs['podcast_id'];
         }
 
-        return $podcastId === null ? null : (int) $podcastId;
+        return $podcastId;
     }
 
-    protected function checkPodcastHasPublishedEpisodes(Station $station, int $podcastId): bool
+    protected function checkPodcastHasPublishedEpisodes(Station $station, string $podcastId): bool
     {
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 

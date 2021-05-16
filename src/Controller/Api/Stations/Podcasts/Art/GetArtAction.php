@@ -22,16 +22,16 @@ class GetArtAction
         $station = $request->getStation();
 
         // If a timestamp delimiter is added, strip it automatically.
-        $podcast_id = explode('-', $podcast_id)[0];
+        $podcast_id = explode('|', $podcast_id)[0];
 
-        $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
         $podcastPath = Entity\Podcast::getArtPath($podcast_id);
 
         $fsStation = new StationFilesystems($station);
         $fsPodcasts = $fsStation->getPodcastsFilesystem();
 
         if ($fsPodcasts->fileExists($podcastPath)) {
-            return $response->streamFilesystemFile($fsPodcasts, $podcastPath, null, 'inline');
+            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
+                ->streamFilesystemFile($fsPodcasts, $podcastPath, null, 'inline');
         }
 
         return $response->withRedirect(

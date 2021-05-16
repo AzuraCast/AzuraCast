@@ -34,23 +34,38 @@ $assets->addInlineJs(
             <div class="row justify-content-center">
                 <?php /** @var App\Entity\PodcastEpisode $episode */ ?>
                 <?php foreach ($episodes as $episode) : ?>
-                    <?php $episodePageLink = $router->named('public:podcast:episode', ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId(), 'episode_id' => $episode->getId()]) ?>
+                    <?php
+                    $episodePageLink = $router->named('public:podcast:episode',
+                                                      [
+                                                          'station_id' => $station->getId(),
+                                                          'podcast_id' => $podcast->getId(),
+                                                          'episode_id' => $episode->getId(),
+                                                      ]
+                    ) ?>
                     <div class="col-12 col-lg-8 mb-4">
                         <div class="card">
                             <div class="row no-gutters">
                                 <div class="col-md-4">
-                                    <a href="<?=$this->e($episodePageLink) ?>" title="<?=__('View Details') ?>">
-                                        <img src="<?=$router->named('api:stations:episode:art', ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId(), 'episode_id' => $episode->getId()]); ?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle()) ?>">
+                                    <a href="<?=$this->e($episodePageLink)?>" title="<?=__('View Details')?>">
+                                        <img src="<?=$router->named('api:stations:podcast:episode:art',
+                                                                    [
+                                                                        'station_id' => $station->getId(),
+                                                                        'podcast_id' => $podcast->getId(),
+                                                                        'episode_id' => $episode->getId(
+                                                                            ) . '|' . $episode->getArtUpdatedAt(),
+                                                                    ]
+                                        );?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle())?>">
                                     </a>
                                 </div>
 
                                 <div class="col-md-8">
                                     <div class="card-body d-flex flex-column h-100">
-                                        <h5 class="card-title"><?=$this->e($episode->getTitle()) ?></h5>
+                                        <h5 class="card-title"><?=$this->e($episode->getTitle())?></h5>
 
-                                        <p class="card-text"><?=$this->e($episode->getDescription()) ?></p>
+                                        <p class="card-text"><?=$this->e($episode->getDescription())?></p>
 
-                                        <?php if ($episode->getExplicit()) : ?>
+                                        <?php
+                                        if ($episode->getExplicit()) : ?>
                                             <p class="card-text">
                                                 <i class="material-icons" aria-hidden="true">warning</i>
                                                 <small class="text-muted"><?=__('Contains explicit content') ?></small>

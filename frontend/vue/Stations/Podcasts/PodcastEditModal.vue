@@ -92,7 +92,7 @@
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
             <template v-if="hasCustomArtwork">
-                <b-button variant="danger" type="button" @click="clearArtwork(artworkSrc)">
+                <b-button variant="danger" type="button" @click="clearArtwork(clearArtUrl)">
                     <translate key="lang_btn_clear_artwork">Clear Art</translate>
                 </b-button>
             </template>
@@ -104,111 +104,113 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import { validationMixin } from 'vuelidate';
-    import required from 'vuelidate/src/validators/required';
-    import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
+import axios from 'axios';
+import { validationMixin } from 'vuelidate';
+import required from 'vuelidate/src/validators/required';
+import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 
-    export default {
-        name: 'EditModal',
-        components: { InvisibleSubmitButton },
-        mixins: [validationMixin],
-        props: {
-            createUrl: String,
-            stationTimeZone: String,
-            languageOptions: Object,
-            categoriesOptions: Object
+export default {
+    name: 'EditModal',
+    components: { InvisibleSubmitButton },
+    mixins: [validationMixin],
+    props: {
+        createUrl: String,
+        stationTimeZone: String,
+        languageOptions: Object,
+        categoriesOptions: Object
+    },
+    data () {
+        return {
+            loading: true,
+            editUrl: null,
+            artworkSrc: null,
+            clearArtUrl: null,
+            hasCustomArtwork: false,
+            form: {
+                'title': '',
+                'link': '',
+                'description': '',
+                'language': 'en',
+                'categories': [],
+                'artwork_file': null
+            }
+        };
+    },
+    computed: {
+        langTitle () {
+            return this.isEditMode
+                ? this.$gettext('Edit Podcast')
+                : this.$gettext('Add Podcast');
         },
-        data () {
-            return {
-                loading: true,
-                editUrl: null,
-                artworkSrc: null,
-                hasCustomArtwork: false,
-                form: {
-                    'title': '',
-                    'link': '',
-                    'description': '',
-                    'language': 'en',
-                    'categories': [],
-                    'artwork_file': null
-                }
+        isEditMode () {
+            return this.editUrl !== null;
+        }
+    },
+    validations: {
+        form: {
+            'title': { required },
+            'link': {},
+            'description': {},
+            'language': { required },
+            'categories': { required },
+            'artwork_file': {}
+        }
+    },
+    methods: {
+        updatePreviewArtwork (file) {
+            if (!(file instanceof File)) {
+                return;
+            }
+
+            let fileReader = new FileReader();
+            fileReader.addEventListener('load', () => {
+                this.artworkSrc = fileReader.result;
+            }, false);
+            fileReader.readAsDataURL(file);
+        },
+        resetForm () {
+            this.form = {
+                'title': '',
+                'link': '',
+                'description': '',
+                'language': 'en',
+                'categories': [],
+                'artwork_file': null
             };
         },
-        computed: {
-            langTitle () {
-                return this.isEditMode
-                    ? this.$gettext('Edit Podcast')
-                    : this.$gettext('Add Podcast');
-            },
-            isEditMode () {
-                return this.editUrl !== null;
-            }
+        create () {
+            this.resetForm();
+            this.loading = false;
+            this.editUrl = null;
+
+            this.$refs.modal.show();
         },
-        validations: {
-            form: {
-                'title': { required },
-                'link': {},
-                'description': {},
-                'language': { required },
-                'categories': { required },
-                'artwork_file': {}
-            }
-        },
-        methods: {
-            updatePreviewArtwork (file) {
-                if (!(file instanceof File)) {
-                    return;
-                }
-                let vueThis = this;
-                let fileReader = new FileReader();
-                fileReader.addEventListener('load', function () {
-                    vueThis.artworkSrc = fileReader.result;
-                }, false);
-                fileReader.readAsDataURL(file);
-            },
-            resetForm () {
+        edit (recordUrl) {
+            this.resetForm();
+            this.loading = true;
+            this.editUrl = recordUrl;
+            this.$refs.modal.show();
+
+            axios.get(this.editUrl).then((resp) => {
+                let d = resp.data;
+
                 this.form = {
-                    'title': '',
-                    'link': '',
-                    'description': '',
-                    'language': 'en',
-                    'categories': [],
-                    'artwork_file': null
+                    'title': d.title,
+                    'link': d.link,
+                    'description': d.description,
+                    'language': d.language,
+                    'categories': d.categories
                 };
-            },
-            create () {
-                this.resetForm();
+
+                this.clearArtUrl = d.links.art;
+                this.artworkSrc = d.art;
+                this.hasCustomArtwork = d.has_custom_art;
+
                 this.loading = false;
-                this.editUrl = null;
-
-                this.$refs.modal.show();
-            },
-            edit (recordUrl) {
-                this.resetForm();
-                this.loading = true;
-                this.editUrl = recordUrl;
-                this.$refs.modal.show();
-
-                axios.get(this.editUrl).then((resp) => {
-                    let d = resp.data;
-
-                    this.form = {
-                        'title': d.title,
-                        'link': d.link,
-                        'description': d.description,
-                        'language': d.language,
-                        'categories': d.categories
-                    };
-
-                    this.artworkSrc = d.artwork_src;
-                    this.hasCustomArtwork = d.has_custom_artwork;
-
-                    this.loading = false;
-                }).catch((err) => {
-                    console.log(err);
-                    this.close();
-                });
+            }).catch((err) => {
+                console.log(err);
+                this.close();
+            });
             },
             doSubmit () {
                 this.$v.form.$touch();
@@ -262,11 +264,12 @@
                     confirmButtonColor: '#e64942',
                     showCancelButton: true,
                     focusCancel: true
-                }).then((value) => {
-                    if (value) {
+                }).then((result) => {
+                    if (result.value) {
                         axios.delete(url).then((resp) => {
                             notify('<b>' + resp.data.message + '</b>', 'success');
 
+                            this.$emit('relist');
                             this.close();
                         }).catch((err) => {
                             console.error(err);
@@ -280,6 +283,10 @@
             close () {
                 this.loading = false;
                 this.editUrl = null;
+                this.clearArtUrl = null;
+                this.artworkSrc = null;
+                this.hasCustomArtwork = false;
+
                 this.resetForm();
 
                 this.$v.form.$reset();

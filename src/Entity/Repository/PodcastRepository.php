@@ -89,6 +89,8 @@ class PodcastRepository extends Repository
 
         $fsPodcasts = $podcast->getStorageLocation()->getFilesystem();
         $fsPodcasts->writeStream($podcastArtworkPath, $podcastArtworkStream->detach());
+
+        $podcast->setArtUpdatedAt(time());
     }
 
     public function removePodcastArtwork(Podcast $podcast): void
@@ -101,7 +103,5 @@ class PodcastRepository extends Repository
         }
 
         $podcast->setArtUpdatedAt(0);
-        $this->em->persist($podcast);
-        $this->em->flush();
     }
 }

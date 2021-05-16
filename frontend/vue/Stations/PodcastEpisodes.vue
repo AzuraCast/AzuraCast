@@ -26,7 +26,14 @@
                     <data-table ref="datatable" id="station_podcast_episodes" paginated :fields="fields" :responsive="false"
                                 :api-url="listUrl">
                         <template v-slot:cell(title)="row">
+                            <album-art class="float-right pl-3" :src="row.item.art"></album-art>
+
                             <h5 class="m-0">{{ row.item.title }}</h5>
+                            <a :href="row.item.links.public" target="_blank">
+                                <translate key="lang_link_public">
+                                Public Page
+                                </translate>
+                            </a>
                         </template>
                         <template v-slot:cell(podcast_media)="row">
                             <template v-if="row.item.has_media">
@@ -70,10 +77,11 @@ import PodcastMedia from './Podcasts/PodcastMediaView';
 import EditModal from './Podcasts/EpisodeEditModal';
 import axios from 'axios';
 import Icon from '../Common/Icon';
+import AlbumArt from '../Common/AlbumArt';
 
 export default {
     name: 'StationPodcastEpisodes',
-    components: { Icon, EditModal, PodcastMedia, DataTable },
+    components: { AlbumArt, Icon, EditModal, PodcastMedia, DataTable },
     props: {
         backUrl: String,
         listUrl: String,
@@ -90,7 +98,7 @@ export default {
                 { key: 'title', label: this.$gettext('Episode'), sortable: false },
                 { key: 'podcast_media', label: this.$gettext('File'), sortable: false },
                 { key: 'explicit', label: this.$gettext('Explicit'), sortable: false },
-                { key: 'actions', label: this.$gettext('Actions'), sortable: false }
+                { key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink' }
             ]
         };
     },
@@ -136,8 +144,8 @@ export default {
                     confirmButtonColor: '#e64942',
                     showCancelButton: true,
                     focusCancel: true
-                }).then((value) => {
-                    if (value) {
+                }).then((result) => {
+                    if (result.value) {
                         axios.delete(url).then((resp) => {
                             notify('<b>' + resp.data.message + '</b>', 'success');
 

@@ -89,14 +89,14 @@ class PodcastMedia
      *
      * @var string The mime type of the podcast media file.
      */
-    protected $mime_type;
+    protected $mime_type = 'application/octet-stream';
 
     /**
      * @ORM\Column(name="modified_time", type="integer")
      *
      * @var int Timestamp of when the podcast media was last modified
      */
-    protected $modified_time;
+    protected $modified_time = 0;
 
     /**
      * @ORM\Column(name="art_updated_at", type="integer")

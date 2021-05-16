@@ -55,7 +55,7 @@ class ListAction
                 $podcastMediaArtworkPath = PodcastMedia::getArtPath($podcastMedia->getId());
                 if ($podcastsFilesystem->fileExists($podcastMediaArtworkPath)) {
                     $podcastMediaArtSrc = (string)$router->named(
-                        'api:stations:podcast-media:art',
+                        'api:stations:podcasts:media:art',
                         [
                             'station_id' => $station->getId(),
                             'podcast_media_id' => $podcastMedia->getId(),
@@ -64,7 +64,7 @@ class ListAction
                 }
 
                 $podcastMediaPlayUrl = (string) $router->named(
-                    'api:stations:podcast-files:download',
+                    'api:stations:podcasts:files:download',
                     [
                         'station_id' => $station->getId(),
                         'podcast_media_id' => $podcastMedia->getId(),
@@ -86,7 +86,7 @@ class ListAction
                     'is_dir' => false,
                     'links' => [
                         'self' => $router->fromHere(
-                            'api:stations:podcast-files:delete',
+                            'api:stations:podcasts:files:delete',
                             ['podcast_media_id' => $podcastMedia->getId()]
                         ),
                     ],

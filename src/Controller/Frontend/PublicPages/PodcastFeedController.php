@@ -6,7 +6,6 @@ namespace App\Controller\Frontend\PublicPages;
 
 use App\Entity\Podcast;
 use App\Entity\PodcastEpisode;
-use App\Entity\PodcastMedia;
 use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
 use App\Entity\Station;
@@ -247,7 +246,7 @@ class PodcastFeedController
             $rssItem->setPubDate($publishAtDateTime);
 
             $rssEnclosure = $this->buildRssEnclosureForPodcastMedia(
-                $episode->getMedia(),
+                $episode,
                 $station
             );
             $rssItem->setEnclosure($rssEnclosure);
@@ -266,22 +265,25 @@ class PodcastFeedController
     }
 
     protected function buildRssEnclosureForPodcastMedia(
-        PodcastMedia $podcastMedia,
+        PodcastEpisode $episode,
         Station $station
     ): RssEnclosure {
         $rssEnclosure = new RssEnclosure();
 
         $podcastMediaPlayUrl = (string) $this->router->named(
-            'api:stations:podcast-files:download',
+            'api:stations:podcast:episode:download',
             [
                 'station_id' => $station->getId(),
-                'podcast_media_id' => $podcastMedia->getId(),
+                'podcast_id' => $episode->getPodcast()->getId(),
+                'episode_id' => $episode->getId(),
             ],
             [],
             true
         );
 
         $rssEnclosure->setUrl($podcastMediaPlayUrl);
+
+        $podcastMedia = $episode->getMedia();
         $rssEnclosure->setType($podcastMedia->getMimeType());
         $rssEnclosure->setLength($podcastMedia->getLength());
 
@@ -300,11 +302,11 @@ class PodcastFeedController
 
         if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getId()))) {
             $episodeArtworkSrc = (string)$this->router->named(
-                'api:stations:episode:art',
+                'api:stations:podcast:episode:art',
                 [
                     'station_id' => $station->getId(),
                     'podcast_id' => $episode->getPodcast()->getId(),
-                    'episode_id' => $episode->getId(),
+                    'episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt(),
                 ],
                 [],
                 true

@@ -16,22 +16,29 @@ class GetArtAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
-        Entity\Repository\PodcastRepository $podcastRepo,
+        string $podcast_id,
         string $episode_id,
     ): ResponseInterface {
         $station = $request->getStation();
 
         // If a timestamp delimiter is added, strip it automatically.
-        $episode_id = explode('-', $episode_id)[0];
+        $episode_id = explode('|', $episode_id)[0];
 
-        $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
-        $podcastPath = Entity\PodcastEpisode::getArtPath($episode_id);
+        $episodeArtPath = Entity\PodcastEpisode::getArtPath($episode_id);
 
         $fsStation = new StationFilesystems($station);
         $fsPodcasts = $fsStation->getPodcastsFilesystem();
 
-        if ($fsPodcasts->fileExists($podcastPath)) {
-            return $response->streamFilesystemFile($fsPodcasts, $podcastPath, null, 'inline');
+        if ($fsPodcasts->fileExists($episodeArtPath)) {
+            return $response->withCacheLifetime(Response::CACHE_ONE_YEAR)
+                ->streamFilesystemFile($fsPodcasts, $episodeArtPath, null, 'inline');
+        }
+
+        $podcastArtPath = Entity\Podcast::getArtPath($podcast_id);
+
+        if ($fsPodcasts->fileExists($podcastArtPath)) {
+            return $response->withCacheLifetime(Response::CACHE_ONE_DAY)
+                ->streamFilesystemFile($fsPodcasts, $podcastArtPath, null, 'inline');
         }
 
         return $response->withRedirect(

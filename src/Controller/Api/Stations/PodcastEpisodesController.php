@@ -36,11 +36,11 @@ class PodcastEpisodesController extends AbstractPodcastApiCrudController
     public function listAction(
         ServerRequest $request,
         Response $response,
+        string $podcast_id
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $podcastId = $request->getRouteArgument('podcast_id');
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
 
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('e, p, pm')

@@ -139,12 +139,12 @@ class PodcastEpisode implements \JsonSerializable
         return $this;
     }
 
-    public function getLink(): string
+    public function getLink(): ?string
     {
         return $this->link;
     }
 
-    public function setLink(string $link): self
+    public function setLink(?string $link): self
     {
         $this->link = $this->truncateString($link);
 

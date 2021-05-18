@@ -30,12 +30,20 @@ if ($episode->getPublishAt() !== null) {
     $publishedAt = CarbonImmutable::createFromTimestamp($episode->getPublishAt());
 }
 
+$this->push('head');
 ?>
+
+<link rel="alternate" type="application/rss+xml" title="<?=$this->e($podcast->getTitle())?>" href="<?=$feedLink?>">
+
+<?php
+$this->end();
+?>
+
 <section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
     <div class="container pt-5 pb-5 h-100" style="flex: 1;">
         <div id="station_podcast_episode">
             <div class="row mb-4">
-                <h1 class="mx-auto"><?=$this->e($podcast->getTitle()) ?></h1>
+                <h1 class="mx-auto"><?=$this->e($podcast->getTitle())?></h1>
             </div>
 
             <div class="row justify-content-center mb-4">

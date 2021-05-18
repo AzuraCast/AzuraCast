@@ -154,7 +154,7 @@ class PodcastFeedController
         $itunesChannel = new ItunesChannel();
         $itunesChannel->setExplicit($containsExplicitContent);
         $itunesChannel->setImage($rssImage->getUrl());
-        $itunesChannel->setCategories($this->buildiTunesCategoriesForPodcast($podcast));
+        $itunesChannel->setCategories($this->buildItunesCategoriesForPodcast($podcast));
 
         $channel->addExtension($itunesChannel);
         $channel->addExtension(new Sy());
@@ -191,7 +191,7 @@ class PodcastFeedController
     /**
      * @return mixed[]
      */
-    protected function buildiTunesCategoriesForPodcast(Podcast $podcast): array
+    protected function buildItunesCategoriesForPodcast(Podcast $podcast): array
     {
         return $podcast->getCategories()->map(
             function (PodcastCategory $podcastCategory) {

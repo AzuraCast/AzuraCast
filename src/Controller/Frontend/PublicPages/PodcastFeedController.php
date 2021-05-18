@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Entity\Podcast;
+use App\Entity\PodcastCategory;
 use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastRepository;
 use App\Entity\Repository\StationRepository;
@@ -127,7 +128,16 @@ class PodcastFeedController
 
         $channel->setTitle($podcast->getTitle());
         $channel->setDescription($podcast->getDescription());
-        $channel->setLink($podcast->getLink());
+
+        $channelLink = $podcast->getLink();
+        if (empty($channelLink)) {
+            $channelLink = $serverRequest->getRouter()->fromHere(
+                route_name: 'public:podcast:episodes',
+                absolute: true
+            );
+        }
+        $channel->setLink($channelLink);
+
         $channel->setLanguage($podcast->getLanguage());
 
         $categories = $this->buildRssCategoriesForPodcast($podcast);
@@ -143,10 +153,8 @@ class PodcastFeedController
 
         $itunesChannel = new ItunesChannel();
         $itunesChannel->setExplicit($containsExplicitContent);
-
-        foreach ($categories as $category) {
-            $itunesChannel->addCategory($category->getTitle());
-        }
+        $itunesChannel->setImage($rssImage->getUrl());
+        $itunesChannel->setCategories($this->buildiTunesCategoriesForPodcast($podcast));
 
         $channel->addExtension($itunesChannel);
         $channel->addExtension(new Sy());
@@ -167,20 +175,34 @@ class PodcastFeedController
      */
     protected function buildRssCategoriesForPodcast(Podcast $podcast): array
     {
-        $categories = [];
-
-        foreach ($podcast->getCategories() as $podcastCategory) {
-            $rssCategory = new RssCategory();
-            if (null === $podcastCategory->getSubTitle()) {
-                $rssCategory->setTitle($podcastCategory->getTitle());
-            } else {
-                $rssCategory->setTitle($podcastCategory->getSubTitle());
+        return $podcast->getCategories()->map(
+            function (PodcastCategory $podcastCategory) {
+                $rssCategory = new RssCategory();
+                if (null === $podcastCategory->getSubTitle()) {
+                    $rssCategory->setTitle($podcastCategory->getTitle());
+                } else {
+                    $rssCategory->setTitle($podcastCategory->getSubTitle());
+                }
+                return $rssCategory;
             }
+        )->getValues();
+    }
 
-            $categories[] = $rssCategory;
-        }
-
-        return $categories;
+    /**
+     * @return mixed[]
+     */
+    protected function buildiTunesCategoriesForPodcast(Podcast $podcast): array
+    {
+        return $podcast->getCategories()->map(
+            function (PodcastCategory $podcastCategory) {
+                return (null === $podcastCategory->getSubTitle())
+                    ? $podcastCategory->getTitle()
+                    : [
+                        $podcastCategory->getTitle(),
+                        $podcastCategory->getSubTitle(),
+                    ];
+            }
+        )->getValues();
     }
 
     protected function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
@@ -196,14 +218,10 @@ class PodcastFeedController
         );
 
         if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getId()))) {
-            $podcastArtworkSrc = (string)$this->router->named(
-                'api:stations:podcast:art',
-                [
-                    'station_id' => $station->getId(),
-                    'podcast_id' => $podcast->getId(),
-                ],
-                [],
-                true
+            $podcastArtworkSrc = $this->router->fromHere(
+                route_name: 'api:stations:podcast:art',
+                route_params: ['podcast_id' => $podcast->getId() . '|' . $podcast->getArtUpdatedAt()],
+                absolute: true
             );
         }
 
@@ -235,7 +253,18 @@ class PodcastFeedController
             $rssItem->setGuid($rssGuid);
             $rssItem->setTitle($episode->getTitle());
             $rssItem->setDescription($episode->getDescription());
-            $rssItem->setLink($episode->getLink());
+
+            $episodeLink = $episode->getLink();
+            if (empty($episodeLink)) {
+                $episodeLink = $this->router->fromHere(
+                    route_name: 'public:podcast:episode',
+                    route_params: ['episode_id' => $episode->getId()],
+                    absolute: true
+                );
+            }
+
+
+            $rssItem->setLink($episodeLink);
 
             $publishAtDateTime = (new \DateTime())->setTimestamp($episode->getCreatedAt());
 
@@ -270,15 +299,10 @@ class PodcastFeedController
     ): RssEnclosure {
         $rssEnclosure = new RssEnclosure();
 
-        $podcastMediaPlayUrl = (string) $this->router->named(
-            'api:stations:podcast:episode:download',
-            [
-                'station_id' => $station->getId(),
-                'podcast_id' => $episode->getPodcast()->getId(),
-                'episode_id' => $episode->getId(),
-            ],
-            [],
-            true
+        $podcastMediaPlayUrl = $this->router->fromHere(
+            route_name: 'api:stations:podcast:episode:download',
+            route_params: ['episode_id' => $episode->getId()],
+            absolute: true
         );
 
         $rssEnclosure->setUrl($podcastMediaPlayUrl);
@@ -301,15 +325,10 @@ class PodcastFeedController
         );
 
         if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getId()))) {
-            $episodeArtworkSrc = (string)$this->router->named(
-                'api:stations:podcast:episode:art',
-                [
-                    'station_id' => $station->getId(),
-                    'podcast_id' => $episode->getPodcast()->getId(),
-                    'episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt(),
-                ],
-                [],
-                true
+            $episodeArtworkSrc = $this->router->fromHere(
+                route_name: 'api:stations:podcast:episode:art',
+                route_params: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
+                absolute: true
             );
         }
 

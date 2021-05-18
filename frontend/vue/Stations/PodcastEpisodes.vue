@@ -25,9 +25,10 @@
 
                     <data-table ref="datatable" id="station_podcast_episodes" paginated :fields="fields" :responsive="false"
                                 :api-url="listUrl">
-                        <template v-slot:cell(title)="row">
-                            <album-art class="float-right pl-3" :src="row.item.art"></album-art>
-
+                        <template #cell(art)="row">
+                            <album-art :src="row.item.art"></album-art>
+                        </template>
+                        <template #cell(title)="row">
                             <h5 class="m-0">{{ row.item.title }}</h5>
                             <a :href="row.item.links.public" target="_blank">
                                 <translate key="lang_link_public">
@@ -35,19 +36,19 @@
                                 </translate>
                             </a>
                         </template>
-                        <template v-slot:cell(podcast_media)="row">
+                        <template #cell(podcast_media)="row">
                             <template v-if="row.item.has_media">
                                 <span>{{ row.item.podcast_media.original_name }}</span>
                                 <br/>
                                 <small>{{ row.item.podcast_media.path }}</small>
                             </template>
                         </template>
-                        <template v-slot:cell(explicit)="row">
+                        <template #cell(explicit)="row">
                             <span class="badge badge-danger" v-if="row.item.explicit">
                                 <translate key="explicit">Explicit</translate>
                             </span>
                         </template>
-                        <template v-slot:cell(actions)="row">
+                        <template #cell(actions)="row">
                             <b-button-group size="sm">
                                 <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                                     <translate key="lang_btn_edit">Edit</translate>
@@ -95,6 +96,7 @@ export default {
     data () {
         return {
             fields: [
+                { key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0' },
                 { key: 'title', label: this.$gettext('Episode'), sortable: false },
                 { key: 'podcast_media', label: this.$gettext('File'), sortable: false },
                 { key: 'explicit', label: this.$gettext('Explicit'), sortable: false },

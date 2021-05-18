@@ -8,7 +8,7 @@
         </div>
 
         <data-table ref="datatable" id="station_podcast_media" paginated @refreshed="onRefreshed" :fields="fields" :api-url="listUrl">
-            <template v-slot:cell(art_src)="row">
+            <template #cell(art)="row">
                 <template v-if="row.item.is_dir">
                     <span class="file-icon">
                         <i class="material-icons" aria-hidden="true">folder</i>
@@ -18,7 +18,7 @@
                     <album-art :src="row.item.art"></album-art>
                 </template>
             </template>
-            <template v-slot:cell(original_name)="row">
+            <template #cell(original_name)="row">
                 <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
                     <template v-if="row.item.is_dir">
                         <a class="original_name" href="#" @click.prevent="changeDirectory(row.item.path)"
@@ -36,16 +36,16 @@
                     <small v-else>{{ row.item.path }}</small>
                 </div>
             </template>
-            <template v-slot:cell(length)="row">
+            <template #cell(length)="row">
                 {{ row.item.length_text }}
             </template>
-            <template v-slot:cell(size)="row">
+            <template #cell(size)="row">
                 <template v-if="!row.item.size">&nbsp;</template>
                 <template v-else>
                     {{ formatFileSize(row.item.size) }}
                 </template>
             </template>
-            <template v-slot:cell(actions)="row">
+            <template #cell(actions)="row">
                 <b-button-group size="sm">
                     <b-button size="sm" variant="primary" @click.prevent="doAssign(row.item)">
                         <translate key="lang_btn_delete">Assign</translate>
@@ -61,14 +61,6 @@
             @relist="relist"></assign-modal>
     </div>
 </template>
-
-<style lang="scss">
-    #station_podcast_media table thead tr th:first-of-type,
-    #station_podcast_media table tbody tr td:first-of-type {
-        padding-right: 0;
-        width: 40px;
-    }
-</style>
 
 <script>
 import DataTable from '../../Common/DataTable';
@@ -96,7 +88,7 @@ export default {
     data () {
         return {
             fields: [
-                { key: 'art_src', label: this.$gettext('Art'), sortable: false },
+                { key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0' },
                 { key: 'original_name', label: this.$gettext('Name'), sortable: true },
                 { key: 'length_text', label: this.$gettext('Length'), sortable: true, selectable: true, visible: true },
                 { key: 'size', label: this.$gettext('Size'), sortable: true, selectable: true, visible: true },

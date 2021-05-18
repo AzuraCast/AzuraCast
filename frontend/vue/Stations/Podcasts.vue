@@ -18,28 +18,26 @@
 
             <data-table ref="datatable" id="station_podcasts" paginated :fields="fields" :responsive="false"
                         :api-url="listUrl">
-                <template v-slot:cell(title)="row">
-                    <div>
-                        <album-art class="float-right pl-3" :src="row.item.art"></album-art>
-
-                        <h5 class="m-0">{{ row.item.title }}</h5>
-                        <a :href="row.item.links.public_episodes" target="_blank">
-                            <translate key="lang_link_public_page">
-                            Public Page
-                            </translate>
-                        </a> &bull;
-                        <a :href="row.item.links.public_feed" target="_blank">
-                            <translate key="lang_link_rss_feed">
-                            RSS Feed
-                            </translate>
-                        </a>
-
-                    </div>
+                <template #cell(art)="row">
+                    <album-art :src="row.item.art"></album-art>
                 </template>
-                <template v-slot:cell(num_episodes)="row">
+                <template #cell(title)="row">
+                    <h5 class="m-0">{{ row.item.title }}</h5>
+                    <a :href="row.item.links.public_episodes" target="_blank">
+                        <translate key="lang_link_public_page">
+                        Public Page
+                        </translate>
+                    </a> &bull;
+                    <a :href="row.item.links.public_feed" target="_blank">
+                        <translate key="lang_link_rss_feed">
+                        RSS Feed
+                        </translate>
+                    </a>
+                </template>
+                <template #cell(num_episodes)="row">
                     {{ countEpisodes(row.item.episodes) }}
                 </template>
-                <template v-slot:cell(actions)="row">
+                <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                             <translate key="lang_btn_edit">Edit</translate>
@@ -80,6 +78,7 @@ export default {
     data () {
         return {
             fields: [
+                { key: 'art', label: this.$gettext('Art'), sortable: false, class: 'shrink pr-0' },
                 { key: 'title', label: this.$gettext('Podcast'), sortable: false },
                 { key: 'num_episodes', label: this.$gettext('# Episodes'), sortable: false },
                 { key: 'actions', label: this.$gettext('Actions'), sortable: false, class: 'shrink' }

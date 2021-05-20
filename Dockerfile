@@ -1,5 +1,5 @@
 # Base install step (done first for caching purposes).
-FROM ubuntu:focal as base
+FROM ubuntu:groovy-20210416 as base
 
 ENV TZ="UTC"
 

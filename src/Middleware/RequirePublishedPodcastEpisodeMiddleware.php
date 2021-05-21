@@ -85,6 +85,8 @@ class RequirePublishedPodcastEpisodeMiddleware
 
     protected function checkPodcastHasPublishedEpisodes(Station $station, string $podcastId): bool
     {
+        $podcastId = explode('|', $podcastId)[0];
+
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 
         if ($podcast === null) {

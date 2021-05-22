@@ -314,39 +314,6 @@ return function (App $app) {
                                 ->setName('api:stations:podcasts');
 
                             $group->post('', Controller\Api\Stations\PodcastsController::class . ':createAction');
-
-                            $group->get(
-                                '/media/art/{podcast_media_id}.jpg',
-                                Controller\Api\Stations\Podcasts\GetMediaArtAction::class
-                            )->setName('api:stations:podcasts:media:art');
-
-                            $group->get('/categories', Controller\Api\Stations\Podcasts\Categories\ListAction::class)
-                                ->setName('api:stations:podcasts:categories');
-
-                            $group->group(
-                                '/files',
-                                function (RouteCollectorProxy $group) {
-                                    $group->get('/list', Controller\Api\Stations\Podcasts\Files\ListAction::class)
-                                        ->setName('api:stations:podcasts:files:list');
-
-                                    $group->map(
-                                        ['GET', 'POST'],
-                                        '/upload',
-                                        Controller\Api\Stations\Podcasts\Files\FlowUploadAction::class
-                                    )->setName('api:stations:podcasts:files:upload');
-
-                                    $group->delete(
-                                        '/{podcast_media_id}',
-                                        Controller\Api\Stations\Podcasts\Files\DeleteAction::class
-                                    )->setName('api:stations:podcasts:files:delete');
-
-                                    $group->get(
-                                        '/download/{podcast_media_id}',
-                                        Controller\Api\Stations\Podcasts\Files\DownloadAction::class
-                                    )->setName('api:stations:podcasts:files:download');
-                                }
-
-                            );
                         }
                     )->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
 
@@ -367,11 +334,6 @@ return function (App $app) {
                                 Controller\Api\Stations\PodcastEpisodesController::class . ':createAction'
                             );
 
-                            $group->get(
-                                '/episodes/assignable',
-                                Controller\Api\Stations\PodcastEpisodesController::class . ':listAssignableAction'
-                            )->setName('api:stations:podcast:episodes:assignable');
-
                             $group->group(
                                 '/episode/{episode_id}',
                                 function (RouteCollectorProxy $group) {
@@ -389,11 +351,6 @@ return function (App $app) {
                                         '/art',
                                         Controller\Api\Stations\Podcasts\Episodes\Art\DeleteArtAction::class
                                     )->setName('api:stations:podcast:episode:art-internal');
-
-                                    $group->put(
-                                        '/media/{podcast_media_id:[a-zA-Z0-9\-]+}',
-                                        Controller\Api\Stations\Podcasts\Episodes\AssignMediaAction::class
-                                    )->setName('api:stations:podcast:episode:media:assign');
                                 }
                             );
                         }

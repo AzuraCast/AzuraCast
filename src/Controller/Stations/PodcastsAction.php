@@ -10,7 +10,7 @@ use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Intl\Languages;
 
-class PodcastsController
+class PodcastsAction
 {
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {

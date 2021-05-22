@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Finder\Finder;
 
-class PodcastMedia extends AbstractFixture implements DependentFixtureInterface
+class PodcastEpisode extends AbstractFixture implements DependentFixtureInterface
 {
     protected Entity\Repository\PodcastMediaRepository $mediaRepo;
 
@@ -56,11 +56,6 @@ class PodcastMedia extends AbstractFixture implements DependentFixtureInterface
             $filePath = $file->getPathname();
             $fileBaseName = basename($filePath);
 
-            // Copy the file to the station media directory.
-            $fs->upload($filePath, '/' . $fileBaseName);
-
-            $podcastMediaRow = $this->mediaRepo->getOrCreate($storageLocation, $fileBaseName);
-
             // Create an episode and associate it with the podcast/media.
             $episode = new Entity\PodcastEpisode($podcast);
 
@@ -71,16 +66,18 @@ class PodcastMedia extends AbstractFixture implements DependentFixtureInterface
             $episode->setDescription('Another great episode!');
             $episode->setExplicit(false);
 
-            $episode->setMedia($podcastMediaRow);
             $em->persist($episode);
+            $em->flush();
 
-            $podcastMediaRow->setEpisode($episode);
-            $em->persist($podcastMediaRow);
+            $this->mediaRepo->upload(
+                $episode,
+                $fileBaseName,
+                $filePath,
+                $fs
+            );
 
             $i++;
         }
-
-        $em->flush();
     }
 
     /**

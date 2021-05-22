@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use App\Paginator;
-use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PodcastEpisodesController extends AbstractPodcastApiCrudController
+class PodcastEpisodesController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\PodcastEpisode::class;
     protected string $resourceRouteName = 'api:stations:podcast:episode';
@@ -60,69 +59,6 @@ class PodcastEpisodesController extends AbstractPodcastApiCrudController
         return $this->listPaginatedFromQuery($request, $response, $queryBuilder->getQuery());
     }
 
-    public function listAssignableAction(
-        ServerRequest $request,
-        Response $response,
-        string $podcast_id
-    ): ResponseInterface {
-        $station = $request->getStation();
-
-        $podcastMediaId = $request->getQueryParam('podcast_media_id', 0);
-        $podcastMedia = $this->podcastMediaRepository->fetchPodcastMediaForStation(
-            $station,
-            $podcastMediaId
-        );
-
-        if ($podcastMedia === null) {
-            return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Podcast media not found!')));
-        }
-
-        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
-
-        $queryBuilder = $this->em->createQueryBuilder()
-            ->select('e, p, pm')
-            ->from(Entity\PodcastEpisode::class, 'e')
-            ->join('e.podcast', 'p')
-            ->leftJoin('e.media', 'pm')
-            ->where('e.podcast = :podcast')
-            ->orderBy('e.title', 'ASC')
-            ->setParameter('podcast', $podcast);
-
-        $searchPhrase = trim($request->getParam('searchPhrase', ''));
-        if (!empty($searchPhrase)) {
-            $queryBuilder->andWhere('e.title LIKE :title')
-                ->setParameter('title', '%' . $searchPhrase . '%');
-        }
-
-        $paginator = Paginator::fromQueryBuilder($queryBuilder, $request);
-
-        $is_bootgrid = $paginator->isFromBootgrid();
-        $is_internal = ('true' === $request->getParam('internal', 'false'));
-        $router = $request->getRouter();
-
-        $postProcessor = function ($row) use ($is_bootgrid, $is_internal, $request, $router, $podcastMediaId) {
-            $return = $this->viewRecord($row, $request);
-
-            $return['links']['assign'] = (string)$router->fromHere(
-                'api:stations:podcast:episode:media:assign',
-                [
-                    'episode_id' => $row->getId(),
-                    'podcast_media_id' => $podcastMediaId,
-                ]
-            );
-
-            // Older jQuery Bootgrid requests should be "flattened".
-            if ($is_bootgrid && !$is_internal) {
-                return Utilities\Arrays::flattenArray($return, '_');
-            }
-
-            return $return;
-        };
-        $paginator->setPostprocessor($postProcessor);
-        return $paginator->write($response);
-    }
-
     public function getAction(
         ServerRequest $request,
         Response $response,
@@ -140,6 +76,24 @@ class PodcastEpisodesController extends AbstractPodcastApiCrudController
         return $response->withJson($return);
     }
 
+    public function createAction(
+        ServerRequest $request,
+        Response $response,
+        string $podcast_id
+    ): ResponseInterface {
+        $station = $request->getStation();
+
+        $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $record = $this->editRecord(
+            $request->getParsedBody(),
+            new Entity\PodcastEpisode($podcast)
+        );
+
+        $this->processFiles($request, $record);
+
+        return $response->withJson($this->viewRecord($record, $request));
+    }
+
     public function editAction(
         ServerRequest $request,
         Response $response,
@@ -152,7 +106,8 @@ class PodcastEpisodesController extends AbstractPodcastApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->editRecord($this->getParsedBody($request), $podcast);
+        $this->editRecord($request->getParsedBody(), $podcast);
+        $this->processFiles($request, $podcast);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -160,16 +115,18 @@ class PodcastEpisodesController extends AbstractPodcastApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        string $podcast_id
+        string $episode_id
     ): ResponseInterface {
-        $record = $this->getRecord($request->getStation(), $podcast_id);
+        $station = $request->getStation();
+        $record = $this->getRecord($station, $episode_id);
 
         if (null === $record) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->deleteRecord($record);
+        $fsStation = new StationFilesystems($station);
+        $this->episodeRepository->delete($record, $fsStation->getPodcastsFilesystem());
 
         return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
     }
@@ -226,57 +183,15 @@ class PodcastEpisodesController extends AbstractPodcastApiCrudController
         return $return;
     }
 
-    /**
-     * @param mixed[] $data
-     */
-    protected function createRecord($data, Entity\Station $station): object
-    {
-        $data = $this->normalizeFormDataBooleans($data);
+    protected function processFiles(
+        ServerRequest $request,
+        Entity\PodcastEpisode $record
+    ): void {
+        $files = $request->getUploadedFiles();
 
-        $podcast = $this->podcastRepository->fetchPodcastForStation(
-            $station,
-            $data['podcast_id']
-        );
-
-        return $this->editRecord($data, null, [
-            AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [
-                $this->entityClass => [
-                    'podcast' => $podcast,
-                ],
-            ],
-        ]);
-    }
-
-    /**
-     * @param mixed[] $data
-     *
-     * @return mixed[]
-     */
-    protected function normalizeFormDataBooleans(array $data): array
-    {
-        // FormData only sends string values so booleans aren't correctly evaluated, this fixed that
-        foreach ($data as $dataKey => $dataValue) {
-            if ($dataValue === 'false' || $dataValue === 'true') {
-                $data[$dataKey] = ($dataValue === 'true');
-            }
-        }
-
-        return $data;
-    }
-
-    protected function fromArray($data, $record = null, array $context = []): object
-    {
-        $artwork = null;
-        if (isset($data['artwork_file'])) {
-            $artwork = $data['artwork_file'];
-            unset($data['artwork_file']);
-        }
-
-        /** @var Entity\PodcastEpisode $record */
-        $record = parent::fromArray($data, $record, $context);
-
+        $artwork = $files['artwork'] ?? null;
         if ($artwork instanceof UploadedFileInterface && UPLOAD_ERR_OK === $artwork->getError()) {
-            $this->episodeRepository->writeEpisodeArtwork(
+            $this->episodeRepository->writeEpisodeArt(
                 $record,
                 $artwork->getStream()->getContents()
             );
@@ -285,6 +200,33 @@ class PodcastEpisodesController extends AbstractPodcastApiCrudController
             $this->em->flush();
         }
 
-        return $record;
+        $media = $files['media'] ?? null;
+        if ($media instanceof UploadedFileInterface && UPLOAD_ERR_OK === $media->getError()) {
+            $fsStations = new StationFilesystems($request->getStation());
+            $fsTemp = $fsStations->getTempFilesystem();
+
+            $originalName = $media->getClientFilename() ?? $record->getId() . '.mp4';
+            $originalExt = pathinfo($originalName, PATHINFO_EXTENSION);
+
+            $tempPath = $fsTemp->getLocalPath($record->getId() . '.' . $originalExt);
+            if ($media->moveTo($tempPath)) {
+                $artwork = $this->podcastMediaRepository->upload(
+                    $record,
+                    $originalName,
+                    $tempPath,
+                    $fsStations->getPodcastsFilesystem()
+                );
+
+                if (0 === $record->getArtUpdatedAt()) {
+                    $this->episodeRepository->writeEpisodeArt(
+                        $record,
+                        $artwork
+                    );
+                }
+
+                $this->em->persist($record);
+                $this->em->flush();
+            }
+        }
     }
 }

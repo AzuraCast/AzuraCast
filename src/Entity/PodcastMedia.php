@@ -19,8 +19,6 @@ class PodcastMedia
 {
     use Traits\TruncateStrings;
 
-    public const DIR_PODCAST_MEDIA_ARTWORK = '.podcast_media_art';
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="guid", unique=true)
@@ -219,11 +217,6 @@ class PodcastMedia
         $this->art_updated_at = $art_updated_at;
 
         return $this;
-    }
-
-    public static function getArtPath(string $uniqueId): string
-    {
-        return self::DIR_PODCAST_MEDIA_ARTWORK . '/' . $uniqueId . '.jpg';
     }
 
     /**

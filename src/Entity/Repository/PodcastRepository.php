@@ -10,8 +10,10 @@ use App\Entity\Podcast;
 use App\Entity\Station;
 use App\Entity\StorageLocation;
 use App\Environment;
+use Azura\Files\ExtendedFilesystemInterface;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
+use League\Flysystem\UnableToDeleteFile;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -22,7 +24,8 @@ class PodcastRepository extends Repository
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        protected ImageManager $imageManager
+        protected ImageManager $imageManager,
+        protected PodcastEpisodeRepository $podcastEpisodeRepo,
     ) {
         parent::__construct($entityManager, $serializer, $environment, $logger);
     }
@@ -73,8 +76,13 @@ class PodcastRepository extends Repository
         );
     }
 
-    public function writePodcastArtwork(Podcast $podcast, string $rawArtworkString): void
-    {
+    public function writePodcastArt(
+        Podcast $podcast,
+        string $rawArtworkString,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= $podcast->getStorageLocation()->getFilesystem();
+
         $podcastArtwork = $this->imageManager->make($rawArtworkString);
         $podcastArtwork->fit(
             3000,
@@ -87,21 +95,40 @@ class PodcastRepository extends Repository
         $podcastArtworkPath = Podcast::getArtPath($podcast->getId());
         $podcastArtworkStream = $podcastArtwork->stream('jpg');
 
-        $fsPodcasts = $podcast->getStorageLocation()->getFilesystem();
-        $fsPodcasts->writeStream($podcastArtworkPath, $podcastArtworkStream->detach());
+        $fs->writeStream($podcastArtworkPath, $podcastArtworkStream->detach());
 
         $podcast->setArtUpdatedAt(time());
     }
 
-    public function removePodcastArtwork(Podcast $podcast): void
-    {
+    public function removePodcastArt(
+        Podcast $podcast,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= $podcast->getStorageLocation()->getFilesystem();
+
         $artworkPath = Podcast::getArtPath($podcast->getId());
 
-        $fsPodcasts = $podcast->getStorageLocation()->getFilesystem();
-        if ($fsPodcasts->fileExists($artworkPath)) {
-            $fsPodcasts->delete($artworkPath);
+        try {
+            $fs->delete($artworkPath);
+        } catch (UnableToDeleteFile) {
         }
 
         $podcast->setArtUpdatedAt(0);
+    }
+
+    public function delete(
+        Podcast $podcast,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= $podcast->getStorageLocation()->getFilesystem();
+
+        foreach ($podcast->getEpisodes() as $episode) {
+            $this->podcastEpisodeRepo->delete($episode, $fs);
+        }
+
+        $this->removePodcastArt($podcast, $fs);
+
+        $this->em->remove($podcast);
+        $this->em->flush();
     }
 }

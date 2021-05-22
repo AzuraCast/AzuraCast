@@ -33,7 +33,7 @@ class DeleteArtAction
                 );
         }
 
-        $podcastRepo->removePodcastArtwork($podcast);
+        $podcastRepo->removePodcastArt($podcast);
         $em->persist($podcast);
         $em->flush();
 

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\Stations;
 
 use App\Acl;
+use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
+use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class PodcastsController extends AbstractPodcastApiCrudController
+class PodcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Podcast::class;
     protected string $resourceRouteName = 'api:stations:podcast';
@@ -68,6 +70,20 @@ class PodcastsController extends AbstractPodcastApiCrudController
         return $response->withJson($return);
     }
 
+    public function createAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $station = $request->getStation();
+
+        $record = $this->editRecord(
+            $request->getParsedBody(),
+            new Entity\Podcast($station->getPodcastsStorageLocation())
+        );
+
+        $this->processFiles($request, $record);
+
+        return $response->withJson($this->viewRecord($record, $request));
+    }
+
     public function editAction(
         ServerRequest $request,
         Response $response,
@@ -80,7 +96,8 @@ class PodcastsController extends AbstractPodcastApiCrudController
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->editRecord($this->getParsedBody($request), $podcast);
+        $this->editRecord($request->getParsedBody(), $podcast);
+        $this->processFiles($request, $podcast);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -90,14 +107,16 @@ class PodcastsController extends AbstractPodcastApiCrudController
         Response $response,
         string $podcast_id
     ): ResponseInterface {
-        $record = $this->getRecord($request->getStation(), $podcast_id);
+        $station = $request->getStation();
+        $record = $this->getRecord($station, $podcast_id);
 
         if (null === $record) {
             return $response->withStatus(404)
                 ->withJson(new Entity\Api\Error(404, __('Record not found!')));
         }
 
-        $this->deleteRecord($record);
+        $fsStation = new StationFilesystems($station);
+        $this->podcastRepository->delete($record, $fsStation->getPodcastsFilesystem());
 
         return $response->withJson(new Entity\Api\Status(true, __('Record deleted successfully.')));
     }
@@ -126,28 +145,24 @@ class PodcastsController extends AbstractPodcastApiCrudController
 
         $return['links'] = [
             'self' => $router->fromHere(
-                $this->resourceRouteName,
-                [
-                    'podcast_id' => $record->getId(),
-                ],
-                [],
-                !$isInternal
+                route_name: $this->resourceRouteName,
+                route_params: ['podcast_id' => $record->getId()],
+                absolute: !$isInternal
+            ),
+            'episodes' => $router->fromHere(
+                route_name: 'api:station:podcast:episodes',
+                route_params: ['podcast_id' => $record->getId()],
+                absolute: !$isInternal
             ),
             'public_episodes' => $router->fromHere(
-                'public:podcast:episodes',
-                [
-                    'podcast_id' => $record->getId(),
-                ],
-                [],
-                !$isInternal
+                route_name: 'public:podcast:episodes',
+                route_params: ['podcast_id' => $record->getId()],
+                absolute: !$isInternal
             ),
             'public_feed' => $router->fromHere(
-                'public:podcast:feed',
-                [
-                    'podcast_id' => $record->getId(),
-                ],
-                [],
-                !$isInternal
+                route_name: 'public:podcast:feed',
+                route_params: ['podcast_id' => $record->getId()],
+                absolute: !$isInternal
             ),
         ];
 
@@ -167,14 +182,6 @@ class PodcastsController extends AbstractPodcastApiCrudController
         $acl = $request->getAcl();
 
         if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
-            $return['links']['station_episodes'] = (string)$router->named(
-                'stations:podcast:episodes',
-                [
-                    'station_id' => $station->getId(),
-                    'podcast_id' => $record->getId(),
-                ]
-            );
-
             $return['links']['art'] = (string)$router->named(
                 'api:stations:podcast:art-internal',
                 [
@@ -191,45 +198,47 @@ class PodcastsController extends AbstractPodcastApiCrudController
 
     protected function fromArray($data, $record = null, array $context = []): object
     {
-        $artwork = null;
-        if (isset($data['artwork_file'])) {
-            $artwork = $data['artwork_file'];
-            unset($data['artwork_file']);
-        }
-
-        /** @var Entity\Podcast $record */
-        $record = parent::fromArray(
+        return parent::fromArray(
             $data,
             $record,
             array_merge(
                 $context,
                 [
                     AbstractNormalizer::CALLBACKS => [
-                        'categories' => function (array $newCategories, $record) {
-                            if ($record instanceof Entity\Podcast) {
-                                $categories = $record->getCategories();
-                                if ($categories->count() > 0) {
-                                    foreach ($categories as $existingCategories) {
-                                        $this->em->remove($existingCategories);
-                                    }
-                                    $categories->clear();
-                                }
-
-                                foreach ($newCategories as $category) {
-                                    $podcastCategory = new Entity\PodcastCategory($record, $category);
-                                    $this->em->persist($podcastCategory);
-                                    $categories->add($podcastCategory);
-                                }
+                        'categories' => function (array $newCategories, $record): void {
+                            if (!($record instanceof Entity\Podcast)) {
+                                return;
                             }
-                            return null;
+
+                            $categories = $record->getCategories();
+                            if ($categories->count() > 0) {
+                                foreach ($categories as $existingCategories) {
+                                    $this->em->remove($existingCategories);
+                                }
+                                $categories->clear();
+                            }
+
+                            foreach ($newCategories as $category) {
+                                $podcastCategory = new Entity\PodcastCategory($record, $category);
+                                $this->em->persist($podcastCategory);
+                                $categories->add($podcastCategory);
+                            }
                         },
                     ],
                 ]
             )
         );
+    }
 
+    protected function processFiles(
+        ServerRequest $request,
+        Entity\Podcast $record
+    ): void {
+        $files = $request->getUploadedFiles();
+
+        $artwork = $files['artwork'] ?? null;
         if ($artwork instanceof UploadedFileInterface && UPLOAD_ERR_OK === $artwork->getError()) {
-            $this->podcastRepository->writePodcastArtwork(
+            $this->podcastRepository->writePodcastArt(
                 $record,
                 $artwork->getStream()->getContents()
             );
@@ -237,7 +246,5 @@ class PodcastsController extends AbstractPodcastApiCrudController
             $this->em->persist($record);
             $this->em->flush();
         }
-
-        return $record;
     }
 }

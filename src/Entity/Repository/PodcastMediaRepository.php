@@ -60,7 +60,7 @@ class PodcastMediaRepository extends Repository
 
         $podcastMedia = new PodcastMedia($storageLocation);
         $podcastMedia->setPath($path);
-        $podcastMedia->setOriginalName(pathinfo($originalPath, PATHINFO_BASENAME));
+        $podcastMedia->setOriginalName(basename($originalPath));
 
         // Load metadata from local file while it's available.
         $podcastMedia->setLength($metadata->getDuration());

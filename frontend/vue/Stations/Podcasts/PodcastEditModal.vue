@@ -4,86 +4,12 @@
         </b-spinner>
 
         <b-form class="form" v-else @submit.prevent="doSubmit">
-            <b-form-group>
-                <b-row>
-                    <b-form-group class="col-md-6" label-for="form_edit_title">
-                        <template v-slot:label>
-                            <translate key="lang_form_edit_title">Podcast Title</translate>
-                        </template>
-                        <b-form-input id="form_edit_title" type="text" v-model="$v.form.title.$model"
-                                    :state="$v.form.title.$dirty ? !$v.form.title.$error : null"></b-form-input>
-                        <b-form-invalid-feedback>
-                            <translate key="lang_error_required">This field is required.</translate>
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-
-                    <b-form-group class="col-md-6" label-for="form_edit_link">
-                        <template v-slot:label>
-                            <translate key="lang_form_edit_link">Website</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate key="lang_form_edit_link_desc">Typically the home page of a podcast.</translate>
-                        </template>
-                        <b-form-input id="form_edit_link" type="text" v-model="$v.form.link.$model"
-                                    :state="$v.form.link.$dirty ? !$v.form.link.$error : null"></b-form-input>
-                    </b-form-group>
-
-                    <b-form-group class="col-md-12" label-for="form_edit_description">
-                        <template v-slot:label>
-                            <translate key="lang_form_edit_description">Description</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate key="lang_form_edit_description_desc">The description of your podcast. The typical maximum amount of text allowed for this is 4000 characters.</translate>
-                        </template>
-                        <b-form-textarea id="form_edit_description" v-model="$v.form.description.$model"
-                                    :state="$v.form.description.$dirty ? !$v.form.description.$error : null"></b-form-textarea>
-                    </b-form-group>
-
-                    <b-form-group class="col-md-12" label-for="form_edit_language">
-                        <template v-slot:label>
-                            <translate key="lang_form_edit_language">Language</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate key="lang_form_edit_language_desc">The language spoken on the podcast.</translate>
-                        </template>
-                        <b-form-select id="form_edit_language" v-model="$v.form.language.$model" :options="languageOptions"
-                                   :state="$v.form.language.$dirty ? !$v.form.language.$error : null"></b-form-select>
-                        <b-form-invalid-feedback>
-                            <translate key="lang_error_required">This field is required.</translate>
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-
-                    <b-form-group class="col-md-12" label-for="form_edit_categories">
-                        <template v-slot:label>
-                            <translate key="lang_form_edit_categories">Categories</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate key="lang_form_edit_categories_desc">Select the category/categories that best reflects the content of your podcast.</translate>
-                        </template>
-                        <b-form-select id="form_edit_categories" v-model="$v.form.categories.$model" :options="categoriesOptions"
-                                   :state="$v.form.categories.$dirty ? !$v.form.categories.$error : null" multiple></b-form-select>
-                        <b-form-invalid-feedback>
-                            <translate key="lang_error_required">This field is required.</translate>
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-
-                    <b-form-group class="col-md-8" label-for="artwork_file">
-                        <template v-slot:label>
-                            <translate key="artwork_file">Select PNG/JPG artwork file</translate>
-                        </template>
-                        <template v-slot:description>
-                            <translate key="artwork_file_desc">Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels for Apple Podcasts.</translate>
-                        </template>
-                        <b-form-file id="artwork_file" accept="image/jpeg, image/png" v-model="$v.form.artwork_file.$model" @input="updatePreviewArtwork"></b-form-file>
-                    </b-form-group>
-
-                    <b-form-group class="col-md-4">
-                        <template v-if="artworkSrc">
-                            <b-img fluid center v-bind:src="artworkSrc" aria-hidden="true"></b-img>
-                        </template>
-                    </b-form-group>
-                </b-row>
-            </b-form-group>
+            <b-tabs content-class="mt-3">
+                <podcast-form-basic-info :form="$v.form"
+                                         :categories-options="categoriesOptions" :language-options="languageOptions">
+                </podcast-form-basic-info>
+                <podcast-common-artwork :form="$v.form" :artwork-src="artworkSrc"></podcast-common-artwork>
+            </b-tabs>
 
             <invisible-submit-button/>
         </b-form>
@@ -91,11 +17,9 @@
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
-            <template v-if="hasCustomArtwork">
-                <b-button variant="danger" type="button" @click="clearArtwork(clearArtUrl)">
-                    <translate key="lang_btn_clear_artwork">Clear Art</translate>
-                </b-button>
-            </template>
+            <b-button variant="danger" type="button" @click="clearArtwork(clearArtUrl)">
+                <translate key="lang_btn_clear_artwork">Clear Art</translate>
+            </b-button>
             <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
                 <translate key="lang_btn_save_changes">Save Changes</translate>
             </b-button>
@@ -108,10 +32,12 @@ import axios from 'axios';
 import { validationMixin } from 'vuelidate';
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
+import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
+import PodcastCommonArtwork from './Common/Artwork';
 
 export default {
     name: 'EditModal',
-    components: { InvisibleSubmitButton },
+    components: { PodcastCommonArtwork, PodcastFormBasicInfo, InvisibleSubmitButton },
     mixins: [validationMixin],
     props: {
         createUrl: String,
@@ -125,7 +51,6 @@ export default {
             editUrl: null,
             artworkSrc: null,
             clearArtUrl: null,
-            hasCustomArtwork: false,
             form: {
                 'title': '',
                 'link': '',
@@ -157,17 +82,6 @@ export default {
         }
     },
     methods: {
-        updatePreviewArtwork (file) {
-            if (!(file instanceof File)) {
-                return;
-            }
-
-            let fileReader = new FileReader();
-            fileReader.addEventListener('load', () => {
-                this.artworkSrc = fileReader.result;
-            }, false);
-            fileReader.readAsDataURL(file);
-        },
         resetForm () {
             this.form = {
                 'title': '',
@@ -204,7 +118,6 @@ export default {
 
                 this.clearArtUrl = d.links.art;
                 this.artworkSrc = d.art;
-                this.hasCustomArtwork = d.has_custom_art;
 
                 this.loading = false;
             }).catch((err) => {
@@ -285,7 +198,6 @@ export default {
                 this.editUrl = null;
                 this.clearArtUrl = null;
                 this.artworkSrc = null;
-                this.hasCustomArtwork = false;
 
                 this.resetForm();
 

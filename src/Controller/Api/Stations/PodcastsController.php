@@ -150,7 +150,7 @@ class PodcastsController extends AbstractApiCrudController
                 absolute: !$isInternal
             ),
             'episodes' => $router->fromHere(
-                route_name: 'api:station:podcast:episodes',
+                route_name: 'api:stations:podcast:episodes',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
@@ -236,7 +236,7 @@ class PodcastsController extends AbstractApiCrudController
     ): void {
         $files = $request->getUploadedFiles();
 
-        $artwork = $files['artwork'] ?? null;
+        $artwork = $files['artwork_file'] ?? null;
         if ($artwork instanceof UploadedFileInterface && UPLOAD_ERR_OK === $artwork->getError()) {
             $this->podcastRepository->writePodcastArt(
                 $record,

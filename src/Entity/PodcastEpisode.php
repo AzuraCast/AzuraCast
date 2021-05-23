@@ -248,7 +248,7 @@ class PodcastEpisode implements \JsonSerializable
         $episodePodcastMedia = $this->getMedia();
 
         if ($episodePodcastMedia !== null) {
-            $return['podcast_media'] = [
+            $return['media'] = [
                 'id' => $episodePodcastMedia->getId(),
                 'original_name' => $episodePodcastMedia->getOriginalName(),
                 'length' => $episodePodcastMedia->getLength(),

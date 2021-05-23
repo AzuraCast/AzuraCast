@@ -189,7 +189,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
     ): void {
         $files = $request->getUploadedFiles();
 
-        $artwork = $files['artwork'] ?? null;
+        $artwork = $files['artwork_file'] ?? null;
         if ($artwork instanceof UploadedFileInterface && UPLOAD_ERR_OK === $artwork->getError()) {
             $this->episodeRepository->writeEpisodeArt(
                 $record,
@@ -200,12 +200,12 @@ class PodcastEpisodesController extends AbstractApiCrudController
             $this->em->flush();
         }
 
-        $media = $files['media'] ?? null;
+        $media = $files['media_file'] ?? null;
         if ($media instanceof UploadedFileInterface && UPLOAD_ERR_OK === $media->getError()) {
             $fsStations = new StationFilesystems($request->getStation());
             $fsTemp = $fsStations->getTempFilesystem();
 
-            $originalName = $media->getClientFilename() ?? $record->getId() . '.mp4';
+            $originalName = basename($media->getClientFilename()) ?? $record->getId() . '.mp3';
             $originalExt = pathinfo($originalName, PATHINFO_EXTENSION);
 
             $tempPath = $fsTemp->getLocalPath($record->getId() . '.' . $originalExt);

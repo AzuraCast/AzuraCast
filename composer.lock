@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44513940d9a78bde92dbe68aa71ae68b",
+    "content-hash": "05e4ea9b6e9a99c125005d4925875957",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3494,11 +3494,17 @@
         },
         {
             "name": "lstrojny/fxmlrpc",
-            "version": "dev-php8",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/VincentLanglet/fxmlrpc.git",
-                "reference": "8f053ee53d27da796adff3e1ca929f48e7171c1f"
+                "url": "https://github.com/lstrojny/fxmlrpc.git",
+                "reference": "c84c39583db75bf639155c20e7d5704e1d47596b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lstrojny/fxmlrpc/zipball/c84c39583db75bf639155c20e7d5704e1d47596b",
+                "reference": "c84c39583db75bf639155c20e7d5704e1d47596b",
+                "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0",
@@ -3529,6 +3535,7 @@
                 "zendframework/zend-log": "To use ZF2 Zend\\Log\\Logger as a logger",
                 "zendframework/zendframework1": "To use ZF1 Log"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3540,11 +3547,7 @@
                     "fXmlRpc\\": "src/fXmlRpc"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "fXmlRpc\\": "tests/fXmlRpc"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3563,7 +3566,11 @@
                 "xml",
                 "xmlrpc"
             ],
-            "time": "2020-12-17T18:20:51+00:00"
+            "support": {
+                "issues": "https://github.com/lstrojny/fxmlrpc/issues",
+                "source": "https://github.com/lstrojny/fxmlrpc/tree/master"
+            },
+            "time": "2021-05-21T15:11:33+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -12948,14 +12955,7 @@
             "time": "2021-03-09T10:59:23+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "lstrojny/fxmlrpc",
-            "version": "dev-php8",
-            "alias": "0.13",
-            "alias_normalized": "0.13.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "azuracast/azuraforms": 20,

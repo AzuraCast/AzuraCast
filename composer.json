@@ -40,7 +40,7 @@
         "league/flysystem-aws-s3-v3": "^2.0",
         "league/mime-type-detection": "^1.7",
         "league/plates": "^3.1",
-        "lstrojny/fxmlrpc": "dev-php8 as 0.13",
+        "lstrojny/fxmlrpc": "dev-master",
         "matomo/device-detector": "^4.0",
         "mezzio/mezzio-session": "^1.3",
         "mezzio/mezzio-session-cache": "^1.4",
@@ -79,12 +79,6 @@
         "wikimedia/composer-merge-plugin": "dev-master",
         "zircote/swagger-php": "^3"
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/VincentLanglet/fxmlrpc.git"
-        }
-    ],
     "require-dev": {
         "codeception/codeception": "^4.0",
         "codeception/module-asserts": "^1.1",

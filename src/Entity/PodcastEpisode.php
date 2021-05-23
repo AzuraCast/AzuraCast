@@ -234,18 +234,19 @@ class PodcastEpisode implements \JsonSerializable
      */
     public function jsonSerialize(): array
     {
+        $episodePodcastMedia = $this->getMedia();
+
         $return = [
             'id' => $this->getId(),
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'explicit' => $this->getExplicit(),
             'publish_at' => $this->getPublishAt(),
-            'has_media' => ($this->getMedia() !== null),
-            'podcast_media' => null,
-            'has_custom_art' => (0 !== $this->getArtUpdatedAt()),
+            'has_media' => (null !== $episodePodcastMedia),
+            'media' => null,
+            'has_custom_art' => 0 !== $this->art_updated_at,
+            'art_updated_at' => $this->art_updated_at,
         ];
-
-        $episodePodcastMedia = $this->getMedia();
 
         if ($episodePodcastMedia !== null) {
             $return['media'] = [

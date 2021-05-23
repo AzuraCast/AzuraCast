@@ -61,7 +61,7 @@
             </data-table>
         </b-card>
 
-        <edit-modal ref="editEpisodeModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
+        <edit-modal ref="editEpisodeModal" :create-url="podcast.links.episodes" :station-time-zone="stationTimeZone"
                     :locale="locale" :podcast-id="podcast.id" @relist="relist"></edit-modal>
     </div>
 </template>

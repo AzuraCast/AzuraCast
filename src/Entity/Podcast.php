@@ -211,6 +211,8 @@ class Podcast implements JsonSerializable
             'language' => $this->language,
             'categories' => [],
             'episodes' => [],
+            'has_custom_art' => 0 !== $this->art_updated_at,
+            'art_updated_at' => $this->art_updated_at,
         ];
 
         /** @var PodcastCategory $category */

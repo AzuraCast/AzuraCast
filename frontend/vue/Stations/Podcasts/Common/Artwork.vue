@@ -12,10 +12,8 @@
                     <b-form-file id="artwork_file" accept="image/jpeg, image/png" v-model="form.artwork_file.$model" @input="updatePreviewArtwork"></b-form-file>
                 </b-form-group>
 
-                <b-form-group class="col-md-4">
-                    <template v-if="src">
-                        <b-img fluid center :src="src" aria-hidden="true"></b-img>
-                    </template>
+                <b-form-group class="col-md-4" v-if="src">
+                    <b-img fluid center :src="src" aria-hidden="true"></b-img>
                 </b-form-group>
             </b-row>
         </b-form-group>

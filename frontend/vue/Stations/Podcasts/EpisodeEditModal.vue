@@ -6,19 +6,21 @@
         <b-form class="form" v-else @submit.prevent="doSubmit">
             <b-tabs content-class="mt-3">
                 <episode-form-basic-info :form="$v.form"></episode-form-basic-info>
-                <episode-form-media :form="$v.files" :media="media" :download-url="downloadUrl"></episode-form-media>
-                <podcast-common-artwork :form="$v.files" :artwork-src="artworkSrc"></podcast-common-artwork>
+                <episode-form-media :form="$v.files" :has-media="record.has_media" :media="record.media" :download-url="record.links.download"></episode-form-media>
+                <podcast-common-artwork :form="$v.files" :artwork-src="record.art"></podcast-common-artwork>
             </b-tabs>
 
             <invisible-submit-button/>
         </b-form>
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
-            <b-button variant="danger" type="button" @click="clearArtwork(clearArtUrl)">
-                <translate key="lang_btn_clear_artwork">Clear Art</translate>
-            </b-button>
+            <template v-if="record.has_custom_art">
+                <b-button variant="danger" type="button" @click="clearArtwork(record.links.art)">
+                    <translate key="lang_btn_clear_artwork">Clear Art</translate>
+                </b-button>
+            </template>
             <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
                 <translate key="lang_btn_save_changes">Save Changes</translate>
             </b-button>
@@ -48,11 +50,14 @@ export default {
     data () {
         return {
             loading: true,
-            media: {},
             editUrl: null,
-            downloadUrl: null,
-            clearArtUrl: null,
-            artworkSrc: null,
+            record: {
+                has_custom_art: false,
+                art: null,
+                has_media: false,
+                media: null,
+                links: {}
+            },
             form: {},
             files: {}
         };
@@ -83,12 +88,14 @@ export default {
     },
     methods: {
         resetForm () {
-            this.media = {};
             this.editUrl = null;
-            this.downloadUrl = null;
-            this.clearArtUrl = null;
-            this.artworkSrc = null;
-
+            this.record = {
+                has_custom_art: false,
+                art: null,
+                has_media: false,
+                media: null,
+                links: {}
+            };
             this.form = {
                 'title': '',
                 'link': '',
@@ -127,6 +134,8 @@ export default {
                     publishTime = publishDateTime.format('hh:mm');
                 }
 
+                this.record = d;
+
                 this.form = {
                     'title': d.title,
                     'link': d.link,
@@ -135,11 +144,6 @@ export default {
                     'publish_time': publishTime,
                     'explicit': d.explicit
                 };
-
-                this.downloadUrl = d.links.download;
-                this.clearArtUrl = d.links.art;
-                this.artworkSrc = d.art;
-                this.media = d.media;
 
                 this.loading = false;
             }).catch((err) => {
@@ -154,8 +158,6 @@ export default {
             }
 
             let modifiedForm = this.form;
-            modifiedForm.podcast_id = this.podcastId;
-
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
                 let publishDateTimeString = modifiedForm.publish_date + ' ' + modifiedForm.publish_time;
                 let publishDateTime = moment(publishDateTimeString);

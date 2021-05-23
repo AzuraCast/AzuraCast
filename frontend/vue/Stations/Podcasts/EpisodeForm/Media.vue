@@ -17,7 +17,7 @@
                         <translate key="existing_media">Current Podcast Media</translate>
                     </template>
 
-                    <div v-if="media">
+                    <div v-if="hasMedia">
                         <p>
                             {{ media.original_name }}<br>
                             <small>{{ media.length_text }}</small>
@@ -43,6 +43,7 @@ export default {
     name: 'EpisodeFormMedia',
     props: {
         form: Object,
+        hasMedia: Boolean,
         media: Object,
         downloadUrl: String
     },

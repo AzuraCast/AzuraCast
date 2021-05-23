@@ -8,7 +8,7 @@
                 <podcast-form-basic-info :form="$v.form"
                                          :categories-options="categoriesOptions" :language-options="languageOptions">
                 </podcast-form-basic-info>
-                <podcast-common-artwork :form="$v.files" :artwork-src="artworkSrc"></podcast-common-artwork>
+                <podcast-common-artwork :form="$v.files" :artwork-src="record.art"></podcast-common-artwork>
             </b-tabs>
 
             <invisible-submit-button/>
@@ -17,9 +17,11 @@
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
-            <b-button variant="danger" type="button" @click="clearArtwork(clearArtUrl)">
-                <translate key="lang_btn_clear_artwork">Clear Art</translate>
-            </b-button>
+            <template v-if="record.has_custom_art">
+                <b-button variant="danger" type="button" @click="clearArtwork(record.links.art)">
+                    <translate key="lang_btn_clear_artwork">Clear Art</translate>
+                </b-button>
+            </template>
             <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
                 <translate key="lang_btn_save_changes">Save Changes</translate>
             </b-button>
@@ -49,8 +51,11 @@ export default {
         return {
             loading: true,
             editUrl: null,
-            artworkSrc: null,
-            clearArtUrl: null,
+            record: {
+                has_custom_art: false,
+                art: null,
+                links: {}
+            },
             form: {
                 'title': '',
                 'link': '',
@@ -87,6 +92,11 @@ export default {
     },
     methods: {
         resetForm () {
+            this.record = {
+                has_custom_art: false,
+                art: null,
+                links: {}
+            };
             this.form = {
                 'title': '',
                 'link': '',
@@ -114,6 +124,7 @@ export default {
             axios.get(this.editUrl).then((resp) => {
                 let d = resp.data;
 
+                this.record = d;
                 this.form = {
                     'title': d.title,
                     'link': d.link,
@@ -121,9 +132,6 @@ export default {
                     'language': d.language,
                     'categories': d.categories
                 };
-
-                this.clearArtUrl = d.links.art;
-                this.artworkSrc = d.art;
 
                 this.loading = false;
             }).catch((err) => {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations;
 
+use App\Acl;
 use App\Controller\Api\AbstractApiCrudController;
 use App\Entity;
 use App\Flysystem\StationFilesystems;
@@ -166,19 +167,30 @@ class PodcastEpisodesController extends AbstractApiCrudController
                 [],
                 !$isInternal
             ),
-            'public' => (string)$router->fromHere(
+            'public' => $router->fromHere(
                 'public:podcast:episode',
                 ['episode_id' => $record->getId()],
                 [],
                 !$isInternal
             ),
-            'download' => (string)$router->fromHere(
+            'download' => $router->fromHere(
                 'api:stations:podcast:episode:download',
                 ['episode_id' => $record->getId()],
                 [],
                 !$isInternal
             ),
         ];
+
+        $acl = $request->getAcl();
+        $station = $request->getStation();
+
+        if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
+            $return['links']['art'] = $router->fromHere(
+                route_name: 'api:stations:podcast:episode:art-internal',
+                route_params: ['episode_id' => $record->getId()],
+                absolute: !$isInternal
+            );
+        }
 
         return $return;
     }

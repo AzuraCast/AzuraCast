@@ -313,14 +313,16 @@ return function (App $app) {
                             $group->get('', Controller\Api\Stations\PodcastsController::class . ':listAction')
                                 ->setName('api:stations:podcasts');
 
-                            $group->post('', Controller\Api\Stations\PodcastsController::class . ':createAction');
+                            $group->post('', Controller\Api\Stations\PodcastsController::class . ':createAction')
+                                ->add(new Middleware\HandleMultipartJson());
                         }
                     )->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
 
                     $group->group(
                         '/podcast/{podcast_id}',
                         function (RouteCollectorProxy $group) {
-                            $group->post('', Controller\Api\Stations\PodcastsController::class . ':editAction');
+                            $group->post('', Controller\Api\Stations\PodcastsController::class . ':editAction')
+                                ->add(new Middleware\HandleMultipartJson());
 
                             $group->delete('', Controller\Api\Stations\PodcastsController::class . ':deleteAction');
 
@@ -332,7 +334,7 @@ return function (App $app) {
                             $group->post(
                                 '/episodes',
                                 Controller\Api\Stations\PodcastEpisodesController::class . ':createAction'
-                            );
+                            )->add(new Middleware\HandleMultipartJson());
 
                             $group->group(
                                 '/episode/{episode_id}',
@@ -340,7 +342,7 @@ return function (App $app) {
                                     $group->post(
                                         '',
                                         Controller\Api\Stations\PodcastEpisodesController::class . ':editAction'
-                                    );
+                                    )->add(new Middleware\HandleMultipartJson());
 
                                     $group->delete(
                                         '',

@@ -8,7 +8,7 @@
                 <podcast-form-basic-info :form="$v.form"
                                          :categories-options="categoriesOptions" :language-options="languageOptions">
                 </podcast-form-basic-info>
-                <podcast-common-artwork :form="$v.form" :artwork-src="artworkSrc"></podcast-common-artwork>
+                <podcast-common-artwork :form="$v.files" :artwork-src="artworkSrc"></podcast-common-artwork>
             </b-tabs>
 
             <invisible-submit-button/>
@@ -56,7 +56,9 @@ export default {
                 'link': '',
                 'description': '',
                 'language': 'en',
-                'categories': [],
+                'categories': []
+            },
+            files: {
                 'artwork_file': null
             }
         };
@@ -77,7 +79,9 @@ export default {
             'link': {},
             'description': {},
             'language': { required },
-            'categories': { required },
+            'categories': { required }
+        },
+        files: {
             'artwork_file': {}
         }
     },
@@ -88,7 +92,9 @@ export default {
                 'link': '',
                 'description': '',
                 'language': 'en',
-                'categories': [],
+                'categories': []
+            };
+            this.files = {
                 'artwork_file': null
             };
         },
@@ -132,14 +138,9 @@ export default {
                 }
 
                 let formData = new FormData();
-                Object.entries(this.form).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        value.forEach(arrayValue => {
-                            formData.append(`${key}[]`, arrayValue);
-                        });
-                    } else {
-                        formData.append(key, value);
-                    }
+                formData.append('body', JSON.stringify(this.form));
+                Object.entries(this.files).forEach(([key, value]) => {
+                    formData.append(key, value);
                 });
 
                 axios({

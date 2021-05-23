@@ -6,8 +6,8 @@
         <b-form class="form" v-else @submit.prevent="doSubmit">
             <b-tabs content-class="mt-3">
                 <episode-form-basic-info :form="$v.form"></episode-form-basic-info>
-                <episode-form-media :form="$v.form" :media="media" :download-url="downloadUrl"></episode-form-media>
-                <podcast-common-artwork :form="$v.form" :artwork-src="artworkSrc"></podcast-common-artwork>
+                <episode-form-media :form="$v.files" :media="media" :download-url="downloadUrl"></episode-form-media>
+                <podcast-common-artwork :form="$v.files" :artwork-src="artworkSrc"></podcast-common-artwork>
             </b-tabs>
 
             <invisible-submit-button/>
@@ -53,7 +53,8 @@ export default {
             downloadUrl: null,
             clearArtUrl: null,
             artworkSrc: null,
-            form: {}
+            form: {},
+            files: {}
         };
     },
     computed: {
@@ -73,7 +74,9 @@ export default {
             'description': { required },
             'publish_date': {},
             'publish_time': {},
-            'explicit': {},
+            'explicit': {}
+        },
+        files: {
             'artwork_file': {},
             'media_file': {}
         }
@@ -92,8 +95,11 @@ export default {
                 'description': '',
                 'publish_date': '',
                 'publish_time': '',
-                'explicit': false,
-                'artwork_file': null
+                'explicit': false
+            };
+            this.files = {
+                'artwork_file': null,
+                'media_file': null
             };
         },
         create () {
@@ -142,8 +148,8 @@ export default {
             });
         },
         doSubmit () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
+            this.$v.$touch();
+            if (this.$v.$anyError) {
                 return;
             }
 
@@ -158,7 +164,8 @@ export default {
             }
 
             let formData = new FormData();
-            Object.entries(modifiedForm).forEach(([key, value]) => {
+            formData.append('body', JSON.stringify(modifiedForm));
+            Object.entries(this.files).forEach(([key, value]) => {
                 formData.append(key, value);
             });
 
@@ -217,7 +224,7 @@ export default {
             this.loading = false;
             this.resetForm();
 
-            this.$v.form.$reset();
+            this.$v.$reset();
             this.$refs.modal.hide();
         }
     }

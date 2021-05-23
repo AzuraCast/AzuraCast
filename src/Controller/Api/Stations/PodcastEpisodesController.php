@@ -209,24 +209,24 @@ class PodcastEpisodesController extends AbstractApiCrudController
             $originalExt = pathinfo($originalName, PATHINFO_EXTENSION);
 
             $tempPath = $fsTemp->getLocalPath($record->getId() . '.' . $originalExt);
-            if ($media->moveTo($tempPath)) {
-                $artwork = $this->podcastMediaRepository->upload(
+            $media->moveTo($tempPath);
+
+            $artwork = $this->podcastMediaRepository->upload(
+                $record,
+                $originalName,
+                $tempPath,
+                $fsStations->getPodcastsFilesystem()
+            );
+
+            if (0 === $record->getArtUpdatedAt()) {
+                $this->episodeRepository->writeEpisodeArt(
                     $record,
-                    $originalName,
-                    $tempPath,
-                    $fsStations->getPodcastsFilesystem()
+                    $artwork
                 );
-
-                if (0 === $record->getArtUpdatedAt()) {
-                    $this->episodeRepository->writeEpisodeArt(
-                        $record,
-                        $artwork
-                    );
-                }
-
-                $this->em->persist($record);
-                $this->em->flush();
             }
+
+            $this->em->persist($record);
+            $this->em->flush();
         }
     }
 }

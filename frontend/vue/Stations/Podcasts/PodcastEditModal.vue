@@ -140,7 +140,9 @@ export default {
                 let formData = new FormData();
                 formData.append('body', JSON.stringify(this.form));
                 Object.entries(this.files).forEach(([key, value]) => {
-                    formData.append(key, value);
+                    if (null !== value) {
+                        formData.append(key, value);
+                    }
                 });
 
                 axios({

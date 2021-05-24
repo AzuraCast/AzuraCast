@@ -230,7 +230,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
                 $fsStations->getPodcastsFilesystem()
             );
 
-            if (0 === $record->getArtUpdatedAt()) {
+            if (!empty($artwork) && 0 === $record->getArtUpdatedAt()) {
                 $this->episodeRepository->writeEpisodeArt(
                     $record,
                     $artwork

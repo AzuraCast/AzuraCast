@@ -4,15 +4,16 @@ namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use App\Flysystem\StationFilesystems;
 use App\Media\MimeType;
 use App\Message;
 use App\MessageQueue\QueueManager;
 use App\Radio\Quota;
+use Azura\Files\Attributes\FileAttributes;
 use Brick\Math\BigInteger;
 use Doctrine\ORM\Query;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
+use League\Flysystem\UnableToRetrieveMetadata;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBus;
 
@@ -106,10 +107,14 @@ class CheckMediaTask extends AbstractTask
             return;
         }
 
-        /** @var StorageAttributes $file */
+        /** @var FileAttributes $file */
         foreach ($fsIterator as $file) {
-            $size = $fs->fileSize($file->path());
-            $total_size = $total_size->plus($size);
+            try {
+                $size = $file->fileSize();
+                $total_size = $total_size->plus($size);
+            } catch (UnableToRetrieveMetadata) {
+                continue;
+            }
 
             $pathHash = md5($file->path());
             $musicFiles[$pathHash] = [
@@ -290,74 +295,5 @@ class CheckMediaTask extends AbstractTask
                 $stats['created']++;
             }
         }
-    }
-
-    public function importPlaylists(Entity\Station $station): void
-    {
-        $fsStation = new StationFilesystems($station);
-
-        $fsMedia = $fsStation->getMediaFilesystem();
-
-        // Skip playlist importing for remote filesystems.
-        if (!$fsMedia->isLocal()) {
-            return;
-        }
-
-        $fsPlaylists = $fsStation->getPlaylistsFilesystem();
-
-        // Create a lookup cache of all valid imported media.
-        $media_lookup = [];
-        foreach ($station->getMedia() as $media) {
-            /** @var Entity\StationMedia $media */
-            $media_path = $fsMedia->getLocalPath($media->getPath());
-            $media_hash = md5($media_path);
-
-            $media_lookup[$media_hash] = $media;
-        }
-
-        // Iterate through playlists.
-        $playlist_files_raw = $fsPlaylists->listContents('/', true)->filter(
-            function (StorageAttributes $attrs) {
-                return preg_match('/^.+\.(m3u|pls)$/i', $attrs->path()) > 0;
-            }
-        );
-
-        /** @var StorageAttributes $playlist_file */
-        foreach ($playlist_files_raw as $playlist_file) {
-            // Create new StationPlaylist record.
-            $record = new Entity\StationPlaylist($station);
-
-            $playlist_file_path = $fsPlaylists->getLocalPath($playlist_file->path());
-
-            $path_parts = pathinfo($playlist_file_path);
-            $playlist_name = str_replace('playlist_', '', $path_parts['filename']);
-            $record->setName($playlist_name);
-
-            $playlist_file = file_get_contents($playlist_file_path);
-            $playlist_lines = explode("\n", $playlist_file);
-            $this->em->persist($record);
-
-            foreach ($playlist_lines as $line_raw) {
-                $line = trim($line_raw);
-                if (empty($line) || str_starts_with($line, '#')) {
-                    continue;
-                }
-
-                if (file_exists($line)) {
-                    $line_hash = md5($line);
-                    if (isset($media_lookup[$line_hash])) {
-                        /** @var Entity\StationMedia $media_record */
-                        $media_record = $media_lookup[$line_hash];
-
-                        $spm = new Entity\StationPlaylistMedia($record, $media_record);
-                        $this->em->persist($spm);
-                    }
-                }
-            }
-
-            @unlink($playlist_file_path);
-        }
-
-        $this->em->flush();
     }
 }

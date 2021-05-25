@@ -55,6 +55,10 @@ return function (App $app) {
                 ->setName('stations:playlists:index')
                 ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+            $group->get('/podcasts', Controller\Stations\PodcastsAction::class)
+                ->setName('stations:podcasts:index')
+                ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
+
             $group->group(
                 '/mounts',
                 function (RouteCollectorProxy $group) {

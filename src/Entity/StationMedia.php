@@ -5,7 +5,6 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Flysystem\FilesystemManager;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

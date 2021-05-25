@@ -17,6 +17,7 @@ class QueueManager implements SendersLocatorInterface
     public const QUEUE_NORMAL_PRIORITY = 'normal_priority';
     public const QUEUE_LOW_PRIORITY = 'low_priority';
     public const QUEUE_MEDIA = 'media';
+    public const QUEUE_PODCAST_MEDIA = 'podcast_media';
 
     protected string $workerName = 'app';
 
@@ -125,6 +126,7 @@ class QueueManager implements SendersLocatorInterface
             self::QUEUE_NORMAL_PRIORITY,
             self::QUEUE_LOW_PRIORITY,
             self::QUEUE_MEDIA,
+            self::QUEUE_PODCAST_MEDIA,
         ];
     }
 }

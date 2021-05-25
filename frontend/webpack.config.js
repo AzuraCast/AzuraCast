@@ -16,6 +16,7 @@ module.exports = {
     PublicWebDJ: './vue/Public/WebDJ.vue',
     StationsMedia: './vue/Stations/Media.vue',
     StationsPlaylists: './vue/Stations/Playlists.vue',
+    StationsPodcasts: './vue/Stations/Podcasts.vue',
     StationsProfile: './vue/Stations/Profile.vue',
     StationsQueue: './vue/Stations/Queue.vue',
     StationsStreamers: './vue/Stations/Streamers.vue',

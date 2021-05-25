@@ -1,0 +1,119 @@
+<?php
+
+use Carbon\CarbonImmutable;
+
+$this->layout('minimal', [
+    'page_class' => 'podcasts station-' . $station->getShortName(),
+    'title' => 'Podcasts - ' . $this->e($station->getName()),
+    'hide_footer' => true,
+]);
+
+/** @var \App\Assets $assets */
+$assets->addInlineJs(
+    $this->fetch('frontend/public/podcast-episode.js', [])
+);
+
+$episodeAudioSrc = (string) $router->named(
+    'api:stations:podcast:episode:download',
+    [
+        'station_id' => $station->getId(),
+        'podcast_id' => $episode->getPodcast()->getId(),
+        'episode_id' => $episode->getId(),
+    ],
+    [],
+    true
+);
+
+$publishedAt = CarbonImmutable::createFromTimestamp($episode->getCreatedAt());
+
+if ($episode->getPublishAt() !== null) {
+    $publishedAt = CarbonImmutable::createFromTimestamp($episode->getPublishAt());
+}
+
+$this->push('head');
+?>
+
+<link rel="alternate" type="application/rss+xml" title="<?=$this->e($podcast->getTitle())?>" href="<?=$feedLink?>">
+
+<?php
+$this->end();
+?>
+
+<section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
+    <div class="container pt-5 pb-5 h-100" style="flex: 1;">
+        <div id="station_podcast_episode">
+            <div class="row mb-4">
+                <h1 class="mx-auto"><?=$this->e($podcast->getTitle())?></h1>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <a href="<?=$podcastEpisodesLink?>" class="btn btn-primary mr-2"><span class="material-icons">chevron_left</span><?=__(
+                        'Back'
+                    )?></a>
+                <a href="<?=$feedLink?>" class="btn btn-warning" target="_blank"><span class="material-icons">rss_feed</span> <?=__(
+                        'RSS Feed'
+                    )?></a>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-12 col-lg-10">
+                    <div class="card">
+                        <div class="row no-gutters">
+                            <div class="col-3 col-lg-2">
+                                <img src="<?=$router->named(
+                                    'api:stations:podcast:episode:art',
+                                    [
+                                        'station_id' => $station->getId(),
+                                        'podcast_id' => $podcast->getId(),
+                                        'episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt(),
+                                    ]
+                                );?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle())?>">
+                            </div>
+
+                            <div class="col-9 col-lg-10">
+                                <div class="card-body d-flex flex-column h-100">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <span class="badge badge-pill badge-dark" data-toggle="tooltip" data-placement="right" data-html="true" title="<span class='material-icons'>schedule</span> <?=$publishedAt->format(
+                                                'H:i'
+                                            )?>"><?=$publishedAt->format('d. M. Y')?></span>
+                                        </div>
+
+                                        <?php
+                                        if ($episode->getExplicit()) : ?>
+                                            <div class="col-6 text-right">
+                                                <span class="badge badge-pill badge-danger"><?=__('Explicit') ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <div class="row mt-3 mb-3">
+                                        <div class="col">
+                                            <h2 class="card-title text-center"><?=$this->e($episode->getTitle()) ?></h2>
+                                        </div>
+                                    </div>
+
+                                    <audio src="<?=$episodeAudioSrc ?>" controls class="mt-auto" style="width: 100%;"></audio>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-10">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h5 class="card-title text-center"><?=__('Description') ?></h5>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="card-text"><?=$this->e($episode->getDescription()) ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

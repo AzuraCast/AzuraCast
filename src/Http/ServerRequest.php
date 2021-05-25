@@ -140,11 +140,13 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         }
 
         if (!($object instanceof $class_name)) {
-            throw new Exception\InvalidRequestAttribute(sprintf(
-                'Attribute "%s" must be of type "%s".',
-                $attr,
-                $class_name
-            ));
+            throw new Exception\InvalidRequestAttribute(
+                sprintf(
+                    'Attribute "%s" must be of type "%s".',
+                    $attr,
+                    $class_name
+                )
+            );
         }
 
         return $object;

@@ -8,7 +8,6 @@ use App\Annotations\AuditLog;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AuditLog\Auditable
  */
-class Podcast implements JsonSerializable
+class Podcast
 {
     use Traits\TruncateStrings;
 
@@ -195,36 +194,5 @@ class Podcast implements JsonSerializable
     public static function getArtPath(string $uniqueId): string
     {
         return self::DIR_PODCAST_ARTWORK . '/' . $uniqueId . '.jpg';
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function jsonSerialize(): array
-    {
-        $return = [
-            'id' => $this->id,
-            'storage_location_id' => $this->storage_location->getId(),
-            'title' => $this->title,
-            'link' => $this->link,
-            'description' => $this->description,
-            'language' => $this->language,
-            'categories' => [],
-            'episodes' => [],
-            'has_custom_art' => 0 !== $this->art_updated_at,
-            'art_updated_at' => $this->art_updated_at,
-        ];
-
-        /** @var PodcastCategory $category */
-        foreach ($this->categories as $category) {
-            $return['categories'][] = $category->getCategory();
-        }
-
-        /** @var PodcastEpisode $episode */
-        foreach ($this->episodes as $episode) {
-            $return['episodes'][] = $episode->getId();
-        }
-
-        return $return;
     }
 }

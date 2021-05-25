@@ -55,6 +55,7 @@ use OpenApi\Annotations as OA;
  * @OA\Tag(name="Stations: Media")
  * @OA\Tag(name="Stations: Mount Points")
  * @OA\Tag(name="Stations: Playlists")
+ * @OA\Tag(name="Stations: Podcasts")
  * @OA\Tag(name="Stations: Queue")
  * @OA\Tag(name="Stations: Remote Relays")
  * @OA\Tag(name="Stations: Streamers/DJs")

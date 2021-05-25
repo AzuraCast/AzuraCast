@@ -11,6 +11,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -32,6 +33,93 @@ class PodcastsController extends AbstractApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
+    /**
+     * @OA\Get(path="/station/{station_id}/podcasts",
+     *   tags={"Stations: Podcasts"},
+     *   description="List all current podcasts.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_Podcast"))
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Post(path="/station/{station_id}/podcasts",
+     *   tags={"Stations: Podcasts"},
+     *   description="Create a new podcast.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Get(path="/station/{station_id}/podcast/{id}",
+     *   tags={"Stations: Podcasts"},
+     *   description="Retrieve details for a single podcast.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Put(path="/station/{station_id}/podcast/{id}",
+     *   tags={"Stations: Podcasts"},
+     *   description="Update details of a single podcast.",
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Podcast")
+     *   ),
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Delete(path="/station/{station_id}/podcast/{id}",
+     *   tags={"Stations: Podcasts"},
+     *   description="Delete a single podcast.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     */
+
+    /**
+     * @inheritDoc
+     */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
@@ -132,18 +220,42 @@ class PodcastsController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof $this->entityClass)) {
+        if (!($record instanceof Entity\Podcast)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
 
-        $station = $request->getStation();
-
-        $return = $this->toArray($record);
-
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
+        $station = $request->getStation();
 
-        $return['links'] = [
+        $return = new Entity\Api\Podcast();
+        $return->id = $record->getId();
+        $return->storage_location_id = $record->getStorageLocation()?->getId();
+        $return->title = $record->getTitle();
+        $return->link = $record->getLink();
+        $return->description = $record->getDescription();
+        $return->language = $record->getLanguage();
+
+        $categories = [];
+        foreach ($record->getCategories() as $category) {
+            $categories[] = $category->getCategory();
+        }
+        $return->categories = $categories;
+
+        $episodes = [];
+        foreach ($record->getEpisodes() as $episode) {
+            $episodes[] = $episode->getId();
+        }
+        $return->episodes = $episodes;
+
+        $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
+        $return->art = $router->fromHere(
+            route_name: 'api:stations:podcast:art',
+            route_params: ['podcast_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
+            absolute: true
+        );
+
+        $return->links = [
             'self' => $router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['podcast_id' => $record->getId()],
@@ -166,30 +278,13 @@ class PodcastsController extends AbstractApiCrudController
             ),
         ];
 
-        $return['has_custom_artwork'] = (0 !== $record->getArtUpdatedAt());
-
-        $return['art'] = (string)$router->named(
-            'api:stations:podcast:art',
-            [
-                'station_id' => $station->getId(),
-                'podcast_id' => $record->getId() . '|' . $record->getArtUpdatedAt(),
-            ],
-            [],
-            true
-        );
-        $return['has_custom_art'] = (0 !== $record->getArtUpdatedAt());
-
         $acl = $request->getAcl();
 
         if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
-            $return['links']['art'] = (string)$router->named(
-                'api:stations:podcast:art-internal',
-                [
-                    'station_id' => $station->getId(),
-                    'podcast_id' => $record->getId(),
-                ],
-                [],
-                true
+            $return->links['art'] = $router->fromHere(
+                route_name: 'api:stations:podcast:art-internal',
+                route_params: ['podcast_id' => $record->getId()],
+                absolute: !$isInternal
             );
         }
 

@@ -33,6 +33,128 @@ class PodcastEpisodesController extends AbstractApiCrudController
         parent::__construct($em, $serializer, $validator);
     }
 
+    /**
+     * @OA\Get(path="/station/{station_id}/podcast/{podcast_id}/episodes",
+     *   tags={"Stations: Podcasts"},
+     *   description="List all current episodes for a given podcast ID.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="podcast_id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Api_PodcastEpisode"))
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Post(path="/station/{station_id}/podcast/{podcast_id}/episodes",
+     *   tags={"Stations: Podcasts"},
+     *   description="Create a new podcast episode.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="podcast_id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Get(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
+     *   tags={"Stations: Podcasts"},
+     *   description="Retrieve details for a single podcast episode.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="podcast_id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Podcast Episode ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Put(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
+     *   tags={"Stations: Podcasts"},
+     *   description="Update details of a single podcast episode.",
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(ref="#/components/schemas/Api_PodcastEpisode")
+     *   ),
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="podcast_id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Podcast Episode ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     *
+     * @OA\Delete(path="/station/{station_id}/podcast/{podcast_id}/episode/{id}",
+     *   tags={"Stations: Podcasts"},
+     *   description="Delete a single podcast episode.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
+     *     name="podcast_id",
+     *     in="path",
+     *     description="Podcast ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Podcast Episode ID",
+     *     required=true,
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Response(response=200, description="Success",
+     *     @OA\JsonContent(ref="#/components/schemas/Api_Status")
+     *   ),
+     *   @OA\Response(response=403, description="Access denied"),
+     *   security={{"api_key": {}}},
+     * )
+     */
+
+    /**
+     * @inheritDoc
+     */
     public function listAction(
         ServerRequest $request,
         Response $response,
@@ -143,41 +265,61 @@ class PodcastEpisodesController extends AbstractApiCrudController
 
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
-        if (!($record instanceof $this->entityClass)) {
+        if (!($record instanceof Entity\PodcastEpisode)) {
             throw new \InvalidArgumentException(sprintf('Record must be an instance of %s.', $this->entityClass));
         }
-
-        /** @var Entity\PodcastEpisode $record */
-        $return = $this->toArray($record);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
 
-        $return['art'] = (string)$router->fromHere(
-            'api:stations:podcast:episode:art',
-            [
-                'episode_id' => $record->getId() . '|' . $record->getArtUpdatedAt(),
-            ]
+        $return = new Entity\Api\PodcastEpisode();
+        $return->id = $record->getId();
+        $return->title = $record->getTitle();
+        $return->description = $record->getDescription();
+        $return->explicit = $record->getExplicit();
+        $return->publish_at = $record->getPublishAt();
+
+        $mediaRow = $record->getMedia();
+        $return->has_media = ($mediaRow instanceof Entity\PodcastMedia);
+        if ($mediaRow instanceof Entity\PodcastMedia) {
+            $media = new Entity\Api\PodcastMedia();
+            $media->id = $mediaRow->getId();
+            $media->original_name = $mediaRow->getOriginalName();
+            $media->length = $mediaRow->getLength();
+            $media->length_text = $mediaRow->getLengthText();
+            $media->path = $mediaRow->getPath();
+
+            $return->has_media = true;
+            $return->media = $media;
+        } else {
+            $return->has_media = false;
+            $return->media = new Entity\Api\PodcastMedia();
+        }
+
+        $return->art_updated_at = $record->getArtUpdatedAt();
+        $return->has_custom_art = (0 !== $return->art_updated_at);
+
+        $return->art = $router->fromHere(
+            route_name: 'api:stations:podcast:episode:art',
+            route_params: ['episode_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
+            absolute: true
         );
 
-        $return['links'] = [
+        $return->links = [
             'self' => $router->fromHere(
-                $this->resourceRouteName,
-                ['episode_id' => $record->getId()],
-                [],
-                !$isInternal
+                route_name: $this->resourceRouteName,
+                route_params: ['episode_id' => $record->getId()],
+                absolute: !$isInternal
             ),
             'public' => $router->fromHere(
-                'public:podcast:episode',
-                ['episode_id' => $record->getId()],
-                [],
-                !$isInternal
+                route_name: 'public:podcast:episode',
+                route_params: ['episode_id' => $record->getId()],
+                absolute: !$isInternal
             ),
             'download' => $router->fromHere(
-                'api:stations:podcast:episode:download',
-                ['episode_id' => $record->getId()],
-                [],
-                !$isInternal
+                route_name: 'api:stations:podcast:episode:download',
+                route_params: ['episode_id' => $record->getId()],
+                absolute: !$isInternal
             ),
         ];
 
@@ -185,7 +327,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
         $station = $request->getStation();
 
         if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
-            $return['links']['art'] = $router->fromHere(
+            $return->links['art'] = $router->fromHere(
                 route_name: 'api:stations:podcast:episode:art-internal',
                 route_params: ['episode_id' => $record->getId()],
                 absolute: !$isInternal

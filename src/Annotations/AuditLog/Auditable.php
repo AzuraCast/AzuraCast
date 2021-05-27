@@ -2,6 +2,7 @@
 
 namespace App\Annotations\AuditLog;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
@@ -10,6 +11,7 @@ use Doctrine\Common\Annotations\Annotation;
  * @Annotation
  * @Annotation\Target("CLASS")
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 class Auditable
 {
 }

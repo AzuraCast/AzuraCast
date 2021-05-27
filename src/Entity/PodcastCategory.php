@@ -8,50 +8,31 @@ use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="podcast_category")
- * @ORM\Entity
- *
- * @AuditLog\Auditable
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'podcast_category')]
+#[AuditLog\Auditable]
 class PodcastCategory
 {
     use Traits\TruncateStrings;
 
     public const CATEGORY_SEPARATOR = '|';
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Podcast", inversedBy="categories")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="podcast_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     *
-     * @var Podcast
-     */
-    protected $podcast;
+    #[ORM\ManyToOne(inversedBy: 'categories')]
+    #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Podcast $podcast;
 
-    /**
-     * @ORM\Column(name="category", type="string", length=255)
-     *
-     * @Assert\NotBlank
-     *
-     * @var string The combined category and sub-category (if provided).
-     */
-    protected $category;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    protected string $category;
 
     public function __construct(Podcast $podcast, string $category)
     {
         $this->podcast = $podcast;
-        $this->category = $this->truncateString($category);
+        $this->category = $this->truncateString($category) ?? '';
     }
 
     public function getPodcast(): Podcast

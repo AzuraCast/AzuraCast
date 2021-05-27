@@ -7,59 +7,34 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Internal table used for Symfony Messenger handling.
- *
- * @ORM\Table(name="messenger_messages", indexes={
- *     @ORM\Index(columns={"queue_name"}),
- *     @ORM\Index(columns={"available_at"}),
- *     @ORM\Index(columns={"delivered_at"}),
- * })
- * @ORM\Entity(readOnly=true)
- *
  * @internal
  */
+#[ORM\Entity(readOnly: true)]
+#[ORM\Table(name: 'messenger_messages')]
+#[ORM\Index(columns: ['queue_name'])]
+#[ORM\Index(columns: ['available_at'])]
+#[ORM\Index(columns: ['delivered_at'])]
 class MessengerMessage
 {
-    /**
-     * @ORM\Column(name="id", type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int
-     */
-    protected $id;
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected int $id;
 
-    /**
-     * @ORM\Column(name="body", type="text")
-     * @var string
-     */
-    protected $body;
+    #[ORM\Column(type: 'text')]
+    protected string $body;
 
-    /**
-     * @ORM\Column(name="headers", type="text")
-     * @var string
-     */
-    protected $headers;
+    #[ORM\Column(type: 'text')]
+    protected string $headers;
 
-    /**
-     * @ORM\Column(name="queue_name", type="string", length=190)
-     * @var string
-     */
-    protected $queueName;
+    #[ORM\Column(name: 'queue_name', length: 190)]
+    protected string $queueName;
 
-    /**
-     * @ORM\Column(name="created_at", type="datetime")
-     * @var DateTime
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at')]
+    protected DateTime $createdAt;
 
-    /**
-     * @ORM\Column(name="available_at", type="datetime")
-     * @var DateTime
-     */
-    protected $availableAt;
+    #[ORM\Column(name: 'available_at')]
+    protected DateTime $availableAt;
 
-    /**
-     * @ORM\Column(name="delivered_at", type="datetime", nullable=true)
-     * @var DateTime
-     */
-    protected $deliveredAt;
+    #[ORM\Column(name: 'delivered_at')]
+    protected ?DateTime $deliveredAt;
 }

@@ -9,48 +9,34 @@ use App\Event\GetSyncTasks;
 use App\Service\Avatar;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
-use Ramsey\Uuid\Doctrine\UuidGenerator;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="settings")
- * @ORM\Entity()
- *
- * @OA\Schema(type="object", schema="Settings")
- * @AuditLog\Auditable
- */
+/** @OA\Schema(type="object", schema="Settings") */
+#[ORM\Entity, ORM\Table(name: 'settings')]
+#[AuditLog\Auditable]
 class Settings
 {
     use Entity\Traits\TruncateStrings;
     use Entity\Traits\TruncateInts;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="app_unique_identifier", type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     *
-     * @ORM\GeneratedValue(strategy="NONE")
-     *
-     * @OA\Property(example="")
-     * @var UuidInterface The unique identifier for this installation (for update checks).
-     */
-    protected $app_unique_identifier;
+    /** @OA\Property() */
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
+    protected string $app_unique_identifier;
 
-    public function getAppUniqueIdentifier(): UuidInterface
+    public function getAppUniqueIdentifier(): string
     {
         return $this->app_unique_identifier;
     }
 
     /**
-     * @ORM\Column(name="base_url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="https://your.azuracast.site")
-     *
-     * @var string|null Site Base URL
+     * @OA\Property(
+     *     description="Site Base URL",
+     *     example="https://your.azuracast.site"
+     * )
      */
-    protected $base_url = '';
+    #[ORM\Column(length: 255)]
+    protected ?string $base_url = '';
 
     public function getBaseUrl(): ?string
     {
@@ -63,12 +49,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="instance_name", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="My AzuraCast Instance")
-     * @var string|null AzuraCast Instance Name
+     * @OA\Property(
+     *     description="AzuraCast Instance Name"
+     *     example="My AzuraCast Instance"
+     * )
      */
-    protected $instance_name = null;
+    #[ORM\Column(length: 255)]
+    protected ?string $instance_name = null;
 
     public function getInstanceName(): ?string
     {
@@ -81,11 +68,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="prefer_browser_url", type="boolean")
-     * @OA\Property(example="false")
-     * @var bool Prefer Browser URL (If Available)
+     * @OA\Property(
+     *     description="Prefer Browser URL (If Available)"
+     *     example="false"
+     * )
      */
-    protected $prefer_browser_url = false;
+    #[ORM\Column]
+    protected bool $prefer_browser_url = false;
 
     public function getPreferBrowserUrl(): bool
     {
@@ -98,11 +87,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="use_radio_proxy", type="boolean")
-     * @OA\Property(example="false")
-     * @var bool Use Web Proxy for Radio
+     * @OA\Property(
+     *     description="Use Web Proxy for Radio"
+     *     example="false"
+     * )
      */
-    protected $use_radio_proxy = false;
+    #[ORM\Column]
+    protected bool $use_radio_proxy = false;
 
     public function getUseRadioProxy(): bool
     {
@@ -115,13 +106,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="history_keep_days", type="smallint")
-     *
-     * @OA\Property()
-     * @Assert\Choice({0,14,30,60,365,730})
-     * @var int Days of Playback History to Keep
+     * @OA\Property(
+     *     description="Days of Playback History to Keep"
+     * )
      */
-    protected $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
+    #[ORM\Column(type: 'smallint')]
+    #[Assert\Choice([0, 14, 30, 60, 365, 730])]
+    protected int $history_keep_days = Entity\SongHistory::DEFAULT_DAYS_TO_KEEP;
 
     public function getHistoryKeepDays(): int
     {
@@ -130,16 +121,17 @@ class Settings
 
     public function setHistoryKeepDays(int $historyKeepDays): void
     {
-        $this->history_keep_days = $this->truncateSmallInt($historyKeepDays);
+        $this->history_keep_days = $this->truncateSmallInt($historyKeepDays) ?? 0;
     }
 
     /**
-     * @ORM\Column(name="always_use_ssl", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Always Use HTTPS
+     * @OA\Property(
+     *     description="Always Use HTTPS"
+     *     example="false"
+     * )
      */
-    protected $always_use_ssl = false;
+    #[ORM\Column]
+    protected bool $always_use_ssl = false;
 
     public function getAlwaysUseSsl(): bool
     {
@@ -152,12 +144,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="api_access_control", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="*")
-     * @var string|null API "Access-Control-Allow-Origin" header
+     * @OA\Property(
+     *     description="API 'Access-Control-Allow-Origin' header"
+     *     example="*"
+     * )
      */
-    protected $api_access_control = '';
+    #[ORM\Column(length: 255)]
+    protected ?string $api_access_control = '';
 
     public function getApiAccessControl(): string
     {
@@ -170,12 +163,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="enable_websockets", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Whether to use Websockets for Now Playing data updates.
+     * @OA\Property(
+     *     description="Whether to use Websockets for Now Playing data updates."
+     *     example="false"
+     * )
      */
-    protected $enable_websockets = false;
+    #[ORM\Column]
+    protected bool $enable_websockets = false;
 
     public function getEnableWebsockets(): bool
     {
@@ -188,15 +182,13 @@ class Settings
     }
 
     /**
-     * Listener Analytics Collection
-     *
-     * @ORM\Column(name="analytics", type="string", length=50, nullable=true)
-     *
-     * @OA\Property()
-     * @Assert\Choice({Entity\Analytics::LEVEL_NONE, Entity\Analytics::LEVEL_NO_IP, Entity\Analytics::LEVEL_ALL})
-     * @var string|null
+     * @OA\Property(
+     *     description="Listener Analytics Collection"
+     * )
      */
-    protected $analytics = Entity\Analytics::LEVEL_ALL;
+    #[ORM\Column(length: 50)]
+    #[Assert\Choice([Analytics::LEVEL_NONE, Analytics::LEVEL_NO_IP, Analytics::LEVEL_ALL])]
+    protected ?string $analytics = Analytics::LEVEL_ALL;
 
     public function getAnalytics(): string
     {
@@ -209,12 +201,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="check_for_updates", type="boolean")
-     *
-     * @OA\Property(example="true")
-     * @var bool Check for Updates and Announcements
+     * @OA\Property(
+     *     description="Check for Updates and Announcements"
+     *     example="true"
+     * )
      */
-    protected $check_for_updates = true;
+    #[ORM\Column]
+    protected bool $check_for_updates = true;
 
     public function getCheckForUpdates(): bool
     {
@@ -227,14 +220,15 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="update_results", type="json", nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var mixed[]|null Results of the latest update check.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="Results of the latest update check."
+     *     example=""
+     * )
+     * @var mixed[]|null
      */
-    protected $update_results = null;
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[AuditLog\AuditIgnore]
+    protected ?array $update_results = null;
 
     /**
      * @return mixed[]|null

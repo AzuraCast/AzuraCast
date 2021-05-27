@@ -2,6 +2,7 @@
 
 namespace App\Annotations\AuditLog;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
@@ -11,6 +12,7 @@ use Doctrine\Common\Annotations\Annotation;
  * @Annotation
  * @Annotation\Target("METHOD")
  */
+#[Attribute(Attribute::TARGET_METHOD)]
 class AuditIdentifier
 {
 }

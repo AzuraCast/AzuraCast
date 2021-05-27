@@ -9,100 +9,50 @@ use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="podcast_media")
- * @ORM\Entity()
- *
- * @AuditLog\Auditable
- */
+#[ORM\Table(name: 'podcast_media')]
+#[ORM\Entity]
+#[AuditLog\Auditable]
 class PodcastMedia
 {
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="guid", unique=true)
-     * @ORM\GeneratedValue(strategy="UUID")
-     *
-     * @var string|null
-     */
-    protected $id;
+    #[ORM\Column(type: 'guid', unique: true, nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
+    protected ?string $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StorageLocation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     *
-     * @var StorageLocation
-     */
-    protected $storage_location;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StorageLocation $storage_location;
 
-    /**
-     * @ORM\OneToOne(targetEntity="PodcastEpisode", inversedBy="media")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="episode_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     *
-     * @var PodcastEpisode|null
-     */
-    protected $episode;
+    #[ORM\OneToOne(inversedBy: 'media')]
+    #[ORM\JoinColumn(name: 'episode_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?PodcastEpisode $episode;
 
-    /**
-     * @ORM\Column(name="original_name", type="string", length=200)
-     *
-     * @Assert\NotBlank
-     *
-     * @var string The original name of the podcast media file.
-     */
-    protected $original_name;
+    #[ORM\Column(length: 200)]
+    #[Assert\NotBlank]
+    protected string $original_name;
 
-    /**
-     * @ORM\Column(name="length", type="decimal", precision=7, scale=2)
-     *
-     * @var float The podcast media's duration in seconds.
-     */
-    protected $length = 0.00;
+    #[ORM\Column(type: 'decimal', precision: 7, scale: 2)]
+    protected float $length = 0.00;
 
-    /**
-     * @ORM\Column(name="length_text", type="string", length=10)
-     *
-     * @var string The formatted podcast media's duration (in mm:ss format)
-     */
-    protected $length_text = '0:00';
+    /** @var string The formatted podcast media's duration (in mm:ss format) */
+    #[ORM\Column(length: 10)]
+    protected string $length_text = '0:00';
 
-    /**
-     * @ORM\Column(name="path", type="string", length=500)
-     *
-     * @Assert\NotBlank
-     *
-     * @var string The relative path of the podcast media file.
-     */
-    protected $path;
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank]
+    protected string $path;
 
-    /**
-     * @ORM\Column(name="mime_type", type="string", length=255)
-     *
-     * @Assert\NotBlank
-     *
-     * @var string The mime type of the podcast media file.
-     */
-    protected $mime_type = 'application/octet-stream';
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    protected string $mime_type = 'application/octet-stream';
 
-    /**
-     * @ORM\Column(name="modified_time", type="integer")
-     *
-     * @var int Timestamp of when the podcast media was last modified
-     */
-    protected $modified_time = 0;
+    #[ORM\Column]
+    protected int $modified_time = 0;
 
-    /**
-     * @ORM\Column(name="art_updated_at", type="integer")
-     * @AuditLog\AuditIgnore()
-     *
-     * @var int The latest time (UNIX timestamp) when album art was updated.
-     */
-    protected $art_updated_at = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $art_updated_at = 0;
 
     public function __construct(StorageLocation $storageLocation)
     {

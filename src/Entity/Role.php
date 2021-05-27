@@ -8,55 +8,38 @@ use App\Annotations\AuditLog;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use JsonSerializable;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="role")
- * @ORM\Entity
- *
- * @AuditLog\Auditable
- *
- * @OA\Schema(type="object")
- */
+/** @OA\Schema(type="object") */
+#[ORM\Entity, ORM\Table(name: 'role')]
+#[AuditLog\Auditable]
 class Role implements JsonSerializable
 {
     use Traits\TruncateStrings;
 
     public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @OA\Property(example=1)
-     * @var int|null
-     */
-    protected $id;
+    /** @OA\Property(example=1) */
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=100)
-     * @OA\Property(example="Super Administrator")
-     * @Assert\NotBlank
-     * @var string
-     */
-    protected $name;
+    /** @OA\Property(example="Super Administrator") */
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    protected string $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
-     * @var Collection
-     */
-    protected $users;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
+    protected Collection $users;
 
-    /**
-     * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="role")
-     * @OA\Property(@OA\Items)
-     * @var Collection
-     */
-    protected $permissions;
+    /** @OA\Property(@OA\Items) */
+    #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'role')]
+    protected Collection $permissions;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->permissions = new ArrayCollection();

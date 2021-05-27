@@ -60,6 +60,8 @@ class AuditLog implements EventSubscriber
                 // Check that the entity being managed is "Auditable".
                 $reflectionClass = new ReflectionObject($entity);
 
+                $reflectionClass->getAttributes()
+
                 $auditable = $this->reader->getClassAnnotation($reflectionClass, Auditable::class);
                 if (null === $auditable) {
                     continue;

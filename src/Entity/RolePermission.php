@@ -7,57 +7,31 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
-/**
- * @ORM\Table(name="role_permissions", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
- * })
- * @ORM\Entity(readOnly=true)
- */
+#[ORM\Entity(readOnly: true)]
+#[ORM\Table(name: 'role_permissions')]
+#[ORM\UniqueConstraint(name: 'role_permission_unique_idx', columns: ['role_id', 'action_name', 'station_id'])]
 class RolePermission implements JsonSerializable
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\Column(name="role_id", type="integer")
-     * @var int
-     */
-    protected $role_id;
+    #[ORM\Column]
+    protected int $role_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="permissions")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Role
-     */
-    protected $role;
+    #[ORM\ManyToOne(inversedBy: 'permissions')]
+    #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Role $role;
 
-    /**
-     * @ORM\Column(name="action_name", type="string", length=50, nullable=false)
-     * @var string
-     */
-    protected $action_name;
+    #[ORM\Column(length: 50)]
+    protected string $action_name;
 
-    /**
-     * @ORM\Column(name="station_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $station_id;
+    #[ORM\Column]
+    protected ?int $station_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="permissions")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station|null
-     */
-    protected $station;
+    #[ORM\ManyToOne(inversedBy: 'permissions')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?Station $station;
 
     public function __construct(Role $role, Station $station = null, $action_name = null)
     {

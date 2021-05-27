@@ -97,11 +97,10 @@ return [
 
             $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
-            $annotationDriver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
-                $reader,
+            $attributeDriver = new Doctrine\ORM\Mapping\Driver\AttributeDriver(
                 $mappingClassesPaths
             );
-            $config->setMetadataDriverImpl($annotationDriver);
+            $config->setMetadataDriverImpl($attributeDriver);
 
             // Debug mode:
             // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);

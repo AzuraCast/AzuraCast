@@ -146,7 +146,7 @@ class Podcast
 
     public function setDescription(string $description): self
     {
-        $this->description = $this->truncateString($description);
+        $this->description = $this->truncateString($description, 4000);
 
         return $this;
     }

@@ -47,7 +47,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="The full display name of the station."
+     *     description="The full display name of the station.",
      *     example="AzuraTest Radio"
      * )
      */
@@ -57,7 +57,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="The URL-friendly name for the station, typically auto-generated from the full station name."
+     *     description="The URL-friendly name for the station, typically auto-generated from the full station name.",
      *     example="azuratest_radio"
      * )
      */
@@ -67,7 +67,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="If set to "false", prevents the station from broadcasting but leaves it in the database."
+     *     description="If set to "false", prevents the station from broadcasting but leaves it in the database.",
      *     example=true
      * )
      */
@@ -76,7 +76,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="The frontend adapter (icecast,shoutcast,remote,etc)"
+     *     description="The frontend adapter (icecast,shoutcast,remote,etc)",
      *     example="icecast"
      * )
      */
@@ -86,7 +86,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="An array containing station-specific frontend configuration"
+     *     description="An array containing station-specific frontend configuration",
      *     @OA\Items()
      * )
      */
@@ -95,7 +95,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="The backend adapter (liquidsoap,etc)"
+     *     description="The backend adapter (liquidsoap,etc)",
      *     example="liquidsoap"
      * )
      */
@@ -105,7 +105,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="An array containing station-specific backend configuration"
+     *     description="An array containing station-specific backend configuration",
      *     @OA\Items()
      * )
      */
@@ -150,7 +150,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether listeners can request songs to play on this station."
+     *     description="Whether listeners can request songs to play on this station.",
      *     example=true
      * )
      */
@@ -171,7 +171,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether streamers are allowed to broadcast to this station at all."
+     *     description="Whether streamers are allowed to broadcast to this station at all.",
      *     example=false
      * )
      */
@@ -180,7 +180,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether a streamer is currently active on the station."
+     *     description="Whether a streamer is currently active on the station.",
      *     example=false
      * )
      */
@@ -190,7 +190,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether this station is visible as a public page and in a now-playing API response."
+     *     description="Whether this station is visible as a public page and in a now-playing API response.",
      *     example=true
      * )
      */
@@ -199,7 +199,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether this station has a public "on-demand" streaming and download page."
+     *     description="Whether this station has a public "on-demand" streaming and download page.",
      *     example=true
      * )
      */
@@ -208,7 +208,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether the "on-demand" page offers download capability."
+     *     description="Whether the "on-demand" page offers download capability.",
      *     example=true
      * )
      */
@@ -225,16 +225,16 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="The number of "last played" history items to show for a station in the Now Playing API responses."
+     *     description="The number of "last played" history items to show for a station in API responses.",
      *     example=5
      * )
      */
     #[ORM\Column(type: 'smallint')]
-    protected ?int $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
+    protected int $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
 
     /**
      * @OA\Property(
-     *     description="The time zone that station operations should take place in."
+     *     description="The time zone that station operations should take place in.",
      *     example="UTC"
      * )
      */
@@ -243,14 +243,14 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="The station-specific default album artwork URL."
+     *     description="The station-specific default album artwork URL.",
      *     example="https://example.com/image.jpg"
      * )
      */
     #[ORM\Column(length: 255)]
     protected ?string $default_album_art_url;
 
-    #[ORM\OneToMany(mappedBy: 'station')]
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class)]
     #[ORM\OrderBy(['timestamp_start' => 'desc'])]
     protected Collection $history;
 
@@ -295,7 +295,12 @@ class Station
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationRemote::class)]
     protected Collection $remotes;
 
-    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationWebhook::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
+    #[ORM\OneToMany(
+        mappedBy: 'station',
+        targetEntity: StationWebhook::class,
+        cascade: ['persist'],
+        fetch: 'EXTRA_LAZY'
+    )]
     protected Collection $webhooks;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SftpUser::class)]
@@ -324,7 +329,7 @@ class Station
 
     public function setName(?string $name = null): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
             $this->setShortName(null);
@@ -521,7 +526,7 @@ class Station
 
     public function setGenre(?string $genre): void
     {
-        $this->genre = $this->truncateString($genre, 150);
+        $this->genre = $this->truncateNullableString($genre, 150);
     }
 
     public function getRadioBaseDir(): ?string
@@ -531,7 +536,7 @@ class Station
 
     public function setRadioBaseDir(?string $newDir = null): void
     {
-        $newDir = $this->truncateString(trim($newDir));
+        $newDir = $this->truncateNullableString(trim($newDir));
 
         if (empty($newDir)) {
             $stationsBaseDir = Environment::getInstance()->getStationDirectory();

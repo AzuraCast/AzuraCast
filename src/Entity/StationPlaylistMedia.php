@@ -13,9 +13,9 @@ use JsonSerializable;
 ]
 class StationPlaylistMedia implements JsonSerializable
 {
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $playlist_id;
@@ -32,23 +32,21 @@ class StationPlaylistMedia implements JsonSerializable
     protected StationMedia $media;
 
     #[ORM\Column]
-    protected int $weight;
+    protected int $weight = 0;
 
     #[ORM\Column]
     protected bool $is_queued = true;
 
     #[ORM\Column]
-    protected int $last_played;
+    protected int $last_played = 0;
 
     public function __construct(StationPlaylist $playlist, StationMedia $media)
     {
         $this->playlist = $playlist;
         $this->media = $media;
-        $this->weight = 0;
-        $this->last_played = 0;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

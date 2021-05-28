@@ -14,9 +14,9 @@ use JsonSerializable;
 ]
 class RolePermission implements JsonSerializable
 {
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $role_id;
@@ -29,11 +29,11 @@ class RolePermission implements JsonSerializable
     protected string $action_name;
 
     #[ORM\Column]
-    protected ?int $station_id;
+    protected ?int $station_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'permissions')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?Station $station;
+    protected ?Station $station = null;
 
     public function __construct(Role $role, Station $station = null, $action_name = null)
     {
@@ -45,7 +45,7 @@ class RolePermission implements JsonSerializable
         }
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

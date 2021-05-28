@@ -45,12 +45,12 @@ class Settings
 
     public function setBaseUrl(?string $baseUrl): void
     {
-        $this->base_url = $this->truncateString($baseUrl);
+        $this->base_url = $this->truncateNullableString($baseUrl);
     }
 
     /**
      * @OA\Property(
-     *     description="AzuraCast Instance Name"
+     *     description="AzuraCast Instance Name",
      *     example="My AzuraCast Instance"
      * )
      */
@@ -64,12 +64,12 @@ class Settings
 
     public function setInstanceName(?string $instanceName): void
     {
-        $this->instance_name = $this->truncateString($instanceName);
+        $this->instance_name = $this->truncateNullableString($instanceName);
     }
 
     /**
      * @OA\Property(
-     *     description="Prefer Browser URL (If Available)"
+     *     description="Prefer Browser URL (If Available)",
      *     example="false"
      * )
      */
@@ -88,7 +88,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Use Web Proxy for Radio"
+     *     description="Use Web Proxy for Radio",
      *     example="false"
      * )
      */
@@ -121,12 +121,12 @@ class Settings
 
     public function setHistoryKeepDays(int $historyKeepDays): void
     {
-        $this->history_keep_days = $this->truncateSmallInt($historyKeepDays) ?? 0;
+        $this->history_keep_days = $this->truncateSmallInt($historyKeepDays);
     }
 
     /**
      * @OA\Property(
-     *     description="Always Use HTTPS"
+     *     description="Always Use HTTPS",
      *     example="false"
      * )
      */
@@ -145,7 +145,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="API 'Access-Control-Allow-Origin' header"
+     *     description="API 'Access-Control-Allow-Origin' header",
      *     example="*"
      * )
      */
@@ -159,12 +159,12 @@ class Settings
 
     public function setApiAccessControl(?string $apiAccessControl): void
     {
-        $this->api_access_control = $this->truncateString($apiAccessControl);
+        $this->api_access_control = $this->truncateNullableString($apiAccessControl);
     }
 
     /**
      * @OA\Property(
-     *     description="Whether to use Websockets for Now Playing data updates."
+     *     description="Whether to use Websockets for Now Playing data updates.",
      *     example="false"
      * )
      */
@@ -197,12 +197,12 @@ class Settings
 
     public function setAnalytics(?string $analytics): void
     {
-        $this->analytics = $this->truncateString($analytics, 50);
+        $this->analytics = $this->truncateNullableString($analytics, 50);
     }
 
     /**
      * @OA\Property(
-     *     description="Check for Updates and Announcements"
+     *     description="Check for Updates and Announcements",
      *     example="true"
      * )
      */
@@ -221,7 +221,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Results of the latest update check."
+     *     description="Results of the latest update check.",
      *     example=""
      * )
      * @var mixed[]|null
@@ -245,7 +245,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when updates were last checked."
+     *     description="The UNIX timestamp when updates were last checked.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -270,7 +270,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Base Theme for Public Pages"
+     *     description="Base Theme for Public Pages",
      *     example="light"
      * )
      */
@@ -290,7 +290,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Hide Album Art on Public Pages"
+     *     description="Hide Album Art on Public Pages",
      *     example="false"
      * )
      */
@@ -309,7 +309,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Homepage Redirect URL"
+     *     description="Homepage Redirect URL",
      *     example="https://example.com/"
      * )
      */
@@ -323,12 +323,12 @@ class Settings
 
     public function setHomepageRedirectUrl(?string $homepageRedirectUrl): void
     {
-        $this->homepage_redirect_url = $this->truncateString($homepageRedirectUrl);
+        $this->homepage_redirect_url = $this->truncateNullableString($homepageRedirectUrl);
     }
 
     /**
      * @OA\Property(
-     *     description="Default Album Art URL"
+     *     description="Default Album Art URL",
      *     example="https://example.com/image.jpg"
      * )
      */
@@ -342,12 +342,12 @@ class Settings
 
     public function setDefaultAlbumArtUrl(?string $defaultAlbumArtUrl): void
     {
-        $this->default_album_art_url = $this->truncateString($defaultAlbumArtUrl);
+        $this->default_album_art_url = $this->truncateNullableString($defaultAlbumArtUrl);
     }
 
     /**
      * @OA\Property(
-     *     description="Attempt to fetch album art from external sources when processing media."
+     *     description="Attempt to fetch album art from external sources when processing media.",
      *     example="false"
      * )
      */
@@ -366,7 +366,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Attempt to fetch album art from external sources in API requests."
+     *     description="Attempt to fetch album art from external sources in API requests.",
      *     example="false"
      * )
      */
@@ -385,7 +385,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="An API key to connect to Last.fm services, if provided."
+     *     description="An API key to connect to Last.fm services, if provided.",
      *     example="SAMPLE-API-KEY"
      * )
      */
@@ -402,12 +402,12 @@ class Settings
         $lastFmApiKey = trim($lastFmApiKey);
         $lastFmApiKey = (!empty($lastFmApiKey)) ? $lastFmApiKey : null;
 
-        $this->last_fm_api_key = $this->truncateString($lastFmApiKey);
+        $this->last_fm_api_key = $this->truncateNullableString($lastFmApiKey);
     }
 
     /**
      * @OA\Property(
-     *     description="Hide AzuraCast Branding on Public Pages"
+     *     description="Hide AzuraCast Branding on Public Pages",
      *     example="false"
      * )
      */
@@ -426,7 +426,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Custom CSS for Public Pages"
+     *     description="Custom CSS for Public Pages",
      *     example=""
      * )
      */
@@ -445,7 +445,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Custom JS for Public Pages"
+     *     description="Custom JS for Public Pages",
      *     example=""
      * )
      */
@@ -464,7 +464,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Custom CSS for Internal Pages"
+     *     description="Custom CSS for Internal Pages",
      *     example=""
      * )
      */
@@ -483,7 +483,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Whether backup is enabled."
+     *     description="Whether backup is enabled.",
      *     example="false"
      * )
      */
@@ -502,7 +502,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The timecode (i.e. 400 for 4:00AM) when automated backups should run."
+     *     description="The timecode (i.e. 400 for 4:00AM) when automated backups should run.",
      *     example=400
      * )
      */
@@ -521,7 +521,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Whether to exclude media in automated backups."
+     *     description="Whether to exclude media in automated backups.",
      *     example="false"
      * )
      */
@@ -540,7 +540,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Number of backups to keep, or infinite if zero/null."
+     *     description="Number of backups to keep, or infinite if zero/null.",
      *     example=2
      * )
      */
@@ -559,7 +559,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The storage location ID for automated backups."
+     *     description="The storage location ID for automated backups.",
      *     example=1
      * )
      */
@@ -578,7 +578,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when automated backup was last run."
+     *     description="The UNIX timestamp when automated backup was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -603,7 +603,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The result of the latest automated backup task."
+     *     description="The result of the latest automated backup task.",
      *     example=""
      * )
      */
@@ -623,7 +623,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The output of the latest automated backup task."
+     *     description="The output of the latest automated backup task.",
      *     example=""
      * )
      */
@@ -643,7 +643,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when setup was last completed."
+     *     description="The UNIX timestamp when setup was last completed.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -672,7 +672,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The current cached now playing data."
+     *     description="The current cached now playing data.",
      *     example=""
      * )
      * @var mixed[]|null
@@ -696,7 +696,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the now playing sync task was last run."
+     *     description="The UNIX timestamp when the now playing sync task was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -716,7 +716,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the 60-second "short" sync task was last run."
+     *     description="The UNIX timestamp when the 60-second "short" sync task was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -736,7 +736,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the 5-minute "medium" sync task was last run."
+     *     description="The UNIX timestamp when the 5-minute "medium" sync task was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -756,7 +756,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the 1-hour "long" sync task was last run."
+     *     description="The UNIX timestamp when the 1-hour "long" sync task was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -809,7 +809,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="This installation's external IP."
+     *     description="This installation's external IP.",
      *     example="192.168.1.1"
      * )
      */
@@ -829,7 +829,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The license key for the Maxmind Geolite download."
+     *     description="The license key for the Maxmind Geolite download.",
      *     example=""
      * )
      */
@@ -850,7 +850,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the Maxmind Geolite was last downloaded."
+     *     description="The UNIX timestamp when the Maxmind Geolite was last downloaded.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -875,7 +875,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Whether to enable "advanced" functionality in the system that is intended for power users."
+     *     description="Whether to enable "advanced" functionality in the system that is intended for power users.",
      *     example=false
      * )
      */
@@ -894,7 +894,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Enable e-mail delivery across the application."
+     *     description="Enable e-mail delivery across the application.",
      *     example="true"
      * )
      */
@@ -913,7 +913,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The name of the sender of system e-mails."
+     *     description="The name of the sender of system e-mails.",
      *     example="AzuraCast"
      * )
      */
@@ -932,7 +932,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The e-mail address of the sender of system e-mails."
+     *     description="The e-mail address of the sender of system e-mails.",
      *     example="example@example.com"
      * )
      */
@@ -951,7 +951,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The host to send outbound SMTP mail."
+     *     description="The host to send outbound SMTP mail.",
      *     example="smtp.example.com"
      * )
      */
@@ -970,7 +970,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The port for sending outbound SMTP mail."
+     *     description="The port for sending outbound SMTP mail.",
      *     example=465
      * )
      */
@@ -989,7 +989,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The username when connecting to SMTP mail."
+     *     description="The username when connecting to SMTP mail.",
      *     example="username"
      * )
      */
@@ -1003,12 +1003,12 @@ class Settings
 
     public function setMailSmtpUsername(?string $mailSmtpUsername): void
     {
-        $this->mail_smtp_username = $this->truncateString($mailSmtpUsername);
+        $this->mail_smtp_username = $this->truncateNullableString($mailSmtpUsername);
     }
 
     /**
      * @OA\Property(
-     *     description="The password when connecting to SMTP mail."
+     *     description="The password when connecting to SMTP mail.",
      *     example="password"
      * )
      */
@@ -1027,7 +1027,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Whether to use a secure (TLS) connection when sending SMTP mail."
+     *     description="Whether to use a secure (TLS) connection when sending SMTP mail.",
      *     example="true"
      * )
      */
@@ -1046,7 +1046,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The external avatar service to use when fetching avatars."
+     *     description="The external avatar service to use when fetching avatars.",
      *     example="libravatar"
      * )
      */
@@ -1060,12 +1060,12 @@ class Settings
 
     public function setAvatarService(?string $avatarService): void
     {
-        $this->avatar_service = $this->truncateString($avatarService, 25);
+        $this->avatar_service = $this->truncateNullableString($avatarService, 25);
     }
 
     /**
      * @OA\Property(
-     *     description="The default avatar URL."
+     *     description="The default avatar URL.",
      *     example=""
      * )
      */
@@ -1082,12 +1082,10 @@ class Settings
         $this->avatar_default_url = $avatarDefaultUrl;
     }
 
-    /**
-     * AuditIdentifier filler function
-     * @AuditLog\AuditIdentifier
-     */
+    #[AuditLog\AuditIdentifier]
     public function getAuditIdentifier(): string
     {
+        // AuditIdentifier filler function.
         return 'Settings';
     }
 }

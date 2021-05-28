@@ -14,9 +14,9 @@ class StationMediaCustomField
 {
     use Traits\TruncateStrings;
 
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $media_id;
@@ -32,8 +32,8 @@ class StationMediaCustomField
     #[ORM\JoinColumn(name: 'field_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected CustomField $field;
 
-    #[ORM\Column(length: 255)]
-    protected string $value;
+    #[ORM\Column(name: 'field_value', length: 255)]
+    protected ?string $value = null;
 
     public function __construct(StationMedia $media, CustomField $field)
     {
@@ -41,7 +41,7 @@ class StationMediaCustomField
         $this->field = $field;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -63,6 +63,6 @@ class StationMediaCustomField
 
     public function setValue(?string $value = null): void
     {
-        $this->value = $this->truncateString($value);
+        $this->value = $this->truncateNullableString($value);
     }
 }

@@ -34,9 +34,9 @@ class StationStreamer
     use Traits\TruncateStrings;
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -58,11 +58,11 @@ class StationStreamer
 
     /** @OA\Property(example="Test DJ") */
     #[ORM\Column(length: 255)]
-    protected ?string $display_name;
+    protected ?string $display_name = null;
 
     /** @OA\Property(example="This is a test DJ account.") */
     #[ORM\Column(type: 'text')]
-    protected ?string $comments;
+    protected ?string $comments = null;
 
     /** @OA\Property(example=true) */
     #[ORM\Column]
@@ -75,7 +75,7 @@ class StationStreamer
     /** @OA\Property(example=SAMPLE_TIMESTAMP) */
     #[ORM\Column]
     #[AuditLog\AuditIgnore]
-    protected ?int $reactivate_at;
+    protected ?int $reactivate_at = null;
 
     /**
      * @OA\Property(
@@ -93,7 +93,7 @@ class StationStreamer
         $this->schedule_items = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -132,9 +132,7 @@ class StationStreamer
         return password_verify($password, $this->streamer_password);
     }
 
-    /**
-     * @AuditLog\AuditIdentifier()
-     */
+    #[AuditLog\AuditIdentifier]
     public function getDisplayName(): string
     {
         return (!empty($this->display_name))
@@ -144,7 +142,7 @@ class StationStreamer
 
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $this->truncateString($display_name);
+        $this->display_name = $this->truncateNullableString($display_name);
     }
 
     public function getComments(): ?string

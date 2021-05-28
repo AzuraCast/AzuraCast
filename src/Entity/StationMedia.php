@@ -30,9 +30,9 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public const DIR_WAVEFORMS = '.waveforms';
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $storage_location_id;
@@ -43,52 +43,52 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     /**
      * @OA\Property(
-     *     description="The name of the media file's album."
+     *     description="The name of the media file's album.",
      *     example="Test Album"
      * )
      */
     #[ORM\Column(length: 200)]
-    protected ?string $album;
+    protected ?string $album = null;
 
     /**
      * @OA\Property(
-     *     description="The genre of the media file."
+     *     description="The genre of the media file.",
      *     example="Rock"
      * )
      */
     #[ORM\Column(length: 30)]
-    protected ?string $genre;
+    protected ?string $genre = null;
 
     /**
      * @OA\Property(
-     *     description="Full lyrics of the track, if available."
+     *     description="Full lyrics of the track, if available.",
      *     example="...Never gonna give you up..."
      * )
      */
     #[ORM\Column(type: 'text')]
-    protected ?string $lyrics;
+    protected ?string $lyrics = null;
 
     /**
      * @OA\Property(
-     *     description="The track ISRC (International Standard Recording Code), used for licensing purposes."
+     *     description="The track ISRC (International Standard Recording Code), used for licensing purposes.",
      *     example="GBARL0600786"
      * )
      */
     #[ORM\Column(length: 15)]
-    protected ?string $isrc;
+    protected ?string $isrc = null;
 
     /**
      * @OA\Property(
-     *     description="The song duration in seconds."
+     *     description="The song duration in seconds.",
      *     example=240.00
      * )
      */
-    #[ORM\Column(precision: 7, scale: 2)]
+    #[ORM\Column(type: 'decimal', precision: 7, scale: 2)]
     protected ?float $length = 0.00;
 
     /**
      * @OA\Property(
-     *     description="The formatted song duration (in mm:ss format)"
+     *     description="The formatted song duration (in mm:ss format)",
      *     example="4:00"
      * )
      */
@@ -97,7 +97,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     /**
      * @OA\Property(
-     *     description="The relative path of the media file."
+     *     description="The relative path of the media file.",
      *     example="test.mp3"
      * )
      */
@@ -106,7 +106,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the database was last modified."
+     *     description="The UNIX timestamp when the database was last modified.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -115,61 +115,61 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     /**
      * @OA\Property(
-     *     description="The amount of amplification (in dB) to be applied to the radio source (liq_amplify)"
+     *     description="The amount of amplification (in dB) to be applied to the radio source (liq_amplify)",
      *     example=-14.00
      * )
      */
-    #[ORM\Column(precision: 6, scale: 1)]
-    protected ?float $amplify;
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    protected ?float $amplify = null;
 
     /**
      * @OA\Property(
-     *     description="The length of time (in seconds) before the next song starts in the fade (liq_start_next)"
+     *     description="The length of time (in seconds) before the next song starts in the fade (liq_start_next)",
      *     example=2.00
      * )
      */
-    #[ORM\Column(precision: 6, scale: 1)]
-    protected ?float $fade_overlap;
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    protected ?float $fade_overlap = null;
 
     /**
      * @OA\Property(
-     *     description="The length of time (in seconds) to fade in the next track (liq_fade_in)"
+     *     description="The length of time (in seconds) to fade in the next track (liq_fade_in)",
      *     example=3.00
      * )
      */
-    #[ORM\Column(precision: 6, scale: 1)]
-    protected ?float $fade_in;
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    protected ?float $fade_in = null;
 
     /**
      * @OA\Property(
-     *     description="The length of time (in seconds) to fade out the previous track (liq_fade_out)"
+     *     description="The length of time (in seconds) to fade out the previous track (liq_fade_out)",
      *     example=3.00
      * )
      */
-    #[ORM\Column(precision: 6, scale: 1)]
-    protected ?float $fade_out;
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    protected ?float $fade_out = null;
 
     /**
      * @OA\Property(
-     *     description="The length of time (in seconds) from the start of the track to start playing (liq_cue_in)"
+     *     description="The length of time (in seconds) from the start of the track to start playing (liq_cue_in)",
      *     example=30.00
      * )
      */
-    #[ORM\Column(precision: 6, scale: 1)]
-    protected ?float $cue_in;
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    protected ?float $cue_in = null;
 
     /**
      * @OA\Property(
-     *     description="The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)"
+     *     description="The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)",
      *     example=30.00
      * )
      */
-    #[ORM\Column(precision: 6, scale: 1)]
-    protected ?float $cue_out;
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    protected ?float $cue_out = null;
 
     /**
      * @OA\Property(
-     *     description="The latest time (UNIX timestamp) when album art was updated."
+     *     description="The latest time (UNIX timestamp) when album art was updated.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -196,7 +196,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         $this->generateUniqueId();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -213,7 +213,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     public function setAlbum(?string $album = null): void
     {
-        $this->album = $this->truncateString($album, 200);
+        $this->album = $this->truncateNullableString($album, 200);
     }
 
     public function getGenre(): ?string
@@ -223,7 +223,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     public function setGenre(?string $genre = null): void
     {
-        $this->genre = $this->truncateString($genre, 30);
+        $this->genre = $this->truncateNullableString($genre, 30);
     }
 
     public function getLyrics(): ?string
@@ -254,7 +254,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     public function setIsrc(?string $isrc = null): void
     {
-        $this->isrc = $this->truncateString($isrc, 15);
+        $this->isrc = $this->truncateNullableString($isrc, 15);
     }
 
     public function getLength(): float

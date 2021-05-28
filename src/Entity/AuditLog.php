@@ -21,8 +21,8 @@ class AuditLog
 
     protected static ?string $currentUser = null;
 
-    #[ORM\Column, ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $timestamp;
@@ -94,7 +94,7 @@ class AuditLog
             : null;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

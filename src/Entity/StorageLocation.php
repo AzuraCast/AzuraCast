@@ -22,6 +22,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Spatie\Dropbox\Client;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     AuditLog\Auditable,
     AppAssert\StorageLocation
 ]
-class StorageLocation implements \Stringable
+class StorageLocation implements Stringable
 {
     use Traits\TruncateStrings;
 
@@ -45,9 +46,9 @@ class StorageLocation implements \Stringable
 
     public const DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
 
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column(length: 50)]
     #[Assert\Choice(choices: [
@@ -66,16 +67,16 @@ class StorageLocation implements \Stringable
     protected string $adapter = self::ADAPTER_LOCAL;
 
     #[ORM\Column(length: 255)]
-    protected ?string $path;
+    protected ?string $path = null;
 
     #[ORM\Column(name: 's3_credential_key', length: 255)]
-    protected ?string $s3CredentialKey;
+    protected ?string $s3CredentialKey = null;
 
     #[ORM\Column(name: 's3_credential_secret', length: 255)]
-    protected ?string $s3CredentialSecret;
+    protected ?string $s3CredentialSecret = null;
 
     #[ORM\Column(name: 's3_region', length: 150)]
-    protected ?string $s3Region;
+    protected ?string $s3Region = null;
 
     #[ORM\Column(name: 's3_version', length: 150)]
     protected ?string $s3Version = 'latest';
@@ -90,15 +91,17 @@ class StorageLocation implements \Stringable
     protected ?string $dropboxAuthToken = null;
 
     #[ORM\Column(name: 'storage_quota', type: 'bigint')]
-    protected ?string $storageQuota;
+    protected ?string $storageQuota = null;
 
-    protected ?string $storageQuotaBytes;
+    // Used for API generation.
+    protected ?string $storageQuotaBytes = null;
 
     #[ORM\Column(name: 'storage_used', type: 'bigint')]
     #[AuditLog\AuditIgnore]
-    protected ?string $storageUsed;
+    protected ?string $storageUsed = null;
 
-    protected ?string $storageUsedBytes;
+    // Used for API generation.
+    protected ?string $storageUsedBytes = null;
 
     #[ORM\OneToMany(mappedBy: 'storage_location', targetEntity: StationMedia::class)]
     protected Collection $media;
@@ -111,7 +114,7 @@ class StorageLocation implements \Stringable
         $this->media = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -150,7 +153,7 @@ class StorageLocation implements \Stringable
 
     public function setPath(?string $path): void
     {
-        $this->path = $this->truncateString($path);
+        $this->path = $this->truncateNullableString($path);
     }
 
     public function getS3CredentialKey(): ?string
@@ -160,7 +163,7 @@ class StorageLocation implements \Stringable
 
     public function setS3CredentialKey(?string $s3CredentialKey): void
     {
-        $this->s3CredentialKey = $this->truncateString($s3CredentialKey);
+        $this->s3CredentialKey = $this->truncateNullableString($s3CredentialKey);
     }
 
     public function getS3CredentialSecret(): ?string
@@ -170,7 +173,7 @@ class StorageLocation implements \Stringable
 
     public function setS3CredentialSecret(?string $s3CredentialSecret): void
     {
-        $this->s3CredentialSecret = $this->truncateString($s3CredentialSecret);
+        $this->s3CredentialSecret = $this->truncateNullableString($s3CredentialSecret);
     }
 
     public function getS3Region(): ?string
@@ -210,7 +213,7 @@ class StorageLocation implements \Stringable
 
     public function setS3Endpoint(?string $s3Endpoint): void
     {
-        $this->s3Endpoint = $this->truncateString($s3Endpoint);
+        $this->s3Endpoint = $this->truncateNullableString($s3Endpoint);
     }
 
     public function getDropboxAuthToken(): ?string

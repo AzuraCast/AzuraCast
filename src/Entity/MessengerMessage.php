@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class MessengerMessage
 {
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id, ORM\GeneratedValue]
     protected int $id;
 
     #[ORM\Column(type: 'text')]
@@ -38,5 +38,5 @@ class MessengerMessage
     protected DateTime $availableAt;
 
     #[ORM\Column(name: 'delivered_at')]
-    protected ?DateTime $deliveredAt;
+    protected ?DateTime $deliveredAt = null;
 }

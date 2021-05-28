@@ -23,9 +23,9 @@ class StationMount implements StationMountInterface
     use Traits\TruncateStrings;
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -41,7 +41,7 @@ class StationMount implements StationMountInterface
 
     /** @OA\Property(example="128kbps MP3") */
     #[ORM\Column(length: 255)]
-    protected ?string $display_name;
+    protected ?string $display_name = null;
 
     /** @OA\Property(example=true) */
     #[ORM\Column]
@@ -57,15 +57,15 @@ class StationMount implements StationMountInterface
 
     /** @OA\Property(example="/error.mp3") */
     #[ORM\Column(length: 100)]
-    protected ?string $fallback_mount;
+    protected ?string $fallback_mount = null;
 
     /** @OA\Property(example="http://radio.example.com:8000/radio.mp3") */
     #[ORM\Column(length: 255)]
-    protected ?string $relay_url;
+    protected ?string $relay_url = null;
 
     /** @OA\Property(example="") */
     #[ORM\Column(length: 255)]
-    protected ?string $authhash;
+    protected ?string $authhash = null;
 
     /** @OA\Property(example=true) */
     #[ORM\Column]
@@ -81,15 +81,15 @@ class StationMount implements StationMountInterface
 
     /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
     #[ORM\Column(length: 255)]
-    protected ?string $custom_listen_url;
+    protected ?string $custom_listen_url = null;
 
     /** @OA\Property(@OA\Items()) */
     #[ORM\Column(type: 'text')]
-    protected ?string $frontend_config;
+    protected ?string $frontend_config = null;
 
     /**
      * @OA\Property(
-     *     description="The most recent number of unique listeners."
+     *     description="The most recent number of unique listeners.",
      *     example=10
      * )
      */
@@ -99,7 +99,7 @@ class StationMount implements StationMountInterface
 
     /**
      * @OA\Property(
-     *     description="The most recent number of total (non-unique) listeners."
+     *     description="The most recent number of total (non-unique) listeners.",
      *     example=12
      * )
      */
@@ -133,9 +133,7 @@ class StationMount implements StationMountInterface
         $this->name = $this->truncateString('/' . ltrim($new_name, '/'), 100);
     }
 
-    /**
-     * @AuditLog\AuditIdentifier
-     */
+    #[AuditLog\AuditIdentifier]
     public function getDisplayName(): string
     {
         if (!empty($this->display_name)) {
@@ -151,7 +149,7 @@ class StationMount implements StationMountInterface
 
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $this->truncateString($display_name);
+        $this->display_name = $this->truncateNullableString($display_name);
     }
 
     public function isVisibleOnPublicPages(): bool
@@ -201,7 +199,7 @@ class StationMount implements StationMountInterface
 
     public function setRelayUrl(?string $relay_url = null): void
     {
-        $this->relay_url = $this->truncateString($relay_url);
+        $this->relay_url = $this->truncateNullableString($relay_url);
     }
 
     public function getAuthhash(): ?string
@@ -211,7 +209,7 @@ class StationMount implements StationMountInterface
 
     public function setAuthhash(?string $authhash = null): void
     {
-        $this->authhash = $this->truncateString($authhash);
+        $this->authhash = $this->truncateNullableString($authhash);
     }
 
     public function getEnableAutodj(): bool
@@ -231,7 +229,7 @@ class StationMount implements StationMountInterface
 
     public function setAutodjFormat(?string $autodj_format = null): void
     {
-        $this->autodj_format = $this->truncateString($autodj_format, 10);
+        $this->autodj_format = $this->truncateNullableString($autodj_format, 10);
     }
 
     public function getAutodjBitrate(): ?int
@@ -251,7 +249,7 @@ class StationMount implements StationMountInterface
 
     public function setCustomListenUrl(?string $custom_listen_url = null): void
     {
-        $this->custom_listen_url = $this->truncateString($custom_listen_url);
+        $this->custom_listen_url = $this->truncateNullableString($custom_listen_url);
     }
 
     public function getFrontendConfig(): ?string

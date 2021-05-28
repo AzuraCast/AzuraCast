@@ -15,9 +15,9 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
 {
     public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $storage_location_id;
@@ -33,7 +33,7 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
     protected ?int $mtime = 0;
 
     #[ORM\Column(type: 'text')]
-    protected ?string $error;
+    protected ?string $error = null;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {
@@ -42,7 +42,7 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
         $this->setPath($path);
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

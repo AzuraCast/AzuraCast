@@ -15,9 +15,9 @@ class StationPlaylistFolder implements PathAwareInterface
 {
     use TruncateStrings;
 
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -37,7 +37,7 @@ class StationPlaylistFolder implements PathAwareInterface
         $this->path = $path;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

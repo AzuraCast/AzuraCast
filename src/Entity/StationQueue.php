@@ -15,9 +15,9 @@ class StationQueue implements SongInterface
     use Traits\TruncateInts;
     use Traits\HasSongFields;
 
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -27,37 +27,37 @@ class StationQueue implements SongInterface
     protected Station $station;
 
     #[ORM\Column]
-    protected ?int $playlist_id;
+    protected ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?StationPlaylist $playlist;
+    protected ?StationPlaylist $playlist = null;
 
     #[ORM\Column]
-    protected ?int $media_id;
+    protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?StationMedia $media;
+    protected ?StationMedia $media = null;
 
     #[ORM\Column]
-    protected ?int $request_id;
+    protected ?int $request_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?StationRequest $request;
+    protected ?StationRequest $request = null;
 
     #[ORM\Column]
-    protected bool $sent_to_autodj;
+    protected bool $sent_to_autodj = false;
 
     #[ORM\Column(length: 255)]
-    protected ?string $autodj_custom_uri;
+    protected ?string $autodj_custom_uri = null;
 
     #[ORM\Column]
     protected int $timestamp_cued;
 
     #[ORM\Column]
-    protected ?int $duration;
+    protected ?int $duration = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
     protected ?array $log;
@@ -66,8 +66,6 @@ class StationQueue implements SongInterface
     {
         $this->setSong($song);
         $this->station = $station;
-
-        $this->sent_to_autodj = false;
     }
 
     public function getId(): ?int

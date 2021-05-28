@@ -33,9 +33,9 @@ class StationWebhook
     public const TRIGGER_STATION_ONLINE = 'station_online';
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -46,16 +46,16 @@ class StationWebhook
 
     /**
      * @OA\Property(
-     *     description="The nickname of the webhook connector."
+     *     description="The nickname of the webhook connector.",
      *     example="Twitter Post"
      * )
      */
     #[ORM\Column(length: 100)]
-    protected ?string $name;
+    protected ?string $name = null;
 
     /**
      * @OA\Property(
-     *     description="The type of webhook connector to use."
+     *     description="The type of webhook connector to use.",
      *     example="twitter"
      * )
      */
@@ -69,31 +69,31 @@ class StationWebhook
 
     /**
      * @OA\Property(
-     *     description="List of events that should trigger the webhook notification."
+     *     description="List of events that should trigger the webhook notification.",
      *     @OA\Items()
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    protected ?array $triggers;
+    protected ?array $triggers = null;
 
     /**
      * @OA\Property(
-     *     description="Detailed webhook configuration (if applicable)"
+     *     description="Detailed webhook configuration (if applicable)",
      *     @OA\Items()
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    protected ?array $config;
+    protected ?array $config = null;
 
     /**
      * @OA\Property(
-     *     description="Internal details used by the webhook to preserve state."
+     *     description="Internal details used by the webhook to preserve state.",
      *     @OA\Items()
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
     #[AuditLog\AuditIgnore]
-    protected ?array $metadata;
+    protected ?array $metadata = null;
 
     public function __construct(Station $station, $type)
     {
@@ -101,7 +101,7 @@ class StationWebhook
         $this->type = $type;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -111,9 +111,7 @@ class StationWebhook
         return $this->station;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier
-     */
+    #[AuditLog\AuditIdentifier]
     public function getName(): ?string
     {
         return $this->name;
@@ -121,7 +119,7 @@ class StationWebhook
 
     public function setName(?string $name): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
     }
 
     public function getType(): string

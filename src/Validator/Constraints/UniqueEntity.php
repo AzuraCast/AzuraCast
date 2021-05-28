@@ -20,9 +20,6 @@ use function is_string;
 /**
  * Constraint for the Unique Entity validator.
  *
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 #[Attribute(Attribute::TARGET_CLASS)]

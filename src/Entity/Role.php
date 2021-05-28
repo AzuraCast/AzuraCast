@@ -8,7 +8,6 @@ use App\Annotations\AuditLog;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 use JsonSerializable;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,9 +25,9 @@ class Role implements JsonSerializable
     public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     /** @OA\Property(example="Super Administrator") */
     #[ORM\Column(length: 100)]
@@ -39,23 +38,21 @@ class Role implements JsonSerializable
     protected Collection $users;
 
     /** @OA\Property(@OA\Items) */
-    #[ORM\OneToMany(targetEntity: RolePermission::class, mappedBy: 'role')]
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
-    #[Pure] public function __construct()
+    public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->permissions = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier()
-     */
+    #[AuditLog\AuditIdentifier]
     public function getName(): string
     {
         return $this->name;

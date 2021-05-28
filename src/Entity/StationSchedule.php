@@ -21,17 +21,17 @@ use OpenApi\Annotations as OA;
 class StationSchedule
 {
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
+    #[ORM\Column]
     #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    protected int $id;
 
     #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?StationPlaylist $playlist;
+    protected ?StationPlaylist $playlist = null;
 
     #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?StationStreamer $streamer;
+    protected ?StationStreamer $streamer = null;
 
     /** @OA\Property(example=900) */
     #[ORM\Column(type: 'smallint')]
@@ -42,19 +42,19 @@ class StationSchedule
     protected int $end_time = 0;
 
     #[ORM\Column(length: 10)]
-    protected ?string $start_date;
+    protected ?string $start_date = null;
 
     #[ORM\Column(length: 10)]
-    protected ?string $end_date;
+    protected ?string $end_date = null;
 
     /**
      * @OA\Property(
-     *     description="Array of ISO-8601 days (1 for Monday, 7 for Sunday)"
+     *     description="Array of ISO-8601 days (1 for Monday, 7 for Sunday)",
      *     example="0,1,2,3"
      * )
      */
     #[ORM\Column(length: 50)]
-    protected string $days;
+    protected ?string $days = null;
 
     public function __construct(StationPlaylist|StationStreamer $relation)
     {
@@ -67,7 +67,7 @@ class StationSchedule
         }
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

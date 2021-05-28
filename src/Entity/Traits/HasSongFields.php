@@ -14,19 +14,19 @@ trait HasSongFields
     protected string $song_id;
 
     #[ORM\Column(length: 303)]
-    protected ?string $text;
+    protected ?string $text = null;
 
     #[ORM\Column(length: 150)]
-    protected ?string $artist;
+    protected ?string $artist = null;
 
     #[ORM\Column(length: 150)]
-    protected ?string $title;
+    protected ?string $title = null;
 
     public function setSong(SongInterface $song): void
     {
-        $this->title = $this->truncateString($song->getTitle(), 303);
-        $this->artist = $this->truncateString($song->getArtist(), 150);
-        $this->text = $this->truncateString($song->getText(), 150);
+        $this->title = $this->truncateNullableString($song->getTitle(), 303);
+        $this->artist = $this->truncateNullableString($song->getArtist(), 150);
+        $this->text = $this->truncateNullableString($song->getText(), 150);
 
         // Force setting the text field if it's not otherwise set.
         $this->setText($this->getText());
@@ -56,7 +56,7 @@ trait HasSongFields
     public function setText(?string $text): void
     {
         $oldText = $this->text;
-        $this->text = $this->truncateString($text, 303);
+        $this->text = $this->truncateNullableString($text, 303);
 
         if (0 !== strcmp($oldText, $this->text)) {
             $this->updateSongId();
@@ -71,7 +71,7 @@ trait HasSongFields
     public function setArtist(?string $artist): void
     {
         $oldArtist = $this->artist;
-        $this->artist = $this->truncateString($artist, 150);
+        $this->artist = $this->truncateNullableString($artist, 150);
 
         if (0 !== strcmp($oldArtist, $this->artist)) {
             $this->setTextFromArtistAndTitle();
@@ -86,7 +86,7 @@ trait HasSongFields
     public function setTitle(?string $title): void
     {
         $oldTitle = $this->title;
-        $this->title = $this->truncateString($title, 150);
+        $this->title = $this->truncateNullableString($title, 150);
 
         if (0 !== strcmp($oldTitle, $this->title)) {
             $this->setTextFromArtistAndTitle();

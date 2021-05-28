@@ -17,9 +17,8 @@ class Listener
     use Traits\TruncateStrings;
 
     #[ORM\Column(nullable: false)]
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -29,18 +28,18 @@ class Listener
     protected Station $station;
 
     #[ORM\Column]
-    protected ?int $mount_id;
+    protected ?int $mount_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationMount::class)]
     #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    protected ?StationMount $mount;
+    protected ?StationMount $mount = null;
 
     #[ORM\Column]
-    protected ?int $remote_id;
+    protected ?int $remote_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationRemote::class)]
     #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    protected ?StationRemote $remote;
+    protected ?StationRemote $remote = null;
 
     #[ORM\Column]
     protected int $listener_uid;
@@ -68,12 +67,12 @@ class Listener
         $this->timestamp_end = 0;
 
         $this->listener_uid = (int)$client->uid;
-        $this->listener_user_agent = $this->truncateString($client->userAgent) ?? '';
+        $this->listener_user_agent = $this->truncateString($client->userAgent);
         $this->listener_ip = $client->ip;
         $this->listener_hash = self::calculateListenerHash($client);
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

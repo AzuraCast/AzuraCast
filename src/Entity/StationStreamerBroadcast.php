@@ -22,16 +22,16 @@ class StationStreamerBroadcast
     use Traits\TruncateStrings;
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\ManyToOne(inversedBy: 'streamer_broadcasts')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected Station $station;
 
     #[ORM\ManyToOne(inversedBy: 'broadcasts')]
-    #[ORM\JoinColumn(name: 'streamed_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected StationStreamer $streamer;
 
     #[ORM\Column(name: 'timestamp_start')]
@@ -41,7 +41,7 @@ class StationStreamerBroadcast
     protected int $timestampEnd = 0;
 
     #[ORM\Column(name: 'recording_path', length: 255)]
-    protected ?string $recordingPath;
+    protected ?string $recordingPath = null;
 
     public function __construct(StationStreamer $streamer)
     {
@@ -51,7 +51,7 @@ class StationStreamerBroadcast
         $this->timestampStart = time();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

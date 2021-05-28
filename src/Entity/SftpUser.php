@@ -17,9 +17,9 @@ use const PASSWORD_ARGON2ID;
 #[Auditable]
 class SftpUser
 {
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\ManyToOne(inversedBy: 'sftp_users')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -35,15 +35,15 @@ class SftpUser
     #[Assert\NotBlank]
     protected string $password;
 
-    #[ORM\Column(type: 'text')]
-    protected ?string $publicKeys;
+    #[ORM\Column(name: 'public_keys', type: 'text')]
+    protected ?string $publicKeys = null;
 
     public function __construct(Station $station)
     {
         $this->station = $station;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

@@ -18,9 +18,9 @@ class PodcastMedia
 {
     use Traits\TruncateStrings;
 
-    #[ORM\Column(type: 'guid', unique: true, nullable: false)]
+    #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
-    protected ?string $id;
+    protected string $id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -97,7 +97,7 @@ class PodcastMedia
 
     public function getLength(): float
     {
-        return (float)$this->length;
+        return $this->length;
     }
 
     public function setLength(float $length): self
@@ -105,7 +105,7 @@ class PodcastMedia
         $lengthMin = floor($length / 60);
         $lengthSec = $length % 60;
 
-        $this->length = (float)$length;
+        $this->length = $length;
         $this->length_text = $lengthMin . ':' . str_pad((string)$lengthSec, 2, '0', STR_PAD_LEFT);
 
         return $this;

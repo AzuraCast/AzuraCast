@@ -19,10 +19,10 @@ class Relay
 {
     use Traits\TruncateStrings;
 
-    /** @OA\Property(example="http://custom-url.example.com") */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    /** @OA\Property() */
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     /** @OA\Property(example="http://custom-url.example.com") */
     #[ORM\Column(length: 255)]
@@ -47,12 +47,12 @@ class Relay
     #[ORM\Column]
     protected int $updated_at;
 
-    #[ORM\OneToMany(targetEntity: StationRemote::class, mappedBy: 'relay')]
+    #[ORM\OneToMany(mappedBy: 'relay', targetEntity: StationRemote::class)]
     protected Collection $remotes;
 
     public function __construct(string $base_url)
     {
-        $this->base_url = $this->truncateString($base_url) ?? '';
+        $this->base_url = $this->truncateString($base_url);
 
         $this->created_at = time();
         $this->updated_at = time();
@@ -66,7 +66,7 @@ class Relay
         $this->updated_at = time();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -83,7 +83,7 @@ class Relay
 
     public function setName(?string $name): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
     }
 
     public function isIsVisibleOnPublicPages(): bool

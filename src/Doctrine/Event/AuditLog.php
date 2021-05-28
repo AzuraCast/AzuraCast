@@ -6,7 +6,6 @@ use App\Annotations\AuditLog\Auditable;
 use App\Annotations\AuditLog\AuditIdentifier;
 use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -27,11 +26,6 @@ use ReflectionObject;
  */
 class AuditLog implements EventSubscriber
 {
-    public function __construct(
-        protected Reader $reader
-    ) {
-    }
-
     /**
      * @return string[]
      */
@@ -59,11 +53,7 @@ class AuditLog implements EventSubscriber
             foreach ($collection as $entity) {
                 // Check that the entity being managed is "Auditable".
                 $reflectionClass = new ReflectionObject($entity);
-
-                $reflectionClass->getAttributes()
-
-                $auditable = $this->reader->getClassAnnotation($reflectionClass, Auditable::class);
-                if (null === $auditable) {
+                if (!$this->isAuditable($reflectionClass)) {
                     continue;
                 }
 
@@ -81,9 +71,8 @@ class AuditLog implements EventSubscriber
 
                     // Ensure the property isn't ignored.
                     $property = $reflectionClass->getProperty($changeField);
-                    $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
-
-                    if (null !== $annotation) {
+                    $ignoreAttr = $property->getAttributes(AuditIgnore::class);
+                    if (!empty($ignoreAttr)) {
                         continue;
                     }
 
@@ -128,8 +117,7 @@ class AuditLog implements EventSubscriber
             $owner = $collection->getOwner();
 
             $reflectionClass = new ReflectionObject($owner);
-            $isAuditable = $this->reader->getClassAnnotation($reflectionClass, Auditable::class);
-            if (null === $isAuditable) {
+            if (!$this->isAuditable($reflectionClass)) {
                 continue;
             }
 
@@ -143,8 +131,7 @@ class AuditLog implements EventSubscriber
 
             foreach ($collection->getInsertDiff() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
-                $targetIsAuditable = $this->reader->getClassAnnotation($targetReflectionClass, Auditable::class);
-                if (null === $targetIsAuditable) {
+                if (!$this->isAuditable($targetReflectionClass)) {
                     continue;
                 }
 
@@ -153,8 +140,7 @@ class AuditLog implements EventSubscriber
             }
             foreach ($collection->getDeleteDiff() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
-                $targetIsAuditable = $this->reader->getClassAnnotation($targetReflectionClass, Auditable::class);
-                if (null === $targetIsAuditable) {
+                if (!$this->isAuditable($targetReflectionClass)) {
                     continue;
                 }
 
@@ -167,9 +153,12 @@ class AuditLog implements EventSubscriber
             /** @var PersistentCollection $collection */
             $owner = $collection->getOwner();
 
+            if (null === $owner) {
+                continue;
+            }
+
             $reflectionClass = new ReflectionObject($owner);
-            $isAuditable = $this->reader->getClassAnnotation($reflectionClass, Auditable::class);
-            if (null === $isAuditable) {
+            if (!$this->isAuditable($reflectionClass)) {
                 continue;
             }
 
@@ -183,8 +172,7 @@ class AuditLog implements EventSubscriber
 
             foreach ($collection->toArray() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
-                $targetIsAuditable = $this->reader->getClassAnnotation($targetReflectionClass, Auditable::class);
-                if (null === $targetIsAuditable) {
+                if (!$this->isAuditable($targetReflectionClass)) {
                     continue;
                 }
 
@@ -243,6 +231,12 @@ class AuditLog implements EventSubscriber
         return !$em->getMetadataFactory()->isTransient($class);
     }
 
+    protected function isAuditable(ReflectionClass $refl): bool
+    {
+        $auditable = $refl->getAttributes(Auditable::class);
+        return !empty($auditable);
+    }
+
     /**
      * Get the identifier string for an entity, if it's set or fetchable.
      *
@@ -252,17 +246,15 @@ class AuditLog implements EventSubscriber
     protected function getIdentifier(ReflectionClass $reflectionClass, object $entity): ?string
     {
         foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-            $isIdentifier = $this->reader->getMethodAnnotation($reflectionMethod, AuditIdentifier::class);
-
-            if (null !== $isIdentifier) {
+            $identifierAttr = $reflectionMethod->getAttributes(AuditIdentifier::class);
+            if (!empty($identifierAttr)) {
                 return (string)$reflectionMethod->invoke($entity);
             }
         }
 
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            $isIdentifier = $this->reader->getPropertyAnnotation($reflectionProperty, AuditIdentifier::class);
-
-            if (null !== $isIdentifier) {
+            $identifierAttr = $reflectionProperty->getAttributes(AuditIdentifier::class);
+            if (!empty($identifierAttr)) {
                 return $reflectionProperty->getValue($entity);
             }
         }

@@ -32,40 +32,40 @@ class User
     use Traits\TruncateStrings;
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(name: 'uid', nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column(name: 'uid')]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     /** @OA\Property(example="demo@azuracast.com") */
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
     #[Assert\Email]
-    protected ?string $email;
+    protected ?string $email = null;
 
     #[ORM\Column(length: 255)]
     #[AuditLog\AuditIgnore]
-    protected ?string $auth_password;
+    protected ?string $auth_password = null;
 
     /** @OA\Property(example="") */
-    protected ?string $new_password;
+    protected ?string $new_password = null;
 
     /** @OA\Property(example="Demo Account") */
     #[ORM\Column(length: 100)]
-    protected ?string $name;
+    protected ?string $name = null;
 
     /** @OA\Property(example="en_US") */
     #[ORM\Column(length: 25)]
-    protected ?string $locale;
+    protected ?string $locale = null;
 
     /** @OA\Property(example="dark") */
     #[ORM\Column(length: 25)]
     #[AuditLog\AuditIgnore]
-    protected ?string $theme;
+    protected ?string $theme = null;
 
     /** @OA\Property(example="A1B2C3D4") */
     #[ORM\Column(length: 255)]
     #[AuditLog\AuditIgnore]
-    protected ?string $two_factor_secret;
+    protected ?string $two_factor_secret = null;
 
     /** @OA\Property(example=SAMPLE_TIMESTAMP) */
     #[ORM\Column]
@@ -83,6 +83,7 @@ class User
      * )
      */
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER')]
+    #[ORM\JoinTable(name: 'user_has_role')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uid', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[DeepNormalize(true)]
@@ -126,7 +127,7 @@ class User
 
     public function setName(?string $name = null): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
     }
 
     public function getEmail(): ?string
@@ -136,7 +137,7 @@ class User
 
     public function setEmail(?string $email = null): void
     {
-        $this->email = $this->truncateString($email, 100);
+        $this->email = $this->truncateNullableString($email, 100);
     }
 
     public function verifyPassword(string $password): bool

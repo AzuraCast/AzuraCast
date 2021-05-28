@@ -23,7 +23,7 @@ class Podcast
 
     #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
-    protected ?string $id;
+    protected string $id;
 
     #[ORM\ManyToOne(targetEntity: StorageLocation::class)]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -34,7 +34,7 @@ class Podcast
     protected string $title;
 
     #[ORM\Column(length: 255)]
-    protected ?string $link;
+    protected ?string $link = null;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
@@ -62,7 +62,7 @@ class Podcast
         $this->episodes = new ArrayCollection();
     }
 
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -91,7 +91,7 @@ class Podcast
 
     public function setLink(?string $link): self
     {
-        $this->link = $this->truncateString($link);
+        $this->link = $this->truncateNullableString($link);
 
         return $this;
     }

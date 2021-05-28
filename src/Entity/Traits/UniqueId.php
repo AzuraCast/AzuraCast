@@ -12,16 +12,20 @@ use OpenApi\Annotations as OA;
 trait UniqueId
 {
     /**
-     * @ORM\Column(name="unique_id", type="string", length=25, nullable=true)
-     *
-     * @OA\Property(example="69b536afc7ebbf16457b8645")
-     *
-     * @var string A unique identifier associated with this record.
+     * @OA\Property(
+     *     description="A unique identifier associated with this record."
+     *     example="69b536afc7ebbf16457b8645"
+     * )
      */
-    protected $unique_id;
+    #[ORM\Column(length: 25)]
+    protected ?string $unique_id;
 
     public function getUniqueId(): string
     {
+        if (!isset($this->unique_id)) {
+            throw new \RuntimeException('Unique ID has not been generated yet.');
+        }
+
         return $this->unique_id;
     }
 
@@ -34,7 +38,7 @@ trait UniqueId
      */
     public function generateUniqueId($force_new = false): void
     {
-        if (empty($this->unique_id) || $force_new) {
+        if (!isset($this->unique_id) || $force_new) {
             $this->unique_id = bin2hex(random_bytes(12));
         }
     }

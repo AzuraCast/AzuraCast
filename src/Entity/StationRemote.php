@@ -26,9 +26,9 @@ class StationRemote implements StationMountInterface
     use Traits\TruncateStrings;
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -38,15 +38,15 @@ class StationRemote implements StationMountInterface
     protected Station $station;
 
     #[ORM\Column]
-    protected ?int $relay_id;
+    protected ?int $relay_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'remotes')]
     #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?Relay $relay;
+    protected ?Relay $relay = null;
 
     /** @OA\Property(example="128kbps MP3") */
     #[ORM\Column(length: 255)]
-    protected ?string $display_name;
+    protected ?string $display_name = null;
 
     /** @OA\Property(example=true) */
     #[ORM\Column]
@@ -63,43 +63,43 @@ class StationRemote implements StationMountInterface
 
     /** @OA\Property(example="mp3") */
     #[ORM\Column(length: 10)]
-    protected ?string $autodj_format;
+    protected ?string $autodj_format = null;
 
     /** @OA\Property(example=128) */
     #[ORM\Column(type: 'smallint')]
-    protected ?int $autodj_bitrate;
+    protected ?int $autodj_bitrate = null;
 
     /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
     #[ORM\Column(length: 255)]
-    protected ?string $custom_listen_url;
+    protected ?string $custom_listen_url = null;
 
     /** @OA\Property(example="http://custom-url.example.com") */
     #[ORM\Column(length: 255)]
-    protected ?string $url;
+    protected ?string $url = null;
 
     /** @OA\Property(example="/stream.mp3") */
     #[ORM\Column(length: 150)]
-    protected ?string $mount;
+    protected ?string $mount = null;
 
     /** @OA\Property(example="password") */
     #[ORM\Column(length: 100)]
-    protected ?string $admin_password;
+    protected ?string $admin_password = null;
 
     /** @OA\Property(example=8000) */
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    protected ?int $source_port;
+    protected ?int $source_port = null;
 
     /** @OA\Property(example="/") */
     #[ORM\Column(length: 150)]
-    protected ?string $source_mount;
+    protected ?string $source_mount = null;
 
     /** @OA\Property(example="source") */
     #[ORM\Column(length: 100)]
-    protected ?string $source_username;
+    protected ?string $source_username = null;
 
     /** @OA\Property(example="password") */
     #[ORM\Column(length: 100)]
-    protected ?string $source_password;
+    protected ?string $source_password = null;
 
     /** @OA\Property(example=false) */
     #[ORM\Column]
@@ -107,7 +107,7 @@ class StationRemote implements StationMountInterface
 
     /**
      * @OA\Property(
-     *     description="The most recent number of unique listeners."
+     *     description="The most recent number of unique listeners.",
      *     example=10
      * )
      */
@@ -117,7 +117,7 @@ class StationRemote implements StationMountInterface
 
     /**
      * @OA\Property(
-     *     description="The most recent number of total (non-unique) listeners."
+     *     description="The most recent number of total (non-unique) listeners.",
      *     example=12
      * )
      */
@@ -130,7 +130,7 @@ class StationRemote implements StationMountInterface
         $this->station = $station;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -213,7 +213,7 @@ class StationRemote implements StationMountInterface
 
     public function setSourceUsername(?string $source_username): void
     {
-        $this->source_username = $this->truncateString($source_username, 100);
+        $this->source_username = $this->truncateNullableString($source_username, 100);
     }
 
     /** @inheritdoc */
@@ -242,7 +242,7 @@ class StationRemote implements StationMountInterface
 
     public function setSourcePassword(?string $source_password): void
     {
-        $this->source_password = $this->truncateString($source_password, 100);
+        $this->source_password = $this->truncateNullableString($source_password, 100);
     }
 
     public function getType(): string
@@ -262,7 +262,7 @@ class StationRemote implements StationMountInterface
 
     public function setSourceMount(?string $source_mount): void
     {
-        $this->source_mount = $this->truncateString($source_mount, 150);
+        $this->source_mount = $this->truncateNullableString($source_mount, 150);
     }
 
     public function getMount(): ?string
@@ -272,7 +272,7 @@ class StationRemote implements StationMountInterface
 
     public function setMount(?string $mount): void
     {
-        $this->mount = $this->truncateString($mount, 150);
+        $this->mount = $this->truncateNullableString($mount, 150);
     }
 
     public function getAdminPassword(): ?string
@@ -317,7 +317,7 @@ class StationRemote implements StationMountInterface
             $url = 'http://' . $url;
         }
 
-        $this->url = $this->truncateString($url);
+        $this->url = $this->truncateNullableString($url);
     }
 
     /*
@@ -426,9 +426,7 @@ class StationRemote implements StationMountInterface
         return $response;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier
-     */
+    #[AuditLog\AuditIdentifier]
     public function getDisplayName(): string
     {
         if (!empty($this->display_name)) {
@@ -447,6 +445,6 @@ class StationRemote implements StationMountInterface
      */
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $this->truncateString($display_name);
+        $this->display_name = $this->truncateNullableString($display_name);
     }
 }

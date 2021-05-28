@@ -29,8 +29,8 @@ class Analytics
     public const INTERVAL_DAILY = 'day';
     public const INTERVAL_HOURLY = 'hour';
 
-    #[ORM\Column, ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id = null;
+    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected ?int $station_id = null;
@@ -80,14 +80,14 @@ class Analytics
         $this->number_unique = $number_unique;
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getStation(): ?Station
     {
         return $this->station;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getType(): string

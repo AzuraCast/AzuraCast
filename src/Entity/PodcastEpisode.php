@@ -20,30 +20,30 @@ class PodcastEpisode
 
     public const DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
 
-    #[ORM\Column(type: 'guid', unique: true, nullable: false)]
+    #[ORM\Column(type: 'guid', unique: true)]
     #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
-    protected ?string $id;
+    protected string $id;
 
     #[ORM\ManyToOne(inversedBy: 'episodes')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected Podcast $podcast;
 
     #[ORM\OneToOne(mappedBy: 'episode')]
-    protected ?PodcastMedia $media;
+    protected ?PodcastMedia $media = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     protected string $title;
 
     #[ORM\Column(length: 255)]
-    protected ?string $link;
+    protected ?string $link = null;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     protected string $description;
 
     #[ORM\Column]
-    protected ?int $publish_at;
+    protected ?int $publish_at = null;
 
     #[ORM\Column]
     protected bool $explicit;
@@ -61,7 +61,7 @@ class PodcastEpisode
         $this->created_at = time();
     }
 
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -100,7 +100,7 @@ class PodcastEpisode
 
     public function setLink(?string $link): self
     {
-        $this->link = $this->truncateString($link);
+        $this->link = $this->truncateNullableString($link);
 
         return $this;
     }

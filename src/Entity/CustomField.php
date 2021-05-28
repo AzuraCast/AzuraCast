@@ -42,9 +42,7 @@ class CustomField
         return $this->id;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier()
-     */
+    #[AuditLog\AuditIdentifier]
     public function getName(): string
     {
         return $this->name;

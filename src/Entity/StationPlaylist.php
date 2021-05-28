@@ -49,9 +49,9 @@ class StationPlaylist
     public const OPTION_MERGE = 'merge';
 
     /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -82,13 +82,13 @@ class StationPlaylist
     protected string $source = self::SOURCE_SONGS;
 
     /** @OA\Property(example="shuffle") */
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(name: 'playback_order', length: 50)]
     #[Assert\Choice(choices: [self::ORDER_RANDOM, self::ORDER_SHUFFLE, self::ORDER_SEQUENTIAL])]
     protected string $order = self::ORDER_SHUFFLE;
 
     /** @OA\Property(example="http://remote-url.example.com/stream.mp3") */
     #[ORM\Column(length: 255)]
-    protected ?string $remote_url;
+    protected ?string $remote_url = null;
 
     /** @OA\Property(example="stream") */
     #[ORM\Column(length: 25)]
@@ -97,11 +97,11 @@ class StationPlaylist
 
     /**
      * @OA\Property(
-     *     description="The total time (in seconds) that Liquidsoap should buffer remote URL streams."
+     *     description="The total time (in seconds) that Liquidsoap should buffer remote URL streams.",
      *     example=0
      * )
      */
-    #[ORM\Column(type: 'smallint')]
+    #[ORM\Column(name: 'remote_timeout', type: 'smallint')]
     protected int $remote_buffer = 0;
 
     /** @OA\Property(example=true) */
@@ -110,7 +110,7 @@ class StationPlaylist
 
     /**
      * @OA\Property(
-     *     description="If yes, do not send jingle metadata to AutoDJ or trigger web hooks."
+     *     description="If yes, do not send jingle metadata to AutoDJ or trigger web hooks.",
      *     example=false
      * )
      */
@@ -139,7 +139,7 @@ class StationPlaylist
 
     /**
      * @OA\Property(
-     *     description="Whether this playlist's media is included in "on demand" download/streaming if enabled."
+     *     description="Whether this playlist's media is included in "on demand" download/streaming if enabled.",
      *     example=true
      * )
      */
@@ -188,7 +188,7 @@ class StationPlaylist
         $this->schedule_items = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -198,9 +198,7 @@ class StationPlaylist
         return $this->station;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier
-     */
+    #[AuditLog\AuditIdentifier]
     public function getName(): string
     {
         return $this->name;

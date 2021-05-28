@@ -24,7 +24,7 @@ class ApiKey implements JsonSerializable
     protected User $user;
 
     #[ORM\Column(length: 255)]
-    protected ?string $comment;
+    protected ?string $comment = null;
 
     public function __construct(User $user, SplitToken $token)
     {
@@ -37,9 +37,7 @@ class ApiKey implements JsonSerializable
         return $this->user;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier
-     */
+    #[AuditLog\AuditIdentifier]
     public function getComment(): ?string
     {
         return $this->comment;
@@ -47,7 +45,7 @@ class ApiKey implements JsonSerializable
 
     public function setComment(?string $comment): void
     {
-        $this->comment = $this->truncateString($comment);
+        $this->comment = $this->truncateNullableString($comment);
     }
 
     /**

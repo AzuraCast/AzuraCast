@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Repository\StationMediaRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'song_history')]
@@ -21,9 +20,9 @@ class SongHistory implements SongInterface
     /** @var int */
     public const DEFAULT_DAYS_TO_KEEP = 60;
 
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -33,85 +32,72 @@ class SongHistory implements SongInterface
     protected Station $station;
 
     #[ORM\Column]
-    protected ?int $playlist_id;
+    protected ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id',)]
-    protected ?StationPlaylist $playlist;
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?StationPlaylist $playlist = null;
 
     #[ORM\Column]
-    protected ?int $streamer_id;
+    protected ?int $streamer_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?StationStreamer $streamer;
+    protected ?StationStreamer $streamer = null;
 
     #[ORM\Column]
-    protected ?int $media_id;
+    protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?StationMediaRepository $media;
+    protected ?StationMedia $media = null;
 
     #[ORM\Column]
-    protected ?int $request_id;
+    protected ?int $request_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    protected ?StationRequest $request;
+    protected ?StationRequest $request = null;
 
     #[ORM\Column]
-    protected int $timestamp_start;
+    protected int $timestamp_start = 0;
 
     #[ORM\Column]
-    protected ?int $duration;
+    protected ?int $duration = null;
 
     #[ORM\Column]
-    protected ?int $listeners_start;
+    protected ?int $listeners_start = null;
 
     #[ORM\Column]
-    protected int $timestamp_end;
+    protected int $timestamp_end = 0;
 
     #[ORM\Column]
-    protected ?int $listeners_end;
+    protected ?int $listeners_end = 0;
 
     #[ORM\Column]
-    protected ?int $unique_listeners;
+    protected ?int $unique_listeners = 0;
 
     #[ORM\Column]
-    protected int $delta_total;
+    protected int $delta_total = 0;
 
     #[ORM\Column]
-    protected int $delta_positive;
+    protected int $delta_positive = 0;
 
     #[ORM\Column]
-    protected int $delta_negative;
+    protected int $delta_negative = 0;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    protected mixed $delta_points;
+    protected mixed $delta_points = null;
 
     public function __construct(
         Station $station,
         SongInterface $song
     ) {
         $this->setSong($song);
-
         $this->station = $station;
-
-        $this->timestamp_start = 0;
-        $this->listeners_start = 0;
-
-        $this->timestamp_end = 0;
-        $this->listeners_end = 0;
-
-        $this->unique_listeners = 0;
-
-        $this->delta_total = 0;
-        $this->delta_negative = 0;
-        $this->delta_positive = 0;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -211,7 +197,7 @@ class SongHistory implements SongInterface
 
     public function getTimestamp(): int
     {
-        return (int)$this->timestamp_start;
+        return $this->timestamp_start;
     }
 
     public function getListenersEnd(): ?int

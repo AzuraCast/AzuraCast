@@ -19,9 +19,9 @@ class PodcastCategory
 
     public const CATEGORY_SEPARATOR = '|';
 
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -34,7 +34,7 @@ class PodcastCategory
     public function __construct(Podcast $podcast, string $category)
     {
         $this->podcast = $podcast;
-        $this->category = $this->truncateString($category) ?? '';
+        $this->category = $this->truncateString($category);
     }
 
     public function getPodcast(): Podcast

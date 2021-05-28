@@ -15,9 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class StationRequest
 {
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
+    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -40,7 +40,7 @@ class StationRequest
     protected bool $skip_delay = false;
 
     #[ORM\Column]
-    protected int $played_at;
+    protected int $played_at = 0;
 
     #[ORM\Column(length: 40)]
     protected string $ip;
@@ -56,12 +56,10 @@ class StationRequest
 
         $this->timestamp = time();
         $this->skip_delay = $skipDelay;
-        $this->played_at = 0;
-
         $this->ip = $ip ?? $_SERVER['REMOTE_ADDR'];
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

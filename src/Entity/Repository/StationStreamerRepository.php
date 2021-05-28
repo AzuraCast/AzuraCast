@@ -84,7 +84,8 @@ class StationStreamerRepository extends Repository
             $recordStreams = $backendConfig->recordStreams();
 
             if ($recordStreams) {
-                $format = $backendConfig->getRecordStreamsFormat() ?? Entity\StationMountInterface::FORMAT_MP3;
+                $format = $backendConfig->getRecordStreamsFormat(
+                ) ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
                 $recordingPath = $record->generateRecordingPath($format);
                 $this->em->persist($record);
                 $this->em->flush();

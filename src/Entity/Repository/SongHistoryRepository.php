@@ -65,7 +65,7 @@ class SongHistoryRepository extends Repository
     }
 
     public function register(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         Entity\Station $station,
         Entity\Api\NowPlaying $np
     ): Entity\SongHistory {

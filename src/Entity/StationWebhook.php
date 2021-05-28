@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,8 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
     AuditLog\Auditable
 ]
-class StationWebhook
+class StationWebhook implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
@@ -31,11 +33,6 @@ class StationWebhook
     public const TRIGGER_LIVE_DISCONNECT = 'live_disconnect';
     public const TRIGGER_STATION_OFFLINE = 'station_offline';
     public const TRIGGER_STATION_ONLINE = 'station_online';
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -69,6 +66,7 @@ class StationWebhook
 
     /**
      * @OA\Property(
+     *     type="array",
      *     description="List of events that should trigger the webhook notification.",
      *     @OA\Items()
      * )
@@ -78,6 +76,7 @@ class StationWebhook
 
     /**
      * @OA\Property(
+     *     type="array",
      *     description="Detailed webhook configuration (if applicable)",
      *     @OA\Items()
      * )
@@ -87,6 +86,7 @@ class StationWebhook
 
     /**
      * @OA\Property(
+     *     type="array",
      *     description="Internal details used by the webhook to preserve state.",
      *     @OA\Items()
      * )
@@ -101,17 +101,11 @@ class StationWebhook
         $this->type = $type;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    #[AuditLog\AuditIdentifier]
     public function getName(): ?string
     {
         return $this->name;
@@ -219,5 +213,10 @@ class StationWebhook
     public function updateLastSentTimestamp(): void
     {
         $this->setMetadataKey(self::LAST_SENT_TIMESTAMP_KEY, time());
+    }
+
+    public function __toString(): string
+    {
+        return (string)($this->getStation()) . ' Web Hook: ' . $this->getName();
     }
 }

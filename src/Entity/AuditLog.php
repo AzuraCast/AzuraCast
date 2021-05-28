@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class AuditLog
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const OPER_INSERT = 1;
@@ -20,9 +21,6 @@ class AuditLog
     public const OPER_DELETE = 3;
 
     protected static ?string $currentUser = null;
-
-    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $timestamp;
@@ -90,13 +88,8 @@ class AuditLog
     public static function setCurrentUser(?User $user = null): void
     {
         self::$currentUser = ($user instanceof User)
-            ? $user->getIdentifier()
+            ? (string)$user
             : null;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getTimestamp(): int

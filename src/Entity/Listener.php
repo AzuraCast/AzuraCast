@@ -14,11 +14,8 @@ use NowPlaying\Result\Client;
 ]
 class Listener
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -70,11 +67,6 @@ class Listener
         $this->listener_user_agent = $this->truncateString($client->userAgent);
         $this->listener_ip = $client->ip;
         $this->listener_hash = self::calculateListenerHash($client);
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

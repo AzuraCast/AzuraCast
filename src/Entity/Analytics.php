@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class Analytics
 {
+    use Traits\HasAutoIncrementId;
+
     /** @var string Log all analytics data across the system. */
     public const LEVEL_ALL = 'all';
 
@@ -28,9 +30,6 @@ class Analytics
 
     public const INTERVAL_DAILY = 'day';
     public const INTERVAL_HOURLY = 'hour';
-
-    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected ?int $station_id = null;
@@ -78,11 +77,6 @@ class Analytics
         $this->number_max = $number_max;
         $this->number_avg = (string)round($number_avg, 2);
         $this->number_unique = $number_unique;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): ?Station

@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,8 +21,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\HasLifecycleCallbacks,
     AuditLog\Auditable
 ]
-class StationPlaylist
+class StationPlaylist implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const DEFAULT_WEIGHT = 3;
@@ -47,11 +49,6 @@ class StationPlaylist
     public const OPTION_LOOP_PLAYLIST_ONCE = 'loop_once';
     public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
     public const OPTION_MERGE = 'merge';
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -139,7 +136,7 @@ class StationPlaylist
 
     /**
      * @OA\Property(
-     *     description="Whether this playlist's media is included in "on demand" download/streaming if enabled.",
+     *     description="Whether this playlist's media is included in 'on demand' download/streaming if enabled.",
      *     example=true
      * )
      */
@@ -171,6 +168,7 @@ class StationPlaylist
 
     /**
      * @OA\Property(
+     *     type="array",
      *     @OA\Items()
      * )
      */
@@ -188,17 +186,11 @@ class StationPlaylist
         $this->schedule_items = new ArrayCollection();
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    #[AuditLog\AuditIdentifier]
     public function getName(): string
     {
         return $this->name;
@@ -487,5 +479,10 @@ class StationPlaylist
         int $play_per_minutes
     ): void {
         $this->play_per_minutes = $play_per_minutes;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getStation() . ' Playlist: ' . $this->getName();
     }
 }

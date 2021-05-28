@@ -8,19 +8,20 @@ use App\Annotations\AuditLog;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use Stringable;
 
 #[
     AuditLog\Auditable,
     ORM\Table(name: 'api_keys'),
     ORM\Entity(readOnly: true)
 ]
-class ApiKey implements JsonSerializable
+class ApiKey implements JsonSerializable, Stringable
 {
     use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER', inversedBy: 'api_keys')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uid', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected User $user;
 
     #[ORM\Column(length: 255)]
@@ -37,7 +38,6 @@ class ApiKey implements JsonSerializable
         return $this->user;
     }
 
-    #[AuditLog\AuditIdentifier]
     public function getComment(): ?string
     {
         return $this->comment;
@@ -57,5 +57,10 @@ class ApiKey implements JsonSerializable
             'id' => $this->id,
             'comment' => $this->comment,
         ];
+    }
+
+    public function __toString(): string
+    {
+        return $this->comment;
     }
 }

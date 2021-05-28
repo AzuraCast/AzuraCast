@@ -9,12 +9,13 @@ use App\Event\GetSyncTasks;
 use App\Service\Avatar;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @OA\Schema(type="object", schema="Settings") */
 #[ORM\Entity, ORM\Table(name: 'settings')]
 #[AuditLog\Auditable]
-class Settings
+class Settings implements Stringable
 {
     use Entity\Traits\TruncateStrings;
     use Entity\Traits\TruncateInts;
@@ -716,7 +717,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the 60-second "short" sync task was last run.",
+     *     description="The UNIX timestamp when the 60-second 'short' sync task was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -736,7 +737,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the 5-minute "medium" sync task was last run.",
+     *     description="The UNIX timestamp when the 5-minute 'medium' sync task was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -756,7 +757,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="The UNIX timestamp when the 1-hour "long" sync task was last run.",
+     *     description="The UNIX timestamp when the 1-hour 'long' sync task was last run.",
      *     example=SAMPLE_TIMESTAMP
      * )
      */
@@ -875,7 +876,7 @@ class Settings
 
     /**
      * @OA\Property(
-     *     description="Whether to enable "advanced" functionality in the system that is intended for power users.",
+     *     description="Whether to enable 'advanced' functionality in the system that is intended for power users.",
      *     example=false
      * )
      */
@@ -1082,10 +1083,8 @@ class Settings
         $this->avatar_default_url = $avatarDefaultUrl;
     }
 
-    #[AuditLog\AuditIdentifier]
-    public function getAuditIdentifier(): string
+    public function __toString(): string
     {
-        // AuditIdentifier filler function.
         return 'Settings';
     }
 }

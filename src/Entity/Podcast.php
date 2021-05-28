@@ -17,13 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 class Podcast
 {
+    use Traits\HasUniqueId;
     use Traits\TruncateStrings;
 
     public const DIR_PODCAST_ARTWORK = '.podcast_art';
-
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
-    protected string $id;
 
     #[ORM\ManyToOne(targetEntity: StorageLocation::class)]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -60,11 +57,6 @@ class Podcast
 
         $this->categories = new ArrayCollection();
         $this->episodes = new ArrayCollection();
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
     }
 
     public function getStorageLocation(): StorageLocation

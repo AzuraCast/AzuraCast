@@ -3,7 +3,6 @@
 namespace App\Doctrine\Event;
 
 use App\Annotations\AuditLog\Auditable;
-use App\Annotations\AuditLog\AuditIdentifier;
 use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
 use Doctrine\Common\EventSubscriber;
@@ -245,18 +244,8 @@ class AuditLog implements EventSubscriber
      */
     protected function getIdentifier(ReflectionClass $reflectionClass, object $entity): ?string
     {
-        foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-            $identifierAttr = $reflectionMethod->getAttributes(AuditIdentifier::class);
-            if (!empty($identifierAttr)) {
-                return (string)$reflectionMethod->invoke($entity);
-            }
-        }
-
-        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            $identifierAttr = $reflectionProperty->getAttributes(AuditIdentifier::class);
-            if (!empty($identifierAttr)) {
-                return $reflectionProperty->getValue($entity);
-            }
+        if ($entity instanceof \Stringable) {
+            return (string)$entity;
         }
 
         if (method_exists($entity, 'getName')) {

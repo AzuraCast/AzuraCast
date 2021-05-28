@@ -5,11 +5,13 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
+use App\Entity\Interfaces\StationMountInterface;
 use App\Radio\Adapters;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PHP_URL_HOST;
@@ -21,14 +23,10 @@ use const PHP_URL_PORT;
     ORM\Table(name: 'station_remotes'),
     AuditLog\Auditable
 ]
-class StationRemote implements StationMountInterface
+class StationRemote implements StationMountInterface, Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -128,11 +126,6 @@ class StationRemote implements StationMountInterface
     public function __construct(Station $station)
     {
         $this->station = $station;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station
@@ -426,7 +419,6 @@ class StationRemote implements StationMountInterface
         return $response;
     }
 
-    #[AuditLog\AuditIdentifier]
     public function getDisplayName(): string
     {
         if (!empty($this->display_name)) {
@@ -446,5 +438,10 @@ class StationRemote implements StationMountInterface
     public function setDisplayName(?string $display_name): void
     {
         $this->display_name = $this->truncateNullableString($display_name);
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getStation() . ' Relay: ' . $this->getDisplayName();
     }
 }

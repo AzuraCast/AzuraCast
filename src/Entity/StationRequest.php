@@ -15,9 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class StationRequest
 {
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    use Traits\HasAutoIncrementId;
 
     #[ORM\Column]
     protected int $station_id;
@@ -57,11 +55,6 @@ class StationRequest
         $this->timestamp = time();
         $this->skip_delay = $skipDelay;
         $this->ip = $ip ?? $_SERVER['REMOTE_ADDR'];
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

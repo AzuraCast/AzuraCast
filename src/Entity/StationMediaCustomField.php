@@ -12,11 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class StationMediaCustomField
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $media_id;
@@ -39,11 +36,6 @@ class StationMediaCustomField
     {
         $this->media = $media;
         $this->field = $field;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getMedia(): StationMedia

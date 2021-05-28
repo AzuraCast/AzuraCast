@@ -4,6 +4,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'song_history')]
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')]
 class SongHistory implements SongInterface
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
     use Traits\HasSongFields;
 
@@ -19,10 +21,6 @@ class SongHistory implements SongInterface
 
     /** @var int */
     public const DEFAULT_DAYS_TO_KEEP = 60;
-
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -95,11 +93,6 @@ class SongHistory implements SongInterface
     ) {
         $this->setSong($song);
         $this->station = $station;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

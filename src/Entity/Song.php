@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\SongInterface;
 use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
 

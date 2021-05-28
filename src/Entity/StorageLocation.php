@@ -33,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 class StorageLocation implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const TYPE_BACKUP = 'backup';
@@ -45,10 +46,6 @@ class StorageLocation implements Stringable
     public const ADAPTER_DROPBOX = 'dropbox';
 
     public const DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
-
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column(length: 50)]
     #[Assert\Choice(choices: [
@@ -112,11 +109,6 @@ class StorageLocation implements Stringable
         $this->adapter = $adapter;
 
         $this->media = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getType(): string

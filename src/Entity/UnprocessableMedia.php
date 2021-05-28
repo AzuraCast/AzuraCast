@@ -4,6 +4,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\PathAwareInterface;
+use App\Entity\Interfaces\ProcessableMediaInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -13,11 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterface
 {
-    public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
+    use Traits\HasAutoIncrementId;
 
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
     #[ORM\Column]
     protected int $storage_location_id;
@@ -40,11 +40,6 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
         $this->storage_location = $storageLocation;
 
         $this->setPath($path);
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStorageLocation(): StorageLocation

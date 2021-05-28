@@ -2,23 +2,30 @@
 
 namespace App\Entity\Traits;
 
+use App\Entity\Interfaces\SongInterface;
 use App\Entity\Song;
-use App\Entity\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @OA\Schema(type="object")
+ */
 trait HasSongFields
 {
     use TruncateStrings;
 
+    /** @OA\Property() */
     #[ORM\Column(length: 50)]
     protected string $song_id;
 
+    /** @OA\Property() */
     #[ORM\Column(length: 303)]
     protected ?string $text = null;
 
+    /** @OA\Property() */
     #[ORM\Column(length: 150)]
     protected ?string $artist = null;
 
+    /** @OA\Property() */
     #[ORM\Column(length: 150)]
     protected ?string $title = null;
 

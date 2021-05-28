@@ -4,7 +4,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\TruncateStrings;
+use App\Entity\Interfaces\PathAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -13,11 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class StationPlaylistFolder implements PathAwareInterface
 {
-    use TruncateStrings;
-
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    use Traits\HasAutoIncrementId;
+    use Traits\TruncateStrings;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -35,11 +32,6 @@ class StationPlaylistFolder implements PathAwareInterface
         $this->station = $station;
         $this->playlist = $playlist;
         $this->path = $path;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

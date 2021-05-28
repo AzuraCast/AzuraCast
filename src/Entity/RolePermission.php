@@ -14,9 +14,7 @@ use JsonSerializable;
 ]
 class RolePermission implements JsonSerializable
 {
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    use Traits\HasAutoIncrementId;
 
     #[ORM\Column]
     protected int $role_id;
@@ -43,11 +41,6 @@ class RolePermission implements JsonSerializable
         if (null !== $action_name) {
             $this->setActionName($action_name);
         }
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getRole(): Role

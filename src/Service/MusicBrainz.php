@@ -84,7 +84,7 @@ class MusicBrainz
      * @return mixed[]
      */
     public function findRecordingsForSong(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         string $include = 'releases'
     ): array {
         $query = [];

@@ -20,10 +20,7 @@ use OpenApi\Annotations as OA;
 ]
 class StationSchedule
 {
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected int $id;
+    use Traits\HasAutoIncrementId;
 
     #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
@@ -65,11 +62,6 @@ class StationSchedule
         } else {
             throw new InvalidArgumentException('Schedule must be created with either a playlist or a streamer.');
         }
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getPlaylist(): ?StationPlaylist

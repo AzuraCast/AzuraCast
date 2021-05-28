@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @OA\Schema(type="object") */
@@ -18,16 +19,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'role'),
     AuditLog\Auditable
 ]
-class Role implements JsonSerializable
+class Role implements JsonSerializable, Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     /** @OA\Property(example="Super Administrator") */
     #[ORM\Column(length: 100)]
@@ -37,7 +34,7 @@ class Role implements JsonSerializable
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
     protected Collection $users;
 
-    /** @OA\Property(@OA\Items) */
+    /** @OA\Property(type="array", @OA\Items) */
     #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)]
     protected Collection $permissions;
 
@@ -47,12 +44,6 @@ class Role implements JsonSerializable
         $this->permissions = new ArrayCollection();
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    #[AuditLog\AuditIdentifier]
     public function getName(): string
     {
         return $this->name;
@@ -98,5 +89,10 @@ class Role implements JsonSerializable
         }
 
         return $return;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

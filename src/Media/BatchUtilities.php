@@ -35,7 +35,7 @@ class BatchUtilities
 
             foreach ($toRename as $iterator) {
                 foreach ($iterator as $record) {
-                    /** @var Entity\PathAwareInterface $record */
+                    /** @var \App\Entity\Interfaces\PathAwareInterface $record */
                     $record->setPath(
                         File::renameDirectoryInPath($record->getPath(), $from, $to)
                     );

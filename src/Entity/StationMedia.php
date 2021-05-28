@@ -4,10 +4,14 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\PathAwareInterface;
+use App\Entity\Interfaces\ProcessableMediaInterface;
+use App\Entity\Interfaces\SongInterface;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
@@ -20,7 +24,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 ]
 class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface
 {
-    use Traits\UniqueId;
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
     use Traits\HasSongFields;
 
@@ -29,10 +33,14 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public const DIR_ALBUM_ART = '.albumart';
     public const DIR_WAVEFORMS = '.waveforms';
 
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    /**
+     * @OA\Property(
+     *     description="A unique identifier associated with this record.",
+     *     example="69b536afc7ebbf16457b8645"
+     * )
+     */
+    #[ORM\Column(length: 25)]
+    protected ?string $unique_id = null;
 
     #[ORM\Column]
     protected int $storage_location_id;
@@ -176,7 +184,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     #[ORM\Column]
     protected int $art_updated_at = 0;
 
-    /** @OA\Property(@OA\Items()) */
+    /** @OA\Property(type="array", @OA\Items()) */
     #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationPlaylistMedia::class)]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
@@ -196,9 +204,27 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         $this->generateUniqueId();
     }
 
-    public function getId(): int
+    public function getUniqueId(): string
     {
-        return $this->id;
+        if (!isset($this->unique_id)) {
+            throw new \RuntimeException('Unique ID has not been generated yet.');
+        }
+
+        return $this->unique_id;
+    }
+
+    /**
+     * Generate a new unique ID for this item.
+     *
+     * @param bool $force_new
+     *
+     * @throws Exception
+     */
+    public function generateUniqueId($force_new = false): void
+    {
+        if (!isset($this->unique_id) || $force_new) {
+            $this->unique_id = bin2hex(random_bytes(12));
+        }
     }
 
     public function getStorageLocation(): StorageLocation

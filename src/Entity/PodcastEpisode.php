@@ -16,13 +16,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 class PodcastEpisode
 {
+    use Traits\HasUniqueId;
     use Traits\TruncateStrings;
 
     public const DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
-
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
-    protected string $id;
 
     #[ORM\ManyToOne(inversedBy: 'episodes')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -59,11 +56,6 @@ class PodcastEpisode
     {
         $this->podcast = $podcast;
         $this->created_at = time();
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
     }
 
     public function getPodcast(): Podcast

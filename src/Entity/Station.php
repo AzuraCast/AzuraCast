@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use OpenApi\Annotations as OA;
 use RuntimeException;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,19 +32,15 @@ use Symfony\Component\Validator\Constraints as Assert;
     AppAssert\StationPortChecker,
     AppAssert\UniqueEntity(fields: ['short_name'])
 ]
-class Station
+class Station implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const DEFAULT_REQUEST_DELAY = 5;
     public const DEFAULT_REQUEST_THRESHOLD = 15;
     public const DEFAULT_DISCONNECT_DEACTIVATE_STREAMER = 0;
     public const DEFAULT_API_HISTORY_ITEMS = 5;
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
 
     /**
      * @OA\Property(
@@ -53,7 +50,7 @@ class Station
      */
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
-    protected ?string $name;
+    protected ?string $name = null;
 
     /**
      * @OA\Property(
@@ -63,11 +60,11 @@ class Station
      */
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
-    protected ?string $short_name;
+    protected ?string $short_name = null;
 
     /**
      * @OA\Property(
-     *     description="If set to "false", prevents the station from broadcasting but leaves it in the database.",
+     *     description="If set to 'false', prevents the station from broadcasting but leaves it in the database.",
      *     example=true
      * )
      */
@@ -86,12 +83,13 @@ class Station
 
     /**
      * @OA\Property(
+     *     type="array",
      *     description="An array containing station-specific frontend configuration",
      *     @OA\Items()
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    protected ?array $frontend_config;
+    protected ?array $frontend_config = null;
 
     /**
      * @OA\Property(
@@ -105,32 +103,33 @@ class Station
 
     /**
      * @OA\Property(
+     *     type="array",
      *     description="An array containing station-specific backend configuration",
      *     @OA\Items()
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    protected ?array $backend_config;
+    protected ?array $backend_config = null;
 
     #[ORM\Column(length: 150)]
     #[AuditLog\AuditIgnore]
-    protected ?string $adapter_api_key;
+    protected ?string $adapter_api_key = null;
 
     /** @OA\Property(example="A sample radio station.") */
     #[ORM\Column(type: 'text')]
-    protected ?string $description;
+    protected ?string $description = null;
 
     /** @OA\Property(example="https://demo.azuracast.com/") */
     #[ORM\Column(length: 255)]
-    protected ?string $url;
+    protected ?string $url = null;
 
     /** @OA\Property(example="Various") */
     #[ORM\Column(length: 150)]
-    protected ?string $genre;
+    protected ?string $genre = null;
 
     /** @OA\Property(example="/var/azuracast/stations/azuratest_radio") */
     #[ORM\Column(length: 255)]
-    protected ?string $radio_base_dir;
+    protected ?string $radio_base_dir = null;
 
     #[ORM\Column(type: 'array', nullable: true)]
     #[AuditLog\AuditIgnore]
@@ -138,11 +137,11 @@ class Station
 
     #[ORM\Column]
     #[AuditLog\AuditIgnore]
-    protected ?int $nowplaying_timestamp;
+    protected ?int $nowplaying_timestamp = null;
 
-    /** @OA\Property(@OA\Items()) */
+    /** @OA\Property(type="array", @OA\Items()) */
     #[ORM\Column(type: 'json')]
-    protected ?array $automation_settings;
+    protected ?array $automation_settings = null;
 
     #[ORM\Column]
     #[AuditLog\AuditIgnore]
@@ -199,7 +198,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether this station has a public "on-demand" streaming and download page.",
+     *     description="Whether this station has a public 'on-demand' streaming and download page.",
      *     example=true
      * )
      */
@@ -208,7 +207,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="Whether the "on-demand" page offers download capability.",
+     *     description="Whether the 'on-demand' page offers download capability.",
      *     example=true
      * )
      */
@@ -225,7 +224,7 @@ class Station
 
     /**
      * @OA\Property(
-     *     description="The number of "last played" history items to show for a station in API responses.",
+     *     description="The number of 'last played' history items to show for a station in API responses.",
      *     example=5
      * )
      */
@@ -248,7 +247,7 @@ class Station
      * )
      */
     #[ORM\Column(length: 255)]
-    protected ?string $default_album_art_url;
+    protected ?string $default_album_art_url = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class)]
     #[ORM\OrderBy(['timestamp_start' => 'desc'])]
@@ -258,29 +257,29 @@ class Station
     #[ORM\JoinColumn(name: 'media_storage_location_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    protected ?StorageLocation $media_storage_location;
+    protected ?StorageLocation $media_storage_location = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'recordings_storage_location_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    protected ?StorageLocation $recordings_storage_location;
+    protected ?StorageLocation $recordings_storage_location = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'podcasts_storage_location_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
-    protected ?StorageLocation $podcasts_storage_location;
+    protected ?StorageLocation $podcasts_storage_location = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
     protected Collection $streamers;
 
     #[ORM\Column]
-    protected ?int $current_streamer_id;
+    protected ?int $current_streamer_id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    protected ?StationStreamer $current_streamer;
+    protected ?StationStreamer $current_streamer = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
     protected Collection $permissions;
@@ -315,11 +314,6 @@ class Station
         $this->webhooks = new ArrayCollection();
         $this->streamers = new ArrayCollection();
         $this->sftp_users = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -954,5 +948,16 @@ class Station
     {
         $this->nowplaying = null;
         $this->nowplaying_timestamp = 0;
+    }
+
+    public function __toString(): string
+    {
+        $name = $this->getName();
+        if (null !== $name) {
+            return $name;
+        }
+
+        $id = $this->getId();
+        return (null !== $id) ? 'Station #' . $id : 'New Station';
     }
 }

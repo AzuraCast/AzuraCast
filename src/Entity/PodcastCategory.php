@@ -15,13 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 class PodcastCategory
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const CATEGORY_SEPARATOR = '|';
-
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', onDelete: 'CASCADE')]

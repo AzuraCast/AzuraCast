@@ -4,6 +4,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -12,12 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 ]
 class StationQueue implements SongInterface
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
     use Traits\HasSongFields;
-
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -60,17 +58,12 @@ class StationQueue implements SongInterface
     protected ?int $duration = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    protected ?array $log;
+    protected ?array $log = null;
 
     public function __construct(Station $station, SongInterface $song)
     {
         $this->setSong($song);
         $this->station = $station;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

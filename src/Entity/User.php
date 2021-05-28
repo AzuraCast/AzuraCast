@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use OTPHP\Factory;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,14 +28,10 @@ use const PASSWORD_BCRYPT;
     AuditLog\Auditable,
     UniqueEntity(fields: ['email'])
 ]
-class User
+class User implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column(name: 'uid')]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     /** @OA\Property(example="demo@azuracast.com") */
     #[ORM\Column(length: 100)]
@@ -79,12 +76,13 @@ class User
 
     /**
      * @OA\Property(
+     *     type="array",
      *     @OA\Items()
      * )
      */
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER')]
     #[ORM\JoinTable(name: 'user_has_role')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uid', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
@@ -107,17 +105,6 @@ class User
     public function preUpdate(): void
     {
         $this->updated_at = time();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    #[AuditLog\AuditIdentifier]
-    public function getIdentifier(): string
-    {
-        return $this->getName() . ' (' . $this->getEmail() . ')';
     }
 
     public function getName(): ?string
@@ -245,5 +232,10 @@ class User
     public function getApiKeys(): Collection
     {
         return $this->api_keys;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName() . ' (' . $this->getEmail() . ')';
     }
 }

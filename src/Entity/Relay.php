@@ -17,12 +17,8 @@ use OpenApi\Annotations as OA;
 ]
 class Relay
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    /** @OA\Property() */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     /** @OA\Property(example="http://custom-url.example.com") */
     #[ORM\Column(length: 255)]
@@ -64,11 +60,6 @@ class Relay
     public function preUpdate(): void
     {
         $this->updated_at = time();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getBaseUrl(): ?string

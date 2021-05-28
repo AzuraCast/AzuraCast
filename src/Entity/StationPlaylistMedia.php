@@ -13,9 +13,7 @@ use JsonSerializable;
 ]
 class StationPlaylistMedia implements JsonSerializable
 {
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    use Traits\HasAutoIncrementId;
 
     #[ORM\Column]
     protected int $playlist_id;
@@ -44,11 +42,6 @@ class StationPlaylistMedia implements JsonSerializable
     {
         $this->playlist = $playlist;
         $this->media = $media;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getPlaylist(): StationPlaylist

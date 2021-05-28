@@ -4,6 +4,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\StationMountInterface;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
@@ -19,12 +20,8 @@ use OpenApi\Annotations as OA;
 ]
 class StationStreamerBroadcast
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\ManyToOne(inversedBy: 'streamer_broadcasts')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -49,11 +46,6 @@ class StationStreamerBroadcast
         $this->station = $streamer->getStation();
 
         $this->timestampStart = time();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

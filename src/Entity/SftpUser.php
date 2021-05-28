@@ -17,9 +17,7 @@ use const PASSWORD_ARGON2ID;
 #[Auditable]
 class SftpUser
 {
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    use Traits\HasAutoIncrementId;
 
     #[ORM\ManyToOne(inversedBy: 'sftp_users')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -41,11 +39,6 @@ class SftpUser
     public function __construct(Station $station)
     {
         $this->station = $station;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

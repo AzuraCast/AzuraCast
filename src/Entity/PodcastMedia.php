@@ -16,11 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 ]
 class PodcastMedia
 {
+    use Traits\HasUniqueId;
     use Traits\TruncateStrings;
-
-    #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
-    protected string $id;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -59,11 +56,6 @@ class PodcastMedia
     public function __construct(StorageLocation $storageLocation)
     {
         $this->storage_location = $storageLocation;
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
     }
 
     public function getStorageLocation(): StorageLocation

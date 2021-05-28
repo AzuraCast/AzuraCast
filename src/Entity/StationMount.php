@@ -5,6 +5,7 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
+use App\Entity\Interfaces\StationMountInterface;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,14 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_mounts'),
     AuditLog\Auditable
 ]
-class StationMount implements StationMountInterface
+class StationMount implements StationMountInterface, \Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -83,7 +80,7 @@ class StationMount implements StationMountInterface
     #[ORM\Column(length: 255)]
     protected ?string $custom_listen_url = null;
 
-    /** @OA\Property(@OA\Items()) */
+    /** @OA\Property(type="array", @OA\Items()) */
     #[ORM\Column(type: 'text')]
     protected ?string $frontend_config = null;
 
@@ -112,11 +109,6 @@ class StationMount implements StationMountInterface
         $this->station = $station;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getStation(): Station
     {
         return $this->station;
@@ -133,7 +125,6 @@ class StationMount implements StationMountInterface
         $this->name = $this->truncateString('/' . ltrim($new_name, '/'), 100);
     }
 
-    #[AuditLog\AuditIdentifier]
     public function getDisplayName(): string
     {
         if (!empty($this->display_name)) {
@@ -356,5 +347,10 @@ class StationMount implements StationMountInterface
         }
 
         return $response;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getStation() . ' Mount: ' . $this->getDisplayName();
     }
 }

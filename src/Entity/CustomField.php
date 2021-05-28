@@ -15,14 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'custom_field'),
     AuditLog\Auditable
 ]
-class CustomField
+class CustomField implements \Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    /** @OA\Property() */
-    #[ORM\Column(nullable: false)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
-    protected ?int $id;
 
     /** @OA\Property() */
     #[ORM\Column(length: 255)]
@@ -31,18 +27,12 @@ class CustomField
 
     /** @OA\Property(description="The programmatic name for the field. Can be auto-generated from the full name.") */
     #[ORM\Column(length: 100)]
-    protected ?string $short_name;
+    protected ?string $short_name = null;
 
     /** @OA\Property(description="An ID3v2 field to automatically assign to this value, if it exists in the media file.") */
     #[ORM\Column(length: 100)]
-    protected ?string $auto_assign;
+    protected ?string $auto_assign = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    #[AuditLog\AuditIdentifier]
     public function getName(): string
     {
         return $this->name;
@@ -85,5 +75,10 @@ class CustomField
     public function setAutoAssign(?string $auto_assign): void
     {
         $this->auto_assign = $auto_assign;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

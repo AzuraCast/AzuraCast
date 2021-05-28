@@ -29,14 +29,10 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['station', 'streamer_username']),
     AuditLog\Auditable
 ]
-class StationStreamer
+class StationStreamer implements \Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
-
-    /** @OA\Property(example=1) */
-    #[ORM\Column]
-    #[ORM\Id, ORM\GeneratedValue]
-    protected int $id;
 
     #[ORM\Column]
     protected int $station_id;
@@ -79,6 +75,7 @@ class StationStreamer
 
     /**
      * @OA\Property(
+     *     type="array",
      *     @OA\Items()
      * )
      */
@@ -91,11 +88,6 @@ class StationStreamer
     {
         $this->station = $station;
         $this->schedule_items = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station
@@ -132,7 +124,6 @@ class StationStreamer
         return password_verify($password, $this->streamer_password);
     }
 
-    #[AuditLog\AuditIdentifier]
     public function getDisplayName(): string
     {
         return (!empty($this->display_name))
@@ -202,5 +193,10 @@ class StationStreamer
     public function getScheduleItems(): Collection
     {
         return $this->schedule_items;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getStation() . ' Streamer: ' . $this->getDisplayName();
     }
 }

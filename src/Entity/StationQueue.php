@@ -6,112 +6,61 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="station_queue")
- * @ORM\Entity()
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_queue')
+]
 class StationQueue implements SongInterface
 {
     use Traits\TruncateInts;
     use Traits\HasSongFields;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
-     */
-    protected $station_id;
+    #[ORM\Column]
+    protected int $station_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
+    #[ORM\ManyToOne(inversedBy: 'history')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Station $station;
 
-    /**
-     * @ORM\Column(name="playlist_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $playlist_id;
+    #[ORM\Column]
+    protected ?int $playlist_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationPlaylist")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationPlaylist|null
-     */
-    protected $playlist;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?StationPlaylist $playlist;
 
-    /**
-     * @ORM\Column(name="media_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $media_id;
+    #[ORM\Column]
+    protected ?int $media_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationMedia")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationMedia|null
-     */
-    protected $media;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?StationMedia $media;
 
-    /**
-     * @ORM\Column(name="request_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $request_id;
+    #[ORM\Column]
+    protected ?int $request_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationRequest")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationRequest|null
-     */
-    protected $request;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?StationRequest $request;
 
-    /**
-     * @ORM\Column(name="sent_to_autodj", type="boolean")
-     * @var bool
-     */
-    protected $sent_to_autodj;
+    #[ORM\Column]
+    protected bool $sent_to_autodj;
 
-    /**
-     * @ORM\Column(name="autodj_custom_uri", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $autodj_custom_uri;
+    #[ORM\Column(length: 255)]
+    protected ?string $autodj_custom_uri;
 
-    /**
-     * @ORM\Column(name="timestamp_cued", type="integer")
-     * @var int
-     */
-    protected $timestamp_cued;
+    #[ORM\Column]
+    protected int $timestamp_cued;
 
-    /**
-     * @ORM\Column(name="duration", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $duration;
+    #[ORM\Column]
+    protected ?int $duration;
 
-    /**
-     * @ORM\Column(name="log", type="json", nullable=true)
-     * @var array|null Any relevant logs regarding how this track was selected.
-     */
-    protected $log;
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $log;
 
     public function __construct(Station $station, SongInterface $song)
     {

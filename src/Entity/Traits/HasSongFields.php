@@ -10,29 +10,17 @@ trait HasSongFields
 {
     use TruncateStrings;
 
-    /**
-     * @ORM\Column(name="song_id", type="string", length=50)
-     * @var string
-     */
-    protected $song_id;
+    #[ORM\Column(length: 50)]
+    protected string $song_id;
 
-    /**
-     * @ORM\Column(name="text", type="string", length=303, nullable=true)
-     * @var string|null
-     */
-    protected $text;
+    #[ORM\Column(length: 303)]
+    protected ?string $text;
 
-    /**
-     * @ORM\Column(name="artist", type="string", length=150, nullable=true)
-     * @var string|null
-     */
-    protected $artist;
+    #[ORM\Column(length: 150)]
+    protected ?string $artist;
 
-    /**
-     * @ORM\Column(name="title", type="string", length=150, nullable=true)
-     * @var string|null
-     */
-    protected $title;
+    #[ORM\Column(length: 150)]
+    protected ?string $title;
 
     public function setSong(SongInterface $song): void
     {

@@ -12,88 +12,50 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 
-/**
- * @ORM\Table(name="station_schedules")
- * @ORM\Entity
- *
- * @AuditLog\Auditable
- *
- * @OA\Schema(type="object")
- */
+/** @OA\Schema(type="object") */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_schedules'),
+    AuditLog\Auditable
+]
 class StationSchedule
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     * @var int|null
-     */
-    protected $id;
+    /** @OA\Property(example=1) */
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
+
+    #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationPlaylist $playlist;
+
+    #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationStreamer $streamer;
+
+    /** @OA\Property(example=900) */
+    #[ORM\Column(type: 'smallint')]
+    protected int $start_time = 0;
+
+    /** @OA\Property(example=2200) */
+    #[ORM\Column(type: 'smallint')]
+    protected int $end_time = 0;
+
+    #[ORM\Column(length: 10)]
+    protected ?string $start_date;
+
+    #[ORM\Column(length: 10)]
+    protected ?string $end_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="schedules")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
-     * })
-     * @var StationPlaylist|null
+     * @OA\Property(
+     *     description="Array of ISO-8601 days (1 for Monday, 7 for Sunday)"
+     *     example="0,1,2,3"
+     * )
      */
-    protected $playlist;
+    #[ORM\Column(length: 50)]
+    protected string $days;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationStreamer", inversedBy="schedules")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="streamer_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
-     * })
-     * @var StationStreamer|null
-     */
-    protected $streamer;
-
-    /**
-     * @ORM\Column(name="start_time", type="smallint")
-     *
-     * @OA\Property(example=900)
-     *
-     * @var int
-     */
-    protected $start_time = 0;
-
-    /**
-     * @ORM\Column(name="end_time", type="smallint")
-     *
-     * @OA\Property(example=2200)
-     *
-     * @var int
-     */
-    protected $end_time = 0;
-
-    /**
-     * @ORM\Column(name="start_date", type="string", length=10, nullable=true)
-     *
-     * @var string|null The optional start date for this scheduled period.
-     */
-    protected $start_date;
-
-    /**
-     * @ORM\Column(name="end_date", type="string", length=10, nullable=true)
-     *
-     * @var string|null The optional end date for this scheduled period.
-     */
-    protected $end_date;
-
-    /**
-     * @ORM\Column(name="days", type="string", length=50, nullable=true)
-     *
-     * @OA\Property(example="0,1,2,3")
-     *
-     * @var string Array of ISO-8601 days (1 for Monday, 7 for Sunday)
-     */
-    protected $days;
-
-    /**
-     * @param StationPlaylist|StationStreamer $relation
-     */
     public function __construct(StationPlaylist|StationStreamer $relation)
     {
         if ($relation instanceof StationPlaylist) {

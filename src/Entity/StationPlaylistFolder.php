@@ -7,45 +7,28 @@ namespace App\Entity;
 use App\Entity\Traits\TruncateStrings;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="station_playlist_folders")
- * @ORM\Entity()
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_playlist_folders')
+]
 class StationPlaylistFolder implements PathAwareInterface
 {
     use TruncateStrings;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Station $station;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="folders", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationPlaylist
-     */
-    protected $playlist;
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'folders')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StationPlaylist $playlist;
 
-    /**
-     * @ORM\Column(name="path", type="string", length=500)
-     * @var string
-     */
-    protected $path;
+    #[ORM\Column(length: 500)]
+    protected string $path;
 
     public function __construct(Station $station, StationPlaylist $playlist, string $path)
     {

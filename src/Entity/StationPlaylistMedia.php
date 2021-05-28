@@ -7,68 +7,38 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
-/**
- * @ORM\Table(name="station_playlist_media")
- * @ORM\Entity()
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_playlist_media')
+]
 class StationPlaylistMedia implements JsonSerializable
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\Column(name="playlist_id", type="integer")
-     * @var int
-     */
-    protected $playlist_id;
+    #[ORM\Column]
+    protected int $playlist_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="media_items", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationPlaylist
-     */
-    protected $playlist;
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StationPlaylist $playlist;
 
-    /**
-     * @ORM\Column(name="media_id", type="integer")
-     * @var int
-     */
-    protected $media_id;
+    #[ORM\Column]
+    protected int $media_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationMedia", inversedBy="playlists", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationMedia
-     */
-    protected $media;
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StationMedia $media;
 
-    /**
-     * @ORM\Column(name="weight", type="integer")
-     * @var int
-     */
-    protected $weight;
+    #[ORM\Column]
+    protected int $weight;
 
-    /**
-     * @ORM\Column(name="is_queued", type="boolean")
-     *
-     * @var bool
-     */
-    protected $is_queued = true;
+    #[ORM\Column]
+    protected bool $is_queued = true;
 
-    /**
-     * @ORM\Column(name="last_played", type="integer")
-     * @var int
-     */
-    protected $last_played;
+    #[ORM\Column]
+    protected int $last_played;
 
     public function __construct(StationPlaylist $playlist, StationMedia $media)
     {

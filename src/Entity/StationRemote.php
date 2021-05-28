@@ -15,211 +15,115 @@ use Symfony\Component\Validator\Constraints as Assert;
 use const PHP_URL_HOST;
 use const PHP_URL_PORT;
 
-/**
- * @ORM\Table(name="station_remotes")
- * @ORM\Entity()
- *
- * @AuditLog\Auditable
- *
- * @OA\Schema(type="object")
- */
+/** @OA\Schema(type="object") */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_remotes'),
+    AuditLog\Auditable
+]
 class StationRemote implements StationMountInterface
 {
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     * @var int|null
-     */
-    protected $id;
+    /** @OA\Property(example=1) */
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
+
+    #[ORM\Column]
+    protected int $station_id;
+
+    #[ORM\ManyToOne(inversedBy: 'remotes')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Station $station;
+
+    #[ORM\Column]
+    protected ?int $relay_id;
+
+    #[ORM\ManyToOne(inversedBy: 'remotes')]
+    #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?Relay $relay;
+
+    /** @OA\Property(example="128kbps MP3") */
+    #[ORM\Column(length: 255)]
+    protected ?string $display_name;
+
+    /** @OA\Property(example=true) */
+    #[ORM\Column]
+    protected bool $is_visible_on_public_pages = true;
+
+    /** @OA\Property(example="icecast") */
+    #[ORM\Column(length: 50)]
+    #[Assert\Choice(choices: [Adapters::REMOTE_ICECAST, Adapters::REMOTE_SHOUTCAST1, Adapters::REMOTE_SHOUTCAST2])]
+    protected string $type;
+
+    /** @OA\Property(example=false) */
+    #[ORM\Column]
+    protected bool $enable_autodj = false;
+
+    /** @OA\Property(example="mp3") */
+    #[ORM\Column(length: 10)]
+    protected ?string $autodj_format;
+
+    /** @OA\Property(example=128) */
+    #[ORM\Column(type: 'smallint')]
+    protected ?int $autodj_bitrate;
+
+    /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
+    #[ORM\Column(length: 255)]
+    protected ?string $custom_listen_url;
+
+    /** @OA\Property(example="http://custom-url.example.com") */
+    #[ORM\Column(length: 255)]
+    protected ?string $url;
+
+    /** @OA\Property(example="/stream.mp3") */
+    #[ORM\Column(length: 150)]
+    protected ?string $mount;
+
+    /** @OA\Property(example="password") */
+    #[ORM\Column(length: 100)]
+    protected ?string $admin_password;
+
+    /** @OA\Property(example=8000) */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
+    protected ?int $source_port;
+
+    /** @OA\Property(example="/") */
+    #[ORM\Column(length: 150)]
+    protected ?string $source_mount;
+
+    /** @OA\Property(example="source") */
+    #[ORM\Column(length: 100)]
+    protected ?string $source_username;
+
+    /** @OA\Property(example="password") */
+    #[ORM\Column(length: 100)]
+    protected ?string $source_password;
+
+    /** @OA\Property(example=false) */
+    #[ORM\Column]
+    protected bool $is_public = false;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
+     * @OA\Property(
+     *     description="The most recent number of unique listeners."
+     *     example=10
+     * )
      */
-    protected $station_id;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $listeners_unique = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="remotes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
+     * @OA\Property(
+     *     description="The most recent number of total (non-unique) listeners."
+     *     example=12
+     * )
      */
-    protected $station;
-
-    /**
-     * @ORM\Column(name="relay_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $relay_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Relay", inversedBy="remotes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="relay_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Relay|null
-     */
-    protected $relay;
-
-    /**
-     * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="128kbps MP3")
-     *
-     * @var string|null
-     */
-    protected $display_name;
-
-    /**
-     * @ORM\Column(name="is_visible_on_public_pages", type="boolean")
-     *
-     * @OA\Property(example=true)
-     *
-     * @var bool
-     */
-    protected $is_visible_on_public_pages = true;
-
-    /**
-     * @ORM\Column(name="type", type="string", length=50)
-     *
-     * @OA\Property(example="icecast")
-     * @Assert\Choice(choices={Adapters::REMOTE_ICECAST, Adapters::REMOTE_SHOUTCAST1, Adapters::REMOTE_SHOUTCAST2})
-     *
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @ORM\Column(name="enable_autodj", type="boolean")
-     *
-     * @OA\Property(example=false)
-     *
-     * @var bool
-     */
-    protected $enable_autodj = false;
-
-    /**
-     * @ORM\Column(name="autodj_format", type="string", length=10, nullable=true)
-     *
-     * @OA\Property(example="mp3")
-     *
-     * @var string|null
-     */
-    protected $autodj_format;
-
-    /**
-     * @ORM\Column(name="autodj_bitrate", type="smallint", nullable=true)
-     *
-     * @OA\Property(example=128)
-     *
-     * @var int|null
-     */
-    protected $autodj_bitrate;
-
-    /**
-     * @ORM\Column(name="custom_listen_url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="https://custom-listen-url.example.com/stream.mp3")
-     *
-     * @var string|null
-     */
-    protected $custom_listen_url;
-
-    /**
-     * @ORM\Column(name="url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="http://custom-url.example.com")
-     *
-     * @var string|null
-     */
-    protected $url;
-
-    /**
-     * @ORM\Column(name="mount", type="string", length=150, nullable=true)
-     *
-     * @OA\Property(example="/stream.mp3")
-     *
-     * @var string|null
-     */
-    protected $mount;
-
-    /**
-     * @ORM\Column(name="admin_password", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="password")
-     *
-     * @var string|null
-     */
-    protected $admin_password;
-
-    /**
-     * @ORM\Column(name="source_port", type="smallint", nullable=true, options={"unsigned"=true})
-     *
-     * @OA\Property(example=8000)
-     *
-     * @var int|null
-     */
-    protected $source_port;
-
-    /**
-     * @ORM\Column(name="source_mount", type="string", length=150, nullable=true)
-     *
-     * @OA\Property(example="/")
-     *
-     * @var string|null
-     */
-    protected $source_mount;
-
-    /**
-     * @ORM\Column(name="source_username", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="source")
-     *
-     * @var string|null
-     */
-    protected $source_username;
-
-    /**
-     * @ORM\Column(name="source_password", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="password")
-     *
-     * @var string|null
-     */
-    protected $source_password;
-
-    /**
-     * @ORM\Column(name="is_public", type="boolean")
-     *
-     * @OA\Property(example=false)
-     *
-     * @var bool
-     */
-    protected $is_public = false;
-
-    /**
-     * @ORM\Column(name="listeners_unique", type="integer")
-     * @AuditLog\AuditIgnore
-     * @OA\Property(example=10)
-     *
-     * @var int The most recent number of unique listeners.
-     */
-    protected $listeners_unique = 0;
-
-    /**
-     * @ORM\Column(name="listeners_total", type="integer")
-     * @AuditLog\AuditIgnore
-     * @OA\Property(example=12)
-     *
-     * @var int The most recent number of total (non-unique) listeners.
-     */
-    protected $listeners_total = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $listeners_total = 0;
 
     public function __construct(Station $station)
     {

@@ -6,60 +6,34 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="unprocessable_media", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "storage_location_id"})
- * })
- * @ORM\Entity()
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'unprocessable_media'),
+    ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
+]
 class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterface
 {
     public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\Column(name="storage_location_id", type="integer")
-     * @var int
-     */
-    protected $storage_location_id;
+    #[ORM\Column]
+    protected int $storage_location_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StorageLocation", inversedBy="media")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StorageLocation
-     */
-    protected $storage_location;
+    #[ORM\ManyToOne(inversedBy: 'media')]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StorageLocation $storage_location;
 
-    /**
-     * @ORM\Column(name="path", type="string", length=500)
-     *
-     * @var string The relative path of the media file.
-     */
-    protected $path;
+    #[ORM\Column(length: 500)]
+    protected string $path;
 
-    /**
-     * @ORM\Column(name="mtime", type="integer", nullable=true)
-     *
-     * @var int|null The UNIX timestamp when the database was last modified.
-     */
-    protected $mtime = 0;
+    #[ORM\Column]
+    protected ?int $mtime = 0;
 
-    /**
-     * @ORM\Column(name="error", type="text", nullable=true)
-     *
-     * @var string|null The full text of any errors that occurred during processing.
-     */
-    protected $error;
+    #[ORM\Column(type: 'text')]
+    protected ?string $error;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {

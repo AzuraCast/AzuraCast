@@ -8,9 +8,11 @@ use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'podcast_category')]
-#[AuditLog\Auditable]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'podcast_category'),
+    AuditLog\Auditable
+]
 class PodcastCategory
 {
     use Traits\TruncateStrings;

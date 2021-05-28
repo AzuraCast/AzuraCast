@@ -244,14 +244,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="update_last_run", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when updates were last checked.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The UNIX timestamp when updates were last checked."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $update_last_run = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $update_last_run = 0;
 
     public function getUpdateLastRun(): int
     {
@@ -269,13 +269,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="public_theme", type="string", length=50, nullable=true)
-     *
-     * @OA\Property(example="light")
-     * @Assert\Choice({Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK})
-     * @var string|null Base Theme for Public Pages
+     * @OA\Property(
+     *     description="Base Theme for Public Pages"
+     *     example="light"
+     * )
      */
-    protected $public_theme = Customization::DEFAULT_THEME;
+    #[ORM\Column(length: 50)]
+    #[Assert\Choice([Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK])]
+    protected ?string $public_theme = Customization::DEFAULT_THEME;
 
     public function getPublicTheme(): string
     {
@@ -288,12 +289,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="hide_album_art", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Hide Album Art on Public Pages
+     * @OA\Property(
+     *     description="Hide Album Art on Public Pages"
+     *     example="false"
+     * )
      */
-    protected $hide_album_art = false;
+    #[ORM\Column]
+    protected bool $hide_album_art = false;
 
     public function getHideAlbumArt(): bool
     {
@@ -306,12 +308,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="homepage_redirect_url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="https://example.com/")
-     * @var string|null Homepage Redirect URL
+     * @OA\Property(
+     *     description="Homepage Redirect URL"
+     *     example="https://example.com/"
+     * )
      */
-    protected $homepage_redirect_url = null;
+    #[ORM\Column(length: 255)]
+    protected ?string $homepage_redirect_url = null;
 
     public function getHomepageRedirectUrl(): ?string
     {
@@ -324,12 +327,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="default_album_art_url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="https://example.com/image.jpg")
-     * @var string|null Default Album Art URL
+     * @OA\Property(
+     *     description="Default Album Art URL"
+     *     example="https://example.com/image.jpg"
+     * )
      */
-    protected $default_album_art_url = null;
+    #[ORM\Column]
+    protected ?string $default_album_art_url = null;
 
     public function getDefaultAlbumArtUrl(): ?string
     {
@@ -342,12 +346,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="use_external_album_art_when_processing_media", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Attempt to fetch album art from external sources when processing media.
+     * @OA\Property(
+     *     description="Attempt to fetch album art from external sources when processing media."
+     *     example="false"
+     * )
      */
-    protected $use_external_album_art_when_processing_media = false;
+    #[ORM\Column]
+    protected bool $use_external_album_art_when_processing_media = false;
 
     public function getUseExternalAlbumArtWhenProcessingMedia(): bool
     {
@@ -360,12 +365,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="use_external_album_art_in_apis", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Attempt to fetch album art from external sources in API requests.
+     * @OA\Property(
+     *     description="Attempt to fetch album art from external sources in API requests."
+     *     example="false"
+     * )
      */
-    protected $use_external_album_art_in_apis = false;
+    #[ORM\Column]
+    protected bool $use_external_album_art_in_apis = false;
 
     public function getUseExternalAlbumArtInApis(): bool
     {
@@ -378,12 +384,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="last_fm_api_key", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="SAMPLE-API-KEY")
-     * @var string|null An API key to connect to Last.fm services, if provided.
+     * @OA\Property(
+     *     description="An API key to connect to Last.fm services, if provided."
+     *     example="SAMPLE-API-KEY"
+     * )
      */
-    protected $last_fm_api_key = null;
+    #[ORM\Column(length: 255)]
+    protected ?string $last_fm_api_key = null;
 
     public function getLastFmApiKey(): ?string
     {
@@ -399,12 +406,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="hide_product_name", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Hide AzuraCast Branding on Public Pages
+     * @OA\Property(
+     *     description="Hide AzuraCast Branding on Public Pages"
+     *     example="false"
+     * )
      */
-    protected $hide_product_name = false;
+    #[ORM\Column]
+    protected bool $hide_product_name = false;
 
     public function getHideProductName(): bool
     {
@@ -417,12 +425,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="public_custom_css", type="text", nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var string|null Custom CSS for Public Pages
+     * @OA\Property(
+     *     description="Custom CSS for Public Pages"
+     *     example=""
+     * )
      */
-    protected $public_custom_css = null;
+    #[ORM\Column(type: 'text')]
+    protected ?string $public_custom_css = null;
 
     public function getPublicCustomCss(): ?string
     {
@@ -435,12 +444,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="public_custom_js", type="text", nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var string|null Custom JS for Public Pages
+     * @OA\Property(
+     *     description="Custom JS for Public Pages"
+     *     example=""
+     * )
      */
-    protected $public_custom_js = null;
+    #[ORM\Column(type: 'text')]
+    protected ?string $public_custom_js = null;
 
     public function getPublicCustomJs(): ?string
     {
@@ -453,12 +463,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="internal_custom_css", type="text", nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var string|null Custom CSS for Internal Pages
+     * @OA\Property(
+     *     description="Custom CSS for Internal Pages"
+     *     example=""
+     * )
      */
-    protected $internal_custom_css = null;
+    #[ORM\Column(type: 'text')]
+    protected ?string $internal_custom_css = null;
 
     public function getInternalCustomCss(): ?string
     {
@@ -471,12 +482,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_enabled", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Whether backup is enabled.
+     * @OA\Property(
+     *     description="Whether backup is enabled."
+     *     example="false"
+     * )
      */
-    protected $backup_enabled = false;
+    #[ORM\Column]
+    protected bool $backup_enabled = false;
 
     public function isBackupEnabled(): bool
     {
@@ -489,12 +501,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_time_code", type="string", length=4, nullable=true)
-     *
-     * @OA\Property(example=400)
-     * @var string|null The timecode (i.e. 400 for 4:00AM) when automated backups should run.
+     * @OA\Property(
+     *     description="The timecode (i.e. 400 for 4:00AM) when automated backups should run."
+     *     example=400
+     * )
      */
-    protected $backup_time_code = null;
+    #[ORM\Column(length: 4)]
+    protected ?string $backup_time_code = null;
 
     public function getBackupTimeCode(): ?string
     {
@@ -507,12 +520,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_exclude_media", type="boolean")
-     *
-     * @OA\Property(example="false")
-     * @var bool Whether to exclude media in automated backups.
+     * @OA\Property(
+     *     description="Whether to exclude media in automated backups."
+     *     example="false"
+     * )
      */
-    protected $backup_exclude_media = false;
+    #[ORM\Column]
+    protected bool $backup_exclude_media = false;
 
     public function getBackupExcludeMedia(): bool
     {
@@ -525,12 +539,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_keep_copies", type="smallint")
-     *
-     * @OA\Property(example=2)
-     * @var int Number of backups to keep, or infinite if zero/null.
+     * @OA\Property(
+     *     description="Number of backups to keep, or infinite if zero/null."
+     *     example=2
+     * )
      */
-    protected $backup_keep_copies = 0;
+    #[ORM\Column(type: 'smallint')]
+    protected int $backup_keep_copies = 0;
 
     public function getBackupKeepCopies(): int
     {
@@ -543,12 +558,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_storage_location", type="integer", nullable=true)
-     *
-     * @OA\Property(example=1)
-     * @var int|null The storage location ID for automated backups.
+     * @OA\Property(
+     *     description="The storage location ID for automated backups."
+     *     example=1
+     * )
      */
-    protected $backup_storage_location = null;
+    #[ORM\Column]
+    protected ?int $backup_storage_location = null;
 
     public function getBackupStorageLocation(): ?int
     {
@@ -561,14 +577,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_last_run", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when automated backup was last run.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The UNIX timestamp when automated backup was last run."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $backup_last_run = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $backup_last_run = 0;
 
     public function getBackupLastRun(): int
     {
@@ -586,14 +602,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_last_result", type="text", nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var string|null The result of the latest automated backup task.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The result of the latest automated backup task."
+     *     example=""
+     * )
      */
-    protected $backup_last_result = null;
+    #[ORM\Column(type: 'text')]
+    #[AuditLog\AuditIgnore]
+    protected ?string $backup_last_result = null;
 
     public function getBackupLastResult(): ?string
     {
@@ -606,14 +622,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="backup_last_output", type="text", nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var string|null The output of the latest automated backup task.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The output of the latest automated backup task."
+     *     example=""
+     * )
      */
-    protected $backup_last_output = null;
+    #[ORM\Column(type: 'text')]
+    #[AuditLog\AuditIgnore]
+    protected ?string $backup_last_output = null;
 
     public function getBackupLastOutput(): ?string
     {
@@ -626,12 +642,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="setup_complete_time", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when setup was last completed.
+     * @OA\Property(
+     *     description="The UNIX timestamp when setup was last completed."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $setup_complete_time = 0;
+    #[ORM\Column]
+    protected int $setup_complete_time = 0;
 
     public function getSetupCompleteTime(): int
     {
@@ -654,14 +671,15 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="nowplaying", type="json", nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var mixed[]|null The current cached now playing data.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The current cached now playing data."
+     *     example=""
+     * )
+     * @var mixed[]|null
      */
-    protected $nowplaying = null;
+    #[ORM\Column(type: 'json')]
+    #[AuditLog\AuditIgnore]
+    protected ?array $nowplaying = null;
 
     /**
      * @return mixed[]|null
@@ -677,14 +695,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="sync_nowplaying_last_run", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when the now playing sync task was last run.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The UNIX timestamp when the now playing sync task was last run."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $sync_nowplaying_last_run = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $sync_nowplaying_last_run = 0;
 
     public function getSyncNowplayingLastRun(): int
     {
@@ -697,14 +715,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="sync_short_last_run", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when the 60-second "short" sync task was last run.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The UNIX timestamp when the 60-second "short" sync task was last run."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $sync_short_last_run = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $sync_short_last_run = 0;
 
     public function getSyncShortLastRun(): int
     {
@@ -717,14 +735,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="sync_medium_last_run", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when the 5-minute "medium" sync task was last run.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The UNIX timestamp when the 5-minute "medium" sync task was last run."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $sync_medium_last_run = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $sync_medium_last_run = 0;
 
     public function getSyncMediumLastRun(): int
     {
@@ -737,14 +755,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="sync_long_last_run", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when the 1-hour "long" sync task was last run.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The UNIX timestamp when the 1-hour "long" sync task was last run."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $sync_long_last_run = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $sync_long_last_run = 0;
 
     public function getSyncLongLastRun(): int
     {
@@ -790,14 +808,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="external_ip", type="string", length=45, nullable=true)
-     *
-     * @OA\Property(example="192.168.1.1")
-     * @var string|null This installation's external IP.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="This installation's external IP."
+     *     example="192.168.1.1"
+     * )
      */
-    protected $external_ip = null;
+    #[ORM\Column(length: 45)]
+    #[AuditLog\AuditIgnore]
+    protected ?string $external_ip = null;
 
     public function getExternalIp(): ?string
     {
@@ -810,12 +828,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="geolite_license_key", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var string|null The license key for the Maxmind Geolite download.
+     * @OA\Property(
+     *     description="The license key for the Maxmind Geolite download."
+     *     example=""
+     * )
      */
-    protected $geolite_license_key = null;
+    #[ORM\Column(length: 255)]
+    protected ?string $geolite_license_key = null;
 
     public function getGeoliteLicenseKey(): ?string
     {
@@ -830,14 +849,14 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="geolite_last_run", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The UNIX timestamp when the Maxmind Geolite was last downloaded.
-     *
-     * @AuditLog\AuditIgnore
+     * @OA\Property(
+     *     description="The UNIX timestamp when the Maxmind Geolite was last downloaded."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $geolite_last_run = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $geolite_last_run = 0;
 
     public function getGeoliteLastRun(): int
     {
@@ -855,12 +874,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="enable_advanced_features", type="boolean")
-     *
-     * @OA\Property(example=false)
-     * @var bool Whether to enable "advanced" functionality in the system that is intended for power users.
+     * @OA\Property(
+     *     description="Whether to enable "advanced" functionality in the system that is intended for power users."
+     *     example=false
+     * )
      */
-    protected $enable_advanced_features = false;
+    #[ORM\Column]
+    protected bool $enable_advanced_features = false;
 
     public function getEnableAdvancedFeatures(): bool
     {
@@ -873,12 +893,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_enabled", type="boolean")
-     *
-     * @OA\Property(example="true")
-     * @var bool Enable e-mail delivery across the application.
+     * @OA\Property(
+     *     description="Enable e-mail delivery across the application."
+     *     example="true"
+     * )
      */
-    protected $mail_enabled = false;
+    #[ORM\Column]
+    protected bool $mail_enabled = false;
 
     public function getMailEnabled(): bool
     {
@@ -891,12 +912,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_sender_name", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="AzuraCast")
-     * @var string|null The name of the sender of system e-mails.
+     * @OA\Property(
+     *     description="The name of the sender of system e-mails."
+     *     example="AzuraCast"
+     * )
      */
-    protected $mail_sender_name = '';
+    #[ORM\Column(length: 255)]
+    protected ?string $mail_sender_name = '';
 
     public function getMailSenderName(): string
     {
@@ -909,12 +931,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_sender_email", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="example@example.com")
-     * @var string|null The e-mail address of the sender of system e-mails.
+     * @OA\Property(
+     *     description="The e-mail address of the sender of system e-mails."
+     *     example="example@example.com"
+     * )
      */
-    protected $mail_sender_email = '';
+    #[ORM\Column(length: 255)]
+    protected ?string $mail_sender_email = '';
 
     public function getMailSenderEmail(): string
     {
@@ -927,12 +950,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_smtp_host", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="smtp.example.com")
-     * @var string|null The host to send outbound SMTP mail.
+     * @OA\Property(
+     *     description="The host to send outbound SMTP mail."
+     *     example="smtp.example.com"
+     * )
      */
-    protected $mail_smtp_host = '';
+    #[ORM\Column(length: 255)]
+    protected ?string $mail_smtp_host = '';
 
     public function getMailSmtpHost(): string
     {
@@ -945,12 +969,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_smtp_port", type="smallint")
-     *
-     * @OA\Property(example=465)
-     * @var int The port for sending outbound SMTP mail.
+     * @OA\Property(
+     *     description="The port for sending outbound SMTP mail."
+     *     example=465
+     * )
      */
-    protected $mail_smtp_port = 0;
+    #[ORM\Column(type: 'smallint')]
+    protected int $mail_smtp_port = 0;
 
     public function getMailSmtpPort(): int
     {
@@ -963,12 +988,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_smtp_username", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="username")
-     * @var string|null The username when connecting to SMTP mail.
+     * @OA\Property(
+     *     description="The username when connecting to SMTP mail."
+     *     example="username"
+     * )
      */
-    protected $mail_smtp_username = '';
+    #[ORM\Column(length: 255)]
+    protected ?string $mail_smtp_username = '';
 
     public function getMailSmtpUsername(): string
     {
@@ -981,12 +1007,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_smtp_password", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="password")
-     * @var string|null The password when connecting to SMTP mail.
+     * @OA\Property(
+     *     description="The password when connecting to SMTP mail."
+     *     example="password"
+     * )
      */
-    protected $mail_smtp_password = '';
+    #[ORM\Column(length: 255)]
+    protected ?string $mail_smtp_password = '';
 
     public function getMailSmtpPassword(): string
     {
@@ -999,12 +1026,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="mail_smtp_secure", type="boolean")
-     *
-     * @OA\Property(example="true")
-     * @var bool Whether to use a secure (TLS) connection when sending SMTP mail.
+     * @OA\Property(
+     *     description="Whether to use a secure (TLS) connection when sending SMTP mail."
+     *     example="true"
+     * )
      */
-    protected $mail_smtp_secure = true;
+    #[ORM\Column]
+    protected bool $mail_smtp_secure = true;
 
     public function getMailSmtpSecure(): bool
     {
@@ -1017,12 +1045,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="avatar_service", type="string", length=25, nullable=true)
-     *
-     * @OA\Property(example="libravatar")
-     * @var string|null The external avatar service to use when fetching avatars.
+     * @OA\Property(
+     *     description="The external avatar service to use when fetching avatars."
+     *     example="libravatar"
+     * )
      */
-    protected $avatar_service = null;
+    #[ORM\Column(length: 25)]
+    protected ?string $avatar_service = null;
 
     public function getAvatarService(): string
     {
@@ -1035,12 +1064,13 @@ class Settings
     }
 
     /**
-     * @ORM\Column(name="avatar_default_url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="")
-     * @var string|null The default avatar URL.
+     * @OA\Property(
+     *     description="The default avatar URL."
+     *     example=""
+     * )
      */
-    protected $avatar_default_url = null;
+    #[ORM\Column(length: 255)]
+    protected ?string $avatar_default_url = null;
 
     public function getAvatarDefaultUrl(): string
     {

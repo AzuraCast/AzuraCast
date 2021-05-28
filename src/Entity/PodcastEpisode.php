@@ -9,9 +9,11 @@ use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'podcast_episode')]
-#[AuditLog\Auditable]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'podcast_episode'),
+    AuditLog\Auditable
+]
 class PodcastEpisode
 {
     use Traits\TruncateStrings;

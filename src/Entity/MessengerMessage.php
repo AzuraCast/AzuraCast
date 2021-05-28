@@ -9,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
  * Internal table used for Symfony Messenger handling.
  * @internal
  */
-#[ORM\Entity(readOnly: true)]
-#[ORM\Table(name: 'messenger_messages')]
-#[ORM\Index(columns: ['queue_name'])]
-#[ORM\Index(columns: ['available_at'])]
-#[ORM\Index(columns: ['delivered_at'])]
+#[
+    ORM\Entity(readOnly: true),
+    ORM\Table(name: 'messenger_messages'),
+    ORM\Index(columns: ['queue_name']),
+    ORM\Index(columns: ['available_at']),
+    ORM\Index(columns: ['delivered_at'])
+]
 class MessengerMessage
 {
     #[ORM\Column(type: 'bigint')]

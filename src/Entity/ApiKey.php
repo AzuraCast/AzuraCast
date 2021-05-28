@@ -9,9 +9,11 @@ use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
-#[AuditLog\Auditable]
-#[ORM\Table(name: 'api_keys')]
-#[ORM\Entity(readOnly: true)]
+#[
+    AuditLog\Auditable,
+    ORM\Table(name: 'api_keys'),
+    ORM\Entity(readOnly: true)
+]
 class ApiKey implements JsonSerializable
 {
     use Traits\HasSplitTokenFields;

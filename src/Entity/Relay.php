@@ -10,8 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
 /** @OA\Schema(type="object") */
-#[ORM\Entity, ORM\Table(name: 'relays')]
-#[ORM\HasLifecycleCallbacks]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'relays'),
+    ORM\HasLifecycleCallbacks
+]
 class Relay
 {
     use Traits\TruncateStrings;

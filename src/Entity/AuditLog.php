@@ -6,9 +6,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'audit_log')]
-#[ORM\Index(columns: ['class', 'user', 'identifier'], name: 'idx_search')]
-#[ORM\Entity(readOnly: true)]
+#[
+    ORM\Entity(readOnly: true),
+    ORM\Table(name: 'audit_log'),
+    ORM\Index(columns: ['class', 'user', 'identifier'], name: 'idx_search')
+]
 class AuditLog
 {
     use Traits\TruncateStrings;

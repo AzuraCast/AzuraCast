@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Normalizer\Annotation\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,16 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
-/**
- * @ORM\Table(name="station_media", indexes={
- *   @ORM\Index(name="search_idx", columns={"title", "artist", "album"})
- * }, uniqueConstraints={
- *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "storage_location_id"})
- * })
- * @ORM\Entity()
- *
- * @OA\Schema(type="object")
- */
+/** @OA\Schema(type="object") */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_media'),
+    ORM\Index(columns: ['title', 'artist', 'album'], name: 'search_idx'),
+    ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
+]
 class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface
 {
     use Traits\UniqueId;
@@ -33,191 +29,161 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public const DIR_ALBUM_ART = '.albumart';
     public const DIR_WAVEFORMS = '.waveforms';
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     *
-     * @var int|null
-     */
-    protected $id;
+    /** @OA\Property(example=1) */
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
+
+    #[ORM\Column]
+    protected int $storage_location_id;
+
+    #[ORM\ManyToOne(inversedBy: 'media')]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StorageLocation $storage_location;
 
     /**
-     * @ORM\Column(name="storage_location_id", type="integer")
-     * @var int
+     * @OA\Property(
+     *     description="The name of the media file's album."
+     *     example="Test Album"
+     * )
      */
-    protected $storage_location_id;
+    #[ORM\Column(length: 200)]
+    protected ?string $album;
 
     /**
-     * @ORM\ManyToOne(targetEntity="StorageLocation", inversedBy="media")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StorageLocation
+     * @OA\Property(
+     *     description="The genre of the media file."
+     *     example="Rock"
+     * )
      */
-    protected $storage_location;
+    #[ORM\Column(length: 30)]
+    protected ?string $genre;
 
     /**
-     * @ORM\Column(name="album", type="string", length=200, nullable=true)
-     *
-     * @OA\Property(example="Test Album")
-     *
-     * @var string|null The name of the media file's album.
+     * @OA\Property(
+     *     description="Full lyrics of the track, if available."
+     *     example="...Never gonna give you up..."
+     * )
      */
-    protected $album;
+    #[ORM\Column(type: 'text')]
+    protected ?string $lyrics;
 
     /**
-     * @ORM\Column(name="genre", type="string", length=30, nullable=true)
-     *
-     * @OA\Property(example="Rock")
-     *
-     * @var string|null The genre of the media file.
+     * @OA\Property(
+     *     description="The track ISRC (International Standard Recording Code), used for licensing purposes."
+     *     example="GBARL0600786"
+     * )
      */
-    protected $genre;
+    #[ORM\Column(length: 15)]
+    protected ?string $isrc;
 
     /**
-     * @ORM\Column(name="lyrics", type="text", nullable=true)
-     *
-     * @OA\Property(example="...Never gonna give you up...")
-     *
-     * @var string|null Full lyrics of the track, if available.
+     * @OA\Property(
+     *     description="The song duration in seconds."
+     *     example=240.00
+     * )
      */
-    protected $lyrics;
+    #[ORM\Column(precision: 7, scale: 2)]
+    protected ?float $length = 0.00;
 
     /**
-     * @ORM\Column(name="isrc", type="string", length=15, nullable=true)
-     *
-     * @OA\Property(example="GBARL0600786")
-     *
-     * @var string|null The track ISRC (International Standard Recording Code), used for licensing purposes.
+     * @OA\Property(
+     *     description="The formatted song duration (in mm:ss format)"
+     *     example="4:00"
+     * )
      */
-    protected $isrc;
+    #[ORM\Column(length: 10)]
+    protected ?string $length_text = '0:00';
 
     /**
-     * @ORM\Column(name="length", type="decimal", precision=7, scale=2, nullable=true)
-     *
-     * @OA\Property(example=240.00)
-     *
-     * @var float The song duration in seconds.
+     * @OA\Property(
+     *     description="The relative path of the media file."
+     *     example="test.mp3"
+     * )
      */
-    protected $length = 0.00;
+    #[ORM\Column(length: 500)]
+    protected string $path;
 
     /**
-     * @ORM\Column(name="length_text", type="string", length=10, nullable=true)
-     *
-     * @OA\Property(example="4:00")
-     *
-     * @var string|null The formatted song duration (in mm:ss format)
+     * @OA\Property(
+     *     description="The UNIX timestamp when the database was last modified."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $length_text = '0:00';
+    #[ORM\Column]
+    protected ?int $mtime = 0;
 
     /**
-     * @ORM\Column(name="path", type="string", length=500)
-     *
-     * @OA\Property(example="test.mp3")
-     *
-     * @var string The relative path of the media file.
+     * @OA\Property(
+     *     description="The amount of amplification (in dB) to be applied to the radio source (liq_amplify)"
+     *     example=-14.00
+     * )
      */
-    protected $path;
+    #[ORM\Column(precision: 6, scale: 1)]
+    protected ?float $amplify;
 
     /**
-     * @ORM\Column(name="mtime", type="integer", nullable=true)
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     *
-     * @var int|null The UNIX timestamp when the database was last modified.
+     * @OA\Property(
+     *     description="The length of time (in seconds) before the next song starts in the fade (liq_start_next)"
+     *     example=2.00
+     * )
      */
-    protected $mtime = 0;
+    #[ORM\Column(precision: 6, scale: 1)]
+    protected ?float $fade_overlap;
 
     /**
-     * @ORM\Column(name="amplify", type="decimal", precision=6, scale=1, nullable=true)
-     *
-     * @OA\Property(example=-14.00)
-     *
-     * @var float|null The amount of amplification (in dB) to be applied to the radio source;
-     *                 equivalent to Liquidsoap's "liq_amplify" annotation.
+     * @OA\Property(
+     *     description="The length of time (in seconds) to fade in the next track (liq_fade_in)"
+     *     example=3.00
+     * )
      */
-    protected $amplify;
+    #[ORM\Column(precision: 6, scale: 1)]
+    protected ?float $fade_in;
 
     /**
-     * @ORM\Column(name="fade_overlap", type="decimal", precision=6, scale=1, nullable=true)
-     *
-     * @OA\Property(example=2.00)
-     *
-     * @var float|null The length of time (in seconds) before the next song starts in the fade;
-     *                 equivalent to Liquidsoap's "liq_start_next" annotation.
+     * @OA\Property(
+     *     description="The length of time (in seconds) to fade out the previous track (liq_fade_out)"
+     *     example=3.00
+     * )
      */
-    protected $fade_overlap;
+    #[ORM\Column(precision: 6, scale: 1)]
+    protected ?float $fade_out;
 
     /**
-     * @ORM\Column(name="fade_in", type="decimal", precision=6, scale=1, nullable=true)
-     *
-     * @OA\Property(example=3.00)
-     *
-     * @var float|null The length of time (in seconds) to fade in the next track;
-     *                 equivalent to Liquidsoap's "liq_fade_in" annotation.
+     * @OA\Property(
+     *     description="The length of time (in seconds) from the start of the track to start playing (liq_cue_in)"
+     *     example=30.00
+     * )
      */
-    protected $fade_in;
+    #[ORM\Column(precision: 6, scale: 1)]
+    protected ?float $cue_in;
 
     /**
-     * @ORM\Column(name="fade_out", type="decimal", precision=6, scale=1, nullable=true)
-     *
-     * @OA\Property(example=3.00)
-     *
-     * @var float|null The length of time (in seconds) to fade out the previous track;
-     *                 equivalent to Liquidsoap's "liq_fade_out" annotation.
+     * @OA\Property(
+     *     description="The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)"
+     *     example=30.00
+     * )
      */
-    protected $fade_out;
+    #[ORM\Column(precision: 6, scale: 1)]
+    protected ?float $cue_out;
 
     /**
-     * @ORM\Column(name="cue_in", type="decimal", precision=6, scale=1, nullable=true)
-     *
-     * @OA\Property(example=30.00)
-     *
-     * @var float|null The length of time (in seconds) from the start of the track to start playing;
-     *                 equivalent to Liquidsoap's "liq_cue_in" annotation.
+     * @OA\Property(
+     *     description="The latest time (UNIX timestamp) when album art was updated."
+     *     example=SAMPLE_TIMESTAMP
+     * )
      */
-    protected $cue_in;
+    #[ORM\Column]
+    protected int $art_updated_at = 0;
 
-    /**
-     * @ORM\Column(name="cue_out", type="decimal", precision=6, scale=1, nullable=true)
-     *
-     * @OA\Property(example=30.00)
-     *
-     * @var float|null The length of time (in seconds) from the CUE-IN of the track to stop playing;
-     *                 equivalent to Liquidsoap's "liq_cue_out" annotation.
-     */
-    protected $cue_out;
+    /** @OA\Property(@OA\Items()) */
+    #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationPlaylistMedia::class)]
+    #[DeepNormalize(true)]
+    #[Serializer\MaxDepth(1)]
+    protected Collection $playlists;
 
-    /**
-     * @ORM\Column(name="art_updated_at", type="integer")
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int The latest time (UNIX timestamp) when album art was updated.
-     */
-    protected $art_updated_at = 0;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
-     *
-     * @DeepNormalize(true)
-     * @Serializer\MaxDepth(1)
-     *
-     * @OA\Property(@OA\Items())
-     *
-     * @var Collection
-     */
-    protected $playlists;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
-     *
-     * @var Collection
-     */
-    protected $custom_fields;
+    #[ORM\OneToMany(mappedBy: 'media', targetEntity: StationMediaCustomField::class)]
+    protected Collection $custom_fields;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {

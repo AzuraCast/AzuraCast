@@ -14,8 +14,11 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @OA\Schema(type="object") */
-#[ORM\Entity, ORM\Table(name: 'role')]
-#[AuditLog\Auditable]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'role'),
+    AuditLog\Auditable
+]
 class Role implements JsonSerializable
 {
     use Traits\TruncateStrings;

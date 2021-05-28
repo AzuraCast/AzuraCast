@@ -7,8 +7,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
-#[ORM\Entity, ORM\Table(name: 'listener')]
-#[ORM\Index(columns: ['timestamp_end', 'timestamp_start'], name: 'idx_timestamps')]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'listener'),
+    ORM\Index(columns: ['timestamp_end', 'timestamp_start'], name: 'idx_timestamps')
+]
 class Listener
 {
     use Traits\TruncateStrings;

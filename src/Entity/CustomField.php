@@ -10,8 +10,11 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @OA\Schema(type="object") */
-#[ORM\Entity, ORM\Table(name: 'custom_field')]
-#[AuditLog\Auditable]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'custom_field'),
+    AuditLog\Auditable
+]
 class CustomField
 {
     use Traits\TruncateStrings;

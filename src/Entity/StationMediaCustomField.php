@@ -6,53 +6,34 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="station_media_custom_field")
- * @ORM\Entity
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_media_custom_field')
+]
 class StationMediaCustomField
 {
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id;
 
-    /**
-     * @ORM\Column(name="media_id", type="integer")
-     * @var int
-     */
-    protected $media_id;
+    #[ORM\Column]
+    protected int $media_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationMedia", inversedBy="metadata")
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
-     * @var StationMedia
-     */
-    protected $media;
+    #[ORM\ManyToOne(inversedBy: 'metadata')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StationMedia $media;
 
-    /**
-     * @ORM\Column(name="field_id", type="integer")
-     * @var int
-     */
-    protected $field_id;
+    #[ORM\Column]
+    protected int $field_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="CustomField", inversedBy="media_fields")
-     * @ORM\JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
-     * @var CustomField
-     */
-    protected $field;
+    #[ORM\ManyToOne(inversedBy: 'media_fields')]
+    #[ORM\JoinColumn(name: 'field_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected CustomField $field;
 
-    /**
-     * @ORM\Column(name="field_value", type="string", length=255, nullable=true)
-     * @var string
-     */
-    protected $value;
+    #[ORM\Column(length: 255)]
+    protected string $value;
 
     public function __construct(StationMedia $media, CustomField $field)
     {

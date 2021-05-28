@@ -9,10 +9,12 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(readOnly: true)]
-#[ORM\Table(name: 'analytics')]
-#[ORM\Index(columns: ['type', 'moment'], name: 'search_idx')]
-#[ORM\UniqueConstraint(name: 'stats_unique_idx', columns: ['station_id', 'type', 'moment'])]
+#[
+    ORM\Entity(readOnly: true),
+    ORM\Table(name: 'analytics'),
+    ORM\Index(columns: ['type', 'moment'], name: 'search_idx'),
+    ORM\UniqueConstraint(name: 'stats_unique_idx', columns: ['station_id', 'type', 'moment'])
+]
 class Analytics
 {
     /** @var string Log all analytics data across the system. */

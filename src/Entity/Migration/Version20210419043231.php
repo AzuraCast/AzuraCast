@@ -6,7 +6,6 @@ namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -43,8 +42,9 @@ final class Version20210419043231 extends AbstractMigration
 
         $appUniqueIdentifier = $oldSettings['app_unique_identifier'] ?? null;
         if (empty($appUniqueIdentifier)) {
-            $appUniqueIdentifier = Uuid::uuid4()->toString();
+            $appUniqueIdentifier = $this->connection->executeQuery('SELECT UUID()')->fetchOne();
         }
+
         $newSettings['app_unique_identifier'] = $appUniqueIdentifier;
 
         $textFields = [

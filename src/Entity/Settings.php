@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Customization;
+use App\Doctrine\Generator\UuidV6Generator;
 use App\Entity;
 use App\Event\GetSyncTasks;
 use App\Service\Avatar;
@@ -22,12 +23,12 @@ class Settings implements Stringable
 
     /** @OA\Property() */
     #[ORM\Column(type: 'guid', unique: true)]
-    #[ORM\Id, ORM\GeneratedValue(strategy: 'UUID')]
+    #[ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class)]
     protected string $app_unique_identifier;
 
-    public function getAppUniqueIdentifier(): string
+    public function getAppUniqueIdentifier(): ?string
     {
-        return $this->app_unique_identifier;
+        return $this->app_unique_identifier ?? null;
     }
 
     /**

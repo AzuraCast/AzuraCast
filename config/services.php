@@ -107,10 +107,6 @@ return [
 
             $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
 
-            if (!Doctrine\DBAL\Types\Type::hasType('uuid')) {
-                Doctrine\DBAL\Types\Type::addType('uuid', Ramsey\Uuid\Doctrine\UuidType::class);
-            }
-
             if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
                 Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
             }

@@ -56,6 +56,9 @@ class PodcastEpisode extends AbstractFixture implements DependentFixtureInterfac
             $filePath = $file->getPathname();
             $fileBaseName = basename($filePath);
 
+            $tempPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileBaseName;
+            copy($filePath, $tempPath);
+
             // Create an episode and associate it with the podcast/media.
             $episode = new Entity\PodcastEpisode($podcast);
 
@@ -72,7 +75,7 @@ class PodcastEpisode extends AbstractFixture implements DependentFixtureInterfac
             $this->mediaRepo->upload(
                 $episode,
                 $fileBaseName,
-                $filePath,
+                $tempPath,
                 $fs
             );
 

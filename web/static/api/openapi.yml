@@ -2398,11 +2398,11 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         connected_until:
           description: 'UNIX timestamp that the user disconnected (or the latest timestamp if they are still connected).'
           type: integer
-          example: 1621831102
+          example: 1622324661
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2433,11 +2433,13 @@ components:
         live:
           $ref: '#/components/schemas/Api_NowPlayingLive'
         now_playing:
+          description: 'Current Song'
           nullable: true
           oneOf:
             -
               $ref: '#/components/schemas/Api_NowPlayingCurrentSong'
         playing_next:
+          description: 'Next Playing Song'
           nullable: true
           oneOf:
             -
@@ -2538,9 +2540,11 @@ components:
             art_updated_at:
               type: integer
             categories:
+              type: array
               items:
                 type: string
             episodes:
+              type: array
               items:
                 type: string
     Api_PodcastEpisode:
@@ -2640,7 +2644,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2776,7 +2780,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2793,11 +2797,12 @@ components:
           $ref: '#/components/schemas/Api_Song'
       type: object
     Api_StationQueueDetailed:
+      type: object
       allOf:
         -
-          $ref: '#/components/schemas/HasLinks'
-        -
           $ref: '#/components/schemas/Api_StationQueue'
+        -
+          $ref: '#/components/schemas/HasLinks'
         -
           properties:
             autodj_custom_uri:
@@ -2805,7 +2810,6 @@ components:
               type: string
               example: ''
               nullable: true
-          type: object
     Api_StationRemote:
       properties:
         id:
@@ -2865,7 +2869,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2873,7 +2877,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2913,7 +2917,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1621831102
+          example: 1622324661
       type: object
     Api_Time:
       properties:
@@ -2952,61 +2956,62 @@ components:
           example: ''
       type: object
     CustomField:
-      properties:
-        id:
-          type: integer
-          nullable: true
-        name:
-          type: string
-        short_name:
-          description: 'The programmatic name for the field. Can be auto-generated from the full name.'
-          type: string
-          nullable: true
-        auto_assign:
-          description: 'An ID3v2 field to automatically assign to this value, if it exists in the media file.'
-          type: string
-          nullable: true
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              type: string
+            short_name:
+              description: 'The programmatic name for the field. Can be auto-generated from the full name.'
+              type: string
+              nullable: true
+            auto_assign:
+              description: 'An ID3v2 field to automatically assign to this value, if it exists in the media file.'
+              type: string
+              nullable: true
     Relay:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        base_url:
-          type: string
-          example: 'http://custom-url.example.com'
-        name:
-          type: string
-          example: Relay
-          nullable: true
-        is_visible_on_public_pages:
-          type: boolean
-          example: true
-        created_at:
-          type: integer
-          example: 1621831102
-        updated_at:
-          type: integer
-          example: 1621831102
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            base_url:
+              type: string
+              example: 'http://custom-url.example.com'
+            name:
+              type: string
+              example: Relay
+              nullable: true
+            is_visible_on_public_pages:
+              type: boolean
+              example: true
+            created_at:
+              type: integer
+              example: 1622324661
+            updated_at:
+              type: integer
+              example: 1622324661
     Role:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        name:
-          type: string
-          example: 'Super Administrator'
-        permissions:
-          items: {  }
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              type: string
+              example: 'Super Administrator'
+            permissions:
+              type: array
+              items: {  }
     Settings:
       properties:
         app_unique_identifier:
-          description: 'The unique identifier for this installation (for update checks).'
-          example: ''
+          type: string
         base_url:
           description: 'Site Base URL'
           type: string
@@ -3033,7 +3038,7 @@ components:
           type: boolean
           example: 'false'
         api_access_control:
-          description: 'API "Access-Control-Allow-Origin" header'
+          description: 'API ''Access-Control-Allow-Origin'' header'
           type: string
           example: '*'
           nullable: true
@@ -3055,7 +3060,7 @@ components:
         update_last_run:
           description: 'The UNIX timestamp when updates were last checked.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         public_theme:
           description: 'Base Theme for Public Pages'
           type: string
@@ -3132,7 +3137,7 @@ components:
         backup_last_run:
           description: 'The UNIX timestamp when automated backup was last run.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         backup_last_result:
           description: 'The result of the latest automated backup task.'
           type: string
@@ -3146,26 +3151,26 @@ components:
         setup_complete_time:
           description: 'The UNIX timestamp when setup was last completed.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         nowplaying:
           description: 'The current cached now playing data.'
           example: ''
         sync_nowplaying_last_run:
           description: 'The UNIX timestamp when the now playing sync task was last run.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         sync_short_last_run:
-          description: 'The UNIX timestamp when the 60-second "short" sync task was last run.'
+          description: 'The UNIX timestamp when the 60-second ''short'' sync task was last run.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         sync_medium_last_run:
-          description: 'The UNIX timestamp when the 5-minute "medium" sync task was last run.'
+          description: 'The UNIX timestamp when the 5-minute ''medium'' sync task was last run.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         sync_long_last_run:
-          description: 'The UNIX timestamp when the 1-hour "long" sync task was last run.'
+          description: 'The UNIX timestamp when the 1-hour ''long'' sync task was last run.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         external_ip:
           description: 'This installation''s external IP.'
           type: string
@@ -3179,9 +3184,9 @@ components:
         geolite_last_run:
           description: 'The UNIX timestamp when the Maxmind Geolite was last downloaded.'
           type: integer
-          example: 1621831102
+          example: 1622324661
         enable_advanced_features:
-          description: 'Whether to enable "advanced" functionality in the system that is intended for power users.'
+          description: 'Whether to enable ''advanced'' functionality in the system that is intended for power users.'
           type: boolean
           example: false
         mail_enabled:
@@ -3233,126 +3238,124 @@ components:
           nullable: true
       type: object
     Station:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        name:
-          description: 'The full display name of the station.'
-          type: string
-          example: 'AzuraTest Radio'
-          nullable: true
-        short_name:
-          description: 'The URL-friendly name for the station, typically auto-generated from the full station name.'
-          type: string
-          example: azuratest_radio
-          nullable: true
-        is_enabled:
-          description: 'If set to "false", prevents the station from broadcasting but leaves it in the database.'
-          type: boolean
-          example: true
-        frontend_type:
-          description: 'The frontend adapter (icecast,shoutcast,remote,etc)'
-          type: string
-          example: icecast
-          nullable: true
-        frontend_config:
-          description: 'An array containing station-specific frontend configuration'
-          type: array
-          items: {  }
-          nullable: true
-        backend_type:
-          description: 'The backend adapter (liquidsoap,etc)'
-          type: string
-          example: liquidsoap
-          nullable: true
-        backend_config:
-          description: 'An array containing station-specific backend configuration'
-          type: array
-          items: {  }
-          nullable: true
-        description:
-          type: string
-          example: 'A sample radio station.'
-          nullable: true
-        url:
-          type: string
-          example: 'https://demo.azuracast.com/'
-          nullable: true
-        genre:
-          type: string
-          example: Various
-          nullable: true
-        radio_base_dir:
-          type: string
-          example: /var/azuracast/stations/azuratest_radio
-          nullable: true
-        automation_settings:
-          type: array
-          items: {  }
-          nullable: true
-        enable_requests:
-          description: 'Whether listeners can request songs to play on this station.'
-          type: boolean
-          example: true
-        request_delay:
-          type: integer
-          example: 5
-          nullable: true
-        request_threshold:
-          type: integer
-          example: 15
-          nullable: true
-        disconnect_deactivate_streamer:
-          type: integer
-          example: 0
-        enable_streamers:
-          description: 'Whether streamers are allowed to broadcast to this station at all.'
-          type: boolean
-          example: false
-        is_streamer_live:
-          description: 'Whether a streamer is currently active on the station.'
-          type: boolean
-          example: false
-        enable_public_page:
-          description: 'Whether this station is visible as a public page and in a now-playing API response.'
-          type: boolean
-          example: true
-        enable_on_demand:
-          description: 'Whether this station has a public "on-demand" streaming and download page.'
-          type: boolean
-          example: true
-        enable_on_demand_download:
-          description: 'Whether the "on-demand" page offers download capability.'
-          type: boolean
-          example: true
-        api_history_items:
-          description: 'The number of "last played" history items to show for a station in the Now Playing API responses.'
-          type: integer
-          example: 5
-          nullable: true
-        timezone:
-          description: 'The time zone that station operations should take place in.'
-          type: string
-          example: UTC
-          nullable: true
-        default_album_art_url:
-          description: 'The station-specific default album artwork URL.'
-          type: string
-          example: 'https://example.com/image.jpg'
-          nullable: true
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              description: 'The full display name of the station.'
+              type: string
+              example: 'AzuraTest Radio'
+              nullable: true
+            short_name:
+              description: 'The URL-friendly name for the station, typically auto-generated from the full station name.'
+              type: string
+              example: azuratest_radio
+              nullable: true
+            is_enabled:
+              description: 'If set to ''false'', prevents the station from broadcasting but leaves it in the database.'
+              type: boolean
+              example: true
+            frontend_type:
+              description: 'The frontend adapter (icecast,shoutcast,remote,etc)'
+              type: string
+              example: icecast
+              nullable: true
+            frontend_config:
+              description: 'An array containing station-specific frontend configuration'
+              type: array
+              items: {  }
+            backend_type:
+              description: 'The backend adapter (liquidsoap,etc)'
+              type: string
+              example: liquidsoap
+              nullable: true
+            backend_config:
+              description: 'An array containing station-specific backend configuration'
+              type: array
+              items: {  }
+            description:
+              type: string
+              example: 'A sample radio station.'
+              nullable: true
+            url:
+              type: string
+              example: 'https://demo.azuracast.com/'
+              nullable: true
+            genre:
+              type: string
+              example: Various
+              nullable: true
+            radio_base_dir:
+              type: string
+              example: /var/azuracast/stations/azuratest_radio
+              nullable: true
+            automation_settings:
+              type: array
+              items: {  }
+            enable_requests:
+              description: 'Whether listeners can request songs to play on this station.'
+              type: boolean
+              example: true
+            request_delay:
+              type: integer
+              example: 5
+              nullable: true
+            request_threshold:
+              type: integer
+              example: 15
+              nullable: true
+            disconnect_deactivate_streamer:
+              type: integer
+              example: 0
+              nullable: true
+            enable_streamers:
+              description: 'Whether streamers are allowed to broadcast to this station at all.'
+              type: boolean
+              example: false
+            is_streamer_live:
+              description: 'Whether a streamer is currently active on the station.'
+              type: boolean
+              example: false
+            enable_public_page:
+              description: 'Whether this station is visible as a public page and in a now-playing API response.'
+              type: boolean
+              example: true
+            enable_on_demand:
+              description: 'Whether this station has a public ''on-demand'' streaming and download page.'
+              type: boolean
+              example: true
+            enable_on_demand_download:
+              description: 'Whether the ''on-demand'' page offers download capability.'
+              type: boolean
+              example: true
+            api_history_items:
+              description: 'The number of ''last played'' history items to show for a station in API responses.'
+              type: integer
+              example: 5
+            timezone:
+              description: 'The time zone that station operations should take place in.'
+              type: string
+              example: UTC
+              nullable: true
+            default_album_art_url:
+              description: 'The station-specific default album artwork URL.'
+              type: string
+              example: 'https://example.com/image.jpg'
+              nullable: true
     StationMedia:
       type: object
       allOf:
         -
-          $ref: '#/components/schemas/UniqueId'
+          $ref: '#/components/schemas/HasAutoIncrementId'
         -
           properties:
-            id:
-              type: integer
-              example: 1
+            unique_id:
+              description: 'A unique identifier associated with this record.'
+              type: string
+              example: 69b536afc7ebbf16457b8645
               nullable: true
             album:
               description: 'The name of the media file''s album.'
@@ -3379,6 +3382,7 @@ components:
               type: number
               format: float
               example: 240
+              nullable: true
             length_text:
               description: 'The formatted song duration (in mm:ss format)'
               type: string
@@ -3391,40 +3395,40 @@ components:
             mtime:
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer
-              example: 1621831102
+              example: 1622324661
               nullable: true
             amplify:
-              description: 'The amount of amplification (in dB) to be applied to the radio source;'
+              description: 'The amount of amplification (in dB) to be applied to the radio source (liq_amplify)'
               type: number
               format: float
               example: -14
               nullable: true
             fade_overlap:
-              description: 'The length of time (in seconds) before the next song starts in the fade;'
+              description: 'The length of time (in seconds) before the next song starts in the fade (liq_start_next)'
               type: number
               format: float
               example: 2
               nullable: true
             fade_in:
-              description: 'The length of time (in seconds) to fade in the next track;'
+              description: 'The length of time (in seconds) to fade in the next track (liq_fade_in)'
               type: number
               format: float
               example: 3
               nullable: true
             fade_out:
-              description: 'The length of time (in seconds) to fade out the previous track;'
+              description: 'The length of time (in seconds) to fade out the previous track (liq_fade_out)'
               type: number
               format: float
               example: 3
               nullable: true
             cue_in:
-              description: 'The length of time (in seconds) from the start of the track to start playing;'
+              description: 'The length of time (in seconds) from the start of the track to start playing (liq_cue_in)'
               type: number
               format: float
               example: 30
               nullable: true
             cue_out:
-              description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing;'
+              description: 'The length of time (in seconds) from the CUE-IN of the track to stop playing (liq_cue_out)'
               type: number
               format: float
               example: 30
@@ -3432,344 +3436,352 @@ components:
             art_updated_at:
               description: 'The latest time (UNIX timestamp) when album art was updated.'
               type: integer
-              example: 1621831102
+              example: 1622324661
             playlists:
+              type: array
               items: {  }
     StationMount:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        name:
-          type: string
-          example: /radio.mp3
-        display_name:
-          type: string
-          example: '128kbps MP3'
-          nullable: true
-        is_visible_on_public_pages:
-          type: boolean
-          example: true
-        is_default:
-          type: boolean
-          example: false
-        is_public:
-          type: boolean
-          example: false
-        fallback_mount:
-          type: string
-          example: /error.mp3
-          nullable: true
-        relay_url:
-          type: string
-          example: 'http://radio.example.com:8000/radio.mp3'
-          nullable: true
-        authhash:
-          type: string
-          example: ''
-          nullable: true
-        enable_autodj:
-          type: boolean
-          example: true
-        autodj_format:
-          type: string
-          example: mp3
-          nullable: true
-        autodj_bitrate:
-          type: integer
-          example: 128
-          nullable: true
-        custom_listen_url:
-          type: string
-          example: 'https://custom-listen-url.example.com/stream.mp3'
-          nullable: true
-        frontend_config:
-          type: string
-          items: {  }
-          nullable: true
-        listeners_unique:
-          description: 'The most recent number of unique listeners.'
-          type: integer
-          example: 10
-        listeners_total:
-          description: 'The most recent number of total (non-unique) listeners.'
-          type: integer
-          example: 12
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              type: string
+              example: /radio.mp3
+            display_name:
+              type: string
+              example: '128kbps MP3'
+              nullable: true
+            is_visible_on_public_pages:
+              type: boolean
+              example: true
+            is_default:
+              type: boolean
+              example: false
+            is_public:
+              type: boolean
+              example: false
+            fallback_mount:
+              type: string
+              example: /error.mp3
+              nullable: true
+            relay_url:
+              type: string
+              example: 'http://radio.example.com:8000/radio.mp3'
+              nullable: true
+            authhash:
+              type: string
+              example: ''
+              nullable: true
+            enable_autodj:
+              type: boolean
+              example: true
+            autodj_format:
+              type: string
+              example: mp3
+              nullable: true
+            autodj_bitrate:
+              type: integer
+              example: 128
+              nullable: true
+            custom_listen_url:
+              type: string
+              example: 'https://custom-listen-url.example.com/stream.mp3'
+              nullable: true
+            frontend_config:
+              type: array
+              items: {  }
+            listeners_unique:
+              description: 'The most recent number of unique listeners.'
+              type: integer
+              example: 10
+            listeners_total:
+              description: 'The most recent number of total (non-unique) listeners.'
+              type: integer
+              example: 12
     StationPlaylist:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        name:
-          type: string
-          example: 'Test Playlist'
-        type:
-          type: string
-          example: default
-        source:
-          type: string
-          example: songs
-        order:
-          type: string
-          example: shuffle
-        remote_url:
-          type: string
-          example: 'http://remote-url.example.com/stream.mp3'
-          nullable: true
-        remote_type:
-          type: string
-          example: stream
-          nullable: true
-        remote_buffer:
-          description: 'The total time (in seconds) that Liquidsoap should buffer remote URL streams.'
-          type: integer
-          example: 0
-        is_enabled:
-          type: boolean
-          example: true
-        is_jingle:
-          description: 'If yes, do not send jingle metadata to AutoDJ or trigger web hooks.'
-          type: boolean
-          example: false
-        play_per_songs:
-          type: integer
-          example: 5
-        play_per_minutes:
-          type: integer
-          example: 120
-        play_per_hour_minute:
-          type: integer
-          example: 15
-        weight:
-          type: integer
-          example: 3
-        include_in_requests:
-          type: boolean
-          example: true
-        include_in_on_demand:
-          description: 'Whether this playlist''s media is included in "on demand" download/streaming if enabled.'
-          type: boolean
-          example: true
-        include_in_automation:
-          type: boolean
-          example: false
-        backend_options:
-          type: string
-          example: 'interrupt,loop_once,single_track,merge'
-        avoid_duplicates:
-          type: boolean
-          example: true
-        schedule_items:
-          items: {  }
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              type: string
+              example: 'Test Playlist'
+            type:
+              type: string
+              example: default
+            source:
+              type: string
+              example: songs
+            order:
+              type: string
+              example: shuffle
+            remote_url:
+              type: string
+              example: 'http://remote-url.example.com/stream.mp3'
+              nullable: true
+            remote_type:
+              type: string
+              example: stream
+              nullable: true
+            remote_buffer:
+              description: 'The total time (in seconds) that Liquidsoap should buffer remote URL streams.'
+              type: integer
+              example: 0
+            is_enabled:
+              type: boolean
+              example: true
+            is_jingle:
+              description: 'If yes, do not send jingle metadata to AutoDJ or trigger web hooks.'
+              type: boolean
+              example: false
+            play_per_songs:
+              type: integer
+              example: 5
+            play_per_minutes:
+              type: integer
+              example: 120
+            play_per_hour_minute:
+              type: integer
+              example: 15
+            weight:
+              type: integer
+              example: 3
+            include_in_requests:
+              type: boolean
+              example: true
+            include_in_on_demand:
+              description: 'Whether this playlist''s media is included in ''on demand'' download/streaming if enabled.'
+              type: boolean
+              example: true
+            include_in_automation:
+              type: boolean
+              example: false
+            backend_options:
+              type: string
+              example: 'interrupt,loop_once,single_track,merge'
+              nullable: true
+            avoid_duplicates:
+              type: boolean
+              example: true
+            schedule_items:
+              type: array
+              items: {  }
     StationRemote:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        display_name:
-          type: string
-          example: '128kbps MP3'
-          nullable: true
-        is_visible_on_public_pages:
-          type: boolean
-          example: true
-        type:
-          type: string
-          example: icecast
-        enable_autodj:
-          type: boolean
-          example: false
-        autodj_format:
-          type: string
-          example: mp3
-          nullable: true
-        autodj_bitrate:
-          type: integer
-          example: 128
-          nullable: true
-        custom_listen_url:
-          type: string
-          example: 'https://custom-listen-url.example.com/stream.mp3'
-          nullable: true
-        url:
-          type: string
-          example: 'http://custom-url.example.com'
-          nullable: true
-        mount:
-          type: string
-          example: /stream.mp3
-          nullable: true
-        admin_password:
-          type: string
-          example: password
-          nullable: true
-        source_port:
-          type: integer
-          example: 8000
-          nullable: true
-        source_mount:
-          type: string
-          example: /
-          nullable: true
-        source_username:
-          type: string
-          example: source
-          nullable: true
-        source_password:
-          type: string
-          example: password
-          nullable: true
-        is_public:
-          type: boolean
-          example: false
-        listeners_unique:
-          description: 'The most recent number of unique listeners.'
-          type: integer
-          example: 10
-        listeners_total:
-          description: 'The most recent number of total (non-unique) listeners.'
-          type: integer
-          example: 12
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            display_name:
+              type: string
+              example: '128kbps MP3'
+              nullable: true
+            is_visible_on_public_pages:
+              type: boolean
+              example: true
+            type:
+              type: string
+              example: icecast
+            enable_autodj:
+              type: boolean
+              example: false
+            autodj_format:
+              type: string
+              example: mp3
+              nullable: true
+            autodj_bitrate:
+              type: integer
+              example: 128
+              nullable: true
+            custom_listen_url:
+              type: string
+              example: 'https://custom-listen-url.example.com/stream.mp3'
+              nullable: true
+            url:
+              type: string
+              example: 'http://custom-url.example.com'
+              nullable: true
+            mount:
+              type: string
+              example: /stream.mp3
+              nullable: true
+            admin_password:
+              type: string
+              example: password
+              nullable: true
+            source_port:
+              type: integer
+              example: 8000
+              nullable: true
+            source_mount:
+              type: string
+              example: /
+              nullable: true
+            source_username:
+              type: string
+              example: source
+              nullable: true
+            source_password:
+              type: string
+              example: password
+              nullable: true
+            is_public:
+              type: boolean
+              example: false
+            listeners_unique:
+              description: 'The most recent number of unique listeners.'
+              type: integer
+              example: 10
+            listeners_total:
+              description: 'The most recent number of total (non-unique) listeners.'
+              type: integer
+              example: 12
     StationSchedule:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        start_time:
-          type: integer
-          example: 900
-        end_time:
-          type: integer
-          example: 2200
-        days:
-          description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
-          type: string
-          example: '0,1,2,3'
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            start_time:
+              type: integer
+              example: 900
+            end_time:
+              type: integer
+              example: 2200
+            days:
+              description: 'Array of ISO-8601 days (1 for Monday, 7 for Sunday)'
+              type: string
+              example: '0,1,2,3'
+              nullable: true
     StationStreamer:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        streamer_username:
-          type: string
-          example: dj_test
-        streamer_password:
-          type: string
-          example: ''
-        display_name:
-          type: string
-          example: 'Test DJ'
-          nullable: true
-        comments:
-          type: string
-          example: 'This is a test DJ account.'
-          nullable: true
-        is_active:
-          type: boolean
-          example: true
-        enforce_schedule:
-          type: boolean
-          example: false
-        reactivate_at:
-          type: integer
-          example: 1621831102
-          nullable: true
-        schedule_items:
-          items: {  }
+      description: 'Station streamers (DJ accounts) allowed to broadcast to a station.'
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            streamer_username:
+              type: string
+              example: dj_test
+            streamer_password:
+              type: string
+              example: ''
+            display_name:
+              type: string
+              example: 'Test DJ'
+              nullable: true
+            comments:
+              type: string
+              example: 'This is a test DJ account.'
+              nullable: true
+            is_active:
+              type: boolean
+              example: true
+            enforce_schedule:
+              type: boolean
+              example: false
+            reactivate_at:
+              type: integer
+              example: 1622324661
+              nullable: true
+            schedule_items:
+              type: array
+              items: {  }
     StationStreamerBroadcast:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
+      description: 'Each individual broadcast associated with a streamer.'
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
     StationWebhook:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            name:
+              description: 'The nickname of the webhook connector.'
+              type: string
+              example: 'Twitter Post'
+              nullable: true
+            type:
+              description: 'The type of webhook connector to use.'
+              type: string
+              example: twitter
+            is_enabled:
+              type: boolean
+              example: true
+            triggers:
+              description: 'List of events that should trigger the webhook notification.'
+              type: array
+              items: {  }
+            config:
+              description: 'Detailed webhook configuration (if applicable)'
+              type: array
+              items: {  }
+            metadata:
+              description: 'Internal details used by the webhook to preserve state.'
+              type: array
+              items: {  }
+    HasAutoIncrementId:
       properties:
         id:
           type: integer
-          example: 1
-          nullable: true
-        name:
-          description: 'The nickname of the webhook connector.'
-          type: string
-          example: 'Twitter Post'
-          nullable: true
-        type:
-          description: 'The type of webhook connector to use.'
-          type: string
-          example: twitter
-        is_enabled:
-          type: boolean
-          example: true
-        triggers:
-          description: 'List of events that should trigger the webhook notification.'
-          type: array
-          items: {  }
-        config:
-          description: 'Detailed webhook configuration (if applicable)'
-          type: array
-          items: {  }
-        metadata:
-          description: 'Internal details used by the webhook to preserve state.'
-          type: array
-          items: {  }
       type: object
-    UniqueId:
+    HasUniqueId:
       properties:
-        unique_id:
-          description: 'A unique identifier associated with this record.'
+        id:
           type: string
-          example: 69b536afc7ebbf16457b8645
       type: object
     User:
-      properties:
-        id:
-          type: integer
-          example: 1
-          nullable: true
-        email:
-          type: string
-          example: demo@azuracast.com
-          nullable: true
-        new_password:
-          type: string
-          example: ''
-          nullable: true
-        name:
-          type: string
-          example: 'Demo Account'
-          nullable: true
-        locale:
-          type: string
-          example: en_US
-          nullable: true
-        theme:
-          type: string
-          example: dark
-          nullable: true
-        two_factor_secret:
-          type: string
-          example: A1B2C3D4
-          nullable: true
-        created_at:
-          type: integer
-          example: 1621831102
-        updated_at:
-          type: integer
-          example: 1621831102
-        roles:
-          items: {  }
       type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HasAutoIncrementId'
+        -
+          properties:
+            email:
+              type: string
+              example: demo@azuracast.com
+              nullable: true
+            new_password:
+              type: string
+              example: ''
+              nullable: true
+            name:
+              type: string
+              example: 'Demo Account'
+              nullable: true
+            locale:
+              type: string
+              example: en_US
+              nullable: true
+            theme:
+              type: string
+              example: dark
+              nullable: true
+            two_factor_secret:
+              type: string
+              example: A1B2C3D4
+              nullable: true
+            created_at:
+              type: integer
+              example: 1622324661
+            updated_at:
+              type: integer
+              example: 1622324661
+            roles:
+              type: array
+              items: {  }
   responses:
     todo:
       description: 'This API call has no documented response (yet)'

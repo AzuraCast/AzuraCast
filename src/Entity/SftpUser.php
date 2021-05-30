@@ -11,68 +11,34 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_ARGON2ID;
 
-/**
- * @ORM\Table(name="sftp_user", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="username_idx", columns={"username"})
- * })
- * @ORM\Entity()
- *
- * @UniqueEntity(fields={"username"})
- *
- * @Auditable()
- */
+#[ORM\Entity, ORM\Table(name: 'sftp_user')]
+#[ORM\UniqueConstraint(name: 'username_idx', columns: ['username'])]
+#[UniqueEntity(fields: ['username'])]
+#[Auditable]
 class SftpUser
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int|null
-     */
-    protected $id;
+    use Traits\HasAutoIncrementId;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="sftp_users")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
+    #[ORM\ManyToOne(inversedBy: 'sftp_users')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Station $station;
 
-    /**
-     * @ORM\Column(name="username", type="string", length=32, nullable=false)
-     * @var string
-     *
-     * @Assert\Length(min=1, max=32)
-     * @Assert\NotBlank
-     * @Assert\Regex(pattern="/^[a-zA-Z0-9-_.~]+$/")
-     */
-    protected $username;
+    #[ORM\Column(length: 32)]
+    #[Assert\Length(min: 1, max: 32)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '/^[a-zA-Z0-9-_.~]+$/')]
+    protected string $username;
 
-    /**
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
-     * @var string
-     *
-     * @Assert\NotBlank
-     */
-    protected $password;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    protected string $password;
 
-    /**
-     * @ORM\Column(name="public_keys", type="text", nullable=true)
-     * @var string|null
-     */
-    protected $publicKeys;
+    #[ORM\Column(name: 'public_keys', type: 'text')]
+    protected ?string $publicKeys = null;
 
     public function __construct(Station $station)
     {
         $this->station = $station;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

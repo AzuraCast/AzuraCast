@@ -11,6 +11,7 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 use function is_array;
@@ -19,11 +20,9 @@ use function is_string;
 /**
  * Constraint for the Unique Entity validator.
  *
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 class UniqueEntity extends Constraint
 {
     public $entityClass = null;

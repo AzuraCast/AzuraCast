@@ -58,12 +58,12 @@ class Podcast
     public int $art_updated_at = 0;
 
     /**
-     * @OA\Property(@OA\Items(type="string"))
+     * @OA\Property(type="array", @OA\Items(type="string"))
      */
     public array $categories = [];
 
     /**
-     * @OA\Property(@OA\Items(type="string"))
+     * @OA\Property(type="array", @OA\Items(type="string"))
      */
     public array $episodes = [];
 }

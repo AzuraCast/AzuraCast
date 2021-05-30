@@ -37,7 +37,7 @@ class SongApiGenerator
     }
 
     public function __invoke(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false
@@ -64,7 +64,7 @@ class SongApiGenerator
     }
 
     protected function getAlbumArtUrl(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false

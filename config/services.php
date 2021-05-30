@@ -97,20 +97,15 @@ return [
 
             $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
-            $annotationDriver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
-                $reader,
+            $attributeDriver = new Doctrine\ORM\Mapping\Driver\AttributeDriver(
                 $mappingClassesPaths
             );
-            $config->setMetadataDriverImpl($annotationDriver);
+            $config->setMetadataDriverImpl($attributeDriver);
 
             // Debug mode:
             // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
 
             $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
-
-            if (!Doctrine\DBAL\Types\Type::hasType('uuid')) {
-                Doctrine\DBAL\Types\Type::addType('uuid', Ramsey\Uuid\Doctrine\UuidType::class);
-            }
 
             if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
                 Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);

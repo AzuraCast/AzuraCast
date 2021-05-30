@@ -8,21 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait HasSplitTokenFields
 {
-    /**
-     * @ORM\Column(name="id", type="string", length=16)
-     * @ORM\Id
-     * @var string
-     */
-    protected $id;
+    #[ORM\Column(length: 16)]
+    #[ORM\Id]
+    protected string $id;
 
-    /**
-     * @ORM\Column(name="verifier", type="string", length=128, nullable=false)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var string
-     */
-    protected $verifier;
+    #[ORM\Column(length: 128)]
+    #[AuditLog\AuditIgnore]
+    protected string $verifier;
 
     protected function setFromToken(SplitToken $token): void
     {
@@ -35,12 +27,6 @@ trait HasSplitTokenFields
         return $this->id;
     }
 
-    /**
-     * Verify an incoming API key against the verifier on this record.
-     *
-     * @param SplitToken $userSuppliedToken
-     *
-     */
     public function verify(SplitToken $userSuppliedToken): bool
     {
         return $userSuppliedToken->verify($this->verifier);

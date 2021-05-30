@@ -10,51 +10,33 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="role")
- * @ORM\Entity
- *
- * @AuditLog\Auditable
- *
- * @OA\Schema(type="object")
- */
-class Role implements JsonSerializable
+/** @OA\Schema(type="object") */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'role'),
+    AuditLog\Auditable
+]
+class Role implements JsonSerializable, Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const SUPER_ADMINISTRATOR_ROLE_ID = 1;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @OA\Property(example=1)
-     * @var int|null
-     */
-    protected $id;
+    /** @OA\Property(example="Super Administrator") */
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    protected string $name;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=100)
-     * @OA\Property(example="Super Administrator")
-     * @Assert\NotBlank
-     * @var string
-     */
-    protected $name;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
+    protected Collection $users;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
-     * @var Collection
-     */
-    protected $users;
-
-    /**
-     * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="role")
-     * @OA\Property(@OA\Items)
-     * @var Collection
-     */
-    protected $permissions;
+    /** @OA\Property(type="array", @OA\Items) */
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)]
+    protected Collection $permissions;
 
     public function __construct()
     {
@@ -62,14 +44,6 @@ class Role implements JsonSerializable
         $this->permissions = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @AuditLog\AuditIdentifier()
-     */
     public function getName(): string
     {
         return $this->name;
@@ -115,5 +89,10 @@ class Role implements JsonSerializable
         }
 
         return $return;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

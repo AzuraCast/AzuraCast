@@ -19,130 +19,75 @@ use const PASSWORD_ARGON2ID;
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
- * @ORM\Table(name="station_streamers", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="username_unique_idx", columns={"station_id", "streamer_username"})
- * })
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks
- *
- * @UniqueEntity(fields={"station", "streamer_username"})
- *
- * @AuditLog\Auditable
- *
  * @OA\Schema(type="object")
  */
-class StationStreamer
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_streamers'),
+    ORM\UniqueConstraint(name: 'username_unique_idx', columns: ['station_id', 'streamer_username']),
+    ORM\HasLifecycleCallbacks,
+    UniqueEntity(fields: ['station', 'streamer_username']),
+    AuditLog\Auditable
+]
+class StationStreamer implements \Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column]
+    protected int $station_id;
+
+    #[ORM\ManyToOne(inversedBy: 'streamers')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Station $station;
+
+    /** @OA\Property(example="dj_test") */
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    protected string $streamer_username;
+
+    /** @OA\Property(example="") */
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[AuditLog\AuditIgnore]
+    protected string $streamer_password;
+
+    /** @OA\Property(example="Test DJ") */
+    #[ORM\Column(length: 255)]
+    protected ?string $display_name = null;
+
+    /** @OA\Property(example="This is a test DJ account.") */
+    #[ORM\Column(type: 'text')]
+    protected ?string $comments = null;
+
+    /** @OA\Property(example=true) */
+    #[ORM\Column]
+    protected bool $is_active = true;
+
+    /** @OA\Property(example=false) */
+    #[ORM\Column]
+    protected bool $enforce_schedule = false;
+
+    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected ?int $reactivate_at = null;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
-     */
-    protected $station_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="streamers")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
-
-    /**
-     * @ORM\Column(name="streamer_username", type="string", length=50, nullable=false)
-     *
-     * @OA\Property(example="dj_test")
-     * @Assert\NotBlank()
-     * @var string
-     */
-    protected $streamer_username;
-
-    /**
-     * @ORM\Column(name="streamer_password", type="string", length=255, nullable=false)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @Assert\NotBlank()
-     * @OA\Property(example="")
-     * @var string
-     */
-    protected $streamer_password;
-
-    /**
-     * @ORM\Column(name="display_name", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="Test DJ")
-     * @var string|null
-     */
-    protected $display_name;
-
-    /**
-     * @ORM\Column(name="comments", type="text", nullable=true)
-     *
-     * @OA\Property(example="This is a test DJ account.")
-     * @var string|null
-     */
-    protected $comments;
-
-    /**
-     * @ORM\Column(name="is_active", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=true)
-     * @var bool
-     */
-    protected $is_active = true;
-
-    /**
-     * @ORM\Column(name="enforce_schedule", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=false)
-     * @var bool
-     */
-    protected $enforce_schedule = false;
-
-    /**
-     * @ORM\Column(name="reactivate_at", type="integer", nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int|null
-     */
-    protected $reactivate_at;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationSchedule", mappedBy="streamer")
-     * @var Collection
-     *
-     * @DeepNormalize(true)
-     * @Serializer\MaxDepth(1)
      * @OA\Property(
+     *     type="array",
      *     @OA\Items()
      * )
      */
-    protected $schedule_items;
+    #[ORM\OneToMany(targetEntity: StationSchedule::class, mappedBy: 'streamer')]
+    #[DeepNormalize(true)]
+    #[Serializer\MaxDepth(1)]
+    protected Collection $schedule_items;
 
     public function __construct(Station $station)
     {
         $this->station = $station;
         $this->schedule_items = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station
@@ -179,9 +124,6 @@ class StationStreamer
         return password_verify($password, $this->streamer_password);
     }
 
-    /**
-     * @AuditLog\AuditIdentifier()
-     */
     public function getDisplayName(): string
     {
         return (!empty($this->display_name))
@@ -191,7 +133,7 @@ class StationStreamer
 
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $this->truncateString($display_name);
+        $this->display_name = $this->truncateNullableString($display_name);
     }
 
     public function getComments(): ?string
@@ -251,5 +193,10 @@ class StationStreamer
     public function getScheduleItems(): Collection
     {
         return $this->schedule_items;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getStation() . ' Streamer: ' . $this->getDisplayName();
     }
 }

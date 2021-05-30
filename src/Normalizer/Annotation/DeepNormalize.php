@@ -2,17 +2,16 @@
 
 namespace App\Normalizer\Annotation;
 
-/**
- * @Annotation
- * @Target({"PROPERTY", "METHOD"})
- */
+use Attribute;
+
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 class DeepNormalize
 {
     private bool $deepNormalize;
 
-    public function __construct(array $data)
+    public function __construct(bool $value)
     {
-        $this->deepNormalize = (bool)$data['value'];
+        $this->deepNormalize = $value;
     }
 
     public function getDeepNormalize(): bool

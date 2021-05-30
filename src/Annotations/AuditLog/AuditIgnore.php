@@ -2,14 +2,12 @@
 
 namespace App\Annotations\AuditLog;
 
-use Doctrine\Common\Annotations\Annotation;
+use Attribute;
 
 /**
  * Mark an individual property as one where changes should be ignored.
- *
- * @Annotation
- * @Annotation\Target("PROPERTY")
  */
+#[Attribute(Attribute::TARGET_PROPERTY)]
 class AuditIgnore
 {
 }

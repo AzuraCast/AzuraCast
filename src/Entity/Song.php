@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\SongInterface;
 use InvalidArgumentException;
 use NowPlaying\Result\CurrentSong;
 
@@ -21,9 +22,6 @@ class Song implements SongInterface
         return 'Song ' . $this->song_id . ': ' . $this->artist . ' - ' . $this->title;
     }
 
-    /**
-     * @param array|string|CurrentSong|self $songText
-     */
     public static function getSongHash(Song|array|string|CurrentSong $songText): string
     {
         // Handle various input types.

@@ -33,7 +33,7 @@ class RemoteAlbumArt
         return $settings->getUseExternalAlbumArtWhenProcessingMedia();
     }
 
-    public function __invoke(Entity\SongInterface $song): ?string
+    public function __invoke(Entity\Interfaces\SongInterface $song): ?string
     {
         // Avoid tracks that shouldn't ever hit remote APIs.
         $offlineSong = Entity\Song::createOffline();

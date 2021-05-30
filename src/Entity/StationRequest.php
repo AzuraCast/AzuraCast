@@ -9,73 +9,39 @@ use Carbon\CarbonInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="station_requests")
- * @ORM\Entity()
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_requests')
+]
 class StationRequest
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    use Traits\HasAutoIncrementId;
 
-    /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
-     */
-    protected $station_id;
+    #[ORM\Column]
+    protected int $station_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="media")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
+    #[ORM\ManyToOne(inversedBy: 'media')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Station $station;
 
-    /**
-     * @ORM\Column(name="track_id", type="integer")
-     * @var int
-     */
-    protected $track_id;
+    #[ORM\Column]
+    protected int $track_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationMedia")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationMedia
-     */
-    protected $track;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'track_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected StationMedia $track;
 
-    /**
-     * @ORM\Column(name="timestamp", type="integer")
-     * @var int
-     */
-    protected $timestamp;
+    #[ORM\Column]
+    protected int $timestamp;
 
-    /**
-     * @ORM\Column(name="skip_delay", type="boolean", nullable=false)
-     * @var bool If set to "true", this request was set by an administrator and skips various delays.
-     */
-    protected $skip_delay = false;
+    #[ORM\Column]
+    protected bool $skip_delay = false;
 
-    /**
-     * @ORM\Column(name="played_at", type="integer")
-     * @var int
-     */
-    protected $played_at;
+    #[ORM\Column]
+    protected int $played_at = 0;
 
-    /**
-     * @ORM\Column(name="ip", type="string", length=40)
-     * @var string
-     */
-    protected $ip;
+    #[ORM\Column(length: 40)]
+    protected string $ip;
 
     public function __construct(
         Station $station,
@@ -88,14 +54,7 @@ class StationRequest
 
         $this->timestamp = time();
         $this->skip_delay = $skipDelay;
-        $this->played_at = 0;
-
         $this->ip = $ip ?? $_SERVER['REMOTE_ADDR'];
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

@@ -9,81 +9,42 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 
-/**
- * AzuraRelay instances
- *
- * @ORM\Table(name="relays")
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks()
- *
- * @OA\Schema(type="object")
- */
+/** @OA\Schema(type="object") */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'relays'),
+    ORM\HasLifecycleCallbacks
+]
 class Relay
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     * @var int|null
-     */
-    protected $id;
+    /** @OA\Property(example="http://custom-url.example.com") */
+    #[ORM\Column(length: 255)]
+    protected string $base_url;
 
-    /**
-     * @ORM\Column(name="base_url", type="string", length=255)
-     *
-     * @OA\Property(example="http://custom-url.example.com")
-     *
-     * @var string
-     */
-    protected $base_url;
+    /** @OA\Property(example="Relay") */
+    #[ORM\Column(length: 100)]
+    protected ?string $name = 'Relay';
 
-    /**
-     * @ORM\Column(name="name", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="Relay")
-     * @var string|null
-     */
-    protected $name = 'Relay';
+    /** @OA\Property(example=true) */
+    #[ORM\Column]
+    protected bool $is_visible_on_public_pages = true;
 
-    /**
-     * @ORM\Column(name="is_visible_on_public_pages", type="boolean")
-     *
-     * @OA\Property(example=true)
-     * @var bool
-     */
-    protected $is_visible_on_public_pages = true;
+    #[ORM\Column(type: 'array', nullable: true)]
+    protected mixed $nowplaying;
 
-    /**
-     * @ORM\Column(name="nowplaying", type="array", nullable=true)
-     * @var mixed|null
-     */
-    protected $nowplaying;
+    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    #[ORM\Column]
+    protected int $created_at;
 
-    /**
-     * @ORM\Column(name="created_at", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
-     */
-    protected $created_at;
+    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    #[ORM\Column]
+    protected int $updated_at;
 
-    /**
-     * @ORM\Column(name="updated_at", type="integer")
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
-     */
-    protected $updated_at;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationRemote", mappedBy="relay")
-     * @var Collection
-     */
-    protected $remotes;
+    #[ORM\OneToMany(mappedBy: 'relay', targetEntity: StationRemote::class)]
+    protected Collection $remotes;
 
     public function __construct(string $base_url)
     {
@@ -95,17 +56,10 @@ class Relay
         $this->remotes = new ArrayCollection();
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate(): void
     {
         $this->updated_at = time();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getBaseUrl(): ?string
@@ -120,7 +74,7 @@ class Relay
 
     public function setName(?string $name): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
     }
 
     public function isIsVisibleOnPublicPages(): bool
@@ -133,8 +87,6 @@ class Relay
         $this->is_visible_on_public_pages = $is_visible_on_public_pages;
     }
 
-    /**
-     */
     public function getNowplaying(): mixed
     {
         return $this->nowplaying;

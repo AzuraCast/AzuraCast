@@ -7,18 +7,20 @@ namespace App\Entity;
 use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="station_webhooks", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci"})
- *
- * @AuditLog\Auditable
- *
  * @OA\Schema(type="object")
  */
-class StationWebhook
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
+    AuditLog\Auditable
+]
+class StationWebhook implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const LAST_SENT_TIMESTAMP_KEY = 'last_message_sent';
@@ -32,88 +34,66 @@ class StationWebhook
     public const TRIGGER_STATION_OFFLINE = 'station_offline';
     public const TRIGGER_STATION_ONLINE = 'station_online';
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     *
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column]
+    protected int $station_id;
+
+    #[ORM\ManyToOne(inversedBy: 'webhooks')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Station $station;
 
     /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
+     * @OA\Property(
+     *     description="The nickname of the webhook connector.",
+     *     example="Twitter Post"
+     * )
      */
-    protected $station_id;
+    #[ORM\Column(length: 100)]
+    protected ?string $name = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="webhooks")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
+     * @OA\Property(
+     *     description="The type of webhook connector to use.",
+     *     example="twitter"
+     * )
      */
-    protected $station;
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    protected string $type;
+
+    /** @OA\Property(example=true) */
+    #[ORM\Column]
+    protected bool $is_enabled = true;
 
     /**
-     * @ORM\Column(name="name", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="Twitter Post")
-     *
-     * @var string|null The nickname of the webhook connector.
+     * @OA\Property(
+     *     type="array",
+     *     description="List of events that should trigger the webhook notification.",
+     *     @OA\Items()
+     * )
      */
-    protected $name;
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $triggers = null;
 
     /**
-     * @ORM\Column(name="type", type="string", length=100)
-     *
-     * @OA\Property(example="twitter")
-     *
-     * @Assert\NotBlank()
-     *
-     * @var string The type of webhook connector to use.
+     * @OA\Property(
+     *     type="array",
+     *     description="Detailed webhook configuration (if applicable)",
+     *     @OA\Items()
+     * )
      */
-    protected $type;
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $config = null;
 
     /**
-     * @ORM\Column(name="is_enabled", type="boolean")
-     *
-     * @OA\Property(example=true)
-     *
-     * @var bool
+     * @OA\Property(
+     *     type="array",
+     *     description="Internal details used by the webhook to preserve state.",
+     *     @OA\Items()
+     * )
      */
-    protected $is_enabled = true;
-
-    /**
-     * @ORM\Column(name="triggers", type="json", nullable=true)
-     *
-     * @OA\Property(@OA\Items())
-     *
-     * @var array List of events that should trigger the webhook notification.
-     */
-    protected $triggers;
-
-    /**
-     * @ORM\Column(name="config", type="json", nullable=true)
-     *
-     * @OA\Property(@OA\Items())
-     *
-     * @var array Detailed webhook configuration (if applicable)
-     */
-    protected $config;
-
-    /**
-     * @ORM\Column(name="metadata", type="json", nullable=true)
-     *
-     * @OA\Property(@OA\Items())
-     * @AuditLog\AuditIgnore
-     *
-     * @var array Internal details used by the webhook to preserve state.
-     */
-    protected $metadata;
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[AuditLog\AuditIgnore]
+    protected ?array $metadata = null;
 
     public function __construct(Station $station, $type)
     {
@@ -121,19 +101,11 @@ class StationWebhook
         $this->type = $type;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getStation(): Station
     {
         return $this->station;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -141,7 +113,7 @@ class StationWebhook
 
     public function setName(?string $name): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
     }
 
     public function getType(): string
@@ -241,5 +213,10 @@ class StationWebhook
     public function updateLastSentTimestamp(): void
     {
         $this->setMetadataKey(self::LAST_SENT_TIMESTAMP_KEY, time());
+    }
+
+    public function __toString(): string
+    {
+        return (string)($this->getStation()) . ' Web Hook: ' . $this->getName();
     }
 }

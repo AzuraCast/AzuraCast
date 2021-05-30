@@ -9,107 +9,53 @@ use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="podcast_episode")
- * @ORM\Entity
- *
- * @AuditLog\Auditable
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'podcast_episode'),
+    AuditLog\Auditable
+]
 class PodcastEpisode
 {
+    use Traits\HasUniqueId;
     use Traits\TruncateStrings;
 
     public const DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="guid", unique=true)
-     * @ORM\GeneratedValue(strategy="UUID")
-     *
-     * @var string|null
-     */
-    protected $id;
+    #[ORM\ManyToOne(inversedBy: 'episodes')]
+    #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected Podcast $podcast;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Podcast", inversedBy="episodes")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="podcast_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     *
-     * @var Podcast
-     */
-    protected $podcast;
+    #[ORM\OneToOne(mappedBy: 'episode')]
+    protected ?PodcastMedia $media = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="PodcastMedia", mappedBy="episode")
-     *
-     * @var PodcastMedia|null
-     */
-    protected $media;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    protected string $title;
 
-    /**
-     * @ORM\Column(name="title", type="string", length=255)
-     *
-     * @Assert\NotBlank
-     *
-     * @var string The name of the episode
-     */
-    protected $title;
+    #[ORM\Column(length: 255)]
+    protected ?string $link = null;
 
-    /**
-     * @ORM\Column(name="link", type="string", length=255, nullable=true)
-     *
-     * @var string|null A link to the episodes website
-     */
-    protected $link;
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
+    protected string $description;
 
-    /**
-     * @ORM\Column(name="description", type="text")
-     *
-     * @Assert\NotBlank
-     *
-     * @var string A description of the episode
-     */
-    protected $description;
+    #[ORM\Column]
+    protected ?int $publish_at = null;
 
-    /**
-     * @ORM\Column(name="publish_at", type="integer", nullable=true)
-     *
-     * @var int|null Timestamp of when the episode should be published
-     */
-    protected $publish_at;
+    #[ORM\Column]
+    protected bool $explicit;
 
-    /**
-     * @ORM\Column(name="explicit", type="boolean")
-     *
-     * @var bool Whether the episode contains explicit content or not
-     */
-    protected $explicit;
+    #[ORM\Column]
+    protected int $created_at;
 
-    /**
-     * @ORM\Column(name="created_at", type="integer")
-     *
-     * @var int Timestamp of when the episode was created
-     */
-    protected $created_at;
-
-    /**
-     * @ORM\Column(name="art_updated_at", type="integer")
-     * @AuditLog\AuditIgnore()
-     *
-     * @var int The latest time (UNIX timestamp) when album art was updated.
-     */
-    protected $art_updated_at = 0;
+    #[ORM\Column]
+    #[AuditLog\AuditIgnore]
+    protected int $art_updated_at = 0;
 
     public function __construct(Podcast $podcast)
     {
         $this->podcast = $podcast;
         $this->created_at = time();
-    }
-
-    public function getId(): ?string
-    {
-        return $this->id;
     }
 
     public function getPodcast(): Podcast
@@ -146,7 +92,7 @@ class PodcastEpisode
 
     public function setLink(?string $link): self
     {
-        $this->link = $this->truncateString($link);
+        $this->link = $this->truncateNullableString($link);
 
         return $this;
     }

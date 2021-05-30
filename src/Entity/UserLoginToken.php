@@ -7,28 +7,20 @@ namespace App\Entity;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="user_login_tokens")
- * @ORM\Entity(readOnly=true)
- */
+#[
+    ORM\Entity(readOnly: true),
+    ORM\Table(name: 'user_login_tokens')
+]
 class UserLoginToken
 {
     use Traits\HasSplitTokenFields;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
-     * })
-     * @var User
-     */
-    protected $user;
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'api_keys')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected User $user;
 
-    /**
-     * @ORM\Column(name="created_at", type="integer")
-     * @var int
-     */
-    protected $created_at;
+    #[ORM\Column]
+    protected int $created_at;
 
     public function __construct(User $user, SplitToken $token)
     {

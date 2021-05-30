@@ -2,14 +2,12 @@
 
 namespace App\Annotations\AuditLog;
 
-use Doctrine\Common\Annotations\Annotation;
+use Attribute;
 
 /**
  * Marks a class as one whose changes should be logged via the Audit Log.
- *
- * @Annotation
- * @Annotation\Target("CLASS")
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 class Auditable
 {
 }

@@ -861,7 +861,7 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         if ($recordLiveStreams) {
-            $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\StationMountInterface::FORMAT_MP3;
+            $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
             $recordLiveStreamsBitrate = (int)($settings['record_streams_bitrate'] ?? 128);
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
@@ -1001,13 +1001,13 @@ class ConfigWriter implements EventSubscriberInterface
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
      *
      * @param Entity\Station $station
-     * @param Entity\StationMountInterface $mount
+     * @param \App\Entity\Interfaces\StationMountInterface $mount
      * @param string $idPrefix
      * @param int $id
      */
     protected function getOutputString(
         Entity\Station $station,
-        Entity\StationMountInterface $mount,
+        Entity\Interfaces\StationMountInterface $mount,
         string $idPrefix,
         int $id
     ): string {
@@ -1062,7 +1062,7 @@ class ConfigWriter implements EventSubscriberInterface
             $output_params[] = 'protocol="' . $protocol . '"';
         }
 
-        if (Entity\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
+        if (Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
             $output_params[] = 'icy_metadata="true"';
         }
 
@@ -1074,19 +1074,19 @@ class ConfigWriter implements EventSubscriberInterface
     protected function getOutputFormatString(string $format, int $bitrate = 128): string
     {
         switch (strtolower($format)) {
-            case Entity\StationMountInterface::FORMAT_AAC:
+            case Entity\Interfaces\StationMountInterface::FORMAT_AAC:
                 $afterburner = ($bitrate >= 160) ? 'true' : 'false';
                 $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
 
                 return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
 
-            case Entity\StationMountInterface::FORMAT_OGG:
+            case Entity\Interfaces\StationMountInterface::FORMAT_OGG:
                 return '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
 
-            case Entity\StationMountInterface::FORMAT_OPUS:
+            case Entity\Interfaces\StationMountInterface::FORMAT_OPUS:
                 return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
 
-            case Entity\StationMountInterface::FORMAT_MP3:
+            case Entity\Interfaces\StationMountInterface::FORMAT_MP3:
             default:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
         }

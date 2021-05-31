@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Environment;
-use App\Normalizer\Annotation\DeepNormalize;
+use App\Normalizer\Attributes\DeepNormalize;
 use App\Radio\Adapters;
 use App\Utilities\File;
 use App\Validator\Constraints as AppAssert;

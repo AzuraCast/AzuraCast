@@ -3,7 +3,7 @@
 namespace App\Normalizer;
 
 use App\Exception\NoGetterAvailableException;
-use App\Normalizer\Annotation\DeepNormalize;
+use App\Normalizer\Attributes\DeepNormalize;
 use DateTime;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;

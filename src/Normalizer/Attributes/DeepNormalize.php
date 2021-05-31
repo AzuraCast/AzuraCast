@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Normalizer\Annotation;
+namespace App\Normalizer\Attributes;
 
 use Attribute;
 

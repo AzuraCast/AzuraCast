@@ -4,7 +4,7 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog\Auditable;
+use App\Entity\Attributes\Auditable;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;

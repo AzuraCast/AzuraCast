@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeZone;
@@ -16,7 +15,7 @@ use OpenApi\Annotations as OA;
 #[
     ORM\Entity,
     ORM\Table(name: 'station_schedules'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class StationSchedule
 {

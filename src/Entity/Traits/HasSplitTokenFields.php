@@ -13,7 +13,7 @@ trait HasSplitTokenFields
     protected string $id;
 
     #[ORM\Column(length: 128)]
-    #[AuditLog\AuditIgnore]
+    #[\App\Entity\Attributes\AuditIgnore]
     protected string $verifier;
 
     protected function setFromToken(SplitToken $token): void

@@ -25,7 +25,7 @@ use const PASSWORD_BCRYPT;
     ORM\Table(name: 'users'),
     ORM\HasLifecycleCallbacks,
     ORM\UniqueConstraint(name: 'email_idx', columns: ['email']),
-    AuditLog\Auditable,
+    Attributes\Auditable,
     UniqueEntity(fields: ['email'])
 ]
 class User implements Stringable
@@ -40,7 +40,7 @@ class User implements Stringable
     protected ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $auth_password = null;
 
     /** @OA\Property(example="") */
@@ -56,22 +56,22 @@ class User implements Stringable
 
     /** @OA\Property(example="dark") */
     #[ORM\Column(length: 25)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $theme = null;
 
     /** @OA\Property(example="A1B2C3D4") */
     #[ORM\Column(length: 255)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $two_factor_secret = null;
 
     /** @OA\Property(example=SAMPLE_TIMESTAMP) */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $created_at;
 
     /** @OA\Property(example=SAMPLE_TIMESTAMP) */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $updated_at;
 
     /**

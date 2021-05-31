@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity,
     ORM\Table(name: 'podcast_media'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class PodcastMedia
 {
@@ -50,7 +50,7 @@ class PodcastMedia
     protected int $modified_time = 0;
 
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $art_updated_at = 0;
 
     public function __construct(StorageLocation $storageLocation)

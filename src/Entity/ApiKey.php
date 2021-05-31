@@ -4,14 +4,13 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Stringable;
 
 #[
-    AuditLog\Auditable,
+    Attributes\Auditable,
     ORM\Table(name: 'api_keys'),
     ORM\Entity(readOnly: true)
 ]

@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity,
     ORM\Table(name: 'custom_field'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class CustomField implements \Stringable
 {

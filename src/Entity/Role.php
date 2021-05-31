@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity,
     ORM\Table(name: 'role'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class Role implements JsonSerializable, Stringable
 {

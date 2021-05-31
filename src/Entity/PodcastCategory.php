@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     ORM\Entity,
     ORM\Table(name: 'podcast_category'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class PodcastCategory
 {

@@ -2,9 +2,9 @@
 
 namespace App\Doctrine\Event;
 
-use App\Annotations\AuditLog\Auditable;
-use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
+use App\Entity\Attributes\Auditable;
+use App\Entity\Attributes\AuditIgnore;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -12,6 +12,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Proxy\Proxy;
+use Doctrine\ORM\UnitOfWork;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionObject;
@@ -37,10 +38,28 @@ class AuditLog implements EventSubscriber
 
     public function onFlush(OnFlushEventArgs $args): void
     {
-        $newAuditLogs = [];
-
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
+
+        $singleAuditLogs = $this->handleSingleUpdates($em, $uow);
+        $collectionAuditLogs = $this->handleCollectionUpdates($uow);
+        $newAuditLogs = array_merge($singleAuditLogs, $collectionAuditLogs);
+
+        if (!empty($newAuditLogs)) {
+            $auditLogMetadata = $em->getClassMetadata(Entity\AuditLog::class);
+            foreach ($newAuditLogs as $auditLog) {
+                $uow->persist($auditLog);
+                $uow->computeChangeSet($auditLogMetadata, $auditLog);
+            }
+        }
+    }
+
+    /** @return Entity\AuditLog[] */
+    protected function handleSingleUpdates(
+        EntityManagerInterface $em,
+        UnitOfWork $uow
+    ): array {
+        $newRecords = [];
 
         $collections = [
             Entity\AuditLog::OPER_INSERT => $uow->getScheduledEntityInsertions(),
@@ -77,10 +96,10 @@ class AuditLog implements EventSubscriber
 
                     // Check if either field value is an object.
                     if ($this->isEntity($em, $fieldPrev)) {
-                        $fieldPrev = $this->getIdentifier(new ReflectionObject($fieldPrev), $fieldPrev);
+                        $fieldPrev = $this->getIdentifier($fieldPrev);
                     }
                     if ($this->isEntity($em, $fieldNow)) {
-                        $fieldNow = $this->getIdentifier(new ReflectionObject($fieldNow), $fieldNow);
+                        $fieldNow = $this->getIdentifier($fieldNow);
                     }
 
                     $changes[$changeField] = [$fieldPrev, $fieldNow];
@@ -91,12 +110,12 @@ class AuditLog implements EventSubscriber
                 }
 
                 // Find the identifier method or property.
-                $identifier = $this->getIdentifier($reflectionClass, $entity);
+                $identifier = $this->getIdentifier($entity);
                 if (null === $identifier) {
                     continue;
                 }
 
-                $newAuditLogs[] = new Entity\AuditLog(
+                $newRecords[] = new Entity\AuditLog(
                     $changeType,
                     get_class($entity),
                     $identifier,
@@ -107,7 +126,14 @@ class AuditLog implements EventSubscriber
             }
         }
 
-        // Handle changes to collections.
+        return $newRecords;
+    }
+
+    /** @return Entity\AuditLog[] */
+    protected function handleCollectionUpdates(
+        UnitOfWork $uow
+    ): array {
+        $newRecords = [];
         $associated = [];
         $disassociated = [];
 
@@ -126,7 +152,7 @@ class AuditLog implements EventSubscriber
                 continue;
             }
 
-            $ownerIdentifier = $this->getIdentifier($reflectionClass, $owner);
+            $ownerIdentifier = $this->getIdentifier($owner);
 
             foreach ($collection->getInsertDiff() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
@@ -134,7 +160,7 @@ class AuditLog implements EventSubscriber
                     continue;
                 }
 
-                $entityIdentifier = $this->getIdentifier($targetReflectionClass, $entity);
+                $entityIdentifier = $this->getIdentifier($entity);
                 $associated[] = [$owner, $ownerIdentifier, $entity, $entityIdentifier];
             }
             foreach ($collection->getDeleteDiff() as $entity) {
@@ -143,7 +169,7 @@ class AuditLog implements EventSubscriber
                     continue;
                 }
 
-                $entityIdentifier = $this->getIdentifier($targetReflectionClass, $entity);
+                $entityIdentifier = $this->getIdentifier($entity);
                 $disassociated[] = [$owner, $ownerIdentifier, $entity, $entityIdentifier];
             }
         }
@@ -167,7 +193,7 @@ class AuditLog implements EventSubscriber
                 continue;
             }
 
-            $ownerIdentifier = $this->getIdentifier($reflectionClass, $owner);
+            $ownerIdentifier = $this->getIdentifier($owner);
 
             foreach ($collection->toArray() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
@@ -175,13 +201,13 @@ class AuditLog implements EventSubscriber
                     continue;
                 }
 
-                $entityIdentifier = $this->getIdentifier($targetReflectionClass, $entity);
+                $entityIdentifier = $this->getIdentifier($entity);
                 $disassociated[] = [$owner, $ownerIdentifier, $entity, $entityIdentifier];
             }
         }
 
         foreach ($associated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newAuditLogs[] = new Entity\AuditLog(
+            $newRecords[] = new Entity\AuditLog(
                 Entity\AuditLog::OPER_INSERT,
                 get_class($owner),
                 $ownerIdentifier,
@@ -192,7 +218,7 @@ class AuditLog implements EventSubscriber
         }
 
         foreach ($disassociated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newAuditLogs[] = new Entity\AuditLog(
+            $newRecords[] = new Entity\AuditLog(
                 Entity\AuditLog::OPER_DELETE,
                 get_class($owner),
                 $ownerIdentifier,
@@ -202,17 +228,9 @@ class AuditLog implements EventSubscriber
             );
         }
 
-        $auditLogMetadata = $em->getClassMetadata(Entity\AuditLog::class);
-        foreach ($newAuditLogs as $auditLog) {
-            $uow->persist($auditLog);
-            $uow->computeChangeSet($auditLogMetadata, $auditLog);
-        }
+        return $newRecords;
     }
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param mixed $class
-     */
     protected function isEntity(EntityManagerInterface $em, mixed $class): bool
     {
         if (is_object($class)) {
@@ -239,10 +257,9 @@ class AuditLog implements EventSubscriber
     /**
      * Get the identifier string for an entity, if it's set or fetchable.
      *
-     * @param ReflectionClass $reflectionClass
      * @param object $entity
      */
-    protected function getIdentifier(ReflectionClass $reflectionClass, object $entity): ?string
+    protected function getIdentifier(object $entity): ?string
     {
         if ($entity instanceof \Stringable) {
             return (string)$entity;

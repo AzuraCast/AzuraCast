@@ -21,7 +21,7 @@ use const PHP_URL_PORT;
 #[
     ORM\Entity,
     ORM\Table(name: 'station_remotes'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class StationRemote implements StationMountInterface, Stringable
 {
@@ -110,7 +110,7 @@ class StationRemote implements StationMountInterface, Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $listeners_unique = 0;
 
     /**
@@ -120,7 +120,7 @@ class StationRemote implements StationMountInterface, Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $listeners_total = 0;
 
     public function __construct(Station $station)

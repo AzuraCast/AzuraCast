@@ -2,8 +2,8 @@
 
 namespace App\Doctrine\Event;
 
-use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
+use App\Entity\Attributes\AuditIgnore;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;

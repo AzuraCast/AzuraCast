@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity,
     ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class StationWebhook implements Stringable
 {
@@ -92,7 +92,7 @@ class StationWebhook implements Stringable
      * )
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?array $metadata = null;
 
     public function __construct(Station $station, $type)

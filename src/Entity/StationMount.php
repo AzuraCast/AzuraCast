@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity,
     ORM\Table(name: 'station_mounts'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class StationMount implements StationMountInterface, \Stringable
 {
@@ -91,7 +91,7 @@ class StationMount implements StationMountInterface, \Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $listeners_unique = 0;
 
     /**
@@ -101,7 +101,7 @@ class StationMount implements StationMountInterface, \Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $listeners_total = 0;
 
     public function __construct(Station $station)

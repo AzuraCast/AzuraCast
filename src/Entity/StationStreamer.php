@@ -27,7 +27,7 @@ use const PASSWORD_ARGON2ID;
     ORM\UniqueConstraint(name: 'username_unique_idx', columns: ['station_id', 'streamer_username']),
     ORM\HasLifecycleCallbacks,
     UniqueEntity(fields: ['station', 'streamer_username']),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class StationStreamer implements \Stringable
 {
@@ -49,7 +49,7 @@ class StationStreamer implements \Stringable
     /** @OA\Property(example="") */
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected string $streamer_password;
 
     /** @OA\Property(example="Test DJ") */
@@ -70,7 +70,7 @@ class StationStreamer implements \Stringable
 
     /** @OA\Property(example=SAMPLE_TIMESTAMP) */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?int $reactivate_at = null;
 
     /**

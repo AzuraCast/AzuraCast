@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity,
     ORM\Table(name: 'podcast'),
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class Podcast
 {
@@ -42,7 +42,7 @@ class Podcast
     protected string $language;
 
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $art_updated_at = 0;
 
     #[ORM\OneToMany(mappedBy: 'podcast', targetEntity: PodcastCategory::class)]

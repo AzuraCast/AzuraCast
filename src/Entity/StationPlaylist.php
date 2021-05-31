@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Entity,
     ORM\Table(name: 'station_playlists'),
     ORM\HasLifecycleCallbacks,
-    AuditLog\Auditable
+    Attributes\Auditable
 ]
 class StationPlaylist implements Stringable
 {
@@ -156,7 +156,7 @@ class StationPlaylist implements Stringable
     protected bool $avoid_duplicates = true;
 
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $played_at = 0;
 
     #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY')]

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /** @OA\Schema(type="object", schema="Settings") */
 #[ORM\Entity, ORM\Table(name: 'settings')]
-#[AuditLog\Auditable]
+#[Attributes\Auditable]
 class Settings implements Stringable
 {
     use Entity\Traits\TruncateStrings;
@@ -229,7 +229,7 @@ class Settings implements Stringable
      * @var mixed[]|null
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?array $update_results = null;
 
     /**
@@ -252,7 +252,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $update_last_run = 0;
 
     public function getUpdateLastRun(): int
@@ -585,7 +585,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $backup_last_run = 0;
 
     public function getBackupLastRun(): int
@@ -610,7 +610,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(type: 'text')]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $backup_last_result = null;
 
     public function getBackupLastResult(): ?string
@@ -630,7 +630,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(type: 'text')]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $backup_last_output = null;
 
     public function getBackupLastOutput(): ?string
@@ -680,7 +680,7 @@ class Settings implements Stringable
      * @var mixed[]|null
      */
     #[ORM\Column(type: 'json')]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?array $nowplaying = null;
 
     /**
@@ -703,7 +703,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $sync_nowplaying_last_run = 0;
 
     public function getSyncNowplayingLastRun(): int
@@ -723,7 +723,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $sync_short_last_run = 0;
 
     public function getSyncShortLastRun(): int
@@ -743,7 +743,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $sync_medium_last_run = 0;
 
     public function getSyncMediumLastRun(): int
@@ -763,7 +763,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $sync_long_last_run = 0;
 
     public function getSyncLongLastRun(): int
@@ -816,7 +816,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column(length: 45)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $external_ip = null;
 
     public function getExternalIp(): ?string
@@ -857,7 +857,7 @@ class Settings implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected int $geolite_last_run = 0;
 
     public function getGeoliteLastRun(): int

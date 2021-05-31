@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity,
     ORM\Table(name: 'storage_location'),
-    AuditLog\Auditable,
+    Attributes\Auditable,
     AppAssert\StorageLocation
 ]
 class StorageLocation implements Stringable
@@ -94,7 +94,7 @@ class StorageLocation implements Stringable
     protected ?string $storageQuotaBytes = null;
 
     #[ORM\Column(name: 'storage_used', type: 'bigint')]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $storageUsed = null;
 
     // Used for API generation.

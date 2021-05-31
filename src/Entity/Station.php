@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station'),
     ORM\Index(columns: ['short_name'], name: 'idx_short_name'),
     ORM\HasLifecycleCallbacks,
-    AuditLog\Auditable,
+    Attributes\Auditable,
     AppAssert\StationPortChecker,
     AppAssert\UniqueEntity(fields: ['short_name'])
 ]
@@ -112,7 +112,7 @@ class Station implements Stringable
     protected ?array $backend_config = null;
 
     #[ORM\Column(length: 150)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?string $adapter_api_key = null;
 
     /** @OA\Property(example="A sample radio station.") */
@@ -132,11 +132,11 @@ class Station implements Stringable
     protected ?string $radio_base_dir = null;
 
     #[ORM\Column(type: 'array', nullable: true)]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected mixed $nowplaying;
 
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?int $nowplaying_timestamp = null;
 
     /** @OA\Property(type="array", @OA\Items()) */
@@ -144,7 +144,7 @@ class Station implements Stringable
     protected ?array $automation_settings = null;
 
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected ?int $automation_timestamp = 0;
 
     /**
@@ -184,7 +184,7 @@ class Station implements Stringable
      * )
      */
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected bool $is_streamer_live = false;
 
     /**
@@ -215,11 +215,11 @@ class Station implements Stringable
     protected bool $enable_on_demand_download = true;
 
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected bool $needs_restart = false;
 
     #[ORM\Column]
-    #[AuditLog\AuditIgnore]
+    #[Attributes\AuditIgnore]
     protected bool $has_started = false;
 
     /**

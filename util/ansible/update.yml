@@ -15,7 +15,7 @@
     - azuracast-config
     - { role : azuracast-radio, when : update_revision|int < 59 }
     - { role : supervisord, when : update_revision|int < 13 }
-    - { role : mariadb, when : update_revision|int < 15 }
+    - { role : mariadb, when : update_revision|int < 63 }
     - { role : nginx, when : update_revision|int < 60 }
     - { role : redis, when : update_revision|int < 57 }
     - { role : php, when : update_revision|int < 62 }

@@ -1,44 +1,20 @@
 ---
- - name: Add MariaDB Repository (Xenial/Bionic)
-   template: src=mariadb_ubuntu.list.j2 dest=/etc/apt/sources.list.d/mariadb.list owner=root group=root mode=0644
-   register: mariadb_list
-   when:
-    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic'
+- name : Update MariaDB Dependencies
+  shell : curl -sSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash -s -- --mariadb-server-version="mariadb-10.5"
 
- - name: Add repo key (Xenial)
-   apt_key:
-     keyserver: keyserver.ubuntu.com
-     id: "0xF1656F24C74CD1D8"
-     state: present
-   when: 
-    - ansible_distribution_release == 'xenial'
+- name : Unattended package installation
+  shell : export DEBIAN_FRONTEND=noninteractive
+  changed_when : false
 
- - name: Add repo key (Bionic)
-   apt_key:
-     keyserver: keyserver.ubuntu.com
-     id: "0xF1656F24C74CD1D8"
-     state: present
-   when: 
-    - ansible_distribution_release == 'bionic'
+- name : Install MariaDB
+  apt :
+    name : "{{ packages }}"
+    state : latest
+    update_cache : yes
+  vars :
+    packages :
+      - mariadb-server
+      - mariadb-client
 
- - name: Update apt cache
-   apt: update_cache=yes
-   when: 
-    - ansible_distribution_release == 'xenial' or ansible_distribution_release == 'bionic' 
-    - mariadb_list.changed == True
-
- - name: Unattended package installation
-   shell: export DEBIAN_FRONTEND=noninteractive
-   changed_when: false
-
- - name: Install MariaDB
-   apt:
-     name: "{{ packages }}"
-     state: latest
-   vars:
-     packages:
-     - mariadb-server
-     - mariadb-client
-
- - name: Start and enable service
-   service: name=mysql state=started enabled=yes
+- name : Start and enable service
+  service : name=mysql state=started enabled=yes

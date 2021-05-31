@@ -254,20 +254,28 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         $form_mode = $context[self::NORMALIZE_TO_IDENTIFIERS] ?? false;
 
         if (isset($context[self::CLASS_METADATA]->associationMappings[$prop_name])) {
-            $annotation = $this->annotationReader->getPropertyAnnotation(
-                new ReflectionProperty(get_class($object), $prop_name),
-                DeepNormalize::class
-            );
+            $reflClass = new ReflectionClass($object);
+            $reflProp = $reflClass->getProperty($prop_name);
 
-            $deep = ($annotation instanceof DeepNormalize)
-                ? $annotation->getDeepNormalize()
-                : false;
+            $deepNormalizeAttrs = $reflProp->getAttributes(DeepNormalize::class);
+            if (!empty($deepNormalizeAttrs)) {
+                $deepNormalizeAttr = current($deepNormalizeAttrs);
+
+                /** @var DeepNormalize $deepNormalize */
+                $deepNormalize = $deepNormalizeAttr->newInstance();
+
+                $deep = $deepNormalize->getDeepNormalize();
+            } else {
+                $deep = false;
+            }
 
             if (!$deep) {
-                throw new NoGetterAvailableException(sprintf(
-                    'Deep normalization disabled for property %s.',
-                    $prop_name
-                ));
+                throw new NoGetterAvailableException(
+                    sprintf(
+                        'Deep normalization disabled for property %s.',
+                        $prop_name
+                    )
+                );
             }
 
             $prop_val = $this->getProperty($object, $prop_name);

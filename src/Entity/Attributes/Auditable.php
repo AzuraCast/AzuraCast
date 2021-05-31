@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Annotations\AuditLog;
+namespace App\Entity\Attributes;
 
 use Attribute;
 

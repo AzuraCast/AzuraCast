@@ -10,6 +10,9 @@
     update_mode : true
     update_revision : 1
 
+  environment :
+    DEBIAN_FRONTEND : noninteractive
+
   roles :
     - init
     - azuracast-config

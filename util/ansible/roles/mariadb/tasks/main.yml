@@ -2,10 +2,6 @@
 - name : Update MariaDB Dependencies
   shell : curl -sSL https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash -s -- --mariadb-server-version="mariadb-10.5"
 
-- name : Unattended package installation
-  shell : export DEBIAN_FRONTEND=noninteractive
-  changed_when : false
-
 - name : Install MariaDB
   apt :
     name : "{{ packages }}"

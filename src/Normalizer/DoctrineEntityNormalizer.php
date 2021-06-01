@@ -5,12 +5,10 @@ namespace App\Normalizer;
 use App\Exception\NoGetterAvailableException;
 use App\Normalizer\Attributes\DeepNormalize;
 use DateTime;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Proxy\Proxy;
 use InvalidArgumentException;
 use ProxyManager\Proxy\GhostObjectInterface;
@@ -20,9 +18,7 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use ReflectionUnionType;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -44,30 +40,17 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /** @var SerializerInterface|NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
-    protected Reader $annotationReader;
-
     protected Inflector $inflector;
 
     public function __construct(
         protected EntityManagerInterface $em,
-        Reader $annotationReader = null,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
         array $defaultContext = []
     ) {
-        /** @var AnnotationDriver $metadata_driver */
-        $metadata_driver = $em->getConfiguration()->getMetadataDriverImpl();
-
-        $annotationReader = $annotationReader ?? $metadata_driver->getReader();
-        $classMetadataFactory = $classMetadataFactory ?? new ClassMetadataFactory(
-            new AnnotationLoader($annotationReader)
-        );
-
         $defaultContext[self::ALLOW_EXTRA_ATTRIBUTES] = false;
-
         parent::__construct($classMetadataFactory, $nameConverter, $defaultContext);
 
-        $this->annotationReader = $annotationReader;
         $this->inflector = InflectorFactory::create()->build();
     }
 

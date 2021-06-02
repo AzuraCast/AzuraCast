@@ -213,10 +213,19 @@ class Icecast extends AbstractFrontend
 
         $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
-            $custom_conf = $this->processCustomConfig($customConfig);
+            $customConfParsed = $this->processCustomConfig($customConfig);
 
-            if (false !== $custom_conf) {
-                $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $custom_conf);
+            // Special handling for aliases.
+            if (isset($customConfParsed['paths']['alias'])) {
+                $alias = (array)$customConfParsed['paths']['alias'];
+                if (!is_numeric(key($alias))) {
+                    $alias = [$alias];
+                }
+                $customConfParsed['paths']['alias'] = $alias;
+            }
+
+            if (false !== $customConfParsed) {
+                $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
             }
         }
 

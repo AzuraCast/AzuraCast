@@ -17,6 +17,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- Several of our upstream dependencies (Doctrine ORM, Symfony Serializer and Validator) have updated to support PHP
+  8.0's attributes, and we have updated our code to reflect those changes.
+
 - The embeddable data on each station's public player is now "OpenGraph" compatible, which should work across multiple
   social media platforms, including the existing Twitter player implementation.
 
@@ -36,6 +39,17 @@ release channel, you can take advantage of these new features and fixes.
     - `/api/station/{id}/streamers/broadcasts`
 
 ## Bug Fixes
+
+- A bug preventing unique listeners from appearing when using remote relays powered by the non-KH branch of Icecast
+  2.4.x has been resolved (#3700).
+
+- Advanced custom configuration for Icecast frontends supports both singular and multiple `<alias>` definitions (#4223).
+
+- Ansible installations will also properly be updated to MariaDB 10.5 and new installations will properly restart PHP
+  8.0.
+
+- Fixed a bug with the 5-minute sync's Check Media task taking an inordinately long amount of time with remote
+  filesystems (like S3 or Dropbox). (#4212)
 
 - Some issues causing errors about type mismatches (caused by recent implementations of strict typing) have been
   resolved.

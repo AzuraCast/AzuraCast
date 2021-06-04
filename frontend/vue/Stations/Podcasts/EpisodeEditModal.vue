@@ -22,7 +22,7 @@
                 </b-button>
             </template>
             <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
-                <translate key="lang_btn_save_changes">Save Changes</translate>
+                {{ langSaveChanges }}
             </b-button>
         </template>
     </b-modal>
@@ -50,6 +50,7 @@ export default {
     data () {
         return {
             loading: true,
+            uploadPercentage: null,
             editUrl: null,
             record: {
                 has_custom_art: false,
@@ -67,6 +68,15 @@ export default {
             return this.isEditMode
                 ? this.$gettext('Edit Episode')
                 : this.$gettext('Add Episode');
+        },
+        langSaveChanges () {
+            let baseText = this.$gettext('Save Changes');
+
+            if (null !== this.uploadPercentage) {
+                baseText = baseText + ' (' + this.uploadPercentage + '%)';
+            }
+
+            return baseText;
         },
         isEditMode () {
             return this.editUrl !== null;
@@ -89,6 +99,7 @@ export default {
     methods: {
         resetForm () {
             this.editUrl = null;
+            this.uploadPercentage = null;
             this.record = {
                 has_custom_art: false,
                 art: null,
@@ -181,6 +192,9 @@ export default {
                 data: formData,
                 headers: {
                     'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: (progressEvent) => {
+                    this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
                 }
             }).then((resp) => {
                 let notifyMessage = this.$gettext('Changes saved.');

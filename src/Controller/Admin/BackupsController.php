@@ -74,7 +74,7 @@ class BackupsController extends AbstractLogViewerController
             'admin/backups/index',
             [
                 'backups' => $backups,
-                'is_enabled' => $settings->isBackupEnabled(),
+                'is_enabled' => $settings->getBackupEnabled(),
                 'last_run' => $settings->getBackupLastRun(),
                 'last_result' => $settings->getBackupLastResult(),
                 'last_output' => $settings->getBackupLastOutput(),

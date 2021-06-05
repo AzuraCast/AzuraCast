@@ -492,7 +492,7 @@ class Settings implements Stringable
     #[ORM\Column]
     protected bool $backup_enabled = false;
 
-    public function isBackupEnabled(): bool
+    public function getBackupEnabled(): bool
     {
         return $this->backup_enabled;
     }

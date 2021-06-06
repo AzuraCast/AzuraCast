@@ -42,16 +42,12 @@ class ServiceWorkerAction
           );
         });
 
-        // Offline-first, cache-first strategy
-        // Kick off two asynchronous requests, one to the cache and one to the network
-        // If there's a cached version available, use it, but fetch an update for next time.
-        // Gets data on screen as quickly as possible, then updates once the network has returned the latest data.
+        // Cache-first strategy, but only for existing cached items.
         self.addEventListener('fetch', event => {
           event.respondWith(
             caches.open(cacheName).then(cache => {
               return cache.match(event.request).then(response => {
                 return response || fetch(event.request).then(networkResponse => {
-                  cache.put(event.request, networkResponse.clone());
                   return networkResponse;
                 });
               });

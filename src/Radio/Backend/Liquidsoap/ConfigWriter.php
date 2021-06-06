@@ -155,13 +155,13 @@ class ConfigWriter implements EventSubscriberInterface
 
         setenv("TZ", "${stationTz}")
 
-        azuracast_api_auth = ref "${stationApiAuth}"
+        azuracast_api_auth = ref("${stationApiAuth}")
         ignore(azuracast_api_auth)
 
-        autodj_is_loading = ref true
+        autodj_is_loading = ref(true)
         ignore(autodj_is_loading)
 
-        autodj_ping_attempts = ref 0
+        autodj_ping_attempts = ref(0)
         ignore(autodj_ping_attempts)
         EOF
         );
@@ -464,7 +464,7 @@ class ConfigWriter implements EventSubscriberInterface
             # Delayed ping for AutoDJ Next Song
             def wait_for_next_song(autodj)
                 autodj_ping_attempts := !autodj_ping_attempts + 1
-                delay = ref 0.5
+                delay = ref(0.5)
 
                 if source.is_ready(!autodj) then
                     log("AutoDJ is ready!")
@@ -498,8 +498,8 @@ class ConfigWriter implements EventSubscriberInterface
             )
             radio = fallback(id="autodj_fallback", track_sensitive = true, [dynamic_startup, radio])
 
-            ref_dynamic = ref dynamic;
-            add_timeout(0.25,fun()->wait_for_next_song(ref_dynamic))
+            ref_dynamic = ref(dynamic);
+            thread.run.recurrent(delay=0.25, { wait_for_next_song(ref_dynamic) })
             EOF
             );
         }
@@ -718,7 +718,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
         $envVarsStr = 'env=[' . implode(', ', $envVarsParts) . ']';
 
-        return 'list.hd(get_process_lines(' . $envVarsStr . ', \'' . $command . '\'), default="")';
+        return 'list.hd(process.read.lines(' . $envVarsStr . ', \'' . $command . '\'), default="")';
     }
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
@@ -767,13 +767,13 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<< EOF
         # DJ Authentication
-        live_enabled = ref false
-        last_authenticated_dj = ref ""
-        live_dj = ref ""
+        live_enabled = ref(false)
+        last_authenticated_dj = ref("")
+        live_dj = ref("")
 
         def dj_auth(auth_user,auth_pw) =
-            user = ref ""
-            password = ref ""
+            user = ref("")
+            password = ref("")
 
             if (auth_user == "source" or auth_user == "") and (string.match(pattern="(:|,)+", auth_pw)) then
                 auth_string = string.split(separator="(:|,)", auth_pw)
@@ -959,10 +959,10 @@ class ConfigWriter implements EventSubscriberInterface
                 (-1.)
             end
 
-            add_timeout(fast=false, 0., f)
+            thread.run.recurrent(fast=false, delay=0., f)
         end
 
-        radio = on_metadata(metadata_updated,radio)
+        source.on_metadata(radio, metadata_updated)
         EOF
         );
     }

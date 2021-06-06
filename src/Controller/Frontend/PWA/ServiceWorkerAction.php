@@ -103,8 +103,8 @@ class ServiceWorkerAction
             ->depth('>=1')
             ->exclude(['dist', 'api']);
 
-        foreach($otherStaticFiles as $file) {
-            $cacheFiles[] = $environment->getAssetUrl().'/'.$file->getRelativePathname();
+        foreach ($otherStaticFiles as $file) {
+            $cacheFiles[] = $environment->getAssetUrl() . '/' . $file->getRelativePathname();
         }
 
         $replaceString = 'const cacheFiles = ' . json_encode($cacheFiles) . ';';

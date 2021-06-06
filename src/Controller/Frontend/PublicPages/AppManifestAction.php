@@ -30,6 +30,9 @@ class AppManifestAction
             'start_url' => '.',
             'display' => 'minimal-ui',
             'theme_color' => '#2196F3',
+            'categories' => [
+                'music',
+            ],
             'icons' => [
                 [
                     'src' => $iconBaseUrl . '/android-icon-36x36.png',

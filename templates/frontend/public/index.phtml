@@ -40,6 +40,7 @@ $assets
 
 $this->push('head');
 ?>
+<link rel="manifest" href="<?=(string)$router->fromHere('public:manifest')?>">
 
 <meta property="og:title" content="<?=$this->e($station->getName())?>">
 <meta property="og:url" content="<?=$this->e($station->getUrl())?>">
@@ -54,7 +55,6 @@ $this->push('head');
 )?>">
 <meta property="twitter:player:width" content="400">
 <meta property="twitter:player:height" content="125">
-
 <?php
 $this->end();
 ?>

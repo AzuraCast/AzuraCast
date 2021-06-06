@@ -12,6 +12,9 @@ return function (App $app) {
             $group->get('[/{embed:embed|social}]', Controller\Frontend\PublicPages\PlayerAction::class)
                 ->setName('public:index');
 
+            $group->get('/app.webmanifest', Controller\Frontend\PublicPages\AppManifestAction::class)
+                ->setName('public:manifest');
+
             $group->get('/embed-requests', Controller\Frontend\PublicPages\RequestsAction::class)
                 ->setName('public:embedrequests');
 

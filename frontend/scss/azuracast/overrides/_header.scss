@@ -1,5 +1,5 @@
 header.navbar {
-  background-image: url('../img/header_bg.png'), linear-gradient(90deg, #2196f3 0%, #0a6fc2 100%);
+  background-image: url('../img/header_bg.png'), linear-gradient(90deg, #0a6fc2 0%, #2196f3 100%);
   background-position: top left, center;
   background-repeat: no-repeat;
   background-size: 500px 100px, cover;
@@ -11,6 +11,7 @@ header.navbar {
     font-weight: normal;
     align-items: baseline;
     height: 2.5rem;
+    text-shadow: 0 0 2px #000;
 
     b {
       font-weight: bold;

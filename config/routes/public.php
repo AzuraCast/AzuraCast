@@ -6,13 +6,16 @@ use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
+    $app->get('/sw.js', Controller\Frontend\PWA\ServiceWorkerAction::class)
+        ->setName('public:sw');
+
     $app->group(
         '/public/{station_id}',
         function (RouteCollectorProxy $group) {
             $group->get('[/{embed:embed|social}]', Controller\Frontend\PublicPages\PlayerAction::class)
                 ->setName('public:index');
 
-            $group->get('/app.webmanifest', Controller\Frontend\PublicPages\AppManifestAction::class)
+            $group->get('/app.webmanifest', Controller\Frontend\PWA\AppManifestAction::class)
                 ->setName('public:manifest');
 
             $group->get('/embed-requests', Controller\Frontend\PublicPages\RequestsAction::class)

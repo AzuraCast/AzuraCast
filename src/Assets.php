@@ -483,6 +483,35 @@ class Assets
     }
 
     /**
+     * @return string[] The paths to all currently loaded files.
+     */
+    public function getLoadedFiles(): array
+    {
+        $this->sort();
+
+        $result = [];
+        foreach ($this->loaded as $item) {
+            if (!empty($item['files']['js'])) {
+                foreach ($item['files']['js'] as $file) {
+                    if (isset($file['src'])) {
+                        $result[] = $this->getUrl($file['src']);
+                    }
+                }
+            }
+
+            if (!empty($item['files']['css'])) {
+                foreach ($item['files']['css'] as $file) {
+                    if (isset($file['href'])) {
+                        $result[] = $this->getUrl($file['href']);
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Resolve the URI of the resource, whether local or remote/CDN-based.
      *
      * @param string $resource_uri
@@ -495,7 +524,7 @@ class Assets
             $resource_uri = $this->versioned_files[$resource_uri];
         }
 
-        if (preg_match('/^(https?:)?\/\//', $resource_uri)) {
+        if (str_starts_with($resource_uri, 'http')) {
             $this->addDomainToCsp($resource_uri);
             return $resource_uri;
         }
@@ -528,13 +557,17 @@ class Assets
 
         // CSP JavaScript policy
         // Note: unsafe-eval included for Vue template compiling
-        $csp_script_src = $this->getCspDomains();
-        $csp_script_src[] = "'self'";
-        $csp_script_src[] = "'unsafe-eval'";
-        $csp_script_src[] = "'nonce-" . $this->getCspNonce() . "'";
+        $cspScriptSrc = $this->getCspDomains();
+        $cspScriptSrc[] = "'self'";
+        $cspScriptSrc[] = "'unsafe-eval'";
+        $cspScriptSrc[] = "'nonce-" . $this->getCspNonce() . "'";
+        $csp[] = 'script-src ' . implode(' ', $cspScriptSrc);
 
-        $csp[] = 'script-src ' . implode(' ', $csp_script_src);
-        $csp[] = 'worker-src blob:';
+        $cspWorkerSrc = [];
+        $cspWorkerSrc[] = "blob:";
+        $cspWorkerSrc[] = "'self'";
+
+        $csp[] = 'worker-src ' . implode(' ', $cspWorkerSrc);
 
         return $response->withHeader('Content-Security-Policy', implode('; ', $csp));
     }

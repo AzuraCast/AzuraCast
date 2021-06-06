@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Frontend\PublicPages;
+namespace App\Controller\Frontend\PWA;
 
 use App\Environment;
 use App\Exception\StationNotFoundException;

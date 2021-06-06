@@ -38,6 +38,19 @@ if ($customization->useWebSocketsForNowPlaying()) {
 $assets
     ->addVueRender('Vue_PublicFullPlayer', '#public-radio-player', $props);
 
+// Register PWA service worker
+$swJsRoute = (string)$router->named('public:sw');
+
+$assets->addInlineJs(
+    <<<JS
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('${swJsRoute}');
+      });
+    }
+    JS
+);
+
 $this->push('head');
 ?>
 <link rel="manifest" href="<?=(string)$router->fromHere('public:manifest')?>">

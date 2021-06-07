@@ -15,6 +15,9 @@ release channel, you can take advantage of these new features and fixes.
   light). You can override this by selecting a default theme in the "Branding" settings, or reset to using browser
   preference by selecting the "Prefer System Default" option.
 
+- The built-in public players are now Progressive Web Apps (PWAs) that can be "installed" on browsers and mobile
+  devices.
+
 ## Code Quality/Technical Changes
 
 - Several of our upstream dependencies (Doctrine ORM, Symfony Serializer and Validator) have updated to support PHP

@@ -28,7 +28,7 @@ class AppManifestAction
             'short_name' => $station->getName(),
             'description' => $station->getDescription(),
             'start_url' => '.',
-            'display' => 'minimal-ui',
+            'display' => 'standalone',
             'theme_color' => '#2196F3',
             'categories' => [
                 'music',

@@ -50,7 +50,7 @@ class IndexController
         $spaceUsed = $spaceTotal->minus($spaceFree);
 
         // Get memory info.
-        $meminfoRaw = explode("\n", file_get_contents("/proc/meminfo"));
+        $meminfoRaw = file("/proc/meminfo", FILE_IGNORE_NEW_LINES);
         $meminfo = [];
         foreach ($meminfoRaw as $line) {
             if (str_contains($line, ':')) {

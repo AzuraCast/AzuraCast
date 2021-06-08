@@ -32,8 +32,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         array $scheduleItems,
         callable $rowRender
     ): ResponseInterface {
-        $station = $request->getStation();
-        $tz = $station->getTimezoneObject();
+        $tz = $request->getStation()->getTimezoneObject();
 
         $params = $request->getQueryParams();
 

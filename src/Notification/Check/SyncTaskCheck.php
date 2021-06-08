@@ -25,12 +25,8 @@ class SyncTaskCheck
             return;
         }
 
-        $settings = $this->settingsRepo->readSettings();
-
-        $setupComplete = $settings->getSetupCompleteTime();
-        $syncTasks = $this->syncRunner->getSyncTimes();
-
-        foreach ($syncTasks as $taskKey => $task) {
+        $setupComplete = $this->settingsRepo->readSettings()->getSetupCompleteTime();
+        foreach ($this->syncRunner->getSyncTimes() as $taskKey => $task) {
             $interval = $task['interval'];
             $diff = $task['diff'];
 

@@ -94,8 +94,7 @@ class Repository
         // Assemble select values and, if necessary, call $display callback.
         foreach ((array)$results as $result) {
             $key = $result[$pk];
-            $value = ($display === null) ? $result['name'] : $display($result);
-            $select[$key] = $value;
+            $select[$key] = ($display === null) ? $result['name'] : $display($result);
         }
 
         return $select;

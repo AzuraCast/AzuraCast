@@ -27,8 +27,7 @@ class DownloadAction
             $podcastMedia = $episode->getMedia();
 
             if ($podcastMedia instanceof Entity\PodcastMedia) {
-                $fsStation = new StationFilesystems($station);
-                $fsPodcasts = $fsStation->getPodcastsFilesystem();
+                $fsPodcasts = (new StationFilesystems($station))->getPodcastsFilesystem();
 
                 $path = $podcastMedia->getPath();
 

@@ -44,8 +44,7 @@ class Stations
         $this->dispatcher->dispatch($event);
 
         $active_tab = null;
-        $routeContext = RouteContext::fromRequest($request);
-        $current_route = $routeContext->getRoute();
+        $current_route = RouteContext::fromRequest($request)->getRoute();
         if ($current_route instanceof RouteInterface) {
             $route_parts = explode(':', $current_route->getName());
             $active_tab = $route_parts[1];

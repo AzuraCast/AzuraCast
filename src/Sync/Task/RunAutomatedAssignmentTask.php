@@ -140,8 +140,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
                 $playlistNumSongs = $songsPerPlaylist;
             }
 
-            $media_in_playlist = array_slice($mediaReport, $i, $playlistNumSongs);
-            foreach ($media_in_playlist as $media) {
+            foreach (array_slice($mediaReport, $i, $playlistNumSongs) as $media) {
                 $mediaToUpdate[$media['id']]['new_playlist_id'] = $playlistId;
             }
 
@@ -259,8 +258,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
             if ($row->getPlaylists()->count() > 0) {
                 /** @var Entity\StationPlaylistMedia $playlist_item */
                 foreach ($row->getPlaylists() as $playlist_item) {
-                    $playlist = $playlist_item->getPlaylist();
-                    $media['playlists'][] = $playlist->getName();
+                    $media['playlists'][] = $playlist_item->getPlaylist()->getName();
                 }
             }
 

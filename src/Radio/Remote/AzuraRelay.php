@@ -70,11 +70,9 @@ class AzuraRelay extends AbstractRemote
 
         $base_url = new Uri(rtrim($relay->getBaseUrl(), '/'));
 
-        $fe_config = $station->getFrontendConfig();
-        $radio_port = $fe_config->getPort();
+        $radio_port = $station->getFrontendConfig()->getPort();
 
-        $settings = $this->settingsRepo->readSettings();
-        $use_radio_proxy = $settings->getUseRadioProxy();
+        $use_radio_proxy = $this->settingsRepo->readSettings()->getUseRadioProxy();
 
         if (
             $use_radio_proxy

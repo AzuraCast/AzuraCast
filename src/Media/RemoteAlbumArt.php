@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+
 namespace App\Media;
 
 use App\Entity;
@@ -23,14 +25,12 @@ class RemoteAlbumArt
 
     public function enableForApis(): bool
     {
-        $settings = $this->settingsRepo->readSettings();
-        return $settings->getUseExternalAlbumArtInApis();
+        return $this->settingsRepo->readSettings()->getUseExternalAlbumArtInApis();
     }
 
     public function enableForMedia(): bool
     {
-        $settings = $this->settingsRepo->readSettings();
-        return $settings->getUseExternalAlbumArtWhenProcessingMedia();
+        return $this->settingsRepo->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
     }
 
     public function __invoke(Entity\Interfaces\SongInterface $song): ?string

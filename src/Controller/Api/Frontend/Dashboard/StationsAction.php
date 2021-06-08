@@ -74,7 +74,6 @@ class StationsAction
             $viewStations = array_reverse($viewStations);
         }
 
-        $paginator = Paginator::fromArray($viewStations, $request);
-        return $paginator->write($response);
+        return Paginator::fromArray($viewStations, $request)->write($response);
     }
 }

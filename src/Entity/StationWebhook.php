@@ -217,6 +217,6 @@ class StationWebhook implements Stringable
 
     public function __toString(): string
     {
-        return (string)($this->getStation()) . ' Web Hook: ' . $this->getName();
+        return $this->getStation() . ' Web Hook: ' . $this->getName();
     }
 }

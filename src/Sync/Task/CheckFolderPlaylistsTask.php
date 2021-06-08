@@ -36,8 +36,7 @@ class CheckFolderPlaylistsTask extends AbstractTask
             ]
         );
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         $mediaInPlaylistQuery = $this->em->createQuery(
             <<<'DQL'

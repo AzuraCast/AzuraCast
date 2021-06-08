@@ -87,7 +87,7 @@ class AuditLog
      */
     public static function setCurrentUser(?User $user = null): void
     {
-        self::$currentUser = ($user instanceof User)
+        self::$currentUser = (null !== $user)
             ? (string)$user
             : null;
     }

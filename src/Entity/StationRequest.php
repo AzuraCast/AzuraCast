@@ -109,8 +109,6 @@ class StationRequest
         $thresholdMins += random_int(0, $thresholdMins);
 
         $cued = CarbonImmutable::createFromTimestamp($this->timestamp);
-        $threshold = $now->subMinutes($thresholdMins);
-
-        return $threshold->gt($cued);
+        return $now->subMinutes($thresholdMins)->gt($cued);
     }
 }

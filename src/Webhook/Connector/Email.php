@@ -49,8 +49,7 @@ class Email extends AbstractConnector
         try {
             $email = $this->mail->createMessage();
 
-            $emailToParts = explode(',', $emailTo);
-            foreach ($emailToParts as $emailToPart) {
+            foreach (explode(',', $emailTo) as $emailToPart) {
                 $email->addTo(trim($emailToPart));
             }
 

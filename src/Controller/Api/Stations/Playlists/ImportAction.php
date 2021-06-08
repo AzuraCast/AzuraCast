@@ -42,8 +42,7 @@ class ImportAction extends AbstractPlaylistsAction
         $foundPaths = 0;
 
         if (!empty($paths)) {
-            $station = $request->getStation();
-            $storageLocation = $station->getMediaStorageLocation();
+            $storageLocation = $request->getStation()->getMediaStorageLocation();
 
             // Assemble list of station media to match against.
             $media_lookup = [];

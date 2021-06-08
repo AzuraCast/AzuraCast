@@ -432,8 +432,7 @@ class Station implements Stringable
      */
     public function useManualAutoDJ(): bool
     {
-        $settings = $this->getBackendConfig();
-        return $settings->useManualAutoDj();
+        return $this->getBackendConfig()->useManualAutoDj();
     }
 
     public function getBackendConfig(): StationBackendConfiguration
@@ -598,8 +597,7 @@ class Station implements Stringable
             return;
         }
 
-        $visibilityConverter = new PortableVisibilityConverter();
-        $visibility = $visibilityConverter->defaultForDirectories();
+        $visibility = (new PortableVisibilityConverter())->defaultForDirectories();
         if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
         }
@@ -630,11 +628,11 @@ class Station implements Stringable
         return null;
     }
 
-    public function setNowplaying(Api\NowPlaying $nowplaying = null): void
+    public function setNowplaying(?Api\NowPlaying $nowplaying = null): void
     {
         $this->nowplaying = $nowplaying;
 
-        if ($nowplaying instanceof Api\NowPlaying) {
+        if (null !== $nowplaying) {
             $this->nowplaying_timestamp = time();
         }
     }

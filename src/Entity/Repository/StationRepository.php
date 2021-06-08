@@ -73,13 +73,10 @@ class StationRepository extends Repository
         }
 
         // Build query for records.
-        $results = $this->fetchArray();
-
         // Assemble select values and, if necessary, call $display callback.
-        foreach ($results as $result) {
+        foreach ($this->fetchArray() as $result) {
             $key = $result[$pk];
-            $value = ($display === null) ? $result['name'] : $display($result);
-            $select[$key] = $value;
+            $select[$key] = ($display === null) ? $result['name'] : $display($result);
         }
 
         return $select;
@@ -146,9 +143,7 @@ class StationRepository extends Repository
         // Create default mountpoints if station supports them.
         if ($frontend_adapter->supportsMounts()) {
             // Create default mount points.
-            $mount_points = $frontend_adapter->getDefaultMounts();
-
-            foreach ($mount_points as $mount_point) {
+            foreach ($frontend_adapter->getDefaultMounts() as $mount_point) {
                 $mount_record = new Entity\StationMount($station);
                 $this->fromArray($mount_record, $mount_point);
 
@@ -264,7 +259,7 @@ class StationRepository extends Repository
      */
     public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {
-        if ($station instanceof Entity\Station) {
+        if (null !== $station) {
             $stationCustomUrl = trim($station->getDefaultAlbumArtUrl());
 
             if (!empty($stationCustomUrl)) {

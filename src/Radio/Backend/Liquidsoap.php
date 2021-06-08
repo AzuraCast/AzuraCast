@@ -96,9 +96,7 @@ class Liquidsoap extends AbstractBackend
      */
     public function getStreamPort(Entity\Station $station): int
     {
-        $settings = $station->getBackendConfig();
-
-        $djPort = $settings->getDjPort();
+        $djPort = $station->getBackendConfig()->getDjPort();
         if (null !== $djPort) {
             return $djPort;
         }
@@ -324,8 +322,7 @@ class Liquidsoap extends AbstractBackend
         string $pass = ''
     ): string {
         // Allow connections using the exact broadcast source password.
-        $fe_config = $station->getFrontendConfig();
-        $sourcePw = $fe_config->getSourcePassword();
+        $sourcePw = $station->getFrontendConfig()->getSourcePassword();
         if (!empty($sourcePw) && strcmp($sourcePw, $pass) === 0) {
             return 'true';
         }
@@ -353,8 +350,7 @@ class Liquidsoap extends AbstractBackend
         Entity\Station $station,
         string $user = ''
     ): string {
-        $backendConfig = $station->getBackendConfig();
-        $recordStreams = $backendConfig->recordStreams();
+        $recordStreams = $station->getBackendConfig()->recordStreams();
 
         if ($recordStreams) {
             $this->command($station, 'recording.stop');
@@ -369,8 +365,7 @@ class Liquidsoap extends AbstractBackend
     {
         $stream_port = $this->getStreamPort($station);
 
-        $settings = $station->getBackendConfig();
-        $djMount = $settings->getDjMountPoint();
+        $djMount = $station->getBackendConfig()->getDjMountPoint();
 
         return $base_url
             ->withScheme('wss')

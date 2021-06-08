@@ -40,9 +40,7 @@ class UserProfileForm extends EntityForm
 
         $this->getField('password')->addValidator(
             function ($val, AbstractField $field) use ($user) {
-                $form = $field->getForm();
-
-                $new_password = $form->getField('new_password')->getValue();
+                $new_password = $field->getForm()->getField('new_password')->getValue();
                 if (!empty($new_password)) {
                     if ($user->verifyPassword($val)) {
                         return true;

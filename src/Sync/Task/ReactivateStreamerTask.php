@@ -18,9 +18,7 @@ class ReactivateStreamerTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $deactivated_streamers = $this->streamerRepo->getStreamersDueForReactivation();
-
-        foreach ($deactivated_streamers as $streamer) {
+        foreach ($this->streamerRepo->getStreamersDueForReactivation() as $streamer) {
             $streamer->setIsActive(true);
             $this->em->persist($streamer);
             $this->em->flush();

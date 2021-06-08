@@ -4,9 +4,9 @@ namespace App\Console\Command;
 
 use App\Environment;
 use App\Version;
+use OpenApi\Generator;
+use OpenApi\Util;
 use Symfony\Component\Console\Style\SymfonyStyle;
-
-use function OpenApi\scan;
 
 class GenerateApiDocsCommand extends CommandAbstract
 {
@@ -18,20 +18,21 @@ class GenerateApiDocsCommand extends CommandAbstract
         define('AZURACAST_API_NAME', 'AzuraCast Public Demo Server');
         define('AZURACAST_VERSION', Version::FALLBACK_VERSION);
 
-        $oa = scan([
-            $environment->getBaseDirectory() . '/util/openapi.php',
-            $environment->getBaseDirectory() . '/src/Entity',
-            $environment->getBaseDirectory() . '/src/Controller/Api',
-        ], [
-            'exclude' => [
+        $finder = Util::finder(
+            [
+                $environment->getBaseDirectory() . '/util/openapi.php',
+                $environment->getBaseDirectory() . '/src/Entity',
+                $environment->getBaseDirectory() . '/src/Controller/Api',
+            ],
+            [
                 'bootstrap',
                 'locale',
                 'templates',
-            ],
-        ]);
+            ]
+        );
 
         $yaml_path = $environment->getBaseDirectory() . '/web/static/api/openapi.yml';
-        $yaml = $oa->toYaml();
+        $yaml = (Generator::scan($finder))->toYaml();
 
         file_put_contents($yaml_path, $yaml);
 

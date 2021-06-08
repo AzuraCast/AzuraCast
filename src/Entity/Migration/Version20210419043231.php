@@ -27,13 +27,12 @@ final class Version20210419043231 extends AbstractMigration
 
         foreach ($oldSettingsRaw as $row) {
             $key = $row['setting_key'];
-            $key = preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $key);
-            $key = mb_strtolower($key);
+            $key = mb_strtolower(preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $key));
 
             $value = $row['setting_value'];
             $value = ($value === null || $value === '')
                 ? null
-                : json_decode($value, true);
+                : json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 
             $oldSettings[$key] = $value;
         }

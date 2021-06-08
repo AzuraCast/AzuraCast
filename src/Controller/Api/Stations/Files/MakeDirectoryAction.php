@@ -25,8 +25,7 @@ class MakeDirectoryAction
 
         $station = $request->getStation();
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         $newDir = $currentDir . '/' . $newDirName;
 

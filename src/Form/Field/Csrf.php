@@ -11,7 +11,7 @@ class Csrf extends \AzuraForms\Field\Csrf
     {
         try {
             $this->getCsrf()->verify($token, 'form_' . $this->options['csrf_key']);
-        } catch (CsrfValidationException $e) {
+        } catch (CsrfValidationException) {
             return false;
         }
 

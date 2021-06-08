@@ -115,15 +115,13 @@ abstract class AbstractFrontend extends AbstractAdapter
 
     public function getPublicUrl(Entity\Station $station, $base_url = null): UriInterface
     {
-        $fe_config = $station->getFrontendConfig();
-        $radio_port = $fe_config->getPort();
+        $radio_port = $station->getFrontendConfig()->getPort();
 
         if (!($base_url instanceof UriInterface)) {
             $base_url = $this->router->getBaseUrl();
         }
 
-        $settings = $this->settingsRepo->readSettings();
-        $use_radio_proxy = $settings->getUseRadioProxy();
+        $use_radio_proxy = $this->settingsRepo->readSettings()->getUseRadioProxy();
 
         if (
             $use_radio_proxy
@@ -177,8 +175,7 @@ abstract class AbstractFrontend extends AbstractAdapter
             }
 
             if (str_starts_with($custom_config_raw, '<')) {
-                $reader = new Reader();
-                return $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                return (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
             }
         } catch (\Exception $e) {
             $this->logger->error(
@@ -196,27 +193,21 @@ abstract class AbstractFrontend extends AbstractAdapter
     protected function writeIpBansFile(Entity\Station $station): string
     {
         $ips = [];
-        $frontendConfig = $station->getFrontendConfig();
-
-        $bannedIps = $frontendConfig->getBannedIps();
+        $bannedIps = $station->getFrontendConfig()->getBannedIps();
 
         if (!empty($bannedIps)) {
-            $ipsRaw = array_filter(array_map('trim', explode("\n", $bannedIps)));
-
-            foreach ($ipsRaw as $ip) {
+            foreach (array_filter(array_map('trim', explode("\n", $bannedIps))) as $ip) {
                 try {
                     if (!str_contains($ip, '/')) {
                         $ipObj = IP::create($ip);
                         $ips[] = (string)$ipObj;
                     } else {
                         // Iterate through CIDR notation
-                        $ipBlock = IPBlock::create($ip);
-                        foreach ($ipBlock as $ipObj) {
+                        foreach (IPBlock::create($ip) as $ipObj) {
                             $ips[] = (string)$ipObj;
                         }
                     }
-                } catch (InvalidArgumentException $e) {
-                    continue;
+                } catch (InvalidArgumentException) {
                 }
             }
         }

@@ -419,7 +419,7 @@ class StationPlaylist implements Stringable
      */
     public function setBackendOptions(array $backend_options): void
     {
-        $this->backend_options = implode(',', (array)$backend_options);
+        $this->backend_options = implode(',', $backend_options);
     }
 
     public function backendInterruptOtherSongs(): bool
@@ -483,6 +483,6 @@ class StationPlaylist implements Stringable
 
     public function __toString(): string
     {
-        return (string)$this->getStation() . ' Playlist: ' . $this->getName();
+        return $this->getStation() . ' Playlist: ' . $this->getName();
     }
 }

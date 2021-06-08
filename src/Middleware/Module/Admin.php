@@ -32,8 +32,7 @@ class Admin
         $view = $request->getView();
 
         $active_tab = null;
-        $routeContext = RouteContext::fromRequest($request);
-        $current_route = $routeContext->getRoute();
+        $current_route = RouteContext::fromRequest($request)->getRoute();
 
         if ($current_route instanceof RouteInterface) {
             $route_parts = explode(':', $current_route->getName());

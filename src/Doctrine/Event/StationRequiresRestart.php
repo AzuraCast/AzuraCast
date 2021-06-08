@@ -51,8 +51,9 @@ class StationRequiresRestart implements EventSubscriber
                         // Look for the @AuditIgnore annotation on a property.
                         $class_reflection = new ReflectionObject($entity);
                         foreach ($changes as $change_field => $changeset) {
-                            $property = $class_reflection->getProperty($change_field);
-                            $ignoreAttr = $property->getAttributes(AuditIgnore::class);
+                            $ignoreAttr = $class_reflection->getProperty($change_field)->getAttributes(
+                                AuditIgnore::class
+                            );
                             if (!empty($ignoreAttr)) {
                                 unset($changes[$change_field]);
                             }

@@ -279,7 +279,6 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                 );
             } catch (Exception $e) {
                 $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-                continue;
             }
         }
 

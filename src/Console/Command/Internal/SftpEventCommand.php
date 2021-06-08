@@ -45,9 +45,7 @@ class SftpEventCommand extends CommandAbstract
         );
 
         // Determine which station the username belongs to.
-        $userRepo = $em->getRepository(Entity\SftpUser::class);
-
-        $sftpUser = $userRepo->findOneBy(
+        $sftpUser = $em->getRepository(Entity\SftpUser::class)->findOneBy(
             [
                 'username' => $username,
             ]
@@ -58,8 +56,7 @@ class SftpEventCommand extends CommandAbstract
             return 1;
         }
 
-        $station = $sftpUser->getStation();
-        $storageLocation = $station->getMediaStorageLocation();
+        $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
 
         if (!$storageLocation->isLocal()) {
             $this->logger->error(sprintf('Storage location "%s" is not local.', (string)$storageLocation));

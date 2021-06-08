@@ -40,8 +40,7 @@ class Avatar
     {
         $avatarService = $this->getAvatarService();
 
-        $settings = $this->settingsRepo->readSettings();
-        $default = $settings->getAvatarDefaultUrl();
+        $default = $this->settingsRepo->readSettings()->getAvatarDefaultUrl();
 
         return $avatarService->getAvatar($email, $size, $default);
     }

@@ -6,7 +6,6 @@ use App\Entity;
 use App\Radio\Adapters;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
-use RuntimeException;
 
 class Station extends AbstractFixture
 {

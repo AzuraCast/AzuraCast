@@ -134,7 +134,7 @@ class StationRequestRepository extends Repository
                 ->setParameter('threshold', $pending_request_threshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return true;
         }
 
@@ -168,7 +168,7 @@ class StationRequestRepository extends Repository
             if ($request->shouldPlayNow($now)) {
                 try {
                     $this->checkRecentPlay($request->getTrack(), $station);
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     continue;
                 }
 

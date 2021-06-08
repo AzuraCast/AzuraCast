@@ -128,8 +128,7 @@ class FilesController extends AbstractStationApiCrudController
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $station = $this->getStation($request);
-        $storageLocation = $station->getMediaStorageLocation();
+        $storageLocation = $this->getStation($request)->getMediaStorageLocation();
 
         $query = $this->em->createQuery(
             <<<'DQL'
@@ -200,8 +199,7 @@ class FilesController extends AbstractStationApiCrudController
         $playlists = $data['playlists'] ?? null;
         unset($data['custom_fields'], $data['playlists']);
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         $record = $this->fromArray(
             $data,
@@ -315,8 +313,7 @@ class FilesController extends AbstractStationApiCrudController
         $mediaStorage = $station->getMediaStorageLocation();
         $repo = $this->em->getRepository($this->entityClass);
 
-        $fieldsToCheck = ['id', 'unique_id', 'song_id'];
-        foreach ($fieldsToCheck as $field) {
+        foreach (['id', 'unique_id', 'song_id'] as $field) {
             $record = $repo->findOneBy(
                 [
                     'storage_location' => $mediaStorage,
@@ -353,10 +350,8 @@ class FilesController extends AbstractStationApiCrudController
         }
 
         // Delete the media file off the filesystem.
-        $affected_playlists = $this->mediaRepo->remove($record, true);
-
         // Write new PLS playlist configuration.
-        foreach ($affected_playlists as $playlist_id => $playlist) {
+        foreach ($this->mediaRepo->remove($record, true) as $playlist_id => $playlist) {
             $backend = $this->adapters->getBackendAdapter($playlist->getStation());
             if ($backend instanceof Liquidsoap) {
                 // Instruct the message queue to start a new "write playlist to file" task.

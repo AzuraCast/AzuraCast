@@ -18,7 +18,7 @@ class RequireLogin
     {
         try {
             $request->getUser();
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new NotLoggedInException();
         }
 

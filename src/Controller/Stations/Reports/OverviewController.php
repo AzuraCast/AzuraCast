@@ -15,8 +15,7 @@ class OverviewController
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
         // Get current analytics level.
-        $settings = $settingsRepo->readSettings();
-        $analytics_level = $settings->getAnalytics();
+        $analytics_level = $settingsRepo->readSettings()->getAnalytics();
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.

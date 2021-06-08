@@ -77,8 +77,7 @@ class QueueManager implements SendersLocatorInterface
      */
     public function getMessagesInTransport(string $queueName): Generator
     {
-        $transport = $this->getTransport($queueName);
-        foreach ($transport->all() as $envelope) {
+        foreach ($this->getTransport($queueName)->all() as $envelope) {
             yield $envelope->getMessage();
         }
     }

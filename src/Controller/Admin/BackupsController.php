@@ -38,10 +38,8 @@ class BackupsController extends AbstractLogViewerController
         $backups = [];
         $storageLocations = $this->storageLocationRepo->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
         foreach ($storageLocations as $storageLocation) {
-            $fs = $storageLocation->getFilesystem();
-
             /** @var StorageAttributes $file */
-            foreach ($fs->listContents('', true) as $file) {
+            foreach ($storageLocation->getFilesystem()->listContents('', true) as $file) {
                 if ($file->isDir()) {
                     continue;
                 }

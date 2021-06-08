@@ -448,7 +448,7 @@ class StationMediaRepository extends Repository
         foreach ($media->getRelatedFilePaths() as $relatedFilePath) {
             try {
                 $fs->delete($relatedFilePath);
-            } catch (FilesystemException $e) {
+            } catch (FilesystemException) {
                 // Skip
             }
         }
@@ -456,7 +456,7 @@ class StationMediaRepository extends Repository
         if ($deleteFile) {
             try {
                 $fs->delete($media->getPath());
-            } catch (FilesystemException $e) {
+            } catch (FilesystemException) {
                 // Skip
             }
         }

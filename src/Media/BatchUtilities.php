@@ -83,9 +83,7 @@ class BatchUtilities
          */
         foreach ($this->iterateMedia($storageLocation, $files) as $media) {
             try {
-                $mediaPlaylists = $this->mediaRepo->remove($media, false, $fs);
-
-                foreach ($mediaPlaylists as $playlistId => $playlist) {
+                foreach ($this->mediaRepo->remove($media, false, $fs) as $playlistId => $playlist) {
                     if (!isset($affectedPlaylists[$playlistId])) {
                         $affectedPlaylists[$playlistId] = $playlist;
                     }

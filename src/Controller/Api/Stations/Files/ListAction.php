@@ -30,8 +30,7 @@ class ListAction
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
 
-        $fsStation = new StationFilesystems($station);
-        $fs = $fsStation->getMediaFilesystem();
+        $fs = (new StationFilesystems($station))->getMediaFilesystem();
 
         $currentDir = $request->getParam('currentDirectory', '');
 

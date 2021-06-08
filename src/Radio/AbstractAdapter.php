@@ -41,7 +41,7 @@ abstract class AbstractAdapter
             return false;
         }
 
-        $currentConfig = (file_exists($configPath))
+        $currentConfig = (is_file($configPath))
             ? file_get_contents($configPath)
             : null;
 
@@ -107,7 +107,7 @@ abstract class AbstractAdapter
             $process = $this->supervisor->getProcess($program_name);
 
             return $process instanceof Process && $process->isRunning();
-        } catch (Fault\BadNameException $e) {
+        } catch (Fault\BadNameException) {
             return false;
         }
     }
@@ -256,7 +256,7 @@ abstract class AbstractAdapter
 
             // Get more detailed information for more significant errors.
             $process_log = $this->supervisor->tailProcessStdoutLog($program_name, 0, 500);
-            $process_log = array_filter(explode("\n", $process_log[0]));
+            $process_log = array_values(array_filter(explode("\n", $process_log[0])));
             $process_log = array_slice($process_log, -6);
 
             $e_body = (!empty($process_log))

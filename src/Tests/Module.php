@@ -26,7 +26,7 @@ class Module extends Framework implements DoctrineProvider
 
     protected $requiredFields = ['container'];
 
-    public function _initialize()
+    public function _initialize(): void
     {
         /** @var string $container_class The fully qualified name of the container class. */
         $container_class = $this->config['container'];
@@ -47,7 +47,7 @@ class Module extends Framework implements DoctrineProvider
         parent::_initialize();
     }
 
-    public function _before(TestInterface $test)
+    public function _before(TestInterface $test): void
     {
         $this->client = new Connector();
         $this->client->setApp($this->app);
@@ -55,7 +55,7 @@ class Module extends Framework implements DoctrineProvider
         parent::_before($test);
     }
 
-    public function _after(TestInterface $test)
+    public function _after(TestInterface $test): void
     {
         $_GET = [];
         $_POST = [];

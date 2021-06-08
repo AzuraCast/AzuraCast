@@ -54,7 +54,7 @@ class Plugins
         foreach ($this->plugins as $plugin) {
             $plugin_path = $plugin['path'];
 
-            if (file_exists($plugin_path . '/services.php')) {
+            if (is_file($plugin_path . '/services.php')) {
                 $services = include $plugin_path . '/services.php';
                 $diDefinitions = array_merge($diDefinitions, $services);
             }
@@ -89,7 +89,7 @@ class Plugins
         foreach ($this->plugins as $plugin) {
             $pluginPath = $plugin['path'];
 
-            if (file_exists($pluginPath . '/messagequeue.php')) {
+            if (is_file($pluginPath . '/messagequeue.php')) {
                 $pluginReceivers = include $pluginPath . '/messagequeue.php';
                 $receivers = array_merge($receivers, $pluginReceivers);
             }

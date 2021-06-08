@@ -191,7 +191,7 @@ class ListenersAction
         }
 
         if ($groupByUnique) {
-            foreach ($listenersByHash as $hash => $listenerInfo) {
+            foreach ($listenersByHash as $listenerInfo) {
                 $intervals = (array)$listenerInfo['intervals'];
 
                 $startTime = $now->getTimestamp();

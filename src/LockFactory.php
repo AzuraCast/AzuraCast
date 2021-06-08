@@ -49,7 +49,7 @@ class LockFactory
             $this->clearQueue($resource);
             try {
                 $lock->acquire(true);
-            } catch (Exception $e) {
+            } catch (\Exception) {
                 return false;
             }
         } elseif (!$lock->acquire()) {

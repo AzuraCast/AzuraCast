@@ -15,7 +15,7 @@ final class Version20171214104226 extends AbstractMigration
     public function preup(Schema $schema): void
     {
         // Deleting duplicate user accounts to avoid constraint errors in subsequent update
-        $users = $this->connection->fetchAll('SELECT * FROM users ORDER BY uid ASC');
+        $users = $this->connection->fetchAllAssociative('SELECT * FROM users ORDER BY uid ASC');
         $emails = [];
 
         foreach ($users as $row) {

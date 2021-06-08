@@ -23,8 +23,7 @@ class LastFm
         protected LockFactory $lockFactory,
         Entity\Repository\SettingsRepository $settingsRepo
     ) {
-        $settings = $settingsRepo->readSettings();
-        $this->apiKey = $settings->getLastFmApiKey();
+        $this->apiKey = $settingsRepo->readSettings()->getLastFmApiKey();
     }
 
     public function hasApiKey(): bool
@@ -57,7 +56,7 @@ class LastFm
 
         try {
             $rateLimitLock->acquire(true);
-        } catch (LockConflictedException $e) {
+        } catch (LockConflictedException) {
             throw new RateLimitExceededException('Could not acquire rate limiting lock.');
         }
 

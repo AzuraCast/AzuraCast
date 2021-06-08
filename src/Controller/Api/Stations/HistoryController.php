@@ -100,9 +100,7 @@ class HistoryController
                 'Streamer',
             ];
 
-            $iterator = BatchIteratorAggregate::fromQuery($qb->getQuery(), 100);
-
-            foreach ($iterator as $sh) {
+            foreach (BatchIteratorAggregate::fromQuery($qb->getQuery(), 100) as $sh) {
                 /** @var Entity\SongHistory $sh */
                 $datetime = CarbonImmutable::createFromTimestamp($sh->getTimestampStart(), $station_tz);
 

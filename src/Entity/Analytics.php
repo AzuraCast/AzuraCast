@@ -97,8 +97,7 @@ class Analytics
     public function getMomentInStationTimeZone(): CarbonImmutable
     {
         $tz = $this->station->getTimezoneObject();
-        $timestamp = CarbonImmutable::parse($this->moment, $tz);
-        return $timestamp->shiftTimezone($tz);
+        return CarbonImmutable::parse($this->moment, $tz)->shiftTimezone($tz);
     }
 
     public function getNumberMin(): int

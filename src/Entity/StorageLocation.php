@@ -300,8 +300,7 @@ class StorageLocation implements Stringable
             return;
         }
 
-        $currentStorageUsed = $this->getStorageUsedBytes();
-        $storageUsed = $currentStorageUsed->minus($amountToRemove);
+        $storageUsed = $this->getStorageUsedBytes()->minus($amountToRemove);
         if ($storageUsed->isLessThan(0)) {
             $storageUsed = BigInteger::zero();
         }

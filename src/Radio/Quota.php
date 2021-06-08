@@ -58,7 +58,10 @@ class Quota
         if ($unit) {
             // Find the position of the unit in the ordered string which is the power
             // of magnitude to multiply a kilobyte by.
-            $byte_power = stripos('bkmgtpezy', $unit[0]);
+            $byte_power = stripos(
+                haystack: 'bkmgtpezy',
+                needle: $unit[0]
+            );
             $byte_multiplier = Math\BigInteger::of(1000)->power($byte_power);
 
             return Math\BigDecimal::of($size)

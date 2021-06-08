@@ -36,8 +36,7 @@ class RenameAction
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         $fsMedia->move($from, $to);
 

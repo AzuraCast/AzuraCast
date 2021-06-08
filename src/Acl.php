@@ -134,7 +134,7 @@ class Acl
      */
     public function userAllowed(?Entity\User $user = null, array|string $action, $stationId = null): bool
     {
-        if (!($user instanceof Entity\User)) {
+        if (null === $user) {
             return false;
         }
 

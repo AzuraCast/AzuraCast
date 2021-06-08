@@ -138,9 +138,7 @@ class RelaysController
         }
 
         // Iterate through all remotes that *should* exist.
-        $stations = $this->getManageableStations($request);
-
-        foreach ($stations as $station) {
+        foreach ($this->getManageableStations($request) as $station) {
             $station_id = $station->getId();
 
             foreach ($station->getMounts() as $mount) {

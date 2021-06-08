@@ -46,8 +46,7 @@ class GoogleAnalytics extends AbstractConnector
         }
 
         // Get listen URLs for each mount point.
-        $frontendConfig = $station->getFrontendConfig();
-        $radioPort = $frontendConfig->getPort();
+        $radioPort = $station->getFrontendConfig()->getPort();
 
         $mountUrls = [];
         foreach ($station->getMounts() as $mount) {

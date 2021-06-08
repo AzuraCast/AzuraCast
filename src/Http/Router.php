@@ -157,8 +157,7 @@ class Router implements RouterInterface
         $absolute = false
     ): string {
         if ($this->currentRequest instanceof ServerRequestInterface) {
-            $routeContext = RouteContext::fromRequest($this->currentRequest);
-            $route = $routeContext->getRoute();
+            $route = RouteContext::fromRequest($this->currentRequest)->getRoute();
         } else {
             $route = null;
         }

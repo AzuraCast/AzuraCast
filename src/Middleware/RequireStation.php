@@ -17,7 +17,7 @@ class RequireStation
     {
         try {
             $request->getStation();
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new StationNotFoundException();
         }
 

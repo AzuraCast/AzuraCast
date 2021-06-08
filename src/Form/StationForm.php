@@ -63,8 +63,7 @@ class StationForm extends EntityForm
     public function process(ServerRequest $request, $record = null): object|bool
     {
         // Check for administrative permissions and hide admin fields otherwise.
-        $acl = $request->getAcl();
-        $canSeeAdministration = $acl->isAllowed(Acl::GLOBAL_STATIONS);
+        $canSeeAdministration = $request->getAcl()->isAllowed(Acl::GLOBAL_STATIONS);
         if (!$canSeeAdministration) {
             foreach ($this->options['groups']['admin']['elements'] as $element_key => $element_info) {
                 unset($this->fields[$element_key]);

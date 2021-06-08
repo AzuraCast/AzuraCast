@@ -19,8 +19,8 @@ final class Version20200816092130 extends AbstractMigration
 
     public function preUp(Schema $schema): void
     {
-        $this->connection->query('DELETE FROM song_history WHERE timestamp_start = 0');
-        $this->connection->query('UPDATE station SET nowplaying=null, nowplaying_timestamp=0');
+        $this->connection->executeStatement('DELETE FROM song_history WHERE timestamp_start = 0');
+        $this->connection->executeStatement('UPDATE station SET nowplaying=null, nowplaying_timestamp=0');
     }
 
     public function up(Schema $schema): void

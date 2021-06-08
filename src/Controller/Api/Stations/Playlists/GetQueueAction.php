@@ -28,8 +28,6 @@ class GetQueueAction extends AbstractPlaylistsAction
         }
 
         $queue = $spmRepo->getQueue($record);
-        $paginator = Paginator::fromArray($queue, $request);
-
-        return $paginator->write($response);
+        return Paginator::fromArray($queue, $request)->write($response);
     }
 }

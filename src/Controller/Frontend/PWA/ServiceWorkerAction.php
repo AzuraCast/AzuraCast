@@ -82,9 +82,7 @@ class ServiceWorkerAction
         $assets->load('minimal')
             ->load('Vue_PublicFullPlayer');
 
-        $loadedFiles = $assets->getLoadedFiles();
-
-        foreach ($loadedFiles as $file) {
+        foreach ($assets->getLoadedFiles() as $file) {
             if (!str_starts_with($file, 'http')) {
                 $cacheFiles[] = $file;
             }
@@ -103,7 +101,7 @@ class ServiceWorkerAction
             $cacheFiles[] = $environment->getAssetUrl() . '/' . $file->getRelativePathname();
         }
 
-        $replaceString = 'const cacheFiles = ' . json_encode($cacheFiles) . ';';
+        $replaceString = 'const cacheFiles = ' . json_encode($cacheFiles, JSON_THROW_ON_ERROR) . ';';
 
         $swContents = str_replace($findString, $replaceString, $swContents);
 

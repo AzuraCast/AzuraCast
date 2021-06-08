@@ -52,7 +52,7 @@ trait HasSongFields
 
     public function getText(): ?string
     {
-        return $this->text ?? $this->artist . ' - ' . $this->title;
+        return $this->text ?? ($this->artist . ' - ' . $this->title);
     }
 
     protected function setTextFromArtistAndTitle(string $separator = ' - '): void

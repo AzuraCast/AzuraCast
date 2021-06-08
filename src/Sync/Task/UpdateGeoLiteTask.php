@@ -84,7 +84,7 @@ class UpdateGeoLiteTask extends AbstractTask
             ]
         );
 
-        if (!file_exists($downloadPath)) {
+        if (!is_file($downloadPath)) {
             throw new RuntimeException('New GeoLite database .tar.gz file not found.');
         }
 

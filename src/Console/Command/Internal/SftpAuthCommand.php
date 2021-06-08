@@ -22,12 +22,10 @@ class SftpAuthCommand extends CommandAbstract
         $password = getenv('SFTPGO_AUTHD_PASSWORD');
         $pubKey = getenv('SFTPGO_AUTHD_PUBLIC_KEY');
 
-        $sftpRepo = $em->getRepository(SftpUser::class);
-        $sftpUser = $sftpRepo->findOneBy(['username' => $username]);
+        $sftpUser = $em->getRepository(SftpUser::class)->findOneBy(['username' => $username]);
 
         if ($sftpUser instanceof SftpUser && $sftpUser->authenticate($password, $pubKey)) {
-            $station = $sftpUser->getStation();
-            $storageLocation = $station->getMediaStorageLocation();
+            $storageLocation = $sftpUser->getStation()->getMediaStorageLocation();
 
             $quotaRaw = $storageLocation->getStorageQuotaBytes();
             $quota = ($quotaRaw instanceof BigInteger)

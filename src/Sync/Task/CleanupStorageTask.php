@@ -76,10 +76,8 @@ class CleanupStorageTask extends AbstractTask
 
         foreach ($cleanupDirs as $key => $dirBase) {
             try {
-                $dirContents = $fs->listContents($dirBase, true);
-
-                foreach ($dirContents as $row) {
-                    /** @var StorageAttributes $row */
+                /** @var StorageAttributes $row */
+                foreach ($fs->listContents($dirBase, true) as $row) {
                     $path = $row->path();
 
                     $filename = pathinfo($path, PATHINFO_FILENAME);

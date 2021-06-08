@@ -44,7 +44,7 @@ final class Version20201027130504 extends AbstractMigration
         );
 
         // Migrate existing directories to new StorageLocation paradigm.
-        $stations = $this->connection->fetchAll(
+        $stations = $this->connection->fetchAllAssociative(
             'SELECT id, radio_base_dir, radio_media_dir, storage_quota FROM station WHERE media_storage_location_id IS NULL ORDER BY id ASC'
         );
 

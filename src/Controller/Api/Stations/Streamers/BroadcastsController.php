@@ -64,8 +64,7 @@ class BroadcastsController extends AbstractApiCrudController
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $fsStation = new StationFilesystems($station);
-        $fsRecordings = $fsStation->getRecordingsFilesystem();
+        $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
         $paginator->setPostprocessor(
             function ($row) use ($id, $is_bootgrid, $router, $fsRecordings) {
@@ -156,8 +155,7 @@ class BroadcastsController extends AbstractApiCrudController
 
         $filename = basename($recordingPath);
 
-        $fsStation = new StationFilesystems($station);
-        $fsRecordings = $fsStation->getRecordingsFilesystem();
+        $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
         return $response->streamFilesystemFile(
             $fsRecordings,
@@ -184,8 +182,7 @@ class BroadcastsController extends AbstractApiCrudController
         $recordingPath = $broadcast->getRecordingPath();
 
         if (!empty($recordingPath)) {
-            $fsStation = new StationFilesystems($station);
-            $fsRecordings = $fsStation->getRecordingsFilesystem();
+            $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
             $fsRecordings->delete($recordingPath);
 

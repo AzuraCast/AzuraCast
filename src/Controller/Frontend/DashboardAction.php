@@ -26,8 +26,7 @@ class DashboardAction
         $acl = $request->getAcl();
 
         // Detect current analytics level.
-        $settings = $settingsRepo->readSettings();
-        $analyticsLevel = $settings->getAnalytics();
+        $analyticsLevel = $settingsRepo->readSettings()->getAnalytics();
         $showCharts = $analyticsLevel !== Entity\Analytics::LEVEL_NONE;
 
         // Avatars

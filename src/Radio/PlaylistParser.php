@@ -15,7 +15,7 @@ class PlaylistParser
 
             return array_filter(
                 $parsed_playlist['playlist'],
-                function ($key) {
+                static function ($key) {
                     return str_starts_with(strtolower($key), 'file');
                 },
                 ARRAY_FILTER_USE_KEY

@@ -207,8 +207,7 @@ class PodcastFeedController
 
     protected function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
     {
-        $stationFilesystems = new StationFilesystems($station);
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
+        $podcastsFilesystem = (new StationFilesystems($station))->getPodcastsFilesystem();
 
         $rssImage = new RssImage();
 
@@ -316,8 +315,7 @@ class PodcastFeedController
 
     protected function buildItunesImageForEpisode(PodcastEpisode $episode, Station $station): string
     {
-        $stationFilesystems = new StationFilesystems($station);
-        $podcastsFilesystem = $stationFilesystems->getPodcastsFilesystem();
+        $podcastsFilesystem = (new StationFilesystems($station))->getPodcastsFilesystem();
 
         $episodeArtworkSrc = (string)UriResolver::resolve(
             $this->router->getBaseUrl(),

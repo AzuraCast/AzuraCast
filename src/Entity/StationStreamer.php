@@ -197,6 +197,6 @@ class StationStreamer implements \Stringable
 
     public function __toString(): string
     {
-        return (string)$this->getStation() . ' Streamer: ' . $this->getDisplayName();
+        return $this->getStation() . ' Streamer: ' . $this->getDisplayName();
     }
 }

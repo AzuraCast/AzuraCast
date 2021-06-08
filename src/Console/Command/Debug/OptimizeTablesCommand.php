@@ -12,9 +12,7 @@ class OptimizeTablesCommand extends CommandAbstract
     {
         $io->title('Optimizing Database Tables...');
 
-        $tables = $db->fetchAllAssociative('SHOW TABLES');
-
-        foreach ($tables as $tableRow) {
+        foreach ($db->fetchAllAssociative('SHOW TABLES') as $tableRow) {
             $table = reset($tableRow);
 
             $io->listing([$table]);

@@ -104,6 +104,7 @@ class StationSchedule
             ->getTimestamp();
 
         if ($start_time > $end_time) {
+            /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
             return 86400 - ($start_time - $end_time);
         }
 

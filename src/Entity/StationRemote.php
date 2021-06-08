@@ -442,6 +442,6 @@ class StationRemote implements StationMountInterface, Stringable
 
     public function __toString(): string
     {
-        return (string)$this->getStation() . ' Relay: ' . $this->getDisplayName();
+        return $this->getStation() . ' Relay: ' . $this->getDisplayName();
     }
 }

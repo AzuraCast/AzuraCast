@@ -31,8 +31,7 @@ class DownloadAction
                 ->withJson(new Entity\Api\Error(404, __('File not found.')));
         }
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         set_time_limit(600);
         return $response->streamFilesystemFile($fsMedia, $media->getPath());

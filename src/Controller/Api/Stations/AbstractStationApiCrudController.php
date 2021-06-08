@@ -104,8 +104,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
      */
     protected function getRecord(Entity\Station $station, int|string $id): ?object
     {
-        $repo = $this->em->getRepository($this->entityClass);
-        return $repo->findOneBy(
+        return $this->em->getRepository($this->entityClass)->findOneBy(
             [
                 'station' => $station,
                 'id' => $id,

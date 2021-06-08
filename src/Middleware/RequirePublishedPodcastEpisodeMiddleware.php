@@ -59,7 +59,7 @@ class RequirePublishedPodcastEpisodeMiddleware
     {
         try {
             return $request->getUser();
-        } catch (Exception $e) {
+        } catch (Exception) {
             return null;
         }
     }
@@ -71,8 +71,7 @@ class RequirePublishedPodcastEpisodeMiddleware
 
     protected function getPodcastIdFromRequest(ServerRequest $request): ?string
     {
-        $routeContext = RouteContext::fromRequest($request);
-        $routeArgs = $routeContext->getRoute()?->getArguments();
+        $routeArgs = RouteContext::fromRequest($request)->getRoute()?->getArguments();
 
         $podcastId = $routeArgs['id'] ?? null;
 
@@ -85,7 +84,7 @@ class RequirePublishedPodcastEpisodeMiddleware
 
     protected function checkPodcastHasPublishedEpisodes(Station $station, string $podcastId): bool
     {
-        $podcastId = explode('|', $podcastId)[0];
+        $podcastId = explode('|', $podcastId, 2)[0];
 
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcastId);
 

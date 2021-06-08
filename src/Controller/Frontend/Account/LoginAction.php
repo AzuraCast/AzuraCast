@@ -49,7 +49,7 @@ class LoginAction
         if ($request->isPost()) {
             try {
                 $rateLimit->checkRequestRateLimit($request, 'login', 30, 5);
-            } catch (RateLimitExceededException $e) {
+            } catch (RateLimitExceededException) {
                 $flash->addMessage(
                     sprintf(
                         '<b>%s</b><br>%s',
@@ -69,6 +69,7 @@ class LoginAction
                 $session = $request->getSession();
                 if ($session instanceof SessionCookiePersistenceInterface) {
                     $rememberMe = (bool)$request->getParam('remember', 0);
+                    /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
                     $session->persistSessionFor(($rememberMe) ? 86400 * 14 : 0);
                 }
 

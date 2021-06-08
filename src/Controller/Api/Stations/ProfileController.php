@@ -36,7 +36,7 @@ class ProfileController
         $apiResponse->schedule = $scheduleRepo->getUpcomingSchedule($station);
 
         $apiResponse->update();
-        $apiResponse->resolveUrls($baseUri = $request->getRouter()->getBaseUrl());
+        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
 
         return $response->withJson($apiResponse);
     }

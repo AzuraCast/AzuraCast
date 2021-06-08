@@ -471,8 +471,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      */
     public function isRequestable(): bool
     {
-        $playlists = $this->getPlaylists();
-        foreach ($playlists as $playlist_item) {
+        foreach ($this->getPlaylists() as $playlist_item) {
             $playlist = $playlist_item->getPlaylist();
             /** @var StationPlaylist $playlist */
             if ($playlist->isRequestable()) {

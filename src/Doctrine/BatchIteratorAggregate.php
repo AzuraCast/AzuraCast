@@ -190,7 +190,7 @@ final class BatchIteratorAggregate implements IteratorAggregate
                     get_class($object),
                     spl_object_hash($object),
                     $metadata->getName(),
-                    json_encode($metadata->getIdentifierValues($object))
+                    json_encode($metadata->getIdentifierValues($object), JSON_THROW_ON_ERROR)
                 )
             );
         }

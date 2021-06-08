@@ -39,8 +39,7 @@ class BatchAction
         $station = $request->getStation();
         $storageLocation = $station->getMediaStorageLocation();
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         $result = match ($request->getParam('do')) {
             'delete' => $this->doDelete($request, $station, $storageLocation, $fsMedia),
@@ -157,7 +156,7 @@ class BatchAction
 
                 $this->em->flush();
 
-                foreach ($playlists as $playlistId => $playlistRecord) {
+                foreach ($playlists as $playlistRecord) {
                     $playlist = $this->em->refetchAsReference($playlistRecord);
 
                     $playlistWeights[$playlist->getId()]++;
@@ -166,7 +165,7 @@ class BatchAction
                     $this->playlistMediaRepo->addMediaToPlaylist($media, $playlist, $weight);
                 }
             } catch (Exception $e) {
-                $errors[] = $media->getPath() . ': ' . $e->getMessage();
+                $result->errors[] = $media->getPath() . ': ' . $e->getMessage();
                 throw $e;
             }
         }

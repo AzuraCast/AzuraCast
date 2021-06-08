@@ -86,11 +86,11 @@ class StationQueue implements SongInterface
         return $this->media;
     }
 
-    public function setMedia(StationMedia $media = null): void
+    public function setMedia(?StationMedia $media = null): void
     {
         $this->media = $media;
 
-        if ($media instanceof StationMedia) {
+        if (null !== $media) {
             $this->setDuration($media->getCalculatedLength());
         }
     }

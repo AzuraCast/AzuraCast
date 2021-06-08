@@ -28,8 +28,7 @@ class PodcastEpisode extends AbstractFixture implements DependentFixtureInterfac
         /** @var Entity\Podcast $podcast */
         $podcast = $this->getReference('podcast');
 
-        $storageLocation = $podcast->getStorageLocation();
-        $fs = $storageLocation->getFilesystem();
+        $fs = $podcast->getStorageLocation()->getFilesystem();
 
         $finder = (new Finder())
             ->files()

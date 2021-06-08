@@ -10,8 +10,7 @@ class Settings extends AbstractFixture
 {
     public function load(ObjectManager $em): void
     {
-        $existingSettings = $em->getRepository(Entity\Settings::class)->findAll();
-        foreach ($existingSettings as $row) {
+        foreach ($em->getRepository(Entity\Settings::class)->findAll() as $row) {
             $em->remove($row);
         }
 

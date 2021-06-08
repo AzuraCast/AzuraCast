@@ -91,9 +91,7 @@ class StationStreamerRepository extends Repository
                 $this->em->flush();
 
                 $fsStations = new StationFilesystems($station);
-                $fsTemp = $fsStations->getTempFilesystem();
-
-                return $fsTemp->getLocalPath($recordingPath);
+                return $fsStations->getTempFilesystem()->getLocalPath($recordingPath);
             }
         }
 
@@ -107,9 +105,7 @@ class StationStreamerRepository extends Repository
         $fsTemp = $fs->getTempFilesystem();
         $fsRecordings = $fs->getRecordingsFilesystem();
 
-        $broadcasts = $this->broadcastRepo->getActiveBroadcasts($station);
-
-        foreach ($broadcasts as $broadcast) {
+        foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
             $broadcastPath = $broadcast->getRecordingPath();
 
             if ((null !== $broadcastPath) && $fsTemp->fileExists($broadcastPath)) {

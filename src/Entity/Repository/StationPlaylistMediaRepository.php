@@ -88,7 +88,7 @@ class StationPlaylistMediaRepository extends Repository
                 DQL
             )->setParameter('playlist_id', $playlist->getId())
                 ->getSingleScalarResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             $highest_weight = 1;
         }
 

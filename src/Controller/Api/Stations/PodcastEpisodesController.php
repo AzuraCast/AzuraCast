@@ -359,7 +359,7 @@ class PodcastEpisodesController extends AbstractApiCrudController
             $fsStations = new StationFilesystems($request->getStation());
             $fsTemp = $fsStations->getTempFilesystem();
 
-            $originalName = basename($media->getClientFilename()) ?? $record->getId() . '.mp3';
+            $originalName = basename($media->getClientFilename()) ?? ($record->getId() . '.mp3');
             $originalExt = pathinfo($originalName, PATHINFO_EXTENSION);
 
             $tempPath = $fsTemp->getLocalPath($record->getId() . '.' . $originalExt);

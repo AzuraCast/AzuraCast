@@ -22,8 +22,7 @@ class MostPlayedAction
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        $settings = $settingsRepo->readSettings();
-        $analytics_level = $settings->getAnalytics();
+        $analytics_level = $settingsRepo->readSettings()->getAnalytics();
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             return $response->withStatus(400)
@@ -50,7 +49,7 @@ class MostPlayedAction
         $baseUrl = $request->getRouter()->getBaseUrl();
 
         $stats = array_map(
-            function ($row) use ($songApiGenerator, $station, $baseUrl) {
+            static function ($row) use ($songApiGenerator, $station, $baseUrl) {
                 $song = ($songApiGenerator)(Entity\Song::createFromArray($row), $station);
                 $song->resolveUrls($baseUrl);
 

@@ -70,7 +70,7 @@ class GetId3MetadataService
         }
 
         if (!empty($info['tags'])) {
-            foreach ($info['tags'] as $tagType => $tagData) {
+            foreach ($info['tags'] as $tagData) {
                 foreach ($tagData as $tagName => $tagContents) {
                     if (!empty($tagContents[0]) && !$metaTags->containsKey($tagName)) {
                         $tagValue = $tagContents[0];

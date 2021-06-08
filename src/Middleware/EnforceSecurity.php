@@ -30,8 +30,7 @@ class EnforceSecurity implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $settings = $this->settingsRepo->readSettings();
-        $always_use_ssl = $settings->getAlwaysUseSsl();
+        $always_use_ssl = $this->settingsRepo->readSettings()->getAlwaysUseSsl();
 
         $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 

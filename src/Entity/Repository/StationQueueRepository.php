@@ -26,9 +26,7 @@ class StationQueueRepository extends Repository
 
     public function getNextVisible(Entity\Station $station): ?Entity\StationQueue
     {
-        $queue = $this->getUpcomingQueue($station);
-
-        foreach ($queue as $sh) {
+        foreach ($this->getUpcomingQueue($station) as $sh) {
             if ($sh->showInApis()) {
                 return $sh;
             }

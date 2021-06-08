@@ -21,8 +21,7 @@ class CleanupHistoryTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $settings = $this->settingsRepo->readSettings();
-        $daysToKeep = $settings->getHistoryKeepDays();
+        $daysToKeep = $this->settingsRepo->readSettings()->getHistoryKeepDays();
 
         if ($daysToKeep !== 0) {
             $this->historyRepo->cleanup($daysToKeep);

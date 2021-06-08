@@ -20,8 +20,7 @@ class ChartsAction
         CacheInterface $cache,
         Entity\Repository\SettingsRepository $settingsRepo
     ): ResponseInterface {
-        $settings = $settingsRepo->readSettings();
-        $analyticsLevel = $settings->getAnalytics();
+        $analyticsLevel = $settingsRepo->readSettings()->getAnalytics();
         if ($analyticsLevel === Entity\Analytics::LEVEL_NONE) {
             return $response->withStatus(403, 'Forbidden')
                 ->withJson(new Entity\Api\Error(403, 'Analytics are disabled for this installation.'));

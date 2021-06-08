@@ -37,7 +37,7 @@ class UniqueEntity extends Constraint
      * @param array|string $fields the combination of fields that must contain unique values or a set of options
      */
     public function __construct(
-        $fields,
+        array|string $fields,
         string $entityClass = null,
         string $repositoryMethod = null,
         string $errorPath = null,
@@ -48,7 +48,7 @@ class UniqueEntity extends Constraint
     ) {
         if (is_array($fields) && is_string(key($fields))) {
             $options = array_merge($fields, $options);
-        } elseif (null !== $fields) {
+        } else {
             $options['fields'] = $fields;
         }
 

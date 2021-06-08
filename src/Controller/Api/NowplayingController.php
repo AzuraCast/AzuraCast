@@ -110,15 +110,15 @@ class NowplayingController implements EventSubscriberInterface
 
         // If unauthenticated, hide non-public stations from full view.
         if ($request->getAttribute('user') === null) {
-            $np = array_filter(
-                $np,
-                static function ($np_row) {
-                    return $np_row->station->is_public;
-                }
-            );
-
             // Prevent NP array from returning as an object.
-            $np = array_values($np);
+            $np = array_values(
+                array_filter(
+                    $np,
+                    static function ($np_row) {
+                        return $np_row->station->is_public;
+                    }
+                )
+            );
         }
 
         foreach ($np as $np_row) {

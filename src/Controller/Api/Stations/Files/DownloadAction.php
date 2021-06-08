@@ -17,8 +17,7 @@ class DownloadAction
         set_time_limit(600);
 
         $station = $request->getStation();
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         $path = $request->getParam('file');
 

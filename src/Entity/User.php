@@ -204,8 +204,7 @@ class User implements Stringable
             return true;
         }
 
-        $totp = Factory::loadFromProvisioningUri($this->two_factor_secret);
-        return $totp->verify($otp, null, Auth::TOTP_WINDOW);
+        return Factory::loadFromProvisioningUri($this->two_factor_secret)->verify($otp, null, Auth::TOTP_WINDOW);
     }
 
     public function getCreatedAt(): int

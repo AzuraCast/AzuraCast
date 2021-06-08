@@ -178,9 +178,7 @@ class CheckMediaTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $storageLocation);
 
-        $mediaRecords = $existingMediaQuery->toIterable([], Query::HYDRATE_ARRAY);
-
-        foreach ($mediaRecords as $mediaRow) {
+        foreach ($existingMediaQuery->toIterable([], Query::HYDRATE_ARRAY) as $mediaRow) {
             // Check if media file still exists.
             $path = $mediaRow['path'];
             $pathHash = md5($path);

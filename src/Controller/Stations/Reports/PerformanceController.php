@@ -34,11 +34,7 @@ class PerformanceController
         $report_data = array_filter(
             $report_data,
             static function ($media) {
-                if (empty($media['playlists'])) {
-                    return false;
-                }
-
-                return true;
+                return !(empty($media['playlists']));
             }
         );
 

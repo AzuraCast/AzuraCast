@@ -13,9 +13,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface, ServerReque
 {
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        $serverRequestFactory = new GuzzleServerRequestFactory();
-
-        $serverRequest = $serverRequestFactory->createServerRequest($method, $uri, $serverParams);
+        $serverRequest = (new GuzzleServerRequestFactory())->createServerRequest($method, $uri, $serverParams);
         return $this->decorateServerRequest($serverRequest);
     }
 

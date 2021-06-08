@@ -22,8 +22,7 @@ class RunAnalyticsTask extends AbstractTask
 
     public function run(bool $force = false): void
     {
-        $settings = $this->settingsRepo->readSettings();
-        $analytics_level = $settings->getAnalytics();
+        $analytics_level = $this->settingsRepo->readSettings()->getAnalytics();
 
         switch ($analytics_level) {
             case Entity\Analytics::LEVEL_NONE:

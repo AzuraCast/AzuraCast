@@ -127,8 +127,7 @@ class AutoDJ
             // Adjust "now" time from current queue.
             $now = $this->getNowFromCurrentSong($station);
 
-            $backendOptions = $station->getBackendConfig();
-            $maxQueueLength = $backendOptions->getAutoDjQueueLength();
+            $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
             if ($maxQueueLength < 1) {
                 $maxQueueLength = 1;
             }
@@ -187,8 +186,7 @@ class AutoDJ
     {
         $duration ??= 1;
 
-        $backendConfig = $station->getBackendConfig();
-        $startNext = $backendConfig->getCrossfadeDuration();
+        $startNext = $station->getBackendConfig()->getCrossfadeDuration();
 
         $now = $now->addSeconds($duration ?? 1);
         return ($duration >= $startNext)

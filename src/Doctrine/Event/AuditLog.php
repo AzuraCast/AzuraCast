@@ -88,8 +88,7 @@ class AuditLog implements EventSubscriber
                     }
 
                     // Ensure the property isn't ignored.
-                    $property = $reflectionClass->getProperty($changeField);
-                    $ignoreAttr = $property->getAttributes(AuditIgnore::class);
+                    $ignoreAttr = $reflectionClass->getProperty($changeField)->getAttributes(AuditIgnore::class);
                     if (!empty($ignoreAttr)) {
                         continue;
                     }

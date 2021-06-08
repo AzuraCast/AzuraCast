@@ -20,8 +20,7 @@ class ChartsAction
         $station_tz = $station->getTimezoneObject();
 
         // Get current analytics level.
-        $settings = $settingsRepo->readSettings();
-        $analytics_level = $settings->getAnalytics();
+        $analytics_level = $settingsRepo->readSettings()->getAnalytics();
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             return $response->withStatus(400)

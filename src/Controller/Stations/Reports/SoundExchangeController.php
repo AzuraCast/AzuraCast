@@ -94,8 +94,7 @@ class SoundExchangeController
             $history_rows_by_id = array_column($history_rows, null, 'media_id');
 
             // Remove any reference to the "Stream Offline" song.
-            $offlineSong = Entity\Song::createOffline();
-            $offline_song_hash = $offlineSong->getSongId();
+            $offline_song_hash = Entity\Song::createOffline()->getSongId();
             unset($history_rows_by_id[$offline_song_hash]);
 
             // Assemble report items
@@ -174,7 +173,7 @@ class SoundExchangeController
                 }
             }
             return null;
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return null;
         }
     }

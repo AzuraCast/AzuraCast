@@ -22,11 +22,10 @@ class GetWaveformAction
 
         $station = $request->getStation();
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         // If a timestamp delimiter is added, strip it automatically.
-        $media_id = explode('-', $media_id)[0];
+        $media_id = explode('-', $media_id, 2)[0];
 
         if (StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $waveformPath = StationMedia::getWaveformPath($media_id);

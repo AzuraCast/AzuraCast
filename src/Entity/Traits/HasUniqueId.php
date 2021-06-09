@@ -12,12 +12,12 @@ use OpenApi\Annotations as OA;
 trait HasUniqueId
 {
     /** @OA\Property() */
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(type: 'guid', unique: true, nullable: false)]
     #[ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class)]
-    protected string $id;
+    protected ?string $id = null;
 
     public function getId(): ?string
     {
-        return $this->id ?? null;
+        return $this->id;
     }
 }

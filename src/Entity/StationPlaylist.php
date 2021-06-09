@@ -50,11 +50,11 @@ class StationPlaylist implements Stringable
     public const OPTION_PLAY_SINGLE_TRACK = 'single_track';
     public const OPTION_MERGE = 'merge';
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'playlists')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
     /** @OA\Property(example="Test Playlist") */
@@ -84,11 +84,11 @@ class StationPlaylist implements Stringable
     protected string $order = self::ORDER_SHUFFLE;
 
     /** @OA\Property(example="http://remote-url.example.com/stream.mp3") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $remote_url = null;
 
     /** @OA\Property(example="stream") */
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 25, nullable: true)]
     #[Assert\Choice(choices: [self::REMOTE_TYPE_STREAM, self::REMOTE_TYPE_PLAYLIST])]
     protected ?string $remote_type = self::REMOTE_TYPE_STREAM;
 
@@ -148,7 +148,7 @@ class StationPlaylist implements Stringable
     protected bool $include_in_automation = false;
 
     /** @OA\Property(example="interrupt,loop_once,single_track,merge") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $backend_options = '';
 
     /** @OA\Property(example=true) */

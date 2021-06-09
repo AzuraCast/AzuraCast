@@ -20,11 +20,11 @@ class PodcastMedia
     use Traits\TruncateStrings;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StorageLocation $storage_location;
 
     #[ORM\OneToOne(inversedBy: 'media')]
-    #[ORM\JoinColumn(name: 'episode_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'episode_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?PodcastEpisode $episode;
 
     #[ORM\Column(length: 200)]

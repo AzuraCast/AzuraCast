@@ -19,20 +19,20 @@ class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterfac
 
     public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $storage_location_id;
 
     #[ORM\ManyToOne(inversedBy: 'media')]
-    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StorageLocation $storage_location;
 
     #[ORM\Column(length: 500)]
     protected string $path;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $mtime = 0;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $error = null;
 
     public function __construct(StorageLocation $storageLocation, string $path)

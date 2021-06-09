@@ -34,16 +34,16 @@ class AuditLog
     #[ORM\Column(length: 255)]
     protected string $identifier;
 
-    #[ORM\Column(name: 'target_class', length: 255)]
+    #[ORM\Column(name: 'target_class', length: 255, nullable: true)]
     protected ?string $targetClass;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $target;
 
     #[ORM\Column(type: 'array')]
     protected array $changes;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $user;
 
     public function __construct(

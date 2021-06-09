@@ -25,7 +25,7 @@ class Relay
     protected string $base_url;
 
     /** @OA\Property(example="Relay") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $name = 'Relay';
 
     /** @OA\Property(example=true) */

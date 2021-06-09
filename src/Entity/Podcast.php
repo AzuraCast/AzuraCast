@@ -23,14 +23,14 @@ class Podcast
     public const DIR_PODCAST_ARTWORK = '.podcast_art';
 
     #[ORM\ManyToOne(targetEntity: StorageLocation::class)]
-    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StorageLocation $storage_location;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     protected string $title;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $link = null;
 
     #[ORM\Column(type: 'text')]

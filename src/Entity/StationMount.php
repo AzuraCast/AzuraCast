@@ -24,11 +24,11 @@ class StationMount implements StationMountInterface, \Stringable
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'mounts')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
     /** @OA\Property(example="/radio.mp3") */
@@ -37,7 +37,7 @@ class StationMount implements StationMountInterface, \Stringable
     protected string $name = '';
 
     /** @OA\Property(example="128kbps MP3") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $display_name = null;
 
     /** @OA\Property(example=true) */
@@ -53,15 +53,15 @@ class StationMount implements StationMountInterface, \Stringable
     protected bool $is_public = false;
 
     /** @OA\Property(example="/error.mp3") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $fallback_mount = null;
 
     /** @OA\Property(example="http://radio.example.com:8000/radio.mp3") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $relay_url = null;
 
     /** @OA\Property(example="") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $authhash = null;
 
     /** @OA\Property(example=true) */
@@ -69,19 +69,19 @@ class StationMount implements StationMountInterface, \Stringable
     protected bool $enable_autodj = true;
 
     /** @OA\Property(example="mp3") */
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     protected ?string $autodj_format = 'mp3';
 
     /** @OA\Property(example=128) */
-    #[ORM\Column(type: 'smallint')]
+    #[ORM\Column(type: 'smallint', nullable: true)]
     protected ?int $autodj_bitrate = 128;
 
     /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $custom_listen_url = null;
 
     /** @OA\Property(type="array", @OA\Items()) */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $frontend_config = null;
 
     /**

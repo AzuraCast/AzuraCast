@@ -39,14 +39,14 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example="69b536afc7ebbf16457b8645"
      * )
      */
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 25, nullable: true)]
     protected ?string $unique_id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $storage_location_id;
 
     #[ORM\ManyToOne(inversedBy: 'media')]
-    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StorageLocation $storage_location;
 
     /**
@@ -55,7 +55,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example="Test Album"
      * )
      */
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(length: 200, nullable: true)]
     protected ?string $album = null;
 
     /**
@@ -64,7 +64,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example="Rock"
      * )
      */
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 30, nullable: true)]
     protected ?string $genre = null;
 
     /**
@@ -73,7 +73,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example="...Never gonna give you up..."
      * )
      */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $lyrics = null;
 
     /**
@@ -82,7 +82,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example="GBARL0600786"
      * )
      */
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(length: 15, nullable: true)]
     protected ?string $isrc = null;
 
     /**
@@ -91,7 +91,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=240.00
      * )
      */
-    #[ORM\Column(type: 'decimal', precision: 7, scale: 2)]
+    #[ORM\Column(type: 'decimal', precision: 7, scale: 2, nullable: true)]
     protected ?float $length = 0.00;
 
     /**
@@ -100,7 +100,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example="4:00"
      * )
      */
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     protected ?string $length_text = '0:00';
 
     /**
@@ -118,7 +118,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=SAMPLE_TIMESTAMP
      * )
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $mtime = 0;
 
     /**
@@ -127,7 +127,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=-14.00
      * )
      */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
     protected ?float $amplify = null;
 
     /**
@@ -136,7 +136,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=2.00
      * )
      */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
     protected ?float $fade_overlap = null;
 
     /**
@@ -145,7 +145,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=3.00
      * )
      */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
     protected ?float $fade_in = null;
 
     /**
@@ -154,7 +154,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=3.00
      * )
      */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
     protected ?float $fade_out = null;
 
     /**
@@ -163,7 +163,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=30.00
      * )
      */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
     protected ?float $cue_in = null;
 
     /**
@@ -172,7 +172,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
      *     example=30.00
      * )
      */
-    #[ORM\Column(type: 'decimal', precision: 6, scale: 1)]
+    #[ORM\Column(type: 'decimal', precision: 6, scale: 1, nullable: true)]
     protected ?float $cue_out = null;
 
     /**

@@ -37,7 +37,7 @@ class Settings implements Stringable
      *     example="https://your.azuracast.site"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $base_url = '';
 
     public function getBaseUrl(): ?string
@@ -56,7 +56,7 @@ class Settings implements Stringable
      *     example="My AzuraCast Instance"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $instance_name = null;
 
     public function getInstanceName(): ?string
@@ -151,7 +151,7 @@ class Settings implements Stringable
      *     example="*"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $api_access_control = '';
 
     public function getApiAccessControl(): string
@@ -188,7 +188,7 @@ class Settings implements Stringable
      *     description="Listener Analytics Collection"
      * )
      */
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Choice([Analytics::LEVEL_NONE, Analytics::LEVEL_NO_IP, Analytics::LEVEL_ALL])]
     protected ?string $analytics = Analytics::LEVEL_ALL;
 
@@ -276,7 +276,7 @@ class Settings implements Stringable
      *     example="light"
      * )
      */
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Choice([Customization::THEME_BROWSER, Customization::THEME_LIGHT, Customization::THEME_DARK])]
     protected ?string $public_theme = Customization::DEFAULT_THEME;
 
@@ -315,7 +315,7 @@ class Settings implements Stringable
      *     example="https://example.com/"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $homepage_redirect_url = null;
 
     public function getHomepageRedirectUrl(): ?string
@@ -334,7 +334,7 @@ class Settings implements Stringable
      *     example="https://example.com/image.jpg"
      * )
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?string $default_album_art_url = null;
 
     public function getDefaultAlbumArtUrl(): ?string
@@ -391,7 +391,7 @@ class Settings implements Stringable
      *     example="SAMPLE-API-KEY"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $last_fm_api_key = null;
 
     public function getLastFmApiKey(): ?string
@@ -432,7 +432,7 @@ class Settings implements Stringable
      *     example=""
      * )
      */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $public_custom_css = null;
 
     public function getPublicCustomCss(): ?string
@@ -451,7 +451,7 @@ class Settings implements Stringable
      *     example=""
      * )
      */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $public_custom_js = null;
 
     public function getPublicCustomJs(): ?string
@@ -470,7 +470,7 @@ class Settings implements Stringable
      *     example=""
      * )
      */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $internal_custom_css = null;
 
     public function getInternalCustomCss(): ?string
@@ -508,7 +508,7 @@ class Settings implements Stringable
      *     example=400
      * )
      */
-    #[ORM\Column(length: 4)]
+    #[ORM\Column(length: 4, nullable: true)]
     protected ?string $backup_time_code = null;
 
     public function getBackupTimeCode(): ?string
@@ -565,7 +565,7 @@ class Settings implements Stringable
      *     example=1
      * )
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $backup_storage_location = null;
 
     public function getBackupStorageLocation(): ?int
@@ -609,7 +609,7 @@ class Settings implements Stringable
      *     example=""
      * )
      */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $backup_last_result = null;
 
@@ -629,7 +629,7 @@ class Settings implements Stringable
      *     example=""
      * )
      */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $backup_last_output = null;
 
@@ -679,7 +679,7 @@ class Settings implements Stringable
      * )
      * @var mixed[]|null
      */
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: 'json', nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?array $nowplaying = null;
 
@@ -815,7 +815,7 @@ class Settings implements Stringable
      *     example="192.168.1.1"
      * )
      */
-    #[ORM\Column(length: 45)]
+    #[ORM\Column(length: 45, nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $external_ip = null;
 
@@ -835,7 +835,7 @@ class Settings implements Stringable
      *     example=""
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $geolite_license_key = null;
 
     public function getGeoliteLicenseKey(): ?string
@@ -919,7 +919,7 @@ class Settings implements Stringable
      *     example="AzuraCast"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $mail_sender_name = '';
 
     public function getMailSenderName(): string
@@ -938,7 +938,7 @@ class Settings implements Stringable
      *     example="example@example.com"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $mail_sender_email = '';
 
     public function getMailSenderEmail(): string
@@ -957,7 +957,7 @@ class Settings implements Stringable
      *     example="smtp.example.com"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $mail_smtp_host = '';
 
     public function getMailSmtpHost(): string
@@ -995,7 +995,7 @@ class Settings implements Stringable
      *     example="username"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $mail_smtp_username = '';
 
     public function getMailSmtpUsername(): string
@@ -1014,7 +1014,7 @@ class Settings implements Stringable
      *     example="password"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $mail_smtp_password = '';
 
     public function getMailSmtpPassword(): string
@@ -1052,7 +1052,7 @@ class Settings implements Stringable
      *     example="libravatar"
      * )
      */
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 25, nullable: true)]
     protected ?string $avatar_service = null;
 
     public function getAvatarService(): string
@@ -1071,7 +1071,7 @@ class Settings implements Stringable
      *     example=""
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $avatar_default_url = null;
 
     public function getAvatarDefaultUrl(): string

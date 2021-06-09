@@ -18,15 +18,15 @@ trait HasSongFields
     protected string $song_id;
 
     /** @OA\Property() */
-    #[ORM\Column(length: 303)]
+    #[ORM\Column(length: 303, nullable: true)]
     protected ?string $text = null;
 
     /** @OA\Property() */
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $artist = null;
 
     /** @OA\Property() */
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $title = null;
 
     public function setSong(SongInterface $song): void

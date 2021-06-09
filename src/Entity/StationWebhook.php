@@ -34,11 +34,11 @@ class StationWebhook implements Stringable
     public const TRIGGER_STATION_OFFLINE = 'station_offline';
     public const TRIGGER_STATION_ONLINE = 'station_online';
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'webhooks')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
     /**
@@ -47,7 +47,7 @@ class StationWebhook implements Stringable
      *     example="Twitter Post"
      * )
      */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $name = null;
 
     /**

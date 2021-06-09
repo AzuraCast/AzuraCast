@@ -25,11 +25,11 @@ class CustomField implements \Stringable
     protected string $name;
 
     /** @OA\Property(description="The programmatic name for the field. Can be auto-generated from the full name.") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $short_name = null;
 
     /** @OA\Property(description="An ID3v2 field to automatically assign to this value, if it exists in the media file.") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $auto_assign = null;
 
     public function getName(): string

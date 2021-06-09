@@ -37,10 +37,10 @@ class StationSchedule
     #[ORM\Column(type: 'smallint')]
     protected int $end_time = 0;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     protected ?string $start_date = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     protected ?string $end_date = null;
 
     /**
@@ -49,7 +49,7 @@ class StationSchedule
      *     example="0,1,2,3"
      * )
      */
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     protected ?string $days = null;
 
     public function __construct(StationPlaylist|StationStreamer $relation)

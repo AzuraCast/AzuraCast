@@ -20,7 +20,7 @@ class SftpUser
     use Traits\HasAutoIncrementId;
 
     #[ORM\ManyToOne(inversedBy: 'sftp_users')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
     #[ORM\Column(length: 32)]
@@ -33,7 +33,7 @@ class SftpUser
     #[Assert\NotBlank]
     protected string $password;
 
-    #[ORM\Column(name: 'public_keys', type: 'text')]
+    #[ORM\Column(name: 'public_keys', type: 'text', nullable: true)]
     protected ?string $publicKeys = null;
 
     public function __construct(Station $station)

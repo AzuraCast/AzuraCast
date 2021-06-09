@@ -34,12 +34,12 @@ class User implements Stringable
     use Traits\TruncateStrings;
 
     /** @OA\Property(example="demo@azuracast.com") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Email]
     protected ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $auth_password = null;
 
@@ -47,20 +47,20 @@ class User implements Stringable
     protected ?string $new_password = null;
 
     /** @OA\Property(example="Demo Account") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $name = null;
 
     /** @OA\Property(example="en_US") */
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 25, nullable: true)]
     protected ?string $locale = null;
 
     /** @OA\Property(example="dark") */
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 25, nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $theme = null;
 
     /** @OA\Property(example="A1B2C3D4") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $two_factor_secret = null;
 

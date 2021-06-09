@@ -17,44 +17,44 @@ class StationQueue implements SongInterface
     use Traits\TruncateInts;
     use Traits\HasSongFields;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $playlist_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationPlaylist $playlist = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $media_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationMedia $media = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $request_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?StationRequest $request = null;
 
     #[ORM\Column]
     protected bool $sent_to_autodj = false;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $autodj_custom_uri = null;
 
     #[ORM\Column]
     protected int $timestamp_cued;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $duration = null;
 
     #[ORM\Column(type: 'json', nullable: true)]

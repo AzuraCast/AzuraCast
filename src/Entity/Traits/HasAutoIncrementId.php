@@ -11,11 +11,12 @@ use OpenApi\Annotations as OA;
 trait HasAutoIncrementId
 {
     /** @OA\Property() */
-    #[ORM\Column, ORM\Id, ORM\GeneratedValue]
-    protected int $id;
+    #[ORM\Column(nullable: false)]
+    #[ORM\Id, ORM\GeneratedValue]
+    protected ?int $id = null;
 
     public function getId(): ?int
     {
-        return $this->id ?? null;
+        return $this->id;
     }
 }

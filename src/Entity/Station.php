@@ -48,7 +48,7 @@ class Station implements Stringable
      *     example="AzuraTest Radio"
      * )
      */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\NotBlank]
     protected ?string $name = null;
 
@@ -58,7 +58,7 @@ class Station implements Stringable
      *     example="azuratest_radio"
      * )
      */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\NotBlank]
     protected ?string $short_name = null;
 
@@ -77,7 +77,7 @@ class Station implements Stringable
      *     example="icecast"
      * )
      */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Choice(choices: [Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST])]
     protected ?string $frontend_type = Adapters::FRONTEND_ICECAST;
 
@@ -97,7 +97,7 @@ class Station implements Stringable
      *     example="liquidsoap"
      * )
      */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Choice(choices: [Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE])]
     protected ?string $backend_type = Adapters::BACKEND_LIQUIDSOAP;
 
@@ -111,39 +111,39 @@ class Station implements Stringable
     #[ORM\Column(type: 'json', nullable: true)]
     protected ?array $backend_config = null;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $adapter_api_key = null;
 
     /** @OA\Property(example="A sample radio station.") */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $description = null;
 
     /** @OA\Property(example="https://demo.azuracast.com/") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $url = null;
 
     /** @OA\Property(example="Various") */
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $genre = null;
 
     /** @OA\Property(example="/var/azuracast/stations/azuratest_radio") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $radio_base_dir = null;
 
     #[ORM\Column(type: 'array', nullable: true)]
     #[Attributes\AuditIgnore]
     protected mixed $nowplaying;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?int $nowplaying_timestamp = null;
 
     /** @OA\Property(type="array", @OA\Items()) */
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: 'json', nullable: true)]
     protected ?array $automation_settings = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?int $automation_timestamp = 0;
 
@@ -157,15 +157,15 @@ class Station implements Stringable
     protected bool $enable_requests = false;
 
     /** @OA\Property(example=5) */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $request_delay = self::DEFAULT_REQUEST_DELAY;
 
     /** @OA\Property(example=15) */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
 
     /** @OA\Property(example=0) */
-    #[ORM\Column(options: ['default' => 0])]
+    #[ORM\Column(nullable: true, options: ['default' => 0])]
     protected ?int $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;
 
     /**
@@ -237,7 +237,7 @@ class Station implements Stringable
      *     example="UTC"
      * )
      */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $timezone = 'UTC';
 
     /**
@@ -246,7 +246,7 @@ class Station implements Stringable
      *     example="https://example.com/image.jpg"
      * )
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $default_album_art_url = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class)]
@@ -254,19 +254,34 @@ class Station implements Stringable
     protected Collection $history;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'media_storage_location_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(
+        name: 'media_storage_location_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
     protected ?StorageLocation $media_storage_location = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'recordings_storage_location_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(
+        name: 'recordings_storage_location_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
     protected ?StorageLocation $recordings_storage_location = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'podcasts_storage_location_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(
+        name: 'podcasts_storage_location_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
     protected ?StorageLocation $podcasts_storage_location = null;
@@ -274,11 +289,11 @@ class Station implements Stringable
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
     protected Collection $streamers;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $current_streamer_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationStreamer $current_streamer = null;
 
     #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]

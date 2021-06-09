@@ -22,7 +22,7 @@ class PodcastEpisode
     public const DIR_PODCAST_EPISODE_ARTWORK = '.podcast_episode_art';
 
     #[ORM\ManyToOne(inversedBy: 'episodes')]
-    #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'podcast_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Podcast $podcast;
 
     #[ORM\OneToOne(mappedBy: 'episode')]
@@ -32,14 +32,14 @@ class PodcastEpisode
     #[Assert\NotBlank]
     protected string $title;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $link = null;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     protected string $description;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $publish_at = null;
 
     #[ORM\Column]

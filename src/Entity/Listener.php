@@ -17,25 +17,25 @@ class Listener
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $mount_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationMount::class)]
-    #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationMount $mount = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $remote_id = null;
 
     #[ORM\ManyToOne(targetEntity: StationRemote::class)]
-    #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?StationRemote $remote = null;
 
     #[ORM\Column]

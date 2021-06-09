@@ -16,7 +16,7 @@ class UserLoginToken
     use Traits\HasSplitTokenFields;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'api_keys')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected User $user;
 
     #[ORM\Column]

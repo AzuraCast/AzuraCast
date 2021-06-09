@@ -63,37 +63,37 @@ class StorageLocation implements Stringable
     ])]
     protected string $adapter = self::ADAPTER_LOCAL;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $path = null;
 
-    #[ORM\Column(name: 's3_credential_key', length: 255)]
+    #[ORM\Column(name: 's3_credential_key', length: 255, nullable: true)]
     protected ?string $s3CredentialKey = null;
 
-    #[ORM\Column(name: 's3_credential_secret', length: 255)]
+    #[ORM\Column(name: 's3_credential_secret', length: 255, nullable: true)]
     protected ?string $s3CredentialSecret = null;
 
-    #[ORM\Column(name: 's3_region', length: 150)]
+    #[ORM\Column(name: 's3_region', length: 150, nullable: true)]
     protected ?string $s3Region = null;
 
-    #[ORM\Column(name: 's3_version', length: 150)]
+    #[ORM\Column(name: 's3_version', length: 150, nullable: true)]
     protected ?string $s3Version = 'latest';
 
-    #[ORM\Column(name: 's3_bucket', length: 255)]
+    #[ORM\Column(name: 's3_bucket', length: 255, nullable: true)]
     protected ?string $s3Bucket = null;
 
-    #[ORM\Column(name: 's3_endpoint', length: 255)]
+    #[ORM\Column(name: 's3_endpoint', length: 255, nullable: true)]
     protected ?string $s3Endpoint = null;
 
-    #[ORM\Column(name: 'dropbox_auth_token', length: 255)]
+    #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
     protected ?string $dropboxAuthToken = null;
 
-    #[ORM\Column(name: 'storage_quota', type: 'bigint')]
+    #[ORM\Column(name: 'storage_quota', type: 'bigint', nullable: true)]
     protected ?string $storageQuota = null;
 
     // Used for API generation.
     protected ?string $storageQuotaBytes = null;
 
-    #[ORM\Column(name: 'storage_used', type: 'bigint')]
+    #[ORM\Column(name: 'storage_used', type: 'bigint', nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?string $storageUsed = null;
 

@@ -17,11 +17,11 @@ class StationPlaylistFolder implements PathAwareInterface
     use Traits\TruncateStrings;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'folders')]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationPlaylist $playlist;
 
     #[ORM\Column(length: 500)]

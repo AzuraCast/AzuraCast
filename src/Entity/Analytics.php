@@ -31,11 +31,11 @@ class Analytics
     public const INTERVAL_DAILY = 'day';
     public const INTERVAL_HOURLY = 'hour';
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $station_id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Station $station = null;
 
     #[ORM\Column(length: 15)]
@@ -53,7 +53,7 @@ class Analytics
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     protected string $number_avg;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $number_unique = null;
 
     public function __construct(

@@ -20,17 +20,17 @@ class RolePermission implements JsonSerializable
     protected int $role_id;
 
     #[ORM\ManyToOne(inversedBy: 'permissions')]
-    #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Role $role;
 
     #[ORM\Column(length: 50)]
     protected string $action_name;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $station_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'permissions')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Station $station = null;
 
     public function __construct(Role $role, Station $station = null, $action_name = null)

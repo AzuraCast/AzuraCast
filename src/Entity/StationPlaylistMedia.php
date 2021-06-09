@@ -15,18 +15,18 @@ class StationPlaylistMedia implements JsonSerializable
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $playlist_id;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'media_items')]
-    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationPlaylist $playlist;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $media_id;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'playlists')]
-    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationMedia $media;
 
     #[ORM\Column]

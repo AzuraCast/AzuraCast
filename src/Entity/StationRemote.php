@@ -28,22 +28,22 @@ class StationRemote implements StationMountInterface, Stringable
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'remotes')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     protected ?int $relay_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'remotes')]
-    #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'relay_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Relay $relay = null;
 
     /** @OA\Property(example="128kbps MP3") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $display_name = null;
 
     /** @OA\Property(example=true) */
@@ -60,43 +60,43 @@ class StationRemote implements StationMountInterface, Stringable
     protected bool $enable_autodj = false;
 
     /** @OA\Property(example="mp3") */
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     protected ?string $autodj_format = null;
 
     /** @OA\Property(example=128) */
-    #[ORM\Column(type: 'smallint')]
+    #[ORM\Column(type: 'smallint', nullable: true)]
     protected ?int $autodj_bitrate = null;
 
     /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $custom_listen_url = null;
 
     /** @OA\Property(example="http://custom-url.example.com") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $url = null;
 
     /** @OA\Property(example="/stream.mp3") */
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $mount = null;
 
     /** @OA\Property(example="password") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $admin_password = null;
 
     /** @OA\Property(example=8000) */
-    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     protected ?int $source_port = null;
 
     /** @OA\Property(example="/") */
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $source_mount = null;
 
     /** @OA\Property(example="source") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $source_username = null;
 
     /** @OA\Property(example="password") */
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     protected ?string $source_password = null;
 
     /** @OA\Property(example=false) */

@@ -15,21 +15,21 @@ class StationMediaCustomField
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $media_id;
 
     #[ORM\ManyToOne(inversedBy: 'metadata')]
-    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationMedia $media;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $field_id;
 
     #[ORM\ManyToOne(inversedBy: 'media_fields')]
-    #[ORM\JoinColumn(name: 'field_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'field_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected CustomField $field;
 
-    #[ORM\Column(name: 'field_value', length: 255)]
+    #[ORM\Column(name: 'field_value', length: 255, nullable: true)]
     protected ?string $value = null;
 
     public function __construct(StationMedia $media, CustomField $field)

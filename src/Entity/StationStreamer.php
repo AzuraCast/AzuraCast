@@ -34,11 +34,11 @@ class StationStreamer implements \Stringable
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'streamers')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
     /** @OA\Property(example="dj_test") */
@@ -53,11 +53,11 @@ class StationStreamer implements \Stringable
     protected string $streamer_password;
 
     /** @OA\Property(example="Test DJ") */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     protected ?string $display_name = null;
 
     /** @OA\Property(example="This is a test DJ account.") */
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $comments = null;
 
     /** @OA\Property(example=true) */
@@ -69,7 +69,7 @@ class StationStreamer implements \Stringable
     protected bool $enforce_schedule = false;
 
     /** @OA\Property(example=SAMPLE_TIMESTAMP) */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Attributes\AuditIgnore]
     protected ?int $reactivate_at = null;
 

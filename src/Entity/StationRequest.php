@@ -17,18 +17,18 @@ class StationRequest
 {
     use Traits\HasAutoIncrementId;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $station_id;
 
     #[ORM\ManyToOne(inversedBy: 'media')]
-    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected Station $station;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     protected int $track_id;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'track_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'track_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected StationMedia $track;
 
     #[ORM\Column]

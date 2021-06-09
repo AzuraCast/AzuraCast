@@ -37,6 +37,6 @@ class MessengerMessage
     #[ORM\Column(name: 'available_at')]
     protected DateTime $availableAt;
 
-    #[ORM\Column(name: 'delivered_at')]
+    #[ORM\Column(name: 'delivered_at', nullable: true)]
     protected ?DateTime $deliveredAt = null;
 }

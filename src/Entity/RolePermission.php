@@ -12,7 +12,7 @@ use JsonSerializable;
     ORM\Table(name: 'role_permissions'),
     ORM\UniqueConstraint(name: 'role_permission_unique_idx', columns: ['role_id', 'action_name', 'station_id'])
 ]
-class RolePermission implements JsonSerializable
+class RolePermission implements JsonSerializable, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -51,6 +51,11 @@ class RolePermission implements JsonSerializable
     public function getStation(): ?Station
     {
         return $this->station;
+    }
+
+    public function setStation(?Station $station): void
+    {
+        $this->station = $station;
     }
 
     public function hasStation(): bool

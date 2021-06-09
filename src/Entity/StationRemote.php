@@ -4,8 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
-use App\Entity\Interfaces\StationMountInterface;
 use App\Radio\Adapters;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
@@ -23,7 +21,7 @@ use const PHP_URL_PORT;
     ORM\Table(name: 'station_remotes'),
     Attributes\Auditable
 ]
-class StationRemote implements StationMountInterface, Stringable
+class StationRemote implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -131,6 +129,11 @@ class StationRemote implements StationMountInterface, Stringable
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
     }
 
     public function getRelay(): ?Relay

@@ -4,14 +4,13 @@
 
 namespace App\Entity;
 
-use App\Entity\Interfaces\PathAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
     ORM\Entity,
     ORM\Table(name: 'station_playlist_folders')
 ]
-class StationPlaylistFolder implements PathAwareInterface
+class StationPlaylistFolder implements Interfaces\PathAwareInterface, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -39,9 +38,19 @@ class StationPlaylistFolder implements PathAwareInterface
         return $this->station;
     }
 
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
     public function getPlaylist(): StationPlaylist
     {
         return $this->playlist;
+    }
+
+    public function setPlaylist(StationPlaylist $playlist): void
+    {
+        $this->playlist = $playlist;
     }
 
     public function getPath(): string

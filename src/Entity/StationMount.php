@@ -5,7 +5,6 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Entity\Interfaces\StationMountInterface;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_mounts'),
     Attributes\Auditable
 ]
-class StationMount implements StationMountInterface, \Stringable
+class StationMount implements \Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -112,6 +111,11 @@ class StationMount implements StationMountInterface, \Stringable
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
     }
 
     public function getName(): string

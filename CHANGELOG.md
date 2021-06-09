@@ -57,6 +57,8 @@ release channel, you can take advantage of these new features and fixes.
 - Some issues causing errors about type mismatches (caused by recent implementations of strict typing) have been
   resolved.
 
+- The "Clone Station" feature has been fixed and expanded.
+
 ---
 
 # AzuraCast 0.12.4 (Apr 27, 2021)

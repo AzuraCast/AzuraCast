@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Normalizer\Attributes\DeepNormalize;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\HasLifecycleCallbacks,
     Attributes\Auditable
 ]
-class StationPlaylist implements Stringable
+class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -189,6 +188,11 @@ class StationPlaylist implements Stringable
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
     }
 
     public function getName(): string

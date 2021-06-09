@@ -49,6 +49,11 @@ class StationPlaylistMedia implements JsonSerializable
         return $this->playlist;
     }
 
+    public function setPlaylist(StationPlaylist $playlist): void
+    {
+        $this->playlist = $playlist;
+    }
+
     public function getMedia(): StationMedia
     {
         return $this->media;
@@ -85,5 +90,11 @@ class StationPlaylistMedia implements JsonSerializable
             'name' => $this->playlist->getName(),
             'weight' => (int)$this->weight,
         ];
+    }
+
+    public function __clone(): void
+    {
+        $this->last_played = 0;
+        $this->is_queued = false;
     }
 }

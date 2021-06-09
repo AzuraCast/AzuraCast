@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
     Attributes\Auditable
 ]
-class StationWebhook implements Stringable
+class StationWebhook implements Stringable, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -104,6 +104,11 @@ class StationWebhook implements Stringable
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
     }
 
     public function getName(): ?string
@@ -218,5 +223,10 @@ class StationWebhook implements Stringable
     public function __toString(): string
     {
         return $this->getStation() . ' Web Hook: ' . $this->getName();
+    }
+
+    public function __clone(): void
+    {
+        $this->metadata = null;
     }
 }

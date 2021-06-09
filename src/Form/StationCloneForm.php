@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Config;
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Http\ServerRequest;
@@ -11,22 +12,32 @@ use App\Radio\Configuration;
 use App\Sync\Task\CheckMediaTask;
 use DeepCopy;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class StationCloneForm extends StationForm
 {
+    public const CLONE_MEDIA_STORAGE = 'media_storage';
+    public const CLONE_RECORDINGS_STORAGE = 'recordings_storage';
+    public const CLONE_PODCASTS_STORAGE = 'podcasts_storage';
+
+    public const CLONE_PLAYLISTS = 'playlists';
+    public const CLONE_MOUNTS = 'mounts';
+    public const CLONE_REMOTES = 'remotes';
+    public const CLONE_STREAMERS = 'streamers';
+    public const CLONE_PERMISSIONS = 'permissions';
+    public const CLONE_WEBHOOKS = 'webhooks';
+
     public function __construct(
         protected Configuration $configuration,
         protected CheckMediaTask $media_sync,
+        protected ReloadableEntityManagerInterface $reloadableEm,
         Entity\Repository\StationRepository $stationRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo,
         Entity\Repository\SettingsRepository $settingsRepo,
         Environment $environment,
         Adapters $adapters,
-        EntityManagerInterface $em,
         Serializer $serializer,
         ValidatorInterface $validator,
         Config $config
@@ -37,7 +48,7 @@ class StationCloneForm extends StationForm
             $settingsRepo,
             $environment,
             $adapters,
-            $em,
+            $reloadableEm,
             $serializer,
             $validator,
             $config
@@ -66,187 +77,154 @@ class StationCloneForm extends StationForm
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
             $data = $this->getValues();
 
+            $toClone = $data['clone'];
+
             $copier = new DeepCopy\DeepCopy();
             $copier->addFilter(
                 new DeepCopy\Filter\Doctrine\DoctrineProxyFilter(),
                 new DeepCopy\Matcher\Doctrine\DoctrineProxyMatcher()
             );
             $copier->addFilter(
-                new DeepCopy\Filter\KeepFilter(),
-                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'song')
+                new DeepCopy\Filter\SetNullFilter(),
+                new DeepCopy\Matcher\PropertyNameMatcher('id')
             );
+            $copier->addFilter(
+                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
+                new DeepCopy\Matcher\PropertyTypeMatcher(Collection::class)
+            );
+
             $copier->addFilter(
                 new DeepCopy\Filter\KeepFilter(),
                 new DeepCopy\Matcher\PropertyMatcher(Entity\RolePermission::class, 'role')
             );
             $copier->addFilter(
                 new DeepCopy\Filter\KeepFilter(),
-                new DeepCopy\Matcher\PropertyMatcher(Entity\StationMediaCustomField::class, 'field')
-            );
-            $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'history')
-            );
-            $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'sftp_users')
-            );
-            $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylist::class, 'media_items')
+                new DeepCopy\Matcher\PropertyMatcher(Entity\StationPlaylistMedia::class, 'media')
             );
 
-            // Unset some properties across all copied record types.
-            $global_unsets = [
-                'id',
-                'station_id',
-                'media_id',
-                'playlist_id',
-                'field_id',
-            ];
-            foreach ($global_unsets as $prop) {
-                $copier->addFilter(
-                    new DeepCopy\Filter\SetNullFilter(),
-                    new DeepCopy\Matcher\PropertyNameMatcher($prop)
-                );
+            /** @var Entity\Station $record */
+            /** @var Entity\Station $newStation */
+            $newStation = $copier->copy($record);
+
+            $newStation->setName($data['name']);
+            $newStation->setDescription($data['description']);
+
+            if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
+                $newStation->setMediaStorageLocation($record->getMediaStorageLocation());
             }
-
-            // Unset some values only on Station entities.
-            $unset_values = [
-                'short_name',
-                'radio_base_dir',
-                'media_storage_location',
-                'recordings_storage_location',
-                'adapter_api_key',
-                'nowplaying',
-                'nowplaying_timestamp',
-                'current_streamer_id',
-                'current_streamer',
-            ];
-
-            foreach ($unset_values as $prop) {
-                $copier->addFilter(
-                    new DeepCopy\Filter\SetNullFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, $prop)
-                );
+            if (in_array(self::CLONE_RECORDINGS_STORAGE, $toClone, true)) {
+                $newStation->setRecordingsStorageLocation($record->getRecordingsStorageLocation());
             }
-
-            if (!$data['clone_playlists']) {
-                $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'playlists')
-                );
-                $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\StationMedia::class, 'playlists')
-                );
-            }
-
-            if (!$data['clone_streamers']) {
-                $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'streamers')
-                );
-            }
-
-            if (!$data['clone_permissions']) {
-                $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'permissions')
-                );
-            }
-
-            if ('none' === $data['clone_media']) {
-                $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'media')
-                );
-            } else {
-                $copier->addFilter(
-                    new DeepCopy\Filter\Doctrine\DoctrineEmptyCollectionFilter(),
-                    new DeepCopy\Matcher\PropertyMatcher(Entity\Station::class, 'playlists')
-                );
-            }
-
-            // Execute the Doctrine entity copy.
-            $copier->addFilter(
-                new DeepCopy\Filter\Doctrine\DoctrineCollectionFilter(),
-                new DeepCopy\Matcher\PropertyTypeMatcher(Collection::class)
-            );
-
-            /** @var Entity\Station $new_record */
-            $new_record = $copier->copy($record);
-
-            $new_record->setName($data['name']);
-            $new_record->setDescription($data['description']);
-            $new_record->clearPorts();
-
-            $new_record->setIsStreamerLive(false);
-            $new_record->setNeedsRestart(false);
-            $new_record->setHasStarted(false);
-
-            if ('share' === $data['clone_media']) {
-                $new_record->setMediaStorageLocation($record->getMediaStorageLocation());
-                $new_record->setRecordingsStorageLocation($record->getRecordingsStorageLocation());
+            if (in_array(self::CLONE_PODCASTS_STORAGE, $toClone, true)) {
+                $newStation->setPodcastsStorageLocation($record->getPodcastsStorageLocation());
             }
 
             // Set new radio base directory
             $station_base_dir = $this->environment->getStationDirectory();
-            $new_record->setRadioBaseDir($station_base_dir . '/' . $new_record->getShortName());
+            $newStation->setRadioBaseDir($station_base_dir . '/' . $newStation->getShortName());
 
-            $new_record->ensureDirectoriesExist();
+            $newStation->ensureDirectoriesExist();
 
             // Persist all newly created records (and relations).
-            $this->em->persist($new_record);
-
-            $this->em->persist($new_record->getMediaStorageLocation());
-            $this->em->persist($new_record->getRecordingsStorageLocation());
-            $this->em->persist($new_record->getPodcastsStorageLocation());
-
-            foreach ($new_record->getMounts() as $subrecord) {
-                $this->em->persist($subrecord);
-            }
-
-            foreach ($new_record->getPermissions() as $subrecord) {
-                $this->em->persist($subrecord);
-            }
-
-            foreach ($new_record->getPlaylists() as $subrecord) {
-                /** @var Entity\StationPlaylist $subrecord */
-                $this->em->persist($subrecord);
-
-                foreach ($subrecord->getScheduleItems() as $playlist_schedule_item) {
-                    $this->em->persist($playlist_schedule_item);
-                }
-            }
-
-            foreach ($new_record->getRemotes() as $subrecord) {
-                $this->em->persist($subrecord);
-            }
-
-            foreach ($new_record->getStreamers() as $subrecord) {
-                /** @var Entity\StationStreamer $subrecord */
-                $this->em->persist($subrecord);
-
-                foreach ($subrecord->getScheduleItems() as $playlist_schedule_item) {
-                    $this->em->persist($playlist_schedule_item);
-                }
-            }
-
+            $this->em->persist($newStation->getMediaStorageLocation());
+            $this->em->persist($newStation->getRecordingsStorageLocation());
+            $this->em->persist($newStation->getPodcastsStorageLocation());
+            $this->em->persist($newStation);
             $this->em->flush();
+            $this->em->clear();
+
+            if (in_array(self::CLONE_PLAYLISTS, $toClone, true)) {
+                if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
+                    $afterCloning = function (
+                        Entity\StationPlaylist $oldPlaylist,
+                        Entity\StationPlaylist $newPlaylist
+                    ) use (
+                        $newStation,
+                        $copier
+                    ): void {
+                        foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
+                            /** @var Entity\StationPlaylistFolder $newPlaylistFolder */
+                            $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
+                            $newPlaylistFolder->setStation($newStation);
+                            $newPlaylistFolder->setPlaylist($newPlaylist);
+                            $this->em->persist($newPlaylistFolder);
+                        }
+
+                        foreach ($oldPlaylist->getMediaItems() as $oldMediaItem) {
+                            /** @var Entity\StationPlaylistMedia $newMediaItem */
+                            $newMediaItem = $copier->copy($oldMediaItem);
+
+                            $newMediaItem->setPlaylist($newPlaylist);
+                            $this->em->persist($newMediaItem);
+                        }
+                    };
+                } else {
+                    $afterCloning = null;
+                }
+
+                $record = $this->reloadableEm->refetch($record);
+                $this->cloneCollection($record->getPlaylists(), $newStation, $copier, $afterCloning);
+            }
+
+            if (in_array(self::CLONE_MOUNTS, $toClone, true)) {
+                $record = $this->reloadableEm->refetch($record);
+                $this->cloneCollection($record->getMounts(), $newStation, $copier);
+            }
+
+            if (in_array(self::CLONE_REMOTES, $toClone, true)) {
+                $record = $this->reloadableEm->refetch($record);
+                $this->cloneCollection($record->getRemotes(), $newStation, $copier);
+            }
+
+            if (in_array(self::CLONE_STREAMERS, $toClone, true)) {
+                $record = $this->reloadableEm->refetch($record);
+                $this->cloneCollection($record->getStreamers(), $newStation, $copier);
+            }
+
+            if (in_array(self::CLONE_PERMISSIONS, $toClone, true)) {
+                $record = $this->reloadableEm->refetch($record);
+                $this->cloneCollection($record->getPermissions(), $newStation, $copier);
+            }
+
+            if (in_array(self::CLONE_WEBHOOKS, $toClone, true)) {
+                $record = $this->reloadableEm->refetch($record);
+                $this->cloneCollection($record->getWebhooks(), $newStation, $copier);
+            }
 
             // Clear the EntityManager for later functions.
-            $new_record_id = $new_record->getId();
-            $this->em->clear();
-            $new_record = $this->em->find(Entity\Station::class, $new_record_id);
+            $newStation = $this->reloadableEm->refetch($newStation);
 
-            $this->configuration->assignRadioPorts($new_record, true);
-            $this->configuration->writeConfiguration($new_record);
-
+            $this->configuration->assignRadioPorts($newStation, true);
+            $this->configuration->writeConfiguration($newStation);
             $this->em->flush();
-            return $new_record;
+
+            return $newStation;
         }
 
         return false;
+    }
+
+    protected function cloneCollection(
+        Collection $collection,
+        Entity\Station $newStation,
+        DeepCopy\DeepCopy $copier,
+        ?callable $afterCloning = null
+    ): void {
+        $newStation = $this->reloadableEm->refetch($newStation);
+
+        foreach ($collection as $oldRecord) {
+            /** @var Entity\Interfaces\StationCloneAwareInterface $newRecord */
+            $newRecord = $copier->copy($oldRecord);
+            $newRecord->setStation($newStation);
+
+            $this->em->persist($newRecord);
+
+            if (is_callable($afterCloning)) {
+                $afterCloning($oldRecord, $newRecord);
+            }
+        }
+
+        $this->em->flush();
+        $this->em->clear();
     }
 }

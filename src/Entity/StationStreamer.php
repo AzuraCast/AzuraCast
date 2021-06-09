@@ -29,7 +29,7 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['station', 'streamer_username']),
     Attributes\Auditable
 ]
-class StationStreamer implements \Stringable
+class StationStreamer implements \Stringable, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -93,6 +93,11 @@ class StationStreamer implements \Stringable
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
     }
 
     public function getStreamerUsername(): string
@@ -198,5 +203,10 @@ class StationStreamer implements \Stringable
     public function __toString(): string
     {
         return $this->getStation() . ' Streamer: ' . $this->getDisplayName();
+    }
+
+    public function __clone(): void
+    {
+        $this->reactivate_at = null;
     }
 }

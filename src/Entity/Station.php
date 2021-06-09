@@ -428,21 +428,6 @@ class Station implements Stringable
     }
 
     /**
-     * Clear all port assignments for the station (useful after cloning).
-     */
-    public function clearPorts(): void
-    {
-        $fe_config = $this->getFrontendConfig();
-        $fe_config->setPort(null);
-        $this->setFrontendConfig($fe_config);
-
-        $be_config = $this->getBackendConfig();
-        $be_config->setDjPort(null);
-        $be_config->setTelnetPort(null);
-        $this->setBackendConfig($be_config);
-    }
-
-    /**
      * Whether the station uses AzuraCast to directly manage the AutoDJ or lets the backend handle it.
      */
     public function useManualAutoDJ(): bool
@@ -972,5 +957,34 @@ class Station implements Stringable
 
         $id = $this->getId();
         return (null !== $id) ? 'Station #' . $id : 'New Station';
+    }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->short_name = null;
+        $this->radio_base_dir = null;
+        $this->adapter_api_key = null;
+        $this->nowplaying = null;
+        $this->nowplaying_timestamp = null;
+        $this->current_streamer = null;
+        $this->current_streamer_id = null;
+        $this->is_streamer_live = false;
+        $this->needs_restart = false;
+        $this->has_started = false;
+
+        $this->media_storage_location = null;
+        $this->recordings_storage_location = null;
+        $this->podcasts_storage_location = null;
+
+        // Clear ports
+        $fe_config = $this->getFrontendConfig();
+        $fe_config->setPort(null);
+        $this->setFrontendConfig($fe_config);
+
+        $be_config = $this->getBackendConfig();
+        $be_config->setDjPort(null);
+        $be_config->setTelnetPort(null);
+        $this->setBackendConfig($be_config);
     }
 }

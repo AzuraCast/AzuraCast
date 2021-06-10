@@ -959,7 +959,7 @@ class Station implements Stringable
         return (null !== $id) ? 'Station #' . $id : 'New Station';
     }
 
-    public function __clone(): void
+    public function __clone()
     {
         $this->id = null;
         $this->short_name = null;

@@ -92,7 +92,7 @@ class StationPlaylistMedia implements JsonSerializable
         ];
     }
 
-    public function __clone(): void
+    public function __clone()
     {
         $this->last_played = 0;
         $this->is_queued = false;

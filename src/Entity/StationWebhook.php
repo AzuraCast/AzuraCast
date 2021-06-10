@@ -225,7 +225,7 @@ class StationWebhook implements Stringable, Interfaces\StationCloneAwareInterfac
         return $this->getStation() . ' Web Hook: ' . $this->getName();
     }
 
-    public function __clone(): void
+    public function __clone()
     {
         $this->metadata = null;
     }

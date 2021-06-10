@@ -205,7 +205,7 @@ class StationStreamer implements \Stringable, Interfaces\StationCloneAwareInterf
         return $this->getStation() . ' Streamer: ' . $this->getDisplayName();
     }
 
-    public function __clone(): void
+    public function __clone()
     {
         $this->reactivate_at = null;
     }

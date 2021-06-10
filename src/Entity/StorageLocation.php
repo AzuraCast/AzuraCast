@@ -51,6 +51,7 @@ class StorageLocation implements Stringable
         StorageLocation::TYPE_BACKUP,
         StorageLocation::TYPE_STATION_MEDIA,
         StorageLocation::TYPE_STATION_RECORDINGS,
+        StorageLocation::TYPE_STATION_PODCASTS,
     ])]
     protected string $type;
 

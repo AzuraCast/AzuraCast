@@ -8,6 +8,7 @@ use App\Entity;
 use App\Event\GetSyncTasks;
 use App\Service\Avatar;
 use Doctrine\ORM\Mapping as ORM;
+use GuzzleHttp\Psr7\Uri;
 use OpenApi\Annotations as OA;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,7 +47,24 @@ class Settings implements Stringable
 
     public function setBaseUrl(?string $baseUrl): void
     {
-        $this->base_url = $this->truncateNullableString($baseUrl);
+        if (null === $baseUrl) {
+            $this->base_url = null;
+            return;
+        }
+
+        // Filter the base URL to avoid trailing slashes and other problems.
+        $baseUri = new Uri($baseUrl);
+        if ('' === $baseUri->getScheme()) {
+            $baseUri = $baseUri->withScheme('http');
+        }
+        if ('/' === $baseUri->getPath()) {
+            $baseUri = $baseUri->withPath('');
+        }
+        if (Uri::isDefaultPort($baseUri)) {
+            $baseUri = $baseUri->withPort(null);
+        }
+
+        $this->base_url = $this->truncateNullableString((string)$baseUri);
     }
 
     /**

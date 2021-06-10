@@ -76,6 +76,11 @@ class Router implements RouterInterface
             $baseUrl = $baseUrl->withScheme('https');
         }
 
+        // Avoid double-trailing slashes in various URLs
+        if ('/' === $baseUrl->getPath()) {
+            $baseUrl = $baseUrl->withPath('');
+        }
+
         // Filter the base URL so it doesn't say http://site:80 or https://site:443
         if (Uri::isDefaultPort($baseUrl)) {
             return $baseUrl->withPort(null);

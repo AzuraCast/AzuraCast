@@ -653,6 +653,15 @@ return [
                     ],
                 ],
 
+                'podcasts_storage_location_id' => [
+                    'select',
+                    [
+                        'label' => __('Podcasts Storage Location'),
+                        'choices' => [],
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
                 'is_enabled' => [
                     'toggle',
                     [

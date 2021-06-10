@@ -75,7 +75,7 @@ class StationSchedule
 
     public function getStartTime(): int
     {
-        return (int)$this->start_time;
+        return $this->start_time;
     }
 
     public function setStartTime(int $start_time): void
@@ -85,7 +85,7 @@ class StationSchedule
 
     public function getEndTime(): int
     {
-        return (int)$this->end_time;
+        return $this->end_time;
     }
 
     public function setEndTime(int $end_time): void

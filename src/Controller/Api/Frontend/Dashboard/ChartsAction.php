@@ -44,7 +44,8 @@ class ChartsAction
         // Generate unique cache ID for stations.
         $stationIds = [];
         foreach ($stations as $station) {
-            $stationIds[$station->getId()] = $station->getId();
+            $stationId = $station->getId();
+            $stationIds[$stationId] = $stationId;
         }
         $cacheName = 'homepage_metrics_' . implode(',', $stationIds);
 

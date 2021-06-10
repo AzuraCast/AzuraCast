@@ -205,7 +205,7 @@ class BatchAction
 
         foreach ($toMove as $iterator) {
             foreach ($iterator as $record) {
-                /** @var \App\Entity\Interfaces\PathAwareInterface $record */
+                /** @var Entity\Interfaces\PathAwareInterface $record */
                 $oldPath = $record->getPath();
                 $newPath = File::renameDirectoryInPath($oldPath, $from, $to);
 
@@ -231,7 +231,7 @@ class BatchAction
 
             foreach ($toMove as $iterator) {
                 foreach ($iterator as $record) {
-                    /** @var \App\Entity\Interfaces\PathAwareInterface $record */
+                    /** @var Entity\Interfaces\PathAwareInterface $record */
                     try {
                         $record->setPath(
                             File::renameDirectoryInPath($record->getPath(), $from, $to)

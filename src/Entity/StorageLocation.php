@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
 use Aws\S3\S3Client;

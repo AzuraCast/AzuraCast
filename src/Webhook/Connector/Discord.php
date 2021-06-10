@@ -152,6 +152,7 @@ class Discord extends AbstractConnector
         return true;
     }
 
+    /** @noinspection HttpUrlsUsage */
     protected function getImageUrl(?string $url = null): ?string
     {
         $url = $this->getValidUrl($url);

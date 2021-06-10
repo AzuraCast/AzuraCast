@@ -90,8 +90,8 @@ class StationStreamerRepository extends Repository
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $fsStations = new StationFilesystems($station);
-                return $fsStations->getTempFilesystem()->getLocalPath($recordingPath);
+                return (new StationFilesystems($station))->getTempFilesystem()
+                    ->getLocalPath($recordingPath);
             }
         }
 

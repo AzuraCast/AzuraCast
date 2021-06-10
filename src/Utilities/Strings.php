@@ -104,6 +104,7 @@ class Strings
      */
     public static function truncateUrl(string $url, $length = 40): string
     {
+        /** @noinspection HttpUrlsUsage */
         $url = str_replace(['http://', 'https://', 'www.'], '', $url);
 
         return self::truncateText(rtrim($url, '/'), $length);

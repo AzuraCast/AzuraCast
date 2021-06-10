@@ -42,6 +42,7 @@ class Router implements RouterInterface
         $settingsBaseUrl = $settings->getBaseUrl();
         if (!empty($settingsBaseUrl)) {
             if (!str_starts_with($settingsBaseUrl, 'http')) {
+                /** @noinspection HttpUrlsUsage */
                 $settingsBaseUrl = 'http://' . $settingsBaseUrl;
             }
 

@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class Role extends AbstractFixture
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         $admin_role = new Entity\Role();
         $admin_role->setName('Super Administrator');
@@ -16,9 +16,9 @@ class Role extends AbstractFixture
         $demo_role = new Entity\Role();
         $demo_role->setName('Demo Account');
 
-        $em->persist($admin_role);
-        $em->persist($demo_role);
-        $em->flush();
+        $manager->persist($admin_role);
+        $manager->persist($demo_role);
+        $manager->flush();
 
         $this->addReference('admin_role', $admin_role);
         $this->addReference('demo_role', $demo_role);

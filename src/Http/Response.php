@@ -4,7 +4,6 @@ namespace App\Http;
 
 use Azura\Files\Adapter\LocalAdapterInterface;
 use Azura\Files\ExtendedFilesystemInterface;
-use Azura\Files\FilesystemInterface;
 use InvalidArgumentException;
 use League\Flysystem\FileAttributes;
 use Psr\Http\Message\ResponseInterface;

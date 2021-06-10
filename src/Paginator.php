@@ -6,9 +6,11 @@ use App\Http\Response;
 use App\Http\Router;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use Countable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use IteratorAggregate;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Doctrine\Collections\CollectionAdapter;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -17,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 
-class Paginator implements \IteratorAggregate, \Countable
+class Paginator implements IteratorAggregate, Countable
 {
     protected RouterInterface $router;
 

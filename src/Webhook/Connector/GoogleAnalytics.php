@@ -3,7 +3,6 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use App\Event\SendWebhooks;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;

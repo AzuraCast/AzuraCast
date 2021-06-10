@@ -13,9 +13,11 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Proxy\Proxy;
 use Doctrine\ORM\UnitOfWork;
+use JetBrains\PhpStorm\Pure;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionObject;
+use Stringable;
 
 /**
  * A hook into Doctrine's event listener to write changes to "Auditable"
@@ -247,7 +249,7 @@ class AuditLog implements EventSubscriber
         return !$em->getMetadataFactory()->isTransient($class);
     }
 
-    protected function isAuditable(ReflectionClass $refl): bool
+    #[Pure] protected function isAuditable(ReflectionClass $refl): bool
     {
         $auditable = $refl->getAttributes(Auditable::class);
         return !empty($auditable);
@@ -260,7 +262,7 @@ class AuditLog implements EventSubscriber
      */
     protected function getIdentifier(object $entity): ?string
     {
-        if ($entity instanceof \Stringable) {
+        if ($entity instanceof Stringable) {
             return (string)$entity;
         }
 

@@ -114,6 +114,7 @@ class RelaysController
             $base_url = $body['base_url'];
         } else {
             $serverParams = $request->getServerParams();
+            /** @noinspection HttpUrlsUsage */
             $base_url = 'http://' . $serverParams('REMOTE_ADDR');
         }
 

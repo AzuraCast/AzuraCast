@@ -2,7 +2,7 @@
 
 namespace App\Entity\Traits;
 
-use App\Annotations\AuditLog;
+use App\Entity;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +13,7 @@ trait HasSplitTokenFields
     protected string $id;
 
     #[ORM\Column(length: 128)]
-    #[\App\Entity\Attributes\AuditIgnore]
+    #[Entity\Attributes\AuditIgnore]
     protected string $verifier;
 
     protected function setFromToken(SplitToken $token): void

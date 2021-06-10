@@ -69,7 +69,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $custom_listen_url = null;
 
-    /** @OA\Property(example="http://custom-url.example.com") */
+    /** @OA\Property(example="https://custom-url.example.com") */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $url = null;
 
@@ -310,6 +310,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
     public function setUrl(?string $url): void
     {
         if (!empty($url) && !str_starts_with($url, 'http')) {
+            /** @noinspection HttpUrlsUsage */
             $url = 'http://' . $url;
         }
 

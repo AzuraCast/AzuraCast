@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class ApiKey extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         $demo_api_key = getenv('INIT_DEMO_API_KEY');
 
@@ -21,7 +21,7 @@ class ApiKey extends AbstractFixture implements DependentFixtureInterface
             $api_key = new Entity\ApiKey($demo_user, SplitToken::fromKeyString($demo_api_key));
             $api_key->setComment('Demo User');
 
-            $em->persist($api_key);
+            $manager->persist($api_key);
         }
 
         $admin_api_key = getenv('INIT_ADMIN_API_KEY');
@@ -33,10 +33,10 @@ class ApiKey extends AbstractFixture implements DependentFixtureInterface
             $api_key = new Entity\ApiKey($admin_user, SplitToken::fromKeyString($admin_api_key));
             $api_key->setComment('Administrator');
 
-            $em->persist($api_key);
+            $manager->persist($api_key);
         }
 
-        $em->flush();
+        $manager->flush();
     }
 
     /**

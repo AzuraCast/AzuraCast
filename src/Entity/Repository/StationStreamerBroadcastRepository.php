@@ -26,6 +26,7 @@ class StationStreamerBroadcastRepository extends Repository
             ->setParameter('streamer', $currentStreamer)
             ->setMaxResults(1)
             ->getSingleResult();
+
         return $latestBroadcast;
     }
 

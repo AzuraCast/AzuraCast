@@ -16,6 +16,7 @@ use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use DateTime;
 use GuzzleHttp\Psr7\UriResolver;
 use MarcW\RssWriter\Extension\Atom\AtomLink;
 use MarcW\RssWriter\Extension\Atom\AtomWriter;
@@ -124,7 +125,7 @@ class PodcastFeedController
         $channel = new RssChannel();
 
         $channel->setTtl(5);
-        $channel->setLastBuildDate(new \DateTime());
+        $channel->setLastBuildDate(new DateTime());
 
         $channel->setTitle($podcast->getTitle());
         $channel->setDescription($podcast->getDescription());
@@ -265,10 +266,10 @@ class PodcastFeedController
 
             $rssItem->setLink($episodeLink);
 
-            $publishAtDateTime = (new \DateTime())->setTimestamp($episode->getCreatedAt());
+            $publishAtDateTime = (new DateTime())->setTimestamp($episode->getCreatedAt());
 
             if ($episode->getPublishAt() !== null) {
-                $publishAtDateTime = (new \DateTime())->setTimestamp($episode->getPublishAt());
+                $publishAtDateTime = (new DateTime())->setTimestamp($episode->getPublishAt());
             }
 
             $rssItem->setPubDate($publishAtDateTime);

@@ -3,7 +3,6 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 
 class TuneIn extends AbstractConnector

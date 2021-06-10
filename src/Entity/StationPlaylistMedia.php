@@ -88,7 +88,7 @@ class StationPlaylistMedia implements JsonSerializable
         return [
             'id' => $this->playlist->getId(),
             'name' => $this->playlist->getName(),
-            'weight' => (int)$this->weight,
+            'weight' => $this->weight,
         ];
     }
 

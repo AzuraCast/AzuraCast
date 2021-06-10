@@ -683,6 +683,8 @@ class ConfigWriter implements EventSubscriberInterface
             $params['api_auth'] = '!azuracast_api_auth';
 
             $service_uri = ($this->environment->isDockerRevisionAtLeast(5)) ? 'web' : 'nginx';
+
+            /** @noinspection HttpUrlsUsage */
             $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
             $command = 'curl -s --request POST --url ' . $api_url;
             foreach ($params as $paramKey => $paramVal) {
@@ -991,11 +993,6 @@ class ConfigWriter implements EventSubscriberInterface
 
     /**
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
-     *
-     * @param Entity\Station $station
-     * @param \App\Entity\Interfaces\StationMountInterface $mount
-     * @param string $idPrefix
-     * @param int $id
      */
     protected function getOutputString(
         Entity\Station $station,

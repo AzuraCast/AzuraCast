@@ -82,7 +82,7 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
     #[Assert\Choice(choices: [self::ORDER_RANDOM, self::ORDER_SHUFFLE, self::ORDER_SEQUENTIAL])]
     protected string $order = self::ORDER_SHUFFLE;
 
-    /** @OA\Property(example="http://remote-url.example.com/stream.mp3") */
+    /** @OA\Property(example="https://remote-url.example.com/stream.mp3") */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $remote_url = null;
 

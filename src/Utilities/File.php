@@ -19,8 +19,7 @@ class File
      */
     public static function sanitizePathPrefix(string $path): string
     {
-        $pattern = '/.*:\/\//i';
-
+        $pattern = '/:\/\//';
         $path = preg_replace($pattern, '', $path);
 
         if (preg_match($pattern, $path)) {

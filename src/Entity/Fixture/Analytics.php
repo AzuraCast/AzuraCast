@@ -10,9 +10,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class Analytics extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
-        $stations = $em->getRepository(Entity\Station::class)->findAll();
+        $stations = $manager->getRepository(Entity\Station::class)->findAll();
 
         $midnight_utc = CarbonImmutable::now('UTC')->setTime(0, 0);
 
@@ -46,7 +46,7 @@ class Analytics extends AbstractFixture implements DependentFixtureInterface
                     $station_listeners,
                     $station_unique
                 );
-                $em->persist($stationPoint);
+                $manager->persist($stationPoint);
             }
 
             $totalPoint = new Entity\Analytics(
@@ -58,10 +58,10 @@ class Analytics extends AbstractFixture implements DependentFixtureInterface
                 $day_listeners,
                 $day_unique
             );
-            $em->persist($totalPoint);
+            $manager->persist($totalPoint);
         }
 
-        $em->flush();
+        $manager->flush();
     }
 
     /**

@@ -113,17 +113,17 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * Replicates the "fromArray" functionality previously present in Doctrine 1.
      *
      * @param mixed $data
-     * @param string $class
+     * @param string $type
      * @param string|null $format
      * @param array $context
      */
-    public function denormalize($data, string $class, string $format = null, array $context = []): object
+    public function denormalize($data, string $type, string $format = null, array $context = []): object
     {
-        $object = $this->instantiateObject($data, $class, $context, new ReflectionClass($class), false, $format);
+        $object = $this->instantiateObject($data, $type, $context, new ReflectionClass($type), false, $format);
 
-        $class = get_class($object);
+        $type = get_class($object);
 
-        $context[self::CLASS_METADATA] = $this->em->getMetadataFactory()->getMetadataFor($class);
+        $context[self::CLASS_METADATA] = $this->em->getMetadataFactory()->getMetadataFor($type);
         $context[self::ASSOCIATION_MAPPINGS] = [];
 
         if ($context[self::CLASS_METADATA]->associationMappings) {

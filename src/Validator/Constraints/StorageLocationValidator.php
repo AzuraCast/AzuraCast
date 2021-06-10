@@ -18,19 +18,19 @@ class StorageLocationValidator extends ConstraintValidator
     ) {
     }
 
-    public function validate($storageLocation, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof StorageLocation) {
             throw new UnexpectedTypeException($constraint, StorageLocation::class);
         }
 
-        if (!($storageLocation instanceof Entity\StorageLocation)) {
-            throw new UnexpectedTypeException($storageLocation, Entity\StorageLocation::class);
+        if (!($value instanceof Entity\StorageLocation)) {
+            throw new UnexpectedTypeException($value, Entity\StorageLocation::class);
         }
 
         // Ensure this storage location validates.
         try {
-            $storageLocation->validate();
+            $value->validate();
         } catch (Exception $e) {
             $message = __(
                 'Storage location %s could not be validated: %s',
@@ -39,7 +39,7 @@ class StorageLocationValidator extends ConstraintValidator
             );
 
             $this->context->buildViolation($message)
-                ->setParameter('{{ storageLocation }}', (string)$storageLocation)
+                ->setParameter('{{ storageLocation }}', (string)$value)
                 ->setParameter('{{ error }}', $e->getMessage())
                 ->addViolation();
         }
@@ -49,16 +49,16 @@ class StorageLocationValidator extends ConstraintValidator
             ->select('sl')
             ->from(Entity\StorageLocation::class, 'sl')
             ->where('sl.type = :type')
-            ->setParameter('type', $storageLocation->getType())
+            ->setParameter('type', $value->getType())
             ->andWhere('sl.adapter = :adapter')
-            ->setParameter('adapter', $storageLocation->getAdapter());
+            ->setParameter('adapter', $value->getAdapter());
 
-        if (null !== $storageLocation->getId()) {
+        if (null !== $value->getId()) {
             $qb->andWhere('sl.id != :id')
-                ->setParameter('id', $storageLocation->getId());
+                ->setParameter('id', $value->getId());
         }
 
-        $storageLocationUri = $storageLocation->getUri();
+        $storageLocationUri = $value->getUri();
 
         /** @var Entity\StorageLocation $row */
         foreach ($qb->getQuery()->toIterable() as $row) {
@@ -69,7 +69,7 @@ class StorageLocationValidator extends ConstraintValidator
                 );
 
                 $this->context->buildViolation($message)
-                    ->setParameter('{{ storageLocation }}', (string)$storageLocation)
+                    ->setParameter('{{ storageLocation }}', (string)$value)
                     ->addViolation();
 
                 break;

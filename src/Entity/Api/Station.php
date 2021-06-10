@@ -56,27 +56,27 @@ class Station implements ResolvableUrlInterface
 
     /**
      * The public URL of the station.
-     * @OA\Property(example="http://example.com/")
+     * @OA\Property(example="https://example.com/")
      */
     public ?string $url = null;
 
     /**
      * The public player URL for the station.
-     * @OA\Property(example="http://example.com/public/example_station")
+     * @OA\Property(example="https://example.com/public/example_station")
      * @var string|UriInterface
      */
     public $public_player_url;
 
     /**
      * The playlist download URL in PLS format.
-     * @OA\Property(example="http://example.com/public/example_station/playlist.pls")
+     * @OA\Property(example="https://example.com/public/example_station/playlist.pls")
      * @var string|UriInterface
      */
     public $playlist_pls_url;
 
     /**
      * The playlist download URL in M3U format.
-     * @OA\Property(example="http://example.com/public/example_station/playlist.m3u")
+     * @OA\Property(example="https://example.com/public/example_station/playlist.m3u")
      * @var string|UriInterface
      */
     public $playlist_m3u_url;

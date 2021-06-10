@@ -17,7 +17,7 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
         $this->mediaRepo = $mediaRepo;
     }
 
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         $musicSkeletonDir = getenv('INIT_MUSIC_PATH');
 
@@ -47,15 +47,15 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
             $fs->upload($filePath, '/' . $fileBaseName);
 
             $mediaRow = $this->mediaRepo->getOrCreate($mediaStorage, $fileBaseName);
-            $em->persist($mediaRow);
+            $manager->persist($mediaRow);
 
             // Add the file to the playlist.
             $spmRow = new Entity\StationPlaylistMedia($playlist, $mediaRow);
             $spmRow->setWeight(1);
-            $em->persist($spmRow);
+            $manager->persist($spmRow);
         }
 
-        $em->flush();
+        $manager->flush();
     }
 
     /**

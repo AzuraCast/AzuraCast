@@ -104,7 +104,7 @@ class Scheduler
         Entity\StationPlaylist $playlist,
         CarbonInterface $now
     ): bool {
-        $current_minute = (int)$now->minute;
+        $current_minute = $now->minute;
         $target_minute = $playlist->getPlayPerHourMinute();
 
         if ($current_minute < $target_minute) {

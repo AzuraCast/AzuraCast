@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Auth;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Validator\Constraints\UniqueEntity;

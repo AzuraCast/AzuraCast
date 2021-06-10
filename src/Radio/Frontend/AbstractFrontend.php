@@ -9,6 +9,7 @@ use App\Http\Router;
 use App\Radio\AbstractAdapter;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
@@ -177,7 +178,7 @@ abstract class AbstractFrontend extends AbstractAdapter
             if (str_starts_with($custom_config_raw, '<')) {
                 return (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error(
                 'Could not parse custom configuration.',
                 [

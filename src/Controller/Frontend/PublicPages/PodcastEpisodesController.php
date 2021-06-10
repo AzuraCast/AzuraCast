@@ -52,7 +52,7 @@ class PodcastEpisodesController
             }
         );
 
-        $podcastsLink = (string)$router->fromHere(
+        $podcastsLink = $router->fromHere(
             'public:podcasts',
             [
                 'station_id' => $station->getId(),

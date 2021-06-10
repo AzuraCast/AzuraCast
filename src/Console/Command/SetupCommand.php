@@ -106,6 +106,7 @@ class SetupCommand extends CommandAbstract
         } else {
             $public_ip = $acCentral->getIp(false);
 
+            /** @noinspection HttpUrlsUsage */
             $io->success(
                 [
                     __('AzuraCast installation complete!'),

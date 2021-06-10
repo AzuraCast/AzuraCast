@@ -20,7 +20,7 @@ class Relay
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /** @OA\Property(example="http://custom-url.example.com") */
+    /** @OA\Property(example="https://custom-url.example.com") */
     #[ORM\Column(length: 255)]
     protected string $base_url;
 

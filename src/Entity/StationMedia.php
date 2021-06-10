@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use OpenApi\Annotations as OA;
+use RuntimeException;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
 /** @OA\Schema(type="object") */
@@ -207,7 +208,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public function getUniqueId(): string
     {
         if (!isset($this->unique_id)) {
-            throw new \RuntimeException('Unique ID has not been generated yet.');
+            throw new RuntimeException('Unique ID has not been generated yet.');
         }
 
         return $this->unique_id;

@@ -8,10 +8,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class Settings extends AbstractFixture
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
-        foreach ($em->getRepository(Entity\Settings::class)->findAll() as $row) {
-            $em->remove($row);
+        foreach ($manager->getRepository(Entity\Settings::class)->findAll() as $row) {
+            $manager->remove($row);
         }
 
         $settings = new Entity\Settings();
@@ -43,7 +43,7 @@ class Settings extends AbstractFixture
             );
         }
 
-        $em->persist($settings);
-        $em->flush();
+        $manager->persist($settings);
+        $manager->flush();
     }
 }

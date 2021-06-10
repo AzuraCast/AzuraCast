@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class Podcast extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
@@ -22,12 +22,12 @@ class Podcast extends AbstractFixture implements DependentFixtureInterface
         $podcast->setLink('https://demo.azuracast.com');
         $podcast->setLanguage('en');
         $podcast->setDescription('The unofficial testing podcast for the AzuraCast development team.');
-        $em->persist($podcast);
+        $manager->persist($podcast);
 
         $category = new Entity\PodcastCategory($podcast, 'Technology');
-        $em->persist($category);
+        $manager->persist($category);
 
-        $em->flush();
+        $manager->flush();
 
         $this->setReference('podcast', $podcast);
     }

@@ -33,6 +33,7 @@ class Icecast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
+        /** @noinspection HttpUrlsUsage */
         $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getIcecastAdapter($baseUrl);
@@ -91,6 +92,7 @@ class Icecast extends AbstractFrontend
 
         $settingsBaseUrl = $settings->getBaseUrl() ?: 'http://localhost';
         if (!str_starts_with($settingsBaseUrl, 'http')) {
+            /** @noinspection HttpUrlsUsage */
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }
         $baseUrl = new Uri($settingsBaseUrl);

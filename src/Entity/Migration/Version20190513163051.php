@@ -77,7 +77,7 @@ final class Version20190513163051 extends AbstractMigration
      * @return int
      * @noinspection SummerTimeUnsafeTimeManipulationInspection
      */
-    protected function applyOffset(mixed $time_code, int $offset_hours): int
+    private function applyOffset(mixed $time_code, int $offset_hours): int
     {
         $hours = (int)floor($time_code / 100);
         $mins = $time_code % 100;

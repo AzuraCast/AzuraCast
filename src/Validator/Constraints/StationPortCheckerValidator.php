@@ -17,17 +17,17 @@ class StationPortCheckerValidator extends ConstraintValidator
         $this->configuration = $configuration;
     }
 
-    public function validate($station, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof StationPortChecker) {
             throw new UnexpectedTypeException($constraint, StationPortChecker::class);
         }
-        if (!$station instanceof Entity\Station) {
-            throw new UnexpectedTypeException($station, Entity\Station::class);
+        if (!$value instanceof Entity\Station) {
+            throw new UnexpectedTypeException($value, Entity\Station::class);
         }
 
-        $frontend_config = $station->getFrontendConfig();
-        $backend_config = $station->getBackendConfig();
+        $frontend_config = $value->getFrontendConfig();
+        $backend_config = $value->getBackendConfig();
 
         $ports_to_check = [
             'frontend_config_port' => $frontend_config->getPort(),
@@ -35,16 +35,16 @@ class StationPortCheckerValidator extends ConstraintValidator
             'backend_config_telnet_port' => $backend_config->getTelnetPort(),
         ];
 
-        $used_ports = $this->configuration->getUsedPorts($station);
+        $used_ports = $this->configuration->getUsedPorts($value);
 
         $message = __('The port %s is in use by another station.', '{{ port }}');
 
-        foreach ($ports_to_check as $port_path => $value) {
-            if (null === $value) {
+        foreach ($ports_to_check as $port_path => $port) {
+            if (null === $port) {
                 continue;
             }
 
-            $port = (int)$value;
+            $port = (int)$port;
             if (isset($used_ports[$port])) {
                 $this->context->buildViolation($message)
                     ->setParameter('{{ port }}', (string)$port)

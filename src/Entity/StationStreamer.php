@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,7 +30,7 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['station', 'streamer_username']),
     Attributes\Auditable
 ]
-class StationStreamer implements \Stringable, Interfaces\StationCloneAwareInterface
+class StationStreamer implements Stringable, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -79,7 +80,7 @@ class StationStreamer implements \Stringable, Interfaces\StationCloneAwareInterf
      *     @OA\Items()
      * )
      */
-    #[ORM\OneToMany(targetEntity: StationSchedule::class, mappedBy: 'streamer')]
+    #[ORM\OneToMany(mappedBy: 'streamer', targetEntity: StationSchedule::class)]
     #[DeepNormalize(true)]
     #[Serializer\MaxDepth(1)]
     protected Collection $schedule_items;

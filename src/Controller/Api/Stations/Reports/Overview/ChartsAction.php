@@ -7,6 +7,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Carbon\CarbonImmutable;
 use Psr\Http\Message\ResponseInterface;
+use stdClass;
 
 class ChartsAction
 {
@@ -38,7 +39,7 @@ class ChartsAction
             $statisticsThreshold
         );
 
-        $daily_chart = new \stdClass();
+        $daily_chart = new stdClass();
         $daily_chart->label = __('Listeners by Day');
         $daily_chart->type = 'line';
         $daily_chart->fill = false;
@@ -56,7 +57,7 @@ class ChartsAction
             $statTime = $stat['moment'];
             $statTime = $statTime->shiftTimezone($station_tz);
 
-            $avg_row = new \stdClass();
+            $avg_row = new stdClass();
             $avg_row->t = $statTime->getTimestamp() * 1000;
             $avg_row->y = round($stat['number_avg'], 2);
             $daily_averages[] = $avg_row;
@@ -79,7 +80,7 @@ class ChartsAction
             'alt' => implode('', $daily_alt),
         ];
 
-        $day_of_week_chart = new \stdClass();
+        $day_of_week_chart = new stdClass();
         $day_of_week_chart->label = __('Listeners by Day of Week');
 
         $day_of_week_alt = [
@@ -134,12 +135,12 @@ class ChartsAction
             $statTime = $stat['moment'];
             $statTime = $statTime->shiftTimezone($station_tz);
 
-            $hour = (int)$statTime->hour;
+            $hour = $statTime->hour;
             $totals_by_hour[$hour][] = $stat['number_avg'];
         }
 
         $hourly_labels = [];
-        $hourly_chart = new \stdClass();
+        $hourly_chart = new stdClass();
         $hourly_chart->label = __('Listeners by Hour');
 
         $hourly_rows = [];

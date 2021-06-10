@@ -7,6 +7,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * When sending data using multipart forms (that also include uploaded files, for example),
  * it isn't possible to encode JSON values (i.e. booleans) in the other submitted values.
@@ -34,7 +36,7 @@ class HandleMultipartJson implements MiddlewareInterface
         if (1 === count($parsedBody)) {
             $bodyField = current($parsedBody);
             if (is_string($bodyField)) {
-                $parsedBody = json_decode($bodyField, true, 512, \JSON_THROW_ON_ERROR);
+                $parsedBody = json_decode($bodyField, true, 512, JSON_THROW_ON_ERROR);
 
                 $request = $request->withParsedBody($parsedBody);
             }

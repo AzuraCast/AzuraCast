@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class Station extends AbstractFixture
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         $station = new Entity\Station();
         $station->setName('AzuraTest Radio');
@@ -32,12 +32,12 @@ class Station extends AbstractFixture
             $podcastsStorage->setStorageQuota($stationQuota);
         }
 
-        $em->persist($station);
-        $em->persist($mediaStorage);
-        $em->persist($recordingsStorage);
-        $em->persist($podcastsStorage);
+        $manager->persist($station);
+        $manager->persist($mediaStorage);
+        $manager->persist($recordingsStorage);
+        $manager->persist($podcastsStorage);
 
-        $em->flush();
+        $manager->flush();
 
         $this->addReference('station', $station);
     }

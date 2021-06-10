@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Customization;
 use App\Doctrine\Generator\UuidV6Generator;
 use App\Entity;

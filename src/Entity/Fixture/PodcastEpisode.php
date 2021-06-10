@@ -17,7 +17,7 @@ class PodcastEpisode extends AbstractFixture implements DependentFixtureInterfac
         $this->mediaRepo = $mediaRepo;
     }
 
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         $podcastsSkeletonDir = getenv('INIT_PODCASTS_PATH');
 
@@ -68,8 +68,8 @@ class PodcastEpisode extends AbstractFixture implements DependentFixtureInterfac
             $episode->setDescription('Another great episode!');
             $episode->setExplicit(false);
 
-            $em->persist($episode);
-            $em->flush();
+            $manager->persist($episode);
+            $manager->flush();
 
             $this->mediaRepo->upload(
                 $episode,

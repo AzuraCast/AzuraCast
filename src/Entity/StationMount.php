@@ -10,6 +10,7 @@ use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @OA\Schema(type="object") */
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_mounts'),
     Attributes\Auditable
 ]
-class StationMount implements \Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
+class StationMount implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -55,7 +56,7 @@ class StationMount implements \Stringable, Interfaces\StationMountInterface, Int
     #[ORM\Column(length: 100, nullable: true)]
     protected ?string $fallback_mount = null;
 
-    /** @OA\Property(example="http://radio.example.com:8000/radio.mp3") */
+    /** @OA\Property(example="https://radio.example.com:8000/radio.mp3") */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $relay_url = null;
 
@@ -335,7 +336,7 @@ class StationMount implements \Stringable, Interfaces\StationMountInterface, Int
         $response->id = $this->id;
         $response->name = $this->getDisplayName();
         $response->path = $this->getName();
-        $response->is_default = (bool)$this->is_default;
+        $response->is_default = $this->is_default;
         $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
 
         $response->listeners = new Api\NowPlayingListeners(

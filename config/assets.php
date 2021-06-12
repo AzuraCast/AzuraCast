@@ -523,6 +523,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_StationsMounts' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_StationsPlaylists' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],

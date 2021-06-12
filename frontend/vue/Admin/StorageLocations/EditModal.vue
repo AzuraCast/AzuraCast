@@ -24,32 +24,21 @@ import axios from 'axios';
 import { validationMixin } from 'vuelidate';
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
+import BaseEditModal from '../../Common/BaseEditModal';
 import StorageLocationForm from './Form';
 
 export default {
     name: 'AdminStorageLocationsEditModal',
     components: { StorageLocationForm, InvisibleSubmitButton },
-    mixins: [validationMixin],
+    mixins: [validationMixin, BaseEditModal],
     props: {
-        createUrl: String,
         type: String
-    },
-    data () {
-        return {
-            loading: true,
-            editUrl: null,
-            error: null,
-            form: {}
-        };
     },
     computed: {
         langTitle () {
             return this.isEditMode
                 ? this.$gettext('Edit Storage Location')
                 : this.$gettext('Add Storage Location');
-        },
-        isEditMode () {
-            return this.editUrl !== null;
         }
     },
     validations () {
@@ -112,59 +101,19 @@ export default {
                 'storageQuota': ''
             };
         },
-        create () {
-            this.resetForm();
-            this.loading = false;
-            this.editUrl = null;
-            this.error = null;
-
-            this.$refs.modal.show();
-        },
-        edit (recordUrl) {
-            this.resetForm();
-            this.loading = true;
-            this.editUrl = recordUrl;
-            this.error = null;
-
-            this.$refs.modal.show();
-
-            axios.get(this.editUrl).then((resp) => {
-                let d = resp.data;
-
-                this.form = {
-                    'adapter': d.adapter,
-                    'path': d.path,
-                    's3CredentialKey': d.s3CredentialKey,
-                    's3CredentialSecret': d.s3CredentialSecret,
-                    's3Region': d.s3Region,
-                    's3Version': d.s3Version,
-                    's3Bucket': d.s3Bucket,
-                    's3Endpoint': d.s3Endpoint,
-                    'dropboxAuthToken': d.dropboxAuthToken,
-                    'storageQuota': d.storageQuota
-                };
-
-                this.loading = false;
-            }).catch((err) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                notify('<b>' + notifyMessage + '</b>', 'danger');
-
-                this.$emit('relist');
-                this.close();
-            });
+        populateForm (d) {
+            this.form = {
+                'adapter': d.adapter,
+                'path': d.path,
+                's3CredentialKey': d.s3CredentialKey,
+                's3CredentialSecret': d.s3CredentialSecret,
+                's3Region': d.s3Region,
+                's3Version': d.s3Version,
+                's3Bucket': d.s3Bucket,
+                's3Endpoint': d.s3Endpoint,
+                'dropboxAuthToken': d.dropboxAuthToken,
+                'storageQuota': d.storageQuota
+            };
         },
         doSubmit () {
             this.$v.form.$touch();
@@ -208,15 +157,6 @@ export default {
 
                 this.error = notifyMessage;
             });
-        },
-        close () {
-            this.loading = false;
-            this.editUrl = null;
-            this.error = null;
-            this.resetForm();
-
-            this.$v.form.$reset();
-            this.$refs.modal.hide();
         }
     }
 };

@@ -30,9 +30,9 @@
 
 <script>
 import axios from 'axios';
-import { validationMixin } from 'vuelidate';
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
+import BaseEditModal from '../../Common/BaseEditModal';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
@@ -40,18 +40,15 @@ import EpisodeFormMedia from './EpisodeForm/Media';
 export default {
     name: 'EditModal',
     components: { EpisodeFormMedia, PodcastCommonArtwork, EpisodeFormBasicInfo, InvisibleSubmitButton },
-    mixins: [validationMixin],
+    mixins: [BaseEditModal],
     props: {
-        createUrl: String,
         stationTimeZone: String,
         locale: String,
         podcastId: String
     },
     data () {
         return {
-            loading: true,
             uploadPercentage: null,
-            editUrl: null,
             record: {
                 has_custom_art: false,
                 art: null,
@@ -59,7 +56,6 @@ export default {
                 media: null,
                 links: {}
             },
-            form: {},
             files: {}
         };
     },
@@ -77,9 +73,6 @@ export default {
             }
 
             return baseText;
-        },
-        isEditMode () {
-            return this.editUrl !== null;
         }
     },
     validations: {
@@ -98,7 +91,6 @@ export default {
     },
     methods: {
         resetForm () {
-            this.editUrl = null;
             this.uploadPercentage = null;
             this.record = {
                 has_custom_art: false,
@@ -120,47 +112,26 @@ export default {
                 'media_file': null
             };
         },
-        create () {
-            this.resetForm();
-            this.loading = false;
+        populateForm (d) {
+            let publishDate = '';
+            let publishTime = '';
 
-            this.$refs.modal.show();
-        },
-        edit (recordUrl) {
-            this.resetForm();
-            this.loading = true;
-            this.editUrl = recordUrl;
+            if (d.publishAt !== null) {
+                let publishDateTime = moment.unix(d.publishAt);
+                publishDate = publishDateTime.format('YYYY-MM-DD');
+                publishTime = publishDateTime.format('hh:mm');
+            }
 
-            this.$refs.modal.show();
+            this.record = d;
 
-            axios.get(this.editUrl).then((resp) => {
-                let d = resp.data;
-
-                let publishDate = '';
-                let publishTime = '';
-
-                if (d.publishAt !== null) {
-                    let publishDateTime = moment.unix(d.publishAt);
-                    publishDate = publishDateTime.format('YYYY-MM-DD');
-                    publishTime = publishDateTime.format('hh:mm');
-                }
-
-                this.record = d;
-
-                this.form = {
-                    'title': d.title,
-                    'link': d.link,
-                    'description': d.description,
-                    'publish_date': publishDate,
-                    'publish_time': publishTime,
-                    'explicit': d.explicit
-                };
-
-                this.loading = false;
-            }).catch((err) => {
-                console.log(err);
-                this.close();
-            });
+            this.form = {
+                'title': d.title,
+                'link': d.link,
+                'description': d.description,
+                'publish_date': publishDate,
+                'publish_time': publishTime,
+                'explicit': d.explicit
+            };
         },
         doSubmit () {
             this.$v.$touch();
@@ -238,13 +209,6 @@ export default {
                 }
             });
         },
-        close () {
-            this.loading = false;
-            this.resetForm();
-
-            this.$v.$reset();
-            this.$refs.modal.hide();
-        }
     }
 };
 </script>

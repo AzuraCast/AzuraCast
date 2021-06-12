@@ -4,6 +4,7 @@ namespace App\Controller\Api\Stations;
 
 use App\Entity;
 use App\Exception\StationUnsupportedException;
+use App\Http\Router;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 
@@ -95,6 +96,23 @@ class MountsController extends AbstractStationApiCrudController
      *   security={{"api_key": {}}},
      * )
      */
+
+    protected function viewRecord(object $record, ServerRequest $request): mixed
+    {
+        $return = parent::viewRecord($record, $request);
+
+        $station = $request->getStation();
+        $frontend = $request->getStationFrontend();
+        $router = $request->getRouter();
+
+        $return['links']['listen'] = (string)Router::resolveUri(
+            $router->getBaseUrl(),
+            $frontend->getUrlForMount($station, $record),
+            true
+        );
+
+        return $return;
+    }
 
     /**
      * @inheritDoc

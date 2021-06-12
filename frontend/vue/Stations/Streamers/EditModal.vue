@@ -23,28 +23,18 @@
     </b-modal>
 </template>
 <script>
-import { validationMixin } from 'vuelidate';
-import axios from 'axios';
 import required from 'vuelidate/src/validators/required';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSchedule from './Form/Schedule';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
+import BaseEditModal from '../../Common/BaseEditModal';
 
 export default {
     name: 'EditModal',
-    mixins: [validationMixin],
+    mixins: [BaseEditModal],
     components: { FormBasicInfo, FormSchedule, InvisibleSubmitButton },
     props: {
-        createUrl: String,
         stationTimeZone: String
-    },
-    data () {
-        return {
-            loading: true,
-            error: null,
-            editUrl: null,
-            form: {}
-        };
     },
     validations () {
         let validations = {
@@ -78,9 +68,6 @@ export default {
             return this.isEditMode
                 ? this.$gettext('Edit Streamer')
                 : this.$gettext('Add Streamer');
-        },
-        isEditMode () {
-            return this.editUrl !== null;
         }
     },
     methods: {
@@ -95,103 +82,16 @@ export default {
                 'schedule_items': []
             };
         },
-        create () {
-            this.resetForm();
-            this.loading = false;
-            this.error = null;
-            this.editUrl = null;
-
-            this.$refs.modal.show();
-        },
-        edit (recordUrl) {
-            this.resetForm();
-            this.loading = true;
-            this.error = null;
-            this.editUrl = recordUrl;
-            this.$refs.modal.show();
-
-            axios.get(this.editUrl).then((resp) => {
-
-                let d = resp.data;
-
-                this.form = {
-                    'streamer_username': d.streamer_username,
-                    'streamer_password': null,
-                    'display_name': d.display_name,
-                    'comments': d.comments,
-                    'is_active': d.is_active,
-                    'enforce_schedule': d.enforce_schedule,
-                    'schedule_items': d.schedule_items
-                };
-
-                this.loading = false;
-            }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                notify('<b>' + notifyMessage + '</b>', 'danger');
-                this.close();
-            });
-        },
-        doSubmit () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-
-            axios({
-                method: (this.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: this.form
-            }).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
-
-                this.$emit('relist');
-                this.close();
-            }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                this.error = notifyMessage;
-            });
-        },
-        close () {
-            this.loading = false;
-            this.error = null;
-            this.editUrl = null;
-            this.resetForm();
-
-            this.$v.form.$reset();
-            this.$refs.modal.hide();
+        populateForm (d) {
+            this.form = {
+                'streamer_username': d.streamer_username,
+                'streamer_password': null,
+                'display_name': d.display_name,
+                'comments': d.comments,
+                'is_active': d.is_active,
+                'enforce_schedule': d.enforce_schedule,
+                'schedule_items': d.schedule_items
+            };
         }
     }
 };

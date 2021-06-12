@@ -26,40 +26,27 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { validationMixin } from 'vuelidate';
 import required from 'vuelidate/src/validators/required';
 import FormBasicInfo from './Form/BasicInfo';
 import FormSource from './Form/Source';
 import FormSchedule from './Form/Schedule';
 import FormAdvanced from './Form/Advanced';
+import BaseEditModal from '../../Common/BaseEditModal';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 
 export default {
     name: 'EditModal',
     components: { FormSchedule, FormSource, FormBasicInfo, FormAdvanced, InvisibleSubmitButton },
-    mixins: [validationMixin],
+    mixins: [BaseEditModal],
     props: {
-        createUrl: String,
         stationTimeZone: String,
         enableAdvancedFeatures: Boolean
-    },
-    data () {
-        return {
-            loading: true,
-            error: null,
-            editUrl: null,
-            form: {}
-        };
     },
     computed: {
         langTitle () {
             return this.isEditMode
                 ? this.$gettext('Edit Playlist')
                 : this.$gettext('Add Playlist');
-        },
-        isEditMode () {
-            return this.editUrl !== null;
         }
     },
     validations: {
@@ -117,114 +104,28 @@ export default {
                 'schedule_items': []
             };
         },
-        create () {
-            this.resetForm();
-            this.loading = false;
-            this.error = null;
-            this.editUrl = null;
-
-            this.$refs.modal.show();
-        },
-        edit (recordUrl) {
-            this.resetForm();
-            this.loading = true;
-            this.error = null;
-            this.editUrl = recordUrl;
-            this.$refs.modal.show();
-
-            axios.get(this.editUrl).then((resp) => {
-                let d = resp.data;
-
-                this.form = {
-                    'name': d.name,
-                    'is_enabled': d.is_enabled,
-                    'include_in_on_demand': d.include_in_on_demand,
-                    'weight': d.weight,
-                    'type': d.type,
-                    'source': d.source,
-                    'order': d.order,
-                    'remote_url': d.remote_url,
-                    'remote_type': d.remote_type,
-                    'remote_buffer': d.remote_buffer,
-                    'is_jingle': d.is_jingle,
-                    'play_per_songs': d.play_per_songs,
-                    'play_per_minutes': d.play_per_minutes,
-                    'play_per_hour_minute': d.play_per_hour_minute,
-                    'include_in_requests': d.include_in_requests,
-                    'include_in_automation': d.include_in_automation,
-                    'avoid_duplicates': d.avoid_duplicates,
-                    'backend_options': d.backend_options,
-                    'schedule_items': d.schedule_items
-                };
-
-                this.loading = false;
-            }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                notify('<b>' + notifyMessage + '</b>', 'danger');
-                this.close();
-            });
-        },
-        doSubmit () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
-            this.error = null;
-
-            axios({
-                method: (this.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: this.form
-            }).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success');
-
-                this.$emit('relist');
-                this.close();
-            }).catch((error) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                this.error = notifyMessage;
-            });
-        },
-        close () {
-            this.loading = false;
-            this.error = null;
-            this.editUrl = null;
-            this.resetForm();
-
-            this.$v.form.$reset();
-            this.$refs.modal.hide();
+        populateForm (d) {
+            this.form = {
+                'name': d.name,
+                'is_enabled': d.is_enabled,
+                'include_in_on_demand': d.include_in_on_demand,
+                'weight': d.weight,
+                'type': d.type,
+                'source': d.source,
+                'order': d.order,
+                'remote_url': d.remote_url,
+                'remote_type': d.remote_type,
+                'remote_buffer': d.remote_buffer,
+                'is_jingle': d.is_jingle,
+                'play_per_songs': d.play_per_songs,
+                'play_per_minutes': d.play_per_minutes,
+                'play_per_hour_minute': d.play_per_hour_minute,
+                'include_in_requests': d.include_in_requests,
+                'include_in_automation': d.include_in_automation,
+                'avoid_duplicates': d.avoid_duplicates,
+                'backend_options': d.backend_options,
+                'schedule_items': d.schedule_items
+            };
         }
     }
 };

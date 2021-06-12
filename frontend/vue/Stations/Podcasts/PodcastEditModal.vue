@@ -31,26 +31,23 @@
 
 <script>
 import axios from 'axios';
-import { validationMixin } from 'vuelidate';
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
+import BaseEditModal from '../../Common/BaseEditModal';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 
 export default {
     name: 'EditModal',
     components: { PodcastCommonArtwork, PodcastFormBasicInfo, InvisibleSubmitButton },
-    mixins: [validationMixin],
+    mixins: [BaseEditModal],
     props: {
-        createUrl: String,
         stationTimeZone: String,
         languageOptions: Object,
         categoriesOptions: Object
     },
     data () {
         return {
-            loading: true,
-            editUrl: null,
             record: {
                 has_custom_art: false,
                 art: null,
@@ -73,9 +70,6 @@ export default {
             return this.isEditMode
                 ? this.$gettext('Edit Podcast')
                 : this.$gettext('Add Podcast');
-        },
-        isEditMode () {
-            return this.editUrl !== null;
         }
     },
     validations: {
@@ -108,75 +102,54 @@ export default {
                 'artwork_file': null
             };
         },
-        create () {
-            this.resetForm();
-            this.loading = false;
-            this.editUrl = null;
-
-            this.$refs.modal.show();
+        populateForm (d) {
+            this.record = d;
+            this.form = {
+                'title': d.title,
+                'link': d.link,
+                'description': d.description,
+                'language': d.language,
+                'categories': d.categories
+            };
         },
-        edit (recordUrl) {
-            this.resetForm();
-            this.loading = true;
-            this.editUrl = recordUrl;
-            this.$refs.modal.show();
+        doSubmit () {
+            this.$v.form.$touch();
+            if (this.$v.form.$anyError) {
+                return;
+            }
 
-            axios.get(this.editUrl).then((resp) => {
-                let d = resp.data;
+            let formData = new FormData();
+            formData.append('body', JSON.stringify(this.form));
+            Object.entries(this.files).forEach(([key, value]) => {
+                if (null !== value) {
+                    formData.append(key, value);
+                }
+            });
 
-                this.record = d;
-                this.form = {
-                    'title': d.title,
-                    'link': d.link,
-                    'description': d.description,
-                    'language': d.language,
-                    'categories': d.categories
-                };
+            axios({
+                method: 'POST',
+                url: (this.isEditMode)
+                    ? this.editUrl
+                    : this.createUrl,
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((resp) => {
+                let notifyMessage = this.$gettext('Changes saved.');
+                notify('<b>' + notifyMessage + '</b>', 'success', false);
 
-                this.loading = false;
+                this.$emit('relist');
+                this.close();
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
+
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+
+                this.$emit('relist');
                 this.close();
             });
-            },
-            doSubmit () {
-                this.$v.form.$touch();
-                if (this.$v.form.$anyError) {
-                    return;
-                }
-
-                let formData = new FormData();
-                formData.append('body', JSON.stringify(this.form));
-                Object.entries(this.files).forEach(([key, value]) => {
-                    if (null !== value) {
-                        formData.append(key, value);
-                    }
-                });
-
-                axios({
-                    method: 'POST',
-                    url: (this.isEditMode)
-                        ? this.editUrl
-                        : this.createUrl,
-                    data: formData,
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }).then((resp) => {
-                    let notifyMessage = this.$gettext('Changes saved.');
-                    notify('<b>' + notifyMessage + '</b>', 'success', false);
-
-                    this.$emit('relist');
-                    this.close();
-                }).catch((err) => {
-                    console.error(err);
-
-                    let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                    notify('<b>' + notifyMessage + '</b>', 'danger', false);
-
-                    this.$emit('relist');
-                    this.close();
-                });
             },
             clearArtwork (url) {
                 let buttonText = this.$gettext('Remove Artwork');
@@ -204,17 +177,6 @@ export default {
                     }
                 });
             },
-            close () {
-                this.loading = false;
-                this.editUrl = null;
-                this.clearArtUrl = null;
-                this.artworkSrc = null;
-
-                this.resetForm();
-
-                this.$v.form.$reset();
-                this.$refs.modal.hide();
-            }
         }
     };
 </script>

@@ -32,6 +32,7 @@
 
 <script>
 import axios from 'axios';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'QueueModal',
@@ -57,7 +58,7 @@ export default {
                 this.media = resp.data;
                 this.loading = false;
             }).catch((err) => {
-                this.handleError(err);
+                handleAxiosError(err);
             });
         },
         doClear () {
@@ -65,14 +66,8 @@ export default {
                 notify('<b>' + this.$gettext('Playlist queue cleared.') + '</b>', 'success');
                 this.close();
             }).catch((err) => {
-                this.handleError(err);
+                handleAxiosError(err);
             });
-        },
-        handleError (err) {
-            console.error(err);
-            if (err.response.message) {
-                notify('<b>' + err.response.message + '</b>', 'danger');
-            }
         },
         close () {
             this.loading = false;

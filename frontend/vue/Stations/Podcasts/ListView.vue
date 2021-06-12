@@ -63,6 +63,7 @@ import DataTable from '../../Common/DataTable';
 import EditModal from './PodcastEditModal';
 import axios from 'axios';
 import AlbumArt from '../../Common/AlbumArt';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export const listViewProps = {
     props: {
@@ -141,10 +142,7 @@ export default {
 
                         this.relist();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.message) {
-                            notify('<b>' + err.response.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
                 }
             });

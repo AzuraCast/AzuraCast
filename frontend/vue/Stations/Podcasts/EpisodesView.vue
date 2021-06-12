@@ -74,6 +74,7 @@ import Icon from '../../Common/Icon';
 import AlbumArt from '../../Common/AlbumArt';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export const episodeViewProps = {
     props: {
@@ -145,10 +146,7 @@ export default {
 
                         this.relist();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.message) {
-                            notify('<b>' + err.response.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
                 }
             });

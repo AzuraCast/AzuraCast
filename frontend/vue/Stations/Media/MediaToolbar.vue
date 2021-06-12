@@ -75,6 +75,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 import Icon from '../../Common/Icon';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'station-media-toolbar',
@@ -176,7 +177,7 @@ export default {
 
                     this.$emit('relist');
                 }).catch((err) => {
-                    this.handleError(err);
+                    handleAxiosError(err);
                 });
             } else {
                 this.notifyNoFiles();
@@ -222,7 +223,7 @@ export default {
 
                     this.$emit('relist');
                 }).catch((err) => {
-                    this.handleError(err);
+                    handleAxiosError(err);
                 });
             } else {
                 this.notifyNoFiles();
@@ -235,12 +236,6 @@ export default {
         },
         notifyNoFiles () {
             notify('<b>' + this.$gettext('No files selected.') + '</b>', 'danger');
-        },
-        handleError (err) {
-            console.error(err);
-            if (err.response.message) {
-                notify('<b>' + err.response.message + '</b>', 'danger');
-            }
         }
     }
 };

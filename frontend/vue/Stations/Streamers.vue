@@ -65,6 +65,7 @@ import EditModal from './Streamers/EditModal';
 import BroadcastsModal from './Streamers/BroadcastsModal';
 import Schedule from '../Common/ScheduleView';
 import Icon from '../Common/Icon';
+import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
     name: 'StationStreamers',
@@ -133,10 +134,7 @@ export default {
 
                         this.relist();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.data.message) {
-                            notify('<b>' + err.response.data.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
                 }
             });

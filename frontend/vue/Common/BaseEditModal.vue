@@ -5,6 +5,7 @@
 <script>
 import axios from 'axios';
 import { validationMixin } from 'vuelidate';
+import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
     name: 'BaseEditModal',
@@ -24,6 +25,11 @@ export default {
         };
     },
     computed: {
+        langTitle () {
+            return this.isEditMode
+                ? this.$gettext('Edit Record')
+                : this.$gettext('Add Record');
+        },
         isEditMode () {
             return this.editUrl !== null;
         }
@@ -55,20 +61,8 @@ export default {
                 this.loading = false;
             }).catch((error) => {
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                handleAxiosError(error, notifyMessage);
 
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                notify('<b>' + notifyMessage + '</b>', 'danger');
                 this.close();
             });
         },
@@ -99,18 +93,7 @@ export default {
                 this.close();
             }).catch((error) => {
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
+                notifyMessage = handleAxiosError(error, notifyMessage);
 
                 this.error = notifyMessage;
             });

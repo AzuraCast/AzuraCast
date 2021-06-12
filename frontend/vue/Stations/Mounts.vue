@@ -23,10 +23,10 @@
                 <template #cell(name)="row">
                     <h5 class="m-0">
                         <a :href="row.item.links.listen">{{ row.item.display_name }}</a>
-                        <div v-if="row.item.is_default">
-                            <span class="badge badge-success" key="lang_default_mount" v-translate>Default Mount</span>
-                        </div>
                     </h5>
+                    <div v-if="row.item.is_default">
+                        <span class="badge badge-success" key="lang_default_mount" v-translate>Default Mount</span>
+                    </div>
                 </template>
                 <template #cell(autodj)="row">
                     <template v-if="row.item.enable_autodj">
@@ -61,6 +61,7 @@ import axios from 'axios';
 import EditModal from './Mounts/EditModal';
 import Icon from '../Common/Icon';
 import InfoCard from '../Common/InfoCard';
+import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
     name: 'StationMounts',
@@ -99,7 +100,7 @@ export default {
         },
         doDelete (url) {
             let buttonText = this.$gettext('Delete');
-            let buttonConfirmText = this.$gettext('Delete streamer?');
+            let buttonConfirmText = this.$gettext('Delete Mount Point?');
 
             Swal.fire({
                 title: buttonConfirmText,
@@ -114,10 +115,7 @@ export default {
 
                         this.relist();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.data.message) {
-                            notify('<b>' + err.response.data.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
                 }
             });

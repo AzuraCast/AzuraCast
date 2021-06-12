@@ -63,10 +63,8 @@ export default {
                 this.$emit('relist');
                 this.close();
             }).catch((err) => {
-                console.error(err);
-
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notify('<b>' + notifyMessage + '</b>', 'danger');
+                handleAxiosError(err, notifyMessage);
 
                 this.$emit('relist');
                 this.close();

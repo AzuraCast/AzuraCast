@@ -129,6 +129,7 @@ import ImportModal from './Playlists/ImportModal';
 import QueueModal from './Playlists/QueueModal';
 import axios from 'axios';
 import Icon from '../Common/Icon';
+import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
     name: 'StationPlaylists',
@@ -276,10 +277,7 @@ export default {
 
                         this.relist();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.data.message) {
-                            notify('<b>' + err.response.data.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
                 }
             });

@@ -36,6 +36,7 @@ import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import BaseEditModal from '../../Common/BaseEditModal';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'EditModal',
@@ -142,10 +143,8 @@ export default {
                 this.$emit('relist');
                 this.close();
             }).catch((err) => {
-                console.error(err);
-
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+                handleAxiosError(err, notifyMessage);
 
                 this.$emit('relist');
                 this.close();
@@ -169,10 +168,7 @@ export default {
                             this.$emit('relist');
                             this.close();
                         }).catch((err) => {
-                            console.error(err);
-                            if (err.response.message) {
-                                notify('<b>' + err.response.message + '</b>', 'danger');
-                            }
+                            handleAxiosError(err);
                         });
                     }
                 });

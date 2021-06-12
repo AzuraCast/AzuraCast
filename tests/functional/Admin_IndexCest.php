@@ -1,6 +1,6 @@
 <?php
 
-class B00_Admin_IndexCest extends CestAbstract
+class Admin_IndexCest extends CestAbstract
 {
     /**
      * @before setupComplete

@@ -1,6 +1,6 @@
 <?php
 
-class C02_Station_MediaCest extends CestAbstract
+class Station_MediaCest extends CestAbstract
 {
     /**
      * @before setupComplete

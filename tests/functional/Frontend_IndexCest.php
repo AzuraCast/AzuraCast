@@ -1,6 +1,6 @@
 <?php
 
-class A02_Frontend_IndexCest extends CestAbstract
+class Frontend_IndexCest extends CestAbstract
 {
     /**
      * @before setupComplete

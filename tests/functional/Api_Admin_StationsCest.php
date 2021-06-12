@@ -1,6 +1,6 @@
 <?php
 
-class D04_Api_Admin_StationsCest extends CestAbstract
+class Api_Admin_StationsCest extends CestAbstract
 {
     /**
      * @before setupComplete

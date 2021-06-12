@@ -1,6 +1,6 @@
 <?php
 
-class B03_Admin_DebugCest extends CestAbstract
+class Admin_DebugCest extends CestAbstract
 {
     /**
      * @before setupComplete

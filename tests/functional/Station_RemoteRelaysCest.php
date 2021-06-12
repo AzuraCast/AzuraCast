@@ -1,6 +1,6 @@
 <?php
 
-class C03_Station_RemoteRelaysCest extends CestAbstract
+class Station_RemoteRelaysCest extends CestAbstract
 {
     /**
      * @before setupComplete

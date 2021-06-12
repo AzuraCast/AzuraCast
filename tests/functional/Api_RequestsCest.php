@@ -2,7 +2,7 @@
 
 use App\Entity;
 
-class D02_Api_RequestsCest extends CestAbstract
+class Api_RequestsCest extends CestAbstract
 {
     /**
      * @before setupComplete

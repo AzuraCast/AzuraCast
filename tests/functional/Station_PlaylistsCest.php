@@ -1,6 +1,6 @@
 <?php
 
-class C03_Station_PlaylistsCest extends CestAbstract
+class Station_PlaylistsCest extends CestAbstract
 {
     /**
      * @before setupComplete

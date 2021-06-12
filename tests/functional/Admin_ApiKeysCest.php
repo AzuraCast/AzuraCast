@@ -1,6 +1,6 @@
 <?php
 
-class B01_Admin_ApiKeysCest extends CestAbstract
+class Admin_ApiKeysCest extends CestAbstract
 {
     /**
      * @before setupComplete

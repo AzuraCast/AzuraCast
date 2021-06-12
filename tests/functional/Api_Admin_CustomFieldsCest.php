@@ -1,6 +1,6 @@
 <?php
 
-class D03_Api_Admin_CustomFieldsCest extends CestAbstract
+class Api_Admin_CustomFieldsCest extends CestAbstract
 {
     /**
      * @before setupComplete

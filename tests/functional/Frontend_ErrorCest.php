@@ -1,6 +1,6 @@
 <?php
 
-class A03_Frontend_ErrorCest extends CestAbstract
+class Frontend_ErrorCest extends CestAbstract
 {
     public function seeErrorPages(FunctionalTester $I): void
     {

@@ -1,6 +1,6 @@
 <?php
 
-class D00_Api_IndexCest extends CestAbstract
+class Api_IndexCest extends CestAbstract
 {
     /**
      * @before setupComplete
@@ -10,7 +10,8 @@ class D00_Api_IndexCest extends CestAbstract
         $I->wantTo('Check basic API functions.');
 
         $I->sendGET('/api/status');
-        $I->seeResponseContainsJson([
+        $I->seeResponseContainsJson(
+            [
             'online' => true,
         ]);
 

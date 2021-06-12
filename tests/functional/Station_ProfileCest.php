@@ -1,6 +1,6 @@
 <?php
 
-class C00_Station_ProfileCest extends CestAbstract
+class Station_ProfileCest extends CestAbstract
 {
     /**
      * @before setupComplete

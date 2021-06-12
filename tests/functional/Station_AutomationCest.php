@@ -2,7 +2,7 @@
 
 use App\Entity;
 
-class C05_Station_AutomationCest extends CestAbstract
+class Station_AutomationCest extends CestAbstract
 {
     /**
      * @before setupComplete

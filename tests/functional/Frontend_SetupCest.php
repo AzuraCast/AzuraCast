@@ -1,6 +1,6 @@
 <?php
 
-class A00_Frontend_SetupCest extends CestAbstract
+class Frontend_SetupCest extends CestAbstract
 {
     /**
      * @before setupIncomplete

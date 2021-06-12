@@ -1,6 +1,6 @@
 <?php
 
-class A01_Frontend_ProfileCest extends CestAbstract
+class Frontend_ProfileCest extends CestAbstract
 {
     /**
      * @before login

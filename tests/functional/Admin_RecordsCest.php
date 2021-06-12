@@ -1,6 +1,6 @@
 <?php
 
-class B02_Admin_RecordsCest extends CestAbstract
+class Admin_RecordsCest extends CestAbstract
 {
     /**
      * @before setupComplete

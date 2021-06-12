@@ -1,6 +1,6 @@
 <?php
 
-class A04_Frontend_PublicCest extends CestAbstract
+class Frontend_PublicCest extends CestAbstract
 {
     /**
      * @before setupComplete

@@ -321,7 +321,7 @@ return function (App $app) {
                     $group->group(
                         '/podcast/{podcast_id}',
                         function (RouteCollectorProxy $group) {
-                            $group->post('', Controller\Api\Stations\PodcastsController::class . ':editAction')
+                            $group->put('', Controller\Api\Stations\PodcastsController::class . ':editAction')
                                 ->add(new Middleware\HandleMultipartJson());
 
                             $group->delete('', Controller\Api\Stations\PodcastsController::class . ':deleteAction');
@@ -339,7 +339,7 @@ return function (App $app) {
                             $group->group(
                                 '/episode/{episode_id}',
                                 function (RouteCollectorProxy $group) {
-                                    $group->post(
+                                    $group->put(
                                         '',
                                         Controller\Api\Stations\PodcastEpisodesController::class . ':editAction'
                                     )->add(new Middleware\HandleMultipartJson());

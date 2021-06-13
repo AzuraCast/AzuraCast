@@ -99,11 +99,15 @@ class Strings
     /**
      * Truncate URL in text-presentable format (i.e. "http://www.example.com" becomes "example.com")
      *
-     * @param string $url
+     * @param string|null $url
      * @param int $length
      */
-    public static function truncateUrl(string $url, $length = 40): string
+    public static function truncateUrl(?string $url, $length = 40): string
     {
+        if (null === $url) {
+            return '';
+        }
+
         /** @noinspection HttpUrlsUsage */
         $url = str_replace(['http://', 'https://', 'www.'], '', $url);
 

@@ -163,4 +163,38 @@ abstract class CestAbstract
 
         $I->seeInSource('Logged In');
     }
+
+    protected function testCrudApi(
+        FunctionalTester $I,
+        string $listUrl,
+        array $createJson = [],
+        array $editJson = []
+    ): void {
+        // Create new record
+        $I->sendPOST($listUrl, $createJson);
+
+        $I->seeResponseCodeIs(200);
+
+        $newRecord = $I->grabDataFromResponseByJsonPath('links.self');
+        $newRecordSelfLink = $newRecord[0];
+
+        // Get single record.
+        $I->sendGET($newRecordSelfLink);
+
+        $I->seeResponseContainsJson($createJson);
+
+        // Modify record.
+        $I->sendPUT($newRecordSelfLink, $editJson);
+
+        // List all records.
+        $I->sendGET($newRecordSelfLink);
+
+        $I->seeResponseContainsJson($editJson);
+
+        // Delete Record
+        $I->sendDELETE($newRecordSelfLink);
+
+        $I->sendGET($newRecordSelfLink);
+        $I->seeResponseCodeIs(404);
+    }
 }

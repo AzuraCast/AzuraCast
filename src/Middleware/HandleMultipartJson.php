@@ -2,6 +2,7 @@
 
 namespace App\Middleware;
 
+use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -36,9 +37,11 @@ class HandleMultipartJson implements MiddlewareInterface
         if (1 === count($parsedBody)) {
             $bodyField = current($parsedBody);
             if (is_string($bodyField)) {
-                $parsedBody = json_decode($bodyField, true, 512, JSON_THROW_ON_ERROR);
-
-                $request = $request->withParsedBody($parsedBody);
+                try {
+                    $parsedBody = json_decode($bodyField, true, 512, JSON_THROW_ON_ERROR);
+                    $request = $request->withParsedBody($parsedBody);
+                } catch (JsonException) {
+                }
             }
         }
 

@@ -137,9 +137,9 @@ class StationCloneForm extends StationForm
                 if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
                     $afterCloning = function (
                         Entity\StationPlaylist $oldPlaylist,
-                        Entity\StationPlaylist $newPlaylist
+                        Entity\StationPlaylist $newPlaylist,
+                        Entity\Station $newStation
                     ) use (
-                        $newStation,
                         $copier
                     ): void {
                         foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
@@ -220,7 +220,7 @@ class StationCloneForm extends StationForm
             $this->em->persist($newRecord);
 
             if (is_callable($afterCloning)) {
-                $afterCloning($oldRecord, $newRecord);
+                $afterCloning($oldRecord, $newRecord, $newStation);
             }
         }
 

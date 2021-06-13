@@ -2,7 +2,7 @@
 
 namespace App\Media;
 
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Entity;
 use App\Utilities\File;
 use Azura\Files\ExtendedFilesystemInterface;
@@ -123,7 +123,7 @@ class BatchUtilities
      */
     public function iterateMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
     {
-        return BatchIteratorAggregate::fromTraversableResult(
+        return ReadWriteBatchIteratorAggregate::fromTraversableResult(
             $this->mediaRepo->iteratePaths($paths, $storageLocation),
             $this->em,
             25
@@ -148,7 +148,7 @@ class BatchUtilities
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
 
-        return BatchIteratorAggregate::fromQuery($query, 25);
+        return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
     }
 
     /**
@@ -163,7 +163,7 @@ class BatchUtilities
      */
     public function iterateUnprocessableMedia(Entity\StorageLocation $storageLocation, array $paths): iterable
     {
-        return BatchIteratorAggregate::fromTraversableResult(
+        return ReadWriteBatchIteratorAggregate::fromTraversableResult(
             $this->unprocessableMediaRepo->iteratePaths($paths, $storageLocation),
             $this->em,
             25
@@ -190,7 +190,7 @@ class BatchUtilities
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '/%');
 
-        return BatchIteratorAggregate::fromQuery($query, 25);
+        return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
     }
 
     /**
@@ -216,6 +216,6 @@ class BatchUtilities
         )->setParameter('storageLocation', $storageLocation)
             ->setParameter('path', $dir . '%');
 
-        return BatchIteratorAggregate::fromQuery($query, 25);
+        return ReadWriteBatchIteratorAggregate::fromQuery($query, 25);
     }
 }

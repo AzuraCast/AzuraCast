@@ -2,7 +2,7 @@
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception;
@@ -225,7 +225,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
-        $iterator = BatchIteratorAggregate::fromQuery($mediaQuery, 100);
+        $iterator = ReadOnlyBatchIteratorAggregate::fromQuery($mediaQuery, 100);
         $report = [];
 
         /** @var Entity\StationMedia $row */

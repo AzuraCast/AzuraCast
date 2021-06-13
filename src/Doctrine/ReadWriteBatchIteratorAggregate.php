@@ -5,102 +5,17 @@ declare(strict_types=1);
 namespace App\Doctrine;
 
 use Closure;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityManagerInterface;
-use IteratorAggregate;
 use RuntimeException;
 use Throwable;
-use Traversable;
 
 use function get_class;
 use function is_array;
 use function is_object;
 use function key;
 
-/**
- * @template TKey
- * @template TValue
- * @implements \IteratorAggregate<TKey, TValue>
- */
-final class BatchIteratorAggregate implements IteratorAggregate
+final class ReadWriteBatchIteratorAggregate extends AbstractBatchIteratorAggregate
 {
-    /** @var iterable<TKey, TValue> */
-    private iterable $resultSet;
-
-    private EntityManagerInterface $entityManager;
-
     private ?Closure $customFetchFunction = null;
-
-    /** @psalm-var positive-int */
-    private int $batchSize;
-
-    private bool $clearMemoryWithFlush = true;
-
-    /**
-     * @psalm-param positive-int $batchSize
-     */
-    public static function fromQuery(
-        AbstractQuery $query,
-        int $batchSize
-    ): self {
-        return new self($query->toIterable(), $query->getEntityManager(), $batchSize);
-    }
-
-    /**
-     * @param array<C, D> $results
-     *
-     * @return self<C, D>
-     *
-     * @template C
-     * @template D
-     * @psalm-param positive-int $batchSize
-     */
-    public static function fromArrayResult(
-        array $results,
-        EntityManagerInterface $entityManager,
-        int $batchSize
-    ): self {
-        return new self($results, $entityManager, $batchSize);
-    }
-
-    /**
-     * @param Traversable<E, F> $results
-     *
-     * @return self<E, F>
-     *
-     * @template E
-     * @template F
-     * @psalm-param positive-int $batchSize
-     */
-    public static function fromTraversableResult(
-        Traversable $results,
-        EntityManagerInterface $entityManager,
-        int $batchSize
-    ): self {
-        return new self($results, $entityManager, $batchSize);
-    }
-
-    /**
-     * BatchIteratorAggregate constructor (private by design: use a named constructor instead).
-     *
-     * @param iterable<TKey, TValue> $resultSet
-     *
-     * @psalm-param positive-int $batchSize
-     */
-    private function __construct(
-        iterable $resultSet,
-        EntityManagerInterface $entityManager,
-        int $batchSize
-    ) {
-        $this->resultSet = $resultSet;
-        $this->entityManager = $entityManager;
-        $this->batchSize = $batchSize;
-    }
-
-    public function setBatchSize(int $batchSize): void
-    {
-        $this->batchSize = $batchSize;
-    }
 
     public function setCustomFetchFunction(?callable $customFetchFunction = null): void
     {
@@ -109,14 +24,7 @@ final class BatchIteratorAggregate implements IteratorAggregate
             : Closure::fromCallable($customFetchFunction);
     }
 
-    public function setClearMemoryWithFlush(bool $clearMemoryWithFlush): void
-    {
-        $this->clearMemoryWithFlush = $clearMemoryWithFlush;
-    }
-
-    /**
-     * @return Traversable<TKey, TValue>
-     */
+    /** @inheritDoc */
     public function getIterator(): iterable
     {
         $iteration = 0;
@@ -142,10 +50,6 @@ final class BatchIteratorAggregate implements IteratorAggregate
         $this->entityManager->commit();
     }
 
-    /**
-     * @param mixed $value
-     *
-     */
     private function getObjectFromValue(mixed $value): mixed
     {
         if ($this->customFetchFunction instanceof Closure) {
@@ -170,11 +74,6 @@ final class BatchIteratorAggregate implements IteratorAggregate
         return $this->reFetchObject($value);
     }
 
-    /**
-     * @return object of TValue
-     *
-     * @psalm-assert TValue $object
-     */
     private function reFetchObject(object $object): object
     {
         $metadata = $this->entityManager->getClassMetadata(get_class($object));

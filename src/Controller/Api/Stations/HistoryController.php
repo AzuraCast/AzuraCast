@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Stations;
 
 use App;
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -100,7 +100,7 @@ class HistoryController
                 'Streamer',
             ];
 
-            foreach (BatchIteratorAggregate::fromQuery($qb->getQuery(), 100) as $sh) {
+            foreach (ReadOnlyBatchIteratorAggregate::fromQuery($qb->getQuery(), 100) as $sh) {
                 /** @var Entity\SongHistory $sh */
                 $datetime = CarbonImmutable::createFromTimestamp($sh->getTimestampStart(), $station_tz);
 

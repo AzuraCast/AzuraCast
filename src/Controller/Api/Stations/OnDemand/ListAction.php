@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Stations\OnDemand;
 
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -121,7 +121,7 @@ class ListAction
                 DQL
             )->setParameter('playlist_id', $playlist['id']);
 
-            foreach (BatchIteratorAggregate::fromQuery($query, 50) as $media) {
+            foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 50) as $media) {
                 /** @var Entity\StationMedia $media */
                 $row = new Entity\Api\StationOnDemand();
 

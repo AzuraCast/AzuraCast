@@ -2,7 +2,7 @@
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadWriteBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use Psr\Log\LoggerInterface;
@@ -18,11 +18,11 @@ abstract class AbstractTask
     abstract public function run(bool $force = false): void;
 
     /**
-     * @return BatchIteratorAggregate|Entity\Station[]
+     * @return ReadWriteBatchIteratorAggregate|Entity\Station[]
      */
-    protected function iterateStations(): BatchIteratorAggregate
+    protected function iterateStations(): ReadWriteBatchIteratorAggregate
     {
-        return BatchIteratorAggregate::fromQuery(
+        return ReadWriteBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
                 <<<'DQL'
                     SELECT s FROM App\Entity\Station s
@@ -35,11 +35,11 @@ abstract class AbstractTask
     /**
      * @param string $type
      *
-     * @return BatchIteratorAggregate|Entity\StorageLocation[]
+     * @return ReadWriteBatchIteratorAggregate|Entity\StorageLocation[]
      */
-    protected function iterateStorageLocations(string $type): BatchIteratorAggregate
+    protected function iterateStorageLocations(string $type): ReadWriteBatchIteratorAggregate
     {
-        return BatchIteratorAggregate::fromQuery(
+        return ReadWriteBatchIteratorAggregate::fromQuery(
             $this->em->createQuery(
                 <<<'DQL'
                     SELECT sl

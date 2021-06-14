@@ -5,7 +5,7 @@ use Carbon\CarbonImmutable;
 
 class ListenerIntervalTest extends \Codeception\Test\Unit
 {
-    public function testListenerIntervals()
+    public function testListenerIntervals(): void
     {
         $utc = new \DateTimeZone('UTC');
 
@@ -29,6 +29,6 @@ class ListenerIntervalTest extends \Codeception\Test\Unit
         ];
 
         $expected = 6 * 60 * 60;
-        $this->assertEquals($expected, Entity\Listener::getListenerSeconds($intervals));
+        self::assertEquals($expected, Entity\Listener::getListenerSeconds($intervals));
     }
 }

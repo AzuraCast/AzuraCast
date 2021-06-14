@@ -15,16 +15,25 @@ extensions:
   enabled:
     - Codeception\Extension\RunFailed
 modules:
-coverage:
-  enabled: true
-  include:
+coverage :
+  enabled : true
+  include :
     - src/*
-  exclude:
+  exclude :
+    # Application bootstrapping
+    - src/AppFactory.php
+    - src/EventDispatcher.php
+    - src/Exception.php
+    - src/Plugins.php
+
     # Used in application, but not used in tests
     - src/Radio/Frontend/ShoutCast2.php
+    - src/Console/*.php
     - src/Console/Command/*.php
     - src/Entity/Fixture/*
     - src/Entity/Migration/*
+    - src/Service/IpGeolocator/GeoLite.php
+    - src/RateLimit.php
 
     # Exceptions
     - src/Exception/*.php

@@ -69,6 +69,17 @@ export default {
         populateForm (data) {
             this.form = data;
         },
+        buildSubmitRequest () {
+            return {
+                method: (this.isEditMode)
+                    ? 'PUT'
+                    : 'POST',
+                url: (this.isEditMode)
+                    ? this.editUrl
+                    : this.createUrl,
+                data: this.form
+            };
+        },
         doSubmit () {
             this.$v.form.$touch();
             if (this.$v.form.$anyError) {
@@ -77,15 +88,7 @@ export default {
 
             this.error = null;
 
-            axios({
-                method: (this.isEditMode)
-                    ? 'PUT'
-                    : 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: this.form
-            }).then((resp) => {
+            axios(this.buildSubmitRequest()).then((resp) => {
                 let notifyMessage = this.$gettext('Changes saved.');
                 notify('<b>' + notifyMessage + '</b>', 'success');
 

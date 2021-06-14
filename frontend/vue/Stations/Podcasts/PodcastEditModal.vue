@@ -113,12 +113,7 @@ export default {
                 'categories': d.categories
             };
         },
-        doSubmit () {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-
+        buildSubmitRequest () {
             let formData = new FormData();
             formData.append('body', JSON.stringify(this.form));
             Object.entries(this.files).forEach(([key, value]) => {
@@ -127,7 +122,7 @@ export default {
                 }
             });
 
-            axios({
+            return {
                 method: 'POST',
                 url: (this.isEditMode)
                     ? this.editUrl
@@ -136,43 +131,31 @@ export default {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success', false);
+            };
+        },
+        clearArtwork (url) {
+            let buttonText = this.$gettext('Remove Artwork');
+            let buttonConfirmText = this.$gettext('Delete podcast artwork?');
 
-                this.$emit('relist');
-                this.close();
-            }).catch((err) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                handleAxiosError(err, notifyMessage);
+            Swal.fire({
+                title: buttonConfirmText,
+                confirmButtonText: buttonText,
+                confirmButtonColor: '#e64942',
+                showCancelButton: true,
+                focusCancel: true
+            }).then((result) => {
+                if (result.value) {
+                    axios.delete(url).then((resp) => {
+                        notify('<b>' + resp.data.message + '</b>', 'success');
 
-                this.$emit('relist');
-                this.close();
+                        this.$emit('relist');
+                        this.close();
+                    }).catch((err) => {
+                        handleAxiosError(err);
+                    });
+                }
             });
-            },
-            clearArtwork (url) {
-                let buttonText = this.$gettext('Remove Artwork');
-                let buttonConfirmText = this.$gettext('Delete podcast artwork?');
-
-                Swal.fire({
-                    title: buttonConfirmText,
-                    confirmButtonText: buttonText,
-                    confirmButtonColor: '#e64942',
-                    showCancelButton: true,
-                    focusCancel: true
-                }).then((result) => {
-                    if (result.value) {
-                        axios.delete(url).then((resp) => {
-                            notify('<b>' + resp.data.message + '</b>', 'success');
-
-                            this.$emit('relist');
-                            this.close();
-                        }).catch((err) => {
-                            handleAxiosError(err);
-                        });
-                    }
-                });
-            },
         }
-    };
+    }
+};
 </script>

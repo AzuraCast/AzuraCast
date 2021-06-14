@@ -134,12 +134,7 @@ export default {
                 'explicit': d.explicit
             };
         },
-        doSubmit () {
-            this.$v.$touch();
-            if (this.$v.$anyError) {
-                return;
-            }
-
+        buildSubmitRequest () {
             let modifiedForm = this.form;
             if (modifiedForm.publish_date.length > 0 && modifiedForm.publish_time.length > 0) {
                 let publishDateTimeString = modifiedForm.publish_date + ' ' + modifiedForm.publish_time;
@@ -156,7 +151,7 @@ export default {
                 }
             });
 
-            axios({
+            return {
                 method: 'POST',
                 url: (this.isEditMode)
                     ? this.editUrl
@@ -168,19 +163,7 @@ export default {
                 onUploadProgress: (progressEvent) => {
                     this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
                 }
-            }).then((resp) => {
-                let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success', false);
-
-                this.$emit('relist');
-                this.close();
-            }).catch((err) => {
-                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                handleAxiosError(err, notifyMessage);
-
-                this.$emit('relist');
-                this.close();
-            });
+            };
         },
         clearArtwork (url) {
             let buttonText = this.$gettext('Remove Artwork');

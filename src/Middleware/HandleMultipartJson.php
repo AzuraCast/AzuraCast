@@ -27,20 +27,24 @@ class HandleMultipartJson implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $parsedBody = array_filter(
-            $request->getParsedBody(),
-            static function ($value) {
-                return $value && 'null' !== $value;
-            }
-        );
+        $parsedBody = $request->getParsedBody();
 
-        if (1 === count($parsedBody)) {
-            $bodyField = current($parsedBody);
-            if (is_string($bodyField)) {
-                try {
-                    $parsedBody = json_decode($bodyField, true, 512, JSON_THROW_ON_ERROR);
-                    $request = $request->withParsedBody($parsedBody);
-                } catch (JsonException) {
+        if (!empty($parsedBody)) {
+            $parsedBody = array_filter(
+                $parsedBody,
+                static function ($value) {
+                    return $value && 'null' !== $value;
+                }
+            );
+
+            if (1 === count($parsedBody)) {
+                $bodyField = current($parsedBody);
+                if (is_string($bodyField)) {
+                    try {
+                        $parsedBody = json_decode($bodyField, true, 512, JSON_THROW_ON_ERROR);
+                        $request = $request->withParsedBody($parsedBody);
+                    } catch (JsonException) {
+                    }
                 }
             }
         }

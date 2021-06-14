@@ -895,6 +895,16 @@ class Station implements Stringable
         $this->podcasts_storage_location = $storageLocation;
     }
 
+    /** @return StorageLocation[] */
+    public function getAllStorageLocations(): array
+    {
+        return [
+            $this->getMediaStorageLocation(),
+            $this->getRecordingsStorageLocation(),
+            $this->getPodcastsStorageLocation(),
+        ];
+    }
+
     public function getPermissions(): Collection
     {
         return $this->permissions;

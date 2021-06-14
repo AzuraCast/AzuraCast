@@ -7,6 +7,7 @@
 
 namespace App\Tests;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Environment;
 use Codeception\Configuration;
 use Codeception\Lib\Framework;
@@ -22,7 +23,7 @@ class Module extends Framework implements DoctrineProvider
 
     public App $app;
 
-    public EntityManagerInterface $em;
+    public ReloadableEntityManagerInterface $em;
 
     protected $requiredFields = ['container'];
 
@@ -42,7 +43,7 @@ class Module extends Framework implements DoctrineProvider
         );
 
         $this->container = $this->app->getContainer();
-        $this->em = $this->container->get(EntityManagerInterface::class);
+        $this->em = $this->container->get(ReloadableEntityManagerInterface::class);
 
         parent::_initialize();
     }

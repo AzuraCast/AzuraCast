@@ -224,12 +224,7 @@ class StationRepository extends Repository
         // Save changes and continue to the last setup step.
         $this->em->flush();
 
-        $storageLocations = [
-            $station->getMediaStorageLocation(),
-            $station->getRecordingsStorageLocation(),
-        ];
-
-        foreach ($storageLocations as $storageLocation) {
+        foreach ($station->getAllStorageLocations() as $storageLocation) {
             $stations = $this->storageLocationRepo->getStationsUsingLocation($storageLocation);
             if (1 === count($stations)) {
                 $this->em->remove($storageLocation);

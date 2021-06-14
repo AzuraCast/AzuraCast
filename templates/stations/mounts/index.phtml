@@ -11,6 +11,7 @@ $this->layout(
 $props = [
     'listUrl' => $router->fromHere('api:stations:mounts'),
     'stationFrontendType' => $station->getFrontendType(),
+    'enableAdvancedFeatures' => $enableAdvancedFeatures,
 ];
 
 /** @var \App\Assets $assets */

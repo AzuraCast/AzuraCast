@@ -6,7 +6,7 @@
                 <b-tabs content-class="mt-3">
                     <mount-form-basic-info :form="$v.form" :station-frontend-type="stationFrontendType"></mount-form-basic-info>
                     <mount-form-auto-dj :form="$v.form" :station-frontend-type="stationFrontendType"></mount-form-auto-dj>
-                    <mount-form-advanced :form="$v.form" :station-frontend-type="stationFrontendType"></mount-form-advanced>
+                    <mount-form-advanced v-if="enableAdvancedFeatures" :form="$v.form" :station-frontend-type="stationFrontendType"></mount-form-advanced>
                 </b-tabs>
 
                 <invisible-submit-button/>
@@ -37,7 +37,8 @@ export default {
     mixins: [BaseEditModal],
     components: { MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo, InvisibleSubmitButton },
     props: {
-        stationFrontendType: String
+        stationFrontendType: String,
+        enableAdvancedFeatures: Boolean
     },
     validations () {
         let validations = {

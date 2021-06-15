@@ -3,6 +3,12 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+---
+
+# AzuraCast 0.13.0 (Jun 15, 2021)
+
+## Code Quality/Technical Changes
+
 ## New Features/Changes
 
 - **Podcast Management (Beta):** You can now upload and manage podcasts directly via the AzuraCast web interface. Via

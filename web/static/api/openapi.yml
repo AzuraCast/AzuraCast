@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.12.4
+  version: 0.13.0
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -1016,6 +1016,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'List all current mount points.'
+      operationId: 'App\Controller\Api\Stations\MountsController::viewRecord'
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1037,6 +1038,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Create a new mount point.'
+      operationId: 'App\Controller\Api\Stations\MountsController::viewRecord'
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1062,6 +1064,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Retrieve details for a single mount point.'
+      operationId: 'App\Controller\Api\Stations\MountsController::viewRecord'
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1089,6 +1092,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Update details of a single mount point.'
+      operationId: 'App\Controller\Api\Stations\MountsController::viewRecord'
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -1121,6 +1125,7 @@ paths:
       tags:
         - 'Stations: Mount Points'
       description: 'Delete a single mount point.'
+      operationId: 'App\Controller\Api\Stations\MountsController::viewRecord'
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -2398,11 +2403,11 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         connected_until:
           description: 'UNIX timestamp that the user disconnected (or the latest timestamp if they are still connected).'
           type: integer
-          example: 1622324661
+          example: 1623804005
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -2644,7 +2649,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2697,17 +2702,17 @@ components:
         url:
           description: 'The public URL of the station.'
           type: string
-          example: 'http://example.com/'
+          example: 'https://example.com/'
           nullable: true
         public_player_url:
           description: 'The public player URL for the station.'
-          example: 'http://example.com/public/example_station'
+          example: 'https://example.com/public/example_station'
         playlist_pls_url:
           description: 'The playlist download URL in PLS format.'
-          example: 'http://example.com/public/example_station/playlist.pls'
+          example: 'https://example.com/public/example_station/playlist.pls'
         playlist_m3u_url:
           description: 'The playlist download URL in M3U format.'
-          example: 'http://example.com/public/example_station/playlist.m3u'
+          example: 'https://example.com/public/example_station/playlist.m3u'
         is_public:
           description: 'If the station is public (i.e. should be shown in listings of all stations)'
           type: boolean
@@ -2780,7 +2785,7 @@ components:
         cued_at:
           description: 'UNIX timestamp when playback is expected to start.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -2869,7 +2874,7 @@ components:
         start_timestamp:
           description: 'The start time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         start:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2877,7 +2882,7 @@ components:
         end_timestamp:
           description: 'The end time of the schedule entry, in UNIX format.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         end:
           description: 'The start time of the schedule entry, in ISO 8601 format.'
           type: string
@@ -2917,7 +2922,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1622324661
+          example: 1623804005
       type: object
     Api_Time:
       properties:
@@ -2981,7 +2986,7 @@ components:
           properties:
             base_url:
               type: string
-              example: 'http://custom-url.example.com'
+              example: 'https://custom-url.example.com'
             name:
               type: string
               example: Relay
@@ -2991,10 +2996,10 @@ components:
               example: true
             created_at:
               type: integer
-              example: 1622324661
+              example: 1623804005
             updated_at:
               type: integer
-              example: 1622324661
+              example: 1623804005
     Role:
       type: object
       allOf:
@@ -3060,7 +3065,7 @@ components:
         update_last_run:
           description: 'The UNIX timestamp when updates were last checked.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         public_theme:
           description: 'Base Theme for Public Pages'
           type: string
@@ -3137,7 +3142,7 @@ components:
         backup_last_run:
           description: 'The UNIX timestamp when automated backup was last run.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         backup_last_result:
           description: 'The result of the latest automated backup task.'
           type: string
@@ -3151,26 +3156,26 @@ components:
         setup_complete_time:
           description: 'The UNIX timestamp when setup was last completed.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         nowplaying:
           description: 'The current cached now playing data.'
           example: ''
         sync_nowplaying_last_run:
           description: 'The UNIX timestamp when the now playing sync task was last run.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         sync_short_last_run:
           description: 'The UNIX timestamp when the 60-second ''short'' sync task was last run.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         sync_medium_last_run:
           description: 'The UNIX timestamp when the 5-minute ''medium'' sync task was last run.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         sync_long_last_run:
           description: 'The UNIX timestamp when the 1-hour ''long'' sync task was last run.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         external_ip:
           description: 'This installation''s external IP.'
           type: string
@@ -3184,7 +3189,7 @@ components:
         geolite_last_run:
           description: 'The UNIX timestamp when the Maxmind Geolite was last downloaded.'
           type: integer
-          example: 1622324661
+          example: 1623804005
         enable_advanced_features:
           description: 'Whether to enable ''advanced'' functionality in the system that is intended for power users.'
           type: boolean
@@ -3351,6 +3356,8 @@ components:
         -
           $ref: '#/components/schemas/HasAutoIncrementId'
         -
+          $ref: '#/components/schemas/HasSongFields'
+        -
           properties:
             unique_id:
               description: 'A unique identifier associated with this record.'
@@ -3395,7 +3402,7 @@ components:
             mtime:
               description: 'The UNIX timestamp when the database was last modified.'
               type: integer
-              example: 1622324661
+              example: 1623804005
               nullable: true
             amplify:
               description: 'The amount of amplification (in dB) to be applied to the radio source (liq_amplify)'
@@ -3436,7 +3443,7 @@ components:
             art_updated_at:
               description: 'The latest time (UNIX timestamp) when album art was updated.'
               type: integer
-              example: 1622324661
+              example: 1623804005
             playlists:
               type: array
               items: {  }
@@ -3469,7 +3476,7 @@ components:
               nullable: true
             relay_url:
               type: string
-              example: 'http://radio.example.com:8000/radio.mp3'
+              example: 'https://radio.example.com:8000/radio.mp3'
               nullable: true
             authhash:
               type: string
@@ -3522,7 +3529,7 @@ components:
               example: shuffle
             remote_url:
               type: string
-              example: 'http://remote-url.example.com/stream.mp3'
+              example: 'https://remote-url.example.com/stream.mp3'
               nullable: true
             remote_type:
               type: string
@@ -3605,7 +3612,7 @@ components:
               nullable: true
             url:
               type: string
-              example: 'http://custom-url.example.com'
+              example: 'https://custom-url.example.com'
               nullable: true
             mount:
               type: string
@@ -3690,7 +3697,7 @@ components:
               example: false
             reactivate_at:
               type: integer
-              example: 1622324661
+              example: 1623804005
               nullable: true
             schedule_items:
               type: array
@@ -3736,11 +3743,27 @@ components:
       properties:
         id:
           type: integer
+          nullable: true
+      type: object
+    HasSongFields:
+      properties:
+        song_id:
+          type: string
+        text:
+          type: string
+          nullable: true
+        artist:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
       type: object
     HasUniqueId:
       properties:
         id:
           type: string
+          nullable: true
       type: object
     User:
       type: object
@@ -3775,10 +3798,10 @@ components:
               nullable: true
             created_at:
               type: integer
-              example: 1622324661
+              example: 1623804005
             updated_at:
               type: integer
-              example: 1622324661
+              example: 1623804005
             roles:
               type: array
               items: {  }

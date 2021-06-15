@@ -4,11 +4,11 @@ namespace App\Controller\Api;
 
 use App\Entity;
 use App\Event\Radio\LoadNowPlaying;
-use App\EventDispatcher;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,7 +19,7 @@ class NowplayingController implements EventSubscriberInterface
         protected EntityManagerInterface $em,
         protected Entity\Repository\SettingsRepository $settingsRepo,
         protected CacheInterface $cache,
-        protected EventDispatcher $dispatcher
+        protected EventDispatcherInterface $dispatcher
     ) {
     }
 
@@ -93,15 +93,11 @@ class NowplayingController implements EventSubscriberInterface
                 ->withJson(new Entity\Api\Error(408, 'Now Playing data has not loaded yet. Please try again later.'));
         }
 
-        $np = $event->getNowPlaying();
-
         if (!empty($station_id)) {
-            foreach ($np as $np_row) {
-                if ($np_row->station->id == (int)$station_id || $np_row->station->shortcode === $station_id) {
-                    $np_row->resolveUrls($router->getBaseUrl());
-                    $np_row->now_playing->recalculate();
-                    return $response->withJson($np_row);
-                }
+            $npStation = $event->getForStation($station_id);
+            if (null !== $npStation) {
+                $npStation->resolveUrls($router->getBaseUrl());
+                return $response->withJson($npStation);
             }
 
             return $response->withStatus(404)
@@ -109,21 +105,12 @@ class NowplayingController implements EventSubscriberInterface
         }
 
         // If unauthenticated, hide non-public stations from full view.
-        if ($request->getAttribute('user') === null) {
-            // Prevent NP array from returning as an object.
-            $np = array_values(
-                array_filter(
-                    $np,
-                    static function ($np_row) {
-                        return $np_row->station->is_public;
-                    }
-                )
-            );
-        }
+        $np = ($request->getAttribute('user') === null)
+            ? $event->getAllPublic()
+            : $event->getNowPlaying();
 
-        foreach ($np as $np_row) {
-            $np_row->resolveUrls($router->getBaseUrl());
-            $np_row->now_playing->recalculate();
+        foreach ($np as $npRow) {
+            $npRow->resolveUrls($router->getBaseUrl());
         }
 
         return $response->withJson($np);

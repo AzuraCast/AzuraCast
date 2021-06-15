@@ -237,6 +237,7 @@ return [
 
         return $dispatcher;
     },
+    Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(App\EventDispatcher::class),
 
     // Monolog Logger
     Monolog\Logger::class => function (Environment $environment) {

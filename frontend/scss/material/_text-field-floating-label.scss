@@ -8,10 +8,6 @@
     transform: scale($floating-label-font-size / $textfield-font-size);
   }
 
-  &.is-focused label {
-    color: $floating-label-color-focus;
-  }
-
   &:not(.has-value):not(.is-focused) .form-control {
     &[type='date'],
     &[type='datetime-local'],
@@ -23,7 +19,6 @@
   label {
     @include transition-standard(color, top, transform);
 
-    color: $floating-label-color;
     display: block;
     font-size: $textfield-font-size;
     line-height: $textfield-line-height;
@@ -40,7 +35,6 @@
 
     &:focus {
       &::placeholder {
-        color: $textfield-hint-color;
         opacity: 1;
       }
     }

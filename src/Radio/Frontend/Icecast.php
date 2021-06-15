@@ -33,6 +33,7 @@ class Icecast extends AbstractFrontend
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
 
+        /** @noinspection HttpUrlsUsage */
         $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getIcecastAdapter($baseUrl);
@@ -91,6 +92,7 @@ class Icecast extends AbstractFrontend
 
         $settingsBaseUrl = $settings->getBaseUrl() ?: 'http://localhost';
         if (!str_starts_with($settingsBaseUrl, 'http')) {
+            /** @noinspection HttpUrlsUsage */
             $settingsBaseUrl = 'http://' . $settingsBaseUrl;
         }
         $baseUrl = new Uri($settingsBaseUrl);
@@ -134,8 +136,10 @@ class Icecast extends AbstractFrontend
                 'adminroot' => '/usr/local/share/icecast/admin',
                 'pidfile' => $configDir . '/icecast.pid',
                 'alias' => [
-                    '@source' => '/',
-                    '@dest' => '/status.xsl',
+                    [
+                        '@source' => '/',
+                        '@dest' => '/status.xsl',
+                    ],
                 ],
                 'ssl-private-key' => $certPaths->getKeyPath(),
                 'ssl-certificate' => $certPaths->getCertPath(),
@@ -187,10 +191,10 @@ class Icecast extends AbstractFrontend
                 $mount['fallback-override'] = 1;
             }
 
-            if ($mount_row->getFrontendConfig()) {
-                $mount_conf = $this->processCustomConfig($mount_row->getFrontendConfig());
-
-                if (!empty($mount_conf)) {
+            $mountFrontendConfig = trim($mount_row->getFrontendConfig() ?? '');
+            if (!empty($mountFrontendConfig)) {
+                $mount_conf = $this->processCustomConfig($mountFrontendConfig);
+                if (false !== $mount_conf) {
                     $mount = Utilities\Arrays::arrayMergeRecursiveDistinct($mount, $mount_conf);
                 }
             }
@@ -209,11 +213,21 @@ class Icecast extends AbstractFrontend
             $config['mount'][] = $mount;
         }
 
-        $customConfig = $frontendConfig->getCustomConfiguration();
+        $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
-            $custom_conf = $this->processCustomConfig($customConfig);
-            if (!empty($custom_conf)) {
-                $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $custom_conf);
+            $customConfParsed = $this->processCustomConfig($customConfig);
+
+            // Special handling for aliases.
+            if (isset($customConfParsed['paths']['alias'])) {
+                $alias = (array)$customConfParsed['paths']['alias'];
+                if (!is_numeric(key($alias))) {
+                    $alias = [$alias];
+                }
+                $customConfParsed['paths']['alias'] = $alias;
+            }
+
+            if (false !== $customConfParsed) {
+                $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
             }
         }
 

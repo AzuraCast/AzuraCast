@@ -4,148 +4,92 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Auth;
-use App\Normalizer\Annotation\DeepNormalize;
+use App\Normalizer\Attributes\DeepNormalize;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use OTPHP\Factory;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use const PASSWORD_BCRYPT;
 
-/**
- * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="email_idx", columns={"email"})})
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks
- *
- * @AuditLog\Auditable
- *
- * @UniqueEntity(fields={"email"})
- *
- * @OA\Schema(type="object")
- */
-class User
+/** @OA\Schema(type="object") */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'users'),
+    ORM\HasLifecycleCallbacks,
+    ORM\UniqueConstraint(name: 'email_idx', columns: ['email']),
+    Attributes\Auditable,
+    UniqueEntity(fields: ['email'])
+]
+class User implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Column(name="uid", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     * @var int|null
-     */
-    protected $id;
+    /** @OA\Property(example="demo@azuracast.com") */
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    protected ?string $email = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected ?string $auth_password = null;
+
+    /** @OA\Property(example="") */
+    protected ?string $new_password = null;
+
+    /** @OA\Property(example="Demo Account") */
+    #[ORM\Column(length: 100, nullable: true)]
+    protected ?string $name = null;
+
+    /** @OA\Property(example="en_US") */
+    #[ORM\Column(length: 25, nullable: true)]
+    protected ?string $locale = null;
+
+    /** @OA\Property(example="dark") */
+    #[ORM\Column(length: 25, nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected ?string $theme = null;
+
+    /** @OA\Property(example="A1B2C3D4") */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected ?string $two_factor_secret = null;
+
+    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    protected int $created_at;
+
+    /** @OA\Property(example=SAMPLE_TIMESTAMP) */
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    protected int $updated_at;
 
     /**
-     * @ORM\Column(name="email", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="demo@azuracast.com")
-     * @var string|null
-     *
-     * @Assert\NotBlank
-     */
-    protected $email;
-
-    /**
-     * @ORM\Column(name="auth_password", type="string", length=255, nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     * @var string|null
-     */
-    protected $auth_password;
-
-    /**
-     * @OA\Property(example="")
-     * @var string|null
-     */
-    protected $new_password;
-
-    /**
-     * @ORM\Column(name="name", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="Demo Account")
-     * @var string|null
-     */
-    protected $name;
-
-    /**
-     * @ORM\Column(name="locale", type="string", length=25, nullable=true)
-     *
-     * @OA\Property(example="en_US")
-     * @var string|null
-     */
-    protected $locale;
-
-    /**
-     * @ORM\Column(name="theme", type="string", length=25, nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example="dark")
-     * @var string|null
-     */
-    protected $theme;
-
-    /**
-     * @ORM\Column(name="two_factor_secret", type="string", length=255, nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example="A1B2C3D4")
-     * @var string|null
-     */
-    protected $two_factor_secret;
-
-    /**
-     * @ORM\Column(name="created_at", type="integer")
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
-     */
-    protected $created_at;
-
-    /**
-     * @ORM\Column(name="updated_at", type="integer")
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
-     */
-    protected $updated_at;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", fetch="EAGER")
-     * @ORM\JoinTable(name="user_has_role",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     *
-     * @DeepNormalize(true)
-     * @Serializer\MaxDepth(1)
      * @OA\Property(
+     *     type="array",
      *     @OA\Items()
      * )
-     *
-     * @var Collection
      */
-    protected $roles;
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users', fetch: 'EAGER')]
+    #[ORM\JoinTable(name: 'user_has_role')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[DeepNormalize(true)]
+    #[Serializer\MaxDepth(1)]
+    protected Collection $roles;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ApiKey", mappedBy="user")
-     * @DeepNormalize(true)
-     * @var Collection
-     */
-    protected $api_keys;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ApiKey::class)]
+    #[DeepNormalize(true)]
+    protected Collection $api_keys;
 
     public function __construct()
     {
@@ -156,25 +100,10 @@ class User
         $this->api_keys = new ArrayCollection();
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate(): void
     {
         $this->updated_at = time();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @AuditLog\AuditIdentifier()
-     */
-    public function getIdentifier(): string
-    {
-        return $this->getName() . ' (' . $this->getEmail() . ')';
     }
 
     public function getName(): ?string
@@ -184,7 +113,7 @@ class User
 
     public function setName(?string $name = null): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
     }
 
     public function getEmail(): ?string
@@ -194,7 +123,7 @@ class User
 
     public function setEmail(?string $email = null): void
     {
-        $this->email = $this->truncateString($email, 100);
+        $this->email = $this->truncateNullableString($email, 100);
     }
 
     public function verifyPassword(string $password): bool
@@ -274,8 +203,7 @@ class User
             return true;
         }
 
-        $totp = Factory::loadFromProvisioningUri($this->two_factor_secret);
-        return $totp->verify($otp, null, Auth::TOTP_WINDOW);
+        return Factory::loadFromProvisioningUri($this->two_factor_secret)->verify($otp, null, Auth::TOTP_WINDOW);
     }
 
     public function getCreatedAt(): int
@@ -302,5 +230,10 @@ class User
     public function getApiKeys(): Collection
     {
         return $this->api_keys;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName() . ' (' . $this->getEmail() . ')';
     }
 }

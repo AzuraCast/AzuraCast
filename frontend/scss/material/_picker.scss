@@ -40,7 +40,6 @@
   @include transition-standard(opacity);
 
   align-items: center;
-  background-color: $picker-holder-bg;
   display: flex;
   justify-content: center;
   min-height: 100%;
@@ -177,8 +176,6 @@
 .picker-date-display {
   @include border-top-radius($picker-border-radius);
 
-  background-color: $picker-header-bg;
-  color: color-yiq($picker-header-bg);
   padding: $picker-header-padding-y $picker-header-padding-x;
 
   @media (orientation: landscape) {
@@ -217,7 +214,6 @@
 .picker-box {
   @include border-bottom-radius($picker-border-radius);
 
-  background-color: $picker-content-bg;
   overflow: hidden;
 
   @media (orientation: landscape) {
@@ -230,12 +226,7 @@
 .picker-input {
   &.form-control[readonly] {
     border-bottom-style: solid;
-    color: inherit;
     cursor: text;
-  }
-
-  &.picker-input-active {
-    border-bottom-color: $textfield-border-color-focus;
   }
 }
 
@@ -254,15 +245,6 @@
     margin-right: ($picker-inner-spacer-x / 2);
     margin-left: ($picker-inner-spacer-x / 2);
   }
-
-  &.picker-day-selected {
-    background-color: $picker-day-bg-selected;
-    color: color-yiq($picker-day-bg-selected);
-  }
-}
-
-.picker-day-disabled {
-  color: $picker-day-color-disabled;
 }
 
 .picker-day-outfocus {
@@ -270,7 +252,6 @@
 }
 
 .picker-day-today {
-  color: $picker-day-color-today;
   font-weight: bolder;
 }
 
@@ -294,7 +275,6 @@
 }
 
 .picker-weekday {
-  color: $picker-weekday-color;
   height: $picker-cell-size;
   vertical-align: middle;
   width: $picker-cell-size;
@@ -306,13 +286,11 @@
   @include transition-standard(opacity);
 
   appearance: none;
-  background-color: $picker-select-bg;
   background-image: none;
   background-position: 100% 50%;
   background-size: auto 100%;
   border: 0;
   box-shadow: none;
-  color: $textfield-color;
   display: inline-block;
   font-size: inherit;
   height: ($picker-cell-size / 2);
@@ -325,7 +303,6 @@
   }
 
   @include media-moz-webkit {
-    background-image: $caret-bg;
     background-repeat: no-repeat;
   }
 

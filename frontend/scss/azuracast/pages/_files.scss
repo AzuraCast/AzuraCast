@@ -1,47 +1,8 @@
 .page-file-manager {
-  #file-table {
-    width:100%;
-
-    th {
-      cursor:pointer;
-      user-select: none;
-
-      .non-sort {
-        cursor: default;
-      }
-
-      .indicator {
-        margin-left: 6px;
-      }
-    }
-
-    td {
-      vertical-align: middle;
-      white-space: nowrap;
-
-      .file-icon {
-        display: inline-block;
-        float: left;
-        width: 30px;
-
-        i:before {
-          font-size: 25px;
-          vertical-align: middle;
-        }
-      }
-    }
-  }
-
   #file_drop_target {
     padding: 25px 0;
-    border: 4px dashed $theme-color-3;
-    color: #5e5e5e;
     text-align: center;
 
-    &.drag_over {
-      border: 4px dashed $theme-color-4;
-      color: $text-muted;
-    }
     input {
       display: inline;
     }
@@ -50,7 +11,6 @@
   #upload_progress {
     padding: 4px 0;
 
-    .error {color:#a00;}
     & > div { padding:3px 0;}
   }
 
@@ -65,10 +25,5 @@
       }
     }
   }
-
-  /*
-  .progress_track {display:inline-block;width:200px;height:10px;border:1px solid #333;margin: 0 4px 0 10px;}
-  .progress {background-color: #82CFFA;height:10px; }
-  */
 }
 

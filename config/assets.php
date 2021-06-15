@@ -2,7 +2,6 @@
 
 use App\Environment;
 use App\Http\ServerRequest;
-use App\Locale;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
@@ -125,16 +124,35 @@ return [
                 [
                     'href' => 'dist/lib/roboto-fontface/css/roboto/roboto-fontface.css',
                 ],
+                [
+                    'href' => 'dist/style.css',
+                ],
             ],
         ],
         'inline' => [
             'js' => [
                 function (Request $request) {
+                    /** @var App\Session\Flash|null $flashObj */
+                    $flashObj = $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH);
+
+                    if (null === $flashObj || !$flashObj->hasMessages()) {
+                        return null;
+                    }
+
+                    $notifies = [];
+                    foreach ($flashObj->getMessages() as $message) {
+                        $notifyMessage = str_replace(['"', "\n"], ['\'', '<br>'], $message['text']);
+                        $notifies[] = 'notify("' . $notifyMessage . '", "' . $message['color'] . '");';
+                    }
+
+                    return '$(function () { ' . implode('', $notifies) . ' });';
+                },
+                function (Request $request) {
                     /** @var Locale|null $locale */
                     $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
 
-                    $locale = ($localeObj instanceof Locale)
-                        ? $localeObj->getLocale()
+                    $locale = ($localeObj instanceof App\Locale)
+                        ? (string)$localeObj
                         : Locale::DEFAULT_LOCALE;
 
                     $locale = explode('.', $locale)[0];
@@ -155,6 +173,13 @@ return [
 
                     return 'let App = ' . json_encode($app) . ';';
                 },
+                <<<'JS'
+                    let currentTheme = document.documentElement.getAttribute('data-theme');
+                    if (currentTheme === 'browser') {
+                        currentTheme = (window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+                    }
+                    App.theme = currentTheme;
+                JS,
             ],
         ],
     ],
@@ -171,30 +196,6 @@ return [
                 [
                     'src' => 'dist/lib/autosize/autosize.min.js',
                     'defer' => true,
-                ],
-            ],
-        ],
-    ],
-
-    /*
-     * Themes
-     */
-    'theme_dark' => [
-        'order' => 50,
-        'files' => [
-            'css' => [
-                [
-                    'href' => 'dist/dark.css',
-                ],
-            ],
-        ],
-    ],
-    'theme_light' => [
-        'order' => 50,
-        'files' => [
-            'css' => [
-                [
-                    'href' => 'dist/light.css',
                 ],
             ],
         ],
@@ -522,10 +523,28 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_StationsMounts' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_StationsPlaylists' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
         'replace' => ['moment'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_StationsPodcasts' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_StationsPodcastEpisodes' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
@@ -544,6 +563,12 @@ return [
     'Vue_StationsStreamers' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_StationsReportsOverview' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'chartjs'],
         // Auto-managed by Assets
     ],
 ];

@@ -45,6 +45,7 @@ import DataTable from '../../Common/DataTable.vue';
 import axios from 'axios';
 import _ from 'lodash';
 import Icon from '../../Common/Icon';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'MoveFilesModal',
@@ -87,15 +88,13 @@ export default {
             }).then((resp) => {
                 let allItemNames = _.map(this.selectedItems.all, 'name');
                 let notifyMessage = this.$gettext('Files moved:');
-                notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success', false);
+                notify('<b>' + notifyMessage + '</b><br>' + allItemNames.join('<br>'), 'success');
 
                 this.close();
                 this.$emit('relist');
             }).catch((err) => {
-                console.error(err);
-
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
+                handleAxiosError(err, notifyMessage);
 
                 this.close();
                 this.$emit('relist');

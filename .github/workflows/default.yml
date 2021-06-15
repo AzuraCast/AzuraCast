@@ -25,6 +25,7 @@ jobs :
     runs-on : ubuntu-latest
     env :
       APPLICATION_ENV : testing
+      NODE_ENV : production
     steps :
       - uses : actions/checkout@master
 
@@ -133,6 +134,7 @@ jobs :
       - name : Echo test output directory
         if : failure()
         run : |
+          docker-compose logs
           cat tests/_output/*
 
       - name : Upload built static assets and translations

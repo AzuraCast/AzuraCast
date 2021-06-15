@@ -159,9 +159,7 @@ class StreamersController extends AbstractScheduledEntityController
         $return = parent::viewRecord($record, $request);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
-        $router = $request->getRouter();
-
-        $return['links']['broadcasts'] = $router->fromHere(
+        $return['links']['broadcasts'] = $request->getRouter()->fromHere(
             'api:stations:streamer:broadcasts',
             ['id' => $record->getId()],
             [],

@@ -1,0 +1,40 @@
+body {
+  background-color: $body-bg;
+  color: $body-color;
+}
+
+label {
+  color: $textfield-hint-color;
+}
+
+legend {
+  color: inherit;
+}
+
+a {
+  background-color: transparent;
+  color: $link-color;
+
+  @include active-focus-hover {
+    color: $link-color-hover;
+  }
+}
+
+a:not([href]):not([tabindex]) {
+  color: inherit;
+
+  @include active-focus-hover {
+    color: inherit;
+  }
+}
+
+// Table
+
+caption {
+  color: $table-caption-color;
+}
+
+mark {
+  background-color: $mark-bg;
+  color: $mark-color;
+}

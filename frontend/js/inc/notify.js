@@ -29,11 +29,11 @@ function notify (message, type, options) {
     }
   }
 
-  if (options.minimal) {
-    growlSettings.placement.from = 'top'
-    growlSettings.placement.align = 'center'
-    growlSettings.offset.y = 20
+  if ($('body').hasClass('page-minimal')) {
+    growlSettings.placement.from = 'top';
+    growlSettings.placement.align = 'center';
+    growlSettings.offset.y = 20;
   }
 
-  $.notify({ message: message }, $.extend({}, growlSettings, options))
+  $.notify({ message: message }, $.extend({}, growlSettings, options));
 }

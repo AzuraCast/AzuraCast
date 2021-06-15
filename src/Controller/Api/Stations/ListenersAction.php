@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Stations;
 
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Environment;
 use App\Http\Response;
@@ -98,7 +98,7 @@ class ListenersAction
         $mountNames = $mountRepo->getDisplayNames($station);
         $remoteNames = $remoteRepo->getDisplayNames($station);
 
-        $listenersIterator = BatchIteratorAggregate::fromQuery($qb->getQuery(), 250);
+        $listenersIterator = ReadOnlyBatchIteratorAggregate::fromQuery($qb->getQuery(), 250);
 
         /** @var Entity\Api\Listener[] $listeners */
         $listeners = [];
@@ -191,7 +191,7 @@ class ListenersAction
         }
 
         if ($groupByUnique) {
-            foreach ($listenersByHash as $hash => $listenerInfo) {
+            foreach ($listenersByHash as $listenerInfo) {
                 $intervals = (array)$listenerInfo['intervals'];
 
                 $startTime = $now->getTimestamp();

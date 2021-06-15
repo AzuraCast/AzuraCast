@@ -7,104 +7,54 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
-/**
- * @ORM\Table(name="listener", indexes={
- *     @ORM\Index(name="idx_timestamps", columns={"timestamp_end", "timestamp_start"}),
- * })
- * @ORM\Entity()
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'listener'),
+    ORM\Index(columns: ['timestamp_end', 'timestamp_start'], name: 'idx_timestamps')
+]
 class Listener
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    protected int $station_id;
 
-    /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
-     */
-    protected $station_id;
+    #[ORM\ManyToOne(inversedBy: 'history')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected Station $station;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
+    #[ORM\Column(nullable: true)]
+    protected ?int $mount_id = null;
 
-    /**
-     * @ORM\Column(name="mount_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $mount_id;
+    #[ORM\ManyToOne(targetEntity: StationMount::class)]
+    #[ORM\JoinColumn(name: 'mount_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?StationMount $mount = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationMount")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="mount_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     * @var StationMount|null
-     */
-    protected $mount;
+    #[ORM\Column(nullable: true)]
+    protected ?int $remote_id = null;
 
-    /**
-     * @ORM\Column(name="remote_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $remote_id;
+    #[ORM\ManyToOne(targetEntity: StationRemote::class)]
+    #[ORM\JoinColumn(name: 'remote_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?StationRemote $remote = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationRemote")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="remote_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     * @var StationRemote|null
-     */
-    protected $remote;
+    #[ORM\Column]
+    protected int $listener_uid;
 
-    /**
-     * @ORM\Column(name="listener_uid", type="integer")
-     * @var int
-     */
-    protected $listener_uid;
+    #[ORM\Column(length: 45)]
+    protected string $listener_ip;
 
-    /**
-     * @ORM\Column(name="listener_ip", type="string", length=45)
-     * @var string
-     */
-    protected $listener_ip;
+    #[ORM\Column(length: 255)]
+    protected string $listener_user_agent;
 
-    /**
-     * @ORM\Column(name="listener_user_agent", type="string", length=255)
-     * @var string
-     */
-    protected $listener_user_agent;
+    #[ORM\Column(length: 32)]
+    protected string $listener_hash;
 
-    /**
-     * @ORM\Column(name="listener_hash", type="string", length=32)
-     * @var string
-     */
-    protected $listener_hash;
+    #[ORM\Column]
+    protected int $timestamp_start;
 
-    /**
-     * @ORM\Column(name="timestamp_start", type="integer")
-     * @var int
-     */
-    protected $timestamp_start;
-
-    /**
-     * @ORM\Column(name="timestamp_end", type="integer")
-     * @var int
-     */
-    protected $timestamp_end;
+    #[ORM\Column]
+    protected int $timestamp_end;
 
     public function __construct(Station $station, Client $client)
     {
@@ -114,14 +64,9 @@ class Listener
         $this->timestamp_end = 0;
 
         $this->listener_uid = (int)$client->uid;
-        $this->listener_user_agent = $this->truncateString($client->userAgent) ?? '';
+        $this->listener_user_agent = $this->truncateString($client->userAgent);
         $this->listener_ip = $client->ip;
         $this->listener_hash = self::calculateListenerHash($client);
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station

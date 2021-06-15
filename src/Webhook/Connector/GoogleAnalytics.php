@@ -3,7 +3,6 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use App\Event\SendWebhooks;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
@@ -16,28 +15,20 @@ class GoogleAnalytics extends AbstractConnector
 {
     public const NAME = 'google_analytics';
 
-    protected EntityManagerInterface $em;
-
-    protected Adapters $adapters;
-
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        EntityManagerInterface $em,
-        Adapters $adapters
+        protected EntityManagerInterface $em,
+        protected Adapters $adapters
     ) {
         parent::__construct($logger, $httpClient);
-
-        $this->em = $em;
-        $this->adapters = $adapters;
     }
 
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying $np,
-        array $triggers,
-        bool $isStandalone
+        array $triggers
     ): bool {
         $config = $webhook->getConfig();
         if (empty($config['tracking_id'])) {
@@ -46,8 +37,7 @@ class GoogleAnalytics extends AbstractConnector
         }
 
         // Get listen URLs for each mount point.
-        $frontendConfig = $station->getFrontendConfig();
-        $radioPort = $frontendConfig->getPort();
+        $radioPort = $station->getFrontendConfig()->getPort();
 
         $mountUrls = [];
         foreach ($station->getMounts() as $mount) {

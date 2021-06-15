@@ -127,13 +127,10 @@ class AutoDJ
             // Adjust "now" time from current queue.
             $now = $this->getNowFromCurrentSong($station);
 
-            $backendOptions = $station->getBackendConfig();
-            $maxQueueLength = $backendOptions->getAutoDjQueueLength();
+            $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
             if ($maxQueueLength < 1) {
                 $maxQueueLength = 1;
             }
-
-            $stationTz = $station->getTimezoneObject();
 
             $upcomingQueue = $this->queueRepo->getUpcomingQueue($station);
 
@@ -153,8 +150,7 @@ class AutoDJ
                 $queueRow->setTimestampCued($now->getTimestamp());
                 $this->em->persist($queueRow);
 
-                $timestampCued = CarbonImmutable::createFromTimestamp($queueRow->getTimestampCued(), $stationTz);
-                $now = $this->getAdjustedNow($station, $timestampCued, $queueRow->getDuration() ?? 1);
+                $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
             }
 
             $this->em->flush();
@@ -170,7 +166,7 @@ class AutoDJ
                         $this->em->remove($queueRow);
                     } else {
                         $lastSongId = $queueRow->getSongId();
-                        $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration() ?? 1);
+                        $now = $this->getAdjustedNow($station, $now, $queueRow->getDuration());
                     }
                 } else {
                     break;
@@ -188,8 +184,9 @@ class AutoDJ
 
     protected function getAdjustedNow(Entity\Station $station, CarbonInterface $now, ?int $duration): CarbonInterface
     {
-        $backendConfig = $station->getBackendConfig();
-        $startNext = $backendConfig->getCrossfadeDuration();
+        $duration ??= 1;
+
+        $startNext = $station->getBackendConfig()->getCrossfadeDuration();
 
         $now = $now->addSeconds($duration ?? 1);
         return ($duration >= $startNext)
@@ -202,15 +199,15 @@ class AutoDJ
         $stationTz = $station->getTimezoneObject();
         $now = CarbonImmutable::now($stationTz);
 
-        $currentSong = $this->songHistoryRepo->getCurrent($station);
-        if (!($currentSong instanceof Entity\SongHistory)) {
+        $lastCuedSong = $this->queueRepo->getLastCuedSong($station);
+        if (!($lastCuedSong instanceof Entity\StationQueue)) {
             return $now;
         }
 
-        $startTimestamp = $currentSong->getTimestampStart();
-        $started = CarbonImmutable::createFromTimestamp($startTimestamp, $stationTz);
+        $cuedTimestamp = $lastCuedSong->getTimestampCued();
+        $cued = CarbonImmutable::createFromTimestamp($cuedTimestamp, $stationTz);
 
-        $adjustedNow = $this->getAdjustedNow($station, $started, $currentSong->getDuration());
+        $adjustedNow = $this->getAdjustedNow($station, $cued, $lastCuedSong->getDuration());
 
         // Return either the current timestamp (if it's later) or the scheduled end time.
         return max($now, $adjustedNow);

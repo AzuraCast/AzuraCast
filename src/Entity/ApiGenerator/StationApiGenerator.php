@@ -9,14 +9,10 @@ use Psr\Http\Message\UriInterface;
 
 class StationApiGenerator
 {
-    protected Adapters $adapters;
-
-    protected Router $router;
-
-    public function __construct(Adapters $adapters, Router $router)
-    {
-        $this->adapters = $adapters;
-        $this->router = $router;
+    public function __construct(
+        protected Adapters $adapters,
+        protected Router $router
+    ) {
     }
 
     public function __invoke(

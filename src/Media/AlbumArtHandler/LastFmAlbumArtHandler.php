@@ -20,7 +20,7 @@ class LastFmAlbumArtHandler extends AbstractAlbumArtHandler
         return 'LastFm';
     }
 
-    protected function getAlbumArt(Entity\SongInterface $song): ?string
+    protected function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string
     {
         if ($song instanceof Entity\StationMedia && !empty($song->getAlbum())) {
             $response = $this->lastFm->makeRequest(

@@ -162,6 +162,7 @@ import axios from 'axios';
 import store from 'store';
 import Icon from './Common/Icon';
 import Avatar, { avatarProps } from './Common/Avatar';
+import handleAxiosError from './Function/handleAxiosError';
 
 export default {
     components: { Avatar, Icon, DataTable, TimeSeriesChart },
@@ -229,14 +230,14 @@ export default {
             this.chartsData = response.data;
             this.chartsLoading = false;
         }).catch((error) => {
-            console.error(error);
+            handleAxiosError(error);
         });
 
         axios.get(this.notificationsUrl).then((response) => {
             this.notifications = response.data;
             this.notificationsLoading = false;
         }).catch((error) => {
-            console.error(error);
+            handleAxiosError(error);
         });
 
         this.updateNowPlaying();
@@ -263,7 +264,8 @@ export default {
 
                 setTimeout(this.updateNowPlaying, 15000);
             }).catch((error) => {
-                console.error(error);
+                handleAxiosError(error);
+
                 setTimeout(this.updateNowPlaying, 30000);
             });
         }

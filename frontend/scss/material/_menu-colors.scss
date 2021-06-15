@@ -1,0 +1,72 @@
+.dropdown-menu {
+  color: inherit;
+
+  &::before {
+    background-color: $menu-bg;
+  }
+}
+
+.dropdown-divider {
+  @include nav-divider($menu-divider-bg);
+}
+
+.dropdown-header {
+  color: $menu-header-color;
+}
+
+.dropdown-item {
+  color: $menu-link-color;
+
+  @include active-focus-hover {
+    background-color: $menu-link-bg-hover;
+    color: $menu-link-color;
+  }
+
+  &.active {
+    background-color: $menu-link-bg-hover;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: transparent;
+    color: $menu-link-color-disabled;
+  }
+}
+
+.dropdown-item-text {
+  color: $menu-link-color;
+}
+
+// Toggle
+
+.dropdown-toggle {
+  &::after {
+    border-top: $caret-width solid $text-color;
+    border-right: $caret-width solid transparent;
+    border-bottom: 0;
+    border-left: $caret-width solid transparent;
+
+    .dropright & {
+      border-top: $caret-width solid transparent;
+      border-right: 0;
+      border-bottom: $caret-width solid transparent;
+      border-left: $caret-width solid $text-color;
+    }
+
+    .dropup & {
+      border-top: 0;
+      border-right: $caret-width solid transparent;
+      border-bottom: $caret-width solid $text-color;
+      border-left: $caret-width solid transparent;
+    }
+  }
+
+  .dropleft & {
+    &::before {
+      border-top: $caret-width solid transparent;
+      border-right: $caret-width solid $text-color;
+      border-bottom: $caret-width solid transparent;
+      border-left: 0;
+    }
+  }
+}

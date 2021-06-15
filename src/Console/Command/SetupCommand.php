@@ -38,8 +38,7 @@ class SetupCommand extends CommandAbstract
             $io->note(__('Running in update mode.'));
         }
 
-        $em = $di->get(EntityManagerInterface::class);
-        $conn = $em->getConnection();
+        $conn = $di->get(EntityManagerInterface::class)->getConnection();
 
         $io->newLine();
         $io->section(__('Running Database Migrations'));
@@ -107,6 +106,7 @@ class SetupCommand extends CommandAbstract
         } else {
             $public_ip = $acCentral->getIp(false);
 
+            /** @noinspection HttpUrlsUsage */
             $io->success(
                 [
                     __('AzuraCast installation complete!'),

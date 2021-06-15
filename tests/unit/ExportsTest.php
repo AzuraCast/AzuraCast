@@ -1,10 +1,10 @@
 <?php
+
+use App\Utilities;
+
 class ExportsTest extends \Codeception\Test\Unit
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
+    protected UnitTester $tester;
 
     public function testExports()
     {
@@ -15,15 +15,15 @@ class ExportsTest extends \Codeception\Test\Unit
             ]
         ];
 
-        $csv = \App\Utilities\Csv::arrayToCsv($raw_data, false);
+        $csv = Utilities\Csv::arrayToCsv($raw_data, false);
         $this->assertStringContainsString('"test_field_a","test_field_b"', $csv);
 
         $raw_data = '<test><subtest>Contents</subtest></test>';
-        $xml_array = \App\Utilities\Xml::xmlToArray($raw_data);
+        $xml_array = Utilities\Xml::xmlToArray($raw_data);
 
         $this->assertArrayHasKey('test', $xml_array);
 
-        $xml = \App\Utilities\Xml::arrayToXml($xml_array);
+        $xml = Utilities\Xml::arrayToXml($xml_array);
 
         $this->assertStringContainsString($raw_data, $xml);
     }

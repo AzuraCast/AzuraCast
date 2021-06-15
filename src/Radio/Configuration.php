@@ -56,8 +56,9 @@ class Configuration
         }
 
         $this->em->persist($station);
-        $this->em->persist($station->getMediaStorageLocation());
-        $this->em->persist($station->getRecordingsStorageLocation());
+        foreach ($station->getAllStorageLocations() as $storageLocation) {
+            $this->em->persist($storageLocation);
+        }
 
         $this->em->flush();
     }
@@ -166,7 +167,7 @@ class Configuration
             try {
                 $this->supervisor->stopProcessGroup($station_group, true);
                 $this->supervisor->startProcessGroup($station_group, true);
-            } catch (SupervisorException $e) {
+            } catch (SupervisorException) {
             }
 
             $was_restarted = true;
@@ -206,7 +207,7 @@ class Configuration
                 try {
                     $this->supervisor->stopProcessGroup($group);
                     $this->supervisor->removeProcessGroup($group);
-                } catch (SupervisorException $e) {
+                } catch (SupervisorException) {
                 }
             }
         }
@@ -221,7 +222,7 @@ class Configuration
                     $this->supervisor->stopProcessGroup($group);
                     $this->supervisor->removeProcessGroup($group);
                     $this->supervisor->addProcessGroup($group);
-                } catch (SupervisorException $e) {
+                } catch (SupervisorException) {
                 }
             }
         }
@@ -234,7 +235,7 @@ class Configuration
 
                 try {
                     $this->supervisor->addProcessGroup($group);
-                } catch (SupervisorException $e) {
+                } catch (SupervisorException) {
                 }
             }
         }
@@ -428,7 +429,7 @@ class Configuration
         try {
             $this->supervisor->stopProcessGroup($station_group, true);
             $this->supervisor->removeProcessGroup($station_group);
-        } catch (SupervisorException $e) {
+        } catch (SupervisorException) {
         }
 
         $supervisor_config_path = $this->getSupervisorConfigFile($station);

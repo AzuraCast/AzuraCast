@@ -55,7 +55,6 @@ return [
     // Doctrine Entity Manager
     App\Doctrine\DecoratedEntityManager::class => function (
         Doctrine\Common\Cache\Cache $doctrineCache,
-        Doctrine\Common\Annotations\Reader $reader,
         Environment $environment,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
@@ -97,20 +96,15 @@ return [
 
             $mappingClassesPaths = $buildDoctrineMappingPathsEvent->getMappingClassesPaths();
 
-            $annotationDriver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
-                $reader,
+            $attributeDriver = new Doctrine\ORM\Mapping\Driver\AttributeDriver(
                 $mappingClassesPaths
             );
-            $config->setMetadataDriverImpl($annotationDriver);
+            $config->setMetadataDriverImpl($attributeDriver);
 
             // Debug mode:
             // $config->setSQLLogger(new Doctrine\DBAL\Logging\EchoSQLLogger);
 
             $config->addCustomNumericFunction('RAND', DoctrineExtensions\Query\Mysql\Rand::class);
-
-            if (!Doctrine\DBAL\Types\Type::hasType('uuid')) {
-                Doctrine\DBAL\Types\Type::addType('uuid', Ramsey\Uuid\Doctrine\UuidType::class);
-            }
 
             if (!Doctrine\DBAL\Types\Type::hasType('carbon_immutable')) {
                 Doctrine\DBAL\Types\Type::addType('carbon_immutable', Carbon\Doctrine\CarbonImmutableType::class);
@@ -175,13 +169,13 @@ return [
     // Doctrine cache
     Doctrine\Common\Cache\Cache::class => function (
         Environment $environment,
-        Psr\Cache\CacheItemPoolInterface $cachePool
+        Psr\Cache\CacheItemPoolInterface $psr6Cache
     ) {
         if ($environment->isCli()) {
-            $cachePool = new Symfony\Component\Cache\Adapter\ArrayAdapter();
+            $psr6Cache = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         }
 
-        $doctrineCache = new Symfony\Component\Cache\DoctrineProvider($cachePool);
+        $doctrineCache = Doctrine\Common\Cache\Psr6\DoctrineProvider::wrap($psr6Cache);
         $doctrineCache->setNamespace('doctrine.');
         return $doctrineCache;
     },
@@ -243,6 +237,7 @@ return [
 
         return $dispatcher;
     },
+    Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(App\EventDispatcher::class),
 
     // Monolog Logger
     Monolog\Logger::class => function (Environment $environment) {
@@ -268,29 +263,29 @@ return [
 
     // Doctrine annotations reader
     Doctrine\Common\Annotations\Reader::class => function (
-        Doctrine\Common\Cache\Cache $doctrine_cache,
+        Psr\Cache\CacheItemPoolInterface $psr6Cache,
         Environment $settings
     ) {
-        return new Doctrine\Common\Annotations\CachedReader(
+        return new Doctrine\Common\Annotations\PsrCachedReader(
             new Doctrine\Common\Annotations\AnnotationReader,
-            $doctrine_cache,
+            $psr6Cache,
             !$settings->isProduction()
         );
     },
 
     // Symfony Serializer
     Symfony\Component\Serializer\Serializer::class => function (
-        Doctrine\Common\Annotations\Reader $annotation_reader,
+        Doctrine\Common\Annotations\Reader $reader,
         Doctrine\ORM\EntityManagerInterface $em
     ) {
-        $meta_factory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
-            new Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($annotation_reader)
+        $classMetaFactory = new Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory(
+            new Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader($reader)
         );
 
         $normalizers = [
             new Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer(),
-            new App\Normalizer\DoctrineEntityNormalizer($em, $annotation_reader, $meta_factory),
-            new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($meta_factory),
+            new App\Normalizer\DoctrineEntityNormalizer($em, $classMetaFactory),
+            new Symfony\Component\Serializer\Normalizer\ObjectNormalizer($classMetaFactory),
         ];
         $encoders = [
             new Symfony\Component\Serializer\Encoder\JsonEncoder,
@@ -300,17 +295,13 @@ return [
     },
 
     // Symfony Validator
-    Symfony\Component\Validator\ConstraintValidatorFactoryInterface::class => DI\autowire(
-        App\Validator\ConstraintValidatorFactory::class
-    ),
-
     Symfony\Component\Validator\Validator\ValidatorInterface::class => function (
-        Doctrine\Common\Annotations\Reader $annotation_reader,
-        Symfony\Component\Validator\ConstraintValidatorFactoryInterface $cvf
+        Doctrine\Common\Annotations\Reader $reader,
+        Symfony\Component\Validator\ContainerConstraintValidatorFactory $constraintValidatorFactory
     ) {
         $builder = new Symfony\Component\Validator\ValidatorBuilder();
-        $builder->setConstraintValidatorFactory($cvf);
-        $builder->enableAnnotationMapping($annotation_reader);
+        $builder->setConstraintValidatorFactory($constraintValidatorFactory);
+        $builder->enableAnnotationMapping($reader);
         return $builder->getValidator();
     },
 

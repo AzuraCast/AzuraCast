@@ -1,0 +1,31 @@
+.card {
+  background-color: $card-bg;
+
+  @each $color, $values in $theme-colors {
+    &.border-#{$color} {
+      box-shadow: map-get($card-elevation-shadow, shadow), inset 0 0 0 $card-border-width theme-color($color);
+
+      &[href],
+      &[tabindex] {
+        @include active-focus-hover {
+          box-shadow: map-get($card-elevation-shadow-hover, shadow), inset 0 0 0 $card-border-width theme-color($color);
+        }
+      }
+    }
+  }
+}
+
+.card-footer {
+  border-top: $card-border-width solid $card-border-color;
+}
+
+.card-header {
+  border-bottom: $card-border-width solid $card-border-color;
+}
+
+.card-header.bg-primary-dark {
+  .card-title,
+  .card-subtitle {
+    color: #fff;
+  }
+}

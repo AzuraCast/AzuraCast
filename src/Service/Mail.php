@@ -19,8 +19,7 @@ class Mail implements MailerInterface
 
     public function isEnabled(): bool
     {
-        $settings = $this->settingsRepo->readSettings();
-        return $settings->getMailEnabled();
+        return $this->settingsRepo->readSettings()->getMailEnabled();
     }
 
     public function createMessage(): Email

@@ -6,5 +6,6 @@ services :
       context : .
     environment :
       APPLICATION_ENV : 'testing'
+      LOG_LEVEL : 'debug'
     volumes :
       - .:/var/azuracast/www

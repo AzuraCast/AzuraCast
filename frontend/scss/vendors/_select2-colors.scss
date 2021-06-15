@@ -1,0 +1,107 @@
+.select2-search--dropdown .select2-search__field {
+  color: $text-primary;
+}
+
+.select2-results__message {
+  color: $text-secondary;
+}
+
+.select2-container--bootstrap4 {
+  .select2-selection {
+    border: $textfield-border-width solid $textfield-border-color;
+  }
+
+  .select2-search--inline .select2-search__field {
+    color: $text-primary;
+  }
+
+  // focused input box
+  &.select2-container--focus {
+    .select2-selection {
+      border-color: $textfield-border-color-focus;
+    }
+  }
+
+  // disabled input box
+  &.select2-container--disabled,
+  &.select2-container--disabled.select2-container--focus {
+    .select2-selection {
+      color: $textfield-color-disabled;
+    }
+  }
+
+  // validated input box
+  select.is-invalid ~ & .select2-selection,
+  form.was-validated select:invalid ~ & .select2-selection {
+    border-color: $form-feedback-invalid-color;
+  }
+
+  select.is-valid ~ & .select2-selection,
+  form.was-validated select:valid ~ & .select2-selection {
+    border-color: $form-feedback-valid-color;
+  }
+
+  // dropdown
+  .select2-dropdown {
+    border-color: $textfield-border-color;
+    background: $menu-bg;
+
+    // dropdown opened above
+    &.select2-dropdown--above {
+      border-top: 1px solid $textfield-border-color;
+    }
+
+    // selected item
+    .select2-results__option[aria-selected=true] {
+      background-color: $menu-link-bg-hover;
+    }
+  }
+
+  // mouse hovered item
+  .select2-results__option--highlighted,
+  .select2-results__option--highlighted.select2-results__option[aria-selected=true] {
+    background-color: theme-color(primary);
+    color: $white-primary;
+  }
+
+  .select2-results__group {
+    color: $text-secondary;
+  }
+
+  // all clear button
+  .select2-selection__clear {
+    $bg: #c8c8c8;
+    background-color: $menu-bg;
+    color: $menu-link-color;
+
+    &:hover {
+      background-color: $menu-link-bg-hover;
+    }
+  }
+
+  .select2-selection--single {
+    // arrow
+    .select2-selection__arrow {
+      b {
+        border-color: $text-primary transparent transparent transparent;
+      }
+    }
+  }
+
+  .select2-selection--multiple {
+    // each selected item in input box
+    .select2-selection__choice {
+      color: $text-primary;
+      border: 1px solid $textfield-border-color-hover;
+    }
+
+    // x button of each selected item in input box
+    .select2-selection__choice__remove {
+      color: darken($text-secondary, 20%);
+
+      &:hover {
+        color: $text-primary;
+      }
+    }
+  }
+}

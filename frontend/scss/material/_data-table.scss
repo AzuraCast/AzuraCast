@@ -1,5 +1,4 @@
 .table {
-  background-color: $table-bg;
   border: 0;
   margin-bottom: $table-margin-y;
   max-width: 100%;
@@ -7,7 +6,6 @@
 
   td,
   th {
-    border-top: $table-border-width solid $table-border-color;
     line-height: $table-line-height;
     padding-right: $table-cell-padding-x;
     padding-left: $table-cell-padding-x;
@@ -23,8 +21,6 @@
   }
 
   tbody {
-    color: $table-tbody-color;
-
     td,
     th {
       font-size: $table-tbody-font-size;
@@ -36,8 +32,6 @@
   }
 
   tfoot {
-    color: $table-tfoot-color;
-
     td,
     th {
       font-size: $table-tfoot-font-size;
@@ -49,8 +43,6 @@
   }
 
   thead {
-    color: $table-thead-color;
-
     td,
     th {
       font-size: $table-thead-font-size;
@@ -109,10 +101,6 @@
     }
   }
 
-  .table {
-    border-top: $table-border-width solid $table-border-color;
-  }
-
   > :first-child > tr:first-child {
     td,
     th {
@@ -130,8 +118,6 @@
 }
 
 .table-bordered {
-  border: $table-border-width solid $table-border-color;
-
   .card > & {
     border: 0;
   }
@@ -178,122 +164,6 @@
     }
   }
 }
-
-.table-striped {
-  tbody tr:nth-of-type(#{$table-striped-order}) {
-    background-color: $table-bg-accent;
-  }
-}
-
-// Placed here because it has to come after the striping styles
-
-.table-hover {
-  tbody tr {
-    @include hover {
-      background-color: $table-bg-hover;
-    }
-  }
-}
-
-// Table background
-
-@each $color, $values in $theme-colors {
-  .table-#{$color} {
-    &,
-    > td,
-    > th {
-      background-color: theme-color-light($color);
-      color: color-yiq(theme-color-light($color));
-    }
-
-    .table-hover & {
-      @include hover {
-        &,
-        > td,
-        > th {
-          background-color: theme-color($color);
-          color: color-yiq(theme-color($color));
-        }
-      }
-    }
-  }
-}
-
-.table-active {
-  &,
-  > td,
-  > th {
-    background-color: $table-bg-active;
-    color: color-yiq($table-bg-active);
-  }
-
-  .table-hover & {
-    @include hover {
-      &,
-      > td,
-      > th {
-        background-color: $table-bg-active-hover;
-        color: color-yiq($table-bg-active-hover);
-      }
-    }
-  }
-}
-
-// stylelint-disable-next-line no-duplicate-selectors
-.table {
-  .thead-dark {
-    td,
-    th {
-      background-color: $table-dark-bg;
-      color: $table-dark-color;
-    }
-  }
-
-  .thead-light {
-    td,
-    th {
-      background-color: $table-thead-bg;
-      color: $table-thead-color;
-    }
-  }
-}
-
-.table-dark {
-  background-color: $table-dark-bg;
-  color: $table-dark-color;
-
-  &.table-bordered {
-    border-color: $table-dark-border-color;
-  }
-
-  &.table-striped {
-    tbody tr:nth-of-type(odd) {
-      background-color: $table-dark-bg-accent;
-    }
-  }
-
-  &.table-hover {
-    tbody tr {
-      @include hover {
-        background-color: $table-dark-bg-hover;
-      }
-    }
-  }
-
-  tbody,
-  tfoot,
-  thead {
-    color: inherit;
-  }
-
-  td,
-  th,
-  .table {
-    border-color: $table-dark-border-color;
-  }
-}
-
-// Table responsive
 
 .table-responsive {
   @each $breakpoint in map-keys($grid-breakpoints) {

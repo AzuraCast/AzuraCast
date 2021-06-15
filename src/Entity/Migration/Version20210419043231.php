@@ -6,7 +6,6 @@ namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -28,13 +27,12 @@ final class Version20210419043231 extends AbstractMigration
 
         foreach ($oldSettingsRaw as $row) {
             $key = $row['setting_key'];
-            $key = preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $key);
-            $key = mb_strtolower($key);
+            $key = mb_strtolower(preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $key));
 
             $value = $row['setting_value'];
             $value = ($value === null || $value === '')
                 ? null
-                : json_decode($value, true);
+                : json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 
             $oldSettings[$key] = $value;
         }
@@ -43,8 +41,9 @@ final class Version20210419043231 extends AbstractMigration
 
         $appUniqueIdentifier = $oldSettings['app_unique_identifier'] ?? null;
         if (empty($appUniqueIdentifier)) {
-            $appUniqueIdentifier = Uuid::uuid4()->toString();
+            $appUniqueIdentifier = $this->connection->executeQuery('SELECT UUID()')->fetchOne();
         }
+
         $newSettings['app_unique_identifier'] = $appUniqueIdentifier;
 
         $textFields = [
@@ -126,7 +125,7 @@ final class Version20210419043231 extends AbstractMigration
                 continue;
             }
 
-            $newSettings[$field] = mb_substr($value, 0, $length, 'UTF-8');
+            $newSettings[$field] = mb_substr((string)$value, 0, $length, 'UTF-8');
         }
 
         foreach ($boolFields as $field) {

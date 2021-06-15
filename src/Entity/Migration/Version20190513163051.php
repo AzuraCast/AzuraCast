@@ -27,7 +27,7 @@ final class Version20190513163051 extends AbstractMigration
     public function postup(Schema $schema): void
     {
         // Use the system setting for "global timezone" to set the station timezones.
-        $global_tz = $this->connection->fetchColumn('SELECT setting_value FROM settings WHERE setting_key="timezone"');
+        $global_tz = $this->connection->fetchOne('SELECT setting_value FROM settings WHERE setting_key="timezone"');
 
         if (!empty($global_tz)) {
             $global_tz = json_decode($global_tz, true, 512, JSON_THROW_ON_ERROR);
@@ -54,7 +54,9 @@ final class Version20190513163051 extends AbstractMigration
             $offset_hours = (int)floor($offset / 3600);
 
             if (0 !== $offset_hours) {
-                $playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp WHERE sp.type = "scheduled"');
+                $playlists = $this->connection->fetchAllAssociative(
+                    'SELECT sp.* FROM station_playlists AS sp WHERE sp.type = "scheduled"'
+                );
 
                 foreach ($playlists as $playlist) {
                     $this->connection->update('station_playlists', [
@@ -73,8 +75,9 @@ final class Version20190513163051 extends AbstractMigration
      * @param int $offset_hours
      *
      * @return int
+     * @noinspection SummerTimeUnsafeTimeManipulationInspection
      */
-    protected function applyOffset(mixed $time_code, int $offset_hours): int
+    private function applyOffset(mixed $time_code, int $offset_hours): int
     {
         $hours = (int)floor($time_code / 100);
         $mins = $time_code % 100;

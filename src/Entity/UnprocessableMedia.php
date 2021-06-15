@@ -4,73 +4,42 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\PathAwareInterface;
+use App\Entity\Interfaces\ProcessableMediaInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="unprocessable_media", uniqueConstraints={
- *   @ORM\UniqueConstraint(name="path_unique_idx", columns={"path", "storage_location_id"})
- * })
- * @ORM\Entity()
- */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'unprocessable_media'),
+    ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
+]
 class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterface
 {
+    use Traits\HasAutoIncrementId;
+
     public const REPROCESS_THRESHOLD_MINIMUM = 604800; // One week
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    protected int $storage_location_id;
 
-    /**
-     * @ORM\Column(name="storage_location_id", type="integer")
-     * @var int
-     */
-    protected $storage_location_id;
+    #[ORM\ManyToOne(inversedBy: 'media')]
+    #[ORM\JoinColumn(name: 'storage_location_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected StorageLocation $storage_location;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StorageLocation", inversedBy="media")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="storage_location_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StorageLocation
-     */
-    protected $storage_location;
+    #[ORM\Column(length: 500)]
+    protected string $path;
 
-    /**
-     * @ORM\Column(name="path", type="string", length=500)
-     *
-     * @var string The relative path of the media file.
-     */
-    protected $path;
+    #[ORM\Column(nullable: true)]
+    protected ?int $mtime = 0;
 
-    /**
-     * @ORM\Column(name="mtime", type="integer", nullable=true)
-     *
-     * @var int|null The UNIX timestamp when the database was last modified.
-     */
-    protected $mtime = 0;
-
-    /**
-     * @ORM\Column(name="error", type="text", nullable=true)
-     *
-     * @var string|null The full text of any errors that occurred during processing.
-     */
-    protected $error;
+    #[ORM\Column(type: 'text', nullable: true)]
+    protected ?string $error = null;
 
     public function __construct(StorageLocation $storageLocation, string $path)
     {
         $this->storage_location = $storageLocation;
 
         $this->setPath($path);
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStorageLocation(): StorageLocation

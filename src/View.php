@@ -47,7 +47,7 @@ class View extends Engine
         // Add request-dependent content.
         $this->request = $request;
 
-        if ($request instanceof ServerRequestInterface) {
+        if (null !== $request) {
             $this->addData(
                 [
                     'request' => $request,
@@ -80,8 +80,7 @@ class View extends Engine
                 if (class_exists(VarCloner::class)) {
                     $varCloner = new VarCloner();
 
-                    $dumper = new CliDumper();
-                    $dumpedValue = $dumper->dump($varCloner->cloneVar($value), true);
+                    $dumpedValue = (new CliDumper())->dump($varCloner->cloneVar($value), true);
                 } else {
                     $dumpedValue = json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
                 }
@@ -106,8 +105,7 @@ class View extends Engine
                     return $word;
                 }
 
-                $inflector = InflectorFactory::create()->build();
-                return $inflector->pluralize($word);
+                return InflectorFactory::create()->build()->pluralize($word);
             }
         );
 

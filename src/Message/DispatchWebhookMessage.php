@@ -11,8 +11,6 @@ class DispatchWebhookMessage extends AbstractUniqueMessage
 
     public NowPlaying $np;
 
-    public bool $is_standalone = true;
-
     public array $triggers = [];
 
     public function getIdentifier(): string

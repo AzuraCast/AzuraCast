@@ -6,11 +6,10 @@ use App\Entity;
 use App\Radio\Adapters;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
-use RuntimeException;
 
 class Station extends AbstractFixture
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         $station = new Entity\Station();
         $station->setName('AzuraTest Radio');
@@ -24,18 +23,21 @@ class Station extends AbstractFixture
 
         $mediaStorage = $station->getMediaStorageLocation();
         $recordingsStorage = $station->getRecordingsStorageLocation();
+        $podcastsStorage = $station->getPodcastsStorageLocation();
 
         $stationQuota = getenv('INIT_STATION_QUOTA');
         if (!empty($stationQuota)) {
             $mediaStorage->setStorageQuota($stationQuota);
             $recordingsStorage->setStorageQuota($stationQuota);
+            $podcastsStorage->setStorageQuota($stationQuota);
         }
 
-        $em->persist($station);
-        $em->persist($mediaStorage);
-        $em->persist($recordingsStorage);
+        $manager->persist($station);
+        $manager->persist($mediaStorage);
+        $manager->persist($recordingsStorage);
+        $manager->persist($podcastsStorage);
 
-        $em->flush();
+        $manager->flush();
 
         $this->addReference('station', $station);
     }

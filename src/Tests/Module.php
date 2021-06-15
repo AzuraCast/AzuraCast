@@ -7,6 +7,7 @@
 
 namespace App\Tests;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Environment;
 use Codeception\Configuration;
 use Codeception\Lib\Framework;
@@ -22,11 +23,11 @@ class Module extends Framework implements DoctrineProvider
 
     public App $app;
 
-    public EntityManagerInterface $em;
+    public ReloadableEntityManagerInterface $em;
 
     protected $requiredFields = ['container'];
 
-    public function _initialize()
+    public function _initialize(): void
     {
         /** @var string $container_class The fully qualified name of the container class. */
         $container_class = $this->config['container'];
@@ -42,12 +43,12 @@ class Module extends Framework implements DoctrineProvider
         );
 
         $this->container = $this->app->getContainer();
-        $this->em = $this->container->get(EntityManagerInterface::class);
+        $this->em = $this->container->get(ReloadableEntityManagerInterface::class);
 
         parent::_initialize();
     }
 
-    public function _before(TestInterface $test)
+    public function _before(TestInterface $test): void
     {
         $this->client = new Connector();
         $this->client->setApp($this->app);
@@ -55,7 +56,7 @@ class Module extends Framework implements DoctrineProvider
         parent::_before($test);
     }
 
-    public function _after(TestInterface $test)
+    public function _after(TestInterface $test): void
     {
         $_GET = [];
         $_POST = [];

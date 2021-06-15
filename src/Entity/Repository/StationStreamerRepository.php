@@ -84,15 +84,14 @@ class StationStreamerRepository extends Repository
             $recordStreams = $backendConfig->recordStreams();
 
             if ($recordStreams) {
-                $format = $backendConfig->getRecordStreamsFormat() ?? Entity\StationMountInterface::FORMAT_MP3;
+                $format = $backendConfig->getRecordStreamsFormat(
+                ) ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
                 $recordingPath = $record->generateRecordingPath($format);
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $fsStations = new StationFilesystems($station);
-                $fsTemp = $fsStations->getTempFilesystem();
-
-                return $fsTemp->getLocalPath($recordingPath);
+                return (new StationFilesystems($station))->getTempFilesystem()
+                    ->getLocalPath($recordingPath);
             }
         }
 
@@ -106,9 +105,7 @@ class StationStreamerRepository extends Repository
         $fsTemp = $fs->getTempFilesystem();
         $fsRecordings = $fs->getRecordingsFilesystem();
 
-        $broadcasts = $this->broadcastRepo->getActiveBroadcasts($station);
-
-        foreach ($broadcasts as $broadcast) {
+        foreach ($this->broadcastRepo->getActiveBroadcasts($station) as $broadcast) {
             $broadcastPath = $broadcast->getRecordingPath();
 
             if ((null !== $broadcastPath) && $fsTemp->fileExists($broadcastPath)) {

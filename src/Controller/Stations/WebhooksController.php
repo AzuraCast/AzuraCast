@@ -114,8 +114,7 @@ class WebhooksController extends AbstractStationCrudController
         /** @var Entity\StationWebhook $record */
         $record = $this->getRecord($station, $id);
 
-        $handler_response = $this->dispatcher->testDispatch($station, $record);
-        $log_records = $handler_response->getRecords();
+        $log_records = $this->dispatcher->testDispatch($station, $record)->getRecords();
 
         return $request->getView()->renderToResponse($response, 'system/log_view', [
             'title' => __('Web Hook Test Output'),

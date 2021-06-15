@@ -38,8 +38,31 @@ if ($customization->useWebSocketsForNowPlaying()) {
 $assets
     ->addVueRender('Vue_PublicFullPlayer', '#public-radio-player', $props);
 
+// Register PWA service worker
+$swJsRoute = (string)$router->named('public:sw');
+
+$assets->addInlineJs(
+    <<<JS
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('${swJsRoute}');
+      });
+    }
+    JS
+);
+
 $this->push('head');
 ?>
+<link rel="manifest" href="<?=(string)$router->fromHere('public:manifest')?>">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="<?=$this->e($station->getName())?>">
+
+<meta property="og:title" content="<?=$this->e($station->getName())?>">
+<meta property="og:url" content="<?=$this->e($station->getUrl())?>">
+<meta property="og:image" content="<?=$defaultAlbumArt?>">
+
 <meta property="twitter:card" content="player">
 <meta property="twitter:player" content="<?=(string)$router->named(
     'public:index',
@@ -49,9 +72,6 @@ $this->push('head');
 )?>">
 <meta property="twitter:player:width" content="400">
 <meta property="twitter:player:height" content="125">
-<meta property="twitter:title" content="<?=$this->e($station->getName())?>">
-<meta property="twitter:site" content="<?=$this->e($station->getUrl())?>">
-<meta property="twitter:image" content="<?=$defaultAlbumArt?>">
 <?php
 $this->end();
 ?>

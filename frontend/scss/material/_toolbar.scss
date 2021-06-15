@@ -1,6 +1,5 @@
 .navbar {
   align-items: center;
-  color: $toolbar-color;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -18,9 +17,7 @@
     @include border-radius($toolbar-element-border-radius);
     @include transition-standard(opacity);
 
-    background-color: $toolbar-element-bg;
     border: 0;
-    color: inherit;
     opacity: $toolbar-element-opacity;
     padding: (($textfield-height - $textfield-font-size * $textfield-line-height) / 2) $toolbar-inner-spacer-x;
 
@@ -44,7 +41,6 @@
     @include border-radius($toolbar-element-border-radius);
     @include transition-standard(opacity);
 
-    background-color: $toolbar-element-bg;
     opacity: $toolbar-element-opacity;
 
     @include focus-hover {
@@ -109,23 +105,6 @@
   }
 }
 
-.navbar-dark {
-  color: $toolbar-dark-color;
-
-  .form-control,
-  .input-group,
-  .navbar-brand::before,
-  .navbar-nav .show > .nav-link,
-  .navbar-toggler::before {
-    background-color: $toolbar-dark-element-bg;
-  }
-
-  .form-control::placeholder,
-  .navbar-nav .nav-link.disabled {
-    color: $toolbar-dark-color-lighter;
-  }
-}
-
 .navbar-fixed-bottom,
 .navbar-fixed-top {
   box-shadow: map-get($toolbar-elevation-shadow, shadow);
@@ -167,7 +146,6 @@
   z-index: map-get($toolbar-elevation-shadow, elevation);
 
   &.waterfall {
-    background-color: $toolbar-waterfall-bg;
     box-shadow: map-get($toolbar-elevation-shadow, shadow);
     position: fixed;
   }
@@ -179,20 +157,17 @@
   @include typography-title;
 
   align-items: center;
-  color: inherit;
   display: block;
   position: relative;
   white-space: nowrap;
 
   @include active-focus-hover {
-    color: inherit;
     text-decoration: none;
   }
 
   &::before {
     @include transition-standard(opacity);
 
-    background-color: $toolbar-element-bg;
     content: '';
     display: block;
     opacity: 0;
@@ -222,7 +197,6 @@
 
 .navbar-text {
   align-items: center;
-  color: inherit;
   display: inline-flex;
   flex-wrap: wrap;
   height: $toolbar-element-height;
@@ -241,7 +215,6 @@
     @include border-radius($toolbar-element-border-radius);
     @include transition-standard(background-color, opacity);
 
-    color: inherit;
     font-size: $toolbar-link-font-size;
     height: $toolbar-link-height;
     line-height: $toolbar-link-line-height;
@@ -249,7 +222,6 @@
     padding: $toolbar-link-padding-y $toolbar-link-padding-x;
 
     @include active-focus-hover {
-      background-color: $toolbar-element-bg;
       opacity: 1;
     }
 
@@ -260,7 +232,6 @@
 
     &.disabled {
       background-color: transparent;
-      color: $toolbar-color-lighter;
     }
 
     &:focus {
@@ -271,10 +242,6 @@
   .active > .nav-link,
   .show > .nav-link {
     opacity: 1;
-  }
-
-  .show > .nav-link {
-    background-color: $toolbar-element-bg;
   }
 }
 
@@ -331,7 +298,6 @@
   background-color: transparent;
   border: 0;
   border-radius: 50%;
-  color: inherit;
   display: inline-flex;
   flex-shrink: 0;
   height: $toolbar-element-height;
@@ -342,7 +308,6 @@
   width: $toolbar-element-height;
 
   @include active-focus-hover {
-    color: inherit;
     text-decoration: none;
 
     &::before {
@@ -353,7 +318,6 @@
   &::before {
     @include transition-standard(opacity);
 
-    background-color: $toolbar-element-bg;
     border-radius: 50%;
     content: '';
     display: block;
@@ -377,5 +341,4 @@
 .navbar-toggler-icon {
   display: block;
   @include setup-material-icons-bg();
-  @include material-icons-bg($toolbar-toggler-icon);
 }

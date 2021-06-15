@@ -93,8 +93,9 @@ return [
                     [
                         'label' => __('Site Theme'),
                         'choices' => [
-                            'light' => __('Light') . ' (' . __('Default') . ')',
-                            'dark' => __('Dark'),
+                            App\Customization::THEME_BROWSER => __('Prefer System Default'),
+                            App\Customization::THEME_LIGHT => __('Light'),
+                            App\Customization::THEME_DARK => __('Dark'),
                         ],
                         'default' => App\Customization::DEFAULT_THEME,
                         'form_group_class' => 'col-md-6',

@@ -3,17 +3,70 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
-## New Features/Changes
+---
 
-There have been no changes since the last stable release.
+# AzuraCast 0.13.0 (Jun 15, 2021)
 
 ## Code Quality/Technical Changes
 
-There have been no changes since the last stable release.
+## New Features/Changes
+
+- **Podcast Management (Beta):** You can now upload and manage podcasts directly via the AzuraCast web interface. Via
+  this interface, you can create and manage individual podcast episodes and associate them with uploaded media (which
+  can be managed in an interface similar to the Media Manager). Podcasts have their own automatically generated public
+  pages and RSS feeds that are compatible with many major podcast aggregation services.
+
+- **Automatic Theme Selection:** If you haven't set a default theme for either your user account or the AzuraCast public
+  pages, the theme will automatically be determined by the user's browser based on their OS's theme preference (dark or
+  light). You can override this by selecting a default theme in the "Branding" settings, or reset to using browser
+  preference by selecting the "Prefer System Default" option.
+
+- The built-in public players are now Progressive Web Apps (PWAs) that can be "installed" on browsers and mobile
+  devices.
+
+## Code Quality/Technical Changes
+
+- Several of our upstream dependencies (Doctrine ORM, Symfony Serializer and Validator) have updated to support PHP
+  8.0's attributes, and we have updated our code to reflect those changes.
+
+- The embeddable data on each station's public player is now "OpenGraph" compatible, which should work across multiple
+  social media platforms, including the existing Twitter player implementation.
+
+- Unauthenticated users viewing paginated data (i.e. requestable tracks) are limited to viewing 25 rows per page to
+  avoid excessive server load.
+
+- When streaming to a Remote Relay with a URL beginning in "https://", Liquidsoap will properly use the "https" protocol
+  when broadcasting to it.
+
+- The reports available via the "Reports Overview" page are now also available as API calls to authenticated users with
+  access to the reports pages themselves, via the following URLs:
+    - Charts: `/api/station/{id}/reports/overview/charts`
+    - Best and Worst Performing Tracks: `/api/station/{id}/reports/overview/best-and-worst`
+    - Most Played Tracks: `/api/station/{id}/reports/overview/most-played`
+
+- A new API endpoint is available to view _all_ broadcasts for a station, not just for a specific streamer:
+    - `/api/station/{id}/streamers/broadcasts`
 
 ## Bug Fixes
 
-There have been no changes since the last stable release.
+- A bug preventing unique listeners from appearing when using remote relays powered by the non-KH branch of Icecast
+  2.4.x has been resolved (#3700).
+
+- Advanced custom configuration for Icecast frontends supports both singular and multiple `<alias>` definitions (#4223).
+
+- Ansible installations will also properly be updated to MariaDB 10.5 and new installations will properly restart PHP
+  8.0.
+
+- Fixed a bug with the 5-minute sync's Check Media task taking an inordinately long amount of time with remote
+  filesystems (like S3 or Dropbox). (#4212)
+
+- Some issues causing errors about type mismatches (caused by recent implementations of strict typing) have been
+  resolved.
+
+- The "Clone Station" feature has been fixed and expanded.
+
+- A bug that caused the URLs in "Now Playing" API responses to occasionally jump from using the "Prefer Browser URL"
+  setting to not using it has been resolved; the API response should now be far more consistent.
 
 ---
 

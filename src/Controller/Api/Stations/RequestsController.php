@@ -163,7 +163,7 @@ class RequestsController
 
         try {
             $user = $request->getUser();
-        } catch (Exception\InvalidRequestAttribute $e) {
+        } catch (Exception\InvalidRequestAttribute) {
             $user = null;
         }
 

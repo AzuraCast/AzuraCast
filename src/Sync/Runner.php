@@ -9,6 +9,7 @@ use App\EventDispatcher;
 use App\LockFactory;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -92,7 +93,7 @@ class Runner
             foreach ($event->getTasks() as $taskClass => $task) {
                 try {
                     $lock->refresh($syncInfo['timeout']);
-                } catch (\Exception) {
+                } catch (Exception) {
                     // Noop
                 }
 

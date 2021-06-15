@@ -52,6 +52,7 @@
 import DataTable from '../Common/DataTable';
 import axios from 'axios';
 import QueueLogsModal from './Queue/LogsModal';
+import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
     name: 'StationPlaylists',
@@ -101,10 +102,7 @@ export default {
 
                         this.$refs.datatable.refresh();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.data.message) {
-                            notify('<b>' + err.response.data.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
                 }
             });

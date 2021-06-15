@@ -20,7 +20,7 @@ class MusicBrainzAlbumArtHandler extends AbstractAlbumArtHandler
         return 'MusicBrainz';
     }
 
-    public function getAlbumArt(Entity\SongInterface $song): ?string
+    public function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string
     {
         $releaseGroupIds = [];
         foreach ($this->musicBrainz->findRecordingsForSong($song) as $recording) {

@@ -7,43 +7,12 @@
   padding-left: 0;
   width: 100%;
 
-  &:active,
-  &:focus {
-    &::-moz-range-track {
-      background-color: $slider-track-bg-active;
-    }
-
-    &::-ms-fill-upper {
-      background-color: $slider-track-bg-active;
-    }
-
-    &::-webkit-slider-runnable-track {
-      background-color: $slider-track-bg-active;
-    }
-  }
-
   &:focus {
     outline: 0;
-
-    &::-moz-range-thumb {
-      box-shadow: 0 0 0 $slider-thumb-size rgba($slider-thumb-bg, $slider-thumb-radial-opacity);
-    }
-
-    &::-ms-range-thumb {
-      box-shadow: 0 0 0 $slider-thumb-size rgba($slider-thumb-bg, $slider-thumb-radial-opacity);
-    }
-
-    &::-webkit-slider-thumb {
-      box-shadow: 0 0 0 $slider-thumb-size rgba($slider-thumb-bg, $slider-thumb-radial-opacity);
-    }
   }
 
   &::-moz-focus-outer {
     border: 0;
-  }
-
-  &::-moz-range-progress {
-    background-color: $slider-thumb-bg;
   }
 
   &::-moz-range-thumb {
@@ -53,7 +22,6 @@
     -webkit-appearance: none;
     appearance: none;
 
-    background-color: $slider-thumb-bg;
     border: 0;
     border-radius: 50%;
     height: $slider-thumb-size;
@@ -73,7 +41,6 @@
   &::-moz-range-track {
     @include transition-standard(background-color);
 
-    background-color: $slider-track-bg;
     border-color: transparent;
     border-radius: 0;
     color: transparent;
@@ -83,14 +50,12 @@
   }
 
   &::-ms-fill-lower {
-    background-color: $slider-thumb-bg;
     height: $slider-track-height;
     margin-bottom: $slider-track-height;
     margin-left: ($slider-thumb-size / 2);
   }
 
   &::-ms-fill-upper {
-    background-color: $slider-track-bg;
     height: $slider-track-height;
     margin-right: ($slider-thumb-size / 2);
     margin-bottom: $slider-track-height;
@@ -103,17 +68,12 @@
     -webkit-appearance: none;
     appearance: none;
 
-    background-color: $slider-thumb-bg;
     border: 0;
     border-radius: 50%;
     height: $slider-thumb-size;
     margin-right: ($slider-thumb-size / 2);
     margin-left: ($slider-thumb-size / 2);
     width: $slider-thumb-size;
-
-    &:active {
-      box-shadow: 0 0 0 ($slider-thumb-size / 2) $slider-thumb-bg;
-    }
 
     &:focus {
       outline: 0;
@@ -135,7 +95,6 @@
   &::-webkit-slider-runnable-track {
     @include transition-standard(background-color);
 
-    background-color: $slider-track-bg;
     border-color: transparent;
     border-radius: 0;
     color: transparent;
@@ -151,7 +110,6 @@
     -webkit-appearance: none;
     appearance: none;
 
-    background-color: $slider-thumb-bg;
     border: 0;
     border-radius: 50%;
     height: $slider-thumb-size;

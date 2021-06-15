@@ -85,7 +85,6 @@ abstract class AbstractBuildMenu extends Event
 
     public function checkPermission(string $permission_name): bool
     {
-        $acl = $this->request->getAcl();
-        return $acl->isAllowed($permission_name);
+        return $this->request->getAcl()->isAllowed($permission_name);
     }
 }

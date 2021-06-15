@@ -38,10 +38,8 @@ class BackupsController extends AbstractLogViewerController
         $backups = [];
         $storageLocations = $this->storageLocationRepo->findAllByType(Entity\StorageLocation::TYPE_BACKUP);
         foreach ($storageLocations as $storageLocation) {
-            $fs = $storageLocation->getFilesystem();
-
             /** @var StorageAttributes $file */
-            foreach ($fs->listContents('', true) as $file) {
+            foreach ($storageLocation->getFilesystem()->listContents('', true) as $file) {
                 if ($file->isDir()) {
                     continue;
                 }
@@ -59,7 +57,13 @@ class BackupsController extends AbstractLogViewerController
                 ];
             }
         }
-        $backups = array_reverse($backups);
+
+        uasort(
+            $backups,
+            static function ($a, $b) {
+                return $b['timestamp'] <=> $a['timestamp'];
+            }
+        );
 
         $settings = $this->settingsRepo->readSettings();
 
@@ -68,7 +72,7 @@ class BackupsController extends AbstractLogViewerController
             'admin/backups/index',
             [
                 'backups' => $backups,
-                'is_enabled' => $settings->isBackupEnabled(),
+                'is_enabled' => $settings->getBackupEnabled(),
                 'last_run' => $settings->getBackupLastRun(),
                 'last_result' => $settings->getBackupLastResult(),
                 'last_output' => $settings->getBackupLastOutput(),

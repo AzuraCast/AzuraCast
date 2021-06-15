@@ -6,9 +6,11 @@ use App\Http\Response;
 use App\Http\Router;
 use App\Http\RouterInterface;
 use App\Http\ServerRequest;
+use Countable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use IteratorAggregate;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Doctrine\Collections\CollectionAdapter;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
@@ -17,16 +19,18 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 
-class Paginator
+class Paginator implements IteratorAggregate, Countable
 {
-    protected Pagerfanta $paginator;
-
     protected RouterInterface $router;
 
-    protected int $maxPerPage = 50;
+    /** @var int The maximum number of records that can be viewed per page for unauthenticated users. */
+    protected int $maxPerPage = 25;
 
     /** @var bool Whether the current request is from jQuery Bootgrid */
     protected bool $isBootgrid = false;
+
+    /** @var bool Whether the user is currently authenticated on this request. */
+    protected bool $isAuthenticated = false;
 
     /** @var bool Whether to show pagination controls. */
     protected bool $isDisabled = true;
@@ -34,10 +38,14 @@ class Paginator
     /** @var callable|null A callable postprocessor that can be run on each result. */
     protected $postprocessor;
 
-    public function __construct(Pagerfanta $paginator, ServerRequestInterface $request)
-    {
-        $this->paginator = $paginator;
+    public function __construct(
+        protected Pagerfanta $paginator,
+        ServerRequestInterface $request
+    ) {
         $this->router = $request->getAttribute(ServerRequest::ATTR_ROUTER);
+
+        $user = $request->getAttribute(ServerRequest::ATTR_USER);
+        $this->isAuthenticated = ($user !== null);
 
         $params = $request->getQueryParams();
         $this->isBootgrid = isset($params['rowCount']) || isset($params['searchPhrase']);
@@ -84,11 +92,15 @@ class Paginator
 
     public function setPerPage(int $perPage): void
     {
-        if ($perPage > 0) {
-            $this->paginator->setMaxPerPage(($perPage <= $this->maxPerPage) ? $perPage : $this->maxPerPage);
-        } else {
-            $this->paginator->setMaxPerPage(PHP_INT_MAX);
+        if ($perPage <= 0) {
+            $perPage = PHP_INT_MAX;
         }
+
+        $this->paginator->setMaxPerPage(
+            $this->isAuthenticated
+                ? $perPage
+                : min($perPage, $this->maxPerPage)
+        );
 
         $this->isDisabled = false;
     }
@@ -118,7 +130,7 @@ class Paginator
         return $this->paginator->getIterator();
     }
 
-    public function getCount(): int
+    public function count(): int
     {
         return $this->paginator->getNbResults();
     }
@@ -131,7 +143,7 @@ class Paginator
         }
 
         $iterator = $this->getIterator();
-        $total = $this->getCount();
+        $total = $this->count();
 
         $totalPages = $this->paginator->getNbPages();
 

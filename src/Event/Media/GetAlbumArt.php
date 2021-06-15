@@ -10,11 +10,11 @@ class GetAlbumArt extends Event
     protected ?string $albumArt = null;
 
     public function __construct(
-        protected Entity\SongInterface $song
+        protected Entity\Interfaces\SongInterface $song
     ) {
     }
 
-    public function getSong(): Entity\SongInterface
+    public function getSong(): Entity\Interfaces\SongInterface
     {
         return $this->song;
     }

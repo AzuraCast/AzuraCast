@@ -32,7 +32,7 @@ class Assets
     protected bool $is_sorted = true;
 
     /** @var string A randomly generated number-used-once (nonce) for inline CSP. */
-    protected $csp_nonce;
+    protected string $csp_nonce;
 
     /** @var array The loaded domains that should be included in the CSP header. */
     protected array $csp_domains;
@@ -47,26 +47,25 @@ class Assets
     ) {
         $this->request = $request;
 
-        $libraries = $config->get('assets');
-        foreach ($libraries as $library_name => $library) {
+        foreach ($config->get('assets') as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }
 
         $versioned_files = [];
         $assets_file = $environment->getBaseDirectory() . '/web/static/assets.json';
-        if (file_exists($assets_file)) {
+        if (is_file($assets_file)) {
             $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }
         $this->versioned_files = $versioned_files;
 
         $vueComponents = [];
         $assets_file = $environment->getBaseDirectory() . '/web/static/webpack.json';
-        if (file_exists($assets_file)) {
+        if (is_file($assets_file)) {
             $vueComponents = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
         }
         $this->addVueComponents($vueComponents);
 
-        $this->csp_nonce = preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
+        $this->csp_nonce = (string)preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
         $this->csp_domains = [];
     }
 
@@ -196,7 +195,7 @@ class Assets
 
         // Check if a library is "replaced" by other libraries already loaded.
         $is_replaced = false;
-        foreach ($this->loaded as $loaded_name => $loaded_item) {
+        foreach ($this->loaded as $loaded_item) {
             if (!empty($loaded_item['replace']) && in_array($name, (array)$loaded_item['replace'], true)) {
                 $is_replaced = true;
                 break;
@@ -483,6 +482,35 @@ class Assets
     }
 
     /**
+     * @return string[] The paths to all currently loaded files.
+     */
+    public function getLoadedFiles(): array
+    {
+        $this->sort();
+
+        $result = [];
+        foreach ($this->loaded as $item) {
+            if (!empty($item['files']['js'])) {
+                foreach ($item['files']['js'] as $file) {
+                    if (isset($file['src'])) {
+                        $result[] = $this->getUrl($file['src']);
+                    }
+                }
+            }
+
+            if (!empty($item['files']['css'])) {
+                foreach ($item['files']['css'] as $file) {
+                    if (isset($file['href'])) {
+                        $result[] = $this->getUrl($file['href']);
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Resolve the URI of the resource, whether local or remote/CDN-based.
      *
      * @param string $resource_uri
@@ -495,7 +523,7 @@ class Assets
             $resource_uri = $this->versioned_files[$resource_uri];
         }
 
-        if (preg_match('/^(https?:)?\/\//', $resource_uri)) {
+        if (str_starts_with($resource_uri, 'http')) {
             $this->addDomainToCsp($resource_uri);
             return $resource_uri;
         }
@@ -528,13 +556,17 @@ class Assets
 
         // CSP JavaScript policy
         // Note: unsafe-eval included for Vue template compiling
-        $csp_script_src = $this->getCspDomains();
-        $csp_script_src[] = "'self'";
-        $csp_script_src[] = "'unsafe-eval'";
-        $csp_script_src[] = "'nonce-" . $this->getCspNonce() . "'";
+        $cspScriptSrc = $this->getCspDomains();
+        $cspScriptSrc[] = "'self'";
+        $cspScriptSrc[] = "'unsafe-eval'";
+        $cspScriptSrc[] = "'nonce-" . $this->getCspNonce() . "'";
+        $csp[] = 'script-src ' . implode(' ', $cspScriptSrc);
 
-        $csp[] = 'script-src ' . implode(' ', $csp_script_src);
-        $csp[] = 'worker-src blob:';
+        $cspWorkerSrc = [];
+        $cspWorkerSrc[] = "blob:";
+        $cspWorkerSrc[] = "'self'";
+
+        $csp[] = 'worker-src ' . implode(' ', $cspWorkerSrc);
 
         return $response->withHeader('Content-Security-Policy', implode('; ', $csp));
     }

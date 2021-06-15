@@ -21,7 +21,6 @@
 // Base styles for custom control indicators
 
 .custom-control-label {
-  color: inherit;
   font-size: $textfield-font-size;
   line-height: inherit;
   margin-bottom: 0;
@@ -37,7 +36,6 @@
 
     background-color: currentColor;
     border-radius: 50%;
-    color: $selection-control-color;
     content: '';
     display: block;
     height: ($selection-control-indicator-size * 2);
@@ -65,55 +63,11 @@
     }
   }
 
-  &:checked ~ {
-    .custom-control-label {
-      &::before {
-        background-color: $selection-control-color-active;
-      }
-    }
-  }
-
   &:disabled ~ {
     .custom-control-label {
-      background-color: $selection-control-color-disabled;
-
       &::before {
         display: none;
       }
-    }
-  }
-}
-
-// Checkbox
-
-.custom-checkbox {
-  .custom-control-label::after {
-    @include setup-material-icons-bg;
-    @include material-icons-bg($selection-control-checkbox-icon);
-  }
-
-  .custom-control-input {
-    &:checked ~ .custom-control-label::after {
-      @include material-icons-bg($selection-control-checkbox-icon-checked);
-    }
-
-    &:indeterminate ~ .custom-control-label::after {
-      @include material-icons-bg($selection-control-checkbox-icon-indeterminate);
-    }
-  }
-}
-
-// Radio button
-
-.custom-radio {
-  .custom-control-label::after {
-    @include setup-material-icons-bg;
-    @include material-icons-bg($selection-control-radio-icon);
-  }
-
-  .custom-control-input {
-    &:checked ~ .custom-control-label::after {
-      @include material-icons-bg($selection-control-radio-icon-checked);
     }
   }
 }
@@ -129,7 +83,6 @@
     &::after {
       @include transition-standard(background-color, transform);
 
-      background-color: $selection-control-thumb-bg;
       border-radius: 50%;
       box-shadow: $selection-control-thumb-shadow;
       content: '';
@@ -148,26 +101,7 @@
         &::before {
           transform: translateX($selection-control-track-width - $selection-control-indicator-size);
         }
-
-        &::after {
-          background-color: $selection-control-color-active;
-        }
-
         // scss-lint:enable
-      }
-
-      ~ .custom-control-track {
-        background-color: rgba($selection-control-color-active, $selection-control-track-opacity);
-      }
-    }
-
-    &:disabled {
-      ~ .custom-control-label::after {
-        background-color: $selection-control-thumb-bg-disabled;
-      }
-
-      ~ .custom-control-track {
-        background-color: $selection-control-track-bg-disabled;
       }
     }
   }
@@ -176,7 +110,6 @@
     @include transition-standard(background-color);
 
     background-clip: content-box;
-    background-color: $selection-control-track-bg;
     border: (($selection-control-indicator-size - $selection-control-track-height) / 2) solid transparent;
     border-radius: $selection-control-track-height;
     content: '';

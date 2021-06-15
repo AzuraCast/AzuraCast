@@ -20,63 +20,90 @@ class BroadcastsController extends AbstractApiCrudController
      * @param ServerRequest $request
      * @param Response $response
      * @param int|string $station_id
-     * @param int $id
+     * @param int|null $id
      */
     public function listAction(
         ServerRequest $request,
         Response $response,
         int|string $station_id,
-        int $id
+        ?int $id = null
     ): ResponseInterface {
         $station = $request->getStation();
-        $streamer = $this->getStreamer($station, $id);
 
-        if (null === $streamer) {
-            return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+        if (null !== $id) {
+            $streamer = $this->getStreamer($station, $id);
+
+            if (null === $streamer) {
+                return $response->withStatus(404)
+                    ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+            }
+
+            $query = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT ssb
+                    FROM App\Entity\StationStreamerBroadcast ssb
+                    WHERE ssb.station = :station AND ssb.streamer = :streamer
+                    ORDER BY ssb.timestampStart DESC
+                DQL
+            )->setParameter('station', $station)
+                ->setParameter('streamer', $streamer);
+        } else {
+            $query = $this->em->createQuery(
+                <<<'DQL'
+                    SELECT ssb, ss
+                    FROM App\Entity\StationStreamerBroadcast ssb
+                    JOIN ssb.streamer ss
+                    WHERE ssb.station = :station
+                    ORDER BY ssb.timestampStart DESC
+                DQL
+            )->setParameter('station', $station);
         }
-
-        $query = $this->em->createQuery(
-            <<<'DQL'
-                SELECT ssb
-                FROM App\Entity\StationStreamerBroadcast ssb
-                WHERE ssb.station = :station AND ssb.streamer = :streamer
-                ORDER BY ssb.timestampStart DESC
-            DQL
-        )->setParameter('station', $station)
-            ->setParameter('streamer', $streamer);
 
         $paginator = Paginator::fromQuery($query, $request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
         $router = $request->getRouter();
 
-        $fsStation = new StationFilesystems($station);
-        $fsRecordings = $fsStation->getRecordingsFilesystem();
+        $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
         $paginator->setPostprocessor(
-            function ($row) use ($is_bootgrid, $router, $fsRecordings) {
+            function ($row) use ($id, $is_bootgrid, $router, $fsRecordings) {
                 /** @var Entity\StationStreamerBroadcast $row */
                 $return = $this->toArray($row);
 
                 unset($return['recordingPath']);
-
                 $recordingPath = $row->getRecordingPath();
 
+                if (null === $id) {
+                    $streamer = $row->getStreamer();
+                    $return['streamer'] = [
+                        'id' => $streamer->getId(),
+                        'streamer_username' => $streamer->getStreamerUsername(),
+                        'display_name' => $streamer->getDisplayName(),
+                    ];
+                }
+
                 if (!empty($recordingPath) && $fsRecordings->fileExists($recordingPath)) {
+                    $routeParams = [
+                        'broadcast_id' => $row->getId(),
+                    ];
+                    if (null === $id) {
+                        $routeParams['id'] = $row->getStreamer()->getId();
+                    }
+
                     $return['recording'] = [
                         'path' => $recordingPath,
                         'size' => $fsRecordings->fileSize($recordingPath),
                         'links' => [
                             'download' => $router->fromHere(
                                 'api:stations:streamer:broadcast:download',
-                                ['broadcast_id' => $row->getId()],
+                                $routeParams,
                                 [],
                                 true
                             ),
                             'delete' => $router->fromHere(
                                 'api:stations:streamer:broadcast:delete',
-                                ['broadcast_id' => $row->getId()],
+                                $routeParams,
                                 [],
                                 true
                             ),
@@ -128,8 +155,7 @@ class BroadcastsController extends AbstractApiCrudController
 
         $filename = basename($recordingPath);
 
-        $fsStation = new StationFilesystems($station);
-        $fsRecordings = $fsStation->getRecordingsFilesystem();
+        $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
         return $response->streamFilesystemFile(
             $fsRecordings,
@@ -156,8 +182,7 @@ class BroadcastsController extends AbstractApiCrudController
         $recordingPath = $broadcast->getRecordingPath();
 
         if (!empty($recordingPath)) {
-            $fsStation = new StationFilesystems($station);
-            $fsRecordings = $fsStation->getRecordingsFilesystem();
+            $fsRecordings = (new StationFilesystems($station))->getRecordingsFilesystem();
 
             $fsRecordings->delete($recordingPath);
 

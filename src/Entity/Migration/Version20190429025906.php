@@ -19,7 +19,7 @@ final class Version20190429025906 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $playlists = $this->connection->fetchAll('SELECT sp.* FROM station_playlists AS sp');
+        $playlists = $this->connection->fetchAllAssociative('SELECT sp.* FROM station_playlists AS sp');
 
         foreach ($playlists as $playlist) {
             $backend_options = [];

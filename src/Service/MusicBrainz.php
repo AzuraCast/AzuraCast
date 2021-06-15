@@ -46,16 +46,11 @@ class MusicBrainz
 
         try {
             $rateLimitLock->acquire(true);
-        } catch (LockConflictedException $e) {
+        } catch (LockConflictedException) {
             throw new RateLimitExceededException('Could not acquire rate limiting lock.');
         }
 
-        $query = array_merge(
-            $query,
-            [
-                'fmt' => 'json',
-            ]
-        );
+        $query['fmt'] = 'json';
 
         $uri = UriResolver::resolve(
             Utils::uriFor(self::API_BASE_URL),
@@ -84,7 +79,7 @@ class MusicBrainz
      * @return mixed[]
      */
     public function findRecordingsForSong(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         string $include = 'releases'
     ): array {
         $query = [];
@@ -172,7 +167,7 @@ class MusicBrainz
 
         try {
             $jsonBody = json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
+        } catch (JsonException) {
             return null;
         }
 
@@ -191,7 +186,8 @@ class MusicBrainz
                 ?? null;
 
             if (!empty($imageUrl)) {
-                return $imageUrl;
+                $imageUri = Utils::uriFor($imageUrl);
+                return (string)($imageUri->withScheme('https'));
             }
         }
 

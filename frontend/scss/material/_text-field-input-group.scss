@@ -52,7 +52,6 @@
 }
 
 .input-group-text {
-  color: inherit;
   font-size: $textfield-font-size;
   line-height: $textfield-line-height;
   margin-bottom: 0;
@@ -81,19 +80,9 @@
 .input-group-icon {
   @include transition-standard(color);
 
-  color: $textfield-border-color;
   font-size: ($font-size-base / 1rem * $textfield-font-size);
   margin-right: $input-group-inner-spacer-x;
   order: -1;
-
-  @include hover {
-    color: $textfield-border-color-hover;
-  }
-
-  .floating-label.is-focused ~ &,
-  .form-control:focus ~ & {
-    color: $textfield-border-color-focus;
-  }
 
   .floating-label:not(.textfield-box) ~ & {
     margin-top: $floating-label-font-size;

@@ -37,21 +37,21 @@ class SongApiGenerator
     }
 
     public function __invoke(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false
     ): Entity\Api\Song {
         $response = new Entity\Api\Song();
-        $response->id = (string)$song->getSongId();
-        $response->text = (string)$song->getText();
-        $response->artist = (string)$song->getArtist();
-        $response->title = (string)$song->getTitle();
+        $response->id = $song->getSongId();
+        $response->text = $song->getText() ?? '';
+        $response->artist = $song->getArtist() ?? '';
+        $response->title = $song->getTitle() ?? '';
 
         if ($song instanceof Entity\StationMedia) {
-            $response->album = (string)$song->getAlbum();
-            $response->genre = (string)$song->getGenre();
-            $response->lyrics = (string)$song->getLyrics();
+            $response->album = $song->getAlbum() ?? '';
+            $response->genre = $song->getGenre() ?? '';
+            $response->lyrics = $song->getLyrics() ?? '';
 
             $response->custom_fields = $this->getCustomFields($song->getId());
         } else {
@@ -64,7 +64,7 @@ class SongApiGenerator
     }
 
     protected function getAlbumArtUrl(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         ?Entity\Station $station = null,
         ?UriInterface $baseUri = null,
         bool $allowRemoteArt = false

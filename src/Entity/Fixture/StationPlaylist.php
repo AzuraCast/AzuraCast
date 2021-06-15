@@ -9,15 +9,15 @@ use Doctrine\Persistence\ObjectManager;
 
 class StationPlaylist extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
 
         $playlist = new Entity\StationPlaylist($station);
         $playlist->setName('default');
-        $em->persist($playlist);
-        $em->flush();
+        $manager->persist($playlist);
+        $manager->flush();
 
         $this->addReference('station_playlist', $playlist);
     }

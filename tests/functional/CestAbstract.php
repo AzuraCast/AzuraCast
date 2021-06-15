@@ -1,7 +1,7 @@
 <?php
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
 abstract class CestAbstract
@@ -14,7 +14,7 @@ abstract class CestAbstract
 
     protected Entity\Repository\StationRepository $stationRepo;
 
-    protected EntityManagerInterface $em;
+    protected ReloadableEntityManagerInterface $em;
 
     protected string $login_username = 'azuracast@azuracast.com';
     protected string $login_password = 'AzuraCastFunctionalTests!';
@@ -102,7 +102,7 @@ abstract class CestAbstract
     protected function getTestStation(): Entity\Station
     {
         if ($this->test_station instanceof Entity\Station) {
-            $testStation = $this->em->find(Entity\Station::class, $this->test_station->getId());
+            $testStation = $this->em->refetch($this->test_station);
             if ($testStation instanceof Entity\Station) {
                 return $testStation;
             }
@@ -162,5 +162,39 @@ abstract class CestAbstract
         );
 
         $I->seeInSource('Logged In');
+    }
+
+    protected function testCrudApi(
+        FunctionalTester $I,
+        string $listUrl,
+        array $createJson = [],
+        array $editJson = []
+    ): void {
+        // Create new record
+        $I->sendPOST($listUrl, $createJson);
+
+        $I->seeResponseCodeIs(200);
+
+        $newRecord = $I->grabDataFromResponseByJsonPath('links.self');
+        $newRecordSelfLink = $newRecord[0];
+
+        // Get single record.
+        $I->sendGET($newRecordSelfLink);
+
+        $I->seeResponseContainsJson($createJson);
+
+        // Modify record.
+        $I->sendPUT($newRecordSelfLink, $editJson);
+
+        // List all records.
+        $I->sendGET($newRecordSelfLink);
+
+        $I->seeResponseContainsJson($editJson);
+
+        // Delete Record
+        $I->sendDELETE($newRecordSelfLink);
+
+        $I->sendGET($newRecordSelfLink);
+        $I->seeResponseCodeIs(404);
     }
 }

@@ -71,7 +71,7 @@ class UptimeWait
 
         $elapsed = 0;
         while ($elapsed <= $this->timeout) {
-            if ($this->checkDatabase() && $this->checkRedis()) {
+            if ($this->checkRedis() && $this->checkDatabase()) {
                 $this->println('Services started up and ready!');
                 die(0);
             }

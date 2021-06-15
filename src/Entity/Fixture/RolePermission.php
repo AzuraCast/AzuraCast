@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class RolePermission extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
@@ -38,11 +38,11 @@ class RolePermission extends AbstractFixture implements DependentFixtureInterfac
 
             foreach ($perm_names as $perm_name) {
                 $rp = new Entity\RolePermission($role, $perm_name[1], $perm_name[0]);
-                $em->persist($rp);
+                $manager->persist($rp);
             }
         }
 
-        $em->flush();
+        $manager->flush();
     }
 
     /**

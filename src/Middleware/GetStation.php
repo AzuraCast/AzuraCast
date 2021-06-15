@@ -25,8 +25,7 @@ class GetStation implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $routeContext = RouteContext::fromRequest($request);
-        $route_args = $routeContext->getRoute()?->getArguments();
+        $route_args = RouteContext::fromRequest($request)->getRoute()?->getArguments();
 
         $id = $route_args['station_id'] ?? null;
 

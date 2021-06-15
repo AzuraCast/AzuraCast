@@ -20,7 +20,9 @@ final class Version20170412210654 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $all_stations = $this->connection->fetchAll("SELECT * FROM station WHERE frontend_type='shoutcast2'");
+        $all_stations = $this->connection->fetchAllAssociative(
+            "SELECT * FROM station WHERE frontend_type='shoutcast2'"
+        );
 
         foreach ($all_stations as $station) {
             $this->connection->insert('station_mounts', [

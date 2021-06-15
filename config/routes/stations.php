@@ -55,26 +55,13 @@ return function (App $app) {
                 ->setName('stations:playlists:index')
                 ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
-            $group->group(
-                '/mounts',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Stations\MountsController::class . ':indexAction')
-                        ->setName('stations:mounts:index');
+            $group->get('/podcasts', Controller\Stations\PodcastsAction::class)
+                ->setName('stations:podcasts:index')
+                ->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
 
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/edit/{id}',
-                        Controller\Stations\MountsController::class . ':editAction'
-                    )
-                        ->setName('stations:mounts:edit');
-
-                    $group->map(['GET', 'POST'], '/add', Controller\Stations\MountsController::class . ':editAction')
-                        ->setName('stations:mounts:add');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Stations\MountsController::class . ':deleteAction')
-                        ->setName('stations:mounts:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
+            $group->get('/mounts', Controller\Stations\MountsAction::class)
+                ->setName('stations:mounts:index')
+                ->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
 
             $group->get('/profile', Controller\Stations\ProfileController::class)
                 ->setName('stations:profile:index');

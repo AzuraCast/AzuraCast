@@ -3,7 +3,6 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use App\Event\SendWebhooks;
 
 interface ConnectorInterface
 {
@@ -28,7 +27,6 @@ interface ConnectorInterface
      * @param Entity\StationWebhook $webhook
      * @param Entity\Api\NowPlaying $np
      * @param array $triggers
-     * @param bool $isStandalone
      *
      * @return bool Whether the webhook actually dispatched.
      */
@@ -36,7 +34,6 @@ interface ConnectorInterface
         Entity\Station $station,
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying $np,
-        array $triggers,
-        bool $isStandalone
+        array $triggers
     ): bool;
 }

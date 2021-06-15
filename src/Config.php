@@ -25,7 +25,7 @@ class Config
     {
         $path = $this->getPath($name);
 
-        if (file_exists($path)) {
+        if (is_file($path)) {
             unset($name);
             extract($inject_vars, EXTR_OVERWRITE);
             unset($inject_vars);

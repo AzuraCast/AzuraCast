@@ -69,5 +69,5 @@ abstract class AbstractAlbumArtHandler
 
     abstract protected function getServiceName(): string;
 
-    abstract protected function getAlbumArt(Entity\SongInterface $song): ?string;
+    abstract protected function getAlbumArt(Entity\Interfaces\SongInterface $song): ?string;
 }

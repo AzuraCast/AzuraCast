@@ -46,7 +46,7 @@ class UsersController extends AbstractAdminCrudController
 
                 return $response->withRedirect($request->getRouter()->named('admin:users:index'));
             }
-        } catch (UniqueConstraintViolationException $e) {
+        } catch (UniqueConstraintViolationException) {
             $request->getFlash()->addMessage(
                 __('Another user already exists with this e-mail address. Please update the e-mail address.'),
                 Flash::ERROR

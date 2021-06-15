@@ -1,9 +1,7 @@
 .chip {
   align-items: center;
-  background-color: $chip-bg;
   border: 0;
   border-radius: ($chip-height / 2);
-  color: $chip-color;
   display: inline-flex;
   font-size: $chip-font-size;
   font-weight: $chip-font-weight;
@@ -32,26 +30,11 @@
   }
 }
 
-@each $color, $values in $theme-colors {
-  .chip-#{$color} {
-    background-color: theme-color($color);
-    color: color-yiq(theme-color($color));
-  }
-}
-
-// Misc
-
 .chip-action {
   @include transition-standard(background-color, box-shadow);
 
   @include active-focus-hover {
-    box-shadow: map-get($chip-elevation-shadow-hover, shadow);
-    color: $chip-color;
     text-decoration: none;
-  }
-
-  &:active {
-    background-color: $chip-bg-active;
   }
 
   &:focus {
@@ -63,9 +46,7 @@
   @include text-truncate;
 
   align-items: center;
-  background-color: $chip-icon-bg;
   border-radius: ($chip-height / 2);
-  color: color-yiq($chip-icon-bg);
   display: inline-flex;
   flex-shrink: 0;
   font-size: $chip-icon-font-size;

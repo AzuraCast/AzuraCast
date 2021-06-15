@@ -19,7 +19,7 @@ final class Version20180324053351 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $this->connection->exec('UPDATE station SET is_enabled=1');
+        $this->connection->executeStatement('UPDATE station SET is_enabled=1');
     }
 
     public function down(Schema $schema): void

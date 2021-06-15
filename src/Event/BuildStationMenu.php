@@ -23,7 +23,6 @@ class BuildStationMenu extends AbstractBuildMenu
 
     public function checkPermission(string $permission_name): bool
     {
-        $acl = $this->request->getAcl();
-        return $acl->isAllowed($permission_name, $this->station->getId());
+        return $this->request->getAcl()->isAllowed($permission_name, $this->station->getId());
     }
 }

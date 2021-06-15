@@ -43,6 +43,7 @@ import axios from 'axios';
 import formatFileSize from '../../Function/FormatFileSize.js';
 import InlinePlayer from '../../InlinePlayer';
 import Icon from '../../Common/Icon';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'StreamerBroadcastsModal',
@@ -141,10 +142,7 @@ export default {
 
                         this.$refs.datatable.refresh();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.message) {
-                            notify('<b>' + err.response.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
 
                     this.$refs.datatable.refresh();

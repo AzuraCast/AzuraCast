@@ -6,7 +6,6 @@
   @include reset-text;
   @include border-radius($popover-border-radius);
 
-  background-color: $popover-bg;
   box-shadow: map-get($popover-elevation-shadow, shadow);
   display: block;
   font-size: $popover-font-size;

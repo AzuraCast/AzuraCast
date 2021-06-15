@@ -60,11 +60,11 @@
                      :no-provider-filtering="handleClientSide"
                      tbody-tr-class="align-middle" thead-tr-class="align-middle" selected-variant=""
                      :filter="filter" @filtered="onFiltered" @refreshed="onRefreshed">
-                <template v-slot:head(selected)="data">
+                <template #head(selected)="data">
                     <b-form-checkbox :aria-label="langSelectAll" :checked="allSelected"
                                      @change="toggleSelected"></b-form-checkbox>
                 </template>
-                <template v-slot:cell(selected)="{ rowSelected }">
+                <template #cell(selected)="{ rowSelected }">
                     <div class="text-muted">
                         <template v-if="rowSelected">
                             <span class="sr-only">{{ langDeselectRow }}</span>
@@ -76,7 +76,7 @@
                         </template>
                     </div>
                 </template>
-                <template v-slot:table-busy>
+                <template #table-busy>
                     <div role="alert" aria-live="polite">
                         <div class="text-center my-2">
                             <div class="progress-circular progress-circular-primary mx-auto mb-3">
@@ -122,6 +122,13 @@ div.datatable-toolbar-bottom {
     padding: 0;
 }
 
+table.b-table {
+    td.shrink {
+        width: 0.1%;
+        white-space: nowrap;
+    }
+}
+
 table.b-table-selectable {
     thead tr th:nth-child(1),
     tbody tr td:nth-child(1),
@@ -162,6 +169,10 @@ export default {
             type: Boolean,
             default: true
         },
+        pageOptions: {
+            type: Array,
+            default: () => [10, 25, 50, 0]
+        },
         defaultPerPage: {
             type: Number,
             default: 10
@@ -201,7 +212,6 @@ export default {
             storeKey: 'datatable_' + this.id + '_settings',
             filter: null,
             perPage: (this.paginated) ? this.defaultPerPage : 0,
-            pageOptions: [10, 25, 50, 0],
             currentPage: 1,
             totalRows: 0,
             flushCache: false

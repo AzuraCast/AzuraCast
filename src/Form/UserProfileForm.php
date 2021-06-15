@@ -40,9 +40,7 @@ class UserProfileForm extends EntityForm
 
         $this->getField('password')->addValidator(
             function ($val, AbstractField $field) use ($user) {
-                $form = $field->getForm();
-
-                $new_password = $form->getField('new_password')->getValue();
+                $new_password = $field->getForm()->getField('new_password')->getValue();
                 if (!empty($new_password)) {
                     if ($user->verifyPassword($val)) {
                         return true;
@@ -56,31 +54,6 @@ class UserProfileForm extends EntityForm
         );
 
         return parent::process($request, $user);
-    }
-
-    public function switchTheme(ServerRequest $request): void
-    {
-        $user = $request->getUser();
-
-        $themeField = $this->getField('theme');
-
-        $themeFieldOptions = $themeField->getOptions();
-        $themeOptions = array_keys($themeFieldOptions['choices']);
-
-        $currentTheme = $user->getTheme();
-        if (empty($currentTheme)) {
-            $currentTheme = $themeField->getValue();
-        }
-
-        foreach ($themeOptions as $theme) {
-            if ($theme !== $currentTheme) {
-                $user->setTheme($theme);
-                break;
-            }
-        }
-
-        $this->em->persist($user);
-        $this->em->flush();
     }
 
     public function getView(ServerRequest $request): string

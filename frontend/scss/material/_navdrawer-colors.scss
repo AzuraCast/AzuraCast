@@ -1,0 +1,89 @@
+.navdrawer-backdrop {
+  background-color: $navdrawer-backdrop-bg;
+}
+
+.navdrawer-content {
+  background-color: $navdrawer-content-bg;
+}
+
+.navdrawer-divider {
+  @include nav-divider($navdrawer-divider-bg);
+}
+
+.navdrawer-header {
+  background-color: $navdrawer-header-bg;
+  border-bottom: $navdrawer-header-border-width solid $navdrawer-header-border-color;
+}
+
+.navdrawer-subheader {
+  color: $navdrawer-subheader-color;
+}
+
+.navdrawer-nav {
+  .nav-link {
+    color: $navdrawer-nav-link-color;
+
+    @include active-focus-hover {
+      background-color: $navdrawer-nav-link-bg-hover;
+    }
+
+    &.active,
+    &:active {
+      color: $navdrawer-nav-link-color-active;
+    }
+
+    &.disabled {
+      background-color: transparent;
+      color: $navdrawer-nav-link-color-disabled;
+    }
+  }
+
+  .active > .nav-link {
+    color: $navdrawer-nav-link-color-active;
+  }
+}
+
+.navdrawer-nav-icon {
+  color: $navdrawer-nav-icon-color;
+  width: $navdrawer-nav-icon-width;
+
+  .nav-link:active &,
+  .nav-link.active & {
+    color: $navdrawer-nav-link-color-active;
+  }
+}
+
+.active > .nav-link .navdrawer-nav-icon {
+  color: $navdrawer-nav-link-color-active;
+}
+
+// Permanent, persistent and temporary variations
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  $next: breakpoint-next($breakpoint);
+  $infix: breakpoint-infix($next);
+
+  .navdrawer-permanent#{$infix} {
+    border-right: $navdrawer-border-width solid $navdrawer-border-color;
+
+    &.navdrawer-right {
+      border-left: $navdrawer-border-width solid $navdrawer-border-color;
+    }
+  }
+
+  .navdrawer-persistent#{$infix} {
+    &.navdrawer-persistent-clipped {
+      border-top: $navdrawer-border-width solid $navdrawer-border-color;
+    }
+
+    &.navdrawer-right {
+      .navdrawer-content {
+        border-left: $navdrawer-border-width solid $navdrawer-border-color;
+      }
+    }
+
+    .navdrawer-content {
+      border-right: $navdrawer-border-width solid $navdrawer-border-color;
+    }
+  }
+}

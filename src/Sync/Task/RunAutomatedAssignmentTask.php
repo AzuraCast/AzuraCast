@@ -2,7 +2,7 @@
 
 namespace App\Sync\Task;
 
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Exception;
@@ -140,8 +140,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
                 $playlistNumSongs = $songsPerPlaylist;
             }
 
-            $media_in_playlist = array_slice($mediaReport, $i, $playlistNumSongs);
-            foreach ($media_in_playlist as $media) {
+            foreach (array_slice($mediaReport, $i, $playlistNumSongs) as $media) {
                 $mediaToUpdate[$media['id']]['new_playlist_id'] = $playlistId;
             }
 
@@ -226,7 +225,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
             DQL
         )->setParameter('storageLocation', $station->getMediaStorageLocation());
 
-        $iterator = BatchIteratorAggregate::fromQuery($mediaQuery, 100);
+        $iterator = ReadOnlyBatchIteratorAggregate::fromQuery($mediaQuery, 100);
         $report = [];
 
         /** @var Entity\StationMedia $row */
@@ -259,8 +258,7 @@ class RunAutomatedAssignmentTask extends AbstractTask
             if ($row->getPlaylists()->count() > 0) {
                 /** @var Entity\StationPlaylistMedia $playlist_item */
                 foreach ($row->getPlaylists() as $playlist_item) {
-                    $playlist = $playlist_item->getPlaylist();
-                    $media['playlists'][] = $playlist->getName();
+                    $media['playlists'][] = $playlist_item->getPlaylist()->getName();
                 }
             }
 

@@ -12,11 +12,9 @@
  * @var App\Environment $environment
  */
 
-$page_class ??= '';
-$page_class .= ' theme-' . $customization->getTheme();
 ?>
 <!DOCTYPE html>
-<html>
+<html data-theme="<?=$customization->getTheme()?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,14 +29,13 @@ $page_class .= ' theme-' . $customization->getTheme();
     <?php
     $assets
         ->load('main')
-        ->load('theme_' . $customization->getTheme())
         ->addInlineCss($customization->getCustomInternalCss());
 
     echo $assets->css();
     echo $assets->js();
     ?>
 </head>
-<body class="page-full <?=$page_class?> <?php
+<body class="page-full <?=$page_class ?? ''?> <?php
 if (!empty($sidebar)): ?>has-sidebar<?php
 endif; ?>">
 <?=$assets->inlineJs()?>
@@ -192,21 +189,5 @@ endif; ?> role="contentinfo">
 </footer>
 
 <div id="radio-player"></div>
-
-<?php
-if (null !== $flash && $flash->hasMessages()): ?>
-    <script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
-        $(function () {
-            <?php foreach($flash->getMessages() as $message): ?>
-            notify("<?=str_replace(
-                ['"', "\n"],
-                ['\'', '<br>'],
-                $message['text']
-            ) ?>", '<?=$message['color'] ?>', false);
-            <?php endforeach; ?>
-        });
-    </script>
-<?php
-endif; ?>
 </body>
 </html>

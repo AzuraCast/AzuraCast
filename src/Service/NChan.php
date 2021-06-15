@@ -44,10 +44,8 @@ class NChan
     {
         $vars = [];
 
-        if (0 === stripos(PHP_OS, 'linux')) {
-            $files = glob('/etc/*-release');
-
-            foreach ($files as $file) {
+        if ('Linux' === PHP_OS_FAMILY) {
+            foreach (glob(' /etc/*-release', GLOB_NOSORT) as $file) {
                 $lines = array_filter(
                     array_map(
                         static function ($line) {

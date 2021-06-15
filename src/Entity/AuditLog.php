@@ -6,79 +6,45 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="audit_log", indexes={
- *     @ORM\Index(name="idx_search", columns={"class", "user", "identifier"}),
- * })
- * @ORM\Entity(readOnly=true)
- */
+#[
+    ORM\Entity(readOnly: true),
+    ORM\Table(name: 'audit_log'),
+    ORM\Index(columns: ['class', 'user', 'identifier'], name: 'idx_search')
+]
 class AuditLog
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const OPER_INSERT = 1;
     public const OPER_UPDATE = 2;
     public const OPER_DELETE = 3;
 
-    /** @var string|null */
-    protected static $currentUser;
+    protected static ?string $currentUser = null;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column]
+    protected int $timestamp;
 
-    /**
-     * @ORM\Column(name="timestamp", type="integer")
-     * @var int
-     */
-    protected $timestamp;
+    #[ORM\Column(type: 'smallint')]
+    protected int $operation;
 
-    /**
-     * @ORM\Column(name="operation", type="smallint")
-     * @var int
-     */
-    protected $operation;
+    #[ORM\Column(length: 255)]
+    protected string $class;
 
-    /**
-     * @ORM\Column(name="class", type="string", length=255)
-     * @var string
-     */
-    protected $class;
+    #[ORM\Column(length: 255)]
+    protected string $identifier;
 
-    /**
-     * @ORM\Column(name="identifier", type="string", length=255)
-     * @var string
-     */
-    protected $identifier;
+    #[ORM\Column(name: 'target_class', length: 255, nullable: true)]
+    protected ?string $targetClass;
 
-    /**
-     * @ORM\Column(name="target_class", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $targetClass;
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $target;
 
-    /**
-     * @ORM\Column(name="target", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $target;
+    #[ORM\Column(type: 'array')]
+    protected array $changes;
 
-    /**
-     * @ORM\Column(name="changes", type="array")
-     * @var array
-     */
-    protected $changes;
-
-    /**
-     * @ORM\Column(name="user", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $user;
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $user;
 
     public function __construct(
         int $operation,
@@ -92,7 +58,7 @@ class AuditLog
         $this->user = self::$currentUser;
 
         $this->operation = $operation;
-        $this->class = $this->filterClassName($class);
+        $this->class = $this->filterClassName($class) ?? '';
         $this->identifier = $identifier;
         $this->targetClass = $this->filterClassName($targetClass);
         $this->target = $target;
@@ -121,14 +87,9 @@ class AuditLog
      */
     public static function setCurrentUser(?User $user = null): void
     {
-        self::$currentUser = ($user instanceof User)
-            ? $user->getIdentifier()
+        self::$currentUser = (null !== $user)
+            ? (string)$user
             : null;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getTimestamp(): int

@@ -31,6 +31,7 @@ class UserLoginTokenRepository extends AbstractSplitTokenRepository
 
     public function cleanup(): void
     {
+        /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
         $threshold = time() - 86400; // One day
 
         $this->em->createQuery(

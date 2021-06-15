@@ -1,0 +1,36 @@
+.bs-tooltip-top {
+  .arrow {
+    &::before {
+      border-top-color: $tooltip-arrow-color;
+    }
+  }
+}
+
+.bs-tooltip-right {
+  .arrow {
+    &::before {
+      border-right-color: $tooltip-arrow-color;
+    }
+  }
+}
+
+.bs-tooltip-bottom {
+  .arrow {
+    &::before {
+      border-bottom-color: $tooltip-arrow-color;
+    }
+  }
+}
+
+.bs-tooltip-left {
+  .arrow {
+    &::before {
+      border-left-color: $tooltip-arrow-color;
+    }
+  }
+}
+
+.tooltip-inner {
+  color: $tooltip-color;
+  background-color: $tooltip-bg;
+}

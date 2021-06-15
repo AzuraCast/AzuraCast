@@ -24,7 +24,7 @@ final class Version20200604075356 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
-        $this->connection->executeUpdate('UPDATE station_playlists SET avoid_duplicates=1');
+        $this->connection->executeStatement('UPDATE station_playlists SET avoid_duplicates=1');
     }
 
     public function down(Schema $schema): void

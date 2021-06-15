@@ -36,6 +36,7 @@ import MediaFormAdvancedSettings from './Form/AdvancedSettings';
 import MediaFormPlaylists from './Form/Playlists';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import MediaFormWaveformEditor from './Form/WaveformEditor';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'EditModal',
@@ -164,20 +165,8 @@ export default {
                 this.loading = false;
             }).catch((error) => {
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                handleAxiosError(error, notifyMessage);
 
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-
-                notify('<b>' + notifyMessage + '</b>', 'danger', false);
                 this.close();
             });
         },
@@ -202,24 +191,13 @@ export default {
 
             axios.put(this.recordUrl, this.form).then((resp) => {
                 let notifyMessage = this.$gettext('Changes saved.');
-                notify('<b>' + notifyMessage + '</b>', 'success', false);
+                notify('<b>' + notifyMessage + '</b>', 'success');
 
                 this.$emit('relist');
                 this.close();
             }).catch((error) => {
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
-
-                if (error.response) {
-                    // Request made and server responded
-                    notifyMessage = error.response.data.message;
-                    console.log(notifyMessage);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
+                notifyMessage = handleAxiosError(error, notifyMessage);
 
                 this.error = notifyMessage;
             });

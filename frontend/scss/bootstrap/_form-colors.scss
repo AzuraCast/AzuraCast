@@ -1,0 +1,21 @@
+.form-check-input {
+  &:disabled ~ .form-check-label {
+    color: $textfield-color-disabled;
+  }
+}
+
+.form-check-label {
+  color: inherit;
+}
+
+.form-text {
+  color: $textfield-hint-color;
+}
+
+.form-control-plaintext {
+  color: $textfield-plaintext-color;
+}
+
+.col-form-label {
+  color: inherit;
+}

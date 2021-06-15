@@ -26,9 +26,7 @@ class StationQueueRepository extends Repository
 
     public function getNextVisible(Entity\Station $station): ?Entity\StationQueue
     {
-        $queue = $this->getUpcomingQueue($station);
-
-        foreach ($queue as $sh) {
+        foreach ($this->getUpcomingQueue($station) as $sh) {
             if ($sh->showInApis()) {
                 return $sh;
             }
@@ -109,8 +107,19 @@ class StationQueueRepository extends Repository
             ->getOneOrNullResult();
     }
 
-    public function findRecentlyCuedSong(Entity\Station $station, Entity\SongInterface $song): ?Entity\StationQueue
+    public function getLastCuedSong(Entity\Station $station): ?Entity\StationQueue
     {
+        return $this->getRecentBaseQuery($station)
+            ->andWhere('sq.sent_to_autodj = 1')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
+    public function findRecentlyCuedSong(
+        Entity\Station $station,
+        Entity\Interfaces\SongInterface $song
+    ): ?Entity\StationQueue {
         return $this->getRecentBaseQuery($station)
             ->andWhere('sq.sent_to_autodj = 1')
             ->andWhere('sq.song_id = :song_id')

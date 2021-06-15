@@ -36,8 +36,7 @@ class PlaylistAction
             ];
         }
 
-        $remotes = $request->getStationRemotes();
-        foreach ($remotes as $remote_proxy) {
+        foreach ($request->getStationRemotes() as $remote_proxy) {
             $adapter = $remote_proxy->getAdapter();
             $remote = $remote_proxy->getRemote();
 

@@ -2,8 +2,9 @@
 
 namespace App\Middleware;
 
-use App\Http\RouterInterface;
+use App\Http\Router;
 use App\Http\ServerRequest;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -15,7 +16,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class InjectRouter implements MiddlewareInterface
 {
     public function __construct(
-        protected RouterInterface $router
+        protected FactoryInterface $factory
     ) {
     }
 
@@ -25,9 +26,14 @@ class InjectRouter implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $this->router->setCurrentRequest($request);
+        $router = $this->factory->make(
+            Router::class,
+            [
+                'request' => $request,
+            ]
+        );
 
-        $request = $request->withAttribute(ServerRequest::ATTR_ROUTER, $this->router);
+        $request = $request->withAttribute(ServerRequest::ATTR_ROUTER, $router);
 
         return $handler->handle($request);
     }

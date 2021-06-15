@@ -157,7 +157,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                         'exception' => $this->exception,
                     ]
                 );
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 return parent::respond();
             }
         }
@@ -223,8 +223,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             $handler->setPageTitle('An error occurred!');
 
             if ($this->exception instanceof Exception) {
-                $extra_tables = $this->exception->getExtraData();
-                foreach ($extra_tables as $legend => $data) {
+                foreach ($this->exception->getExtraData() as $legend => $data) {
                     $handler->addDataTable($legend, $data);
                 }
             }
@@ -250,7 +249,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
                     'exception' => $this->exception,
                 ]
             );
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return parent::respond();
         }
     }

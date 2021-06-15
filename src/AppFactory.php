@@ -111,6 +111,7 @@ class AppFactory
         return $app;
     }
 
+    /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
     public static function buildContainer(
         $autoloader = null,
         $appEnvironment = [],
@@ -137,8 +138,6 @@ class AppFactory
 
             $diDefinitions[Plugins::class] = $plugins;
             $diDefinitions = $plugins->registerServices($diDefinitions);
-        } else {
-            $plugins = null;
         }
 
         $containerBuilder = new DI\ContainerBuilder();

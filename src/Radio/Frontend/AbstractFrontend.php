@@ -9,6 +9,7 @@ use App\Http\Router;
 use App\Radio\AbstractAdapter;
 use App\Xml\Reader;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
@@ -90,15 +91,10 @@ abstract class AbstractFrontend extends AbstractAdapter
         return $this->getUrlForMount($station, $default_mount, $base_url);
     }
 
-    /**
-     * @param Entity\Station $station
-     * @param Entity\StationMount|null $mount
-     * @param UriInterface|null $base_url
-     */
     public function getUrlForMount(
         Entity\Station $station,
-        Entity\StationMount $mount = null,
-        UriInterface $base_url = null
+        ?Entity\StationMount $mount = null,
+        ?UriInterface $base_url = null
     ): UriInterface {
         if ($mount === null) {
             return $this->getPublicUrl($station, $base_url);
@@ -113,17 +109,12 @@ abstract class AbstractFrontend extends AbstractAdapter
         return $public_url->withPath($public_url->getPath() . $mount->getName());
     }
 
-    public function getPublicUrl(Entity\Station $station, $base_url = null): UriInterface
+    public function getPublicUrl(Entity\Station $station, ?UriInterface $base_url = null): UriInterface
     {
-        $fe_config = $station->getFrontendConfig();
-        $radio_port = $fe_config->getPort();
+        $radio_port = $station->getFrontendConfig()->getPort();
+        $base_url ??= $this->router->getBaseUrl();
 
-        if (!($base_url instanceof UriInterface)) {
-            $base_url = $this->router->getBaseUrl();
-        }
-
-        $settings = $this->settingsRepo->readSettings();
-        $use_radio_proxy = $settings->getUseRadioProxy();
+        $use_radio_proxy = $this->settingsRepo->readSettings()->getUseRadioProxy();
 
         if (
             $use_radio_proxy
@@ -165,48 +156,51 @@ abstract class AbstractFrontend extends AbstractAdapter
     }
 
     /**
-     * @param string|null $custom_config_raw
+     * @param string $custom_config_raw
      *
      * @return mixed[]|bool
      */
-    protected function processCustomConfig(?string $custom_config_raw): array|bool
+    protected function processCustomConfig(string $custom_config_raw): array|bool
     {
-        $custom_config = [];
+        try {
+            if (str_starts_with($custom_config_raw, '{')) {
+                return json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
+            }
 
-        if (str_starts_with($custom_config_raw, '{')) {
-            $custom_config = @json_decode($custom_config_raw, true, 512, JSON_THROW_ON_ERROR);
-        } elseif (str_starts_with($custom_config_raw, '<')) {
-            $reader = new Reader();
-            $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+            if (str_starts_with($custom_config_raw, '<')) {
+                return (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+            }
+        } catch (Exception $e) {
+            $this->logger->error(
+                'Could not parse custom configuration.',
+                [
+                    'config' => $custom_config_raw,
+                    'exception' => $e,
+                ]
+            );
         }
 
-        return $custom_config;
+        return false;
     }
 
     protected function writeIpBansFile(Entity\Station $station): string
     {
         $ips = [];
-        $frontendConfig = $station->getFrontendConfig();
-
-        $bannedIps = $frontendConfig->getBannedIps();
+        $bannedIps = $station->getFrontendConfig()->getBannedIps();
 
         if (!empty($bannedIps)) {
-            $ipsRaw = array_filter(array_map('trim', explode("\n", $bannedIps)));
-
-            foreach ($ipsRaw as $ip) {
+            foreach (array_filter(array_map('trim', explode("\n", $bannedIps))) as $ip) {
                 try {
                     if (!str_contains($ip, '/')) {
                         $ipObj = IP::create($ip);
                         $ips[] = (string)$ipObj;
                     } else {
                         // Iterate through CIDR notation
-                        $ipBlock = IPBlock::create($ip);
-                        foreach ($ipBlock as $ipObj) {
+                        foreach (IPBlock::create($ip) as $ipObj) {
                             $ips[] = (string)$ipObj;
                         }
                     }
-                } catch (InvalidArgumentException $e) {
-                    continue;
+                } catch (InvalidArgumentException) {
                 }
             }
         }

@@ -16,8 +16,9 @@ return [
                             'Select a theme to use as a base for station public pages and the login page.'
                         ),
                         'choices' => [
-                            'light' => __('Light') . ' (' . __('Default') . ')',
-                            'dark' => __('Dark'),
+                            App\Customization::THEME_BROWSER => __('Prefer System Default'),
+                            App\Customization::THEME_LIGHT => __('Light'),
+                            App\Customization::THEME_DARK => __('Dark'),
                         ],
                         'default' => App\Customization::DEFAULT_THEME,
                         'form_group_class' => 'col-md-6',

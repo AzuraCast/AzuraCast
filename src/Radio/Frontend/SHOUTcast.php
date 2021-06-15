@@ -59,6 +59,8 @@ class SHOUTcast extends AbstractFrontend
     {
         $feConfig = $station->getFrontendConfig();
         $radioPort = $feConfig->getPort();
+
+        /** @noinspection HttpUrlsUsage */
         $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);
@@ -127,10 +129,11 @@ class SHOUTcast extends AbstractFrontend
             'requirestreamconfigs' => 1,
         ];
 
-        $customConfig = $frontendConfig->getCustomConfiguration();
+        $customConfig = trim($frontendConfig->getCustomConfiguration() ?? '');
         if (!empty($customConfig)) {
             $custom_conf = $this->processCustomConfig($customConfig);
-            if (!empty($custom_conf)) {
+
+            if (false !== $custom_conf) {
                 $config = array_merge($config, $custom_conf);
             }
         }

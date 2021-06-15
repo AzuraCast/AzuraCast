@@ -81,9 +81,7 @@ class RotateLogsTask extends AbstractTask
 
         krsort($backupsByTime);
 
-        $backupsToDelete = array_slice($backupsByTime, $copiesToKeep);
-
-        foreach ($backupsToDelete as $backupToDelete) {
+        foreach (array_slice($backupsByTime, $copiesToKeep) as $backupToDelete) {
             $fs->delete($backupToDelete);
             $this->logger->info(sprintf('Deleted automated backup: "%s"', $backupToDelete));
         }

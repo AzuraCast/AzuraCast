@@ -2,43 +2,38 @@
 
 namespace App\Entity\Traits;
 
+use App\Entity\Interfaces\SongInterface;
 use App\Entity\Song;
-use App\Entity\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @OA\Schema(type="object")
+ */
 trait HasSongFields
 {
     use TruncateStrings;
 
-    /**
-     * @ORM\Column(name="song_id", type="string", length=50)
-     * @var string
-     */
-    protected $song_id;
+    /** @OA\Property() */
+    #[ORM\Column(length: 50)]
+    protected string $song_id;
 
-    /**
-     * @ORM\Column(name="text", type="string", length=303, nullable=true)
-     * @var string|null
-     */
-    protected $text;
+    /** @OA\Property() */
+    #[ORM\Column(length: 303, nullable: true)]
+    protected ?string $text = null;
 
-    /**
-     * @ORM\Column(name="artist", type="string", length=150, nullable=true)
-     * @var string|null
-     */
-    protected $artist;
+    /** @OA\Property() */
+    #[ORM\Column(length: 150, nullable: true)]
+    protected ?string $artist = null;
 
-    /**
-     * @ORM\Column(name="title", type="string", length=150, nullable=true)
-     * @var string|null
-     */
-    protected $title;
+    /** @OA\Property() */
+    #[ORM\Column(length: 150, nullable: true)]
+    protected ?string $title = null;
 
     public function setSong(SongInterface $song): void
     {
-        $this->title = $this->truncateString($song->getTitle(), 303);
-        $this->artist = $this->truncateString($song->getArtist(), 150);
-        $this->text = $this->truncateString($song->getText(), 150);
+        $this->title = $this->truncateNullableString($song->getTitle(), 303);
+        $this->artist = $this->truncateNullableString($song->getArtist(), 150);
+        $this->text = $this->truncateNullableString($song->getText(), 150);
 
         // Force setting the text field if it's not otherwise set.
         $this->setText($this->getText());
@@ -57,7 +52,7 @@ trait HasSongFields
 
     public function getText(): ?string
     {
-        return $this->text ?? $this->artist . ' - ' . $this->title;
+        return $this->text ?? ($this->artist . ' - ' . $this->title);
     }
 
     protected function setTextFromArtistAndTitle(string $separator = ' - '): void
@@ -68,7 +63,7 @@ trait HasSongFields
     public function setText(?string $text): void
     {
         $oldText = $this->text;
-        $this->text = $this->truncateString($text, 303);
+        $this->text = $this->truncateNullableString($text, 303);
 
         if (0 !== strcmp($oldText, $this->text)) {
             $this->updateSongId();
@@ -83,7 +78,7 @@ trait HasSongFields
     public function setArtist(?string $artist): void
     {
         $oldArtist = $this->artist;
-        $this->artist = $this->truncateString($artist, 150);
+        $this->artist = $this->truncateNullableString($artist, 150);
 
         if (0 !== strcmp($oldArtist, $this->artist)) {
             $this->setTextFromArtistAndTitle();
@@ -98,7 +93,7 @@ trait HasSongFields
     public function setTitle(?string $title): void
     {
         $oldTitle = $this->title;
-        $this->title = $this->truncateString($title, 150);
+        $this->title = $this->truncateNullableString($title, 150);
 
         if (0 !== strcmp($oldTitle, $this->title)) {
             $this->setTextFromArtistAndTitle();

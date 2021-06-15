@@ -2,9 +2,8 @@
 
 namespace App\Doctrine\Event;
 
-use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
-use Doctrine\Common\Annotations\Reader;
+use App\Entity\Attributes\AuditIgnore;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -16,11 +15,6 @@ use ReflectionObject;
  */
 class StationRequiresRestart implements EventSubscriber
 {
-    public function __construct(
-        protected Reader $reader
-    ) {
-    }
-
     /**
      * @inheritDoc
      */
@@ -57,10 +51,10 @@ class StationRequiresRestart implements EventSubscriber
                         // Look for the @AuditIgnore annotation on a property.
                         $class_reflection = new ReflectionObject($entity);
                         foreach ($changes as $change_field => $changeset) {
-                            $property = $class_reflection->getProperty($change_field);
-                            $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
-
-                            if (null !== $annotation) {
+                            $ignoreAttr = $class_reflection->getProperty($change_field)->getAttributes(
+                                AuditIgnore::class
+                            );
+                            if (!empty($ignoreAttr)) {
                                 unset($changes[$change_field]);
                             }
                         }

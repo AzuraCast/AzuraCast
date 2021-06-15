@@ -54,7 +54,7 @@ class InstallShoutcastController
 
                 if (UPLOAD_ERR_OK === $import_file->getError()) {
                     $sc_tgz_path = $sc_base_dir . '/sc_serv.tar.gz';
-                    if (file_exists($sc_tgz_path)) {
+                    if (is_file($sc_tgz_path)) {
                         unlink($sc_tgz_path);
                     }
 

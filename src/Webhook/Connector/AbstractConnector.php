@@ -5,19 +5,16 @@ namespace App\Webhook\Connector;
 use App\Entity;
 use App\Utilities;
 use GuzzleHttp\Client;
+use JetBrains\PhpStorm\Pure;
 use Monolog\Logger;
 use Symfony\Component\Validator\Constraints\UrlValidator;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
-    protected Client $httpClient;
-
-    protected Logger $logger;
-
-    public function __construct(Logger $logger, Client $httpClient)
-    {
-        $this->logger = $logger;
-        $this->httpClient = $httpClient;
+    public function __construct(
+        protected Logger $logger,
+        protected Client $httpClient
+    ) {
     }
 
     public function shouldDispatch(Entity\StationWebhook $webhook, array $triggers = []): bool
@@ -48,7 +45,7 @@ abstract class AbstractConnector implements ConnectorInterface
         return true;
     }
 
-    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    #[Pure] protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
     {
         $webhookTriggers = $webhook->getTriggers();
         if (empty($webhookTriggers)) {
@@ -105,7 +102,7 @@ abstract class AbstractConnector implements ConnectorInterface
     protected function getValidUrl(?string $url_string = null): ?string
     {
         $url = trim($url_string);
-        $pattern = sprintf(UrlValidator::PATTERN, implode('|', ['http', 'https']));
+        $pattern = sprintf(UrlValidator::PATTERN, 'http|https');
         return (preg_match($pattern, $url)) ? $url : null;
     }
 }

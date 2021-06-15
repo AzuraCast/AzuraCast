@@ -1,0 +1,29 @@
+.fc {
+  &.fc-unthemed {
+    th, td, thead, body, .fc-divider, .fc-row,
+    .fc-content, .fc-popover, .fc-list-view, .fc-list-heading td {
+      border-color: $theme-color-4;
+    }
+
+    .fc-popover {
+      background-color: $card-bg;
+    }
+
+    .fc-divider, .fc-popover .fc-header, .fc-list-heading td {
+      background: $table-border-color;
+    }
+
+    td.fc-today {
+      background: theme-color-dark('secondary');
+    }
+
+    .fc-disabled-day {
+      background: theme-color-dark('secondary');
+      opacity: 0.3;
+    }
+
+    .fc-event, .fc-event-dot {
+      background-color: theme-color('primary');
+    }
+  }
+}

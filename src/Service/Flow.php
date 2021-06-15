@@ -78,7 +78,7 @@ class Flow
             // Force a reupload of the last chunk if all chunks are uploaded, to trigger processing below.
             if (
                 $flowChunkNumber !== $targetChunks
-                && file_exists($chunkPath)
+                && is_file($chunkPath)
                 && filesize($chunkPath) === $currentChunkSize
             ) {
                 return $response->withStatus(200, 'OK');

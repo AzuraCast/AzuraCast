@@ -3,7 +3,6 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
-use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 
 class TuneIn extends AbstractConnector
@@ -19,8 +18,7 @@ class TuneIn extends AbstractConnector
         Entity\Station $station,
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying $np,
-        array $triggers,
-        bool $isStandalone
+        array $triggers
     ): bool {
         $config = $webhook->getConfig();
 

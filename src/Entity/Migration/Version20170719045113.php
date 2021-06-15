@@ -20,7 +20,9 @@ final class Version20170719045113 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $this->connection->exec('UPDATE song_history SET sent_to_autodj=1 WHERE timestamp_cued != 0 AND timestamp_cued IS NOT NULL');
+        $this->connection->executeStatement(
+            'UPDATE song_history SET sent_to_autodj=1 WHERE timestamp_cued != 0 AND timestamp_cued IS NOT NULL'
+        );
     }
 
     /**

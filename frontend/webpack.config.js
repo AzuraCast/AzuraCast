@@ -15,10 +15,13 @@ module.exports = {
     PublicRequests: './vue/Public/Requests.vue',
     PublicWebDJ: './vue/Public/WebDJ.vue',
     StationsMedia: './vue/Stations/Media.vue',
+    StationsMounts: './vue/Stations/Mounts.vue',
     StationsPlaylists: './vue/Stations/Playlists.vue',
+    StationsPodcasts: './vue/Stations/Podcasts.vue',
     StationsProfile: './vue/Stations/Profile.vue',
     StationsQueue: './vue/Stations/Queue.vue',
-    StationsStreamers: './vue/Stations/Streamers.vue'
+    StationsStreamers: './vue/Stations/Streamers.vue',
+    StationsReportsOverview: './vue/Stations/Reports/Overview.vue'
   },
   resolve: {
     extensions: ['*', '.js', '.vue', '.json']
@@ -60,15 +63,10 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: {}
       },
       {
         test: /\.scss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
+        loader: 'vue-style-loader'
       }
     ]
   },

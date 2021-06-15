@@ -22,7 +22,7 @@ class RemoveSlashes implements MiddlewareInterface
         $uri = $request->getUri();
         $path = $uri->getPath();
 
-        if ($path !== '/' && substr($path, -1) === '/') {
+        if ($path !== '/' && str_ends_with($path, '/')) {
             // permanently redirect paths with a trailing slash
             // to their non-trailing counterpart
             $uri = $uri->withPath(substr($path, 0, -1));

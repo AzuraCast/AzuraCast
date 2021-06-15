@@ -41,7 +41,7 @@ function initMap () {
         fullscreenControl: true
     }).setView([40, 0], 1);
 
-    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/<?=$customization->getTheme() ?>_all/{z}/{x}/{y}.png', {
+    L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/' + App.theme + '_all/{z}/{x}/{y}.png', {
         attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
     }).addTo(map);
 }

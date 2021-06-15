@@ -245,7 +245,7 @@ export default {
                 artist: this.metadata.artist
             });
 
-            notify('Metadata updated!', 'success', true);
+            notify('Metadata updated!', 'success');
         },
         onMetadataUpdate (new_metadata) {
             this.metadata.title = new_metadata.title;

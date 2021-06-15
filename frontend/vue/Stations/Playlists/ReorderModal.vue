@@ -34,10 +34,17 @@
     </b-modal>
 </template>
 
+<style lang="scss">
+table.sortable {
+    cursor: pointer;
+}
+</style>
+
 <script>
 import axios from 'axios';
 import Draggable from 'vuedraggable';
 import Icon from '../../Common/Icon';
+import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'ReorderModal',
@@ -73,7 +80,7 @@ export default {
                 this.media = resp.data;
                 this.loading = false;
             }).catch((err) => {
-                this.handleError(err);
+                handleAxiosError(err);
             });
         },
         moveDown (index) {
@@ -94,17 +101,11 @@ export default {
             });
 
             axios.put(this.reorderUrl, { 'order': newOrder }).then((resp) => {
-                notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success', false);
+                notify('<b>' + this.$gettext('Playlist order set.') + '</b>', 'success');
             }).catch((err) => {
-                this.handleError(err);
+                handleAxiosError(err);
             });
         },
-        handleError (err) {
-            console.error(err);
-            if (err.response.message) {
-                notify('<b>' + err.response.message + '</b>', 'danger');
-            }
-        }
     }
 };
 </script>

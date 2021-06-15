@@ -1,0 +1,17 @@
+.floating-label {
+  &.is-focused label {
+    color: $floating-label-color-focus;
+  }
+
+  label {
+    color: $floating-label-color;
+  }
+
+  %form-control {
+    &:focus {
+      &::placeholder {
+        color: $textfield-hint-color;
+      }
+    }
+  }
+}

@@ -4,48 +4,27 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\TruncateStrings;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="station_playlist_folders")
- * @ORM\Entity()
- */
-class StationPlaylistFolder implements PathAwareInterface
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station_playlist_folders')
+]
+class StationPlaylistFolder implements Interfaces\PathAwareInterface, Interfaces\StationCloneAwareInterface
 {
-    use TruncateStrings;
+    use Traits\HasAutoIncrementId;
+    use Traits\TruncateStrings;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected Station $station;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'folders')]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected StationPlaylist $playlist;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationPlaylist", inversedBy="folders", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationPlaylist
-     */
-    protected $playlist;
-
-    /**
-     * @ORM\Column(name="path", type="string", length=500)
-     * @var string
-     */
-    protected $path;
+    #[ORM\Column(length: 500)]
+    protected string $path;
 
     public function __construct(Station $station, StationPlaylist $playlist, string $path)
     {
@@ -54,19 +33,24 @@ class StationPlaylistFolder implements PathAwareInterface
         $this->path = $path;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getStation(): Station
     {
         return $this->station;
     }
 
+    public function setStation(Station $station): void
+    {
+        $this->station = $station;
+    }
+
     public function getPlaylist(): StationPlaylist
     {
         return $this->playlist;
+    }
+
+    public function setPlaylist(StationPlaylist $playlist): void
+    {
+        $this->playlist = $playlist;
     }
 
     public function getPath(): string

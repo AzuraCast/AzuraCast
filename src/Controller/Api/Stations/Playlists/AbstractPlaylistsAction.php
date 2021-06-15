@@ -15,9 +15,7 @@ abstract class AbstractPlaylistsAction
 
     protected function requireRecord(Entity\Station $station, int $id): Entity\StationPlaylist
     {
-        $repo = $this->em->getRepository(Entity\StationPlaylist::class);
-
-        $record = $repo->findOneBy(
+        $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy(
             [
                 'station' => $station,
                 'id' => $id,

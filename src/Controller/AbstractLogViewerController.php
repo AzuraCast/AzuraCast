@@ -21,7 +21,7 @@ abstract class AbstractLogViewerController
     ): ResponseInterface {
         clearstatcache();
 
-        if (!file_exists($log_path)) {
+        if (!is_file($log_path)) {
             throw new NotFoundException('Log file not found!');
         }
 

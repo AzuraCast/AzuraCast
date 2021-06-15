@@ -1,0 +1,24 @@
+.pagination {
+  background-color: $pagination-bg;
+}
+
+.page-link {
+  color: $pagination-color;
+
+  @include active-focus-hover {
+    color: $pagination-color;
+  }
+
+  &.active,
+  &:active {
+    background-color: $btn-bg-active;
+  }
+
+  .page-item.active & {
+    background-color: $btn-bg-active;
+  }
+
+  .page-item.disabled & {
+    color: $pagination-color-disabled;
+  }
+}

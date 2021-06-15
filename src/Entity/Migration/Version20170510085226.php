@@ -28,14 +28,16 @@ final class Version20170510085226 extends AbstractMigration
 
     public function postdown(Schema $schema): void
     {
-        $all_stations = $this->connection->fetchAll('SELECT * FROM station');
-
-        foreach ($all_stations as $station) {
-            $this->connection->update('station', [
-                'radio_base_dir' => str_replace('/media', '', $station['radio_media_dir']),
-            ], [
-                'id' => $station['id'],
-            ]);
+        foreach ($this->connection->fetchAllAssociative('SELECT * FROM station') as $station) {
+            $this->connection->update(
+                'station',
+                [
+                    'radio_base_dir' => str_replace('/media', '', $station['radio_media_dir']),
+                ],
+                [
+                    'id' => $station['id'],
+                ]
+            );
         }
     }
 }

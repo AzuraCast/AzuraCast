@@ -89,8 +89,7 @@ class ConfigWriter implements EventSubscriberInterface
             return;
         }
 
-        $station = $event->getStation();
-        $settings = $station->getBackendConfig();
+        $settings = $event->getStation()->getBackendConfig();
         if (!empty($settings[$sectionName])) {
             $event->appendLines(
                 [
@@ -174,8 +173,7 @@ class ConfigWriter implements EventSubscriberInterface
 
         // Clear out existing playlists directory.
 
-        $fsStation = new StationFilesystems($station);
-        $fsPlaylists = $fsStation->getPlaylistsFilesystem();
+        $fsPlaylists = (new StationFilesystems($station))->getPlaylistsFilesystem();
 
         foreach ($fsPlaylists->listContents('', false) as $file) {
             /** @var StorageAttributes $file */
@@ -416,8 +414,7 @@ class ConfigWriter implements EventSubscriberInterface
             $event->appendLines(['# Standard Schedule Switches']);
 
             // Chunk scheduled switches to avoid hitting the max amount of playlists in a switch()
-            $chunkedScheduleSwitches = array_chunk($scheduleSwitches, 168, true);
-            foreach ($chunkedScheduleSwitches as $scheduleSwitchesChunk) {
+            foreach (array_chunk($scheduleSwitches, 168, true) as $scheduleSwitchesChunk) {
                 $scheduleSwitchesChunk[] = '({true}, radio)';
 
                 $event->appendLines(
@@ -432,7 +429,7 @@ class ConfigWriter implements EventSubscriberInterface
         }
 
         // Add in special playlists if necessary.
-        foreach ($specialPlaylists as $playlist_type => $playlistConfigLines) {
+        foreach ($specialPlaylists as $playlistConfigLines) {
             if (count($playlistConfigLines) > 1) {
                 $event->appendLines($playlistConfigLines);
             }
@@ -571,10 +568,8 @@ class ConfigWriter implements EventSubscriberInterface
             DQL
         )->setParameter('playlist', $playlist);
 
-        $mediaIterator = $mediaQuery->toIterable();
-
         /** @var Entity\StationMedia $mediaFile */
-        foreach ($mediaIterator as $mediaFile) {
+        foreach ($mediaQuery->toIterable() as $mediaFile) {
             $mediaFilePath = $mediaBaseDir . $mediaFile->getPath();
             $mediaAnnotations = $this->liquidsoap->annotateMedia($mediaFile);
 
@@ -638,7 +633,6 @@ class ConfigWriter implements EventSubscriberInterface
                 $next_play_days = [];
 
                 foreach ($playlist_schedule_days as $day) {
-                    $day = (int)$day;
                     $current_play_days[] = (($day === 7) ? '0' : $day) . 'w';
 
                     $day++;
@@ -665,7 +659,6 @@ class ConfigWriter implements EventSubscriberInterface
             $play_days = [];
 
             foreach ($playlist_schedule_days as $day) {
-                $day = (int)$day;
                 $play_days[] = (($day === 7) ? '0' : $day) . 'w';
             }
 
@@ -690,6 +683,8 @@ class ConfigWriter implements EventSubscriberInterface
             $params['api_auth'] = '!azuracast_api_auth';
 
             $service_uri = ($this->environment->isDockerRevisionAtLeast(5)) ? 'web' : 'nginx';
+
+            /** @noinspection HttpUrlsUsage */
             $api_url = 'http://' . $service_uri . '/api/internal/' . $station->getId() . '/' . $endpoint;
             $command = 'curl -s --request POST --url ' . $api_url;
             foreach ($params as $paramKey => $paramVal) {
@@ -724,8 +719,7 @@ class ConfigWriter implements EventSubscriberInterface
 
     public function writeCrossfadeConfiguration(WriteLiquidsoapConfiguration $event): void
     {
-        $station = $event->getStation();
-        $settings = $station->getBackendConfig();
+        $settings = $event->getStation()->getBackendConfig();
 
         // Write pre-crossfade section.
         $this->writeCustomConfigurationSection($event, self::CUSTOM_PRE_FADE);
@@ -861,7 +855,7 @@ class ConfigWriter implements EventSubscriberInterface
         );
 
         if ($recordLiveStreams) {
-            $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\StationMountInterface::FORMAT_MP3;
+            $recordLiveStreamsFormat = $settings['record_streams_format'] ?? Entity\Interfaces\StationMountInterface::FORMAT_MP3;
             $recordLiveStreamsBitrate = (int)($settings['record_streams_bitrate'] ?? 128);
 
             $formatString = $this->getOutputFormatString($recordLiveStreamsFormat, $recordLiveStreamsBitrate);
@@ -999,20 +993,14 @@ class ConfigWriter implements EventSubscriberInterface
 
     /**
      * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
-     *
-     * @param Entity\Station $station
-     * @param Entity\StationMountInterface $mount
-     * @param string $idPrefix
-     * @param int $id
      */
     protected function getOutputString(
         Entity\Station $station,
-        Entity\StationMountInterface $mount,
+        Entity\Interfaces\StationMountInterface $mount,
         string $idPrefix,
         int $id
     ): string {
-        $settings = $station->getBackendConfig();
-        $charset = $settings->getCharset();
+        $charset = $station->getBackendConfig()->getCharset();
 
         $output_format = $this->getOutputFormatString(
             $mount->getAutodjFormat(),
@@ -1037,9 +1025,10 @@ class ConfigWriter implements EventSubscriberInterface
         }
         $output_params[] = 'password = "' . $password . '"';
 
-        $isShoutcastMode = Adapters::REMOTE_ICECAST !== $mount->getAutodjAdapterType();
+        $protocol = $mount->getAutodjProtocol();
+
         if (!empty($mount->getAutodjMount())) {
-            if ($isShoutcastMode) {
+            if ($mount::PROTOCOL_ICY === $protocol) {
                 $output_params[] = 'icy_id = ' . $id;
             } else {
                 $output_params[] = 'mount = "' . self::cleanUpString($mount->getAutodjMount()) . '"';
@@ -1057,11 +1046,11 @@ class ConfigWriter implements EventSubscriberInterface
         $output_params[] = 'public = ' . ($mount->getIsPublic() ? 'true' : 'false');
         $output_params[] = 'encoding = "' . $charset . '"';
 
-        if ($isShoutcastMode) {
-            $output_params[] = 'protocol="icy"';
+        if (null !== $protocol) {
+            $output_params[] = 'protocol="' . $protocol . '"';
         }
 
-        if (Entity\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
+        if (Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
             $output_params[] = 'icy_metadata="true"';
         }
 
@@ -1073,19 +1062,19 @@ class ConfigWriter implements EventSubscriberInterface
     protected function getOutputFormatString(string $format, int $bitrate = 128): string
     {
         switch (strtolower($format)) {
-            case Entity\StationMountInterface::FORMAT_AAC:
+            case Entity\Interfaces\StationMountInterface::FORMAT_AAC:
                 $afterburner = ($bitrate >= 160) ? 'true' : 'false';
                 $aot = ($bitrate >= 96) ? 'mpeg4_aac_lc' : 'mpeg4_he_aac_v2';
 
                 return '%fdkaac(channels=2, samplerate=44100, bitrate=' . $bitrate . ', afterburner=' . $afterburner . ', aot="' . $aot . '", sbr_mode=true)';
 
-            case Entity\StationMountInterface::FORMAT_OGG:
+            case Entity\Interfaces\StationMountInterface::FORMAT_OGG:
                 return '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . $bitrate . ')';
 
-            case Entity\StationMountInterface::FORMAT_OPUS:
+            case Entity\Interfaces\StationMountInterface::FORMAT_OPUS:
                 return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
 
-            case Entity\StationMountInterface::FORMAT_MP3:
+            case Entity\Interfaces\StationMountInterface::FORMAT_MP3:
             default:
                 return '%mp3(samplerate=44100, stereo=true, bitrate=' . $bitrate . ', id3v2=true)';
         }
@@ -1175,8 +1164,7 @@ class ConfigWriter implements EventSubscriberInterface
     public static function cleanUpVarName(string $str): string
     {
         $str = strip_tags($str);
-        $str = preg_replace('/[\r\n\t ]+/', ' ', $str);
-        $str = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $str);
+        $str = preg_replace(['/[\r\n\t ]+/', '/[\"\*\/\:\<\>\?\'\|]+/'], ' ', $str);
         $str = strtolower($str);
         $str = html_entity_decode($str, ENT_QUOTES, "utf-8");
         $str = htmlentities($str, ENT_QUOTES, "utf-8");

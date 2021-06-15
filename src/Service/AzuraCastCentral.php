@@ -70,8 +70,7 @@ class AzuraCastCentral
 
     public function getUniqueIdentifier(): string
     {
-        $settings = $this->settingsRepo->readSettings();
-        return (string)$settings->getAppUniqueIdentifier();
+        return $this->settingsRepo->readSettings()->getAppUniqueIdentifier();
     }
 
     /**

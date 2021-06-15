@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\Stations\OnDemand;
 
-use App\Doctrine\BatchIteratorAggregate;
+use App\Doctrine\ReadOnlyBatchIteratorAggregate;
 use App\Entity;
 use App\Http\Response;
 use App\Http\RouterInterface;
@@ -60,8 +60,7 @@ class ListAction
                 'playlist',
             ];
 
-            $customFields = array_keys($this->customFieldRepo->getFieldIds());
-            foreach ($customFields as $customField) {
+            foreach (array_keys($this->customFieldRepo->getFieldIds()) as $customField) {
                 $searchFields[] = 'media_custom_fields_' . $customField;
             }
 
@@ -88,8 +87,7 @@ class ListAction
             $trackList = $trackList->matching($criteria);
         }
 
-        $paginator = Paginator::fromCollection($trackList, $request);
-        return $paginator->write($response);
+        return Paginator::fromCollection($trackList, $request)->write($response);
     }
 
     /**
@@ -123,9 +121,7 @@ class ListAction
                 DQL
             )->setParameter('playlist_id', $playlist['id']);
 
-            $iterator = BatchIteratorAggregate::fromQuery($query, 50);
-
-            foreach ($iterator as $media) {
+            foreach (ReadOnlyBatchIteratorAggregate::fromQuery($query, 50) as $media) {
                 /** @var Entity\StationMedia $media */
                 $row = new Entity\Api\StationOnDemand();
 

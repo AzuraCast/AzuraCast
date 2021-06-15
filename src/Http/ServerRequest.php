@@ -126,7 +126,7 @@ final class ServerRequest extends \Slim\Http\ServerRequest
      *
      * @throws Exception\InvalidRequestAttribute
      */
-    protected function getAttributeOfClass(string $attr, string $class_name): mixed
+    private function getAttributeOfClass(string $attr, string $class_name): mixed
     {
         $object = $this->serverRequest->getAttribute($attr);
 
@@ -140,11 +140,13 @@ final class ServerRequest extends \Slim\Http\ServerRequest
         }
 
         if (!($object instanceof $class_name)) {
-            throw new Exception\InvalidRequestAttribute(sprintf(
-                'Attribute "%s" must be of type "%s".',
-                $attr,
-                $class_name
-            ));
+            throw new Exception\InvalidRequestAttribute(
+                sprintf(
+                    'Attribute "%s" must be of type "%s".',
+                    $attr,
+                    $class_name
+                )
+            );
         }
 
         return $object;

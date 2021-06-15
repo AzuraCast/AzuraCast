@@ -44,13 +44,12 @@ class GetArtAction
     ): ResponseInterface {
         $station = $request->getStation();
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         $defaultArtRedirect = $response->withRedirect($stationRepo->getDefaultAlbumArtUrl($station), 302);
 
         // If a timestamp delimiter is added, strip it automatically.
-        $media_id = explode('-', $media_id)[0];
+        $media_id = explode('-', $media_id, 2)[0];
 
         if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($media_id)) {
             $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);

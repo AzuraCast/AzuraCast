@@ -2,7 +2,6 @@
 
 use App\Console\Application;
 use App\Console\Command;
-use App\Environment;
 
 return function (Application $console) {
     // Liquidsoap Internal CLI commands
@@ -27,9 +26,9 @@ return function (Application $console) {
     )->setDescription('Send upcoming song feedback from the AutoDJ back to AzuraCast.');
 
     $console->command(
-        'azuracast:internal:sftp-upload action username path [target-path] [ssh-cmd]',
-        Command\Internal\SftpUploadCommand::class
-    )->setDescription('Process a file uploaded via SFTP');
+        'azuracast:internal:sftp-event action username path [target-path] [ssh-cmd]',
+        Command\Internal\SftpEventCommand::class
+    )->setDescription('Process an event triggered via SFTP');
 
     $console->command(
         'azuracast:internal:sftp-auth',

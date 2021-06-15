@@ -66,6 +66,12 @@ $props = [
         [],
         true
     ),
+    'publicPodcastsUri' => (string)$router->named(
+        'public:podcasts',
+        ['station_id' => $station->getShortName()],
+        [],
+        true
+    ),
     'publicOnDemandEmbedUri' => (string)$router->named(
         'public:ondemand',
         ['station_id' => $station->getShortName(), 'embed' => 'embed'],
@@ -91,7 +97,7 @@ $props = [
     ),
 
     // Frontend
-    'frontendAdminUri' => (string)$frontend->getAdminUrl($station),
+    'frontendAdminUri' => (string)$frontend->getAdminUrl($station, $router->getBaseUrl()),
     'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
     'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
     'frontendRelayPassword' => $frontendConfig->getRelayPassword(),

@@ -1,0 +1,69 @@
+// stylelint-disable declaration-no-important
+
+// Border
+
+.border {
+  border: $border-width solid $border-color !important;
+}
+
+.border-top {
+  border-top: $border-width solid $border-color !important;
+}
+
+.border-right {
+  border-right: $border-width solid $border-color !important;
+}
+
+.border-bottom {
+  border-bottom: $border-width solid $border-color !important;
+}
+
+.border-left {
+  border-left: $border-width solid $border-color !important;
+}
+
+.border-black {
+  border-color: $black !important;
+}
+
+.border-black-primary {
+  border-color: $black-primary !important;
+}
+
+.border-black-secondary {
+  border-color: $black-secondary !important;
+}
+
+.border-black-hint {
+  border-color: $black-hint !important;
+}
+
+.border-black-divider {
+  border-color: $black-divider !important;
+}
+
+.border-white {
+  border-color: $white !important;
+}
+
+.border-white-primary {
+  border-color: $white-primary !important;
+}
+
+.border-white-secondary {
+  border-color: $white-secondary !important;
+}
+
+.border-white-hint {
+  border-color: $white-hint !important;
+}
+
+.border-white-divider {
+  border-color: $white-divider !important;
+}
+
+@each $color, $values in $theme-colors {
+  .border-#{$color} {
+    border-color: theme-color($color) !important;
+  }
+}

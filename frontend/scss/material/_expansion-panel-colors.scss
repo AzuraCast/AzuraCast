@@ -1,0 +1,78 @@
+.list-group-item {
+  background-color: $expansion-panel-bg;
+  color: $expansion-panel-color;
+
+  @include active-focus-hover {
+    color: $expansion-panel-color;
+  }
+
+  &.active {
+    background-color: $expansion-panel-bg-active;
+    color: $expansion-panel-color;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $expansion-panel-bg;
+    color: $expansion-panel-color-disabled;
+  }
+}
+
+.list-group-item-action {
+  color: $expansion-panel-color;
+
+  @include active-focus-hover {
+    background-color: $expansion-panel-bg-active;
+    color: $expansion-panel-color;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $expansion-panel-bg;
+    color: $expansion-panel-color-disabled;
+  }
+}
+
+@each $color, $values in $theme-colors {
+  .list-group-item-#{$color} {
+    background-color: theme-color-light($color);
+    color: color-yiq(theme-color-light($color));
+
+    &.active {
+      background-color: theme-color($color);
+      color: color-yiq(theme-color($color));
+    }
+
+    &.list-group-item-action {
+      @include active-focus-hover {
+        background-color: theme-color($color);
+        color: color-yiq(theme-color($color));
+      }
+    }
+  }
+}
+
+.expansion-panel-toggler {
+  color: inherit;
+
+  @include active-focus-hover {
+    background-color: $expansion-panel-bg-active;
+    color: $expansion-panel-color;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $expansion-panel-bg;
+    color: $expansion-panel-color-disabled;
+  }
+}
+
+.list-group-flush {
+  .list-group-item {
+    border-top: $expansion-panel-border-width solid $expansion-panel-border-color;
+
+    &:last-child {
+      border-bottom: $expansion-panel-border-width solid $expansion-panel-border-color;
+    }
+  }
+}

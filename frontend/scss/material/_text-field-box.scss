@@ -1,6 +1,5 @@
 .textfield-box {
   %form-control {
-    background-color: $textfield-box-bg;
     border-radius: $textfield-box-border-radius;
     padding: $textfield-box-padding-y $textfield-box-padding-x calc(#{$textfield-box-padding-y} - #{$textfield-border-width});
   }

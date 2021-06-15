@@ -1,0 +1,138 @@
+.table {
+  background-color: $table-bg;
+
+  td,
+  th {
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  tbody {
+    color: $table-tbody-color;
+  }
+
+  tfoot {
+    color: $table-tfoot-color;
+  }
+
+  thead {
+    color: $table-thead-color;
+  }
+
+  .table {
+    border-top: $table-border-width solid $table-border-color;
+  }
+}
+
+.table-bordered {
+  border: $table-border-width solid $table-border-color;
+}
+
+.table-striped {
+  tbody tr:nth-of-type(#{$table-striped-order}) {
+    background-color: $table-bg-accent;
+  }
+}
+
+.table-hover {
+  tbody tr {
+    @include hover {
+      background-color: $table-bg-hover;
+    }
+  }
+}
+
+@each $color, $values in $theme-colors {
+  .table-#{$color} {
+    &,
+    > td,
+    > th {
+      background-color: theme-color-light($color);
+      color: color-yiq(theme-color-light($color));
+    }
+
+    .table-hover & {
+      @include hover {
+        &,
+        > td,
+        > th {
+          background-color: theme-color($color);
+          color: color-yiq(theme-color($color));
+        }
+      }
+    }
+  }
+}
+
+.table-active {
+  &,
+  > td,
+  > th {
+    background-color: $table-bg-active;
+    color: color-yiq($table-bg-active);
+  }
+
+  .table-hover & {
+    @include hover {
+      &,
+      > td,
+      > th {
+        background-color: $table-bg-active-hover;
+        color: color-yiq($table-bg-active-hover);
+      }
+    }
+  }
+}
+
+// stylelint-disable-next-line no-duplicate-selectors
+.table {
+  .thead-dark {
+    td,
+    th {
+      background-color: $table-dark-bg;
+      color: $table-dark-color;
+    }
+  }
+
+  .thead-light {
+    td,
+    th {
+      background-color: $table-thead-bg;
+      color: $table-thead-color;
+    }
+  }
+}
+
+.table-dark {
+  background-color: $table-dark-bg;
+  color: $table-dark-color;
+
+  &.table-bordered {
+    border-color: $table-dark-border-color;
+  }
+
+  &.table-striped {
+    tbody tr:nth-of-type(odd) {
+      background-color: $table-dark-bg-accent;
+    }
+  }
+
+  &.table-hover {
+    tbody tr {
+      @include hover {
+        background-color: $table-dark-bg-hover;
+      }
+    }
+  }
+
+  tbody,
+  tfoot,
+  thead {
+    color: inherit;
+  }
+
+  td,
+  th,
+  .table {
+    border-color: $table-dark-border-color;
+  }
+}

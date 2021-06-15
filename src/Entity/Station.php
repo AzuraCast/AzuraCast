@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use App\Annotations\AuditLog;
 use App\Environment;
-use App\Normalizer\Annotation\DeepNormalize;
+use App\Normalizer\Attributes\DeepNormalize;
 use App\Radio\Adapters;
 use App\Utilities\File;
 use App\Validator\Constraints as AppAssert;
@@ -18,24 +18,23 @@ use InvalidArgumentException;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use OpenApi\Annotations as OA;
 use RuntimeException;
+use Stringable;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="station", indexes={
- *     @ORM\Index(name="idx_short_name", columns={"short_name"})
- * })
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks
- *
- * @AuditLog\Auditable
- *
- * @OA\Schema(type="object", schema="Station")
- * @AppAssert\StationPortChecker()
- * @AppAssert\UniqueEntity(fields={"short_name"})
- */
-class Station
+/** @OA\Schema(type="object", schema="Station") */
+#[
+    ORM\Entity,
+    ORM\Table(name: 'station'),
+    ORM\Index(columns: ['short_name'], name: 'idx_short_name'),
+    ORM\HasLifecycleCallbacks,
+    Attributes\Auditable,
+    AppAssert\StationPortChecker,
+    AppAssert\UniqueEntity(fields: ['short_name'])
+]
+class Station implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const DEFAULT_REQUEST_DELAY = 5;
@@ -44,360 +43,282 @@ class Station
     public const DEFAULT_API_HISTORY_ITEMS = 5;
 
     /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @OA\Property(example=1)
-     * @var int|null
+     * @OA\Property(
+     *     description="The full display name of the station.",
+     *     example="AzuraTest Radio"
+     * )
      */
-    protected $id;
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    protected ?string $name = null;
 
     /**
-     * @ORM\Column(name="name", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="AzuraTest Radio")
-     *
-     * @Assert\NotBlank()
-     * @var string|null The full display name of the station.
+     * @OA\Property(
+     *     description="The URL-friendly name for the station, typically auto-generated from the full station name.",
+     *     example="azuratest_radio"
+     * )
      */
-    protected $name;
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    protected ?string $short_name = null;
 
     /**
-     * @ORM\Column(name="short_name", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="azuratest_radio")
-     *
-     * @Assert\NotBlank()
-     * @var string|null The URL-friendly name for the station, typically auto-generated from the full station name.
+     * @OA\Property(
+     *     description="If set to 'false', prevents the station from broadcasting but leaves it in the database.",
+     *     example=true
+     * )
      */
-    protected $short_name;
+    #[ORM\Column]
+    protected bool $is_enabled = true;
 
     /**
-     * @ORM\Column(name="is_enabled", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=true)
-     * @var bool If set to "false", prevents the station from broadcasting but leaves it in the database.
+     * @OA\Property(
+     *     description="The frontend adapter (icecast,shoutcast,remote,etc)",
+     *     example="icecast"
+     * )
      */
-    protected $is_enabled = true;
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Choice(choices: [Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST])]
+    protected ?string $frontend_type = Adapters::FRONTEND_ICECAST;
 
     /**
-     * @ORM\Column(name="frontend_type", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="icecast")
-     *
-     * @Assert\Choice(choices={Adapters::FRONTEND_ICECAST, Adapters::FRONTEND_REMOTE, Adapters::FRONTEND_SHOUTCAST})
-     * @var string|null The frontend adapter (icecast,shoutcast,remote,etc)
+     * @OA\Property(
+     *     type="array",
+     *     description="An array containing station-specific frontend configuration",
+     *     @OA\Items()
+     * )
      */
-    protected $frontend_type = Adapters::FRONTEND_ICECAST;
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $frontend_config = null;
 
     /**
-     * @ORM\Column(name="frontend_config", type="json", nullable=true)
-     *
-     * @OA\Property(@OA\Items())
-     * @var array|null An array containing station-specific frontend configuration
+     * @OA\Property(
+     *     description="The backend adapter (liquidsoap,etc)",
+     *     example="liquidsoap"
+     * )
      */
-    protected $frontend_config;
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Choice(choices: [Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE])]
+    protected ?string $backend_type = Adapters::BACKEND_LIQUIDSOAP;
 
     /**
-     * @ORM\Column(name="backend_type", type="string", length=100, nullable=true)
-     *
-     * @Assert\Choice(choices={Adapters::BACKEND_LIQUIDSOAP, Adapters::BACKEND_NONE})
-     * @OA\Property(example="liquidsoap")
-     * @var string|null The backend adapter (liquidsoap,etc)
+     * @OA\Property(
+     *     type="array",
+     *     description="An array containing station-specific backend configuration",
+     *     @OA\Items()
+     * )
      */
-    protected $backend_type = Adapters::BACKEND_LIQUIDSOAP;
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $backend_config = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected ?string $adapter_api_key = null;
+
+    /** @OA\Property(example="A sample radio station.") */
+    #[ORM\Column(type: 'text', nullable: true)]
+    protected ?string $description = null;
+
+    /** @OA\Property(example="https://demo.azuracast.com/") */
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $url = null;
+
+    /** @OA\Property(example="Various") */
+    #[ORM\Column(length: 150, nullable: true)]
+    protected ?string $genre = null;
+
+    /** @OA\Property(example="/var/azuracast/stations/azuratest_radio") */
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $radio_base_dir = null;
+
+    #[ORM\Column(type: 'array', nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected mixed $nowplaying;
+
+    #[ORM\Column(nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected ?int $nowplaying_timestamp = null;
+
+    /** @OA\Property(type="array", @OA\Items()) */
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected ?array $automation_settings = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected ?int $automation_timestamp = 0;
 
     /**
-     * @ORM\Column(name="backend_config", type="json", nullable=true)
-     *
-     * @OA\Property(@OA\Items())
-     * @var array|null An array containing station-specific backend configuration
+     * @OA\Property(
+     *     description="Whether listeners can request songs to play on this station.",
+     *     example=true
+     * )
      */
-    protected $backend_config;
+    #[ORM\Column]
+    protected bool $enable_requests = false;
+
+    /** @OA\Property(example=5) */
+    #[ORM\Column(nullable: true)]
+    protected ?int $request_delay = self::DEFAULT_REQUEST_DELAY;
+
+    /** @OA\Property(example=15) */
+    #[ORM\Column(nullable: true)]
+    protected ?int $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
+
+    /** @OA\Property(example=0) */
+    #[ORM\Column(nullable: true, options: ['default' => 0])]
+    protected ?int $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;
 
     /**
-     * @ORM\Column(name="adapter_api_key", type="string", length=150, nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var string|null An internal API key used for container-to-container communications from Liquidsoap to AzuraCast
+     * @OA\Property(
+     *     description="Whether streamers are allowed to broadcast to this station at all.",
+     *     example=false
+     * )
      */
-    protected $adapter_api_key;
+    #[ORM\Column]
+    protected bool $enable_streamers = false;
 
     /**
-     * @ORM\Column(name="description", type="text", nullable=true)
-     *
-     * @OA\Property(example="A sample radio station.")
-     * @var string|null
+     * @OA\Property(
+     *     description="Whether a streamer is currently active on the station.",
+     *     example=false
+     * )
      */
-    protected $description;
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    protected bool $is_streamer_live = false;
 
     /**
-     * @ORM\Column(name="url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="https://demo.azuracast.com/")
-     * @var string|null
+     * @OA\Property(
+     *     description="Whether this station is visible as a public page and in a now-playing API response.",
+     *     example=true
+     * )
      */
-    protected $url;
+    #[ORM\Column]
+    protected bool $enable_public_page = true;
 
     /**
-     * @ORM\Column(name="genre", type="string", length=150, nullable=true)
-     *
-     * @OA\Property(example="Various")
-     * @var string|null
+     * @OA\Property(
+     *     description="Whether this station has a public 'on-demand' streaming and download page.",
+     *     example=true
+     * )
      */
-    protected $genre;
+    #[ORM\Column]
+    protected bool $enable_on_demand = false;
 
     /**
-     * @ORM\Column(name="radio_base_dir", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="/var/azuracast/stations/azuratest_radio")
-     * @var string|null
+     * @OA\Property(
+     *     description="Whether the 'on-demand' page offers download capability.",
+     *     example=true
+     * )
      */
-    protected $radio_base_dir;
+    #[ORM\Column]
+    protected bool $enable_on_demand_download = true;
+
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    protected bool $needs_restart = false;
+
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    protected bool $has_started = false;
 
     /**
-     * @ORM\Column(name="nowplaying", type="array", nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var mixed|null
+     * @OA\Property(
+     *     description="The number of 'last played' history items to show for a station in API responses.",
+     *     example=5
+     * )
      */
-    protected $nowplaying;
+    #[ORM\Column(type: 'smallint')]
+    protected int $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
 
     /**
-     * @ORM\Column(name="nowplaying_timestamp", type="integer", nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var int
+     * @OA\Property(
+     *     description="The time zone that station operations should take place in.",
+     *     example="UTC"
+     * )
      */
-    protected $nowplaying_timestamp;
+    #[ORM\Column(length: 100, nullable: true)]
+    protected ?string $timezone = 'UTC';
 
     /**
-     * @ORM\Column(name="automation_settings", type="json", nullable=true)
-     *
-     * @OA\Property(@OA\Items())
-     * @var array|null
+     * @OA\Property(
+     *     description="The station-specific default album artwork URL.",
+     *     example="https://example.com/image.jpg"
+     * )
      */
-    protected $automation_settings;
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $default_album_art_url = null;
 
-    /**
-     * @ORM\Column(name="automation_timestamp", type="integer", nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var int|null The UNIX timestamp when station automation was most recently run.
-     */
-    protected $automation_timestamp = 0;
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: SongHistory::class)]
+    #[ORM\OrderBy(['timestamp_start' => 'desc'])]
+    protected Collection $history;
 
-    /**
-     * @ORM\Column(name="enable_requests", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=true)
-     * @var bool Whether listeners can request songs to play on this station.
-     */
-    protected $enable_requests = false;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(
+        name: 'media_storage_location_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    #[DeepNormalize(true)]
+    #[Serializer\MaxDepth(1)]
+    protected ?StorageLocation $media_storage_location = null;
 
-    /**
-     * @ORM\Column(name="request_delay", type="integer", nullable=true)
-     *
-     * @OA\Property(example=5)
-     * @var int|null
-     */
-    protected $request_delay = self::DEFAULT_REQUEST_DELAY;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(
+        name: 'recordings_storage_location_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    #[DeepNormalize(true)]
+    #[Serializer\MaxDepth(1)]
+    protected ?StorageLocation $recordings_storage_location = null;
 
-    /**
-     * @ORM\Column(name="request_threshold", type="integer", nullable=true)
-     *
-     * @OA\Property(example=15)
-     * @var int|null
-     */
-    protected $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(
+        name: 'podcasts_storage_location_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    #[DeepNormalize(true)]
+    #[Serializer\MaxDepth(1)]
+    protected ?StorageLocation $podcasts_storage_location = null;
 
-    /**
-     * @ORM\Column(name="disconnect_deactivate_streamer", type="integer", nullable=true, options={"default":0})
-     *
-     * @OA\Property(example=0)
-     * @var int
-     */
-    protected $disconnect_deactivate_streamer = self::DEFAULT_DISCONNECT_DEACTIVATE_STREAMER;
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationStreamer::class)]
+    protected Collection $streamers;
 
-    /**
-     * @ORM\Column(name="enable_streamers", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=false)
-     * @var bool Whether streamers are allowed to broadcast to this station at all.
-     */
-    protected $enable_streamers = false;
+    #[ORM\Column(nullable: true)]
+    protected ?int $current_streamer_id = null;
 
-    /**
-     * @ORM\Column(name="is_streamer_live", type="boolean", nullable=false)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @OA\Property(example=false)
-     * @var bool Whether a streamer is currently active on the station.
-     */
-    protected $is_streamer_live = false;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'current_streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?StationStreamer $current_streamer = null;
 
-    /**
-     * @ORM\Column(name="enable_public_page", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=true)
-     * @var bool Whether this station is visible as a public page and in a now-playing API response.
-     */
-    protected $enable_public_page = true;
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: RolePermission::class)]
+    protected Collection $permissions;
 
-    /**
-     * @ORM\Column(name="enable_on_demand", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=true)
-     * @var bool Whether this station has a public "on-demand" streaming and download page.
-     */
-    protected $enable_on_demand = false;
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationPlaylist::class)]
+    #[ORM\OrderBy(['type' => 'ASC', 'weight' => 'DESC'])]
+    protected Collection $playlists;
 
-    /**
-     * @ORM\Column(name="enable_on_demand_download", type="boolean", nullable=false)
-     *
-     * @OA\Property(example=true)
-     * @var bool Whether the "on-demand" page offers download capability.
-     */
-    protected $enable_on_demand_download = true;
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationMount::class)]
+    protected Collection $mounts;
 
-    /**
-     * @ORM\Column(name="needs_restart", type="boolean")
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var bool Whether to show the "Restart station to apply changes" sidebar for this station
-     */
-    protected $needs_restart = false;
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: StationRemote::class)]
+    protected Collection $remotes;
 
-    /**
-     * @ORM\Column(name="has_started", type="boolean")
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var bool
-     */
-    protected $has_started = false;
+    #[ORM\OneToMany(
+        mappedBy: 'station',
+        targetEntity: StationWebhook::class,
+        cascade: ['persist'],
+        fetch: 'EXTRA_LAZY'
+    )]
+    protected Collection $webhooks;
 
-    /**
-     * @ORM\Column(name="api_history_items", type="smallint")
-     *
-     * @OA\Property(example=5)
-     * @var int|null The number of "last played" history items to show for a station in the Now Playing API responses.
-     */
-    protected $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
-
-    /**
-     * @ORM\Column(name="timezone", type="string", length=100, nullable=true)
-     *
-     * @OA\Property(example="UTC")
-     * @var string|null The time zone that station operations should take place in.
-     */
-    protected $timezone = 'UTC';
-
-    /**
-     * @ORM\Column(name="default_album_art_url", type="string", length=255, nullable=true)
-     *
-     * @OA\Property(example="https://example.com/image.jpg")
-     * @var string|null The station-specific default album artwork URL.
-     */
-    protected $default_album_art_url;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SongHistory", mappedBy="station")
-     * @ORM\OrderBy({"timestamp_start" = "DESC"})
-     * @var Collection
-     */
-    protected $history;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="StorageLocation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     *
-     * @DeepNormalize(true)
-     * @Serializer\MaxDepth(1)
-     *
-     * @var StorageLocation
-     */
-    protected $media_storage_location;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="StorageLocation")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="recordings_storage_location_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     *
-     * @DeepNormalize(true)
-     * @Serializer\MaxDepth(1)
-     *
-     * @var StorageLocation
-     */
-    protected $recordings_storage_location;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationStreamer", mappedBy="station")
-     * @var Collection
-     */
-    protected $streamers;
-
-    /**
-     * @ORM\Column(name="current_streamer_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $current_streamer_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="StationStreamer")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="current_streamer_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     * @var StationStreamer|null
-     */
-    protected $current_streamer;
-
-    /**
-     * @ORM\OneToMany(targetEntity="RolePermission", mappedBy="station")
-     * @var Collection
-     */
-    protected $permissions;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationPlaylist", mappedBy="station")
-     * @ORM\OrderBy({"type" = "ASC","weight" = "DESC"})
-     * @var Collection
-     */
-    protected $playlists;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationMount", mappedBy="station")
-     * @var Collection
-     */
-    protected $mounts;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationRemote", mappedBy="station")
-     * @var Collection
-     */
-    protected $remotes;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationWebhook", mappedBy="station", fetch="EXTRA_LAZY", cascade={"persist"})
-     * @var Collection
-     */
-    protected $webhooks;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SftpUser", mappedBy="station")
-     * @var Collection
-     */
-    protected $sftp_users;
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: SftpUser::class)]
+    protected Collection $sftp_users;
 
     public function __construct()
     {
@@ -410,11 +331,6 @@ class Station
         $this->sftp_users = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -422,7 +338,7 @@ class Station
 
     public function setName(?string $name = null): void
     {
-        $this->name = $this->truncateString($name, 100);
+        $this->name = $this->truncateNullableString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
             $this->setShortName(null);
@@ -512,27 +428,11 @@ class Station
     }
 
     /**
-     * Clear all port assignments for the station (useful after cloning).
-     */
-    public function clearPorts(): void
-    {
-        $fe_config = $this->getFrontendConfig();
-        $fe_config->setPort(null);
-        $this->setFrontendConfig($fe_config);
-
-        $be_config = $this->getBackendConfig();
-        $be_config->setDjPort(null);
-        $be_config->setTelnetPort(null);
-        $this->setBackendConfig($be_config);
-    }
-
-    /**
      * Whether the station uses AzuraCast to directly manage the AutoDJ or lets the backend handle it.
      */
     public function useManualAutoDJ(): bool
     {
-        $settings = $this->getBackendConfig();
-        return $settings->useManualAutoDj();
+        return $this->getBackendConfig()->useManualAutoDj();
     }
 
     public function getBackendConfig(): StationBackendConfiguration
@@ -619,7 +519,7 @@ class Station
 
     public function setGenre(?string $genre): void
     {
-        $this->genre = $this->truncateString($genre, 150);
+        $this->genre = $this->truncateNullableString($genre, 150);
     }
 
     public function getRadioBaseDir(): ?string
@@ -629,7 +529,7 @@ class Station
 
     public function setRadioBaseDir(?string $newDir = null): void
     {
-        $newDir = $this->truncateString(trim($newDir));
+        $newDir = $this->truncateNullableString(trim($newDir));
 
         if (empty($newDir)) {
             $stationsBaseDir = Environment::getInstance()->getStationDirectory();
@@ -676,6 +576,19 @@ class Station
 
             $this->recordings_storage_location = $storageLocation;
         }
+
+        if (null === $this->podcasts_storage_location) {
+            $storageLocation = new StorageLocation(
+                StorageLocation::TYPE_STATION_PODCASTS,
+                StorageLocation::ADAPTER_LOCAL
+            );
+
+            $podcastsPath = $this->getRadioBaseDir() . '/podcasts';
+            $this->ensureDirectoryExists($podcastsPath);
+            $storageLocation->setPath($podcastsPath);
+
+            $this->podcasts_storage_location = $storageLocation;
+        }
     }
 
     protected function ensureDirectoryExists(string $dirname): void
@@ -684,8 +597,7 @@ class Station
             return;
         }
 
-        $visibilityConverter = new PortableVisibilityConverter();
-        $visibility = $visibilityConverter->defaultForDirectories();
+        $visibility = (new PortableVisibilityConverter())->defaultForDirectories();
         if (!mkdir($dirname, $visibility, true) && !is_dir($dirname)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
         }
@@ -716,11 +628,11 @@ class Station
         return null;
     }
 
-    public function setNowplaying(Api\NowPlaying $nowplaying = null): void
+    public function setNowplaying(?Api\NowPlaying $nowplaying = null): void
     {
         $this->nowplaying = $nowplaying;
 
-        if ($nowplaying instanceof Api\NowPlaying) {
+        if (null !== $nowplaying) {
             $this->nowplaying_timestamp = time();
         }
     }
@@ -969,6 +881,30 @@ class Station
         $this->recordings_storage_location = $storageLocation;
     }
 
+    public function getPodcastsStorageLocation(): StorageLocation
+    {
+        return $this->podcasts_storage_location;
+    }
+
+    public function setPodcastsStorageLocation(StorageLocation $storageLocation): void
+    {
+        if (StorageLocation::TYPE_STATION_PODCASTS !== $storageLocation->getType()) {
+            throw new InvalidArgumentException('Storage location must be for station podcasts.');
+        }
+
+        $this->podcasts_storage_location = $storageLocation;
+    }
+
+    /** @return StorageLocation[] */
+    public function getAllStorageLocations(): array
+    {
+        return [
+            $this->getMediaStorageLocation(),
+            $this->getRecordingsStorageLocation(),
+            $this->getPodcastsStorageLocation(),
+        ];
+    }
+
     public function getPermissions(): Collection
     {
         return $this->permissions;
@@ -1020,5 +956,45 @@ class Station
     {
         $this->nowplaying = null;
         $this->nowplaying_timestamp = 0;
+    }
+
+    public function __toString(): string
+    {
+        $name = $this->getName();
+        if (null !== $name) {
+            return $name;
+        }
+
+        $id = $this->getId();
+        return (null !== $id) ? 'Station #' . $id : 'New Station';
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+        $this->short_name = null;
+        $this->radio_base_dir = null;
+        $this->adapter_api_key = null;
+        $this->nowplaying = null;
+        $this->nowplaying_timestamp = null;
+        $this->current_streamer = null;
+        $this->current_streamer_id = null;
+        $this->is_streamer_live = false;
+        $this->needs_restart = false;
+        $this->has_started = false;
+
+        $this->media_storage_location = null;
+        $this->recordings_storage_location = null;
+        $this->podcasts_storage_location = null;
+
+        // Clear ports
+        $fe_config = $this->getFrontendConfig();
+        $fe_config->setPort(null);
+        $this->setFrontendConfig($fe_config);
+
+        $be_config = $this->getBackendConfig();
+        $be_config->setDjPort(null);
+        $be_config->setTelnetPort(null);
+        $this->setBackendConfig($be_config);
     }
 }

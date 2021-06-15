@@ -170,7 +170,11 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             $np = ($this->nowPlayingApiGenerator)($station, $npResult);
 
             // Trigger the dispatching of webhooks.
-            $this->dispatchWebhooks($station, $np, $standalone);
+            $this->dispatchWebhooks($station, $np);
+
+            if ($standalone) {
+                $this->updateCaches($station, $np);
+            }
 
             $station->setNowplaying($np);
             $this->em->persist($station);
@@ -279,7 +283,6 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
                 );
             } catch (Exception $e) {
                 $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-                continue;
             }
         }
 
@@ -293,7 +296,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
     ): void {
         /** @var Entity\Api\NowPlaying $np */
         $np = (new DeepCopy())->copy($npOriginal);
-        $np->resolveUrls($this->router->getBaseUrl(false));
+        $np->resolveUrls($this->router->getBaseUrl());
         $np->cache = 'event';
 
         $npOld = $station->getNowplaying();
@@ -329,8 +332,35 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         $message->station_id = (int)$station->getId();
         $message->np = $np;
         $message->triggers = $triggers;
-        $message->is_standalone = $isStandalone;
 
         $this->messageBus->dispatch($message);
+    }
+
+    protected function updateCaches(
+        Entity\Station $station,
+        Entity\Api\NowPlaying $np
+    ): void {
+        // Replace the relevant station information in the cache and database.
+        $this->logger->debug('Updating NowPlaying cache...');
+
+        $np_full = $this->cache->get('nowplaying');
+
+        if ($np_full) {
+            $np_new = [];
+            foreach ($np_full as $np_old) {
+                /** @var Entity\Api\NowPlaying $np_old */
+                if ($np_old->station->id === $station->getId()) {
+                    $np_new[] = $np;
+                } else {
+                    $np_new[] = $np_old;
+                }
+            }
+
+            $this->cache->set('nowplaying', $np_new, 120);
+
+            $settings = $this->settingsRepo->readSettings();
+            $settings->setNowplaying($np_new);
+            $this->settingsRepo->writeSettings($settings);
+        }
     }
 }

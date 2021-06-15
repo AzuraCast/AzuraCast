@@ -14,24 +14,24 @@ class MigrateConfigCommand extends CommandAbstract
         $envSettings = [];
 
         $iniPath = $environment->getBaseDirectory() . '/env.ini';
-        if (file_exists($iniPath)) {
+        if (is_file($iniPath)) {
             $envSettings = (array)parse_ini_file($iniPath);
         }
 
         // Migrate from existing legacy config files.
         $legacyIniPath = $environment->getBaseDirectory() . '/app/env.ini';
-        if (file_exists($legacyIniPath)) {
+        if (is_file($legacyIniPath)) {
             $iniSettings = parse_ini_file($legacyIniPath);
             $envSettings = array_merge($envSettings, (array)$iniSettings);
         }
 
         $legacyAppEnvFile = $environment->getBaseDirectory() . '/app/.env';
-        if (file_exists($legacyAppEnvFile)) {
+        if (is_file($legacyAppEnvFile)) {
             $envSettings[Environment::APP_ENV] ??= file_get_contents($legacyAppEnvFile);
         }
 
         $legacyDbConfFile = $environment->getBaseDirectory() . '/app/config/db.conf.php';
-        if (file_exists($legacyDbConfFile)) {
+        if (is_file($legacyDbConfFile)) {
             $dbConf = include($legacyDbConfFile);
 
             $envSettings[Environment::DB_PASSWORD] ??= $dbConf['password'];

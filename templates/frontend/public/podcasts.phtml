@@ -1,0 +1,106 @@
+<?php
+$this->layout('minimal', [
+    'page_class' => 'podcasts station-' . $station->getShortName(),
+    'title' => 'Podcasts - ' . $this->e($station->getName()),
+    'hide_footer' => true,
+]);
+
+?>
+<section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
+    <div class="container pt-5 pb-5 h-100" style="flex: 1;">
+        <div id="station_podcasts">
+            <div class="row mb-4">
+                <h1 class="mx-auto"><?=$this->e($station->getName())?></h1>
+            </div>
+
+            <div class="row justify-content-center">
+                <?php
+                /** @var App\Entity\Podcast $podcast */ ?>
+                <?php
+                foreach ($podcasts as $podcast) : ?>
+                    <?php
+                    $episodesPageLink = $router->named(
+                        'public:podcast:episodes',
+                        [
+                            'station_id' => $station->getId(),
+                            'podcast_id' => $podcast->getId(),
+                        ]
+                    ) ?>
+                    <?php
+                    $feedLink = $router->named(
+                        'public:podcast:feed',
+                        ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId()]
+                    ) ?>
+                    <div class="col col-md-10 mb-4">
+                        <div class="card">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <a href="<?=$this->e($episodesPageLink)?>" title="<?=__('Episodes')?>">
+                                        <img src="<?=$router->named(
+                                            'api:stations:podcast:art',
+                                            [
+                                                'station_id' => $station->getId(),
+                                                'podcast_id' => $podcast->getId(),
+                                            ]
+                                        );?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle())?>">
+                                    </a>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="card-body d-flex flex-column h-100">
+                                        <h5 class="card-title"><?=$this->e($podcast->getTitle())?></h5>
+
+                                        <p class="card-text"><?=$this->e($podcast->getDescription())?></p>
+
+                                        <p class="card-text">
+                                            <small class="text-muted"><?=__('Language')?>: <?=strtoupper(
+                                                    $podcast->getLanguage()
+                                                )?></small>
+                                            <br/>
+                                            <small class="text-muted"><?=__('Categories')?>: <?=implode(
+                                                    $podcast->getCategories()->map(
+                                                        function ($category) {
+                                                            $title = $category->getTitle();
+                                                            $subtitle = $category->getSubTitle();
+
+                                                            return (!empty($subtitle))
+                                                                ? $title . ' - ' . $subtitle
+                                                                : $title;
+                                                        }
+                                                    )->getValues()
+                                                );?></small>
+                                        </p>
+
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <a href="<?=$feedLink?>" class="btn btn-warning btn-sm" target="_blank"><span class="material-icons">rss_feed</span> <?=__(
+                                                        'RSS Feed'
+                                                    )?></a>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-auto">
+                                            <a href="<?=$episodesPageLink?>" class="btn btn-primary btn-block"><?=__(
+                                                    'Episodes'
+                                                )?></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <?php if (count($podcasts) === 0) : ?>
+                    <div class="col col-md-10 mb-4">
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <h5 class="card-title text-center"><?=__('No entries found.') ?></h5>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>

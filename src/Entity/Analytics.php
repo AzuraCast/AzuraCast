@@ -9,16 +9,16 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="analytics", indexes={
- *   @ORM\Index(name="search_idx", columns={"type", "moment"})
- * }, uniqueConstraints={
- *   @ORM\UniqueConstraint(name="stats_unique_idx", columns={"station_id", "type", "moment"})
- * })
- * @ORM\Entity(readOnly=true)
- */
+#[
+    ORM\Entity(readOnly: true),
+    ORM\Table(name: 'analytics'),
+    ORM\Index(columns: ['type', 'moment'], name: 'search_idx'),
+    ORM\UniqueConstraint(name: 'stats_unique_idx', columns: ['station_id', 'type', 'moment'])
+]
 class Analytics
 {
+    use Traits\HasAutoIncrementId;
+
     /** @var string Log all analytics data across the system. */
     public const LEVEL_ALL = 'all';
 
@@ -31,64 +31,30 @@ class Analytics
     public const INTERVAL_DAILY = 'day';
     public const INTERVAL_HOURLY = 'hour';
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: true)]
+    protected ?int $station_id = null;
 
-    /**
-     * @ORM\Column(name="station_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $station_id;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?Station $station = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station|null
-     */
-    protected $station;
+    #[ORM\Column(length: 15)]
+    protected string $type;
 
-    /**
-     * @ORM\Column(name="type", type="string", length=15)
-     * @var string
-     */
-    protected $type;
+    #[ORM\Column(type: 'carbon_immutable')]
+    protected CarbonImmutable $moment;
 
-    /**
-     * @ORM\Column(name="moment", type="carbon_immutable", precision=0)
-     * @var CarbonImmutable
-     */
-    protected $moment;
+    #[ORM\Column]
+    protected int $number_min;
 
-    /**
-     * @ORM\Column(name="number_min", type="integer")
-     * @var int
-     */
-    protected $number_min;
+    #[ORM\Column]
+    protected int $number_max;
 
-    /**
-     * @ORM\Column(name="number_max", type="integer")
-     * @var int
-     */
-    protected $number_max;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    protected string $number_avg;
 
-    /**
-     * @ORM\Column(name="number_avg", type="decimal", precision=10, scale=2)
-     * @var string
-     */
-    protected $number_avg;
-
-    /**
-     * @ORM\Column(name="number_unique", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $number_unique;
+    #[ORM\Column(nullable: true)]
+    protected ?int $number_unique = null;
 
     public function __construct(
         DateTimeInterface $moment,
@@ -118,11 +84,6 @@ class Analytics
         return $this->station;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getType(): string
     {
         return $this->type;
@@ -136,8 +97,7 @@ class Analytics
     public function getMomentInStationTimeZone(): CarbonImmutable
     {
         $tz = $this->station->getTimezoneObject();
-        $timestamp = CarbonImmutable::parse($this->moment, $tz);
-        return $timestamp->shiftTimezone($tz);
+        return CarbonImmutable::parse($this->moment, $tz)->shiftTimezone($tz);
     }
 
     public function getNumberMin(): int

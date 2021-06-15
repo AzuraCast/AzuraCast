@@ -1,34 +1,31 @@
 ---
-name: Bug Report 
+name: Bug Report
+
 about: Report an error you're encountering with your AzuraCast installation.
 ---
 
 <!--
 Notes:
+- This template is only to be used for bug/error reports. For feature requests, visit https://features.azuracast.com/
 - Please be kind and patient in your interactions with us. We are a small team of volunteers working solely on donations. Thank you in advance.
 - Ansible installation methods are not officially supported and support may not be provided outside of the rare circumstances.
 - Always check your logs before submitting!
 - Make sure your issue isn't already answered here: https://docs.azuracast.com/en/user-guide/troubleshooting
 -->
 
-**Using Docker installation method**
+**Using Docker installation method?**
 <!-- Yes / No -->
 
-
-**AzuraCast version**
+**AzuraCast version:**
 <!-- (i.e. v0.10.1 for Stable Releases or 2021-02-07 #abcdefg for Rolling Releases -->
 
-
-**Host Operating System**
+**Host Operating System:**
 <!-- (i.e. Ubuntu 16.04, MacOS High Sierra, Windows 10) -->
 
-
-**Describe the bug**
+**Describe the bug:**
 <!-- A clear and concise description of what the bug is. -->
 
-
-
-**To Reproduce**
+**Steps to reproduce:**
 <!--
 Steps to reproduce the behavior:
 1. Go to '...'
@@ -37,18 +34,14 @@ Steps to reproduce the behavior:
 4. See error
 -->
 
-
-**Expected behavior**
+**Expected behavior:**
 <!-- A clear and concise description of what you expected to happen. -->
 
-
-**Relevant Logs**
+**Relevant logs:**
 <!-- Paste in any error messages or abnormal entries you see in your logs (see above). -->
 
-
-**Screenshots**
+**Screenshots:**
 <!-- If applicable, add screenshots to help explain your problem. -->
-
 
 **Device(s):**
 
@@ -57,5 +50,5 @@ Steps to reproduce the behavior:
 - Browser: <!-- [e.g. chrome, safari] -->
 - Version: <!-- [e.g. 22] -->
 
-**Additional context**
+**Additional context:**
 <!-- Add any other context about the problem here. -->

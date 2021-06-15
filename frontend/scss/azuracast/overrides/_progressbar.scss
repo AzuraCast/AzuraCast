@@ -1,33 +1,33 @@
 .progress-bar {
   &.h-5 {
-    border-bottom-width: 5px;
+    border-bottom-width: 5px !important;
 
     &::after {
-      height: 5px;
+      height: 5px !important;
     }
   }
 
   &.h-10 {
-    border-bottom-width: 10px;
+    border-bottom-width: 10px !important;
 
     &::after {
-      height: 10px;
+      height: 10px !important;
     }
   }
 
   &.h-15 {
-    border-bottom-width: 15px;
+    border-bottom-width: 15px !important;
 
     &::after {
-      height: 15px;
+      height: 15px !important;
     }
   }
 
   &.h-20 {
-    border-bottom-width: 20px;
+    border-bottom-width: 20px !important;
 
     &::after {
-      height: 20px;
+      height: 20px !important;
     }
   }
 }

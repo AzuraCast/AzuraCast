@@ -1,0 +1,48 @@
+select.form-control option,
+select.custom-select option {
+  background: $menu-bg;
+}
+
+.form {
+  fieldset {
+    div.fieldset-legend,
+    legend.col-form-label {
+      border-color: theme-color-dark(primary);
+    }
+  }
+}
+
+.form-group {
+  &.has-error {
+    .form-text {
+      color: theme-color(danger);
+    }
+
+    .form-control {
+      border-color: theme-color(danger);
+      box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) theme-color(danger);
+    }
+  }
+
+  &.has-warning {
+    .form-text {
+      color: theme-color(warning);
+    }
+
+    .form-control {
+      border-color: theme-color(warning);
+      box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) theme-color(warning);
+    }
+  }
+
+  &.has-success {
+    .form-text {
+      color: theme-color(success);
+    }
+
+    .form-control {
+      border-color: theme-color(success);
+      box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) theme-color(success);
+    }
+  }
+}

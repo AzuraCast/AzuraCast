@@ -5,9 +5,11 @@
         "setstat_mode": 1,
         "actions": {
             "execute_on": [
-                "upload"
+                "upload",
+                "pre-delete",
+                "rename"
             ],
-            "hook": "/usr/local/bin/azuracast_sftp_upload"
+            "hook": "/usr/local/bin/azuracast_sftp_event"
         }
     },
     "sftpd": {

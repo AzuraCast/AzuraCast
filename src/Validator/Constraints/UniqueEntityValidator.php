@@ -42,12 +42,12 @@ class UniqueEntityValidator extends ConstraintValidator
     }
 
     /**
-     * @param object $entity
+     * @param object $value
      *
      * @throws UnexpectedTypeException
      * @throws ConstraintDefinitionException
      */
-    public function validate($entity, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueEntity) {
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);
@@ -67,11 +67,11 @@ class UniqueEntityValidator extends ConstraintValidator
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 
-        if (null === $entity) {
+        if (null === $value) {
             return;
         }
 
-        $class = $this->em->getClassMetadata(get_class($entity));
+        $class = $this->em->getClassMetadata(get_class($value));
 
         $criteria = [];
         $hasNullValue = false;
@@ -86,7 +86,7 @@ class UniqueEntityValidator extends ConstraintValidator
                 );
             }
 
-            $fieldValue = $class->reflFields[$fieldName]->getValue($entity);
+            $fieldValue = $class->reflFields[$fieldName]->getValue($value);
 
             if (null === $fieldValue) {
                 $hasNullValue = true;
@@ -126,7 +126,7 @@ class UniqueEntityValidator extends ConstraintValidator
             $repository = $this->em->getRepository($constraint->entityClass);
             $supportedClass = $repository->getClassName();
 
-            if (!$entity instanceof $supportedClass) {
+            if (!$value instanceof $supportedClass) {
                 throw new ConstraintDefinitionException(
                     sprintf(
                         'The "%s" entity repository does not support the "%s" entity. The entity should be '
@@ -138,7 +138,7 @@ class UniqueEntityValidator extends ConstraintValidator
                 );
             }
         } else {
-            $repository = $this->em->getRepository(get_class($entity));
+            $repository = $this->em->getRepository(get_class($value));
         }
 
         $result = $repository->{$constraint->repositoryMethod}($criteria);
@@ -168,7 +168,7 @@ class UniqueEntityValidator extends ConstraintValidator
          * which is the same as the entity being validated, the criteria is
          * unique.
          */
-        if (!$result || (1 === count($result) && current($result) === $entity)) {
+        if (!$result || (1 === count($result) && current($result) === $value)) {
             return;
         }
 

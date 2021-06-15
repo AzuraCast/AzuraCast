@@ -9,14 +9,14 @@ use Doctrine\Persistence\ObjectManager;
 
 class User extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         $demo_user = new Entity\User();
         $demo_user->setEmail('demo@azuracast.com');
         $demo_user->setNewPassword('demo');
         $demo_user->setName('AzuraCast Demo User');
         $demo_user->getRoles()->add($this->getReference('demo_role'));
-        $em->persist($demo_user);
+        $manager->persist($demo_user);
 
         $this->addReference('demo_user', $demo_user);
 
@@ -37,12 +37,12 @@ class User extends AbstractFixture implements DependentFixtureInterface
                 $admin_user->setTwoFactorSecret($admin_2fa_secret);
             }
 
-            $em->persist($admin_user);
+            $manager->persist($admin_user);
 
             $this->addReference('admin_user', $admin_user);
         }
 
-        $em->flush();
+        $manager->flush();
     }
 
     /**

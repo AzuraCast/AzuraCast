@@ -19,8 +19,7 @@ class UpdateCheck
     public function __invoke(GetNotifications $event): void
     {
         // This notification is for full administrators only.
-        $request = $event->getRequest();
-        $acl = $request->getAcl();
+        $acl = $event->getRequest()->getAcl();
         if (!$acl->isAllowed(Acl::GLOBAL_ALL)) {
             return;
         }

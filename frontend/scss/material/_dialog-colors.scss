@@ -1,0 +1,37 @@
+.modal-backdrop {
+  background-color: $dialog-backdrop-bg;
+}
+
+.modal-content {
+  background-color: $dialog-content-bg;
+}
+
+.modal-footer {
+  .btn {
+    background-color: transparent;
+
+    @each $color, $values in $theme-colors {
+      &-#{$color} {
+        @include plain-active-focus-hover {
+          color: theme-color($color);
+        }
+
+        &.disabled,
+        &:disabled {
+          color: $btn-color-disabled;
+        }
+      }
+    }
+
+    &.active,
+    &:active {
+      background-color: $btn-bg-active;
+      box-shadow: none;
+    }
+
+    &.disabled,
+    &:disabled {
+      background-color: transparent;
+    }
+  }
+}

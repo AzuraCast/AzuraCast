@@ -28,20 +28,13 @@
 .select2-search--dropdown .select2-search__field {
   background: transparent;
   border: 0;
-  color: $text-primary;
 }
 
 // no result message
-.select2-results__message {
-  color: $text-secondary;
-}
-
-.select2-container--bootstrap4 {
-
+.select2-container.select2-container--bootstrap4 {
   // input box
   .select2-selection {
     background-color: transparent;
-    border: $textfield-border-width solid $textfield-border-color;
     border-radius: 4px;
     box-shadow: none;
     width: 100%;
@@ -49,13 +42,11 @@
 
   .select2-search--inline .select2-search__field {
     background: transparent;
-    color: $text-primary;
   }
 
   // focused input box
   &.select2-container--focus {
     .select2-selection {
-      border-color: $textfield-border-color-focus;
       outline: 0;
     }
   }
@@ -77,7 +68,6 @@
   &.select2-container--disabled,
   &.select2-container--disabled.select2-container--focus {
     .select2-selection {
-      color: $textfield-color-disabled;
       cursor: not-allowed;
       box-shadow: none;
     }
@@ -87,22 +77,9 @@
     }
   }
 
-  // validated input box
-  select.is-invalid ~ & .select2-selection,
-  form.was-validated select:invalid ~ & .select2-selection {
-    border-color: $form-feedback-invalid-color;
-  }
-
-  select.is-valid ~ & .select2-selection,
-  form.was-validated select:valid ~ & .select2-selection {
-    border-color: $form-feedback-valid-color;
-  }
-
   // dropdown
   .select2-dropdown {
-    border-color: $textfield-border-color;
     border-radius: 0; // overwrite select2.css
-    background: $menu-bg;
 
     // dropdown opened below
     &.select2-dropdown--below {
@@ -112,21 +89,8 @@
 
     // dropdown opened above
     &.select2-dropdown--above {
-      border-top: 1px solid $textfield-border-color;
       @include border-top-radius(4px);
     }
-
-    // selected item
-    .select2-results__option[aria-selected=true] {
-      background-color: $menu-link-bg-hover;
-    }
-  }
-
-  // mouse hovered item
-  .select2-results__option--highlighted,
-  .select2-results__option--highlighted.select2-results__option[aria-selected=true] {
-    background-color: theme-color(primary);
-    color: $white-primary;
   }
 
   // for <optgroup>
@@ -147,13 +111,10 @@
   .select2-results__group {
     padding: 6px;
     display: list-item;
-    color: $text-secondary;
   }
 
   // all clear button
   .select2-selection__clear {
-    $bg: #c8c8c8;
-
     width: 0.9em;
     height: 0.9em;
     line-height: 0.75em;
@@ -161,14 +122,8 @@
     margin-top: 0.7em;
     border-radius: 100%;
 
-    background-color: $menu-bg;
-    color: $menu-link-color;
     float: right;
     margin-right: 0.3em;
-
-    &:hover {
-      background-color: $menu-link-bg-hover;
-    }
   }
 
   .select2-selection--single {
@@ -196,7 +151,6 @@
 
       b {
         top: 60%;
-        border-color: $text-primary transparent transparent transparent;
         border-style: solid;
         border-width: 5px 4px 0 4px;
         width: 0;
@@ -224,8 +178,6 @@
 
     // each selected item in input box
     .select2-selection__choice {
-      color: $text-primary;
-      border: 1px solid $textfield-border-color-hover;
       @include border-radius(2px);
       padding: 0;
       padding-right: 5px;
@@ -237,17 +189,12 @@
 
     // x button of each selected item in input box
     .select2-selection__choice__remove {
-      color: darken($text-secondary, 20%);
       font-weight: bold;
       margin-left: 3px;
       margin-right: 1px;
       padding-right: 3px;
       padding-left: 3px;
       float: left;
-
-      &:hover {
-        color: $text-primary;
-      }
     }
 
     // all clear button

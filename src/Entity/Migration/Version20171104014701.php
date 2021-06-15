@@ -20,14 +20,16 @@ final class Version20171104014701 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $all_records = $this->connection->fetchAll('SELECT * FROM station_media');
-
-        foreach ($all_records as $record) {
-            $this->connection->update('station_media', [
-                'unique_id' => bin2hex(random_bytes(12)),
-            ], [
-                'id' => $record['id'],
-            ]);
+        foreach ($this->connection->fetchAllAssociative('SELECT * FROM station_media') as $record) {
+            $this->connection->update(
+                'station_media',
+                [
+                    'unique_id' => bin2hex(random_bytes(12)),
+                ],
+                [
+                    'id' => $record['id'],
+                ]
+            );
         }
     }
 

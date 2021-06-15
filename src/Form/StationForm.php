@@ -63,8 +63,7 @@ class StationForm extends EntityForm
     public function process(ServerRequest $request, $record = null): object|bool
     {
         // Check for administrative permissions and hide admin fields otherwise.
-        $acl = $request->getAcl();
-        $canSeeAdministration = $acl->isAllowed(Acl::GLOBAL_STATIONS);
+        $canSeeAdministration = $request->getAcl()->isAllowed(Acl::GLOBAL_STATIONS);
         if (!$canSeeAdministration) {
             foreach ($this->options['groups']['admin']['elements'] as $element_key => $element_info) {
                 unset($this->fields[$element_key]);
@@ -87,6 +86,7 @@ class StationForm extends EntityForm
             $recordArray = $this->normalizeRecord($record);
             $recordArray['media_storage_location_id'] = $recordArray['media_storage_location']['id'] ?? null;
             $recordArray['recordings_storage_location_id'] = $recordArray['recordings_storage_location']['id'] ?? null;
+            $recordArray['podcasts_storage_location_id'] = $recordArray['podcasts_storage_location']['id'] ?? null;
 
             $this->populate($recordArray);
         }
@@ -122,6 +122,19 @@ class StationForm extends EntityForm
                     )
                 );
             }
+
+            if ($this->hasField('podcasts_storage_location_id')) {
+                $recordingsStorageField = $this->getField('podcasts_storage_location_id');
+                $recordingsStorageField->setOption('description', $storageLocationsDesc);
+                $recordingsStorageField->setOption(
+                    'choices',
+                    $this->storageLocationRepo->fetchSelectByType(
+                        Entity\StorageLocation::TYPE_STATION_PODCASTS,
+                        $create_mode,
+                        __('Create a new storage location based on the base directory.'),
+                    )
+                );
+            }
         }
 
         if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
@@ -144,6 +157,14 @@ class StationForm extends EntityForm
                         $this->storageLocationRepo->findByType(
                             Entity\StorageLocation::TYPE_STATION_RECORDINGS,
                             $data['recordings_storage_location_id']
+                        )
+                    );
+                }
+                if (!empty($data['podcasts_storage_location_id'])) {
+                    $record->setPodcastsStorageLocation(
+                        $this->storageLocationRepo->findByType(
+                            Entity\StorageLocation::TYPE_STATION_PODCASTS,
+                            $data['podcasts_storage_location_id']
                         )
                     );
                 }

@@ -1,0 +1,93 @@
+.custom-control-label {
+  color: inherit;
+
+  &::before {
+    color: $selection-control-color;
+  }
+}
+
+// Checkbox
+
+.custom-checkbox {
+  .custom-control-label::after {
+    @include setup-material-icons-bg;
+    @include material-icons-bg($selection-control-checkbox-icon);
+  }
+
+  .custom-control-input {
+    &:checked ~ .custom-control-label::after {
+      @include material-icons-bg($selection-control-checkbox-icon-checked);
+    }
+
+    &:indeterminate ~ .custom-control-label::after {
+      @include material-icons-bg($selection-control-checkbox-icon-indeterminate);
+    }
+  }
+}
+
+// Radio button
+
+.custom-radio {
+  .custom-control-label::after {
+    @include setup-material-icons-bg;
+    @include material-icons-bg($selection-control-radio-icon);
+  }
+
+  .custom-control-input {
+    &:checked ~ .custom-control-label::after {
+      @include material-icons-bg($selection-control-radio-icon-checked);
+    }
+  }
+}
+
+.custom-control-input {
+  &:checked ~ {
+    .custom-control-label {
+      &::before {
+        background-color: $selection-control-color-active;
+      }
+    }
+  }
+
+  &:disabled ~ {
+    .custom-control-label {
+      background-color: $selection-control-color-disabled;
+    }
+  }
+}
+
+.custom-switch {
+  .custom-control-label {
+    &::after {
+      background-color: $selection-control-thumb-bg;
+    }
+  }
+
+  .custom-control-input {
+    &:checked {
+      ~ .custom-control-label {
+        &::after {
+          background-color: $selection-control-color-active;
+        }
+      }
+
+      ~ .custom-control-track {
+        background-color: rgba($selection-control-color-active, $selection-control-track-opacity);
+      }
+    }
+
+    &:disabled {
+      ~ .custom-control-label::after {
+        background-color: $selection-control-thumb-bg-disabled;
+      }
+
+      ~ .custom-control-track {
+        background-color: $selection-control-track-bg-disabled;
+      }
+    }
+  }
+
+  .custom-control-track {
+    background-color: $selection-control-track-bg;
+  }
+}

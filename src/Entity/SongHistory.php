@@ -4,18 +4,15 @@
 
 namespace App\Entity;
 
-use App\ApiUtilities;
+use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="song_history", indexes={
- *     @ORM\Index(name="idx_timestamp_start", columns={"timestamp_start"}),
- *     @ORM\Index(name="idx_timestamp_end", columns={"timestamp_end"})
- * })
- * @ORM\Entity()
- */
+#[ORM\Entity, ORM\Table(name: 'song_history')]
+#[ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start')]
+#[ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')]
 class SongHistory implements SongInterface
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
     use Traits\HasSongFields;
 
@@ -25,173 +22,77 @@ class SongHistory implements SongInterface
     /** @var int */
     public const DEFAULT_DAYS_TO_KEEP = 60;
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(nullable: false)]
+    protected int $station_id;
 
-    /**
-     * @ORM\Column(name="station_id", type="integer")
-     * @var int
-     */
-    protected $station_id;
+    #[ORM\ManyToOne(inversedBy: 'history')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected Station $station;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="history")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
+    #[ORM\Column(nullable: true)]
+    protected ?int $playlist_id = null;
 
-    /**
-     * @ORM\Column(name="playlist_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $playlist_id;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'playlist_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationPlaylist $playlist = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationPlaylist")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationPlaylist|null
-     */
-    protected $playlist;
+    #[ORM\Column(nullable: true)]
+    protected ?int $streamer_id = null;
 
-    /**
-     * @ORM\Column(name="streamer_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $streamer_id;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'streamer_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationStreamer $streamer = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationStreamer")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="streamer_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationStreamer|null
-     */
-    protected $streamer;
+    #[ORM\Column(nullable: true)]
+    protected ?int $media_id = null;
 
-    /**
-     * @ORM\Column(name="media_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $media_id;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationMedia $media = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationMedia")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationMedia|null
-     */
-    protected $media;
+    #[ORM\Column(nullable: true)]
+    protected ?int $request_id = null;
 
-    /**
-     * @ORM\Column(name="request_id", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $request_id;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'request_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?StationRequest $request = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="StationRequest")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var StationRequest|null
-     */
-    protected $request;
+    #[ORM\Column]
+    protected int $timestamp_start = 0;
 
-    /**
-     * @ORM\Column(name="timestamp_start", type="integer")
-     * @var int
-     */
-    protected $timestamp_start;
+    #[ORM\Column(nullable: true)]
+    protected ?int $duration = null;
 
-    /**
-     * @ORM\Column(name="duration", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $duration;
+    #[ORM\Column(nullable: true)]
+    protected ?int $listeners_start = null;
 
-    /**
-     * @ORM\Column(name="listeners_start", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $listeners_start;
+    #[ORM\Column]
+    protected int $timestamp_end = 0;
 
-    /**
-     * @ORM\Column(name="timestamp_end", type="integer")
-     * @var int
-     */
-    protected $timestamp_end;
+    #[ORM\Column(nullable: true)]
+    protected ?int $listeners_end = 0;
 
-    /**
-     * @ORM\Column(name="listeners_end", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $listeners_end;
+    #[ORM\Column(nullable: true)]
+    protected ?int $unique_listeners = 0;
 
-    /**
-     * @ORM\Column(name="unique_listeners", type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $unique_listeners;
+    #[ORM\Column]
+    protected int $delta_total = 0;
 
-    /**
-     * @ORM\Column(name="delta_total", type="integer")
-     * @var int
-     */
-    protected $delta_total;
+    #[ORM\Column]
+    protected int $delta_positive = 0;
 
-    /**
-     * @ORM\Column(name="delta_positive", type="integer")
-     * @var int
-     */
-    protected $delta_positive;
+    #[ORM\Column]
+    protected int $delta_negative = 0;
 
-    /**
-     * @ORM\Column(name="delta_negative", type="integer")
-     * @var int
-     */
-    protected $delta_negative;
-
-    /**
-     * @ORM\Column(name="delta_points", type="json", nullable=true)
-     * @var mixed|null
-     */
-    protected $delta_points;
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected mixed $delta_points = null;
 
     public function __construct(
         Station $station,
         SongInterface $song
     ) {
         $this->setSong($song);
-
         $this->station = $station;
-
-        $this->timestamp_start = 0;
-        $this->listeners_start = 0;
-
-        $this->timestamp_end = 0;
-        $this->listeners_end = 0;
-
-        $this->unique_listeners = 0;
-
-        $this->delta_total = 0;
-        $this->delta_negative = 0;
-        $this->delta_positive = 0;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStation(): Station
@@ -224,11 +125,11 @@ class SongHistory implements SongInterface
         return $this->media;
     }
 
-    public function setMedia(StationMedia $media = null): void
+    public function setMedia(?StationMedia $media = null): void
     {
         $this->media = $media;
 
-        if ($media instanceof StationMedia) {
+        if (null !== $media) {
             $this->setDuration($media->getCalculatedLength());
         }
     }
@@ -289,7 +190,7 @@ class SongHistory implements SongInterface
 
     public function getTimestamp(): int
     {
-        return (int)$this->timestamp_start;
+        return $this->timestamp_start;
     }
 
     public function getListenersEnd(): ?int

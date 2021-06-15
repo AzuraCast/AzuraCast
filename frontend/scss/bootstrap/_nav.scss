@@ -15,7 +15,6 @@
   }
 
   &.disabled {
-    color: $nav-link-color-disabled;
     cursor: default;
   }
 }
@@ -44,21 +43,14 @@
     @include border-radius($nav-pills-border-radius);
     @include transition-standard(background-color, color, opacity);
 
-    color: $nav-pills-color;
     opacity: $nav-pills-link-opacity;
 
-    @include active-focus-hover {
-      background-color: $nav-pills-bg-hover;
-    }
-
     &.active {
-      color: $nav-pills-color-active;
       opacity: 1;
     }
 
     &.disabled {
       background-color: transparent;
-      color: $nav-link-color-disabled;
       opacity: 1;
     }
 
@@ -68,7 +60,6 @@
   }
 
   .show > .nav-link {
-    background-color: $nav-pills-bg-hover;
     opacity: 1;
   }
 }

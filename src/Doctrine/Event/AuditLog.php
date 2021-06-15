@@ -2,11 +2,9 @@
 
 namespace App\Doctrine\Event;
 
-use App\Annotations\AuditLog\Auditable;
-use App\Annotations\AuditLog\AuditIdentifier;
-use App\Annotations\AuditLog\AuditIgnore;
 use App\Entity;
-use Doctrine\Common\Annotations\Reader;
+use App\Entity\Attributes\Auditable;
+use App\Entity\Attributes\AuditIgnore;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -14,9 +12,12 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Proxy\Proxy;
+use Doctrine\ORM\UnitOfWork;
+use JetBrains\PhpStorm\Pure;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionObject;
+use Stringable;
 
 /**
  * A hook into Doctrine's event listener to write changes to "Auditable"
@@ -27,11 +28,6 @@ use ReflectionObject;
  */
 class AuditLog implements EventSubscriber
 {
-    public function __construct(
-        protected Reader $reader
-    ) {
-    }
-
     /**
      * @return string[]
      */
@@ -44,10 +40,28 @@ class AuditLog implements EventSubscriber
 
     public function onFlush(OnFlushEventArgs $args): void
     {
-        $newAuditLogs = [];
-
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
+
+        $singleAuditLogs = $this->handleSingleUpdates($em, $uow);
+        $collectionAuditLogs = $this->handleCollectionUpdates($uow);
+        $newAuditLogs = array_merge($singleAuditLogs, $collectionAuditLogs);
+
+        if (!empty($newAuditLogs)) {
+            $auditLogMetadata = $em->getClassMetadata(Entity\AuditLog::class);
+            foreach ($newAuditLogs as $auditLog) {
+                $uow->persist($auditLog);
+                $uow->computeChangeSet($auditLogMetadata, $auditLog);
+            }
+        }
+    }
+
+    /** @return Entity\AuditLog[] */
+    protected function handleSingleUpdates(
+        EntityManagerInterface $em,
+        UnitOfWork $uow
+    ): array {
+        $newRecords = [];
 
         $collections = [
             Entity\AuditLog::OPER_INSERT => $uow->getScheduledEntityInsertions(),
@@ -59,9 +73,7 @@ class AuditLog implements EventSubscriber
             foreach ($collection as $entity) {
                 // Check that the entity being managed is "Auditable".
                 $reflectionClass = new ReflectionObject($entity);
-
-                $auditable = $this->reader->getClassAnnotation($reflectionClass, Auditable::class);
-                if (null === $auditable) {
+                if (!$this->isAuditable($reflectionClass)) {
                     continue;
                 }
 
@@ -78,19 +90,17 @@ class AuditLog implements EventSubscriber
                     }
 
                     // Ensure the property isn't ignored.
-                    $property = $reflectionClass->getProperty($changeField);
-                    $annotation = $this->reader->getPropertyAnnotation($property, AuditIgnore::class);
-
-                    if (null !== $annotation) {
+                    $ignoreAttr = $reflectionClass->getProperty($changeField)->getAttributes(AuditIgnore::class);
+                    if (!empty($ignoreAttr)) {
                         continue;
                     }
 
                     // Check if either field value is an object.
                     if ($this->isEntity($em, $fieldPrev)) {
-                        $fieldPrev = $this->getIdentifier(new ReflectionObject($fieldPrev), $fieldPrev);
+                        $fieldPrev = $this->getIdentifier($fieldPrev);
                     }
                     if ($this->isEntity($em, $fieldNow)) {
-                        $fieldNow = $this->getIdentifier(new ReflectionObject($fieldNow), $fieldNow);
+                        $fieldNow = $this->getIdentifier($fieldNow);
                     }
 
                     $changes[$changeField] = [$fieldPrev, $fieldNow];
@@ -101,12 +111,12 @@ class AuditLog implements EventSubscriber
                 }
 
                 // Find the identifier method or property.
-                $identifier = $this->getIdentifier($reflectionClass, $entity);
+                $identifier = $this->getIdentifier($entity);
                 if (null === $identifier) {
                     continue;
                 }
 
-                $newAuditLogs[] = new Entity\AuditLog(
+                $newRecords[] = new Entity\AuditLog(
                     $changeType,
                     get_class($entity),
                     $identifier,
@@ -117,7 +127,14 @@ class AuditLog implements EventSubscriber
             }
         }
 
-        // Handle changes to collections.
+        return $newRecords;
+    }
+
+    /** @return Entity\AuditLog[] */
+    protected function handleCollectionUpdates(
+        UnitOfWork $uow
+    ): array {
+        $newRecords = [];
         $associated = [];
         $disassociated = [];
 
@@ -126,8 +143,7 @@ class AuditLog implements EventSubscriber
             $owner = $collection->getOwner();
 
             $reflectionClass = new ReflectionObject($owner);
-            $isAuditable = $this->reader->getClassAnnotation($reflectionClass, Auditable::class);
-            if (null === $isAuditable) {
+            if (!$this->isAuditable($reflectionClass)) {
                 continue;
             }
 
@@ -137,26 +153,24 @@ class AuditLog implements EventSubscriber
                 continue;
             }
 
-            $ownerIdentifier = $this->getIdentifier($reflectionClass, $owner);
+            $ownerIdentifier = $this->getIdentifier($owner);
 
             foreach ($collection->getInsertDiff() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
-                $targetIsAuditable = $this->reader->getClassAnnotation($targetReflectionClass, Auditable::class);
-                if (null === $targetIsAuditable) {
+                if (!$this->isAuditable($targetReflectionClass)) {
                     continue;
                 }
 
-                $entityIdentifier = $this->getIdentifier($targetReflectionClass, $entity);
+                $entityIdentifier = $this->getIdentifier($entity);
                 $associated[] = [$owner, $ownerIdentifier, $entity, $entityIdentifier];
             }
             foreach ($collection->getDeleteDiff() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
-                $targetIsAuditable = $this->reader->getClassAnnotation($targetReflectionClass, Auditable::class);
-                if (null === $targetIsAuditable) {
+                if (!$this->isAuditable($targetReflectionClass)) {
                     continue;
                 }
 
-                $entityIdentifier = $this->getIdentifier($targetReflectionClass, $entity);
+                $entityIdentifier = $this->getIdentifier($entity);
                 $disassociated[] = [$owner, $ownerIdentifier, $entity, $entityIdentifier];
             }
         }
@@ -165,9 +179,12 @@ class AuditLog implements EventSubscriber
             /** @var PersistentCollection $collection */
             $owner = $collection->getOwner();
 
+            if (null === $owner) {
+                continue;
+            }
+
             $reflectionClass = new ReflectionObject($owner);
-            $isAuditable = $this->reader->getClassAnnotation($reflectionClass, Auditable::class);
-            if (null === $isAuditable) {
+            if (!$this->isAuditable($reflectionClass)) {
                 continue;
             }
 
@@ -177,22 +194,21 @@ class AuditLog implements EventSubscriber
                 continue;
             }
 
-            $ownerIdentifier = $this->getIdentifier($reflectionClass, $owner);
+            $ownerIdentifier = $this->getIdentifier($owner);
 
             foreach ($collection->toArray() as $entity) {
                 $targetReflectionClass = new ReflectionObject($entity);
-                $targetIsAuditable = $this->reader->getClassAnnotation($targetReflectionClass, Auditable::class);
-                if (null === $targetIsAuditable) {
+                if (!$this->isAuditable($targetReflectionClass)) {
                     continue;
                 }
 
-                $entityIdentifier = $this->getIdentifier($targetReflectionClass, $entity);
+                $entityIdentifier = $this->getIdentifier($entity);
                 $disassociated[] = [$owner, $ownerIdentifier, $entity, $entityIdentifier];
             }
         }
 
         foreach ($associated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newAuditLogs[] = new Entity\AuditLog(
+            $newRecords[] = new Entity\AuditLog(
                 Entity\AuditLog::OPER_INSERT,
                 get_class($owner),
                 $ownerIdentifier,
@@ -203,7 +219,7 @@ class AuditLog implements EventSubscriber
         }
 
         foreach ($disassociated as [$owner, $ownerIdentifier, $entity, $entityIdentifier]) {
-            $newAuditLogs[] = new Entity\AuditLog(
+            $newRecords[] = new Entity\AuditLog(
                 Entity\AuditLog::OPER_DELETE,
                 get_class($owner),
                 $ownerIdentifier,
@@ -213,17 +229,9 @@ class AuditLog implements EventSubscriber
             );
         }
 
-        $auditLogMetadata = $em->getClassMetadata(Entity\AuditLog::class);
-        foreach ($newAuditLogs as $auditLog) {
-            $uow->persist($auditLog);
-            $uow->computeChangeSet($auditLogMetadata, $auditLog);
-        }
+        return $newRecords;
     }
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param mixed $class
-     */
     protected function isEntity(EntityManagerInterface $em, mixed $class): bool
     {
         if (is_object($class)) {
@@ -241,28 +249,21 @@ class AuditLog implements EventSubscriber
         return !$em->getMetadataFactory()->isTransient($class);
     }
 
+    #[Pure] protected function isAuditable(ReflectionClass $refl): bool
+    {
+        $auditable = $refl->getAttributes(Auditable::class);
+        return !empty($auditable);
+    }
+
     /**
      * Get the identifier string for an entity, if it's set or fetchable.
      *
-     * @param ReflectionClass $reflectionClass
      * @param object $entity
      */
-    protected function getIdentifier(ReflectionClass $reflectionClass, object $entity): ?string
+    protected function getIdentifier(object $entity): ?string
     {
-        foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-            $isIdentifier = $this->reader->getMethodAnnotation($reflectionMethod, AuditIdentifier::class);
-
-            if (null !== $isIdentifier) {
-                return (string)$reflectionMethod->invoke($entity);
-            }
-        }
-
-        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            $isIdentifier = $this->reader->getPropertyAnnotation($reflectionProperty, AuditIdentifier::class);
-
-            if (null !== $isIdentifier) {
-                return $reflectionProperty->getValue($entity);
-            }
+        if ($entity instanceof Stringable) {
+            return (string)$entity;
         }
 
         if (method_exists($entity, 'getName')) {

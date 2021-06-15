@@ -70,6 +70,12 @@ return function (App\Event\BuildStationMenu $e) {
                 'visible' => $backend->supportsMedia(),
                 'permission' => Acl::STATION_MEDIA,
             ],
+            'podcasts' => [
+                'label' => __('Podcasts (Beta)'),
+                'icon' => 'cast',
+                'url' => $router->fromHere('stations:podcasts:index'),
+                'permission' => Acl::STATION_PODCASTS,
+            ],
             'streamers' => [
                 'label' => __('Streamer/DJ Accounts'),
                 'icon' => 'mic',

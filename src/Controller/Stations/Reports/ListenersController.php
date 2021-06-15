@@ -18,8 +18,7 @@ class ListenersController
     ): ResponseInterface {
         $view = $request->getView();
 
-        $settings = $settingsRepo->readSettings();
-        $analytics_level = $settings->getAnalytics();
+        $analytics_level = $settingsRepo->readSettings()->getAnalytics();
 
         if ($analytics_level !== Entity\Analytics::LEVEL_ALL) {
             return $view->renderToResponse($response, 'stations/reports/restricted');

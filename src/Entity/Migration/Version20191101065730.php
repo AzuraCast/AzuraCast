@@ -21,7 +21,7 @@ final class Version20191101065730 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
-        $playlists = $this->connection->fetchAll(
+        $playlists = $this->connection->fetchAllAssociative(
             'SELECT sp.* FROM station_playlists AS sp WHERE sp.type = ?',
             ['scheduled'],
             [PDO::PARAM_STR]

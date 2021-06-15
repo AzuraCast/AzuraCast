@@ -37,7 +37,7 @@ class AudioWaveform
 
         $process->mustRun();
 
-        if (!file_exists($jsonOutPath)) {
+        if (!is_file($jsonOutPath)) {
             throw new RuntimeException('Audio waveform JSON was not generated.');
         }
 

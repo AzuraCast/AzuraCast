@@ -15,7 +15,9 @@ final class Version20180320052444 extends AbstractMigration
     public function preup(Schema $schema): void
     {
         // Avoid FK errors with station art
-        $this->connection->exec('DELETE FROM station_media_art WHERE media_id NOT IN (SELECT id FROM station_media)');
+        $this->connection->executeStatement(
+            'DELETE FROM station_media_art WHERE media_id NOT IN (SELECT id FROM station_media)'
+        );
     }
 
     public function up(Schema $schema): void

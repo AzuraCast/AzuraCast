@@ -3,6 +3,7 @@
 namespace App\Event\Radio;
 
 use App\Entity\Api\NowPlaying;
+use App\Entity\Station;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class LoadNowPlaying extends Event
@@ -28,6 +29,7 @@ class LoadNowPlaying extends Event
                 foreach ($np as $np_row) {
                     /** @var NowPlaying $np_row */
                     $np_row->cache = $source;
+                    $np_row->update();
                 }
             }
 
@@ -47,5 +49,39 @@ class LoadNowPlaying extends Event
     public function getNowPlaying(): array
     {
         return $this->np;
+    }
+
+    /**
+     * @return NowPlaying[]
+     */
+    public function getAllPublic(): array
+    {
+        return array_values(
+            array_filter(
+                $this->np,
+                static function (NowPlaying $np_row) {
+                    return $np_row->station->is_public;
+                }
+            )
+        );
+    }
+
+    public function getForStation(
+        int|string|Station|null $stationId
+    ): ?NowPlaying {
+        if ($stationId instanceof Station) {
+            $stationId = $stationId->getId();
+        }
+
+        if (null === $stationId) {
+            return null;
+        }
+
+        foreach ($this->np as $npRow) {
+            if ($npRow->station->id === (int)$stationId || $npRow->station->shortcode === $stationId) {
+                return $npRow;
+            }
+        }
+        return null;
     }
 }

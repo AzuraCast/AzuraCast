@@ -1,9 +1,9 @@
 <?php
 
+use App\Entity\Interfaces\StationMountInterface;
 use App\Entity\Station;
 use App\Entity\StationBackendConfiguration;
 use App\Entity\StationFrontendConfiguration;
-use App\Entity\StationMountInterface;
 use App\Radio\Adapters;
 
 /**
@@ -648,6 +648,15 @@ return [
                     'select',
                     [
                         'label' => __('Live Recordings Storage Location'),
+                        'choices' => [],
+                        'form_group_class' => 'col-md-6',
+                    ],
+                ],
+
+                'podcasts_storage_location_id' => [
+                    'select',
+                    [
+                        'label' => __('Podcasts Storage Location'),
                         'choices' => [],
                         'form_group_class' => 'col-md-6',
                     ],

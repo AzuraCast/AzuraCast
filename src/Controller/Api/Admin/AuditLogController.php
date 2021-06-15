@@ -41,7 +41,7 @@ class AuditLogController
             ->setParameter('start', $start->getTimestamp())
             ->setParameter('end', $end->getTimestamp());
 
-        $search_phrase = trim($params['searchPhrase']);
+        $search_phrase = trim($params['searchPhrase'] ?? '');
         if (!empty($search_phrase)) {
             $qb->andWhere('(a.user LIKE :query OR a.identifier LIKE :query OR a.target LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');

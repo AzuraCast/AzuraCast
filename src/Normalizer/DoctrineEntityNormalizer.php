@@ -3,14 +3,12 @@
 namespace App\Normalizer;
 
 use App\Exception\NoGetterAvailableException;
-use App\Normalizer\Annotation\DeepNormalize;
+use App\Normalizer\Attributes\DeepNormalize;
 use DateTime;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Proxy\Proxy;
 use InvalidArgumentException;
 use ProxyManager\Proxy\GhostObjectInterface;
@@ -20,22 +18,17 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use ReflectionUnionType;
 use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectToPopulateTrait;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use function is_array;
 
 class DoctrineEntityNormalizer extends AbstractNormalizer
 {
-    use ObjectToPopulateTrait;
-
     public const NORMALIZE_TO_IDENTIFIERS = 'form_mode';
 
     public const CLASS_METADATA = 'class_metadata';
@@ -44,30 +37,17 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /** @var SerializerInterface|NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
-    protected Reader $annotationReader;
-
     protected Inflector $inflector;
 
     public function __construct(
         protected EntityManagerInterface $em,
-        Reader $annotationReader = null,
         ClassMetadataFactoryInterface $classMetadataFactory = null,
         NameConverterInterface $nameConverter = null,
         array $defaultContext = []
     ) {
-        /** @var AnnotationDriver $metadata_driver */
-        $metadata_driver = $em->getConfiguration()->getMetadataDriverImpl();
-
-        $annotationReader = $annotationReader ?? $metadata_driver->getReader();
-        $classMetadataFactory = $classMetadataFactory ?? new ClassMetadataFactory(
-            new AnnotationLoader($annotationReader)
-        );
-
         $defaultContext[self::ALLOW_EXTRA_ATTRIBUTES] = false;
-
         parent::__construct($classMetadataFactory, $nameConverter, $defaultContext);
 
-        $this->annotationReader = $annotationReader;
         $this->inflector = InflectorFactory::create()->build();
     }
 
@@ -121,8 +101,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                     }
 
                     $return_arr[$attribute] = $value;
-                } catch (NoGetterAvailableException $e) {
-                    continue;
+                } catch (NoGetterAvailableException) {
                 }
             }
         }
@@ -134,17 +113,17 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * Replicates the "fromArray" functionality previously present in Doctrine 1.
      *
      * @param mixed $data
-     * @param string $class
+     * @param string $type
      * @param string|null $format
      * @param array $context
      */
-    public function denormalize($data, string $class, string $format = null, array $context = []): object
+    public function denormalize($data, string $type, string $format = null, array $context = []): object
     {
-        $object = $this->instantiateObject($data, $class, $context, new ReflectionClass($class), false, $format);
+        $object = $this->instantiateObject($data, $type, $context, new ReflectionClass($type), false, $format);
 
-        $class = get_class($object);
+        $type = get_class($object);
 
-        $context[self::CLASS_METADATA] = $this->em->getMetadataFactory()->getMetadataFor($class);
+        $context[self::CLASS_METADATA] = $this->em->getMetadataFactory()->getMetadataFor($type);
         $context[self::ASSOCIATION_MAPPINGS] = [];
 
         if ($context[self::CLASS_METADATA]->associationMappings) {
@@ -191,7 +170,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /**
      * @inheritdoc
      */
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $this->isEntity($data);
     }
@@ -199,7 +178,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     /**
      * @inheritdoc
      */
-    public function supportsDenormalization($data, $type, string $format = null)
+    public function supportsDenormalization($data, $type, string $format = null): bool
     {
         return $this->isEntity($type);
     }
@@ -215,8 +194,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     {
         $meta = $this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata();
 
-        $reflect = new ReflectionClass($classOrObject);
-        $props_raw = $reflect->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
+        $props_raw = (new ReflectionClass($classOrObject))->getProperties(
+            ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED
+        );
         $props = [];
         foreach ($props_raw as $prop_raw) {
             $props[$prop_raw->getName()] = $prop_raw;
@@ -254,20 +234,25 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         $form_mode = $context[self::NORMALIZE_TO_IDENTIFIERS] ?? false;
 
         if (isset($context[self::CLASS_METADATA]->associationMappings[$prop_name])) {
-            $annotation = $this->annotationReader->getPropertyAnnotation(
-                new ReflectionProperty(get_class($object), $prop_name),
+            $deepNormalizeAttrs = (new ReflectionClass($object))->getProperty($prop_name)->getAttributes(
                 DeepNormalize::class
             );
+            if (!empty($deepNormalizeAttrs)) {
+                /** @var DeepNormalize $deepNormalize */
+                $deepNormalize = current($deepNormalizeAttrs)->newInstance();
 
-            $deep = ($annotation instanceof DeepNormalize)
-                ? $annotation->getDeepNormalize()
-                : false;
+                $deep = $deepNormalize->getDeepNormalize();
+            } else {
+                $deep = false;
+            }
 
             if (!$deep) {
-                throw new NoGetterAvailableException(sprintf(
-                    'Deep normalization disabled for property %s.',
-                    $prop_name
-                ));
+                throw new NoGetterAvailableException(
+                    sprintf(
+                        'Deep normalization disabled for property %s.',
+                        $prop_name
+                    )
+                );
             }
 
             $prop_val = $this->getProperty($object, $prop_name);
@@ -277,8 +262,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                 if (count($prop_val) > 0) {
                     foreach ($prop_val as $val_obj) {
                         if ($form_mode) {
-                            $obj_meta = $this->em->getClassMetadata(get_class($val_obj));
-                            $id_field = $obj_meta->identifier;
+                            $id_field = $this->em->getClassMetadata(get_class($val_obj))->identifier;
 
                             if ($id_field && count($id_field) === 1) {
                                 $return_val[] = $this->getProperty($val_obj, $id_field[0]);
@@ -367,7 +351,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
                     if ($value) {
                         foreach ((array)$value as $field_id) {
-                            $field_item = $field_item = $this->em->find($mapping['entity'], $field_id);
+                            $field_item = $this->em->find($mapping['entity'], $field_id);
                             if ($field_item instanceof $mapping['entity']) {
                                 $collection->add($field_item);
                             }

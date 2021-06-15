@@ -12,6 +12,7 @@ const clean_css = require('gulp-clean-css');
 const revdel = require('gulp-rev-delete-original');
 const webpackStream = require('webpack-stream');
 const gulpIgnore = require('gulp-ignore');
+const mode = require('gulp-mode')();
 
 var jsFiles = {
   // Core Libraries
@@ -252,11 +253,11 @@ gulp.task('build-js', function () {
 });
 
 gulp.task('build-css', function () {
-  return gulp.src(['./scss/dark.scss', './scss/light.scss'])
-    .pipe(sourcemaps.init())
+  return gulp.src(['./scss/style.scss'])
+    .pipe(mode.development(sourcemaps.init()))
     .pipe(sass())
     .pipe(clean_css())
-    .pipe(sourcemaps.write())
+    .pipe(mode.development(sourcemaps.write()))
     .pipe(gulp.dest('../web/static/dist'));
 });
 

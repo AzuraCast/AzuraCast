@@ -13,10 +13,8 @@
  * @var App\Environment $environment
  */
 
-$page_class ??= '';
-$page_class .= ' theme-' . $customization->getPublicTheme();
 ?>
-<html>
+<html data-theme="<?=$customization->getPublicTheme()?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +29,6 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
     <?php
     $assets
         ->load('minimal')
-        ->load('theme_' . $customization->getPublicTheme())
         ->addInlineCss($customization->getCustomPublicCss())
         ->addInlineJs($customization->getCustomPublicJs());
 
@@ -40,7 +37,7 @@ $page_class .= ' theme-' . $customization->getPublicTheme();
     ?>
 </head>
 
-<body class="page-minimal <?=$page_class?>">
+<body class="page-minimal <?=$page_class ?? ''?>">
 <?=$assets->inlineJs()?>
 
 <?=$this->section('content')?>
@@ -54,18 +51,6 @@ if (!$customization->hideProductName() && !$hide_footer): ?>
             '<a href="https://azuracast.com/" target="_blank">' . $environment->getAppName() . '</a>' . ' '
         )?>
     </footer>
-<?php
-endif; ?>
-
-<?php
-if (null !== $flash && $flash->hasMessages()): ?>
-    <script type="text/javascript" nonce="<?=$assets->getCspNonce()?>">
-        $(function () {
-            <?php foreach($flash->getMessages() as $message): ?>
-            notify("<?=str_replace(['"', "\n"], ['\'', '<br>'], $message['text']) ?>", '<?=$message['color'] ?>', true);
-            <?php endforeach; ?>
-        });
-    </script>
 <?php
 endif; ?>
 </body>

@@ -38,10 +38,10 @@ class Annotations implements EventSubscriberInterface
     {
         $media = $event->getMedia();
         if ($media instanceof Entity\StationMedia) {
-            $fsStation = new StationFilesystems($event->getStation());
-            $fsMedia = $fsStation->getMediaFilesystem();
+            $localMediaPath = (new StationFilesystems($event->getStation()))
+                ->getMediaFilesystem()
+                ->getLocalPath($media->getPath());
 
-            $localMediaPath = $fsMedia->getLocalPath($media->getPath());
             $event->setSongPath($localMediaPath);
 
             $backend = $this->adapters->getBackendAdapter($event->getStation());

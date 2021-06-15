@@ -19,7 +19,7 @@ final class Version20180909060758 extends AbstractMigration
 
     public function postup(Schema $schema): void
     {
-        $stations = $this->connection->fetchAll("SELECT id FROM station WHERE frontend_type = 'remote'");
+        $stations = $this->connection->fetchAllAssociative("SELECT id FROM station WHERE frontend_type = 'remote'");
 
         foreach ($stations as $station) {
             $this->connection->delete('station_mounts', [

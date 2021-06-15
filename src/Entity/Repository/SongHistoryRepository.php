@@ -65,14 +65,14 @@ class SongHistoryRepository extends Repository
     }
 
     public function register(
-        Entity\SongInterface $song,
+        Entity\Interfaces\SongInterface $song,
         Entity\Station $station,
         Entity\Api\NowPlaying $np
     ): Entity\SongHistory {
         // Pull the most recent history item for this station.
         $last_sh = $this->getCurrent($station);
 
-        $listeners = (int)$np->listeners->current;
+        $listeners = $np->listeners->current;
 
         if ($last_sh instanceof Entity\SongHistory) {
             if ($last_sh->getSongId() === $song->getSongId()) {

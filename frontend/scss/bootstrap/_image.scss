@@ -4,8 +4,6 @@
 
 .figure-caption {
   @include typography-caption;
-
-  color: $figure-caption-color;
 }
 
 .figure-img {

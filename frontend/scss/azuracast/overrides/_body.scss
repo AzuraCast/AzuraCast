@@ -20,17 +20,14 @@ body {
 
 ::-webkit-scrollbar-track {
   padding: 2px;
-  background: $body-bg;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   margin: 2px 0;
   border-radius: 10px;
-  background: $scrollbar-color;
 }
 
 ::-webkit-scrollbar-corner {
-  background: $body-bg;
   border: 0;
 }

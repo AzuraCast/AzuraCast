@@ -121,7 +121,7 @@ class ServicesController
             default:
                 try {
                     $frontend->stop($station);
-                } catch (NotRunningException $e) {
+                } catch (NotRunningException) {
                 }
 
                 $frontend->write($station);
@@ -202,7 +202,7 @@ class ServicesController
             default:
                 try {
                     $backend->stop($station);
-                } catch (NotRunningException $e) {
+                } catch (NotRunningException) {
                 }
 
                 $backend->write($station);

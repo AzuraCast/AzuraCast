@@ -15,6 +15,8 @@ class StationFilesystems
 
     protected ExtendedFilesystemInterface $fsRecordings;
 
+    protected ExtendedFilesystemInterface $fsPodcasts;
+
     protected LocalFilesystem $fsPlaylists;
 
     protected LocalFilesystem $fsConfig;
@@ -54,6 +56,21 @@ class StationFilesystems
         }
 
         return $this->fsRecordings;
+    }
+
+    public function getPodcastsFilesystem(): ExtendedFilesystemInterface
+    {
+        if (!isset($this->fsPodcasts)) {
+            $podcastsAdapter = $this->station->getPodcastsStorageLocation()->getStorageAdapter();
+            if ($podcastsAdapter instanceof LocalAdapterInterface) {
+                $this->fsPodcasts = new LocalFilesystem($podcastsAdapter);
+            } else {
+                $tempDir = $this->station->getRadioTempDir();
+                $this->fsPodcasts = new RemoteFilesystem($podcastsAdapter, $tempDir);
+            }
+        }
+
+        return $this->fsPodcasts;
     }
 
     public function getPlaylistsFilesystem(): LocalFilesystem

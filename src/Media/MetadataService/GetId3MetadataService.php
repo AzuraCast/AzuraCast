@@ -70,7 +70,7 @@ class GetId3MetadataService
         }
 
         if (!empty($info['tags'])) {
-            foreach ($info['tags'] as $tagType => $tagData) {
+            foreach ($info['tags'] as $tagData) {
                 foreach ($tagData as $tagName => $tagContents) {
                     if (!empty($tagContents[0]) && !$metaTags->containsKey($tagName)) {
                         $tagValue = $tagContents[0];
@@ -94,6 +94,8 @@ class GetId3MetadataService
         } elseif (!empty($info['id3v2']['PIC'][0]['data'])) {
             $metadata->setArtwork($info['id3v2']['PIC'][0]['data']);
         }
+
+        $metadata->setMimeType($info['mime_type']);
 
         return $metadata;
     }

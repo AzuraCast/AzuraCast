@@ -12,6 +12,8 @@ class Metadata
 
     protected ?string $artwork = null;
 
+    protected string $mimeType = '';
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -40,5 +42,15 @@ class Metadata
     public function setArtwork(?string $artwork): void
     {
         $this->artwork = $artwork;
+    }
+
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
+    }
+
+    public function setMimeType(string $mimeType): void
+    {
+        $this->mimeType = $mimeType;
     }
 }

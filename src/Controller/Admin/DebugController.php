@@ -162,7 +162,7 @@ class DebugController extends AbstractLogViewerController
         ServerRequest $request,
         Response $response
     ): ResponseInterface {
-        [$resultCode, $resultOutput] = $this->console->runCommandWithArgs(
+        [, $resultOutput] = $this->console->runCommandWithArgs(
             'cache:clear'
         );
 
@@ -182,7 +182,7 @@ class DebugController extends AbstractLogViewerController
             $args['queue'] = $queue;
         }
 
-        [$resultCode, $resultOutput] = $this->console->runCommandWithArgs('queue:clear', $args);
+        [, $resultOutput] = $this->console->runCommandWithArgs('queue:clear', $args);
 
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);

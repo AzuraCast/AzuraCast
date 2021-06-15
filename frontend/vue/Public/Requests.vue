@@ -1,12 +1,8 @@
 <template>
-    <data-table ref="datatable" id="song_requests" paginated select-fields :fields="fields" :responsive="false"
-                :api-url="requestListUri">
+    <data-table ref="datatable" id="song_requests" paginated select-fields :page-options="pageOptions" :fields="fields"
+                :responsive="false" :api-url="requestListUri">
         <template v-slot:cell(name)="row">
-            <a :href="row.item.song_art" class="album-art float-left pr-3" target="_blank"
-               v-if="row.item.song_art" data-fancybox="gallery">
-                <img class="album_art" :alt="langAlbumArt" :src="row.item.song_art">
-            </a>
-
+            <album-art :src="row.item.song_art" :width="40" class="float-left pr-3"></album-art>
             {{ row.item.song_title }}<br>
             <small>{{ row.item.song_artist }}</small>
         </template>
@@ -32,9 +28,12 @@ img.album_art {
 import DataTable from '../Common/DataTable';
 import axios from 'axios';
 import _ from 'lodash';
+import AlbumArt from '../Common/AlbumArt';
+import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
-    components: { DataTable },
+    components: { AlbumArt, DataTable },
+    emits: ['submitted'],
     props: {
         requestListUri: {
             type: String,
@@ -76,7 +75,10 @@ export default {
         );
 
         return {
-            fields: fields
+            fields: fields,
+            pageOptions: [
+                10, 25
+            ]
         };
     },
     computed: {
@@ -90,9 +92,7 @@ export default {
                 notify('<b>' + resp.data.message + '</b>', 'success');
                 this.$emit('submitted');
             }).catch((err) => {
-                if (err.response.data.message) {
-                    notify('<b>' + err.response.data.message + '</b>', 'danger');
-                }
+                handleAxiosError(err);
                 this.$emit('submitted');
             });
         }

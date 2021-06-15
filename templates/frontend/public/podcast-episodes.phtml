@@ -1,0 +1,109 @@
+<?php
+
+use Carbon\CarbonImmutable;
+
+$this->layout(
+    'minimal',
+    [
+        'page_class' => 'podcasts station-' . $station->getShortName(),
+        'title' => 'Podcasts - ' . $this->e($station->getName()),
+        'hide_footer' => true,
+    ]
+);
+
+/** @var \App\Assets $assets */
+$assets->addInlineJs(
+    $this->fetch('frontend/public/podcast-episodes.js', [])
+);
+
+$this->push('head');
+?>
+
+<link rel="alternate" type="application/rss+xml" title="<?=$this->e($podcast->getTitle())?>" href="<?=$feedLink?>">
+
+<?php
+$this->end();
+?>
+
+<section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
+    <div class="container pt-5 pb-5 h-100" style="flex: 1;">
+        <div id="station_podcast_episodes">
+            <div class="row">
+                <h1 class="mx-auto"><?=__('Episodes')?></h1>
+            </div>
+
+            <div class="row mb-4">
+                <h2 class="mx-auto"><?=$this->e($podcast->getTitle())?></h2>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <a href="<?=$podcastsLink?>" class="btn btn-primary mr-2"><span class="material-icons">chevron_left</span><?=__(
+                        'Back'
+                    )?></a>
+                <a href="<?=$feedLink?>" class="btn btn-warning" target="_blank"><span class="material-icons">rss_feed</span> <?=__(
+                        'RSS Feed'
+                    )?></a>
+            </div>
+
+            <div class="row justify-content-center">
+                <?php
+                /** @var App\Entity\PodcastEpisode $episode */ ?>
+                <?php
+                foreach ($episodes as $episode) : ?>
+                    <?php
+                    $episodePageLink = $router->named('public:podcast:episode',
+                                                      [
+                                                          'station_id' => $station->getId(),
+                                                          'podcast_id' => $podcast->getId(),
+                                                          'episode_id' => $episode->getId(),
+                                                      ]
+                    ) ?>
+                    <div class="col-12 col-lg-8 mb-4">
+                        <div class="card">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <a href="<?=$this->e($episodePageLink)?>" title="<?=__('View Details')?>">
+                                        <img src="<?=$router->named('api:stations:podcast:episode:art',
+                                                                    [
+                                                                        'station_id' => $station->getId(),
+                                                                        'podcast_id' => $podcast->getId(),
+                                                                        'episode_id' => $episode->getId(
+                                                                            ) . '|' . $episode->getArtUpdatedAt(),
+                                                                    ]
+                                        );?>" class="card-img img-fluid" alt="<?=$this->e($podcast->getTitle())?>">
+                                    </a>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="card-body d-flex flex-column h-100">
+                                        <h5 class="card-title"><?=$this->e($episode->getTitle())?></h5>
+
+                                        <p class="card-text"><?=$this->e($episode->getDescription())?></p>
+
+                                        <?php
+                                        if ($episode->getExplicit()) : ?>
+                                            <p class="card-text">
+                                                <i class="material-icons" aria-hidden="true">warning</i>
+                                                <small class="text-muted"><?=__('Contains explicit content') ?></small>
+                                            </p>
+                                        <?php endif; ?>
+
+                                        <p class="card-text">
+                                            <?php $publishedAt = CarbonImmutable::createFromTimestamp($episode->getCreatedAt()); ?>
+                                            <?php if ($episode->getPublishAt() !== null) : ?>
+                                                <?php $publishedAt = CarbonImmutable::createFromTimestamp($episode->getPublishAt()); ?>
+                                            <?php endif; ?>
+                                            <span class="badge badge-pill badge-dark" data-toggle="tooltip" data-placement="right" data-html="true" title="<span class='material-icons'>schedule</span> <?=$publishedAt->format('H:i') ?>"><?=$publishedAt->format('d. M. Y') ?></span>
+                                        </p>
+
+                                        <a href="<?=$this->e($episodePageLink) ?>" class="btn btn-primary btn-block mt-auto"><?=__('View Details') ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</section>

@@ -5,6 +5,7 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 
 class ProfileController
@@ -20,12 +21,13 @@ class ProfileController
         $backend = $request->getStationBackend();
         $frontend = $request->getStationFrontend();
 
-        $nowPlayingApi = $nowPlayingApiGenerator->currentOrEmpty($station);
+        $baseUri = new Uri('');
+        $nowPlayingApi = $nowPlayingApiGenerator->currentOrEmpty($station, $baseUri);
 
         $apiResponse = new Entity\Api\StationProfile();
         $apiResponse->fromParentObject($nowPlayingApi);
 
-        $apiResponse->station = ($stationApiGenerator)($station, null, true);
+        $apiResponse->station = ($stationApiGenerator)($station, $baseUri, true);
         $apiResponse->cache = 'database';
 
         $apiResponse->services = new Entity\Api\StationServiceStatus(
@@ -36,7 +38,7 @@ class ProfileController
         $apiResponse->schedule = $scheduleRepo->getUpcomingSchedule($station);
 
         $apiResponse->update();
-        $apiResponse->resolveUrls($baseUri = $request->getRouter()->getBaseUrl());
+        $apiResponse->resolveUrls($request->getRouter()->getBaseUrl());
 
         return $response->withJson($apiResponse);
     }

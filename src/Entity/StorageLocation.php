@@ -4,7 +4,6 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
 use Aws\S3\S3Client;
@@ -22,22 +21,24 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Spatie\Dropbox\Client;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="storage_location")
- * @ORM\Entity()
- *
- * @AuditLog\Auditable
- * @AppAssert\StorageLocation()
- */
-class StorageLocation
+#[
+    ORM\Entity,
+    ORM\Table(name: 'storage_location'),
+    Attributes\Auditable,
+    AppAssert\StorageLocation
+]
+class StorageLocation implements Stringable
 {
+    use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     public const TYPE_BACKUP = 'backup';
     public const TYPE_STATION_MEDIA = 'station_media';
     public const TYPE_STATION_RECORDINGS = 'station_recordings';
+    public const TYPE_STATION_PODCASTS = 'station_podcasts';
 
     public const ADAPTER_LOCAL = 'local';
     public const ADAPTER_S3 = 's3';
@@ -45,126 +46,62 @@ class StorageLocation
 
     public const DEFAULT_BACKUPS_PATH = '/var/azuracast/backups';
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var int|null
-     */
-    protected $id;
+    #[ORM\Column(length: 50)]
+    #[Assert\Choice(choices: [
+        StorageLocation::TYPE_BACKUP,
+        StorageLocation::TYPE_STATION_MEDIA,
+        StorageLocation::TYPE_STATION_RECORDINGS,
+        StorageLocation::TYPE_STATION_PODCASTS,
+    ])]
+    protected string $type;
 
-    /**
-     * @ORM\Column(name="type", type="string", length=50)
-     *
-     * @Assert\Choice(choices={
-     *     StorageLocation::TYPE_BACKUP,
-     *     StorageLocation::TYPE_STATION_MEDIA,
-     *     StorageLocation::TYPE_STATION_RECORDINGS
-     * })
-     * @var string The type of storage location.
-     */
-    protected $type;
+    #[ORM\Column(length: 50)]
+    #[Assert\Choice(choices: [
+        StorageLocation::ADAPTER_LOCAL,
+        StorageLocation::ADAPTER_S3,
+        StorageLocation::ADAPTER_DROPBOX,
+    ])]
+    protected string $adapter = self::ADAPTER_LOCAL;
 
-    /**
-     * @ORM\Column(name="adapter", type="string", length=50)
-     *
-     * @Assert\Choice(choices={
-     *     StorageLocation::ADAPTER_LOCAL,
-     *     StorageLocation::ADAPTER_S3,
-     *     StorageLocation::ADAPTER_DROPBOX
-     * })
-     * @var string The storage adapter to use for this location.
-     */
-    protected $adapter = self::ADAPTER_LOCAL;
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $path = null;
 
-    /**
-     * @ORM\Column(name="path", type="string", length=255, nullable=true)
-     *
-     * @var string|null The local path, if the local adapter is used, or path prefix for S3/remote adapters.
-     */
-    protected $path;
+    #[ORM\Column(name: 's3_credential_key', length: 255, nullable: true)]
+    protected ?string $s3CredentialKey = null;
 
-    /**
-     * @ORM\Column(name="s3_credential_key", type="string", length=255, nullable=true)
-     *
-     * @var string|null The credential key for S3 adapters.
-     */
-    protected $s3CredentialKey;
+    #[ORM\Column(name: 's3_credential_secret', length: 255, nullable: true)]
+    protected ?string $s3CredentialSecret = null;
 
-    /**
-     * @ORM\Column(name="s3_credential_secret", type="string", length=255, nullable=true)
-     *
-     * @var string|null The credential secret for S3 adapters.
-     */
-    protected $s3CredentialSecret;
+    #[ORM\Column(name: 's3_region', length: 150, nullable: true)]
+    protected ?string $s3Region = null;
 
-    /**
-     * @ORM\Column(name="s3_region", type="string", length=150, nullable=true)
-     *
-     * @var string|null The region for S3 adapters.
-     */
-    protected $s3Region;
+    #[ORM\Column(name: 's3_version', length: 150, nullable: true)]
+    protected ?string $s3Version = 'latest';
 
-    /**
-     * @ORM\Column(name="s3_version", type="string", length=150, nullable=true)
-     *
-     * @var string|null The API version for S3 adapters.
-     */
-    protected $s3Version = 'latest';
+    #[ORM\Column(name: 's3_bucket', length: 255, nullable: true)]
+    protected ?string $s3Bucket = null;
 
-    /**
-     * @ORM\Column(name="s3_bucket", type="string", length=255, nullable=true)
-     *
-     * @var string|null The S3 bucket name for S3 adapters.
-     */
-    protected $s3Bucket = null;
+    #[ORM\Column(name: 's3_endpoint', length: 255, nullable: true)]
+    protected ?string $s3Endpoint = null;
 
-    /**
-     * @ORM\Column(name="s3_endpoint", type="string", length=255, nullable=true)
-     *
-     * @var string|null The optional custom S3 endpoint S3 adapters.
-     */
-    protected $s3Endpoint = null;
+    #[ORM\Column(name: 'dropbox_auth_token', length: 255, nullable: true)]
+    protected ?string $dropboxAuthToken = null;
 
-    /**
-     * @ORM\Column(name="dropbox_auth_token", type="string", length=255, nullable=true)
-     *
-     * @var string|null The optional custom S3 endpoint S3 adapters.
-     */
-    protected $dropboxAuthToken = null;
+    #[ORM\Column(name: 'storage_quota', type: 'bigint', nullable: true)]
+    protected ?string $storageQuota = null;
 
-    /**
-     * @ORM\Column(name="storage_quota", type="bigint", nullable=true)
-     *
-     * @var string|null
-     */
-    protected $storageQuota;
+    // Used for API generation.
+    protected ?string $storageQuotaBytes = null;
 
-    /**
-     * @var string|null
-     */
-    protected $storageQuotaBytes;
+    #[ORM\Column(name: 'storage_used', type: 'bigint', nullable: true)]
+    #[Attributes\AuditIgnore]
+    protected ?string $storageUsed = null;
 
-    /**
-     * @ORM\Column(name="storage_used", type="bigint", nullable=true)
-     *
-     * @AuditLog\AuditIgnore()
-     *
-     * @var string|null
-     */
-    protected $storageUsed;
+    // Used for API generation.
+    protected ?string $storageUsedBytes = null;
 
-    /**
-     * @var string|null
-     */
-    protected $storageUsedBytes;
-
-    /**
-     * @ORM\OneToMany(targetEntity="StationMedia", mappedBy="storage_location")
-     * @var Collection|StationMedia[]
-     */
-    protected $media;
+    #[ORM\OneToMany(mappedBy: 'storage_location', targetEntity: StationMedia::class)]
+    protected Collection $media;
 
     public function __construct(string $type, string $adapter)
     {
@@ -172,11 +109,6 @@ class StorageLocation
         $this->adapter = $adapter;
 
         $this->media = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getType(): string
@@ -213,7 +145,7 @@ class StorageLocation
 
     public function setPath(?string $path): void
     {
-        $this->path = $this->truncateString($path);
+        $this->path = $this->truncateNullableString($path);
     }
 
     public function getS3CredentialKey(): ?string
@@ -223,7 +155,7 @@ class StorageLocation
 
     public function setS3CredentialKey(?string $s3CredentialKey): void
     {
-        $this->s3CredentialKey = $this->truncateString($s3CredentialKey);
+        $this->s3CredentialKey = $this->truncateNullableString($s3CredentialKey);
     }
 
     public function getS3CredentialSecret(): ?string
@@ -233,7 +165,7 @@ class StorageLocation
 
     public function setS3CredentialSecret(?string $s3CredentialSecret): void
     {
-        $this->s3CredentialSecret = $this->truncateString($s3CredentialSecret);
+        $this->s3CredentialSecret = $this->truncateNullableString($s3CredentialSecret);
     }
 
     public function getS3Region(): ?string
@@ -273,7 +205,7 @@ class StorageLocation
 
     public function setS3Endpoint(?string $s3Endpoint): void
     {
-        $this->s3Endpoint = $this->truncateString($s3Endpoint);
+        $this->s3Endpoint = $this->truncateNullableString($s3Endpoint);
     }
 
     public function getDropboxAuthToken(): ?string
@@ -368,8 +300,7 @@ class StorageLocation
             return;
         }
 
-        $currentStorageUsed = $this->getStorageUsedBytes();
-        $storageUsed = $currentStorageUsed->minus($amountToRemove);
+        $storageUsed = $this->getStorageUsedBytes()->minus($amountToRemove);
         if ($storageUsed->isLessThan(0)) {
             $storageUsed = BigInteger::zero();
         }

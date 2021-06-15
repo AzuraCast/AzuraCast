@@ -11,6 +11,7 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 use function is_array;
@@ -19,11 +20,9 @@ use function is_string;
 /**
  * Constraint for the Unique Entity validator.
  *
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 class UniqueEntity extends Constraint
 {
     public $entityClass = null;
@@ -38,7 +37,7 @@ class UniqueEntity extends Constraint
      * @param array|string $fields the combination of fields that must contain unique values or a set of options
      */
     public function __construct(
-        $fields,
+        array|string $fields,
         string $entityClass = null,
         string $repositoryMethod = null,
         string $errorPath = null,
@@ -49,7 +48,7 @@ class UniqueEntity extends Constraint
     ) {
         if (is_array($fields) && is_string(key($fields))) {
             $options = array_merge($fields, $options);
-        } elseif (null !== $fields) {
+        } else {
             $options['fields'] = $fields;
         }
 

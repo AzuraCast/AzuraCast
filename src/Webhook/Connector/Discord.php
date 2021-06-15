@@ -66,8 +66,7 @@ class Discord extends AbstractConnector
         Entity\Station $station,
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying $np,
-        array $triggers,
-        bool $isStandalone
+        array $triggers
     ): bool {
         $config = $webhook->getConfig();
 
@@ -91,13 +90,14 @@ class Discord extends AbstractConnector
         $vars = $this->replaceVariables($raw_vars, $np);
 
         // Compose webhook
-        $embed = [
-            'title' => $vars['title'] ?? '',
-            'description' => $vars['description'] ?? '',
-            'url' => $this->getValidUrl($vars['url']) ?? '',
-            'color' => 2201331, // #2196f3
-        ];
-        $embed = array_filter($embed);
+        $embed = array_filter(
+            [
+                'title' => $vars['title'] ?? '',
+                'description' => $vars['description'] ?? '',
+                'url' => $this->getValidUrl($vars['url']) ?? '',
+                'color' => 2201331, // #2196f3
+            ]
+        );
 
         if (!empty($vars['author'])) {
             $embed['author'] = [
@@ -151,6 +151,7 @@ class Discord extends AbstractConnector
         return true;
     }
 
+    /** @noinspection HttpUrlsUsage */
     protected function getImageUrl(?string $url = null): ?string
     {
         $url = $this->getValidUrl($url);

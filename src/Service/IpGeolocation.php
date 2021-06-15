@@ -87,6 +87,7 @@ class IpGeolocation
         $ipInfo = $this->cache->get(
             $cacheKey,
             function (CacheItem $item) use ($ip) {
+                /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
                 $item->expiresAfter(86400 * 7);
 
                 try {

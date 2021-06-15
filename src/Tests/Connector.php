@@ -48,8 +48,7 @@ class Connector extends AbstractBrowser
         $_SERVER['REQUEST_METHOD'] = strtoupper($request->getMethod());
         $_SERVER['REQUEST_URI'] = $uri;
 
-        $serverRequestCreator = new ServerRequestFactory;
-        $request = $serverRequestCreator->createServerRequestFromGlobals();
+        $request = (new ServerRequestFactory)->createServerRequestFromGlobals();
 
         $slimResponse = $this->app->handle($request);
 

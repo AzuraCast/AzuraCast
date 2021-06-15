@@ -47,8 +47,7 @@ class TaskLocator
             return;
         }
 
-        $taskClasses = $this->tasks[$type];
-        foreach ($taskClasses as $taskClass) {
+        foreach ($this->tasks[$type] as $taskClass) {
             $event->addTask($this->di->get($taskClass));
         }
     }

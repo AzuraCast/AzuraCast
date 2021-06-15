@@ -1,0 +1,19 @@
+.breadcrumb {
+  background-color: $breadcrumb-bg;
+}
+
+.breadcrumb-item {
+  color: $breadcrumb-item-color;
+
+  @include active-focus-hover {
+    color: $breadcrumb-item-color-hover;
+  }
+
+  &.active {
+    color: $breadcrumb-item-color-hover;
+  }
+
+  a {
+    color: inherit;
+  }
+}

@@ -3,42 +3,24 @@
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
+use App\Event\Radio\LoadNowPlaying;
 use GuzzleHttp\Psr7\Uri;
 use NowPlaying\Result\Result;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 
 class NowPlayingApiGenerator
 {
-    protected SongApiGenerator $songApiGenerator;
-
-    protected SongHistoryApiGenerator $songHistoryApiGenerator;
-
-    protected StationApiGenerator $stationApiGenerator;
-
-    protected StationQueueApiGenerator $stationQueueApiGenerator;
-
-    protected Entity\Repository\SongHistoryRepository $historyRepo;
-
-    protected Entity\Repository\StationQueueRepository $queueRepo;
-
-    protected Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo;
-
     public function __construct(
-        SongApiGenerator $songApiGenerator,
-        SongHistoryApiGenerator $songHistoryApiGenerator,
-        StationApiGenerator $stationApiGenerator,
-        StationQueueApiGenerator $stationQueueApiGenerator,
-        Entity\Repository\SongHistoryRepository $historyRepo,
-        Entity\Repository\StationQueueRepository $queueRepo,
-        Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo
+        protected SongApiGenerator $songApiGenerator,
+        protected SongHistoryApiGenerator $songHistoryApiGenerator,
+        protected StationApiGenerator $stationApiGenerator,
+        protected StationQueueApiGenerator $stationQueueApiGenerator,
+        protected Entity\Repository\SongHistoryRepository $historyRepo,
+        protected Entity\Repository\StationQueueRepository $queueRepo,
+        protected Entity\Repository\StationStreamerBroadcastRepository $broadcastRepo,
+        protected EventDispatcherInterface $eventDispatcher
     ) {
-        $this->songApiGenerator = $songApiGenerator;
-        $this->songHistoryApiGenerator = $songHistoryApiGenerator;
-        $this->stationApiGenerator = $stationApiGenerator;
-        $this->stationQueueApiGenerator = $stationQueueApiGenerator;
-        $this->historyRepo = $historyRepo;
-        $this->queueRepo = $queueRepo;
-        $this->broadcastRepo = $broadcastRepo;
     }
 
     public function __invoke(
@@ -136,9 +118,12 @@ class NowPlayingApiGenerator
         Entity\Station $station,
         ?UriInterface $baseUri = null
     ): Entity\Api\NowPlaying {
-        $npOld = $station->getNowplaying();
-        if ($npOld instanceof Entity\Api\NowPlaying) {
-            return $npOld;
+        $event = new LoadNowPlaying();
+        $this->eventDispatcher->dispatch($event);
+
+        $np = $event->getForStation($station);
+        if (null !== $np) {
+            return $np;
         }
 
         return $this->offlineApi($station, $baseUri);

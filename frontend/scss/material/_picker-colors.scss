@@ -1,0 +1,51 @@
+.picker-holder {
+  background-color: $picker-holder-bg;
+}
+
+.picker-date-display {
+  background-color: $picker-header-bg;
+  color: color-yiq($picker-header-bg);
+}
+
+.picker-box {
+  background-color: $picker-content-bg;
+}
+
+.picker-input {
+  &.form-control[readonly] {
+    color: inherit;
+  }
+
+  &.picker-input-active {
+    border-bottom-color: $textfield-border-color-focus;
+  }
+}
+
+.picker-day {
+  &.picker-day-selected {
+    background-color: $picker-day-bg-selected;
+    color: color-yiq($picker-day-bg-selected);
+  }
+}
+
+.picker-day-disabled {
+  color: $picker-day-color-disabled;
+}
+
+.picker-day-today {
+  color: $picker-day-color-today;
+}
+
+.picker-weekday {
+  color: $picker-weekday-color;
+}
+
+.picker-select-month,
+.picker-select-year {
+  background-color: $picker-select-bg;
+  color: $textfield-color;
+
+  @include media-moz-webkit {
+    background-image: $caret-bg;
+  }
+}

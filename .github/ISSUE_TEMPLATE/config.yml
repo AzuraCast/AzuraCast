@@ -1,6 +1,10 @@
 blank_issues_enabled : false
 
 contact_links :
+  - name : AzuraCast Discussion Page
+    url : https://github.com/AzuraCast/AzuraCast/discussions
+    about : Need help with something that isnt a bug? Ask our friendly community. 
+
   - name : AzuraCast Help Page
     url : https://docs.azuracast.com/en/user-guide/troubleshooting
     about : Check the AzuraCast help page for solutions to common problems.

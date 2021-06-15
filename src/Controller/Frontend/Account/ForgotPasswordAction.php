@@ -31,7 +31,7 @@ class ForgotPasswordAction
         if ($request->isPost()) {
             try {
                 $rateLimit->checkRequestRateLimit($request, 'forgot', 30, 3);
-            } catch (RateLimitExceededException $e) {
+            } catch (RateLimitExceededException) {
                 $flash->addMessage(
                     sprintf(
                         '<b>%s</b><br>%s',
@@ -81,7 +81,7 @@ class ForgotPasswordAction
                 Flash::SUCCESS
             );
 
-            return $response->withRedirect($request->getRouter()->named('home'));
+            return $response->withRedirect($request->getRouter()->named('account:login'));
         }
 
         return $view->renderToResponse($response, 'frontend/account/forgot');

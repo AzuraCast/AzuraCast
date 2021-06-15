@@ -16,9 +16,7 @@ final class Version20181202180617 extends AbstractMigration
 {
     public function preup(Schema $schema): void
     {
-        $stations = $this->connection->fetchAll('SELECT s.* FROM station AS s');
-
-        foreach ($stations as $station) {
+        foreach ($this->connection->fetchAllAssociative('SELECT s.* FROM station AS s') as $station) {
             $this->write('Migrating album art for station "' . $station['name'] . '"...');
 
             $base_dir = $station['radio_base_dir'];
@@ -27,12 +25,16 @@ final class Version20181202180617 extends AbstractMigration
                 throw new RuntimeException(sprintf('Directory "%s" was not created', $art_dir));
             }
 
-            $stmt = $this->connection->executeQuery('SELECT sm.unique_id, sma.art
+            $stmt = $this->connection->executeQuery(
+                'SELECT sm.unique_id, sma.art
                 FROM station_media AS sm
                 JOIN station_media_art sma on sm.id = sma.media_id
-                WHERE sm.station_id = ?', [$station['id']], [ParameterType::INTEGER]);
+                WHERE sm.station_id = ?',
+                [$station['id']],
+                [ParameterType::INTEGER]
+            );
 
-            while ($art_row = $stmt->fetch()) {
+            while ($art_row = $stmt->fetchAssociative()) {
                 $art_path = $art_dir . '/' . $art_row['unique_id'] . '.jpg';
                 file_put_contents($art_path, $art_row['art']);
             }

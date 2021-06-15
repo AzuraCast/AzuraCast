@@ -70,8 +70,7 @@ class EnableTwoFactorAction
             new BaconQrCode\Renderer\RendererStyle\RendererStyle(300),
             new BaconQrCode\Renderer\Image\SvgImageBackEnd()
         );
-        $writer = new BaconQrCode\Writer($renderer);
-        $qr_code = $writer->writeString($totp_uri);
+        $qr_code = (new BaconQrCode\Writer($renderer))->writeString($totp_uri);
 
         return $request->getView()->renderToResponse($response, 'frontend/profile/enable_two_factor', [
             'form' => $form,

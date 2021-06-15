@@ -2,17 +2,14 @@
 
 namespace App\Http;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 
 interface RouterInterface
 {
     /**
-     * @param ServerRequestInterface $current_request
+     * Dynamically calculate the base URL the first time it's called, if it is at all in the request.
      */
-    public function setCurrentRequest(ServerRequestInterface $current_request): void;
-
-    public function getCurrentRequest(): ServerRequestInterface;
+    public function getBaseUrl(): UriInterface;
 
     /**
      * Simpler format for calling "named" routes with parameters.
@@ -28,13 +25,6 @@ interface RouterInterface
         array $query_params = [],
         $absolute = false
     ): UriInterface;
-
-    /**
-     * Dynamically calculate the base URL the first time it's called, if it is at all in the request.
-     *
-     * @param bool $useRequest Use the current request for the base URI, if available.
-     */
-    public function getBaseUrl(bool $useRequest = true): UriInterface;
 
     /**
      * Return a named route based on the current page and its route arguments.

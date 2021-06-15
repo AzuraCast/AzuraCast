@@ -7,6 +7,7 @@
             <b-tabs pills card lazy>
                 <b-tab :active="activeType === 'station_media'" @click="setType('station_media')" :title="langStationMediaTab" no-body></b-tab>
                 <b-tab :active="activeType === 'station_recordings'" @click="setType('station_recordings')" :title="langStationRecordingsTab" no-body></b-tab>
+                <b-tab :active="activeType === 'station_podcasts'" @click="setType('station_podcasts')" :title="langStationPodcastsTab" no-body></b-tab>
                 <b-tab :active="activeType === 'backup'" @click="setType('backup')" :title="langBackupsTab" no-body></b-tab>
             </b-tabs>
 
@@ -19,7 +20,7 @@
 
             <data-table ref="datatable" id="admin_storage_locations" :show-toolbar="false" :fields="fields" :responsive="false"
                         :api-url="listUrlForType">
-                <template v-slot:cell(actions)="row">
+                <template #cell(actions)="row">
                     <b-button-group size="sm">
                         <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                             <translate key="lang_btn_edit">Edit</translate>
@@ -29,11 +30,11 @@
                         </b-button>
                     </b-button-group>
                 </template>
-                <template v-slot:cell(adapter)="row">
+                <template #cell(adapter)="row">
                     <h5 class="m-0">{{ getAdapterName(row.item.adapter) }}</h5>
                     <p class="card-text">{{ row.item.uri }}</p>
                 </template>
-                <template v-slot:cell(stations)="row">
+                <template #cell(stations)="row">
                     {{ row.item.stations.join(', ') }}
                 </template>
             </data-table>
@@ -48,6 +49,7 @@ import DataTable from '../Common/DataTable';
 import axios from 'axios';
 import EditModal from './StorageLocations/EditModal';
 import Icon from '../Common/Icon';
+import handleAxiosError from '../Function/handleAxiosError';
 
 export default {
     name: 'AdminStorageLocations',
@@ -71,6 +73,9 @@ export default {
         },
         langStationRecordingsTab () {
             return this.$gettext('Station Recordings');
+        },
+        langStationPodcastsTab () {
+            return this.$gettext('Station Podcasts');
         },
         langBackupsTab () {
             return this.$gettext('Backups');
@@ -115,10 +120,7 @@ export default {
 
                 this.relist();
             }).catch((err) => {
-                console.error(err);
-                if (err.response.data.message) {
-                    notify('<b>' + err.response.data.message + '</b>', 'danger');
-                }
+                handleAxiosError(err);
             });
         },
         doDelete (url) {
@@ -138,10 +140,7 @@ export default {
 
                         this.relist();
                     }).catch((err) => {
-                        console.error(err);
-                        if (err.response.data.message) {
-                            notify('<b>' + err.response.data.message + '</b>', 'danger');
-                        }
+                        handleAxiosError(err);
                     });
                 }
             });

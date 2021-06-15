@@ -1,0 +1,16 @@
+.CodeMirror {
+  background: $card-bg;
+  border: 1px solid $textfield-border-color;
+  color: $textfield-color;
+
+  .CodeMirror-gutters {
+    background: $navdrawer-header-bg;
+    border-right: 1px solid $textfield-border-color;
+  }
+
+  .CodeMirror-guttermarker,
+  .CodeMirror-guttermarker-subtle,
+  .CodeMirror-linenumber {
+    color: $textfield-color;
+  }
+}

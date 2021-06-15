@@ -69,8 +69,7 @@ class ListenerRepository extends Repository
                     $existingClients[$identifier] = $client['id'];
                 }
 
-                $listenerMeta = $this->em->getClassMetadata(Entity\Listener::class);
-                $listenerTable = $listenerMeta->getTableName();
+                $listenerTable = $this->em->getClassMetadata(Entity\Listener::class)->getTableName();
 
                 $conn = $this->em->getConnection();
 

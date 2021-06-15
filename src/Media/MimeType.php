@@ -27,9 +27,7 @@ class MimeType
 
     public static function getMimeTypeFromFile(string $path): string
     {
-        $detector = new FinfoMimeTypeDetector();
-
-        $fileMimeType = $detector->detectMimeTypeFromFile($path);
+        $fileMimeType = (new FinfoMimeTypeDetector())->detectMimeTypeFromFile($path);
         if ('application/octet-stream' === $fileMimeType) {
             $fileMimeType = null;
         }

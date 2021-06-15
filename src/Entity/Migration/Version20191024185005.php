@@ -21,9 +21,7 @@ final class Version20191024185005 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
-        $stations = $this->connection->fetchAll('SELECT s.* FROM station AS s');
-
-        foreach ($stations as $station) {
+        foreach ($this->connection->fetchAllAssociative('SELECT s.* FROM station AS s') as $station) {
             $this->write('Migrating album art for station "' . $station['name'] . '"...');
 
             $baseDir = $station['radio_base_dir'];
@@ -38,7 +36,7 @@ final class Version20191024185005 extends AbstractMigration
             $mediaRowsTotal = 0;
             $mediaRowsToUpdate = [];
 
-            while ($row = $getMediaQuery->fetch()) {
+            while ($row = $getMediaQuery->fetchAssociative()) {
                 $mediaRowsTotal++;
                 $artPath = $artDir . '/' . $row['unique_id'] . '.jpg';
 
@@ -49,7 +47,7 @@ final class Version20191024185005 extends AbstractMigration
 
             $this->write('Album art exists for ' . count($mediaRowsToUpdate) . ' of ' . $mediaRowsTotal . ' media.');
 
-            $this->connection->executeUpdate(
+            $this->connection->executeStatement(
                 'UPDATE station_media SET art_updated_at=UNIX_TIMESTAMP() WHERE unique_id IN (?)',
                 [$mediaRowsToUpdate],
                 [Connection::PARAM_STR_ARRAY]

@@ -4,36 +4,27 @@
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Security\SplitToken;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use Stringable;
 
-/**
- * @ORM\Table(name="api_keys")
- * @ORM\Entity(readOnly=true)
- *
- * @AuditLog\Auditable
- */
-class ApiKey implements JsonSerializable
+#[
+    Attributes\Auditable,
+    ORM\Table(name: 'api_keys'),
+    ORM\Entity(readOnly: true)
+]
+class ApiKey implements JsonSerializable, Stringable
 {
     use Traits\HasSplitTokenFields;
     use Traits\TruncateStrings;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="api_keys", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
-     * })
-     * @var User
-     */
-    protected $user;
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER', inversedBy: 'api_keys')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected User $user;
 
-    /**
-     * @ORM\Column(name="comment", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $comment;
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $comment = null;
 
     public function __construct(User $user, SplitToken $token)
     {
@@ -46,9 +37,6 @@ class ApiKey implements JsonSerializable
         return $this->user;
     }
 
-    /**
-     * @AuditLog\AuditIdentifier
-     */
     public function getComment(): ?string
     {
         return $this->comment;
@@ -56,7 +44,7 @@ class ApiKey implements JsonSerializable
 
     public function setComment(?string $comment): void
     {
-        $this->comment = $this->truncateString($comment);
+        $this->comment = $this->truncateNullableString($comment);
     }
 
     /**
@@ -68,5 +56,10 @@ class ApiKey implements JsonSerializable
             'id' => $this->id,
             'comment' => $this->comment,
         ];
+    }
+
+    public function __toString(): string
+    {
+        return $this->comment;
     }
 }

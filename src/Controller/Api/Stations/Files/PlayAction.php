@@ -27,8 +27,7 @@ class PlayAction
                 ->withJson(new Entity\Api\Error(404, 'Not Found'));
         }
 
-        $fsStation = new StationFilesystems($station);
-        $fsMedia = $fsStation->getMediaFilesystem();
+        $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
         return $response->streamFilesystemFile($fsMedia, $media->getPath());
     }

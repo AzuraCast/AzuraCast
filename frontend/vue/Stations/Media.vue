@@ -16,10 +16,7 @@
                     :request-config="requestConfig">
             <template v-slot:cell(name)="row">
                 <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
-                    <a :href="row.item.media_art" class="album-art float-right pl-3" target="_blank"
-                       v-if="row.item.media_art" data-fancybox="gallery">
-                        <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
-                    </a>
+                    <album-art v-if="row.item.media_art" :src="row.item.media_art" class="float-right pl-3"></album-art>
 
                     <template v-if="row.item.media_is_playable">
                         <a class="file-icon btn-audio has-listener" href="#" :data-url="row.item.media_links_play"
@@ -107,14 +104,6 @@
     </div>
 </template>
 
-<style lang="scss">
-img.media_manager_album_art {
-    width: 40px;
-    height: auto;
-    border-radius: 5px;
-}
-</style>
-
 <script>
 import DataTable from '../Common/DataTable';
 import MediaToolbar from './Media/MediaToolbar';
@@ -127,9 +116,11 @@ import EditModal from './Media/EditModal';
 import formatFileSize from '../Function/FormatFileSize.js';
 import _ from 'lodash';
 import Icon from '../Common/Icon';
+import AlbumArt from '../Common/AlbumArt';
 
 export default {
     components: {
+        AlbumArt,
         Icon,
         EditModal,
         RenameModal,
@@ -229,7 +220,7 @@ export default {
                 selectable: true,
                 visible: true
             },
-            { key: 'commands', label: this.$gettext('Actions'), sortable: false }
+            { key: 'commands', label: this.$gettext('Actions'), sortable: false, class: 'shrink' }
         );
 
         return {

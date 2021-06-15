@@ -26,15 +26,14 @@ class Permissions
     public function __invoke(ServerRequest $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->use_station) {
-            $station = $request->getStation();
-            $station_id = $station->getId();
+            $station_id = $request->getStation()->getId();
         } else {
             $station_id = null;
         }
 
         try {
             $user = $request->getUser();
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new PermissionDeniedException();
         }
 

@@ -17,7 +17,7 @@ class PlayerAction
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         Entity\Repository\CustomFieldRepository $customFieldRepo,
         Entity\Repository\StationRepository $stationRepo,
-        $embed = false
+        ?string $embed = null
     ): ResponseInterface {
         // Override system-wide iframe refusal
         $response = $response

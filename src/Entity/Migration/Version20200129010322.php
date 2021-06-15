@@ -22,7 +22,9 @@ final class Version20200129010322 extends AbstractMigration
     public function preUp(Schema $schema): void
     {
         // Deleting duplicate streamers to avoid constraint errors in subsequent update
-        $streamers = $this->connection->fetchAll('SELECT * FROM station_streamers ORDER BY station_id, id ASC');
+        $streamers = $this->connection->fetchAllAssociative(
+            'SELECT * FROM station_streamers ORDER BY station_id, id ASC'
+        );
         $accounts = [];
 
         foreach ($streamers as $row) {
@@ -46,7 +48,9 @@ final class Version20200129010322 extends AbstractMigration
     public function postUp(Schema $schema): void
     {
         // Hash DJ passwords that are currently stored in plaintext.
-        $streamers = $this->connection->fetchAll('SELECT * FROM station_streamers ORDER BY station_id, id ASC');
+        $streamers = $this->connection->fetchAllAssociative(
+            'SELECT * FROM station_streamers ORDER BY station_id, id ASC'
+        );
 
         foreach ($streamers as $row) {
             $this->connection->update('station_streamers', [

@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class StationMount extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $em): void
+    public function load(ObjectManager $manager): void
     {
         /** @var Entity\Station $station */
         $station = $this->getReference('station');
@@ -17,14 +17,14 @@ class StationMount extends AbstractFixture implements DependentFixtureInterface
         $mount_radio = new Entity\StationMount($station);
         $mount_radio->setName('/radio.mp3');
         $mount_radio->setIsDefault(true);
-        $em->persist($mount_radio);
+        $manager->persist($mount_radio);
 
         $mount_mobile = new Entity\StationMount($station);
         $mount_mobile->setName('/mobile.mp3');
         $mount_mobile->setAutodjBitrate(64);
-        $em->persist($mount_mobile);
+        $manager->persist($mount_mobile);
 
-        $em->flush();
+        $manager->flush();
     }
 
     /**

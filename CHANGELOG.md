@@ -59,6 +59,9 @@ release channel, you can take advantage of these new features and fixes.
 
 - The "Clone Station" feature has been fixed and expanded.
 
+- A bug that caused the URLs in "Now Playing" API responses to occasionally jump from using the "Prefer Browser URL"
+  setting to not using it has been resolved; the API response should now be far more consistent.
+
 ---
 
 # AzuraCast 0.12.4 (Apr 27, 2021)

@@ -18,8 +18,7 @@ class Telegram extends AbstractConnector
         Entity\Station $station,
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying $np,
-        array $triggers,
-        bool $isStandalone
+        array $triggers
     ): bool {
         $config = $webhook->getConfig();
 

@@ -12,24 +12,19 @@ class Email extends AbstractConnector
 {
     public const NAME = 'email';
 
-    protected Mail $mail;
-
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        Mail $mail
+        protected Mail $mail
     ) {
         parent::__construct($logger, $httpClient);
-
-        $this->mail = $mail;
     }
 
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying $np,
-        array $triggers,
-        bool $isStandalone
+        array $triggers
     ): bool {
         if (!$this->mail->isEnabled()) {
             $this->logger->error('E-mail delivery is not currently enabled. Skipping webhook delivery...');

@@ -26,34 +26,8 @@ class LocalWebhookHandler
 
     public function dispatch(
         Entity\Station $station,
-        Entity\Api\NowPlaying $np,
-        bool $isStandalone
+        Entity\Api\NowPlaying $np
     ): void {
-        if ($isStandalone) {
-            // Replace the relevant station information in the cache and database.
-            $this->logger->debug('Updating NowPlaying cache...');
-
-            $np_full = $this->cache->get('nowplaying');
-
-            if ($np_full) {
-                $np_new = [];
-                foreach ($np_full as $np_old) {
-                    /** @var Entity\Api\NowPlaying $np_old */
-                    if ($np_old->station->id === $station->getId()) {
-                        $np_new[] = $np;
-                    } else {
-                        $np_new[] = $np_old;
-                    }
-                }
-
-                $this->cache->set('nowplaying', $np_new, 120);
-
-                $settings = $this->settingsRepo->readSettings();
-                $settings->setNowplaying($np_new);
-                $this->settingsRepo->writeSettings($settings);
-            }
-        }
-
         // Write local static file that the video stream (and other scripts) can use.
         $this->logger->debug('Writing local nowplaying text file...');
 

@@ -15,28 +15,20 @@ class GoogleAnalytics extends AbstractConnector
 {
     public const NAME = 'google_analytics';
 
-    protected EntityManagerInterface $em;
-
-    protected Adapters $adapters;
-
     public function __construct(
         Logger $logger,
         Client $httpClient,
-        EntityManagerInterface $em,
-        Adapters $adapters
+        protected EntityManagerInterface $em,
+        protected Adapters $adapters
     ) {
         parent::__construct($logger, $httpClient);
-
-        $this->em = $em;
-        $this->adapters = $adapters;
     }
 
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,
         Entity\Api\NowPlaying $np,
-        array $triggers,
-        bool $isStandalone
+        array $triggers
     ): bool {
         $config = $webhook->getConfig();
         if (empty($config['tracking_id'])) {

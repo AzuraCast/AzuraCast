@@ -11,14 +11,10 @@ use Symfony\Component\Validator\Constraints\UrlValidator;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
-    protected Client $httpClient;
-
-    protected Logger $logger;
-
-    public function __construct(Logger $logger, Client $httpClient)
-    {
-        $this->logger = $logger;
-        $this->httpClient = $httpClient;
+    public function __construct(
+        protected Logger $logger,
+        protected Client $httpClient
+    ) {
     }
 
     public function shouldDispatch(Entity\StationWebhook $webhook, array $triggers = []): bool

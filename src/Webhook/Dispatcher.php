@@ -43,11 +43,10 @@ class Dispatcher
         }
 
         $np = $message->np;
-        $isStandalone = (bool)$message->is_standalone;
         $triggers = (array)$message->triggers;
 
         // Always dispatch the special "local" updater task.
-        $this->localHandler->dispatch($station, $np, $isStandalone);
+        $this->localHandler->dispatch($station, $np);
 
         if ($this->environment->isTesting()) {
             $this->logger->notice('In testing mode; no webhooks dispatched.');
@@ -69,7 +68,7 @@ class Dispatcher
             if ($connectorObj->shouldDispatch($webhook, $triggers)) {
                 $this->logger->debug(sprintf('Dispatching connector "%s".', $webhook->getType()));
 
-                if ($connectorObj->dispatch($station, $webhook, $np, $triggers, $isStandalone)) {
+                if ($connectorObj->dispatch($station, $webhook, $np, $triggers)) {
                     $webhook->updateLastSentTimestamp();
                     $this->em->persist($webhook);
                     $this->em->flush();
@@ -99,7 +98,7 @@ class Dispatcher
         $np->cache = 'event';
 
         $connectorObj = $this->connectors->getConnector($webhook->getType());
-        $connectorObj->dispatch($station, $webhook, $np, [Entity\StationWebhook::TRIGGER_ALL], true);
+        $connectorObj->dispatch($station, $webhook, $np, [Entity\StationWebhook::TRIGGER_ALL]);
 
         $this->logger->popHandler();
 

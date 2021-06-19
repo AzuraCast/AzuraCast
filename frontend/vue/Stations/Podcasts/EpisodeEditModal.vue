@@ -6,8 +6,11 @@
         <b-form class="form" v-else @submit.prevent="doSubmit">
             <b-tabs content-class="mt-3">
                 <episode-form-basic-info :form="$v.form"></episode-form-basic-info>
-                <episode-form-media :form="$v.files" :has-media="record.has_media" :media="record.media" :download-url="record.links.download"></episode-form-media>
-                <podcast-common-artwork :form="$v.files" :artwork-src="record.art"></podcast-common-artwork>
+                <episode-form-media v-model="$v.form.media_file.$model" :record-has-media="record.has_media"
+                                    :new-media-url="newMediaUrl" :edit-media-url="record.links.media"
+                                    :download-url="record.links.download"></episode-form-media>
+                <podcast-common-artwork v-model="$v.form.artwork_file.$model" :artwork-src="record.art"
+                                        :new-art-url="newArtUrl" :edit-art-url="record.links.art"></podcast-common-artwork>
             </b-tabs>
 
             <invisible-submit-button/>
@@ -16,11 +19,6 @@
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
-            <template v-if="record.has_custom_art">
-                <b-button variant="danger" type="button" @click="clearArtwork(record.links.art)">
-                    <translate key="lang_btn_clear_artwork">Clear Art</translate>
-                </b-button>
-            </template>
             <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
                 {{ langSaveChanges }}
             </b-button>
@@ -29,14 +27,12 @@
 </template>
 
 <script>
-import axios from 'axios';
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import BaseEditModal from '../../Common/BaseEditModal';
 import EpisodeFormBasicInfo from './EpisodeForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
 import EpisodeFormMedia from './EpisodeForm/Media';
-import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'EditModal',
@@ -45,7 +41,9 @@ export default {
     props: {
         stationTimeZone: String,
         locale: String,
-        podcastId: String
+        podcastId: String,
+        newArtUrl: String,
+        newMediaUrl: String
     },
     data () {
         return {
@@ -55,9 +53,10 @@ export default {
                 art: null,
                 has_media: false,
                 media: null,
-                links: {}
+                links: {},
+                artwork_file: null,
+                media_file: null
             },
-            files: {}
         };
     },
     computed: {
@@ -83,9 +82,7 @@ export default {
             'description': { required },
             'publish_date': {},
             'publish_time': {},
-            'explicit': {}
-        },
-        files: {
+            'explicit': {},
             'artwork_file': {},
             'media_file': {}
         }
@@ -98,7 +95,10 @@ export default {
                 art: null,
                 has_media: false,
                 media: null,
-                links: {}
+                links: {
+                    art: null,
+                    media: null
+                }
             };
             this.form = {
                 'title': '',
@@ -106,9 +106,7 @@ export default {
                 'description': '',
                 'publish_date': '',
                 'publish_time': '',
-                'explicit': false
-            };
-            this.files = {
+                'explicit': false,
                 'artwork_file': null,
                 'media_file': null
             };
@@ -143,51 +141,16 @@ export default {
                 modifiedForm.publish_at = publishDateTime.unix();
             }
 
-            let formData = new FormData();
-            formData.append('body', JSON.stringify(modifiedForm));
-            Object.entries(this.files).forEach(([key, value]) => {
-                if (null !== value) {
-                    formData.append(key, value);
-                }
-            });
-
             return {
-                method: 'POST',
+                method: (this.isEditMode)
+                    ? 'PUT'
+                    : 'POST',
                 url: (this.isEditMode)
                     ? this.editUrl
                     : this.createUrl,
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                onUploadProgress: (progressEvent) => {
-                    this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
-                }
+                data: this.form
             };
-        },
-        clearArtwork (url) {
-            let buttonText = this.$gettext('Remove Artwork');
-            let buttonConfirmText = this.$gettext('Delete episode artwork?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
-            }).then((result) => {
-                if (result.value) {
-                    axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
-                        this.$emit('relist');
-                        this.close();
-                    }).catch((err) => {
-                        handleAxiosError(err);
-                    });
-                }
-            });
-        },
+        }
     }
 };
 </script>

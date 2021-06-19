@@ -54,7 +54,8 @@
         </b-card>
 
         <edit-modal ref="editPodcastModal" :create-url="listUrl" :station-time-zone="stationTimeZone"
-                    :language-options="languageOptions" :categories-options="categoriesOptions" @relist="relist"></edit-modal>
+                    :new-art-url="newArtUrl" :language-options="languageOptions"
+                    :categories-options="categoriesOptions" @relist="relist"></edit-modal>
     </div>
 </template>
 
@@ -68,6 +69,7 @@ import handleAxiosError from '../../Function/handleAxiosError';
 export const listViewProps = {
     props: {
         listUrl: String,
+        newArtUrl: String,
         locale: String,
         stationTimeZone: String,
         languageOptions: Object,

@@ -8,7 +8,8 @@
                 <podcast-form-basic-info :form="$v.form"
                                          :categories-options="categoriesOptions" :language-options="languageOptions">
                 </podcast-form-basic-info>
-                <podcast-common-artwork :form="$v.files" :artwork-src="record.art"></podcast-common-artwork>
+                <podcast-common-artwork v-model="$v.form.artwork_file.$model" :artwork-src="record.art"
+                                        :new-art-url="newArtUrl" :edit-art-url="record.links.art"></podcast-common-artwork>
             </b-tabs>
 
             <invisible-submit-button/>
@@ -17,11 +18,6 @@
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>
-            <template v-if="record.has_custom_art">
-                <b-button variant="danger" type="button" @click="clearArtwork(record.links.art)">
-                    <translate key="lang_btn_clear_artwork">Clear Art</translate>
-                </b-button>
-            </template>
             <b-button variant="primary" type="submit" @click="doSubmit" :disabled="$v.form.$invalid">
                 <translate key="lang_btn_save_changes">Save Changes</translate>
             </b-button>
@@ -30,13 +26,11 @@
 </template>
 
 <script>
-import axios from 'axios';
 import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import BaseEditModal from '../../Common/BaseEditModal';
 import PodcastFormBasicInfo from './PodcastForm/BasicInfo';
 import PodcastCommonArtwork from './Common/Artwork';
-import handleAxiosError from '../../Function/handleAxiosError';
 
 export default {
     name: 'EditModal',
@@ -45,7 +39,8 @@ export default {
     props: {
         stationTimeZone: String,
         languageOptions: Object,
-        categoriesOptions: Object
+        categoriesOptions: Object,
+        newArtUrl: String
     },
     data () {
         return {
@@ -59,9 +54,7 @@ export default {
                 'link': '',
                 'description': '',
                 'language': 'en',
-                'categories': []
-            },
-            files: {
+                'categories': [],
                 'artwork_file': null
             }
         };
@@ -79,9 +72,7 @@ export default {
             'link': {},
             'description': {},
             'language': { required },
-            'categories': { required }
-        },
-        files: {
+            'categories': { required },
             'artwork_file': {}
         }
     },
@@ -90,16 +81,16 @@ export default {
             this.record = {
                 has_custom_art: false,
                 art: null,
-                links: {}
+                links: {
+                    art: null
+                }
             };
             this.form = {
                 'title': '',
                 'link': '',
                 'description': '',
                 'language': 'en',
-                'categories': []
-            };
-            this.files = {
+                'categories': [],
                 'artwork_file': null
             };
         },
@@ -110,51 +101,9 @@ export default {
                 'link': d.link,
                 'description': d.description,
                 'language': d.language,
-                'categories': d.categories
+                'categories': d.categories,
+                'artwork_file': null
             };
-        },
-        buildSubmitRequest () {
-            let formData = new FormData();
-            formData.append('body', JSON.stringify(this.form));
-            Object.entries(this.files).forEach(([key, value]) => {
-                if (null !== value) {
-                    formData.append(key, value);
-                }
-            });
-
-            return {
-                method: 'POST',
-                url: (this.isEditMode)
-                    ? this.editUrl
-                    : this.createUrl,
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            };
-        },
-        clearArtwork (url) {
-            let buttonText = this.$gettext('Remove Artwork');
-            let buttonConfirmText = this.$gettext('Delete podcast artwork?');
-
-            Swal.fire({
-                title: buttonConfirmText,
-                confirmButtonText: buttonText,
-                confirmButtonColor: '#e64942',
-                showCancelButton: true,
-                focusCancel: true
-            }).then((result) => {
-                if (result.value) {
-                    axios.delete(url).then((resp) => {
-                        notify('<b>' + resp.data.message + '</b>', 'success');
-
-                        this.$emit('relist');
-                        this.close();
-                    }).catch((err) => {
-                        handleAxiosError(err);
-                    });
-                }
-            });
         }
     }
 };

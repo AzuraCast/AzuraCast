@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Stations\Podcasts\Episodes;
+namespace App\Controller\Api\Stations\Podcasts\Episodes\Media;
 
 use App\Entity;
 use App\Flysystem\StationFilesystems;
@@ -10,7 +10,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class DownloadAction
+class GetMediaAction
 {
     public function __invoke(
         ServerRequest $request,

@@ -13,7 +13,7 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
--
+- We've added some extra information on how to enable ShoutCast DNAS Premium features in the `Edit Profile` panel under `Broadcasting`. 
 
 ---
 

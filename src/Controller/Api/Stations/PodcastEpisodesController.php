@@ -10,10 +10,10 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\Flow\UploadedFile;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -208,12 +208,34 @@ class PodcastEpisodesController extends AbstractApiCrudController
         $station = $request->getStation();
 
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        $parsedBody = $request->getParsedBody();
+
+        /** @var Entity\PodcastEpisode $record */
         $record = $this->editRecord(
             $request->getParsedBody(),
             new Entity\PodcastEpisode($podcast)
         );
 
-        $this->processFiles($request, $record);
+        if (!empty($parsedBody['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+            $this->episodeRepository->writeEpisodeArt(
+                $record,
+                $artwork->readAndDeleteUploadedFile()
+            );
+
+            $this->em->persist($record);
+            $this->em->flush();
+        }
+
+        if (!empty($parsedBody['media_file'])) {
+            $media = UploadedFile::fromArray($parsedBody['media_file'], $station->getRadioTempDir());
+
+            $this->podcastMediaRepository->upload(
+                $record,
+                $media->getOriginalFilename(),
+                $media->getUploadedPath()
+            );
+        }
 
         return $response->withJson($this->viewRecord($record, $request));
     }
@@ -231,7 +253,6 @@ class PodcastEpisodesController extends AbstractApiCrudController
         }
 
         $this->editRecord($request->getParsedBody(), $podcast);
-        $this->processFiles($request, $podcast);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -333,55 +354,13 @@ class PodcastEpisodesController extends AbstractApiCrudController
                 route_params: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             );
+            $return->links['media'] = $router->fromHere(
+                route_name: 'api:stations:podcast:episode:media-internal',
+                route_params: ['episode_id' => $record->getId()],
+                absolute: !$isInternal
+            );
         }
 
         return $return;
-    }
-
-    protected function processFiles(
-        ServerRequest $request,
-        Entity\PodcastEpisode $record
-    ): void {
-        $files = $request->getUploadedFiles();
-
-        $artwork = $files['artwork_file'] ?? null;
-        if ($artwork instanceof UploadedFileInterface && UPLOAD_ERR_OK === $artwork->getError()) {
-            $this->episodeRepository->writeEpisodeArt(
-                $record,
-                $artwork->getStream()->getContents()
-            );
-
-            $this->em->persist($record);
-            $this->em->flush();
-        }
-
-        $media = $files['media_file'] ?? null;
-        if ($media instanceof UploadedFileInterface && UPLOAD_ERR_OK === $media->getError()) {
-            $fsStations = new StationFilesystems($request->getStation());
-            $fsTemp = $fsStations->getTempFilesystem();
-
-            $originalName = basename($media->getClientFilename()) ?? ($record->getId() . '.mp3');
-            $originalExt = pathinfo($originalName, PATHINFO_EXTENSION);
-
-            $tempPath = $fsTemp->getLocalPath($record->getId() . '.' . $originalExt);
-            $media->moveTo($tempPath);
-
-            $artwork = $this->podcastMediaRepository->upload(
-                $record,
-                $originalName,
-                $tempPath,
-                $fsStations->getPodcastsFilesystem()
-            );
-
-            if (!empty($artwork) && 0 === $record->getArtUpdatedAt()) {
-                $this->episodeRepository->writeEpisodeArt(
-                    $record,
-                    $artwork
-                );
-            }
-
-            $this->em->persist($record);
-            $this->em->flush();
-        }
     }
 }

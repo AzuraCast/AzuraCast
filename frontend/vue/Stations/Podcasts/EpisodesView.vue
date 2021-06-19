@@ -62,6 +62,7 @@
         </b-card>
 
         <edit-modal ref="editEpisodeModal" :create-url="podcast.links.episodes" :station-time-zone="stationTimeZone"
+                    :new-art-url="podcast.links.episode_new_art" :new-media-url="podcast.links.episode_new_media"
                     :locale="locale" :podcast-id="podcast.id" @relist="relist"></edit-modal>
     </div>
 </template>

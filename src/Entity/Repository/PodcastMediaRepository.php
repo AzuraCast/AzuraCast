@@ -25,7 +25,8 @@ class PodcastMediaRepository extends Repository
         Environment $environment,
         LoggerInterface $logger,
         protected GetId3MetadataService $metadataService,
-        protected ImageManager $imageManager
+        protected ImageManager $imageManager,
+        protected PodcastEpisodeRepository $episodeRepo,
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
     }
@@ -35,7 +36,7 @@ class PodcastMediaRepository extends Repository
         string $originalPath,
         string $uploadPath,
         ?ExtendedFilesystemInterface $fs = null
-    ): ?string {
+    ): void {
         $podcast = $episode->getPodcast();
         $storageLocation = $podcast->getStorageLocation();
 
@@ -50,8 +51,9 @@ class PodcastMediaRepository extends Repository
             );
         }
 
-        if ($episode->getMedia() instanceof PodcastMedia) {
-            $this->delete($episode->getMedia(), $fs);
+        $existingMedia = $episode->getMedia();
+        if ($existingMedia instanceof PodcastMedia) {
+            $this->delete($existingMedia, $fs);
             $episode->setMedia(null);
         }
 
@@ -73,10 +75,17 @@ class PodcastMediaRepository extends Repository
         $this->em->persist($podcastMedia);
 
         $episode->setMedia($podcastMedia);
+
+        $artwork = $metadata->getArtwork();
+        if (!empty($artwork) && 0 === $episode->getArtUpdatedAt()) {
+            $this->episodeRepo->writeEpisodeArt(
+                $episode,
+                $artwork
+            );
+        }
+
         $this->em->persist($episode);
         $this->em->flush();
-
-        return $metadata->getArtwork();
     }
 
     public function delete(

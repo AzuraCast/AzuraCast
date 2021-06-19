@@ -25,8 +25,7 @@ class PodcastEpisodeRepository extends Repository
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        protected ImageManager $imageManager,
-        protected PodcastMediaRepository $podcastMediaRepo,
+        protected ImageManager $imageManager
     ) {
         parent::__construct($entityManager, $serializer, $environment, $logger);
     }
@@ -121,8 +120,14 @@ class PodcastEpisodeRepository extends Repository
     ): void {
         $fs ??= $episode->getPodcast()->getStorageLocation()->getFilesystem();
 
-        if (null !== $episode->getMedia()) {
-            $this->podcastMediaRepo->delete($episode->getMedia(), $fs);
+        $media = $episode->getMedia();
+        if (null !== $media) {
+            try {
+                $fs->delete($media->getPath());
+            } catch (UnableToDeleteFile) {
+            }
+
+            $this->em->remove($media);
         }
 
         $this->removeEpisodeArt($episode, $fs);

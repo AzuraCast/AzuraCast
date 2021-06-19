@@ -10,11 +10,11 @@ use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Service\Flow\UploadedFile;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -163,12 +163,24 @@ class PodcastsController extends AbstractApiCrudController
     {
         $station = $request->getStation();
 
+        $parsedBody = $request->getParsedBody();
+
+        /** @var Entity\Podcast $record */
         $record = $this->editRecord(
             $request->getParsedBody(),
             new Entity\Podcast($station->getPodcastsStorageLocation())
         );
 
-        $this->processFiles($request, $record);
+        if (!empty($parsedBody['artwork_file'])) {
+            $artwork = UploadedFile::fromArray($parsedBody['artwork_file'], $station->getRadioTempDir());
+            $this->podcastRepository->writePodcastArt(
+                $record,
+                $artwork->readAndDeleteUploadedFile()
+            );
+
+            $this->em->persist($record);
+            $this->em->flush();
+        }
 
         return $response->withJson($this->viewRecord($record, $request));
     }
@@ -186,7 +198,6 @@ class PodcastsController extends AbstractApiCrudController
         }
 
         $this->editRecord($request->getParsedBody(), $podcast);
-        $this->processFiles($request, $podcast);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -287,6 +298,17 @@ class PodcastsController extends AbstractApiCrudController
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
+
+            $return->links['episode_new_art'] = $router->fromHere(
+                route_name: 'api:stations:podcast:episodes:new-art',
+                route_params: ['podcast_id' => $record->getId()],
+                absolute: !$isInternal
+            );
+            $return->links['episode_new_media'] = $router->fromHere(
+                route_name: 'api:stations:podcast:episodes:new-media',
+                route_params: ['podcast_id' => $record->getId()],
+                absolute: !$isInternal
+            );
         }
 
         return $return;
@@ -324,23 +346,5 @@ class PodcastsController extends AbstractApiCrudController
                 ]
             )
         );
-    }
-
-    protected function processFiles(
-        ServerRequest $request,
-        Entity\Podcast $record
-    ): void {
-        $files = $request->getUploadedFiles();
-
-        $artwork = $files['artwork_file'] ?? null;
-        if ($artwork instanceof UploadedFileInterface && UPLOAD_ERR_OK === $artwork->getError()) {
-            $this->podcastRepository->writePodcastArt(
-                $record,
-                $artwork->getStream()->getContents()
-            );
-
-            $this->em->persist($record);
-            $this->em->flush();
-        }
     }
 }

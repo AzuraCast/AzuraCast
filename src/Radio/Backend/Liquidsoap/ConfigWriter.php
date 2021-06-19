@@ -1050,7 +1050,10 @@ class ConfigWriter implements EventSubscriberInterface
             $output_params[] = 'protocol="' . $protocol . '"';
         }
 
-        if (Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
+        if (
+            Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()
+            || Entity\Interfaces\StationMountInterface::FORMAT_FLAC === $mount->getAutodjFormat()
+        ) {
             $output_params[] = 'icy_metadata="true"';
         }
 
@@ -1073,6 +1076,9 @@ class ConfigWriter implements EventSubscriberInterface
 
             case Entity\Interfaces\StationMountInterface::FORMAT_OPUS:
                 return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+
+            case Entity\Interfaces\StationMountInterface::FORMAT_FLAC:
+                return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';
 
             case Entity\Interfaces\StationMountInterface::FORMAT_MP3:
             default:

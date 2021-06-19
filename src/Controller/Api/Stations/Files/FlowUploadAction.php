@@ -39,13 +39,13 @@ class FlowUploadAction
         if (is_array($flowResponse)) {
             $currentDir = $request->getParam('currentDirectory', '');
 
-            $destPath = $flowResponse['filename'];
+            $destPath = $flowResponse->originalFilename;
             if (!empty($currentDir)) {
                 $destPath = $currentDir . '/' . $destPath;
             }
 
             try {
-                $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse['path']);
+                $stationMedia = $mediaRepo->getOrCreate($station, $destPath, $flowResponse->uploadedPath);
             } catch (CannotProcessMediaException $e) {
                 $logger->error(
                     $e->getMessageWithPath(),
@@ -78,7 +78,7 @@ class FlowUploadAction
                 }
             }
 
-            $mediaStorage->addStorageUsed($flowResponse['size']);
+            $mediaStorage->addStorageUsed($flowResponse->size);
             $em->persist($mediaStorage);
             $em->flush();
 

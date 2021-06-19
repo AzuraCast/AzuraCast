@@ -1050,7 +1050,10 @@ class ConfigWriter implements EventSubscriberInterface
             $output_params[] = 'protocol="' . $protocol . '"';
         }
 
-        if (Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
+        if (
+            Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()
+            || Entity\Interfaces\StationMountInterface::FORMAT_FLAC === $mount->getAutodjFormat()
+        ) {
             $output_params[] = 'icy_metadata="true"';
         }
 

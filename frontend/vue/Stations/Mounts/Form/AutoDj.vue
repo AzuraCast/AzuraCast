@@ -24,7 +24,7 @@
                         :options="formatOptions"
                     ></b-form-radio-group>
                 </b-form-group>
-                <b-form-group class="col-md-6" label-for="edit_form_autodj_bitrate">
+                <b-form-group class="col-md-6" label-for="edit_form_autodj_bitrate" v-if="formatSupportsBitrateOptions">
                     <template #label>
                         <translate key="lang_edit_form_autodj_bitrate">AutoDJ Bitrate (kbps)</translate>
                     </template>
@@ -60,7 +60,8 @@ export default {
                         'mp3': 'MP3',
                         'ogg': 'OGG Vorbis',
                         'opus': 'OGG Opus',
-                        'aac': 'AAC+ (MPEG4 HE-AAC v2)'
+                        'aac': 'AAC+ (MPEG4 HE-AAC v2)',
+                        'flac': 'FLAC (OGG FLAC)',
                     };
 
                 case FRONTEND_SHOUTCAST:
@@ -68,7 +69,8 @@ export default {
                         'mp3': 'MP3',
                         'ogg': 'OGG Vorbis',
                         'opus': 'OGG Opus',
-                        'aac': 'AAC+ (MPEG4 HE-AAC v2)'
+                        'aac': 'AAC+ (MPEG4 HE-AAC v2)',
+                        'flac': 'FLAC (OGG FLAC)',
                     };
 
                 default:
@@ -86,6 +88,19 @@ export default {
                 256: '256',
                 320: '320'
             };
+        },
+        formatSupportsBitrateOptions () {
+            switch (this.form.autodj_format.$model) {
+                case 'flac':
+                    return false;
+
+                case 'mp3':
+                case 'ogg':
+                case 'opus':
+                case 'aac':
+                default:
+                    return true;
+            }
         }
     }
 };

@@ -278,7 +278,9 @@ return [
                         'belongsTo' => 'frontend_config',
                         'class' => 'text-preformatted',
                         'description' => __(
-                            'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;. For ShoutCast Premium users, use this code to activate it <code>{ "licenceid": "YOUR_LICENSE_ID" "userid": "YOUR_USER_ID" }</code>'
+                            'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'
+                        ).__(
+                            'For SHOUTcast Premium users, you can use custom configuration in this format: <code>{ "licenceid": "YOUR_LICENSE_ID" "userid": "YOUR_USER_ID" }</code>'
                         ),
                         'form_group_class' => 'col-sm-7',
                     ],

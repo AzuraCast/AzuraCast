@@ -169,6 +169,12 @@ class StationCloneForm extends StationForm
             if (in_array(self::CLONE_MOUNTS, $toClone, true)) {
                 $record = $this->reloadableEm->refetch($record);
                 $this->cloneCollection($record->getMounts(), $newStation, $copier);
+            } else {
+                $newStation = $this->reloadableEm->refetch($newStation);
+
+                // Create default mountpoints if station supports them.
+                $frontendAdapter = $this->adapters->getFrontendAdapter($newStation);
+                $this->stationRepo->resetMounts($newStation, $frontendAdapter);
             }
 
             if (in_array(self::CLONE_REMOTES, $toClone, true)) {

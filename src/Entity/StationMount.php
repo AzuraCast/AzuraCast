@@ -5,6 +5,7 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
+use App\Entity\Traits\TruncateInts;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
+    use Traits\TruncateInts;
 
     #[ORM\Column(nullable: false)]
     protected int $station_id;
@@ -63,6 +65,10 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     /** @OA\Property(example="") */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $authhash = null;
+
+    /** @OA\Property(example=43200) */
+    #[ORM\Column(type: 'integer', nullable: false)]
+    protected int $max_listener_duration = 0;
 
     /** @OA\Property(example=true) */
     #[ORM\Column]
@@ -206,6 +212,21 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     public function setAuthhash(?string $authhash = null): void
     {
         $this->authhash = $this->truncateNullableString($authhash);
+    }
+
+    public function getMaxListenerDuration(): int
+    {
+        return $this->max_listener_duration;
+    }
+
+    public function setMaxListenerDuration(int $max_listener_duration): void
+    {
+        $this->max_listener_duration = $this->truncateIntToLimit(
+            signed_limit: 2147483647,
+            unsigned_limit: 4294967295,
+            unsigned: false,
+            int: $max_listener_duration
+        );
     }
 
     public function getEnableAutodj(): bool

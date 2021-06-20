@@ -1,0 +1,32 @@
+div.flow-upload {
+  div.upload-progress {
+    padding: 4px 0;
+
+    & > div {
+      padding: 3px 0;
+    }
+
+    .progress {
+      margin-bottom: 5px;
+
+      .progress-bar {
+        border-bottom-width: 10px;
+
+        &::after {
+          height: 10px;
+        }
+      }
+    }
+  }
+
+  div.file-drop-target {
+    padding: 25px 0;
+    text-align: center;
+
+    input {
+      display: inline;
+    }
+  }
+}
+
+

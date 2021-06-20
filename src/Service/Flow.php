@@ -54,8 +54,11 @@ class Flow
         $flowIdentifier = $params['flowIdentifier'] ?? '';
         $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
 
+        $targetSize = (int)($params['flowTotalSize'] ?? 0);
+        $targetChunks = (int)($params['flowTotalChunks'] ?? 1);
+
         // Handle a regular file upload that isn't using flow.
-        if (empty($flowIdentifier) || 1 === $flowChunkNumber) {
+        if (1 === $targetChunks) {
             if ('GET' === $request->getMethod()) {
                 return $response->withStatus(200, 'OK');
             }
@@ -70,9 +73,6 @@ class Flow
         $chunkPath = $chunkBaseDir . '/' . $flowIdentifier . '.part' . $flowChunkNumber;
 
         $currentChunkSize = (int)($params['flowCurrentChunkSize'] ?? 0);
-
-        $targetSize = (int)($params['flowTotalSize'] ?? 0);
-        $targetChunks = (int)($params['flowTotalChunks'] ?? 0);
 
         // Check if request is GET and the requested chunk exists or not. This makes testChunks work
         if ('GET' === $request->getMethod()) {
@@ -117,7 +117,7 @@ class Flow
 
         $file->moveTo($chunkPath);
 
-        if (self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
+        if ($flowChunkNumber === $targetChunks && self::allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
             return self::createFileFromChunks(
                 $tempDir,
                 $chunkBaseDir,

@@ -9,7 +9,8 @@
                     <template #description>
                         <translate key="media_file_desc">Podcast media should be in the MP3 or M4A (AAC) format for the greatest compatibility.</translate>
                     </template>
-                    <b-form-file id="media_file" accept="audio/x-m4a, audio/mpeg" @input="uploadNewMedia"></b-form-file>
+
+                    <flow-upload :target-url="targetUrl" :valid-mime-types="acceptMimeTypes" @success="onFileSuccess"></flow-upload>
                 </b-form-group>
 
                 <b-form-group class="col-md-6">
@@ -39,9 +40,11 @@
 <script>
 import axios from 'axios';
 import handleAxiosError from '../../../Function/handleAxiosError';
+import FlowUpload from '../../../Common/FlowUpload';
 
 export default {
     name: 'EpisodeFormMedia',
+    components: { FlowUpload },
     props: {
         value: Object,
         recordHasMedia: Boolean,
@@ -51,32 +54,26 @@ export default {
     },
     data () {
         return {
-            hasMedia: this.recordHasMedia
+            hasMedia: this.recordHasMedia,
+            acceptMimeTypes: ['audio/x-m4a', 'audio/mpeg']
         };
     },
     computed: {
         langTitle () {
             return this.$gettext('Media');
+        },
+        targetUrl () {
+            return (this.editMediaUrl)
+                ? this.editMediaUrl
+                : this.newMediaUrl;
         }
     },
     methods: {
-        uploadNewMedia (file) {
-            if (!(file instanceof File)) {
-                return;
+        onFileSuccess (file, message) {
+            this.hasMedia = true;
+            if (!this.editMediaUrl) {
+                this.$emit('input', message);
             }
-
-            let url = (this.editMediaUrl) ? this.editMediaUrl : this.newMediaUrl;
-            let formData = new FormData();
-            formData.append('art', file);
-
-            axios.post(url, formData).then((resp) => {
-                this.hasMedia = true;
-                if (!this.editMediaUrl) {
-                    this.$emit('input', resp.data);
-                }
-            }).catch((err) => {
-                handleAxiosError(err);
-            });
         },
         deleteMedia () {
             if (this.editMediaUrl) {

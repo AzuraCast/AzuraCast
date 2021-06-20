@@ -67,11 +67,7 @@ export default {
             formData.append('art', file);
 
             axios.post(url, formData).then((resp) => {
-                if (this.editArtUrl) {
-                    this.src = this.albumArtSrc + '?' + Math.floor(Date.now() / 1000);
-                } else {
-                    this.$emit('input', resp.data);
-                }
+                this.$emit('input', resp.data);
             }).catch((err) => {
                 handleAxiosError(err);
             });
@@ -79,7 +75,7 @@ export default {
         deleteArt () {
             if (this.editArtUrl) {
                 axios.delete(this.editArtUrl).then((resp) => {
-                    this.src = this.albumArtSrc + '?' + Math.floor(Date.now() / 1000);
+                    this.src = null;
                 }).catch((err) => {
                     handleAxiosError(err);
                 });

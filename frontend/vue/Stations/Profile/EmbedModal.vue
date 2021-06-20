@@ -72,7 +72,8 @@ export const profileEmbedModalProps = {
         publicPageEmbedUri: String,
         publicOnDemandEmbedUri: String,
         publicRequestEmbedUri: String,
-        publicHistoryEmbedUri: String
+        publicHistoryEmbedUri: String,
+        publicScheduleEmbedUri: String
     }
 };
 
@@ -88,6 +89,10 @@ export default {
             {
                 value: 'history',
                 text: this.$gettext('History')
+            },
+            {
+                value: 'schedule',
+                text: this.$gettext('Schedule')
             }
         ];
 
@@ -142,6 +147,9 @@ export default {
                 case 'requests':
                     return this.publicRequestEmbedUri;
 
+                case 'schedule':
+                    return this.publicScheduleEmbedUri;
+
                 case 'player':
                 default:
                     return this.publicPageEmbedUri;
@@ -169,6 +177,9 @@ export default {
 
                 case 'history':
                     return '300px';
+
+                case 'schedule':
+                    return '800px'
 
                 case 'player':
                 default:

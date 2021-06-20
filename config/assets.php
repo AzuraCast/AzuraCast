@@ -496,6 +496,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_PublicSchedule' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_PublicWebDJ' => [
         'order' => 10,
         'require' => ['vue-component-common'],

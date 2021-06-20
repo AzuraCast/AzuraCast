@@ -90,6 +90,12 @@ $props = [
         [],
         true
     ),
+    'publicScheduleEmbedUri' => (string)$router->named(
+        'public:schedule',
+        ['station_id' => $station->getShortName(), 'embed' => 'embed'],
+        [],
+        true
+    ),
 
     'togglePublicPageUri' => $router->fromHere(
         'stations:profile:toggle',

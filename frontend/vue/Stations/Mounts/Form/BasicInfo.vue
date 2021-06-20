@@ -74,7 +74,7 @@
                         <translate key="lang_edit_form_max_listener_duration">Max Listener Duration</translate>
                     </template>
                     <template #description>
-                        <translate key="lang_edit_form_max_listener_duration_desc">Set the length of time (Seconds) a listener will stay connected to the stream. If set to 0 listeners can stay connected infinitely.</translate>
+                        <translate key="lang_edit_form_max_listener_duration_desc">Set the length of time (seconds) a listener will stay connected to the stream. If set to 0, listeners can stay connected infinitely.</translate>
                     </template>
                     <b-form-input type="number" min="0" max="2147483647" id="edit_form_max_listener_duration" v-model="form.max_listener_duration.$model"
                                   :state="form.max_listener_duration.$dirty ? !form.max_listener_duration.$error : null"></b-form-input>
@@ -82,36 +82,35 @@
                         <translate key="lang_error_required">This field is required.</translate>
                     </b-form-invalid-feedback>
                 </b-form-group>
-            </b-row>
 
-            <b-row v-if="isShoutcast">
-                <b-form-group class="col-md-12" label-for="edit_form_authhash">
-                    <template #label>
-                        <translate key="lang_edit_form_authhash">YP Directory Authorization Hash</translate>
-                    </template>
-                    <template #description>{{ langAuthhashDesc }}</template>
-                    <b-form-input type="text" id="edit_form_authhash" v-model="form.authhash.$model"
-                                  :state="form.authhash.$dirty ? !form.authhash.$error : null"></b-form-input>
-                    <b-form-invalid-feedback>
-                        <translate key="lang_error_required">This field is required.</translate>
-                    </b-form-invalid-feedback>
-                </b-form-group>
-            </b-row>
-
-            <b-row v-if="isIcecast">
-                <b-form-group class="col-md-6" label-for="edit_form_fallback_mount">
-                    <template #label>
-                        <translate key="lang_edit_form_fallback_mount">Fallback Mount</translate>
-                    </template>
-                    <template #description>
-                        <translate key="lang_edit_form_fallback_mount_desc">If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.</translate>
-                    </template>
-                    <b-form-input type="text" id="edit_form_fallback_mount" v-model="form.fallback_mount.$model"
-                                  :state="form.fallback_mount.$dirty ? !form.fallback_mount.$error : null"></b-form-input>
-                    <b-form-invalid-feedback>
-                        <translate key="lang_error_required">This field is required.</translate>
-                    </b-form-invalid-feedback>
-                </b-form-group>
+                <template v-if="isShoutcast">
+                    <b-form-group class="col-md-6" label-for="edit_form_authhash">
+                        <template #label>
+                            <translate key="lang_edit_form_authhash">YP Directory Authorization Hash</translate>
+                        </template>
+                        <template #description>{{ langAuthhashDesc }}</template>
+                        <b-form-input type="text" id="edit_form_authhash" v-model="form.authhash.$model"
+                                      :state="form.authhash.$dirty ? !form.authhash.$error : null"></b-form-input>
+                        <b-form-invalid-feedback>
+                            <translate key="lang_error_required">This field is required.</translate>
+                        </b-form-invalid-feedback>
+                    </b-form-group>
+                </template>
+                <template v-if="isIcecast">
+                    <b-form-group class="col-md-6" label-for="edit_form_fallback_mount">
+                        <template #label>
+                            <translate key="lang_edit_form_fallback_mount">Fallback Mount</translate>
+                        </template>
+                        <template #description>
+                            <translate key="lang_edit_form_fallback_mount_desc">If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.</translate>
+                        </template>
+                        <b-form-input type="text" id="edit_form_fallback_mount" v-model="form.fallback_mount.$model"
+                                      :state="form.fallback_mount.$dirty ? !form.fallback_mount.$error : null"></b-form-input>
+                        <b-form-invalid-feedback>
+                            <translate key="lang_error_required">This field is required.</translate>
+                        </b-form-invalid-feedback>
+                    </b-form-group>
+                </template>
             </b-row>
         </b-form-group>
     </b-tab>

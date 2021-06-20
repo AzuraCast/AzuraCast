@@ -5,7 +5,6 @@
 namespace App\Entity;
 
 use App\Annotations\AuditLog;
-use App\Entity\Traits\TruncateInts;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;
@@ -221,12 +220,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
 
     public function setMaxListenerDuration(int $max_listener_duration): void
     {
-        $this->max_listener_duration = $this->truncateIntToLimit(
-            signed_limit: 2147483647,
-            unsigned_limit: 4294967295,
-            unsigned: false,
-            int: $max_listener_duration
-        );
+        $this->max_listener_duration = $this->truncateInt($max_listener_duration);
     }
 
     public function getEnableAutodj(): bool

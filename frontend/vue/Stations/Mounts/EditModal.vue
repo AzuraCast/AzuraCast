@@ -52,7 +52,8 @@ export default {
                 enable_autodj: {},
                 autodj_format: {},
                 autodj_bitrate: {},
-                custom_listen_url: {}
+                custom_listen_url: {},
+                max_listener_duration: { required }
             }
         };
 
@@ -61,7 +62,6 @@ export default {
         }
         if (FRONTEND_ICECAST === this.stationFrontendType) {
             validations.form.fallback_mount = {};
-            validations.form.max_listener_duration = { required };
             validations.form.frontend_config = {};
         }
 

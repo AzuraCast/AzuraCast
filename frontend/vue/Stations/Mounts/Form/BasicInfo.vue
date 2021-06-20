@@ -69,6 +69,19 @@
                         <translate key="lang_edit_form_is_public">Publish to "Yellow Pages" Directories</translate>
                     </b-form-checkbox>
                 </b-form-group>
+                <b-form-group class="col-md-6" label-for="edit_form_max_listener_duration">
+                    <template #label>
+                        <translate key="lang_edit_form_max_listener_duration">Max Listener Duration</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_edit_form_max_listener_duration_desc">Set the length of time (Seconds) a listener will stay connected to the stream. If set to 0 listeners can stay connected infinitely.</translate>
+                    </template>
+                    <b-form-input type="number" min="0" max="2147483647" id="edit_form_max_listener_duration" v-model="form.max_listener_duration.$model"
+                                  :state="form.max_listener_duration.$dirty ? !form.max_listener_duration.$error : null"></b-form-input>
+                    <b-form-invalid-feedback>
+                        <translate key="lang_error_required">This field is required.</translate>
+                    </b-form-invalid-feedback>
+                </b-form-group>
             </b-row>
 
             <b-row v-if="isShoutcast">

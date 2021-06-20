@@ -191,6 +191,10 @@ class Icecast extends AbstractFrontend
                 $mount['fallback-override'] = 1;
             }
 
+            if ($mount_row->getMaxListenerDuration()) {
+                $mount['max-listener-duration'] = $mount_row->getMaxListenerDuration();
+            }
+
             $mountFrontendConfig = trim($mount_row->getFrontendConfig() ?? '');
             if (!empty($mountFrontendConfig)) {
                 $mount_conf = $this->processCustomConfig($mountFrontendConfig);

@@ -61,6 +61,7 @@ export default {
         }
         if (FRONTEND_ICECAST === this.stationFrontendType) {
             validations.form.fallback_mount = {};
+            validations.form.max_listener_duration = { required };
             validations.form.frontend_config = {};
         }
 
@@ -88,6 +89,7 @@ export default {
                 custom_listen_url: null,
                 authhash: null,
                 fallback_mount: '/error.mp3',
+                max_listener_duration: 0,
                 frontend_config: null
             };
         },
@@ -105,6 +107,7 @@ export default {
                 'custom_listen_url': d.custom_listen_url,
                 'authhash': d.authhash,
                 'fallback_mount': d.fallback_mount,
+                'max_listener_duration': d.max_listener_duration,
                 'frontend_config': d.frontend_config
             };
         }

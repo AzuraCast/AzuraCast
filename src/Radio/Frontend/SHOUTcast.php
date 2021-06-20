@@ -152,6 +152,10 @@ class SHOUTcast extends AbstractFrontend
             if ($mount_row->getAuthhash()) {
                 $config['streamauthhash_' . $i] = $mount_row->getAuthhash();
             }
+
+            if ($mount_row->getMaxListenerDuration()) {
+                $config['streammaxuser_' . $i] = $mount_row->getMaxListenerDuration();
+            }
         }
 
         $configFileOutput = '';

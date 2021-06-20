@@ -32,13 +32,10 @@ class GetMediaAction
                 $path = $podcastMedia->getPath();
 
                 if ($fsPodcasts->fileExists($path)) {
-                    $fileMeta = $fsPodcasts->getMetadata($path);
-                    $filename = $podcastMedia->getOriginalName() . '.' . $fileMeta['extension'];
-
                     return $response->streamFilesystemFile(
                         $fsPodcasts,
                         $path,
-                        $filename
+                        $podcastMedia->getOriginalName()
                     );
                 }
             }

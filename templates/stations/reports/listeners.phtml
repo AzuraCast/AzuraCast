@@ -59,6 +59,7 @@ $assets
                     <thead>
                     <tr>
                         <th><?=__('IP')?></th>
+                        <th><?=__('Time')?></th>
                         <th><?=__('Time (sec)')?></th>
                         <th><?=__('User Agent')?></th>
                         <th><?=__('Stream')?></th>
@@ -68,6 +69,7 @@ $assets
                     <tbody>
                     <tr v-for="listener in listeners">
                         <td>{{ listener.ip }}</td>
+                        <td>{{ formatTime(listener.connected_time) }}</td>
                         <td>{{ listener.connected_time }}</td>
                         <td>
                                 <span v-if="listener.is_mobile">

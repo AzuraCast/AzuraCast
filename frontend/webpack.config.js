@@ -13,6 +13,7 @@ module.exports = {
     PublicOnDemand: './vue/Public/OnDemand.vue',
     PublicPlayer: './vue/Public/Player.vue',
     PublicRequests: './vue/Public/Requests.vue',
+    PublicSchedule: './vue/Public/Schedule.vue',
     PublicWebDJ: './vue/Public/WebDJ.vue',
     StationsMedia: './vue/Stations/Media.vue',
     StationsMounts: './vue/Stations/Mounts.vue',

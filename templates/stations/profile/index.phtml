@@ -72,6 +72,12 @@ $props = [
         [],
         true
     ),
+    'publicScheduleUri' => (string)$router->named(
+        'public:schedule',
+        ['station_id' => $station->getShortName()],
+        [],
+        true
+    ),
     'publicOnDemandEmbedUri' => (string)$router->named(
         'public:ondemand',
         ['station_id' => $station->getShortName(), 'embed' => 'embed'],
@@ -87,6 +93,12 @@ $props = [
     'publicHistoryEmbedUri' => (string)$router->named(
         'public:history',
         ['station_id' => $station->getShortName()],
+        [],
+        true
+    ),
+    'publicScheduleEmbedUri' => (string)$router->named(
+        'public:schedule',
+        ['station_id' => $station->getShortName(), 'embed' => 'embed'],
         [],
         true
     ),

@@ -33,6 +33,9 @@ return function (App $app) {
             $group->get('/ondemand[/{embed:embed}]', Controller\Frontend\PublicPages\OnDemandAction::class)
                 ->setName('public:ondemand');
 
+            $group->get('/schedule[/{embed:embed}]', Controller\Frontend\PublicPages\ScheduleAction::class)
+                ->setName('public:schedule');
+
             $group->get('/podcasts', Controller\Frontend\PublicPages\PodcastsController::class)
                 ->setName('public:podcasts');
 

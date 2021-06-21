@@ -1,0 +1,33 @@
+<?php
+/** @var App\Entity\Station $station */
+
+$pageClass = 'schedule station-' . $station->getShortName();
+if ($embed) {
+    $pageClass .= ' embed';
+}
+
+$this->layout(
+    'minimal',
+    [
+        'page_class' => $pageClass,
+        'title' => __('Schedule') . ' - ' . $this->e($station->getName()),
+        'hide_footer' => true,
+    ]
+);
+
+$props = [
+    'scheduleUrl' => (string)$router->named('api:stations:schedule', ['station_id' => $station->getId()]),
+    'stationName' => $station->getName(),
+    'locale' => substr($customization->getLocale()->getLocale(), 0, 2),
+    'stationTimeZone' => $station_tz,
+];
+
+/** @var \App\Assets $assets */
+$assets->addVueRender('Vue_PublicSchedule', '#station-schedule', $props);
+?>
+
+<section id="content" role="main" class="d-flex align-items-stretch" style="height: 100vh;">
+    <div class="container pt-5 pb-5 h-100" style="flex: 1;">
+        <div id="station-schedule"></div>
+    </div>
+</section>

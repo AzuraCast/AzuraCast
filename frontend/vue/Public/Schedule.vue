@@ -28,10 +28,10 @@
         max-width: 100%;
         padding: 0 !important;
     }
+}
 
-    #station-schedule-calendar {
-        overflow-y: auto;
-    }
+#station-schedule-calendar {
+    overflow-y: auto;
 }
 </style>
 

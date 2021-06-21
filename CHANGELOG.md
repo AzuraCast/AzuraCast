@@ -5,7 +5,14 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
--
+- You can now embed the "Schedule" panel from the station's profile into your own web page as an embeddabl component.
+
+- Mount point updates:
+    - You can now broadcast in Ogg FLAC format.
+    - You can now specify a maximum connected time in seconds, after which listeners are automatically disconnected.
+
+- Podcast episodes now take advantage of the same multi-part uploader that our Media Manager already uses, making
+  uploading larger files simple and avoiding file size issues.
 
 ## Code Quality/Technical Changes
 
@@ -13,7 +20,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Bug Fixes
 
-- We've added some extra information on how to enable ShoutCast DNAS Premium features in the `Edit Profile` panel under `Broadcasting`. 
+- Fixed a bug where files that included certain special non-ASCII characters would never be read or processed.
+
+- We've added some extra information on how to enable ShoutCast DNAS Premium features in the `Edit Profile` panel
+  under `Broadcasting`.
 
 ---
 

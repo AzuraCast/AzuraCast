@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
+source /bd_build_final/buildconfig
 set -x
 
 add-apt-repository -y ppa:chris-needham/ppa

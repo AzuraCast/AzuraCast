@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
+source /bd_build_base/buildconfig
 set -x
 
 $minimal_apt_get_install sudo

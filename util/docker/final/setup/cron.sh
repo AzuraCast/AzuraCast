@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
+source /bd_build_final/buildconfig
 set -x
 
 $minimal_apt_get_install cron
@@ -20,5 +20,5 @@ rm -f /etc/cron.daily/dpkg
 rm -f /etc/cron.daily/password
 rm -f /etc/cron.weekly/fstrim
 
-cp -r /bd_build/cron/. /etc/cron.d/
+cp -r /bd_build_final/cron/. /etc/cron.d/
 chmod -R 600 /etc/cron.d/*

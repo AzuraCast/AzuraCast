@@ -29,10 +29,6 @@ jobs :
     steps :
       - uses : actions/checkout@master
 
-      - name : Reduce Git repository size.
-        run : |
-          git gc --prune=now --aggressive
-
       - name : Setup PHP
         uses : shivammathur/setup-php@v2
         with :
@@ -120,11 +116,9 @@ jobs :
 
       - name : Run functional test suite.
         run : |
-          chown -R 1001:1001 ./vendor
-          chmod -R a+x vendor/bin/*
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose exec -T --user="azuracast" web composer run codeception-no-coverage
+          docker-compose exec -T --user="azuracast" web php vendor/bin/codecept --no-interaction
 
       - name : Stop all running containers.
         run : |
@@ -155,6 +149,10 @@ jobs :
     if : github.event_name == 'push' || github.event_name == 'schedule'
     steps :
       - uses : actions/checkout@master
+
+      - name : Reduce Git repository size.
+        run : |
+          git gc --prune=now --aggressive
 
       - name : Download built static assets from previous step
         uses : actions/download-artifact@v2

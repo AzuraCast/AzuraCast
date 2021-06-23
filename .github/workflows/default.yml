@@ -120,10 +120,9 @@ jobs :
 
       - name : Run functional test suite.
         run : |
-          chown -R 1000:1000 ./
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose exec -T --user="azuracast" web composer run codeception-no-coverage
+          docker-compose exec -T web composer run codeception-no-coverage
 
       - name : Stop all running containers.
         run : |

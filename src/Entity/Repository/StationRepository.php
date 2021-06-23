@@ -236,18 +236,6 @@ class StationRepository extends Repository
     }
 
     /**
-     * Clear the now-playing cache from all stations.
-     */
-    public function clearNowPlaying(): void
-    {
-        $this->em->createQuery(
-            <<<'DQL'
-                UPDATE App\Entity\Station s SET s.nowplaying=null
-            DQL
-        )->execute();
-    }
-
-    /**
      * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
      *
      * @param Entity\Station|null $station

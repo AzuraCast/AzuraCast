@@ -4,7 +4,6 @@ namespace App\Console\Command;
 
 use App\Entity;
 use App\Environment;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -14,9 +13,6 @@ class InitializeCommand extends CommandAbstract
         SymfonyStyle $io,
         OutputInterface $output,
         Environment $environment,
-        ContainerInterface $di,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        Entity\Repository\StationRepository $stationRepo,
         Entity\Repository\StorageLocationRepository $storageLocationRepo
     ): int {
         $io->title(__('Initialize AzuraCast'));
@@ -51,20 +47,7 @@ class InitializeCommand extends CommandAbstract
         $this->runCommand($output, 'cache:clear');
         $this->runCommand($output, 'queue:clear');
 
-        $stationRepo->clearNowPlaying();
-
-        // Clear settings that should be reset upon update.
-        $settings = $settingsRepo->readSettings();
-        $settings->setNowplaying(null);
-        $settings->updateUpdateLastRun();
-        $settings->setUpdateResults(null);
-
-        if ('127.0.0.1' !== $settings->getExternalIp()) {
-            $settings->setExternalIp(null);
-        }
-
-        $settingsRepo->writeSettings($settings);
-
+        // Ensure default storage locations exist.
         $storageLocationRepo->createDefaultStorageLocations();
 
         $io->newLine();

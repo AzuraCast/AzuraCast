@@ -2,6 +2,7 @@
 
 namespace App\Console\Command;
 
+use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Service\AzuraCastCentral;
 use Psr\Container\ContainerInterface;
@@ -16,6 +17,7 @@ class SetupCommand extends CommandAbstract
         Environment $environment,
         ContainerInterface $di,
         AzuraCastCentral $acCentral,
+        SettingsRepository $settingsRepo,
         bool $update = false,
         bool $loadFixtures = false
     ): int {
@@ -37,6 +39,11 @@ class SetupCommand extends CommandAbstract
         $this->runCommand($output, 'azuracast:radio:restart');
 
         $io->newLine();
+
+        // Update system setting logging when updates were last run.
+        $settings = $settingsRepo->readSettings();
+        $settings->updateUpdateLastRun();
+        $settingsRepo->writeSettings($settings);
 
         if ($update) {
             $io->success(

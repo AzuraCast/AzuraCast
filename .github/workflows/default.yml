@@ -119,13 +119,13 @@ jobs :
           cp docker-compose.testing.yml docker-compose.override.yml
           docker-compose build web
 
-          docker-compose run --rm --user="azuracast" web azuracast_install
+          docker-compose up -d
 
       - name : Run functional test suite.
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose run --rm --user="azuracast" web composer codeception-no-coverage
+          docker-compose exec --user="azuracast" web composer codeception-no-coverage
 
       - name : Stop all running containers.
         run : |

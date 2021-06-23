@@ -12,7 +12,7 @@ STANDALONE_MODE=${AZURACAST_DOCKER_STANDALONE_MODE:-0}
 if bool "$STANDALONE_MODE"; then
   echo "Running in standalone mode; enabling optional services..."
 
-  cp /etc/service_standalone/. /etc/service/
+  cp -R /etc/service_standalone/. /etc/service/
 else
   echo "Not running in standalone mode; skipping optional services."
 fi

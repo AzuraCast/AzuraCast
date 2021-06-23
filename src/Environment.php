@@ -31,6 +31,7 @@ class Environment
 
     public const ASSET_URL = 'ASSETS_URL';
 
+    public const DOCKER_STANDALONE_MODE = 'AZURACAST_DOCKER_STANDALONE_MODE';
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
 
     public const LANG = 'LANG';
@@ -98,6 +99,17 @@ class Environment
         $this->data = array_merge($this->defaults, $elements);
     }
 
+    protected function envToBool(string|bool $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return str_starts_with(strtolower($value), 'y')
+            || 'true' === strtolower($value)
+            || '1' === $value;
+    }
+
     public function getAppEnvironment(): string
     {
         return $this->data[self::APP_ENV] ?? self::ENV_PRODUCTION;
@@ -120,7 +132,22 @@ class Environment
 
     public function isDocker(): bool
     {
-        return (bool)($this->data[self::IS_DOCKER] ?? true);
+        return $this->envToBool($this->data[self::IS_DOCKER] ?? true);
+    }
+
+    public function isDockerStandaloneMode(): bool
+    {
+        return $this->envToBool($this->data[self::DOCKER_STANDALONE_MODE] ?? false);
+    }
+
+    public function isDockerRevisionAtLeast(int $version): bool
+    {
+        if (!$this->isDocker()) {
+            return false;
+        }
+
+        $compareVersion = (int)($this->data[self::DOCKER_REVISION] ?? 0);
+        return ($compareVersion >= $version);
     }
 
     public function isCli(): bool
@@ -184,16 +211,6 @@ class Environment
     public function getStationDirectory(): string
     {
         return $this->getParentDirectory() . '/stations';
-    }
-
-    public function isDockerRevisionAtLeast(int $version): bool
-    {
-        if (!$this->isDocker()) {
-            return false;
-        }
-
-        $compareVersion = (int)($this->data[self::DOCKER_REVISION] ?? 0);
-        return ($compareVersion >= $version);
     }
 
     public function getLang(): ?string
@@ -297,12 +314,12 @@ class Environment
 
     public function isProfilingExtensionEnabled(): bool
     {
-        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ENABLED] ?? 0));
+        return $this->envToBool($this->data[self::PROFILING_EXTENSION_ENABLED] ?? false);
     }
 
     public function isProfilingExtensionAlwaysOn(): bool
     {
-        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? 0));
+        return $this->envToBool($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? false);
     }
 
     public function getProfilingExtensionHttpKey(): string

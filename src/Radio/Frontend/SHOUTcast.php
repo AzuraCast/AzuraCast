@@ -61,7 +61,10 @@ class SHOUTcast extends AbstractFrontend
         $radioPort = $feConfig->getPort();
 
         /** @noinspection HttpUrlsUsage */
-        $baseUrl = 'http://' . ($this->environment->isDocker() ? 'stations' : 'localhost') . ':' . $radioPort;
+        $baseUrlHost = (!$this->environment->isDocker() || $this->environment->isDockerStandaloneMode())
+            ? 'localhost'
+            : 'stations';
+        $baseUrl = 'http://' . $baseUrlHost . ':' . $radioPort;
 
         $npAdapter = $this->adapterFactory->getShoutcast2Adapter($baseUrl);
         $npAdapter->setAdminPassword($feConfig->getAdminPassword());

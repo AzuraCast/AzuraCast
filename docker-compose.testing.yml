@@ -1,5 +1,6 @@
 services :
   web :
+    image : "testing_azuracast:latest"
     build :
       context : .
       target : build_final

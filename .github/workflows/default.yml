@@ -122,7 +122,7 @@ jobs :
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose exec -T --user="azuracast" web composer run ci-test
+          docker-compose exec -T --user="azuracast" web composer run codeception-no-coverage
 
       - name : Stop all running containers.
         run : |

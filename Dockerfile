@@ -49,7 +49,15 @@ ENV LANG="en_US.UTF-8" \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=127.0.0.1
 
+
+# START Operations as `azuracast` user
+USER azuracast
+
+RUN touch /var/azuracast/.docker
 WORKDIR /var/azuracast/www
+
+# END Operations as `azuracast` user
+USER root
 
 # Entrypoint and default command
 ENTRYPOINT ["/usr/local/bin/uptime_wait"]
@@ -118,8 +126,7 @@ RUN composer install \
 
 COPY --chown=azuracast:azuracast . .
 
-RUN composer dump-autoload --optimize --classmap-authoritative \
-    && touch /var/azuracast/.docker
+RUN composer dump-autoload --optimize --classmap-authoritative
 
 # END Operations as `azuracast` user
 USER root

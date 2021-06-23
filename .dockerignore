@@ -8,6 +8,7 @@
 !resources/locale/compiled
 !util/docker
 !util/openapi.php
+!vendor
 !web
 !templates
 !plugins

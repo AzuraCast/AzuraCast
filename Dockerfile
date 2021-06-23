@@ -49,6 +49,8 @@ ENV LANG="en_US.UTF-8" \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=127.0.0.1
 
+WORKDIR /var/azuracast/www
+
 # Entrypoint and default command
 ENTRYPOINT ["/usr/local/bin/uptime_wait"]
 CMD ["/usr/local/bin/my_init"]
@@ -106,8 +108,6 @@ RUN ln -s /var/azuracast/.opam/ocaml-system.4.08.1/bin/liquidsoap /usr/local/bin
 
 # START Operations as `azuracast` user
 USER azuracast
-
-WORKDIR /var/azuracast/www
 
 COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
 RUN composer install \

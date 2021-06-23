@@ -4,6 +4,7 @@ services :
   web :
     build :
       context : .
+      target : build_final
     environment :
       APPLICATION_ENV : 'testing'
       LOG_LEVEL : 'debug'

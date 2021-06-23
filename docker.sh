@@ -219,6 +219,41 @@ add-ports-to-docker-compose() {
   yq eval ".services.web.ports += [$PORTS]" -i docker-compose.yml
 }
 
+install-docker() {
+  curl -fsSL get.docker.com -o get-docker.sh
+  sh get-docker.sh
+  rm get-docker.sh
+
+  if [[ $EUID -ne 0 ]]; then
+    sudo usermod -aG docker "$(whoami)"
+
+    echo "You must log out or restart to apply necessary Docker permissions changes."
+    echo "Restart, then continue installing using this script."
+    exit
+  fi
+}
+
+install-docker-compose() {
+  local COMPOSE_VERSION=1.29.2
+
+  if [[ $EUID -ne 0 ]]; then
+    if [[ ! $(command -v sudo) ]]; then
+      echo "Sudo does not appear to be installed."
+      echo "Install sudo using your host's package manager,"
+      echo "then continue installing using this script."
+      exit 1
+    fi
+
+    sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
+  else
+    curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+  fi
+}
+
 #
 # Run the initial installer of Docker and AzuraCast.
 # Usage: ./docker.sh install
@@ -235,17 +270,7 @@ install() {
     echo "Docker is already installed! Continuing..."
   else
     if ask "Docker does not appear to be installed. Install Docker now?" Y; then
-      curl -fsSL get.docker.com -o get-docker.sh
-      sh get-docker.sh
-      rm get-docker.sh
-
-      if [[ $EUID -ne 0 ]]; then
-        sudo usermod -aG docker "$(whoami)"
-
-        echo "You must log out or restart to apply necessary Docker permissions changes."
-        echo "Restart, then continue installing using this script."
-        exit
-      fi
+      install-docker
     fi
   fi
 
@@ -253,24 +278,7 @@ install() {
     echo "Docker Compose is already installed! Continuing..."
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-      local COMPOSE_VERSION=1.25.3
-
-      if [[ $EUID -ne 0 ]]; then
-        if [[ ! $(command -v sudo) ]]; then
-          echo "Sudo does not appear to be installed."
-          echo "Install sudo using your host's package manager,"
-          echo "then continue installing using this script."
-          exit 1
-        fi
-
-        sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
-        sudo chmod +x /usr/local/bin/docker-compose
-        sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
-      else
-        curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
-        curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
-      fi
+      install-docker-compose
     fi
   fi
 

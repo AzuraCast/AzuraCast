@@ -52,19 +52,8 @@ ENV LANG="en_US.UTF-8" \
 # START Operations as `azuracast` user
 USER azuracast
 
+RUN touch /var/azuracast/.docker
 WORKDIR /var/azuracast/www
-
-COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
-RUN composer install \
-    --no-dev \
-    --no-ansi \
-    --no-autoloader \
-    --no-interaction
-
-COPY --chown=azuracast:azuracast . .
-
-RUN composer dump-autoload --optimize --classmap-authoritative \
-    && touch /var/azuracast/.docker
 
 # END Operations as `azuracast` user
 USER root
@@ -126,6 +115,23 @@ RUN ln -s /var/azuracast/.opam/ocaml-system.4.08.1/bin/liquidsoap /usr/local/bin
 
 # Include radio services in PATH
 ENV PATH="${PATH}:/var/azuracast/servers/shoutcast2"
+
+# START Operations as `azuracast` user
+USER azuracast
+
+COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
+RUN composer install \
+    --no-dev \
+    --no-ansi \
+    --no-autoloader \
+    --no-interaction
+
+COPY --chown=azuracast:azuracast . .
+
+RUN composer dump-autoload --optimize --classmap-authoritative
+
+# END Operations as `azuracast` user
+USER root
 
 VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
 

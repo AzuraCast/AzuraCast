@@ -133,10 +133,6 @@
         "phpcbf": "phpcbf",
         "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",
         "codeception-no-coverage": "codecept run --no-interaction",
-        "ci-test": [
-            "@composer install --no-interaction",
-            "@codeception-no-coverage"
-        ],
         "ci-import-locales": [
             "bin/console locale:import"
         ]

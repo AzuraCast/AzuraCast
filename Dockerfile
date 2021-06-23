@@ -49,12 +49,22 @@ ENV LANG="en_US.UTF-8" \
     PROFILING_EXTENSION_HTTP_KEY=dev \
     PROFILING_EXTENSION_HTTP_IP_WHITELIST=127.0.0.1
 
-
 # START Operations as `azuracast` user
 USER azuracast
 
-RUN touch /var/azuracast/.docker
 WORKDIR /var/azuracast/www
+
+COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
+RUN composer install \
+    --no-dev \
+    --no-ansi \
+    --no-autoloader \
+    --no-interaction
+
+COPY --chown=azuracast:azuracast . .
+
+RUN composer dump-autoload --optimize --classmap-authoritative \
+    && touch /var/azuracast/.docker
 
 # END Operations as `azuracast` user
 USER root
@@ -113,23 +123,6 @@ COPY --from=build_icecast /usr/local/share/icecast /usr/local/share/icecast
 COPY --from=build_liquidsoap --chown=azuracast:azuracast /var/azuracast/.opam/ocaml-system.4.08.1 /var/azuracast/.opam/ocaml-system.4.08.1
 
 RUN ln -s /var/azuracast/.opam/ocaml-system.4.08.1/bin/liquidsoap /usr/local/bin/liquidsoap
-
-# START Operations as `azuracast` user
-USER azuracast
-
-COPY --chown=azuracast:azuracast ./composer.json ./composer.lock ./
-RUN composer install \
-    --no-dev \
-    --no-ansi \
-    --no-autoloader \
-    --no-interaction
-
-COPY --chown=azuracast:azuracast . .
-
-RUN composer dump-autoload --optimize --classmap-authoritative
-
-# END Operations as `azuracast` user
-USER root
 
 # Include radio services in PATH
 ENV PATH="${PATH}:/var/azuracast/servers/shoutcast2"

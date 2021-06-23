@@ -114,22 +114,19 @@ jobs :
           cp sample.env .env
           cp azuracast.sample.env azuracast.env
           cp docker-compose.sample.yml docker-compose.yml
-          docker-compose pull web
-
           cp docker-compose.testing.yml docker-compose.override.yml
           docker-compose build web
-
           docker-compose up -d
 
       - name : Run functional test suite.
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose exec --user="azuracast" web composer codeception-no-coverage
+          docker-compose exec -T --user="azuracast" web composer codeception-no-coverage
 
       - name : Stop all running containers.
         run : |
-          docker-compose down
+          docker-compose down -v
 
       - name : Echo test output directory
         if : failure()

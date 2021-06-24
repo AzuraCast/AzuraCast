@@ -51,7 +51,7 @@ jobs :
 
       - name : Run Composer install
         run : |
-          sudo -u #1001 composer install --no-interaction --ignore-platform-reqs
+          sudo -u \#1001 composer install --no-interaction --ignore-platform-reqs
 
       - name : Run PHP Linter
         run : |

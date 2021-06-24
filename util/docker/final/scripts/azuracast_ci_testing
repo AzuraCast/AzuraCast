@@ -2,9 +2,5 @@
 
 set -ex
 
-runsv /service/supervisord
-
 cd /var/azuracast/www
-setuser azuracast composer run codeception-no-coverage
-
-sv term /service/supervisord
+/usr/local/bin/my_init setuser azuracast composer run codeception-no-coverage

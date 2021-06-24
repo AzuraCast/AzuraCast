@@ -112,19 +112,12 @@ jobs :
           cp docker-compose.sample.yml docker-compose.yml
           cp docker-compose.testing.yml docker-compose.override.yml
           docker-compose build web
-          docker-compose up -d
-
-      - name : Debug Info
-        run : |
-          docker-compose exec -T web ls -lah .
-          docker-compose exec -T web ls -lah ./vendor
-          docker-compose exec -T web ls -lah ./vendor/bin
 
       - name : Run functional test suite.
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose exec -T --user="azuracast" web composer run codeception-no-coverage
+          docker-compose run --rm --user="azuracast" web azuracast_ci_testing
 
       - name : Stop all running containers.
         run : |

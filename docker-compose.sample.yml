@@ -9,6 +9,9 @@
 #   docker-compose.override.yml
 # with any changes you need to make.
 #
+
+version : '2.2'
+
 services :
   nginx_proxy :
     container_name : nginx_proxy

@@ -118,7 +118,8 @@ jobs :
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose exec -T --user="azuracast" web php vendor/bin/codecept --no-interaction
+          docker-compose exec -T --user="azuracast" web ls -lah vendor/bin
+          exit 1
 
       - name : Stop all running containers.
         run : |

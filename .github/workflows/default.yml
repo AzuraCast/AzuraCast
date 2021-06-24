@@ -51,7 +51,7 @@ jobs :
 
       - name : Run Composer install
         run : |
-          composer install --no-interaction --ignore-platform-reqs
+          sudo -u 1001 composer install --no-interaction --ignore-platform-reqs
 
       - name : Run PHP Linter
         run : |
@@ -118,8 +118,7 @@ jobs :
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose exec -T --user="azuracast" web ls -lah vendor/bin
-          exit 1
+          docker-compose exec -T --user="azuracast" web composer run codeception-no-coverage
 
       - name : Stop all running containers.
         run : |

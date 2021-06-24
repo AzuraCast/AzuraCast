@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 
-if [ `whoami` != 'azuracast' ]; then
-    echo 'This script must be run as the "azuracast" user. Rerunning...'
-    setuser azuracast azuracast_ci_testing "$@"
-    exit $?
-fi
-
 set -ex
 
 runsv /service/supervisord
 
 cd /var/azuracast/www
-composer run codeception-no-coverage
+setuser azuracast composer run codeception-no-coverage
 
 sv term /service/supervisord

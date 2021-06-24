@@ -117,7 +117,7 @@ jobs :
         run : |
           chmod 777 tests/_output/
           chmod 777 tests/_support/_generated
-          docker-compose run --rm --user="azuracast" web azuracast_ci_testing
+          docker-compose run --rm web azuracast_ci_testing
 
       - name : Stop all running containers.
         run : |

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "419126bd4b8437a667508f7085775a4e",
+    "content-hash": "c1a93d3233ba7369caefc4d1a25d4118",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2765,23 +2765,23 @@
         },
         {
             "name": "james-heinrich/getid3",
-            "version": "v1.9.20",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "3c15e353b9bb1252201c73394bb8390b573a751d"
+                "reference": "4e5bcaf39eaa033e21e722c8788dcaa3d71c8b3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/3c15e353b9bb1252201c73394bb8390b573a751d",
-                "reference": "3c15e353b9bb1252201c73394bb8390b573a751d",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/4e5bcaf39eaa033e21e722c8788dcaa3d71c8b3a",
+                "reference": "4e5bcaf39eaa033e21e722c8788dcaa3d71c8b3a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "jakub-onderka/php-parallel-lint": "^0.9 || ^1.0"
+                "php-parallel-lint/php-parallel-lint": "^1.0"
             },
             "suggest": {
                 "ext-SimpleXML": "SimpleXML extension is required to analyze RIFF/WAV/BWF audio files (also requires `ext-libxml`).",
@@ -2800,6 +2800,7 @@
                 "ext-xml": "XML extension is required for graphic modules to analyze the XML metadata.",
                 "ext-zlib": "Zlib extension is required for archive modules and compressed metadata."
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2828,7 +2829,7 @@
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
                 "source": "https://github.com/JamesHeinrich/getID3/tree/master"
             },
-            "time": "2020-06-30T18:43:34+00:00"
+            "time": "2021-06-22T21:50:24+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -13128,6 +13129,7 @@
         "azuracast/azuraforms": 20,
         "azuracast/flysystem-v2-extensions": 20,
         "azuracast/nowplaying": 20,
+        "james-heinrich/getid3": 20,
         "lstrojny/fxmlrpc": 20,
         "rlanvin/php-ip": 20,
         "supervisorphp/supervisor": 20,

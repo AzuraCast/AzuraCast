@@ -1,0 +1,25 @@
+services:
+  nginx_proxy:
+    volumes:
+      - ./util/local_ssl:/etc/nginx/certs
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  web:
+    build:
+      context: .
+    volumes:
+      - ./util/local_ssl:/etc/nginx/certs:ro
+      - ${LOCAL_WORKSPACE_FOLDER}/vendor:/var/azuracast/www/vendor
+      - ${LOCAL_WORKSPACE_FOLDER}:/var/azuracast/www
+
+  mariadb:
+    ports:
+      - "127.0.0.1:3306:3306"
+
+  redis:
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  stations:
+    volumes:
+      - ./util/local_ssl:/etc/nginx/certs

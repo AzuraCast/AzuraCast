@@ -91,6 +91,7 @@ class Environment
             'sv_SE.UTF-8' => 'Svenska',             // Swedish
             'tr_TR.UTF-8' => 'Türkçe',              // Turkish
             'zh_CN.UTF-8' => '簡化字',               // Simplified Chinese
+            'ko_KR.UTF-8' => '한국어',               // Korean (South Korean)
         ],
     ];
 

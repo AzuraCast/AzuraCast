@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
+# Constants
+export COMPOSE_VERSION=1.29.2
+
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -114,6 +117,11 @@ __dotenv_cmd=.env
 # Shortcut to have Docker run YQ files
 yq() {
   docker run --rm -i -v "${PWD}":/workdir mikefarah/yq "$@"
+}
+
+# Shortcut to convert semver version (x.yyy.zzz) into a comparable number.
+version-number() {
+  echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
 }
 
 # This is a general-purpose function to ask Yes/No questions in Bash, either
@@ -234,8 +242,6 @@ install-docker() {
 }
 
 install-docker-compose() {
-  local COMPOSE_VERSION=1.29.2
-
   if [[ $EUID -ne 0 ]]; then
     if [[ ! $(command -v sudo) ]]; then
       echo "Sudo does not appear to be installed."
@@ -367,6 +373,16 @@ update() {
     if [[ ! -f azuracast.env ]]; then
       curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/azuracast.sample.env -o azuracast.env
       echo "Default environment file loaded."
+    fi
+
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+        install-docker-compose
+      fi
     fi
 
     # Migrate previous release settings to new environment variable.

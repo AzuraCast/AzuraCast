@@ -133,9 +133,9 @@ RUN composer dump-autoload --optimize --classmap-authoritative
 # END Operations as `azuracast` user
 USER root
 
-VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
+VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/stations", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist", "/var/azuracast/servers/shoutcast2"]
 
-EXPOSE 80 2022 9001 8000-8999
+EXPOSE 80 2022 8000-8999
 
 # Nginx Proxy environment variables.
 ENV VIRTUAL_HOST="azuracast.local" \

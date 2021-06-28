@@ -158,7 +158,9 @@ return [
         } elseif (!$environment->enableRedis()) {
             $tempDir = $environment->getTempDirectory() . DIRECTORY_SEPARATOR . 'cache';
             $cacheInterface = new Symfony\Component\Cache\Adapter\FilesystemAdapter(
-                directory: $tempDir
+                '',
+                0,
+                $tempDir
             );
         } else {
             $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));

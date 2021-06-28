@@ -159,6 +159,9 @@ return [
         return $redisAdapter;
     },
 
+    Symfony\Component\Cache\Adapter\AdapterInterface::class => DI\get(
+        Symfony\Contracts\Cache\CacheInterface::class
+    ),
     Psr\Cache\CacheItemPoolInterface::class => DI\get(
         Symfony\Contracts\Cache\CacheInterface::class
     ),

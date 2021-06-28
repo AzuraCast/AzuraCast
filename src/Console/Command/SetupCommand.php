@@ -5,7 +5,6 @@ namespace App\Console\Command;
 use App\Entity;
 use App\Environment;
 use App\Service\AzuraCastCentral;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -27,36 +26,7 @@ class SetupCommand extends CommandAbstract
         $io->title(__('AzuraCast Setup'));
         $io->writeln(__('Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...'));
 
-        $io->listing(
-            [
-                __('Environment: %s', ucfirst($environment->getAppEnvironment())),
-                __('Installation Method: %s', $environment->isDocker() ? 'Docker' : 'Ansible'),
-            ]
-        );
-
-        if ($update) {
-            $io->note(__('Running in update mode.'));
-        }
-
-        $conn = $di->get(EntityManagerInterface::class)->getConnection();
-
-        $io->newLine();
-        $io->section(__('Running Database Migrations'));
-
-        $conn->ping();
-        $this->runCommand(
-            $output,
-            'migrations:migrate',
-            [
-                '--allow-no-migration' => true,
-            ]
-        );
-
-        $io->newLine();
-        $io->section(__('Generating Database Proxy Classes'));
-
-        $conn->ping();
-        $this->runCommand($output, 'orm:generate-proxies');
+        $this->runCommand($output, 'azuracast:setup:initialize');
 
         if ($loadFixtures || (!$environment->isProduction() && !$update)) {
             $io->newLine();
@@ -66,36 +36,14 @@ class SetupCommand extends CommandAbstract
         }
 
         $io->newLine();
-        $io->section(__('Reload System Data'));
-
-        $this->runCommand($output, 'cache:clear');
-
-        $this->runCommand($output, 'queue:clear');
-
-        $settings = $settingsRepo->readSettings();
-        $settings->setNowplaying(null);
-
-        $stationRepo->clearNowPlaying();
-
-        $io->newLine();
         $io->section(__('Refreshing All Stations'));
 
-        $conn->ping();
         $this->runCommand($output, 'azuracast:radio:restart');
 
-        // Clear settings that should be reset upon update.
+        // Update system setting logging when updates were last run.
+        $settings = $settingsRepo->readSettings();
         $settings->updateUpdateLastRun();
-        $settings->setUpdateResults(null);
-
-        if ('127.0.0.1' !== $settings->getExternalIp()) {
-            $settings->setExternalIp(null);
-        }
-
         $settingsRepo->writeSettings($settings);
-
-        $storageLocationRepo->createDefaultStorageLocations();
-
-        $io->newLine();
 
         if ($update) {
             $io->success(

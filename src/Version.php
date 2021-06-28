@@ -19,7 +19,7 @@ class Version
     public const RELEASE_CHANNEL_STABLE = 'stable';
 
     // phpcs:disable Generic.Files.LineLength
-    public const LATEST_COMPOSE_REVISION = 11;
+    public const LATEST_COMPOSE_REVISION = 12;
     public const LATEST_COMPOSE_URL = 'https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml';
 
     public const UPDATE_URL = 'https://docs.azuracast.com/en/getting-started/updates';

@@ -60,7 +60,7 @@ services :
     env_file : azuracast.env
     environment :
       LANG : ${LANG:-en_US.UTF-8}
-      AZURACAST_DC_REVISION : 11
+      AZURACAST_DC_REVISION : 12
       AZURACAST_VERSION : ${AZURACAST_VERSION:-latest}
       AZURACAST_SFTP_PORT : ${AZURACAST_SFTP_PORT:-2022}
       VIRTUAL_HOST : ${LETSENCRYPT_HOST:-azuracast.local}

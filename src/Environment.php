@@ -59,6 +59,7 @@ class Environment
     public const DB_USER = 'MYSQL_USER';
     public const DB_PASSWORD = 'MYSQL_PASSWORD';
 
+    public const ENABLE_REDIS = 'ENABLE_REDIS';
     public const REDIS_HOST = 'REDIS_HOST';
     public const REDIS_PORT = 'REDIS_PORT';
     public const REDIS_DB = 'REDIS_DB';
@@ -72,6 +73,8 @@ class Environment
         self::IS_CLI => ('cli' === PHP_SAPI),
 
         self::ASSET_URL => '/static',
+
+        self::ENABLE_REDIS => true,
 
         self::SUPPORTED_LOCALES => [
             'en_US.UTF-8' => 'English (Default)',
@@ -99,6 +102,17 @@ class Environment
         $this->data = array_merge($this->defaults, $elements);
     }
 
+    protected function envToBool(string|bool $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return str_starts_with(strtolower($value), 'y')
+            || 'true' === strtolower($value)
+            || '1' === $value;
+    }
+
     public function getAppEnvironment(): string
     {
         return $this->data[self::APP_ENV] ?? self::ENV_PRODUCTION;
@@ -121,7 +135,7 @@ class Environment
 
     public function isDocker(): bool
     {
-        return (bool)($this->data[self::IS_DOCKER] ?? true);
+        return $this->envToBool($this->data[self::IS_DOCKER] ?? true);
     }
 
     public function isCli(): bool
@@ -284,6 +298,11 @@ class Environment
         ];
     }
 
+    public function enableRedis(): bool
+    {
+        return $this->envToBool($this->data[self::ENABLE_REDIS] ?? true);
+    }
+
     /**
      * @return mixed[]
      */
@@ -298,12 +317,12 @@ class Environment
 
     public function isProfilingExtensionEnabled(): bool
     {
-        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ENABLED] ?? 0));
+        return $this->envToBool($this->data[self::PROFILING_EXTENSION_ENABLED] ?? false);
     }
 
     public function isProfilingExtensionAlwaysOn(): bool
     {
-        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? 0));
+        return $this->envToBool($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? false);
     }
 
     public function getProfilingExtensionHttpKey(): string

@@ -1,6 +1,8 @@
+{{if eq .Env.ENABLE_REDIS "true"}}
 upstream redis_server {
     nchan_redis_server "redis://redis:6379";
 }
+{{end}}
 
 resolver 127.0.0.11;
 
@@ -50,7 +52,9 @@ server {
 
     location ~ /pub/(\w+)$ {
         nchan_publisher;
+{{if eq .Env.ENABLE_REDIS "true"}}
         nchan_redis_pass redis_server;
+{{end}}
 
         nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id $1;
@@ -152,7 +156,9 @@ server {
         nchan_access_control_allow_origin "*";
 
         nchan_subscriber;
+{{if eq .Env.ENABLE_REDIS "true"}}
         nchan_redis_pass redis_server;
+{{end}}
 
         nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id "$1";

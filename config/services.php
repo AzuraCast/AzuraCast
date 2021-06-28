@@ -134,6 +134,10 @@ return [
 
     // Redis cache
     Redis::class => function (Environment $environment) {
+        if (!$environment->enableRedis()) {
+            throw new App\Exception\BootstrapException('Redis is disabled on this installation.');
+        }
+
         $settings = $environment->getRedisSettings();
 
         $redis = new Redis();
@@ -148,15 +152,20 @@ return [
         Psr\Log\LoggerInterface $logger,
         ContainerInterface $di
     ) {
+        /** @var Symfony\Contracts\Cache\CacheInterface $cacheInterface */
         if ($environment->isTesting()) {
-            $arrayAdapter = new Symfony\Component\Cache\Adapter\ArrayAdapter();
-            $arrayAdapter->setLogger($logger);
-            return $arrayAdapter;
+            $cacheInterface = new Symfony\Component\Cache\Adapter\ArrayAdapter();
+        } elseif (!$environment->enableRedis()) {
+            $tempDir = $environment->getTempDirectory() . DIRECTORY_SEPARATOR . 'cache';
+            $cacheInterface = new Symfony\Component\Cache\Adapter\FilesystemAdapter(
+                directory: $tempDir
+            );
+        } else {
+            $cacheInterface = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
         }
 
-        $redisAdapter = new Symfony\Component\Cache\Adapter\RedisAdapter($di->get(Redis::class));
-        $redisAdapter->setLogger($logger);
-        return $redisAdapter;
+        $cacheInterface->setLogger($logger);
+        return $cacheInterface;
     },
 
     Symfony\Component\Cache\Adapter\AdapterInterface::class => DI\get(
@@ -178,9 +187,23 @@ return [
             $psr6Cache = new Symfony\Component\Cache\Adapter\ArrayAdapter();
         }
 
-        $doctrineCache = Doctrine\Common\Cache\Psr6\DoctrineProvider::wrap($psr6Cache);
-        $doctrineCache->setNamespace('doctrine.');
-        return $doctrineCache;
+        $proxyCache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'doctrine.');
+        return Doctrine\Common\Cache\Psr6\DoctrineProvider::wrap($proxyCache);
+    },
+
+    // Symfony Lock adapter
+    Symfony\Component\Lock\PersistingStoreInterface::class => function (
+        ContainerInterface $di,
+        Environment $environment
+    ) {
+        if ($environment->enableRedis()) {
+            $redis = $di->get(Redis::class);
+            $store = new Symfony\Component\Lock\Store\RedisStore($redis);
+        } else {
+            $store = new Symfony\Component\Lock\Store\FlockStore($environment->getTempDirectory());
+        }
+
+        return $store;
     },
 
     // Session save handler middleware
@@ -269,9 +292,11 @@ return [
         Psr\Cache\CacheItemPoolInterface $psr6Cache,
         Environment $settings
     ) {
+        $proxyCache = new Symfony\Component\Cache\Adapter\ProxyAdapter($psr6Cache, 'annotations.');
+
         return new Doctrine\Common\Annotations\PsrCachedReader(
             new Doctrine\Common\Annotations\AnnotationReader,
-            $psr6Cache,
+            $proxyCache,
             !$settings->isProduction()
         );
     },
@@ -441,12 +466,7 @@ return [
             )
         );
 
-        $supervisor = new Supervisor\Supervisor($client, $logger);
-        if (!$supervisor->isConnected()) {
-            throw new \App\Exception(sprintf('Could not connect to supervisord.'));
-        }
-
-        return $supervisor;
+        return new Supervisor\Supervisor($client, $logger);
     },
 
     // Image Manager

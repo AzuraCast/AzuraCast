@@ -72,6 +72,7 @@
         "symfony/messenger": "^5",
         "symfony/process": "^5",
         "symfony/property-access": "^5",
+        "symfony/rate-limiter": "^5.3",
         "symfony/redis-messenger": "^5",
         "symfony/serializer": "^5",
         "symfony/validator": "^5",

@@ -39,9 +39,7 @@ class MusicBrainz
         $rateLimitLock = $this->lockFactory->createLock(
             'api_musicbrainz',
             1,
-            false,
-            500,
-            10
+            false
         );
 
         try {

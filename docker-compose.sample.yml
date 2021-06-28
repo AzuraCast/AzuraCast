@@ -14,7 +14,7 @@ version : '2.2'
 services :
   nginx_proxy :
     container_name : nginx_proxy
-    image : "azuracast/azuracast_nginx_proxy:${AZURACAST_VERSION:-latest}"
+    image : "ghcr.io/azuracast/nginx_proxy:${AZURACAST_VERSION:-latest}"
     ports :
       - '${AZURACAST_HTTP_PORT:-80}:80'
       - '${AZURACAST_HTTPS_PORT:-443}:443'
@@ -34,7 +34,7 @@ services :
 
   nginx_proxy_letsencrypt :
     container_name : nginx_proxy_letsencrypt
-    image : "azuracast/azuracast_nginx_proxy_letsencrypt:${AZURACAST_VERSION:-latest}"
+    image : "ghcr.io/azuracast/nginx_proxy_letsencrypt:${AZURACAST_VERSION:-latest}"
     volumes_from :
       - nginx_proxy
     volumes :
@@ -48,7 +48,7 @@ services :
 
   web :
     container_name : azuracast_web
-    image : "azuracast/azuracast_web_v2:${AZURACAST_VERSION:-latest}"
+    image : "ghcr.io/azuracast/web:${AZURACAST_VERSION:-latest}"
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://docs.azuracast.com/en/administration/docker#using-non-standard-ports
     ports :
@@ -91,7 +91,7 @@ services :
 
   mariadb :
     container_name : azuracast_mariadb
-    image : "azuracast/azuracast_db:${AZURACAST_VERSION:-latest}"
+    image : "ghcr.io/azuracast/db:${AZURACAST_VERSION:-latest}"
     volumes :
       - db_data:/var/lib/mysql
     env_file : azuracast.env
@@ -102,7 +102,7 @@ services :
 
   redis :
     container_name : azuracast_redis
-    image : "azuracast/azuracast_redis:${AZURACAST_VERSION:-latest}"
+    image : "ghcr.io/azuracast/redis:${AZURACAST_VERSION:-latest}"
     sysctls :
       net.core.somaxconn : 1024
     volumes :
@@ -114,7 +114,7 @@ services :
 
   stations :
     container_name : azuracast_stations
-    image : "azuracast/azuracast_radio:${AZURACAST_VERSION:-latest}"
+    image : "ghcr.io/azuracast/radio:${AZURACAST_VERSION:-latest}"
     ports :
       # This default mapping is the outgoing and incoming ports for the first 50 stations.
       # You can override this port mapping in your own docker-compose.override.yml file.

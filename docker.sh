@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
+# Constants
+export COMPOSE_VERSION=1.29.2
+export LEGACY_PORTS="8000,8005,8006,8010,8015,8016,8020,8025,8026,8030,8035,8036,8040,8045,8046,8050,8055,8056,8060,8065,8066,8070,8075,8076,8090,8095,8096,8100,8105,8106,8110,8115,8116,8120,8125,8126,8130,8135,8136,8140,8145,8146,8150,8155,8156,8160,8165,8166,8170,8175,8176,8180,8185,8186,8190,8195,8196,8200,8205,8206,8210,8215,8216,8220,8225,8226,8230,8235,8236,8240,8245,8246,8250,8255,8256,8260,8265,8266,8270,8275,8276,8280,8285,8286,8290,8295,8296,8300,8305,8306,8310,8315,8316,8320,8325,8326,8330,8335,8336,8340,8345,8346,8350,8355,8356,8360,8365,8366,8370,8375,8376,8380,8385,8386,8390,8395,8396,8400,8405,8406,8410,8415,8416,8420,8425,8426,8430,8435,8436,8440,8445,8446,8450,8455,8456,8460,8465,8466,8470,8475,8476,8480,8485,8486,8490,8495,8496"
+
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -111,6 +115,16 @@ __dotenv_cmd=.env
   esac
 }
 
+# Shortcut to have Docker run YQ files
+yq() {
+  docker run --rm -i -v "${PWD}":/workdir mikefarah/yq "$@"
+}
+
+# Shortcut to convert semver version (x.yyy.zzz) into a comparable number.
+version-number() {
+  echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
+}
+
 # This is a general-purpose function to ask Yes/No questions in Bash, either
 # with or without a default answer. It keeps repeating the question until it
 # gets a valid answer.
@@ -201,6 +215,49 @@ setup-release() {
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
 }
 
+# Add Ports to Docker Compose
+add-ports-to-docker-compose() {
+  .env --file .env get AZURACAST_STATION_PORTS
+
+  local PORTS
+  PORTS="${REPLY:-$LEGACY_PORTS}"
+
+  yq eval ".services.stations.ports += [$PORTS]" -i docker-compose.yml
+}
+
+install-docker() {
+  curl -fsSL get.docker.com -o get-docker.sh
+  sh get-docker.sh
+  rm get-docker.sh
+
+  if [[ $EUID -ne 0 ]]; then
+    sudo usermod -aG docker "$(whoami)"
+
+    echo "You must log out or restart to apply necessary Docker permissions changes."
+    echo "Restart, then continue installing using this script."
+    exit
+  fi
+}
+
+install-docker-compose() {
+  if [[ $EUID -ne 0 ]]; then
+    if [[ ! $(command -v sudo) ]]; then
+      echo "Sudo does not appear to be installed."
+      echo "Install sudo using your host's package manager,"
+      echo "then continue installing using this script."
+      exit 1
+    fi
+
+    sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
+  else
+    curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+  fi
+}
+
 #
 # Run the initial installer of Docker and AzuraCast.
 # Usage: ./docker.sh install
@@ -217,17 +274,7 @@ install() {
     echo "Docker is already installed! Continuing..."
   else
     if ask "Docker does not appear to be installed. Install Docker now?" Y; then
-      curl -fsSL get.docker.com -o get-docker.sh
-      sh get-docker.sh
-      rm get-docker.sh
-
-      if [[ $EUID -ne 0 ]]; then
-        sudo usermod -aG docker "$(whoami)"
-
-        echo "You must log out or restart to apply necessary Docker permissions changes."
-        echo "Restart, then continue installing using this script."
-        exit
-      fi
+      install-docker
     fi
   fi
 
@@ -235,24 +282,7 @@ install() {
     echo "Docker Compose is already installed! Continuing..."
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-      local COMPOSE_VERSION=1.25.3
-
-      if [[ $EUID -ne 0 ]]; then
-        if [[ ! $(command -v sudo) ]]; then
-          echo "Sudo does not appear to be installed."
-          echo "Install sudo using your host's package manager,"
-          echo "then continue installing using this script."
-          exit 1
-        fi
-
-        sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
-        sudo chmod +x /usr/local/bin/docker-compose
-        sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
-      else
-        curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
-        curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
-      fi
+      install-docker-compose
     fi
   fi
 
@@ -285,6 +315,8 @@ install() {
     else
       curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml -o docker-compose.yml
     fi
+
+    add-ports-to-docker-compose
   fi
 
   if ask "Customize AzuraCast ports?" N; then
@@ -341,6 +373,16 @@ update() {
       echo "Default environment file loaded."
     fi
 
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+        install-docker-compose
+      fi
+    fi
+
     # Migrate previous release settings to new environment variable.
     .env --file azuracast.env get PREFER_RELEASE_BUILDS
 
@@ -384,6 +426,8 @@ update() {
 
       cp docker-compose.yml docker-compose.backup.yml
       mv docker-compose.new.yml docker-compose.yml
+
+      add-ports-to-docker-compose
     else
       rm docker-compose.new.yml
 

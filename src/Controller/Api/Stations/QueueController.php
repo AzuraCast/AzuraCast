@@ -63,6 +63,7 @@ class QueueController extends AbstractStationApiCrudController
      * @OA\Get(path="/station/{station_id}/queue/{id}",
      *   tags={"Stations: Queue"},
      *   description="Retrieve details of a single queued item.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
@@ -81,6 +82,7 @@ class QueueController extends AbstractStationApiCrudController
      * @OA\Delete(path="/station/{station_id}/queue/{id}",
      *   tags={"Stations: Queue"},
      *   description="Delete a single queued item.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",

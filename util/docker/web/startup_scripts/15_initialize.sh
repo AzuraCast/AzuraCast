@@ -2,4 +2,4 @@
 
 set -ex
 
-azuracast_cli azuracast:setup:initialize
+setuser azuracast azuracast_cli azuracast:setup:initialize

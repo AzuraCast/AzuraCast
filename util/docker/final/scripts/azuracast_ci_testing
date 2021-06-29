@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -ex
+
+cd /var/azuracast/www
+/usr/local/bin/my_init setuser azuracast composer run codeception-no-coverage

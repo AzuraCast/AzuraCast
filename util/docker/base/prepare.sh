@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
+source /bd_build_base/buildconfig
 set -x
 
 ## Prevent initramfs updates from trying to run grub and lilo.
@@ -14,7 +14,7 @@ echo -n no > /etc/container_environment/INITRD
 echo "UTC" > /etc/timezone
 
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
-sed -i "s/^exit 101$/exit 0/" /usr/sbin/policy-rc.d 
+sed -i "s/^exit 101$/exit 0/" /usr/sbin/policy-rc.d
 
 ## Enable Ubuntu Universe, Multiverse, and deb-src for main.
 sed -i 's/^#\s*\(deb.*main restricted\)$/\1/g' /etc/apt/sources.list

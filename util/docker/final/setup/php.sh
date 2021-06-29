@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /bd_build/buildconfig
+source /bd_build_final/buildconfig
 set -x
 
 PHP_VERSION=8.0
@@ -20,8 +20,8 @@ touch /run/php/php${PHP_VERSION}-fpm.pid
 
 echo "PHP_VERSION=${PHP_VERSION}" >>/etc/php/.version
 
-cp /bd_build/php/php.ini.tmpl /etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl
-cp /bd_build/php/www.conf.tmpl /etc/php/${PHP_VERSION}/fpm/www.conf.tmpl
+cp /bd_build_final/php/php.ini.tmpl /etc/php/${PHP_VERSION}/fpm/05-azuracast.ini.tmpl
+cp /bd_build_final/php/www.conf.tmpl /etc/php/${PHP_VERSION}/fpm/www.conf.tmpl
 
 # Install Composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
@@ -29,7 +29,7 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --fil
 # Install PHP SPX profiler
 $minimal_apt_get_install php${PHP_VERSION}-dev zlib1g-dev build-essential
 
-cd /bd_build
+cd /bd_build_final
 git clone https://github.com/NoiseByNorthwest/php-spx.git
 cd php-spx
 phpize

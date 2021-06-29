@@ -115,11 +115,6 @@ __dotenv_cmd=.env
   esac
 }
 
-# Shortcut to have Docker run YQ files
-yq() {
-  docker run --rm -i -v "${PWD}":/workdir mikefarah/yq "$@"
-}
-
 # Shortcut to convert semver version (x.yyy.zzz) into a comparable number.
 version-number() {
   echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
@@ -215,16 +210,6 @@ setup-release() {
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
 }
 
-# Add Ports to Docker Compose
-add-ports-to-docker-compose() {
-  .env --file .env get AZURACAST_STATION_PORTS
-
-  local PORTS
-  PORTS="${REPLY:-$LEGACY_PORTS}"
-
-  yq eval ".services.stations.ports += [$PORTS]" -i docker-compose.yml
-}
-
 install-docker() {
   curl -fsSL get.docker.com -o get-docker.sh
   sh get-docker.sh
@@ -315,8 +300,6 @@ install() {
     else
       curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml -o docker-compose.yml
     fi
-
-    add-ports-to-docker-compose
   fi
 
   if ask "Customize AzuraCast ports?" N; then
@@ -426,8 +409,6 @@ update() {
 
       cp docker-compose.yml docker-compose.backup.yml
       mv docker-compose.new.yml docker-compose.yml
-
-      add-ports-to-docker-compose
     else
       rm docker-compose.new.yml
 

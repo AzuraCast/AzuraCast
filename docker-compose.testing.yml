@@ -1,9 +1,9 @@
-version : '2.2'
-
 services :
   web :
+    image : "testing_azuracast:latest"
     build :
       context : .
+      target : build_final
     environment :
       APPLICATION_ENV : 'testing'
       LOG_LEVEL : 'debug'

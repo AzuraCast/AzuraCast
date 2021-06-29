@@ -31,9 +31,3 @@ services :
       context : ../docker-azuracast-redis
     ports :
       - "127.0.0.1:6379:6379"
-
-  stations :
-    build :
-      context : ../docker-azuracast-radio
-    volumes :
-      - ./util/local_ssl:/etc/nginx/certs

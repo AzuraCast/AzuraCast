@@ -55,12 +55,12 @@ services :
       - '${AZURACAST_SFTP_PORT:-2022}:2022'
     depends_on :
       - mariadb
-      - stations
       - redis
     env_file : azuracast.env
     environment :
       LANG : ${LANG:-en_US.UTF-8}
       AZURACAST_DC_REVISION : 12
+      AZURACAST_DOCKER_STANDALONE_MODE : 1
       AZURACAST_VERSION : ${AZURACAST_VERSION:-latest}
       AZURACAST_SFTP_PORT : ${AZURACAST_SFTP_PORT:-2022}
       VIRTUAL_HOST : ${LETSENCRYPT_HOST:-azuracast.local}
@@ -110,22 +110,6 @@ services :
     networks :
       - backend
     restart : always
-    logging : *default-logging
-
-  stations :
-    container_name : azuracast_stations
-    image : "ghcr.io/azuracast/radio:${AZURACAST_VERSION:-latest}"
-    volumes :
-      - station_data:/var/azuracast/stations
-      - shoutcast2_install:/var/azuracast/servers/shoutcast2
-      - letsencrypt:/etc/nginx/certs
-      - tmp_data:/var/azuracast/www_tmp
-    networks :
-      - frontend
-      - backend
-    init : true
-    restart : always
-    ulimits : *default-ulimits
     logging : *default-logging
 
 networks :

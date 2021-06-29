@@ -16,7 +16,17 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
--
+- The main web Docker container will now automatically initialize itself upon startup, performing essential tasks like
+  updating the database, clearing the cache and ensuring the system is set up properly. This means even if you miss a
+  step in installation (or use the Docker images directly) they should still work without issue.
+
+- You can optionally disable Redis entirely, instead relying on flatfile caches for session management and other Redis
+  functions by setting `ENABLE_REDIS=false` in `azuracast.env`. This is not recommended for most users as Redis offers
+  great performance, but if you are looking to minimize the number of running containers, this is a viable option.
+
+- One of the biggest issues with Docker file mounting has been permissions; you can now set a custom UID/GID for the
+  running user inside the Docker containers, to match the one you use in your host operating system.
+  Set `AZURACAST_PUID` and `AZURACAST_PGID` in `.env` accordingly; both default to 1000.
 
 ## Bug Fixes
 

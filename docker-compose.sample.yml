@@ -67,6 +67,8 @@ services :
       NGINX_TIMEOUT : ${NGINX_TIMEOUT:-1800}
       LETSENCRYPT_HOST : ${LETSENCRYPT_HOST}
       LETSENCRYPT_EMAIL : ${LETSENCRYPT_EMAIL}
+      PUID : ${AZURACAST_PUID:-1000}
+      PGID : ${AZURACAST_PGID:-1000}
     volumes :
       - letsencrypt:/etc/nginx/certs:ro
       - www_vendor:/var/azuracast/www/vendor
@@ -115,6 +117,9 @@ services :
   stations :
     container_name : azuracast_stations
     image : "ghcr.io/azuracast/radio:${AZURACAST_VERSION:-latest}"
+    environment :
+      PUID : ${AZURACAST_PUID:-1000}
+      PGID : ${AZURACAST_PGID:-1000}
     ports :
       # This default mapping is the outgoing and incoming ports for the first 50 stations.
       # You can override this port mapping in your own docker-compose.override.yml file.

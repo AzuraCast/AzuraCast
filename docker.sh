@@ -222,7 +222,7 @@ add-ports-to-docker-compose() {
   local PORTS
   PORTS="${REPLY:-$LEGACY_PORTS}"
 
-  yq eval ".services.stations.ports += [$PORTS]" -i docker-compose.yml
+  yq eval ".services.web.ports += [$PORTS]" -i docker-compose.yml
 }
 
 install-docker() {

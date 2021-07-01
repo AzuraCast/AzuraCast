@@ -51,20 +51,21 @@ class Flow
 
         $params = $request->getParams();
 
-        $flowIdentifier = $params['flowIdentifier'] ?? '';
-        $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
-
-        $targetSize = (int)($params['flowTotalSize'] ?? 0);
-        $targetChunks = (int)($params['flowTotalChunks'] ?? 1);
-
         // Handle a regular file upload that isn't using flow.
-        if (1 === $targetChunks) {
+        if (empty($params['flowTotalChunks']) || empty($params['flowIdentifier'])) {
+            // Prompt an upload if this is indeed a mistaken Flow request.
             if ('GET' === $request->getMethod()) {
                 return $response->withStatus(204, 'No Content');
             }
 
             return self::handleStandardUpload($request, $tempDir);
         }
+
+        $flowIdentifier = $params['flowIdentifier'] ?? '';
+        $flowChunkNumber = (int)($params['flowChunkNumber'] ?? 1);
+
+        $targetSize = (int)($params['flowTotalSize'] ?? 0);
+        $targetChunks = (int)($params['flowTotalChunks'] ?? 1);
 
         $flowFilename = $params['flowFilename'] ?? ($flowIdentifier ?: ('upload-' . date('Ymd')));
 

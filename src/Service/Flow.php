@@ -60,7 +60,7 @@ class Flow
         // Handle a regular file upload that isn't using flow.
         if (1 === $targetChunks) {
             if ('GET' === $request->getMethod()) {
-                return $response->withStatus(200, 'OK');
+                return $response->withStatus(204, 'No Content');
             }
 
             return self::handleStandardUpload($request, $tempDir);

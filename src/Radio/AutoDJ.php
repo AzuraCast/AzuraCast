@@ -94,14 +94,22 @@ class AutoDJ
             return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
         }
 
+        $duration = $queueRow->getDuration();
+        $now = $this->getNowFromCurrentSong($station);
+        $now = $this->getAdjustedNow($station, $now, $duration);
+
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
+
+        $this->buildQueue($station, true, $now);
+
         return $event->buildAnnotations();
     }
 
     public function buildQueue(
         Entity\Station $station,
-        bool $force = false
+        bool $force = false,
+        CarbonInterface $nowOverride = null
     ): void {
         $lock = $this->lockFactory->createAndAcquireLock(
             resource: 'autodj_queue_' . $station->getId(),
@@ -125,7 +133,7 @@ class AutoDJ
             );
 
             // Adjust "now" time from current queue.
-            $now = $this->getNowFromCurrentSong($station);
+            $now = $nowOverride ?? $this->getNowFromCurrentSong($station);
 
             $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
             if ($maxQueueLength < 1) {

@@ -42,7 +42,8 @@ class AppFactory
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         self::buildAppFromContainer($di);
 
-        $locale = $di->make(Locale::class);
+        $env = $di->get(Environment::class);
+        $locale = Locale::createForCli($env);
         $locale->register();
 
         return $di->get(Application::class);

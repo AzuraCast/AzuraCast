@@ -14,42 +14,13 @@ class Locale
 
     public function __construct(
         protected Environment $environment,
-        protected ?ServerRequestInterface $request = null
+        string|array $possibleLocales
     ) {
-        $this->locale = $this->determineLocale();
-    }
-
-    protected function determineLocale(): string
-    {
-        $possibleLocales = [];
-
-        // Attempt to load from request if provided.
-        if ($this->request instanceof ServerRequestInterface) {
-            // Prefer user-based profile locale.
-            $user = $this->request->getAttribute(ServerRequest::ATTR_USER);
-            if (null !== $user && !empty($user->getLocale()) && 'default' !== $user->getLocale()) {
-                $possibleLocales[] = $user->getLocale();
-            }
-
-            $server_params = $this->request->getServerParams();
-            $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
-
-            if (!empty($browser_locale)) {
-                if (2 === strlen($browser_locale)) {
-                    $browser_locale = strtolower($browser_locale) . '_' . strtoupper($browser_locale);
-                }
-
-                $possibleLocales[] = substr($browser_locale, 0, 5) . '.UTF-8';
-            }
+        if (is_string($possibleLocales)) {
+            $possibleLocales = [$possibleLocales];
         }
 
-        // Attempt to load from environment variable.
-        $envLocale = $this->environment->getLang();
-        if (!empty($envLocale)) {
-            $possibleLocales[] = substr($envLocale, 0, 5) . '.UTF-8';
-        }
-
-        return $this->getValidLocale($possibleLocales);
+        $this->locale = $this->getValidLocale($possibleLocales);
     }
 
     protected function getValidLocale(array $possibleLocales): string
@@ -57,6 +28,8 @@ class Locale
         $supportedLocales = $this->environment->getSupportedLocales();
 
         foreach ($possibleLocales as $locale) {
+            $locale = self::ensureLocaleEncoding($locale);
+
             // Prefer exact match.
             if (isset($supportedLocales[$locale])) {
                 return $locale;
@@ -79,11 +52,11 @@ class Locale
     }
 
     /**
-     * @return string A shortened locale (minus .UTF-8) for use in Vue.
+     * @return string A shortened locale (minus .UTF-8).
      */
-    public function getVueLocale(): string
+    public function getLocaleWithoutEncoding(): string
     {
-        return json_encode(substr($this->locale, 0, 5), JSON_THROW_ON_ERROR);
+        return self::stripLocaleEncoding($this->locale);
     }
 
     public function setLocale(string $newLocale = self::DEFAULT_LOCALE): void
@@ -91,16 +64,23 @@ class Locale
         $this->locale = $newLocale;
     }
 
-    public function register(): void
+    public function createTranslator(): Translator
     {
         $translator = new Translator();
 
         $localeBase = $this->environment->getBaseDirectory() . '/resources/locale/compiled';
         $localePath = $localeBase . '/' . $this->locale . '.php';
+
         if (file_exists($localePath)) {
             $translator->loadTranslations($localePath);
         }
 
+        return $translator;
+    }
+
+    public function register(): void
+    {
+        $translator = $this->createTranslator();
         $translator->register();
 
         // Register translation superglobal functions
@@ -110,5 +90,56 @@ class Locale
     public function __toString(): string
     {
         return $this->locale;
+    }
+
+    public static function createFromRequest(
+        Environment $environment,
+        ServerRequestInterface $request
+    ): self {
+        $possibleLocales = [];
+
+        // Prefer user-based profile locale.
+        $user = $request->getAttribute(ServerRequest::ATTR_USER);
+        if (null !== $user && !empty($user->getLocale()) && 'default' !== $user->getLocale()) {
+            $possibleLocales[] = $user->getLocale();
+        }
+
+        $server_params = $request->getServerParams();
+        $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
+
+        if (!empty($browser_locale)) {
+            if (2 === strlen($browser_locale)) {
+                $browser_locale = strtolower($browser_locale) . '_' . strtoupper($browser_locale);
+            }
+
+            $possibleLocales[] = substr($browser_locale, 0, 5) . '.UTF-8';
+        }
+
+        // Attempt to load from environment variable.
+        $possibleLocales[] = $environment->getLang();
+
+        return new self($environment, $possibleLocales);
+    }
+
+    public static function createForCli(
+        Environment $environment
+    ): self {
+        return new self(
+            $environment,
+            $environment->getLang()
+        );
+    }
+
+    public static function stripLocaleEncoding(string $locale): string
+    {
+        if (str_contains($locale, '.')) {
+            return explode('.', $locale, 2)[0];
+        }
+        return $locale;
+    }
+
+    public static function ensureLocaleEncoding(string $locale): string
+    {
+        return self::stripLocaleEncoding($locale) . '.UTF-8';
     }
 }

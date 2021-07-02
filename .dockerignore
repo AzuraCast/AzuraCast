@@ -12,3 +12,6 @@
 !templates
 !plugins
 !crowdin.yaml
+!docker-compose.sample.yml
+!sample.env
+!azuracast.sample.env

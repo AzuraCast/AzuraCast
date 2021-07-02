@@ -155,7 +155,7 @@ return [
                         ? (string)$localeObj
                         : Locale::DEFAULT_LOCALE;
 
-                    $locale = explode('.', $locale)[0];
+                    $locale = explode('.', $locale, 2)[0];
                     $localeShort = substr($locale, 0, 2);
                     $localeWithDashes = str_replace('_', '-', $locale);
 

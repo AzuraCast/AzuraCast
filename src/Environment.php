@@ -69,6 +69,7 @@ class Environment
         self::APP_NAME => 'AzuraCast',
         self::APP_ENV => self::ENV_PRODUCTION,
 
+        self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,
         self::IS_CLI => ('cli' === PHP_SAPI),
 
@@ -76,6 +77,7 @@ class Environment
 
         self::ENABLE_REDIS => true,
 
+        self::LANG => Locale::DEFAULT_LOCALE,
         self::SUPPORTED_LOCALES => [
             'en_US.UTF-8' => 'English (Default)',
             'cs_CZ.UTF-8' => 'čeština',             // Czech
@@ -100,6 +102,11 @@ class Environment
     public function __construct(array $elements = [])
     {
         $this->data = array_merge($this->defaults, $elements);
+    }
+
+    public function toArray(): array
+    {
+        return $this->data;
     }
 
     protected function envToBool(string|bool $value): bool
@@ -211,17 +218,17 @@ class Environment
         return ($compareVersion >= $version);
     }
 
-    public function getLang(): ?string
-    {
-        return $this->data[self::LANG];
-    }
-
     /**
      * @return string[]
      */
     public function getSupportedLocales(): array
     {
         return $this->data[self::SUPPORTED_LOCALES] ?? [];
+    }
+
+    public function getLang(): ?string
+    {
+        return $this->data[self::LANG];
     }
 
     public function getReleaseChannel(): string

@@ -94,14 +94,18 @@ class AutoDJ
             return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
         }
 
-        $duration = $queueRow->getDuration();
-        $now = $this->getNowFromCurrentSong($station);
-        $now = $this->getAdjustedNow($station, $now, $duration);
+        // Build adjusted "now" based on the currently playing song before annotating up the next one
+        $adjustedNow = $this->getAdjustedNow(
+            $station,
+            $this->getNowFromCurrentSong($station),
+            $queueRow->getDuration()
+        );
 
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
 
-        $this->buildQueue($station, true, $now);
+        // Refill station queue while taking into context that LS queues songs 40s before they are played
+        $this->buildQueue($station, true, $adjustedNow);
 
         return $event->buildAnnotations();
     }

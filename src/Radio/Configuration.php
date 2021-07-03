@@ -438,4 +438,23 @@ class Configuration
 
         $this->reloadSupervisor();
     }
+
+    public static function enumerateDefaultPorts(
+        int $rangeMin = self::DEFAULT_PORT_MIN,
+        int $rangeMax = self::DEFAULT_PORT_MAX,
+    ): array {
+        $defaultPorts = [];
+
+        for ($i = $rangeMin; $i < $rangeMax; $i += 10) {
+            if (in_array($i, self::PROTECTED_PORTS, true)) {
+                continue;
+            }
+
+            $defaultPorts[] = $i;
+            $defaultPorts[] = $i + 5;
+            $defaultPorts[] = $i + 6;
+        }
+
+        return $defaultPorts;
+    }
 }

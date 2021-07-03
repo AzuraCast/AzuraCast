@@ -7,41 +7,50 @@ use App\Locale;
 use App\Radio\Configuration;
 use App\Utilities\Strings;
 use Dotenv\Dotenv;
+use Dotenv\Exception\ExceptionInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Yaml\Yaml;
 
 class InstallCommand extends CommandAbstract
 {
-    public const WORKDIR = '/installer';
+    protected SymfonyStyle $io;
+
+    public const DEFAULT_BASE_DIRECTORY = '/installer';
 
     public function __invoke(
         SymfonyStyle $io,
         OutputInterface $output,
-        Environment $environment
+        Environment $environment,
+        bool $defaults = false,
+        ?int $httpPort = null,
+        ?int $httpsPort = null,
+        ?string $releaseChannel = null,
+        ?string $baseDir = self::DEFAULT_BASE_DIRECTORY
     ): int {
-        $workDir = self::WORKDIR;
+        $this->io = $io;
 
         // Initialize all the environment variables.
-        $envPath = $workDir . '/.env';
-        $azuracastEnvPath = $workDir . '/azuracast.env';
+        $envPath = $baseDir . '/.env';
+        $azuracastEnvPath = $baseDir . '/azuracast.env';
 
         if (is_file($envPath)) {
             $isNewInstall = false;
-            $env = Dotenv::parse(file_get_contents($envPath));
+            $env = $this->parseEnvFile($envPath);
         } else {
             $isNewInstall = true;
             $env = [];
         }
 
         if (is_file($azuracastEnvPath)) {
-            $azuracastEnv = Dotenv::parse(file_get_contents($azuracastEnvPath));
+            $azuracastEnv = $this->parseEnvFile($azuracastEnvPath);
         } else {
             $azuracastEnv = [];
         }
 
         // Initialize locale for translated installer/updater.
-        if ($isNewInstall) {
+        if ($isNewInstall || empty($azuracastEnv[Environment::LANG])) {
             $currentLang = Locale::stripLocaleEncoding($environment->getLang());
 
             $lang = $io->choice(
@@ -57,11 +66,22 @@ class InstallCommand extends CommandAbstract
         }
 
         // Build defaults now (once new locale is registered)
-        $azuracastEnvFileConfig = $this->getAzuraCastEnvFileConfig();
-        $azuracastEnv = $this->applyDefaults($azuracastEnv, $azuracastEnvFileConfig);
+        $azuracastEnvConfig = $this->getAzuraCastEnvFileConfig();
+        $azuracastEnv = $this->applyDefaults($azuracastEnv, $azuracastEnvConfig);
 
         $envConfig = $this->getEnvFileConfig();
         $env = $this->applyDefaults($env, $envConfig);
+
+        // Apply values passed via flags
+        if (null !== $releaseChannel) {
+            $env['AZURACAST_VERSION'] = $releaseChannel;
+        }
+        if (null !== $httpPort) {
+            $env['AZURACAST_HTTP_PORT'] = $httpPort;
+        }
+        if (null !== $httpsPort) {
+            $env['AZURACAST_HTTPS_PORT'] = $httpsPort;
+        }
 
         // Display header messages
         if ($isNewInstall) {
@@ -71,23 +91,33 @@ class InstallCommand extends CommandAbstract
             $io->block(
                 __('Welcome to AzuraCast! Complete the initial server setup by answering a few questions.')
             );
-
-            $customize = $io->confirm(
-                __('Customize server settings (ports, databases, etc.)?'),
-                false
-            );
         } else {
             $io->title(
                 __('AzuraCast Updater')
             );
+        }
 
+        if ($defaults) {
+            $customize = false;
+        } else {
             $customize = $io->confirm(
-                __('Modify server settings (ports, databases, etc.)?'),
+                __('Customize server settings (ports, databases, etc.)?'),
                 false
             );
         }
 
         if ($customize) {
+            // Release channel
+            $env['AZURACAST_VERSION'] = $io->choice(
+                __('AzuraCast Release Channel'),
+                [
+                    'stable' => __('Stable'),
+                    'latest' => __('Rolling Release'),
+                ],
+                $env['AZURACAST_VERSION']
+            );
+
+            // Port customization
             $io->writeln(
                 __('AzuraCast is currently configured to listen on the following ports:'),
             );
@@ -118,6 +148,22 @@ class InstallCommand extends CommandAbstract
                         (int)$env[$port]
                     );
                 }
+
+                $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN] = (int)$io->ask(
+                    $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MIN]['name'],
+                    (int)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN]
+                );
+
+                $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX] = (int)$io->ask(
+                    $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MAX]['name'],
+                    (int)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
+                );
+
+                $stationPorts = Configuration::enumerateDefaultPorts(
+                    rangeMin: $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN],
+                    rangeMax: $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
+                );
+                $env['AZURACAST_STATION_PORTS'] = implode(',', $stationPorts);
             }
         }
 
@@ -126,12 +172,37 @@ class InstallCommand extends CommandAbstract
         );
 
         $this->writeEnvFile($envPath, $env, $envConfig);
-        $this->writeEnvFile($azuracastEnvPath, $azuracastEnv, $azuracastEnvFileConfig);
+        $this->writeEnvFile($azuracastEnvPath, $azuracastEnv, $azuracastEnvConfig);
+
+        $dockerComposePath = $baseDir . '/docker-compose.yml';
+        $this->updateDockerCompose($environment, $dockerComposePath, $env['AZURACAST_STATION_PORTS']);
 
         $io->success(
             __('Server configuration complete!')
         );
         return 0;
+    }
+
+    protected function parseEnvFile(string $path): array
+    {
+        if (is_file($path)) {
+            $fileContents = file_get_contents($path);
+            if (!empty($fileContents)) {
+                try {
+                    return Dotenv::parse($fileContents);
+                } catch (ExceptionInterface $e) {
+                    $this->io->error(
+                        __(
+                            'Encountered an error parsing %s: "%s". Resetting to default configuration.',
+                            basename($path),
+                            $e->getMessage()
+                        )
+                    );
+                }
+            }
+        }
+
+        return [];
     }
 
     protected function applyDefaults(
@@ -152,17 +223,6 @@ class InstallCommand extends CommandAbstract
 
     protected function getEnvFileConfig(): array
     {
-        $defaultPorts = [];
-        for ($i = Configuration::DEFAULT_PORT_MIN; $i < Configuration::DEFAULT_PORT_MAX; $i += 10) {
-            if (in_array($i, Configuration::PROTECTED_PORTS, true)) {
-                continue;
-            }
-
-            $defaultPorts[] = $i;
-            $defaultPorts[] = $i + 5;
-            $defaultPorts[] = $i + 6;
-        }
-
         return [
             'COMPOSE_PROJECT_NAME' => [
                 'name' => __(
@@ -207,7 +267,7 @@ class InstallCommand extends CommandAbstract
                 'description' => __(
                     'The ports AzuraCast should listen to for station broadcasts and incoming DJ connections.',
                 ),
-                'default' => implode(',', $defaultPorts),
+                'default' => implode(',', Configuration::enumerateDefaultPorts()),
             ],
             'AZURACAST_PUID' => [
                 'name' => __('Docker User UID'),
@@ -433,8 +493,7 @@ class InstallCommand extends CommandAbstract
     protected function writeEnvFile(
         string $path,
         array $values,
-        array $config,
-        bool $debug = true
+        array $config
     ): void {
         $values = array_filter($values);
 
@@ -465,9 +524,12 @@ class InstallCommand extends CommandAbstract
                 $envFile[] = '# ' . __('Valid options: %s', implode(', ', $options));
             }
 
-            $value = (isset($values[$key]))
-                ? $this->getEnvValue($values[$key])
-                : null;
+            if (isset($values[$key])) {
+                $value = $this->getEnvValue($values[$key]);
+                unset($values[$key]);
+            } else {
+                $value = null;
+            }
 
             if (!empty($keyInfo['default'])) {
                 $default = $this->getEnvValue($keyInfo['default']);
@@ -476,7 +538,7 @@ class InstallCommand extends CommandAbstract
                 $default = '';
             }
 
-            if (null === $value || $default === $value) {
+            if ((null === $value || $default === $value) && Environment::LANG !== $key) {
                 $value ??= $default;
                 $envFile[] = '# ' . $key . '=' . $value;
             } else {
@@ -486,10 +548,20 @@ class InstallCommand extends CommandAbstract
             $envFile[] = '';
         }
 
+        // Add in other environment vars that were missed or previously present.
+        if (!empty($values)) {
+            $envFile[] = '# ' . __('Additional Environment Variables');
+
+            foreach ($values as $key => $value) {
+                $envFile[] = $key . '=' . $this->getEnvValue($value);
+            }
+        }
+
         $envFileStr = implode("\n", $envFile);
 
-        if ($debug) {
-            print_r($envFileStr);
+        if ($this->io->isVerbose()) {
+            $this->io->section(basename($path));
+            $this->io->block($envFileStr);
         }
 
         file_put_contents($path, $envFileStr);
@@ -511,6 +583,37 @@ class InstallCommand extends CommandAbstract
             return implode(',', $value);
         }
 
+        if (str_contains($value, ' ')) {
+            $value = '"' . $value . '"';
+        }
+
         return $value;
+    }
+
+    protected function updateDockerCompose(
+        Environment $env,
+        string $dockerComposePath,
+        string $ports
+    ): void {
+        // Parse port listing and convert into YAML format.
+        $yamlPorts = [];
+        foreach (explode(',', $ports) as $port) {
+            $yamlPorts[] = $port . ':' . $port;
+        }
+
+        // Attempt to parse Docker Compose YAML file
+        $sampleFile = $env->getBaseDirectory() . '/docker-compose.sample.yml';
+        $yaml = Yaml::parseFile($sampleFile);
+
+        $yaml['services']['stations']['ports'] = $yamlPorts;
+
+        $yamlRaw = Yaml::dump($yaml, PHP_INT_MAX);
+
+        if ($this->io->isVerbose()) {
+            $this->io->section(basename($dockerComposePath));
+            $this->io->block($yamlRaw);
+        }
+
+        file_put_contents($dockerComposePath, $yamlRaw);
     }
 }

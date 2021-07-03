@@ -5,6 +5,7 @@ namespace App\Console\Command;
 use App\Environment;
 use App\Locale;
 use App\Radio\Configuration;
+use App\Utilities\Strings;
 use Dotenv\Dotenv;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -175,6 +176,11 @@ class InstallCommand extends CommandAbstract
                 ),
                 'default' => 300,
             ],
+            'AZURACAST_VERSION' => [
+                'name' => __('AzuraCast Release Channel'),
+                'options' => ['latest', 'stable'],
+                'default' => 'latest',
+            ],
             'AZURACAST_HTTP_PORT' => [
                 'name' => __('HTTP Port'),
                 'description' => __(
@@ -203,6 +209,21 @@ class InstallCommand extends CommandAbstract
                 ),
                 'default' => implode(',', $defaultPorts),
             ],
+            'AZURACAST_PUID' => [
+                'name' => __('Docker User UID'),
+                'description' => __(
+                    'Set the UID of the user running inside the Docker containers. Matching this with your host UID can fix permission issues.',
+                ),
+                'default' => 1000,
+            ],
+            'AZURACAST_PGID' => [
+                'name' => __('Docker User GID'),
+                'description' => __(
+                    'Set the GID of the user running inside the Docker containers. Matching this with your host GID can fix permission issues.'
+                ),
+                'default' => 1000,
+            ],
+
         ];
     }
 
@@ -247,7 +268,150 @@ class InstallCommand extends CommandAbstract
                     LogLevel::EMERGENCY,
                 ],
             ],
-
+            'COMPOSER_PLUGIN_MODE' => [
+                'name' => __('Composer Plugin Mode'),
+                'description' => __(
+                    'Enable the composer "merge" functionality to combine the main application\'s composer.json file with any plugin composer files. This can have performance implications, so you should only use it if you use one or more plugins with their own Composer dependencies.',
+                ),
+                'options' => [true, false],
+                'default' => false,
+            ],
+            Environment::AUTO_ASSIGN_PORT_MIN => [
+                'name' => __(
+                    'Minimum Port for Station Port Assignment'
+                ),
+                'description' => __(
+                    'Modify this if your stations are listening on nonstandard ports.',
+                ),
+            ],
+            Environment::AUTO_ASSIGN_PORT_MAX => [
+                'name' => __(
+                    'Maximum Port for Station Port Assignment'
+                ),
+                'description' => __(
+                    'Modify this if your stations are listening on nonstandard ports.',
+                ),
+            ],
+            Environment::DB_HOST => [
+                'name' => __('MariaDB Host'),
+                'description' => __(
+                    'Do not modify this after installation.',
+                ),
+            ],
+            Environment::DB_PORT => [
+                'name' => __('MariaDB Port'),
+                'description' => __(
+                    'Do not modify this after installation.',
+                ),
+            ],
+            Environment::DB_USER => [
+                'name' => __('MariaDB Username'),
+                'description' => __(
+                    'Do not modify this after installation.',
+                ),
+            ],
+            Environment::DB_PASSWORD => [
+                'name' => __('MariaDB Password'),
+                'description' => __(
+                    'Do not modify this after installation.',
+                ),
+            ],
+            Environment::DB_NAME => [
+                'name' => __('MariaDB Database Name'),
+                'description' => __(
+                    'Do not modify this after installation.',
+                ),
+            ],
+            'MYSQL_RANDOM_ROOT_PASSWORD' => [
+                'name' => __('Auto-generate Random MariaDB Root Password'),
+                'description' => __(
+                    'Do not modify this after installation.',
+                ),
+                'default' => 'yes',
+            ],
+            'MYSQL_SLOW_QUERY_LOG' => [
+                'name' => __('Enable MariaDB Slow Query Log'),
+                'description' => __(
+                    'Log slower queries to diagnose possible database issues. Only turn this on if needed.',
+                ),
+                'default' => 0,
+            ],
+            'MYSQL_MAX_CONNECTIONS' => [
+                'name' => __('MariaDB Maximum Connections'),
+                'description' => __(
+                    'Set the amount of allowed connections to the database. This value should be increased if you are seeing the "Too many connections" error in the logs.',
+                ),
+                'default' => 100,
+            ],
+            Environment::ENABLE_REDIS => [
+                'name' => __('Enable Redis'),
+                'description' => __(
+                    'Disable to use a flatfile cache instead of Redis.',
+                ),
+            ],
+            Environment::REDIS_HOST => [
+                'name' => __('Redis Host'),
+            ],
+            Environment::REDIS_PORT => [
+                'name' => __('Redis Port'),
+            ],
+            Environment::REDIS_DB => [
+                'name' => __('Redis Database Index'),
+                'options' => range(0, 15),
+            ],
+            'PHP_MAX_FILE_SIZE' => [
+                'name' => __('PHP Maximum POST File Size'),
+                'default' => '25M',
+            ],
+            'PHP_MEMORY_LIMIT' => [
+                'name' => __('PHP Memory Limit'),
+                'default' => '128M',
+            ],
+            'PHP_MAX_EXECUTION_TIME' => [
+                'name' => __('PHP Script Maximum Execution Time'),
+                'description' => __('(in seconds)'),
+                'default' => 30,
+            ],
+            Environment::SYNC_SHORT_EXECUTION_TIME => [
+                'name' => __('Short Sync Task Execution Time'),
+                'description' => __(
+                    'The maximum execution time (and lock timeout) for the 15-second, 1-minute and 5-minute synchronization tasks.'
+                ),
+            ],
+            Environment::SYNC_LONG_EXECUTION_TIME => [
+                'name' => __('Long Sync Task Execution Time'),
+                'description' => __(
+                    'The maximum execution time (and lock timeout) for the 1-hour synchronization task.',
+                ),
+            ],
+            'PHP_FPM_MAX_CHILDREN' => [
+                'name' => __('Maximum PHP-FPM Worker Processes'),
+                'default' => 5,
+            ],
+            Environment::PROFILING_EXTENSION_ENABLED => [
+                'name' => __('Enable Performance Profiling Extension'),
+                'description' => __(
+                    'Profiling data can be viewed by visiting %s.',
+                    'http://your-azuracast-site/?SPX_KEY=dev&SPX_UI_URI=/',
+                ),
+            ],
+            Environment::PROFILING_EXTENSION_ALWAYS_ON => [
+                'name' => __('Profile Performance on All Requests'),
+                'description' => __(
+                    'This will have a significant performance impact on your installation.',
+                ),
+            ],
+            Environment::PROFILING_EXTENSION_HTTP_KEY => [
+                'name' => __('Profiling Extension HTTP Key'),
+                'description' => __(
+                    'The value for the "SPX_KEY" parameter for viewing profiling pages.',
+                ),
+            ],
+            'PROFILING_EXTENSION_HTTP_IP_WHITELIST' => [
+                'name' => __('Profiling Extension IP Allow List'),
+                'options' => ['127.0.0.1', '*'],
+                'default' => '127.0.0.1',
+            ],
         ];
 
         foreach ($config as $key => &$keyInfo) {
@@ -269,16 +433,79 @@ class InstallCommand extends CommandAbstract
     protected function writeEnvFile(
         string $path,
         array $values,
-        array $config
+        array $config,
+        bool $debug = true
     ): void {
         $values = array_filter($values);
+
+        $envFile = [
+            '# ' . __('This file was automatically generated by AzuraCast.'),
+            '# ' . __('You can modify it as necessary. To apply changes, restart the Docker containers.'),
+            '# ' . __('Remove the leading "#" symbol from lines to uncomment them.'),
+            '',
+        ];
+
+        foreach ($config as $key => $keyInfo) {
+            $envFile[] = '# ' . ($keyInfo['name'] ?? $key);
+
+            if (!empty($keyInfo['description'])) {
+                $desc = Strings::mbWordwrap($keyInfo['description']);
+
+                foreach (explode("\n", $desc) as $descPart) {
+                    $envFile[] = '# ' . $descPart;
+                }
+            }
+
+            if (!empty($keyInfo['options'])) {
+                $options = array_map(
+                    fn($val) => $this->getEnvValue($val),
+                    $keyInfo['options'],
+                );
+
+                $envFile[] = '# ' . __('Valid options: %s', implode(', ', $options));
+            }
+
+            $value = (isset($values[$key]))
+                ? $this->getEnvValue($values[$key])
+                : null;
+
+            if (!empty($keyInfo['default'])) {
+                $default = $this->getEnvValue($keyInfo['default']);
+                $envFile[] = '# ' . __('Default: %s', $default);
+            } else {
+                $default = '';
+            }
+
+            if (null === $value || $default === $value) {
+                $value ??= $default;
+                $envFile[] = '# ' . $key . '=' . $value;
+            } else {
+                $envFile[] = $key . '=' . $value;
+            }
+
+            $envFile[] = '';
+        }
+
+        $envFileStr = implode("\n", $envFile);
+
+        if ($debug) {
+            print_r($envFileStr);
+        }
+
+        file_put_contents($path, $envFileStr);
     }
 
     protected function getEnvValue(
         mixed $value
     ): string {
+        if (is_null($value)) {
+            return '';
+        }
         if (is_bool($value)) {
             return $value ? 'true' : 'false';
+        }
+        if (is_int($value)) {
+            return (string)$value;
         }
         if (is_array($value)) {
             return implode(',', $value);

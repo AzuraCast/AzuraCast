@@ -183,6 +183,23 @@ class InstallCommand
                 );
                 $env['AZURACAST_STATION_PORTS'] = implode(',', $stationPorts);
             }
+
+            $customizeLetsEncrypt = $io->confirm(
+                __('Set up LetsEncrypt?'),
+                false
+            );
+
+            if ($customizeLetsEncrypt) {
+                $env['LETSENCRYPT_HOST'] = $io->ask(
+                    $envConfig['LETSENCRYPT_HOST']['description'],
+                    $env['LETSENCRYPT_HOST']
+                );
+
+                $env['LETSENCRYPT_EMAIL'] = $io->ask(
+                    $envConfig['LETSENCRYPT_EMAIL']['description'],
+                    $env['LETSENCRYPT_EMAIL']
+                );
+            }
         }
 
         $io->writeln(

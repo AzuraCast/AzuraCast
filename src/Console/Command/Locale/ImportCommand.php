@@ -4,6 +4,7 @@ namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;
 use App\Environment;
+use App\Locale;
 use Gettext\Translations;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -15,7 +16,7 @@ class ImportCommand extends CommandAbstract
     ): int {
         $io->title('Import Locales');
 
-        $locales = $environment->getSupportedLocales();
+        $locales = Locale::SUPPORTED_LOCALES;
         $locale_base = $environment->getBaseDirectory() . '/resources/locale';
 
         foreach ($locales as $locale_key => $locale_name) {

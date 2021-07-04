@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
+set -x
+
 # Constants
 export COMPOSE_VERSION=1.29.2
-export LEGACY_PORTS="8000,8005,8006,8010,8015,8016,8020,8025,8026,8030,8035,8036,8040,8045,8046,8050,8055,8056,8060,8065,8066,8070,8075,8076,8090,8095,8096,8100,8105,8106,8110,8115,8116,8120,8125,8126,8130,8135,8136,8140,8145,8146,8150,8155,8156,8160,8165,8166,8170,8175,8176,8180,8185,8186,8190,8195,8196,8200,8205,8206,8210,8215,8216,8220,8225,8226,8230,8235,8236,8240,8245,8246,8250,8255,8256,8260,8265,8266,8270,8275,8276,8280,8285,8286,8290,8295,8296,8300,8305,8306,8310,8315,8316,8320,8325,8326,8330,8335,8336,8340,8345,8346,8350,8355,8356,8360,8365,8366,8370,8375,8376,8380,8385,8386,8390,8395,8396,8400,8405,8406,8410,8415,8416,8420,8425,8426,8430,8435,8436,8440,8445,8446,8450,8455,8456,8460,8465,8466,8470,8475,8476,8480,8485,8486,8490,8495,8496"
 
 # Functions to manage .env files
 __dotenv=
@@ -120,6 +121,25 @@ version-number() {
   echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
 }
 
+# Get the current release channel for AzuraCast
+get-release-channel() {
+  local AZURACAST_VERSION="latest"
+  if [[ -f .env ]]; then
+    .env --file .env get AZURACAST_VERSION
+    AZURACAST_VERSION="${REPLY:-latest}"
+  fi
+
+  echo "$AZURACAST_VERSION"
+}
+
+get-release-branch-name() {
+  if [[ $(get-release-channel) == "stable" ]]; then
+    echo "stable"
+  else
+    echo "main"
+  fi
+}
+
 # This is a general-purpose function to ask Yes/No questions in Bash, either
 # with or without a default answer. It keeps repeating the question until it
 # gets a valid answer.
@@ -197,11 +217,6 @@ setup-letsencrypt() {
 # Configure release mode settings.
 #
 setup-release() {
-  if [[ ! -f .env ]]; then
-    echo "Writing default .env file..."
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
-  fi
-
   local AZURACAST_VERSION="latest"
   if ask "Prefer stable release versions of AzuraCast?" N; then
     AZURACAST_VERSION="stable"
@@ -243,6 +258,16 @@ install-docker-compose() {
   fi
 }
 
+run-installer() {
+  local AZURACAST_RELEASE_BRANCH
+  AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
+
+  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
+
+  docker-compose -f docker-compose.installer.yml pull
+  docker-compose -f docker-compose.installer.yml run --rm installer install "$@"
+}
+
 #
 # Run the initial installer of Docker and AzuraCast.
 # Usage: ./docker.sh install
@@ -271,43 +296,16 @@ install() {
     fi
   fi
 
-  if [[ ! -f .env ]]; then
-    setup-release
-  fi
+  run-installer
 
-  if [[ ! -f azuracast.env ]]; then
-    echo "Creating default AzuraCast settings file..."
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/azuracast.sample.env -o azuracast.env
+  # Installer creates a file at docker-compose.new.yml; copy it to the main spot.
+  rm docker-compose.yml
+  mv docker-compose.new.yml docker-compose.yml
 
-    # Generate a random password and replace the MariaDB password with it.
-    local NEW_PASSWORD
-    NEW_PASSWORD=$(
-      tr </dev/urandom -dc _A-Z-a-z-0-9 | head -c"${1:-32}"
-      echo
-    )
-    sed -i "s/azur4c457/${NEW_PASSWORD}/g" azuracast.env
-  fi
-
-  if [[ ! -f docker-compose.yml ]]; then
-    echo "Retrieving default docker-compose.yml file..."
-
-    .env --file .env get AZURACAST_VERSION
-    local AZURACAST_VERSION
-    AZURACAST_VERSION="${REPLY:-latest}"
-
-    if [[ $AZURACAST_VERSION == "stable" ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.yml
-    else
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml -o docker-compose.yml
-    fi
-  fi
-
-  if ask "Customize AzuraCast ports?" N; then
-    setup-ports
-  fi
-
-  if ask "Set up LetsEncrypt?" N; then
-    setup-letsencrypt
+  # If this script is running as a non-root user, set the PUID/PGID in the environment vars appropriately.
+  if [[ $EUID -ne 0 ]]; then
+    .env --file .env set AZURACAST_PUID="$(id -u)"
+    .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
   docker-compose pull
@@ -325,15 +323,18 @@ update() {
 		if ask "Are you ready to continue with the update?" Y; then
 
     # Check for a new Docker Utility Script.
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker.sh -o docker.new.sh
+    local AZURACAST_RELEASE_BRANCH
+    AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
+
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh -o docker.new.sh
 
     local UTILITY_FILES_MATCH
     UTILITY_FILES_MATCH="$(
       cmp --silent docker.sh docker.new.sh
       echo $?
     )"
-    local UPDATE_UTILITY=0
 
+    local UPDATE_UTILITY=0
     if [[ ${UTILITY_FILES_MATCH} -ne 0 ]]; then
       if ask "The Docker Utility Script has changed since your version. Update to latest version?" Y; then
         UPDATE_UTILITY=1
@@ -351,11 +352,6 @@ update() {
       rm docker.new.sh
     fi
 
-    if [[ ! -f azuracast.env ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/azuracast.sample.env -o azuracast.env
-      echo "Default environment file loaded."
-    fi
-
     # Check for update to Docker Compose
     local CURRENT_COMPOSE_VERSION
     CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
@@ -366,28 +362,7 @@ update() {
       fi
     fi
 
-    # Migrate previous release settings to new environment variable.
-    .env --file azuracast.env get PREFER_RELEASE_BUILDS
-
-    local PREFER_RELEASE_BUILDS
-    PREFER_RELEASE_BUILDS="${REPLY:-false}"
-
-    if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
-      .env --file .env set AZURACAST_VERSION=stable
-    fi
-
-    .env --file azuracast.env set PREFER_RELEASE_BUILDS
-
-    # Check for new Docker Compose file
-    .env --file .env get AZURACAST_VERSION
-    local AZURACAST_VERSION
-    AZURACAST_VERSION="${REPLY:-latest}"
-
-    if [[ $AZURACAST_VERSION == "stable" ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.new.yml
-    else
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml -o docker-compose.new.yml
-    fi
+    run-installer
 
     # Check for updated Docker Compose config.
     local COMPOSE_FILES_MATCH
@@ -395,15 +370,8 @@ update() {
       cmp --silent docker-compose.yml docker-compose.new.yml
       echo $?
     )"
-    local UPDATE_COMPOSE=0
 
     if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
-      if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
-        UPDATE_COMPOSE=1
-      fi
-    fi
-
-    if [[ ${UPDATE_COMPOSE} -ne 0 ]]; then
       docker-compose -f docker-compose.new.yml pull
       docker-compose down
 
@@ -437,7 +405,10 @@ update() {
 # Usage: ./docker.sh update-self
 #
 update-self() {
-  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker.sh -o docker.sh
+  local AZURACAST_RELEASE_BRANCH
+  AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
+
+  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh -o docker.sh
   chmod a+x docker.sh
 
   echo "New Docker utility script downloaded."

@@ -1,7 +1,7 @@
 <?php
 /** @var \App\Environment $environment */
 
-$locale_select = $environment->getSupportedLocales();
+$locale_select = \App\Locale::SUPPORTED_LOCALES;
 $locale_select = ['default' => __('Use Browser Default')] + $locale_select;
 
 return [

@@ -62,11 +62,6 @@ return function (Application $console) {
 
     // Setup
     $console->command(
-        'azuracast:install [--defaults] [--http-port=] [--https-port=] [--release-channel=] [base-dir]',
-        Command\InstallCommand::class
-    )->setDescription(__('Run server install/update tool for AzuraCast Docker installations.'));
-
-    $console->command(
         'azuracast:setup:initialize',
         Command\InitializeCommand::class
     )->setDescription(__('Ensure key settings are initialized within AzuraCast.'));

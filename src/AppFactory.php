@@ -191,7 +191,7 @@ class AppFactory
         return $di;
     }
 
-    protected static function buildEnvironment(array $environment): Environment
+    public static function buildEnvironment(array $environment): Environment
     {
         if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');

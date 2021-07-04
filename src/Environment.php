@@ -34,7 +34,6 @@ class Environment
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
 
     public const LANG = 'LANG';
-    public const SUPPORTED_LOCALES = 'SUPPORTED_LOCALES';
 
     public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
 
@@ -97,25 +96,6 @@ class Environment
         self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
 
         self::LANG => Locale::DEFAULT_LOCALE,
-        self::SUPPORTED_LOCALES => [
-            'en_US.UTF-8' => 'English (Default)',
-            'cs_CZ.UTF-8' => 'čeština',             // Czech
-            'de_DE.UTF-8' => 'Deutsch',             // German
-            'es_ES.UTF-8' => 'Español',             // Spanish
-            'fr_FR.UTF-8' => 'Français',            // French
-            'el_GR.UTF-8' => 'ελληνικά',            // Greek
-            'it_IT.UTF-8' => 'Italiano',            // Italian
-            'hu_HU.UTF-8' => 'magyar',              // Hungarian
-            'nl_NL.UTF-8' => 'Nederlands',          // Dutch
-            'pl_PL.UTF-8' => 'Polski',              // Polish
-            'pt_PT.UTF-8' => 'Português',           // Portuguese
-            'pt_BR.UTF-8' => 'Português do Brasil', // Brazilian Portuguese
-            'ru_RU.UTF-8' => 'Русский язык',        // Russian
-            'sv_SE.UTF-8' => 'Svenska',             // Swedish
-            'tr_TR.UTF-8' => 'Türkçe',              // Turkish
-            'zh_CN.UTF-8' => '簡化字',               // Simplified Chinese
-            'ko_KR.UTF-8' => '한국어',               // Korean (South Korean)
-        ],
     ];
 
     public function __construct(array $elements = [])
@@ -123,6 +103,9 @@ class Environment
         $this->data = array_merge($this->defaults, $elements);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function toArray(): array
     {
         return $this->data;
@@ -235,14 +218,6 @@ class Environment
 
         $compareVersion = (int)($this->data[self::DOCKER_REVISION] ?? 0);
         return ($compareVersion >= $version);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSupportedLocales(): array
-    {
-        return $this->data[self::SUPPORTED_LOCALES] ?? [];
     }
 
     public function getLang(): ?string

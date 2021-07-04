@@ -439,6 +439,9 @@ class Configuration
         $this->reloadSupervisor();
     }
 
+    /**
+     * @return int[]
+     */
     public static function enumerateDefaultPorts(
         int $rangeMin = self::DEFAULT_PORT_MIN,
         int $rangeMax = self::DEFAULT_PORT_MAX,

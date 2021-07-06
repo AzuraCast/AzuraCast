@@ -28,6 +28,9 @@ release channel, you can take advantage of these new features and fixes.
   running user inside the Docker containers, to match the one you use in your host operating system.
   Set `AZURACAST_PUID` and `AZURACAST_PGID` in `.env` accordingly; both default to 1000.
 
+- All up-to-date AzuraCast installations will opt users out of Google's new advertisement tracking system, FLoC. Learn
+  more about this and why we disabled it [here](https://www.eff.org/deeplinks/2021/03/googles-floc-terrible-idea).
+
 ## Bug Fixes
 
 - Fixed a bug where files that included certain special non-ASCII characters would never be read or processed.

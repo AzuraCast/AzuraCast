@@ -3,17 +3,19 @@
 namespace App\Controller\Admin;
 
 use App\Form\ApiKeyForm;
+use App\Form\EntityFormFactory;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class ApiController extends AbstractAdminCrudController
 {
     public function __construct(
-        ApiKeyForm $form
+        FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        parent::__construct($factory->make(ApiKeyForm::class));
         $this->csrf_namespace = 'admin_api';
     }
 

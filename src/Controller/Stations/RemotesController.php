@@ -9,13 +9,14 @@ use App\Form\StationRemoteForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class RemotesController extends AbstractStationCrudController
 {
-    public function __construct(StationRemoteForm $form)
+    public function __construct(FactoryInterface $factory)
     {
-        parent::__construct($form);
+        parent::__construct($factory->make(StationRemoteForm::class));
         $this->csrf_namespace = 'stations_remotes';
     }
 

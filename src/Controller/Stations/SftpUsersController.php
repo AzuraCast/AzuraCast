@@ -10,6 +10,7 @@ use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use App\Service\SftpGo;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class SftpUsersController extends AbstractStationCrudController
@@ -17,9 +18,9 @@ class SftpUsersController extends AbstractStationCrudController
     public function __construct(
         protected AzuraCastCentral $ac_central,
         protected Environment $environment,
-        SftpUserForm $form
+        FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        parent::__construct($factory->make(SftpUserForm::class));
 
         $this->csrf_namespace = 'stations_sftp_users';
     }

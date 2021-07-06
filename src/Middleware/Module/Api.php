@@ -46,10 +46,8 @@ class Api
 
         // Override the request's "user" variable if API authentication is supplied and valid.
         if ($api_user instanceof Entity\User) {
-            $acl = $request->getAcl();
-            $acl->setUser($api_user);
-
             $request = $request->withAttribute(ServerRequest::ATTR_USER, $api_user);
+            $request->getAcl()->setRequest($request);
 
             Entity\AuditLog::setCurrentUser($api_user);
         }

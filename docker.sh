@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
+# Constants
+export COMPOSE_VERSION=1.29.2
+
 # Functions to manage .env files
 __dotenv=
 __dotenv_file=
@@ -111,6 +114,25 @@ __dotenv_cmd=.env
   esac
 }
 
+# Get the current release channel for AzuraCast
+get-release-channel() {
+  local AZURACAST_VERSION="latest"
+  if [[ -f .env ]]; then
+    .env --file .env get AZURACAST_VERSION
+    AZURACAST_VERSION="${REPLY:-latest}"
+  fi
+
+  echo "$AZURACAST_VERSION"
+}
+
+get-release-branch-name() {
+  if [[ $(get-release-channel) == "stable" ]]; then
+    echo "stable"
+  else
+    echo "main"
+  fi
+}
+
 # This is a general-purpose function to ask Yes/No questions in Bash, either
 # with or without a default answer. It keeps repeating the question until it
 # gets a valid answer.
@@ -201,6 +223,39 @@ setup-release() {
   .env --file .env set AZURACAST_VERSION=${AZURACAST_VERSION}
 }
 
+install-docker() {
+  curl -fsSL get.docker.com -o get-docker.sh
+  sh get-docker.sh
+  rm get-docker.sh
+
+  if [[ $EUID -ne 0 ]]; then
+    sudo usermod -aG docker "$(whoami)"
+
+    echo "You must log out or restart to apply necessary Docker permissions changes."
+    echo "Restart, then continue installing using this script."
+    exit
+  fi
+}
+
+install-docker-compose() {
+  if [[ $EUID -ne 0 ]]; then
+    if [[ ! $(command -v sudo) ]]; then
+      echo "Sudo does not appear to be installed."
+      echo "Install sudo using your host's package manager,"
+      echo "then continue installing using this script."
+      exit 1
+    fi
+
+    sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
+  else
+    curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
+  fi
+}
+
 #
 # Run the initial installer of Docker and AzuraCast.
 # Usage: ./docker.sh install
@@ -217,17 +272,7 @@ install() {
     echo "Docker is already installed! Continuing..."
   else
     if ask "Docker does not appear to be installed. Install Docker now?" Y; then
-      curl -fsSL get.docker.com -o get-docker.sh
-      sh get-docker.sh
-      rm get-docker.sh
-
-      if [[ $EUID -ne 0 ]]; then
-        sudo usermod -aG docker "$(whoami)"
-
-        echo "You must log out or restart to apply necessary Docker permissions changes."
-        echo "Restart, then continue installing using this script."
-        exit
-      fi
+      install-docker
     fi
   fi
 
@@ -235,24 +280,7 @@ install() {
     echo "Docker Compose is already installed! Continuing..."
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
-      local COMPOSE_VERSION=1.25.3
-
-      if [[ $EUID -ne 0 ]]; then
-        if [[ ! $(command -v sudo) ]]; then
-          echo "Sudo does not appear to be installed."
-          echo "Install sudo using your host's package manager,"
-          echo "then continue installing using this script."
-          exit 1
-        fi
-
-        sudo sh -c "curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
-        sudo chmod +x /usr/local/bin/docker-compose
-        sudo sh -c "curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose"
-      else
-        curl -fsSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
-        curl -fsSL https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
-      fi
+      install-docker-compose
     fi
   fi
 
@@ -260,9 +288,12 @@ install() {
     setup-release
   fi
 
+  local AZURACAST_RELEASE_BRANCH
+  AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
+
   if [[ ! -f azuracast.env ]]; then
     echo "Creating default AzuraCast settings file..."
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/azuracast.sample.env -o azuracast.env
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
 
     # Generate a random password and replace the MariaDB password with it.
     local NEW_PASSWORD
@@ -276,15 +307,7 @@ install() {
   if [[ ! -f docker-compose.yml ]]; then
     echo "Retrieving default docker-compose.yml file..."
 
-    .env --file .env get AZURACAST_VERSION
-    local AZURACAST_VERSION
-    AZURACAST_VERSION="${REPLY:-latest}"
-
-    if [[ $AZURACAST_VERSION == "stable" ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.yml
-    else
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml -o docker-compose.yml
-    fi
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.yml
   fi
 
   if ask "Customize AzuraCast ports?" N; then
@@ -310,7 +333,10 @@ update() {
 		if ask "Are you ready to continue with the update?" Y; then
 
     # Check for a new Docker Utility Script.
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker.sh -o docker.new.sh
+    local AZURACAST_RELEASE_BRANCH
+    AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
+
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh -o docker.new.sh
 
     local UTILITY_FILES_MATCH
     UTILITY_FILES_MATCH="$(
@@ -337,7 +363,7 @@ update() {
     fi
 
     if [[ ! -f azuracast.env ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/azuracast.sample.env -o azuracast.env
+      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
       echo "Default environment file loaded."
     fi
 
@@ -358,11 +384,7 @@ update() {
     local AZURACAST_VERSION
     AZURACAST_VERSION="${REPLY:-latest}"
 
-    if [[ $AZURACAST_VERSION == "stable" ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/stable/docker-compose.sample.yml -o docker-compose.new.yml
-    else
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker-compose.sample.yml -o docker-compose.new.yml
-    fi
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.new.yml
 
     # Check for updated Docker Compose config.
     local COMPOSE_FILES_MATCH
@@ -412,7 +434,10 @@ update() {
 # Usage: ./docker.sh update-self
 #
 update-self() {
-  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/docker.sh -o docker.sh
+  local AZURACAST_RELEASE_BRANCH
+  AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
+
+  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker.sh -o docker.sh
   chmod a+x docker.sh
 
   echo "New Docker utility script downloaded."

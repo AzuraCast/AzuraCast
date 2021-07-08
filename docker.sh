@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2145,SC2178,SC2120,SC2162
 
-set -x
-
 # Constants
 export COMPOSE_VERSION=1.29.2
 
@@ -299,7 +297,10 @@ install() {
   run-installer
 
   # Installer creates a file at docker-compose.new.yml; copy it to the main spot.
-  rm docker-compose.yml
+  if [[ -f docker-compose.yml ]]; then
+    rm docker-compose.yml
+  fi
+
   mv docker-compose.new.yml docker-compose.yml
 
   # If this script is running as a non-root user, set the PUID/PGID in the environment vars appropriately.

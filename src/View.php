@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Http\Router;
+use App\Http\RouterInterface;
 use App\Http\ServerRequest;
-use DI\FactoryInterface;
+use App\Traits\RequestAwareTrait;
 use Doctrine\Inflector\InflectorFactory;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
@@ -15,57 +15,26 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 class View extends Engine
 {
-    protected Assets $assets;
-
-    protected ?ServerRequestInterface $request = null;
+    use RequestAwareTrait;
 
     public function __construct(
-        FactoryInterface $factory,
         Environment $environment,
         EventDispatcher $dispatcher,
         Version $version,
-        ?ServerRequestInterface $request = null
+        RouterInterface $router,
+        protected Assets $assets
     ) {
         parent::__construct($environment->getViewsDirectory(), 'phtml');
 
         // Add non-request-dependent content.
-        $this->assets = $factory->make(
-            Assets::class,
-            [
-                'request' => $request,
-            ]
-        );
-
         $this->addData(
             [
                 'environment' => $environment,
                 'version' => $version,
+                'router' => $router,
                 'assets' => $this->assets,
             ]
         );
-
-        // Add request-dependent content.
-        $this->request = $request;
-
-        if (null !== $request) {
-            $this->addData(
-                [
-                    'request' => $request,
-                    'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
-                    'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
-                    'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
-                    'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
-                    'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
-                    'user' => $request->getAttribute(ServerRequest::ATTR_USER),
-                ]
-            );
-        } else {
-            $this->addData(
-                [
-                    'router' => $factory->make(Router::class),
-                ]
-            );
-        }
 
         $this->registerFunction(
             'escapeJs',
@@ -139,6 +108,27 @@ class View extends Engine
         );
 
         $dispatcher->dispatch(new Event\BuildView($this));
+    }
+
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->assets = $this->assets->withRequest($request);
+        $this->request = $request;
+
+        if (null !== $request) {
+            $this->addData(
+                [
+                    'assets' => $this->assets,
+                    'request' => $request,
+                    'router' => $request->getAttribute(ServerRequest::ATTR_ROUTER),
+                    'auth' => $request->getAttribute(ServerRequest::ATTR_AUTH),
+                    'acl' => $request->getAttribute(ServerRequest::ATTR_ACL),
+                    'customization' => $request->getAttribute(ServerRequest::ATTR_CUSTOMIZATION),
+                    'flash' => $request->getAttribute(ServerRequest::ATTR_SESSION_FLASH),
+                    'user' => $request->getAttribute(ServerRequest::ATTR_USER),
+                ]
+            );
+        }
     }
 
     public function reset(): void

@@ -3,12 +3,17 @@
 namespace App;
 
 use App\Entity;
+use App\Http\ServerRequest;
+use App\Traits\RequestAwareTrait;
+use Psr\Http\Message\ServerRequestInterface;
 
 use function in_array;
 use function is_array;
 
 class Acl
 {
+    use RequestAwareTrait;
+
     public const GLOBAL_ALL = 'administer all';
     public const GLOBAL_VIEW = 'view administration';
     public const GLOBAL_LOGS = 'view system logs';
@@ -39,16 +44,9 @@ class Acl
 
     public function __construct(
         protected Entity\Repository\RolePermissionRepository $permissionRepo,
-        protected EventDispatcher $dispatcher,
-        protected ?Entity\User $user = null
+        protected EventDispatcher $dispatcher
     ) {
-        $this->permissions = $this->listPermissions();
         $this->reload();
-    }
-
-    public function setUser(?Entity\User $user): void
-    {
-        $this->user = $user;
     }
 
     /**
@@ -75,43 +73,43 @@ class Acl
      */
     public function listPermissions(): array
     {
-        if (isset($this->permissions)) {
-            return $this->permissions;
+        if (!isset($this->permissions)) {
+            $permissions = [
+                'global' => [
+                    self::GLOBAL_ALL => __('All Permissions'),
+                    self::GLOBAL_VIEW => __('View Administration Page'),
+                    self::GLOBAL_LOGS => __('View System Logs'),
+                    self::GLOBAL_SETTINGS => __('Administer Settings'),
+                    self::GLOBAL_API_KEYS => __('Administer API Keys'),
+                    self::GLOBAL_STATIONS => __('Administer Stations'),
+                    self::GLOBAL_CUSTOM_FIELDS => __('Administer Custom Fields'),
+                    self::GLOBAL_BACKUPS => __('Administer Backups'),
+                    self::GLOBAL_STORAGE_LOCATIONS => __('Administer Storage Locations'),
+                ],
+                'station' => [
+                    self::STATION_ALL => __('All Permissions'),
+                    self::STATION_VIEW => __('View Station Page'),
+                    self::STATION_REPORTS => __('View Station Reports'),
+                    self::STATION_LOGS => __('View Station Logs'),
+                    self::STATION_PROFILE => __('Manage Station Profile'),
+                    self::STATION_BROADCASTING => __('Manage Station Broadcasting'),
+                    self::STATION_STREAMERS => __('Manage Station Streamers'),
+                    self::STATION_MOUNTS => __('Manage Station Mount Points'),
+                    self::STATION_REMOTES => __('Manage Station Remote Relays'),
+                    self::STATION_MEDIA => __('Manage Station Media'),
+                    self::STATION_AUTOMATION => __('Manage Station Automation'),
+                    self::STATION_WEB_HOOKS => __('Manage Station Web Hooks'),
+                    self::STATION_PODCASTS => __('Manage Station Podcasts'),
+                ],
+            ];
+
+            $buildPermissionsEvent = new Event\BuildPermissions($permissions);
+            $this->dispatcher->dispatch($buildPermissionsEvent);
+
+            $this->permissions = $buildPermissionsEvent->getPermissions();
         }
 
-        $permissions = [
-            'global' => [
-                self::GLOBAL_ALL => __('All Permissions'),
-                self::GLOBAL_VIEW => __('View Administration Page'),
-                self::GLOBAL_LOGS => __('View System Logs'),
-                self::GLOBAL_SETTINGS => __('Administer Settings'),
-                self::GLOBAL_API_KEYS => __('Administer API Keys'),
-                self::GLOBAL_STATIONS => __('Administer Stations'),
-                self::GLOBAL_CUSTOM_FIELDS => __('Administer Custom Fields'),
-                self::GLOBAL_BACKUPS => __('Administer Backups'),
-                self::GLOBAL_STORAGE_LOCATIONS => __('Administer Storage Locations'),
-            ],
-            'station' => [
-                self::STATION_ALL => __('All Permissions'),
-                self::STATION_VIEW => __('View Station Page'),
-                self::STATION_REPORTS => __('View Station Reports'),
-                self::STATION_LOGS => __('View Station Logs'),
-                self::STATION_PROFILE => __('Manage Station Profile'),
-                self::STATION_BROADCASTING => __('Manage Station Broadcasting'),
-                self::STATION_STREAMERS => __('Manage Station Streamers'),
-                self::STATION_MOUNTS => __('Manage Station Mount Points'),
-                self::STATION_REMOTES => __('Manage Station Remote Relays'),
-                self::STATION_MEDIA => __('Manage Station Media'),
-                self::STATION_AUTOMATION => __('Manage Station Automation'),
-                self::STATION_WEB_HOOKS => __('Manage Station Web Hooks'),
-                self::STATION_PODCASTS => __('Manage Station Podcasts'),
-            ],
-        ];
-
-        $buildPermissionsEvent = new Event\BuildPermissions($permissions);
-        $this->dispatcher->dispatch($buildPermissionsEvent);
-
-        return $buildPermissionsEvent->getPermissions();
+        return $this->permissions;
     }
 
     /**
@@ -122,7 +120,12 @@ class Acl
      */
     public function isAllowed(array|string $action, $stationId = null): bool
     {
-        return $this->userAllowed($this->user, $action, $stationId);
+        if ($this->request instanceof ServerRequestInterface) {
+            $user = $this->request->getAttribute(ServerRequest::ATTR_USER);
+            return $this->userAllowed($user, $action, $stationId);
+        }
+
+        return false;
     }
 
     /**

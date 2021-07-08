@@ -2,20 +2,19 @@
 
 namespace App\Controller\Admin;
 
-use App\Acl;
 use App\Form\PermissionsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController
 {
     public function __construct(
-        protected Acl $acl,
-        PermissionsForm $form,
+        FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        parent::__construct($factory->make(PermissionsForm::class));
 
         $this->csrf_namespace = 'admin_permissions';
     }
@@ -35,7 +34,7 @@ class PermissionsController extends AbstractAdminCrudController
 
         $roles = [];
 
-        $actions = $this->acl->listPermissions();
+        $actions = $request->getAcl()->listPermissions();
 
         foreach ($all_roles as $role) {
             $role['permissions_global'] = [];

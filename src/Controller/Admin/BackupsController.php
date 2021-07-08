@@ -16,6 +16,7 @@ use App\Sync\Task\RunBackupTask;
 use App\Utilities\File;
 use Azura\Files\Attributes\FileAttributes;
 use Azura\Files\ExtendedFilesystemInterface;
+use DI\FactoryInterface;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
@@ -84,8 +85,10 @@ class BackupsController extends AbstractLogViewerController
     public function configureAction(
         ServerRequest $request,
         Response $response,
-        BackupSettingsForm $settingsForm
+        FactoryInterface $factory
     ): ResponseInterface {
+        $settingsForm = $factory->make(BackupSettingsForm::class);
+
         if (false !== $settingsForm->process($request)) {
             $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->fromHere('admin:backups:index'));

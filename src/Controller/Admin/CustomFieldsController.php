@@ -7,13 +7,14 @@ use App\Form\CustomFieldForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class CustomFieldsController extends AbstractAdminCrudController
 {
-    public function __construct(CustomFieldForm $form)
+    public function __construct(FactoryInterface $factory)
     {
-        parent::__construct($form);
+        parent::__construct($factory->make(CustomFieldForm::class));
 
         $this->csrf_namespace = 'admin_custom_fields';
     }

@@ -8,6 +8,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
 use App\Webhook\Dispatcher;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class WebhooksController extends AbstractStationCrudController
@@ -16,10 +17,11 @@ class WebhooksController extends AbstractStationCrudController
 
     public function __construct(
         protected Dispatcher $dispatcher,
-        StationWebhookForm $form
+        FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        $form = $factory->make(StationWebhookForm::class);
 
+        parent::__construct($form);
         $this->webhook_config = $form->getConfig();
 
         $this->csrf_namespace = 'stations_webhooks';

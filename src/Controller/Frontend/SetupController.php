@@ -10,6 +10,7 @@ use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -94,9 +95,6 @@ class SetupController
     /**
      * Setup Step 1:
      * Create Super Administrator Account
-     *
-     * @param ServerRequest $request
-     * @param Response $response
      */
     public function registerAction(ServerRequest $request, Response $response): ResponseInterface
     {
@@ -149,17 +147,14 @@ class SetupController
     /**
      * Setup Step 2:
      * Create Station and Parse Metadata
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @param StationForm $stationForm
      */
     public function stationAction(
         ServerRequest $request,
         Response $response,
-        StationForm $stationForm
+        FactoryInterface $factory
     ): ResponseInterface {
+        $stationForm = $factory->make(StationForm::class);
+
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'station' && $this->environment->isProduction()) {
@@ -182,17 +177,14 @@ class SetupController
     /**
      * Setup Step 3:
      * Set site settings.
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @param SettingsForm $settingsForm
      */
     public function settingsAction(
         ServerRequest $request,
         Response $response,
-        SettingsForm $settingsForm
+        FactoryInterface $factory
     ): ResponseInterface {
+        $settingsForm = $factory->make(SettingsForm::class);
+
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'settings' && $this->environment->isProduction()) {

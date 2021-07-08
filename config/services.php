@@ -9,6 +9,17 @@ use Psr\Container\ContainerInterface;
 
 return [
 
+    // Slim interface
+    Slim\Interfaces\RouteCollectorInterface::class => static function (Slim\App $app) {
+        return $app->getRouteCollector();
+    },
+
+    Slim\Interfaces\RouteParserInterface::class => static function (
+        Slim\Interfaces\RouteCollectorInterface $routeCollector
+    ) {
+        return $routeCollector->getRouteParser();
+    },
+
     // URL Router helper
     App\Http\RouterInterface::class => DI\Get(App\Http\Router::class),
 
@@ -16,12 +27,12 @@ return [
     Slim\Interfaces\ErrorHandlerInterface::class => DI\Get(App\Http\ErrorHandler::class),
 
     // HTTP client
-    GuzzleHttp\Client::class => function (Psr\Log\LoggerInterface $logger) {
+    GuzzleHttp\Client::class => static function (Psr\Log\LoggerInterface $logger) {
         $stack = GuzzleHttp\HandlerStack::create();
 
         $stack->unshift(
             function (callable $handler) {
-                return function (Psr\Http\Message\RequestInterface $request, array $options) use ($handler) {
+                return static function (Psr\Http\Message\RequestInterface $request, array $options) use ($handler) {
                     $options[GuzzleHttp\RequestOptions::VERIFY] = Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(
                     );
                     return $handler($request, $options);
@@ -48,12 +59,12 @@ return [
     },
 
     // DBAL
-    Doctrine\DBAL\Connection::class => function (Doctrine\ORM\EntityManagerInterface $em) {
+    Doctrine\DBAL\Connection::class => static function (Doctrine\ORM\EntityManagerInterface $em) {
         return $em->getConnection();
     },
 
     // Doctrine Entity Manager
-    App\Doctrine\DecoratedEntityManager::class => function (
+    App\Doctrine\DecoratedEntityManager::class => static function (
         Doctrine\Common\Cache\Cache $doctrineCache,
         Environment $environment,
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
@@ -133,7 +144,7 @@ return [
     Doctrine\ORM\EntityManagerInterface::class => DI\Get(App\Doctrine\DecoratedEntityManager::class),
 
     // Redis cache
-    Redis::class => function (Environment $environment) {
+    Redis::class => static function (Environment $environment) {
         if (!$environment->enableRedis()) {
             throw new App\Exception\BootstrapException('Redis is disabled on this installation.');
         }
@@ -147,7 +158,7 @@ return [
         return $redis;
     },
 
-    Symfony\Contracts\Cache\CacheInterface::class => function (
+    Symfony\Contracts\Cache\CacheInterface::class => static function (
         Environment $environment,
         Psr\Log\LoggerInterface $logger,
         ContainerInterface $di
@@ -176,12 +187,12 @@ return [
     Psr\Cache\CacheItemPoolInterface::class => DI\get(
         Symfony\Contracts\Cache\CacheInterface::class
     ),
-    Psr\SimpleCache\CacheInterface::class => function (Psr\Cache\CacheItemPoolInterface $cache) {
+    Psr\SimpleCache\CacheInterface::class => static function (Psr\Cache\CacheItemPoolInterface $cache) {
         return new Symfony\Component\Cache\Psr16Cache($cache);
     },
 
     // Doctrine cache
-    Doctrine\Common\Cache\Cache::class => function (
+    Doctrine\Common\Cache\Cache::class => static function (
         Environment $environment,
         Psr\Cache\CacheItemPoolInterface $psr6Cache
     ) {
@@ -194,7 +205,7 @@ return [
     },
 
     // Symfony Lock adapter
-    Symfony\Component\Lock\PersistingStoreInterface::class => function (
+    Symfony\Component\Lock\PersistingStoreInterface::class => static function (
         ContainerInterface $di,
         Environment $environment
     ) {
@@ -209,7 +220,7 @@ return [
     },
 
     // Session save handler middleware
-    Mezzio\Session\SessionPersistenceInterface::class => function (
+    Mezzio\Session\SessionPersistenceInterface::class => static function (
         Environment $environment,
         Psr\Cache\CacheItemPoolInterface $cachePool
     ) {
@@ -231,7 +242,7 @@ return [
     },
 
     // Console
-    App\Console\Application::class => function (
+    App\Console\Application::class => static function (
         DI\Container $di,
         App\EventDispatcher $dispatcher,
         App\Version $version,
@@ -252,7 +263,7 @@ return [
     },
 
     // Event Dispatcher
-    App\EventDispatcher::class => function (Slim\App $app, App\Plugins $plugins) {
+    App\EventDispatcher::class => static function (Slim\App $app, App\Plugins $plugins) {
         $dispatcher = new App\EventDispatcher($app->getCallableResolver());
 
         // Register application default events.
@@ -268,7 +279,7 @@ return [
     Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(App\EventDispatcher::class),
 
     // Monolog Logger
-    Monolog\Logger::class => function (Environment $environment) {
+    Monolog\Logger::class => static function (Environment $environment) {
         $logger = new Monolog\Logger($environment->getAppName());
         $loggingLevel = $environment->getLogLevel();
 
@@ -290,7 +301,7 @@ return [
     Psr\Log\LoggerInterface::class => DI\get(Monolog\Logger::class),
 
     // Doctrine annotations reader
-    Doctrine\Common\Annotations\Reader::class => function (
+    Doctrine\Common\Annotations\Reader::class => static function (
         Psr\Cache\CacheItemPoolInterface $psr6Cache,
         Environment $settings
     ) {
@@ -304,7 +315,7 @@ return [
     },
 
     // Symfony Serializer
-    Symfony\Component\Serializer\Serializer::class => function (
+    Symfony\Component\Serializer\Serializer::class => static function (
         Doctrine\Common\Annotations\Reader $reader,
         Doctrine\ORM\EntityManagerInterface $em
     ) {
@@ -325,7 +336,7 @@ return [
     },
 
     // Symfony Validator
-    Symfony\Component\Validator\Validator\ValidatorInterface::class => function (
+    Symfony\Component\Validator\Validator\ValidatorInterface::class => static function (
         Doctrine\Common\Annotations\Reader $reader,
         Symfony\Component\Validator\ContainerConstraintValidatorFactory $constraintValidatorFactory
     ) {
@@ -335,7 +346,7 @@ return [
         return $builder->getValidator();
     },
 
-    Symfony\Component\Messenger\MessageBus::class => function (
+    Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
         App\LockFactory $lockFactory,
         Monolog\Logger $logger,
@@ -355,7 +366,7 @@ return [
         $receivers = $plugins->registerMessageQueueReceivers($receivers);
 
         foreach ($receivers as $messageClass => $handlerClass) {
-            $handlers[$messageClass][] = function ($message) use ($handlerClass, $di) {
+            $handlers[$messageClass][] = static function ($message) use ($handlerClass, $di) {
                 $obj = $di->get($handlerClass);
                 return $obj($message);
             };
@@ -396,7 +407,7 @@ return [
     ),
 
     // Mail functionality
-    Symfony\Component\Mailer\Transport\TransportInterface::class => function (
+    Symfony\Component\Mailer\Transport\TransportInterface::class => static function (
         App\Entity\Repository\SettingsRepository $settingsRepo,
         App\EventDispatcher $eventDispatcher,
         Monolog\Logger $logger
@@ -411,7 +422,7 @@ return [
             ];
 
             $hasAllSettings = true;
-            foreach ($requiredSettings as $settingKey => $setting) {
+            foreach ($requiredSettings as $setting) {
                 if (empty($setting)) {
                     $hasAllSettings = false;
                     break;
@@ -442,7 +453,7 @@ return [
         );
     },
 
-    Symfony\Component\Mailer\Mailer::class => function (
+    Symfony\Component\Mailer\Mailer::class => static function (
         Symfony\Component\Mailer\Transport\TransportInterface $transport,
         Symfony\Component\Messenger\MessageBus $messageBus,
         App\EventDispatcher $eventDispatcher
@@ -459,7 +470,8 @@ return [
     ),
 
     // Supervisor manager
-    Supervisor\Supervisor::class => function (Environment $settings, Psr\Log\LoggerInterface $logger) {
+    Supervisor\Supervisor::class => static function (Environment $settings, Psr\Log\LoggerInterface $logger) {
+        /** @noinspection HttpUrlsUsage */
         $client = new fXmlRpc\Client(
             'http://' . ($settings->isDocker() ? 'stations' : '127.0.0.1') . ':9001/RPC2',
             new fXmlRpc\Transport\PsrTransport(
@@ -472,7 +484,7 @@ return [
     },
 
     // Image Manager
-    Intervention\Image\ImageManager::class => function () {
+    Intervention\Image\ImageManager::class => static function () {
         return new Intervention\Image\ImageManager(
             [
                 'driver' => 'gd',
@@ -481,7 +493,7 @@ return [
     },
 
     // NowPlaying Adapter factory
-    NowPlaying\AdapterFactory::class => function (
+    NowPlaying\AdapterFactory::class => static function (
         GuzzleHttp\Client $httpClient,
         Psr\Log\LoggerInterface $logger
     ) {

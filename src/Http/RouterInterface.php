@@ -2,13 +2,15 @@
 
 namespace App\Http;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 
 interface RouterInterface
 {
-    /**
-     * Dynamically calculate the base URL the first time it's called, if it is at all in the request.
-     */
+    public function setRequest(ServerRequestInterface $request): void;
+
+    public function withRequest(ServerRequestInterface $request): self;
+
     public function getBaseUrl(): UriInterface;
 
     /**

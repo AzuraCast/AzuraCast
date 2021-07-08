@@ -9,16 +9,16 @@ use App\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class StationsController extends AbstractAdminCrudController
 {
     public function __construct(
         protected StationRepository $stationRepo,
-        protected Form\StationCloneForm $clone_form,
-        Form\StationForm $form
+        protected FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        parent::__construct($factory->make(Form\StationForm::class));
 
         $this->csrf_namespace = 'admin_stations';
     }
@@ -61,20 +61,26 @@ class StationsController extends AbstractAdminCrudController
 
     public function cloneAction(ServerRequest $request, Response $response, $id): ResponseInterface
     {
+        $cloneForm = $this->factory->make(Form\StationCloneForm::class);
+
         $record = $this->record_repo->find((int)$id);
         if (!($record instanceof Entity\Station)) {
             throw new NotFoundException(__('Station not found.'));
         }
 
-        if (false !== $this->clone_form->process($request, $record)) {
+        if (false !== $cloneForm->process($request, $record)) {
             $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
             return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->clone_form,
-            'render_mode' => 'edit',
-            'title' => __('Clone Station: %s', $record->getName()),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                                                         'form' => $cloneForm,
+                                                         'render_mode' => 'edit',
+                                                         'title' => __('Clone Station: %s', $record->getName()),
+            ]
+        );
     }
 }

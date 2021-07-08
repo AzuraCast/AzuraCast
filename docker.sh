@@ -118,7 +118,7 @@ __dotenv_cmd=.env
 
 # Shortcut to convert semver version (x.yyy.zzz) into a comparable number.
 version-number() {
-  echo "$@" | gawk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
+  echo "$@" | awk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
 }
 
 # Get the current release channel for AzuraCast

@@ -14,14 +14,9 @@ use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 use Invoker\ParameterResolver\DefaultValueResolver;
 use Invoker\ParameterResolver\ResolverChain;
 use Monolog\Registry;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Interfaces\CallableResolverInterface;
-use Slim\Interfaces\MiddlewareDispatcherInterface;
-use Slim\Interfaces\RouteCollectorInterface;
-use Slim\Interfaces\RouteResolverInterface;
 
 use const E_COMPILE_ERROR;
 use const E_CORE_ERROR;
@@ -54,33 +49,9 @@ class AppFactory
         ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
         ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory());
 
-        $responseFactory = $container->has(ResponseFactoryInterface::class)
-            ? $container->get(ResponseFactoryInterface::class)
-            : new ResponseFactory();
-
-        $callableResolver = $container->has(CallableResolverInterface::class)
-            ? $container->get(CallableResolverInterface::class)
-            : null;
-
-        $routeCollector = $container->has(RouteCollectorInterface::class)
-            ? $container->get(RouteCollectorInterface::class)
-            : null;
-
-        $routeResolver = $container->has(RouteResolverInterface::class)
-            ? $container->get(RouteResolverInterface::class)
-            : null;
-
-        $middlewareDispatcher = $container->has(MiddlewareDispatcherInterface::class)
-            ? $container->get(MiddlewareDispatcherInterface::class)
-            : null;
-
         $app = new App(
-            $responseFactory,
-            $container,
-            $callableResolver,
-            $routeCollector,
-            $routeResolver,
-            $middlewareDispatcher
+            responseFactory: new ResponseFactory(),
+            container: $container,
         );
         $container->set(App::class, $app);
 
@@ -142,11 +113,14 @@ class AppFactory
         }
 
         $containerBuilder = new DI\ContainerBuilder();
-        $containerBuilder->useAnnotations(true);
         $containerBuilder->useAutowiring(true);
+
+        /*
+        $containerBuilder->enableDefinitionCache();
         if ($environment->isProduction()) {
             $containerBuilder->enableCompilation($environment->getTempDirectory());
         }
+        */
 
         $containerBuilder->addDefinitions($diDefinitions);
 

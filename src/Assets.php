@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\RequestAwareTrait;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,6 +20,8 @@ use function random_bytes;
  */
 class Assets
 {
+    use RequestAwareTrait;
+
     /** @var array Known libraries loaded in initialization. */
     protected array $libraries = [];
 
@@ -42,11 +45,8 @@ class Assets
 
     public function __construct(
         protected Environment $environment,
-        Config $config,
-        ?ServerRequestInterface $request = null
+        Config $config
     ) {
-        $this->request = $request;
-
         foreach ($config->get('assets') as $library_name => $library) {
             $this->addLibrary($library, $library_name);
         }

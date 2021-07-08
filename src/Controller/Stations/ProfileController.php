@@ -6,6 +6,7 @@ use App\Entity;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use DI\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,8 +16,8 @@ class ProfileController
 
     public function __construct(
         protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRepository $station_repo,
-        protected StationForm $station_form
+        protected Entity\Repository\StationRepository $stationRepo,
+        protected FactoryInterface $factory
     ) {
     }
 
@@ -68,14 +69,19 @@ class ProfileController
     public function editAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
+        $stationForm = $this->factory->make(StationForm::class);
 
-        if (false !== $this->station_form->process($request, $station)) {
+        if (false !== $stationForm->process($request, $station)) {
             return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/profile/edit', [
-            'form' => $this->station_form,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/profile/edit',
+            [
+                'form' => $stationForm,
+            ]
+        );
     }
 
     public function toggleAction(

@@ -9,6 +9,7 @@ use App\Http\ServerRequest;
 use App\Service\IpGeolocator\GeoLite;
 use App\Session\Flash;
 use App\Sync\Task\UpdateGeoLiteTask;
+use DI\FactoryInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 
@@ -19,9 +20,11 @@ class InstallGeoLiteController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        GeoLiteSettingsForm $form,
+        FactoryInterface $factory,
         UpdateGeoLiteTask $syncTask
     ): ResponseInterface {
+        $form = $factory->make(GeoLiteSettingsForm::class);
+
         if (false !== $form->process($request)) {
             $flash = $request->getFlash();
 

@@ -8,14 +8,15 @@ use App\Form\UserForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Psr\Http\Message\ResponseInterface;
 
 class UsersController extends AbstractAdminCrudController
 {
-    public function __construct(UserForm $form)
+    public function __construct(FactoryInterface $factory)
     {
-        parent::__construct($form);
+        parent::__construct($factory->make(UserForm::class));
 
         $this->csrf_namespace = 'admin_users';
     }

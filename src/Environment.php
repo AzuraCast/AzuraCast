@@ -34,7 +34,6 @@ class Environment
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
 
     public const LANG = 'LANG';
-    public const SUPPORTED_LOCALES = 'SUPPORTED_LOCALES';
 
     public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
 
@@ -69,37 +68,47 @@ class Environment
         self::APP_NAME => 'AzuraCast',
         self::APP_ENV => self::ENV_PRODUCTION,
 
+        self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,
         self::IS_CLI => ('cli' === PHP_SAPI),
 
         self::ASSET_URL => '/static',
 
-        self::ENABLE_REDIS => true,
+        self::AUTO_ASSIGN_PORT_MIN => 8000,
+        self::AUTO_ASSIGN_PORT_MAX => 8499,
 
-        self::SUPPORTED_LOCALES => [
-            'en_US.UTF-8' => 'English (Default)',
-            'cs_CZ.UTF-8' => 'čeština',             // Czech
-            'de_DE.UTF-8' => 'Deutsch',             // German
-            'es_ES.UTF-8' => 'Español',             // Spanish
-            'fr_FR.UTF-8' => 'Français',            // French
-            'el_GR.UTF-8' => 'ελληνικά',            // Greek
-            'it_IT.UTF-8' => 'Italiano',            // Italian
-            'hu_HU.UTF-8' => 'magyar',              // Hungarian
-            'nl_NL.UTF-8' => 'Nederlands',          // Dutch
-            'pl_PL.UTF-8' => 'Polski',              // Polish
-            'pt_PT.UTF-8' => 'Português',           // Portuguese
-            'pt_BR.UTF-8' => 'Português do Brasil', // Brazilian Portuguese
-            'ru_RU.UTF-8' => 'Русский язык',        // Russian
-            'sv_SE.UTF-8' => 'Svenska',             // Swedish
-            'tr_TR.UTF-8' => 'Türkçe',              // Turkish
-            'zh_CN.UTF-8' => '簡化字',               // Simplified Chinese
-            'ko_KR.UTF-8' => '한국어',               // Korean (South Korean)
-        ],
+        self::DB_HOST => 'mariadb',
+        self::DB_PORT => 3306,
+        self::DB_USER => 'azuracast',
+        self::DB_PASSWORD => 'azur4c457',
+        self::DB_NAME => 'azuracast',
+
+        self::ENABLE_REDIS => true,
+        self::REDIS_HOST => 'redis',
+        self::REDIS_PORT => 6379,
+        self::REDIS_DB => 1,
+
+        self::SYNC_SHORT_EXECUTION_TIME => 600,
+        self::SYNC_LONG_EXECUTION_TIME => 1800,
+
+        self::PROFILING_EXTENSION_ENABLED => 0,
+        self::PROFILING_EXTENSION_ALWAYS_ON => 0,
+        self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
+
+        self::LANG => Locale::DEFAULT_LOCALE,
     ];
 
     public function __construct(array $elements = [])
     {
         $this->data = array_merge($this->defaults, $elements);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return $this->data;
     }
 
     protected function envToBool(string|bool $value): bool
@@ -214,14 +223,6 @@ class Environment
     public function getLang(): ?string
     {
         return $this->data[self::LANG];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSupportedLocales(): array
-    {
-        return $this->data[self::SUPPORTED_LOCALES] ?? [];
     }
 
     public function getReleaseChannel(): string

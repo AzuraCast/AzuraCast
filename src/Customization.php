@@ -53,7 +53,7 @@ class Customization
         }
 
         // Register locale
-        $this->locale = new Locale($environment, $request);
+        $this->locale = Locale::createFromRequest($this->environment, $request);
         $this->locale->register();
     }
 

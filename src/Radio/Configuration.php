@@ -15,6 +15,7 @@ class Configuration
 {
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
+    public const PROTECTED_PORTS = [8080, 80, 443, 2022];
 
     public function __construct(
         protected EntityManagerInterface $em,
@@ -295,7 +296,7 @@ class Configuration
         $used_ports = $this->getUsedPorts($station);
 
         // Iterate from port 8000 to 9000, in increments of 10
-        $protected_ports = [8080];
+        $protected_ports = self::PROTECTED_PORTS;
 
         $port_min = $this->environment->getAutoAssignPortMin();
         $port_max = $this->environment->getAutoAssignPortMax();
@@ -436,5 +437,27 @@ class Configuration
         @unlink($supervisor_config_path);
 
         $this->reloadSupervisor();
+    }
+
+    /**
+     * @return int[]
+     */
+    public static function enumerateDefaultPorts(
+        int $rangeMin = self::DEFAULT_PORT_MIN,
+        int $rangeMax = self::DEFAULT_PORT_MAX,
+    ): array {
+        $defaultPorts = [];
+
+        for ($i = $rangeMin; $i < $rangeMax; $i += 10) {
+            if (in_array($i, self::PROTECTED_PORTS, true)) {
+                continue;
+            }
+
+            $defaultPorts[] = $i;
+            $defaultPorts[] = $i + 5;
+            $defaultPorts[] = $i + 6;
+        }
+
+        return $defaultPorts;
     }
 }

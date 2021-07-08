@@ -37,7 +37,8 @@ class AppFactory
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         self::buildAppFromContainer($di);
 
-        $locale = $di->make(Locale::class);
+        $env = $di->get(Environment::class);
+        $locale = Locale::createForCli($env);
         $locale->register();
 
         return $di->get(Application::class);
@@ -164,7 +165,7 @@ class AppFactory
         return $di;
     }
 
-    protected static function buildEnvironment(array $environment): Environment
+    public static function buildEnvironment(array $environment): Environment
     {
         if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');

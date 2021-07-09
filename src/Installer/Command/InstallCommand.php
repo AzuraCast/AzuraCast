@@ -52,7 +52,7 @@ class InstallCommand
         }
 
         // Initialize locale for translated installer/updater.
-        if ($isNewInstall || empty($azuracastEnv[Environment::LANG])) {
+        if (!$defaults && ($isNewInstall || empty($azuracastEnv[Environment::LANG]))) {
             $langOptions = [];
             foreach (Locale::SUPPORTED_LOCALES as $langKey => $langName) {
                 $langOptions[Locale::stripLocaleEncoding($langKey)] = $langName;
@@ -109,19 +109,21 @@ class InstallCommand
             $io->block(
                 __('Welcome to AzuraCast! Complete the initial server setup by answering a few questions.')
             );
+
+            $customize = !$defaults;
         } else {
             $io->title(
                 __('AzuraCast Updater')
             );
-        }
 
-        if ($defaults) {
-            $customize = false;
-        } else {
-            $customize = $io->confirm(
-                __('Customize server settings (ports, databases, etc.)?'),
-                false
-            );
+            if ($defaults) {
+                $customize = false;
+            } else {
+                $customize = $io->confirm(
+                    __('Change installation settings?'),
+                    false
+                );
+            }
         }
 
         if ($customize) {

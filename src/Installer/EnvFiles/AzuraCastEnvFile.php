@@ -13,12 +13,16 @@ class AzuraCastEnvFile extends AbstractEnvFile
     /** @inheritDoc */
     public static function getConfiguration(): array
     {
-        $defaults = (new Environment([]))->toArray();
+        $emptyEnv = new Environment([]);
+        $defaults = $emptyEnv->toArray();
 
         $langOptions = [];
         foreach (Locale::SUPPORTED_LOCALES as $locale => $localeName) {
             $langOptions[] = Locale::stripLocaleEncoding($locale);
         }
+
+        $dbSettings = $emptyEnv->getDatabaseSettings();
+        $redisSettings = $emptyEnv->getRedisSettings();
 
         $config = [
             Environment::LANG => [
@@ -85,30 +89,35 @@ class AzuraCastEnvFile extends AbstractEnvFile
                 'description' => __(
                     'Do not modify this after installation.',
                 ),
+                'default' => $dbSettings['host'],
             ],
             Environment::DB_PORT => [
                 'name' => __('MariaDB Port'),
                 'description' => __(
                     'Do not modify this after installation.',
                 ),
+                'default' => $dbSettings['port'],
             ],
             Environment::DB_USER => [
                 'name' => __('MariaDB Username'),
                 'description' => __(
                     'Do not modify this after installation.',
                 ),
+                'default' => $dbSettings['user'],
             ],
             Environment::DB_PASSWORD => [
                 'name' => __('MariaDB Password'),
                 'description' => __(
                     'Do not modify this after installation.',
                 ),
+                'default' => $dbSettings['password'],
             ],
             Environment::DB_NAME => [
                 'name' => __('MariaDB Database Name'),
                 'description' => __(
                     'Do not modify this after installation.',
                 ),
+                'default' => $dbSettings['dbname'],
             ],
             'MYSQL_RANDOM_ROOT_PASSWORD' => [
                 'name' => __('Auto-generate Random MariaDB Root Password'),
@@ -139,13 +148,16 @@ class AzuraCastEnvFile extends AbstractEnvFile
             ],
             Environment::REDIS_HOST => [
                 'name' => __('Redis Host'),
+                'default' => $redisSettings['host'],
             ],
             Environment::REDIS_PORT => [
                 'name' => __('Redis Port'),
+                'default' => $redisSettings['port'],
             ],
             Environment::REDIS_DB => [
                 'name' => __('Redis Database Index'),
                 'options' => range(0, 15),
+                'default' => $redisSettings['db'],
             ],
             'PHP_MAX_FILE_SIZE' => [
                 'name' => __('PHP Maximum POST File Size'),

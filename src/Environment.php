@@ -77,16 +77,7 @@ class Environment
         self::AUTO_ASSIGN_PORT_MIN => 8000,
         self::AUTO_ASSIGN_PORT_MAX => 8499,
 
-        self::DB_HOST => 'mariadb',
-        self::DB_PORT => 3306,
-        self::DB_USER => 'azuracast',
-        self::DB_PASSWORD => 'azur4c457',
-        self::DB_NAME => 'azuracast',
-
         self::ENABLE_REDIS => true,
-        self::REDIS_HOST => 'redis',
-        self::REDIS_PORT => 6379,
-        self::REDIS_DB => 1,
 
         self::SYNC_SHORT_EXECUTION_TIME => 600,
         self::SYNC_LONG_EXECUTION_TIME => 1800,

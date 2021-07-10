@@ -287,7 +287,17 @@ install() {
   fi
 
   if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
-    echo "Docker Compose is already installed! Continuing..."
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+        install-docker-compose
+      fi
+    else
+      echo "Docker Compose is already installed and up to date! Continuing..."
+    fi
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
       install-docker-compose

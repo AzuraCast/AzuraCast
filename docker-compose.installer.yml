@@ -1,3 +1,5 @@
+version : '2.2'
+
 services :
   installer :
     container_name : azuracast_installer

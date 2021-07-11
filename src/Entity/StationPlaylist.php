@@ -158,6 +158,10 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
     #[Attributes\AuditIgnore]
     protected int $played_at = 0;
 
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    protected int $queue_reset_at = 0;
+
     #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY')]
     #[ORM\OrderBy(['weight' => 'ASC'])]
     protected Collection $media_items;
@@ -360,6 +364,16 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
     public function setPlayedAt(int $played_at): void
     {
         $this->played_at = $played_at;
+    }
+
+    public function getQueueResetAt(): int
+    {
+        return $this->queue_reset_at;
+    }
+
+    public function setQueueResetAt(int $queue_reset_at): void
+    {
+        $this->queue_reset_at = $queue_reset_at;
     }
 
     /**

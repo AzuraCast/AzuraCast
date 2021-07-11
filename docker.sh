@@ -215,6 +215,10 @@ setup-letsencrypt() {
 # Configure release mode settings.
 #
 setup-release() {
+  if [[ ! -f .env ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
+  fi
+
   local AZURACAST_VERSION="latest"
   if ask "Prefer stable release versions of AzuraCast?" N; then
     AZURACAST_VERSION="stable"
@@ -393,14 +397,14 @@ update() {
     # Check for updated Docker Compose config.
     local COMPOSE_FILES_MATCH
 
-    if [[ -s docker-compose.new.yml ]]; then
-      COMPOSE_FILES_MATCH="$(
-        cmp --silent docker-compose.yml docker-compose.new.yml
-        echo $?
-      )"
-    else
-      COMPOSE_FILES_MATCH=0
+    if [[ ! -s docker-compose.new.yml ]]; then
+      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.new.yml
     fi
+
+    COMPOSE_FILES_MATCH="$(
+      cmp --silent docker-compose.yml docker-compose.new.yml
+      echo $?
+    )"
 
     if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
       docker-compose -f docker-compose.new.yml pull

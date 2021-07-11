@@ -295,12 +295,17 @@ return [
         ],
     ],
 
-    'moment_base' => [
+    // Moment standalone (with locales)
+    'moment' => [
         'order' => 8,
         'files' => [
             'js' => [
                 [
                     'src' => 'dist/lib/moment/moment.min.js',
+                ],
+                [
+                    'src' => 'dist/lib/moment/locales.min.js',
+                    'charset' => 'UTF-8',
                 ],
             ],
         ],
@@ -313,23 +318,9 @@ return [
         ],
     ],
 
-    // Moment standalone (with locales)
-    'moment' => [
-        'order' => 9,
-        'require' => ['moment_base'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/moment/locales.min.js',
-                    'charset' => 'UTF-8',
-                ],
-            ],
-        ],
-    ],
-
     'moment_timezone' => [
         'order' => 9,
-        'require' => ['moment_base'],
+        'require' => ['moment'],
         'files' => [
             'js' => [
                 [
@@ -498,7 +489,7 @@ return [
 
     'Vue_PublicSchedule' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
@@ -537,20 +528,19 @@ return [
 
     'Vue_StationsPlaylists' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
-        'replace' => ['moment'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcastEpisodes' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 

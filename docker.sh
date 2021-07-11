@@ -260,10 +260,23 @@ run-installer() {
   local AZURACAST_RELEASE_BRANCH
   AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
 
-  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
+  if [[ ! -f .env ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/sample.env -o .env
+  fi
+  if [[ ! -f azuracast.env ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
+  fi
+  if [[ ! -f docker-compose.yml ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.yml
+  fi
 
+  touch docker-compose.new.yml
+
+  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
   docker-compose -f docker-compose.installer.yml pull
   docker-compose -f docker-compose.installer.yml run --rm installer install "$@"
+
+  rm docker-compose.installer.yml
 }
 
 #
@@ -304,14 +317,16 @@ install() {
     fi
   fi
 
-  run-installer
+  run-installer "$@"
 
   # Installer creates a file at docker-compose.new.yml; copy it to the main spot.
-  if [[ -f docker-compose.yml ]]; then
-    rm docker-compose.yml
-  fi
+  if [[ -s docker-compose.new.yml ]]; then
+    if [[ -f docker-compose.yml ]]; then
+      rm docker-compose.yml
+    fi
 
-  mv docker-compose.new.yml docker-compose.yml
+    mv docker-compose.new.yml docker-compose.yml
+  fi
 
   # If this script is running as a non-root user, set the PUID/PGID in the environment vars appropriately.
   if [[ $EUID -ne 0 ]]; then
@@ -373,14 +388,19 @@ update() {
       fi
     fi
 
-    run-installer
+    run-installer --update "$@"
 
     # Check for updated Docker Compose config.
     local COMPOSE_FILES_MATCH
-    COMPOSE_FILES_MATCH="$(
-      cmp --silent docker-compose.yml docker-compose.new.yml
-      echo $?
-    )"
+
+    if [[ -s docker-compose.new.yml ]]; then
+      COMPOSE_FILES_MATCH="$(
+        cmp --silent docker-compose.yml docker-compose.new.yml
+        echo $?
+      )"
+    else
+      COMPOSE_FILES_MATCH=0
+    fi
 
     if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
       docker-compose -f docker-compose.new.yml pull

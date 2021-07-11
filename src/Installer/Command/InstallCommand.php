@@ -25,6 +25,7 @@ class InstallCommand
     public function __invoke(
         SymfonyStyle $io,
         OutputInterface $output,
+        bool $update,
         bool $defaults,
         ?int $httpPort = null,
         ?int $httpsPort = null,
@@ -35,7 +36,15 @@ class InstallCommand
         $envPath = EnvFile::buildPathFromBase($baseDir);
         $azuracastEnvPath = AzuraCastEnvFile::buildPathFromBase($baseDir);
 
-        $isNewInstall = !is_file($envPath);
+        // Fail early if permissions aren't present.
+        if (!is_writable($envPath)) {
+            $io->error(
+                'Permissions error: cannot write to work directory. Exiting installer and using defaults instead.'
+            );
+            return 1;
+        }
+
+        $isNewInstall = !$update;
 
         try {
             $env = EnvFile::fromEnvFile($envPath);

@@ -14,7 +14,7 @@ $environment = App\AppFactory::buildEnvironment(
 $console = new Silly\Application('AzuraCast installer', App\Version::FALLBACK_VERSION);
 
 $console->command(
-        'install [--defaults] [--http-port=] [--https-port=] [--release-channel=] [base-dir]',
+        'install [--update] [--defaults] [--http-port=] [--https-port=] [--release-channel=] [base-dir]',
         new App\Installer\Command\InstallCommand($environment)
 );
 

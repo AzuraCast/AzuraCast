@@ -538,7 +538,6 @@ return [
     'Vue_StationsPlaylists' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
-        'replace' => ['moment'],
         // Auto-managed by Assets
     ],
 

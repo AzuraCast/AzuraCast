@@ -129,6 +129,25 @@ class StationQueueRepository extends Repository
             ->getOneOrNullResult();
     }
 
+    public function hasCuedPlaylistMedia(Entity\StationPlaylist $playlist): bool
+    {
+        $station = $playlist->getStation();
+
+        $cuedPlaylistContentCountQuery = $this->getUpcomingBaseQuery($station)
+            ->select('count(sq.id)')
+            ->andWhere('sq.playlist = :playlist')
+            ->setParameter('playlist', $playlist)
+            ->getQuery();
+
+        $cuedPlaylistContentCount = $cuedPlaylistContentCountQuery->getSingleScalarResult();
+
+        if ($cuedPlaylistContentCount > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     protected function getRecentBaseQuery(Entity\Station $station): QueryBuilder
     {
         return $this->getBaseQuery($station)

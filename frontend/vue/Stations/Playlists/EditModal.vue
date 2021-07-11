@@ -75,7 +75,8 @@ export default {
                     'end_time': { required },
                     'start_date': {},
                     'end_date': {},
-                    'days': {}
+                    'days': {},
+                    'loop_once': {}
                 }
             }
         }

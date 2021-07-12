@@ -17,17 +17,20 @@ class EnvFile extends AbstractEnvFile
                     '(Docker Compose) All Docker containers are prefixed by this name. Do not change this after installation.'
                 ),
                 'default' => 'azuracast',
+                'required' => true,
             ],
             'COMPOSE_HTTP_TIMEOUT' => [
                 'name' => __(
                     '(Docker Compose) The amount of time to wait before a Docker Compose operation fails. Increase this on lower performance computers.'
                 ),
                 'default' => 300,
+                'required' => true,
             ],
             'AZURACAST_VERSION' => [
                 'name' => __('AzuraCast Release Channel'),
                 'options' => ['latest', 'stable'],
                 'default' => 'latest',
+                'required' => true,
             ],
             'AZURACAST_HTTP_PORT' => [
                 'name' => __('HTTP Port'),

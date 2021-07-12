@@ -2,11 +2,10 @@
 
 namespace App\Installer\EnvFiles;
 
-use App\Environment;
 use App\Utilities\Strings;
 use Dotenv\Dotenv;
 use Dotenv\Exception\ExceptionInterface;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 abstract class AbstractEnvFile implements \ArrayAccess
 {
@@ -105,7 +104,9 @@ abstract class AbstractEnvFile implements \ArrayAccess
                 $default = '';
             }
 
-            if ((null === $value || $default === $value) && Environment::LANG !== $key) {
+            $isRequired = (bool)($keyInfo['required'] ?? false);
+
+            if (null === $value || ($default === $value && !$isRequired)) {
                 $value ??= $default;
                 $envFile[] = '# ' . $key . '=' . $value;
             } else {

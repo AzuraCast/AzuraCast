@@ -31,6 +31,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                 ),
                 'options' => $langOptions,
                 'default' => Locale::stripLocaleEncoding(Locale::DEFAULT_LOCALE),
+                'required' => true,
             ],
             Environment::APP_ENV => [
                 'name' => __(
@@ -41,6 +42,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     Environment::ENV_DEVELOPMENT,
                     Environment::ENV_TESTING,
                 ],
+                'required' => true,
             ],
             Environment::LOG_LEVEL => [
                 'name' => __(
@@ -90,6 +92,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'Do not modify this after installation.',
                 ),
                 'default' => $dbSettings['host'],
+                'required' => true,
             ],
             Environment::DB_PORT => [
                 'name' => __('MariaDB Port'),
@@ -97,6 +100,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'Do not modify this after installation.',
                 ),
                 'default' => $dbSettings['port'],
+                'required' => true,
             ],
             Environment::DB_USER => [
                 'name' => __('MariaDB Username'),
@@ -104,6 +108,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'Do not modify this after installation.',
                 ),
                 'default' => $dbSettings['user'],
+                'required' => true,
             ],
             Environment::DB_PASSWORD => [
                 'name' => __('MariaDB Password'),
@@ -111,6 +116,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'Do not modify this after installation.',
                 ),
                 'default' => $dbSettings['password'],
+                'required' => true,
             ],
             Environment::DB_NAME => [
                 'name' => __('MariaDB Database Name'),
@@ -118,6 +124,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'Do not modify this after installation.',
                 ),
                 'default' => $dbSettings['dbname'],
+                'required' => true,
             ],
             'MYSQL_RANDOM_ROOT_PASSWORD' => [
                 'name' => __('Auto-generate Random MariaDB Root Password'),
@@ -149,15 +156,18 @@ class AzuraCastEnvFile extends AbstractEnvFile
             Environment::REDIS_HOST => [
                 'name' => __('Redis Host'),
                 'default' => $redisSettings['host'],
+                'required' => true,
             ],
             Environment::REDIS_PORT => [
                 'name' => __('Redis Port'),
                 'default' => $redisSettings['port'],
+                'required' => true,
             ],
             Environment::REDIS_DB => [
                 'name' => __('Redis Database Index'),
                 'options' => range(0, 15),
                 'default' => $redisSettings['db'],
+                'required' => true,
             ],
             'PHP_MAX_FILE_SIZE' => [
                 'name' => __('PHP Maximum POST File Size'),

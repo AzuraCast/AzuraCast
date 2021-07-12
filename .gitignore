@@ -45,6 +45,7 @@ tmp/cache/*---*
 
 # Docker files
 /docker-compose.yml
+/docker-compose.new.yml
 /docker-compose.override.yml
 /.env
 

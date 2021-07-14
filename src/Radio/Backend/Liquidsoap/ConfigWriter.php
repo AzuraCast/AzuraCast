@@ -482,9 +482,9 @@ class ConfigWriter implements EventSubscriberInterface
                 track_sensitive = false,
                 [
                     dynamic,
-                    at(
-                        fun()-> !autodj_is_loading,
-                        blank(id = "autodj_startup_blank", duration = 120.)
+                    source.available(
+                        blank(id = "autodj_startup_blank", duration = 120.),
+                        predicate.activates({!autodj_is_loading})
                     )
                 ]
             )
@@ -949,7 +949,7 @@ class ConfigWriter implements EventSubscriberInterface
                     ret = {$feedbackCommand}
                     log("AzuraCast Feedback Response: #{ret}")
                 end
-                (-1.)
+                (-1.0)
             end
 
             thread.run.recurrent(fast=false, delay=0., f)

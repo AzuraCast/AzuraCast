@@ -141,17 +141,17 @@ class ConfigWriter implements EventSubscriberInterface
 
         $event->appendBlock(
             <<<EOF
-        set("init.daemon", false)
-        set("init.daemon.pidfile.path","${pidfile}")
-        set("log.stdout", true)
-        set("log.file", false)
-        set("server.telnet",true)
-        set("server.telnet.bind_addr","${telnetBindAddr}")
-        set("server.telnet.port", ${telnetPort})
-        set("harbor.bind_addrs",["0.0.0.0"])
+        init.daemon.set(false)
+        init.daemon.pidfile.path.set("${pidfile}")
+        log.stdout.set(true)
+        log.file.set(false)
+        setting.server.telnet.set(true)
+        setting.server.telnet.bind_addr.set("${telnetBindAddr}")
+        setting.server.telnet.port.set(${telnetPort})
+        setting.harbor.bind_addrs.set(["0.0.0.0"])
 
-        set("tag.encodings",["UTF-8","ISO-8859-1"])
-        set("encoder.encoder.export",["artist","title","album","song"])
+        setting.tag.encodings.set(["UTF-8","ISO-8859-1"])
+        setting.encoder.encoder.export.set(["artist","title","album","song"])
 
         setenv("TZ", "${stationTz}")
 
@@ -293,21 +293,14 @@ class ConfigWriter implements EventSubscriberInterface
                     default:
                         $remote_url = $playlist->getRemoteUrl();
                         if (null !== $remote_url) {
-                            $remote_url_scheme = parse_url($remote_url, PHP_URL_SCHEME);
-                            $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
-
                             $buffer = $playlist->getRemoteBuffer();
                             $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function
-                            . '(max=' . $buffer . '., "' . self::cleanUpString($remote_url) . '"))';
+                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(input.http(max=' . $buffer . '., "' . self::cleanUpString($remote_url) . '"))';
                         }
                         break;
                 }
             }
-
-            $playlistConfigLines[] = $playlistVarName . ' = audio_to_stereo(id="stereo_'
-                . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
 
             $playlistConfigLines[] = $playlistVarName . ' = cue_cut(id="cue_'
                 . self::cleanUpString($playlistVarName) . '", ' . $playlistVarName . ')';
@@ -482,7 +475,6 @@ class ConfigWriter implements EventSubscriberInterface
             end
 
             dynamic = request.dynamic.list(id="next_song", timeout=20., retry_delay=2., autodj_next_song)
-            dynamic = audio_to_stereo(id="stereo_next_song", dynamic)
             dynamic = cue_cut(id="cue_next_song", dynamic)
 
             dynamic_startup = fallback(
@@ -521,7 +513,6 @@ class ConfigWriter implements EventSubscriberInterface
         $event->appendBlock(
             <<< EOF
         requests = request.queue(id="requests")
-        requests = audio_to_stereo(id="stereo_requests", requests)
         requests = cue_cut(id="cue_requests", requests)
 
         radio = fallback(id="requests_fallback", track_sensitive = true, [requests, radio])
@@ -735,13 +726,15 @@ class ConfigWriter implements EventSubscriberInterface
         $crossDuration = $settings->getCrossfadeDuration();
         if ($crossDuration > 0) {
             $crossfadeIsSmart = (Entity\StationBackendConfiguration::CROSSFADE_SMART === $crossfade_type) ? 'true' : 'false';
-            $event->appendLines(
-                [
-                    'radio = crossfade(smart=' . $crossfadeIsSmart . ', duration=' . self::toFloat(
-                        $crossDuration
-                    ) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
-                ]
-            );
+            $event->appendLines([
+                sprintf(
+                    'radio = crossfade(smart=%s, duration=%s, fade_out=%s, fade_in=%s, radio)',
+                    $crossfadeIsSmart,
+                    self::toFloat($crossDuration),
+                    self::toFloat($crossfade),
+                    self::toFloat($crossfade)
+                ),
+            ]);
         }
     }
 
@@ -771,18 +764,18 @@ class ConfigWriter implements EventSubscriberInterface
         last_authenticated_dj = ref("")
         live_dj = ref("")
 
-        def dj_auth(auth_user,auth_pw) =
+        def dj_auth(login) =
             user = ref("")
             password = ref("")
 
-            if (auth_user == "source" or auth_user == "") and (string.match(pattern="(:|,)+", auth_pw)) then
-                auth_string = string.split(separator="(:|,)", auth_pw)
+            if (login.user == "source" or login.user == "") and (string.match(pattern="(:|,)+", login.password)) then
+                auth_string = string.split(separator="(:|,)", login.password)
 
                 user := list.nth(default="", auth_string, 0)
                 password := list.nth(default="", auth_string, 2)
             else
-                user := auth_user
-                password := auth_pw
+                user := login.user
+                password := login.password
             end
 
             log("Authenticating DJ: #{!user}")
@@ -851,7 +844,7 @@ class ConfigWriter implements EventSubscriberInterface
         ignore(radio_without_live)
 
         # Live Broadcasting
-        live = audio_to_stereo(input.harbor(${harborParams}))
+        live = input.harbor(${harborParams})
         ignore(output.dummy(live, fallible=true))
 
         radio = fallback(id="live_fallback", replay_metadata=false, track_sensitive=false, [live, radio])

@@ -949,7 +949,7 @@ class ConfigWriter implements EventSubscriberInterface
                     ret = {$feedbackCommand}
                     log("AzuraCast Feedback Response: #{ret}")
                 end
-                (-1.0)
+                (-1.)
             end
 
             thread.run.recurrent(fast=false, delay=0., f)

@@ -145,13 +145,13 @@ class ConfigWriter implements EventSubscriberInterface
         init.daemon.pidfile.path.set("${pidfile}")
         log.stdout.set(true)
         log.file.set(false)
-        setting.server.telnet.set(true)
-        setting.server.telnet.bind_addr.set("${telnetBindAddr}")
-        setting.server.telnet.port.set(${telnetPort})
-        setting.harbor.bind_addrs.set(["0.0.0.0"])
+        settings.server.telnet.set(true)
+        settings.server.telnet.bind_addr.set("${telnetBindAddr}")
+        settings.server.telnet.port.set(${telnetPort})
+        settings.harbor.bind_addrs.set(["0.0.0.0"])
 
-        setting.tag.encodings.set(["UTF-8","ISO-8859-1"])
-        setting.encoder.encoder.export.set(["artist","title","album","song"])
+        settings.tag.encodings.set(["UTF-8","ISO-8859-1"])
+        settings.encoder.encoder.export.set(["artist","title","album","song"])
 
         setenv("TZ", "${stationTz}")
 

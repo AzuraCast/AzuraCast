@@ -51,6 +51,9 @@
                                                      v-if="row.item.order === 'shuffle'">
                                         {{ langReshuffleButton }}
                                     </b-dropdown-item>
+                                    <b-dropdown-item @click.prevent="doClone(row.item.name, row.item.links.clone)">
+                                        {{ langCloneButton }}
+                                    </b-dropdown-item>
                                     <template v-for="format in ['pls', 'm3u']">
                                         <b-dropdown-item :href="row.item.links.export[format]" target="_blank">
                                             <translate :key="'lang_format_'+format" :translate-params="{ format: format.toUpperCase() }">
@@ -117,6 +120,7 @@
         <queue-modal ref="queueModal"></queue-modal>
         <reorder-modal ref="reorderModal"></reorder-modal>
         <import-modal ref="importModal" @relist="relist"></import-modal>
+        <clone-modal ref="cloneModal" @relist="relist"></clone-modal>
     </div>
 </template>
 
@@ -130,10 +134,11 @@ import QueueModal from './Playlists/QueueModal';
 import axios from 'axios';
 import Icon from '../Common/Icon';
 import handleAxiosError from '../Function/handleAxiosError';
+import CloneModal from './Playlists/CloneModal';
 
 export default {
     name: 'StationPlaylists',
-    components: { Icon, QueueModal, ImportModal, ReorderModal, EditModal, Schedule, DataTable },
+    components: { CloneModal, Icon, QueueModal, ImportModal, ReorderModal, EditModal, Schedule, DataTable },
     props: {
         listUrl: String,
         scheduleUrl: String,
@@ -170,6 +175,9 @@ export default {
         },
         langReshuffleButton () {
             return this.$gettext('Reshuffle');
+        },
+        langCloneButton () {
+            return this.$gettext('Duplicate');
         },
         langImportButton () {
             return this.$gettext('Import from PLS/M3U');
@@ -243,6 +251,9 @@ export default {
         },
         doImport (url) {
             this.$refs.importModal.open(url);
+        },
+        doClone (name, url) {
+            this.$refs.cloneModal.open(name, url);
         },
         doModify (url) {
             notify('<b>' + this.$gettext('Applying changes...') + '</b>', 'warning', {

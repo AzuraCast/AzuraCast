@@ -204,27 +204,33 @@ class PlaylistsController extends AbstractScheduledEntityController
             'toggle' => $router->fromHere('api:stations:playlist:toggle', ['id' => $record->getId()], [], !$isInternal),
             'order' => $router->fromHere('api:stations:playlist:order', ['id' => $record->getId()], [], !$isInternal),
             'reshuffle' => $router->fromHere(
-                'api:stations:playlist:reshuffle',
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
+                route_name: 'api:stations:playlist:reshuffle',
+                route_params: ['id' => $record->getId()],
+                absolute: !$isInternal
             ),
             'queue' => $router->fromHere(
-                'api:stations:playlist:queue',
-                ['id' => $record->getId()],
-                [],
-                !$isInternal
+                route_name: 'api:stations:playlist:queue',
+                route_params: ['id' => $record->getId()],
+                absolute: !$isInternal
             ),
-            'import' => $router->fromHere('api:stations:playlist:import', ['id' => $record->getId()], [], !$isInternal),
+            'import' => $router->fromHere(
+                route_name: 'api:stations:playlist:import',
+                route_params: ['id' => $record->getId()],
+                absolute: !$isInternal
+            ),
+            'clone' => $router->fromHere(
+                route_name: 'api:stations:playlist:clone',
+                route_params: ['id' => $record->getId()],
+                absolute: !$isInternal
+            ),
             'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 
         foreach (['pls', 'm3u'] as $format) {
             $return['links']['export'][$format] = $router->fromHere(
-                'api:stations:playlist:export',
-                ['id' => $record->getId(), 'format' => $format],
-                [],
-                !$isInternal
+                route_name: 'api:stations:playlist:export',
+                route_params: ['id' => $record->getId(), 'format' => $format],
+                absolute: !$isInternal
             );
         }
 

@@ -499,6 +499,12 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
         $this->play_per_minutes = $play_per_minutes;
     }
 
+    public function __clone()
+    {
+        $this->played_at = 0;
+        $this->queue_reset_at = 0;
+    }
+
     public function __toString(): string
     {
         return $this->getStation() . ' Playlist: ' . $this->getName();

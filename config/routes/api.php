@@ -504,6 +504,11 @@ return function (App $app) {
                             );
 
                             $group->post(
+                                '/clone',
+                                Controller\Api\Stations\Playlists\CloneAction::class
+                            )->setName('api:stations:playlist:clone');
+
+                            $group->post(
                                 '/import',
                                 Controller\Api\Stations\Playlists\ImportAction::class
                             )->setName('api:stations:playlist:import');

@@ -5,6 +5,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- You can now duplicate a single playlist within a station, choosing whether to copy over the schedule entries or media
+  associations that the current playlist has.
+
 - You can now embed the "Schedule" panel from the station's profile into your own web page as an embeddabl component.
 
 - Mount point updates:

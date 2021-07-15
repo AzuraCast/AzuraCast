@@ -51,7 +51,7 @@ return [
                             StationCloneForm::CLONE_PERMISSIONS => __('User Permissions'),
                             StationCloneForm::CLONE_WEBHOOKS => __('Web Hooks'),
                         ],
-                        'form_group_class' => 'col - sm - 12',
+                        'form_group_class' => 'col-sm-12',
                     ],
                 ],
 

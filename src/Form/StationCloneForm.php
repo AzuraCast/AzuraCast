@@ -134,14 +134,23 @@ class StationCloneForm extends StationForm
             $this->em->clear();
 
             if (in_array(self::CLONE_PLAYLISTS, $toClone, true)) {
-                if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
-                    $afterCloning = function (
-                        Entity\StationPlaylist $oldPlaylist,
-                        Entity\StationPlaylist $newPlaylist,
-                        Entity\Station $newStation
-                    ) use (
-                        $copier
-                    ): void {
+                $afterCloning = function (
+                    Entity\StationPlaylist $oldPlaylist,
+                    Entity\StationPlaylist $newPlaylist,
+                    Entity\Station $newStation
+                ) use (
+                    $copier,
+                    $toClone
+                ): void {
+                    foreach ($oldPlaylist->getScheduleItems() as $oldScheduleItem) {
+                        /** @var Entity\StationSchedule $newScheduleItem */
+                        $newScheduleItem = $copier->copy($oldScheduleItem);
+                        $newScheduleItem->setPlaylist($newPlaylist);
+
+                        $this->em->persist($newScheduleItem);
+                    }
+
+                    if (in_array(self::CLONE_MEDIA_STORAGE, $toClone, true)) {
                         foreach ($oldPlaylist->getFolders() as $oldPlaylistFolder) {
                             /** @var Entity\StationPlaylistFolder $newPlaylistFolder */
                             $newPlaylistFolder = $copier->copy($oldPlaylistFolder);
@@ -157,10 +166,8 @@ class StationCloneForm extends StationForm
                             $newMediaItem->setPlaylist($newPlaylist);
                             $this->em->persist($newMediaItem);
                         }
-                    };
-                } else {
-                    $afterCloning = null;
-                }
+                    }
+                };
 
                 $record = $this->reloadableEm->refetch($record);
                 $this->cloneCollection($record->getPlaylists(), $newStation, $copier, $afterCloning);
@@ -184,7 +191,24 @@ class StationCloneForm extends StationForm
 
             if (in_array(self::CLONE_STREAMERS, $toClone, true)) {
                 $record = $this->reloadableEm->refetch($record);
-                $this->cloneCollection($record->getStreamers(), $newStation, $copier);
+
+                $afterCloning = function (
+                    Entity\StationStreamer $oldStreamer,
+                    Entity\StationStreamer $newStreamer,
+                    Entity\Station $station
+                ) use (
+                    $copier
+                ): void {
+                    foreach ($oldStreamer->getScheduleItems() as $oldScheduleItem) {
+                        /** @var Entity\StationSchedule $newScheduleItem */
+                        $newScheduleItem = $copier->copy($oldScheduleItem);
+                        $newScheduleItem->setStreamer($newStreamer);
+
+                        $this->em->persist($newScheduleItem);
+                    }
+                };
+
+                $this->cloneCollection($record->getStreamers(), $newStation, $copier, $afterCloning);
             }
 
             if (in_array(self::CLONE_PERMISSIONS, $toClone, true)) {

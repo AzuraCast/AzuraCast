@@ -72,9 +72,21 @@ class StationSchedule
         return $this->playlist;
     }
 
+    public function setPlaylist(StationPlaylist $playlist): void
+    {
+        $this->playlist = $playlist;
+        $this->streamer = null;
+    }
+
     public function getStreamer(): ?StationStreamer
     {
         return $this->streamer;
+    }
+
+    public function setStreamer(StationStreamer $streamer): void
+    {
+        $this->streamer = $streamer;
+        $this->playlist = null;
     }
 
     public function getStartTime(): int

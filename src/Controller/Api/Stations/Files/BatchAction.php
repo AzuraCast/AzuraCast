@@ -228,7 +228,7 @@ class BatchAction
             $toMove = [
                 $this->batchUtilities->iterateMediaInDirectory($storageLocation, $dirPath),
                 $this->batchUtilities->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
-                $this->batchUtilities->iteratePlaylistFoldersInDirectory($station, $dirPath),
+                $this->batchUtilities->iteratePlaylistFoldersInDirectory($storageLocation, $dirPath),
             ];
 
             foreach ($toMove as $iterator) {

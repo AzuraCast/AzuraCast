@@ -191,7 +191,7 @@ final class Response extends \Slim\Http\Response
         }
 
         $response = $this->withHeader('Content-Disposition', $disposition)
-            ->withHeader('Content-Length', $fileMeta->fileSize())
+            ->withHeader('Content-Length', (string)$fileMeta->fileSize())
             ->withHeader('X-Accel-Buffering', 'no');
 
         $adapter = $filesystem->getAdapter();

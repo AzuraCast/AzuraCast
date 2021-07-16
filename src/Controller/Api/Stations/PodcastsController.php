@@ -242,7 +242,7 @@ class PodcastsController extends AbstractApiCrudController
 
         $return = new Entity\Api\Podcast();
         $return->id = $record->getId();
-        $return->storage_location_id = $record->getStorageLocation()?->getId();
+        $return->storage_location_id = $record->getStorageLocation()->getId();
         $return->title = $record->getTitle();
         $return->link = $record->getLink();
         $return->description = $record->getDescription();

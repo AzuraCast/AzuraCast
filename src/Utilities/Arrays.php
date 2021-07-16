@@ -25,19 +25,15 @@ class Arrays
      *
      * @param object|array $array
      * @param string $separator
-     * @param null $prefix
+     * @param string|null $prefix
      *
      * @return mixed[]
      */
-    public static function flattenArray(object|array $array, string $separator = '.', $prefix = null): array
+    public static function flattenArray(object|array $array, string $separator = '.', ?string $prefix = null): array
     {
-        if (!is_array($array)) {
-            if (is_object($array)) {
-                // Quick and dirty conversion from object to array.
-                $array = self::objectToArray($array);
-            } else {
-                return $array;
-            }
+        if (is_object($array)) {
+            // Quick and dirty conversion from object to array.
+            $array = self::objectToArray($array);
         }
 
         $return = [];

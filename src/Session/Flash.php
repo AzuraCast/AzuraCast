@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Session;
 
 use App\Traits\AvailableStaticallyTrait;
@@ -33,7 +35,7 @@ class Flash
      * @param string $level
      * @param bool $saveInSession
      */
-    public function alert(string $message, $level = self::INFO, $saveInSession = true): void
+    public function alert(string $message, string $level = self::INFO, bool $saveInSession = true): void
     {
         $this->addMessage($message, $level, $saveInSession);
     }
@@ -45,7 +47,7 @@ class Flash
      * @param string $level
      * @param bool $saveInSession
      */
-    public function addMessage(string $message, $level = self::INFO, $saveInSession = true): void
+    public function addMessage(string $message, string $level = self::INFO, bool $saveInSession = true): void
     {
         $colorChart = [
             'green' => self::SUCCESS,

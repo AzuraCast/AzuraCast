@@ -165,10 +165,14 @@ class PodcastMedia
     /**
      * @param string|float|null $seconds
      */
-    protected function parseSeconds($seconds = null): ?float
+    protected function parseSeconds(string|float $seconds = null): ?float
     {
         if ($seconds === '') {
             return null;
+        }
+
+        if (is_float($seconds)) {
+            return $seconds;
         }
 
         if (str_contains($seconds, ':')) {
@@ -180,6 +184,6 @@ class PodcastMedia
             return $sec;
         }
 
-        return $seconds;
+        return (float)$seconds;
     }
 }

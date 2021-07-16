@@ -2,6 +2,8 @@
 
 /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
 
+declare(strict_types=1);
+
 namespace App\Media;
 
 use App\Entity;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity;
@@ -37,7 +39,7 @@ class StationsController extends AbstractAdminCrudController
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
@@ -56,7 +58,7 @@ class StationsController extends AbstractAdminCrudController
         }
 
         $request->getFlash()->addMessage(__('Station deleted.'), Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
     }
 
     public function cloneAction(ServerRequest $request, Response $response, $id): ResponseInterface
@@ -70,16 +72,16 @@ class StationsController extends AbstractAdminCrudController
 
         if (false !== $cloneForm->process($request, $record)) {
             $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
         }
 
         return $request->getView()->renderToResponse(
             $response,
             'system/form_page',
             [
-                                                         'form' => $cloneForm,
-                                                         'render_mode' => 'edit',
-                                                         'title' => __('Clone Station: %s', $record->getName()),
+                'form' => $cloneForm,
+                'render_mode' => 'edit',
+                'title' => __('Clone Station: %s', $record->getName()),
             ]
         );
     }

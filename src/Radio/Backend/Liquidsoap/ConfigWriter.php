@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Backend\Liquidsoap;
 
 use App\Entity;
@@ -533,9 +535,9 @@ class ConfigWriter implements EventSubscriberInterface
      * @param Entity\StationPlaylist $playlist
      * @param bool $notify
      *
-     * @return string The full path that was written to.
+     * @return string|null The full path that was written to.
      */
-    public function writePlaylistFile(Entity\StationPlaylist $playlist, $notify = true): ?string
+    public function writePlaylistFile(Entity\StationPlaylist $playlist, bool $notify = true): ?string
     {
         $station = $playlist->getStation();
 
@@ -675,7 +677,7 @@ class ConfigWriter implements EventSubscriberInterface
      * @param string $endpoint
      * @param array $params
      */
-    protected function getApiUrlCommand(Entity\Station $station, string $endpoint, $params = []): string
+    protected function getApiUrlCommand(Entity\Station $station, string $endpoint, array $params = []): string
     {
         // Docker cURL-based API URL call with API authentication.
         if ($this->environment->isDocker()) {
@@ -1136,7 +1138,7 @@ class ConfigWriter implements EventSubscriberInterface
      * @param float|int|string $number
      * @param int $decimals
      */
-    public static function toFloat(float|int|string $number, $decimals = 2): string
+    public static function toFloat(float|int|string $number, int $decimals = 2): string
     {
         return number_format((float)$number, $decimals, '.', '');
     }

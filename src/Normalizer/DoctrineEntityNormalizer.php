@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Normalizer;
 
 use App\Exception\NoGetterAvailableException;
@@ -190,8 +192,11 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      *
      * @return bool|string[]|AttributeMetadataInterface[]
      */
-    protected function getAllowedAttributes($classOrObject, array $context, $attributesAsString = false): bool|array
-    {
+    protected function getAllowedAttributes(
+        $classOrObject,
+        array $context,
+        bool $attributesAsString = false
+    ): bool|array {
         $meta = $this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata();
 
         $props_raw = (new ReflectionClass($classOrObject))->getProperties(
@@ -314,7 +319,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * @param string $var
      * @param string $prefix
      */
-    protected function getMethodName(string $var, $prefix = ''): string
+    protected function getMethodName(string $var, string $prefix = ''): string
     {
         return $this->inflector->camelize(($prefix ? $prefix . '_' : '') . $var);
     }
@@ -330,7 +335,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         object $object,
         string $field,
         mixed $value,
-        $format = null,
+        ?string $format = null,
         array $context = []
     ): void {
         if (isset($context[self::ASSOCIATION_MAPPINGS][$field])) {

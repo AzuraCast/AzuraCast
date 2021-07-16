@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Profile;
 
 use App\Auth;
@@ -56,7 +58,7 @@ class EnableTwoFactorAction
 
             $request->getFlash()->addMessage(__('Two-factor authentication enabled.'), Flash::SUCCESS);
 
-            return $response->withRedirect($request->getRouter()->named('profile:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('profile:index'));
         }
 
         // Further customize TOTP code (with metadata that won't be stored in the DB)

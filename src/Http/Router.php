@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use App\Entity;
@@ -99,19 +101,14 @@ class Router implements RouterInterface
     }
 
     /**
-     * Same as $this->fromHere(), but merging the current GET query parameters into the request as well.
-     *
-     * @param null $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param bool $absolute
+     * @inheritDoc
      */
     public function fromHereWithQuery(
-        $route_name = null,
+        ?string $route_name = null,
         array $route_params = [],
         array $query_params = [],
-        $absolute = false
-    ): string {
+        bool $absolute = false
+    ): UriInterface {
         if ($this->currentRequest instanceof ServerRequestInterface) {
             $query_params = array_merge($this->currentRequest->getQueryParams(), $query_params);
         }
@@ -120,19 +117,14 @@ class Router implements RouterInterface
     }
 
     /**
-     * Return a named route based on the current page and its route arguments.
-     *
-     * @param null $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param bool $absolute
+     * @inheritDoc
      */
     public function fromHere(
-        $route_name = null,
+        ?string $route_name = null,
         array $route_params = [],
         array $query_params = [],
-        $absolute = false
-    ): string {
+        bool $absolute = false
+    ): UriInterface {
         if ($this->currentRequest instanceof ServerRequestInterface) {
             $route = RouteContext::fromRequest($this->currentRequest)->getRoute();
         } else {
@@ -157,18 +149,13 @@ class Router implements RouterInterface
     }
 
     /**
-     * Simpler format for calling "named" routes with parameters.
-     *
-     * @param string $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param boolean $absolute Whether to include the full URL.
+     * @inheritDoc
      */
     public function named(
         string $route_name,
-        $route_params = [],
+        array $route_params = [],
         array $query_params = [],
-        $absolute = false
+        bool $absolute = false
     ): UriInterface {
         return self::resolveUri(
             $this->getBaseUrl(),

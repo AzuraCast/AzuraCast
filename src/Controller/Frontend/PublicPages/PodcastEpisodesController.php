@@ -52,7 +52,7 @@ class PodcastEpisodesController
             }
         );
 
-        $podcastsLink = $router->fromHere(
+        $podcastsLink = (string)$router->fromHere(
             'public:podcasts',
             [
                 'station_id' => $station->getId(),
@@ -64,7 +64,7 @@ class PodcastEpisodesController
             return $response->withRedirect($podcastsLink);
         }
 
-        $feedLink = $router->named(
+        $feedLink = (string)$router->named(
             'public:podcast:feed',
             [
                 'station_id' => $station->getId(),

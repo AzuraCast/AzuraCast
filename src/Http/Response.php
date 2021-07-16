@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use Azura\Files\Adapter\LocalAdapterInterface;
@@ -117,7 +119,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function renderStringAsFile(string $file_data, string $content_type, $file_name = null): static
+    public function renderStringAsFile(string $file_data, string $content_type, ?string $file_name = null): static
     {
         $response = $this->response
             ->withHeader('Pragma', 'public')

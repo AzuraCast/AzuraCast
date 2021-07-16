@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -493,7 +493,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     public function fromMetadata(Metadata $metadata): void
     {
-        $this->setLength($metadata->getDuration());
+        $this->setLength((int)$metadata->getDuration());
 
         $tags = $metadata->getTags();
 

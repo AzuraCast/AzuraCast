@@ -321,24 +321,24 @@ class PodcastEpisodesController extends AbstractApiCrudController
         $return->art_updated_at = $record->getArtUpdatedAt();
         $return->has_custom_art = (0 !== $return->art_updated_at);
 
-        $return->art = $router->fromHere(
+        $return->art = (string)$router->fromHere(
             route_name: 'api:stations:podcast:episode:art',
             route_params: ['episode_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
             absolute: true
         );
 
         $return->links = [
-            'self' => $router->fromHere(
+            'self' => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public' => $router->fromHere(
+            'public' => (string)$router->fromHere(
                 route_name: 'public:podcast:episode',
                 route_params: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'download' => $router->fromHere(
+            'download' => (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episode:download',
                 route_params: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
@@ -349,12 +349,12 @@ class PodcastEpisodesController extends AbstractApiCrudController
         $station = $request->getStation();
 
         if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
-            $return->links['art'] = $router->fromHere(
+            $return->links['art'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episode:art-internal',
                 route_params: ['episode_id' => $record->getId()],
                 absolute: !$isInternal
             );
-            $return->links['media'] = $router->fromHere(
+            $return->links['media'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episode:media-internal',
                 route_params: ['episode_id' => $record->getId()],
                 absolute: !$isInternal

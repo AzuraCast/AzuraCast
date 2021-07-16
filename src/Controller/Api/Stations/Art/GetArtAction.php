@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Art;
 
 use App\Entity;
@@ -46,7 +48,7 @@ class GetArtAction
 
         $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();
 
-        $defaultArtRedirect = $response->withRedirect($stationRepo->getDefaultAlbumArtUrl($station), 302);
+        $defaultArtRedirect = $response->withRedirect((string)$stationRepo->getDefaultAlbumArtUrl($station), 302);
 
         // If a timestamp delimiter is added, strip it automatically.
         $media_id = explode('-', $media_id, 2)[0];

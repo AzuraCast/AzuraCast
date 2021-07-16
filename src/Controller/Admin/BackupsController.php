@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Config;
@@ -91,7 +93,7 @@ class BackupsController extends AbstractLogViewerController
 
         if (false !== $settingsForm->process($request)) {
             $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->fromHere('admin:backups:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('admin:backups:index'));
         }
 
         return $request->getView()->renderToResponse(
@@ -196,7 +198,7 @@ class BackupsController extends AbstractLogViewerController
         $fs->delete($path);
 
         $request->getFlash()->addMessage('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:backups:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:backups:index'));
     }
 
     /**

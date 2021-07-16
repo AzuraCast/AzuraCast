@@ -55,7 +55,7 @@ class PodcastEpisodeController
             return $response->withRedirect($podcastEpisodesLink);
         }
 
-        $feedLink = $router->named(
+        $feedLink = (string)$router->named(
             'public:podcast:feed',
             [
                 'station_id' => $station->getId(),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -135,21 +137,20 @@ class StationScheduleRepository extends Repository
                     }
 
                     $row = new Entity\Api\StationSchedule();
-                    $row->id = $scheduleItem->getId();
+                    $row->id = $scheduleItem->getIdRequired();
                     $row->start_timestamp = $start->getTimestamp();
                     $row->start = $start->toIso8601String();
                     $row->end_timestamp = $end->getTimestamp();
                     $row->end = $end->toIso8601String();
                     $row->is_now = $start->lessThanOrEqualTo($now);
 
-                    if ($scheduleItem->getPlaylist() instanceof Entity\StationPlaylist) {
-                        $playlist = $scheduleItem->getPlaylist();
+                    $playlist = $scheduleItem->getPlaylist();
+                    $streamer = $scheduleItem->getStreamer();
 
+                    if ($playlist instanceof Entity\StationPlaylist) {
                         $row->type = Entity\Api\StationSchedule::TYPE_PLAYLIST;
                         $row->name = $playlist->getName();
-                    } elseif ($scheduleItem->getStreamer() instanceof Entity\StationStreamer) {
-                        $streamer = $scheduleItem->getStreamer();
-
+                    } elseif ($streamer instanceof Entity\StationStreamer) {
                         $row->type = Entity\Api\StationSchedule::TYPE_STREAMER;
                         $row->name = $streamer->getDisplayName();
                     }

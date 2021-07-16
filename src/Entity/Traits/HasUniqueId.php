@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Traits;
 
 use App\Doctrine\Generator\UuidV6Generator;
@@ -18,6 +20,15 @@ trait HasUniqueId
 
     public function getId(): ?string
     {
+        return $this->id;
+    }
+
+    public function getIdRequired(): string
+    {
+        if (null === $this->id) {
+            throw new \RuntimeException('An ID was not generated for this object.');
+        }
+
         return $this->id;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -73,7 +75,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         return $response->withJson($events);
     }
 
-    protected function editRecord(?array $data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');

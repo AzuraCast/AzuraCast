@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utilities;
 
 class Strings
@@ -34,24 +36,20 @@ class Strings
     /**
      * Generate a randomized password of specified length.
      *
-     * @param int $char_length
+     * @param int $length
      */
-    public static function generatePassword($char_length = 8): string
+    public static function generatePassword(int $length = 8): string
     {
         // String of all possible characters. Avoids using certain letters and numbers that closely resemble others.
-        $numeric_chars = str_split('234679');
-        $uppercase_chars = str_split('ACDEFGHJKLMNPQRTWXYZ');
-        $lowercase_chars = str_split('acdefghjkmnpqrtwxyz');
+        $keyspace = '234679ACDEFGHJKLMNPQRTWXYZacdefghjkmnpqrtwxyz';
 
-        $chars = [$numeric_chars, $uppercase_chars, $lowercase_chars];
+        $str = '';
+        $max = mb_strlen($keyspace, '8bit') - 1;
 
-        $password = '';
-        for ($i = 1; $i <= $char_length; $i++) {
-            $char_array = $chars[$i % 3];
-            $password .= $char_array[random_int(0, count($char_array) - 1)];
+        for ($i = 0; $i < $length; ++$i) {
+            $str .= $keyspace[random_int(0, $max)];
         }
-
-        return str_shuffle($password);
+        return $str;
     }
 
     /**

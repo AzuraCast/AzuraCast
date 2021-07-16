@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -406,7 +406,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
     ): Api\StationRemote {
         $response = new Api\StationRemote();
 
-        $response->id = $this->id;
+        $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
         $response->url = $adapter->getPublicUrl($this);
 

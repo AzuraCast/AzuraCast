@@ -4,6 +4,8 @@
  * Extends the Zend Config XML library to allow attribute handling.
  */
 
+declare(strict_types=1);
+
 namespace App\Xml;
 
 use Laminas\Config\Exception;
@@ -120,11 +122,11 @@ class Writer extends Xml
 
     protected function attributesFirst($a, $b): int
     {
-        if (str_starts_with($a, '@')) {
+        if (str_starts_with((string)$a, '@')) {
             return -1;
         }
 
-        if (str_starts_with($b, '@')) {
+        if (str_starts_with((string)$b, '@')) {
             return 1;
         }
 

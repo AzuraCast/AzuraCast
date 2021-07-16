@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
@@ -45,7 +47,7 @@ class RelaysController
             $fa = $this->adapters->getFrontendAdapter($station);
 
             $row = new Entity\Api\Admin\Relay();
-            $row->id = $station->getId();
+            $row->id = $station->getIdRequired();
             $row->name = $station->getName();
             $row->shortcode = $station->getShortName();
             $row->description = $station->getDescription();

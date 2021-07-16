@@ -1,10 +1,9 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;

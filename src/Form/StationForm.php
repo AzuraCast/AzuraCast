@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Acl;
@@ -75,7 +77,7 @@ class StationForm extends EntityForm
         if (!isset($installedFrontends[Adapters::FRONTEND_SHOUTCAST])) {
             $frontendDesc = __(
                 'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
-                $request->getRouter()->named('admin:install_shoutcast:index')
+                (string)$request->getRouter()->named('admin:install_shoutcast:index')
             );
 
             $this->getField('frontend_type')->setOption('description', $frontendDesc);
@@ -94,7 +96,7 @@ class StationForm extends EntityForm
         if ($canSeeAdministration) {
             $storageLocationsDesc = __(
                 '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.',
-                $request->getRouter()->named('admin:storage_locations:index')
+                (string)$request->getRouter()->named('admin:storage_locations:index')
             );
 
             if ($this->hasField('media_storage_location_id')) {
@@ -148,7 +150,7 @@ class StationForm extends EntityForm
                     $record->setMediaStorageLocation(
                         $this->storageLocationRepo->findByType(
                             Entity\StorageLocation::TYPE_STATION_MEDIA,
-                            $data['media_storage_location_id']
+                            (int)$data['media_storage_location_id']
                         )
                     );
                 }
@@ -156,7 +158,7 @@ class StationForm extends EntityForm
                     $record->setRecordingsStorageLocation(
                         $this->storageLocationRepo->findByType(
                             Entity\StorageLocation::TYPE_STATION_RECORDINGS,
-                            $data['recordings_storage_location_id']
+                            (int)$data['recordings_storage_location_id']
                         )
                     );
                 }
@@ -164,7 +166,7 @@ class StationForm extends EntityForm
                     $record->setPodcastsStorageLocation(
                         $this->storageLocationRepo->findByType(
                             Entity\StorageLocation::TYPE_STATION_PODCASTS,
-                            $data['podcasts_storage_location_id']
+                            (int)$data['podcasts_storage_location_id']
                         )
                     );
                 }

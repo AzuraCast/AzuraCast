@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Entity;
@@ -72,7 +74,7 @@ class ProfileController
         $stationForm = $this->factory->make(StationForm::class);
 
         if (false !== $stationForm->process($request, $station)) {
-            return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:profile:index'));
         }
 
         return $request->getView()->renderToResponse(
@@ -111,6 +113,6 @@ class ProfileController
         $this->em->persist($station);
         $this->em->flush();
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:profile:index'));
     }
 }

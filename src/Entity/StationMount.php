@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -348,7 +348,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     ): Api\StationMount {
         $response = new Api\StationMount();
 
-        $response->id = $this->id;
+        $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
         $response->path = $this->getName();
         $response->is_default = $this->is_default;

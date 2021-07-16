@@ -261,29 +261,29 @@ class PodcastsController extends AbstractApiCrudController
         $return->episodes = $episodes;
 
         $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
-        $return->art = $router->fromHere(
+        $return->art = (string)$router->fromHere(
             route_name: 'api:stations:podcast:art',
             route_params: ['podcast_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
             absolute: true
         );
 
         $return->links = [
-            'self' => $router->fromHere(
+            'self' => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'episodes' => $router->fromHere(
+            'episodes' => (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episodes',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public_episodes' => $router->fromHere(
+            'public_episodes' => (string)$router->fromHere(
                 route_name: 'public:podcast:episodes',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public_feed' => $router->fromHere(
+            'public_feed' => (string)$router->fromHere(
                 route_name: 'public:podcast:feed',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
@@ -293,18 +293,18 @@ class PodcastsController extends AbstractApiCrudController
         $acl = $request->getAcl();
 
         if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
-            $return->links['art'] = $router->fromHere(
+            $return->links['art'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:art-internal',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
 
-            $return->links['episode_new_art'] = $router->fromHere(
+            $return->links['episode_new_art'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episodes:new-art',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
-            $return->links['episode_new_media'] = $router->fromHere(
+            $return->links['episode_new_media'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episodes:new-media',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal

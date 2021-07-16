@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Profile;
 
 use App\Http\Response;
@@ -24,6 +26,6 @@ class DisableTwoFactorAction
 
         $request->getFlash()->addMessage(__('Two-factor authentication disabled.'), Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->named('profile:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('profile:index'));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity;
@@ -45,7 +47,7 @@ class UsersController extends AbstractAdminCrudController
             if (false !== $this->doEdit($request, $id)) {
                 $request->getFlash()->addMessage(($id ? __('User updated.') : __('User added.')), Flash::SUCCESS);
 
-                return $response->withRedirect($request->getRouter()->named('admin:users:index'));
+                return $response->withRedirect((string)$request->getRouter()->named('admin:users:index'));
             }
         } catch (UniqueConstraintViolationException) {
             $request->getFlash()->addMessage(
@@ -78,7 +80,7 @@ class UsersController extends AbstractAdminCrudController
             $request->getFlash()->addMessage('<b>' . __('User deleted.') . '</b>', Flash::SUCCESS);
         }
 
-        return $response->withRedirect($request->getRouter()->named('admin:users:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:users:index'));
     }
 
     public function impersonateAction(
@@ -103,6 +105,6 @@ class UsersController extends AbstractAdminCrudController
             Flash::SUCCESS
         );
 
-        return $response->withRedirect($request->getRouter()->named('dashboard'));
+        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
     }
 }

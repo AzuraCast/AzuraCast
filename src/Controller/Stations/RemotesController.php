@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
@@ -37,7 +39,7 @@ class RemotesController extends AbstractStationCrudController
                 '<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
                 Flash::SUCCESS
             );
-            return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:remotes:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/remotes/edit', [
@@ -57,7 +59,7 @@ class RemotesController extends AbstractStationCrudController
 
         $request->getFlash()->addMessage('<b>' . __('Remote Relay deleted.') . '</b>', Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:remotes:index'));
     }
 
     protected function getRecord(Station $station, $id = null): ?object

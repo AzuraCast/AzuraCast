@@ -1,10 +1,9 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Environment;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Radio\Adapters;
@@ -354,7 +353,7 @@ class Station implements Stringable
 
     public function setShortName(?string $shortName): void
     {
-        $shortName = trim($shortName);
+        $shortName = trim($shortName ?? '');
         if (empty($shortName)) {
             $shortName = $this->name;
         }
@@ -529,7 +528,7 @@ class Station implements Stringable
 
     public function setRadioBaseDir(?string $newDir = null): void
     {
-        $newDir = $this->truncateNullableString(trim($newDir));
+        $newDir = $this->truncateNullableString(trim($newDir ?? ''));
 
         if (empty($newDir)) {
             $stationsBaseDir = Environment::getInstance()->getStationDirectory();
@@ -794,7 +793,7 @@ class Station implements Stringable
         return $this->api_history_items ?? self::DEFAULT_API_HISTORY_ITEMS;
     }
 
-    public function setApiHistoryItems(?int $api_history_items): void
+    public function setApiHistoryItems(int $api_history_items): void
     {
         $this->api_history_items = $api_history_items;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App;
@@ -124,7 +126,7 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse->log = $record->getLog();
 
         $apiResponse->links = [
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 
         return $apiResponse;

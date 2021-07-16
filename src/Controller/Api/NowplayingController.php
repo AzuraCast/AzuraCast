@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api;
 
 use App\Entity;
@@ -80,8 +82,11 @@ class NowplayingController implements EventSubscriberInterface
      * @param Response $response
      * @param int|string|null $station_id
      */
-    public function __invoke(ServerRequest $request, Response $response, $station_id = null): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequest $request,
+        Response $response,
+        int|string $station_id = null
+    ): ResponseInterface {
         $router = $request->getRouter();
 
         // Pull NP data from the fastest/first available source using the EventDispatcher.

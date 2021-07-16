@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api;
 
 use App\Exception\ValidationException;
@@ -75,7 +77,7 @@ abstract class AbstractApiCrudController
         $router = $request->getRouter();
 
         $return['links'] = [
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
         return $return;
     }
@@ -134,7 +136,7 @@ abstract class AbstractApiCrudController
      * @param object|null $record
      * @param array $context
      */
-    protected function editRecord(?array $data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
@@ -160,7 +162,7 @@ abstract class AbstractApiCrudController
      * @param object|null $record
      * @param array $context
      */
-    protected function fromArray(array $data, $record = null, array $context = []): object
+    protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
         if (null !== $record) {
             $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;

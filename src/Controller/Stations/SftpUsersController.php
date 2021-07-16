@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Environment;
@@ -56,7 +58,7 @@ class SftpUsersController extends AbstractStationCrudController
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Changes saved.') . '</b>', Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->fromHere('stations:sftp_users:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:sftp_users:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -75,6 +77,6 @@ class SftpUsersController extends AbstractStationCrudController
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('SFTP User deleted.') . '</b>', Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->fromHere('stations:sftp_users:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:sftp_users:index'));
     }
 }

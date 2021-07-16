@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio;
 
 use Brick\Math;
@@ -58,6 +60,8 @@ class Quota
         if ($unit) {
             // Find the position of the unit in the ordered string which is the power
             // of magnitude to multiply a kilobyte by.
+
+            /** @noinspection StringFragmentMisplacedInspection */
             $byte_power = stripos(
                 haystack: 'bkmgtpezy',
                 needle: $unit[0]

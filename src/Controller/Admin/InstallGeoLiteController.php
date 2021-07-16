@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Repository\SettingsRepository;
@@ -74,6 +76,6 @@ class InstallGeoLiteController
         @unlink(GeoLite::getDatabasePath());
 
         $request->getFlash()->addMessage(__('GeoLite database uninstalled.'), Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->fromHere('admin:install_geolite:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('admin:install_geolite:index'));
     }
 }

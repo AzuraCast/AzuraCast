@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sync;
 
 use App\Entity\Repository\SettingsRepository;

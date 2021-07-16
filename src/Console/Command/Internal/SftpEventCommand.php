@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Command\Internal;
 
 use App\Console\Application;
@@ -99,7 +101,7 @@ class SftpEventCommand extends CommandAbstract
         );
 
         $message = new Message\AddNewMediaMessage();
-        $message->storage_location_id = $storageLocation->getId();
+        $message->storage_location_id = $storageLocation->getIdRequired();
         $message->path = $relativePath;
 
         $this->messageBus->dispatch($message);

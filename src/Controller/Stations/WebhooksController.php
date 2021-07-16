@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Entity;
@@ -56,7 +58,7 @@ class WebhooksController extends AbstractStationCrudController
 
         if (false !== $this->form->process($request, $record)) {
             $request->getFlash()->addMessage('<b>' . __('Web Hook added.') . '</b>', Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
         return $view->renderToResponse($response, 'system/form_page', [
@@ -70,7 +72,7 @@ class WebhooksController extends AbstractStationCrudController
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Web Hook updated.') . '</b>', Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -100,7 +102,7 @@ class WebhooksController extends AbstractStationCrudController
             '<b>' . ($new_status ? __('Web hook enabled.') : __('Web Hook disabled.')) . '</b>',
             Flash::SUCCESS
         );
-        return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:webhooks:index'));
     }
 
     public function testAction(
@@ -134,6 +136,6 @@ class WebhooksController extends AbstractStationCrudController
 
         $request->getFlash()->addMessage('<b>' . __('Web Hook deleted.') . '</b>', Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:webhooks:index'));
     }
 }

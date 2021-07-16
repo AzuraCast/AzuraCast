@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Http\ServerRequest;
@@ -125,7 +127,7 @@ class Locale
         }
 
         $server_params = $request->getServerParams();
-        $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
+        $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? '');
 
         if (!empty($browser_locale)) {
             if (2 === strlen($browser_locale)) {

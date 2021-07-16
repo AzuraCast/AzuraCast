@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Form\PermissionsForm;
@@ -66,7 +68,7 @@ class PermissionsController extends AbstractAdminCrudController
                 '<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
                 Flash::SUCCESS
             );
-            return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:permissions:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -81,6 +83,6 @@ class PermissionsController extends AbstractAdminCrudController
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Permission deleted.') . '</b>', Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:permissions:index'));
     }
 }

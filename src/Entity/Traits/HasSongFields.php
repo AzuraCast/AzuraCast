@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Traits;
 
 use App\Entity\Interfaces\SongInterface;
@@ -65,7 +67,7 @@ trait HasSongFields
         $oldText = $this->text;
         $this->text = $this->truncateNullableString($text, 303);
 
-        if (0 !== strcmp($oldText, $this->text)) {
+        if (0 !== strcmp($oldText ?? '', $this->text ?? '')) {
             $this->updateSongId();
         }
     }
@@ -80,7 +82,7 @@ trait HasSongFields
         $oldArtist = $this->artist;
         $this->artist = $this->truncateNullableString($artist, 150);
 
-        if (0 !== strcmp($oldArtist, $this->artist)) {
+        if (0 !== strcmp($oldArtist ?? '', $this->artist ?? '')) {
             $this->setTextFromArtistAndTitle();
         }
     }
@@ -95,7 +97,7 @@ trait HasSongFields
         $oldTitle = $this->title;
         $this->title = $this->truncateNullableString($title, 150);
 
-        if (0 !== strcmp($oldTitle, $this->title)) {
+        if (0 !== strcmp($oldTitle ?? '', $this->title ?? '')) {
             $this->setTextFromArtistAndTitle();
         }
     }

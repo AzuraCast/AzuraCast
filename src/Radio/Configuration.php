@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio;
 
 use App\Entity\Station;
@@ -157,7 +159,7 @@ class Configuration
      * @param Station $station
      * @param bool $force_restart
      */
-    protected function reloadSupervisorForStation(Station $station, $force_restart = false): bool
+    protected function reloadSupervisorForStation(Station $station, bool $force_restart = false): bool
     {
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
@@ -250,7 +252,7 @@ class Configuration
      * @param Station $station
      * @param bool $force
      */
-    public function assignRadioPorts(Station $station, $force = false): void
+    public function assignRadioPorts(Station $station, bool $force = false): void
     {
         if (
             $station->getFrontendType() !== Adapters::FRONTEND_REMOTE

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Doctrine;
 
 use App\Environment;
@@ -48,7 +50,7 @@ class Repository
      *
      * @return mixed[]
      */
-    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
+    public function fetchArray(bool $cached = true, ?string $order_by = null, string $order_dir = 'ASC'): array
     {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
@@ -71,8 +73,12 @@ class Repository
      *
      * @return mixed[]
      */
-    public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name'): array
-    {
+    public function fetchSelect(
+        bool|string $add_blank = false,
+        Closure $display = null,
+        string $pk = 'id',
+        string $order_by = 'name'
+    ): array {
         $select = [];
 
         // Specify custom text in the $add_blank parameter to override.
@@ -127,7 +133,7 @@ class Repository
      *
      * @return mixed[]
      */
-    public function toArray(object $entity, $deep = false, $form_mode = false): array
+    public function toArray(object $entity, bool $deep = false, bool $form_mode = false): array
     {
         return $this->serializer->normalize(
             $entity,

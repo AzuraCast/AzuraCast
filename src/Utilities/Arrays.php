@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utilities;
 
 class Arrays
@@ -27,7 +29,7 @@ class Arrays
      *
      * @return mixed[]
      */
-    public static function flattenArray(object|array $array, $separator = '.', $prefix = null): array
+    public static function flattenArray(object|array $array, string $separator = '.', $prefix = null): array
     {
         if (!is_array($array)) {
             if (is_object($array)) {

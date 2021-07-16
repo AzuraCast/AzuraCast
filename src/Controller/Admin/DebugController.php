@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Console\Application;
@@ -169,7 +171,7 @@ class DebugController extends AbstractLogViewerController
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('admin:debug:index'));
     }
 
     public function clearQueueAction(
@@ -187,6 +189,6 @@ class DebugController extends AbstractLogViewerController
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('admin:debug:index'));
     }
 }

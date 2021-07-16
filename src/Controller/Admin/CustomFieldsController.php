@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity;
@@ -40,7 +42,7 @@ class CustomFieldsController extends AbstractAdminCrudController
                 ($id ? __('Custom Field updated.') : __('Custom Field added.')),
                 Flash::SUCCESS
             );
-            return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:custom_fields:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -56,6 +58,6 @@ class CustomFieldsController extends AbstractAdminCrudController
 
         $request->getFlash()->addMessage('<b>' . __('Custom Field deleted.') . '</b>', Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:custom_fields:index'));
     }
 }

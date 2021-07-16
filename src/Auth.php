@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Entity\Repository\UserRepository;
@@ -52,7 +54,7 @@ class Auth
      *
      * @throws Exception
      */
-    public function getLoggedInUser($real_user_only = false): ?User
+    public function getLoggedInUser(bool $real_user_only = false): ?User
     {
         if (!$real_user_only && $this->isMasqueraded()) {
             return $this->getMasquerade();

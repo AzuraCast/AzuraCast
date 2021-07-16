@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Form\ApiKeyForm;
@@ -37,7 +39,7 @@ class ApiController extends AbstractAdminCrudController
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(__('API Key updated.'), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->named('admin:api:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:api:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -52,6 +54,6 @@ class ApiController extends AbstractAdminCrudController
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage(__('API Key deleted.'), Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:api:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:api:index'));
     }
 }

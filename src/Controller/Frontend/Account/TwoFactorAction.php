@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Account;
 
 use App\Http\Response;
@@ -32,7 +34,7 @@ class TwoFactorAction
                     return $response->withRedirect($referrer);
                 }
 
-                return $response->withRedirect($request->getRouter()->named('dashboard'));
+                return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
             }
 
             $flash->addMessage(
@@ -40,7 +42,7 @@ class TwoFactorAction
                 Flash::ERROR
             );
 
-            return $response->withRedirect($request->getUri());
+            return $response->withRedirect((string)$request->getUri());
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/account/two_factor');

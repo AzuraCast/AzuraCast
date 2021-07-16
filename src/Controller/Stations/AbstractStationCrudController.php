@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
@@ -36,7 +38,7 @@ abstract class AbstractStationCrudController
      * @param string|int|null $id
      *
      */
-    protected function doEdit(ServerRequest $request, $id = null): object|bool|null
+    protected function doEdit(ServerRequest $request, string|int $id = null): object|bool|null
     {
         $station = $request->getStation();
         $this->form->setStation($station);
@@ -49,7 +51,7 @@ abstract class AbstractStationCrudController
      * @param Station $station
      * @param string|int|null $id
      */
-    protected function getRecord(Station $station, $id = null): ?object
+    protected function getRecord(Station $station, string|int $id = null): ?object
     {
         if (null === $id) {
             return null;

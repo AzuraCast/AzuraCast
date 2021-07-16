@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Entity;
@@ -118,7 +120,7 @@ class Acl
      * @param array|string $action
      * @param int|Entity\Station|null $stationId
      */
-    public function isAllowed(array|string $action, $stationId = null): bool
+    public function isAllowed(array|string $action, Entity\Station|int $stationId = null): bool
     {
         if ($this->request instanceof ServerRequestInterface) {
             $user = $this->request->getAttribute(ServerRequest::ATTR_USER);
@@ -135,8 +137,11 @@ class Acl
      * @param array|string $action
      * @param int|Entity\Station|null $stationId
      */
-    public function userAllowed(?Entity\User $user = null, array|string $action, $stationId = null): bool
-    {
+    public function userAllowed(
+        ?Entity\User $user = null,
+        array|string $action,
+        Entity\Station|int $stationId = null
+    ): bool {
         if (null === $user) {
             return false;
         }
@@ -172,7 +177,7 @@ class Acl
      * @param array|string $action
      * @param int|Entity\Station|null $station_id
      */
-    public function roleAllowed(array|int $role_id, array|string $action, $station_id = null): bool
+    public function roleAllowed(array|int $role_id, array|string $action, Entity\Station|int $station_id = null): bool
     {
         if ($station_id instanceof Entity\Station) {
             $station_id = $station_id->getId();

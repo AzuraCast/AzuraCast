@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Streamers;
 
 use App\Controller\Api\AbstractApiCrudController;
@@ -95,13 +97,13 @@ class BroadcastsController extends AbstractApiCrudController
                         'path' => $recordingPath,
                         'size' => $fsRecordings->fileSize($recordingPath),
                         'links' => [
-                            'download' => $router->fromHere(
+                            'download' => (string)$router->fromHere(
                                 'api:stations:streamer:broadcast:download',
                                 $routeParams,
                                 [],
                                 true
                             ),
-                            'delete' => $router->fromHere(
+                            'delete' => (string)$router->fromHere(
                                 'api:stations:streamer:broadcast:delete',
                                 $routeParams,
                                 [],

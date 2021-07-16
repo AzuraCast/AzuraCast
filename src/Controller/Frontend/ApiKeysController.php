@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend;
 
 use App\Config;
@@ -80,7 +82,7 @@ class ApiKeysController
             }
 
             $request->getFlash()->addMessage(__('API Key updated.'), 'green');
-            return $response->withRedirect($request->getRouter()->named('api_keys:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('api_keys:index'));
         }
 
         return $view->renderToResponse($response, 'system/form_page', [
@@ -108,6 +110,6 @@ class ApiKeysController
 
         $request->getFlash()->addMessage(__('API Key deleted.'), 'green');
 
-        return $response->withRedirect($request->getRouter()->named('api_keys:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('api_keys:index'));
     }
 }

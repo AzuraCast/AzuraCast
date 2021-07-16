@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Station;
@@ -72,7 +74,7 @@ class EntityForm extends Form
      *
      * @return object|bool The modified object if edited/created, or `false` if not processed.
      */
-    public function process(ServerRequest $request, $record = null): object|bool
+    public function process(ServerRequest $request, ?object $record = null): object|bool
     {
         if (!isset($this->entityClass)) {
             throw new Exception('Entity class name is not specified.');
@@ -180,7 +182,7 @@ class EntityForm extends Form
      * @param object|null $record
      * @param array $context
      */
-    protected function denormalizeToRecord(array $data, $record = null, array $context = []): object
+    protected function denormalizeToRecord(array $data, ?object $record = null, array $context = []): object
     {
         $context = array_merge($this->defaultContext, $context);
 

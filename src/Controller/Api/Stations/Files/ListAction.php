@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
@@ -177,7 +179,7 @@ class ListAction
                 $media->genre = (string)$row['genre'];
 
                 $media->is_playable = ($row['length'] !== 0);
-                $media->length = $row['length'];
+                $media->length = (int)$row['length'];
                 $media->length_text = $row['length_text'];
 
                 $media->media_id = $row['id'];

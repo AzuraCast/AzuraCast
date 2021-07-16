@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity\Repository\StationScheduleRepository;

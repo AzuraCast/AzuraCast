@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Backend;
 
 use App\Entity;
@@ -157,7 +159,7 @@ class Liquidsoap extends AbstractBackend
                 continue;
             }
 
-            $prop = self::annotateString($prop);
+            $prop = self::annotateString((string)$prop);
 
             // Convert Liquidsoap-specific annotations to floats.
             if ('duration' === $annotation_name || str_starts_with($annotation_name, 'liq')) {

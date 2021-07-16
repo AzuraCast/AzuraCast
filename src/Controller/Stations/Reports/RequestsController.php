@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
@@ -62,7 +64,7 @@ class RequestsController
             $request->getFlash()->addMessage('<b>Request deleted!</b>', Flash::SUCCESS);
         }
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:reports:requests'));
     }
 
     public function clearAction(
@@ -85,6 +87,6 @@ class RequestsController
 
         $request->getFlash()->addMessage('<b>All pending requests cleared.</b>', Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:reports:requests'));
     }
 }

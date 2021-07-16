@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -243,7 +245,7 @@ class CheckMediaTask extends AbstractTask
 
                 if (Entity\UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
                     $message = new Message\AddNewMediaMessage();
-                    $message->storage_location_id = $storageLocation->getId();
+                    $message->storage_location_id = $storageLocation->getIdRequired();
                     $message->path = $unprocessableRow['path'];
 
                     $this->messageBus->dispatch($message);
@@ -285,7 +287,7 @@ class CheckMediaTask extends AbstractTask
                 $stats['already_queued']++;
             } else {
                 $message = new Message\AddNewMediaMessage();
-                $message->storage_location_id = $storageLocation->getId();
+                $message->storage_location_id = $storageLocation->getIdRequired();
                 $message->path = $path;
 
                 $this->messageBus->dispatch($message);

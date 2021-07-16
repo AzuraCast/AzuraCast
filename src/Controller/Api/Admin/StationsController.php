@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
@@ -123,7 +125,7 @@ class StationsController extends AbstractAdminApiCrudController
     }
 
     /** @inheritDoc */
-    protected function editRecord(?array $data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
         $create_mode = (null === $record);
 

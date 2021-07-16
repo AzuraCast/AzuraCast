@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utilities;
 
 use SimpleXMLElement;
@@ -90,7 +92,7 @@ class Xml
 
                 self::arrToXml($value, $subnode);
             } else {
-                $xml->addChild((string)$key, htmlspecialchars($value));
+                $xml->addChild((string)$key, htmlspecialchars($value, ENT_QUOTES | ENT_HTML5));
             }
         }
     }

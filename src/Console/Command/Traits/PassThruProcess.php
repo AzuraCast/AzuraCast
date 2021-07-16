@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Command\Traits;
 
 use Symfony\Component\Console\Style\SymfonyStyle;

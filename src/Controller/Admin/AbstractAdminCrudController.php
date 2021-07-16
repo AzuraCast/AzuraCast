@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Exception\NotFoundException;
@@ -28,19 +30,19 @@ abstract class AbstractAdminCrudController
 
     /**
      * @param ServerRequest $request
-     * @param string|int|null $id
+     * @param int|string|null $id
      *
      */
-    protected function doEdit(ServerRequest $request, $id = null): object|bool|null
+    protected function doEdit(ServerRequest $request, int|string $id = null): object|bool|null
     {
         $record = $this->getRecord($id);
         return $this->form->process($request, $record);
     }
 
     /**
-     * @param string|int|null $id
+     * @param int|string|null $id
      */
-    protected function getRecord($id = null): ?object
+    protected function getRecord(int|string $id = null): ?object
     {
         if (null === $id) {
             return null;

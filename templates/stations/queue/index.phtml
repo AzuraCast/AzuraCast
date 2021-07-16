@@ -2,8 +2,9 @@
 
 $this->layout('main', ['title' => __('Upcoming Song Queue'), 'manual' => true]);
 
+/** @var App\Http\RouterInterface $router */
 $props = [
-    'listUrl' => $router->fromHere('api:stations:queue'),
+    'listUrl' => (string)$router->fromHere('api:stations:queue'),
     'locale' => substr($customization->getLocale(), 0, 2),
     'stationTimeZone' => $stationTz,
 ];

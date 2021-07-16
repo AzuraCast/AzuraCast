@@ -19,7 +19,7 @@ $this->layout('minimal', [
                 <?php
                 foreach ($podcasts as $podcast) : ?>
                     <?php
-                    $episodesPageLink = $router->named(
+                    $episodesPageLink = (string)$router->named(
                         'public:podcast:episodes',
                         [
                             'station_id' => $station->getId(),
@@ -27,7 +27,7 @@ $this->layout('minimal', [
                         ]
                     ) ?>
                     <?php
-                    $feedLink = $router->named(
+                    $feedLink = (string)$router->named(
                         'public:podcast:feed',
                         ['station_id' => $station->getId(), 'podcast_id' => $podcast->getId()]
                     ) ?>

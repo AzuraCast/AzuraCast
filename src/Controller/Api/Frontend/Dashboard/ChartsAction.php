@@ -85,7 +85,7 @@ class ChartsAction
                 $sortableKey = $moment->format('Y-m-d');
                 $jsTimestamp = $moment->getTimestamp() * 1000;
 
-                $average = round($row['number_avg'], 2);
+                $average = round((float)$row['number_avg'], 2);
                 $unique = $row['number_unique'];
 
                 $rawStats['average'][$stationId][$sortableKey] = [

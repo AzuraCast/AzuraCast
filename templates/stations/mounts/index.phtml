@@ -8,8 +8,9 @@ $this->layout(
     ]
 );
 
+/** @var App\Http\RouterInterface $router */
 $props = [
-    'listUrl' => $router->fromHere('api:stations:mounts'),
+    'listUrl' => (string)$router->fromHere('api:stations:mounts'),
     'stationFrontendType' => $station->getFrontendType(),
     'enableAdvancedFeatures' => $enableAdvancedFeatures,
 ];

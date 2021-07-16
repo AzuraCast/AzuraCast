@@ -70,7 +70,7 @@ $this->layout(
 
             <p class="text-center"><?=__('Please log in to continue.')?> <?=sprintf(
                     '<a href="%s">%s</a>',
-                    $router->named('account:forgot'),
+                    (string)$router->named('account:forgot'),
                     __('Forgot your password?')
                 )?></p>
         </div>

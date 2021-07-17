@@ -35,7 +35,7 @@ class AutomationController
         $form = new Form($this->form_config);
         $form->populate($automation_settings);
 
-        if (!empty($_POST) && $form->isValid($_POST)) {
+        if ($form->isValid($request)) {
             $data = $form->getValues();
 
             $station->setAutomationSettings($data);

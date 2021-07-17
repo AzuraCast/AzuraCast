@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Environment;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Radio\Adapters;
@@ -31,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     AppAssert\StationPortChecker,
     AppAssert\UniqueEntity(fields: ['short_name'])
 ]
-class Station implements Stringable
+class Station implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

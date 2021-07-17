@@ -15,6 +15,10 @@ use RuntimeException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\StorageLocation
+ * @extends AbstractAdminApiCrudController<TEntity>
+ */
 class StorageLocationsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\StorageLocation::class;
@@ -127,9 +131,8 @@ class StorageLocationsController extends AbstractAdminApiCrudController
     }
 
     /** @inheritDoc */
-    protected function viewRecord(object $record, ServerRequest $request): Entity\Api\Admin\StorageLocation
+    protected function viewRecord(object $record, ServerRequest $request): object
     {
-        /** @var Entity\StorageLocation $record */
         $original = parent::viewRecord($record, $request);
 
         $return = new Entity\Api\Admin\StorageLocation();

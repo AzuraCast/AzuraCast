@@ -106,7 +106,7 @@ class NowplayingController implements EventSubscriberInterface
             }
 
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Station not found.'));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         // If unauthenticated, hide non-public stations from full view.

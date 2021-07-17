@@ -35,7 +35,7 @@ class CustomFieldsController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int|string $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(
@@ -45,15 +45,22 @@ class CustomFieldsController extends AbstractAdminCrudController
             return $response->withRedirect((string)$request->getRouter()->named('admin:custom_fields:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
             'form' => $this->form,
             'render_mode' => 'edit',
             'title' => $id ? __('Edit Custom Field') : __('Add Custom Field'),
         ]);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $id,
+        string $csrf
+    ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Custom Field deleted.') . '</b>', Flash::SUCCESS);

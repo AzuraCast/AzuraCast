@@ -120,7 +120,7 @@ class Writer extends Xml
         }
     }
 
-    protected function attributesFirst($a, $b): int
+    protected function attributesFirst(mixed $a, mixed $b): int
     {
         if (str_starts_with((string)$a, '@')) {
             return -1;

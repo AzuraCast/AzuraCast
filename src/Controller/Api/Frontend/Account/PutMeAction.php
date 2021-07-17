@@ -19,7 +19,7 @@ class PutMeAction extends UsersController
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
         $user = $request->getUser();
-        $this->editRecord($request->getParsedBody(), $user);
+        $this->editRecord((array)$request->getParsedBody(), $user);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }

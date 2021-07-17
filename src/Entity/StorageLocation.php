@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Radio\Quota;
 use App\Validator\Constraints as AppAssert;
 use Aws\S3\S3Client;
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     Attributes\Auditable,
     AppAssert\StorageLocation
 ]
-class StorageLocation implements Stringable
+class StorageLocation implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

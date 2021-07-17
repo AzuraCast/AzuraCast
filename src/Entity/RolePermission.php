@@ -12,7 +12,8 @@ use JsonSerializable;
     ORM\Table(name: 'role_permissions'),
     ORM\UniqueConstraint(name: 'role_permission_unique_idx', columns: ['role_id', 'action_name', 'station_id'])
 ]
-class RolePermission implements JsonSerializable, Interfaces\StationCloneAwareInterface
+class RolePermission implements JsonSerializable, Interfaces\StationCloneAwareInterface,
+                                Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -33,7 +34,7 @@ class RolePermission implements JsonSerializable, Interfaces\StationCloneAwareIn
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     protected ?Station $station = null;
 
-    public function __construct(Role $role, Station $station = null, $action_name = null)
+    public function __construct(Role $role, Station $station = null, ?string $action_name = null)
     {
         $this->role = $role;
         $this->station = $station;

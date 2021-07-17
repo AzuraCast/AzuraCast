@@ -125,7 +125,7 @@ class BackupsController extends AbstractLogViewerController
         );
 
         // Handle submission.
-        if ($request->isPost() && $runForm->isValid($request->getParsedBody())) {
+        if ($runForm->isValid($request)) {
             $data = $runForm->getValues();
 
             $tempFile = File::generateTempPath('backup.log');
@@ -178,7 +178,7 @@ class BackupsController extends AbstractLogViewerController
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        $path
+        string $path
     ): ResponseInterface {
         [$path, $fs] = $this->getFile($path);
 
@@ -188,8 +188,12 @@ class BackupsController extends AbstractLogViewerController
             ->streamFilesystemFile($fs, $path);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        string $path,
+        string $csrf
+    ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrfNamespace);
 
         [$path, $fs] = $this->getFile($path);

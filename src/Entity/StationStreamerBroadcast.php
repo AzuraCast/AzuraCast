@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\StationMountInterface;
 use Carbon\CarbonImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +19,7 @@ use OpenApi\Annotations as OA;
     ORM\Entity,
     ORM\Table(name: 'station_streamer_broadcasts')
 ]
-class StationStreamerBroadcast
+class StationStreamerBroadcast implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

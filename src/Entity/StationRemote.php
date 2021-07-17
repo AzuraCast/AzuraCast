@@ -21,7 +21,8 @@ use const PHP_URL_PORT;
     ORM\Table(name: 'station_remotes'),
     Attributes\Auditable
 ]
-class StationRemote implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
+class StationRemote implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface,
+                               Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

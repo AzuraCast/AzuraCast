@@ -23,7 +23,7 @@ class Quota
             ->toInt();
     }
 
-    public static function getReadableSize(Math\BigInteger $bytes, $decimals = 1): string
+    public static function getReadableSize(Math\BigInteger $bytes, int $decimals = 1): string
     {
         $bytes_str = (string)$bytes;
 
@@ -41,7 +41,7 @@ class Quota
         return $bytes_str;
     }
 
-    public static function convertFromReadableSize($size): ?Math\BigInteger
+    public static function convertFromReadableSize(Math\BigInteger|string $size): ?Math\BigInteger
     {
         if ($size instanceof Math\BigInteger) {
             return $size;

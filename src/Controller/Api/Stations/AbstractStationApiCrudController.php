@@ -12,6 +12,10 @@ use App\Http\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
+/**
+ * @template TEntity as object
+ * @extends AbstractApiCrudController<TEntity>
+ */
 abstract class AbstractStationApiCrudController extends AbstractApiCrudController
 {
     /**
@@ -48,7 +52,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $this->getStation($request);
-        $row = $this->createRecord($request->getParsedBody(), $station);
+        $row = $this->createRecord((array)$request->getParsedBody(), $station);
 
         $return = $this->viewRecord($row, $request);
 
@@ -58,6 +62,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param array $data
      * @param Entity\Station $station
+     *
+     * @return TEntity
      */
     protected function createRecord(array $data, Entity\Station $station): object
     {
@@ -93,7 +99,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $return = $this->viewRecord($record, $request);
@@ -103,6 +109,8 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
     /**
      * @param Entity\Station $station
      * @param int|string $id
+     *
+     * @return TEntity
      */
     protected function getRecord(Entity\Station $station, int|string $id): ?object
     {
@@ -130,10 +138,10 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
-        $this->editRecord($request->getParsedBody(), $record);
+        $this->editRecord((array)$request->getParsedBody(), $record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -154,7 +162,7 @@ abstract class AbstractStationApiCrudController extends AbstractApiCrudControlle
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $this->deleteRecord($record);

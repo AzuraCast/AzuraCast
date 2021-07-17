@@ -159,6 +159,7 @@ class BatchAction
                 $this->em->flush();
 
                 foreach ($playlists as $playlistRecord) {
+                    /** @var Entity\StationPlaylist $playlist */
                     $playlist = $this->em->refetchAsReference($playlistRecord);
 
                     $playlistWeights[$playlist->getId()]++;

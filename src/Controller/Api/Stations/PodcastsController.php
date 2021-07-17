@@ -152,7 +152,7 @@ class PodcastsController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $return = $this->viewRecord($record, $request);
@@ -163,11 +163,11 @@ class PodcastsController extends AbstractApiCrudController
     {
         $station = $request->getStation();
 
-        $parsedBody = $request->getParsedBody();
+        $parsedBody = (array)$request->getParsedBody();
 
         /** @var Entity\Podcast $record */
         $record = $this->editRecord(
-            $request->getParsedBody(),
+            $parsedBody,
             new Entity\Podcast($station->getPodcastsStorageLocation())
         );
 
@@ -194,10 +194,10 @@ class PodcastsController extends AbstractApiCrudController
 
         if ($podcast === null) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
-        $this->editRecord($request->getParsedBody(), $podcast);
+        $this->editRecord((array)$request->getParsedBody(), $podcast);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -212,7 +212,7 @@ class PodcastsController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $fsStation = new StationFilesystems($station);

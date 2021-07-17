@@ -23,9 +23,9 @@ class StationServiceStatus
      */
     public bool $frontend_running;
 
-    public function __construct($backend_running, $frontend_running)
+    public function __construct(bool $backend_running, bool $frontend_running)
     {
-        $this->backend_running = (bool)$backend_running;
-        $this->frontend_running = (bool)$frontend_running;
+        $this->backend_running = $backend_running;
+        $this->frontend_running = $frontend_running;
     }
 }

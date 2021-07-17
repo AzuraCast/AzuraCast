@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeZone;
@@ -17,7 +18,7 @@ use OpenApi\Annotations as OA;
     ORM\Table(name: 'station_schedules'),
     Attributes\Auditable
 ]
-class StationSchedule
+class StationSchedule implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -164,9 +165,9 @@ class StationSchedule
         return $days;
     }
 
-    public function setDays($days): void
+    public function setDays(array $days): void
     {
-        $this->days = implode(',', (array)$days);
+        $this->days = implode(',', $days);
     }
 
     public function getLoopOnce(): bool

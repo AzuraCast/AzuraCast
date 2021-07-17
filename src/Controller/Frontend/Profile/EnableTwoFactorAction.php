@@ -50,7 +50,7 @@ class EnableTwoFactorAction
                 : __('The token you supplied is invalid. Please try again.');
         });
 
-        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
+        if ($form->isValid($request)) {
             $user->setTwoFactorSecret($totp->getProvisioningUri());
 
             $em->persist($user);

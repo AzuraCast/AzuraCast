@@ -35,10 +35,13 @@ class NowPlayingLive
      */
     public ?int $broadcast_start = null;
 
-    public function __construct($is_live = false, $streamer_name = '', $broadcast_start = null)
-    {
-        $this->is_live = (bool)$is_live;
-        $this->streamer_name = (string)$streamer_name;
+    public function __construct(
+        bool $is_live = false,
+        string $streamer_name = '',
+        ?int $broadcast_start = null
+    ) {
+        $this->is_live = $is_live;
+        $this->streamer_name = $streamer_name;
         $this->broadcast_start = $broadcast_start;
     }
 }

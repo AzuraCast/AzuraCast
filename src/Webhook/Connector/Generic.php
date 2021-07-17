@@ -11,6 +11,9 @@ class Generic extends AbstractConnector
 {
     public const NAME = 'generic';
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

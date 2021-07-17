@@ -16,6 +16,9 @@ class TuneIn extends AbstractConnector
         return in_array(Entity\StationWebhook::TRIGGER_SONG_CHANGED, $triggers, true);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

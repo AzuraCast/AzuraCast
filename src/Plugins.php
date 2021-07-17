@@ -16,15 +16,15 @@ class Plugins
 
     protected Inflector $inflector;
 
-    public function __construct($base_dir)
+    public function __construct(string $baseDir)
     {
         $this->inflector = InflectorFactory::create()
             ->build();
 
-        $this->loadDirectory($base_dir);
+        $this->loadDirectory($baseDir);
     }
 
-    public function loadDirectory($dir): void
+    public function loadDirectory(string $dir): void
     {
         $plugins = (new Finder())
             ->ignoreUnreadableDirs()

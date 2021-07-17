@@ -30,7 +30,7 @@ class PostArtAction
 
             if (null === $podcast) {
                 return $response->withStatus(404)
-                    ->withJson(new Entity\Api\Error(404, __('Podcast not found!')));
+                    ->withJson(Entity\Api\Error::notFound());
             }
 
             $podcastRepo->writePodcastArt(

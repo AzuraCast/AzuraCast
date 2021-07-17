@@ -255,12 +255,4 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
             return parent::respond();
         }
     }
-
-    protected function withJson(ResponseInterface $response, $data): ResponseInterface
-    {
-        $json = (string)json_encode($data, JSON_THROW_ON_ERROR);
-        $response->getBody()->write($json);
-
-        return $response->withHeader('Content-Type', 'application/json;charset=utf-8');
-    }
 }

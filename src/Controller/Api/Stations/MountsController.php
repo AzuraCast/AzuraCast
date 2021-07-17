@@ -10,6 +10,10 @@ use App\Http\Router;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 
+/**
+ * @template TEntity as Entity\StationMount
+ * @extends AbstractStationApiCrudController<TEntity>
+ */
 class MountsController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationMount::class;

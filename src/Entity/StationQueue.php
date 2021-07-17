@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Entity,
     ORM\Table(name: 'station_queue')
 ]
-class StationQueue implements SongInterface
+class StationQueue implements SongInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
@@ -100,7 +101,7 @@ class StationQueue implements SongInterface
         return $this->request;
     }
 
-    public function setRequest($request): void
+    public function setRequest(?StationRequest $request): void
     {
         $this->request = $request;
     }

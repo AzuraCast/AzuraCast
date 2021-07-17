@@ -13,6 +13,7 @@ class DispatchWebhookMessage extends AbstractUniqueMessage
 
     public NowPlaying $np;
 
+    /** @var array<string> */
     public array $triggers = [];
 
     public function getIdentifier(): string

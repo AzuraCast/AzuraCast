@@ -131,7 +131,7 @@ class ListAction
 
                         if (!$playlist instanceof Entity\StationPlaylist) {
                             return $response->withStatus(400)
-                                ->withJson(new Entity\Api\Error('Playlist not found.'));
+                                ->withJson(new Entity\Api\Error(400, 'Playlist not found.'));
                         }
 
                         $mediaQueryBuilder->andWhere(

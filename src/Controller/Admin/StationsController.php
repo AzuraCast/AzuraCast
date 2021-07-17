@@ -35,21 +35,29 @@ class StationsController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int|string $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
             return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
-            'form' => $this->form,
-            'title' => $id ? __('Edit Station') : 'Add Station',
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'admin/stations/edit',
+            [
+                'form' => $this->form,
+                'title' => $id ? __('Edit Station') : 'Add Station',
+            ]
+        );
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $id,
+        string $csrf
+    ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $record = $this->record_repo->find((int)$id);
@@ -61,7 +69,7 @@ class StationsController extends AbstractAdminCrudController
         return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
     }
 
-    public function cloneAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function cloneAction(ServerRequest $request, Response $response, int|string $id): ResponseInterface
     {
         $cloneForm = $this->factory->make(Form\StationCloneForm::class);
 

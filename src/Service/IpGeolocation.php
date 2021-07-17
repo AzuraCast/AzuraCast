@@ -127,7 +127,7 @@ class IpGeolocation
         ];
     }
 
-    protected function getLocalizedString($names, string $locale): string
+    protected function getLocalizedString(?array $names, string $locale): string
     {
         if (empty($names)) {
             return '';

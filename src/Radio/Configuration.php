@@ -390,13 +390,13 @@ class Configuration
     protected function writeConfigurationSection(
         Station $station,
         AbstractAdapter $adapter,
-        $priority
+        ?int $priority
     ): string {
         [, $program_name] = explode(':', $adapter->getProgramName($station));
 
         $config_lines = [
             'user' => 'azuracast',
-            'priority' => $priority,
+            'priority' => $priority ?? 50,
             'command' => $adapter->getCommand($station),
             'directory' => $station->getRadioConfigDir(),
             'environment' => 'TZ="' . $station->getTimezone() . '"',

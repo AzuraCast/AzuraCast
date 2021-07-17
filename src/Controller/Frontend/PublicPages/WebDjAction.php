@@ -16,8 +16,6 @@ class WebDjAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $station_id,
-        $format = 'pls'
     ): ResponseInterface {
         // Override system-wide iframe refusal
         $response = $response->withHeader('X-Frame-Options', '*');

@@ -41,7 +41,7 @@ class SoundExchangeController
             ]
         );
 
-        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
+        if ($form->isValid($request)) {
             $data = $form->getValues();
 
             $start_date = strtotime($data['start_date'] . ' 00:00:00');
@@ -164,7 +164,7 @@ class SoundExchangeController
         ]);
     }
 
-    protected function findISRC($song_row): ?string
+    protected function findISRC(array $song_row): ?string
     {
         $song = Entity\Song::createFromArray($song_row);
 

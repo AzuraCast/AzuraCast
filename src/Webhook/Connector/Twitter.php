@@ -33,6 +33,9 @@ class Twitter extends AbstractConnector
         return max(10, $rateLimitSeconds);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

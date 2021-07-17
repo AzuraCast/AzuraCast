@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use DateTimeZone;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Index(columns: ['type', 'moment'], name: 'search_idx'),
     ORM\UniqueConstraint(name: 'stats_unique_idx', columns: ['station_id', 'type', 'moment'])
 ]
-class Analytics
+class Analytics implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -59,7 +60,7 @@ class Analytics
     public function __construct(
         DateTimeInterface $moment,
         ?Station $station = null,
-        $type = self::INTERVAL_DAILY,
+        string $type = self::INTERVAL_DAILY,
         int $number_min = 0,
         int $number_max = 0,
         float $number_avg = 0,

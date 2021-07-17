@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App;
 
 use App\Traits\RequestAwareTrait;
+use App\Utilities\Json;
+use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 use function base64_encode;
 use function is_array;
@@ -24,13 +25,13 @@ class Assets
 {
     use RequestAwareTrait;
 
-    /** @var array Known libraries loaded in initialization. */
+    /** @var array<string, array> Known libraries loaded in initialization. */
     protected array $libraries = [];
 
-    /** @var array An optional array lookup for versioned files. */
+    /** @var array<string, string> An optional array lookup for versioned files. */
     protected array $versioned_files = [];
 
-    /** @var array Loaded libraries. */
+    /** @var array<string, array> Loaded libraries. */
     protected array $loaded = [];
 
     /** @var bool Whether the current loaded libraries have been sorted by order. */
@@ -42,9 +43,6 @@ class Assets
     /** @var array The loaded domains that should be included in the CSP header. */
     protected array $csp_domains;
 
-    /** @var ServerRequestInterface|null The current request (if it's available) */
-    protected ?ServerRequestInterface $request = null;
-
     public function __construct(
         protected Environment $environment,
         Config $config
@@ -53,18 +51,10 @@ class Assets
             $this->addLibrary($library, $library_name);
         }
 
-        $versioned_files = [];
-        $assets_file = $environment->getBaseDirectory() . '/web/static/assets.json';
-        if (is_file($assets_file)) {
-            $versioned_files = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
-        }
+        $versioned_files = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/assets.json');
         $this->versioned_files = $versioned_files;
 
-        $vueComponents = [];
-        $assets_file = $environment->getBaseDirectory() . '/web/static/webpack.json';
-        if (is_file($assets_file)) {
-            $vueComponents = json_decode(file_get_contents($assets_file), true, 512, JSON_THROW_ON_ERROR);
-        }
+        $vueComponents = Json::loadFromFile($environment->getBaseDirectory() . '/web/static/webpack.json');
         $this->addVueComponents($vueComponents);
 
         $this->csp_nonce = (string)preg_replace('/[^A-Za-z0-9\+\/=]/', '', base64_encode(random_bytes(18)));
@@ -540,10 +530,9 @@ class Assets
      */
     protected function addDomainToCsp(string $src): void
     {
-        $src_parts = parse_url($src);
+        $uri = new Uri($src);
 
-        $domain = $src_parts['scheme'] . '://' . $src_parts['host'];
-
+        $domain = $uri->getScheme() . '://' . $uri->getHost();
         if (!isset($this->csp_domains[$domain])) {
             $this->csp_domains[$domain] = $domain;
         }

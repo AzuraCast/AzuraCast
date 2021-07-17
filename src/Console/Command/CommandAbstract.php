@@ -22,7 +22,7 @@ abstract class CommandAbstract
         return $this->application;
     }
 
-    protected function runCommand(OutputInterface $output, $command_name, $command_args = []): void
+    protected function runCommand(OutputInterface $output, string $command_name, array $command_args = []): void
     {
         $command = $this->getApplication()->find($command_name);
 

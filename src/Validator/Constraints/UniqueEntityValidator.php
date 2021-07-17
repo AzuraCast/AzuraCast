@@ -16,6 +16,7 @@ namespace App\Validator\Constraints;
 use Countable;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Iterator;
 use IteratorAggregate;
 use Symfony\Component\Validator\Constraint;
@@ -36,11 +37,9 @@ use function is_string;
  */
 class UniqueEntityValidator extends ConstraintValidator
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        protected EntityManagerInterface $em
+    ) {
     }
 
     /**
@@ -181,13 +180,13 @@ class UniqueEntityValidator extends ConstraintValidator
 
         $this->context->buildViolation($message)
             ->atPath($errorPath)
-            ->setParameter('{{ value }}', $this->formatWithIdentifiers($this->em, $class, $invalidValue))
+            ->setParameter('{{ value }}', $this->formatWithIdentifiers($class, $invalidValue))
             ->setInvalidValue($invalidValue)
             ->setCause($result)
             ->addViolation();
     }
 
-    private function formatWithIdentifiers($em, $class, $value): string
+    private function formatWithIdentifiers(ClassMetadata $class, mixed $value): string
     {
         if (!is_object($value) || $value instanceof DateTimeInterface) {
             return $this->formatValue($value, self::PRETTY_DATE);
@@ -199,8 +198,8 @@ class UniqueEntityValidator extends ConstraintValidator
 
         if ($class->getName() !== $idClass = get_class($value)) {
             // non unique value might be a composite PK that consists of other entity objects
-            if ($em->getMetadataFactory()->hasMetadataFor($idClass)) {
-                $identifiers = $em->getClassMetadata($idClass)->getIdentifierValues($value);
+            if ($this->em->getMetadataFactory()->hasMetadataFor($idClass)) {
+                $identifiers = $this->em->getClassMetadata($idClass)->getIdentifierValues($value);
             } else {
                 // this case might happen if the non unique column has a custom doctrine type and its value is an object
                 // in which case we cannot get any identifiers for it

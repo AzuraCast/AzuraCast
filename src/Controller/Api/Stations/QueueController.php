@@ -15,6 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\StationQueue
+ * @extends AbstractStationApiCrudController<TEntity>
+ */
 class QueueController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationQueue::class;

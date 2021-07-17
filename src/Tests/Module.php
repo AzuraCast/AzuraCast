@@ -13,6 +13,7 @@ use App\Environment;
 use Codeception\Configuration;
 use Codeception\Lib\Framework;
 use Codeception\Lib\Interfaces\DoctrineProvider;
+use Codeception\Lib\ModuleContainer;
 use Codeception\TestInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
@@ -26,7 +27,12 @@ class Module extends Framework implements DoctrineProvider
 
     public ReloadableEntityManagerInterface $em;
 
-    protected $requiredFields = ['container'];
+    public function __construct(ModuleContainer $moduleContainer, $config = null)
+    {
+        parent::__construct($moduleContainer, $config);
+
+        $this->requiredFields = ['container'];
+    }
 
     public function _initialize(): void
     {

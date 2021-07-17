@@ -9,11 +9,12 @@ use App\Entity;
 use App\Exception;
 use App\Http\Response;
 use App\Http\ServerRequest;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\TransactionRequiredException;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @template TEntity as object
+ * @extends AbstractApiCrudController<TEntity>
+ */
 abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 {
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
@@ -31,7 +32,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
      */
     public function createAction(ServerRequest $request, Response $response): ResponseInterface
     {
-        $row = $this->createRecord($request->getParsedBody());
+        $row = $this->createRecord((array)$request->getParsedBody());
 
         $return = $this->viewRecord($row, $request);
         return $response->withJson($return);
@@ -39,6 +40,8 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
     /**
      * @param array $data
+     *
+     * @return TEntity
      */
     protected function createRecord(array $data): object
     {
@@ -56,7 +59,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $return = $this->viewRecord($record, $request);
@@ -66,9 +69,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
     /**
      * @param mixed $id
      *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     * @throws TransactionRequiredException
+     * @return TEntity|null
      */
     protected function getRecord(mixed $id): ?object
     {
@@ -86,10 +87,10 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
-        $this->editRecord($request->getParsedBody(), $record);
+        $this->editRecord((array)$request->getParsedBody(), $record);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -105,7 +106,7 @@ abstract class AbstractAdminApiCrudController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $this->deleteRecord($record);

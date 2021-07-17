@@ -33,6 +33,7 @@ class DeferredCallable
     }
 
     /**
+     * @param mixed ...$args
      */
     public function __invoke(...$args): mixed
     {

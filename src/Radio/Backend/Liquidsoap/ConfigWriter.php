@@ -1143,7 +1143,7 @@ class ConfigWriter implements EventSubscriberInterface
         return number_format((float)$number, $decimals, '.', '');
     }
 
-    public static function formatTimeCode($time_code): string
+    public static function formatTimeCode(int $time_code): string
     {
         $hours = floor($time_code / 100);
         $mins = $time_code % 100;

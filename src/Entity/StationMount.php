@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;

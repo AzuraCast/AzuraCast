@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'audit_log'),
     ORM\Index(columns: ['class', 'user', 'identifier'], name: 'idx_search')
 ]
-class AuditLog
+class AuditLog implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

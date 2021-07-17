@@ -20,9 +20,9 @@ class SftpAuthCommand extends CommandAbstract
         SymfonyStyle $io,
         EntityManagerInterface $em
     ): int {
-        $username = getenv('SFTPGO_AUTHD_USERNAME');
-        $password = getenv('SFTPGO_AUTHD_PASSWORD');
-        $pubKey = getenv('SFTPGO_AUTHD_PUBLIC_KEY');
+        $username = getenv('SFTPGO_AUTHD_USERNAME') ?: null;
+        $password = getenv('SFTPGO_AUTHD_PASSWORD') ?: null;
+        $pubKey = getenv('SFTPGO_AUTHD_PUBLIC_KEY') ?: null;
 
         $sftpUser = $em->getRepository(SftpUser::class)->findOneBy(['username' => $username]);
 

@@ -48,7 +48,7 @@ class Xml
     /**
      * @return mixed[]
      */
-    protected static function structToArray($values, &$i): array
+    protected static function structToArray(mixed $values, mixed &$i): array
     {
         $child = [];
         if (isset($values[$i]['value'])) {
@@ -83,9 +83,9 @@ class Xml
     }
 
     /** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
-    protected static function arrToXml($array, &$xml): void
+    protected static function arrToXml(array $array, SimpleXMLElement &$xml): void
     {
-        foreach ((array)$array as $key => $value) {
+        foreach ($array as $key => $value) {
             $key = is_numeric($key) ? "item$key" : $key;
             if (is_array($value)) {
                 $subnode = $xml->addChild((string)$key);

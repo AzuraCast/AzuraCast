@@ -96,7 +96,7 @@ class EditLiquidsoapConfigAction
         $backendConfig = $station->getBackendConfig();
         $form = new Form($formConfig, ['backend_config' => $backendConfig->toArray()]);
 
-        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
+        if ($form->isValid($request)) {
             $data = $form->getValues();
 
             foreach ($data['backend_config'] as $configKey => $configValue) {

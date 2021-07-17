@@ -16,11 +16,11 @@ class CloneAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $id
+        int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 
-        $data = $request->getParsedBody();
+        $data = (array)$request->getParsedBody();
 
         $copier = new DeepCopy\DeepCopy();
         $copier->addFilter(

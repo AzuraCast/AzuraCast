@@ -14,6 +14,10 @@ use App\Utilities;
 use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @template TEntity as Entity\StationStreamerBroadcast
+ * @extends AbstractApiCrudController<TEntity>
+ */
 class BroadcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\StationStreamerBroadcast::class;
@@ -21,13 +25,11 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
      * @param int|null $id
      */
     public function listAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
         ?int $id = null
     ): ResponseInterface {
         $station = $request->getStation();
@@ -37,7 +39,7 @@ class BroadcastsController extends AbstractApiCrudController
 
             if (null === $streamer) {
                 return $response->withStatus(404)
-                    ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                    ->withJson(Entity\Api\Error::notFound());
             }
 
             $query = $this->em->createQuery(
@@ -129,15 +131,11 @@ class BroadcastsController extends AbstractApiCrudController
     /**
      * @param ServerRequest $request
      * @param Response $response
-     * @param int|string $station_id
-     * @param int $id
      * @param int $broadcast_id
      */
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        int|string $station_id,
-        int $id,
         int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
@@ -145,7 +143,7 @@ class BroadcastsController extends AbstractApiCrudController
 
         if (null === $broadcast) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $recordingPath = $broadcast->getRecordingPath();
@@ -169,16 +167,14 @@ class BroadcastsController extends AbstractApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $station_id,
-        $id,
-        $broadcast_id
+        int $broadcast_id
     ): ResponseInterface {
         $station = $request->getStation();
         $broadcast = $this->getRecord($station, $broadcast_id);
 
         if (null === $broadcast) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $recordingPath = $broadcast->getRecordingPath();

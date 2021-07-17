@@ -13,6 +13,10 @@ use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
+/**
+ * @template TEntity as Entity\StationPlaylist
+ * @extends AbstractScheduledEntityController<TEntity>
+ */
 class PlaylistsController extends AbstractScheduledEntityController
 {
     protected string $entityClass = Entity\StationPlaylist::class;

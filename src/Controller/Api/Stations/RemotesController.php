@@ -9,6 +9,10 @@ use App\Entity\StationRemote;
 use App\Exception\PermissionDeniedException;
 use OpenApi\Annotations as OA;
 
+/**
+ * @template TEntity as Entity\StationRemote
+ * @extends AbstractStationApiCrudController<TEntity>
+ */
 class RemotesController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationRemote::class;

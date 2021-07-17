@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Station;
 use App\Environment;
 use App\Exception;
@@ -23,10 +24,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * This class exists primarily to facilitate the switch to Symfony's
  * Serializer and Validator classes, to allow for API parity.
+ *
+ * @template TEntity of object
  */
 class EntityForm extends Form
 {
-    /** @var string The fully-qualified (::class) class name of the entity being managed. */
+    /** @var class-string<TEntity> The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
     /** @var array The default context sent to form normalization/denormalization functions. */
@@ -44,11 +47,17 @@ class EntityForm extends Form
         parent::__construct($options, $defaults);
     }
 
+    /**
+     * @return class-string<TEntity>
+     */
     public function getEntityClass(): string
     {
         return $this->entityClass;
     }
 
+    /**
+     * @param class-string<TEntity> $entityClass
+     */
     public function setEntityClass(string $entityClass): void
     {
         $this->entityClass = $entityClass;
@@ -59,6 +68,9 @@ class EntityForm extends Form
         return $this->em;
     }
 
+    /**
+     * @return ObjectRepository<TEntity>
+     */
     public function getEntityRepository(): ObjectRepository
     {
         if (!isset($this->entityClass)) {
@@ -70,9 +82,9 @@ class EntityForm extends Form
 
     /**
      * @param ServerRequest $request
-     * @param object|null $record
+     * @param TEntity|null $record
      *
-     * @return object|bool The modified object if edited/created, or `false` if not processed.
+     * @return TEntity|bool The modified object if edited/created, or `false` if not processed.
      */
     public function process(ServerRequest $request, ?object $record = null): object|bool
     {
@@ -90,7 +102,7 @@ class EntityForm extends Form
         }
 
         // Handle submission.
-        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
+        if ($this->isValid($request)) {
             $data = $this->getValues();
 
             $record = $this->denormalizeToRecord($data, $record);
@@ -127,7 +139,7 @@ class EntityForm extends Form
     /**
      * The old ->toArray().
      *
-     * @param object $record
+     * @param TEntity $record
      * @param array $context
      *
      * @return mixed[]
@@ -149,13 +161,13 @@ class EntityForm extends Form
                 ) {
                     return $this->displayShortenedObject($innerObject);
                 },
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
-                $object,
-                string $format = null,
-                array $context = []
-            ) {
-                return $this->displayShortenedObject($object);
-            },
+                ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function (
+                    $object,
+                    string $format = null,
+                    array $context = []
+                ) {
+                    return $this->displayShortenedObject($object);
+                },
             ]
         );
 
@@ -172,15 +184,25 @@ class EntityForm extends Form
             return $object->getName();
         }
 
-        return $object->getId();
+        if ($object instanceof IdentifiableEntityInterface) {
+            return $object->getIdRequired();
+        }
+
+        if ($object instanceof \Stringable) {
+            return (string)$object;
+        }
+
+        return get_class($object) . ': ' . spl_object_hash($object);
     }
 
     /**
      * The old ->fromArray().
      *
      * @param array $data
-     * @param object|null $record
+     * @param TEntity|null $record
      * @param array $context
+     *
+     * @return TEntity
      */
     protected function denormalizeToRecord(array $data, ?object $record = null, array $context = []): object
     {

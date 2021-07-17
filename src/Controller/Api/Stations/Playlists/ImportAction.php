@@ -17,7 +17,7 @@ class ImportAction extends AbstractPlaylistsAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
-        $id
+        int $id
     ): ResponseInterface {
         $playlist = $this->requireRecord($request->getStation(), $id);
 
@@ -33,7 +33,7 @@ class ImportAction extends AbstractPlaylistsAction
 
         if (UPLOAD_ERR_OK !== $file->getError()) {
             return $response->withStatus(500)
-                ->withJson(new Entity\Api\Error(500, $file->getError()));
+                ->withJson(Entity\Api\Error::fromFileError($file->getError()));
         }
 
         $playlistFile = $file->getStream()->getContents();

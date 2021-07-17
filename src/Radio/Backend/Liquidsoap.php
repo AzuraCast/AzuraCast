@@ -258,7 +258,7 @@ class Liquidsoap extends AbstractBackend
     /**
      * @return string[]
      */
-    public function enqueue(Entity\Station $station, $music_file): array
+    public function enqueue(Entity\Station $station, string $music_file): array
     {
         return $this->command(
             $station,

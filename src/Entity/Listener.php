@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use NowPlaying\Result\Client;
 
@@ -12,7 +13,7 @@ use NowPlaying\Result\Client;
     ORM\Table(name: 'listener'),
     ORM\Index(columns: ['timestamp_end', 'timestamp_start'], name: 'idx_timestamps')
 ]
-class Listener
+class Listener implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

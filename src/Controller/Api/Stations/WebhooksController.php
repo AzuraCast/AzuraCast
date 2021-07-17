@@ -7,6 +7,10 @@ namespace App\Controller\Api\Stations;
 use App\Entity;
 use OpenApi\Annotations as OA;
 
+/**
+ * @template TEntity as Entity\StationWebhook
+ * @extends AbstractStationApiCrudController<TEntity>
+ */
 class WebhooksController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationWebhook::class;

@@ -24,6 +24,10 @@ class Application extends \Silly\Edition\PhpDi\Application
         $input->setInteractive(false);
 
         $temp_stream = fopen($outputFile, 'wb+');
+        if (false === $temp_stream) {
+            throw new \RuntimeException(sprintf('Could not open output file: "%s"', $outputFile));
+        }
+
         $output = new StreamOutput($temp_stream);
 
         $command = $this->find($command);
@@ -33,7 +37,7 @@ class Application extends \Silly\Edition\PhpDi\Application
         $result_output = stream_get_contents($temp_stream);
         fclose($temp_stream);
 
-        $result_output = trim($result_output);
+        $result_output = trim((string)$result_output);
 
         return [
             $result_code,

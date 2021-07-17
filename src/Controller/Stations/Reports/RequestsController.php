@@ -44,8 +44,8 @@ class RequestsController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $request_id,
-        $csrf
+        int $request_id,
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
@@ -70,7 +70,7 @@ class RequestsController
     public function clearAction(
         ServerRequest $request,
         Response $response,
-        $csrf
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 

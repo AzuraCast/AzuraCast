@@ -7,6 +7,10 @@ namespace App\Controller\Api\Admin;
 use App\Entity;
 use OpenApi\Annotations as OA;
 
+/**
+ * @template TEntity as Entity\CustomField
+ * @extends AbstractAdminApiCrudController<TEntity>
+ */
 class CustomFieldsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\CustomField::class;

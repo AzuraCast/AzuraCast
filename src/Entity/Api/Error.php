@@ -54,16 +54,37 @@ class Error
     public bool $success;
 
     public function __construct(
-        $code = 500,
-        $message = 'General Error',
-        $formatted_message = null,
-        $extra_data = []
+        int $code = 500,
+        string $message = 'General Error',
+        ?string $formatted_message = null,
+        array $extra_data = []
     ) {
-        $this->code = (int)$code;
-        $this->message = (string)$message;
+        $this->code = $code;
+        $this->message = $message;
         $this->formatted_message = ($formatted_message ?? $message);
-        $this->extra_data = (array)$extra_data;
+        $this->extra_data = $extra_data;
         $this->success = false;
+    }
+
+    public static function notFound(): self
+    {
+        return new self(404, __('Record not found'));
+    }
+
+    public static function fromFileError(int $fileError): self
+    {
+        $errorMessage = match ($fileError) {
+            UPLOAD_ERR_INI_SIZE => __('The uploaded file exceeds the upload_max_filesize directive in php.ini.'),
+            UPLOAD_ERR_FORM_SIZE => __('The uploaded file exceeds the MAX_FILE_SIZE directive from the HTML form.'),
+            UPLOAD_ERR_PARTIAL => __('The uploaded file was only partially uploaded.'),
+            UPLOAD_ERR_NO_FILE => __('No file was uploaded.'),
+            UPLOAD_ERR_NO_TMP_DIR => __('No temporary directory is available.'),
+            UPLOAD_ERR_CANT_WRITE => __('Could not write to filesystem.'),
+            UPLOAD_ERR_EXTENSION => __('Upload halted by a PHP extension.'),
+            default => __('Unspecified error.'),
+        };
+
+        return new self(500, $errorMessage);
     }
 
     public static function fromException(Throwable $e, bool $includeTrace = false): self

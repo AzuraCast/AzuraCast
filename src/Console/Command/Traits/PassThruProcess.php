@@ -11,8 +11,8 @@ trait PassThruProcess
 {
     protected function passThruProcess(
         SymfonyStyle $io,
-        $cmd,
-        $cwd = null,
+        string|array $cmd,
+        ?string $cwd = null,
         array $env = [],
         int $timeout = 14400
     ): Process {

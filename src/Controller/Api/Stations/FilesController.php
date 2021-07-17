@@ -21,6 +21,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\Media
+ * @extends AbstractStationApiCrudController<TEntity>
+ */
 class FilesController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationMedia::class;
@@ -189,11 +193,11 @@ class FilesController extends AbstractStationApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $data = $request->getParsedBody();
-        if (null === $data) {
+        if (!is_array($data)) {
             throw new InvalidArgumentException('Could not parse input data.');
         }
 

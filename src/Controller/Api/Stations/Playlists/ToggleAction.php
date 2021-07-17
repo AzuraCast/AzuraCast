@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ToggleAction extends AbstractPlaylistsAction
 {
-    public function __invoke(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, int $id): ResponseInterface
     {
         $record = $this->requireRecord($request->getStation(), $id);
 

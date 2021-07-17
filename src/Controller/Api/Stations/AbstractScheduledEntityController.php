@@ -16,6 +16,10 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as object
+ * @extends AbstractStationApiCrudController<TEntity>
+ */
 abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController
 {
     public function __construct(
@@ -33,16 +37,27 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         Response $response,
         array $scheduleItems,
         callable $rowRender
-    ): ResponseInterface {
+    ): ResponseInterface
+    {
         $tz = $request->getStation()->getTimezoneObject();
 
         $params = $request->getQueryParams();
 
         $startDateStr = substr($params['start'], 0, 10);
-        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
+        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz);
+
+        if (false === $startDate) {
+            throw new \InvalidArgumentException(sprintf('Could not parse start date: "%s"', $startDateStr));
+        }
+
+        $startDate = $startDate->subDay();
 
         $endDateStr = substr($params['end'], 0, 10);
         $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);
+
+        if (false === $endDate) {
+            throw new \InvalidArgumentException(sprintf('Could not parse end date: "%s"', $endDateStr));
+        }
 
         $events = [];
 

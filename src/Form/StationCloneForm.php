@@ -76,7 +76,7 @@ class StationCloneForm extends StationForm
             ]
         );
 
-        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
+        if ($this->isValid($request)) {
             $data = $this->getValues();
 
             $toClone = $data['clone'];

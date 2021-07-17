@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Auth;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,7 +28,7 @@ use const PASSWORD_BCRYPT;
     Attributes\Auditable,
     UniqueEntity(fields: ['email'])
 ]
-class User implements Stringable
+class User implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

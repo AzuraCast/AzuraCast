@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Stringable;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'custom_field'),
     Attributes\Auditable
 ]
-class CustomField implements Stringable
+class CustomField implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

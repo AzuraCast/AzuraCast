@@ -13,6 +13,10 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\Station
+ * @extends AbstractAdminApiCrudController<TEntity>
+ */
 class StationsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\Station::class;
@@ -106,7 +110,12 @@ class StationsController extends AbstractAdminApiCrudController
      * )
      */
 
-    /** @inheritDoc */
+    /**
+     * @param TEntity $record
+     * @param array<string, mixed> $context
+     *
+     * @return array<mixed>
+     */
     protected function toArray(object $record, array $context = []): array
     {
         return parent::toArray(
@@ -124,7 +133,13 @@ class StationsController extends AbstractAdminApiCrudController
         );
     }
 
-    /** @inheritDoc */
+    /**
+     * @param array<mixed>|null $data
+     * @param TEntity|null $record
+     * @param array<string, mixed> $context
+     *
+     * @return Entity\Station
+     */
     protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
         $create_mode = (null === $record);
@@ -152,7 +167,9 @@ class StationsController extends AbstractAdminApiCrudController
         return $this->station_repo->edit($record);
     }
 
-    /** @inheritDoc */
+    /**
+     * @param TEntity $record
+     */
     protected function deleteRecord(object $record): void
     {
         $this->station_repo->destroy($record);

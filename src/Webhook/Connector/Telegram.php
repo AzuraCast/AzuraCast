@@ -16,6 +16,9 @@ class Telegram extends AbstractConnector
 {
     public const NAME = 'telegram';
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

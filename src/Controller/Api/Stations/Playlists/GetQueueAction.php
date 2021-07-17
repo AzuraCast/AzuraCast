@@ -17,7 +17,7 @@ class GetQueueAction extends AbstractPlaylistsAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationPlaylistMediaRepository $spmRepo,
-        $id
+        int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 

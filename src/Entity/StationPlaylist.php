@@ -20,7 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\HasLifecycleCallbacks,
     Attributes\Auditable
 ]
-class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterface
+class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterface,
+                                 Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

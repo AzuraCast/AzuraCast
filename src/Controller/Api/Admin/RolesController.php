@@ -12,6 +12,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\Role
+ * @extends AbstractAdminApiCrudController<TEntity>
+ */
 class RolesController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\Role::class;

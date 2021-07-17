@@ -29,7 +29,8 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['station', 'streamer_username']),
     Attributes\Auditable
 ]
-class StationStreamer implements Stringable, Interfaces\StationCloneAwareInterface
+class StationStreamer implements Stringable, Interfaces\StationCloneAwareInterface,
+                                 Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

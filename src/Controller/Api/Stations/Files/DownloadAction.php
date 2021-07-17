@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Stations\Files;
 
-use App\Entity\Api\Error;
+use App\Entity;
 use App\Flysystem\StationFilesystems;
 use App\Http\Response;
 use App\Http\ServerRequest;
@@ -25,7 +25,7 @@ class DownloadAction
 
         if (!$fsMedia->fileExists($path)) {
             return $response->withStatus(404)
-                ->withJson(new Error(404, 'File not found.'));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         return $response->streamFilesystemFile($fsMedia, $path);

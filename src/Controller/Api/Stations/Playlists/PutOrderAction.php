@@ -16,7 +16,7 @@ class PutOrderAction extends AbstractPlaylistsAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepository,
-        $id
+        int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 

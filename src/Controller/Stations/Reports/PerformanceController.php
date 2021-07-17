@@ -22,7 +22,7 @@ class PerformanceController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $format = 'html'
+        string $format = 'html'
     ): ResponseInterface {
         $station = $request->getStation();
 

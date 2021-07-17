@@ -13,7 +13,7 @@ interface ConnectorInterface
      * that are set to be triggered, and the configured triggers for this connector.
      *
      * @param Entity\StationWebhook $webhook
-     * @param array $triggers
+     * @param array<string> $triggers
      *
      * @return bool Whether the given webhook should dispatch with these triggers.
      */
@@ -28,7 +28,7 @@ interface ConnectorInterface
      * @param Entity\Station $station
      * @param Entity\StationWebhook $webhook
      * @param Entity\Api\NowPlaying $np
-     * @param array $triggers
+     * @param array<string> $triggers
      *
      * @return bool Whether the webhook actually dispatched.
      */

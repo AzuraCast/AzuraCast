@@ -89,8 +89,8 @@ class ProfileController
     public function toggleAction(
         ServerRequest $request,
         Response $response,
-        $feature,
-        $csrf
+        string $feature,
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 

@@ -41,7 +41,7 @@ class UsersController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int|string $id = null): ResponseInterface
     {
         try {
             if (false !== $this->doEdit($request, $id)) {
@@ -56,15 +56,23 @@ class UsersController extends AbstractAdminCrudController
             );
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => $id ? __('Edit User') : __('Add User'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $this->form,
+                'render_mode' => 'edit',
+                'title' => $id ? __('Edit User') : __('Add User'),
+            ]
+        );
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        int|string $id,
+        string $csrf
+    ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
@@ -86,8 +94,8 @@ class UsersController extends AbstractAdminCrudController
     public function impersonateAction(
         ServerRequest $request,
         Response $response,
-        $id,
-        $csrf
+        int|string $id,
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 

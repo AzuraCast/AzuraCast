@@ -139,7 +139,7 @@ class StationForm extends EntityForm
             }
         }
 
-        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
+        if ($this->isValid($request)) {
             $data = $this->getValues();
 
             /** @var Entity\Station $record */

@@ -22,6 +22,9 @@ class Email extends AbstractConnector
         parent::__construct($logger, $httpClient);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

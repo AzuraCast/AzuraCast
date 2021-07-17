@@ -40,18 +40,22 @@ class WebhooksController extends AbstractStationCrudController
         ]);
     }
 
-    public function addAction(ServerRequest $request, Response $response, $type = null): ResponseInterface
+    public function addAction(ServerRequest $request, Response $response, string $type = null): ResponseInterface
     {
         $view = $request->getView();
         if ($type === null) {
-            return $view->renderToResponse($response, 'stations/webhooks/add', [
-                'connectors' => array_filter(
-                    $this->webhook_config['webhooks'],
-                    static function ($webhook) {
-                        return !empty($webhook['name']);
-                    }
-                ),
-            ]);
+            return $view->renderToResponse(
+                $response,
+                'stations/webhooks/add',
+                [
+                    'connectors' => array_filter(
+                        $this->webhook_config['webhooks'],
+                        static function ($webhook) {
+                            return !empty($webhook['name']);
+                        }
+                    ),
+                ]
+            );
         }
 
         $record = new Entity\StationWebhook($request->getStation(), $type);
@@ -68,25 +72,29 @@ class WebhooksController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int|string $id): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Web Hook updated.') . '</b>', Flash::SUCCESS);
             return $response->withRedirect((string)$request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => __('Edit Web Hook'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $this->form,
+                'render_mode' => 'edit',
+                'title' => __('Edit Web Hook'),
+            ]
+        );
     }
 
     public function toggleAction(
         ServerRequest $request,
         Response $response,
-        $id,
-        $csrf
+        int|string $id,
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
@@ -108,8 +116,8 @@ class WebhooksController extends AbstractStationCrudController
     public function testAction(
         ServerRequest $request,
         Response $response,
-        $id,
-        $csrf
+        int|string $id,
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
@@ -129,8 +137,8 @@ class WebhooksController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $id,
-        $csrf
+        int|string $id,
+        string $csrf
     ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);
 

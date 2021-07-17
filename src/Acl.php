@@ -76,6 +76,7 @@ class Acl
     public function listPermissions(): array
     {
         if (!isset($this->permissions)) {
+            /** @var array<string,array> $permissions */
             $permissions = [
                 'global' => [
                     self::GLOBAL_ALL => __('All Permissions'),

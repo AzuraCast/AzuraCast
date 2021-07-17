@@ -6,6 +6,9 @@ namespace App\Traits;
 
 trait LoadFromParentObject
 {
+    /**
+     * @param object|array<mixed> $obj
+     */
     public function fromParentObject(object|array $obj): void
     {
         if (is_object($obj)) {

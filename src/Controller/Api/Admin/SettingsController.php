@@ -15,6 +15,10 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\Settings
+ * @extends AbstractApiCrudController<TEntity>
+ */
 class SettingsController extends AbstractApiCrudController
 {
     public function __construct(
@@ -42,6 +46,7 @@ class SettingsController extends AbstractApiCrudController
      */
     public function listAction(ServerRequest $request, Response $response): ResponseInterface
     {
+        /** @var TEntity $settings */
         $settings = $this->settingsRepo->readSettings();
         return $response->withJson($this->toArray($settings));
     }
@@ -67,8 +72,9 @@ class SettingsController extends AbstractApiCrudController
      */
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
+        /** @var TEntity $settings */
         $settings = $this->settingsRepo->readSettings();
-        $this->editRecord($request->getParsedBody(), $settings);
+        $this->editRecord((array)$request->getParsedBody(), $settings);
 
         return $response->withJson(new Entity\Api\Status());
     }

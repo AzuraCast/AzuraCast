@@ -65,7 +65,7 @@ class InstallGeoLiteController
         ServerRequest $request,
         Response $response,
         SettingsRepository $settingsRepo,
-        $csrf
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 

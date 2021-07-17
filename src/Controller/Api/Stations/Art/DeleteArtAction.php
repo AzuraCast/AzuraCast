@@ -15,14 +15,14 @@ class DeleteArtAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationMediaRepository $mediaRepo,
-        $media_id
+        int|string $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 
         $media = $mediaRepo->find($media_id, $station);
         if (!($media instanceof Entity\StationMedia)) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found.')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $mediaRepo->removeAlbumArt($media);

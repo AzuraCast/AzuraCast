@@ -115,7 +115,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
      * Replicates the "fromArray" functionality previously present in Doctrine 1.
      *
      * @param mixed $data
-     * @param string $type
+     * @param class-string $type
      * @param string|null $format
      * @param array $context
      */
@@ -345,8 +345,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
             if ('one' === $mapping['type']) {
                 if (empty($value)) {
                     $this->setProperty($object, $field, null);
-                } elseif (($field_item = $this->em->find($mapping['entity'], $value)) instanceof $mapping['entity']) {
-                    $this->setProperty($object, $field, $field_item);
+                } else {
+                    /** @var class-string $entity */
+                    $entity = $mapping['entity'];
+                    if (($field_item = $this->em->find($entity, $value)) instanceof $entity) {
+                        $this->setProperty($object, $field, $field_item);
+                    }
                 }
             } elseif ($mapping['is_owning_side']) {
                 $collection = $this->getProperty($object, $field);
@@ -356,8 +360,11 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
 
                     if ($value) {
                         foreach ((array)$value as $field_id) {
-                            $field_item = $this->em->find($mapping['entity'], $field_id);
-                            if ($field_item instanceof $mapping['entity']) {
+                            /** @var class-string $entity */
+                            $entity = $mapping['entity'];
+
+                            $field_item = $this->em->find($entity, $field_id);
+                            if ($field_item instanceof $entity) {
                                 $collection->add($field_item);
                             }
                         }

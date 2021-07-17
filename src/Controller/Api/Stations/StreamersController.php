@@ -12,6 +12,10 @@ use Carbon\CarbonInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @template TEntity as Entity\StationStreamer
+ * @extends AbstractScheduledEntityController<TEntity>
+ */
 class StreamersController extends AbstractScheduledEntityController
 {
     protected string $entityClass = Entity\StationStreamer::class;

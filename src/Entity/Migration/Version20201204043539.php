@@ -84,12 +84,12 @@ final class Version20201204043539 extends AbstractMigration
         }
     }
 
-    private function toInt($value): ?int
+    private function toInt(mixed $value): ?int
     {
         return (null === $value) ? null : (int)$value;
     }
 
-    private function toBool($value): ?bool
+    private function toBool(mixed $value): ?bool
     {
         return (null === $value) ? null : (bool)$value;
     }

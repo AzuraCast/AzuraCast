@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class Repository
 {
+    /** @var class-string */
     protected string $entityClass;
 
     protected ObjectRepository $repository;

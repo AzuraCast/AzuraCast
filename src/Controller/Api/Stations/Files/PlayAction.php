@@ -26,7 +26,7 @@ class PlayAction
 
         if (!$media instanceof Entity\StationMedia) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Not Found'));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();

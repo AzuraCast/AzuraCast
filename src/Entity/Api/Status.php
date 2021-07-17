@@ -30,13 +30,12 @@ class Status
     public string $formatted_message;
 
     public function __construct(
-        $success = true,
-        $message = 'Changes saved successfully.',
-        $formatted_message = null
+        bool $success = true,
+        string $message = 'Changes saved successfully.',
+        ?string $formatted_message = null
     ) {
-        $this->success = (bool)$success;
-        $this->message = (string)$message;
-
-        $this->formatted_message = ($formatted_message ?? $message);
+        $this->success = $success;
+        $this->message = $message;
+        $this->formatted_message = $formatted_message ?? $message;
     }
 }

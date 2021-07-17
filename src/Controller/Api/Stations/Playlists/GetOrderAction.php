@@ -15,7 +15,7 @@ class GetOrderAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $id
+        int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 

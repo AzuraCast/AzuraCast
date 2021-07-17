@@ -110,14 +110,13 @@ class RelaysController
     {
         $relay_repo = $this->em->getRepository(Entity\Relay::class);
 
-        $body = $request->getParsedBody();
+        $body = (array)$request->getParsedBody();
 
         if (!empty($body['base_url'])) {
             $base_url = $body['base_url'];
         } else {
-            $serverParams = $request->getServerParams();
             /** @noinspection HttpUrlsUsage */
-            $base_url = 'http://' . $serverParams('REMOTE_ADDR');
+            $base_url = 'http://' . $request->getIp();
         }
 
         $relay = $relay_repo->findOneBy(['base_url' => $base_url]);

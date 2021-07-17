@@ -195,13 +195,16 @@ class Auth
      */
     public function getMasquerade(): ?User
     {
-        return $this->masqueraded_user;
+        if ($this->masqueraded_user instanceof User) {
+            return $this->masqueraded_user;
+        }
+        return null;
     }
 
     /**
      * Become a different user across the application.
      *
-     * @param array|User $user_info
+     * @param array<string, mixed>|User $user_info
      */
     public function masqueradeAsUser(User|array $user_info): void
     {

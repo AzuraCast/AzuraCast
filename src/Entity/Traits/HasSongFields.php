@@ -49,7 +49,10 @@ trait HasSongFields
 
     public function updateSongId(): void
     {
-        $this->song_id = Song::getSongHash($this->getText());
+        $text = $this->getText();
+        $this->song_id = (null !== $text)
+            ? Song::getSongHash($text)
+            : Song::createOffline()->song_id;
     }
 
     public function getText(): ?string

@@ -113,7 +113,9 @@ class CheckMediaTask extends AbstractTask
         foreach ($fsIterator as $file) {
             try {
                 $size = $file->fileSize();
-                $total_size = $total_size->plus($size);
+                if (null !== $size) {
+                    $total_size = $total_size->plus($size);
+                }
             } catch (UnableToRetrieveMetadata) {
                 continue;
             }
@@ -211,10 +213,10 @@ class CheckMediaTask extends AbstractTask
 
                 unset($musicFiles[$pathHash]);
             } else {
-                $this->mediaRepo->remove(
-                    $this->em->find(Entity\StationMedia::class, $mediaRow['id']),
-                    false
-                );
+                $media = $this->em->find(Entity\StationMedia::class, $mediaRow['id']);
+                if ($media instanceof Entity\StationMedia) {
+                    $this->mediaRepo->remove($media, false);
+                }
 
                 $stats['deleted']++;
             }

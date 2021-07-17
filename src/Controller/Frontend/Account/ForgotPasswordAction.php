@@ -54,7 +54,12 @@ class ForgotPasswordAction
 
             if ($user instanceof Entity\User) {
                 $email = $mail->createMessage();
-                $email->to($user->getEmail());
+
+                $userEmail = $user->getEmail();
+                if (null === $userEmail) {
+                    throw new \RuntimeException('User does not have an e-mail address!');
+                }
+                $email->to($userEmail);
 
                 $email->subject(__('Account Recovery Link'));
 

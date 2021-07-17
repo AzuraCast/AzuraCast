@@ -56,7 +56,7 @@ class View extends Engine
                     $dumpedValue = json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
                 }
 
-                return '<pre>' . htmlspecialchars($dumpedValue, ENT_QUOTES | ENT_HTML5) . '</pre>';
+                return '<pre>' . htmlspecialchars($dumpedValue ?? '', ENT_QUOTES | ENT_HTML5) . '</pre>';
             }
         );
 

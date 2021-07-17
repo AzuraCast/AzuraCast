@@ -28,9 +28,13 @@ class Settings implements Stringable
     #[ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class)]
     protected string $app_unique_identifier;
 
-    public function getAppUniqueIdentifier(): ?string
+    public function getAppUniqueIdentifier(): string
     {
-        return $this->app_unique_identifier ?? null;
+        if (null === $this->app_unique_identifier) {
+            throw new \RuntimeException('Application Unique ID not generated yet.');
+        }
+
+        return $this->app_unique_identifier;
     }
 
     /**

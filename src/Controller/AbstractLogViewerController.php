@@ -28,7 +28,7 @@ abstract class AbstractLogViewerController
         }
 
         if (!$tail_file) {
-            $log = file_get_contents($log_path) ?: null;
+            $log = file_get_contents($log_path) ?: '';
             $log_contents = $this->processLog($request, $log);
 
             return $response->withJson([

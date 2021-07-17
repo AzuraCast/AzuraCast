@@ -47,7 +47,7 @@ class NChan
         $vars = [];
 
         if ('Linux' === PHP_OS_FAMILY) {
-            foreach (glob(' /etc/*-release', GLOB_NOSORT) as $file) {
+            foreach (glob(' /etc/*-release', GLOB_NOSORT) ?: [] as $file) {
                 $lines = array_filter(
                     array_map(
                         static function ($line) {

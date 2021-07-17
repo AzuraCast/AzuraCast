@@ -120,7 +120,7 @@ class BackupCommand extends CommandAbstract
 
         // Strip leading slashes from backup paths.
         $files_to_backup = array_map(
-            static function ($val) {
+            static function (string $val) {
                 if (str_starts_with($val, '/')) {
                     return substr($val, 1);
                 }

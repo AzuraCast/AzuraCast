@@ -53,7 +53,7 @@ trait TruncateInts
         int $unsigned_limit,
         bool $unsigned,
         int $int
-    ): ?int {
+    ): int {
         $lower_limit = $unsigned ? 0 : 0 - $signed_limit;
         $upper_limit = $unsigned ? $unsigned_limit : $signed_limit;
 

@@ -19,6 +19,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\Podcast
+ * @extends AbstractApiCrudController<TEntity>
+ */
 class PodcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Podcast::class;
@@ -224,6 +228,8 @@ class PodcastsController extends AbstractApiCrudController
     /**
      * @param Entity\Station $station
      * @param string $id
+     *
+     * @return TEntity|null
      */
     protected function getRecord(Entity\Station $station, string $id): ?object
     {
@@ -305,15 +311,22 @@ class PodcastsController extends AbstractApiCrudController
                 absolute: !$isInternal
             );
             $return->links['episode_new_media'] = (string)$router->fromHere(
-                route_name: 'api:stations:podcast:episodes:new-media',
+                route_name:   'api:stations:podcast:episodes:new-media',
                 route_params: ['podcast_id' => $record->getId()],
-                absolute: !$isInternal
+                absolute:     !$isInternal
             );
         }
 
         return $return;
     }
 
+    /**
+     * @param mixed[] $data
+     * @param TEntity|null $record
+     * @param array $context
+     *
+     * @return TEntity
+     */
     protected function fromArray($data, $record = null, array $context = []): object
     {
         return parent::fromArray(

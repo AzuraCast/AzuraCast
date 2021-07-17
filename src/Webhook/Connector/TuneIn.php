@@ -42,9 +42,9 @@ class TuneIn extends AbstractConnector
                         'partnerId' => $config['partner_id'],
                         'partnerKey' => $config['partner_key'],
                         'id' => $config['station_id'],
-                        'title' => $np->now_playing->song->title,
-                        'artist' => $np->now_playing->song->artist,
-                        'album' => $np->now_playing->song->album,
+                        'title' => $np->now_playing?->song?->title,
+                        'artist' => $np->now_playing?->song?->artist,
+                        'album' => $np->now_playing?->song?->album,
                     ],
                 ]
             );

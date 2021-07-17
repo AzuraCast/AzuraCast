@@ -208,6 +208,10 @@ class PodcastEpisodesController extends AbstractApiCrudController
         $station = $request->getStation();
 
         $podcast = $this->podcastRepository->fetchPodcastForStation($station, $podcast_id);
+        if (null === $podcast) {
+            throw new \RuntimeException('Podcast not found.');
+        }
+
         $parsedBody = (array)$request->getParsedBody();
 
         /** @var Entity\PodcastEpisode $record */

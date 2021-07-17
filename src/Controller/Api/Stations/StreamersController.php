@@ -155,7 +155,7 @@ class StreamersController extends AbstractScheduledEntityController
     }
 
     /**
-     * @param object $record
+     * @param TEntity $record
      * @param ServerRequest $request
      *
      * @return mixed[]

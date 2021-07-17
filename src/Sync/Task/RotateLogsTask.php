@@ -114,7 +114,9 @@ class RotateLogsTask extends AbstractTask
 
         foreach ($finder as $file) {
             $file_path = $file->getRealPath();
-            @unlink($file_path);
+            if ($file_path) {
+                @unlink($file_path);
+            }
         }
     }
 }

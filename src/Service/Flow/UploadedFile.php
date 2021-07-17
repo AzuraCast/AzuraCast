@@ -20,6 +20,10 @@ final class UploadedFile implements \JsonSerializable
         $tempDir ??= sys_get_temp_dir();
 
         $originalFilename ??= tempnam($tempDir, 'upload');
+        if (!$originalFilename) {
+            throw new \RuntimeException('Could not generate original filename.');
+        }
+
         $this->originalFilename = self::filterOriginalFilename($originalFilename);
 
         if (null === $uploadedPath) {

@@ -9,9 +9,9 @@ use Psr\Http\Message\UriInterface;
 
 interface RouterInterface
 {
-    public function setRequest(ServerRequestInterface $request): void;
+    public function setRequest(?ServerRequestInterface $request): void;
 
-    public function withRequest(ServerRequestInterface $request): self;
+    public function withRequest(?ServerRequestInterface $request): self;
 
     public function getBaseUrl(): UriInterface;
 

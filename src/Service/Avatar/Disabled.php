@@ -18,6 +18,6 @@ class Disabled implements AvatarServiceInterface
 
     public function getAvatar(string $email, int $size = 50, ?string $default = null): string
     {
-        return $default;
+        return $default ?? '';
     }
 }

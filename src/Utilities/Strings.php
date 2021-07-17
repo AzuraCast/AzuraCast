@@ -22,7 +22,11 @@ class Strings
         }
 
         $wrapped_text = self::mbWordwrap($text, $limit, '{N}', true);
-        $shortened_text = mb_substr($wrapped_text, 0, strpos($wrapped_text, '{N}'));
+        $shortened_text = mb_substr(
+            $wrapped_text,
+            0,
+            strpos($wrapped_text, '{N}') ?: null
+        );
 
         // Prevent the padding string from bumping up against punctuation.
         $punctuation = ['.', ',', ';', '?', '!'];

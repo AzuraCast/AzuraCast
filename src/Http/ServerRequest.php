@@ -157,7 +157,7 @@ final class ServerRequest extends \Slim\Http\ServerRequest
     /**
      * Get the remote user's IP address as indicated by HTTP headers.
      */
-    public function getIp(): ?string
+    public function getIp(): string
     {
         $params = $this->serverRequest->getServerParams();
 
@@ -167,7 +167,11 @@ final class ServerRequest extends \Slim\Http\ServerRequest
             ?? $params['HTTP_FORWARDED_FOR']
             ?? $params['HTTP_FORWARDED']
             ?? $params['REMOTE_ADDR']
-            ?? '';
+            ?? null;
+
+        if (null === $ip) {
+            throw new \RuntimeException('No IP address attached to this request.');
+        }
 
         // Handle the IP being separated by commas.
         $ipParts = explode(',', $ip);

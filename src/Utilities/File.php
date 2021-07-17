@@ -22,7 +22,7 @@ class File
     public static function sanitizePathPrefix(string $path): string
     {
         $pattern = '/:\/\//';
-        $path = preg_replace($pattern, '', $path);
+        $path = preg_replace($pattern, '', $path) ?? $path;
 
         if (preg_match($pattern, $path)) {
             return self::sanitizePathPrefix($path);
@@ -39,10 +39,10 @@ class File
      */
     public static function sanitizeFileName(string $str): string
     {
-        $str = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
-        $str = mb_ereg_replace("([\.]{2,})", '.', $str);
-        $str = str_replace(' ', '_', $str);
-        return mb_strtolower($str);
+        $str = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str) ?? '';
+        $str = mb_ereg_replace("([\.]{2,})", '.', $str) ?? '';
+        $str = str_replace(' ', '_', $str) ?? '';
+        return mb_strtolower($str) ?? '';
     }
 
     public static function generateTempPath(string $pattern = ''): string
@@ -96,11 +96,16 @@ class File
 
         foreach ($files as $fileinfo) {
             /** @var SplFileInfo $fileinfo */
+            $realPath = $fileinfo->getRealPath();
+            if (null === $realPath) {
+                return false;
+            }
+
             if ('link' !== $fileinfo->getType() && $fileinfo->isDir()) {
-                if (!rmdir($fileinfo->getRealPath())) {
+                if (!rmdir($realPath)) {
                     return false;
                 }
-            } elseif (!unlink($fileinfo->getRealPath())) {
+            } elseif (!unlink($realPath)) {
                 return false;
             }
         }

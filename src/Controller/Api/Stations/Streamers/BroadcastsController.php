@@ -72,7 +72,7 @@ class BroadcastsController extends AbstractApiCrudController
 
         $paginator->setPostprocessor(
             function ($row) use ($id, $is_bootgrid, $router, $fsRecordings) {
-                /** @var Entity\StationStreamerBroadcast $row */
+                /** @var TEntity $row */
                 $return = $this->toArray($row);
 
                 unset($return['recordingPath']);

@@ -31,8 +31,9 @@ class UniqueEntity extends Constraint
     public ?string $entityClass = null;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
+     * @param class-string|null $entityClass
      * @param array|string $fields the combination of fields that must contain unique values or a set of options
      */
     public function __construct(

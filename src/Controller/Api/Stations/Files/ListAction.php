@@ -317,7 +317,7 @@ class ListAction
         $paginator = Paginator::fromArray($result, $request);
 
         // Add processor-intensive data for just this page.
-        $stationId = $station->getId();
+        $stationId = $station->getIdRequired();
         $isInternal = (bool)$request->getParam('internal', false);
         $defaultAlbumArtUrl = (string)$stationRepo->getDefaultAlbumArtUrl($station);
 

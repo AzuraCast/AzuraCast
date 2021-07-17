@@ -541,7 +541,7 @@ class Assets
     public function writeCsp(ResponseInterface $response): ResponseInterface
     {
         $csp = [];
-        if ('https' === $this->request->getUri()->getScheme()) {
+        if (null !== $this->request && 'https' === $this->request->getUri()->getScheme()) {
             $csp[] = 'upgrade-insecure-requests';
         }
 

@@ -37,7 +37,7 @@ class LockFactory extends SymfonyLockFactory
         ?float $ttl = 300.0,
         bool $autoRelease = true,
         bool $force = false
-    ): LockInterface|bool {
+    ): LockInterface|false {
         $lock = $this->createLock($resource, $ttl, $autoRelease);
 
         if ($force) {

@@ -14,7 +14,7 @@ class GetIpCommand extends CommandAbstract
         SymfonyStyle $io,
         AzuraCastCentral $acCentral
     ): int {
-        $io->write($acCentral->getIp());
+        $io->write($acCentral->getIp() ?? 'Unknown');
         return 0;
     }
 }

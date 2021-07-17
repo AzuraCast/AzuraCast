@@ -345,7 +345,7 @@ class Station implements Stringable, IdentifiableEntityInterface
         }
     }
 
-    public function getShortName(): ?string
+    public function getShortName(): string
     {
         return (!empty($this->short_name))
             ? $this->short_name

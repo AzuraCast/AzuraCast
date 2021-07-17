@@ -11,11 +11,15 @@ use Doctrine\Persistence\ObjectRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @template TEntity as object
+ */
 class Repository
 {
-    /** @var class-string */
+    /** @var class-string<TEntity> */
     protected string $entityClass;
 
+    /** @var ObjectRepository<TEntity> */
     protected ObjectRepository $repository;
 
     public function __construct(

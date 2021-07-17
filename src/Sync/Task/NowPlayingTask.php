@@ -307,7 +307,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         ];
 
         if ($npOld instanceof Entity\Api\NowPlaying) {
-            if ($npOld->now_playing->song->id !== $np->now_playing->song->id) {
+            if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
                 $triggers[] = Entity\StationWebhook::TRIGGER_SONG_CHANGED;
             }
 

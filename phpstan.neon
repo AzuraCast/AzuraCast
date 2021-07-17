@@ -22,6 +22,9 @@ parameters:
         - '#Parameter \#3 \$criteria of method Doctrine\\DBAL\\Connection::update\(\) expects array<string, mixed>, array<int, int> given.#'
         - '#Parameter \#2 \$criteria of method Doctrine\\DBAL\\Connection::delete\(\) expects array<string, mixed>, array<int, int> given.#'
 
+        # Known upstream issue with Plates template engine
+        - '#Parameter \#2 \$callback of method League\\Plates\\Engine::registerFunction\(\) expects League\\Plates\\callback, Closure given.#'
+
     parallel:
         maximumNumberOfProcesses: 1
 

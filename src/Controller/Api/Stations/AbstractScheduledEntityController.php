@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as object
+ * @template TEntity as Entity\StationPlaylist|Entity\StationStreamer
  * @extends AbstractStationApiCrudController<TEntity>
  */
 abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController

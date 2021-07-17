@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\Account;
 
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
@@ -22,6 +23,7 @@ class TwoFactorAction
             $otp = $request->getParam('otp');
 
             if ($auth->verifyTwoFactor($otp)) {
+                /** @var User $user */
                 $user = $auth->getUser();
 
                 $flash->addMessage(

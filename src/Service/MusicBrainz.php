@@ -84,7 +84,9 @@ class MusicBrainz
     ): array {
         $query = [];
 
-        $query[] = $this->quoteQuery($song->getTitle());
+        if (!empty($song->getTitle())) {
+            $query[] = $this->quoteQuery($song->getTitle());
+        }
 
         if (!empty($song->getArtist())) {
             $query[] = 'artist:' . $this->quoteQuery($song->getArtist());
@@ -114,6 +116,10 @@ class MusicBrainz
                     return $response['recordings'];
                 }
             }
+        }
+
+        if (empty($query)) {
+            return [];
         }
 
         $response = $this->makeRequest(

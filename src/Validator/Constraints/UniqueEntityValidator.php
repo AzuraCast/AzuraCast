@@ -87,7 +87,7 @@ class UniqueEntityValidator extends ConstraintValidator
                 );
             }
 
-            $fieldValue = $class->reflFields[$fieldName]->getValue($value);
+            $fieldValue = $class->reflFields[$fieldName]?->getValue($value);
 
             if (null === $fieldValue) {
                 $hasNullValue = true;

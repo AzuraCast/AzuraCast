@@ -31,15 +31,15 @@ class AppFactory
 {
     /**
      * @param ClassLoader|null $autoloader
-     * @param array<string, mixed>|null $appEnvironment
-     * @param array<string, mixed>|null $diDefinitions
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
      *
      * @return App
      */
     public static function createApp(
         ?ClassLoader $autoloader = null,
-        ?array $appEnvironment = [],
-        ?array $diDefinitions = []
+        array $appEnvironment = [],
+        array $diDefinitions = []
     ): App {
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         return self::buildAppFromContainer($di);
@@ -47,15 +47,15 @@ class AppFactory
 
     /**
      * @param ClassLoader|null $autoloader
-     * @param array<string, mixed>|null $appEnvironment
-     * @param array<string, mixed>|null $diDefinitions
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
      *
      * @return Application
      */
     public static function createCli(
         ?ClassLoader $autoloader = null,
-        ?array $appEnvironment = [],
-        ?array $diDefinitions = []
+        array $appEnvironment = [],
+        array $diDefinitions = []
     ): Application {
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         self::buildAppFromContainer($di);
@@ -106,7 +106,15 @@ class AppFactory
         return $app;
     }
 
-    /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+    /**
+     * @param ClassLoader|null $autoloader
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
+     *
+     * @noinspection SummerTimeUnsafeTimeManipulationInspection
+     *
+     * @return DI\Container
+     */
     public static function buildContainer(
         ?ClassLoader $autoloader = null,
         array $appEnvironment = [],
@@ -191,7 +199,7 @@ class AppFactory
     /**
      * @param array<string, mixed> $environment
      */
-    public static function buildEnvironment(array $environment): Environment
+    public static function buildEnvironment(array $environment = []): Environment
     {
         if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');

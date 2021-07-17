@@ -170,7 +170,7 @@ class Flow
         $chunkSize = 0;
         $chunkNumber = 0;
 
-        foreach (array_diff(scandir($chunkBaseDir, SCANDIR_SORT_NONE), ['.', '..']) as $file) {
+        foreach (array_diff(scandir($chunkBaseDir, SCANDIR_SORT_NONE) ?: [], ['.', '..']) as $file) {
             $chunkSize += filesize($chunkBaseDir . '/' . $file);
             $chunkNumber++;
         }
@@ -189,6 +189,15 @@ class Flow
 
         $finalPath = $uploadedFile->getUploadedPath();
         $fp = fopen($finalPath, 'wb+');
+
+        if (false === $fp) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Could not open final path "%s" for writing.',
+                    $finalPath
+                )
+            );
+        }
 
         for ($i = 1; $i <= $numChunks; $i++) {
             fwrite($fp, file_get_contents($chunkBaseDir . '/' . $chunkIdentifier . '.part' . $i));
@@ -217,7 +226,7 @@ class Flow
     protected static function rrmdir(string $dir): void
     {
         if (is_dir($dir)) {
-            $objects = array_diff(scandir($dir, SCANDIR_SORT_NONE), ['.', '..']);
+            $objects = array_diff(scandir($dir, SCANDIR_SORT_NONE) ?: [], ['.', '..']);
             foreach ($objects as $object) {
                 if (is_dir($dir . '/' . $object)) {
                     self::rrmdir($dir . '/' . $object);

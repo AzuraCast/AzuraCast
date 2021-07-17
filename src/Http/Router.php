@@ -20,8 +20,6 @@ class Router implements RouterInterface
 {
     use RequestAwareTrait;
 
-    protected ?ServerRequestInterface $currentRequest = null;
-
     protected ?UriInterface $baseUrl = null;
 
     public function __construct(
@@ -31,10 +29,10 @@ class Router implements RouterInterface
     ) {
     }
 
-    public function setRequest(ServerRequestInterface $request): void
+    public function setRequest(?ServerRequestInterface $request): void
     {
+        $this->request = $request;
         $this->baseUrl = null;
-        $this->currentRequest = $request;
     }
 
     public function getBaseUrl(bool $useRequest = true): UriInterface
@@ -64,8 +62,8 @@ class Router implements RouterInterface
 
         $useHttps = $settings->getAlwaysUseSsl();
 
-        if ($this->currentRequest instanceof ServerRequestInterface) {
-            $currentUri = $this->currentRequest->getUri();
+        if ($this->request instanceof ServerRequestInterface) {
+            $currentUri = $this->request->getUri();
 
             if ('https' === $currentUri->getScheme()) {
                 $useHttps = true;
@@ -108,9 +106,10 @@ class Router implements RouterInterface
         array $route_params = [],
         array $query_params = [],
         bool $absolute = false
-    ): UriInterface {
-        if ($this->currentRequest instanceof ServerRequestInterface) {
-            $query_params = array_merge($this->currentRequest->getQueryParams(), $query_params);
+    ): UriInterface
+    {
+        if ($this->request instanceof ServerRequestInterface) {
+            $query_params = array_merge($this->request->getQueryParams(), $query_params);
         }
 
         return $this->fromHere($route_name, $route_params, $query_params, $absolute);
@@ -124,9 +123,10 @@ class Router implements RouterInterface
         array $route_params = [],
         array $query_params = [],
         bool $absolute = false
-    ): UriInterface {
-        if ($this->currentRequest instanceof ServerRequestInterface) {
-            $route = RouteContext::fromRequest($this->currentRequest)->getRoute();
+    ): UriInterface
+    {
+        if ($this->request instanceof ServerRequestInterface) {
+            $route = RouteContext::fromRequest($this->request)->getRoute();
         } else {
             $route = null;
         }

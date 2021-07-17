@@ -111,7 +111,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     protected function getValidUrl(?string $url_string = null): ?string
     {
-        $url = trim($url_string);
+        $url = trim($url_string ?? '');
         $pattern = sprintf(UrlValidator::PATTERN, 'http|https');
         return (preg_match($pattern, $url)) ? $url : null;
     }

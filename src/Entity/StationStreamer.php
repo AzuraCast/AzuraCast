@@ -118,7 +118,7 @@ class StationStreamer implements Stringable, Interfaces\StationCloneAwareInterfa
 
     public function setStreamerPassword(?string $streamer_password): void
     {
-        $streamer_password = trim($streamer_password);
+        $streamer_password = trim($streamer_password ?? '');
 
         if (!empty($streamer_password)) {
             $this->streamer_password = password_hash($streamer_password, PASSWORD_ARGON2ID);

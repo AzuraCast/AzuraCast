@@ -52,7 +52,7 @@ trait HasSongFields
         $text = $this->getText();
         $this->song_id = (null !== $text)
             ? Song::getSongHash($text)
-            : Song::createOffline()->song_id;
+            : Song::createOffline()->getSongId();
     }
 
     public function getText(): ?string

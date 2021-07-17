@@ -131,14 +131,14 @@ class Router implements RouterInterface
             $route = null;
         }
 
-        if ($route_name === null) {
-            if ($route instanceof RouteInterface) {
-                $route_name = $route->getName();
-            } else {
-                throw new InvalidArgumentException(
-                    'Cannot specify a null route name if no existing route is configured.'
-                );
-            }
+        if (null === $route_name && $route instanceof RouteInterface) {
+            $route_name = $route->getName();
+        }
+
+        if (null === $route_name) {
+            throw new InvalidArgumentException(
+                'Cannot specify a null route name if no existing route is configured.'
+            );
         }
 
         if ($route instanceof RouteInterface) {

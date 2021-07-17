@@ -89,7 +89,7 @@ class PodcastEpisodeRepository extends Repository
             }
         );
 
-        $episodeArtworkPath = PodcastEpisode::getArtPath($episode->getId());
+        $episodeArtworkPath = PodcastEpisode::getArtPath($episode->getIdRequired());
         $episodeArtworkStream = $episodeArtwork->stream('jpg');
 
         $fsPodcasts = $episode->getPodcast()->getStorageLocation()->getFilesystem();
@@ -102,7 +102,7 @@ class PodcastEpisodeRepository extends Repository
         PodcastEpisode $episode,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
-        $artworkPath = PodcastEpisode::getArtPath($episode->getId());
+        $artworkPath = PodcastEpisode::getArtPath($episode->getIdRequired());
 
         $fs ??= $episode->getPodcast()->getStorageLocation()->getFilesystem();
 

@@ -14,6 +14,10 @@ use Carbon\CarbonInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @template TEntity as Entity\StationSchedule
+ * @extends Repository<TEntity>
+ */
 class StationScheduleRepository extends Repository
 {
     protected Scheduler $scheduler;
@@ -32,9 +36,9 @@ class StationScheduleRepository extends Repository
 
     /**
      * @param Entity\StationPlaylist|Entity\StationStreamer $relation
-     * @param array|null $items
+     * @param array $items
      */
-    public function setScheduleItems(Entity\StationPlaylist|Entity\StationStreamer $relation, ?array $items): void
+    public function setScheduleItems(Entity\StationPlaylist|Entity\StationStreamer $relation, array $items = []): void
     {
         $rawScheduleItems = $this->findByRelation($relation);
 

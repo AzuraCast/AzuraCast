@@ -141,7 +141,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
         }
 
         if ($this->enable_autodj) {
-            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format);
+            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '');
         }
 
         return $this->name;

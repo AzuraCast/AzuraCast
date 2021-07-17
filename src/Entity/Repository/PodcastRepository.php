@@ -6,9 +6,7 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
-use App\Entity\Podcast;
-use App\Entity\Station;
-use App\Entity\StorageLocation;
+use App\Entity;
 use App\Environment;
 use Azura\Files\ExtendedFilesystemInterface;
 use Intervention\Image\Constraint;
@@ -17,6 +15,9 @@ use League\Flysystem\UnableToDeleteFile;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @extends Repository<Entity\Podcast>
+ */
 class PodcastRepository extends Repository
 {
     public function __construct(
@@ -30,15 +31,15 @@ class PodcastRepository extends Repository
         parent::__construct($entityManager, $serializer, $environment, $logger);
     }
 
-    public function fetchPodcastForStation(Station $station, string $podcastId): ?Podcast
+    public function fetchPodcastForStation(Entity\Station $station, string $podcastId): ?Entity\Podcast
     {
         return $this->fetchPodcastForStorageLocation($station->getPodcastsStorageLocation(), $podcastId);
     }
 
     public function fetchPodcastForStorageLocation(
-        StorageLocation $storageLocation,
+        Entity\StorageLocation $storageLocation,
         string $podcastId
-    ): ?Podcast {
+    ): ?Entity\Podcast {
         return $this->repository->findOneBy(
             [
                 'id' => $podcastId,
@@ -48,9 +49,9 @@ class PodcastRepository extends Repository
     }
 
     /**
-     * @return Podcast[]
+     * @return Entity\Podcast[]
      */
-    public function fetchPublishedPodcastsForStation(Station $station): array
+    public function fetchPublishedPodcastsForStation(Entity\Station $station): array
     {
         $podcasts = $this->em->createQuery(
             <<<'DQL'
@@ -64,7 +65,7 @@ class PodcastRepository extends Repository
 
         return array_filter(
             $podcasts,
-            static function (Podcast $podcast) {
+            static function (Entity\Podcast $podcast) {
                 foreach ($podcast->getEpisodes() as $episode) {
                     if ($episode->isPublished()) {
                         return true;
@@ -77,7 +78,7 @@ class PodcastRepository extends Repository
     }
 
     public function writePodcastArt(
-        Podcast $podcast,
+        Entity\Podcast $podcast,
         string $rawArtworkString,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
@@ -92,7 +93,7 @@ class PodcastRepository extends Repository
             }
         );
 
-        $podcastArtworkPath = Podcast::getArtPath($podcast->getId());
+        $podcastArtworkPath = Entity\Podcast::getArtPath($podcast->getIdRequired());
         $podcastArtworkStream = $podcastArtwork->stream('jpg');
 
         $fs->writeStream($podcastArtworkPath, $podcastArtworkStream->detach());
@@ -101,12 +102,12 @@ class PodcastRepository extends Repository
     }
 
     public function removePodcastArt(
-        Podcast $podcast,
+        Entity\Podcast $podcast,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $podcast->getStorageLocation()->getFilesystem();
 
-        $artworkPath = Podcast::getArtPath($podcast->getId());
+        $artworkPath = Entity\Podcast::getArtPath($podcast->getIdRequired());
 
         try {
             $fs->delete($artworkPath);
@@ -117,7 +118,7 @@ class PodcastRepository extends Repository
     }
 
     public function delete(
-        Podcast $podcast,
+        Entity\Podcast $podcast,
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         $fs ??= $podcast->getStorageLocation()->getFilesystem();

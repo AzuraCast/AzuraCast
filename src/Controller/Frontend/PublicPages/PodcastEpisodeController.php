@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Frontend\PublicPages;
 
+use App\Entity\PodcastEpisode;
 use App\Entity\Repository\PodcastEpisodeRepository;
 use App\Entity\Repository\PodcastRepository;
 use App\Exception\PodcastNotFoundException;
@@ -50,7 +51,7 @@ class PodcastEpisodeController
             ]
         );
 
-        if (!$episode->isPublished()) {
+        if (!($episode instanceof PodcastEpisode) || !$episode->isPublished()) {
             $request->getFlash()->addMessage(__('Episode not found.'), Flash::ERROR);
             return $response->withRedirect($podcastEpisodesLink);
         }

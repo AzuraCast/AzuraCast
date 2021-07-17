@@ -424,7 +424,7 @@ class Settings implements Stringable
 
     public function setLastFmApiKey(?string $lastFmApiKey): void
     {
-        $lastFmApiKey = trim($lastFmApiKey);
+        $lastFmApiKey = trim($lastFmApiKey ?? '');
         $lastFmApiKey = (!empty($lastFmApiKey)) ? $lastFmApiKey : null;
 
         $this->last_fm_api_key = $this->truncateNullableString($lastFmApiKey);

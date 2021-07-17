@@ -96,7 +96,7 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
             throw new InvalidArgumentException('Could not parse input data.');
         }
 
-        $scheduleItems = $data['schedule_items'] ?? null;
+        $scheduleItems = $data['schedule_items'] ?? [];
         unset($data['schedule_items']);
 
         $record = $this->fromArray($data, $record, $context);

@@ -102,7 +102,7 @@ final class Response extends \Slim\Http\Response
             ->withHeader('Pragma', 'public')
             ->withHeader('Expires', '0')
             ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
-            ->withHeader('Content-Type', mime_content_type($file_path))
+            ->withHeader('Content-Type', mime_content_type($file_path) ?: '')
             ->withHeader('Content-Length', (string)filesize($file_path))
             ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name)
             ->withBody($stream);
@@ -208,12 +208,12 @@ final class Response extends \Slim\Http\Response
                 if (str_starts_with($localPath, $diskPath)) {
                     $accelPath = str_replace($diskPath, $nginxPath, $localPath);
 
-                    return $response->withHeader('Content-Type', $fileMeta->mimeType())
+                    return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
                         ->withHeader('X-Accel-Redirect', $accelPath);
                 }
             }
         }
 
-        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType());
+        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType() ?? '');
     }
 }

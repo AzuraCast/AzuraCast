@@ -8,8 +8,7 @@ use App\Entity;
 use OpenApi\Annotations as OA;
 
 /**
- * @template TEntity as Entity\StationWebhook
- * @extends AbstractStationApiCrudController<TEntity>
+ * @extends AbstractStationApiCrudController<Entity\StationWebhook>
  */
 class WebhooksController extends AbstractStationApiCrudController
 {

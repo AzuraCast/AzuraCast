@@ -210,7 +210,7 @@ class Liquidsoap extends AbstractBackend
 
         $response = [];
         while (!feof($fp)) {
-            $response[] = trim(fgets($fp, 1024));
+            $response[] = trim(fgets($fp, 1024) ?? '');
         }
 
         fclose($fp);

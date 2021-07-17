@@ -54,6 +54,12 @@ final class Version20210717164419 extends AbstractMigration
             ['auth_password' => ''],
             ['auth_password' => null]
         );
+
+        $this->connection->update(
+            'storage_location',
+            ['path' => ''],
+            ['path' => null]
+        );
     }
 
     public function up(Schema $schema): void
@@ -61,16 +67,32 @@ final class Version20210717164419 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE api_keys CHANGE comment comment VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE custom_field CHANGE short_name short_name VARCHAR(100) NOT NULL');
-        $this->addSql('ALTER TABLE station CHANGE name name VARCHAR(100) NOT NULL, CHANGE short_name short_name VARCHAR(100) NOT NULL');
-        $this->addSql('ALTER TABLE users CHANGE email email VARCHAR(100) NOT NULL, CHANGE auth_password auth_password VARCHAR(255) NOT NULL');
+        $this->addSql(
+            'ALTER TABLE station CHANGE name name VARCHAR(100) NOT NULL, CHANGE short_name short_name VARCHAR(100) NOT NULL'
+        );
+        $this->addSql(
+            'ALTER TABLE users CHANGE email email VARCHAR(100) NOT NULL, CHANGE auth_password auth_password VARCHAR(255) NOT NULL'
+        );
+        $this->addSql('ALTER TABLE storage_location CHANGE path path VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE api_keys CHANGE comment comment VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`');
-        $this->addSql('ALTER TABLE custom_field CHANGE short_name short_name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`');
-        $this->addSql('ALTER TABLE station CHANGE name name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`, CHANGE short_name short_name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`');
-        $this->addSql('ALTER TABLE users CHANGE email email VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`, CHANGE auth_password auth_password VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`');
+        $this->addSql(
+            'ALTER TABLE api_keys CHANGE comment comment VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`'
+        );
+        $this->addSql(
+            'ALTER TABLE custom_field CHANGE short_name short_name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`'
+        );
+        $this->addSql(
+            'ALTER TABLE station CHANGE name name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`, CHANGE short_name short_name VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`'
+        );
+        $this->addSql(
+            'ALTER TABLE users CHANGE email email VARCHAR(100) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`, CHANGE auth_password auth_password VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`'
+        );
+        $this->addSql(
+            'ALTER TABLE storage_location CHANGE path path VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`'
+        );
     }
 }

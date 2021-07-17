@@ -31,11 +31,14 @@ class Csrf
      *
      * @param string $namespace
      */
-    public function generate(string $namespace = self::DEFAULT_NAMESPACE): ?string
+    public function generate(string $namespace = self::DEFAULT_NAMESPACE): string
     {
         $sessionKey = $this->getSessionIdentifier($namespace);
         if ($this->session->has($sessionKey)) {
-            return $this->session->get($sessionKey);
+            $csrf = $this->session->get($sessionKey);
+            if (!empty($csrf)) {
+                return $csrf;
+            }
         }
 
         $key = $this->randomString();

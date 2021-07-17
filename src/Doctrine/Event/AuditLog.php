@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Proxy\Proxy;
 use Doctrine\ORM\UnitOfWork;
-use JetBrains\PhpStorm\Pure;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionObject;
@@ -144,6 +143,10 @@ class AuditLog implements EventSubscriber
             /** @var PersistentCollection $collection */
             $owner = $collection->getOwner();
 
+            if (null === $owner) {
+                continue;
+            }
+
             $reflectionClass = new ReflectionObject($owner);
             if (!$this->isAuditable($reflectionClass)) {
                 continue;
@@ -151,6 +154,9 @@ class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
+            if (null === $mapping) {
+                continue;
+            }
             if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
                 continue;
             }
@@ -251,7 +257,7 @@ class AuditLog implements EventSubscriber
         return !$em->getMetadataFactory()->isTransient($class);
     }
 
-    #[Pure] protected function isAuditable(ReflectionClass $refl): bool
+    protected function isAuditable(ReflectionClass $refl): bool
     {
         $auditable = $refl->getAttributes(Auditable::class);
         return !empty($auditable);
@@ -262,7 +268,7 @@ class AuditLog implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function getIdentifier(object $entity): ?string
+    protected function getIdentifier(object $entity): string
     {
         if ($entity instanceof Stringable) {
             return (string)$entity;
@@ -272,6 +278,10 @@ class AuditLog implements EventSubscriber
             return $entity->getName();
         }
 
-        return null;
+        if ($entity instanceof Entity\Interfaces\IdentifiableEntityInterface) {
+            return $entity->getIdRequired();
+        }
+
+        return spl_object_hash($entity);
     }
 }

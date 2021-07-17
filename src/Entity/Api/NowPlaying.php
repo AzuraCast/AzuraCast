@@ -79,7 +79,7 @@ class NowPlaying implements ResolvableUrlInterface
      */
     public function update(): void
     {
-        $this->now_playing->recalculate();
+        $this->now_playing?->recalculate();
     }
 
     /**

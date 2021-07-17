@@ -15,8 +15,7 @@ use App\Utilities\File;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @template TEntity as Entity\StationStreamerBroadcast
- * @extends AbstractApiCrudController<TEntity>
+ * @extends AbstractApiCrudController<Entity\StationStreamerBroadcast>
  */
 class BroadcastsController extends AbstractApiCrudController
 {
@@ -72,7 +71,6 @@ class BroadcastsController extends AbstractApiCrudController
 
         $paginator->setPostprocessor(
             function ($row) use ($id, $is_bootgrid, $router, $fsRecordings) {
-                /** @var TEntity $row */
                 $return = $this->toArray($row);
 
                 unset($return['recordingPath']);

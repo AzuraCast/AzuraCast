@@ -139,7 +139,7 @@ class Customization
             $title = '(' . ucfirst($this->environment->getAppEnvironment()) . ') ' . $title;
         }
 
-        return $title;
+        return $title ?? '';
     }
 
     /**

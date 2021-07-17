@@ -14,8 +14,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as Entity\Station
- * @extends AbstractAdminApiCrudController<TEntity>
+ * @extends AbstractAdminApiCrudController<Entity\Station>
  */
 class StationsController extends AbstractAdminApiCrudController
 {
@@ -111,7 +110,7 @@ class StationsController extends AbstractAdminApiCrudController
      */
 
     /**
-     * @param TEntity $record
+     * @param Entity\Station $record
      * @param array<string, mixed> $context
      *
      * @return array<mixed>
@@ -135,7 +134,7 @@ class StationsController extends AbstractAdminApiCrudController
 
     /**
      * @param array<mixed>|null $data
-     * @param TEntity|null $record
+     * @param Entity\Station|null $record
      * @param array<string, mixed> $context
      *
      * @return Entity\Station
@@ -168,7 +167,7 @@ class StationsController extends AbstractAdminApiCrudController
     }
 
     /**
-     * @param TEntity $record
+     * @param Entity\Station $record
      */
     protected function deleteRecord(object $record): void
     {

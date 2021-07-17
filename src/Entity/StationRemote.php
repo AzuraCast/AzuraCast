@@ -8,12 +8,11 @@ use App\Radio\Adapters;
 use App\Radio\Remote\AbstractRemote;
 use App\Utilities;
 use Doctrine\ORM\Mapping as ORM;
+use GuzzleHttp\Psr7\Uri;
 use OpenApi\Annotations as OA;
+use Psr\Http\Message\UriInterface;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
-
-use const PHP_URL_HOST;
-use const PHP_URL_PORT;
 
 /** @OA\Schema(type="object") */
 #[
@@ -192,12 +191,11 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
         return $this->custom_listen_url;
     }
 
-    public function setCustomListenUrl(string $custom_listen_url = null): void
+    public function setCustomListenUrl(?string $custom_listen_url = null): void
     {
-        $this->custom_listen_url = $this->truncateString($custom_listen_url);
+        $this->custom_listen_url = $this->truncateNullableString($custom_listen_url);
     }
 
-    /** @inheritdoc */
     public function getAutodjUsername(): ?string
     {
         return $this->getSourceUsername();
@@ -213,7 +211,6 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
         $this->source_username = $this->truncateNullableString($source_username, 100);
     }
 
-    /** @inheritdoc */
     public function getAutodjPassword(): ?string
     {
         $password = $this->getSourcePassword();
@@ -297,15 +294,21 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
         return $this->getMount();
     }
 
-    /** @inheritdoc */
     public function getAutodjHost(): ?string
     {
-        return parse_url($this->getUrl(), PHP_URL_HOST);
+        return $this->getUrlAsUri()?->getHost();
     }
 
     public function getUrl(): ?string
     {
         return $this->url;
+    }
+
+    public function getUrlAsUri(): ?UriInterface
+    {
+        return (null !== $this->url)
+            ? new Uri($this->url)
+            : null;
     }
 
     public function setUrl(?string $url): void
@@ -325,7 +328,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
     /** @inheritdoc */
     public function getAutodjPort(): ?int
     {
-        return $this->getSourcePort() ?? parse_url($this->getUrl(), PHP_URL_PORT);
+        return $this->getSourcePort() ?? $this->getUrlAsUri()?->getPort();
     }
 
     public function getSourcePort(): ?int
@@ -348,7 +351,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
             return self::PROTOCOL_ICY;
         }
 
-        $urlScheme = parse_url($this->getUrl(), PHP_URL_SCHEME);
+        $urlScheme = $this->getUrlAsUri()?->getScheme();
         return ('https' === $urlScheme)
             ? self::PROTOCOL_HTTPS
             : self::PROTOCOL_HTTP;
@@ -431,7 +434,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
         }
 
         if ($this->enable_autodj) {
-            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format);
+            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '');
         }
 
         return Utilities\Strings::truncateUrl($this->url);

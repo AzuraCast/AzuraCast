@@ -41,7 +41,7 @@ class Quota
         return $bytes_str;
     }
 
-    public static function convertFromReadableSize(Math\BigInteger|string $size): ?Math\BigInteger
+    public static function convertFromReadableSize(Math\BigInteger|string|null $size): ?Math\BigInteger
     {
         if ($size instanceof Math\BigInteger) {
             return $size;

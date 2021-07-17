@@ -22,8 +22,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as Entity\StationMedia
- * @extends AbstractStationApiCrudController<TEntity>
+ * @extends AbstractStationApiCrudController<Entity\StationMedia>
  */
 class FilesController extends AbstractStationApiCrudController
 {
@@ -175,7 +174,6 @@ class FilesController extends AbstractStationApiCrudController
         file_put_contents($temp_path, $api_record->getFileContents());
 
         // Process temp path as regular media record.
-        /** @var TEntity $record */
         $record = $this->mediaRepo->getOrCreate($station, $api_record->getSanitizedPath(), $temp_path);
 
         $return = $this->viewRecord($record, $request);

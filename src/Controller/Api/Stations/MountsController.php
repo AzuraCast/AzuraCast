@@ -11,8 +11,7 @@ use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 
 /**
- * @template TEntity as Entity\StationMount
- * @extends AbstractStationApiCrudController<TEntity>
+ * @extends AbstractStationApiCrudController<Entity\StationMount>
  */
 class MountsController extends AbstractStationApiCrudController
 {

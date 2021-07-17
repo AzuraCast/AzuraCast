@@ -81,8 +81,9 @@ class Role implements JsonSerializable, Stringable, IdentifiableEntityInterface
         foreach ($this->permissions as $permission) {
             /** @var RolePermission $permission */
 
-            if ($permission->hasStation()) {
-                $return['permissions']['station'][$permission->getStation()->getId()][] = $permission->getActionName();
+            $station = $permission->getStation();
+            if (null !== $station) {
+                $return['permissions']['station'][$station->getIdRequired()][] = $permission->getActionName();
             } else {
                 $return['permissions']['global'][] = $permission->getActionName();
             }

@@ -118,12 +118,12 @@ class User implements Stringable, IdentifiableEntityInterface
         $this->name = $this->truncateNullableString($name, 100);
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email = null): void
+    public function setEmail(string $email): void
     {
         $this->email = $this->truncateString($email, 100);
     }

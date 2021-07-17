@@ -8,8 +8,7 @@ use App\Entity;
 use OpenApi\Annotations as OA;
 
 /**
- * @template TEntity as Entity\CustomField
- * @extends AbstractAdminApiCrudController<TEntity>
+ * @extends AbstractAdminApiCrudController<Entity\CustomField>
  */
 class CustomFieldsController extends AbstractAdminApiCrudController
 {

@@ -7,6 +7,9 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 
+/**
+ * @extends Repository<Entity\StationStreamerBroadcast>
+ */
 class StationStreamerBroadcastRepository extends Repository
 {
     public function getLatestBroadcast(Entity\Station $station): ?Entity\StationStreamerBroadcast

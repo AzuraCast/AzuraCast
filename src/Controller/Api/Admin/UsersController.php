@@ -11,8 +11,7 @@ use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @template TEntity as Entity\User
- * @extends AbstractAdminApiCrudController<TEntity>
+ * @extends AbstractAdminApiCrudController<Entity\User>
  */
 class UsersController extends AbstractAdminApiCrudController
 {
@@ -103,7 +102,6 @@ class UsersController extends AbstractAdminApiCrudController
      */
     public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
     {
-        /** @var TEntity|null $record */
         $record = $this->getRecord($id);
 
         if (null === $record) {

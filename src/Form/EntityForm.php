@@ -114,9 +114,9 @@ class EntityForm extends Form
                     $field_name = $error->getPropertyPath();
 
                     if (isset($this->fields[$field_name])) {
-                        $this->fields[$field_name]->addError($error->getMessage());
+                        $this->fields[$field_name]->addError((string)$error->getMessage());
                     } else {
-                        $this->addError($error->getMessage());
+                        $this->addError((string)$error->getMessage());
                     }
                 }
                 return false;
@@ -171,7 +171,7 @@ class EntityForm extends Form
             ]
         );
 
-        return $this->serializer->normalize($record, null, $context);
+        return (array)$this->serializer->normalize($record, null, $context);
     }
 
     /**

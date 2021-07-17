@@ -17,6 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractApiCrudController<Entity\PodcastEpisode>
+ */
 class PodcastEpisodesController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\PodcastEpisode::class;
@@ -153,9 +156,6 @@ class PodcastEpisodesController extends AbstractApiCrudController
      * )
      */
 
-    /**
-     * @inheritDoc
-     */
     public function listAction(
         ServerRequest $request,
         Response $response,
@@ -214,7 +214,6 @@ class PodcastEpisodesController extends AbstractApiCrudController
 
         $parsedBody = (array)$request->getParsedBody();
 
-        /** @var Entity\PodcastEpisode $record */
         $record = $this->editRecord(
             $parsedBody,
             new Entity\PodcastEpisode($podcast)
@@ -283,12 +282,17 @@ class PodcastEpisodesController extends AbstractApiCrudController
     /**
      * @param Entity\Station $station
      * @param string $id
+     *
+     * @return Entity\PodcastEpisode|null
      */
     protected function getRecord(Entity\Station $station, string $id): ?object
     {
         return $this->episodeRepository->fetchEpisodeForStation($station, $id);
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof Entity\PodcastEpisode)) {

@@ -160,9 +160,9 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * @param string $custom_config_raw
      *
-     * @return mixed[]|bool
+     * @return mixed[]|false
      */
-    protected function processCustomConfig(string $custom_config_raw): array|bool
+    protected function processCustomConfig(string $custom_config_raw): array|false
     {
         try {
             if (str_starts_with($custom_config_raw, '{')) {

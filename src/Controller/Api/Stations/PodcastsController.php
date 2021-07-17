@@ -20,8 +20,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as Entity\Podcast
- * @extends AbstractApiCrudController<TEntity>
+ * @extends AbstractApiCrudController<Entity\Podcast>
  */
 class PodcastsController extends AbstractApiCrudController
 {
@@ -229,13 +228,20 @@ class PodcastsController extends AbstractApiCrudController
      * @param Entity\Station $station
      * @param string $id
      *
-     * @return TEntity|null
+     * @return Entity\Podcast|null
      */
     protected function getRecord(Entity\Station $station, string $id): ?object
     {
-        return $this->podcastRepository->fetchPodcastForStation($station, $id);
+        $record = $this->podcastRepository->fetchPodcastForStation($station, $id);
+        return $record;
     }
 
+    /**
+     * @param Entity\Podcast $record
+     * @param ServerRequest $request
+     *
+     * @return mixed
+     */
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof Entity\Podcast)) {
@@ -322,10 +328,10 @@ class PodcastsController extends AbstractApiCrudController
 
     /**
      * @param mixed[] $data
-     * @param TEntity|null $record
+     * @param Entity\Podcast|null $record
      * @param array $context
      *
-     * @return TEntity
+     * @return Entity\Podcast
      */
     protected function fromArray($data, $record = null, array $context = []): object
     {

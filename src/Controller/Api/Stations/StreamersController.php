@@ -13,8 +13,7 @@ use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @template TEntity as Entity\StationStreamer
- * @extends AbstractScheduledEntityController<TEntity>
+ * @extends AbstractScheduledEntityController<Entity\StationStreamer>
  */
 class StreamersController extends AbstractScheduledEntityController
 {
@@ -155,7 +154,7 @@ class StreamersController extends AbstractScheduledEntityController
     }
 
     /**
-     * @param TEntity $record
+     * @param Entity\StationStreamer $record
      * @param ServerRequest $request
      *
      * @return mixed[]

@@ -36,7 +36,7 @@ class Locale
 
     public function __construct(
         protected Environment $environment,
-        string|array $possibleLocales
+        string|array $possibleLocales = self::DEFAULT_LOCALE
     ) {
         if (is_string($possibleLocales)) {
             $possibleLocales = [$possibleLocales];

@@ -97,6 +97,10 @@ class Analytics implements IdentifiableEntityInterface
 
     public function getMomentInStationTimeZone(): CarbonImmutable
     {
+        if (null === $this->station) {
+            throw new \RuntimeException('Cannot get moment in station timezone; no station associated.');
+        }
+
         $tz = $this->station->getTimezoneObject();
         return CarbonImmutable::parse($this->moment, $tz)->shiftTimezone($tz);
     }

@@ -12,6 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends EntityForm<Entity\Role>
+ */
 class PermissionsForm extends EntityForm
 {
     protected bool $set_permissions = true;

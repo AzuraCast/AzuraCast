@@ -162,29 +162,4 @@ class PodcastMedia implements IdentifiableEntityInterface
 
         return $this;
     }
-
-    /**
-     * @param string|float|null $seconds
-     */
-    protected function parseSeconds(string|float $seconds = null): ?float
-    {
-        if ($seconds === '') {
-            return null;
-        }
-
-        if (is_float($seconds)) {
-            return $seconds;
-        }
-
-        if (str_contains($seconds, ':')) {
-            $sec = 0;
-            foreach (array_reverse(explode(':', $seconds)) as $k => $v) {
-                $sec += (60 ** (int)$k) * (int)$v;
-            }
-
-            return $sec;
-        }
-
-        return (float)$seconds;
-    }
 }

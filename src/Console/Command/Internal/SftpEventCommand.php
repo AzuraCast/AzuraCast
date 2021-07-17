@@ -65,6 +65,11 @@ class SftpEventCommand extends CommandAbstract
             return 1;
         }
 
+        if (null === $path) {
+            $this->logger->error('No path specified for action.');
+            return 1;
+        }
+
         return match ($action) {
             'upload' => $this->handleNewUpload($storageLocation, $path),
             'pre-delete' => $this->handleDelete($storageLocation, $path),
@@ -150,8 +155,13 @@ class SftpEventCommand extends CommandAbstract
     protected function handleRename(
         Entity\StorageLocation $storageLocation,
         string $path,
-        string $newPath
+        ?string $newPath
     ): int {
+        if (null === $newPath) {
+            $this->logger->error('No new path specified for rename.');
+            return 1;
+        }
+
         $pathPrefixer = new PathPrefixer($storageLocation->getPath(), DIRECTORY_SEPARATOR);
 
         $from = $pathPrefixer->stripPrefix($path);

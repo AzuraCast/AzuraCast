@@ -13,8 +13,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as Entity\Role
- * @extends AbstractAdminApiCrudController<TEntity>
+ * @extends AbstractAdminApiCrudController<Entity\Role>
  */
 class RolesController extends AbstractAdminApiCrudController
 {

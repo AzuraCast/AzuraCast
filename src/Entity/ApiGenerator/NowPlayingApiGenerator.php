@@ -47,8 +47,13 @@ class NowPlayingApiGenerator
 
         // Pull from current NP data if song details haven't changed .
         if ($npOld instanceof Entity\Api\NowPlaying && $this->tracksMatch($npResult, $npOld)) {
-            $previousHistory = $this->historyRepo->getCurrent($station)
-                ?? Entity\Song::createFromApiSong($npOld->now_playing->song);
+            $previousHistory = $this->historyRepo->getCurrent($station);
+
+            if (null === $previousHistory) {
+                $previousHistory = ($npOld->now_playing?->song)
+                    ? Entity\Song::createFromApiSong($npOld->now_playing->song)
+                    : Entity\Song::createOffline();
+            }
 
             $sh_obj = $this->historyRepo->register($previousHistory, $station, $np);
 
@@ -177,6 +182,6 @@ class NowPlayingApiGenerator
         Entity\Api\NowPlaying $npOld
     ): bool {
         $current_song_hash = Entity\Song::getSongHash($npResult->currentSong);
-        return (0 === strcmp($current_song_hash, $npOld->now_playing->song->id));
+        return (0 === strcmp($current_song_hash, $npOld->now_playing?->song?->id ?? ''));
     }
 }

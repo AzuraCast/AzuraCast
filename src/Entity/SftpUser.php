@@ -79,6 +79,10 @@ class SftpUser implements IdentifiableEntityInterface
      */
     public function getPublicKeysArray(): array
     {
+        if (null === $this->publicKeys) {
+            return [];
+        }
+
         $pubKeysRaw = trim($this->publicKeys);
         if (!empty($pubKeysRaw)) {
             return array_filter(array_map('trim', explode("\n", $pubKeysRaw)));

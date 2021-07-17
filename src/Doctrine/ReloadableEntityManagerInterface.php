@@ -13,24 +13,24 @@ interface ReloadableEntityManagerInterface extends EntityManagerInterface
      *
      * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
      *
-     * @template T as object
+     * @template TEntity as object
      *
-     * @param T $entity
+     * @param TEntity $entity
      *
-     * @return T
+     * @return TEntity
      */
-    public function refetch(mixed $entity);
+    public function refetch(object $entity): object;
 
     /**
      * Fetch a fresh reference to an entity object, even if the EntityManager has been cleared.
      *
      * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
      *
-     * @template U as object
+     * @template TEntity as object
      *
-     * @param U $entity
+     * @param TEntity $entity
      *
-     * @return U
+     * @return TEntity
      */
-    public function refetchAsReference(mixed $entity);
+    public function refetchAsReference(object $entity): object;
 }

@@ -430,7 +430,7 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
      */
     public function getBackendOptions(): array
     {
-        return explode(',', $this->backend_options);
+        return explode(',', $this->backend_options ?? '');
     }
 
     /**

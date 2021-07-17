@@ -110,7 +110,7 @@ class SongHistoryRepository extends Repository
                 if ($delta_delta > 0) {
                     $delta_positive += $delta_delta;
                 } elseif ($delta_delta < 0) {
-                    $delta_negative += abs($delta_delta);
+                    $delta_negative += (int)abs($delta_delta);
                 }
             }
 

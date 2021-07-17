@@ -106,7 +106,7 @@ class StationRequestRepository extends Repository
         $this->em->persist($record);
         $this->em->flush();
 
-        return $record->getId();
+        return $record->getIdRequired();
     }
 
     /**

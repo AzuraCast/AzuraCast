@@ -14,8 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
- * @template TEntity as Entity\StationPlaylist
- * @extends AbstractScheduledEntityController<TEntity>
+ * @extends AbstractScheduledEntityController<Entity\StationPlaylist>
  */
 class PlaylistsController extends AbstractScheduledEntityController
 {

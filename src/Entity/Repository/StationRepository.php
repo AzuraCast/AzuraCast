@@ -20,6 +20,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends Repository<Entity\Station>
+ */
 class StationRepository extends Repository
 {
     public function __construct(

@@ -16,8 +16,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as Entity\StorageLocation
- * @extends AbstractAdminApiCrudController<TEntity>
+ * @extends AbstractAdminApiCrudController<Entity\StorageLocation>
  */
 class StorageLocationsController extends AbstractAdminApiCrudController
 {

@@ -64,8 +64,8 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     ])]
     protected string $adapter = self::ADAPTER_LOCAL;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $path = null;
+    #[ORM\Column(length: 255, nullable: false)]
+    protected string $path = '';
 
     #[ORM\Column(name: 's3_credential_key', length: 255, nullable: true)]
     protected ?string $s3CredentialKey = null;
@@ -122,12 +122,12 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         return $this->adapter;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function getFilteredPath(): ?string
+    public function getFilteredPath(): string
     {
         return match ($this->adapter) {
             self::ADAPTER_S3, self::ADAPTER_DROPBOX => trim($this->path, '/'),
@@ -144,9 +144,9 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
         return $this->path . $suffix;
     }
 
-    public function setPath(?string $path): void
+    public function setPath(string $path): void
     {
-        $this->path = $this->truncateNullableString($path);
+        $this->path = $this->truncateString($path);
     }
 
     public function getS3CredentialKey(): ?string
@@ -384,14 +384,19 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $path = $this->applyPath($suffix);
 
+        $bucket = $this->s3Bucket;
+        if (null === $bucket) {
+            return 'No S3 Bucket Specified';
+        }
+
         try {
             $client = $this->getS3Client();
             if (empty($path)) {
-                $objectUrl = $client->getObjectUrl($this->s3Bucket, '/');
+                $objectUrl = $client->getObjectUrl($bucket, '/');
                 return rtrim($objectUrl, '/');
             }
 
-            return $client->getObjectUrl($this->s3Bucket, ltrim($path, '/'));
+            return $client->getObjectUrl($bucket, ltrim($path, '/'));
         } catch (InvalidArgumentException $e) {
             return 'Invalid URI (' . $e->getMessage() . ')';
         }
@@ -417,11 +422,20 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
     {
         $filteredPath = $this->getFilteredPath();
 
-        return match ($this->adapter) {
-            self::ADAPTER_S3 => new AwsS3Adapter($this->getS3Client(), $this->s3Bucket, $filteredPath),
-            self::ADAPTER_DROPBOX => new DropboxAdapter($this->getDropboxClient(), $filteredPath),
-            default => new LocalFilesystemAdapter($filteredPath)
-        };
+        switch ($this->adapter) {
+            case self::ADAPTER_S3:
+                $bucket = $this->s3Bucket;
+                if (null === $bucket) {
+                    throw new \RuntimeException('Amazon S3 bucket is empty.');
+                }
+                return new AwsS3Adapter($this->getS3Client(), $this->s3Bucket, $filteredPath);
+
+            case self::ADAPTER_DROPBOX:
+                return new DropboxAdapter($this->getDropboxClient(), $filteredPath);
+
+            default:
+                return new LocalFilesystemAdapter($filteredPath);
+        }
     }
 
     protected function getS3Client(): S3Client

@@ -7,6 +7,10 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 
+/**
+ * @template TEntity as Entity\RolePermission
+ * @extends Repository<TEntity>
+ */
 class RolePermissionRepository extends Repository
 {
     /**

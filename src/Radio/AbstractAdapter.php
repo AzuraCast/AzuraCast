@@ -51,7 +51,7 @@ abstract class AbstractAdapter
 
         file_put_contents($configPath, $newConfig);
 
-        return 0 !== strcmp($currentConfig ?? '', $newConfig ?? '');
+        return 0 !== strcmp($currentConfig ?: '', $newConfig ?: '');
     }
 
     /**

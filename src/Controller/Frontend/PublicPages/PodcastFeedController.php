@@ -217,11 +217,11 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getId()))) {
+        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
             $podcastArtworkSrc = (string)$this->router->fromHere(
-                route_name: 'api:stations:podcast:art',
-                route_params: ['podcast_id' => $podcast->getId() . '|' . $podcast->getArtUpdatedAt()],
-                absolute: true
+                route_name:   'api:stations:podcast:art',
+                route_params: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
+                absolute:     true
             );
         }
 
@@ -300,16 +300,18 @@ class PodcastFeedController
         $rssEnclosure = new RssEnclosure();
 
         $podcastMediaPlayUrl = (string)$this->router->fromHere(
-            route_name: 'api:stations:podcast:episode:download',
+            route_name:   'api:stations:podcast:episode:download',
             route_params: ['episode_id' => $episode->getId()],
-            absolute: true
+            absolute:     true
         );
 
         $rssEnclosure->setUrl($podcastMediaPlayUrl);
 
         $podcastMedia = $episode->getMedia();
-        $rssEnclosure->setType($podcastMedia->getMimeType());
-        $rssEnclosure->setLength($podcastMedia->getLength());
+        if (null !== $podcastMedia) {
+            $rssEnclosure->setType($podcastMedia->getMimeType());
+            $rssEnclosure->setLength($podcastMedia->getLength());
+        }
 
         return $rssEnclosure;
     }
@@ -323,11 +325,11 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getId()))) {
+        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
             $episodeArtworkSrc = (string)$this->router->fromHere(
-                route_name: 'api:stations:podcast:episode:art',
+                route_name:   'api:stations:podcast:episode:art',
                 route_params: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
-                absolute: true
+                absolute:     true
             );
         }
 

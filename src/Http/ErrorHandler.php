@@ -50,7 +50,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         bool $logErrorDetails
     ): ResponseInterface {
         if ($exception instanceof Exception\WrappedException) {
-            $exception = $exception->getPrevious();
+            $exception = $exception->getPrevious() ?? $exception;
         }
 
         if ($exception instanceof Exception) {

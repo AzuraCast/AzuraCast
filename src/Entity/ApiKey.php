@@ -24,7 +24,7 @@ class ApiKey implements JsonSerializable, Stringable
     protected User $user;
 
     #[ORM\Column(length: 255, nullable: false)]
-    protected ?string $comment = '';
+    protected string $comment = '';
 
     public function __construct(User $user, SplitToken $token)
     {

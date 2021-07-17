@@ -22,7 +22,8 @@ class GetId3MetadataService
             $metadata = $this->readMetadata($event->getPath());
             $event->setMetadata($metadata);
         } elseif ($event instanceof WriteMetadata) {
-            if ($this->writeMetadata($event->getMetadata(), $event->getPath())) {
+            $metadata = $event->getMetadata();
+            if (null !== $metadata && $this->writeMetadata($metadata, $event->getPath())) {
                 $event->stopPropagation();
             }
         }
@@ -52,7 +53,7 @@ class GetId3MetadataService
         $metadata = new Entity\Metadata();
 
         if (is_numeric($info['playtime_seconds'])) {
-            $metadata->setDuration($info['playtime_seconds']);
+            $metadata->setDuration(Utilities\Time::displayTimeToSeconds($info['playtime_seconds']));
         }
 
         $metaTags = $metadata->getTags();

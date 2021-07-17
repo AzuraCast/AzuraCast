@@ -7,6 +7,10 @@ namespace App\Entity\Repository;
 use App\Doctrine\Repository;
 use App\Entity;
 
+/**
+ * @template TEntity of Entity\StorageLocation
+ * @extends Repository<TEntity>
+ */
 class StorageLocationRepository extends Repository
 {
     public function findByType(string $type, int $id): ?Entity\StorageLocation

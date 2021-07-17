@@ -29,16 +29,11 @@ class Repository
         protected LoggerInterface $logger
     ) {
         if (!isset($this->entityClass)) {
-            $this->entityClass = $this->getEntityClass();
+            $this->entityClass = str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
         }
         if (!isset($this->repository)) {
             $this->repository = $em->getRepository($this->entityClass);
         }
-    }
-
-    protected function getEntityClass(): string
-    {
-        return str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
     }
 
     public function getRepository(): ObjectRepository
@@ -140,7 +135,7 @@ class Repository
      */
     public function toArray(object $entity, bool $deep = false, bool $form_mode = false): array
     {
-        return $this->serializer->normalize(
+        return (array)$this->serializer->normalize(
             $entity,
             null,
             [

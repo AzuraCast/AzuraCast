@@ -44,7 +44,7 @@ class RemoteAlbumArt
         }
 
         // Catch the default error track and derivatives.
-        if (false !== mb_stripos($song->getText(), 'AzuraCast')) {
+        if (false !== mb_stripos($song->getText() ?? '', 'AzuraCast')) {
             return null;
         }
 

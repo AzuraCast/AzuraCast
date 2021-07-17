@@ -489,7 +489,7 @@ class Station implements Stringable, IdentifiableEntityInterface
      */
     public function validateAdapterApiKey(string $api_key): bool
     {
-        return hash_equals($api_key, $this->adapter_api_key);
+        return hash_equals($api_key, $this->adapter_api_key ?? '');
     }
 
     public function getDescription(): ?string
@@ -509,7 +509,7 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function setUrl(string $url = null): void
     {
-        $this->url = $this->truncateString($url);
+        $this->url = $this->truncateNullableString($url);
     }
 
     public function getGenre(): ?string
@@ -522,9 +522,13 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->genre = $this->truncateNullableString($genre, 150);
     }
 
-    public function getRadioBaseDir(): ?string
+    public function getRadioBaseDir(): string
     {
-        return $this->radio_base_dir;
+        if (null === $this->radio_base_dir) {
+            $this->setRadioBaseDir();
+        }
+
+        return (string)$this->radio_base_dir;
     }
 
     public function setRadioBaseDir(?string $newDir = null): void
@@ -541,10 +545,6 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function ensureDirectoriesExist(): void
     {
-        if (null === $this->radio_base_dir) {
-            $this->setRadioBaseDir();
-        }
-
         // Flysystem adapters will automatically create the main directory.
         $this->ensureDirectoryExists($this->getRadioBaseDir());
         $this->ensureDirectoryExists($this->getRadioPlaylistsDir());
@@ -700,12 +700,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->request_threshold = $request_threshold;
     }
 
-    public function getDisconnectDeactivateStreamer(): int
+    public function getDisconnectDeactivateStreamer(): ?int
     {
         return $this->disconnect_deactivate_streamer;
     }
 
-    public function setDisconnectDeactivateStreamer(int $disconnect_deactivate_streamer): void
+    public function setDisconnectDeactivateStreamer(?int $disconnect_deactivate_streamer): void
     {
         $this->disconnect_deactivate_streamer = $disconnect_deactivate_streamer;
     }
@@ -831,11 +831,17 @@ class Station implements Stringable, IdentifiableEntityInterface
         $this->default_album_art_url = $default_album_art_url;
     }
 
+    /**
+     * @return Collection<SongHistory>
+     */
     public function getHistory(): Collection
     {
         return $this->history;
     }
 
+    /**
+     * @return Collection<StationStreamer>
+     */
     public function getStreamers(): Collection
     {
         return $this->streamers;
@@ -855,6 +861,10 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getMediaStorageLocation(): StorageLocation
     {
+        if (null === $this->media_storage_location) {
+            throw new \RuntimeException('Media storage location has not been configured yet.');
+        }
+
         return $this->media_storage_location;
     }
 
@@ -869,6 +879,10 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getRecordingsStorageLocation(): StorageLocation
     {
+        if (null === $this->recordings_storage_location) {
+            throw new \RuntimeException('Recordings storage location has not been configured yet.');
+        }
+
         return $this->recordings_storage_location;
     }
 
@@ -883,6 +897,10 @@ class Station implements Stringable, IdentifiableEntityInterface
 
     public function getPodcastsStorageLocation(): StorageLocation
     {
+        if (null === $this->podcasts_storage_location) {
+            throw new \RuntimeException('Podcasts storage location has not been configured yet.');
+        }
+
         return $this->podcasts_storage_location;
     }
 
@@ -905,21 +923,24 @@ class Station implements Stringable, IdentifiableEntityInterface
         ];
     }
 
+    /**
+     * @return Collection<RolePermission>
+     */
     public function getPermissions(): Collection
     {
         return $this->permissions;
     }
 
     /**
-     * @return StationMedia[]|Collection
+     * @return Collection<StationMedia>
      */
     public function getMedia(): Collection
     {
-        return $this->media_storage_location->getMedia();
+        return $this->getMediaStorageLocation()->getMedia();
     }
 
     /**
-     * @return StationPlaylist[]|Collection
+     * @return Collection<StationPlaylist>
      */
     public function getPlaylists(): Collection
     {
@@ -927,7 +948,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return StationMount[]|Collection
+     * @return Collection<StationMount>
      */
     public function getMounts(): Collection
     {
@@ -935,18 +956,24 @@ class Station implements Stringable, IdentifiableEntityInterface
     }
 
     /**
-     * @return StationRemote[]|Collection
+     * @return Collection<StationRemote>
      */
     public function getRemotes(): Collection
     {
         return $this->remotes;
     }
 
+    /**
+     * @return Collection<StationWebhook>
+     */
     public function getWebhooks(): Collection
     {
         return $this->webhooks;
     }
 
+    /**
+     * @return Collection<SftpUser>
+     */
     public function getSftpUsers(): Collection
     {
         return $this->sftp_users;
@@ -972,7 +999,7 @@ class Station implements Stringable, IdentifiableEntityInterface
     public function __clone()
     {
         $this->id = null;
-        $this->short_name = null;
+        $this->short_name = '';
         $this->radio_base_dir = null;
         $this->adapter_api_key = null;
         $this->nowplaying = null;

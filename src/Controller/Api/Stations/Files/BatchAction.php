@@ -173,6 +173,7 @@ class BatchAction
             }
         }
 
+        /** @var Entity\Station $station */
         $station = $this->em->refetch($station);
 
         foreach ($result->directories as $dir) {

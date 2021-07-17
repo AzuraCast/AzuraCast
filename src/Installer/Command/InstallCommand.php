@@ -32,7 +32,7 @@ class InstallCommand
         ?int $httpPort = null,
         ?int $httpsPort = null,
         ?string $releaseChannel = null,
-        ?string $baseDir = self::DEFAULT_BASE_DIRECTORY
+        string $baseDir = self::DEFAULT_BASE_DIRECTORY
     ): int {
         // Initialize all the environment variables.
         $envPath = EnvFile::buildPathFromBase($baseDir);

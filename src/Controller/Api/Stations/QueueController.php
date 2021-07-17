@@ -16,8 +16,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @template TEntity as Entity\StationQueue
- * @extends AbstractStationApiCrudController<TEntity>
+ * @extends AbstractStationApiCrudController<Entity\StationQueue>
  */
 class QueueController extends AbstractStationApiCrudController
 {

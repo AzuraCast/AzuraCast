@@ -30,7 +30,7 @@ class Settings implements Stringable
 
     public function getAppUniqueIdentifier(): string
     {
-        if (null === $this->app_unique_identifier) {
+        if (!isset($this->app_unique_identifier)) {
             throw new \RuntimeException('Application Unique ID not generated yet.');
         }
 

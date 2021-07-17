@@ -48,9 +48,9 @@ class Station implements Stringable, IdentifiableEntityInterface
      *     example="AzuraTest Radio"
      * )
      */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 100, nullable: false)]
     #[Assert\NotBlank]
-    protected ?string $name = null;
+    protected string $name = '';
 
     /**
      * @OA\Property(
@@ -58,9 +58,9 @@ class Station implements Stringable, IdentifiableEntityInterface
      *     example="azuratest_radio"
      * )
      */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 100, nullable: false)]
     #[Assert\NotBlank]
-    protected ?string $short_name = null;
+    protected string $short_name = '';
 
     /**
      * @OA\Property(
@@ -336,12 +336,12 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->name;
     }
 
-    public function setName(?string $name = null): void
+    public function setName(string $name): void
     {
-        $this->name = $this->truncateNullableString($name, 100);
+        $this->name = $this->truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->setShortName(null);
+            $this->setShortName(self::getStationShortName($name));
         }
     }
 
@@ -352,9 +352,9 @@ class Station implements Stringable, IdentifiableEntityInterface
             : self::getStationShortName($this->name);
     }
 
-    public function setShortName(?string $shortName): void
+    public function setShortName(string $shortName): void
     {
-        $shortName = trim($shortName ?? '');
+        $shortName = trim($shortName);
         if (empty($shortName)) {
             $shortName = $this->name;
         }

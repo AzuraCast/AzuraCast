@@ -23,8 +23,8 @@ class ApiKey implements JsonSerializable, Stringable
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     protected User $user;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $comment = null;
+    #[ORM\Column(length: 255, nullable: false)]
+    protected ?string $comment = '';
 
     public function __construct(User $user, SplitToken $token)
     {
@@ -37,14 +37,14 @@ class ApiKey implements JsonSerializable, Stringable
         return $this->user;
     }
 
-    public function getComment(): ?string
+    public function getComment(): string
     {
         return $this->comment;
     }
 
-    public function setComment(?string $comment): void
+    public function setComment(string $comment): void
     {
-        $this->comment = $this->truncateNullableString($comment);
+        $this->comment = $this->truncateString($comment);
     }
 
     /**

@@ -148,12 +148,12 @@ return [
                     return '$(function () { ' . implode('', $notifies) . ' });';
                 },
                 function (Request $request) {
-                    /** @var Locale|null $locale */
+                    /** @var App\Locale|null $locale */
                     $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
 
                     $locale = ($localeObj instanceof App\Locale)
                         ? (string)$localeObj
-                        : Locale::DEFAULT_LOCALE;
+                        : App\Locale::DEFAULT_LOCALE;
 
                     $locale = explode('.', $locale, 2)[0];
                     $localeShort = substr($locale, 0, 2);

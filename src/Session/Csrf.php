@@ -76,7 +76,7 @@ class Csrf
 
         $sessionKey = $this->session->get($sessionIdentifier);
 
-        if (0 !== strcmp($key, $sessionKey)) {
+        if (0 !== strcmp($key, (string)$sessionKey)) {
             throw new Exception\CsrfValidationException('Invalid CSRF token supplied.');
         }
     }

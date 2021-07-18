@@ -67,9 +67,7 @@ class Flash
             'color' => $colorChart[$level] ?? $level,
         ];
 
-        if (null === $this->messages) {
-            $this->getMessages();
-        }
+        $this->getMessages();
         $this->messages[] = $messageRow;
 
         if ($saveInSession) {

@@ -29,8 +29,11 @@ class Repository
         protected LoggerInterface $logger
     ) {
         if (!isset($this->entityClass)) {
-            $this->entityClass = str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
+            /** @var class-string<TEntity> $defaultClass */
+            $defaultClass = str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
+            $this->entityClass = $defaultClass;
         }
+
         if (!isset($this->repository)) {
             $this->repository = $em->getRepository($this->entityClass);
         }

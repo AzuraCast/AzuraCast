@@ -32,7 +32,7 @@ class RemotesController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, int|string $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(
@@ -56,7 +56,7 @@ class RemotesController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);
@@ -66,7 +66,7 @@ class RemotesController extends AbstractStationCrudController
         return $response->withRedirect((string)$request->getRouter()->fromHere('stations:remotes:index'));
     }
 
-    protected function getRecord(Station $station, int|string $id = null): ?object
+    protected function getRecord(Station $station, int|string|null $id = null): ?object
     {
         $record = parent::getRecord($station, $id);
 

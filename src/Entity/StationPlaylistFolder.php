@@ -10,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Entity,
     ORM\Table(name: 'station_playlist_folders')
 ]
-class StationPlaylistFolder implements Interfaces\PathAwareInterface, Interfaces\StationCloneAwareInterface,
-                                       Interfaces\IdentifiableEntityInterface
+class StationPlaylistFolder implements
+    Interfaces\PathAwareInterface,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

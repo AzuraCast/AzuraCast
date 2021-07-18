@@ -13,12 +13,22 @@ use Psr\Http\Message\ResponseInterface;
 
 class PostArtAction
 {
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
+     * @param EntityManagerInterface $em
+     * @param int|string $media_id
+     *
+     * @return ResponseInterface
+     * @throws \App\Exception\NoFileUploadedException
+     */
     public function __invoke(
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationMediaRepository $mediaRepo,
         EntityManagerInterface $em,
-        int|string $media_id
+        $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 

@@ -36,7 +36,7 @@ class Locale
 
     public function __construct(
         protected Environment $environment,
-        string|array $possibleLocales = self::DEFAULT_LOCALE
+        string|array $possibleLocales
     ) {
         if (is_string($possibleLocales)) {
             $possibleLocales = [$possibleLocales];
@@ -138,7 +138,10 @@ class Locale
         }
 
         // Attempt to load from environment variable.
-        $possibleLocales[] = $environment->getLang();
+        $envLang = $environment->getLang();
+        if (null !== $envLang) {
+            $possibleLocales[] = $envLang;
+        }
 
         return new self($environment, $possibleLocales);
     }
@@ -148,7 +151,7 @@ class Locale
     ): self {
         return new self(
             $environment,
-            $environment->getLang()
+            $environment->getLang() ?? self::DEFAULT_LOCALE
         );
     }
 

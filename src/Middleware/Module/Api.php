@@ -72,7 +72,11 @@ class Api
 
                 if (!empty($origin)) {
                     $rawOrigins = array_map('trim', explode(',', $acao_header));
-                    $rawOrigins[] = $settings->getBaseUrl();
+
+                    $baseUrl = $settings->getBaseUrl();
+                    if (null !== $baseUrl) {
+                        $rawOrigins[] = $baseUrl;
+                    }
 
                     $origins = [];
                     foreach ($rawOrigins as $rawOrigin) {

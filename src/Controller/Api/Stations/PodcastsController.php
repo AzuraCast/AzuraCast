@@ -240,7 +240,6 @@ class PodcastsController extends AbstractApiCrudController
      * @param Entity\Podcast $record
      * @param ServerRequest $request
      *
-     * @return mixed
      */
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {

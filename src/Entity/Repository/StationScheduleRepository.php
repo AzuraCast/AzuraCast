@@ -15,8 +15,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * @template TEntity as Entity\StationSchedule
- * @extends Repository<TEntity>
+ * @extends Repository<Entity\StationSchedule>
  */
 class StationScheduleRepository extends Repository
 {

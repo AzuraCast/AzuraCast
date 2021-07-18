@@ -200,7 +200,17 @@ class Flow
         }
 
         for ($i = 1; $i <= $numChunks; $i++) {
-            fwrite($fp, file_get_contents($chunkBaseDir . '/' . $chunkIdentifier . '.part' . $i));
+            $chunkContents = file_get_contents($chunkBaseDir . '/' . $chunkIdentifier . '.part' . $i);
+            if (empty($chunkContents)) {
+                throw new \RuntimeException(
+                    sprintf(
+                        'Could not load chunk "%d" for writing.',
+                        $i
+                    )
+                );
+            }
+
+            fwrite($fp, $chunkContents);
         }
 
         fclose($fp);

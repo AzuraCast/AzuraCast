@@ -53,7 +53,6 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param Entity\StationWebhook $webhook
      * @param array<string> $triggers
      *
-     * @return bool
      */
     protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
     {

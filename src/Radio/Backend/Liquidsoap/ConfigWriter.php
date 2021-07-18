@@ -292,14 +292,16 @@ class ConfigWriter implements EventSubscriberInterface
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
                     default:
                         $remote_url = $playlist->getRemoteUrl();
-                        $remote_url_scheme = parse_url($remote_url, PHP_URL_SCHEME);
-                        $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
+                        if (null !== $remote_url) {
+                            $remote_url_scheme = parse_url($remote_url, PHP_URL_SCHEME);
+                            $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
 
-                        $buffer = $playlist->getRemoteBuffer();
-                        $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
+                            $buffer = $playlist->getRemoteBuffer();
+                            $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                        $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function
+                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function
                             . '(max=' . $buffer . '., "' . self::cleanUpString($remote_url) . '"))';
+                        }
                         break;
                 }
             }
@@ -1005,7 +1007,7 @@ class ConfigWriter implements EventSubscriberInterface
         $charset = $station->getBackendConfig()->getCharset();
 
         $output_format = $this->getOutputFormatString(
-            $mount->getAutodjFormat(),
+            $mount->getAutodjFormat() ?? $mount::FORMAT_MP3,
             $mount->getAutodjBitrate() ?? 128
         );
 
@@ -1172,11 +1174,11 @@ class ConfigWriter implements EventSubscriberInterface
     public static function cleanUpVarName(string $str): string
     {
         $str = strip_tags($str);
-        $str = preg_replace(['/[\r\n\t ]+/', '/[\"\*\/\:\<\>\?\'\|]+/'], ' ', $str);
+        $str = preg_replace(['/[\r\n\t ]+/', '/[\"\*\/\:\<\>\?\'\|]+/'], ' ', $str) ?? '';
         $str = strtolower($str);
         $str = html_entity_decode($str, ENT_QUOTES, "utf-8");
         $str = htmlentities($str, ENT_QUOTES, "utf-8");
-        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str);
+        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str) ?? '';
         $str = str_replace(' ', '_', $str);
         $str = rawurlencode($str);
         $str = str_replace(['%', '-'], ['', '_'], $str);

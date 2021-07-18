@@ -157,9 +157,9 @@ class StationForm extends EntityForm
 
                     if (null === $sl) {
                         $this->addError('Media storage location not found.');
+                    } else {
+                        $record->setMediaStorageLocation($sl);
                     }
-
-                    $record->setMediaStorageLocation($sl);
                 }
                 if (!empty($data['recordings_storage_location_id'])) {
                     $sl = $this->storageLocationRepo->findByType(
@@ -169,9 +169,9 @@ class StationForm extends EntityForm
 
                     if (null === $sl) {
                         $this->addError('Recordings storage location not found.');
+                    } else {
+                        $record->setRecordingsStorageLocation($sl);
                     }
-
-                    $record->setRecordingsStorageLocation($sl);
                 }
                 if (!empty($data['podcasts_storage_location_id'])) {
                     $sl = $this->storageLocationRepo->findByType(
@@ -181,9 +181,9 @@ class StationForm extends EntityForm
 
                     if (null === $sl) {
                         $this->addError('Podcasts storage location not found.');
+                    } else {
+                        $record->setPodcastsStorageLocation($sl);
                     }
-
-                    $record->setPodcastsStorageLocation($sl);
                 }
             }
 

@@ -170,7 +170,10 @@ abstract class AbstractFrontend extends AbstractAdapter
             }
 
             if (str_starts_with($custom_config_raw, '<')) {
-                return (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                $xmlConfig = (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                return (false !== $xmlConfig)
+                    ? (array)$xmlConfig
+                    : false;
             }
         } catch (Exception $e) {
             $this->logger->error(

@@ -53,7 +53,9 @@ class GetId3MetadataService
         $metadata = new Entity\Metadata();
 
         if (is_numeric($info['playtime_seconds'])) {
-            $metadata->setDuration(Utilities\Time::displayTimeToSeconds($info['playtime_seconds']));
+            $metadata->setDuration(
+                Utilities\Time::displayTimeToSeconds($info['playtime_seconds']) ?? 0.0
+            );
         }
 
         $metaTags = $metadata->getTags();

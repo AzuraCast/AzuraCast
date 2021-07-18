@@ -113,9 +113,6 @@ class AuditLog implements EventSubscriber
 
                 // Find the identifier method or property.
                 $identifier = $this->getIdentifier($entity);
-                if (null === $identifier) {
-                    continue;
-                }
 
                 $newRecords[] = new Entity\AuditLog(
                     $changeType,
@@ -198,6 +195,9 @@ class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
+            if (null === $mapping) {
+                continue;
+            }
             if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
                 continue;
             }
@@ -246,7 +246,9 @@ class AuditLog implements EventSubscriber
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
                 ? get_parent_class($class)
                 : get_class($class);
-        } elseif (!is_string($class)) {
+        }
+
+        if (!is_string($class)) {
             return false;
         }
 
@@ -279,7 +281,10 @@ class AuditLog implements EventSubscriber
         }
 
         if ($entity instanceof Entity\Interfaces\IdentifiableEntityInterface) {
-            return $entity->getIdRequired();
+            $entityId = $entity->getId();
+            if (null !== $entityId) {
+                return (string)$entityId;
+            }
         }
 
         return spl_object_hash($entity);

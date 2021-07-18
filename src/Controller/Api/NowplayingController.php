@@ -85,7 +85,7 @@ class NowplayingController implements EventSubscriberInterface
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        int|string $station_id = null
+        $station_id = null
     ): ResponseInterface {
         $router = $request->getRouter();
 

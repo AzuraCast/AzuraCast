@@ -10,6 +10,9 @@ use Dotenv\Dotenv;
 use Dotenv\Exception\ExceptionInterface;
 use InvalidArgumentException;
 
+/**
+ * @implements ArrayAccess<mixed, mixed>
+ */
 abstract class AbstractEnvFile implements ArrayAccess
 {
     final public function __construct(
@@ -42,38 +45,21 @@ abstract class AbstractEnvFile implements ArrayAccess
         $this->data = array_merge($defaults, $currentVars);
     }
 
-    /**
-     * @param mixed $offset
-     *
-     * @return bool
-     */
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->data[$offset]);
     }
 
-    /**
-     * @param mixed $offset
-     *
-     * @return mixed
-     */
     public function offsetGet(mixed $offset): mixed
     {
         return $this->data[$offset];
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->data[$offset] = $value;
     }
 
-    /**
-     * @param mixed $offset
-     */
     public function offsetUnset(mixed $offset): void
     {
         unset($this->data[$offset]);

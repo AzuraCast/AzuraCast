@@ -12,32 +12,28 @@ use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Proxy\Proxy;
-use InvalidArgumentException;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionProperty;
 use ReflectionUnionType;
-use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
 use function is_array;
 
-class DoctrineEntityNormalizer extends AbstractNormalizer
+class DoctrineEntityNormalizer extends AbstractNormalizer implements NormalizerAwareInterface
 {
+    use NormalizerAwareTrait;
+
     public const NORMALIZE_TO_IDENTIFIERS = 'form_mode';
 
     public const CLASS_METADATA = 'class_metadata';
     public const ASSOCIATION_MAPPINGS = 'association_mappings';
-
-    /** @var SerializerInterface|NormalizerInterface|DenormalizerInterface */
-    protected $serializer;
 
     protected Inflector $inflector;
 
@@ -51,20 +47,6 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         parent::__construct($classMetadataFactory, $nameConverter, $defaultContext);
 
         $this->inflector = InflectorFactory::create()->build();
-    }
-
-    /**
-     * @param DenormalizerInterface|NormalizerInterface|SerializerInterface $serializer
-     */
-    public function setSerializer($serializer): void
-    {
-        if (!$serializer instanceof DenormalizerInterface || !$serializer instanceof NormalizerInterface) {
-            throw new InvalidArgumentException(
-                'Expected a serializer that also implements DenormalizerInterface and NormalizerInterface.'
-            );
-        }
-
-        $this->serializer = $serializer;
     }
 
     /**
@@ -186,18 +168,20 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
     }
 
     /**
-     * @param object|string $classOrObject
+     * @param object|class-string $classOrObject
      * @param array $context
      * @param bool $attributesAsString
      *
-     * @return bool|string[]|AttributeMetadataInterface[]
      */
     protected function getAllowedAttributes(
         $classOrObject,
         array $context,
         bool $attributesAsString = false
-    ): bool|array {
-        $meta = $this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata();
+    ): array|false {
+        $meta = $this->classMetadataFactory?->getMetadataFor($classOrObject)?->getAttributesMetadata();
+        if (null === $meta) {
+            throw new \RuntimeException('Class metadata factory not specified.');
+        }
 
         $props_raw = (new ReflectionClass($classOrObject))->getProperties(
             ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED
@@ -227,15 +211,12 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
         return $allowedAttributes;
     }
 
-    /**
-     * @param object $object
-     * @param string $prop_name
-     * @param null $format
-     * @param array $context
-     *
-     */
-    protected function getAttributeValue(object $object, string $prop_name, $format = null, array $context = []): mixed
-    {
+    protected function getAttributeValue(
+        object $object,
+        string $prop_name,
+        string $format = null,
+        array $context = []
+    ): mixed {
         $form_mode = $context[self::NORMALIZE_TO_IDENTIFIERS] ?? false;
 
         if (isset($context[self::CLASS_METADATA]->associationMappings[$prop_name])) {
@@ -273,14 +254,14 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                                 $return_val[] = $this->getProperty($val_obj, $id_field[0]);
                             }
                         } else {
-                            $return_val[] = $this->serializer->normalize($val_obj, $format, $context);
+                            $return_val[] = $this->normalizer->normalize($val_obj, $format, $context);
                         }
                     }
                 }
                 return $return_val;
             }
 
-            return $this->serializer->normalize($prop_val, $format, $context);
+            return $this->normalizer->normalize($prop_val, $format, $context);
         }
 
         $value = $this->getProperty($object, $prop_name);
@@ -413,7 +394,7 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
                         }
 
                         $dt = new DateTime();
-                        $dt->setTimestamp($value);
+                        $dt->setTimestamp((int)$value);
                         $value = $dt;
                     }
                     break;
@@ -459,7 +440,9 @@ class DoctrineEntityNormalizer extends AbstractNormalizer
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
                 ? get_parent_class($class)
                 : get_class($class);
-        } elseif (!is_string($class)) {
+        }
+
+        if (!is_string($class)) {
             return false;
         }
 

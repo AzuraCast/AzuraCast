@@ -51,12 +51,19 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
 
     /**
      * @inheritDoc
+     *
+     * @template TEntity as object
+     *
+     * @param TEntity $entity
+     *
+     * @return TEntity
      */
     public function refetch(object $entity): object
     {
         // phpcs:enable
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));
 
+        /** @var TEntity|null $freshValue */
         $freshValue = $this->wrapped->find($metadata->getName(), $metadata->getIdentifierValues($entity));
         if (!$freshValue) {
             throw ORMInvalidArgumentException::entityHasNoIdentity($entity, 'refetch');
@@ -67,12 +74,19 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
 
     /**
      * @inheritDoc
+     *
+     * @template TEntity as object
+     *
+     * @param TEntity $entity
+     *
+     * @return TEntity
      */
     public function refetchAsReference(object $entity): object
     {
         // phpcs:enable
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));
 
+        /** @var TEntity|null $freshValue */
         $freshValue = $this->wrapped->getReference($metadata->getName(), $metadata->getIdentifierValues($entity));
         if (!$freshValue) {
             throw ORMInvalidArgumentException::entityHasNoIdentity($entity, 'refetch');

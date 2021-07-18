@@ -39,7 +39,7 @@ class UniqueEntity extends Constraint
     public function __construct(
         ?string $entityClass = null,
         public array|string $fields = [],
-        public ?string $repositoryMethod = null,
+        public ?string $repositoryMethod = 'findBy',
         public ?string $errorPath = null,
         public ?bool $ignoreNull = null,
         array $groups = null,

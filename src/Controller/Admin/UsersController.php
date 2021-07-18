@@ -41,7 +41,7 @@ class UsersController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, int|string $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         try {
             if (false !== $this->doEdit($request, $id)) {
@@ -70,12 +70,12 @@ class UsersController extends AbstractAdminCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $user = $this->record_repo->find((int)$id);
+        $user = $this->record_repo->find($id);
 
         $current_user = $request->getUser();
 
@@ -94,12 +94,12 @@ class UsersController extends AbstractAdminCrudController
     public function impersonateAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $user = $this->record_repo->find((int)$id);
+        $user = $this->record_repo->find($id);
 
         if (!($user instanceof Entity\User)) {
             throw new NotFoundException(__('User not found.'));

@@ -20,8 +20,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_remotes'),
     Attributes\Auditable
 ]
-class StationRemote implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface,
-                               Interfaces\IdentifiableEntityInterface
+class StationRemote implements
+    Stringable,
+    Interfaces\StationMountInterface,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -70,8 +73,8 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
     protected ?string $custom_listen_url = null;
 
     /** @OA\Property(example="https://custom-url.example.com") */
-    #[ORM\Column(length: 255, nullable: true)]
-    protected ?string $url = null;
+    #[ORM\Column(length: 255, nullable: false)]
+    protected string $url = '';
 
     /** @OA\Property(example="/stream.mp3") */
     #[ORM\Column(length: 150, nullable: true)]
@@ -296,29 +299,27 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
 
     public function getAutodjHost(): ?string
     {
-        return $this->getUrlAsUri()?->getHost();
+        return $this->getUrlAsUri()->getHost();
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function getUrlAsUri(): ?UriInterface
+    public function getUrlAsUri(): UriInterface
     {
-        return (null !== $this->url)
-            ? new Uri($this->url)
-            : null;
+        return new Uri($this->url);
     }
 
-    public function setUrl(?string $url): void
+    public function setUrl(string $url): void
     {
         if (!empty($url) && !str_starts_with($url, 'http')) {
             /** @noinspection HttpUrlsUsage */
             $url = 'http://' . $url;
         }
 
-        $this->url = $this->truncateNullableString($url);
+        $this->url = $this->truncateString($url);
     }
 
     /*
@@ -328,7 +329,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
     /** @inheritdoc */
     public function getAutodjPort(): ?int
     {
-        return $this->getSourcePort() ?? $this->getUrlAsUri()?->getPort();
+        return $this->getSourcePort() ?? $this->getUrlAsUri()->getPort();
     }
 
     public function getSourcePort(): ?int
@@ -351,7 +352,7 @@ class StationRemote implements Stringable, Interfaces\StationMountInterface, Int
             return self::PROTOCOL_ICY;
         }
 
-        $urlScheme = $this->getUrlAsUri()?->getScheme();
+        $urlScheme = $this->getUrlAsUri()->getScheme();
         return ('https' === $urlScheme)
             ? self::PROTOCOL_HTTPS
             : self::PROTOCOL_HTTP;

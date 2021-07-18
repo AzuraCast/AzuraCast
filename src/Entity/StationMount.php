@@ -18,7 +18,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_mounts'),
     Attributes\Auditable
 ]
-class StationMount implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
+class StationMount implements
+    Stringable,
+    Interfaces\StationMountInterface,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

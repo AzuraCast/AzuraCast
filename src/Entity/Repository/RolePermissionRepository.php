@@ -8,8 +8,7 @@ use App\Doctrine\Repository;
 use App\Entity;
 
 /**
- * @template TEntity as Entity\RolePermission
- * @extends Repository<TEntity>
+ * @extends Repository<Entity\RolePermission>
  */
 class RolePermissionRepository extends Repository
 {

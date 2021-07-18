@@ -37,7 +37,7 @@ class CleanupStorageTask extends AbstractTask
 
         foreach ($finder as $file) {
             $file_path = $file->getRealPath();
-            if (null !== $file_path) {
+            if (false !== $file_path) {
                 @unlink($file_path);
             }
         }

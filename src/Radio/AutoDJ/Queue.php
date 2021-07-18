@@ -382,8 +382,15 @@ class Queue implements EventSubscriberInterface
 
         $mediaQueue = $this->cache->get($queueCacheKey);
         if (empty($mediaQueue)) {
-            $playlistRaw = file_get_contents($playlist->getRemoteUrl());
-            $mediaQueue = PlaylistParser::getSongs($playlistRaw);
+            $mediaQueue = [];
+
+            $playlistRemoteUrl = $playlist->getRemoteUrl();
+            if (null !== $playlistRemoteUrl) {
+                $playlistRaw = file_get_contents($playlistRemoteUrl);
+                if (false !== $playlistRaw) {
+                    $mediaQueue = PlaylistParser::getSongs($playlistRaw);
+                }
+            }
         }
 
         $mediaId = null;

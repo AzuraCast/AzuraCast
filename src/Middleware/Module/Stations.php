@@ -48,7 +48,7 @@ class Stations
         $active_tab = null;
         $current_route = RouteContext::fromRequest($request)->getRoute();
         if ($current_route instanceof RouteInterface) {
-            $route_parts = explode(':', $current_route->getName());
+            $route_parts = explode(':', $current_route->getName() ?? '');
             $active_tab = $route_parts[1];
         }
 

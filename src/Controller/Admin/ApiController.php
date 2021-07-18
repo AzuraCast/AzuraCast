@@ -35,7 +35,7 @@ class ApiController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, int|string $id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, string $id): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(__('API Key updated.'), Flash::SUCCESS);
@@ -49,13 +49,14 @@ class ApiController extends AbstractAdminCrudController
                 'form' => $this->form,
                 'render_mode' => 'edit',
                 'title' => __('Edit API Key'),
-        ]);
+            ]
+        );
     }
 
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        string $id,
         string $csrf
     ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);

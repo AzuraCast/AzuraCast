@@ -63,7 +63,7 @@ class Relay implements IdentifiableEntityInterface
         $this->updated_at = time();
     }
 
-    public function getBaseUrl(): ?string
+    public function getBaseUrl(): string
     {
         return $this->base_url;
     }

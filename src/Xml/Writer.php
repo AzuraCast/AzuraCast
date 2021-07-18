@@ -106,12 +106,15 @@ class Writer extends Xml
                 } else {
                     $writer->writeElement($branchName, (string)$value);
                 }
-            } elseif (is_array($value)) {
-                $this->addBranch($key, $value, $writer);
-            } elseif (str_starts_with($key, '@')) {
-                $writer->writeAttribute(substr($key, 1), (string)$value);
             } else {
-                $writer->writeElement($key, (string)$value);
+                /** @var string $key */
+                if (is_array($value)) {
+                    $this->addBranch($key, $value, $writer);
+                } elseif (str_starts_with($key, '@')) {
+                    $writer->writeAttribute(substr($key, 1), (string)$value);
+                } else {
+                    $writer->writeElement($key, (string)$value);
+                }
             }
         }
 

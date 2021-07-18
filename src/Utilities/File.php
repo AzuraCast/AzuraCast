@@ -39,9 +39,17 @@ class File
      */
     public static function sanitizeFileName(string $str): string
     {
-        $str = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str) ?? '';
-        $str = mb_ereg_replace("([\.]{2,})", '.', $str) ?? '';
-        $str = str_replace(' ', '_', $str) ?? '';
+        $str = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $str);
+        if (null === $str || false === $str) {
+            throw new \RuntimeException('Cannot parse input string.');
+        }
+
+        $str = mb_ereg_replace("([\.]{2,})", '.', $str);
+        if (null === $str || false === $str) {
+            throw new \RuntimeException('Cannot parse input string.');
+        }
+
+        $str = str_replace(' ', '_', $str);
         return mb_strtolower($str) ?? '';
     }
 
@@ -97,7 +105,7 @@ class File
         foreach ($files as $fileinfo) {
             /** @var SplFileInfo $fileinfo */
             $realPath = $fileinfo->getRealPath();
-            if (null === $realPath) {
+            if (false === $realPath) {
                 return false;
             }
 

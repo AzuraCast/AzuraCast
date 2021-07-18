@@ -34,7 +34,6 @@ class AppFactory
      * @param array<string, mixed> $appEnvironment
      * @param array<string, mixed> $diDefinitions
      *
-     * @return App
      */
     public static function createApp(
         ?ClassLoader $autoloader = null,
@@ -50,7 +49,6 @@ class AppFactory
      * @param array<string, mixed> $appEnvironment
      * @param array<string, mixed> $diDefinitions
      *
-     * @return Application
      */
     public static function createCli(
         ?ClassLoader $autoloader = null,
@@ -113,7 +111,6 @@ class AppFactory
      *
      * @noinspection SummerTimeUnsafeTimeManipulationInspection
      *
-     * @return DI\Container
      */
     public static function buildContainer(
         ?ClassLoader $autoloader = null,

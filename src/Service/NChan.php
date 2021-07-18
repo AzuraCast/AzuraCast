@@ -63,7 +63,7 @@ class NChan
                             $parts[1] = str_replace(['"', "'"], '', $parts[1]);
                             return $parts;
                         },
-                        file($file)
+                        file($file) ?: []
                     )
                 );
 

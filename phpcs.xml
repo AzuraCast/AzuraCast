@@ -30,6 +30,10 @@
         <exclude-pattern>src/Installer/EnvFiles/*.php</exclude-pattern>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification">
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
+    </rule>
+
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
 
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">

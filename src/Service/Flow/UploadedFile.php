@@ -18,9 +18,9 @@ final class UploadedFile implements \JsonSerializable
         ?string $tempDir
     ) {
         $tempDir ??= sys_get_temp_dir();
-
         $originalFilename ??= tempnam($tempDir, 'upload');
-        if (!$originalFilename) {
+
+        if (!$originalFilename || !$tempDir) {
             throw new \RuntimeException('Could not generate original filename.');
         }
 
@@ -31,6 +31,9 @@ final class UploadedFile implements \JsonSerializable
             $this->uploadedPath = $tempDir . '/' . $prefix . '_' . $originalFilename;
         } else {
             $uploadedPath = realpath($uploadedPath);
+            if (false === $uploadedPath) {
+                throw new \InvalidArgumentException('Could not determine real path of specified path.');
+            }
             if (!str_starts_with($uploadedPath, $tempDir)) {
                 throw new \InvalidArgumentException('Uploaded path is not inside specified temporary directory.');
             }
@@ -55,7 +58,12 @@ final class UploadedFile implements \JsonSerializable
 
     public function getUploadedSize(): int
     {
-        return filesize($this->uploadedPath);
+        $size = filesize($this->uploadedPath);
+        if (false === $size) {
+            throw new \RuntimeException('Could not get file size of uploaded path.');
+        }
+
+        return $size;
     }
 
     public function readAndDeleteUploadedFile(): string
@@ -63,7 +71,7 @@ final class UploadedFile implements \JsonSerializable
         $contents = file_get_contents($this->uploadedPath);
         @unlink($this->uploadedPath);
 
-        return $contents;
+        return $contents ?: '';
     }
 
     /** @return mixed[] */

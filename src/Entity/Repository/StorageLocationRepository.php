@@ -8,8 +8,7 @@ use App\Doctrine\Repository;
 use App\Entity;
 
 /**
- * @template TEntity of Entity\StorageLocation
- * @extends Repository<TEntity>
+ * @extends Repository<Entity\StorageLocation>
  */
 class StorageLocationRepository extends Repository
 {

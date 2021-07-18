@@ -43,7 +43,7 @@ class AzuraRelay extends AbstractRemote
             );
 
             $remote->setListenersTotal($result->listeners->total);
-            $remote->setListenersUnique($result->listeners->unique);
+            $remote->setListenersUnique($result->listeners->unique ?? 0);
             $this->em->persist($remote);
             $this->em->flush();
 
@@ -89,6 +89,6 @@ class AzuraRelay extends AbstractRemote
         // Remove port number and other decorations.
         return (string)$base_url
             ->withPort($radio_port)
-            ->withPath($remote->getMount());
+            ->withPath($remote->getMount() ?? '');
     }
 }

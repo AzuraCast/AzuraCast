@@ -106,8 +106,7 @@ class Router implements RouterInterface
         array $route_params = [],
         array $query_params = [],
         bool $absolute = false
-    ): UriInterface
-    {
+    ): UriInterface {
         if ($this->request instanceof ServerRequestInterface) {
             $query_params = array_merge($this->request->getQueryParams(), $query_params);
         }
@@ -123,8 +122,7 @@ class Router implements RouterInterface
         array $route_params = [],
         array $query_params = [],
         bool $absolute = false
-    ): UriInterface
-    {
+    ): UriInterface {
         if ($this->request instanceof ServerRequestInterface) {
             $route = RouteContext::fromRequest($this->request)->getRoute();
         } else {

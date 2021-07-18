@@ -37,7 +37,7 @@ class Csrf
         if ($this->session->has($sessionKey)) {
             $csrf = $this->session->get($sessionKey);
             if (!empty($csrf)) {
-                return $csrf;
+                return (string)$csrf;
             }
         }
 

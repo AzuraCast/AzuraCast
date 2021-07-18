@@ -72,7 +72,7 @@ class WebhooksController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, int|string $id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Web Hook updated.') . '</b>', Flash::SUCCESS);
@@ -93,7 +93,7 @@ class WebhooksController extends AbstractStationCrudController
     public function toggleAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
@@ -116,7 +116,7 @@ class WebhooksController extends AbstractStationCrudController
     public function testAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
@@ -137,7 +137,7 @@ class WebhooksController extends AbstractStationCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);

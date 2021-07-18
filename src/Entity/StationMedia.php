@@ -408,7 +408,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
             $length -= $this->cue_in;
         }
 
-        return $length;
+        return (int)$length;
     }
 
     public function getArtUpdatedAt(): int
@@ -491,7 +491,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public function toMetadata(): Metadata
     {
         $metadata = new Metadata();
-        $metadata->setDuration($this->getLength());
+        $metadata->setDuration($this->getLength() ?? 0.0);
 
         $tagsToSet = array_filter(
             [

@@ -35,7 +35,7 @@ class StationsController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, int|string $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
@@ -55,12 +55,12 @@ class StationsController extends AbstractAdminCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $record = $this->record_repo->find((int)$id);
+        $record = $this->record_repo->find($id);
         if ($record instanceof Entity\Station) {
             $this->stationRepo->destroy($record);
         }
@@ -69,11 +69,11 @@ class StationsController extends AbstractAdminCrudController
         return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
     }
 
-    public function cloneAction(ServerRequest $request, Response $response, int|string $id): ResponseInterface
+    public function cloneAction(ServerRequest $request, Response $response, int $id): ResponseInterface
     {
         $cloneForm = $this->factory->make(Form\StationCloneForm::class);
 
-        $record = $this->record_repo->find((int)$id);
+        $record = $this->record_repo->find($id);
         if (!($record instanceof Entity\Station)) {
             throw new NotFoundException(__('Station not found.'));
         }

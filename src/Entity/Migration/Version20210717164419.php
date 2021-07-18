@@ -19,46 +19,22 @@ final class Version20210717164419 extends AbstractMigration
 
     public function preUp(Schema $schema): void
     {
-        $this->connection->update(
-            'api_keys',
-            ['comment' => ''],
-            ['comment' => null]
-        );
+        $this->setEmptyWhereNull('api_keys', 'comment');
+        $this->setEmptyWhereNull('custom_field', 'short_name');
+        $this->setEmptyWhereNull('station', 'name');
+        $this->setEmptyWhereNull('station', 'short_name');
+        $this->setEmptyWhereNull('users', 'email');
+        $this->setEmptyWhereNull('users', 'auth_password');
+        $this->setEmptyWhereNull('storage_location', 'path');
+        $this->setEmptyWhereNull('station_remotes', 'url');
+    }
 
+    protected function setEmptyWhereNull(string $table, string $field): void
+    {
         $this->connection->update(
-            'custom_field',
-            ['short_name' => ''],
-            ['short_name' => null]
-        );
-
-        $this->connection->update(
-            'station',
-            ['name' => ''],
-            ['name' => null]
-        );
-
-        $this->connection->update(
-            'station',
-            ['short_name' => ''],
-            ['short_name' => null]
-        );
-
-        $this->connection->update(
-            'users',
-            ['email' => ''],
-            ['email' => null]
-        );
-
-        $this->connection->update(
-            'users',
-            ['auth_password' => ''],
-            ['auth_password' => null]
-        );
-
-        $this->connection->update(
-            'storage_location',
-            ['path' => ''],
-            ['path' => null]
+            $table,
+            [$field => ''],
+            [$field => null]
         );
     }
 
@@ -74,6 +50,7 @@ final class Version20210717164419 extends AbstractMigration
             'ALTER TABLE users CHANGE email email VARCHAR(100) NOT NULL, CHANGE auth_password auth_password VARCHAR(255) NOT NULL'
         );
         $this->addSql('ALTER TABLE storage_location CHANGE path path VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE station_remotes CHANGE url url VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -93,6 +70,9 @@ final class Version20210717164419 extends AbstractMigration
         );
         $this->addSql(
             'ALTER TABLE storage_location CHANGE path path VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_general_ci`'
+        );
+        $this->addSql(
+            'ALTER TABLE station_remotes CHANGE url url VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`'
         );
     }
 }

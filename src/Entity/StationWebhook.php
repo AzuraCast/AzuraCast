@@ -17,8 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_webhooks', options: ['charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci']),
     Attributes\Auditable
 ]
-class StationWebhook implements Stringable, Interfaces\StationCloneAwareInterface,
-                                Interfaces\IdentifiableEntityInterface
+class StationWebhook implements
+    Stringable,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

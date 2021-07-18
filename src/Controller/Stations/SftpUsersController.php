@@ -54,7 +54,7 @@ class SftpUsersController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, int|string $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Changes saved.') . '</b>', Flash::SUCCESS);
@@ -68,13 +68,14 @@ class SftpUsersController extends AbstractStationCrudController
                 'form' => $this->form,
                 'render_mode' => 'edit',
                 'title' => $id ? __('Edit SFTP User') : __('Add SFTP User'),
-        ]);
+            ]
+        );
     }
 
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int|string $id,
+        int $id,
         string $csrf
     ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);

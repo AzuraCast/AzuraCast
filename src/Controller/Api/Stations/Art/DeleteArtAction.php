@@ -11,11 +11,19 @@ use Psr\Http\Message\ResponseInterface;
 
 class DeleteArtAction
 {
+    /**
+     * @param ServerRequest $request
+     * @param Response $response
+     * @param Entity\Repository\StationMediaRepository $mediaRepo
+     * @param int|string $media_id
+     *
+     * @return ResponseInterface
+     */
     public function __invoke(
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationMediaRepository $mediaRepo,
-        int|string $media_id
+        $media_id
     ): ResponseInterface {
         $station = $request->getStation();
 

@@ -428,7 +428,7 @@ class StorageLocation implements Stringable, IdentifiableEntityInterface
                 if (null === $bucket) {
                     throw new \RuntimeException('Amazon S3 bucket is empty.');
                 }
-                return new AwsS3Adapter($this->getS3Client(), $this->s3Bucket, $filteredPath);
+                return new AwsS3Adapter($this->getS3Client(), $bucket, $filteredPath);
 
             case self::ADAPTER_DROPBOX:
                 return new DropboxAdapter($this->getDropboxClient(), $filteredPath);

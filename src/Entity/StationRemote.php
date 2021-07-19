@@ -348,14 +348,12 @@ class StationRemote implements
 
     public function getAutodjProtocol(): ?string
     {
-        if (Adapters::REMOTE_SHOUTCAST2 === $this->getAutodjAdapterType()) {
-            return self::PROTOCOL_ICY;
-        }
-
         $urlScheme = $this->getUrlAsUri()->getScheme();
-        return ('https' === $urlScheme)
-            ? self::PROTOCOL_HTTPS
-            : self::PROTOCOL_HTTP;
+
+        return match ($this->getAutodjAdapterType()) {
+            Adapters::REMOTE_SHOUTCAST1, Adapters::REMOTE_SHOUTCAST2 => self::PROTOCOL_ICY,
+            default => ('https' === $urlScheme) ? self::PROTOCOL_HTTPS : self::PROTOCOL_HTTP
+        };
     }
 
     public function getAutodjAdapterType(): string

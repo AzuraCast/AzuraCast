@@ -1,5 +1,5 @@
 name : "Bug Report"
-about : "Report an error you're encountering with your AzuraCast installation."
+description : "Report an error you're encountering with your AzuraCast installation."
 title : "[Bug]: "
 labels : [ possible bug ]
 body :
@@ -21,6 +21,7 @@ body :
         - Docker Installation
         - Ansible Installation
         - One-Click Installation (Docker)
+    validations :
       required : true
   - type : dropdown
     id : release_channel
@@ -30,6 +31,7 @@ body :
       options :
         - Rolling Release Channel
         - Stable Channel
+    validations :
       required : true
   - type : input
     id : current_version

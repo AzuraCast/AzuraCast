@@ -6,7 +6,7 @@ body :
   - type : markdown
     attributes :
       value : |
-        Notes :
+        Thank you for reporting an issue to us! A few important notes:
          - This template is only to be used for bug/error reports. For feature requests, visit https://features.azuracast.com/
          - Please be kind and patient in your interactions with us. We are a small team of volunteers working solely on donations. Thank you in advance.
          - Ansible installation methods are not officially supported and support may not be provided outside of the rare circumstances.
@@ -33,12 +33,23 @@ body :
         - Stable Channel
     validations :
       required : true
+  - type : markdown
+    attributes :
+      value : |
+        **Note:** If you're on the "Stable" release channel, it's possible that the bug you're reporting was already fixed
+        in the latest Rolling Release version. Check the [changelog](https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md)
+        for a full list of the latest changes.
   - type : input
     id : current_version
     attributes :
       label : "Current AzuraCast Version"
       description : "What version of AzuraCast are you currently running? You can find this in the footer of most pages."
       placeholder : "0.12.3 or Rolling Release #abcdefg (2020-01-01)"
+  - type : markdown
+    attributes :
+      value : |
+        **Note:** If you're not running the latest version, you may find that your issue has already been fixed in a newer
+        version. You should follow our [updating instructions](https://docs.azuracast.com/en/getting-started/updates) first before continuing.
   - type : textarea
     id : what-happened
     attributes :

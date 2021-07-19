@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Migration;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -18,7 +20,7 @@ final class Version20170829030442 extends AbstractMigration
         $this->changeCharset('utf8mb4', 'utf8mb4_unicode_ci');
     }
 
-    private function changeCharset($charset, $collate): void
+    private function changeCharset(string $charset, string $collate): void
     {
         $db_name = $this->connection->getDatabase();
 

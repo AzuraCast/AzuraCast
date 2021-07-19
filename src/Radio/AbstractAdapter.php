@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio;
 
 use App\Entity;
@@ -49,7 +51,7 @@ abstract class AbstractAdapter
 
         file_put_contents($configPath, $newConfig);
 
-        return 0 !== strcmp($currentConfig, $newConfig);
+        return 0 !== strcmp($currentConfig ?: '', $newConfig ?: '');
     }
 
     /**

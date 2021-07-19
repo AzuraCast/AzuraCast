@@ -1,9 +1,10 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeZone;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Entity,
     ORM\Table(name: 'station_requests')
 ]
-class StationRequest
+class StationRequest implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 

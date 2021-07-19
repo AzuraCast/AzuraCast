@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations\Reports;
 
 use App\Entity;
@@ -42,8 +44,8 @@ class RequestsController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $request_id,
-        $csrf
+        int $request_id,
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
@@ -62,13 +64,13 @@ class RequestsController
             $request->getFlash()->addMessage('<b>Request deleted!</b>', Flash::SUCCESS);
         }
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:reports:requests'));
     }
 
     public function clearAction(
         ServerRequest $request,
         Response $response,
-        $csrf
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
@@ -85,6 +87,6 @@ class RequestsController
 
         $request->getFlash()->addMessage('<b>All pending requests cleared.</b>', Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:reports:requests'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:reports:requests'));
     }
 }

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Doctrine;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Closure;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -34,7 +37,7 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
      */
     public function persist($object): void
     {
-        if (is_callable([$object, 'getId'])) {
+        if ($object instanceof IdentifiableEntityInterface) {
             $oldId = $object->getId();
             $this->wrapped->persist($object);
 
@@ -48,12 +51,19 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
 
     /**
      * @inheritDoc
+     *
+     * @template TEntity as object
+     *
+     * @param TEntity $entity
+     *
+     * @return TEntity
      */
-    public function refetch(mixed $entity)
+    public function refetch(object $entity): object
     {
         // phpcs:enable
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));
 
+        /** @var TEntity|null $freshValue */
         $freshValue = $this->wrapped->find($metadata->getName(), $metadata->getIdentifierValues($entity));
         if (!$freshValue) {
             throw ORMInvalidArgumentException::entityHasNoIdentity($entity, 'refetch');
@@ -64,12 +74,19 @@ class DecoratedEntityManager extends EntityManagerDecorator implements Reloadabl
 
     /**
      * @inheritDoc
+     *
+     * @template TEntity as object
+     *
+     * @param TEntity $entity
+     *
+     * @return TEntity
      */
-    public function refetchAsReference(mixed $entity)
+    public function refetchAsReference(object $entity): object
     {
         // phpcs:enable
         $metadata = $this->wrapped->getClassMetadata(get_class($entity));
 
+        /** @var TEntity|null $freshValue */
         $freshValue = $this->wrapped->getReference($metadata->getName(), $metadata->getIdentifierValues($entity));
         if (!$freshValue) {
             throw ORMInvalidArgumentException::entityHasNoIdentity($entity, 'refetch');

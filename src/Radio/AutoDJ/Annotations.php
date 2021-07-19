@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\AutoDJ;
 
 use App\Entity;
@@ -69,12 +71,14 @@ class Annotations implements EventSubscriberInterface
 
                 $np = $event->getStation()->getNowplaying();
                 if ($np instanceof Entity\Api\NowPlaying) {
-                    $event->addAnnotations([
-                        'title' => $np->now_playing->song->title,
-                        'artist' => $np->now_playing->song->artist,
-                        'playlist_id' => null,
-                        'media_id' => null,
-                    ]);
+                    $event->addAnnotations(
+                        [
+                            'title' => $np->now_playing?->song?->title,
+                            'artist' => $np->now_playing?->song?->artist,
+                            'playlist_id' => null,
+                            'media_id' => null,
+                        ]
+                    );
                 }
             } else {
                 $event->addAnnotations([

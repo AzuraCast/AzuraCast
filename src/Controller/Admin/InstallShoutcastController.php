@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Config;
@@ -12,8 +14,6 @@ use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Process\Process;
-
-use const UPLOAD_ERR_OK;
 
 class InstallShoutcastController
 {
@@ -44,15 +44,14 @@ class InstallShoutcastController
 
         $form = new Form($form_config, []);
 
-        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
+        if ($form->isValid($request)) {
             try {
                 $sc_base_dir = $environment->getParentDirectory() . '/servers/shoutcast2';
 
-                $files = $request->getUploadedFiles();
-                /** @var UploadedFileInterface $import_file */
-                $import_file = $files['binary'];
+                $values = $form->getValues();
 
-                if (UPLOAD_ERR_OK === $import_file->getError()) {
+                $import_file = $values['binary'] ?? null;
+                if ($import_file instanceof UploadedFileInterface) {
                     $sc_tgz_path = $sc_base_dir . '/sc_serv.tar.gz';
                     if (is_file($sc_tgz_path)) {
                         unlink($sc_tgz_path);

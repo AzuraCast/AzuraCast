@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Controller\AbstractLogViewerController;
@@ -43,7 +45,7 @@ class LogsController extends AbstractLogViewerController
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array>
      */
     protected function getGlobalLogs(): array
     {
@@ -82,8 +84,12 @@ class LogsController extends AbstractLogViewerController
         return $logPaths;
     }
 
-    public function viewAction(ServerRequest $request, Response $response, $station_id, $log): ResponseInterface
-    {
+    public function viewAction(
+        ServerRequest $request,
+        Response $response,
+        string|int $station_id,
+        string $log
+    ): ResponseInterface {
         if ('global' === $station_id) {
             $log_areas = $this->getGlobalLogs();
         } else {
@@ -94,7 +100,7 @@ class LogsController extends AbstractLogViewerController
             throw new Exception('Invalid log file specified.');
         }
 
-        $log = $log_areas[$log];
-        return $this->view($request, $response, $log['path'], $log['tail'] ?? true);
+        $logArea = $log_areas[$log];
+        return $this->view($request, $response, $logArea['path'], $logArea['tail'] ?? true);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Entity;
@@ -41,7 +43,7 @@ class StreamersAction
                     Flash::SUCCESS
                 );
 
-                return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
+                return $response->withRedirect((string)$request->getRouter()->fromHere('stations:streamers:index'));
             }
 
             return $view->renderToResponse($response, 'stations/streamers/disabled');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Admin;
 
 use App\Acl;
@@ -10,6 +12,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractAdminApiCrudController<Entity\Role>
+ */
 class RolesController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\Role::class;

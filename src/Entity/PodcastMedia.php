@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'podcast_media'),
     Attributes\Auditable
 ]
-class PodcastMedia
+class PodcastMedia implements IdentifiableEntityInterface
 {
     use Traits\HasUniqueId;
     use Traits\TruncateStrings;
@@ -160,26 +161,5 @@ class PodcastMedia
         $this->art_updated_at = $art_updated_at;
 
         return $this;
-    }
-
-    /**
-     * @param string|float|null $seconds
-     */
-    protected function parseSeconds($seconds = null): ?float
-    {
-        if ($seconds === '') {
-            return null;
-        }
-
-        if (str_contains($seconds, ':')) {
-            $sec = 0;
-            foreach (array_reverse(explode(':', $seconds)) as $k => $v) {
-                $sec += (60 ** (int)$k) * (int)$v;
-            }
-
-            return $sec;
-        }
-
-        return $seconds;
     }
 }

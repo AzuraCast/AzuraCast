@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App;
@@ -13,6 +15,9 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractStationApiCrudController<Entity\StationQueue>
+ */
 class QueueController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationQueue::class;
@@ -124,7 +129,7 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse->log = $record->getLog();
 
         $apiResponse->links = [
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 
         return $apiResponse;

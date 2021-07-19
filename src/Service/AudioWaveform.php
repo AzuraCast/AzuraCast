@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
+use App\Utilities\Json;
 use InvalidArgumentException;
-use RuntimeException;
 use Symfony\Component\Process\Process;
 
 class AudioWaveform
@@ -37,12 +39,7 @@ class AudioWaveform
 
         $process->mustRun();
 
-        if (!is_file($jsonOutPath)) {
-            throw new RuntimeException('Audio waveform JSON was not generated.');
-        }
-
-        $inputRaw = file_get_contents($jsonOutPath);
-        $input = json_decode($inputRaw, true, 512, JSON_THROW_ON_ERROR);
+        $input = Json::loadFromFile($jsonOutPath);
 
         // Limit all input to a range from 0 to 1.
         $data = $input['data'];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -61,7 +63,10 @@ class PodcastEpisode extends AbstractFixture implements DependentFixtureInterfac
             // Create an episode and associate it with the podcast/media.
             $episode = new Entity\PodcastEpisode($podcast);
 
+            /** @noinspection NonSecureArrayRandUsageInspection */
             $podcastName = $podcastNames[array_rand($podcastNames)];
+
+            /** @noinspection NonSecureArrayRandUsageInspection */
             $podcastFiller = $podcastFillers[array_rand($podcastFillers)];
 
             $episode->setTitle('Episode ' . $i . ': ' . sprintf($podcastName, $podcastFiller));

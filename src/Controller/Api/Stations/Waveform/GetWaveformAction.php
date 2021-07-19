@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Waveform;
 
 use App\Entity\Api\Error;
@@ -16,7 +18,7 @@ class GetWaveformAction
         ServerRequest $request,
         Response $response,
         StationMediaRepository $mediaRepo,
-        $media_id
+        string $media_id
     ): ResponseInterface {
         $response = $response->withCacheLifetime(Response::CACHE_ONE_YEAR);
 

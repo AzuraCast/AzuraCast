@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use App\Entity;
@@ -48,7 +50,7 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         bool $logErrorDetails
     ): ResponseInterface {
         if ($exception instanceof Exception\WrappedException) {
-            $exception = $exception->getPrevious();
+            $exception = $exception->getPrevious() ?? $exception;
         }
 
         if ($exception instanceof Exception) {
@@ -252,13 +254,5 @@ class ErrorHandler extends \Slim\Handlers\ErrorHandler
         } catch (Throwable) {
             return parent::respond();
         }
-    }
-
-    protected function withJson(ResponseInterface $response, $data): ResponseInterface
-    {
-        $json = (string)json_encode($data, JSON_THROW_ON_ERROR);
-        $response->getBody()->write($json);
-
-        return $response->withHeader('Content-Type', 'application/json;charset=utf-8');
     }
 }

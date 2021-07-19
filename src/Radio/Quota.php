@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio;
 
 use Brick\Math;
@@ -21,7 +23,7 @@ class Quota
             ->toInt();
     }
 
-    public static function getReadableSize(Math\BigInteger $bytes, $decimals = 1): string
+    public static function getReadableSize(Math\BigInteger $bytes, int $decimals = 1): string
     {
         $bytes_str = (string)$bytes;
 
@@ -39,7 +41,7 @@ class Quota
         return $bytes_str;
     }
 
-    public static function convertFromReadableSize($size): ?Math\BigInteger
+    public static function convertFromReadableSize(Math\BigInteger|string|null $size): ?Math\BigInteger
     {
         if ($size instanceof Math\BigInteger) {
             return $size;
@@ -50,18 +52,20 @@ class Quota
         }
 
         // Remove the non-unit characters from the size.
-        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
+        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size) ?? '';
 
         // Remove the non-numeric characters from the size.
-        $size = preg_replace('/[^0-9\\.]/', '', $size);
+        $size = preg_replace('/[^0-9\\.]/', '', $size) ?? '';
 
         if ($unit) {
             // Find the position of the unit in the ordered string which is the power
             // of magnitude to multiply a kilobyte by.
+
+            /** @noinspection StringFragmentMisplacedInspection */
             $byte_power = stripos(
                 haystack: 'bkmgtpezy',
-                needle: $unit[0]
-            );
+                needle:   $unit[0]
+            ) ?: 0;
             $byte_multiplier = Math\BigInteger::of(1000)->power($byte_power);
 
             return Math\BigDecimal::of($size)

@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
 
+/**
+ * @extends Repository<Entity\StorageLocation>
+ */
 class StorageLocationRepository extends Repository
 {
     public function findByType(string $type, int $id): ?Entity\StorageLocation

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -111,7 +113,9 @@ class CheckMediaTask extends AbstractTask
         foreach ($fsIterator as $file) {
             try {
                 $size = $file->fileSize();
-                $total_size = $total_size->plus($size);
+                if (null !== $size) {
+                    $total_size = $total_size->plus($size);
+                }
             } catch (UnableToRetrieveMetadata) {
                 continue;
             }
@@ -209,10 +213,10 @@ class CheckMediaTask extends AbstractTask
 
                 unset($musicFiles[$pathHash]);
             } else {
-                $this->mediaRepo->remove(
-                    $this->em->find(Entity\StationMedia::class, $mediaRow['id']),
-                    false
-                );
+                $media = $this->em->find(Entity\StationMedia::class, $mediaRow['id']);
+                if ($media instanceof Entity\StationMedia) {
+                    $this->mediaRepo->remove($media, false);
+                }
 
                 $stats['deleted']++;
             }
@@ -243,7 +247,7 @@ class CheckMediaTask extends AbstractTask
 
                 if (Entity\UnprocessableMedia::needsReprocessing($mtime, $unprocessableRow['mtime'] ?? 0)) {
                     $message = new Message\AddNewMediaMessage();
-                    $message->storage_location_id = $storageLocation->getId();
+                    $message->storage_location_id = $storageLocation->getIdRequired();
                     $message->path = $unprocessableRow['path'];
 
                     $this->messageBus->dispatch($message);
@@ -285,7 +289,7 @@ class CheckMediaTask extends AbstractTask
                 $stats['already_queued']++;
             } else {
                 $message = new Message\AddNewMediaMessage();
-                $message->storage_location_id = $storageLocation->getId();
+                $message->storage_location_id = $storageLocation->getIdRequired();
                 $message->path = $path;
 
                 $this->messageBus->dispatch($message);

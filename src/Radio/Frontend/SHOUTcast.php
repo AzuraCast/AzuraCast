@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -41,7 +43,7 @@ class SHOUTcast extends AbstractFrontend
     /**
      * @inheritDoc
      */
-    public function getBinary(): string
+    public function getBinary(): ?string
     {
         $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
 
@@ -52,7 +54,7 @@ class SHOUTcast extends AbstractFrontend
 
         return file_exists($new_path)
             ? $new_path
-            : false;
+            : null;
     }
 
     public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result

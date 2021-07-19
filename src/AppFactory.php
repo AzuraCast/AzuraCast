@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Console\Application;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
+use Composer\Autoload\ClassLoader;
 use DI;
 use DI\Bridge\Slim\ControllerInvoker;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -26,14 +29,32 @@ use const E_USER_ERROR;
 
 class AppFactory
 {
-    public static function createApp($autoloader = null, $appEnvironment = [], $diDefinitions = []): App
-    {
+    /**
+     * @param ClassLoader|null $autoloader
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
+     *
+     */
+    public static function createApp(
+        ?ClassLoader $autoloader = null,
+        array $appEnvironment = [],
+        array $diDefinitions = []
+    ): App {
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         return self::buildAppFromContainer($di);
     }
 
-    public static function createCli($autoloader = null, $appEnvironment = [], $diDefinitions = []): Application
-    {
+    /**
+     * @param ClassLoader|null $autoloader
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
+     *
+     */
+    public static function createCli(
+        ?ClassLoader $autoloader = null,
+        array $appEnvironment = [],
+        array $diDefinitions = []
+    ): Application {
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         self::buildAppFromContainer($di);
 
@@ -83,11 +104,18 @@ class AppFactory
         return $app;
     }
 
-    /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+    /**
+     * @param ClassLoader|null $autoloader
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
+     *
+     * @noinspection SummerTimeUnsafeTimeManipulationInspection
+     *
+     */
     public static function buildContainer(
-        $autoloader = null,
-        $appEnvironment = [],
-        $diDefinitions = []
+        ?ClassLoader $autoloader = null,
+        array $appEnvironment = [],
+        array $diDefinitions = []
     ): DI\Container {
         // Register Annotation autoloader
         if (null !== $autoloader) {
@@ -165,7 +193,10 @@ class AppFactory
         return $di;
     }
 
-    public static function buildEnvironment(array $environment): Environment
+    /**
+     * @param array<string, mixed> $environment
+     */
+    public static function buildEnvironment(array $environment = []): Environment
     {
         if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');
@@ -180,7 +211,10 @@ class AppFactory
         $environment[Environment::VIEWS_DIR] ??= $environment[Environment::BASE_DIR] . '/templates';
 
         if (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
-            $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
+            $envIni = parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini');
+            if (false !== $envIni) {
+                $_ENV = array_merge($_ENV, $envIni);
+            }
         } else {
             $_ENV = getenv();
         }

@@ -1,16 +1,17 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
     ORM\Entity,
     ORM\Table(name: 'station_media_custom_field')
 ]
-class StationMediaCustomField
+class StationMediaCustomField implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;

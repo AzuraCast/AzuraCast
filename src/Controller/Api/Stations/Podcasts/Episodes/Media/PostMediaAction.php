@@ -33,7 +33,7 @@ class PostMediaAction
 
             if (null === $episode) {
                 return $response->withStatus(404)
-                    ->withJson(new Entity\Api\Error(404, __('Episode not found!')));
+                    ->withJson(Entity\Api\Error::notFound());
             }
 
             $fsStation = new StationFilesystems($station);

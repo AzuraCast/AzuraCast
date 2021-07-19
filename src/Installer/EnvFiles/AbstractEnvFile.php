@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Installer\EnvFiles;
 
 use App\Utilities\Strings;
+use ArrayAccess;
 use Dotenv\Dotenv;
 use Dotenv\Exception\ExceptionInterface;
 use InvalidArgumentException;
 
-abstract class AbstractEnvFile implements \ArrayAccess
+/**
+ * @implements ArrayAccess<mixed, mixed>
+ */
+abstract class AbstractEnvFile implements ArrayAccess
 {
     final public function __construct(
         protected string $path,
@@ -39,22 +45,22 @@ abstract class AbstractEnvFile implements \ArrayAccess
         $this->data = array_merge($defaults, $currentVars);
     }
 
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->data[$offset]);
     }
 
-    public function offsetGet($offset): mixed
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->data[$offset];
     }
 
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->data[$offset] = $value;
     }
 
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->data[$offset]);
     }

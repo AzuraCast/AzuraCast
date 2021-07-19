@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api;
 
 use App\Environment;
@@ -20,7 +22,7 @@ class OpenApiController
 
     public function __invoke(ServerRequest $request, Response $response): ResponseInterface
     {
-        $api_base_url = $request->getRouter()->fromHere(null, [], [], true);
+        $api_base_url = (string)$request->getRouter()->fromHere(absolute: true);
         $api_base_url = str_replace('/openapi.yml', '', $api_base_url);
 
         define('AZURACAST_API_URL', $api_base_url);

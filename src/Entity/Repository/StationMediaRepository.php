@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -66,7 +68,7 @@ class StationMediaRepository extends Repository
      */
     public function find(mixed $id, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
     {
-        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
+        if (is_string($id) && Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
             $media = $this->findByUniqueId($id, $source);
             if ($media instanceof Entity\StationMedia) {
                 return $media;
@@ -106,7 +108,7 @@ class StationMediaRepository extends Repository
         return $media;
     }
 
-    public function iteratePaths(array $paths, $source): Generator
+    public function iteratePaths(array $paths, Entity\Station|Entity\StorageLocation $source): Generator
     {
         $storageLocation = $this->getStorageLocation($source);
 

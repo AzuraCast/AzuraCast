@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\MessageQueue;
 
 use Symfony\Component\Cache\ResettableInterface;

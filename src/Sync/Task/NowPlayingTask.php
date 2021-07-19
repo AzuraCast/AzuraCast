@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -226,7 +228,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
         // Trigger a delayed Now Playing update.
         $message = new Message\UpdateNowPlayingMessage();
-        $message->station_id = $station->getId();
+        $message->station_id = $station->getIdRequired();
 
         $this->messageBus->dispatch(
             $message,
@@ -305,7 +307,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         ];
 
         if ($npOld instanceof Entity\Api\NowPlaying) {
-            if ($npOld->now_playing->song->id !== $np->now_playing->song->id) {
+            if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
                 $triggers[] = Entity\StationWebhook::TRIGGER_SONG_CHANGED;
             }
 

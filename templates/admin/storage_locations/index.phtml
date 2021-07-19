@@ -8,8 +8,9 @@ $this->layout(
     ]
 );
 
+/** @var App\Http\RouterInterface $router */
 $props = [
-    'listUrl' => $router->fromHere('api:admin:storage_locations'),
+    'listUrl' => (string)$router->fromHere('api:admin:storage_locations'),
 ];
 
 /** @var \App\Assets $assets */

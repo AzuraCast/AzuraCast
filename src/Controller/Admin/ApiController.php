@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Form\ApiKeyForm;
@@ -33,25 +35,33 @@ class ApiController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, string $id): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(__('API Key updated.'), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->named('admin:api:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:api:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => __('Edit API Key'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $this->form,
+                'render_mode' => 'edit',
+                'title' => __('Edit API Key'),
+            ]
+        );
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        string $id,
+        string $csrf
+    ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage(__('API Key deleted.'), Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:api:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:api:index'));
     }
 }

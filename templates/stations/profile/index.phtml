@@ -1,7 +1,8 @@
 <?php
 /**
  * @var App\Entity\Station $station
- * @var \App\Assets $assets
+ * @var App\Assets $assets
+ * @var App\Http\RouterInterface $router
  */
 
 $this->layout(
@@ -25,7 +26,7 @@ $props = [
     'enableStreamers' => $station->getEnableStreamers(),
     'enablePublicPage' => $station->getEnablePublicPage(),
     'enableOnDemand' => $station->getEnableOnDemand(),
-    'profileApiUri' => $router->fromHere('api:stations:profile'),
+    'profileApiUri' => (string)$router->fromHere('api:stations:profile'),
 
     // ACL
     'userCanManageMedia' => $acl->isAllowed(App\Acl::STATION_MEDIA, $station->getId()),
@@ -37,19 +38,25 @@ $props = [
     // Header
     'stationName' => $station->getName(),
     'stationDescription' => $station->getDescription(),
-    'manageProfileUri' => $router->fromHere('stations:profile:edit'),
+    'manageProfileUri' => (string)$router->fromHere('stations:profile:edit'),
 
     // Now Playing
-    'backendSkipSongUri' => $router->fromHere('api:stations:backend', ['do' => 'skip']),
-    'backendDisconnectStreamerUri' => $router->fromHere('api:stations:backend', ['do' => 'disconnect']),
+    'backendSkipSongUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'skip']),
+    'backendDisconnectStreamerUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'disconnect']),
 
     // Requests
-    'requestsViewUri' => $router->fromHere('stations:reports:requests'),
-    'requestsToggleUri' => $router->fromHere('stations:profile:toggle', ['feature' => 'requests', 'csrf' => $csrf]),
+    'requestsViewUri' => (string)$router->fromHere('stations:reports:requests'),
+    'requestsToggleUri' => (string)$router->fromHere(
+        'stations:profile:toggle',
+        ['feature' => 'requests', 'csrf' => $csrf]
+    ),
 
     // Streamers
-    'streamersViewUri' => $router->fromHere('stations:streamers:index'),
-    'streamersToggleUri' => $router->fromHere('stations:profile:toggle', ['feature' => 'streamers', 'csrf' => $csrf]),
+    'streamersViewUri' => (string)$router->fromHere('stations:streamers:index'),
+    'streamersToggleUri' => (string)$router->fromHere(
+        'stations:profile:toggle',
+        ['feature' => 'streamers', 'csrf' => $csrf]
+    ),
 
     // Public Pages
     'publicPageUri' => (string)$router->named('public:index', ['station_id' => $station->getShortName()], [], true),
@@ -103,7 +110,7 @@ $props = [
         true
     ),
 
-    'togglePublicPageUri' => $router->fromHere(
+    'togglePublicPageUri' => (string)$router->fromHere(
         'stations:profile:toggle',
         ['feature' => 'public', 'csrf' => $csrf]
     ),
@@ -113,18 +120,18 @@ $props = [
     'frontendAdminPassword' => $frontendConfig->getAdminPassword(),
     'frontendSourcePassword' => $frontendConfig->getSourcePassword(),
     'frontendRelayPassword' => $frontendConfig->getRelayPassword(),
-    'frontendRestartUri' => $router->fromHere('api:stations:frontend', ['do' => 'restart']),
-    'frontendStartUri' => $router->fromHere('api:stations:frontend', ['do' => 'start']),
-    'frontendStopUri' => $router->fromHere('api:stations:frontend', ['do' => 'stop']),
+    'frontendRestartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'restart']),
+    'frontendStartUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'start']),
+    'frontendStopUri' => (string)$router->fromHere('api:stations:frontend', ['do' => 'stop']),
 
     // Backend
     'numSongs' => (int)$num_songs,
     'numPlaylists' => (int)$num_playlists,
-    'manageMediaUri' => $router->fromHere('stations:files:index'),
-    'managePlaylistsUri' => $router->fromHere('stations:playlists:index'),
-    'backendRestartUri' => $router->fromHere('api:stations:backend', ['do' => 'restart']),
-    'backendStartUri' => $router->fromHere('api:stations:backend', ['do' => 'start']),
-    'backendStopUri' => $router->fromHere('api:stations:backend', ['do' => 'stop']),
+    'manageMediaUri' => (string)$router->fromHere('stations:files:index'),
+    'managePlaylistsUri' => (string)$router->fromHere('stations:playlists:index'),
+    'backendRestartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'restart']),
+    'backendStartUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'start']),
+    'backendStopUri' => (string)$router->fromHere('api:stations:backend', ['do' => 'stop']),
 ];
 
 $assets

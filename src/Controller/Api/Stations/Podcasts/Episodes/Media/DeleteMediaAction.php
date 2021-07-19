@@ -23,7 +23,7 @@ class DeleteMediaAction
 
         if (!($episode instanceof Entity\PodcastEpisode)) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, 'Media file not found.'));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $podcastMedia = $episode->getMedia();

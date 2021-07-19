@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Webhook\Connector;
 
 use App\Entity;
@@ -24,6 +26,9 @@ class GoogleAnalytics extends AbstractConnector
         parent::__construct($logger, $httpClient);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

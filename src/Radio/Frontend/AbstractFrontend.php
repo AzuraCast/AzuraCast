@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -158,9 +160,9 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * @param string $custom_config_raw
      *
-     * @return mixed[]|bool
+     * @return mixed[]|false
      */
-    protected function processCustomConfig(string $custom_config_raw): array|bool
+    protected function processCustomConfig(string $custom_config_raw): array|false
     {
         try {
             if (str_starts_with($custom_config_raw, '{')) {
@@ -168,7 +170,10 @@ abstract class AbstractFrontend extends AbstractAdapter
             }
 
             if (str_starts_with($custom_config_raw, '<')) {
-                return (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                $xmlConfig = (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                return (false !== $xmlConfig)
+                    ? (array)$xmlConfig
+                    : false;
             }
         } catch (Exception $e) {
             $this->logger->error(

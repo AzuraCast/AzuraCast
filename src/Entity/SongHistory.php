@@ -1,16 +1,17 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\SongInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'song_history')]
 #[ORM\Index(columns: ['timestamp_start'], name: 'idx_timestamp_start')]
 #[ORM\Index(columns: ['timestamp_end'], name: 'idx_timestamp_end')]
-class SongHistory implements SongInterface
+class SongHistory implements SongInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateInts;
@@ -139,7 +140,7 @@ class SongHistory implements SongInterface
         return $this->request;
     }
 
-    public function setRequest($request): void
+    public function setRequest(?StationRequest $request): void
     {
         $this->request = $request;
     }
@@ -159,7 +160,7 @@ class SongHistory implements SongInterface
         return $this->duration;
     }
 
-    public function setDuration($duration): void
+    public function setDuration(?int $duration): void
     {
         $this->duration = $duration;
     }
@@ -169,7 +170,7 @@ class SongHistory implements SongInterface
         return $this->listeners_start;
     }
 
-    public function setListenersStart($listeners_start): void
+    public function setListenersStart(?int $listeners_start): void
     {
         $this->listeners_start = $listeners_start;
     }
@@ -198,7 +199,7 @@ class SongHistory implements SongInterface
         return $this->listeners_end;
     }
 
-    public function setListenersEnd($listeners_end): void
+    public function setListenersEnd(?int $listeners_end): void
     {
         $this->listeners_end = $listeners_end;
     }
@@ -208,7 +209,7 @@ class SongHistory implements SongInterface
         return $this->unique_listeners;
     }
 
-    public function setUniqueListeners($unique_listeners): void
+    public function setUniqueListeners(?int $unique_listeners): void
     {
         $this->unique_listeners = $unique_listeners;
     }
@@ -248,14 +249,12 @@ class SongHistory implements SongInterface
         $this->delta_negative = $this->truncateSmallInt($delta_negative);
     }
 
-    /**
-     */
     public function getDeltaPoints(): mixed
     {
         return $this->delta_points;
     }
 
-    public function addDeltaPoint($delta_point): void
+    public function addDeltaPoint(mixed $delta_point): void
     {
         $delta_points = (array)$this->delta_points;
         $delta_points[] = $delta_point;

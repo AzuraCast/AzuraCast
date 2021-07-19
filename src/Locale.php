@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Http\ServerRequest;
@@ -125,7 +127,7 @@ class Locale
         }
 
         $server_params = $request->getServerParams();
-        $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? null);
+        $browser_locale = \Locale::acceptFromHttp($server_params['HTTP_ACCEPT_LANGUAGE'] ?? '');
 
         if (!empty($browser_locale)) {
             if (2 === strlen($browser_locale)) {
@@ -136,7 +138,10 @@ class Locale
         }
 
         // Attempt to load from environment variable.
-        $possibleLocales[] = $environment->getLang();
+        $envLang = $environment->getLang();
+        if (null !== $envLang) {
+            $possibleLocales[] = $envLang;
+        }
 
         return new self($environment, $possibleLocales);
     }
@@ -146,7 +151,7 @@ class Locale
     ): self {
         return new self(
             $environment,
-            $environment->getLang()
+            $environment->getLang() ?? self::DEFAULT_LOCALE
         );
     }
 

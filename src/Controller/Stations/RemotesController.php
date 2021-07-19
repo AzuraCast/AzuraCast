@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Entity\Station;
@@ -30,37 +32,41 @@ class RemotesController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(
                 '<b>' . ($id ? __('Remote Relay updated.') : __('Remote Relay added.')) . '</b>',
                 Flash::SUCCESS
             );
-            return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:remotes:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/remotes/edit', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => $id ? __('Edit Remote Relay') : __('Add Remote Relay'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/remotes/edit',
+            [
+                'form' => $this->form,
+                'render_mode' => 'edit',
+                'title' => $id ? __('Edit Remote Relay') : __('Add Remote Relay'),
+            ]
+        );
     }
 
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $id,
-        $csrf
+        int $id,
+        string $csrf
     ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Remote Relay deleted.') . '</b>', Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:remotes:index'));
     }
 
-    protected function getRecord(Station $station, $id = null): ?object
+    protected function getRecord(Station $station, int|string|null $id = null): ?object
     {
         $record = parent::getRecord($station, $id);
 

@@ -1,9 +1,10 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,7 @@ use OpenApi\Annotations as OA;
     ORM\Table(name: 'relays'),
     ORM\HasLifecycleCallbacks
 ]
-class Relay
+class Relay implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -62,7 +63,7 @@ class Relay
         $this->updated_at = time();
     }
 
-    public function getBaseUrl(): ?string
+    public function getBaseUrl(): string
     {
         return $this->base_url;
     }
@@ -92,7 +93,7 @@ class Relay
         return $this->nowplaying;
     }
 
-    public function setNowplaying($nowplaying): void
+    public function setNowplaying(mixed $nowplaying): void
     {
         $this->nowplaying = $nowplaying;
     }

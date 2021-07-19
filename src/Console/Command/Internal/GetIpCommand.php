@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Command\Internal;
 
 use App\Console\Command\CommandAbstract;
@@ -12,7 +14,7 @@ class GetIpCommand extends CommandAbstract
         SymfonyStyle $io,
         AzuraCastCentral $acCentral
     ): int {
-        $io->write($acCentral->getIp());
+        $io->write($acCentral->getIp() ?? 'Unknown');
         return 0;
     }
 }

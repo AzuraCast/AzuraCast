@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Account;
 
 use App\Entity;
@@ -31,7 +33,7 @@ class RecoverAction
                 Flash::ERROR
             );
 
-            return $response->withRedirect($request->getRouter()->named('account:login'));
+            return $response->withRedirect((string)$request->getRouter()->named('account:login'));
         }
 
         if ($request->isPost()) {
@@ -54,7 +56,7 @@ class RecoverAction
                 Flash::SUCCESS
             );
 
-            return $response->withRedirect($request->getRouter()->named('dashboard'));
+            return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/account/recover');

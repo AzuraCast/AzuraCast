@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Config;
@@ -33,7 +35,7 @@ class AutomationController
         $form = new Form($this->form_config);
         $form->populate($automation_settings);
 
-        if (!empty($_POST) && $form->isValid($_POST)) {
+        if ($form->isValid($request)) {
             $data = $form->getValues();
 
             $station->setAutomationSettings($data);
@@ -43,7 +45,7 @@ class AutomationController
 
             $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
 
-            return $response->withRedirect($request->getUri());
+            return $response->withRedirect((string)$request->getUri());
         }
 
         return $request->getView()->renderToResponse($response, 'stations/automation/index', [
@@ -66,6 +68,6 @@ class AutomationController
             );
         }
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:automation:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:automation:index'));
     }
 }

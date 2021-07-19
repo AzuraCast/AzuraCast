@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -104,7 +106,7 @@ class StationRequestRepository extends Repository
         $this->em->persist($record);
         $this->em->flush();
 
-        return $record->getId();
+        return $record->getIdRequired();
     }
 
     /**
@@ -209,7 +211,7 @@ class StationRequestRepository extends Repository
             ->getArrayResult();
 
         $eligibleTrack = new Entity\Api\StationPlaylistQueue();
-        $eligibleTrack->media_id = $media->getId();
+        $eligibleTrack->media_id = $media->getIdRequired();
         $eligibleTrack->song_id = $media->getSongId();
         $eligibleTrack->title = $media->getTitle() ?? '';
         $eligibleTrack->artist = $media->getArtist() ?? '';

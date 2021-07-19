@@ -132,7 +132,7 @@ class PodcastFeedController
 
         $channelLink = $podcast->getLink();
         if (empty($channelLink)) {
-            $channelLink = $serverRequest->getRouter()->fromHere(
+            $channelLink = (string)$serverRequest->getRouter()->fromHere(
                 route_name: 'public:podcast:episodes',
                 absolute: true
             );
@@ -217,11 +217,11 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getId()))) {
-            $podcastArtworkSrc = $this->router->fromHere(
-                route_name: 'api:stations:podcast:art',
-                route_params: ['podcast_id' => $podcast->getId() . '|' . $podcast->getArtUpdatedAt()],
-                absolute: true
+        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
+            $podcastArtworkSrc = (string)$this->router->fromHere(
+                route_name:   'api:stations:podcast:art',
+                route_params: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
+                absolute:     true
             );
         }
 
@@ -256,7 +256,7 @@ class PodcastFeedController
 
             $episodeLink = $episode->getLink();
             if (empty($episodeLink)) {
-                $episodeLink = $this->router->fromHere(
+                $episodeLink = (string)$this->router->fromHere(
                     route_name: 'public:podcast:episode',
                     route_params: ['episode_id' => $episode->getId()],
                     absolute: true
@@ -299,17 +299,19 @@ class PodcastFeedController
     ): RssEnclosure {
         $rssEnclosure = new RssEnclosure();
 
-        $podcastMediaPlayUrl = $this->router->fromHere(
-            route_name: 'api:stations:podcast:episode:download',
+        $podcastMediaPlayUrl = (string)$this->router->fromHere(
+            route_name:   'api:stations:podcast:episode:download',
             route_params: ['episode_id' => $episode->getId()],
-            absolute: true
+            absolute:     true
         );
 
         $rssEnclosure->setUrl($podcastMediaPlayUrl);
 
         $podcastMedia = $episode->getMedia();
-        $rssEnclosure->setType($podcastMedia->getMimeType());
-        $rssEnclosure->setLength($podcastMedia->getLength());
+        if (null !== $podcastMedia) {
+            $rssEnclosure->setType($podcastMedia->getMimeType());
+            $rssEnclosure->setLength($podcastMedia->getLength());
+        }
 
         return $rssEnclosure;
     }
@@ -323,11 +325,11 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getId()))) {
-            $episodeArtworkSrc = $this->router->fromHere(
-                route_name: 'api:stations:podcast:episode:art',
+        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
+            $episodeArtworkSrc = (string)$this->router->fromHere(
+                route_name:   'api:stations:podcast:episode:art',
                 route_params: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
-                absolute: true
+                absolute:     true
             );
         }
 

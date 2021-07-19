@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Command\Users;
 
 use App\Acl;
@@ -25,11 +27,19 @@ class SetAdministratorCommand extends CommandAbstract
             $admin_role = $em->getRepository(Entity\Role::class)
                 ->find(Entity\Role::SUPER_ADMINISTRATOR_ROLE_ID);
 
-            $perms_repo->setActionsForRole($admin_role, [
-                'actions_global' => [
-                    Acl::GLOBAL_ALL,
-                ],
-            ]);
+            if (null === $admin_role) {
+                $io->error('Administrator role not found.');
+                return 1;
+            }
+
+            $perms_repo->setActionsForRole(
+                $admin_role,
+                [
+                    'actions_global' => [
+                        Acl::GLOBAL_ALL,
+                    ],
+                ]
+            );
 
             $user_roles = $user->getRoles();
 

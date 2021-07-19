@@ -19,6 +19,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractApiCrudController<Entity\Podcast>
+ */
 class PodcastsController extends AbstractApiCrudController
 {
     protected string $entityClass = Entity\Podcast::class;
@@ -152,7 +155,7 @@ class PodcastsController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $return = $this->viewRecord($record, $request);
@@ -163,11 +166,11 @@ class PodcastsController extends AbstractApiCrudController
     {
         $station = $request->getStation();
 
-        $parsedBody = $request->getParsedBody();
+        $parsedBody = (array)$request->getParsedBody();
 
         /** @var Entity\Podcast $record */
         $record = $this->editRecord(
-            $request->getParsedBody(),
+            $parsedBody,
             new Entity\Podcast($station->getPodcastsStorageLocation())
         );
 
@@ -194,10 +197,10 @@ class PodcastsController extends AbstractApiCrudController
 
         if ($podcast === null) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
-        $this->editRecord($request->getParsedBody(), $podcast);
+        $this->editRecord((array)$request->getParsedBody(), $podcast);
 
         return $response->withJson(new Entity\Api\Status(true, __('Changes saved successfully.')));
     }
@@ -212,7 +215,7 @@ class PodcastsController extends AbstractApiCrudController
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $fsStation = new StationFilesystems($station);
@@ -224,12 +227,20 @@ class PodcastsController extends AbstractApiCrudController
     /**
      * @param Entity\Station $station
      * @param string $id
+     *
+     * @return Entity\Podcast|null
      */
     protected function getRecord(Entity\Station $station, string $id): ?object
     {
-        return $this->podcastRepository->fetchPodcastForStation($station, $id);
+        $record = $this->podcastRepository->fetchPodcastForStation($station, $id);
+        return $record;
     }
 
+    /**
+     * @param Entity\Podcast $record
+     * @param ServerRequest $request
+     *
+     */
     protected function viewRecord(object $record, ServerRequest $request): mixed
     {
         if (!($record instanceof Entity\Podcast)) {
@@ -242,7 +253,7 @@ class PodcastsController extends AbstractApiCrudController
 
         $return = new Entity\Api\Podcast();
         $return->id = $record->getId();
-        $return->storage_location_id = $record->getStorageLocation()?->getId();
+        $return->storage_location_id = $record->getStorageLocation()->getId();
         $return->title = $record->getTitle();
         $return->link = $record->getLink();
         $return->description = $record->getDescription();
@@ -261,29 +272,29 @@ class PodcastsController extends AbstractApiCrudController
         $return->episodes = $episodes;
 
         $return->has_custom_art = (0 !== $record->getArtUpdatedAt());
-        $return->art = $router->fromHere(
+        $return->art = (string)$router->fromHere(
             route_name: 'api:stations:podcast:art',
             route_params: ['podcast_id' => $record->getId() . '|' . $record->getArtUpdatedAt()],
             absolute: true
         );
 
         $return->links = [
-            'self' => $router->fromHere(
+            'self' => (string)$router->fromHere(
                 route_name: $this->resourceRouteName,
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'episodes' => $router->fromHere(
+            'episodes' => (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episodes',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public_episodes' => $router->fromHere(
+            'public_episodes' => (string)$router->fromHere(
                 route_name: 'public:podcast:episodes',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             ),
-            'public_feed' => $router->fromHere(
+            'public_feed' => (string)$router->fromHere(
                 route_name: 'public:podcast:feed',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
@@ -293,27 +304,34 @@ class PodcastsController extends AbstractApiCrudController
         $acl = $request->getAcl();
 
         if ($acl->isAllowed(Acl::STATION_PODCASTS, $station)) {
-            $return->links['art'] = $router->fromHere(
+            $return->links['art'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:art-internal',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
 
-            $return->links['episode_new_art'] = $router->fromHere(
+            $return->links['episode_new_art'] = (string)$router->fromHere(
                 route_name: 'api:stations:podcast:episodes:new-art',
                 route_params: ['podcast_id' => $record->getId()],
                 absolute: !$isInternal
             );
-            $return->links['episode_new_media'] = $router->fromHere(
-                route_name: 'api:stations:podcast:episodes:new-media',
+            $return->links['episode_new_media'] = (string)$router->fromHere(
+                route_name:   'api:stations:podcast:episodes:new-media',
                 route_params: ['podcast_id' => $record->getId()],
-                absolute: !$isInternal
+                absolute:     !$isInternal
             );
         }
 
         return $return;
     }
 
+    /**
+     * @param mixed[] $data
+     * @param Entity\Podcast|null $record
+     * @param array $context
+     *
+     * @return Entity\Podcast
+     */
     protected function fromArray($data, $record = null, array $context = []): object
     {
         return parent::fromArray(

@@ -8,11 +8,12 @@ $this->layout(
     ]
 );
 
+/** @var App\Http\RouterInterface $router */
 $props = [
-    'listUrl' => $router->fromHere('api:stations:playlists'),
-    'scheduleUrl' => $router->fromHere('api:stations:playlists:schedule'),
+    'listUrl' => (string)$router->fromHere('api:stations:playlists'),
+    'scheduleUrl' => (string)$router->fromHere('api:stations:playlists:schedule'),
     'locale' => substr($customization->getLocale()->getLocale(), 0, 2),
-    'filesUrl' => $router->fromHere('stations:files:index'),
+    'filesUrl' => (string)$router->fromHere('stations:files:index'),
     'stationTimeZone' => $station_tz,
     'enableAdvancedFeatures' => $enableAdvancedFeatures,
 ];

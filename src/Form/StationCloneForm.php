@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Config;
@@ -74,7 +76,7 @@ class StationCloneForm extends StationForm
             ]
         );
 
-        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
+        if ($this->isValid($request)) {
             $data = $this->getValues();
 
             $toClone = $data['clone'];

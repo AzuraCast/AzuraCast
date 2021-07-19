@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -157,6 +159,7 @@ class BatchAction
                 $this->em->flush();
 
                 foreach ($playlists as $playlistRecord) {
+                    /** @var Entity\StationPlaylist $playlist */
                     $playlist = $this->em->refetchAsReference($playlistRecord);
 
                     $playlistWeights[$playlist->getId()]++;
@@ -170,6 +173,7 @@ class BatchAction
             }
         }
 
+        /** @var Entity\Station $station */
         $station = $this->em->refetch($station);
 
         foreach ($result->directories as $dir) {
@@ -226,7 +230,7 @@ class BatchAction
             $toMove = [
                 $this->batchUtilities->iterateMediaInDirectory($storageLocation, $dirPath),
                 $this->batchUtilities->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
-                $this->batchUtilities->iteratePlaylistFoldersInDirectory($station, $dirPath),
+                $this->batchUtilities->iteratePlaylistFoldersInDirectory($storageLocation, $dirPath),
             ];
 
             foreach ($toMove as $iterator) {

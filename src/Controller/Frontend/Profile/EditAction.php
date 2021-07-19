@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Profile;
 
 use App\Form\UserProfileForm;
@@ -21,7 +23,7 @@ class EditAction
         if ($userProfileForm->process($request)) {
             $request->getFlash()->addMessage(__('Profile saved!'), Flash::SUCCESS);
 
-            return $response->withRedirect($request->getRouter()->named('profile:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('profile:index'));
         }
 
         return $request->getView()->renderToResponse(

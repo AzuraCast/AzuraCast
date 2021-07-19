@@ -26,7 +26,7 @@ $this->layout('main', [
         </p>
 
         <?=$this->fetch('partials/log_inline', [
-            'url' => $router->fromHere('admin:backups:log', ['path' => $outputLog]),
+            'url' => (string)$router->fromHere('admin:backups:log', ['path' => $outputLog]),
         ])?>
     </div>
 </div>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Backend;
 
 use App\Entity;
@@ -157,7 +159,7 @@ class Liquidsoap extends AbstractBackend
                 continue;
             }
 
-            $prop = self::annotateString($prop);
+            $prop = self::annotateString((string)$prop);
 
             // Convert Liquidsoap-specific annotations to floats.
             if ('duration' === $annotation_name || str_starts_with($annotation_name, 'liq')) {
@@ -208,7 +210,7 @@ class Liquidsoap extends AbstractBackend
 
         $response = [];
         while (!feof($fp)) {
-            $response[] = trim(fgets($fp, 1024));
+            $response[] = trim(fgets($fp, 1024) ?: '');
         }
 
         fclose($fp);
@@ -256,7 +258,7 @@ class Liquidsoap extends AbstractBackend
     /**
      * @return string[]
      */
-    public function enqueue(Entity\Station $station, $music_file): array
+    public function enqueue(Entity\Station $station, string $music_file): array
     {
         return $this->command(
             $station,

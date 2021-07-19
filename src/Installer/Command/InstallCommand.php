@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Installer\Command;
 
 use App\Environment;
@@ -30,7 +32,7 @@ class InstallCommand
         ?int $httpPort = null,
         ?int $httpsPort = null,
         ?string $releaseChannel = null,
-        ?string $baseDir = self::DEFAULT_BASE_DIRECTORY
+        string $baseDir = self::DEFAULT_BASE_DIRECTORY
     ): int {
         // Initialize all the environment variables.
         $envPath = EnvFile::buildPathFromBase($baseDir);
@@ -174,18 +176,18 @@ class InstallCommand
                 foreach ($simplePorts as $port) {
                     $env[$port] = (int)$io->ask(
                         $envConfig[$port]['name'] . ' - ' . $envConfig[$port]['description'],
-                        (int)$env[$port]
+                        (string)$env[$port]
                     );
                 }
 
                 $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN] = (int)$io->ask(
                     $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MIN]['name'],
-                    (int)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN]
+                    (string)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MIN]
                 );
 
                 $azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX] = (int)$io->ask(
                     $azuracastEnvConfig[Environment::AUTO_ASSIGN_PORT_MAX]['name'],
-                    (int)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
+                    (string)$azuracastEnv[Environment::AUTO_ASSIGN_PORT_MAX]
                 );
 
                 $stationPorts = Configuration::enumerateDefaultPorts(

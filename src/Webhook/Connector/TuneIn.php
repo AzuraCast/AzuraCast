@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Webhook\Connector;
 
 use App\Entity;
@@ -14,6 +16,9 @@ class TuneIn extends AbstractConnector
         return in_array(Entity\StationWebhook::TRIGGER_SONG_CHANGED, $triggers, true);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,
@@ -37,9 +42,9 @@ class TuneIn extends AbstractConnector
                         'partnerId' => $config['partner_id'],
                         'partnerKey' => $config['partner_key'],
                         'id' => $config['station_id'],
-                        'title' => $np->now_playing->song->title,
-                        'artist' => $np->now_playing->song->artist,
-                        'album' => $np->now_playing->song->album,
+                        'title' => $np->now_playing?->song?->title,
+                        'artist' => $np->now_playing?->song?->artist,
+                        'album' => $np->now_playing?->song?->album,
                     ],
                 ]
             );

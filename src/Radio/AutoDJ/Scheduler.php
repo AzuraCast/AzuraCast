@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\AutoDJ;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -279,7 +281,8 @@ class Scheduler
             }
 
             if ($startTime->equalTo($endTime)) {
-                if (!$this->wasPlaylistPlayedInLastXMinutes($schedule->getPlaylist(), $now, 30)) {
+                $playlist = $schedule->getPlaylist();
+                if (null !== $playlist && !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, 30)) {
                     return true;
                 }
             } else {
@@ -303,6 +306,11 @@ class Scheduler
         $this->logger->debug('Checking if playlist should loop now.');
 
         $playlist = $schedule->getPlaylist();
+
+        if (null === $playlist) {
+            $this->logger->error('Attempting to check playlist loop status on a non-playlist-based schedule item.');
+            return false;
+        }
 
         $playlistPlayedAt = CarbonImmutable::createFromTimestamp(
             $playlist->getPlayedAt(),
@@ -358,20 +366,24 @@ class Scheduler
         $endDate = $schedule->getEndDate();
 
         if (!empty($startDate)) {
-            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone())
-                ->setTime(0, 0);
+            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone());
 
-            if ($now->lt($startDate)) {
-                return false;
+            if (false !== $startDate) {
+                $startDate = $startDate->setTime(0, 0);
+                if ($now->lt($startDate)) {
+                    return false;
+                }
             }
         }
 
         if (!empty($endDate)) {
-            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $now->getTimezone())
-                ->setTime(23, 59, 59);
+            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $now->getTimezone());
 
-            if ($now->gt($endDate)) {
-                return false;
+            if (false !== $endDate) {
+                $endDate = $endDate->setTime(23, 59, 59);
+                if ($now->gt($endDate)) {
+                    return false;
+                }
             }
         }
 

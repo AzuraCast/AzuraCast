@@ -1,11 +1,13 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
 use App\Auth;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Normalizer\Attributes\DeepNormalize;
+use App\Utilities\Strings;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,20 +29,20 @@ use const PASSWORD_BCRYPT;
     Attributes\Auditable,
     UniqueEntity(fields: ['email'])
 ]
-class User implements Stringable
+class User implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
 
     /** @OA\Property(example="demo@azuracast.com") */
-    #[ORM\Column(length: 100, nullable: true)]
+    #[ORM\Column(length: 100, nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Email]
-    protected ?string $email = null;
+    protected string $email;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false)]
     #[Attributes\AuditIgnore]
-    protected ?string $auth_password = null;
+    protected string $auth_password = '';
 
     /** @OA\Property(example="") */
     protected ?string $new_password = null;
@@ -116,14 +118,14 @@ class User implements Stringable
         $this->name = $this->truncateNullableString($name, 100);
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function setEmail(?string $email = null): void
+    public function setEmail(string $email): void
     {
-        $this->email = $this->truncateNullableString($email, 100);
+        $this->email = $this->truncateString($email, 100);
     }
 
     public function verifyPassword(string $password): bool
@@ -154,9 +156,9 @@ class User implements Stringable
         return [PASSWORD_BCRYPT, []];
     }
 
-    public function setNewPassword(string $password): void
+    public function setNewPassword(?string $password): void
     {
-        if (trim($password)) {
+        if (null !== $password && trim($password)) {
             [$algo, $algo_opts] = $this->getPasswordAlgorithm();
             $this->auth_password = password_hash($password, $algo, $algo_opts);
         }
@@ -164,7 +166,7 @@ class User implements Stringable
 
     public function generateRandomPassword(): void
     {
-        $this->setNewPassword(bin2hex(random_bytes(20)));
+        $this->setNewPassword(Strings::generatePassword());
     }
 
     public function getLocale(): ?string
@@ -217,7 +219,7 @@ class User implements Stringable
     }
 
     /**
-     * @return Collection|Role[]
+     * @return Collection<Role>
      */
     public function getRoles(): Collection
     {
@@ -225,7 +227,7 @@ class User implements Stringable
     }
 
     /**
-     * @return Collection|ApiKey[]
+     * @return Collection<ApiKey>
      */
     public function getApiKeys(): Collection
     {

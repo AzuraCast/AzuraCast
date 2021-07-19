@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Radio\Configuration;
@@ -102,10 +104,13 @@ class Environment
         return $this->data;
     }
 
-    protected function envToBool(string|bool $value): bool
+    protected function envToBool(string|bool|int $value): bool
     {
         if (is_bool($value)) {
             return $value;
+        }
+        if (is_int($value)) {
+            return 0 !== $value;
         }
 
         return str_starts_with(strtolower($value), 'y')

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Reports\Overview;
 
 use App\Entity;
@@ -59,7 +61,7 @@ class ChartsAction
 
             $avg_row = new stdClass();
             $avg_row->t = $statTime->getTimestamp() * 1000;
-            $avg_row->y = round($stat['number_avg'], 2);
+            $avg_row->y = round((float)$stat['number_avg'], 2);
             $daily_averages[] = $avg_row;
 
             $row_date = $statTime->format('Y-m-d');

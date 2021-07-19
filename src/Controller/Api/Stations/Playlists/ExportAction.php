@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Http\Response;
@@ -12,8 +14,8 @@ class ExportAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $id,
-        $format = 'pls'
+        int $id,
+        string $format = 'pls'
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 

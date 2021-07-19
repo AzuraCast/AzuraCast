@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Entity;
@@ -123,7 +125,7 @@ class Customization
      *
      * @param string|null $title
      */
-    public function getPageTitle($title = null): string
+    public function getPageTitle(?string $title = null): string
     {
         if (!$this->hideProductName()) {
             if ($title) {
@@ -137,7 +139,7 @@ class Customization
             $title = '(' . ucfirst($this->environment->getAppEnvironment()) . ') ' . $title;
         }
 
-        return $title;
+        return $title ?? '';
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -14,6 +16,10 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as Entity\StationPlaylist|Entity\StationStreamer
+ * @extends AbstractStationApiCrudController<TEntity>
+ */
 abstract class AbstractScheduledEntityController extends AbstractStationApiCrudController
 {
     public function __construct(
@@ -37,10 +43,20 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         $params = $request->getQueryParams();
 
         $startDateStr = substr($params['start'], 0, 10);
-        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz)->subDay();
+        $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDateStr, $tz);
+
+        if (false === $startDate) {
+            throw new \InvalidArgumentException(sprintf('Could not parse start date: "%s"', $startDateStr));
+        }
+
+        $startDate = $startDate->subDay();
 
         $endDateStr = substr($params['end'], 0, 10);
         $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDateStr, $tz);
+
+        if (false === $endDate) {
+            throw new \InvalidArgumentException(sprintf('Could not parse end date: "%s"', $endDateStr));
+        }
 
         $events = [];
 
@@ -73,13 +89,13 @@ abstract class AbstractScheduledEntityController extends AbstractStationApiCrudC
         return $response->withJson($events);
     }
 
-    protected function editRecord(?array $data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
         }
 
-        $scheduleItems = $data['schedule_items'] ?? null;
+        $scheduleItems = $data['schedule_items'] ?? [];
         unset($data['schedule_items']);
 
         $record = $this->fromArray($data, $record, $context);

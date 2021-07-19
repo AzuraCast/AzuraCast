@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend;
 
 use App\Config;
@@ -36,7 +38,7 @@ class ApiKeysController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, string $id = null): ResponseInterface
     {
         $user = $request->getUser();
         $view = $request->getView();
@@ -57,7 +59,7 @@ class ApiKeysController
             $record = null;
         }
 
-        if ($_POST && $form->isValid($_POST)) {
+        if ($form->isValid($request)) {
             $data = $form->getValues();
 
             $key = null;
@@ -80,18 +82,26 @@ class ApiKeysController
             }
 
             $request->getFlash()->addMessage(__('API Key updated.'), 'green');
-            return $response->withRedirect($request->getRouter()->named('api_keys:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('api_keys:index'));
         }
 
-        return $view->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
-            'render_mode' => 'edit',
-            'title' => $id ? __('Edit API Key') : __('Add API Key'),
-        ]);
+        return $view->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $form,
+                'render_mode' => 'edit',
+                'title' => $id ? __('Edit API Key') : __('Add API Key'),
+            ]
+        );
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        string $id,
+        string $csrf
+    ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
         /** @var Entity\User $user */
@@ -108,6 +118,6 @@ class ApiKeysController
 
         $request->getFlash()->addMessage(__('API Key deleted.'), 'green');
 
-        return $response->withRedirect($request->getRouter()->named('api_keys:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('api_keys:index'));
     }
 }

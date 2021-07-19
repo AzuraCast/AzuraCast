@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -20,7 +20,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\HasLifecycleCallbacks,
     Attributes\Auditable
 ]
-class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterface
+class StationPlaylist implements
+    Stringable,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -429,7 +432,7 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
      */
     public function getBackendOptions(): array
     {
-        return explode(',', $this->backend_options);
+        return explode(',', $this->backend_options ?? '');
     }
 
     /**

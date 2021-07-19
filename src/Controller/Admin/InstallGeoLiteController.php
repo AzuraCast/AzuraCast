@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Repository\SettingsRepository;
@@ -63,7 +65,7 @@ class InstallGeoLiteController
         ServerRequest $request,
         Response $response,
         SettingsRepository $settingsRepo,
-        $csrf
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
@@ -74,6 +76,6 @@ class InstallGeoLiteController
         @unlink(GeoLite::getDatabasePath());
 
         $request->getFlash()->addMessage(__('GeoLite database uninstalled.'), Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->fromHere('admin:install_geolite:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('admin:install_geolite:index'));
     }
 }

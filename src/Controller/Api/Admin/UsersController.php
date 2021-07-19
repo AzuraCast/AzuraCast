@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
@@ -8,6 +10,9 @@ use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @extends AbstractAdminApiCrudController<Entity\User>
+ */
 class UsersController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\User::class;
@@ -97,12 +102,11 @@ class UsersController extends AbstractAdminApiCrudController
      */
     public function deleteAction(ServerRequest $request, Response $response, mixed $id): ResponseInterface
     {
-        /** @var Entity\User|null $record */
         $record = $this->getRecord($id);
 
         if (null === $record) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Record not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $current_user = $request->getUser();

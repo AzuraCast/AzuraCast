@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -8,6 +10,9 @@ use App\Http\Router;
 use App\Http\ServerRequest;
 use OpenApi\Annotations as OA;
 
+/**
+ * @extends AbstractStationApiCrudController<Entity\StationMount>
+ */
 class MountsController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationMount::class;

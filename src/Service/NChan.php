@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Environment;
@@ -45,7 +47,7 @@ class NChan
         $vars = [];
 
         if ('Linux' === PHP_OS_FAMILY) {
-            foreach (glob(' /etc/*-release', GLOB_NOSORT) as $file) {
+            foreach (glob(' /etc/*-release', GLOB_NOSORT) ?: [] as $file) {
                 $lines = array_filter(
                     array_map(
                         static function ($line) {
@@ -61,7 +63,7 @@ class NChan
                             $parts[1] = str_replace(['"', "'"], '', $parts[1]);
                             return $parts;
                         },
-                        file($file)
+                        file($file) ?: []
                     )
                 );
 

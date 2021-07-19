@@ -4,6 +4,8 @@
  * Extends the Zend Config XML library to allow attribute handling.
  */
 
+declare(strict_types=1);
+
 namespace App\Xml;
 
 use Laminas\Config\Exception;
@@ -104,12 +106,15 @@ class Writer extends Xml
                 } else {
                     $writer->writeElement($branchName, (string)$value);
                 }
-            } elseif (is_array($value)) {
-                $this->addBranch($key, $value, $writer);
-            } elseif (str_starts_with($key, '@')) {
-                $writer->writeAttribute(substr($key, 1), (string)$value);
             } else {
-                $writer->writeElement($key, (string)$value);
+                /** @var string $key */
+                if (is_array($value)) {
+                    $this->addBranch($key, $value, $writer);
+                } elseif (str_starts_with($key, '@')) {
+                    $writer->writeAttribute(substr($key, 1), (string)$value);
+                } else {
+                    $writer->writeElement($key, (string)$value);
+                }
             }
         }
 
@@ -118,13 +123,13 @@ class Writer extends Xml
         }
     }
 
-    protected function attributesFirst($a, $b): int
+    protected function attributesFirst(mixed $a, mixed $b): int
     {
-        if (str_starts_with($a, '@')) {
+        if (str_starts_with((string)$a, '@')) {
             return -1;
         }
 
-        if (str_starts_with($b, '@')) {
+        if (str_starts_with((string)$b, '@')) {
             return 1;
         }
 

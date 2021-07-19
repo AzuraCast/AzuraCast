@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -203,13 +205,14 @@ class Icecast extends AbstractFrontend
                 }
             }
 
-            if ($mount_row->getRelayUrl()) {
-                $relay_parts = parse_url($mount_row->getRelayUrl());
+            $mountRelayUrl = $mount_row->getRelayUrl();
+            if (null !== $mountRelayUrl) {
+                $mountRelayUri = new Uri($mountRelayUrl);
 
                 $config['relay'][] = [
-                    'server' => $relay_parts['host'],
-                    'port' => $relay_parts['port'],
-                    'mount' => $relay_parts['path'],
+                    'server' => $mountRelayUri->getHost(),
+                    'port' => $mountRelayUri->getPort(),
+                    'mount' => $mountRelayUri->getPath(),
                     'local-mount' => $mount_row->getName(),
                 ];
             }
@@ -221,16 +224,16 @@ class Icecast extends AbstractFrontend
         if (!empty($customConfig)) {
             $customConfParsed = $this->processCustomConfig($customConfig);
 
-            // Special handling for aliases.
-            if (isset($customConfParsed['paths']['alias'])) {
-                $alias = (array)$customConfParsed['paths']['alias'];
-                if (!is_numeric(key($alias))) {
-                    $alias = [$alias];
-                }
-                $customConfParsed['paths']['alias'] = $alias;
-            }
-
             if (false !== $customConfParsed) {
+                // Special handling for aliases.
+                if (isset($customConfParsed['paths']['alias'])) {
+                    $alias = (array)$customConfParsed['paths']['alias'];
+                    if (!is_numeric(key($alias))) {
+                        $alias = [$alias];
+                    }
+                    $customConfParsed['paths']['alias'] = $alias;
+                }
+
                 $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Command\Locale;
 
 use App\Console\Command\CommandAbstract;

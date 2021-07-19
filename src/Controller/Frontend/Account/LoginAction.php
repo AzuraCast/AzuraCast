@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Account;
 
 use App\Entity;
@@ -36,12 +38,12 @@ class LoginAction
             )->getSingleScalarResult();
 
             if (0 === $num_users) {
-                return $response->withRedirect($request->getRouter()->named('setup:index'));
+                return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
             }
         }
 
         if ($auth->isLoggedIn()) {
-            return $response->withRedirect($request->getRouter()->named('dashboard'));
+            return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
         }
 
         $flash = $request->getFlash();
@@ -82,7 +84,7 @@ class LoginAction
 
                 // Redirect for 2FA.
                 if (!$auth->isLoginComplete()) {
-                    return $response->withRedirect($request->getRouter()->named('account:login:2fa'));
+                    return $response->withRedirect((string)$request->getRouter()->named('account:login:2fa'));
                 }
 
                 // Redirect to complete setup if it's not completed yet.
@@ -95,7 +97,7 @@ class LoginAction
                         ),
                         Flash::SUCCESS
                     );
-                    return $response->withRedirect($request->getRouter()->named('setup:index'));
+                    return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
                 }
 
                 $flash->addMessage(
@@ -108,7 +110,7 @@ class LoginAction
                     return $response->withRedirect($referrer);
                 }
 
-                return $response->withRedirect($request->getRouter()->named('dashboard'));
+                return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
             }
 
             $flash->addMessage(
@@ -116,7 +118,7 @@ class LoginAction
                 Flash::ERROR
             );
 
-            return $response->withRedirect($request->getUri());
+            return $response->withRedirect((string)$request->getUri());
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/account/login');

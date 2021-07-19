@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\Avatar;
 
 class Libravatar implements AvatarServiceInterface
@@ -24,6 +26,6 @@ class Libravatar implements AvatarServiceInterface
         ];
 
         $avatarUrl = self::BASE_URL . '/' . md5(strtolower($email)) . '?' . http_build_query($url_params);
-        return htmlspecialchars($avatarUrl);
+        return htmlspecialchars($avatarUrl, ENT_QUOTES | ENT_HTML5);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -18,6 +20,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends Repository<Entity\Station>
+ */
 class StationRepository extends Repository
 {
     public function __construct(
@@ -243,7 +248,7 @@ class StationRepository extends Repository
     public function getDefaultAlbumArtUrl(?Entity\Station $station = null): UriInterface
     {
         if (null !== $station) {
-            $stationCustomUrl = trim($station->getDefaultAlbumArtUrl());
+            $stationCustomUrl = trim($station->getDefaultAlbumArtUrl() ?? '');
 
             if (!empty($stationCustomUrl)) {
                 return new Uri($stationCustomUrl);
@@ -251,7 +256,7 @@ class StationRepository extends Repository
         }
 
         $settings = $this->settingsRepo->readSettings();
-        $custom_url = trim($settings->getDefaultAlbumArtUrl());
+        $custom_url = trim($settings->getDefaultAlbumArtUrl() ?? '');
 
         if (!empty($custom_url)) {
             return new Uri($custom_url);

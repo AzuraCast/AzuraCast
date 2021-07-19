@@ -1,10 +1,9 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +18,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_mounts'),
     Attributes\Auditable
 ]
-class StationMount implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
+class StationMount implements
+    Stringable,
+    Interfaces\StationMountInterface,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -142,7 +145,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
         }
 
         if ($this->enable_autodj) {
-            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format);
+            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '');
         }
 
         return $this->name;
@@ -348,7 +351,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     ): Api\StationMount {
         $response = new Api\StationMount();
 
-        $response->id = $this->id;
+        $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
         $response->path = $this->getName();
         $response->is_default = $this->is_default;

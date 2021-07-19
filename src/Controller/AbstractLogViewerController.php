@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity;
@@ -16,8 +18,8 @@ abstract class AbstractLogViewerController
     protected function view(
         ServerRequest $request,
         Response $response,
-        $log_path,
-        $tail_file = true
+        string $log_path,
+        bool $tail_file = true
     ): ResponseInterface {
         clearstatcache();
 
@@ -26,7 +28,7 @@ abstract class AbstractLogViewerController
         }
 
         if (!$tail_file) {
-            $log = file_get_contents($log_path);
+            $log = file_get_contents($log_path) ?: '';
             $log_contents = $this->processLog($request, $log);
 
             return $response->withJson([
@@ -55,8 +57,12 @@ abstract class AbstractLogViewerController
 
         if ($log_visible_size > 0) {
             $fp = fopen($log_path, 'rb');
+            if (false === $fp) {
+                throw new \RuntimeException(sprintf('Could not open file at path "%s".', $log_path));
+            }
+
             fseek($fp, -$log_visible_size, SEEK_END);
-            $log_contents_raw = fread($fp, $log_visible_size);
+            $log_contents_raw = fread($fp, $log_visible_size) ?: '';
             fclose($fp);
 
             $log_contents = $this->processLog($request, $log_contents_raw, $cut_first_line, true);
@@ -91,7 +97,7 @@ abstract class AbstractLogViewerController
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array>
      */
     protected function getStationLogs(Entity\Station $station): array
     {

@@ -1,9 +1,10 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use DateTimeZone;
@@ -17,7 +18,7 @@ use OpenApi\Annotations as OA;
     ORM\Table(name: 'station_schedules'),
     Attributes\Auditable
 ]
-class StationSchedule
+class StationSchedule implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -164,9 +165,9 @@ class StationSchedule
         return $days;
     }
 
-    public function setDays($days): void
+    public function setDays(array $days): void
     {
-        $this->days = implode(',', (array)$days);
+        $this->days = implode(',', $days);
     }
 
     public function getLoopOnce(): bool
@@ -238,13 +239,13 @@ class StationSchedule
             $now = CarbonImmutable::now(new DateTimeZone('UTC'));
         }
 
-        $timeCode = str_pad($timeCode, 4, '0', STR_PAD_LEFT);
+        $timeCode = str_pad((string)$timeCode, 4, '0', STR_PAD_LEFT);
         return $now->setTime((int)substr($timeCode, 0, 2), (int)substr($timeCode, 2));
     }
 
-    public static function displayTimeCode($timeCode): string
+    public static function displayTimeCode(string|int $timeCode): string
     {
-        $timeCode = str_pad($timeCode, 4, '0', STR_PAD_LEFT);
+        $timeCode = str_pad((string)$timeCode, 4, '0', STR_PAD_LEFT);
 
         $hours = (int)substr($timeCode, 0, 2);
         $mins = substr($timeCode, 2);

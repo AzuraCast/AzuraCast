@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Command\Traits;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -9,8 +11,8 @@ trait PassThruProcess
 {
     protected function passThruProcess(
         SymfonyStyle $io,
-        $cmd,
-        $cwd = null,
+        string|array $cmd,
+        ?string $cwd = null,
         array $env = [],
         int $timeout = 14400
     ): Process {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
@@ -29,9 +31,10 @@ class StationQueueApiGenerator
             $response->playlist = '';
         }
 
-        if ($record->getMedia()) {
+        $recordMedia = $record->getMedia();
+        if (null !== $recordMedia) {
             $response->song = ($this->songApiGenerator)(
-                $record->getMedia(),
+                $recordMedia,
                 $record->getStation(),
                 $baseUri,
                 $allowRemoteArt

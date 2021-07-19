@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Account;
 
 use App\Http\Response;
@@ -15,6 +17,6 @@ class LogoutAction
         $auth = $request->getAuth();
         $auth->logout();
 
-        return $response->withRedirect($request->getRouter()->named('account:login'));
+        return $response->withRedirect((string)$request->getRouter()->named('account:login'));
     }
 }

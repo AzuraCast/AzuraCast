@@ -10,6 +10,7 @@ use Pheanstalk\Pheanstalk;
 use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\BeanstalkdTransport;
 use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\Connection as MessengerConnection;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 
@@ -31,6 +32,15 @@ class QueueManager implements SendersLocatorInterface
     public function setWorkerName(string $workerName): void
     {
         $this->workerName = $workerName;
+    }
+
+    public function clearQueue(string $queueName): void
+    {
+        $pheanstalk = $this->pheanstalk->useTube($queueName);
+
+        while ($job = $pheanstalk->reserve()) {
+            $pheanstalk->delete($job);
+        }
     }
 
     /**
@@ -115,7 +125,11 @@ class QueueManager implements SendersLocatorInterface
 
     public function getQueueCount(string $queueName): int
     {
-        return $this->getConnection($queueName)->getMessageCount();
+        try {
+            return $this->getConnection($queueName)->getMessageCount();
+        } catch (TransportException) {
+            return 0;
+        }
     }
 
     /**

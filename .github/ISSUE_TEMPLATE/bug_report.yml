@@ -1,0 +1,63 @@
+name : "Bug Report"
+description : "Report an error you're encountering with your AzuraCast installation."
+title : "[Bug]: "
+labels : [ possible bug ]
+body :
+  - type : markdown
+    attributes :
+      value : |
+        Thank you for reporting an issue to us! A few important notes:
+         - This template is only to be used for bug/error reports. For feature requests, visit https://features.azuracast.com/
+         - Please be kind and patient in your interactions with us. We are a small team of volunteers working solely on donations. Thank you in advance.
+         - Ansible installation methods are not officially supported and support may not be provided outside of the rare circumstances.
+         - Always check your logs before submitting!
+         - Make sure your issue isn't already answered here : https://docs.azuracast.com/en/user-guide/troubleshooting
+  - type : dropdown
+    id : installation_method
+    attributes :
+      label : "Installation Method"
+      description : "How did you install AzuraCast?"
+      options :
+        - Docker Installation
+        - Ansible Installation
+        - One-Click Installation (Docker)
+    validations :
+      required : true
+  - type : dropdown
+    id : release_channel
+    attributes :
+      label : "AzuraCast Release Channel"
+      description : "What release channel are you using?"
+      options :
+        - Rolling Release Channel
+        - Stable Channel
+    validations :
+      required : true
+  - type : markdown
+    attributes :
+      value : |
+        **Note:** If you're on the "Stable" release channel, it's possible that the bug you're reporting was already fixed in the latest Rolling Release version. Check the [changelog](https://github.com/AzuraCast/AzuraCast/blob/main/CHANGELOG.md) for a full list of the latest changes.
+  - type : input
+    id : current_version
+    attributes :
+      label : "Current AzuraCast Version"
+      description : "What version of AzuraCast are you currently running? You can find this in the footer of most pages."
+      placeholder : "0.12.3 or Rolling Release #abcdefg (2020-01-01)"
+  - type : markdown
+    attributes :
+      value : |
+        **Note:** If you're not running the latest version, you may find that your issue has already been fixed in a newer version. You should follow our [updating instructions](https://docs.azuracast.com/en/getting-started/updates) first before continuing.
+  - type : textarea
+    id : what-happened
+    attributes :
+      label : What happened?
+      description : Let us know the full details of the bug, along with what behavior was expected.
+      placeholder : Tell us what you see!
+    validations :
+      required : true
+  - type : textarea
+    id : logs
+    attributes :
+      label : Relevant log output
+      description : Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render : shell

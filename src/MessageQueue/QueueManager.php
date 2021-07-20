@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\MessageQueue;
 
 use App\Message\AbstractMessage;
-use Doctrine\DBAL\Connection;
 use Generator;
-use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection as MessengerConnection;
-use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
+use Pheanstalk\Pheanstalk;
+use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\BeanstalkdTransport;
+use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\Connection as MessengerConnection;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
-use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+use Symfony\Component\Messenger\Transport\Serialization\Serializer;
 
 class QueueManager implements SendersLocatorInterface
 {
@@ -24,7 +24,7 @@ class QueueManager implements SendersLocatorInterface
     protected string $workerName = 'app';
 
     public function __construct(
-        protected Connection $db
+        protected Pheanstalk $pheanstalk
     ) {
     }
 
@@ -56,19 +56,17 @@ class QueueManager implements SendersLocatorInterface
     {
         return new MessengerConnection(
             [
-                'table_name' => 'messenger_messages',
-                'queue_name' => $queueName,
-                'auto_setup' => false,
+                'tube_name' => $queueName,
             ],
-            $this->db
+            $this->pheanstalk
         );
     }
 
-    public function getTransport(string $queueName): DoctrineTransport
+    public function getTransport(string $queueName): BeanstalkdTransport
     {
-        return new DoctrineTransport(
+        return new BeanstalkdTransport(
             $this->getConnection($queueName),
-            new PhpSerializer()
+            new Serializer()
         );
     }
 
@@ -79,7 +77,7 @@ class QueueManager implements SendersLocatorInterface
      */
     public function getMessagesInTransport(string $queueName): Generator
     {
-        foreach ($this->getTransport($queueName)->all() as $envelope) {
+        foreach ($this->getTransport($queueName)->get() as $envelope) {
             $message = $envelope->getMessage();
             if ($message instanceof AbstractMessage) {
                 yield $message;
@@ -88,7 +86,7 @@ class QueueManager implements SendersLocatorInterface
     }
 
     /**
-     * @return DoctrineTransport[]
+     * @return AmazonSqsTransport[]
      */
     public function getTransports(): array
     {

@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\BeanstalkdTransport;
 use Symfony\Component\Messenger\Bridge\Beanstalkd\Transport\Connection as MessengerConnection;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface;
-use Symfony\Component\Messenger\Transport\Serialization\Serializer;
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 
 class QueueManager implements SendersLocatorInterface
 {
@@ -66,7 +66,7 @@ class QueueManager implements SendersLocatorInterface
     {
         return new BeanstalkdTransport(
             $this->getConnection($queueName),
-            new Serializer()
+            new PhpSerializer()
         );
     }
 

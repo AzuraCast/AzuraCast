@@ -96,7 +96,7 @@ class QueueManager implements SendersLocatorInterface
     }
 
     /**
-     * @return AmazonSqsTransport[]
+     * @return BeanstalkdTransport[]
      */
     public function getTransports(): array
     {

@@ -92,7 +92,7 @@ class SongApiGenerator
         }
 
         $path = ($allowRemoteArt && $this->remoteAlbumArt->enableForApis())
-            ? ($this->remoteAlbumArt)($song)
+            ? $this->remoteAlbumArt->getUrlForSong($song)
             : null;
 
         if (null === $path) {

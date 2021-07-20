@@ -10,7 +10,7 @@ use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Environment;
 use App\Exception\InvalidPodcastMediaFileException;
-use App\Media\MetadataService\GetId3MetadataService;
+use App\Media\MetadataManager;
 use Azura\Files\ExtendedFilesystemInterface;
 use Intervention\Image\ImageManager;
 use League\Flysystem\UnableToDeleteFile;
@@ -24,7 +24,7 @@ class PodcastMediaRepository extends Repository
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        protected GetId3MetadataService $metadataService,
+        protected MetadataManager $metadataManager,
         protected ImageManager $imageManager,
         protected PodcastEpisodeRepository $episodeRepo,
     ) {
@@ -43,7 +43,7 @@ class PodcastMediaRepository extends Repository
         $fs ??= $storageLocation->getFilesystem();
 
         // Do an early metadata check of the new media to avoid replacing a valid file with an invalid one.
-        $metadata = $this->metadataService->readMetadata($uploadPath);
+        $metadata = $this->metadataManager->read($uploadPath);
 
         if (!in_array($metadata->getMimeType(), ['audio/x-m4a', 'audio/mpeg'])) {
             throw new InvalidPodcastMediaFileException(

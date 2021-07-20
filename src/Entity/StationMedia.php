@@ -493,21 +493,18 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         $metadata = new Metadata();
         $metadata->setDuration($this->getLength() ?? 0.0);
 
-        $tagsToSet = array_filter(
-            [
-                'title' => $this->getTitle(),
-                'artist' => $this->getArtist(),
-                'album' => $this->getAlbum(),
-                'genre' => $this->getGenre(),
-                'unsynchronised_lyric' => $this->getLyrics(),
-                'isrc' => $this->getIsrc(),
-            ]
+        $metadata->setTags(
+            array_filter(
+                [
+                    'title' => $this->getTitle(),
+                    'artist' => $this->getArtist(),
+                    'album' => $this->getAlbum(),
+                    'genre' => $this->getGenre(),
+                    'unsynchronised_lyric' => $this->getLyrics(),
+                    'isrc' => $this->getIsrc(),
+                ]
+            )
         );
-
-        $tags = $metadata->getTags();
-        foreach ($tagsToSet as $tagKey => $tagValue) {
-            $tags->set($tagKey, $tagValue);
-        }
 
         return $metadata;
     }

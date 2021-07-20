@@ -58,7 +58,7 @@ class StationScheduleRepository extends Repository
             $record->setEndTime($item['end_time']);
             $record->setStartDate($item['start_date']);
             $record->setEndDate($item['end_date']);
-            $record->setDays($item['days']);
+            $record->setDays($item['days'] ?? []);
             $record->setLoopOnce($item['loop_once']);
 
             $this->em->persist($record);

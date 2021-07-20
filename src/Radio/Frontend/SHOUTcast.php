@@ -162,7 +162,7 @@ class SHOUTcast extends AbstractFrontend
 
         $configFileOutput = '';
         foreach ($config as $config_key => $config_value) {
-            $configFileOutput .= $config_key . '=' . str_replace("\n", '', $config_value) . "\n";
+            $configFileOutput .= $config_key . '=' . str_replace("\n", '', (string) $config_value) . "\n";
         }
 
         return $configFileOutput;

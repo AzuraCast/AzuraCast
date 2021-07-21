@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Console\Command\MessageQueue;
 
 use App\Console\Command\CommandAbstract;
-use App\MessageQueue\QueueManager;
-use Pheanstalk\Pheanstalk;
+use App\MessageQueue\AbstractQueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ClearCommand extends CommandAbstract
 {
     public function __invoke(
         SymfonyStyle $io,
-        QueueManager $queueManager,
+        QueueManagerInterface $queueManager,
         ?string $queue = null
     ): int {
-        $allQueues = QueueManager::getAllQueues();
+        $allQueues = AbstractQueueManager::getAllQueues();
 
         if (!empty($queue)) {
             if (in_array($queue, $allQueues, true)) {

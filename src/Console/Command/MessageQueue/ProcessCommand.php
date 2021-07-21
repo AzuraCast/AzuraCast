@@ -9,7 +9,7 @@ use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\Environment;
 use App\EventDispatcher;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheMiddleware;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
@@ -22,7 +22,7 @@ class ProcessCommand extends CommandAbstract
     public function __invoke(
         MessageBus $messageBus,
         EventDispatcher $eventDispatcher,
-        QueueManager $queueManager,
+        QueueManagerInterface $queueManager,
         LoggerInterface $logger,
         Environment $environment,
         ?int $runtime = 0,

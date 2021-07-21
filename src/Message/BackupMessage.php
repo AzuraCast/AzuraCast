@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 
 class BackupMessage extends AbstractUniqueMessage
 {
@@ -33,6 +33,6 @@ class BackupMessage extends AbstractUniqueMessage
 
     public function getQueue(): string
     {
-        return QueueManager::QUEUE_LOW_PRIORITY;
+        return QueueManagerInterface::QUEUE_LOW_PRIORITY;
     }
 }

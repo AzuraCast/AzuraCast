@@ -11,7 +11,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message;
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
 use Azura\Files\ExtendedFilesystemInterface;
@@ -28,7 +28,7 @@ class BatchAction
         protected BatchUtilities $batchUtilities,
         protected ReloadableEntityManagerInterface $em,
         protected MessageBus $messageBus,
-        protected QueueManager $queueManager,
+        protected QueueManagerInterface $queueManager,
         protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
     ) {
@@ -288,7 +288,7 @@ class BatchAction
         $queuedMediaUpdates = [];
         $queuedNewFiles = [];
 
-        foreach ($this->queueManager->getMessagesInTransport(QueueManager::QUEUE_MEDIA) as $message) {
+        foreach ($this->queueManager->getMessagesInTransport(QueueManagerInterface::QUEUE_MEDIA) as $message) {
             if ($message instanceof Message\ReprocessMediaMessage) {
                 $queuedMediaUpdates[$message->media_id] = true;
             } elseif (

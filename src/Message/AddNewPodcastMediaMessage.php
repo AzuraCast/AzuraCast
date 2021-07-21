@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 
 class AddNewPodcastMediaMessage extends AbstractUniqueMessage
 {
@@ -16,6 +16,6 @@ class AddNewPodcastMediaMessage extends AbstractUniqueMessage
 
     public function getQueue(): string
     {
-        return QueueManager::QUEUE_PODCAST_MEDIA;
+        return QueueManagerInterface::QUEUE_PODCAST_MEDIA;
     }
 }

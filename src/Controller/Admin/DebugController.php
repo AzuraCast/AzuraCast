@@ -10,7 +10,8 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\RunSyncTaskMessage;
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\AbstractQueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
@@ -39,9 +40,9 @@ class DebugController extends AbstractLogViewerController
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
         Runner $sync,
-        QueueManager $queueManager
+        QueueManagerInterface $queueManager
     ): ResponseInterface {
-        $queues = QueueManager::getAllQueues();
+        $queues = AbstractQueueManager::getAllQueues();
 
         $queueTotals = [];
         foreach ($queues as $queue) {

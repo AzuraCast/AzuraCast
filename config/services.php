@@ -346,6 +346,22 @@ return [
         return $builder->getValidator();
     },
 
+    Pheanstalk\Pheanstalk::class => static function () {
+        return Pheanstalk\Pheanstalk::create('127.0.0.1', 11300);
+    },
+
+    App\MessageQueue\QueueManagerInterface::class => static function (
+        Environment $environment,
+        ContainerInterface $di
+    ) {
+        if ($environment->isTesting()) {
+            return new App\MessageQueue\TestQueueManager();
+        }
+
+        $pheanstalk = $di->get(Pheanstalk\Pheanstalk::class);
+        return new App\MessageQueue\QueueManager($pheanstalk);
+    },
+
     Symfony\Component\Messenger\MessageBus::class => static function (
         App\MessageQueue\QueueManager $queueManager,
         App\LockFactory $lockFactory,

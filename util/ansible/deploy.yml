@@ -24,6 +24,7 @@
     - nginx
     - php
     - redis
+    - beanstalkd
     - mariadb
     - azuracast-db-install
     - ufw

@@ -8,7 +8,7 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Media\MimeType;
 use App\Message;
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use App\Radio\Quota;
 use Azura\Files\Attributes\FileAttributes;
 use Brick\Math\BigInteger;
@@ -26,7 +26,7 @@ class CheckMediaTask extends AbstractTask
         protected Entity\Repository\StorageLocationRepository $storageLocationRepo,
         protected Entity\Repository\UnprocessableMediaRepository $unprocessableMediaRepo,
         protected MessageBus $messageBus,
-        protected QueueManager $queueManager,
+        protected QueueManagerInterface $queueManager,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {
@@ -138,7 +138,7 @@ class CheckMediaTask extends AbstractTask
         $queuedMediaUpdates = [];
         $queuedNewFiles = [];
 
-        foreach ($this->queueManager->getMessagesInTransport(QueueManager::QUEUE_MEDIA) as $message) {
+        foreach ($this->queueManager->getMessagesInTransport(QueueManagerInterface::QUEUE_MEDIA) as $message) {
             if ($message instanceof Message\ReprocessMediaMessage) {
                 $queuedMediaUpdates[$message->media_id] = true;
             } elseif (

@@ -19,6 +19,10 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- We have once again switched our message queue implementation, this time from the MariaDB database to a
+  super-lightweight standalone tool called Beanstalkd. We hope this will resolve issues we've encountered with parallel
+  workers causing database lockups and other problems.
+
 - The main web Docker container will now automatically initialize itself upon startup, performing essential tasks like
   updating the database, clearing the cache and ensuring the system is set up properly. This means even if you miss a
   step in installation (or use the Docker images directly) they should still work without issue.

@@ -47,7 +47,6 @@ class InitializeCommand extends CommandAbstract
         $io->section(__('Reload System Data'));
 
         $this->runCommand($output, 'cache:clear');
-        $this->runCommand($output, 'queue:clear');
 
         // Ensure default storage locations exist.
         $storageLocationRepo->createDefaultStorageLocations();

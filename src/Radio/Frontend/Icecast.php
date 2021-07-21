@@ -206,7 +206,7 @@ class Icecast extends AbstractFrontend
             }
 
             $mountRelayUrl = $mount_row->getRelayUrl();
-            if (null !== $mountRelayUrl) {
+            if (!empty($mountRelayUrl)) {
                 $mountRelayUri = new Uri($mountRelayUrl);
 
                 $config['relay'][] = [

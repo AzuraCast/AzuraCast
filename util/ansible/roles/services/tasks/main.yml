@@ -11,3 +11,4 @@
     - "nginx"
     - "redis-server"
     - "redis"
+    - "beanstalkd"

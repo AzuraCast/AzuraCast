@@ -864,7 +864,7 @@ class ConfigWriter implements EventSubscriberInterface
 
             def start_recording(path) =
                 output_live_recording = output.file({$formatString}, fallible=true, reopen_on_metadata=false, "#{path}", live)
-                stop_recording_f := fun () -> source.shutdown(output_live_recording)
+                stop_recording_f := fun () -> output_live_recording.shutdown()
             end
 
             def stop_recording() =

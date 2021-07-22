@@ -399,8 +399,11 @@ install-dev() {
   fi
 
   docker-compose build
-  docker-compose run --rm --user="azuracast" web docker_installer install .
   docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+
+  docker-compose -f frontend/docker-compose.yml build
+  docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build
+
   docker-compose up -d
   exit
 }

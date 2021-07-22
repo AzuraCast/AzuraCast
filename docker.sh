@@ -344,13 +344,74 @@ install() {
   exit
 }
 
+install-dev() {
+  if [[ $(command -v docker) && $(docker --version) ]]; then
+    echo "Docker is already installed! Continuing..."
+  else
+    if ask "Docker does not appear to be installed. Install Docker now?" Y; then
+      install-docker
+    fi
+  fi
+
+  if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+        install-docker-compose
+      fi
+    else
+      echo "Docker Compose is already installed and up to date! Continuing..."
+    fi
+  else
+    if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
+      install-docker-compose
+    fi
+  fi
+
+  if ask "Clone related repositories?" Y; then
+    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
+    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
+    git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
+    git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
+    git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
+  fi
+
+  if [[ -f docker-compose.yml ]]; then
+    cp docker-compose.sample.yml docker-compose.yml
+  fi
+  if [[ -f docker-compose.override.yml ]]; then
+    cp docker-compose.dev.yml docker-compose.override.yml
+  fi
+  if [[ -f .env ]]; then
+    cp dev.env .env
+  fi
+  if [[ -f azuracast.env ]]; then
+    cp azuracast.dev.env azuracast.env
+  fi
+
+  # If this script is running as a non-root user, set the PUID/PGID in the environment vars appropriately.
+  if [[ $EUID -ne 0 ]]; then
+    .env --file .env set AZURACAST_PUID="$(id -u)"
+    .env --file .env set AZURACAST_PGID="$(id -g)"
+  fi
+
+  docker-compose build
+  docker-compose run --rm --user="azuracast" web docker_installer install .
+  docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+  docker-compose up -d
+  exit
+}
+
 #
 # Update the Docker images and codebase.
 # Usage: ./docker.sh update
 #
 update() {
-	echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
-		if ask "Are you ready to continue with the update?" Y; then
+  echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
+  if ask "Are you ready to continue with the update?" Y; then
 
     # Check for a new Docker Utility Script.
     local AZURACAST_RELEASE_BRANCH

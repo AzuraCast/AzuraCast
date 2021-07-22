@@ -379,16 +379,16 @@ install-dev() {
     git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
   fi
 
-  if [[ -f docker-compose.yml ]]; then
+  if [[ ! -f docker-compose.yml ]]; then
     cp docker-compose.sample.yml docker-compose.yml
   fi
-  if [[ -f docker-compose.override.yml ]]; then
+  if [[ ! -f docker-compose.override.yml ]]; then
     cp docker-compose.dev.yml docker-compose.override.yml
   fi
-  if [[ -f .env ]]; then
+  if [[ ! -f .env ]]; then
     cp dev.env .env
   fi
-  if [[ -f azuracast.env ]]; then
+  if [[ ! -f azuracast.env ]]; then
     cp azuracast.dev.env azuracast.env
   fi
 

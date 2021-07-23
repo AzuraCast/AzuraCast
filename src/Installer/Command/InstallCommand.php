@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Installer\Command;
 
 use App\Environment;
+use App\Installer\EnvFiles\AbstractEnvFile;
 use App\Installer\EnvFiles\AzuraCastEnvFile;
 use App\Installer\EnvFiles\EnvFile;
 use App\Locale;
@@ -231,7 +232,7 @@ class InstallCommand
         }
 
         $dockerComposePath = $baseDir . '/docker-compose.new.yml';
-        $dockerComposeStr = $this->updateDockerCompose($dockerComposePath, $env['AZURACAST_STATION_PORTS']);
+        $dockerComposeStr = $this->updateDockerCompose($dockerComposePath, $env, $azuracastEnv);
 
         if ($io->isVerbose()) {
             $io->section(basename($dockerComposePath));
@@ -246,19 +247,58 @@ class InstallCommand
 
     protected function updateDockerCompose(
         string $dockerComposePath,
-        string $ports
+        AbstractEnvFile $env,
+        AbstractEnvFile $azuracastEnv
     ): string {
-        // Parse port listing and convert into YAML format.
-        $yamlPorts = [];
-        foreach (explode(',', $ports) as $port) {
-            $yamlPorts[] = $port . ':' . $port;
-        }
-
         // Attempt to parse Docker Compose YAML file
         $sampleFile = $this->environment->getBaseDirectory() . '/docker-compose.sample.yml';
         $yaml = Yaml::parseFile($sampleFile);
 
-        $yaml['services']['stations']['ports'] = $yamlPorts;
+        // Parse port listing and convert into YAML format.
+        $ports = $env['AZURACAST_STATION_PORTS'] ?? '';
+
+        if (!empty($ports)) {
+            $yamlPorts = [];
+            foreach (explode(',', $ports) as $port) {
+                $yamlPorts[] = $port . ':' . $port;
+            }
+            $yaml['services']['stations']['ports'] = $yamlPorts;
+        }
+
+        // Remove Redis if it's not enabled.
+        $enableRedis = $azuracastEnv->getAsBool(Environment::ENABLE_REDIS, true);
+        if (!$enableRedis) {
+            unset($yaml['services']['redis']);
+        }
+
+        // Remove LetsEncrypt if it's not enabled.
+        $letsEncryptHost = $env['LETSENCRYPT_HOST'] ?? null;
+        $letsEncryptEmail = $env['LETSENCRYPT_EMAIL'] ?? null;
+
+        if (empty($letsEncryptHost)) {
+            unset(
+                $yaml['services']['nginx_proxy_letsencrypt'],
+                $yaml['services']['web']['environment']['LETSENCRYPT_HOST'],
+                $yaml['services']['web']['environment']['LETSENCRYPT_EMAIL']
+            );
+        } elseif (empty($letsEncryptEmail)) {
+            unset(
+                $yaml['services']['web']['environment']['LETSENCRYPT_EMAIL'],
+                $yaml['services']['nginx_proxy_letsencrypt']['environment']['DEFAULT_EMAIL']
+            );
+        }
+
+        // Remove privileged-mode settings if not enabled.
+        $enablePrivileged = $env->getAsBool('AZURACAST_COMPOSE_PRIVILEGED', true);
+        if (!$enablePrivileged) {
+            foreach ($yaml['services'] as &$service) {
+                unset(
+                    $service['ulimits'],
+                    $service['sysctls']
+                );
+            }
+            unset($service);
+        }
 
         $yamlRaw = Yaml::dump($yaml, PHP_INT_MAX);
         file_put_contents($dockerComposePath, $yamlRaw);

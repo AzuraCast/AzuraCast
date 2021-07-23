@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Installer\EnvFiles;
 
+use App\Environment;
 use App\Utilities\Strings;
 use ArrayAccess;
 use Dotenv\Dotenv;
@@ -11,7 +12,7 @@ use Dotenv\Exception\ExceptionInterface;
 use InvalidArgumentException;
 
 /**
- * @implements ArrayAccess<mixed, mixed>
+ * @implements ArrayAccess<string, mixed>
  */
 abstract class AbstractEnvFile implements ArrayAccess
 {
@@ -43,6 +44,22 @@ abstract class AbstractEnvFile implements ArrayAccess
         }
 
         $this->data = array_merge($defaults, $currentVars);
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+
+    public function getAsBool(string $key, bool $default): bool
+    {
+        if (isset($this->data[$key])) {
+            return Environment::envToBool($this->data[$key]);
+        }
+        return $default;
     }
 
     public function offsetExists(mixed $offset): bool

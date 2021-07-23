@@ -104,20 +104,6 @@ class Environment
         return $this->data;
     }
 
-    protected function envToBool(string|bool|int $value): bool
-    {
-        if (is_bool($value)) {
-            return $value;
-        }
-        if (is_int($value)) {
-            return 0 !== $value;
-        }
-
-        return str_starts_with(strtolower($value), 'y')
-            || 'true' === strtolower($value)
-            || '1' === $value;
-    }
-
     public function getAppEnvironment(): string
     {
         return $this->data[self::APP_ENV] ?? self::ENV_PRODUCTION;
@@ -140,7 +126,7 @@ class Environment
 
     public function isDocker(): bool
     {
-        return $this->envToBool($this->data[self::IS_DOCKER] ?? true);
+        return self::envToBool($this->data[self::IS_DOCKER] ?? true);
     }
 
     public function isCli(): bool
@@ -297,7 +283,7 @@ class Environment
 
     public function enableRedis(): bool
     {
-        return $this->envToBool($this->data[self::ENABLE_REDIS] ?? true);
+        return self::envToBool($this->data[self::ENABLE_REDIS] ?? true);
     }
 
     /**
@@ -314,16 +300,34 @@ class Environment
 
     public function isProfilingExtensionEnabled(): bool
     {
-        return $this->envToBool($this->data[self::PROFILING_EXTENSION_ENABLED] ?? false);
+        return self::envToBool($this->data[self::PROFILING_EXTENSION_ENABLED] ?? false);
     }
 
     public function isProfilingExtensionAlwaysOn(): bool
     {
-        return $this->envToBool($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? false);
+        return self::envToBool($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? false);
     }
 
     public function getProfilingExtensionHttpKey(): string
     {
         return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
+    }
+
+    public static function envToBool(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+        if (is_int($value)) {
+            return 0 !== $value;
+        }
+        if (null === $value) {
+            return false;
+        }
+
+        $value = (string)$value;
+        return str_starts_with(strtolower($value), 'y')
+            || 'true' === strtolower($value)
+            || '1' === $value;
     }
 }

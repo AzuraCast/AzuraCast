@@ -225,7 +225,7 @@ class AzuraCastEnvFile extends AbstractEnvFile
                 'PROFILING_EXTENSION_HTTP_IP_WHITELIST' => [
                     'name' => __('Profiling Extension IP Allow List'),
                     'options' => ['127.0.0.1', '*'],
-                    'default' => '127.0.0.1',
+                    'default' => '*',
                 ],
             ];
 

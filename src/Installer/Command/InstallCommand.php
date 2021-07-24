@@ -257,12 +257,40 @@ class InstallCommand
         // Parse port listing and convert into YAML format.
         $ports = $env['AZURACAST_STATION_PORTS'] ?? '';
 
-        if (!empty($ports)) {
+        $envConfig = $env::getConfiguration();
+        $defaultPorts = $envConfig['AZURACAST_STATION_PORTS']['default'];
+
+
+
+        if (!empty($ports) && 0 !== strcmp($ports, $defaultPorts)) {
             $yamlPorts = [];
-            foreach (explode(',', $ports) as $port) {
+            $nginxRadioPorts = [];
+            $nginxWebDjPorts = [];
+
+            foreach(explode(',', $ports) as $port) {
+                $port = (int)$port;
+                if ($port <= 0) {
+                    continue;
+                }
+
                 $yamlPorts[] = $port . ':' . $port;
+
+                if (0 === $port % 10) {
+                    $nginxRadioPorts[] = $port;
+                } else if (5 === $port % 10) {
+                    $nginxWebDjPorts[] = $port;
+                }
             }
-            $yaml['services']['stations']['ports'] = $yamlPorts;
+
+            if (!empty($yamlPorts)) {
+                $yaml['services']['stations']['ports'] = $yamlPorts;
+            }
+            if (!empty($nginxRadioPorts)) {
+                $yaml['services']['web']['environment']['NGINX_RADIO_PORTS'] = '('.implode('|', $nginxRadioPorts).')';
+            }
+            if (!empty($nginxWebDjPorts)) {
+                $yaml['services']['web']['environment']['NGINX_WEBDJ_PORTS'] = '('.implode('|', $nginxWebDjPorts).')';
+            }
         }
 
         // Remove Redis if it's not enabled.

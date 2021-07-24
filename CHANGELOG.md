@@ -22,6 +22,9 @@ release channel, you can take advantage of these new features and fixes.
 
 ## Code Quality/Technical Changes
 
+- If you use non-standard radio ports on the Docker installation, nginx will automatically be configured to listen to
+  those new ports for its web proxy instead of the default port range.
+
 - The entire AzuraCast codebase has been set to "strict mode" in PHP, which will strictly enforce type safety across the
   application. To complement this, we have made hundreds of fixes across the application to ensure it passes the
   strictest "static analysis" standards available currently. This may result in new `TypeError` type exceptions being

@@ -260,14 +260,12 @@ class InstallCommand
         $envConfig = $env::getConfiguration();
         $defaultPorts = $envConfig['AZURACAST_STATION_PORTS']['default'];
 
-
-
         if (!empty($ports) && 0 !== strcmp($ports, $defaultPorts)) {
             $yamlPorts = [];
             $nginxRadioPorts = [];
             $nginxWebDjPorts = [];
 
-            foreach(explode(',', $ports) as $port) {
+            foreach (explode(',', $ports) as $port) {
                 $port = (int)$port;
                 if ($port <= 0) {
                     continue;
@@ -277,7 +275,7 @@ class InstallCommand
 
                 if (0 === $port % 10) {
                     $nginxRadioPorts[] = $port;
-                } else if (5 === $port % 10) {
+                } elseif (5 === $port % 10) {
                     $nginxWebDjPorts[] = $port;
                 }
             }
@@ -286,10 +284,12 @@ class InstallCommand
                 $yaml['services']['stations']['ports'] = $yamlPorts;
             }
             if (!empty($nginxRadioPorts)) {
-                $yaml['services']['web']['environment']['NGINX_RADIO_PORTS'] = '('.implode('|', $nginxRadioPorts).')';
+                $nginxRadioPortsStr = '(' . implode('|', $nginxRadioPorts) . ')';
+                $yaml['services']['web']['environment']['NGINX_RADIO_PORTS'] = $nginxRadioPortsStr;
             }
             if (!empty($nginxWebDjPorts)) {
-                $yaml['services']['web']['environment']['NGINX_WEBDJ_PORTS'] = '('.implode('|', $nginxWebDjPorts).')';
+                $nginxWebDjPortsStr = '(' . implode('|', $nginxWebDjPorts) . ')';
+                $yaml['services']['web']['environment']['NGINX_WEBDJ_PORTS'] = $nginxWebDjPortsStr;
             }
         }
 

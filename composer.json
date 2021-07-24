@@ -132,7 +132,7 @@
             "@codeception-no-coverage"
         ],
         "phplint": "parallel-lint . --exclude vendor",
-        "phpstan": "phpstan analyze",
+        "phpstan": "phpstan analyze --memory-limit=-1",
         "phpcs": "phpcs",
         "phpcbf": "phpcbf",
         "codeception": "codecept run --no-interaction --coverage --coverage-xml --fail-fast",

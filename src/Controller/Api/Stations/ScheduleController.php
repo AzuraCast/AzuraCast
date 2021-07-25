@@ -77,7 +77,7 @@ class ScheduleController extends AbstractStationApiCrudController
             }
         );
 
-        $rows = $request->getQueryParam('rows', 5);
+        $rows = (int)$request->getQueryParam('rows', 5);
         $events = array_slice($events, 0, $rows);
 
         return $response->withJson($events);

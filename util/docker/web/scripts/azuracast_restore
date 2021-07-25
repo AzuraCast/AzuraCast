@@ -9,11 +9,11 @@ bool() {
 
 if [ $(whoami) != 'azuracast' ]; then
     echo 'This script must be run as the "azuracast" user. Rerunning...'
-    setuser azuracast azuracast_install "$@"
+    setuser azuracast azuracast_restore "$@"
     exit $?
 fi
 
-echo "AzuraCast Setup"
+echo "AzuraCast Backup Restore"
 
 APPLICATION_ENV="${APPLICATION_ENV:-production}"
 echo "(Environment: $APPLICATION_ENV)"

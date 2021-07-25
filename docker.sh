@@ -565,15 +565,25 @@ db() {
 # ./docker.sh backup [/custom/backup/dir/custombackupname.zip]
 #
 backup() {
-  BACKUP_PATH=${1:-"./backup.tar.gz"}
+  local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
+  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"
   shift
 
-  MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_cli azuracast:backup "/tmp/cli_backup.${BACKUP_EXT}" "$@"
-  docker cp "azuracast_web:tmp/cli_backup.${BACKUP_EXT}" "${BACKUP_PATH}"
-  MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web rm -f "/tmp/cli_backup.${BACKUP_EXT}"
-  exit
+  # Prepare permissions
+  if [[ $EUID -ne 0 ]]; then
+    .env --file .env set AZURACAST_PUID="$(id -u)"
+    .env --file .env set AZURACAST_PGID="$(id -g)"
+  fi
+
+  docker-compose run --rm web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+
+  # Move from Docker volume to local filesystem
+  docker run --rm -v "azuracast_backups:/backup_src" \
+      -v "$BACKUP_DIR:/backup_dest" \
+      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 }
 
 #
@@ -582,7 +592,9 @@ backup() {
 # ./docker.sh restore [/custom/backup/dir/custombackupname.zip]
 #
 restore() {
-  BACKUP_PATH=${1:-"./backup.tar.gz"}
+  local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
+  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"
   shift
@@ -600,14 +612,26 @@ restore() {
 
   if ask "Restoring will remove any existing AzuraCast installation data, replacing it with your backup. Continue?" Y; then
     docker-compose down -v
-    docker-compose pull
 
-    # Run the web task to allow for a full system spin-up
-    docker-compose run --rm --user=azuracast web azuracast_cli cache:clear
+    docker volume create azuracast_backups
 
-    docker-compose up -d web
-    docker cp "${BACKUP_PATH}" "azuracast_web:tmp/cli_backup.${BACKUP_EXT}"
-    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_restore "/tmp/cli_backup.${BACKUP_EXT}" "$@"
+    # Move from local filesystem to Docker volume
+    docker run --rm -v "$BACKUP_DIR:/backup_src" \
+      -v "azuracast_backups:/backup_dest" \
+      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+
+    # Prepare permissions
+    if [[ $EUID -ne 0 ]]; then
+      .env --file .env set AZURACAST_PUID="$(id -u)"
+      .env --file .env set AZURACAST_PGID="$(id -g)"
+    fi
+
+    docker-compose run --rm web azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+
+    # Move file back from volume to local filesystem
+    docker run --rm -v "azuracast_backups:/backup_src" \
+      -v "$BACKUP_DIR:/backup_dest" \
+      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 
     docker-compose down
     docker-compose up -d

@@ -955,7 +955,7 @@ class ConfigWriter implements EventSubscriberInterface
             thread.run.recurrent(fast=false, delay=0., f)
         end
 
-        source.on_metadata(radio, metadata_updated)
+        radio.on_metadata(metadata_updated)
         EOF
         );
     }

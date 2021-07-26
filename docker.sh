@@ -390,6 +390,9 @@ install-dev() {
   fi
   if [[ ! -f azuracast.env ]]; then
     cp azuracast.dev.env azuracast.env
+
+    echo "Customize azuracast.env file now before continuing. Re-run this command to continue installation."
+    exit
   fi
 
   # If this script is running as a non-root user, set the PUID/PGID in the environment vars appropriately.

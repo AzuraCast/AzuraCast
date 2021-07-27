@@ -134,6 +134,11 @@ return function (Application $console) {
     )->setDescription('Set the account specified as a global administrator.');
 
     $console->command(
+        'azuracast:assets:generate-browser-icons original [outputDir]',
+        Command\Assets\GenerateBrowserIcons::class
+    )->setDescription('Generate browser icons for a given image.');
+
+    $console->command(
         'azuracast:settings:list',
         Command\Settings\ListCommand::class
     )->setDescription(__('List all settings in the AzuraCast settings database.'));

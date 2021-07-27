@@ -17,6 +17,24 @@ class Customization
     public const THEME_LIGHT = 'light';
     public const THEME_DARK = 'dark';
 
+    public const ICON_SIZES = [
+        16, // Favicon
+        32, // Favicon
+        36, // Android
+        48, // Android
+        57, // Apple
+        60, // Apple
+        72, // Android/Apple
+        76, // Apple
+        96, // Android/Favicon
+        114, // Apple
+        120, // Apple
+        144, // Android/Apple/MS
+        152, // Apple
+        180, // Apple
+        192, // Android/Apple
+    ];
+
     protected ?Entity\User $user = null;
 
     protected Entity\Settings $settings;
@@ -158,4 +176,6 @@ class Customization
 
         return $this->settings->getEnableWebsockets();
     }
+    
+    
 }

@@ -100,12 +100,10 @@ server {
     }
 
     location /static/uploads {
-        alias /var/azuracast/uploads;
-        try_files $uri @static_cache_busting =404;
-    }
-
-    location @static_cache_busting {
         rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg)$ $1.$2 last;
+
+        alias /var/azuracast/uploads;
+        try_files $uri =404;
     }
 
     location /static/dist {

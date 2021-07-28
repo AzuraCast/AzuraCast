@@ -112,13 +112,15 @@ class Customization
         return $this->settings->getInternalCustomCss() ?? '';
     }
 
-    public function getBrowserIconPath(int $size): string
+    public function getBrowserIconPath(int $size = 256): string
     {
         $uploadsDir = $this->environment->getUploadsDirectory();
         if (is_file($uploadsDir . '/browser_icon/'.$size.'.png')) {
             $mtime = filemtime($uploadsDir. '/browser_icon/'.$size.'.png') ?: 0;
             return '/static/uploads/browser_icon/'.$size.'.'.$mtime.'.png';
         }
+        
+        
         
         
         

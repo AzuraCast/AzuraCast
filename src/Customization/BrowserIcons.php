@@ -40,16 +40,11 @@ class BrowserIcons
         $outputDir ??= dirname($originalPath);
 
         $image = $this->imageManager->make($originalPath);
-        
-        $image->backup();
-
         $image->resize(256, 256);
         $image->save($outputDir . '/original.png');
 
         foreach (self::ICON_SIZES as $iconSize) {
-            $image->reset();
-            $image->backup();
-
+            $image = $this->imageManager->make($originalPath);
             $image->resize($iconSize, $iconSize);
             $image->save($outputDir . '/' . $iconSize . '.png');
         }

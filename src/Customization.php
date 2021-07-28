@@ -16,7 +16,7 @@ class Customization
     public const THEME_BROWSER = 'browser';
     public const THEME_LIGHT = 'light';
     public const THEME_DARK = 'dark';
-    
+
     protected ?Entity\User $user = null;
 
     protected Entity\Settings $settings;
@@ -112,19 +112,17 @@ class Customization
         return $this->settings->getInternalCustomCss() ?? '';
     }
 
-    public function getBrowserIconPath(int $size = 256): string
+    public function getBrowserIconUrl(int $size = 256): string
     {
+        $assetUrl = $this->environment->getAssetUrl();
+
         $uploadsDir = $this->environment->getUploadsDirectory();
-        if (is_file($uploadsDir . '/browser_icon/'.$size.'.png')) {
-            $mtime = filemtime($uploadsDir. '/browser_icon/'.$size.'.png') ?: 0;
-            return '/static/uploads/browser_icon/'.$size.'.'.$mtime.'.png';
+        if (is_file($uploadsDir . '/browser_icon/' . $size . '.png')) {
+            $mtime = filemtime($uploadsDir . '/browser_icon/' . $size . '.png') ?: 0;
+            return $assetUrl . '/uploads/browser_icon/' . $size . '.' . $mtime . '.png';
         }
-        
-        
-        
-        
-        
-        
+
+        return $assetUrl . '/icons/' . $this->environment->getAppEnvironment() . '/' . $size . '.png';
     }
 
     /**

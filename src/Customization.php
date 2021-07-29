@@ -17,6 +17,9 @@ class Customization
     public const THEME_LIGHT = 'light';
     public const THEME_DARK = 'dark';
 
+    
+    public const CUSTOM_ASSET_ALBUM_ART_PATTERN = 'albumart%s.jpg';
+
     protected ?Entity\User $user = null;
 
     protected Entity\Settings $settings;
@@ -123,6 +126,43 @@ class Customization
         }
 
         return $assetUrl . '/icons/' . $this->environment->getAppEnvironment() . '/' . $size . '.png';
+    }
+
+    public function getCustomAssetPattern(string $type): string
+    {
+        return match ($type) {
+            self::CUSTOM_ASSET_FAVICON => self::CUSTOM_ASSET_FAVICON_PATTERN,
+            self::CUSTOM_ASSET_BACKGROUND => self::CUSTOM_ASSET_BACKGROUND_PATTERN,
+            self::CUSTOM_ASSET_ALBUM_ART => self::CUSTOM_ASSET_ALBUM_ART_PATTERN,
+            default => throw new \InvalidArgumentException('Type not specified.')
+        };
+    }
+
+    public function getCustomAssetPath(string $type): string
+    {
+        $typePattern = sprintf($this->getCustomAssetPattern($type), '');
+
+        $uploadsDir = $this->environment->getUploadsDirectory();
+        return $uploadsDir . '/' . $typePattern;
+    }
+
+    public function getCustomAssetUrl(string $type): ?string
+    {
+        $typePattern = $this->getCustomAssetPattern($type);
+
+        $uploadsDir = $this->environment->getUploadsDirectory();
+        $assetFullPath = $uploadsDir . '/' . sprintf($typePattern, '');
+
+        if (is_file($assetFullPath)) {
+            $mtime = filemtime($assetFullPath);
+
+            $staticAssetsUrl = $this->environment->getAssetUrl();
+            return $staticAssetsUrl . '/' . sprintf($typePattern, '.' . $mtime);
+        }
+        
+        
+
+        return null;
     }
 
     /**

@@ -148,6 +148,20 @@ return function (App $app) {
                                 ->setName('api:admin:settings');
 
                             $group->put('/settings', Controller\Api\Admin\SettingsController::class . ':updateAction');
+
+                            $group->get(
+                                '/custom_assets/{type}',
+                                Controller\Api\Admin\CustomAssets\GetCustomAssetAction::class
+                            )->setName('api:admin:custom_assets');
+
+                            $group->post(
+                                '/custom_assets/{type}',
+                                Controller\Api\Admin\CustomAssets\PostCustomAssetAction::class
+                            );
+                            $group->delete(
+                                '/custom_assets/{type}',
+                                Controller\Api\Admin\CustomAssets\DeleteCustomAssetAction::class
+                            );
                         }
                     )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Repository;
 
+use App\Assets\AssetFactory;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
@@ -262,6 +263,7 @@ class StationRepository extends Repository
             return new Uri($custom_url);
         }
 
-        return new Uri('/static/img/generic_song.jpg');
+        $systemAlbumArt = AssetFactory::createAlbumArt($this->environment);
+        return new Uri($systemAlbumArt->getUrl());
     }
 }

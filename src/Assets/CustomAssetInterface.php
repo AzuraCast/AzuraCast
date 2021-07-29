@@ -8,6 +8,8 @@ use Intervention\Image\Image;
 
 interface CustomAssetInterface
 {
+    public const UPLOADS_URL_PREFIX = '/uploads';
+
     public function getPath(): string;
 
     public function isUploaded(): bool;

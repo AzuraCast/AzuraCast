@@ -49,6 +49,9 @@ class Flow
     ): UploadedFile|ResponseInterface {
         if (null === $tempDir) {
             $tempDir = sys_get_temp_dir() . '/uploads';
+            if (!mkdir($tempDir) && !is_dir($tempDir)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $tempDir));
+            }
         }
 
         $params = $request->getParams();

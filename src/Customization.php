@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Assets\AssetFactory;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Service\NChan;
@@ -93,7 +94,20 @@ class Customization
      */
     public function getCustomPublicCss(): string
     {
-        return $this->settings->getPublicCustomCss() ?? '';
+        $publicCss = $this->settings->getPublicCustomCss() ?? '';
+
+        $background = AssetFactory::createBackground($this->environment);
+        if ($background->isUploaded()) {
+            $backgroundUrl = $background->getUrl();
+
+            $publicCss .= <<<CSS
+            [data-theme] body.page-minimal {
+                background-image: url('${backgroundUrl}');
+            }
+            CSS;
+        }
+
+        return $publicCss;
     }
 
     /**
@@ -110,6 +124,11 @@ class Customization
     public function getCustomInternalCss(): string
     {
         return $this->settings->getInternalCustomCss() ?? '';
+    }
+
+    public function getBrowserIconUrl(int $size = 256): string
+    {
+        return AssetFactory::createBrowserIcon($this->environment)->getUrlForSize($size);
     }
 
     /**

@@ -35,6 +35,8 @@ class InstallCommand
         ?string $releaseChannel = null,
         string $baseDir = self::DEFAULT_BASE_DIRECTORY
     ): int {
+        $devMode = ($baseDir !== self::DEFAULT_BASE_DIRECTORY);
+
         // Initialize all the environment variables.
         $envPath = EnvFile::buildPathFromBase($baseDir);
         $azuracastEnvPath = AzuraCastEnvFile::buildPathFromBase($baseDir);
@@ -109,7 +111,7 @@ class InstallCommand
         unset($azuracastEnv['ENABLE_ADVANCED_FEATURES']);
 
         // Randomize the MariaDB root password for new installs.
-        if ($isNewInstall && 'azur4c457' === $azuracastEnv[Environment::DB_PASSWORD]) {
+        if (!$devMode && $isNewInstall && 'azur4c457' === $azuracastEnv[Environment::DB_PASSWORD]) {
             $azuracastEnv[Environment::DB_PASSWORD] = Strings::generatePassword(12);
         }
 
@@ -231,7 +233,9 @@ class InstallCommand
             $io->block($azuracastEnvStr);
         }
 
-        $dockerComposePath = $baseDir . '/docker-compose.new.yml';
+        $dockerComposePath = ($devMode)
+            ? $baseDir . '/docker-compose.yml'
+            : $baseDir . '/docker-compose.new.yml';
         $dockerComposeStr = $this->updateDockerCompose($dockerComposePath, $env, $azuracastEnv);
 
         if ($io->isVerbose()) {

@@ -99,6 +99,13 @@ server {
         add_header Access-Control-Allow-Origin *;
     }
 
+    location /static/uploads {
+        rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg)$ $1.$2 last;
+
+        alias /var/azuracast/uploads;
+        try_files $uri =404;
+    }
+
     location /static/dist {
         expires 365d;
     }

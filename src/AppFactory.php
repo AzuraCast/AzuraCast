@@ -72,7 +72,7 @@ class AppFactory
 
         $app = new App(
             responseFactory: new ResponseFactory(),
-            container: $container,
+            container:       $container,
         );
         $container->set(App::class, $app);
 
@@ -209,6 +209,7 @@ class AppFactory
         $environment[Environment::TEMP_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
         $environment[Environment::CONFIG_DIR] ??= $environment[Environment::BASE_DIR] . '/config';
         $environment[Environment::VIEWS_DIR] ??= $environment[Environment::BASE_DIR] . '/templates';
+        $environment[Environment::UPLOADS_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/uploads';
 
         if (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
             $envIni = parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini');

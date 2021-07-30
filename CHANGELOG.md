@@ -5,6 +5,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+- You can now directly upload a custom public page background, browser icon (favicon) and default album art.
+
 - You can now duplicate a single playlist within a station, choosing whether to copy over the schedule entries or media
   associations that the current playlist has.
 

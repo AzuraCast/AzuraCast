@@ -27,6 +27,7 @@ class Environment
     public const TEMP_DIR = 'TEMP_DIR';
     public const CONFIG_DIR = 'CONFIG_DIR';
     public const VIEWS_DIR = 'VIEWS_DIR';
+    public const UPLOADS_DIR = 'UPLOADS_DIR';
 
     public const IS_DOCKER = 'IS_DOCKER';
     public const IS_CLI = 'IS_CLI';
@@ -174,6 +175,14 @@ class Environment
     public function getViewsDirectory(): string
     {
         return $this->data[self::VIEWS_DIR];
+    }
+
+    /**
+     * @return string The directory where user system-level uploads are stored.
+     */
+    public function getUploadsDirectory(): string
+    {
+        return $this->data[self::UPLOADS_DIR];
     }
 
     /**

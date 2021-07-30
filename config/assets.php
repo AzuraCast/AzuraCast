@@ -348,7 +348,7 @@ return [
         ],
     ],
 
-    'codemirror_css' => [
+    'codemirror' => [
         'order' => 10,
         'files' => [
             'js' => [
@@ -358,6 +358,10 @@ return [
                 ],
                 [
                     'src' => 'dist/lib/codemirror/css.js',
+                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/lib/codemirror/javascript.js',
                     'defer' => true,
                 ],
             ],
@@ -466,6 +470,12 @@ return [
     'Vue_PublicHistory' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_AdminBranding' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'codemirror'],
         // Auto-managed by Assets
     ],
 

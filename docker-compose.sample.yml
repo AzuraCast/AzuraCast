@@ -302,6 +302,7 @@ volumes :
   sftpgo_data : { }
   station_data : { }
   www_vendor : { }
+  www_uploads : { }
   tmp_data : { }
   redis_data : { }
   backups : { }

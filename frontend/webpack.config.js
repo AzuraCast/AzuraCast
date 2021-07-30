@@ -7,6 +7,7 @@ module.exports = {
     VueTranslations: './vue/VueTranslations.js',
     InlinePlayer: './vue/InlinePlayer.vue',
     Dashboard: './vue/Dashboard.vue',
+    AdminBranding: './vue/Admin/Branding.vue',
     AdminStorageLocations: './vue/Admin/StorageLocations.vue',
     PublicFullPlayer: './vue/Public/FullPlayer.vue',
     PublicHistory: './vue/Public/History.vue',
@@ -63,7 +64,7 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        loader: 'vue-loader'
       },
       {
         test: /\.scss$/,

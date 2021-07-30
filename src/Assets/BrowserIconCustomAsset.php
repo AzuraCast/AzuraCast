@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Assets;
 
+use App\Utilities\File;
 use Intervention\Image\Image;
 
 class BrowserIconCustomAsset extends AbstractCustomAsset
@@ -33,8 +34,7 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
 
     protected function getDefaultUrl(): string
     {
-        return $this->environment->getAssetUrl() . '/icons/' . $this->environment->getAppEnvironment(
-        ) . '/original.png';
+        return $this->environment->getAssetUrl() . '/icons/' . $this->environment->getAppEnvironment() . '/original.png';
     }
 
     public function upload(Image $image): void
@@ -53,6 +53,12 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
             $newImage->resize($iconSize, $iconSize);
             $newImage->save($uploadsDir . '/' . $iconSize . '.png');
         }
+    }
+
+    public function delete(): void
+    {
+        $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
+        File::rmdirRecursive($uploadsDir);
     }
 
     public function getUrlForSize(int $size): string

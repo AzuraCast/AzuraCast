@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SettingsController extends AbstractApiCrudController
 {
+    protected string $entityClass = Entity\Settings::class;
+
     public function __construct(
         protected Entity\Repository\SettingsRepository $settingsRepo,
         EntityManagerInterface $em,

@@ -25,15 +25,29 @@
                                 </b-form-radio-group>
                             </b-form-group>
 
-                            <b-form-group class="col-md-6" label-for="form_edit_hide_album_art">
-                                <template v-slot:description>
-                                    <translate key="lang_form_edit_hide_album_art_desc">If selected, album art will not display on public-facing radio pages.</translate>
-                                </template>
-                                <b-form-checkbox id="form_edit_hide_album_art" v-model="$v.form.hide_album_art.$model">
+                            <b-col md="6">
+                                <b-form-group class="mb-2" label-for="form_edit_hide_album_art">
+                                    <template v-slot:description>
+                                        <translate key="lang_form_edit_hide_album_art_desc">If selected, album art will not display on public-facing radio pages.</translate>
+                                    </template>
+                                    <b-form-checkbox id="form_edit_hide_album_art"
+                                                     v-model="$v.form.hide_album_art.$model">
                                     <translate
                                         key="lang_form_edit_hide_album_art">Hide Album Art on Public Pages</translate>
-                                </b-form-checkbox>
-                            </b-form-group>
+                                    </b-form-checkbox>
+                                </b-form-group>
+
+                                <b-form-group label-for="form_edit_hide_product_name">
+                                    <template v-slot:description>
+                                        <translate key="lang_form_edit_hide_product_name_desc">If selected, this will remove the AzuraCast branding from public-facing pages.</translate>
+                                    </template>
+                                    <b-form-checkbox id="form_edit_hide_product_name"
+                                                     v-model="$v.form.hide_product_name.$model">
+                                    <translate
+                                        key="lang_form_edit_hide_product_name">Hide AzuraCast Branding on Public Pages</translate>
+                                    </b-form-checkbox>
+                                </b-form-group>
+                            </b-col>
 
                             <b-form-group class="col-md-6" label-for="form_edit_homepage_redirect_url">
                                 <template #label>
@@ -67,17 +81,6 @@
                                 </b-form-invalid-feedback>
                             </b-form-group>
 
-                            <b-form-group class="col-md-12" label-for="form_edit_hide_product_name">
-                                <template v-slot:description>
-                                    <translate key="lang_form_edit_hide_product_name_desc">If selected, this will remove the AzuraCast branding from public-facing pages.</translate>
-                                </template>
-                                <b-form-checkbox id="form_edit_hide_product_name"
-                                                 v-model="$v.form.hide_product_name.$model">
-                                    <translate
-                                        key="lang_form_edit_hide_product_name">Hide AzuraCast Branding on Public Pages</translate>
-                                </b-form-checkbox>
-                            </b-form-group>
-
                             <b-form-group class="col-md-12" label-for="edit_form_public_custom_css">
                                 <template #label>
                                     <translate
@@ -86,10 +89,9 @@
                                 <template #description>
                                     <translate key="lang_edit_form_public_custom_css_desc">This CSS will be applied to the station public pages and login page.</translate>
                                 </template>
-                                <b-textarea id="edit_form_public_custom_css" class="css-editor" spellcheck="false"
-                                            v-model="$v.form.public_custom_css.$model"
-                                            :state="$v.form.public_custom_css.$dirty ? !$v.form.public_custom_css.$error : null">
-                                </b-textarea>
+
+                                <codemirror-textarea id="edit_form_public_custom_css" mode="css"
+                                                     v-model="$v.form.public_custom_css.$model"></codemirror-textarea>
                             </b-form-group>
 
                             <b-form-group class="col-md-12" label-for="edit_form_public_custom_js">
@@ -100,10 +102,9 @@
                                 <template #description>
                                     <translate key="lang_edit_form_public_custom_js_desc">This javascript code will be applied to the station public pages and login page.</translate>
                                 </template>
-                                <b-textarea id="edit_form_public_custom_js" class="js-editor" spellcheck="false"
-                                            v-model="$v.form.public_custom_js.$model"
-                                            :state="$v.form.public_custom_js.$dirty ? !$v.form.public_custom_js.$error : null">
-                                </b-textarea>
+
+                                <codemirror-textarea id="edit_form_public_custom_js" mode="javascript"
+                                                     v-model="$v.form.public_custom_js.$model"></codemirror-textarea>
                             </b-form-group>
 
                             <b-form-group class="col-md-12" label-for="edit_form_internal_custom_css">
@@ -114,10 +115,9 @@
                                 <template #description>
                                     <translate key="lang_edit_form_internal_custom_css_desc">This CSS will be applied to the main management pages, like this one.</translate>
                                 </template>
-                                <b-textarea id="edit_form_internal_custom_css" class="css-editor" spellcheck="false"
-                                            v-model="$v.form.internal_custom_css.$model"
-                                            :state="$v.form.internal_custom_css.$dirty ? !$v.form.internal_custom_css.$error : null">
-                                </b-textarea>
+
+                                <codemirror-textarea id="edit_form_internal_custom_css" mode="css"
+                                                     v-model="$v.form.internal_custom_css.$model"></codemirror-textarea>
                             </b-form-group>
                         </b-row>
 
@@ -135,11 +135,15 @@
 import {validationMixin} from "vuelidate";
 import handleAxiosError from "../../Function/handleAxiosError";
 import axios from "axios";
+import CodemirrorTextarea from "../../Common/CodemirrorTextarea";
 
 export default {
     name: 'BrandingForm',
     props: {
         apiUrl: String
+    },
+    components: {
+        CodemirrorTextarea,
     },
     mixins: [
         validationMixin
@@ -167,7 +171,7 @@ export default {
                     value: 'dark',
                 }
             ];
-        }
+        },
     },
     validations: {
         form: {
@@ -186,10 +190,11 @@ export default {
     },
     methods: {
         relist() {
+            this.$v.form.$reset();
             this.loading = true;
 
             axios.get(this.apiUrl).then((resp) => {
-                this.form = resp.data;
+                this.populateForm(resp.data);
                 this.loading = false;
             }).catch((error) => {
                 let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
@@ -197,6 +202,18 @@ export default {
 
                 this.close();
             });
+        },
+        populateForm(data) {
+            this.form = {
+                'public_theme': data.public_theme,
+                'hide_album_art': data.hide_album_art,
+                'homepage_redirect_url': data.homepage_redirect_url,
+                'default_album_art_url': data.default_album_art_url,
+                'hide_product_name': data.hide_product_name,
+                'public_custom_css': data.public_custom_css,
+                'public_custom_js': data.public_custom_js,
+                'internal_custom_css': data.internal_custom_css
+            }
         },
         submit() {
             this.$v.form.$touch();

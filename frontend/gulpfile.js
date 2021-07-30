@@ -132,7 +132,8 @@ var jsFiles = {
     base: null,
     files: [
       'node_modules/codemirror/lib/codemirror.*',
-      'node_modules/codemirror/mode/css/css.js'
+      'node_modules/codemirror/mode/css/css.js',
+      'node_modules/codemirror/mode/javascript/javascript.js'
     ]
   },
   'clipboard': {

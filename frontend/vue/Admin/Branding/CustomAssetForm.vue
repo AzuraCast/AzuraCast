@@ -1,7 +1,9 @@
 <template>
     <b-media tag="li">
         <template #aside>
-            <b-img :src="url" width="125" :alt="caption"></b-img>
+            <a :href="url" data-fancybox target="_blank">
+                <b-img :src="url" width="125" :alt="caption"></b-img>
+            </a>
         </template>
         <b-overlay variant="card" :show="loading">
             <b-form-group :label-for="id">
@@ -61,6 +63,10 @@ export default {
             });
         },
         upload() {
+            if (null === this.file) {
+                return;
+            }
+
             let formData = new FormData();
             formData.append('file', this.file);
 

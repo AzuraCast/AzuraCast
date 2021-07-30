@@ -34,7 +34,8 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
 
     protected function getDefaultUrl(): string
     {
-        return $this->environment->getAssetUrl() . '/icons/' . $this->environment->getAppEnvironment() . '/original.png';
+        $assetUrl = $this->environment->getAssetUrl();
+        return $assetUrl . '/icons/' . $this->environment->getAppEnvironment() . '/original.png';
     }
 
     public function upload(Image $image): void

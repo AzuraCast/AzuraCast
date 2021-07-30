@@ -31,9 +31,9 @@ abstract class AbstractCustomAsset implements CustomAssetInterface
             $mtime = filemtime($path);
 
             return $this->environment->getAssetUrl() . self::UPLOADS_URL_PREFIX . '/' . sprintf(
-                    $pattern,
-                    '.' . $mtime
-                );
+                $pattern,
+                '.' . $mtime
+            );
         }
 
         return $this->getDefaultUrl();

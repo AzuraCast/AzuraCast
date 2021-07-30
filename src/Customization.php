@@ -94,7 +94,20 @@ class Customization
      */
     public function getCustomPublicCss(): string
     {
-        return $this->settings->getPublicCustomCss() ?? '';
+        $publicCss = $this->settings->getPublicCustomCss() ?? '';
+
+        $background = AssetFactory::createBackground($this->environment);
+        if ($background->isUploaded()) {
+            $backgroundUrl = $background->getUrl();
+
+            $publicCss .= <<<CSS
+            [data-theme] body.page-minimal {
+                background-image: url('${backgroundUrl}');
+            }
+            CSS;
+        }
+
+        return $publicCss;
     }
 
     /**

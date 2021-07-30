@@ -7,6 +7,8 @@
                 </h2>
             </div>
 
+            <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
+
             <b-overlay variant="card" :show="loading">
                 <div class="card-body">
                     <b-form-group>
@@ -27,13 +29,12 @@
                                 <template v-slot:description>
                                     <translate key="lang_form_edit_hide_album_art_desc">If selected, album art will not display on public-facing radio pages.</translate>
                                 </template>
-                                <b-form-checkbox id="form_edit_hide_album_art" v-model="form.hide_album_art.$model">
+                                <b-form-checkbox id="form_edit_hide_album_art" v-model="$v.form.hide_album_art.$model">
                                     <translate
                                         key="lang_form_edit_hide_album_art">Hide Album Art on Public Pages</translate>
                                 </b-form-checkbox>
                             </b-form-group>
-                        </b-row>
-                        <b-row>
+
                             <b-form-group class="col-md-6" label-for="form_edit_homepage_redirect_url">
                                 <template #label>
                                     <translate
@@ -43,65 +44,86 @@
                                     <translate key="lang_form_edit_homepage_redirect_url_desc">If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.</translate>
                                 </template>
                                 <b-form-input id="form_edit_homepage_redirect_url" type="text"
-                                              v-model="form.homepage_redirect_url.$model"
-                                              :state="form.homepage_redirect_url.$dirty ? !form.homepage_redirect_url.$error : null"></b-form-input>
+                                              v-model="$v.form.homepage_redirect_url.$model"
+                                              :state="$v.form.homepage_redirect_url.$dirty ? !$v.form.homepage_redirect_url.$error : null"></b-form-input>
                                 <b-form-invalid-feedback>
                                     <translate key="lang_error_required">This field is required.</translate>
                                 </b-form-invalid-feedback>
                             </b-form-group>
 
+                            <b-form-group class="col-md-6" label-for="form_edit_default_album_art_url">
+                                <template #label>
+                                    <translate
+                                        key="lang_form_edit_default_album_art_url">Default Album Art URL</translate>
+                                </template>
+                                <template #description>
+                                    <translate key="lang_form_edit_default_album_art_url_desc">If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.</translate>
+                                </template>
+                                <b-form-input id="form_edit_default_album_art_url" type="text"
+                                              v-model="$v.form.default_album_art_url.$model"
+                                              :state="$v.form.default_album_art_url.$dirty ? !$v.form.default_album_art_url.$error : null"></b-form-input>
+                                <b-form-invalid-feedback>
+                                    <translate key="lang_error_required">This field is required.</translate>
+                                </b-form-invalid-feedback>
+                            </b-form-group>
 
-                            <div class="form-group col-md-6" id="field_default_album_art_url"><label
-                                for="azuraforms_form_default_album_art_url" class="">Default Album Art URL </label>
-                                <div class="form-field"><input type="text" name="default_album_art_url"
-                                                               id="azuraforms_form_default_album_art_url" value=""
-                                                               type="text" class=""/></div>
-                                <small class="help-block">If a song has no album art, this URL will be listed instead.
-                                    Leave
-                                    blank to use the standard placeholder art.</small></div>
-                            <div class="form-group col-sm-12" id="field_hide_product_name"><label
-                                for="azuraforms_form_hide_product_name" class="">Hide AzuraCast Branding on Public
-                                Pages </label>
-                                <div class="form-field"><input type="hidden" name="hide_product_name" value="0"/><input
-                                    type="checkbox" name="hide_product_name" id="azuraforms_form_hide_product_name"
-                                    value="1" class="toggle-switch"/><label for="azuraforms_form_hide_product_name">Hide
-                                    AzuraCast Branding on Public Pages</label></div>
-                                <small class="help-block">If selected, this will remove the AzuraCast branding from
-                                    public-facing pages.</small></div>
-                            <div class="form-group col-sm-12" id="field_public_custom_css"><label
-                                for="azuraforms_form_public_custom_css" class="">Custom CSS for Public Pages </label>
-                                <div class="form-field"><textarea name="public_custom_css"
-                                                                  id="azuraforms_form_public_custom_css"
-                                                                  class=" css-editor"
-                                                                  spellcheck="false" type="text" rows="6"
-                                                                  cols="60"></textarea></div>
-                                <small class="help-block">This CSS will be applied to the station public pages and login
-                                    page.</small></div>
-                            <div class="form-group col-sm-12" id="field_public_custom_js"><label
-                                for="azuraforms_form_public_custom_js" class="">Custom JS for Public Pages </label>
-                                <div class="form-field"><textarea name="public_custom_js"
-                                                                  id="azuraforms_form_public_custom_js"
-                                                                  class=" js-editor"
-                                                                  spellcheck="false" type="text" rows="6"
-                                                                  cols="60"></textarea></div>
-                                <small class="help-block">This javascript code will be applied to the station public
-                                    pages
-                                    and login page.</small></div>
-                            <div class="form-group col-sm-12" id="field_internal_custom_css"><label
-                                for="azuraforms_form_internal_custom_css" class="">Custom CSS for Internal
-                                Pages </label>
-                                <div class="form-field"><textarea name="internal_custom_css"
-                                                                  id="azuraforms_form_internal_custom_css"
-                                                                  class=" css-editor" spellcheck="false" type="text"
-                                                                  rows="6" cols="60"></textarea></div>
-                                <small class="help-block">This CSS will be applied to the main management pages, like
-                                    this
-                                    one.</small></div>
-                            <div class="form-group col-sm-12" id="field_submit">
-                                <div class="form-field"><input type="submit" name="submit" id="azuraforms_form_submit"
-                                                               value="Save Changes" type="submit"
-                                                               class=" btn btn-lg btn-primary"/></div>
-                            </div>
+                            <b-form-group class="col-md-12" label-for="form_edit_hide_product_name">
+                                <template v-slot:description>
+                                    <translate key="lang_form_edit_hide_product_name_desc">If selected, this will remove the AzuraCast branding from public-facing pages.</translate>
+                                </template>
+                                <b-form-checkbox id="form_edit_hide_product_name"
+                                                 v-model="$v.form.hide_product_name.$model">
+                                    <translate
+                                        key="lang_form_edit_hide_product_name">Hide AzuraCast Branding on Public Pages</translate>
+                                </b-form-checkbox>
+                            </b-form-group>
+
+                            <b-form-group class="col-md-12" label-for="edit_form_public_custom_css">
+                                <template #label>
+                                    <translate
+                                        key="lang_edit_form_public_custom_css">Custom CSS for Public Pages</translate>
+                                </template>
+                                <template #description>
+                                    <translate key="lang_edit_form_public_custom_css_desc">This CSS will be applied to the station public pages and login page.</translate>
+                                </template>
+                                <b-textarea id="edit_form_public_custom_css" class="css-editor" spellcheck="false"
+                                            v-model="$v.form.public_custom_css.$model"
+                                            :state="$v.form.public_custom_css.$dirty ? !$v.form.public_custom_css.$error : null">
+                                </b-textarea>
+                            </b-form-group>
+
+                            <b-form-group class="col-md-12" label-for="edit_form_public_custom_js">
+                                <template #label>
+                                    <translate
+                                        key="lang_edit_form_public_custom_js">Custom JS for Public Pages</translate>
+                                </template>
+                                <template #description>
+                                    <translate key="lang_edit_form_public_custom_js_desc">This javascript code will be applied to the station public pages and login page.</translate>
+                                </template>
+                                <b-textarea id="edit_form_public_custom_js" class="js-editor" spellcheck="false"
+                                            v-model="$v.form.public_custom_js.$model"
+                                            :state="$v.form.public_custom_js.$dirty ? !$v.form.public_custom_js.$error : null">
+                                </b-textarea>
+                            </b-form-group>
+
+                            <b-form-group class="col-md-12" label-for="edit_form_internal_custom_css">
+                                <template #label>
+                                    <translate
+                                        key="lang_edit_form_internal_custom_css">Custom CSS for Internal Pages</translate>
+                                </template>
+                                <template #description>
+                                    <translate key="lang_edit_form_internal_custom_css_desc">This CSS will be applied to the main management pages, like this one.</translate>
+                                </template>
+                                <b-textarea id="edit_form_internal_custom_css" class="css-editor" spellcheck="false"
+                                            v-model="$v.form.internal_custom_css.$model"
+                                            :state="$v.form.internal_custom_css.$dirty ? !$v.form.internal_custom_css.$error : null">
+                                </b-textarea>
+                            </b-form-group>
+                        </b-row>
+
+                        <b-button size="lg" type="submit" variant="primary">
+                            <translate key="lang_btn_save_changes">Save Changes</translate>
+                        </b-button>
                     </b-form-group>
                 </div>
             </b-overlay>
@@ -110,8 +132,9 @@
 </template>
 
 <script>
-
 import {validationMixin} from "vuelidate";
+import handleAxiosError from "../../Function/handleAxiosError";
+import axios from "axios";
 
 export default {
     name: 'BrandingForm',
@@ -124,6 +147,7 @@ export default {
     data() {
         return {
             loading: true,
+            error: null,
             form: {},
         };
     },
@@ -131,15 +155,15 @@ export default {
         publicThemeOptions() {
             return [
                 {
-                    name: this.$gettext('Prefer System Default'),
+                    text: this.$gettext('Prefer System Default'),
                     value: 'browser',
                 },
                 {
-                    name: this.$gettext('Light'),
+                    text: this.$gettext('Light'),
                     value: 'light',
                 },
                 {
-                    name: this.$gettext('Dark'),
+                    text: this.$gettext('Dark'),
                     value: 'dark',
                 }
             ];
@@ -150,6 +174,11 @@ export default {
             'public_theme': {},
             'hide_album_art': {},
             'homepage_redirect_url': {},
+            'default_album_art_url': {},
+            'hide_product_name': {},
+            'public_custom_css': {},
+            'public_custom_js': {},
+            'internal_custom_css': {}
         }
     },
     mounted() {
@@ -158,8 +187,38 @@ export default {
     methods: {
         relist() {
             this.loading = true;
+
+            axios.get(this.apiUrl).then((resp) => {
+                this.form = resp.data;
+                this.loading = false;
+            }).catch((error) => {
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                handleAxiosError(error, notifyMessage);
+
+                this.close();
+            });
         },
         submit() {
+            this.$v.form.$touch();
+            if (this.$v.form.$anyError) {
+                return;
+            }
+
+            axios({
+                method: 'PUT',
+                url: this.apiUrl,
+                data: this.form
+            }).then((resp) => {
+                let notifyMessage = this.$gettext('Changes saved.');
+                notify('<b>' + notifyMessage + '</b>', 'success');
+
+                this.relist();
+            }).catch((error) => {
+                let notifyMessage = this.$gettext('An error occurred and your request could not be completed.');
+                notifyMessage = handleAxiosError(error, notifyMessage);
+
+                this.error = notifyMessage;
+            });
 
         }
     }

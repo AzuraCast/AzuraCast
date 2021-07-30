@@ -1,14 +1,30 @@
 <?php
 /**
- * @var \App\Form\Form $form
  * @var \App\Assets $assets
+ * @var \App\Http\RouterInterface $router
  */
 
-$assets
-    ->load('codemirror_css')
-    ->addInlineJs($this->fetch('admin/branding/index.js'), 99);
+$this->layout(
+    'main',
+    [
+        'title' => __('Custom Branding'),
+        'manual' => true,
+    ]
+);
 
-echo $this->fetch('system/form_page', [
-    'title' => __('Custom Branding'),
-    'form' => $form,
-]);
+$props = [
+    'settingsApiUrl' => (string)$router->named('api:admin:settings'),
+    'browserIconApiUrl' => (string)$router->named('api:admin:custom_assets', [
+        'type' => App\Assets\AssetFactory::TYPE_BROWSER_ICON,
+    ]),
+    'backgroundApiUrl' => (string)$router->named('api:admin:custom_assets', [
+        'type' => App\Assets\AssetFactory::TYPE_BACKGROUND,
+    ]),
+    'albumArtApiUrl' => (string)$router->named('api:admin:custom_assets', [
+        'type' => App\Assets\AssetFactory::TYPE_ALBUM_ART,
+    ]),
+];
+
+$assets->addVueRender('Vue_AdminBranding', '#admin-branding', $props);
+?>
+<div id="admin-branding"></div>

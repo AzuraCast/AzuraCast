@@ -4,32 +4,23 @@
             <translate key="lang_header">Custom Branding</translate>
         </h2>
 
-        <div class="card-columns mb-3">
-            <section class="card" role="region">
-                <div class="card-header bg-primary-dark">
-                    <h2 class="card-title">{{ langBackground }}</h2>
-                </div>
-                <div class="card-body">
-                    <custom-asset-form :api-url="backgroundApiUrl" :caption="langBackground"></custom-asset-form>
-                </div>
-            </section>
-            <section class="card" role="region">
-                <div class="card-header bg-primary-dark">
-                    <h2 class="card-title">{{ langAlbumArt }}</h2>
-                </div>
-                <div class="card-body">
-                    <custom-asset-form :api-url="albumArtApiUrl" :caption="langAlbumArt"></custom-asset-form>
-                </div>
-            </section>
-            <section class="card" role="region">
-                <div class="card-header bg-primary-dark">
-                    <h2 class="card-title">{{ langBrowserIcon }}</h2>
-                </div>
-                <div class="card-body">
-                    <custom-asset-form :api-url="browserIconApiUrl" :caption="langBrowserIcon"></custom-asset-form>
-                </div>
-            </section>
-        </div>
+        <section class="card mb-3" role="region">
+            <div class="card-header bg-primary-dark">
+                <h2 class="card-title">
+                    <translate key="lang_custom_assets">Upload Custom Assets</translate>
+                </h2>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <custom-asset-form id="asset_background" class="mb-3" :api-url="backgroundApiUrl"
+                                       :caption="langBackground"></custom-asset-form>
+                    <custom-asset-form id="asset_album_art" class="mb-3" :api-url="albumArtApiUrl"
+                                       :caption="langAlbumArt"></custom-asset-form>
+                    <custom-asset-form id="asset_browser_icon" :api-url="browserIconApiUrl"
+                                       :caption="langBrowserIcon"></custom-asset-form>
+                </ul>
+            </div>
+        </section>
 
         <branding-form :api-url="settingsApiUrl"></branding-form>
     </div>

@@ -1,19 +1,18 @@
 <template>
-    <b-overlay variant="card" :show="loading">
-        <div class="row">
-            <div class="col-6">
-                <b-form-group label-for="edit_form_art">
-                    <b-form-file id="edit_form_art" v-model="file" accept="image/*" @input="upload"></b-form-file>
-                </b-form-group>
-                <b-button v-if="isUploaded" block variant="danger" @click.prevent="delete()">
-                    Reset to Default
-                </b-button>
-            </div>
-            <div class="col-6">
-                <b-img :src="url" fluid :alt="caption"></b-img>
-            </div>
-        </div>
-    </b-overlay>
+    <b-media tag="li">
+        <template #aside>
+            <b-img :src="url" width="125" :alt="caption"></b-img>
+        </template>
+        <b-overlay variant="card" :show="loading">
+            <b-form-group :label-for="id">
+                <template #label>{{ caption }}</template>
+                <b-form-file :id="id" v-model="file" accept="image/*" @input="upload"></b-form-file>
+            </b-form-group>
+            <b-button v-if="isUploaded" variant="outline-danger" @click.prevent="clear()">
+                <translate key="lang_btn_reset">Clear Image</translate>
+            </b-button>
+        </b-overlay>
+    </b-media>
 </template>
 
 <script>
@@ -23,6 +22,7 @@ import handleAxiosError from "../../Function/handleAxiosError";
 export default {
     name: 'CustomAssetForm',
     props: {
+        id: String,
         apiUrl: String,
         caption: String
     },
@@ -52,7 +52,7 @@ export default {
             });
 
         },
-        delete() {
+        clear() {
             axios.delete(this.apiUrl).then((resp) => {
                 this.relist();
             }).catch((error) => {

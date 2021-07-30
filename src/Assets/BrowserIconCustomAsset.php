@@ -28,17 +28,21 @@ class BrowserIconCustomAsset extends AbstractCustomAsset
 
     protected function getPattern(): string
     {
-        return 'browser_icon/default%s.png';
+        return 'browser_icon/original%s.png';
     }
 
     protected function getDefaultUrl(): string
     {
-        return $this->environment->getAssetUrl() . '/icons/' . $this->environment->getAppEnvironment() . '/default.png';
+        return $this->environment->getAssetUrl() . '/icons/' . $this->environment->getAppEnvironment(
+            ) . '/original.png';
     }
 
     public function upload(Image $image): void
     {
         $uploadsDir = $this->environment->getUploadsDirectory() . '/browser_icon';
+        if (!mkdir($uploadsDir) && !is_dir($uploadsDir)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadsDir));
+        }
 
         $newImage = clone $image;
         $newImage->resize(256, 256);

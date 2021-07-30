@@ -469,6 +469,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_AdminBranding' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'codemirror_css'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_AdminStorageLocations' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],

@@ -72,6 +72,7 @@ services :
     volumes :
       - letsencrypt:/etc/nginx/certs:ro
       - www_vendor:/var/azuracast/www/vendor
+      - www_uploads:/var/azuracast/uploads
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
       - shoutcast2_install:/var/azuracast/servers/shoutcast2

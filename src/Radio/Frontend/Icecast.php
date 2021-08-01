@@ -188,6 +188,12 @@ class Icecast extends AbstractFrontend
                 $mount['hidden'] = 1;
             }
 
+            if (!empty($mount_row->getIntroPath())) {
+                $introPath = $mount_row->getIntroPath();
+                // The intro path is appended to webroot, hence the 5 ../es. Amazingly, this works!
+                $mount['intro'] = '../../../../../' . $station->getRadioConfigDir() . '/' . $introPath;
+            }
+
             if (!empty($mount_row->getFallbackMount())) {
                 $mount['fallback-mount'] = $mount_row->getFallbackMount();
                 $mount['fallback-override'] = 1;

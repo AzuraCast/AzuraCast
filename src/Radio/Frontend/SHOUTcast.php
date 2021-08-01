@@ -147,6 +147,11 @@ class SHOUTcast extends AbstractFrontend
             $config['streamid_' . $i] = $i;
             $config['streampath_' . $i] = $mount_row->getName();
 
+            if (!empty($mount_row->getIntroPath())) {
+                $introPath = $mount_row->getIntroPath();
+                $config['streamintrofile_' . $i] = $station->getRadioConfigDir() . '/' . $introPath;
+            }
+
             if ($mount_row->getRelayUrl()) {
                 $config['streamrelayurl_' . $i] = $mount_row->getRelayUrl();
             }

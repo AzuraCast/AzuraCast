@@ -6,9 +6,82 @@ namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
 use App\Entity;
+use App\Flysystem\StationFilesystems;
+use App\Service\Flow\UploadedFile;
+use Azura\Files\ExtendedFilesystemInterface;
 
+/**
+ * @extends Repository<Entity\StationMount>
+ */
 class StationMountRepository extends Repository
 {
+    public function find(Entity\Station $station, int $id): ?Entity\StationMount
+    {
+        return $this->repository->findOneBy(
+            [
+                'station' => $station,
+                'id' => $id,
+            ]
+        );
+    }
+
+    public function setIntro(
+        Entity\StationMount $mount,
+        UploadedFile $file,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= (new StationFilesystems($mount->getStation()))->getConfigFilesystem();
+
+        if (!empty($mount->getIntroPath())) {
+            $this->doDeleteIntro($mount, $fs);
+            $mount->setIntroPath(null);
+        }
+
+        $originalPath = $file->getOriginalFilename();
+        $originalExt = pathinfo($originalPath, PATHINFO_EXTENSION);
+
+        $introPath = 'mount_' . $mount->getIdRequired() . '_intro.' . $originalExt;
+        $fs->uploadAndDeleteOriginal($file->getUploadedPath(), $introPath);
+
+        $mount->setIntroPath($introPath);
+        $this->em->persist($mount);
+        $this->em->flush();
+    }
+
+    protected function doDeleteIntro(
+        Entity\StationMount $mount,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $fs ??= (new StationFilesystems($mount->getStation()))->getConfigFilesystem();
+
+        $introPath = $mount->getIntroPath();
+        if (empty($introPath)) {
+            return;
+        }
+
+        $fs->delete($introPath);
+    }
+
+    public function clearIntro(
+        Entity\StationMount $mount,
+        ?ExtendedFilesystemInterface $fs = null
+    ): void {
+        $this->doDeleteIntro($mount, $fs);
+
+        $mount->setIntroPath(null);
+        $this->em->persist($mount);
+        $this->em->flush();
+    }
+
+    public function destroy(
+        Entity\StationMount $mount
+    ): void {
+        $this->doDeleteIntro($mount);
+
+        $this->em->remove($mount);
+        $this->em->flush();
+    }
+
     /**
      * @param Entity\Station $station
      *

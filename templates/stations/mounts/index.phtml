@@ -11,6 +11,7 @@ $this->layout(
 /** @var App\Http\RouterInterface $router */
 $props = [
     'listUrl' => (string)$router->fromHere('api:stations:mounts'),
+    'newIntroUrl' => (string)$router->fromHere('api:stations:mounts:new-intro'),
     'stationFrontendType' => $station->getFrontendType(),
     'enableAdvancedFeatures' => $enableAdvancedFeatures,
 ];

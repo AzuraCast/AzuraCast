@@ -88,6 +88,9 @@ class StationMount implements
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $custom_listen_url = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $intro_path = null;
+
     /** @OA\Property(type="array", @OA\Items()) */
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $frontend_config = null;
@@ -294,6 +297,16 @@ class StationMount implements
     public function setListenersTotal(int $listeners_total): void
     {
         $this->listeners_total = $listeners_total;
+    }
+
+    public function getIntroPath(): ?string
+    {
+        return $this->intro_path;
+    }
+
+    public function setIntroPath(?string $intro_path): void
+    {
+        $this->intro_path = $intro_path;
     }
 
     public function getAutodjHost(): ?string

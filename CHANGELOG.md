@@ -16,6 +16,8 @@ release channel, you can take advantage of these new features and fixes.
 - You can now embed the "Schedule" panel from the station's profile into your own web page as an embeddabl component.
 
 - Mount point updates:
+    - You can now upload an introduction file that will be played to listeners when they initially connect. This file
+      must match the bitrate and format of the stream itself, and is thus uploaded on a per-mount-point basis.
     - You can now broadcast in Ogg FLAC format.
     - You can now specify a maximum connected time in seconds, after which listeners are automatically disconnected.
 

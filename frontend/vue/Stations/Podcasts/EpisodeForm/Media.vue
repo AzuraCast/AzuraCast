@@ -52,17 +52,22 @@ export default {
         editMediaUrl: String,
         newMediaUrl: String
     },
-    data () {
+    data() {
         return {
             hasMedia: this.recordHasMedia,
             acceptMimeTypes: ['audio/x-m4a', 'audio/mpeg']
         };
     },
+    watch: {
+        recordHasMedia(newValue) {
+            this.hasMedia = newValue;
+        }
+    },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Media');
         },
-        targetUrl () {
+        targetUrl() {
             return (this.editMediaUrl)
                 ? this.editMediaUrl
                 : this.newMediaUrl;

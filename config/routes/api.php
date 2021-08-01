@@ -477,6 +477,32 @@ return function (App $app) {
                         ->add(Middleware\Module\StationFiles::class)
                         ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+                    $group->post(
+                        '/mounts/intro',
+                        Controller\Api\Stations\Mounts\Intro\PostIntroAction::class
+                    )->setName('api:stations:mounts:new-intro')
+                        ->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
+
+                    $group->group(
+                        '/mount/{id}',
+                        function (RouteCollectorProxy $group) {
+                            $group->get(
+                                '/intro',
+                                Controller\Api\Stations\Mounts\Intro\GetIntroAction::class
+                            )->setName('api:stations:mounts:intro');
+
+                            $group->post(
+                                '/intro',
+                                Controller\Api\Stations\Mounts\Intro\PostIntroAction::class
+                            );
+
+                            $group->delete(
+                                '/intro',
+                                Controller\Api\Stations\Mounts\Intro\DeleteIntroAction::class
+                            );
+                        }
+                    )->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
+
                     $group->get(
                         '/playlists/schedule',
                         Controller\Api\Stations\PlaylistsController::class . ':scheduleAction'

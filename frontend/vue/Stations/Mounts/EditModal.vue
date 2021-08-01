@@ -4,9 +4,15 @@
             <b-alert variant="danger" :show="error != null">{{ error }}</b-alert>
             <b-form class="form" @submit.prevent="doSubmit">
                 <b-tabs content-class="mt-3">
-                    <mount-form-basic-info :form="$v.form" :station-frontend-type="stationFrontendType"></mount-form-basic-info>
-                    <mount-form-auto-dj :form="$v.form" :station-frontend-type="stationFrontendType"></mount-form-auto-dj>
-                    <mount-form-advanced v-if="enableAdvancedFeatures" :form="$v.form" :station-frontend-type="stationFrontendType"></mount-form-advanced>
+                    <mount-form-basic-info :form="$v.form"
+                                           :station-frontend-type="stationFrontendType"></mount-form-basic-info>
+                    <mount-form-auto-dj :form="$v.form"
+                                        :station-frontend-type="stationFrontendType"></mount-form-auto-dj>
+                    <mount-form-intro v-model="$v.form.intro_file.$model" :record-has-intro="record.intro_path !== null"
+                                      :new-intro-url="newIntroUrl"
+                                      :edit-intro-url="record.links.intro"></mount-form-intro>
+                    <mount-form-advanced v-if="enableAdvancedFeatures" :form="$v.form"
+                                         :station-frontend-type="stationFrontendType"></mount-form-advanced>
                 </b-tabs>
 
                 <invisible-submit-button/>
@@ -27,23 +33,35 @@ import required from 'vuelidate/src/validators/required';
 import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import BaseEditModal from '../../Common/BaseEditModal';
 
-import { FRONTEND_ICECAST, FRONTEND_SHOUTCAST } from '../../Entity/RadioAdapters';
+import {FRONTEND_ICECAST, FRONTEND_SHOUTCAST} from '../../Entity/RadioAdapters';
 import MountFormBasicInfo from './Form/BasicInfo';
 import MountFormAutoDj from './Form/AutoDj';
 import MountFormAdvanced from './Form/Advanced';
+import MountFormIntro from "./Form/Intro";
 
 export default {
     name: 'EditModal',
     mixins: [BaseEditModal],
-    components: { MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo, InvisibleSubmitButton },
+    components: {MountFormIntro, MountFormAdvanced, MountFormAutoDj, MountFormBasicInfo, InvisibleSubmitButton},
     props: {
         stationFrontendType: String,
+        newIntroUrl: String,
         enableAdvancedFeatures: Boolean
     },
-    validations () {
+    data() {
+        return {
+            record: {
+                intro_path: null,
+                links: {
+                    intro: null
+                }
+            }
+        }
+    },
+    validations() {
         let validations = {
             form: {
-                name: { required },
+                name: {required},
                 display_name: {},
                 is_visible_on_public_pages: {},
                 is_default: {},
@@ -53,7 +71,8 @@ export default {
                 autodj_format: {},
                 autodj_bitrate: {},
                 custom_listen_url: {},
-                max_listener_duration: { required }
+                max_listener_duration: {required},
+                intro_file: {}
             }
         };
 
@@ -76,6 +95,12 @@ export default {
     },
     methods: {
         resetForm () {
+            this.record = {
+                intro_path: null,
+                links: {
+                    intro: null
+                }
+            };
             this.form = {
                 name: null,
                 display_name: null,
@@ -90,10 +115,12 @@ export default {
                 authhash: null,
                 fallback_mount: '/error.mp3',
                 max_listener_duration: 0,
-                frontend_config: null
+                frontend_config: null,
+                intro_file: null
             };
         },
         populateForm (d) {
+            this.record = d;
             this.form = {
                 'name': d.name,
                 'display_name': d.display_name,
@@ -108,7 +135,8 @@ export default {
                 'authhash': d.authhash,
                 'fallback_mount': d.fallback_mount,
                 'max_listener_duration': d.max_listener_duration,
-                'frontend_config': d.frontend_config
+                'frontend_config': d.frontend_config,
+                'intro_file': null
             };
         }
     }

@@ -62,7 +62,9 @@ export default {
     },
     mounted () {
         let defaultConfig = {
-            target: this.targetUrl,
+            target: () => {
+                return this.targetUrl
+            },
             singleFile: !this.allowMultiple,
             headers: {
                 'Accept': 'application/json'

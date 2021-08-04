@@ -39,7 +39,7 @@ class Arrays
         $return = [];
 
         foreach ($array as $key => $value) {
-            $return_key = $prefix ? $prefix . $separator . $key : $key;
+            $return_key = (string)($prefix ? $prefix . $separator . $key : $key);
             if (is_array($value)) {
                 $return = array_merge($return, self::flattenArray($value, $separator, $return_key));
             } else {

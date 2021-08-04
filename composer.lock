@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "775abe4bc5a64c6cd571ecce6a133c3a",
+    "content-hash": "23f4b61cc7098b1b1db7b70825cebf26",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2850,12 +2850,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "4e5bcaf"
+                "reference": "0bc9aca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/4e5bcaf",
-                "reference": "4e5bcaf",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/0bc9aca",
+                "reference": "0bc9aca",
                 "shasum": ""
             },
             "require": {
@@ -2910,7 +2910,7 @@
                 "issues": "https://github.com/JamesHeinrich/getID3/issues",
                 "source": "https://github.com/JamesHeinrich/getID3/tree/master"
             },
-            "time": "2021-07-06T12:35:47+00:00"
+            "time": "2021-07-13T18:42:33+00:00"
         },
         {
             "name": "laminas/laminas-code",

@@ -19,7 +19,7 @@ return function (App $app) {
                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                         ->withHeader(
                             'Access-Control-Allow-Headers',
-                            'x-requested-with, Content-Type, Accept, Origin, Authorization'
+                            'x-api-key, x-requested-with, Content-Type, Accept, Origin, Authorization'
                         )
                         ->withHeader('Access-Control-Allow-Origin', '*');
                 }

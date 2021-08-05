@@ -79,7 +79,7 @@ class ReadCommand
                         $tagValue = implode(', ', $flatValue);
                     }
 
-                    $metaTags[$tagName] = $this->cleanUpString($tagValue);
+                    $metaTags[$tagName] = $this->cleanUpString((string)$tagValue);
                 }
             }
         }

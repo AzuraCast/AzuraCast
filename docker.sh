@@ -686,9 +686,13 @@ restore-legacy() {
 # Usage: ./docker.sh static [static_container_command]
 #
 static() {
-  cd frontend || exit
-  docker-compose build
-  docker-compose run --rm frontend "$@"
+  local PUID PGID
+  PUID=$(id -u)
+  PGID=$(id -g)
+
+  docker-compose -f frontend/docker-compose.yml down -v
+  docker-compose -f frontend/docker-compose.yml build
+  PUID=$PUID PGID=$PGID docker-compose -f frontend/docker-compose.yml run --rm frontend "$@"
   exit
 }
 

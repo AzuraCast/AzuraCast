@@ -8,11 +8,11 @@ use App\Entity;
 use App\Environment;
 use App\Event\Media\ReadMetadata;
 use App\Event\Media\WriteMetadata;
-use App\EventDispatcher;
 use App\Exception\CannotProcessMediaException;
 use App\Utilities\File;
 use App\Utilities\Json;
 use GuzzleHttp\Client;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -20,7 +20,7 @@ use Symfony\Component\Process\Process;
 class MetadataManager implements EventSubscriberInterface
 {
     public function __construct(
-        protected EventDispatcher $eventDispatcher,
+        protected EventDispatcherInterface $eventDispatcher,
         protected Client $httpClient,
         protected Environment $environment
     ) {

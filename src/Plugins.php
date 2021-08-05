@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\Finder\Finder;
@@ -68,9 +69,9 @@ class Plugins
     /**
      * Register custom events that the plugin overrides with the Event Dispatcher.
      *
-     * @param EventDispatcher $dispatcher
+     * @param CallableEventDispatcherInterface $dispatcher
      */
-    public function registerEvents(EventDispatcher $dispatcher): void
+    public function registerEvents(CallableEventDispatcherInterface $dispatcher): void
     {
         foreach ($this->plugins as $plugin) {
             $plugin_path = $plugin['path'];

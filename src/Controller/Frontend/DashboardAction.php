@@ -6,7 +6,6 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Entity;
-use App\EventDispatcher;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Avatar;
@@ -19,7 +18,6 @@ class DashboardAction
         ServerRequest $request,
         Response $response,
         EntityManagerInterface $em,
-        EventDispatcher $eventDispatcher,
         Avatar $avatar,
         Entity\ApiGenerator\NowPlayingApiGenerator $npApiGenerator,
         Entity\Repository\SettingsRepository $settingsRepo

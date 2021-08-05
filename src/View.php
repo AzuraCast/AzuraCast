@@ -10,6 +10,7 @@ use App\Traits\RequestAwareTrait;
 use Doctrine\Inflector\InflectorFactory;
 use League\Plates\Engine;
 use League\Plates\Template\Data;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -21,7 +22,7 @@ class View extends Engine
 
     public function __construct(
         Environment $environment,
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         Version $version,
         RouterInterface $router,
         protected Assets $assets

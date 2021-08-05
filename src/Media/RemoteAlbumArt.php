@@ -8,10 +8,10 @@ namespace App\Media;
 
 use App\Entity;
 use App\Event\Media\GetAlbumArt;
-use App\EventDispatcher;
 use App\Version;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
@@ -24,7 +24,7 @@ class RemoteAlbumArt
         protected LoggerInterface $logger,
         protected CacheInterface $cache,
         protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected EventDispatcher $eventDispatcher,
+        protected EventDispatcherInterface $eventDispatcher,
         protected Client $httpClient
     ) {
     }

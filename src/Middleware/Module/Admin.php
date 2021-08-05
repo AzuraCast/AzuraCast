@@ -6,8 +6,8 @@ namespace App\Middleware\Module;
 
 use App\Entity\Repository\SettingsRepository;
 use App\Event;
-use App\EventDispatcher;
 use App\Http\ServerRequest;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
@@ -19,7 +19,7 @@ use Slim\Routing\RouteContext;
 class Admin
 {
     public function __construct(
-        protected EventDispatcher $dispatcher,
+        protected EventDispatcherInterface $dispatcher,
         protected SettingsRepository $settingsRepo
     ) {
     }

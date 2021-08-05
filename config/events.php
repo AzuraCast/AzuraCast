@@ -4,8 +4,9 @@ use App\Console\Command;
 use App\Environment;
 use App\Event;
 use App\Middleware;
+use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 
-return function (App\EventDispatcher $dispatcher) {
+return function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addListener(
         Event\BuildConsoleCommands::class,
         function (Event\BuildConsoleCommands $event) use ($dispatcher) {

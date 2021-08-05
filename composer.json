@@ -20,6 +20,7 @@
         "azuracast/azuraforms": "dev-main",
         "azuracast/flysystem-v2-extensions": "dev-main",
         "azuracast/nowplaying": "dev-main",
+        "azuracast/slim-callable-eventdispatcher": "dev-main",
         "bacon/bacon-qr-code": "^2.0",
         "beberlei/doctrineextensions": "^1.2",
         "brick/math": "^0.9",

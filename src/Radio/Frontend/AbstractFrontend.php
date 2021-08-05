@@ -6,7 +6,6 @@ namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Environment;
-use App\EventDispatcher;
 use App\Http\Router;
 use App\Radio\AbstractAdapter;
 use App\Xml\Reader;
@@ -19,6 +18,7 @@ use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
 use PhpIP\IP;
 use PhpIP\IPBlock;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Supervisor\Supervisor;
@@ -34,7 +34,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         LoggerInterface $logger
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);

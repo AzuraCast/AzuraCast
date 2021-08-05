@@ -7,6 +7,7 @@ namespace App;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Traits\RequestAwareTrait;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 use function in_array;
@@ -46,7 +47,7 @@ class Acl
 
     public function __construct(
         protected Entity\Repository\RolePermissionRepository $permissionRepo,
-        protected EventDispatcher $dispatcher
+        protected EventDispatcherInterface $dispatcher
     ) {
         $this->reload();
     }

@@ -7,9 +7,9 @@ namespace App\Sync\Task;
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Event\Radio\AnnotateNextSong;
-use App\EventDispatcher;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
 class CheckRequests extends AbstractTask
@@ -17,7 +17,7 @@ class CheckRequests extends AbstractTask
     public function __construct(
         protected Entity\Repository\StationRequestRepository $requestRepo,
         protected Adapters $adapters,
-        protected EventDispatcher $dispatcher,
+        protected EventDispatcherInterface $dispatcher,
         ReloadableEntityManagerInterface $em,
         LoggerInterface $logger
     ) {

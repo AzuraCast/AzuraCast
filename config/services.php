@@ -70,7 +70,7 @@ return [
         App\Doctrine\Event\StationRequiresRestart $eventRequiresRestart,
         App\Doctrine\Event\AuditLog $eventAuditLog,
         App\Doctrine\Event\SetExplicitChangeTracking $eventChangeTracking,
-        App\EventDispatcher $dispatcher
+        Psr\EventDispatcher\EventDispatcherInterface $dispatcher
     ) {
         $connectionOptions = array_merge(
             $environment->getDatabaseSettings(),
@@ -244,7 +244,7 @@ return [
     // Console
     App\Console\Application::class => static function (
         DI\Container $di,
-        App\EventDispatcher $dispatcher,
+        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $dispatcher,
         App\Version $version,
         Environment $environment
     ) {
@@ -263,8 +263,11 @@ return [
     },
 
     // Event Dispatcher
-    App\EventDispatcher::class => static function (Slim\App $app, App\Plugins $plugins) {
-        $dispatcher = new App\EventDispatcher($app->getCallableResolver());
+    Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface::class => static function (
+        Slim\App $app,
+        App\Plugins $plugins
+    ) {
+        $dispatcher = new Azura\SlimCallableEventDispatcher\SlimCallableEventDispatcher($app->getCallableResolver());
 
         // Register application default events.
         if (file_exists(__DIR__ . '/events.php')) {
@@ -276,7 +279,9 @@ return [
 
         return $dispatcher;
     },
-    Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(App\EventDispatcher::class),
+    Psr\EventDispatcher\EventDispatcherInterface::class => DI\get(
+        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface::class
+    ),
 
     // Monolog Logger
     Monolog\Logger::class => static function (Environment $environment) {
@@ -425,7 +430,7 @@ return [
     // Mail functionality
     Symfony\Component\Mailer\Transport\TransportInterface::class => static function (
         App\Entity\Repository\SettingsRepository $settingsRepo,
-        App\EventDispatcher $eventDispatcher,
+        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $eventDispatcher,
         Monolog\Logger $logger
     ) {
         $settings = $settingsRepo->readSettings();
@@ -472,7 +477,7 @@ return [
     Symfony\Component\Mailer\Mailer::class => static function (
         Symfony\Component\Mailer\Transport\TransportInterface $transport,
         Symfony\Component\Messenger\MessageBus $messageBus,
-        App\EventDispatcher $eventDispatcher
+        Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface $eventDispatcher
     ) {
         return new Symfony\Component\Mailer\Mailer(
             $transport,

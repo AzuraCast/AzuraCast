@@ -7,9 +7,9 @@ namespace App\Radio\Backend;
 use App\Entity;
 use App\Environment;
 use App\Event\Radio\WriteLiquidsoapConfiguration;
-use App\EventDispatcher;
 use App\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Supervisor\Supervisor;
@@ -21,7 +21,7 @@ class Liquidsoap extends AbstractBackend
         Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         LoggerInterface $logger
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);

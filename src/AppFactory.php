@@ -17,6 +17,7 @@ use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 use Invoker\ParameterResolver\DefaultValueResolver;
 use Invoker\ParameterResolver\ResolverChain;
 use Monolog\Registry;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
@@ -98,7 +99,7 @@ class AppFactory
             $routeCollector->setCacheFile($environment->getTempDirectory() . '/app_routes.cache.php');
         }
 
-        $eventDispatcher = $container->get(EventDispatcher::class);
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(new Event\BuildRoutes($app));
 
         return $app;

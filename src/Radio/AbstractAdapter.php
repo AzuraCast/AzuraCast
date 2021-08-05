@@ -6,12 +6,12 @@ namespace App\Radio;
 
 use App\Entity;
 use App\Environment;
-use App\EventDispatcher;
 use App\Exception\Supervisor\AlreadyRunningException;
 use App\Exception\Supervisor\BadNameException;
 use App\Exception\Supervisor\NotRunningException;
 use App\Exception\SupervisorException;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Supervisor\Exception\Fault;
 use Supervisor\Exception\SupervisorException as SupervisorLibException;
@@ -24,7 +24,7 @@ abstract class AbstractAdapter
         protected Environment $environment,
         protected EntityManagerInterface $em,
         protected Supervisor $supervisor,
-        protected EventDispatcher $dispatcher,
+        protected EventDispatcherInterface $dispatcher,
         protected LoggerInterface $logger
     ) {
     }

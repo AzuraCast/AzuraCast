@@ -8,7 +8,6 @@ use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
-use App\EventDispatcher;
 use App\Http\RouterInterface;
 use App\LockFactory;
 use App\Message;
@@ -18,6 +17,7 @@ use DeepCopy\DeepCopy;
 use Exception;
 use Monolog\Logger;
 use NowPlaying\Result\Result;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,7 +30,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         protected Adapters $adapters,
         protected AutoDJ $autodj,
         protected CacheInterface $cache,
-        protected EventDispatcher $eventDispatcher,
+        protected EventDispatcherInterface $eventDispatcher,
         protected MessageBus $messageBus,
         protected LockFactory $lockFactory,
         protected RouterInterface $router,

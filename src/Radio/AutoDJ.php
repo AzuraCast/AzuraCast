@@ -9,13 +9,13 @@ use App\Entity;
 use App\Environment;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\BuildQueue;
-use App\EventDispatcher;
 use App\LockFactory;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class AutoDJ
 {
@@ -23,7 +23,7 @@ class AutoDJ
         protected ReloadableEntityManagerInterface $em,
         protected Entity\Repository\SongHistoryRepository $songHistoryRepo,
         protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected EventDispatcher $dispatcher,
+        protected EventDispatcherInterface $dispatcher,
         protected Logger $logger,
         protected Scheduler $scheduler,
         protected Environment $environment,

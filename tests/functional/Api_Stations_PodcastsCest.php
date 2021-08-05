@@ -22,10 +22,14 @@ class Api_Stations_PodcastsCest extends CestAbstract
                 'title' => 'My Awesome Podcast',
                 'description' => 'A functional test podcast.',
                 'language' => 'en',
+                'author' => 'AzuraCast',
+                'email' => 'demo@azuracast.com',
             ],
             [
                 'title' => 'My Modified Podcast',
                 'language' => 'de',
+                'author' => 'Test',
+                'email' => 'test@azuracast.com',
             ]
         );
 

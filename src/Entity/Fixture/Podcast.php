@@ -24,6 +24,8 @@ class Podcast extends AbstractFixture implements DependentFixtureInterface
         $podcast->setLink('https://demo.azuracast.com');
         $podcast->setLanguage('en');
         $podcast->setDescription('The unofficial testing podcast for the AzuraCast development team.');
+        $podcast->setAuthor('AzuraCast');
+        $podcast->setEmail('demo@azuracast.com');
         $manager->persist($podcast);
 
         $category = new Entity\PodcastCategory($podcast, 'Technology');

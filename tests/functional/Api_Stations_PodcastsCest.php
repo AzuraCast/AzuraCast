@@ -40,6 +40,8 @@ class Api_Stations_PodcastsCest extends CestAbstract
                 'title' => 'Episode Test Podcast',
                 'description' => 'A podcast with episodes.',
                 'language' => 'en',
+                'author' => 'AzuraCast',
+                'email' => 'demo@azuracast.com',
             ]
         );
         $I->seeResponseCodeIs(200);

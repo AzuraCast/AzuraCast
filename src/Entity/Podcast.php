@@ -41,6 +41,13 @@ class Podcast implements IdentifiableEntityInterface
     #[Assert\NotBlank]
     protected string $language;
 
+    #[ORM\Column(length: 255)]
+    protected string $author;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Email]
+    protected string $email;
+
     #[ORM\Column]
     #[Attributes\AuditIgnore]
     protected int $art_updated_at = 0;
@@ -108,6 +115,30 @@ class Podcast implements IdentifiableEntityInterface
     public function setLanguage(string $language): self
     {
         $this->language = $this->truncateString($language);
+
+        return $this;
+    }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $this->truncateString($author);
+
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $this->truncateString($email);
 
         return $this;
     }

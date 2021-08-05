@@ -258,6 +258,8 @@ class PodcastsController extends AbstractApiCrudController
         $return->link = $record->getLink();
         $return->description = $record->getDescription();
         $return->language = $record->getLanguage();
+        $return->author = $record->getAuthor();
+        $return->email = $record->getEmail();
 
         $categories = [];
         foreach ($record->getCategories() as $category) {

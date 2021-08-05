@@ -54,6 +54,8 @@ export default {
                 'link': '',
                 'description': '',
                 'language': 'en',
+                'author': '',
+                'email': '',
                 'categories': [],
                 'artwork_file': null
             }
@@ -72,6 +74,8 @@ export default {
             'link': {},
             'description': {},
             'language': { required },
+            'author': {},
+            'email': {},
             'categories': { required },
             'artwork_file': {}
         }
@@ -90,6 +94,8 @@ export default {
                 'link': '',
                 'description': '',
                 'language': 'en',
+                'author': '',
+                'email': '',
                 'categories': [],
                 'artwork_file': null
             };
@@ -101,6 +107,8 @@ export default {
                 'link': d.link,
                 'description': d.description,
                 'language': d.language,
+                'author': d.author,
+                'email': d.email,
                 'categories': d.categories,
                 'artwork_file': null
             };

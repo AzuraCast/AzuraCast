@@ -47,6 +47,16 @@ class Podcast
     /**
      * @OA\Property()
      */
+    public ?string $author = null;
+
+    /**
+     * @OA\Property()
+     */
+    public ?string $email = null;
+
+    /**
+     * @OA\Property()
+     */
     public bool $has_custom_art = false;
 
     /**

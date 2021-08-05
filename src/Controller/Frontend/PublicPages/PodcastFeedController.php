@@ -31,6 +31,7 @@ use MarcW\RssWriter\Extension\DublinCore\DublinCore;
 use MarcW\RssWriter\Extension\DublinCore\DublinCoreWriter;
 use MarcW\RssWriter\Extension\Itunes\ItunesChannel;
 use MarcW\RssWriter\Extension\Itunes\ItunesItem;
+use MarcW\RssWriter\Extension\Itunes\ItunesOwner;
 use MarcW\RssWriter\Extension\Itunes\ItunesWriter;
 use MarcW\RssWriter\Extension\Slash\Slash;
 use MarcW\RssWriter\Extension\Slash\SlashWriter;
@@ -156,6 +157,7 @@ class PodcastFeedController
         $itunesChannel->setExplicit($containsExplicitContent);
         $itunesChannel->setImage($rssImage->getUrl());
         $itunesChannel->setCategories($this->buildItunesCategoriesForPodcast($podcast));
+        $itunesChannel->setOwner($this->buildItunesOwner($podcast));
 
         $channel->addExtension($itunesChannel);
         $channel->addExtension(new Sy());
@@ -204,6 +206,19 @@ class PodcastFeedController
                     ];
             }
         )->getValues();
+    }
+
+    protected function buildItunesOwner(Podcast $podcast): ?ItunesOwner
+    {
+        if (empty($podcast->getAuthor()) && empty($podcast->getEmail())) {
+            return null;
+        }
+
+        $itunesOwner = new ItunesOwner();
+        $itunesOwner->setName($podcast->getAuthor());
+        $itunesOwner->setEmail($podcast->getEmail());
+
+        return $itunesOwner;
     }
 
     protected function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage

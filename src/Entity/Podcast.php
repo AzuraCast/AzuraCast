@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'podcast'),
     Attributes\Auditable
 ]
-class Podcast
+class Podcast implements IdentifiableEntityInterface
 {
     use Traits\HasUniqueId;
     use Traits\TruncateStrings;
@@ -39,6 +40,13 @@ class Podcast
     #[ORM\Column(length: 2)]
     #[Assert\NotBlank]
     protected string $language;
+
+    #[ORM\Column(length: 255)]
+    protected string $author;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Email]
+    protected string $email;
 
     #[ORM\Column]
     #[Attributes\AuditIgnore]
@@ -107,6 +115,30 @@ class Podcast
     public function setLanguage(string $language): self
     {
         $this->language = $this->truncateString($language);
+
+        return $this;
+    }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $this->truncateString($author);
+
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $this->truncateString($email);
 
         return $this;
     }

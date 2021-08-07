@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Console\Application;
 use App\Http\Factory\ResponseFactory;
 use App\Http\Factory\ServerRequestFactory;
+use Composer\Autoload\ClassLoader;
 use DI;
 use DI\Bridge\Slim\ControllerInvoker;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -14,14 +17,10 @@ use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 use Invoker\ParameterResolver\DefaultValueResolver;
 use Invoker\ParameterResolver\ResolverChain;
 use Monolog\Registry;
-use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\ServerRequestCreatorFactory;
-use Slim\Interfaces\CallableResolverInterface;
-use Slim\Interfaces\MiddlewareDispatcherInterface;
-use Slim\Interfaces\RouteCollectorInterface;
-use Slim\Interfaces\RouteResolverInterface;
 
 use const E_COMPILE_ERROR;
 use const E_CORE_ERROR;
@@ -31,18 +30,37 @@ use const E_USER_ERROR;
 
 class AppFactory
 {
-    public static function createApp($autoloader = null, $appEnvironment = [], $diDefinitions = []): App
-    {
+    /**
+     * @param ClassLoader|null $autoloader
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
+     *
+     */
+    public static function createApp(
+        ?ClassLoader $autoloader = null,
+        array $appEnvironment = [],
+        array $diDefinitions = []
+    ): App {
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         return self::buildAppFromContainer($di);
     }
 
-    public static function createCli($autoloader = null, $appEnvironment = [], $diDefinitions = []): Application
-    {
+    /**
+     * @param ClassLoader|null $autoloader
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
+     *
+     */
+    public static function createCli(
+        ?ClassLoader $autoloader = null,
+        array $appEnvironment = [],
+        array $diDefinitions = []
+    ): Application {
         $di = self::buildContainer($autoloader, $appEnvironment, $diDefinitions);
         self::buildAppFromContainer($di);
 
-        $locale = $di->make(Locale::class);
+        $env = $di->get(Environment::class);
+        $locale = Locale::createForCli($env);
         $locale->register();
 
         return $di->get(Application::class);
@@ -53,33 +71,9 @@ class AppFactory
         ServerRequestCreatorFactory::setSlimHttpDecoratorsAutomaticDetection(false);
         ServerRequestCreatorFactory::setServerRequestCreator(new ServerRequestFactory());
 
-        $responseFactory = $container->has(ResponseFactoryInterface::class)
-            ? $container->get(ResponseFactoryInterface::class)
-            : new ResponseFactory();
-
-        $callableResolver = $container->has(CallableResolverInterface::class)
-            ? $container->get(CallableResolverInterface::class)
-            : null;
-
-        $routeCollector = $container->has(RouteCollectorInterface::class)
-            ? $container->get(RouteCollectorInterface::class)
-            : null;
-
-        $routeResolver = $container->has(RouteResolverInterface::class)
-            ? $container->get(RouteResolverInterface::class)
-            : null;
-
-        $middlewareDispatcher = $container->has(MiddlewareDispatcherInterface::class)
-            ? $container->get(MiddlewareDispatcherInterface::class)
-            : null;
-
         $app = new App(
-            $responseFactory,
-            $container,
-            $callableResolver,
-            $routeCollector,
-            $routeResolver,
-            $middlewareDispatcher
+            responseFactory: new ResponseFactory(),
+            container:       $container,
         );
         $container->set(App::class, $app);
 
@@ -105,17 +99,24 @@ class AppFactory
             $routeCollector->setCacheFile($environment->getTempDirectory() . '/app_routes.cache.php');
         }
 
-        $eventDispatcher = $container->get(EventDispatcher::class);
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(new Event\BuildRoutes($app));
 
         return $app;
     }
 
-    /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
+    /**
+     * @param ClassLoader|null $autoloader
+     * @param array<string, mixed> $appEnvironment
+     * @param array<string, mixed> $diDefinitions
+     *
+     * @noinspection SummerTimeUnsafeTimeManipulationInspection
+     *
+     */
     public static function buildContainer(
-        $autoloader = null,
-        $appEnvironment = [],
-        $diDefinitions = []
+        ?ClassLoader $autoloader = null,
+        array $appEnvironment = [],
+        array $diDefinitions = []
     ): DI\Container {
         // Register Annotation autoloader
         if (null !== $autoloader) {
@@ -141,11 +142,14 @@ class AppFactory
         }
 
         $containerBuilder = new DI\ContainerBuilder();
-        $containerBuilder->useAnnotations(true);
         $containerBuilder->useAutowiring(true);
+
+        /*
+        $containerBuilder->enableDefinitionCache();
         if ($environment->isProduction()) {
             $containerBuilder->enableCompilation($environment->getTempDirectory());
         }
+        */
 
         $containerBuilder->addDefinitions($diDefinitions);
 
@@ -190,7 +194,10 @@ class AppFactory
         return $di;
     }
 
-    protected static function buildEnvironment(array $environment): Environment
+    /**
+     * @param array<string, mixed> $environment
+     */
+    public static function buildEnvironment(array $environment = []): Environment
     {
         if (!isset($environment[Environment::BASE_DIR])) {
             throw new Exception\BootstrapException('No base directory specified!');
@@ -203,9 +210,13 @@ class AppFactory
         $environment[Environment::TEMP_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/www_tmp';
         $environment[Environment::CONFIG_DIR] ??= $environment[Environment::BASE_DIR] . '/config';
         $environment[Environment::VIEWS_DIR] ??= $environment[Environment::BASE_DIR] . '/templates';
+        $environment[Environment::UPLOADS_DIR] ??= dirname($environment[Environment::BASE_DIR]) . '/uploads';
 
         if (file_exists($environment[Environment::BASE_DIR] . '/env.ini')) {
-            $_ENV = array_merge($_ENV, parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini'));
+            $envIni = parse_ini_file($environment[Environment::BASE_DIR] . '/env.ini');
+            if (false !== $envIni) {
+                $_ENV = array_merge($_ENV, $envIni);
+            }
         } else {
             $_ENV = getenv();
         }

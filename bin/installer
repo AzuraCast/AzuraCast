@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set('display_errors', '1');
+
+$autoloader = require dirname(__DIR__) . '/vendor/autoload.php';
+
+$environment = App\AppFactory::buildEnvironment(
+        [
+                App\Environment::BASE_DIR => dirname(__DIR__),
+        ]
+);
+
+$console = new Silly\Application('AzuraCast installer', App\Version::FALLBACK_VERSION);
+
+$console->command(
+        'install [--update] [--defaults] [--http-port=] [--https-port=] [--release-channel=] [base-dir]',
+        new App\Installer\Command\InstallCommand($environment)
+);
+
+$console->run();

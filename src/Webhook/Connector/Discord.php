@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Webhook\Connector;
 
 use App\Entity;
@@ -62,6 +64,9 @@ class Discord extends AbstractConnector
 {
     public const NAME = 'discord';
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

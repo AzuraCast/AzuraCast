@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use const EXTR_OVERWRITE;
@@ -17,7 +19,7 @@ class Config
      * @param string $name
      * @param array $inject_vars Variables to pass into the scope of the configuration.
      *
-     * @return mixed[]
+     * @return array<mixed>
      * @noinspection PhpIncludeInspection
      * @noinspection UselessUnsetInspection
      */

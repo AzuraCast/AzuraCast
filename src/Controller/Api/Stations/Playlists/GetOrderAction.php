@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Entity;
@@ -13,7 +15,7 @@ class GetOrderAction extends AbstractPlaylistsAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $id
+        int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 

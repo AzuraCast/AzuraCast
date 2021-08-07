@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
 use OpenApi\Annotations as OA;
 
+/**
+ * @extends AbstractAdminApiCrudController<Entity\CustomField>
+ */
 class CustomFieldsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\CustomField::class;

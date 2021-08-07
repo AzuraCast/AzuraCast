@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Interfaces;
 
 interface StationMountInterface
@@ -8,6 +10,7 @@ interface StationMountInterface
     public const FORMAT_OGG = 'ogg';
     public const FORMAT_AAC = 'aac';
     public const FORMAT_OPUS = 'opus';
+    public const FORMAT_FLAC = 'flac';
 
     public const PROTOCOL_ICY = 'icy';
     public const PROTOCOL_HTTP = 'http';

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity;
@@ -49,9 +51,7 @@ class LastFm
         $rateLimitLock = $this->lockFactory->createLock(
             'api_lastfm',
             1,
-            false,
-            500,
-            10
+            false
         );
 
         try {

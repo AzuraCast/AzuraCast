@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -41,7 +43,7 @@ class SHOUTcast extends AbstractFrontend
     /**
      * @inheritDoc
      */
-    public function getBinary(): string
+    public function getBinary(): ?string
     {
         $new_path = '/var/azuracast/servers/shoutcast2/sc_serv';
 
@@ -52,7 +54,7 @@ class SHOUTcast extends AbstractFrontend
 
         return file_exists($new_path)
             ? $new_path
-            : false;
+            : null;
     }
 
     public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
@@ -145,6 +147,11 @@ class SHOUTcast extends AbstractFrontend
             $config['streamid_' . $i] = $i;
             $config['streampath_' . $i] = $mount_row->getName();
 
+            if (!empty($mount_row->getIntroPath())) {
+                $introPath = $mount_row->getIntroPath();
+                $config['streamintrofile_' . $i] = $station->getRadioConfigDir() . '/' . $introPath;
+            }
+
             if ($mount_row->getRelayUrl()) {
                 $config['streamrelayurl_' . $i] = $mount_row->getRelayUrl();
             }
@@ -152,11 +159,15 @@ class SHOUTcast extends AbstractFrontend
             if ($mount_row->getAuthhash()) {
                 $config['streamauthhash_' . $i] = $mount_row->getAuthhash();
             }
+
+            if ($mount_row->getMaxListenerDuration()) {
+                $config['streammaxuser_' . $i] = $mount_row->getMaxListenerDuration();
+            }
         }
 
         $configFileOutput = '';
         foreach ($config as $config_key => $config_value) {
-            $configFileOutput .= $config_key . '=' . str_replace("\n", '', $config_value) . "\n";
+            $configFileOutput .= $config_key . '=' . str_replace("\n", '', (string) $config_value) . "\n";
         }
 
         return $configFileOutput;

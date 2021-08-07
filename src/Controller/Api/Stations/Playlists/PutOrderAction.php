@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Playlists;
 
 use App\Entity;
@@ -14,7 +16,7 @@ class PutOrderAction extends AbstractPlaylistsAction
         ServerRequest $request,
         Response $response,
         Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepository,
-        $id
+        int $id
     ): ResponseInterface {
         $record = $this->requireRecord($request->getStation(), $id);
 

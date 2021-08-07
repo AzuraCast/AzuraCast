@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony package.
  *
@@ -25,27 +27,27 @@ use function is_string;
 #[Attribute(Attribute::TARGET_CLASS)]
 class UniqueEntity extends Constraint
 {
-    public $entityClass = null;
-    public $repositoryMethod = 'findBy';
-    public $fields = [];
-    public $errorPath = null;
-    public $ignoreNull = true;
+    /** @var class-string|null */
+    public ?string $entityClass = null;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
+     * @param class-string|null $entityClass
      * @param array|string $fields the combination of fields that must contain unique values or a set of options
      */
     public function __construct(
-        array|string $fields,
-        string $entityClass = null,
-        string $repositoryMethod = null,
-        string $errorPath = null,
-        bool $ignoreNull = null,
+        ?string $entityClass = null,
+        public array|string $fields = [],
+        public ?string $repositoryMethod = 'findBy',
+        public ?string $errorPath = null,
+        public ?bool $ignoreNull = null,
         array $groups = null,
         $payload = null,
         array $options = []
     ) {
+        $this->entityClass = $entityClass ?? $this->entityClass;
+
         if (is_array($fields) && is_string(key($fields))) {
             $options = array_merge($fields, $options);
         } else {
@@ -53,11 +55,6 @@ class UniqueEntity extends Constraint
         }
 
         parent::__construct($options, $groups, $payload);
-
-        $this->entityClass = $entityClass ?? $this->entityClass;
-        $this->repositoryMethod = $repositoryMethod ?? $this->repositoryMethod;
-        $this->errorPath = $errorPath ?? $this->errorPath;
-        $this->ignoreNull = $ignoreNull ?? $this->ignoreNull;
     }
 
     /**

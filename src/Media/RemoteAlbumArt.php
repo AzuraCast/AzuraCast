@@ -2,11 +2,16 @@
 
 /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
 
+declare(strict_types=1);
+
 namespace App\Media;
 
 use App\Entity;
 use App\Event\Media\GetAlbumArt;
-use App\EventDispatcher;
+use App\Version;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
@@ -19,7 +24,8 @@ class RemoteAlbumArt
         protected LoggerInterface $logger,
         protected CacheInterface $cache,
         protected Entity\Repository\SettingsRepository $settingsRepo,
-        protected EventDispatcher $eventDispatcher
+        protected EventDispatcherInterface $eventDispatcher,
+        protected Client $httpClient
     ) {
     }
 
@@ -33,7 +39,29 @@ class RemoteAlbumArt
         return $this->settingsRepo->readSettings()->getUseExternalAlbumArtWhenProcessingMedia();
     }
 
-    public function __invoke(Entity\Interfaces\SongInterface $song): ?string
+    public function getArtwork(Entity\Interfaces\SongInterface $media): ?string
+    {
+        $artUri = $this->getUrlForSong($media);
+        if (empty($artUri)) {
+            return null;
+        }
+
+        // Fetch external artwork.
+        $response = $this->httpClient->request(
+            'GET',
+            $artUri,
+            [
+                RequestOptions::TIMEOUT => 10,
+                RequestOptions::HEADERS => [
+                    'User-Agent' => 'AzuraCast ' . Version::FALLBACK_VERSION,
+                ],
+            ]
+        );
+
+        return (string)$response->getBody();
+    }
+
+    public function getUrlForSong(Entity\Interfaces\SongInterface $song): ?string
     {
         // Avoid tracks that shouldn't ever hit remote APIs.
         $offlineSong = Entity\Song::createOffline();
@@ -42,7 +70,7 @@ class RemoteAlbumArt
         }
 
         // Catch the default error track and derivatives.
-        if (false !== mb_stripos($song->getText(), 'AzuraCast')) {
+        if (false !== mb_stripos($song->getText() ?? '', 'AzuraCast')) {
             return null;
         }
 

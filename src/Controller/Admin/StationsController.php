@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity;
@@ -9,16 +11,16 @@ use App\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class StationsController extends AbstractAdminCrudController
 {
     public function __construct(
         protected StationRepository $stationRepo,
-        protected Form\StationCloneForm $clone_form,
-        Form\StationForm $form
+        protected FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        parent::__construct($factory->make(Form\StationForm::class));
 
         $this->csrf_namespace = 'admin_stations';
     }
@@ -33,48 +35,62 @@ class StationsController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(($id ? __('Station updated.') : __('Station added.')), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
-            'form' => $this->form,
-            'title' => $id ? __('Edit Station') : 'Add Station',
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'admin/stations/edit',
+            [
+                'form' => $this->form,
+                'title' => $id ? __('Edit Station') : 'Add Station',
+            ]
+        );
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        int $id,
+        string $csrf
+    ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
-        $record = $this->record_repo->find((int)$id);
+        $record = $this->record_repo->find($id);
         if ($record instanceof Entity\Station) {
             $this->stationRepo->destroy($record);
         }
 
         $request->getFlash()->addMessage(__('Station deleted.'), Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
     }
 
-    public function cloneAction(ServerRequest $request, Response $response, $id): ResponseInterface
+    public function cloneAction(ServerRequest $request, Response $response, int $id): ResponseInterface
     {
-        $record = $this->record_repo->find((int)$id);
+        $cloneForm = $this->factory->make(Form\StationCloneForm::class);
+
+        $record = $this->record_repo->find($id);
         if (!($record instanceof Entity\Station)) {
             throw new NotFoundException(__('Station not found.'));
         }
 
-        if (false !== $this->clone_form->process($request, $record)) {
+        if (false !== $cloneForm->process($request, $record)) {
             $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:stations:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->clone_form,
-            'render_mode' => 'edit',
-            'title' => __('Clone Station: %s', $record->getName()),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $cloneForm,
+                'render_mode' => 'edit',
+                'title' => __('Clone Station: %s', $record->getName()),
+            ]
+        );
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sync;
 
 use App\Entity\Repository\SettingsRepository;
 use App\Environment;
 use App\Event\GetSyncTasks;
-use App\EventDispatcher;
 use App\LockFactory;
 use App\Message;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Exception;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LogLevel;
 
 /**
@@ -25,7 +27,7 @@ class Runner
         protected Environment $environment,
         protected Logger $logger,
         protected LockFactory $lockFactory,
-        protected EventDispatcher $eventDispatcher,
+        protected EventDispatcherInterface $eventDispatcher,
         protected EntityManagerInterface $em
     ) {
     }

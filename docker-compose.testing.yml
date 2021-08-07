@@ -8,4 +8,5 @@ services :
       APPLICATION_ENV : 'testing'
       LOG_LEVEL : 'debug'
     volumes :
+      - ./vendor:/var/azuracast/www/vendor
       - .:/var/azuracast/www

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Account;
 
 use App\Http\Response;
@@ -15,6 +17,6 @@ class EndMasqueradeAction
         $auth = $request->getAuth();
         $auth->endMasquerade();
 
-        return $response->withRedirect($request->getRouter()->named('admin:users:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:users:index'));
     }
 }

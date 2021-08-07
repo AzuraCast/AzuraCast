@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
@@ -51,7 +53,7 @@ class ListAction
 
         $params = $request->getQueryParams();
 
-        $searchPhrase = trim($params['searchPhrase']);
+        $searchPhrase = trim($params['searchPhrase'] ?? '');
         if (!empty($searchPhrase)) {
             $searchFields = [
                 'media_title',

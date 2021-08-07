@@ -14,14 +14,17 @@ opcache.enable_cli=1
 opcache.revalidate_freq={{ default .Env.PHP_OPCACHE_REVALIDATE_FREQUENCY "60" }}
 {{end}}
 
-{{if eq .Env.PROFILING_EXTENSION_ENABLED "1"}}
+{{if isTrue .Env.PROFILING_EXTENSION_ENABLED}}
+[spx]
 spx.http_enabled=1
 spx.data_dir=/var/azuracast/www_tmp
 spx.http_key={{ default .Env.PROFILING_EXTENSION_HTTP_KEY "dev" }}
 spx.http_ip_whitelist={{ default .Env.PROFILING_EXTENSION_HTTP_IP_WHITELIST "*" }}
+
+[zlib]
 zlib.output_compression=0
 
-{{if eq .Env.PROFILING_EXTENSION_ALWAYS_ON "1"}}
+{{if isTrue .Env.PROFILING_EXTENSION_ALWAYS_ON}}
 spx.http_profiling_enabled=1
 {{end}}
 {{end}}

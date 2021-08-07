@@ -93,6 +93,15 @@
                             </b-form-invalid-feedback>
                         </b-form-group>
 
+                        <b-form-group class="col-md-4" :label-for="'edit_form_loop_once_'+index">
+                            <template v-slot:description>
+                                <translate key="lang_form_loop_once_desc">Only loop through playlist once.</translate>
+                            </template>
+                            <b-form-checkbox :id="'edit_form_loop_once_'+index" v-model="row.loop_once.$model">
+                                <translate key="lang_form_loop_once">Loop Once</translate>
+                            </b-form-checkbox>
+                        </b-form-group>
+
                         <b-form-group class="col-md-4" :label-for="'edit_form_days_'+index">
                             <template v-slot:label>
                                 <translate key="lang_form_days">Scheduled Play Days of Week</translate>
@@ -158,7 +167,8 @@ export default {
                 end_time: null,
                 start_date: null,
                 end_date: null,
-                days: []
+                days: [],
+                loop_once: false
             });
         },
         remove (index) {

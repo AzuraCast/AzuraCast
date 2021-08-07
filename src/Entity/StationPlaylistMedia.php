@@ -1,9 +1,10 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -11,7 +12,7 @@ use JsonSerializable;
     ORM\Entity,
     ORM\Table(name: 'station_playlist_media')
 ]
-class StationPlaylistMedia implements JsonSerializable
+class StationPlaylistMedia implements JsonSerializable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 

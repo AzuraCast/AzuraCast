@@ -1,10 +1,11 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
 use App\Entity\Attributes\Auditable;
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,7 +16,7 @@ use const PASSWORD_ARGON2ID;
 #[ORM\UniqueConstraint(name: 'username_idx', columns: ['username'])]
 #[UniqueEntity(fields: ['username'])]
 #[Auditable]
-class SftpUser
+class SftpUser implements IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 
@@ -78,6 +79,10 @@ class SftpUser
      */
     public function getPublicKeysArray(): array
     {
+        if (null === $this->publicKeys) {
+            return [];
+        }
+
         $pubKeysRaw = trim($this->publicKeys);
         if (!empty($pubKeysRaw)) {
             return array_filter(array_map('trim', explode("\n", $pubKeysRaw)));

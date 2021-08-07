@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Doctrine\Event;
 
 use App\Entity;
@@ -13,7 +15,6 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Proxy\Proxy;
 use Doctrine\ORM\UnitOfWork;
-use JetBrains\PhpStorm\Pure;
 use ProxyManager\Proxy\GhostObjectInterface;
 use ReflectionClass;
 use ReflectionObject;
@@ -112,9 +113,6 @@ class AuditLog implements EventSubscriber
 
                 // Find the identifier method or property.
                 $identifier = $this->getIdentifier($entity);
-                if (null === $identifier) {
-                    continue;
-                }
 
                 $newRecords[] = new Entity\AuditLog(
                     $changeType,
@@ -142,6 +140,10 @@ class AuditLog implements EventSubscriber
             /** @var PersistentCollection $collection */
             $owner = $collection->getOwner();
 
+            if (null === $owner) {
+                continue;
+            }
+
             $reflectionClass = new ReflectionObject($owner);
             if (!$this->isAuditable($reflectionClass)) {
                 continue;
@@ -149,6 +151,9 @@ class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
+            if (null === $mapping) {
+                continue;
+            }
             if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
                 continue;
             }
@@ -190,6 +195,9 @@ class AuditLog implements EventSubscriber
 
             // Ignore inverse side or one to many relations
             $mapping = $collection->getMapping();
+            if (null === $mapping) {
+                continue;
+            }
             if (!$mapping['isOwningSide'] || $mapping['type'] !== ClassMetadataInfo::MANY_TO_MANY) {
                 continue;
             }
@@ -238,7 +246,9 @@ class AuditLog implements EventSubscriber
             $class = ($class instanceof Proxy || $class instanceof GhostObjectInterface)
                 ? get_parent_class($class)
                 : get_class($class);
-        } elseif (!is_string($class)) {
+        }
+
+        if (!is_string($class)) {
             return false;
         }
 
@@ -249,7 +259,7 @@ class AuditLog implements EventSubscriber
         return !$em->getMetadataFactory()->isTransient($class);
     }
 
-    #[Pure] protected function isAuditable(ReflectionClass $refl): bool
+    protected function isAuditable(ReflectionClass $refl): bool
     {
         $auditable = $refl->getAttributes(Auditable::class);
         return !empty($auditable);
@@ -260,7 +270,7 @@ class AuditLog implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function getIdentifier(object $entity): ?string
+    protected function getIdentifier(object $entity): string
     {
         if ($entity instanceof Stringable) {
             return (string)$entity;
@@ -270,6 +280,13 @@ class AuditLog implements EventSubscriber
             return $entity->getName();
         }
 
-        return null;
+        if ($entity instanceof Entity\Interfaces\IdentifiableEntityInterface) {
+            $entityId = $entity->getId();
+            if (null !== $entityId) {
+                return (string)$entityId;
+            }
+        }
+
+        return spl_object_hash($entity);
     }
 }

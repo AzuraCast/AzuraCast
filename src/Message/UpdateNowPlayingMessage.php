@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Message;
 
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 
 class UpdateNowPlayingMessage extends AbstractMessage
 {
@@ -10,6 +12,6 @@ class UpdateNowPlayingMessage extends AbstractMessage
 
     public function getQueue(): string
     {
-        return QueueManager::QUEUE_HIGH_PRIORITY;
+        return QueueManagerInterface::QUEUE_HIGH_PRIORITY;
     }
 }

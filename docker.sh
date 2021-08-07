@@ -114,6 +114,11 @@ __dotenv_cmd=.env
   esac
 }
 
+# Shortcut to convert semver version (x.yyy.zzz) into a comparable number.
+version-number() {
+  echo "$@" | awk -F. '{ printf("%03d%03d%03d\n", $1,$2,$3); }'
+}
+
 # Get the current release channel for AzuraCast
 get-release-channel() {
   local AZURACAST_VERSION="latest"
@@ -211,7 +216,6 @@ setup-letsencrypt() {
 #
 setup-release() {
   if [[ ! -f .env ]]; then
-    echo "Writing default .env file..."
     curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/main/sample.env -o .env
   fi
 
@@ -256,6 +260,29 @@ install-docker-compose() {
   fi
 }
 
+run-installer() {
+  local AZURACAST_RELEASE_BRANCH
+  AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
+
+  if [[ ! -f .env ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/sample.env -o .env
+  fi
+  if [[ ! -f azuracast.env ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
+  fi
+  if [[ ! -f docker-compose.yml ]]; then
+    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.yml
+  fi
+
+  touch docker-compose.new.yml
+
+  curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.installer.yml -o docker-compose.installer.yml
+  docker-compose -f docker-compose.installer.yml pull
+  docker-compose -f docker-compose.installer.yml run --rm installer install "$@"
+
+  rm docker-compose.installer.yml
+}
+
 #
 # Run the initial installer of Docker and AzuraCast.
 # Usage: ./docker.sh install
@@ -277,49 +304,109 @@ install() {
   fi
 
   if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
-    echo "Docker Compose is already installed! Continuing..."
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+        install-docker-compose
+      fi
+    else
+      echo "Docker Compose is already installed and up to date! Continuing..."
+    fi
   else
     if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
       install-docker-compose
     fi
   fi
 
-  if [[ ! -f .env ]]; then
-    setup-release
+  run-installer "$@"
+
+  # Installer creates a file at docker-compose.new.yml; copy it to the main spot.
+  if [[ -s docker-compose.new.yml ]]; then
+    if [[ -f docker-compose.yml ]]; then
+      rm docker-compose.yml
+    fi
+
+    mv docker-compose.new.yml docker-compose.yml
   fi
 
-  local AZURACAST_RELEASE_BRANCH
-  AZURACAST_RELEASE_BRANCH=$(get-release-branch-name)
-
-  if [[ ! -f azuracast.env ]]; then
-    echo "Creating default AzuraCast settings file..."
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
-
-    # Generate a random password and replace the MariaDB password with it.
-    local NEW_PASSWORD
-    NEW_PASSWORD=$(
-      tr </dev/urandom -dc _A-Z-a-z-0-9 | head -c"${1:-32}"
-      echo
-    )
-    sed -i "s/azur4c457/${NEW_PASSWORD}/g" azuracast.env
-  fi
-
-  if [[ ! -f docker-compose.yml ]]; then
-    echo "Retrieving default docker-compose.yml file..."
-
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.yml
-  fi
-
-  if ask "Customize AzuraCast ports?" N; then
-    setup-ports
-  fi
-
-  if ask "Set up LetsEncrypt?" N; then
-    setup-letsencrypt
+  # If this script is running as a non-root user, set the PUID/PGID in the environment vars appropriately.
+  if [[ $EUID -ne 0 ]]; then
+    .env --file .env set AZURACAST_PUID="$(id -u)"
+    .env --file .env set AZURACAST_PGID="$(id -g)"
   fi
 
   docker-compose pull
   docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+  docker-compose up -d
+  exit
+}
+
+install-dev() {
+  if [[ $(command -v docker) && $(docker --version) ]]; then
+    echo "Docker is already installed! Continuing..."
+  else
+    if ask "Docker does not appear to be installed. Install Docker now?" Y; then
+      install-docker
+    fi
+  fi
+
+  if [[ $(command -v docker-compose) && $(docker-compose --version) ]]; then
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+        install-docker-compose
+      fi
+    else
+      echo "Docker Compose is already installed and up to date! Continuing..."
+    fi
+  else
+    if ask "Docker Compose does not appear to be installed. Install Docker Compose now?" Y; then
+      install-docker-compose
+    fi
+  fi
+
+  if ask "Clone related repositories?" Y; then
+    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy.git ../docker-azuracast-nginx-proxy
+    git clone https://github.com/AzuraCast/docker-azuracast-nginx-proxy-letsencrypt.git ../docker-azuracast-nginx-proxy-letsencrypt
+    git clone https://github.com/AzuraCast/docker-azuracast-db.git ../docker-azuracast-db
+    git clone https://github.com/AzuraCast/docker-azuracast-redis.git ../docker-azuracast-redis
+    git clone https://github.com/AzuraCast/docker-azuracast-radio.git ../docker-azuracast-radio
+  fi
+
+  if [[ ! -f docker-compose.yml ]]; then
+    cp docker-compose.sample.yml docker-compose.yml
+  fi
+  if [[ ! -f docker-compose.override.yml ]]; then
+    cp docker-compose.dev.yml docker-compose.override.yml
+  fi
+  if [[ ! -f .env ]]; then
+    cp dev.env .env
+  fi
+  if [[ ! -f azuracast.env ]]; then
+    cp azuracast.dev.env azuracast.env
+
+    echo "Customize azuracast.env file now before continuing. Re-run this command to continue installation."
+    exit
+  fi
+
+  # If this script is running as a non-root user, set the PUID/PGID in the environment vars appropriately.
+  if [[ $EUID -ne 0 ]]; then
+    .env --file .env set AZURACAST_PUID="$(id -u)"
+    .env --file .env set AZURACAST_PGID="$(id -g)"
+  fi
+
+  docker-compose build
+  docker-compose run --rm --user="azuracast" web azuracast_install "$@"
+
+  docker-compose -f frontend/docker-compose.yml build
+  docker-compose -f frontend/docker-compose.yml run --rm frontend npm run build
+
   docker-compose up -d
   exit
 }
@@ -329,8 +416,8 @@ install() {
 # Usage: ./docker.sh update
 #
 update() {
-	echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
-		if ask "Are you ready to continue with the update?" Y; then
+  echo "[NOTICE] Before you continue, please make sure you have a recent snapshot of your system and or backed it up."
+  if ask "Are you ready to continue with the update?" Y; then
 
     # Check for a new Docker Utility Script.
     local AZURACAST_RELEASE_BRANCH
@@ -343,8 +430,8 @@ update() {
       cmp --silent docker.sh docker.new.sh
       echo $?
     )"
-    local UPDATE_UTILITY=0
 
+    local UPDATE_UTILITY=0
     if [[ ${UTILITY_FILES_MATCH} -ne 0 ]]; then
       if ask "The Docker Utility Script has changed since your version. Update to latest version?" Y; then
         UPDATE_UTILITY=1
@@ -362,45 +449,31 @@ update() {
       rm docker.new.sh
     fi
 
-    if [[ ! -f azuracast.env ]]; then
-      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/azuracast.sample.env -o azuracast.env
-      echo "Default environment file loaded."
+    # Check for update to Docker Compose
+    local CURRENT_COMPOSE_VERSION
+    CURRENT_COMPOSE_VERSION=$(docker-compose version --short)
+
+    if [ "$(version-number "$COMPOSE_VERSION")" -gt "$(version-number "$CURRENT_COMPOSE_VERSION")" ]; then
+      if ask "Your version of Docker Compose is out of date. Attempt to update it automatically?" Y; then
+        install-docker-compose
+      fi
     fi
 
-    # Migrate previous release settings to new environment variable.
-    .env --file azuracast.env get PREFER_RELEASE_BUILDS
-
-    local PREFER_RELEASE_BUILDS
-    PREFER_RELEASE_BUILDS="${REPLY:-false}"
-
-    if [[ $PREFER_RELEASE_BUILDS == "true" ]]; then
-      .env --file .env set AZURACAST_VERSION=stable
-    fi
-
-    .env --file azuracast.env set PREFER_RELEASE_BUILDS
-
-    # Check for new Docker Compose file
-    .env --file .env get AZURACAST_VERSION
-    local AZURACAST_VERSION
-    AZURACAST_VERSION="${REPLY:-latest}"
-
-    curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.new.yml
+    run-installer --update "$@"
 
     # Check for updated Docker Compose config.
     local COMPOSE_FILES_MATCH
+
+    if [[ ! -s docker-compose.new.yml ]]; then
+      curl -fsSL https://raw.githubusercontent.com/AzuraCast/AzuraCast/$AZURACAST_RELEASE_BRANCH/docker-compose.sample.yml -o docker-compose.new.yml
+    fi
+
     COMPOSE_FILES_MATCH="$(
       cmp --silent docker-compose.yml docker-compose.new.yml
       echo $?
     )"
-    local UPDATE_COMPOSE=0
 
     if [[ ${COMPOSE_FILES_MATCH} -ne 0 ]]; then
-      if ask "The docker-compose.yml file has changed since your version. Overwrite? This will overwrite any customizations you made to this file?" Y; then
-        UPDATE_COMPOSE=1
-      fi
-    fi
-
-    if [[ ${UPDATE_COMPOSE} -ne 0 ]]; then
       docker-compose -f docker-compose.new.yml pull
       docker-compose down
 
@@ -495,15 +568,25 @@ db() {
 # ./docker.sh backup [/custom/backup/dir/custombackupname.zip]
 #
 backup() {
-  BACKUP_PATH=${1:-"./backup.tar.gz"}
+  local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
+  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"
   shift
 
-  MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_cli azuracast:backup "/tmp/cli_backup.${BACKUP_EXT}" "$@"
-  docker cp "azuracast_web:tmp/cli_backup.${BACKUP_EXT}" "${BACKUP_PATH}"
-  MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web rm -f "/tmp/cli_backup.${BACKUP_EXT}"
-  exit
+  # Prepare permissions
+  if [[ $EUID -ne 0 ]]; then
+    .env --file .env set AZURACAST_PUID="$(id -u)"
+    .env --file .env set AZURACAST_PGID="$(id -g)"
+  fi
+
+  docker-compose run --rm web azuracast_cli azuracast:backup "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+
+  # Move from Docker volume to local filesystem
+  docker run --rm -v "azuracast_backups:/backup_src" \
+      -v "$BACKUP_DIR:/backup_dest" \
+      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 }
 
 #
@@ -512,7 +595,9 @@ backup() {
 # ./docker.sh restore [/custom/backup/dir/custombackupname.zip]
 #
 restore() {
-  BACKUP_PATH=${1:-"./backup.tar.gz"}
+  local BACKUP_PATH BACKUP_DIR BACKUP_FILENAME BACKUP_EXT
+  BACKUP_PATH=$(realpath ${1:-"./backup.tar.gz"})
+  BACKUP_DIR=$(dirname -- "$BACKUP_PATH")
   BACKUP_FILENAME=$(basename -- "$BACKUP_PATH")
   BACKUP_EXT="${BACKUP_FILENAME##*.}"
   shift
@@ -530,14 +615,26 @@ restore() {
 
   if ask "Restoring will remove any existing AzuraCast installation data, replacing it with your backup. Continue?" Y; then
     docker-compose down -v
-    docker-compose pull
 
-    # Run the web task to allow for a full system spin-up
-    docker-compose run --rm --user=azuracast web azuracast_cli cache:clear
+    docker volume create azuracast_backups
 
-    docker-compose up -d web
-    docker cp "${BACKUP_PATH}" "azuracast_web:tmp/cli_backup.${BACKUP_EXT}"
-    MSYS_NO_PATHCONV=1 docker exec --user="azuracast" azuracast_web azuracast_restore "/tmp/cli_backup.${BACKUP_EXT}" "$@"
+    # Move from local filesystem to Docker volume
+    docker run --rm -v "$BACKUP_DIR:/backup_src" \
+      -v "azuracast_backups:/backup_dest" \
+      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
+
+    # Prepare permissions
+    if [[ $EUID -ne 0 ]]; then
+      .env --file .env set AZURACAST_PUID="$(id -u)"
+      .env --file .env set AZURACAST_PGID="$(id -g)"
+    fi
+
+    docker-compose run --rm web azuracast_restore "/var/azuracast/backups/${BACKUP_FILENAME}" "$@"
+
+    # Move file back from volume to local filesystem
+    docker run --rm -v "azuracast_backups:/backup_src" \
+      -v "$BACKUP_DIR:/backup_dest" \
+      busybox mv "/backup_src/${BACKUP_FILENAME}" "/backup_dest/${BACKUP_FILENAME}"
 
     docker-compose down
     docker-compose up -d
@@ -589,9 +686,13 @@ restore-legacy() {
 # Usage: ./docker.sh static [static_container_command]
 #
 static() {
-  cd frontend || exit
-  docker-compose build
-  docker-compose run --rm frontend "$@"
+  local PUID PGID
+  PUID=$(id -u)
+  PGID=$(id -g)
+
+  docker-compose -f frontend/docker-compose.yml down -v
+  docker-compose -f frontend/docker-compose.yml build
+  PUID=$PUID PGID=$PGID docker-compose -f frontend/docker-compose.yml run --rm frontend "$@"
   exit
 }
 

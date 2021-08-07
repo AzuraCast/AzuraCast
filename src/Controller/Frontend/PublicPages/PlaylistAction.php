@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\PublicPages;
 
 use App\Entity;
@@ -12,8 +14,7 @@ class PlaylistAction
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $station_id,
-        $format = 'pls'
+        string $format = 'pls'
     ): ResponseInterface {
         $station = $request->getStation();
 

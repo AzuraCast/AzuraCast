@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
@@ -34,15 +36,15 @@ class StationApiGenerator
         $response->is_public = $station->getEnablePublicPage();
         $response->listen_url = $fa->getStreamUrl($station, $baseUri);
 
-        $response->public_player_url = $this->router->named(
+        $response->public_player_url = (string)$this->router->named(
             'public:index',
             ['station_id' => $station->getShortName()]
         );
-        $response->playlist_pls_url = $this->router->named(
+        $response->playlist_pls_url = (string)$this->router->named(
             'public:playlist',
             ['station_id' => $station->getShortName(), 'format' => 'pls']
         );
-        $response->playlist_m3u_url = $this->router->named(
+        $response->playlist_m3u_url = (string)$this->router->named(
             'public:playlist',
             ['station_id' => $station->getShortName(), 'format' => 'm3u']
         );

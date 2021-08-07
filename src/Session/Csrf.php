@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Session;
 
 use App\Environment;
@@ -29,11 +31,14 @@ class Csrf
      *
      * @param string $namespace
      */
-    public function generate(string $namespace = self::DEFAULT_NAMESPACE): ?string
+    public function generate(string $namespace = self::DEFAULT_NAMESPACE): string
     {
         $sessionKey = $this->getSessionIdentifier($namespace);
         if ($this->session->has($sessionKey)) {
-            return $this->session->get($sessionKey);
+            $csrf = $this->session->get($sessionKey);
+            if (!empty($csrf)) {
+                return (string)$csrf;
+            }
         }
 
         $key = $this->randomString();
@@ -71,7 +76,7 @@ class Csrf
 
         $sessionKey = $this->session->get($sessionIdentifier);
 
-        if (0 !== strcmp($key, $sessionKey)) {
+        if (0 !== strcmp($key, (string)$sessionKey)) {
             throw new Exception\CsrfValidationException('Invalid CSRF token supplied.');
         }
     }

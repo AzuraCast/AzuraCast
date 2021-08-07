@@ -31,6 +31,7 @@ use MarcW\RssWriter\Extension\DublinCore\DublinCore;
 use MarcW\RssWriter\Extension\DublinCore\DublinCoreWriter;
 use MarcW\RssWriter\Extension\Itunes\ItunesChannel;
 use MarcW\RssWriter\Extension\Itunes\ItunesItem;
+use MarcW\RssWriter\Extension\Itunes\ItunesOwner;
 use MarcW\RssWriter\Extension\Itunes\ItunesWriter;
 use MarcW\RssWriter\Extension\Slash\Slash;
 use MarcW\RssWriter\Extension\Slash\SlashWriter;
@@ -132,7 +133,7 @@ class PodcastFeedController
 
         $channelLink = $podcast->getLink();
         if (empty($channelLink)) {
-            $channelLink = $serverRequest->getRouter()->fromHere(
+            $channelLink = (string)$serverRequest->getRouter()->fromHere(
                 route_name: 'public:podcast:episodes',
                 absolute: true
             );
@@ -156,6 +157,7 @@ class PodcastFeedController
         $itunesChannel->setExplicit($containsExplicitContent);
         $itunesChannel->setImage($rssImage->getUrl());
         $itunesChannel->setCategories($this->buildItunesCategoriesForPodcast($podcast));
+        $itunesChannel->setOwner($this->buildItunesOwner($podcast));
 
         $channel->addExtension($itunesChannel);
         $channel->addExtension(new Sy());
@@ -206,6 +208,19 @@ class PodcastFeedController
         )->getValues();
     }
 
+    protected function buildItunesOwner(Podcast $podcast): ?ItunesOwner
+    {
+        if (empty($podcast->getAuthor()) && empty($podcast->getEmail())) {
+            return null;
+        }
+
+        $itunesOwner = new ItunesOwner();
+        $itunesOwner->setName($podcast->getAuthor());
+        $itunesOwner->setEmail($podcast->getEmail());
+
+        return $itunesOwner;
+    }
+
     protected function buildRssImageForPodcast(Podcast $podcast, Station $station): RssImage
     {
         $podcastsFilesystem = (new StationFilesystems($station))->getPodcastsFilesystem();
@@ -217,11 +232,11 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getId()))) {
-            $podcastArtworkSrc = $this->router->fromHere(
-                route_name: 'api:stations:podcast:art',
-                route_params: ['podcast_id' => $podcast->getId() . '|' . $podcast->getArtUpdatedAt()],
-                absolute: true
+        if ($podcastsFilesystem->fileExists(Podcast::getArtPath($podcast->getIdRequired()))) {
+            $podcastArtworkSrc = (string)$this->router->fromHere(
+                route_name:   'api:stations:podcast:art',
+                route_params: ['podcast_id' => $podcast->getIdRequired() . '|' . $podcast->getArtUpdatedAt()],
+                absolute:     true
             );
         }
 
@@ -256,7 +271,7 @@ class PodcastFeedController
 
             $episodeLink = $episode->getLink();
             if (empty($episodeLink)) {
-                $episodeLink = $this->router->fromHere(
+                $episodeLink = (string)$this->router->fromHere(
                     route_name: 'public:podcast:episode',
                     route_params: ['episode_id' => $episode->getId()],
                     absolute: true
@@ -299,17 +314,19 @@ class PodcastFeedController
     ): RssEnclosure {
         $rssEnclosure = new RssEnclosure();
 
-        $podcastMediaPlayUrl = $this->router->fromHere(
-            route_name: 'api:stations:podcast:episode:download',
+        $podcastMediaPlayUrl = (string)$this->router->fromHere(
+            route_name:   'api:stations:podcast:episode:download',
             route_params: ['episode_id' => $episode->getId()],
-            absolute: true
+            absolute:     true
         );
 
         $rssEnclosure->setUrl($podcastMediaPlayUrl);
 
         $podcastMedia = $episode->getMedia();
-        $rssEnclosure->setType($podcastMedia->getMimeType());
-        $rssEnclosure->setLength($podcastMedia->getLength());
+        if (null !== $podcastMedia) {
+            $rssEnclosure->setType($podcastMedia->getMimeType());
+            $rssEnclosure->setLength($podcastMedia->getLength());
+        }
 
         return $rssEnclosure;
     }
@@ -323,11 +340,11 @@ class PodcastFeedController
             $this->stationRepository->getDefaultAlbumArtUrl($station)
         );
 
-        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getId()))) {
-            $episodeArtworkSrc = $this->router->fromHere(
-                route_name: 'api:stations:podcast:episode:art',
+        if ($podcastsFilesystem->fileExists(PodcastEpisode::getArtPath($episode->getIdRequired()))) {
+            $episodeArtworkSrc = (string)$this->router->fromHere(
+                route_name:   'api:stations:podcast:episode:art',
                 route_params: ['episode_id' => $episode->getId() . '|' . $episode->getArtUpdatedAt()],
-                absolute: true
+                absolute:     true
             );
         }
 

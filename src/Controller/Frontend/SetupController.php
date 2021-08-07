@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend;
 
 use App\Entity;
@@ -10,6 +12,7 @@ use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -31,7 +34,7 @@ class SetupController
     public function indexAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $current_step = $this->getSetupStep($request);
-        return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+        return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
     }
 
     /**
@@ -88,22 +91,19 @@ class SetupController
     {
         $request->getFlash()->addMessage('<b>' . __('Setup has already been completed!') . '</b>', Flash::ERROR);
 
-        return $response->withRedirect($request->getRouter()->named('dashboard'));
+        return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
     }
 
     /**
      * Setup Step 1:
      * Create Super Administrator Account
-     *
-     * @param ServerRequest $request
-     * @param Response $response
      */
     public function registerAction(ServerRequest $request, Response $response): ResponseInterface
     {
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'register' && $this->environment->isProduction()) {
-            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
         }
 
         // Create first account form.
@@ -139,7 +139,7 @@ class SetupController
             $acl = $request->getAcl();
             $acl->reload();
 
-            return $response->withRedirect($request->getRouter()->named('setup:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('setup:index'));
         }
 
         return $request->getView()
@@ -149,25 +149,22 @@ class SetupController
     /**
      * Setup Step 2:
      * Create Station and Parse Metadata
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @param StationForm $stationForm
      */
     public function stationAction(
         ServerRequest $request,
         Response $response,
-        StationForm $stationForm
+        FactoryInterface $factory
     ): ResponseInterface {
+        $stationForm = $factory->make(StationForm::class);
+
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'station' && $this->environment->isProduction()) {
-            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
         }
 
         if (false !== $stationForm->process($request)) {
-            return $response->withRedirect($request->getRouter()->named('setup:settings'));
+            return $response->withRedirect((string)$request->getRouter()->named('setup:settings'));
         }
 
         return $request->getView()->renderToResponse(
@@ -182,21 +179,18 @@ class SetupController
     /**
      * Setup Step 3:
      * Set site settings.
-     *
-     * @param ServerRequest $request
-     * @param Response $response
-     *
-     * @param SettingsForm $settingsForm
      */
     public function settingsAction(
         ServerRequest $request,
         Response $response,
-        SettingsForm $settingsForm
+        FactoryInterface $factory
     ): ResponseInterface {
+        $settingsForm = $factory->make(SettingsForm::class);
+
         // Verify current step.
         $current_step = $this->getSetupStep($request);
         if ($current_step !== 'settings' && $this->environment->isProduction()) {
-            return $response->withRedirect($request->getRouter()->named('setup:' . $current_step));
+            return $response->withRedirect((string)$request->getRouter()->named('setup:' . $current_step));
         }
 
         if ($settingsForm->process($request)) {
@@ -214,7 +208,7 @@ class SetupController
                 Flash::SUCCESS
             );
 
-            return $response->withRedirect($request->getRouter()->named('dashboard'));
+            return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
         }
 
         return $request->getView()->renderToResponse(

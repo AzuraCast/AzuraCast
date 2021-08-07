@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Customization;
@@ -26,9 +28,13 @@ class Settings implements Stringable
     #[ORM\Id, ORM\GeneratedValue(strategy: 'CUSTOM'), ORM\CustomIdGenerator(UuidV6Generator::class)]
     protected string $app_unique_identifier;
 
-    public function getAppUniqueIdentifier(): ?string
+    public function getAppUniqueIdentifier(): string
     {
-        return $this->app_unique_identifier ?? null;
+        if (!isset($this->app_unique_identifier)) {
+            throw new \RuntimeException('Application Unique ID not generated yet.');
+        }
+
+        return $this->app_unique_identifier;
     }
 
     /**
@@ -418,7 +424,7 @@ class Settings implements Stringable
 
     public function setLastFmApiKey(?string $lastFmApiKey): void
     {
-        $lastFmApiKey = trim($lastFmApiKey);
+        $lastFmApiKey = trim($lastFmApiKey ?? '');
         $lastFmApiKey = (!empty($lastFmApiKey)) ? $lastFmApiKey : null;
 
         $this->last_fm_api_key = $this->truncateNullableString($lastFmApiKey);

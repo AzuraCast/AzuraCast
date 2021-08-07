@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Acl;
@@ -13,6 +15,9 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends EntityForm<Entity\Station>
+ */
 class StationForm extends EntityForm
 {
     public function __construct(
@@ -75,7 +80,7 @@ class StationForm extends EntityForm
         if (!isset($installedFrontends[Adapters::FRONTEND_SHOUTCAST])) {
             $frontendDesc = __(
                 'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.',
-                $request->getRouter()->named('admin:install_shoutcast:index')
+                (string)$request->getRouter()->named('admin:install_shoutcast:index')
             );
 
             $this->getField('frontend_type')->setOption('description', $frontendDesc);
@@ -94,7 +99,7 @@ class StationForm extends EntityForm
         if ($canSeeAdministration) {
             $storageLocationsDesc = __(
                 '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.',
-                $request->getRouter()->named('admin:storage_locations:index')
+                (string)$request->getRouter()->named('admin:storage_locations:index')
             );
 
             if ($this->hasField('media_storage_location_id')) {
@@ -137,7 +142,7 @@ class StationForm extends EntityForm
             }
         }
 
-        if ('POST' === $request->getMethod() && $this->isValid($request->getParsedBody())) {
+        if ($this->isValid($request)) {
             $data = $this->getValues();
 
             /** @var Entity\Station $record */
@@ -145,28 +150,40 @@ class StationForm extends EntityForm
 
             if ($canSeeAdministration) {
                 if (!empty($data['media_storage_location_id'])) {
-                    $record->setMediaStorageLocation(
-                        $this->storageLocationRepo->findByType(
-                            Entity\StorageLocation::TYPE_STATION_MEDIA,
-                            $data['media_storage_location_id']
-                        )
+                    $sl = $this->storageLocationRepo->findByType(
+                        Entity\StorageLocation::TYPE_STATION_MEDIA,
+                        (int)$data['media_storage_location_id']
                     );
+
+                    if (null === $sl) {
+                        $this->addError('Media storage location not found.');
+                    } else {
+                        $record->setMediaStorageLocation($sl);
+                    }
                 }
                 if (!empty($data['recordings_storage_location_id'])) {
-                    $record->setRecordingsStorageLocation(
-                        $this->storageLocationRepo->findByType(
-                            Entity\StorageLocation::TYPE_STATION_RECORDINGS,
-                            $data['recordings_storage_location_id']
-                        )
+                    $sl = $this->storageLocationRepo->findByType(
+                        Entity\StorageLocation::TYPE_STATION_RECORDINGS,
+                        (int)$data['recordings_storage_location_id']
                     );
+
+                    if (null === $sl) {
+                        $this->addError('Recordings storage location not found.');
+                    } else {
+                        $record->setRecordingsStorageLocation($sl);
+                    }
                 }
                 if (!empty($data['podcasts_storage_location_id'])) {
-                    $record->setPodcastsStorageLocation(
-                        $this->storageLocationRepo->findByType(
-                            Entity\StorageLocation::TYPE_STATION_PODCASTS,
-                            $data['podcasts_storage_location_id']
-                        )
+                    $sl = $this->storageLocationRepo->findByType(
+                        Entity\StorageLocation::TYPE_STATION_PODCASTS,
+                        (int)$data['podcasts_storage_location_id']
                     );
+
+                    if (null === $sl) {
+                        $this->addError('Podcasts storage location not found.');
+                    } else {
+                        $record->setPodcastsStorageLocation($sl);
+                    }
                 }
             }
 
@@ -177,9 +194,9 @@ class StationForm extends EntityForm
                     $field_name = $error->getPropertyPath();
 
                     if (isset($this->fields[$field_name])) {
-                        $this->fields[$field_name]->addError($error->getMessage());
+                        $this->fields[$field_name]->addError((string)$error->getMessage());
                     } else {
-                        $this->addError($error->getMessage());
+                        $this->addError((string)$error->getMessage());
                     }
                 }
                 return false;

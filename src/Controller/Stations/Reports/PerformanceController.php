@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations\Reports;
 
 use App\Http\Response;
@@ -20,7 +22,7 @@ class PerformanceController
     public function __invoke(
         ServerRequest $request,
         Response $response,
-        $format = 'html'
+        string $format = 'html'
     ): ResponseInterface {
         $station = $request->getStation();
 

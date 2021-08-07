@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Doctrine\ReadOnlyBatchIteratorAggregate;
@@ -136,17 +138,17 @@ class ListenersAction
             $dd = $deviceDetector->parse($userAgent);
 
             if ($dd->isBot()) {
-                $clientBot = $dd->getBot();
+                $clientBot = (array)$dd->getBot();
 
                 $clientBotName = $clientBot['name'] ?? 'Unknown Crawler';
                 $clientBotType = $clientBot['category'] ?? 'Generic Crawler';
                 $client = $clientBotName . ' (' . $clientBotType . ')';
             } else {
-                $clientInfo = $dd->getClient();
+                $clientInfo = (array)$dd->getClient();
                 $clientBrowser = $clientInfo['name'] ?? 'Unknown Browser';
                 $clientVersion = $clientInfo['version'] ?? '0.00';
 
-                $clientOsInfo = $dd->getOs();
+                $clientOsInfo = (array)$dd->getOs();
                 $clientOs = $clientOsInfo['name'] ?? 'Unknown OS';
 
                 $client = $clientBrowser . ' ' . $clientVersion . ', ' . $clientOs;
@@ -237,7 +239,7 @@ class ListenersAction
         array $listeners,
         string $filename
     ): ResponseInterface {
-        $tempFile = tmpfile();
+        $tempFile = tmpfile() ?: throw new \RuntimeException('Could not create temp file.');
         $csv = Writer::createFromStream($tempFile);
 
         $tz = $station->getTimezoneObject();

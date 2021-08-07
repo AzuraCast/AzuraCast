@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -83,10 +85,10 @@ class ServicesController
      *     name="action",
      *     description="The action to perform (start, stop, restart)",
      *     in="path",
-     *     content="restart",
      *     required=false,
      *     @OA\Schema(
-     *         type="string"
+     *         type="string",
+     *         default="restart"
      *     )
      *   ),
      *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),
@@ -140,10 +142,10 @@ class ServicesController
      *     name="action",
      *     description="The action to perform (for all: start, stop, restart; for Liquidsoap only: skip, disconnect)",
      *     in="path",
-     *     content="restart",
      *     required=false,
      *     @OA\Schema(
-     *         type="string"
+     *         type="string",
+     *         default="restart"
      *     )
      *   ),
      *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Api_Status")),

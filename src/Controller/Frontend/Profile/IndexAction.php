@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Profile;
 
 use App\Form\UserProfileForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\Avatar;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class IndexAction
@@ -14,10 +17,12 @@ class IndexAction
         ServerRequest $request,
         Response $response,
         Avatar $avatar,
-        UserProfileForm $userProfileForm
+        FactoryInterface $factory
     ): ResponseInterface {
         // Avatars
         $avatarService = $avatar->getAvatarService();
+
+        $userProfileForm = $factory->make(UserProfileForm::class);
 
         return $request->getView()->renderToResponse(
             $response,

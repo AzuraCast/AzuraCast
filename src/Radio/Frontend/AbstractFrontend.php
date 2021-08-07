@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
 use App\Environment;
-use App\EventDispatcher;
 use App\Http\Router;
 use App\Radio\AbstractAdapter;
 use App\Xml\Reader;
@@ -17,6 +18,7 @@ use NowPlaying\AdapterFactory;
 use NowPlaying\Result\Result;
 use PhpIP\IP;
 use PhpIP\IPBlock;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Supervisor\Supervisor;
@@ -32,7 +34,7 @@ abstract class AbstractFrontend extends AbstractAdapter
         Environment $environment,
         EntityManagerInterface $em,
         Supervisor $supervisor,
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         LoggerInterface $logger
     ) {
         parent::__construct($environment, $em, $supervisor, $dispatcher, $logger);
@@ -158,9 +160,9 @@ abstract class AbstractFrontend extends AbstractAdapter
     /**
      * @param string $custom_config_raw
      *
-     * @return mixed[]|bool
+     * @return mixed[]|false
      */
-    protected function processCustomConfig(string $custom_config_raw): array|bool
+    protected function processCustomConfig(string $custom_config_raw): array|false
     {
         try {
             if (str_starts_with($custom_config_raw, '{')) {
@@ -168,7 +170,10 @@ abstract class AbstractFrontend extends AbstractAdapter
             }
 
             if (str_starts_with($custom_config_raw, '<')) {
-                return (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                $xmlConfig = (new Reader())->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
+                return (false !== $xmlConfig)
+                    ? (array)$xmlConfig
+                    : false;
             }
         } catch (Exception $e) {
             $this->logger->error(

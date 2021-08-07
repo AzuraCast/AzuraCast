@@ -6,6 +6,7 @@
 
 $this->layout('main', ['title' => __('Statistics Overview'), 'manual' => true]);
 
+/** @var App\Http\RouterInterface $router */
 $props = [
     'chartsUrl' => (string)$router->fromHere('api:stations:reports:overview-charts'),
     'bestAndWorstUrl' => (string)$router->fromHere('api:stations:reports:best-and-worst'),

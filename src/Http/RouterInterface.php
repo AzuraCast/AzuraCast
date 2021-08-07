@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 
 interface RouterInterface
 {
-    /**
-     * Dynamically calculate the base URL the first time it's called, if it is at all in the request.
-     */
+    public function setRequest(?ServerRequestInterface $request): void;
+
+    public function withRequest(?ServerRequestInterface $request): self;
+
     public function getBaseUrl(): UriInterface;
 
     /**
@@ -21,9 +25,9 @@ interface RouterInterface
      */
     public function named(
         string $route_name,
-        $route_params = [],
+        array $route_params = [],
         array $query_params = [],
-        $absolute = false
+        bool $absolute = false
     ): UriInterface;
 
     /**
@@ -35,11 +39,11 @@ interface RouterInterface
      * @param bool $absolute
      */
     public function fromHere(
-        $route_name = null,
+        ?string $route_name = null,
         array $route_params = [],
         array $query_params = [],
-        $absolute = false
-    ): string;
+        bool $absolute = false
+    ): UriInterface;
 
     /**
      * Same as $this->fromHere(), but merging the current GET query parameters into the request as well.
@@ -50,9 +54,9 @@ interface RouterInterface
      * @param bool $absolute
      */
     public function fromHereWithQuery(
-        $route_name = null,
+        ?string $route_name = null,
         array $route_params = [],
         array $query_params = [],
-        $absolute = false
-    ): string;
+        bool $absolute = false
+    ): UriInterface;
 }

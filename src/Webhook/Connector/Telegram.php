@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Webhook\Connector;
 
 use App\Entity;
@@ -14,6 +16,9 @@ class Telegram extends AbstractConnector
 {
     public const NAME = 'telegram';
 
+    /**
+     * @inheritDoc
+     */
     public function dispatch(
         Entity\Station $station,
         Entity\StationWebhook $webhook,

@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Entity;
 use App\Form\StationForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use DI\FactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,8 +18,8 @@ class ProfileController
 
     public function __construct(
         protected EntityManagerInterface $em,
-        protected Entity\Repository\StationRepository $station_repo,
-        protected StationForm $station_form
+        protected Entity\Repository\StationRepository $stationRepo,
+        protected FactoryInterface $factory
     ) {
     }
 
@@ -68,21 +71,26 @@ class ProfileController
     public function editAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $station = $request->getStation();
+        $stationForm = $this->factory->make(StationForm::class);
 
-        if (false !== $this->station_form->process($request, $station)) {
-            return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+        if (false !== $stationForm->process($request, $station)) {
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:profile:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'stations/profile/edit', [
-            'form' => $this->station_form,
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'stations/profile/edit',
+            [
+                'form' => $stationForm,
+            ]
+        );
     }
 
     public function toggleAction(
         ServerRequest $request,
         Response $response,
-        $feature,
-        $csrf
+        string $feature,
+        string $csrf
     ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrf_namespace);
 
@@ -105,6 +113,6 @@ class ProfileController
         $this->em->persist($station);
         $this->em->flush();
 
-        return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:profile:index'));
     }
 }

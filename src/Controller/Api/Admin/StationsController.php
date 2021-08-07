@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Admin;
 
 use App\Entity;
@@ -11,6 +13,9 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractAdminApiCrudController<Entity\Station>
+ */
 class StationsController extends AbstractAdminApiCrudController
 {
     protected string $entityClass = Entity\Station::class;
@@ -104,7 +109,12 @@ class StationsController extends AbstractAdminApiCrudController
      * )
      */
 
-    /** @inheritDoc */
+    /**
+     * @param Entity\Station $record
+     * @param array<string, mixed> $context
+     *
+     * @return array<mixed>
+     */
     protected function toArray(object $record, array $context = []): array
     {
         return parent::toArray(
@@ -122,8 +132,14 @@ class StationsController extends AbstractAdminApiCrudController
         );
     }
 
-    /** @inheritDoc */
-    protected function editRecord(?array $data, $record = null, array $context = []): object
+    /**
+     * @param array<mixed>|null $data
+     * @param Entity\Station|null $record
+     * @param array<string, mixed> $context
+     *
+     * @return Entity\Station
+     */
+    protected function editRecord(?array $data, object $record = null, array $context = []): object
     {
         $create_mode = (null === $record);
 
@@ -150,7 +166,9 @@ class StationsController extends AbstractAdminApiCrudController
         return $this->station_repo->edit($record);
     }
 
-    /** @inheritDoc */
+    /**
+     * @param Entity\Station $record
+     */
     protected function deleteRecord(object $record): void
     {
         $this->station_repo->destroy($record);

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Middleware;
 
 use App\Acl;
 use App\Auth;
 use App\Customization;
 use App\Entity;
+use App\Environment;
 use App\Http\ServerRequest;
-use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -19,18 +21,20 @@ use Psr\Http\Server\RequestHandlerInterface;
 class GetCurrentUser implements MiddlewareInterface
 {
     public function __construct(
-        protected FactoryInterface $factory
+        protected Entity\Repository\UserRepository $userRepo,
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected Environment $environment,
+        protected Acl $acl
     ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Initialize the Auth for this request.
-        $auth = $this->factory->make(
-            Auth::class,
-            [
-                'session' => $request->getAttribute(ServerRequest::ATTR_SESSION),
-            ]
+        $auth = new Auth(
+            userRepo: $this->userRepo,
+            session: $request->getAttribute(ServerRequest::ATTR_SESSION),
+            environment: $this->environment,
         );
         $user = ($auth->isLoggedIn()) ? $auth->getLoggedInUser() : null;
 
@@ -40,24 +44,14 @@ class GetCurrentUser implements MiddlewareInterface
             ->withAttribute('is_logged_in', (null !== $user));
 
         // Initialize Customization (timezones, locales, etc) based on the current logged in user.
-
-        /** @var Customization $customization */
-        $customization = $this->factory->make(
-            Customization::class,
-            [
-                'request' => $request,
-            ]
+        $customization = new Customization(
+            environment: $this->environment,
+            settingsRepo: $this->settingsRepo,
+            request: $request
         );
 
         // Initialize ACL (can only be initialized after Customization as it contains localizations).
-
-        /** @var Acl $acl */
-        $acl = $this->factory->make(
-            Acl::class,
-            [
-                'user' => $user,
-            ]
-        );
+        $acl = $this->acl->withRequest($request);
 
         $request = $request
             ->withAttribute(ServerRequest::ATTR_LOCALE, $customization->getLocale())

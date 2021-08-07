@@ -1,9 +1,10 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Interfaces\ProcessableMediaInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'unprocessable_media'),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
-class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterface
+class UnprocessableMedia implements ProcessableMediaInterface, PathAwareInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
 

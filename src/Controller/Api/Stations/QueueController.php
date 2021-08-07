@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App;
@@ -13,6 +15,9 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractStationApiCrudController<Entity\StationQueue>
+ */
 class QueueController extends AbstractStationApiCrudController
 {
     protected string $entityClass = Entity\StationQueue::class;
@@ -63,6 +68,7 @@ class QueueController extends AbstractStationApiCrudController
      * @OA\Get(path="/station/{station_id}/queue/{id}",
      *   tags={"Stations: Queue"},
      *   description="Retrieve details of a single queued item.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
@@ -81,6 +87,7 @@ class QueueController extends AbstractStationApiCrudController
      * @OA\Delete(path="/station/{station_id}/queue/{id}",
      *   tags={"Stations: Queue"},
      *   description="Delete a single queued item.",
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
      *   @OA\Parameter(
      *     name="id",
      *     in="path",
@@ -122,7 +129,7 @@ class QueueController extends AbstractStationApiCrudController
         $apiResponse->log = $record->getLog();
 
         $apiResponse->links = [
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
+            'self' => (string)$router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
         ];
 
         return $apiResponse;

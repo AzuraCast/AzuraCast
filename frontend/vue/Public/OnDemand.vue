@@ -49,6 +49,13 @@
 </template>
 
 <style lang="scss">
+.ondemand.embed {
+    .container {
+        max-width: 100%;
+        padding: 0 !important;
+    }
+}
+
 #station_on_demand_table {
     .datatable-main {
         overflow-y: auto;

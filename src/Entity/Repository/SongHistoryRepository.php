@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -108,7 +110,7 @@ class SongHistoryRepository extends Repository
                 if ($delta_delta > 0) {
                     $delta_positive += $delta_delta;
                 } elseif ($delta_delta < 0) {
-                    $delta_negative += abs($delta_delta);
+                    $delta_negative += (int)abs($delta_delta);
                 }
             }
 

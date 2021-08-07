@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\PWA;
 
 use App\Environment;
@@ -12,8 +14,7 @@ class AppManifestAction
 {
     public function __invoke(
         ServerRequest $request,
-        Response $response,
-        Environment $environment
+        Response $response
     ): ResponseInterface {
         $station = $request->getStation();
 
@@ -21,7 +22,7 @@ class AppManifestAction
             throw new StationNotFoundException();
         }
 
-        $iconBaseUrl = $environment->getAssetUrl() . '/icons/' . $environment->getAppEnvironment();
+        $customization = $request->getCustomization();
 
         $manifest = [
             'name' => $station->getName() . ' - AzuraCast',
@@ -35,37 +36,37 @@ class AppManifestAction
             ],
             'icons' => [
                 [
-                    'src' => $iconBaseUrl . '/android-icon-36x36.png',
+                    'src' => $customization->getBrowserIconUrl(36),
                     'sizes' => '36x36',
                     'type' => 'image/png',
                     'density' => '0.75',
                 ],
                 [
-                    'src' => $iconBaseUrl . '/android-icon-48x48.png',
+                    'src' => $customization->getBrowserIconUrl(48),
                     'sizes' => '48x48',
                     'type' => 'image/png',
                     'density' => '1.0',
                 ],
                 [
-                    'src' => $iconBaseUrl . '/android-icon-72x72.png',
+                    'src' => $customization->getBrowserIconUrl(72),
                     'sizes' => '72x72',
                     'type' => 'image/png',
                     'density' => '1.5',
                 ],
                 [
-                    'src' => $iconBaseUrl . '/android-icon-96x96.png',
+                    'src' => $customization->getBrowserIconUrl(96),
                     'sizes' => '96x96',
                     'type' => 'image/png',
                     'density' => '2.0',
                 ],
                 [
-                    'src' => $iconBaseUrl . '/android-icon-144x144.png',
+                    'src' => $customization->getBrowserIconUrl(144),
                     'sizes' => '144x144',
                     'type' => 'image/png',
                     'density' => '3.0',
                 ],
                 [
-                    'src' => $iconBaseUrl . '/android-icon-192x192.png',
+                    'src' => $customization->getBrowserIconUrl(192),
                     'sizes' => '192x192',
                     'type' => 'image/png',
                     'density' => '4.0',

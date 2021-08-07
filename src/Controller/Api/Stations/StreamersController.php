@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity;
@@ -10,6 +12,9 @@ use Carbon\CarbonInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @extends AbstractScheduledEntityController<Entity\StationStreamer>
+ */
 class StreamersController extends AbstractScheduledEntityController
 {
     protected string $entityClass = Entity\StationStreamer::class;
@@ -149,7 +154,7 @@ class StreamersController extends AbstractScheduledEntityController
     }
 
     /**
-     * @param object $record
+     * @param Entity\StationStreamer $record
      * @param ServerRequest $request
      *
      * @return mixed[]
@@ -159,11 +164,10 @@ class StreamersController extends AbstractScheduledEntityController
         $return = parent::viewRecord($record, $request);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));
-        $return['links']['broadcasts'] = $request->getRouter()->fromHere(
-            'api:stations:streamer:broadcasts',
-            ['id' => $record->getId()],
-            [],
-            !$isInternal
+        $return['links']['broadcasts'] = (string)$request->getRouter()->fromHere(
+            route_name: 'api:stations:streamer:broadcasts',
+            route_params: ['id' => $record->getId()],
+            absolute: !$isInternal
         );
 
         return $return;

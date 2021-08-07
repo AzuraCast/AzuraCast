@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Entity;
@@ -129,7 +131,7 @@ class ListAction
 
                         if (!$playlist instanceof Entity\StationPlaylist) {
                             return $response->withStatus(400)
-                                ->withJson(new Entity\Api\Error('Playlist not found.'));
+                                ->withJson(new Entity\Api\Error(400, 'Playlist not found.'));
                         }
 
                         $mediaQueryBuilder->andWhere(
@@ -177,7 +179,7 @@ class ListAction
                 $media->genre = (string)$row['genre'];
 
                 $media->is_playable = ($row['length'] !== 0);
-                $media->length = $row['length'];
+                $media->length = (int)$row['length'];
                 $media->length_text = $row['length_text'];
 
                 $media->media_id = $row['id'];
@@ -315,7 +317,7 @@ class ListAction
         $paginator = Paginator::fromArray($result, $request);
 
         // Add processor-intensive data for just this page.
-        $stationId = $station->getId();
+        $stationId = $station->getIdRequired();
         $isInternal = (bool)$request->getParam('internal', false);
         $defaultAlbumArtUrl = (string)$stationRepo->getDefaultAlbumArtUrl($station);
 

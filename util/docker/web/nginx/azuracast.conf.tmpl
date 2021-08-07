@@ -1,6 +1,8 @@
+{{if isTrue .Env.ENABLE_REDIS }}
 upstream redis_server {
     nchan_redis_server "redis://redis:6379";
 }
+{{end}}
 
 resolver 127.0.0.11;
 
@@ -50,7 +52,9 @@ server {
 
     location ~ /pub/(\w+)$ {
         nchan_publisher;
+{{if isTrue .Env.ENABLE_REDIS}}
         nchan_redis_pass redis_server;
+{{end}}
 
         nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id $1;
@@ -95,6 +99,13 @@ server {
         add_header Access-Control-Allow-Origin *;
     }
 
+    location /static/uploads {
+        rewrite ^(.+)\.(?:\w+)\.(js|css|png|jpg)$ $1.$2 last;
+
+        alias /var/azuracast/uploads;
+        try_files $uri =404;
+    }
+
     location /static/dist {
         expires 365d;
     }
@@ -121,7 +132,11 @@ server {
     }
 
     # Reverse proxy all possible radio listening ports (8000, 8010...8480, 8490)
+{{ if eq .Env.NGINX_RADIO_PORTS "default" }}
     location ~ ^/radio/(8[0-9][0-9]0)(/?)(.*)$ {
+{{ else }}
+    location ~ ^/radio/{{ .Env.NGINX_RADIO_PORTS }}(/?)(.*)$ {
+{{ end }}
         proxy_buffering           off;
         proxy_ignore_client_abort off;
         proxy_intercept_errors    on;
@@ -136,7 +151,12 @@ server {
     }
 
     # Reverse proxy the Liquidsoap harbor inputs to allow for streaming.
+{{ if eq .Env.NGINX_WEBDJ_PORTS "default" }}
     location ~ ^/radio/(8[0-9][0-9]5)(/?)(.*)$ {
+{{ else }}
+    location ~ ^/radio/{{ .Env.NGINX_WEBDJ_PORTS }}(/?)(.*)$ {
+{{ end }}
+
         resolver 127.0.0.11;
 
         proxy_buffering           off;
@@ -152,7 +172,9 @@ server {
         nchan_access_control_allow_origin "*";
 
         nchan_subscriber;
+{{if isTrue .Env.ENABLE_REDIS}}
         nchan_redis_pass redis_server;
+{{end}}
 
         nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id "$1";

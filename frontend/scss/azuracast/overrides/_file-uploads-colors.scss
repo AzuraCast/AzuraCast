@@ -1,0 +1,17 @@
+div.flow-upload {
+  div.upload-progress {
+    .error {
+      color: #a00;
+    }
+  }
+
+  div.file-drop-target {
+    border: 4px dashed $theme-color-3;
+    color: #5e5e5e;
+
+    &.drag_over {
+      border: 4px dashed $theme-color-4;
+      color: $text-muted;
+    }
+  }
+}

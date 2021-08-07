@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Frontend;
 
 use App\Entity;
@@ -186,9 +188,19 @@ class Icecast extends AbstractFrontend
                 $mount['hidden'] = 1;
             }
 
+            if (!empty($mount_row->getIntroPath())) {
+                $introPath = $mount_row->getIntroPath();
+                // The intro path is appended to webroot, hence the 5 ../es. Amazingly, this works!
+                $mount['intro'] = '../../../../../' . $station->getRadioConfigDir() . '/' . $introPath;
+            }
+
             if (!empty($mount_row->getFallbackMount())) {
                 $mount['fallback-mount'] = $mount_row->getFallbackMount();
                 $mount['fallback-override'] = 1;
+            }
+
+            if ($mount_row->getMaxListenerDuration()) {
+                $mount['max-listener-duration'] = $mount_row->getMaxListenerDuration();
             }
 
             $mountFrontendConfig = trim($mount_row->getFrontendConfig() ?? '');
@@ -199,13 +211,14 @@ class Icecast extends AbstractFrontend
                 }
             }
 
-            if ($mount_row->getRelayUrl()) {
-                $relay_parts = parse_url($mount_row->getRelayUrl());
+            $mountRelayUrl = $mount_row->getRelayUrl();
+            if (!empty($mountRelayUrl)) {
+                $mountRelayUri = new Uri($mountRelayUrl);
 
                 $config['relay'][] = [
-                    'server' => $relay_parts['host'],
-                    'port' => $relay_parts['port'],
-                    'mount' => $relay_parts['path'],
+                    'server' => $mountRelayUri->getHost(),
+                    'port' => $mountRelayUri->getPort(),
+                    'mount' => $mountRelayUri->getPath(),
                     'local-mount' => $mount_row->getName(),
                 ];
             }
@@ -217,16 +230,16 @@ class Icecast extends AbstractFrontend
         if (!empty($customConfig)) {
             $customConfParsed = $this->processCustomConfig($customConfig);
 
-            // Special handling for aliases.
-            if (isset($customConfParsed['paths']['alias'])) {
-                $alias = (array)$customConfParsed['paths']['alias'];
-                if (!is_numeric(key($alias))) {
-                    $alias = [$alias];
-                }
-                $customConfParsed['paths']['alias'] = $alias;
-            }
-
             if (false !== $customConfParsed) {
+                // Special handling for aliases.
+                if (isset($customConfParsed['paths']['alias'])) {
+                    $alias = (array)$customConfParsed['paths']['alias'];
+                    if (!is_numeric(key($alias))) {
+                        $alias = [$alias];
+                    }
+                    $customConfParsed['paths']['alias'] = $alias;
+                }
+
                 $config = Utilities\Arrays::arrayMergeRecursiveDistinct($config, $customConfParsed);
             }
         }

@@ -10,13 +10,14 @@ $this->layout(
     ]
 );
 
+/** @var App\Http\RouterInterface $router */
 $props = [
-    'listUrl' => $router->fromHere('api:stations:files:list'),
-    'batchUrl' => $router->fromHere('api:stations:files:batch'),
-    'uploadUrl' => $router->fromHere('api:stations:files:upload'),
-    'listDirectoriesUrl' => $router->fromHere('api:stations:files:directories'),
-    'mkdirUrl' => $router->fromHere('api:stations:files:mkdir'),
-    'renameUrl' => $router->fromHere('api:stations:files:rename'),
+    'listUrl' => (string)$router->fromHere('api:stations:files:list'),
+    'batchUrl' => (string)$router->fromHere('api:stations:files:batch'),
+    'uploadUrl' => (string)$router->fromHere('api:stations:files:upload'),
+    'listDirectoriesUrl' => (string)$router->fromHere('api:stations:files:directories'),
+    'mkdirUrl' => (string)$router->fromHere('api:stations:files:mkdir'),
+    'renameUrl' => (string)$router->fromHere('api:stations:files:rename'),
     'initialPlaylists' => $playlists,
     'customFields' => $custom_fields,
     'validMimeTypes' => $mime_types,

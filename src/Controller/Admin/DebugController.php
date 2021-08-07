@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Console\Application;
@@ -8,7 +10,8 @@ use App\Entity;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Message\RunSyncTaskMessage;
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\AbstractQueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
 use App\Session\Flash;
@@ -37,9 +40,9 @@ class DebugController extends AbstractLogViewerController
         Response $response,
         Entity\Repository\StationRepository $stationRepo,
         Runner $sync,
-        QueueManager $queueManager
+        QueueManagerInterface $queueManager
     ): ResponseInterface {
-        $queues = QueueManager::getAllQueues();
+        $queues = AbstractQueueManager::getAllQueues();
 
         $queueTotals = [];
         foreach ($queues as $queue) {
@@ -169,7 +172,7 @@ class DebugController extends AbstractLogViewerController
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('admin:debug:index'));
     }
 
     public function clearQueueAction(
@@ -187,6 +190,6 @@ class DebugController extends AbstractLogViewerController
         // Flash an update to ensure the session is recreated.
         $request->getFlash()->addMessage($resultOutput, Flash::SUCCESS);
 
-        return $response->withRedirect($request->getRouter()->fromHere('admin:debug:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('admin:debug:index'));
     }
 }

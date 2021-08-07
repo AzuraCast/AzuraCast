@@ -24,7 +24,7 @@ class DeleteArtAction
         $episode = $episodeRepo->fetchEpisodeForStation($station, $episode_id);
         if ($episode === null) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('Episode not found!')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $episodeRepo->removeEpisodeArt($episode);

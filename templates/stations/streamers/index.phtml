@@ -2,14 +2,15 @@
 
 $this->layout('main', ['title' => __('Streamer/DJ Accounts'), 'manual' => true]);
 
+/** @var App\Http\RouterInterface $router */
 $props = [
-    'listUrl' => $router->fromHere('api:stations:streamers'),
-    'scheduleUrl' => $router->fromHere('api:stations:streamers:schedule'),
+    'listUrl' => (string)$router->fromHere('api:stations:streamers'),
+    'scheduleUrl' => (string)$router->fromHere('api:stations:streamers:schedule'),
     'locale' => substr($customization->getLocale(), 0, 2),
     'stationTimeZone' => $station_tz,
 ];
 
-/** @var \App\Assets $assets */
+/** @var App\Assets $assets */
 $assets->addVueRender('Vue_StationsStreamers', '#station-streamers', $props);
 ?>
 

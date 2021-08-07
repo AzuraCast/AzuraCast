@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity;
@@ -39,9 +41,7 @@ class MusicBrainz
         $rateLimitLock = $this->lockFactory->createLock(
             'api_musicbrainz',
             1,
-            false,
-            500,
-            10
+            false
         );
 
         try {
@@ -84,7 +84,9 @@ class MusicBrainz
     ): array {
         $query = [];
 
-        $query[] = $this->quoteQuery($song->getTitle());
+        if (!empty($song->getTitle())) {
+            $query[] = $this->quoteQuery($song->getTitle());
+        }
 
         if (!empty($song->getArtist())) {
             $query[] = 'artist:' . $this->quoteQuery($song->getArtist());
@@ -114,6 +116,10 @@ class MusicBrainz
                     return $response['recordings'];
                 }
             }
+        }
+
+        if (empty($query)) {
+            return [];
         }
 
         $response = $this->makeRequest(

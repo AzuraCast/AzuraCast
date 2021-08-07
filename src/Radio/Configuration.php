@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio;
 
 use App\Entity\Station;
@@ -15,6 +17,7 @@ class Configuration
 {
     public const DEFAULT_PORT_MIN = 8000;
     public const DEFAULT_PORT_MAX = 8499;
+    public const PROTECTED_PORTS = [8080, 80, 443, 2022];
 
     public function __construct(
         protected EntityManagerInterface $em,
@@ -156,7 +159,7 @@ class Configuration
      * @param Station $station
      * @param bool $force_restart
      */
-    protected function reloadSupervisorForStation(Station $station, $force_restart = false): bool
+    protected function reloadSupervisorForStation(Station $station, bool $force_restart = false): bool
     {
         $station_group = 'station_' . $station->getId();
         $affected_groups = $this->reloadSupervisor();
@@ -249,7 +252,7 @@ class Configuration
      * @param Station $station
      * @param bool $force
      */
-    public function assignRadioPorts(Station $station, $force = false): void
+    public function assignRadioPorts(Station $station, bool $force = false): void
     {
         if (
             $station->getFrontendType() !== Adapters::FRONTEND_REMOTE
@@ -295,7 +298,7 @@ class Configuration
         $used_ports = $this->getUsedPorts($station);
 
         // Iterate from port 8000 to 9000, in increments of 10
-        $protected_ports = [8080];
+        $protected_ports = self::PROTECTED_PORTS;
 
         $port_min = $this->environment->getAutoAssignPortMin();
         $port_max = $this->environment->getAutoAssignPortMax();
@@ -387,13 +390,13 @@ class Configuration
     protected function writeConfigurationSection(
         Station $station,
         AbstractAdapter $adapter,
-        $priority
+        ?int $priority
     ): string {
         [, $program_name] = explode(':', $adapter->getProgramName($station));
 
         $config_lines = [
             'user' => 'azuracast',
-            'priority' => $priority,
+            'priority' => $priority ?? 50,
             'command' => $adapter->getCommand($station),
             'directory' => $station->getRadioConfigDir(),
             'environment' => 'TZ="' . $station->getTimezone() . '"',
@@ -436,5 +439,27 @@ class Configuration
         @unlink($supervisor_config_path);
 
         $this->reloadSupervisor();
+    }
+
+    /**
+     * @return int[]
+     */
+    public static function enumerateDefaultPorts(
+        int $rangeMin = self::DEFAULT_PORT_MIN,
+        int $rangeMax = self::DEFAULT_PORT_MAX,
+    ): array {
+        $defaultPorts = [];
+
+        for ($i = $rangeMin; $i < $rangeMax; $i += 10) {
+            if (in_array($i, self::PROTECTED_PORTS, true)) {
+                continue;
+            }
+
+            $defaultPorts[] = $i;
+            $defaultPorts[] = $i + 5;
+            $defaultPorts[] = $i + 6;
+        }
+
+        return $defaultPorts;
     }
 }

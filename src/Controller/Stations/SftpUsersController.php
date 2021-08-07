@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Environment;
@@ -10,6 +12,7 @@ use App\Http\ServerRequest;
 use App\Service\AzuraCastCentral;
 use App\Service\SftpGo;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class SftpUsersController extends AbstractStationCrudController
@@ -17,9 +20,9 @@ class SftpUsersController extends AbstractStationCrudController
     public function __construct(
         protected AzuraCastCentral $ac_central,
         protected Environment $environment,
-        SftpUserForm $form
+        FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        parent::__construct($factory->make(SftpUserForm::class));
 
         $this->csrf_namespace = 'stations_sftp_users';
     }
@@ -51,29 +54,33 @@ class SftpUsersController extends AbstractStationCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage('<b>' . __('Changes saved.') . '</b>', Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->fromHere('stations:sftp_users:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('stations:sftp_users:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => $id ? __('Edit SFTP User') : __('Add SFTP User'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $this->form,
+                'render_mode' => 'edit',
+                'title' => $id ? __('Edit SFTP User') : __('Add SFTP User'),
+            ]
+        );
     }
 
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        $id,
-        $csrf
+        int $id,
+        string $csrf
     ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('SFTP User deleted.') . '</b>', Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->fromHere('stations:sftp_users:index'));
+        return $response->withRedirect((string)$request->getRouter()->fromHere('stations:sftp_users:index'));
     }
 }

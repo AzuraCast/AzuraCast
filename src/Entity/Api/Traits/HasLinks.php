@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Api\Traits;
 
 use OpenApi\Annotations as OA;

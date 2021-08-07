@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Doctrine\Repository;
 use App\Entity;
 use App\Environment;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -165,7 +170,7 @@ class StationPlaylistMediaRepository extends Repository
     /**
      * @return Entity\Api\StationPlaylistQueue[]
      */
-    public function resetQueue(Entity\StationPlaylist $playlist): array
+    public function resetQueue(Entity\StationPlaylist $playlist, CarbonInterface $now = null): array
     {
         if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
             throw new InvalidArgumentException('Playlist must contain songs.');
@@ -214,6 +219,12 @@ class StationPlaylistMediaRepository extends Repository
             );
         }
 
+        $now = $now ?? CarbonImmutable::now($playlist->getStation()->getTimezoneObject());
+
+        $playlist->setQueueResetAt($now->getTimestamp());
+        $this->em->persist($playlist);
+        $this->em->flush();
+
         return $this->getQueue($playlist);
     }
 
@@ -255,5 +266,63 @@ class StationPlaylistMediaRepository extends Repository
             },
             $queuedMedia
         );
+    }
+
+    public function isQueueCompletelyFilled(Entity\StationPlaylist $playlist): bool
+    {
+        if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
+            return true;
+        }
+
+        if ($playlist::ORDER_RANDOM === $playlist->getOrder()) {
+            return true;
+        }
+
+        $notQueuedMediaCount = $this->getCountPlaylistMediaBaseQuery($playlist)
+            ->andWhere('spm.is_queued = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if ($notQueuedMediaCount === 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isQueueEmpty(Entity\StationPlaylist $playlist): bool
+    {
+        if ($playlist::SOURCE_SONGS !== $playlist->getSource()) {
+            return false;
+        }
+
+        if ($playlist::ORDER_RANDOM === $playlist->getOrder()) {
+            return false;
+        }
+
+        $totalMediaCount = $this->getCountPlaylistMediaBaseQuery($playlist)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $notQueuedMediaCount = $this->getCountPlaylistMediaBaseQuery($playlist)
+            ->andWhere('spm.is_queued = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if ($notQueuedMediaCount === $totalMediaCount) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function getCountPlaylistMediaBaseQuery(Entity\StationPlaylist $playlist): QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->select('count(spm.id)')
+            ->from(Entity\StationMedia::class, 'sm')
+            ->join('sm.playlists', 'spm')
+            ->where('spm.playlist = :playlist')
+            ->setParameter('playlist', $playlist);
     }
 }

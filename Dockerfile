@@ -32,7 +32,7 @@ COPY --chown=azuracast:azuracast . .
 RUN composer dump-autoload --optimize --classmap-authoritative \
     && touch /var/azuracast/.docker
 
-VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist"]
+VOLUME ["/var/azuracast/www_tmp", "/var/azuracast/uploads", "/var/azuracast/backups", "/var/azuracast/sftpgo/persist"]
 
 #
 # END Operations as `azuracast` user
@@ -54,6 +54,12 @@ ENV LANG="en_US.UTF-8" \
     MYSQL_USER="azuracast" \
     MYSQL_PASSWORD="azur4c457" \
     MYSQL_DATABASE="azuracast" \
+    ENABLE_REDIS="true" \
+    REDIS_HOST="redis" \
+    REDIS_PORT=6379 \
+    REDIS_DB=1 \
+    NGINX_RADIO_PORTS="default" \
+    NGINX_WEBDJ_PORTS="default" \
     PREFER_RELEASE_BUILDS="false" \
     COMPOSER_PLUGIN_MODE="false" \
     ADDITIONAL_MEDIA_SYNC_WORKER_COUNT=0 \

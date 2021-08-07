@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Exception\ValidationException;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Paginator;
 use App\Utilities;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -17,9 +18,12 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @template TEntity as object
+ */
 abstract class AbstractApiCrudController
 {
-    /** @var string The fully-qualified (::class) class name of the entity being managed. */
+    /** @var class-string<TEntity> The fully-qualified (::class) class name of the entity being managed. */
     protected string $entityClass;
 
     /** @var string The route name used to generate the "self" links for each record. */
@@ -59,7 +63,7 @@ abstract class AbstractApiCrudController
     }
 
     /**
-     * @param object $record
+     * @param TEntity $record
      * @param ServerRequest $request
      *
      */
@@ -74,21 +78,28 @@ abstract class AbstractApiCrudController
         $isInternal = ('true' === $request->getParam('internal', 'false'));
         $router = $request->getRouter();
 
-        $return['links'] = [
-            'self' => $router->fromHere($this->resourceRouteName, ['id' => $record->getId()], [], !$isInternal),
-        ];
+        if ($record instanceof IdentifiableEntityInterface) {
+            $return['links'] = [
+                'self' => (string)$router->fromHere(
+                    $this->resourceRouteName,
+                    ['id' => $record->getIdRequired()],
+                    [],
+                    !$isInternal
+                ),
+            ];
+        }
         return $return;
     }
 
     /**
-     * @param object $record
-     * @param array $context
+     * @param TEntity $record
+     * @param array<string, mixed> $context
      *
-     * @return mixed[]
+     * @return array<mixed>
      */
     protected function toArray(object $record, array $context = []): array
     {
-        return $this->serializer->normalize(
+        return (array)$this->serializer->normalize(
             $record,
             null,
             array_merge(
@@ -126,15 +137,25 @@ abstract class AbstractApiCrudController
             return $object->getName();
         }
 
-        return $object->getId();
+        if ($object instanceof IdentifiableEntityInterface) {
+            return $object->getIdRequired();
+        }
+
+        if ($object instanceof \Stringable) {
+            return (string)$object;
+        }
+
+        return get_class($object) . ': ' . spl_object_hash($object);
     }
 
     /**
-     * @param array|null $data
-     * @param object|null $record
-     * @param array $context
+     * @param array<mixed>|null $data
+     * @param TEntity|null $record
+     * @param array<string, mixed> $context
+     *
+     * @return TEntity
      */
-    protected function editRecord(?array $data, $record = null, array $context = []): object
+    protected function editRecord(?array $data, ?object $record = null, array $context = []): object
     {
         if (null === $data) {
             throw new InvalidArgumentException('Could not parse input data.');
@@ -156,11 +177,13 @@ abstract class AbstractApiCrudController
     }
 
     /**
-     * @param array $data
-     * @param object|null $record
-     * @param array $context
+     * @param array<mixed> $data
+     * @param TEntity|null $record
+     * @param array<string, mixed> $context
+     *
+     * @return TEntity
      */
-    protected function fromArray(array $data, $record = null, array $context = []): object
+    protected function fromArray(array $data, ?object $record = null, array $context = []): object
     {
         if (null !== $record) {
             $context[ObjectNormalizer::OBJECT_TO_POPULATE] = $record;
@@ -170,10 +193,7 @@ abstract class AbstractApiCrudController
     }
 
     /**
-     * @param object $record
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @param TEntity $record
      */
     protected function deleteRecord(object $record): void
     {

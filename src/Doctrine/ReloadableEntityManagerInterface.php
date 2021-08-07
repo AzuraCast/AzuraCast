@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * @template T as object The type of the entity being refetched.
- */
 interface ReloadableEntityManagerInterface extends EntityManagerInterface
 {
     /**
@@ -14,20 +13,24 @@ interface ReloadableEntityManagerInterface extends EntityManagerInterface
      *
      * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
      *
-     * @param T $entity
+     * @template TEntity as object
      *
-     * @return T
+     * @param TEntity $entity
+     *
+     * @return TEntity
      */
-    public function refetch(mixed $entity);
+    public function refetch(object $entity): object;
 
     /**
      * Fetch a fresh reference to an entity object, even if the EntityManager has been cleared.
      *
      * phpcs:disable SlevomatCodingStandard.TypeHints.ReturnTypeHint
      *
-     * @param T $entity
+     * @template TEntity as object
      *
-     * @return T
+     * @param TEntity $entity
+     *
+     * @return TEntity
      */
-    public function refetchAsReference(mixed $entity);
+    public function refetchAsReference(object $entity): object;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Backend\Liquidsoap;
 
 use App\Entity;
@@ -290,14 +292,16 @@ class ConfigWriter implements EventSubscriberInterface
                     case Entity\StationPlaylist::REMOTE_TYPE_STREAM:
                     default:
                         $remote_url = $playlist->getRemoteUrl();
-                        $remote_url_scheme = parse_url($remote_url, PHP_URL_SCHEME);
-                        $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
+                        if (null !== $remote_url) {
+                            $remote_url_scheme = parse_url($remote_url, PHP_URL_SCHEME);
+                            $remote_url_function = ('https' === $remote_url_scheme) ? 'input.https' : 'input.http';
 
-                        $buffer = $playlist->getRemoteBuffer();
-                        $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
+                            $buffer = $playlist->getRemoteBuffer();
+                            $buffer = ($buffer < 1) ? Entity\StationPlaylist::DEFAULT_REMOTE_BUFFER : $buffer;
 
-                        $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function
+                            $playlistConfigLines[] = $playlistVarName . ' = mksafe(' . $remote_url_function
                             . '(max=' . $buffer . '., "' . self::cleanUpString($remote_url) . '"))';
+                        }
                         break;
                 }
             }
@@ -533,9 +537,9 @@ class ConfigWriter implements EventSubscriberInterface
      * @param Entity\StationPlaylist $playlist
      * @param bool $notify
      *
-     * @return string The full path that was written to.
+     * @return string|null The full path that was written to.
      */
-    public function writePlaylistFile(Entity\StationPlaylist $playlist, $notify = true): ?string
+    public function writePlaylistFile(Entity\StationPlaylist $playlist, bool $notify = true): ?string
     {
         $station = $playlist->getStation();
 
@@ -675,7 +679,7 @@ class ConfigWriter implements EventSubscriberInterface
      * @param string $endpoint
      * @param array $params
      */
-    protected function getApiUrlCommand(Entity\Station $station, string $endpoint, $params = []): string
+    protected function getApiUrlCommand(Entity\Station $station, string $endpoint, array $params = []): string
     {
         // Docker cURL-based API URL call with API authentication.
         if ($this->environment->isDocker()) {
@@ -1003,7 +1007,7 @@ class ConfigWriter implements EventSubscriberInterface
         $charset = $station->getBackendConfig()->getCharset();
 
         $output_format = $this->getOutputFormatString(
-            $mount->getAutodjFormat(),
+            $mount->getAutodjFormat() ?? $mount::FORMAT_MP3,
             $mount->getAutodjBitrate() ?? 128
         );
 
@@ -1050,7 +1054,10 @@ class ConfigWriter implements EventSubscriberInterface
             $output_params[] = 'protocol="' . $protocol . '"';
         }
 
-        if (Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()) {
+        if (
+            Entity\Interfaces\StationMountInterface::FORMAT_OPUS === $mount->getAutodjFormat()
+            || Entity\Interfaces\StationMountInterface::FORMAT_FLAC === $mount->getAutodjFormat()
+        ) {
             $output_params[] = 'icy_metadata="true"';
         }
 
@@ -1073,6 +1080,9 @@ class ConfigWriter implements EventSubscriberInterface
 
             case Entity\Interfaces\StationMountInterface::FORMAT_OPUS:
                 return '%opus(samplerate=48000, bitrate=' . $bitrate . ', vbr="constrained", application="audio", channels=2, signal="music", complexity=10, max_bandwidth="full_band")';
+
+            case Entity\Interfaces\StationMountInterface::FORMAT_FLAC:
+                return '%ogg(%flac(samplerate=48000, channels=2, compression=4, bits_per_sample=24))';
 
             case Entity\Interfaces\StationMountInterface::FORMAT_MP3:
             default:
@@ -1130,12 +1140,12 @@ class ConfigWriter implements EventSubscriberInterface
      * @param float|int|string $number
      * @param int $decimals
      */
-    public static function toFloat(float|int|string $number, $decimals = 2): string
+    public static function toFloat(float|int|string $number, int $decimals = 2): string
     {
         return number_format((float)$number, $decimals, '.', '');
     }
 
-    public static function formatTimeCode($time_code): string
+    public static function formatTimeCode(int $time_code): string
     {
         $hours = floor($time_code / 100);
         $mins = $time_code % 100;
@@ -1164,11 +1174,11 @@ class ConfigWriter implements EventSubscriberInterface
     public static function cleanUpVarName(string $str): string
     {
         $str = strip_tags($str);
-        $str = preg_replace(['/[\r\n\t ]+/', '/[\"\*\/\:\<\>\?\'\|]+/'], ' ', $str);
+        $str = preg_replace(['/[\r\n\t ]+/', '/[\"\*\/\:\<\>\?\'\|]+/'], ' ', $str) ?? '';
         $str = strtolower($str);
         $str = html_entity_decode($str, ENT_QUOTES, "utf-8");
         $str = htmlentities($str, ENT_QUOTES, "utf-8");
-        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str);
+        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str) ?? '';
         $str = str_replace(' ', '_', $str);
         $str = rawurlencode($str);
         $str = str_replace(['%', '-'], ['', '_'], $str);

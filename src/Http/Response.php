@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use Azura\Files\Adapter\LocalAdapterInterface;
@@ -100,7 +102,7 @@ final class Response extends \Slim\Http\Response
             ->withHeader('Pragma', 'public')
             ->withHeader('Expires', '0')
             ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
-            ->withHeader('Content-Type', mime_content_type($file_path))
+            ->withHeader('Content-Type', mime_content_type($file_path) ?: '')
             ->withHeader('Content-Length', (string)filesize($file_path))
             ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name)
             ->withBody($stream);
@@ -117,7 +119,7 @@ final class Response extends \Slim\Http\Response
      *
      * @return static
      */
-    public function renderStringAsFile(string $file_data, string $content_type, $file_name = null): static
+    public function renderStringAsFile(string $file_data, string $content_type, ?string $file_name = null): static
     {
         $response = $this->response
             ->withHeader('Pragma', 'public')
@@ -189,7 +191,7 @@ final class Response extends \Slim\Http\Response
         }
 
         $response = $this->withHeader('Content-Disposition', $disposition)
-            ->withHeader('Content-Length', $fileMeta->fileSize())
+            ->withHeader('Content-Length', (string)$fileMeta->fileSize())
             ->withHeader('X-Accel-Buffering', 'no');
 
         $adapter = $filesystem->getAdapter();
@@ -206,12 +208,12 @@ final class Response extends \Slim\Http\Response
                 if (str_starts_with($localPath, $diskPath)) {
                     $accelPath = str_replace($diskPath, $nginxPath, $localPath);
 
-                    return $response->withHeader('Content-Type', $fileMeta->mimeType())
+                    return $response->withHeader('Content-Type', $fileMeta->mimeType() ?? '')
                         ->withHeader('X-Accel-Redirect', $accelPath);
                 }
             }
         }
 
-        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType());
+        return $response->withFile($filesystem->readStream($path), $fileMeta->mimeType() ?? '');
     }
 }

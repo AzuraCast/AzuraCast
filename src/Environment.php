@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Radio\Configuration;
@@ -25,6 +27,7 @@ class Environment
     public const TEMP_DIR = 'TEMP_DIR';
     public const CONFIG_DIR = 'CONFIG_DIR';
     public const VIEWS_DIR = 'VIEWS_DIR';
+    public const UPLOADS_DIR = 'UPLOADS_DIR';
 
     public const IS_DOCKER = 'IS_DOCKER';
     public const IS_CLI = 'IS_CLI';
@@ -34,7 +37,6 @@ class Environment
     public const DOCKER_REVISION = 'AZURACAST_DC_REVISION';
 
     public const LANG = 'LANG';
-    public const SUPPORTED_LOCALES = 'SUPPORTED_LOCALES';
 
     public const RELEASE_CHANNEL = 'AZURACAST_VERSION';
 
@@ -59,6 +61,7 @@ class Environment
     public const DB_USER = 'MYSQL_USER';
     public const DB_PASSWORD = 'MYSQL_PASSWORD';
 
+    public const ENABLE_REDIS = 'ENABLE_REDIS';
     public const REDIS_HOST = 'REDIS_HOST';
     public const REDIS_PORT = 'REDIS_PORT';
     public const REDIS_DB = 'REDIS_DB';
@@ -68,34 +71,38 @@ class Environment
         self::APP_NAME => 'AzuraCast',
         self::APP_ENV => self::ENV_PRODUCTION,
 
+        self::LOG_LEVEL => LogLevel::NOTICE,
         self::IS_DOCKER => true,
         self::IS_CLI => ('cli' === PHP_SAPI),
 
         self::ASSET_URL => '/static',
 
-        self::SUPPORTED_LOCALES => [
-            'en_US.UTF-8' => 'English (Default)',
-            'cs_CZ.UTF-8' => 'čeština',             // Czech
-            'de_DE.UTF-8' => 'Deutsch',             // German
-            'es_ES.UTF-8' => 'Español',             // Spanish
-            'fr_FR.UTF-8' => 'Français',            // French
-            'el_GR.UTF-8' => 'ελληνικά',            // Greek
-            'it_IT.UTF-8' => 'Italiano',            // Italian
-            'hu_HU.UTF-8' => 'magyar',              // Hungarian
-            'nl_NL.UTF-8' => 'Nederlands',          // Dutch
-            'pl_PL.UTF-8' => 'Polski',              // Polish
-            'pt_PT.UTF-8' => 'Português',           // Portuguese
-            'pt_BR.UTF-8' => 'Português do Brasil', // Brazilian Portuguese
-            'ru_RU.UTF-8' => 'Русский язык',        // Russian
-            'sv_SE.UTF-8' => 'Svenska',             // Swedish
-            'tr_TR.UTF-8' => 'Türkçe',              // Turkish
-            'zh_CN.UTF-8' => '簡化字',               // Simplified Chinese
-        ],
+        self::AUTO_ASSIGN_PORT_MIN => 8000,
+        self::AUTO_ASSIGN_PORT_MAX => 8499,
+
+        self::ENABLE_REDIS => true,
+
+        self::SYNC_SHORT_EXECUTION_TIME => 600,
+        self::SYNC_LONG_EXECUTION_TIME => 1800,
+
+        self::PROFILING_EXTENSION_ENABLED => 0,
+        self::PROFILING_EXTENSION_ALWAYS_ON => 0,
+        self::PROFILING_EXTENSION_HTTP_KEY => 'dev',
+
+        self::LANG => Locale::DEFAULT_LOCALE,
     ];
 
     public function __construct(array $elements = [])
     {
         $this->data = array_merge($this->defaults, $elements);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
+    {
+        return $this->data;
     }
 
     public function getAppEnvironment(): string
@@ -120,7 +127,7 @@ class Environment
 
     public function isDocker(): bool
     {
-        return (bool)($this->data[self::IS_DOCKER] ?? true);
+        return self::envToBool($this->data[self::IS_DOCKER] ?? true);
     }
 
     public function isCli(): bool
@@ -171,6 +178,14 @@ class Environment
     }
 
     /**
+     * @return string The directory where user system-level uploads are stored.
+     */
+    public function getUploadsDirectory(): string
+    {
+        return $this->data[self::UPLOADS_DIR];
+    }
+
+    /**
      * @return string The parent directory the application is within, i.e. `/var/azuracast`.
      */
     public function getParentDirectory(): string
@@ -199,14 +214,6 @@ class Environment
     public function getLang(): ?string
     {
         return $this->data[self::LANG];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSupportedLocales(): array
-    {
-        return $this->data[self::SUPPORTED_LOCALES] ?? [];
     }
 
     public function getReleaseChannel(): string
@@ -283,6 +290,11 @@ class Environment
         ];
     }
 
+    public function enableRedis(): bool
+    {
+        return self::envToBool($this->data[self::ENABLE_REDIS] ?? true);
+    }
+
     /**
      * @return mixed[]
      */
@@ -297,16 +309,34 @@ class Environment
 
     public function isProfilingExtensionEnabled(): bool
     {
-        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ENABLED] ?? 0));
+        return self::envToBool($this->data[self::PROFILING_EXTENSION_ENABLED] ?? false);
     }
 
     public function isProfilingExtensionAlwaysOn(): bool
     {
-        return (1 === (int)($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? 0));
+        return self::envToBool($this->data[self::PROFILING_EXTENSION_ALWAYS_ON] ?? false);
     }
 
     public function getProfilingExtensionHttpKey(): string
     {
         return $this->data[self::PROFILING_EXTENSION_HTTP_KEY] ?? 'dev';
+    }
+
+    public static function envToBool(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+        if (is_int($value)) {
+            return 0 !== $value;
+        }
+        if (null === $value) {
+            return false;
+        }
+
+        $value = (string)$value;
+        return str_starts_with(strtolower($value), 'y')
+            || 'true' === strtolower($value)
+            || '1' === $value;
     }
 }

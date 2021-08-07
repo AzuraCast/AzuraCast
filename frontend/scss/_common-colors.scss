@@ -79,8 +79,8 @@ $enable-print-styles: true !default;
 // Overrides for the Daemonite Material theme
 @import 'azuracast/overrides/body-colors';
 @import 'azuracast/overrides/forms-colors';
+@import 'azuracast/overrides/file-uploads-colors';
 
 // Individual AzuraCast pages
 @import 'azuracast/pages/embed-colors';
-@import 'azuracast/pages/files-colors';
 @import 'azuracast/pages/public-colors';

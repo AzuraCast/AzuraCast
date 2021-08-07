@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\Repository;
@@ -127,6 +129,25 @@ class StationQueueRepository extends Repository
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult();
+    }
+
+    public function hasCuedPlaylistMedia(Entity\StationPlaylist $playlist): bool
+    {
+        $station = $playlist->getStation();
+
+        $cuedPlaylistContentCountQuery = $this->getUpcomingBaseQuery($station)
+            ->select('count(sq.id)')
+            ->andWhere('sq.playlist = :playlist')
+            ->setParameter('playlist', $playlist)
+            ->getQuery();
+
+        $cuedPlaylistContentCount = $cuedPlaylistContentCountQuery->getSingleScalarResult();
+
+        if ($cuedPlaylistContentCount > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     protected function getRecentBaseQuery(Entity\Station $station): QueryBuilder

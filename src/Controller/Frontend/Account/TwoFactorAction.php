@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Account;
 
+use App\Entity\User;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
@@ -20,6 +23,7 @@ class TwoFactorAction
             $otp = $request->getParam('otp');
 
             if ($auth->verifyTwoFactor($otp)) {
+                /** @var User $user */
                 $user = $auth->getUser();
 
                 $flash->addMessage(
@@ -32,7 +36,7 @@ class TwoFactorAction
                     return $response->withRedirect($referrer);
                 }
 
-                return $response->withRedirect($request->getRouter()->named('dashboard'));
+                return $response->withRedirect((string)$request->getRouter()->named('dashboard'));
             }
 
             $flash->addMessage(
@@ -40,7 +44,7 @@ class TwoFactorAction
                 Flash::ERROR
             );
 
-            return $response->withRedirect($request->getUri());
+            return $response->withRedirect((string)$request->getUri());
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/account/two_factor');

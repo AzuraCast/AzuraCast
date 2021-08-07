@@ -4,9 +4,11 @@ $this->layout('main', [
     'manual' => true,
 ]);
 
+/** @var App\Http\RouterInterface $router */
 $props = [
-    'listUrl' => $router->fromHere('api:stations:podcasts'),
-    'stationUrl' => $router->fromHere('stations:index:index', [$stationId]),
+    'listUrl' => (string)$router->fromHere('api:stations:podcasts'),
+    'newArtUrl' => (string)$router->fromHere('api:stations:podcasts:new-art'),
+    'stationUrl' => (string)$router->fromHere('stations:index:index', [$stationId]),
     'locale' => substr($customization->getLocale(), 0, 2),
     'stationTimeZone' => $stationTz,
     'languageOptions' => $languageOptions,

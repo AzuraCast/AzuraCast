@@ -19,7 +19,7 @@ return function (App $app) {
                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
                         ->withHeader(
                             'Access-Control-Allow-Headers',
-                            'x-requested-with, Content-Type, Accept, Origin, Authorization'
+                            'x-api-key, x-requested-with, Content-Type, Accept, Origin, Authorization'
                         )
                         ->withHeader('Access-Control-Allow-Origin', '*');
                 }
@@ -148,6 +148,20 @@ return function (App $app) {
                                 ->setName('api:admin:settings');
 
                             $group->put('/settings', Controller\Api\Admin\SettingsController::class . ':updateAction');
+
+                            $group->get(
+                                '/custom_assets/{type}',
+                                Controller\Api\Admin\CustomAssets\GetCustomAssetAction::class
+                            )->setName('api:admin:custom_assets');
+
+                            $group->post(
+                                '/custom_assets/{type}',
+                                Controller\Api\Admin\CustomAssets\PostCustomAssetAction::class
+                            );
+                            $group->delete(
+                                '/custom_assets/{type}',
+                                Controller\Api\Admin\CustomAssets\DeleteCustomAssetAction::class
+                            );
                         }
                     )->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 
@@ -299,7 +313,7 @@ return function (App $app) {
 
                                     $group->get(
                                         '/download',
-                                        Controller\Api\Stations\Podcasts\Episodes\DownloadAction::class
+                                        Controller\Api\Stations\Podcasts\Episodes\Media\GetMediaAction::class
                                     )->setName('api:stations:podcast:episode:download');
                                 }
                             );
@@ -313,50 +327,77 @@ return function (App $app) {
                             $group->get('', Controller\Api\Stations\PodcastsController::class . ':listAction')
                                 ->setName('api:stations:podcasts');
 
-                            $group->post('', Controller\Api\Stations\PodcastsController::class . ':createAction')
-                                ->add(new Middleware\HandleMultipartJson());
+                            $group->post('', Controller\Api\Stations\PodcastsController::class . ':createAction');
+
+                            $group->post('/art', Controller\Api\Stations\Podcasts\Art\PostArtAction::class)
+                                ->setName('api:stations:podcasts:new-art');
                         }
                     )->add(new Middleware\Permissions(Acl::STATION_PODCASTS, true));
 
                     $group->group(
                         '/podcast/{podcast_id}',
                         function (RouteCollectorProxy $group) {
-                            $group->map(
-                                ['PUT', 'POST'],
-                                '',
-                                Controller\Api\Stations\PodcastsController::class . ':editAction'
-                            )->add(new Middleware\HandleMultipartJson());
+                            $group->put('', Controller\Api\Stations\PodcastsController::class . ':editAction');
 
                             $group->delete('', Controller\Api\Stations\PodcastsController::class . ':deleteAction');
+
+                            $group->post(
+                                '/art',
+                                Controller\Api\Stations\Podcasts\Art\PostArtAction::class
+                            )->setName('api:stations:podcast:art-internal');
 
                             $group->delete(
                                 '/art',
                                 Controller\Api\Stations\Podcasts\Art\DeleteArtAction::class
-                            )->setName('api:stations:podcast:art-internal');
+                            );
 
                             $group->post(
                                 '/episodes',
                                 Controller\Api\Stations\PodcastEpisodesController::class . ':createAction'
-                            )->add(new Middleware\HandleMultipartJson());
+                            );
+
+                            $group->post(
+                                '/episodes/art',
+                                Controller\Api\Stations\Podcasts\Episodes\Art\PostArtAction::class
+                            )->setName('api:stations:podcast:episodes:new-art');
+
+                            $group->post(
+                                '/episodes/media',
+                                Controller\Api\Stations\Podcasts\Episodes\Media\PostMediaAction::class
+                            )->setName('api:stations:podcast:episodes:new-media');
 
                             $group->group(
                                 '/episode/{episode_id}',
                                 function (RouteCollectorProxy $group) {
-                                    $group->map(
-                                        ['PUT', 'POST'],
+                                    $group->put(
                                         '',
                                         Controller\Api\Stations\PodcastEpisodesController::class . ':editAction'
-                                    )->add(new Middleware\HandleMultipartJson());
+                                    );
 
                                     $group->delete(
                                         '',
                                         Controller\Api\Stations\PodcastEpisodesController::class . ':deleteAction'
                                     );
 
+                                    $group->post(
+                                        '/art',
+                                        Controller\Api\Stations\Podcasts\Episodes\Art\PostArtAction::class
+                                    )->setName('api:stations:podcast:episode:art-internal');
+
                                     $group->delete(
                                         '/art',
                                         Controller\Api\Stations\Podcasts\Episodes\Art\DeleteArtAction::class
-                                    )->setName('api:stations:podcast:episode:art-internal');
+                                    );
+
+                                    $group->post(
+                                        '/media',
+                                        Controller\Api\Stations\Podcasts\Episodes\Media\PostMediaAction::class
+                                    )->setName('api:stations:podcast:episode:media-internal');
+
+                                    $group->delete(
+                                        '/media',
+                                        Controller\Api\Stations\Podcasts\Episodes\Media\DeleteMediaAction::class
+                                    );
                                 }
                             );
                         }
@@ -436,6 +477,32 @@ return function (App $app) {
                         ->add(Middleware\Module\StationFiles::class)
                         ->add(new Middleware\Permissions(Acl::STATION_MEDIA, true));
 
+                    $group->post(
+                        '/mounts/intro',
+                        Controller\Api\Stations\Mounts\Intro\PostIntroAction::class
+                    )->setName('api:stations:mounts:new-intro')
+                        ->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
+
+                    $group->group(
+                        '/mount/{id}',
+                        function (RouteCollectorProxy $group) {
+                            $group->get(
+                                '/intro',
+                                Controller\Api\Stations\Mounts\Intro\GetIntroAction::class
+                            )->setName('api:stations:mounts:intro');
+
+                            $group->post(
+                                '/intro',
+                                Controller\Api\Stations\Mounts\Intro\PostIntroAction::class
+                            );
+
+                            $group->delete(
+                                '/intro',
+                                Controller\Api\Stations\Mounts\Intro\DeleteIntroAction::class
+                            );
+                        }
+                    )->add(new Middleware\Permissions(Acl::STATION_MOUNTS, true));
+
                     $group->get(
                         '/playlists/schedule',
                         Controller\Api\Stations\PlaylistsController::class . ':scheduleAction'
@@ -475,6 +542,11 @@ return function (App $app) {
                                 '/queue',
                                 Controller\Api\Stations\Playlists\DeleteQueueAction::class
                             );
+
+                            $group->post(
+                                '/clone',
+                                Controller\Api\Stations\Playlists\CloneAction::class
+                            )->setName('api:stations:playlist:clone');
 
                             $group->post(
                                 '/import',

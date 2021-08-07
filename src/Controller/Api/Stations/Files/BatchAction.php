@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\Files;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -9,7 +11,7 @@ use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Media\BatchUtilities;
 use App\Message;
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use App\Radio\Backend\Liquidsoap;
 use App\Utilities\File;
 use Azura\Files\ExtendedFilesystemInterface;
@@ -26,7 +28,7 @@ class BatchAction
         protected BatchUtilities $batchUtilities,
         protected ReloadableEntityManagerInterface $em,
         protected MessageBus $messageBus,
-        protected QueueManager $queueManager,
+        protected QueueManagerInterface $queueManager,
         protected Entity\Repository\StationPlaylistMediaRepository $playlistMediaRepo,
         protected Entity\Repository\StationPlaylistFolderRepository $playlistFolderRepo,
     ) {
@@ -157,6 +159,7 @@ class BatchAction
                 $this->em->flush();
 
                 foreach ($playlists as $playlistRecord) {
+                    /** @var Entity\StationPlaylist $playlist */
                     $playlist = $this->em->refetchAsReference($playlistRecord);
 
                     $playlistWeights[$playlist->getId()]++;
@@ -170,6 +173,7 @@ class BatchAction
             }
         }
 
+        /** @var Entity\Station $station */
         $station = $this->em->refetch($station);
 
         foreach ($result->directories as $dir) {
@@ -226,7 +230,7 @@ class BatchAction
             $toMove = [
                 $this->batchUtilities->iterateMediaInDirectory($storageLocation, $dirPath),
                 $this->batchUtilities->iterateUnprocessableMediaInDirectory($storageLocation, $dirPath),
-                $this->batchUtilities->iteratePlaylistFoldersInDirectory($station, $dirPath),
+                $this->batchUtilities->iteratePlaylistFoldersInDirectory($storageLocation, $dirPath),
             ];
 
             foreach ($toMove as $iterator) {
@@ -284,7 +288,7 @@ class BatchAction
         $queuedMediaUpdates = [];
         $queuedNewFiles = [];
 
-        foreach ($this->queueManager->getMessagesInTransport(QueueManager::QUEUE_MEDIA) as $message) {
+        foreach ($this->queueManager->getMessagesInTransport(QueueManagerInterface::QUEUE_MEDIA) as $message) {
             if ($message instanceof Message\ReprocessMediaMessage) {
                 $queuedMediaUpdates[$message->media_id] = true;
             } elseif (

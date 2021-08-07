@@ -49,6 +49,28 @@
                     </b-form-invalid-feedback>
                 </b-form-group>
 
+                <b-form-group class="col-md-6" label-for="form_edit_author">
+                    <template #label>
+                        <translate key="lang_form_edit_author">Author</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_edit_author_desc">The contact person of the podcast. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.</translate>
+                    </template>
+                    <b-form-input id="form_edit_author" type="text" v-model="form.author.$model"
+                                  :state="form.author.$dirty ? !form.author.$error : null"></b-form-input>
+                </b-form-group>
+
+                <b-form-group class="col-md-6" label-for="form_edit_email">
+                    <template #label>
+                        <translate key="lang_form_edit_email">E-Mail</translate>
+                    </template>
+                    <template #description>
+                        <translate key="lang_form_edit_email_desc">The email of the podcast contact. May be required in order to list the podcast on services like Apple Podcasts, Spotify, Google Podcasts, etc.</translate>
+                    </template>
+                    <b-form-input id="form_edit_email" type="email" v-model="form.email.$model"
+                                  :state="form.email.$dirty ? !form.email.$error : null"></b-form-input>
+                </b-form-group>
+
                 <b-form-group class="col-md-12" label-for="form_edit_categories">
                     <template #label>
                         <translate key="lang_form_edit_categories">Categories</translate>

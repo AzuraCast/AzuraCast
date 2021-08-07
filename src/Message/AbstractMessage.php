@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Message;
 
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 
 abstract class AbstractMessage
 {
     public function getQueue(): string
     {
-        return QueueManager::QUEUE_NORMAL_PRIORITY;
+        return QueueManagerInterface::QUEUE_NORMAL_PRIORITY;
     }
 }

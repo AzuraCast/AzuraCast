@@ -62,6 +62,11 @@ return function (Application $console) {
 
     // Setup
     $console->command(
+        'azuracast:setup:initialize',
+        Command\InitializeCommand::class
+    )->setDescription(__('Ensure key settings are initialized within AzuraCast.'));
+
+    $console->command(
         'azuracast:config:migrate',
         Command\MigrateConfigCommand::class
     )->setDescription(__('Migrate existing configuration to new INI format if any exists.'));

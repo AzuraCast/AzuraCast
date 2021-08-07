@@ -7,12 +7,14 @@ module.exports = {
     VueTranslations: './vue/VueTranslations.js',
     InlinePlayer: './vue/InlinePlayer.vue',
     Dashboard: './vue/Dashboard.vue',
+    AdminBranding: './vue/Admin/Branding.vue',
     AdminStorageLocations: './vue/Admin/StorageLocations.vue',
     PublicFullPlayer: './vue/Public/FullPlayer.vue',
     PublicHistory: './vue/Public/History.vue',
     PublicOnDemand: './vue/Public/OnDemand.vue',
     PublicPlayer: './vue/Public/Player.vue',
     PublicRequests: './vue/Public/Requests.vue',
+    PublicSchedule: './vue/Public/Schedule.vue',
     PublicWebDJ: './vue/Public/WebDJ.vue',
     StationsMedia: './vue/Stations/Media.vue',
     StationsMounts: './vue/Stations/Mounts.vue',
@@ -62,7 +64,7 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        loader: 'vue-loader'
       },
       {
         test: /\.scss$/,

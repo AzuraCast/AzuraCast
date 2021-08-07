@@ -100,9 +100,9 @@ $enable-print-styles: true !default;
 @import 'azuracast/overrides/header';
 @import 'azuracast/overrides/progressbar';
 @import 'azuracast/overrides/tables';
+@import 'azuracast/overrides/file-uploads';
 
 // Individual AzuraCast pages
 @import 'azuracast/pages/embed';
-@import 'azuracast/pages/files';
 @import 'azuracast/pages/public';
 @import 'azuracast/pages/log_viewer';

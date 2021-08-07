@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Config;
@@ -16,6 +18,7 @@ use App\Sync\Task\RunBackupTask;
 use App\Utilities\File;
 use Azura\Files\Attributes\FileAttributes;
 use Azura\Files\ExtendedFilesystemInterface;
+use DI\FactoryInterface;
 use InvalidArgumentException;
 use League\Flysystem\StorageAttributes;
 use Psr\Http\Message\ResponseInterface;
@@ -84,11 +87,13 @@ class BackupsController extends AbstractLogViewerController
     public function configureAction(
         ServerRequest $request,
         Response $response,
-        BackupSettingsForm $settingsForm
+        FactoryInterface $factory
     ): ResponseInterface {
+        $settingsForm = $factory->make(BackupSettingsForm::class);
+
         if (false !== $settingsForm->process($request)) {
             $request->getFlash()->addMessage(__('Changes saved.'), Flash::SUCCESS);
-            return $response->withRedirect($request->getRouter()->fromHere('admin:backups:index'));
+            return $response->withRedirect((string)$request->getRouter()->fromHere('admin:backups:index'));
         }
 
         return $request->getView()->renderToResponse(
@@ -120,7 +125,7 @@ class BackupsController extends AbstractLogViewerController
         );
 
         // Handle submission.
-        if ($request->isPost() && $runForm->isValid($request->getParsedBody())) {
+        if ($runForm->isValid($request)) {
             $data = $runForm->getValues();
 
             $tempFile = File::generateTempPath('backup.log');
@@ -173,7 +178,7 @@ class BackupsController extends AbstractLogViewerController
     public function downloadAction(
         ServerRequest $request,
         Response $response,
-        $path
+        string $path
     ): ResponseInterface {
         [$path, $fs] = $this->getFile($path);
 
@@ -183,8 +188,12 @@ class BackupsController extends AbstractLogViewerController
             ->streamFilesystemFile($fs, $path);
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $path, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        string $path,
+        string $csrf
+    ): ResponseInterface {
         $request->getCsrf()->verify($csrf, $this->csrfNamespace);
 
         [$path, $fs] = $this->getFile($path);
@@ -193,7 +202,7 @@ class BackupsController extends AbstractLogViewerController
         $fs->delete($path);
 
         $request->getFlash()->addMessage('<b>' . __('Backup deleted.') . '</b>', Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:backups:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:backups:index'));
     }
 
     /**

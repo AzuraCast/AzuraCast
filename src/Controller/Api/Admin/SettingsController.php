@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Admin;
 
 use App\Controller\Api\AbstractApiCrudController;
@@ -13,8 +15,13 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractApiCrudController<Entity\Settings>
+ */
 class SettingsController extends AbstractApiCrudController
 {
+    protected string $entityClass = Entity\Settings::class;
+
     public function __construct(
         protected Entity\Repository\SettingsRepository $settingsRepo,
         EntityManagerInterface $em,
@@ -66,7 +73,7 @@ class SettingsController extends AbstractApiCrudController
     public function updateAction(ServerRequest $request, Response $response): ResponseInterface
     {
         $settings = $this->settingsRepo->readSettings();
-        $this->editRecord($request->getParsedBody(), $settings);
+        $this->editRecord((array)$request->getParsedBody(), $settings);
 
         return $response->withJson(new Entity\Api\Status());
     }

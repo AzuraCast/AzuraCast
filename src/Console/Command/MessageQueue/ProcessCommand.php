@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Command\MessageQueue;
 
 use App\Console\Command\CommandAbstract;
 use App\Doctrine\Messenger\ClearEntityManagerSubscriber;
 use App\Environment;
-use App\EventDispatcher;
 use App\MessageQueue\LogWorkerExceptionSubscriber;
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 use App\MessageQueue\ResetArrayCacheMiddleware;
+use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBus;
@@ -19,8 +21,8 @@ class ProcessCommand extends CommandAbstract
 {
     public function __invoke(
         MessageBus $messageBus,
-        EventDispatcher $eventDispatcher,
-        QueueManager $queueManager,
+        CallableEventDispatcherInterface $eventDispatcher,
+        QueueManagerInterface $queueManager,
         LoggerInterface $logger,
         Environment $environment,
         ?int $runtime = 0,

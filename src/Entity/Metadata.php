@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
-class Metadata
+class Metadata implements \JsonSerializable
 {
-    protected ArrayCollection $tags;
+    /** @var array<string, mixed> */
+    protected array $tags = [];
 
     protected float $duration = 0.0;
 
@@ -14,14 +15,19 @@ class Metadata
 
     protected string $mimeType = '';
 
-    public function __construct()
-    {
-        $this->tags = new ArrayCollection();
-    }
-
-    public function getTags(): ArrayCollection
+    public function getTags(): array
     {
         return $this->tags;
+    }
+
+    public function setTags(array $tags): void
+    {
+        $this->tags = $tags;
+    }
+
+    public function addTag(string $key, mixed $value): void
+    {
+        $this->tags[$key] = $value;
     }
 
     public function getDuration(): float
@@ -52,5 +58,32 @@ class Metadata
     public function setMimeType(string $mimeType): void
     {
         $this->mimeType = $mimeType;
+    }
+
+    public function jsonSerialize()
+    {
+        // Artwork is not included in this JSON feed.
+        return [
+            'tags' => $this->tags,
+            'duration' => $this->duration,
+            'mimeType' => $this->mimeType,
+        ];
+    }
+
+    public static function fromJson(array $data): self
+    {
+        $metadata = new self();
+
+        if (isset($data['tags'])) {
+            $metadata->setTags((array)$data['tags']);
+        }
+        if (isset($data['duration'])) {
+            $metadata->setDuration((float)$data['duration']);
+        }
+        if (isset($data['mimeType'])) {
+            $metadata->setMimeType((string)$data['mimeType']);
+        }
+
+        return $metadata;
     }
 }

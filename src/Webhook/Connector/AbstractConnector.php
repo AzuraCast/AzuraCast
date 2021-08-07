@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Webhook\Connector;
 
 use App\Entity;
 use App\Utilities;
 use GuzzleHttp\Client;
-use JetBrains\PhpStorm\Pure;
 use Monolog\Logger;
 use Symfony\Component\Validator\Constraints\UrlValidator;
 
@@ -17,6 +18,9 @@ abstract class AbstractConnector implements ConnectorInterface
     ) {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function shouldDispatch(Entity\StationWebhook $webhook, array $triggers = []): bool
     {
         if (!$this->webhookShouldTrigger($webhook, $triggers)) {
@@ -45,7 +49,12 @@ abstract class AbstractConnector implements ConnectorInterface
         return true;
     }
 
-    #[Pure] protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
+    /**
+     * @param Entity\StationWebhook $webhook
+     * @param array<string> $triggers
+     *
+     */
+    protected function webhookShouldTrigger(Entity\StationWebhook $webhook, array $triggers = []): bool
     {
         $webhookTriggers = $webhook->getTriggers();
         if (empty($webhookTriggers)) {
@@ -69,10 +78,10 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Replace variables in the format {{ blah }} with the flattened contents of the NowPlaying API array.
      *
-     * @param array $raw_vars
+     * @param array<mixed> $raw_vars
      * @param Entity\Api\NowPlaying $np
      *
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
     {
@@ -101,7 +110,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     protected function getValidUrl(?string $url_string = null): ?string
     {
-        $url = trim($url_string);
+        $url = trim($url_string ?? '');
         $pattern = sprintf(UrlValidator::PATTERN, 'http|https');
         return (preg_match($pattern, $url)) ? $url : null;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Middleware;
 
 use App\Entity;
@@ -50,6 +52,15 @@ class EnforceSecurity implements MiddlewareInterface
         if ($addHstsHeader) {
             $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
         }
+
+        // Opt out of FLoC
+        $permissionsPolicies = [
+            'autoplay=*', // Explicitly allow autoplay
+            'fullscreen=*', // Explicitly allow fullscreen
+            'interest-cohort=()', // Disable FLoC tracking
+        ];
+
+        $response = $response->withHeader('Permissions-Policy', implode(', ', $permissionsPolicies));
 
         // Deny crawling on any pages that don't explicitly allow it.
         $robotsHeader = $response->getHeaderLine('X-Robots-Tag');

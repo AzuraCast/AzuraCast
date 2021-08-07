@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\Remote;
 
 use App\Entity;
@@ -89,7 +91,7 @@ abstract class AbstractRemote
      * @param Entity\StationRemote $remote
      * @param string|null $custom_path
      */
-    protected function getRemoteUrl(Entity\StationRemote $remote, $custom_path = null): string
+    protected function getRemoteUrl(Entity\StationRemote $remote, ?string $custom_path = null): string
     {
         $uri = new Uri($remote->getUrl());
 

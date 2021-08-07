@@ -1,9 +1,10 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Annotations as OA;
 use Stringable;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'custom_field'),
     Attributes\Auditable
 ]
-class CustomField implements Stringable
+class CustomField implements Stringable, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -26,8 +27,8 @@ class CustomField implements Stringable
     protected string $name;
 
     /** @OA\Property(description="The programmatic name for the field. Can be auto-generated from the full name.") */
-    #[ORM\Column(length: 100, nullable: true)]
-    protected ?string $short_name = null;
+    #[ORM\Column(length: 100, nullable: false)]
+    protected string $short_name;
 
     /** @OA\Property(description="An ID3v2 field to automatically assign to this value, if it exists in the media file.") */
     #[ORM\Column(length: 100, nullable: true)]
@@ -47,14 +48,14 @@ class CustomField implements Stringable
         }
     }
 
-    public function getShortName(): ?string
+    public function getShortName(): string
     {
         return (!empty($this->short_name))
             ? $this->short_name
             : Station::getStationShortName($this->name);
     }
 
-    public function setShortName(?string $short_name): void
+    public function setShortName(string $short_name): void
     {
         $short_name = trim($short_name);
         if (!empty($short_name)) {
@@ -79,6 +80,6 @@ class CustomField implements Stringable
 
     public function __toString(): string
     {
-        return $this->name;
+        return $this->short_name;
     }
 }

@@ -4,6 +4,8 @@
  * Extends the Zend Config XML library to allow attribute handling.
  */
 
+declare(strict_types=1);
+
 namespace App\Xml;
 
 use Laminas\Config\Reader\Xml;

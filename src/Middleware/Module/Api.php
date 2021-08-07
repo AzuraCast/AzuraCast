@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Middleware\Module;
 
 use App\Entity;
@@ -46,10 +48,8 @@ class Api
 
         // Override the request's "user" variable if API authentication is supplied and valid.
         if ($api_user instanceof Entity\User) {
-            $acl = $request->getAcl();
-            $acl->setUser($api_user);
-
             $request = $request->withAttribute(ServerRequest::ATTR_USER, $api_user);
+            $request->getAcl()->setRequest($request);
 
             Entity\AuditLog::setCurrentUser($api_user);
         }
@@ -72,7 +72,11 @@ class Api
 
                 if (!empty($origin)) {
                     $rawOrigins = array_map('trim', explode(',', $acao_header));
-                    $rawOrigins[] = $settings->getBaseUrl();
+
+                    $baseUrl = $settings->getBaseUrl();
+                    if (null !== $baseUrl) {
+                        $rawOrigins[] = $baseUrl;
+                    }
 
                     $origins = [];
                     foreach ($rawOrigins as $rawOrigin) {

@@ -1,10 +1,9 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Radio\Adapters;
 use App\Radio\Frontend\AbstractFrontend;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,10 +18,15 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'station_mounts'),
     Attributes\Auditable
 ]
-class StationMount implements Stringable, Interfaces\StationMountInterface, Interfaces\StationCloneAwareInterface
+class StationMount implements
+    Stringable,
+    Interfaces\StationMountInterface,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
+    use Traits\TruncateInts;
 
     #[ORM\Column(nullable: false)]
     protected int $station_id;
@@ -64,6 +68,10 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $authhash = null;
 
+    /** @OA\Property(example=43200) */
+    #[ORM\Column(type: 'integer', nullable: false)]
+    protected int $max_listener_duration = 0;
+
     /** @OA\Property(example=true) */
     #[ORM\Column]
     protected bool $enable_autodj = true;
@@ -79,6 +87,9 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     /** @OA\Property(example="https://custom-listen-url.example.com/stream.mp3") */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $custom_listen_url = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    protected ?string $intro_path = null;
 
     /** @OA\Property(type="array", @OA\Items()) */
     #[ORM\Column(type: 'text', nullable: true)]
@@ -137,7 +148,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
         }
 
         if ($this->enable_autodj) {
-            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format);
+            return $this->autodj_bitrate . 'kbps ' . strtoupper($this->autodj_format ?? '');
         }
 
         return $this->name;
@@ -206,6 +217,16 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     public function setAuthhash(?string $authhash = null): void
     {
         $this->authhash = $this->truncateNullableString($authhash);
+    }
+
+    public function getMaxListenerDuration(): int
+    {
+        return $this->max_listener_duration;
+    }
+
+    public function setMaxListenerDuration(int $max_listener_duration): void
+    {
+        $this->max_listener_duration = $this->truncateInt($max_listener_duration);
     }
 
     public function getEnableAutodj(): bool
@@ -278,6 +299,16 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
         $this->listeners_total = $listeners_total;
     }
 
+    public function getIntroPath(): ?string
+    {
+        return $this->intro_path;
+    }
+
+    public function setIntroPath(?string $intro_path): void
+    {
+        $this->intro_path = $intro_path;
+    }
+
     public function getAutodjHost(): ?string
     {
         return '127.0.0.1';
@@ -333,7 +364,7 @@ class StationMount implements Stringable, Interfaces\StationMountInterface, Inte
     ): Api\StationMount {
         $response = new Api\StationMount();
 
-        $response->id = $this->id;
+        $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
         $response->path = $this->getName();
         $response->is_default = $this->is_default;

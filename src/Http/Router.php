@@ -1,43 +1,52 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use App\Entity;
 use App\Environment;
+use App\Traits\RequestAwareTrait;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Slim\App;
 use Slim\Interfaces\RouteInterface;
 use Slim\Interfaces\RouteParserInterface;
 use Slim\Routing\RouteContext;
 
 class Router implements RouterInterface
 {
-    protected RouteParserInterface $routeParser;
+    use RequestAwareTrait;
 
-    protected ?ServerRequestInterface $currentRequest = null;
-
-    protected UriInterface $baseUrl;
+    protected ?UriInterface $baseUrl = null;
 
     public function __construct(
         protected Environment $environment,
-        Entity\Repository\SettingsRepository $settingsRepo,
-        App $app,
-        ?ServerRequestInterface $request = null
+        protected Entity\Repository\SettingsRepository $settingsRepo,
+        protected RouteParserInterface $routeParser
     ) {
-        $this->routeParser = $app->getRouteCollector()->getRouteParser();
-
-        $this->currentRequest = $request;
-        $this->baseUrl = $this->buildBaseUrl($settingsRepo);
     }
 
-    protected function buildBaseUrl(
-        Entity\Repository\SettingsRepository $settingsRepo
-    ): UriInterface {
-        $settings = $settingsRepo->readSettings();
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+        $this->baseUrl = null;
+    }
+
+    public function getBaseUrl(bool $useRequest = true): UriInterface
+    {
+        if (null === $this->baseUrl) {
+            $this->baseUrl = $this->buildBaseUrl();
+        }
+
+        return $this->baseUrl;
+    }
+
+    protected function buildBaseUrl(): UriInterface
+    {
+        $settings = $this->settingsRepo->readSettings();
 
         $settingsBaseUrl = $settings->getBaseUrl();
         if (!empty($settingsBaseUrl)) {
@@ -53,8 +62,8 @@ class Router implements RouterInterface
 
         $useHttps = $settings->getAlwaysUseSsl();
 
-        if ($this->currentRequest instanceof ServerRequestInterface) {
-            $currentUri = $this->currentRequest->getUri();
+        if ($this->request instanceof ServerRequestInterface) {
+            $currentUri = $this->request->getUri();
 
             if ('https' === $currentUri->getScheme()) {
                 $useHttps = true;
@@ -90,6 +99,70 @@ class Router implements RouterInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function fromHereWithQuery(
+        ?string $route_name = null,
+        array $route_params = [],
+        array $query_params = [],
+        bool $absolute = false
+    ): UriInterface {
+        if ($this->request instanceof ServerRequestInterface) {
+            $query_params = array_merge($this->request->getQueryParams(), $query_params);
+        }
+
+        return $this->fromHere($route_name, $route_params, $query_params, $absolute);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function fromHere(
+        ?string $route_name = null,
+        array $route_params = [],
+        array $query_params = [],
+        bool $absolute = false
+    ): UriInterface {
+        if ($this->request instanceof ServerRequestInterface) {
+            $route = RouteContext::fromRequest($this->request)->getRoute();
+        } else {
+            $route = null;
+        }
+
+        if (null === $route_name && $route instanceof RouteInterface) {
+            $route_name = $route->getName();
+        }
+
+        if (null === $route_name) {
+            throw new InvalidArgumentException(
+                'Cannot specify a null route name if no existing route is configured.'
+            );
+        }
+
+        if ($route instanceof RouteInterface) {
+            $route_params = array_merge($route->getArguments(), $route_params);
+        }
+
+        return $this->named($route_name, $route_params, $query_params, $absolute);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function named(
+        string $route_name,
+        array $route_params = [],
+        array $query_params = [],
+        bool $absolute = false
+    ): UriInterface {
+        return self::resolveUri(
+            $this->getBaseUrl(),
+            $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params),
+            $absolute
+        );
+    }
+
+    /**
      * Compose a URL, returning an absolute URL (including base URL) if the current settings or
      * this function's parameters indicate an absolute URL is necessary
      *
@@ -120,89 +193,5 @@ class Router implements RouterInterface
         }
 
         return UriResolver::resolve($base, $rel);
-    }
-
-    public function getBaseUrl(bool $useRequest = true): UriInterface
-    {
-        return $this->baseUrl;
-    }
-
-    /**
-     * Same as $this->fromHere(), but merging the current GET query parameters into the request as well.
-     *
-     * @param null $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param bool $absolute
-     */
-    public function fromHereWithQuery(
-        $route_name = null,
-        array $route_params = [],
-        array $query_params = [],
-        $absolute = false
-    ): string {
-        if ($this->currentRequest instanceof ServerRequestInterface) {
-            $query_params = array_merge($this->currentRequest->getQueryParams(), $query_params);
-        }
-
-        return $this->fromHere($route_name, $route_params, $query_params, $absolute);
-    }
-
-    /**
-     * Return a named route based on the current page and its route arguments.
-     *
-     * @param null $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param bool $absolute
-     */
-    public function fromHere(
-        $route_name = null,
-        array $route_params = [],
-        array $query_params = [],
-        $absolute = false
-    ): string {
-        if ($this->currentRequest instanceof ServerRequestInterface) {
-            $route = RouteContext::fromRequest($this->currentRequest)->getRoute();
-        } else {
-            $route = null;
-        }
-
-        if ($route_name === null) {
-            if ($route instanceof RouteInterface) {
-                $route_name = $route->getName();
-            } else {
-                throw new InvalidArgumentException(
-                    'Cannot specify a null route name if no existing route is configured.'
-                );
-            }
-        }
-
-        if ($route instanceof RouteInterface) {
-            $route_params = array_merge($route->getArguments(), $route_params);
-        }
-
-        return $this->named($route_name, $route_params, $query_params, $absolute);
-    }
-
-    /**
-     * Simpler format for calling "named" routes with parameters.
-     *
-     * @param string $route_name
-     * @param array $route_params
-     * @param array $query_params
-     * @param boolean $absolute Whether to include the full URL.
-     */
-    public function named(
-        string $route_name,
-        $route_params = [],
-        array $query_params = [],
-        $absolute = false
-    ): UriInterface {
-        return self::resolveUri(
-            $this->getBaseUrl(),
-            $this->routeParser->relativeUrlFor($route_name, $route_params, $query_params),
-            $absolute
-        );
     }
 }

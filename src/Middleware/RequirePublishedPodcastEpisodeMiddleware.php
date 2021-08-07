@@ -76,7 +76,7 @@ class RequirePublishedPodcastEpisodeMiddleware
         $podcastId = $routeArgs['id'] ?? null;
 
         if ($podcastId === null) {
-            $podcastId = $routeArgs['podcast_id'];
+            $podcastId = $routeArgs['podcast_id'] ?? null;
         }
 
         return $podcastId;

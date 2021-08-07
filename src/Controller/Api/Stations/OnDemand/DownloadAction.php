@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations\OnDemand;
 
 use App\Entity;
@@ -28,7 +30,7 @@ class DownloadAction
 
         if (!($media instanceof Entity\StationMedia)) {
             return $response->withStatus(404)
-                ->withJson(new Entity\Api\Error(404, __('File not found.')));
+                ->withJson(Entity\Api\Error::notFound());
         }
 
         $fsMedia = (new StationFilesystems($station))->getMediaFilesystem();

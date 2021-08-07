@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\Repository\SettingsRepository;
@@ -36,11 +38,15 @@ class Avatar
         };
     }
 
-    public function getAvatar(string $email, int $size = self::DEFAULT_SIZE): string
+    public function getAvatar(?string $email, int $size = self::DEFAULT_SIZE): string
     {
         $avatarService = $this->getAvatarService();
 
         $default = $this->settingsRepo->readSettings()->getAvatarDefaultUrl();
+
+        if (empty($email)) {
+            return $default;
+        }
 
         return $avatarService->getAvatar($email, $size, $default);
     }

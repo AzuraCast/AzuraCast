@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Api;
 
 use OpenApi\Annotations as OA;
@@ -77,7 +79,7 @@ class NowPlaying implements ResolvableUrlInterface
      */
     public function update(): void
     {
-        $this->now_playing->recalculate();
+        $this->now_playing?->recalculate();
     }
 
     /**

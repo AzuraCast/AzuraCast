@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api\Stations;
 
 use App\Entity\Repository\StationScheduleRepository;
@@ -75,7 +77,7 @@ class ScheduleController extends AbstractStationApiCrudController
             }
         );
 
-        $rows = $request->getQueryParam('rows', 5);
+        $rows = (int)$request->getQueryParam('rows', 5);
         $events = array_slice($events, 0, $rows);
 
         return $response->withJson($events);

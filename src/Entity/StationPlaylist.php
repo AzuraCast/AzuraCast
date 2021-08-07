@@ -1,6 +1,6 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -20,7 +20,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\HasLifecycleCallbacks,
     Attributes\Auditable
 ]
-class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterface
+class StationPlaylist implements
+    Stringable,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -157,6 +160,10 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
     #[ORM\Column]
     #[Attributes\AuditIgnore]
     protected int $played_at = 0;
+
+    #[ORM\Column]
+    #[Attributes\AuditIgnore]
+    protected int $queue_reset_at = 0;
 
     #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: StationPlaylistMedia::class, fetch: 'EXTRA_LAZY')]
     #[ORM\OrderBy(['weight' => 'ASC'])]
@@ -362,6 +369,16 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
         $this->played_at = $played_at;
     }
 
+    public function getQueueResetAt(): int
+    {
+        return $this->queue_reset_at;
+    }
+
+    public function setQueueResetAt(int $queue_reset_at): void
+    {
+        $this->queue_reset_at = $queue_reset_at;
+    }
+
     /**
      * @return Collection|StationPlaylistMedia[]
      */
@@ -415,7 +432,7 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
      */
     public function getBackendOptions(): array
     {
-        return explode(',', $this->backend_options);
+        return explode(',', $this->backend_options ?? '');
     }
 
     /**
@@ -483,6 +500,12 @@ class StationPlaylist implements Stringable, Interfaces\StationCloneAwareInterfa
         int $play_per_minutes
     ): void {
         $this->play_per_minutes = $play_per_minutes;
+    }
+
+    public function __clone()
+    {
+        $this->played_at = 0;
+        $this->queue_reset_at = 0;
     }
 
     public function __toString(): string

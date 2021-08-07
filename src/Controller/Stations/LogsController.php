@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations;
 
 use App\Controller\AbstractLogViewerController;
@@ -19,7 +21,7 @@ class LogsController extends AbstractLogViewerController
         ]);
     }
 
-    public function viewAction(ServerRequest $request, Response $response, $log): ResponseInterface
+    public function viewAction(ServerRequest $request, Response $response, string $log): ResponseInterface
     {
         $station = $request->getStation();
         $log_areas = $this->getStationLogs($station);
@@ -28,8 +30,8 @@ class LogsController extends AbstractLogViewerController
             throw new Exception('Invalid log file specified.');
         }
 
-        $log = $log_areas[$log];
-        return $this->view($request, $response, $log['path'], $log['tail'] ?? true);
+        $logArea = $log_areas[$log];
+        return $this->view($request, $response, $logArea['path'], $logArea['tail'] ?? true);
     }
 
     protected function processLog(

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Middleware\Module;
 
 use App\Entity\Repository\SettingsRepository;
 use App\Event;
-use App\EventDispatcher;
 use App\Http\ServerRequest;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
@@ -17,7 +19,7 @@ use Slim\Routing\RouteContext;
 class Stations
 {
     public function __construct(
-        protected EventDispatcher $dispatcher,
+        protected EventDispatcherInterface $dispatcher,
         protected SettingsRepository $settingsRepo
     ) {
     }
@@ -46,7 +48,7 @@ class Stations
         $active_tab = null;
         $current_route = RouteContext::fromRequest($request)->getRoute();
         if ($current_route instanceof RouteInterface) {
-            $route_parts = explode(':', $current_route->getName());
+            $route_parts = explode(':', $current_route->getName() ?? '');
             $active_tab = $route_parts[1];
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Doctrine;
 
 use App\Environment;
@@ -9,10 +11,15 @@ use Doctrine\Persistence\ObjectRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @template TEntity as object
+ */
 class Repository
 {
+    /** @var class-string<TEntity> */
     protected string $entityClass;
 
+    /** @var ObjectRepository<TEntity> */
     protected ObjectRepository $repository;
 
     public function __construct(
@@ -22,16 +29,14 @@ class Repository
         protected LoggerInterface $logger
     ) {
         if (!isset($this->entityClass)) {
-            $this->entityClass = $this->getEntityClass();
+            /** @var class-string<TEntity> $defaultClass */
+            $defaultClass = str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
+            $this->entityClass = $defaultClass;
         }
+
         if (!isset($this->repository)) {
             $this->repository = $em->getRepository($this->entityClass);
         }
-    }
-
-    protected function getEntityClass(): string
-    {
-        return str_replace(['Repository', '\\\\'], ['', '\\'], static::class);
     }
 
     public function getRepository(): ObjectRepository
@@ -48,7 +53,7 @@ class Repository
      *
      * @return mixed[]
      */
-    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC'): array
+    public function fetchArray(bool $cached = true, ?string $order_by = null, string $order_dir = 'ASC'): array
     {
         $qb = $this->em->createQueryBuilder()
             ->select('e')
@@ -71,8 +76,12 @@ class Repository
      *
      * @return mixed[]
      */
-    public function fetchSelect($add_blank = false, Closure $display = null, $pk = 'id', $order_by = 'name'): array
-    {
+    public function fetchSelect(
+        bool|string $add_blank = false,
+        Closure $display = null,
+        string $pk = 'id',
+        string $order_by = 'name'
+    ): array {
         $select = [];
 
         // Specify custom text in the $add_blank parameter to override.
@@ -127,9 +136,9 @@ class Repository
      *
      * @return mixed[]
      */
-    public function toArray(object $entity, $deep = false, $form_mode = false): array
+    public function toArray(object $entity, bool $deep = false, bool $form_mode = false): array
     {
-        return $this->serializer->normalize(
+        return (array)$this->serializer->normalize(
             $entity,
             null,
             [

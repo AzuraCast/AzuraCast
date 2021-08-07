@@ -51,7 +51,8 @@
             </data-table>
         </b-card>
 
-        <edit-modal ref="editModal" :create-url="listUrl" :enable-advanced-features="enableAdvancedFeatures"
+        <edit-modal ref="editModal" :create-url="listUrl" :new-intro-url="newIntroUrl"
+                    :enable-advanced-features="enableAdvancedFeatures"
                     :station-frontend-type="stationFrontendType" @relist="relist"></edit-modal>
     </div>
 </template>
@@ -69,6 +70,7 @@ export default {
     components: { InfoCard, Icon, EditModal, DataTable },
     props: {
         listUrl: String,
+        newIntroUrl: String,
         stationFrontendType: String,
         enableAdvancedFeatures: Boolean
     },

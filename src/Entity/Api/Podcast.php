@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Api;
 
 use App\Entity\Api\Traits\HasLinks;
@@ -41,6 +43,16 @@ class Podcast
      * @OA\Property()
      */
     public ?string $language = null;
+
+    /**
+     * @OA\Property()
+     */
+    public ?string $author = null;
+
+    /**
+     * @OA\Property()
+     */
+    public ?string $email = null;
 
     /**
      * @OA\Property()

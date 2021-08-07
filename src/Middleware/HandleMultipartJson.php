@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Middleware;
 
 use JsonException;
@@ -31,7 +33,7 @@ class HandleMultipartJson implements MiddlewareInterface
 
         if (!empty($parsedBody)) {
             $parsedBody = array_filter(
-                $parsedBody,
+                (array)$parsedBody,
                 static function ($value) {
                     return $value && 'null' !== $value;
                 }

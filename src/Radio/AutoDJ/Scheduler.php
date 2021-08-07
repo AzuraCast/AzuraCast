@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio\AutoDJ;
 
+use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
+use App\Entity\Repository\StationPlaylistMediaRepository;
+use App\Entity\Repository\StationQueueRepository;
 use App\Entity\StationSchedule;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -12,7 +17,10 @@ use Monolog\Logger;
 class Scheduler
 {
     public function __construct(
-        protected Logger $logger
+        protected Logger $logger,
+        protected StationPlaylistMediaRepository $spmRepo,
+        protected StationQueueRepository $queueRepo,
+        protected ReloadableEntityManagerInterface $em,
     ) {
     }
 
@@ -262,20 +270,90 @@ class Scheduler
         foreach ($comparePeriods as [$start, $end]) {
             /** @var CarbonInterface $start */
             /** @var CarbonInterface $end */
-            if ($now->between($start, $end)) {
-                $dayToCheck = $start->dayOfWeekIso;
+            if (!$now->between($start, $end)) {
+                continue;
+            }
 
-                if ($this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
-                    if ($startTime->equalTo($endTime)) {
-                        if (!$this->wasPlaylistPlayedInLastXMinutes($schedule->getPlaylist(), $now, 30)) {
-                            return true;
-                        }
-                    } else {
-                        return true;
-                    }
+            $dayToCheck = $start->dayOfWeekIso;
+
+            if (!$this->isScheduleScheduledToPlayToday($schedule, $dayToCheck)) {
+                continue;
+            }
+
+            if ($startTime->equalTo($endTime)) {
+                $playlist = $schedule->getPlaylist();
+                if (null !== $playlist && !$this->wasPlaylistPlayedInLastXMinutes($playlist, $now, 30)) {
+                    return true;
                 }
+            } else {
+                if (!$schedule->getLoopOnce()) {
+                    return true;
+                }
+
+                return $this->shouldPlaylistLoopNow($schedule, $now, $start, $end);
             }
         }
+
+        return false;
+    }
+
+    protected function shouldPlaylistLoopNow(
+        Entity\StationSchedule $schedule,
+        CarbonInterface $now,
+        CarbonInterface $startTime,
+        CarbonInterface $endTime
+    ): bool {
+        $this->logger->debug('Checking if playlist should loop now.');
+
+        $playlist = $schedule->getPlaylist();
+
+        if (null === $playlist) {
+            $this->logger->error('Attempting to check playlist loop status on a non-playlist-based schedule item.');
+            return false;
+        }
+
+        $playlistPlayedAt = CarbonImmutable::createFromTimestamp(
+            $playlist->getPlayedAt(),
+            $now->getTimezone()
+        );
+
+        $isQueueEmpty = $this->spmRepo->isQueueEmpty($playlist);
+        $hasCuedPlaylistMedia = $this->queueRepo->hasCuedPlaylistMedia($playlist);
+
+        if (!$playlistPlayedAt->between($startTime, $endTime)) {
+            $this->logger->debug('Playlist was not played yet.');
+
+            $isQueueFilled = $this->spmRepo->isQueueCompletelyFilled($playlist);
+
+            if ((!$isQueueFilled || $isQueueEmpty) && !$hasCuedPlaylistMedia) {
+                $now = $startTime->subSecond();
+
+                $this->logger->debug('Resetting playlist queue with now override', [$now]);
+
+                $this->spmRepo->resetQueue($playlist, $now);
+                $isQueueEmpty = false;
+            }
+        } elseif ($isQueueEmpty && !$hasCuedPlaylistMedia) {
+            $this->logger->debug('Resetting playlist queue.');
+
+            $this->spmRepo->resetQueue($playlist);
+            $isQueueEmpty = false;
+        }
+
+        $playlist = $this->em->refetch($playlist);
+
+        $playlistQueueResetAt = CarbonImmutable::createFromTimestamp(
+            $playlist->getQueueResetAt(),
+            $now->getTimezone()
+        );
+
+        if (!$isQueueEmpty && !$playlistQueueResetAt->between($startTime, $endTime)) {
+            $this->logger->debug('Playlist should loop.');
+
+            return true;
+        }
+
+        $this->logger->debug('Playlist should NOT loop.');
 
         return false;
     }
@@ -288,20 +366,24 @@ class Scheduler
         $endDate = $schedule->getEndDate();
 
         if (!empty($startDate)) {
-            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone())
-                ->setTime(0, 0);
+            $startDate = CarbonImmutable::createFromFormat('Y-m-d', $startDate, $now->getTimezone());
 
-            if ($now->lt($startDate)) {
-                return false;
+            if (false !== $startDate) {
+                $startDate = $startDate->setTime(0, 0);
+                if ($now->lt($startDate)) {
+                    return false;
+                }
             }
         }
 
         if (!empty($endDate)) {
-            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $now->getTimezone())
-                ->setTime(23, 59, 59);
+            $endDate = CarbonImmutable::createFromFormat('Y-m-d', $endDate, $now->getTimezone());
 
-            if ($now->gt($endDate)) {
-                return false;
+            if (false !== $endDate) {
+                $endDate = $endDate->setTime(23, 59, 59);
+                if ($now->gt($endDate)) {
+                    return false;
+                }
             }
         }
 

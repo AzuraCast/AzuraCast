@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Stations\Reports;
 
 use App\Config;
@@ -8,6 +10,7 @@ use App\Form\Form;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Service\MusicBrainz;
+use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -31,19 +34,24 @@ class SoundExchangeController
     {
         $station = $request->getStation();
 
+        $tzObject = $station->getTimezoneObject();
+
+        $startDate = CarbonImmutable::parse('first day of last month', $tzObject);
+        $endDate = CarbonImmutable::parse('last day of last month', $tzObject);
+
         $form = new Form($this->form_config);
         $form->populate(
             [
-                'start_date' => date('Y-m-d', strtotime('first day of last month')),
-            'end_date' => date('Y-m-d', strtotime('last day of last month')),
+                'start_date' => $startDate->format('Y-m-d'),
+                'end_date' => $endDate->format('Y-m-d'),
             ]
         );
 
-        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
+        if ($form->isValid($request)) {
             $data = $form->getValues();
 
-            $start_date = strtotime($data['start_date'] . ' 00:00:00');
-            $end_date = strtotime($data['end_date'] . ' 23:59:59');
+            $startDate = CarbonImmutable::parse($data['start_date'] . ' 00:00:00', $tzObject);
+            $endDate = CarbonImmutable::parse($data['end_date'] . ' 23:59:59', $tzObject);
 
             $fetchIsrc = $data['fetch_isrc'];
 
@@ -87,8 +95,8 @@ class SoundExchangeController
                     GROUP BY sh.song_id
                 DQL
             )->setParameter('station', $station)
-                ->setParameter('time_start', $start_date)
-                ->setParameter('time_end', $end_date)
+                ->setParameter('time_start', $startDate->getTimestamp())
+                ->setParameter('time_end', $endDate->getTimestamp())
                 ->getArrayResult();
 
             $history_rows_by_id = array_column($history_rows, null, 'media_id');
@@ -149,8 +157,8 @@ class SoundExchangeController
 
             // Example: WABC01012009-31012009_A.txt
             $export_filename = strtoupper($station->getShortName())
-                . date('dmY', $start_date) . '-'
-                . date('dmY', $end_date) . '_A.txt';
+                . $startDate->format('dmY') . '-'
+                . $endDate->format('dmY') . '_A.txt';
 
             return $response->renderStringAsFile($export_txt, 'text/plain', $export_filename);
         }
@@ -162,7 +170,7 @@ class SoundExchangeController
         ]);
     }
 
-    protected function findISRC($song_row): ?string
+    protected function findISRC(array $song_row): ?string
     {
         $song = Entity\Song::createFromArray($song_row);
 

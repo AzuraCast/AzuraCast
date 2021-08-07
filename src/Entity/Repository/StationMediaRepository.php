@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Repository;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -8,6 +10,7 @@ use App\Entity;
 use App\Environment;
 use App\Exception\CannotProcessMediaException;
 use App\Media\MetadataManager;
+use App\Media\RemoteAlbumArt;
 use App\Service\AudioWaveform;
 use Azura\Files\ExtendedFilesystemInterface;
 use Exception;
@@ -24,39 +27,20 @@ use const JSON_UNESCAPED_SLASHES;
 
 class StationMediaRepository extends Repository
 {
-    protected CustomFieldRepository $customFieldRepo;
-
-    protected StationPlaylistMediaRepository $spmRepo;
-
-    protected StorageLocationRepository $storageLocationRepo;
-
-    protected UnprocessableMediaRepository $unprocessableMediaRepo;
-
-    protected MetadataManager $metadataManager;
-
-    protected ImageManager $imageManager;
-
     public function __construct(
         ReloadableEntityManagerInterface $em,
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        MetadataManager $metadataManager,
-        CustomFieldRepository $customFieldRepo,
-        StationPlaylistMediaRepository $spmRepo,
-        StorageLocationRepository $storageLocationRepo,
-        UnprocessableMediaRepository $unprocessableMediaRepo,
-        ImageManager $imageManager
+        protected MetadataManager $metadataManager,
+        protected RemoteAlbumArt $remoteAlbumArt,
+        protected CustomFieldRepository $customFieldRepo,
+        protected StationPlaylistMediaRepository $spmRepo,
+        protected StorageLocationRepository $storageLocationRepo,
+        protected UnprocessableMediaRepository $unprocessableMediaRepo,
+        protected ImageManager $imageManager
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
-
-        $this->customFieldRepo = $customFieldRepo;
-        $this->spmRepo = $spmRepo;
-        $this->storageLocationRepo = $storageLocationRepo;
-        $this->unprocessableMediaRepo = $unprocessableMediaRepo;
-
-        $this->metadataManager = $metadataManager;
-        $this->imageManager = $imageManager;
     }
 
     /**
@@ -66,7 +50,7 @@ class StationMediaRepository extends Repository
      */
     public function find(mixed $id, Entity\Station|Entity\StorageLocation $source): ?Entity\StationMedia
     {
-        if (Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
+        if (is_string($id) && Entity\StationMedia::UNIQUE_ID_LENGTH === strlen($id)) {
             $media = $this->findByUniqueId($id, $source);
             if ($media instanceof Entity\StationMedia) {
                 return $media;
@@ -106,7 +90,7 @@ class StationMediaRepository extends Repository
         return $media;
     }
 
-    public function iteratePaths(array $paths, $source): Generator
+    public function iteratePaths(array $paths, Entity\Station|Entity\StorageLocation $source): Generator
     {
         $storageLocation = $this->getStorageLocation($source);
 
@@ -255,7 +239,9 @@ class StationMediaRepository extends Repository
         ?ExtendedFilesystemInterface $fs = null
     ): void {
         // Load metadata from supported files.
-        $metadata = $this->metadataManager->getMetadata($media, $filePath);
+        $metadata = $this->metadataManager->read($filePath);
+
+        $media->fromMetadata($metadata);
 
         // Persist the media record for later custom field operations.
         $this->em->persist($media);
@@ -283,6 +269,11 @@ class StationMediaRepository extends Repository
         }
 
         $artwork = $metadata->getArtwork();
+
+        if (empty($artwork) && $this->remoteAlbumArt->enableForMedia()) {
+            $artwork = $this->remoteAlbumArt->getArtwork($media);
+        }
+
         if (!empty($artwork)) {
             try {
                 $this->writeAlbumArt($media, $artwork, $fs);
@@ -389,7 +380,7 @@ class StationMediaRepository extends Repository
             $media->getPath(),
             function ($path) use ($metadata) {
                 try {
-                    $this->metadataManager->writeMetadata($metadata, $path);
+                    $this->metadataManager->write($metadata, $path);
                     return true;
                 } catch (CannotProcessMediaException $e) {
                     throw $e;

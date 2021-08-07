@@ -20,7 +20,7 @@ final class Version20180425050351 extends AbstractMigration
         $this->changeCharset('utf8mb4', 'utf8mb4_bin');
     }
 
-    private function changeCharset($charset, $collate): void
+    private function changeCharset(string $charset, string $collate): void
     {
         $sqlLines = [
             'ALTER TABLE `station_media` DROP FOREIGN KEY FK_32AADE3AA0BDB2F3',

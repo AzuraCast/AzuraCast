@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Event\Radio;
 
 use App\Entity\Api\NowPlaying;
@@ -15,7 +17,7 @@ class LoadNowPlaying extends Event
      * @param array $np_raw
      * @param string|null $source
      */
-    public function setNowPlaying(array $np_raw, $source = null): void
+    public function setNowPlaying(array $np_raw, ?string $source = null): void
     {
         $np = array_filter(
             $np_raw,

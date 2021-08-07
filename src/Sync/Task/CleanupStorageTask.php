@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sync\Task;
 
 use App\Entity;
@@ -35,7 +37,9 @@ class CleanupStorageTask extends AbstractTask
 
         foreach ($finder as $file) {
             $file_path = $file->getRealPath();
-            @unlink($file_path);
+            if (false !== $file_path) {
+                @unlink($file_path);
+            }
         }
     }
 

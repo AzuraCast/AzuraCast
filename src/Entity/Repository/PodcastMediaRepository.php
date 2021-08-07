@@ -10,7 +10,7 @@ use App\Entity\PodcastEpisode;
 use App\Entity\PodcastMedia;
 use App\Environment;
 use App\Exception\InvalidPodcastMediaFileException;
-use App\Media\MetadataService\GetId3MetadataService;
+use App\Media\MetadataManager;
 use Azura\Files\ExtendedFilesystemInterface;
 use Intervention\Image\ImageManager;
 use League\Flysystem\UnableToDeleteFile;
@@ -24,8 +24,9 @@ class PodcastMediaRepository extends Repository
         Serializer $serializer,
         Environment $environment,
         LoggerInterface $logger,
-        protected GetId3MetadataService $metadataService,
-        protected ImageManager $imageManager
+        protected MetadataManager $metadataManager,
+        protected ImageManager $imageManager,
+        protected PodcastEpisodeRepository $episodeRepo,
     ) {
         parent::__construct($em, $serializer, $environment, $logger);
     }
@@ -35,14 +36,14 @@ class PodcastMediaRepository extends Repository
         string $originalPath,
         string $uploadPath,
         ?ExtendedFilesystemInterface $fs = null
-    ): ?string {
+    ): void {
         $podcast = $episode->getPodcast();
         $storageLocation = $podcast->getStorageLocation();
 
         $fs ??= $storageLocation->getFilesystem();
 
         // Do an early metadata check of the new media to avoid replacing a valid file with an invalid one.
-        $metadata = $this->metadataService->readMetadata($uploadPath);
+        $metadata = $this->metadataManager->read($uploadPath);
 
         if (!in_array($metadata->getMimeType(), ['audio/x-m4a', 'audio/mpeg'])) {
             throw new InvalidPodcastMediaFileException(
@@ -50,8 +51,9 @@ class PodcastMediaRepository extends Repository
             );
         }
 
-        if ($episode->getMedia() instanceof PodcastMedia) {
-            $this->delete($episode->getMedia(), $fs);
+        $existingMedia = $episode->getMedia();
+        if ($existingMedia instanceof PodcastMedia) {
+            $this->delete($existingMedia, $fs);
             $episode->setMedia(null);
         }
 
@@ -73,10 +75,17 @@ class PodcastMediaRepository extends Repository
         $this->em->persist($podcastMedia);
 
         $episode->setMedia($podcastMedia);
+
+        $artwork = $metadata->getArtwork();
+        if (!empty($artwork) && 0 === $episode->getArtUpdatedAt()) {
+            $this->episodeRepo->writeEpisodeArt(
+                $episode,
+                $artwork
+            );
+        }
+
         $this->em->persist($episode);
         $this->em->flush();
-
-        return $metadata->getArtwork();
     }
 
     public function delete(

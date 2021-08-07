@@ -4,8 +4,9 @@ use App\Console\Command;
 use App\Environment;
 use App\Event;
 use App\Middleware;
+use Azura\SlimCallableEventDispatcher\CallableEventDispatcherInterface;
 
-return function (App\EventDispatcher $dispatcher) {
+return function (CallableEventDispatcherInterface $dispatcher) {
     $dispatcher->addListener(
         Event\BuildConsoleCommands::class,
         function (Event\BuildConsoleCommands $event) use ($dispatcher) {
@@ -168,17 +169,9 @@ return function (App\EventDispatcher $dispatcher) {
         -10
     );
 
-    $dispatcher->addCallableListener(
-        Event\Media\ReadMetadata::class,
-        App\Media\MetadataService\GetId3MetadataService::class
-    );
-    $dispatcher->addCallableListener(
-        Event\Media\WriteMetadata::class,
-        App\Media\MetadataService\GetId3MetadataService::class
-    );
-
     $dispatcher->addServiceSubscriber(
         [
+            App\Media\MetadataManager::class,
             App\Console\ErrorHandler::class,
             App\Radio\AutoDJ\Queue::class,
             App\Radio\AutoDJ\Annotations::class,

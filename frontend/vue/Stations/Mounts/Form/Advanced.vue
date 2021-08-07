@@ -25,7 +25,7 @@
                         <translate key="lang_edit_form_frontend_config">Custom Frontend Configuration</translate>
                     </template>
                     <template #description>
-                        <translate key="lang_edit_form_frontend_config_desc">You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;</translate>
+                        <translate key="lang_edit_form_frontend_config_desc">You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;</translate>
                     </template>
                     <b-textarea id="edit_form_frontend_config" class="text-preformatted" v-model="form.frontend_config.$model"
                                 :state="form.frontend_config.$dirty ? !form.frontend_config.$error : null">

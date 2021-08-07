@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
-use App\Acl;
 use App\Form\PermissionsForm;
 use App\Http\Response;
 use App\Http\ServerRequest;
 use App\Session\Flash;
+use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class PermissionsController extends AbstractAdminCrudController
 {
     public function __construct(
-        protected Acl $acl,
-        PermissionsForm $form,
+        FactoryInterface $factory
     ) {
-        parent::__construct($form);
+        parent::__construct($factory->make(PermissionsForm::class));
 
         $this->csrf_namespace = 'admin_permissions';
     }
@@ -35,7 +36,7 @@ class PermissionsController extends AbstractAdminCrudController
 
         $roles = [];
 
-        $actions = $this->acl->listPermissions();
+        $actions = $request->getAcl()->listPermissions();
 
         foreach ($all_roles as $role) {
             $role['permissions_global'] = [];
@@ -60,28 +61,36 @@ class PermissionsController extends AbstractAdminCrudController
         ]);
     }
 
-    public function editAction(ServerRequest $request, Response $response, $id = null): ResponseInterface
+    public function editAction(ServerRequest $request, Response $response, int $id = null): ResponseInterface
     {
         if (false !== $this->doEdit($request, $id)) {
             $request->getFlash()->addMessage(
                 '<b>' . ($id ? __('Permission updated.') : __('Permission added.')) . '</b>',
                 Flash::SUCCESS
             );
-            return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('admin:permissions:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
-            'form' => $this->form,
-            'render_mode' => 'edit',
-            'title' => $id ? __('Edit Permission') : __('Add Permission'),
-        ]);
+        return $request->getView()->renderToResponse(
+            $response,
+            'system/form_page',
+            [
+                'form' => $this->form,
+                'render_mode' => 'edit',
+                'title' => $id ? __('Edit Permission') : __('Add Permission'),
+            ]
+        );
     }
 
-    public function deleteAction(ServerRequest $request, Response $response, $id, $csrf): ResponseInterface
-    {
+    public function deleteAction(
+        ServerRequest $request,
+        Response $response,
+        int $id,
+        string $csrf
+    ): ResponseInterface {
         $this->doDelete($request, $id, $csrf);
 
         $request->getFlash()->addMessage('<b>' . __('Permission deleted.') . '</b>', Flash::SUCCESS);
-        return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
+        return $response->withRedirect((string)$request->getRouter()->named('admin:permissions:index'));
     }
 }

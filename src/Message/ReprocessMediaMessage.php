@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Message;
 
-use App\MessageQueue\QueueManager;
+use App\MessageQueue\QueueManagerInterface;
 
 class ReprocessMediaMessage extends AbstractUniqueMessage
 {
@@ -19,6 +21,6 @@ class ReprocessMediaMessage extends AbstractUniqueMessage
 
     public function getQueue(): string
     {
-        return QueueManager::QUEUE_MEDIA;
+        return QueueManagerInterface::QUEUE_MEDIA;
     }
 }

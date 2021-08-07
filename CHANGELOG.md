@@ -3,11 +3,90 @@
 These changes have not yet been incorporated into a stable release, but if you are on the latest version of the rolling
 release channel, you can take advantage of these new features and fixes.
 
+## New Features/Changes
+
+There have been no changes in the latest Rolling Release channel yet.
+
+## Code Quality/Technical Changes
+
+There have been no changes in the latest Rolling Release channel yet.
+
+---
+
+# AzuraCast 0.14.0 (Aug 6, 2021)
+
+## New Features/Changes
+
+- You can now directly upload a custom public page background, browser icon (favicon) and default album art.
+
+- You can now duplicate a single playlist within a station, choosing whether to copy over the schedule entries or media
+  associations that the current playlist has.
+
+- Playlists can now be set to loop only once during their scheduled playback slot without needing to use Manual AutoDJ
+  mode.
+
+- You can now embed the "Schedule" panel from the station's profile into your own web page as an embeddabl component.
+
+- Mount point updates:
+    - You can now upload an introduction file that will be played to listeners when they initially connect. This file
+      must match the bitrate and format of the stream itself, and is thus uploaded on a per-mount-point basis.
+    - You can now broadcast in Ogg FLAC format.
+    - You can now specify a maximum connected time in seconds, after which listeners are automatically disconnected.
+
+- Podcast episodes now take advantage of the same multi-part uploader that our Media Manager already uses, making
+  uploading larger files simple and avoiding file size issues.
+
+## Code Quality/Technical Changes
+
+- If you use non-standard radio ports on the Docker installation, nginx will automatically be configured to listen to
+  those new ports for its web proxy instead of the default port range.
+
+- The entire AzuraCast codebase has been set to "strict mode" in PHP, which will strictly enforce type safety across the
+  application. To complement this, we have made hundreds of fixes across the application to ensure it passes the
+  strictest "static analysis" standards available currently. This may result in new `TypeError` type exceptions being
+  thrown in various files; please report those to us here via GitHub, and we will resolve them ASAP.
+
+- Docker installation now includes a new, interactive installer that will dynamically generate a `docker-compose.yml`
+  file optimized for your setup. This new installer is also localized, so more of the installation process will be
+  available in your preferred language.
+
+- We have once again switched our message queue implementation, this time from the MariaDB database to a
+  super-lightweight standalone tool called Beanstalkd. We hope this will resolve issues we've encountered with parallel
+  workers causing database lockups and other problems.
+
+- Several installations with larger music collections were discovering that their media processing was being "held up"
+  by a single file that caused the PHP metadata processor to run out of memory. We've isolated this code so it runs in
+  its own standalone process, which should reduce the overall incidence of unrecoverable errors when processing media.
+
+- The main web Docker container will now automatically initialize itself upon startup, performing essential tasks like
+  updating the database, clearing the cache and ensuring the system is set up properly. This means even if you miss a
+  step in installation (or use the Docker images directly) they should still work without issue.
+
+- You can optionally disable Redis entirely, instead relying on flatfile caches for session management and other Redis
+  functions by setting `ENABLE_REDIS=false` in `azuracast.env`. This is not recommended for most users as Redis offers
+  great performance, but if you are looking to minimize the number of running containers, this is a viable option.
+
+- One of the biggest issues with Docker file mounting has been permissions; you can now set a custom UID/GID for the
+  running user inside the Docker containers, to match the one you use in your host operating system. To use this,
+  set `AZURACAST_PUID` and `AZURACAST_PGID` in `.env` accordingly; both default to 1000.
+
+- All up-to-date AzuraCast installations will opt users out of Google's new advertisement tracking system, FLoC. Learn
+  more about this and why we disabled it [here](https://www.eff.org/deeplinks/2021/03/googles-floc-terrible-idea).
+
+## Bug Fixes
+
+- Remote relays to legacy SHOUTcast 1 installations should once again work as expected (#4408).
+
+- An issue causing localized date/time formats to not appear on some station management pages was fixed (#4394).
+
+- Fixed a bug where files that included certain special non-ASCII characters would never be read or processed.
+
+- We've added some extra information on how to enable ShoutCast DNAS Premium features in the `Edit Profile` panel
+  under `Broadcasting`.
+
 ---
 
 # AzuraCast 0.13.0 (Jun 15, 2021)
-
-## Code Quality/Technical Changes
 
 ## New Features/Changes
 

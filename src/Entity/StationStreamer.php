@@ -1,10 +1,9 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Annotations\AuditLog;
 use App\Normalizer\Attributes\DeepNormalize;
 use App\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,7 +29,10 @@ use const PASSWORD_ARGON2ID;
     UniqueEntity(fields: ['station', 'streamer_username']),
     Attributes\Auditable
 ]
-class StationStreamer implements Stringable, Interfaces\StationCloneAwareInterface
+class StationStreamer implements
+    Stringable,
+    Interfaces\StationCloneAwareInterface,
+    Interfaces\IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -118,7 +120,7 @@ class StationStreamer implements Stringable, Interfaces\StationCloneAwareInterfa
 
     public function setStreamerPassword(?string $streamer_password): void
     {
-        $streamer_password = trim($streamer_password);
+        $streamer_password = trim($streamer_password ?? '');
 
         if (!empty($streamer_password)) {
             $this->streamer_password = password_hash($streamer_password, PASSWORD_ARGON2ID);

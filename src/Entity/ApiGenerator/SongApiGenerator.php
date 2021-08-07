@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
@@ -90,7 +92,7 @@ class SongApiGenerator
         }
 
         $path = ($allowRemoteArt && $this->remoteAlbumArt->enableForApis())
-            ? ($this->remoteAlbumArt)($song)
+            ? $this->remoteAlbumArt->getUrlForSong($song)
             : null;
 
         if (null === $path) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -15,9 +17,9 @@ class Settings extends AbstractFixture
         }
 
         $settings = new Entity\Settings();
-        $settings->setBaseUrl(getenv('INIT_BASE_URL') ?? 'docker.local');
-        $settings->setInstanceName(getenv('INIT_INSTANCE_NAME') ?? 'local test');
-        $settings->setGeoliteLicenseKey(getenv('INIT_GEOLITE_LICENSE_KEY') ?? '');
+        $settings->setBaseUrl((string)(getenv('INIT_BASE_URL') ?? 'docker.local'));
+        $settings->setInstanceName((string)(getenv('INIT_INSTANCE_NAME') ?? 'local test'));
+        $settings->setGeoliteLicenseKey((string)(getenv('INIT_GEOLITE_LICENSE_KEY') ?? ''));
 
         $settings->setSetupCompleteTime(time());
         $settings->setPreferBrowserUrl(true);

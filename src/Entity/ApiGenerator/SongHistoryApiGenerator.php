@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\ApiGenerator;
 
 use App\Entity;
@@ -20,7 +22,7 @@ class SongHistoryApiGenerator
         bool $allowRemoteArt = false
     ): Entity\Api\SongHistory {
         $response = new Entity\Api\SongHistory();
-        $response->sh_id = $record->getId();
+        $response->sh_id = $record->getIdRequired();
         $response->played_at = (0 === $record->getTimestampStart())
             ? 0
             : $record->getTimestampStart() + Entity\SongHistory::PLAYBACK_DELAY_SECONDS;

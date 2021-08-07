@@ -148,14 +148,14 @@ return [
                     return '$(function () { ' . implode('', $notifies) . ' });';
                 },
                 function (Request $request) {
-                    /** @var Locale|null $locale */
+                    /** @var App\Locale|null $locale */
                     $localeObj = $request->getAttribute(ServerRequest::ATTR_LOCALE);
 
                     $locale = ($localeObj instanceof App\Locale)
                         ? (string)$localeObj
-                        : Locale::DEFAULT_LOCALE;
+                        : App\Locale::DEFAULT_LOCALE;
 
-                    $locale = explode('.', $locale)[0];
+                    $locale = explode('.', $locale, 2)[0];
                     $localeShort = substr($locale, 0, 2);
                     $localeWithDashes = str_replace('_', '-', $locale);
 
@@ -295,12 +295,17 @@ return [
         ],
     ],
 
-    'moment_base' => [
+    // Moment standalone (with locales)
+    'moment' => [
         'order' => 8,
         'files' => [
             'js' => [
                 [
                     'src' => 'dist/lib/moment/moment.min.js',
+                ],
+                [
+                    'src' => 'dist/lib/moment/locales.min.js',
+                    'charset' => 'UTF-8',
                 ],
             ],
         ],
@@ -313,23 +318,9 @@ return [
         ],
     ],
 
-    // Moment standalone (with locales)
-    'moment' => [
-        'order' => 9,
-        'require' => ['moment_base'],
-        'files' => [
-            'js' => [
-                [
-                    'src' => 'dist/lib/moment/locales.min.js',
-                    'charset' => 'UTF-8',
-                ],
-            ],
-        ],
-    ],
-
     'moment_timezone' => [
         'order' => 9,
-        'require' => ['moment_base'],
+        'require' => ['moment'],
         'files' => [
             'js' => [
                 [
@@ -357,7 +348,7 @@ return [
         ],
     ],
 
-    'codemirror_css' => [
+    'codemirror' => [
         'order' => 10,
         'files' => [
             'js' => [
@@ -367,6 +358,10 @@ return [
                 ],
                 [
                     'src' => 'dist/lib/codemirror/css.js',
+                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/lib/codemirror/javascript.js',
                     'defer' => true,
                 ],
             ],
@@ -478,6 +473,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_AdminBranding' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'codemirror'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_AdminStorageLocations' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],
@@ -493,6 +494,12 @@ return [
     'Vue_PublicRequests' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
+    'Vue_PublicSchedule' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
@@ -531,20 +538,19 @@ return [
 
     'Vue_StationsPlaylists' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_base', 'moment_timezone'],
-        'replace' => ['moment'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcasts' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 
     'Vue_StationsPodcastEpisodes' => [
         'order' => 10,
-        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_base', 'moment_timezone'],
+        'require' => ['vue-component-common', 'bootstrap-vue', 'fancybox', 'moment_timezone'],
         // Auto-managed by Assets
     ],
 

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
+use App\Assets\AssetFactory;
 use App\Entity;
 use App\Http\ServerRequest;
 use App\Service\NChan;
@@ -53,7 +56,7 @@ class Customization
         }
 
         // Register locale
-        $this->locale = new Locale($environment, $request);
+        $this->locale = Locale::createFromRequest($this->environment, $request);
         $this->locale->register();
     }
 
@@ -91,7 +94,20 @@ class Customization
      */
     public function getCustomPublicCss(): string
     {
-        return $this->settings->getPublicCustomCss() ?? '';
+        $publicCss = $this->settings->getPublicCustomCss() ?? '';
+
+        $background = AssetFactory::createBackground($this->environment);
+        if ($background->isUploaded()) {
+            $backgroundUrl = $background->getUrl();
+
+            $publicCss .= <<<CSS
+            [data-theme] body.page-minimal {
+                background-image: url('${backgroundUrl}');
+            }
+            CSS;
+        }
+
+        return $publicCss;
     }
 
     /**
@@ -110,6 +126,11 @@ class Customization
         return $this->settings->getInternalCustomCss() ?? '';
     }
 
+    public function getBrowserIconUrl(int $size = 256): string
+    {
+        return AssetFactory::createBrowserIcon($this->environment)->getUrlForSize($size);
+    }
+
     /**
      * Return whether to show or hide album art on public pages.
      */
@@ -123,7 +144,7 @@ class Customization
      *
      * @param string|null $title
      */
-    public function getPageTitle($title = null): string
+    public function getPageTitle(?string $title = null): string
     {
         if (!$this->hideProductName()) {
             if ($title) {
@@ -137,7 +158,7 @@ class Customization
             $title = '(' . ucfirst($this->environment->getAppEnvironment()) . ') ' . $title;
         }
 
-        return $title;
+        return $title ?? '';
     }
 
     /**

@@ -1,0 +1,12 @@
+version : '2.2'
+
+services :
+  installer :
+    container_name : azuracast_installer
+    image : 'ghcr.io/azuracast/web:${AZURACAST_VERSION:-latest}'
+    volumes :
+      - './:/installer'
+    restart : 'no'
+    user : root
+    entrypoint : docker_installer
+    command : install

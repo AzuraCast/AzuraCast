@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Api\Admin;
 
 use App\Entity;
@@ -21,16 +23,16 @@ class Relay implements Entity\Api\ResolvableUrlInterface
     /**
      * Station name
      * @OA\Property(example="AzuraTest Radio")
-     * @var string
+     * @var string|null
      */
-    public string $name;
+    public ?string $name = null;
 
     /**
      * Station "short code", used for URL and folder paths
      * @OA\Property(example="azuratest_radio")
-     * @var string
+     * @var string|null
      */
-    public string $shortcode;
+    public ?string $shortcode = null;
 
     /**
      * Station description
@@ -56,16 +58,16 @@ class Relay implements Entity\Api\ResolvableUrlInterface
     /**
      * Which broadcasting software (frontend) the station uses
      * @OA\Property(example="shoutcast2")
-     * @var string
+     * @var string|null
      */
-    public string $type;
+    public ?string $type = null;
 
     /**
      * The port used by this station to serve its broadcasts.
      * @OA\Property(example=8000)
-     * @var int
+     * @var int|null
      */
-    public int $port;
+    public ?int $port = null;
 
     /**
      * The relay password for the frontend (if applicable).

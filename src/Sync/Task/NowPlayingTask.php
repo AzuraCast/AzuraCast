@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sync\Task;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
 use App\Entity;
 use App\Environment;
 use App\Event\Radio\GenerateRawNowPlaying;
-use App\EventDispatcher;
 use App\Http\RouterInterface;
 use App\LockFactory;
 use App\Message;
@@ -16,6 +17,7 @@ use DeepCopy\DeepCopy;
 use Exception;
 use Monolog\Logger;
 use NowPlaying\Result\Result;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,7 +30,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         protected Adapters $adapters,
         protected AutoDJ $autodj,
         protected CacheInterface $cache,
-        protected EventDispatcher $eventDispatcher,
+        protected EventDispatcherInterface $eventDispatcher,
         protected MessageBus $messageBus,
         protected LockFactory $lockFactory,
         protected RouterInterface $router,
@@ -226,7 +228,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
         // Trigger a delayed Now Playing update.
         $message = new Message\UpdateNowPlayingMessage();
-        $message->station_id = $station->getId();
+        $message->station_id = $station->getIdRequired();
 
         $this->messageBus->dispatch(
             $message,
@@ -305,7 +307,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         ];
 
         if ($npOld instanceof Entity\Api\NowPlaying) {
-            if ($npOld->now_playing->song->id !== $np->now_playing->song->id) {
+            if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
                 $triggers[] = Entity\StationWebhook::TRIGGER_SONG_CHANGED;
             }
 

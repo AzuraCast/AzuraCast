@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Fixture;
 
 use App\Entity;
@@ -11,19 +13,19 @@ class User extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $demo_user = new Entity\User();
-        $demo_user->setEmail('demo@azuracast.com');
-        $demo_user->setNewPassword('demo');
-        $demo_user->setName('AzuraCast Demo User');
-        $demo_user->getRoles()->add($this->getReference('demo_role'));
-        $manager->persist($demo_user);
-
-        $this->addReference('demo_user', $demo_user);
-
         $admin_email = getenv('INIT_ADMIN_EMAIL');
         $admin_password = getenv('INIT_ADMIN_PASSWORD');
 
         if (!empty($admin_email) && !empty($admin_password)) {
+            $demo_user = new Entity\User();
+            $demo_user->setEmail('demo@azuracast.com');
+            $demo_user->setNewPassword('demo');
+            $demo_user->setName('AzuraCast Demo User');
+            $demo_user->getRoles()->add($this->getReference('demo_role'));
+            $manager->persist($demo_user);
+
+            $this->addReference('demo_user', $demo_user);
+
             $admin_user = new Entity\User();
             $admin_user->setEmail($admin_email);
             $admin_user->setName('System Administrator');

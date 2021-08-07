@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Frontend\Profile;
 
 use App\Auth;
@@ -48,7 +50,7 @@ class EnableTwoFactorAction
                 : __('The token you supplied is invalid. Please try again.');
         });
 
-        if ($request->isPost() && $form->isValid($request->getParsedBody())) {
+        if ($form->isValid($request)) {
             $user->setTwoFactorSecret($totp->getProvisioningUri());
 
             $em->persist($user);
@@ -56,7 +58,7 @@ class EnableTwoFactorAction
 
             $request->getFlash()->addMessage(__('Two-factor authentication enabled.'), Flash::SUCCESS);
 
-            return $response->withRedirect($request->getRouter()->named('profile:index'));
+            return $response->withRedirect((string)$request->getRouter()->named('profile:index'));
         }
 
         // Further customize TOTP code (with metadata that won't be stored in the DB)

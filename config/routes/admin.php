@@ -112,7 +112,7 @@ return function (App $app) {
                 }
             )->add(new Middleware\Permissions(Acl::GLOBAL_BACKUPS));
 
-            $group->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class)
+            $group->get('/branding', Controller\Admin\BrandingAction::class)
                 ->setName('admin:branding:index')
                 ->add(new Middleware\Permissions(Acl::GLOBAL_SETTINGS));
 

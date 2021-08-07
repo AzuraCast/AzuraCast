@@ -1,13 +1,15 @@
 <?php
 
-/** @noinspection PhpMissingFieldTypeInspection */
+declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\IdentifiableEntityInterface;
 use App\Entity\Interfaces\PathAwareInterface;
 use App\Entity\Interfaces\ProcessableMediaInterface;
 use App\Entity\Interfaces\SongInterface;
 use App\Normalizer\Attributes\DeepNormalize;
+use App\Utilities\Time;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +25,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
     ORM\Index(columns: ['title', 'artist', 'album'], name: 'search_idx'),
     ORM\UniqueConstraint(name: 'path_unique_idx', columns: ['path', 'storage_location_id'])
 ]
-class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface
+class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwareInterface, IdentifiableEntityInterface
 {
     use Traits\HasAutoIncrementId;
     use Traits\TruncateStrings;
@@ -284,7 +286,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         $this->isrc = $this->truncateNullableString($isrc, 15);
     }
 
-    public function getLength(): float
+    public function getLength(): ?float
     {
         return $this->length;
     }
@@ -356,12 +358,9 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         return $this->fade_in;
     }
 
-    /**
-     * @param string|float|null $fade_in
-     */
-    public function setFadeIn($fade_in = null): void
+    public function setFadeIn(string|int|float $fade_in = null): void
     {
-        $this->fade_in = $this->parseSeconds($fade_in);
+        $this->fade_in = Time::displayTimeToSeconds($fade_in);
     }
 
     public function getFadeOut(): ?float
@@ -369,12 +368,9 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         return $this->fade_out;
     }
 
-    /**
-     * @param string|float|null $fade_out
-     */
-    public function setFadeOut($fade_out = null): void
+    public function setFadeOut(string|int|float $fade_out = null): void
     {
-        $this->fade_out = $this->parseSeconds($fade_out);
+        $this->fade_out = Time::displayTimeToSeconds($fade_out);
     }
 
     public function getCueIn(): ?float
@@ -382,12 +378,9 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         return $this->cue_in;
     }
 
-    /**
-     * @param string|float|null $cue_in
-     */
-    public function setCueIn($cue_in = null): void
+    public function setCueIn(string|int|float $cue_in = null): void
     {
-        $this->cue_in = $this->parseSeconds($cue_in);
+        $this->cue_in = Time::displayTimeToSeconds($cue_in);
     }
 
     public function getCueOut(): ?float
@@ -395,33 +388,9 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
         return $this->cue_out;
     }
 
-    /**
-     * @param string|float|null $cue_out
-     */
-    public function setCueOut($cue_out = null): void
+    public function setCueOut(string|int|float $cue_out = null): void
     {
-        $this->cue_out = $this->parseSeconds($cue_out);
-    }
-
-    /**
-     * @param string|float|null $seconds
-     */
-    protected function parseSeconds($seconds = null): ?float
-    {
-        if ($seconds === '') {
-            return null;
-        }
-
-        if (str_contains($seconds, ':')) {
-            $sec = 0;
-            foreach (array_reverse(explode(':', $seconds)) as $k => $v) {
-                $sec += (60 ** (int)$k) * (int)$v;
-            }
-
-            return $sec;
-        }
-
-        return $seconds;
+        $this->cue_out = Time::displayTimeToSeconds($cue_out);
     }
 
     /**
@@ -439,7 +408,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
             $length -= $this->cue_in;
         }
 
-        return $length;
+        return (int)$length;
     }
 
     public function getArtUpdatedAt(): int
@@ -493,7 +462,7 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
 
     public function fromMetadata(Metadata $metadata): void
     {
-        $this->setLength($metadata->getDuration());
+        $this->setLength((int)$metadata->getDuration());
 
         $tags = $metadata->getTags();
 
@@ -522,23 +491,20 @@ class StationMedia implements SongInterface, ProcessableMediaInterface, PathAwar
     public function toMetadata(): Metadata
     {
         $metadata = new Metadata();
-        $metadata->setDuration($this->getLength());
+        $metadata->setDuration($this->getLength() ?? 0.0);
 
-        $tagsToSet = array_filter(
-            [
-                'title' => $this->getTitle(),
-                'artist' => $this->getArtist(),
-                'album' => $this->getAlbum(),
-                'genre' => $this->getGenre(),
-                'unsynchronised_lyric' => $this->getLyrics(),
-                'isrc' => $this->getIsrc(),
-            ]
+        $metadata->setTags(
+            array_filter(
+                [
+                    'title' => $this->getTitle(),
+                    'artist' => $this->getArtist(),
+                    'album' => $this->getAlbum(),
+                    'genre' => $this->getGenre(),
+                    'unsynchronised_lyric' => $this->getLyrics(),
+                    'isrc' => $this->getIsrc(),
+                ]
+            )
         );
-
-        $tags = $metadata->getTags();
-        foreach ($tagsToSet as $tagKey => $tagValue) {
-            $tags->set($tagKey, $tagValue);
-        }
 
         return $metadata;
     }

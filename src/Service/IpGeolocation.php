@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Service\IpGeolocator;
@@ -18,7 +20,7 @@ class IpGeolocation
 
     protected ?string $readerShortName;
 
-    protected ?string $attribution;
+    protected string $attribution = '';
 
     protected CacheInterface $cache;
 
@@ -75,7 +77,8 @@ class IpGeolocation
             $this->initialize();
         }
 
-        if (null === $this->reader) {
+        $reader = $this->reader;
+        if (null === $reader) {
             return [
                 'status' => 'error',
                 'message' => $this->getAttribution(),
@@ -86,12 +89,12 @@ class IpGeolocation
 
         $ipInfo = $this->cache->get(
             $cacheKey,
-            function (CacheItem $item) use ($ip) {
+            function (CacheItem $item) use ($ip, $reader) {
                 /** @noinspection SummerTimeUnsafeTimeManipulationInspection */
                 $item->expiresAfter(86400 * 7);
 
                 try {
-                    $ipInfo = $this->reader->get($ip);
+                    $ipInfo = $reader->get($ip);
                     if (!empty($ipInfo)) {
                         return $ipInfo;
                     }
@@ -125,7 +128,7 @@ class IpGeolocation
         ];
     }
 
-    protected function getLocalizedString($names, string $locale): string
+    protected function getLocalizedString(?array $names, string $locale): string
     {
         if (empty($names)) {
             return '';

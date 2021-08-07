@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Radio;
 
 use App\Doctrine\ReloadableEntityManagerInterface;
@@ -7,13 +9,13 @@ use App\Entity;
 use App\Environment;
 use App\Event\Radio\AnnotateNextSong;
 use App\Event\Radio\BuildQueue;
-use App\EventDispatcher;
 use App\LockFactory;
 use App\Radio\AutoDJ\Scheduler;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class AutoDJ
 {
@@ -21,7 +23,7 @@ class AutoDJ
         protected ReloadableEntityManagerInterface $em,
         protected Entity\Repository\SongHistoryRepository $songHistoryRepo,
         protected Entity\Repository\StationQueueRepository $queueRepo,
-        protected EventDispatcher $dispatcher,
+        protected EventDispatcherInterface $dispatcher,
         protected Logger $logger,
         protected Scheduler $scheduler,
         protected Environment $environment,
@@ -94,14 +96,26 @@ class AutoDJ
             return $this->annotateNextSong($station, $asAutoDj, $iteration + 1);
         }
 
+        // Build adjusted "now" based on the currently playing song before annotating up the next one
+        $adjustedNow = $this->getAdjustedNow(
+            $station,
+            $this->getNowFromCurrentSong($station),
+            $queueRow->getDuration()
+        );
+
         $event = new AnnotateNextSong($queueRow, $asAutoDj);
         $this->dispatcher->dispatch($event);
+
+        // Refill station queue while taking into context that LS queues songs 40s before they are played
+        $this->buildQueue($station, true, $adjustedNow);
+
         return $event->buildAnnotations();
     }
 
     public function buildQueue(
         Entity\Station $station,
-        bool $force = false
+        bool $force = false,
+        CarbonInterface $nowOverride = null
     ): void {
         $lock = $this->lockFactory->createAndAcquireLock(
             resource: 'autodj_queue_' . $station->getId(),
@@ -125,7 +139,7 @@ class AutoDJ
             );
 
             // Adjust "now" time from current queue.
-            $now = $this->getNowFromCurrentSong($station);
+            $now = $nowOverride ?? $this->getNowFromCurrentSong($station);
 
             $maxQueueLength = $station->getBackendConfig()->getAutoDjQueueLength();
             if ($maxQueueLength < 1) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Entity\Interfaces\SongInterface;
@@ -26,7 +28,7 @@ class Song implements SongInterface
     {
         // Handle various input types.
         if ($songText instanceof self) {
-            return self::getSongHash($songText->getText());
+            return self::getSongHash($songText->getText() ?? '');
         }
         if ($songText instanceof CurrentSong) {
             return self::getSongHash($songText->text);

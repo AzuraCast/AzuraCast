@@ -96,7 +96,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="row in bestAndWorst.best">
+                            <tr v-for="row in bestAndWorst.worst">
                                 <td class="text-center text-danger">
                                     <icon icon="keyboard_arrow_down"></icon>
                                     {{ row.stat_delta }}
@@ -166,7 +166,7 @@ import TimeSeriesChart from '../../Common/TimeSeriesChart';
 import DataTable from '../../Common/DataTable';
 import axios from 'axios';
 import Icon from '../../Common/Icon';
-import Avatar, { avatarProps } from '../../Common/Avatar';
+import Avatar, {avatarProps} from '../../Common/Avatar';
 import DayOfWeekChart from './DayOfWeekChart';
 import HourChart from './HourChart';
 

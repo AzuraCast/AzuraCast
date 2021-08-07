@@ -5,6 +5,18 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
+There have been no changes in the latest Rolling Release channel yet.
+
+## Code Quality/Technical Changes
+
+There have been no changes in the latest Rolling Release channel yet.
+
+---
+
+# AzuraCast 0.14.0 (Aug 6, 2021)
+
+## New Features/Changes
+
 - You can now directly upload a custom public page background, browser icon (favicon) and default album art.
 
 - You can now duplicate a single playlist within a station, choosing whether to copy over the schedule entries or media

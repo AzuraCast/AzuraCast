@@ -111,8 +111,17 @@ class InstallCommand
         unset($azuracastEnv['ENABLE_ADVANCED_FEATURES']);
 
         // Randomize the MariaDB root password for new installs.
-        if (!$devMode && $isNewInstall && 'azur4c457' === $azuracastEnv[Environment::DB_PASSWORD]) {
-            $azuracastEnv[Environment::DB_PASSWORD] = Strings::generatePassword(12);
+        if ($isNewInstall) {
+            if (!$devMode && 'azur4c457' === $azuracastEnv[Environment::DB_PASSWORD]) {
+                $azuracastEnv[Environment::DB_PASSWORD] = Strings::generatePassword(12);
+            }
+
+            if (empty($azuracastEnv['MYSQL_ROOT_PASSWORD'])) {
+                $azuracastEnv['MYSQL_RANDOM_ROOT_PASSWORD'] = 'no';
+                $azuracastEnv['MYSQL_ROOT_PASSWORD'] = ($devMode)
+                    ? 'azur4c457'
+                    : Strings::generatePassword(20);
+            }
         }
 
         // Display header messages

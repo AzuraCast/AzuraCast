@@ -137,6 +137,13 @@ class AzuraCastEnvFile extends AbstractEnvFile
                         'Do not modify this after installation.',
                     ),
                     'default' => 'yes',
+                    'required' => true,
+                ],
+                'MYSQL_ROOT_PASSWORD' => [
+                    'name' => __('MariaDB Root Password'),
+                    'description' => __(
+                        'Do not modify this after installation.',
+                    ),
                 ],
                 'MYSQL_SLOW_QUERY_LOG' => [
                     'name' => __('Enable MariaDB Slow Query Log'),

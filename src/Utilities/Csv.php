@@ -26,7 +26,7 @@ class Csv
                     $header_row[] = '"' . str_replace('"', '""', $table_col) . '"';
                 }
 
-                $body_row[] = '"' . str_replace('"', '""', $table_val) . '"';
+                $body_row[] = '"' . str_replace('"', '""', (string) $table_val) . '"';
             }
 
             if ($header_row) {

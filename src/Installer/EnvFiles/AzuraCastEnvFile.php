@@ -136,8 +136,6 @@ class AzuraCastEnvFile extends AbstractEnvFile
                     'description' => __(
                         'Do not modify this after installation.',
                     ),
-                    'default' => 'yes',
-                    'required' => true,
                 ],
                 'MYSQL_ROOT_PASSWORD' => [
                     'name' => __('MariaDB Root Password'),

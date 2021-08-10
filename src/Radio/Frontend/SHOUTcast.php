@@ -17,11 +17,6 @@ class SHOUTcast extends AbstractFrontend
         return true;
     }
 
-    public function supportsListenerDetail(): bool
-    {
-        return true;
-    }
-
     public function getVersion(): ?string
     {
         $binary_path = $this->getBinary();

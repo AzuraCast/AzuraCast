@@ -25,11 +25,6 @@ class Icecast extends AbstractFrontend
         return true;
     }
 
-    public function supportsListenerDetail(): bool
-    {
-        return true;
-    }
-
     public function getNowPlaying(Entity\Station $station, bool $includeClients = true): Result
     {
         $feConfig = $station->getFrontendConfig();

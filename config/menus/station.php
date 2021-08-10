@@ -122,7 +122,6 @@ return function (App\Event\BuildStationMenu $e) {
                     'reports_listeners' => [
                         'label' => __('Listeners'),
                         'url' => (string)$router->fromHere('stations:reports:listeners'),
-                        'visible' => $frontend->supportsListenerDetail(),
                     ],
                     'reports_requests' => [
                         'label' => __('Song Requests'),
@@ -151,7 +150,6 @@ return function (App\Event\BuildStationMenu $e) {
                     'reports_soundexchange' => [
                         'label' => __('SoundExchange Royalties'),
                         'url' => (string)$router->fromHere('stations:reports:soundexchange'),
-                        'visible' => $frontend->supportsListenerDetail(),
                     ],
                 ],
             ],

@@ -76,8 +76,12 @@ $assets
                     <tbody>
                     <tr v-for="row in changes">
                         <td class="pl-0">{{ row.field }}</td>
-                        <td><pre>{{ row.from }}</pre></td>
-                        <td class="pr-0"><pre>{{ row.to }}</pre></td>
+                        <td>
+                            <pre style="max-width: 250px;">{{ row.from }}</pre>
+                        </td>
+                        <td class="pr-0">
+                            <pre style="max-width: 250px;">{{ row.to }}</pre>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

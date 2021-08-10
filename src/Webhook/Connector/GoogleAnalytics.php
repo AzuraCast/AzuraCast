@@ -21,7 +21,8 @@ class GoogleAnalytics extends AbstractConnector
         Logger $logger,
         Client $httpClient,
         protected EntityManagerInterface $em,
-        protected Adapters $adapters
+        protected Adapters $adapters,
+        protected Entity\Repository\ListenerRepository $listenerRepo
     ) {
         parent::__construct($logger, $httpClient);
     }
@@ -69,15 +70,7 @@ class GoogleAnalytics extends AbstractConnector
             ->setTrackingId($config['tracking_id']);
 
         // Get all current listeners
-        $liveListeners = $this->em->createQuery(
-            <<<'DQL'
-                    SELECT l
-                    FROM App\Entity\Listener l
-                    WHERE l.station = :station
-                    AND l.timestamp_end = 0
-                DQL
-        )->setParameter('station', $station)
-            ->getArrayResult();
+        $liveListeners = $this->listenerRepo->iterateLiveListenersArray($station);
 
         $i = 0;
         foreach ($liveListeners as $listener) {

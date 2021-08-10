@@ -43,6 +43,11 @@ return [
             'name' => __('Google Analytics Integration'),
             'description' => __('Send stream listener details to Google Analytics.'),
         ],
+        Connector\MatomoAnalytics::NAME => [
+            'class' => Connector\MatomoAnalytics::class,
+            'name' => __('Matomo Analytics Integration'),
+            'description' => __('Send stream listener details to Matomo Analytics.'),
+        ],
     ],
 
     // The triggers that can be selected for a web hook to trigger.

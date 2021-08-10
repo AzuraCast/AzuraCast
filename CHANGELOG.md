@@ -5,7 +5,8 @@ release channel, you can take advantage of these new features and fixes.
 
 ## New Features/Changes
 
-There have been no changes in the latest Rolling Release channel yet.
+- We now support the self-hosted, free and open-source analytics tool Matomo for listener metrics; your Matomo
+  installation can be added as a web hook and will receive listener data in periodic pings.
 
 ## Code Quality/Technical Changes
 

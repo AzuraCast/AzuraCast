@@ -45,6 +45,20 @@ class ListenerRepository extends Repository
             ->getSingleScalarResult();
     }
 
+    public function iterateLiveListenersArray(Entity\Station $station): iterable
+    {
+        $query = $this->em->createQuery(
+            <<<'DQL'
+                    SELECT l
+                    FROM App\Entity\Listener l
+                    WHERE l.station = :station
+                    AND l.timestamp_end = 0
+                DQL
+        )->setParameter('station', $station);
+
+        return $query->toIterable([], $query::HYDRATE_ARRAY);
+    }
+
     /**
      * Update listener data for a station.
      *

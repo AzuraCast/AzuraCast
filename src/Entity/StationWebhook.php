@@ -192,7 +192,7 @@ class StationWebhook implements
      * @param mixed|null $default
      *
      */
-    public function getMetadataKey(string $key, $default = null): mixed
+    public function getMetadataKey(string $key, mixed $default = null): mixed
     {
         return $this->metadata[$key] ?? $default;
     }

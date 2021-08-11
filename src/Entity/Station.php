@@ -620,15 +620,15 @@ class Station implements Stringable, IdentifiableEntityInterface
         return $this->radio_base_dir . '/temp';
     }
 
-    public function getNowplaying(): ?Api\NowPlaying
+    public function getNowplaying(): ?Api\NowPlaying\NowPlaying
     {
-        if ($this->nowplaying instanceof Api\NowPlaying) {
+        if ($this->nowplaying instanceof Api\NowPlaying\NowPlaying) {
             return $this->nowplaying;
         }
         return null;
     }
 
-    public function setNowplaying(?Api\NowPlaying $nowplaying = null): void
+    public function setNowplaying(?Api\NowPlaying\NowPlaying $nowplaying = null): void
     {
         $this->nowplaying = $nowplaying;
 

@@ -78,12 +78,12 @@ abstract class AbstractConnector implements ConnectorInterface
     /**
      * Replace variables in the format {{ blah }} with the flattened contents of the NowPlaying API array.
      *
-     * @param array<mixed> $raw_vars
-     * @param Entity\Api\NowPlaying $np
+     * @param array $raw_vars
+     * @param Entity\Api\NowPlaying\NowPlaying $np
      *
-     * @return array<mixed>
+     * @return array
      */
-    public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
+    public function replaceVariables(array $raw_vars, Entity\Api\NowPlaying\NowPlaying $np): array
     {
         $values = Utilities\Arrays::flattenArray($np);
         $vars = [];

@@ -75,7 +75,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
     /**
      * @param bool $force
      *
-     * @return Entity\Api\NowPlaying[]
+     * @return Entity\Api\NowPlaying\NowPlaying[]
      */
     protected function loadNowPlaying(bool $force = false): array
     {
@@ -99,11 +99,11 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         Entity\Station $station,
         bool $standalone = false,
         bool $force = false
-    ): Entity\Api\NowPlaying {
+    ): Entity\Api\NowPlaying\NowPlaying {
         $lock = $this->lockFactory->createAndAcquireLock(
             resource: 'nowplaying_station_' . $station->getId(),
-            ttl: 600,
-            force: $force
+            ttl:      600,
+            force:    $force
         );
 
         if (false === $lock) {
@@ -293,10 +293,10 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     protected function dispatchWebhooks(
         Entity\Station $station,
-        Entity\Api\NowPlaying $npOriginal,
+        Entity\Api\NowPlaying\NowPlaying $npOriginal,
         bool $isStandalone = true
     ): void {
-        /** @var Entity\Api\NowPlaying $np */
+        /** @var \App\Entity\Api\NowPlaying\NowPlaying $np */
         $np = (new DeepCopy())->copy($npOriginal);
         $np->resolveUrls($this->router->getBaseUrl());
         $np->cache = 'event';
@@ -306,7 +306,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
             Entity\StationWebhook::TRIGGER_ALL,
         ];
 
-        if ($npOld instanceof Entity\Api\NowPlaying) {
+        if ($npOld instanceof Entity\Api\NowPlaying\NowPlaying) {
             if ($npOld->now_playing?->song?->id !== $np->now_playing?->song?->id) {
                 $triggers[] = Entity\StationWebhook::TRIGGER_SONG_CHANGED;
             }
@@ -340,7 +340,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
 
     protected function updateCaches(
         Entity\Station $station,
-        Entity\Api\NowPlaying $np
+        Entity\Api\NowPlaying\NowPlaying $np
     ): void {
         // Replace the relevant station information in the cache and database.
         $this->logger->debug('Updating NowPlaying cache...');
@@ -350,7 +350,7 @@ class NowPlayingTask extends AbstractTask implements EventSubscriberInterface
         if ($np_full) {
             $np_new = [];
             foreach ($np_full as $np_old) {
-                /** @var Entity\Api\NowPlaying $np_old */
+                /** @var \App\Entity\Api\NowPlaying\NowPlaying $np_old */
                 if ($np_old->station->id === $station->getId()) {
                     $np_new[] = $np;
                 } else {

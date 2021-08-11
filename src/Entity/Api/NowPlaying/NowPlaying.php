@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Api;
+namespace App\Entity\Api\NowPlaying;
 
+use App\Entity\Api\ResolvableUrlInterface;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 
@@ -24,25 +25,25 @@ class NowPlaying implements ResolvableUrlInterface
      * Listener details
      *
      * @OA\Property
-     * @var NowPlayingListeners
+     * @var Listeners
      */
-    public NowPlayingListeners $listeners;
+    public Listeners $listeners;
 
     /**
      * Live broadcast details
      *
      * @OA\Property
-     * @var NowPlayingLive
+     * @var Live
      */
-    public NowPlayingLive $live;
+    public Live $live;
 
     /**
      * Current Song
      *
      * @OA\Property
-     * @var NowPlayingCurrentSong|null
+     * @var CurrentSong|null
      */
-    public ?NowPlayingCurrentSong $now_playing = null;
+    public ?CurrentSong $now_playing = null;
 
     /**
      * Next Playing Song

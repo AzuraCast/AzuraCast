@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Api;
+namespace App\Entity\Api\NowPlaying;
 
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object", schema="Api_NowPlayingLive")
+ * @OA\Schema(type="object", schema="Api_NowPlaying_Live")
  */
-class NowPlayingLive
+class Live
 {
     /**
      * Whether the stream is known to currently have a live DJ.

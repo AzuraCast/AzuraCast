@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Api;
+namespace App\Entity\Api\NowPlaying;
 
 use App\Entity;
 use App\Traits\LoadFromParentObject;
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object", schema="Api_NowPlayingCurrentSong")
+ * @OA\Schema(type="object", schema="Api_NowPlaying_CurrentSong")
  */
-class NowPlayingCurrentSong extends SongHistory
+class CurrentSong extends SongHistory
 {
     use LoadFromParentObject;
 

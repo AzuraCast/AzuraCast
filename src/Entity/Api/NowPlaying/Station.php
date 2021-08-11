@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Api;
+namespace App\Entity\Api\NowPlaying;
 
+use App\Entity\Api\ResolvableUrlInterface;
 use App\Http\Router;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @OA\Schema(type="object", schema="Api_Station")
+ * @OA\Schema(type="object", schema="Api_NowPlaying_Station")
  */
 class Station implements ResolvableUrlInterface
 {

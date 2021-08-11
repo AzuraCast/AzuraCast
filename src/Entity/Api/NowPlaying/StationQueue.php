@@ -2,31 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Api;
+namespace App\Entity\Api\NowPlaying;
 
+use App\Entity\Api\ResolvableUrlInterface;
+use App\Entity\Api\Song;
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @OA\Schema(type="object", schema="Api_SongHistory")
+ * @OA\Schema(type="object", schema="Api_NowPlaying_StationQueue")
  */
-class SongHistory implements ResolvableUrlInterface
+class StationQueue implements ResolvableUrlInterface
 {
     /**
-     * Song history unique identifier
-     *
-     * @OA\Property
-     * @var int
-     */
-    public int $sh_id;
-
-    /**
-     * UNIX timestamp when playback started.
+     * UNIX timestamp when playback is expected to start.
      *
      * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
-    public int $played_at = 0;
+    public int $cued_at = 0;
 
     /**
      * Duration of the song in seconds
@@ -43,14 +37,6 @@ class SongHistory implements ResolvableUrlInterface
      * @var string|null
      */
     public ?string $playlist = null;
-
-    /**
-     * Indicates the current streamer that was connected, if available, or empty string if not.
-     *
-     * @OA\Property(example="Test DJ")
-     * @var string|null
-     */
-    public ?string $streamer = null;
 
     /**
      * Indicates whether the song is a listener request.

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Api;
+namespace App\Entity\Api\NowPlaying;
 
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Schema(type="object", schema="Api_NowPlayingListeners")
+ * @OA\Schema(type="object", schema="Api_NowPlaying_Listeners")
  */
-class NowPlayingListeners
+class Listeners
 {
     /**
      * Total non-unique current listeners

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Event\Radio;
 
-use App\Entity\Api\NowPlaying;
+use App\Entity\Api\NowPlaying\NowPlaying;
 use App\Entity\Station;
 use Symfony\Contracts\EventDispatcher\Event;
 

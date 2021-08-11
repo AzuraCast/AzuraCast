@@ -70,7 +70,7 @@ class Annotations implements EventSubscriberInterface
                 ]);
 
                 $np = $event->getStation()->getNowplaying();
-                if ($np instanceof Entity\Api\NowPlaying) {
+                if ($np instanceof Entity\Api\NowPlaying\NowPlaying) {
                     $event->addAnnotations(
                         [
                             'title' => $np->now_playing?->song?->title,

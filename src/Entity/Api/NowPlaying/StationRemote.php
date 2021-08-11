@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Api;
+namespace App\Entity\Api\NowPlaying;
 
 use OpenApi\Annotations as OA;
 use Psr\Http\Message\UriInterface;
 
 /**
- * @OA\Schema(type="object", schema="Api_StationRemote")
+ * @OA\Schema(type="object", schema="Api_NowPlaying_StationRemote")
  */
 class StationRemote
 {
@@ -56,7 +56,7 @@ class StationRemote
      * Listener details
      *
      * @OA\Property
-     * @var NowPlayingListeners
+     * @var Listeners
      */
-    public NowPlayingListeners $listeners;
+    public Listeners $listeners;
 }

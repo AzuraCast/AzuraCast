@@ -406,15 +406,15 @@ class StationRemote implements
      */
     public function api(
         AbstractRemote $adapter
-    ): Api\StationRemote {
-        $response = new Api\StationRemote();
+    ): Api\NowPlaying\StationRemote {
+        $response = new Api\NowPlaying\StationRemote();
 
         $response->id = $this->getIdRequired();
         $response->name = $this->getDisplayName();
         $response->url = $adapter->getPublicUrl($this);
 
-        $response->listeners = new Api\NowPlayingListeners(
-            total: $this->listeners_total,
+        $response->listeners = new Api\NowPlaying\Listeners(
+            total:  $this->listeners_total,
             unique: $this->listeners_unique
         );
 

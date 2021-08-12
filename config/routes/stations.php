@@ -81,26 +81,9 @@ return function (App $app) {
                 ->setName('stations:queue:index')
                 ->add(new Middleware\Permissions(Acl::STATION_BROADCASTING, true));
 
-            $group->group(
-                '/remotes',
-                function (RouteCollectorProxy $group) {
-                    $group->get('', Controller\Stations\RemotesController::class . ':indexAction')
-                        ->setName('stations:remotes:index');
-
-                    $group->map(
-                        ['GET', 'POST'],
-                        '/edit/{id}',
-                        Controller\Stations\RemotesController::class . ':editAction'
-                    )
-                        ->setName('stations:remotes:edit');
-
-                    $group->map(['GET', 'POST'], '/add', Controller\Stations\RemotesController::class . ':editAction')
-                        ->setName('stations:remotes:add');
-
-                    $group->get('/delete/{id}/{csrf}', Controller\Stations\RemotesController::class . ':deleteAction')
-                        ->setName('stations:remotes:delete');
-                }
-            )->add(new Middleware\Permissions(Acl::STATION_REMOTES, true));
+            $group->get('/remotes', Controller\Stations\RemotesAction::class)
+                ->setName('stations:remotes:index')
+                ->add(new Middleware\Permissions(Acl::STATION_REMOTES, true));
 
             $group->group(
                 '/reports',

@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { FRONTEND_ICECAST, FRONTEND_SHOUTCAST } from '../../../Entity/RadioAdapters';
 
 export default {
     name: 'MountFormAutoDj',
@@ -54,40 +53,38 @@ export default {
             return this.$gettext('AutoDJ');
         },
         formatOptions () {
-            switch (this.stationFrontendType) {
-                case FRONTEND_ICECAST:
-                    return {
-                        'mp3': 'MP3',
-                        'ogg': 'OGG Vorbis',
-                        'opus': 'OGG Opus',
-                        'aac': 'AAC+ (MPEG4 HE-AAC v2)',
-                        'flac': 'FLAC (OGG FLAC)',
-                    };
-
-                case FRONTEND_SHOUTCAST:
-                    return {
-                        'mp3': 'MP3',
-                        'ogg': 'OGG Vorbis',
-                        'opus': 'OGG Opus',
-                        'aac': 'AAC+ (MPEG4 HE-AAC v2)',
-                        'flac': 'FLAC (OGG FLAC)',
-                    };
-
-                default:
-                    return {};
-            }
+            return [
+                {
+                    value: 'mp3',
+                    text: 'MP3'
+                },
+                {
+                    value: 'ogg',
+                    text: 'OGG Vorbis'
+                },
+                {
+                    value: 'opus',
+                    text: 'OGG Opus'
+                },
+                {
+                    value: 'aac',
+                    text: 'AAC+ (MPEG4 HE-AAC v2)'
+                },
+                {
+                    value: 'flac',
+                    text: 'FLAC (OGG FLAC)'
+                }
+            ];
         },
         bitrateOptions () {
-            return {
-                32: '32',
-                48: '48',
-                64: '64',
-                96: '96',
-                128: '128',
-                192: '192',
-                256: '256',
-                320: '320'
-            };
+            let options = [];
+            [32, 48, 64, 96, 128, 192, 256, 320].forEach((val) => {
+                options.push({
+                    value: val,
+                    text: val
+                });
+            });
+            return options;
         },
         formatSupportsBitrateOptions () {
             switch (this.form.autodj_format.$model) {

@@ -566,6 +566,12 @@ return [
         // Auto-managed by Assets
     ],
 
+    'Vue_StationsRemotes' => [
+        'order' => 10,
+        'require' => ['vue-component-common', 'bootstrap-vue'],
+        // Auto-managed by Assets
+    ],
+
     'Vue_StationsStreamers' => [
         'order' => 10,
         'require' => ['vue-component-common', 'bootstrap-vue', 'moment'],

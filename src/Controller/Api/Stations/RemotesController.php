@@ -112,7 +112,7 @@ class RemotesController extends AbstractStationApiCrudController
 
         $returnArray = $this->toArray($record);
 
-        $return = new Entity\Api\StationRemote;
+        $return = new Entity\Api\StationRemote();
         $return->fromParentObject($returnArray);
 
         $isInternal = ('true' === $request->getParam('internal', 'false'));

@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use Monolog\Logger;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
+
 use const JSON_PRETTY_PRINT;
 
 class LocalWebhookHandler

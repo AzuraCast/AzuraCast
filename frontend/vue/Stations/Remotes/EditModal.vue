@@ -27,6 +27,7 @@ import InvisibleSubmitButton from '../../Common/InvisibleSubmitButton';
 import BaseEditModal from '../../Common/BaseEditModal';
 import RemoteFormBasicInfo from "./Form/BasicInfo";
 import RemoteFormAutoDj from "./Form/AutoDj";
+import {REMOTE_ICECAST} from "../../Entity/RadioAdapters";
 
 export default {
     name: 'RemoteEditModal',
@@ -42,22 +43,21 @@ export default {
     validations() {
         return {
             form: {
-                "display_name": {},
-                "is_visible_on_public_pages": {},
-                "type": {required},
-                "is_editable": {},
-                "enable_autodj": {},
-                "autodj_format": {},
-                "autodj_bitrate": {},
-                "custom_listen_url": {},
-                "url": {required},
-                "mount": {},
-                "admin_password": {},
-                "source_port": {},
-                "source_mount": {},
-                "source_username": {},
-                "source_password": {},
-                "is_public": {},
+                display_name: {},
+                is_visible_on_public_pages: {},
+                type: {required},
+                enable_autodj: {},
+                autodj_format: {},
+                autodj_bitrate: {},
+                custom_listen_url: {},
+                url: {required},
+                mount: {},
+                admin_password: {},
+                source_port: {},
+                source_mount: {},
+                source_username: {},
+                source_password: {},
+                is_public: {},
             }
         };
     },
@@ -68,5 +68,26 @@ export default {
                 : this.$gettext('Add Remote Relay');
         }
     },
+    methods: {
+        resetForm() {
+            this.form = {
+                display_name: null,
+                is_visible_on_public_pages: true,
+                type: REMOTE_ICECAST,
+                enable_autodj: false,
+                autodj_format: null,
+                autodj_bitrate: null,
+                custom_listen_url: null,
+                url: null,
+                mount: null,
+                admin_password: null,
+                source_port: null,
+                source_mount: null,
+                source_username: null,
+                source_password: null,
+                is_public: false
+            };
+        }
+    }
 };
 </script>

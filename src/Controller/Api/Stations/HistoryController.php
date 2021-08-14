@@ -141,7 +141,7 @@ class HistoryController
             return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
 
-        $search_phrase = trim($params['searchPhrase']);
+        $search_phrase = trim($params['searchPhrase'] ?? '');
         if (!empty($search_phrase)) {
             $qb->andWhere('(sh.title LIKE :query OR sh.artist LIKE :query)')
                 ->setParameter('query', '%' . $search_phrase . '%');

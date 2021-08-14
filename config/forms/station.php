@@ -8,6 +8,7 @@ use App\Radio\Adapters;
 
 /**
  * @var Adapters $adapters
+ * @var array<string,string> $countries
  */
 
 $frontends = $adapters->listFrontendAdapters(true);
@@ -298,6 +299,29 @@ return [
                     ],
                 ],
 
+                StationFrontendConfiguration::BANNED_COUNTRIES => [
+                    'multipleselect',
+                    [
+                        'label' => __('Banned Countries'),
+                        'label_class' => 'advanced',
+                        'belongsTo' => 'frontend_config',
+                        'description' => __('Select the countries that are not allowed to connect to the streams.'),
+                        'form_group_class' => 'col-sm-7',
+                        'options' => $countries,
+                    ],
+                ],
+
+                StationFrontendConfiguration::ALLOWED_IPS => [
+                    'textarea',
+                    [
+                        'label' => __('Allowed IP Addresses'),
+                        'label_class' => 'advanced',
+                        'belongsTo' => 'frontend_config',
+                        'class' => 'text-preformatted',
+                        'description' => __('List one IP address or group (in CIDR format) per line to explicitly allow them to connect even when their country is banned.'),
+                        'form_group_class' => 'col-sm-5',
+                    ],
+                ],
             ],
         ],
 

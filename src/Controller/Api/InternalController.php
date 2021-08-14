@@ -8,18 +8,25 @@ use App\Acl;
 use App\Exception\PermissionDeniedException;
 use App\Http\Response;
 use App\Http\ServerRequest;
+use App\Locale;
 use App\Radio\AutoDJ;
 use App\Radio\Backend\Liquidsoap;
+use App\Service\IpGeolocation;
 use App\Sync\Task\NowPlayingTask;
+use InvalidArgumentException;
 use Monolog\Logger;
+use PhpIP\IP;
+use PhpIP\IPBlock;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Intl\Countries;
 
 class InternalController
 {
     public function __construct(
         protected NowPlayingTask $syncNowPlaying,
         protected AutoDJ $autodj,
-        protected Logger $logger
+        protected Logger $logger,
+        protected IpGeolocation $ipGeolocation
     ) {
     }
 
@@ -161,5 +168,75 @@ class InternalController
 
         $response->getBody()->write('OK');
         return $response;
+    }
+
+    public function listenerAuthAction(ServerRequest $request, Response $response): ResponseInterface
+    {
+        $this->checkStationAuth($request);
+
+        $station = $request->getStation();
+        $frontendConfig = $station->getFrontendConfig();
+
+        $bannedCountries = $frontendConfig->getBannedCountries() ?? [];
+        if (empty($bannedCountries)) {
+            return $response->withHeader('icecast-auth-user', '1');
+        }
+
+        $listenerIp = $request->getParam('ip') ?? '';
+        $listenerLocation = $this->ipGeolocation->getLocationInfo($listenerIp, Locale::DEFAULT_LOCALE);
+
+        $allowedIps = $frontendConfig->getAllowedIps();
+        if (!empty($allowedIps)) {
+            foreach (array_filter(array_map('trim', explode("\n", $allowedIps))) as $ip) {
+                try {
+                    if (!str_contains($ip, '/')) {
+                        $ipObj = IP::create($ip);
+                        if ($ipObj->matches($listenerIp)) {
+                            return $response->withHeader('icecast-auth-user', '1');
+                        }
+                    } else {
+                        // Iterate through CIDR notation
+                        foreach (IPBlock::create($ip) as $ipObj) {
+                            if ($ipObj->matches($listenerIp)) {
+                                return $response->withHeader('icecast-auth-user', '1');
+                            }
+                        }
+                    }
+                } catch (InvalidArgumentException) {
+                }
+            }
+        }
+
+        if ('success' === $listenerLocation['status']) {
+            $listenerCountry = $listenerLocation['country'];
+
+            $countries = Countries::getNames(Locale::DEFAULT_LOCALE);
+
+            $listenerCountryCode = '';
+            foreach ($countries as $countryCode => $countryName) {
+                if ($countryName === $listenerCountry) {
+                    $listenerCountryCode = $countryCode;
+                    break;
+                }
+            }
+
+            foreach ($bannedCountries as $countryCode) {
+                if ($countryCode === $listenerCountryCode) {
+                    return $response
+                        ->withHeader('icecast-auth-user', '0')
+                        ->withHeader('icecast-auth-message', 'geo-blocked');
+                }
+            }
+
+            return $response->withHeader('icecast-auth-user', '1');
+        }
+
+        if ('Internal/Reserved IP' === $listenerLocation['message']) {
+            return $response->withHeader('icecast-auth-user', '1');
+        }
+
+        return $response
+            ->withHeader('icecast-auth-user', '0')
+            ->withHeader('icecast-auth-message', 'geo-blocked');
     }
 }

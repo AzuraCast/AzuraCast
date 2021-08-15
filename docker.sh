@@ -321,6 +321,8 @@ install() {
     fi
   fi
 
+  setup-release
+
   run-installer "$@"
 
   # Installer creates a file at docker-compose.new.yml; copy it to the main spot.

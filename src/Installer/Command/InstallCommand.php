@@ -162,16 +162,6 @@ class InstallCommand
         }
 
         if ($customize) {
-            // Release channel
-            $env['AZURACAST_VERSION'] = $io->choice(
-                __('AzuraCast Release Channel'),
-                [
-                    'stable' => __('Stable'),
-                    'latest' => __('Rolling Release'),
-                ],
-                $env['AZURACAST_VERSION']
-            );
-
             // Port customization
             $io->writeln(
                 __('AzuraCast is currently configured to listen on the following ports:'),

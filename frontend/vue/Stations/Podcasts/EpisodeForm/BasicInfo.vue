@@ -2,83 +2,90 @@
     <b-tab :title="langTitle" active>
         <b-form-group>
             <b-row>
-                <b-form-group class="col-md-6" label-for="form_edit_title">
+
+                <b-wrapped-form-group class="col-md-6" id="form_edit_title" :field="form.title">
                     <template #label>
                         <translate key="lang_form_edit_title">Episode</translate>
                     </template>
-                    <b-form-input id="form_edit_title" type="text" v-model="form.title.$model"
-                                  :state="form.title.$dirty ? !form.title.$error : null"></b-form-input>
-                    <b-form-invalid-feedback>
-                        <translate key="lang_error_required">This field is required.</translate>
-                    </b-form-invalid-feedback>
-                </b-form-group>
+                </b-wrapped-form-group>
 
-                <b-form-group class="col-md-6" label-for="form_edit_link">
+                <b-wrapped-form-group class="col-md-6" id="form_edit_link" :field="form.link">
                     <template #label>
                         <translate key="lang_form_edit_link">Website</translate>
                     </template>
                     <template #description>
-                        <translate key="lang_form_edit_link_desc">Typically a website with content about the episode.</translate>
+                        <translate
+                            key="lang_form_edit_link_desc">Typically a website with content about the episode.</translate>
                     </template>
-                    <b-form-input id="form_edit_link" type="text" v-model="form.link.$model"
-                                  :state="form.link.$dirty ? !form.link.$error : null"></b-form-input>
-                </b-form-group>
+                </b-wrapped-form-group>
 
-                <b-form-group class="col-md-12" label-for="form_edit_description">
+                <b-wrapped-form-group class="col-md-12" id="form_edit_description" :field="form.description">
                     <template #label>
                         <translate key="lang_form_edit_description">Description</translate>
                     </template>
                     <template #description>
                         <translate key="lang_form_edit_description_desc">The description of the episode. The typical maximum amount of text allowed for this is 4000 characters.</translate>
                     </template>
-                    <b-form-textarea id="form_edit_description" v-model="form.description.$model"
-                                     :state="form.description.$dirty ? !form.description.$error : null"></b-form-textarea>
-                </b-form-group>
+                    <template #default="props">
+                        <b-form-textarea :id="props.id" v-model="props.field.$model"
+                                         :state="props.state"></b-form-textarea>
+                    </template>
+                </b-wrapped-form-group>
 
-                <b-form-group class="col-md-6" label-for="form_edit_publish_date">
+                <b-wrapped-form-group class="col-md-6" id="form_edit_publish_date" :field="form.publish_date">
                     <template #label>
                         <translate key="lang_form_edit_publish_date">Publish Date</translate>
                     </template>
                     <template #description>
-                        <translate key="lang_form_edit_publish_date_desc">The date when the episode should be published.</translate>
+                        <translate
+                            key="lang_form_edit_publish_date_desc">The date when the episode should be published.</translate>
                     </template>
-                    <b-form-datepicker id="form_edit_publish_date" v-model="form.publish_date.$model"
-                                       :state="form.publish_date.$dirty ? !form.publish_date.$error : null" :locale="locale"></b-form-datepicker>
-                </b-form-group>
+                    <template #default="props">
+                        <b-form-datepicker :id="props.id" v-model="props.field.$model" :state="props.state"
+                                           :locale="locale"></b-form-datepicker>
+                    </template>
+                </b-wrapped-form-group>
 
-                <b-form-group class="col-md-6" label-for="form_edit_publish_time">
+                <b-wrapped-form-group class="col-md-6" id="form_edit_publish_time" :field="form.publish_time">
                     <template #label>
                         <translate key="lang_form_edit_publish_time">Publish Time</translate>
                     </template>
                     <template #description>
                         <translate key="lang_form_edit_publish_time_desc">The time when the episode should be published (according to the stations timezone).</translate>
                     </template>
-                    <b-form-timepicker id="form_edit_publish_time" v-model="form.publish_time.$model"
-                                       :state="form.publish_time.$dirty ? !form.publish_time.$error : null" :locale="locale"></b-form-timepicker>
-                </b-form-group>
+                    <template #default="props">
+                        <b-form-timepicker :id="props.id" v-model="props.field.$model"
+                                           :state="props.state" :locale="locale"></b-form-timepicker>
+                    </template>
+                </b-wrapped-form-group>
 
-                <b-form-group class="col-md-12" label-for="form_edit_explicit">
+                <b-wrapped-form-group class="col-md-12" id="form_edit_explicit" :field="form.explicit">
                     <template #description>
                         <translate key="lang_form_edit_explicit_desc">Indicates the presence of explicit content (explicit language or adult content). Apple Podcasts displays an Explicit parental advisory graphic for your episode if turned on. Episodes containing explicit material aren’t available in some Apple Podcasts territories.</translate>
                     </template>
-                    <b-form-checkbox id="form_edit_explicit" v-model="form.explicit.$model">
-                        <translate key="lang_form_edit_explicit">Contains explicit content</translate>
-                    </b-form-checkbox>
-                </b-form-group>
+                    <template #default="props">
+                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                            <translate key="lang_form_edit_explicit">Contains explicit content</translate>
+                        </b-form-checkbox>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
         </b-form-group>
     </b-tab>
 </template>
 
 <script>
+import BWrappedFormGroup from "../../../Form/BWrappedFormGroup";
+
 export default {
     name: 'EpisodeFormBasicInfo',
+    components: {BWrappedFormGroup},
     props: {
         form: Object,
         locale: String
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Basic Information');
         }
     }

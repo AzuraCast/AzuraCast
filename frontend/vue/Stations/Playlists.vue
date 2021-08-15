@@ -22,7 +22,7 @@
 
                     <data-table ref="datatable" id="station_playlists" paginated :fields="fields" :responsive="false"
                                 :api-url="listUrl">
-                        <template v-slot:cell(actions)="row">
+                        <template #cell(actions)="row">
                             <b-button-group size="sm">
                                 <b-button size="sm" variant="primary" @click.prevent="doEdit(row.item.links.self)">
                                     <translate key="lang_btn_edit">Edit</translate>
@@ -64,7 +64,7 @@
                                 </b-dropdown>
                             </b-button-group>
                         </template>
-                        <template v-slot:cell(name)="row">
+                        <template #cell(name)="row">
                             <h5 class="m-0">{{ row.item.name }}</h5>
                             <div>
                                 <span class="badge badge-dark">
@@ -93,10 +93,10 @@
                                 </span>
                             </div>
                         </template>
-                        <template v-slot:cell(scheduling)="row">
+                        <template #cell(scheduling)="row">
                             <span v-html="formatType(row.item)"></span>
                         </template>
-                        <template v-slot:cell(num_songs)="row">
+                        <template #cell(num_songs)="row">
                             <template v-if="row.item.source === 'songs'">
                                 <a :href="filesUrl+'#playlist:'+encodeURIComponent(row.item.name)">
                                     {{ row.item.num_songs }}

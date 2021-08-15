@@ -2,39 +2,48 @@
     <b-tab :title="langTabTitle">
         <b-form-group>
             <b-row class="mb-3">
-                <b-form-group class="col-md-12" label-for="edit_form_enable_autodj">
+                <b-wrapped-form-group class="col-md-12" id="edit_form_enable_autodj" :field="form.enable_autodj">
                     <template #description>
                         <translate key="lang_edit_form_enable_autodj_desc">If enabled, the AutoDJ will automatically play music to this mount point.</translate>
                     </template>
-                    <b-form-checkbox id="edit_form_enable_autodj" v-model="form.enable_autodj.$model">
-                        <translate key="lang_edit_form_enable_autodj">Enable AutoDJ</translate>
-                    </b-form-checkbox>
-                </b-form-group>
+                    <template #default="props">
+                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                            <translate key="lang_edit_form_enable_autodj">Enable AutoDJ</translate>
+                        </b-form-checkbox>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
 
             <b-row v-if="form.enable_autodj.$model">
-                <b-form-group class="col-md-6" label-for="edit_form_autodj_format">
+                <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_format" :field="form.autodj_format">
                     <template #label>
                         <translate key="lang_edit_form_autodj_format">AutoDJ Format</translate>
                     </template>
-                    <b-form-radio-group
-                        stacked
-                        id="edit_form_autodj_format"
-                        v-model="form.autodj_format.$model"
-                        :options="formatOptions"
-                    ></b-form-radio-group>
-                </b-form-group>
-                <b-form-group class="col-md-6" label-for="edit_form_autodj_bitrate" v-if="formatSupportsBitrateOptions">
+                    <template #default="props">
+                        <b-form-radio-group
+                            stacked
+                            :id="props.id"
+                            :state="props.state"
+                            v-model="props.field.$model"
+                            :options="formatOptions"
+                        ></b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
+                <b-wrapped-form-group class="col-md-6" id="edit_form_autodj_bitrate" :field="form.autodj_bitrate"
+                                      v-if="formatSupportsBitrateOptions">
                     <template #label>
                         <translate key="lang_edit_form_autodj_bitrate">AutoDJ Bitrate (kbps)</translate>
                     </template>
-                    <b-form-radio-group
-                        stacked
-                        id="edit_form_autodj_bitrate"
-                        v-model="form.autodj_bitrate.$model"
-                        :options="bitrateOptions"
-                    ></b-form-radio-group>
-                </b-form-group>
+                    <template #default="props">
+                        <b-form-radio-group
+                            stacked
+                            :id="props.id"
+                            :state="props.state"
+                            v-model="props.field.$model"
+                            :options="bitrateOptions"
+                        ></b-form-radio-group>
+                    </template>
+                </b-wrapped-form-group>
             </b-row>
         </b-form-group>
     </b-tab>
@@ -42,17 +51,20 @@
 
 <script>
 
+import BWrappedFormGroup from "../../../Form/BWrappedFormGroup";
+
 export default {
     name: 'MountFormAutoDj',
+    components: {BWrappedFormGroup},
     props: {
         form: Object,
         stationFrontendType: String
     },
     computed: {
-        langTabTitle () {
+        langTabTitle() {
             return this.$gettext('AutoDJ');
         },
-        formatOptions () {
+        formatOptions() {
             return [
                 {
                     value: 'mp3',

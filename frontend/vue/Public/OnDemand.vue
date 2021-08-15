@@ -20,7 +20,7 @@
 
         <data-table ref="datatable" id="station_on_demand_table" paginated select-fields
                     :fields="fields" :api-url="listUrl">
-            <template v-slot:cell(download_url)="row">
+            <template #cell(download_url)="row">
                 <a class="file-icon btn-audio" href="#" :data-url="row.item.download_url"
                    @click.prevent="playAudio(row.item.download_url)" :title="langPlayPause">
                     <icon class="outlined" :icon="(now_playing_url === row.item.download_url) ? 'stop_circle' : 'play_circle'"></icon>
@@ -32,13 +32,13 @@
                     </a>
                 </template>
             </template>
-            <template v-slot:cell(media_art)="row">
+            <template #cell(media_art)="row">
                 <a :href="row.item.media_art" class="album-art" target="_blank"
                    data-fancybox="gallery">
                     <img class="media_manager_album_art" :alt="langAlbumArt" :src="row.item.media_art">
                 </a>
             </template>
-            <template v-slot:cell(size)="row">
+            <template #cell(size)="row">
                 <template v-if="!row.item.size">&nbsp;</template>
                 <template v-else>
                     {{ formatFileSize(row.item.size) }}

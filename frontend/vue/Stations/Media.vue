@@ -14,7 +14,7 @@
         <data-table ref="datatable" id="station_media" selectable paginated select-fields
                     @row-selected="onRowSelected" @refreshed="onRefreshed" :fields="fields" :api-url="listUrl"
                     :request-config="requestConfig">
-            <template v-slot:cell(name)="row">
+            <template #cell(name)="row">
                 <div :class="{ is_dir: row.item.is_dir, is_file: !row.item.is_dir }">
                     <album-art v-if="row.item.media_art" :src="row.item.media_art" class="float-right pl-3"></album-art>
 
@@ -54,26 +54,26 @@
                     <small v-else>{{ row.item.text }}</small>
                 </div>
             </template>
-            <template v-slot:cell(media_genre)="row">
+            <template #cell(media_genre)="row">
                 {{ row.item.media_genre }}
             </template>
-            <template v-slot:cell(media_length)="row">
+            <template #cell(media_length)="row">
                 {{ row.item.media_length_text }}
             </template>
-            <template v-slot:cell(size)="row">
+            <template #cell(size)="row">
                 <template v-if="!row.item.size">&nbsp;</template>
                 <template v-else>
                     {{ formatFileSize(row.item.size) }}
                 </template>
             </template>
-            <template v-slot:cell(playlists)="row">
+            <template #cell(playlists)="row">
                 <template v-for="(playlist, index) in row.item.playlists">
                     <a class="btn-search" href="#" @click.prevent="filter('playlist:'+playlist.name)"
                        :title="langPlaylistSelect">{{ playlist.name }}</a>
                     <span v-if="index+1 < row.item.playlists.length">, </span>
                 </template>
             </template>
-            <template v-slot:cell(commands)="row">
+            <template #cell(commands)="row">
                 <template v-if="row.item.media_links_edit">
                     <b-button size="sm" variant="primary"
                               @click.prevent="edit(row.item.media_links_edit, row.item.media_links_art, row.item.media_links_play, row.item.media_links_waveform)">

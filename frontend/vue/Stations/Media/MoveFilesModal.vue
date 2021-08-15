@@ -16,7 +16,7 @@
                 <data-table ref="datatable" id="station_media" :show-toolbar="false"
                             :selectable="false" :fields="fields"
                             :api-url="listDirectoriesUrl" :request-config="requestConfig">
-                    <template v-slot:cell(directory)="row">
+                    <template #cell(directory)="row">
                         <div class="is_dir">
                             <span class="file-icon">
                                 <icon icon="folder"></icon>
@@ -30,7 +30,7 @@
                 </data-table>
             </b-col>
         </b-row>
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>

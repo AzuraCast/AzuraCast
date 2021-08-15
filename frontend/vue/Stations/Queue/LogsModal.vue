@@ -2,7 +2,7 @@
     <b-modal id="logs_modal" ref="modal" :title="langLogView">
         <textarea class="form-control log-viewer" id="log-view-contents" spellcheck="false" readonly>{{ logs }}</textarea>
 
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>

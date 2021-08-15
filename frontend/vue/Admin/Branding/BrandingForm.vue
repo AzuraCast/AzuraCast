@@ -13,43 +13,49 @@
                 <div class="card-body">
                     <b-form-group>
                         <b-row>
-                            <b-form-group class="col-md-6" label-for="edit_form_public_theme">
+                            <b-wrapped-form-group class="col-md-6" id="edit_form_public_theme"
+                                                  :field="$v.form.public_theme">
                                 <template #label>
                                     <translate key="lang_edit_form_public_theme">Base Theme for Public Pages</translate>
                                 </template>
                                 <template #description>
                                     <translate key="lang_edit_form_public_theme_desc">Select a theme to use as a base for station public pages and the login page.</translate>
                                 </template>
-                                <b-form-radio-group stacked id="edit_form_public_theme" :options="publicThemeOptions"
-                                                    v-model="$v.form.public_theme.$model">
-                                </b-form-radio-group>
-                            </b-form-group>
+                                <template #default="props">
+                                    <b-form-radio-group stacked :id="props.id" :options="publicThemeOptions"
+                                                        v-model="props.field.$model">
+                                    </b-form-radio-group>
+                                </template>
+                            </b-wrapped-form-group>
 
                             <b-col md="6">
-                                <b-form-group class="mb-2" label-for="form_edit_hide_album_art">
-                                    <template v-slot:description>
+                                <b-wrapped-form-group class="mb-2" id="form_edit_hide_album_art"
+                                                      :field="$v.form.hide_album_art">
+                                    <template #description>
                                         <translate key="lang_form_edit_hide_album_art_desc">If selected, album art will not display on public-facing radio pages.</translate>
                                     </template>
-                                    <b-form-checkbox id="form_edit_hide_album_art"
-                                                     v-model="$v.form.hide_album_art.$model">
-                                    <translate
-                                        key="lang_form_edit_hide_album_art">Hide Album Art on Public Pages</translate>
-                                    </b-form-checkbox>
-                                </b-form-group>
+                                    <template #default="props">
+                                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                                            <translate key="lang_form_edit_hide_album_art">Hide Album Art on Public Pages</translate>
+                                        </b-form-checkbox>
+                                    </template>
+                                </b-wrapped-form-group>
 
-                                <b-form-group label-for="form_edit_hide_product_name">
-                                    <template v-slot:description>
+                                <b-wrapped-form-group id="form_edit_hide_product_name"
+                                                      :field="$v.form.hide_product_name">
+                                    <template #description>
                                         <translate key="lang_form_edit_hide_product_name_desc">If selected, this will remove the AzuraCast branding from public-facing pages.</translate>
                                     </template>
-                                    <b-form-checkbox id="form_edit_hide_product_name"
-                                                     v-model="$v.form.hide_product_name.$model">
-                                    <translate
-                                        key="lang_form_edit_hide_product_name">Hide AzuraCast Branding on Public Pages</translate>
-                                    </b-form-checkbox>
-                                </b-form-group>
+                                    <template #default="props">
+                                        <b-form-checkbox :id="props.id" v-model="props.field.$model">
+                                            <translate key="lang_form_edit_hide_product_name">Hide AzuraCast Branding on Public Pages</translate>
+                                        </b-form-checkbox>
+                                    </template>
+                                </b-wrapped-form-group>
                             </b-col>
 
-                            <b-form-group class="col-md-6" label-for="form_edit_homepage_redirect_url">
+                            <b-wrapped-form-group class="col-md-6" id="form_edit_homepage_redirect_url"
+                                                  :field="$v.form.homepage_redirect_url">
                                 <template #label>
                                     <translate
                                         key="lang_form_edit_homepage_redirect_url">Homepage Redirect URL</translate>
@@ -57,15 +63,10 @@
                                 <template #description>
                                     <translate key="lang_form_edit_homepage_redirect_url_desc">If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.</translate>
                                 </template>
-                                <b-form-input id="form_edit_homepage_redirect_url" type="text"
-                                              v-model="$v.form.homepage_redirect_url.$model"
-                                              :state="$v.form.homepage_redirect_url.$dirty ? !$v.form.homepage_redirect_url.$error : null"></b-form-input>
-                                <b-form-invalid-feedback>
-                                    <translate key="lang_error_required">This field is required.</translate>
-                                </b-form-invalid-feedback>
-                            </b-form-group>
+                            </b-wrapped-form-group>
 
-                            <b-form-group class="col-md-6" label-for="form_edit_default_album_art_url">
+                            <b-wrapped-form-group class="col-md-6" id="form_edit_default_album_art_url"
+                                                  :field="$v.form.default_album_art_url">
                                 <template #label>
                                     <translate
                                         key="lang_form_edit_default_album_art_url">Default Album Art URL</translate>
@@ -73,15 +74,10 @@
                                 <template #description>
                                     <translate key="lang_form_edit_default_album_art_url_desc">If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.</translate>
                                 </template>
-                                <b-form-input id="form_edit_default_album_art_url" type="text"
-                                              v-model="$v.form.default_album_art_url.$model"
-                                              :state="$v.form.default_album_art_url.$dirty ? !$v.form.default_album_art_url.$error : null"></b-form-input>
-                                <b-form-invalid-feedback>
-                                    <translate key="lang_error_required">This field is required.</translate>
-                                </b-form-invalid-feedback>
-                            </b-form-group>
+                            </b-wrapped-form-group>
 
-                            <b-form-group class="col-md-12" label-for="edit_form_public_custom_css">
+                            <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_css"
+                                                  :field="$v.form.public_custom_css">
                                 <template #label>
                                     <translate
                                         key="lang_edit_form_public_custom_css">Custom CSS for Public Pages</translate>
@@ -89,12 +85,14 @@
                                 <template #description>
                                     <translate key="lang_edit_form_public_custom_css_desc">This CSS will be applied to the station public pages and login page.</translate>
                                 </template>
+                                <template #default="props">
+                                    <codemirror-textarea :id="props.id" mode="css"
+                                                         v-model="props.field.$model"></codemirror-textarea>
+                                </template>
+                            </b-wrapped-form-group>
 
-                                <codemirror-textarea id="edit_form_public_custom_css" mode="css"
-                                                     v-model="$v.form.public_custom_css.$model"></codemirror-textarea>
-                            </b-form-group>
-
-                            <b-form-group class="col-md-12" label-for="edit_form_public_custom_js">
+                            <b-wrapped-form-group class="col-md-12" id="edit_form_public_custom_js"
+                                                  :field="$v.form.public_custom_js">
                                 <template #label>
                                     <translate
                                         key="lang_edit_form_public_custom_js">Custom JS for Public Pages</translate>
@@ -102,12 +100,14 @@
                                 <template #description>
                                     <translate key="lang_edit_form_public_custom_js_desc">This javascript code will be applied to the station public pages and login page.</translate>
                                 </template>
+                                <template #default="props">
+                                    <codemirror-textarea :id="props.id" mode="javascript"
+                                                         v-model="props.field.$model"></codemirror-textarea>
+                                </template>
+                            </b-wrapped-form-group>
 
-                                <codemirror-textarea id="edit_form_public_custom_js" mode="javascript"
-                                                     v-model="$v.form.public_custom_js.$model"></codemirror-textarea>
-                            </b-form-group>
-
-                            <b-form-group class="col-md-12" label-for="edit_form_internal_custom_css">
+                            <b-wrapped-form-group class="col-md-12" id="edit_form_internal_custom_css"
+                                                  :field="$v.form.internal_custom_css">
                                 <template #label>
                                     <translate
                                         key="lang_edit_form_internal_custom_css">Custom CSS for Internal Pages</translate>
@@ -115,10 +115,11 @@
                                 <template #description>
                                     <translate key="lang_edit_form_internal_custom_css_desc">This CSS will be applied to the main management pages, like this one.</translate>
                                 </template>
-
-                                <codemirror-textarea id="edit_form_internal_custom_css" mode="css"
-                                                     v-model="$v.form.internal_custom_css.$model"></codemirror-textarea>
-                            </b-form-group>
+                                <template #default="props">
+                                    <codemirror-textarea :id="props.id" mode="css"
+                                                         v-model="props.field.$model"></codemirror-textarea>
+                                </template>
+                            </b-wrapped-form-group>
                         </b-row>
 
                         <b-button size="lg" type="submit" variant="primary">
@@ -136,6 +137,7 @@ import {validationMixin} from "vuelidate";
 import handleAxiosError from "../../Function/handleAxiosError";
 import axios from "axios";
 import CodemirrorTextarea from "../../Common/CodemirrorTextarea";
+import BWrappedFormGroup from "../../Form/BWrappedFormGroup";
 
 export default {
     name: 'BrandingForm',
@@ -143,6 +145,7 @@ export default {
         apiUrl: String
     },
     components: {
+        BWrappedFormGroup,
         CodemirrorTextarea,
     },
     mixins: [

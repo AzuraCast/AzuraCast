@@ -11,7 +11,7 @@
                 </b-col>
                 <b-col md="8">
                     <b-form-group label-for="edit_form_art">
-                        <template v-slot:label>
+                        <template #label>
                             <translate key="lang_btn_replace_art">Replace Album Cover Art</translate>
                         </template>
                         <b-form-file id="edit_form_art" v-model="artFile" accept="image/*"

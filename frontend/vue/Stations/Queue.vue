@@ -6,7 +6,7 @@
             </b-card-header>
             <div class="pt-3">
                 <data-table ref="datatable" id="station_queue" :fields="fields" :api-url="listUrl" handle-client-side>
-                    <template v-slot:cell(actions)="row">
+                    <template #cell(actions)="row">
                         <b-button-group>
                             <b-button v-if="row.item.log" size="sm" variant="primary" @click.prevent="doShowLogs(row.item.log)">
                                 <translate key="lang_btn_logs">Logs</translate>
@@ -16,7 +16,7 @@
                             </b-button>
                         </b-button-group>
                     </template>
-                    <template v-slot:cell(song_title)="row">
+                    <template #cell(song_title)="row">
                         <div v-if="row.item.autodj_custom_uri">
                             {{ row.item.autodj_custom_uri }}
                         </div>
@@ -28,10 +28,10 @@
                             {{ row.item.song.text }}
                         </div>
                     </template>
-                    <template v-slot:cell(cued_at)="row">
+                    <template #cell(cued_at)="row">
                         {{ formatTime(row.item.cued_at) }}
                     </template>
-                    <template v-slot:cell(source)="row">
+                    <template #cell(source)="row">
                         <div v-if="row.item.is_request">
                             <translate key="lang_source_request">Listener Request</translate>
                         </div>

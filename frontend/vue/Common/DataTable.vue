@@ -30,7 +30,7 @@
                             </b-dropdown>
                             <b-dropdown variant="default" v-if="selectFields" v-b-tooltip.hover
                                         :title="langSelectFieldsTooltip">
-                                <template v-slot:button-content>
+                                <template #button-content>
                                     <icon icon="filter_list"></icon>
                                     <span class="caret"></span>
                                 </template>

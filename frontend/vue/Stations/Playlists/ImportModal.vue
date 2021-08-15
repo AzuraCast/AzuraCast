@@ -2,10 +2,10 @@
     <b-modal id="import_modal" ref="modal" :title="langTitle">
         <b-form class="form" @submit.prevent="doSubmit">
             <b-form-group label-for="import_modal_playlist_file">
-                <template v-slot:label>
+                <template #label>
                     <translate key="lang_form_playlist_file">Select PLS/M3U File to Import</translate>
                 </template>
-                <template v-slot:description>
+                <template #description>
                     <translate key="lang_form_playlist_file_desc">AzuraCast will scan the uploaded file for matches in this station's music library. Media should already be uploaded before running this step. You can re-run this tool as many times as needed.</translate>
                 </template>
                 <b-form-file id="import_modal_playlist_file" v-model="playlistFile"></b-form-file>
@@ -13,7 +13,7 @@
 
             <invisible-submit-button/>
         </b-form>
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" type="button" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>

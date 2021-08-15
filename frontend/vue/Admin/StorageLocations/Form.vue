@@ -3,7 +3,7 @@
         <b-form-group>
             <b-row>
                 <b-form-group class="col-md-12" label-for="form_edit_adapter">
-                    <template v-slot:label>
+                    <template #label>
                         <translate key="lang_form_edit_adapter">Storage Adapter</translate>
                     </template>
 
@@ -21,10 +21,10 @@
                 </b-form-group>
 
                 <b-form-group class="col-md-6" label-for="form_edit_path">
-                    <template v-slot:label>
+                    <template #label>
                         <translate key="lang_form_edit_path">Path/Suffix</translate>
                     </template>
-                    <template v-slot:description>
+                    <template #description>
                         <translate key="lang_form_edit_path_desc">For local filesystems, this is the base path of the directory. For remote filesystems, this is the folder prefix.</translate>
                     </template>
 
@@ -36,10 +36,10 @@
                 </b-form-group>
 
                 <b-form-group class="col-md-6" label-for="form_edit_storageQuota">
-                    <template v-slot:label>
+                    <template #label>
                         <translate key="lang_form_edit_storageQuota">Storage Quota</translate>
                     </template>
-                    <template v-slot:description>
+                    <template #description>
                         <translate key="lang_form_edit_storageQuota_desc">Set a maximum disk space that this storage location can use. Specify the size with unit, i.e. "8 GB". Units are measured in 1024 bytes. Leave blank to default to the available space on the disk.</translate>
                     </template>
 
@@ -62,7 +62,7 @@
                 <b-form-group>
                     <b-row>
                         <b-form-group class="col-md-6" label-for="form_edit_s3CredentialKey">
-                            <template v-slot:label>
+                            <template #label>
                                 <translate key="lang_form_edit_s3CredentialKey">Access Key ID</translate>
                             </template>
 
@@ -74,7 +74,7 @@
                         </b-form-group>
 
                         <b-form-group class="col-md-6" label-for="form_edit_s3CredentialSecret">
-                            <template v-slot:label>
+                            <template #label>
                                 <translate key="lang_form_edit_s3CredentialSecret">Secret Key</translate>
                             </template>
 
@@ -86,7 +86,7 @@
                         </b-form-group>
 
                         <b-form-group class="col-md-6" label-for="form_edit_s3Endpoint">
-                            <template v-slot:label>
+                            <template #label>
                                 <translate key="lang_form_edit_s3Endpoint">Endpoint</translate>
                             </template>
 
@@ -98,7 +98,7 @@
                         </b-form-group>
 
                         <b-form-group class="col-md-6" label-for="form_edit_s3Bucket">
-                            <template v-slot:label>
+                            <template #label>
                                 <translate key="lang_form_edit_s3Bucket">Bucket Name</translate>
                             </template>
 
@@ -110,7 +110,7 @@
                         </b-form-group>
 
                         <b-form-group class="col-md-6" label-for="form_edit_s3Region">
-                            <template v-slot:label>
+                            <template #label>
                                 <translate key="lang_form_edit_s3Region">Region</translate>
                             </template>
 
@@ -122,7 +122,7 @@
                         </b-form-group>
 
                         <b-form-group class="col-md-6" label-for="form_edit_s3Version">
-                            <template v-slot:label>
+                            <template #label>
                                 <translate key="lang_form_edit_s3Version">API Version</translate>
                             </template>
 
@@ -147,10 +147,10 @@
                 <b-form-group>
                     <b-row>
                         <b-form-group class="col-md-12" label-for="form_edit_dropboxAuthToken">
-                            <template v-slot:label>
+                            <template #label>
                                 <translate key="lang_form_edit_dropboxAuthToken">Dropbox Generated Access Token</translate>
                             </template>
-                            <template v-slot:description>
+                            <template #description>
                                 <a href="https://dropbox.tech/developers/generate-an-access-token-for-your-own-account" target="_blank" v-translate key="lang_form_edit_dropboxAuthToken_desc">Learn More about Dropbox Auth Tokens</a>
                             </template>
 

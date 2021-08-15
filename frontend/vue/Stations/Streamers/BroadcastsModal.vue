@@ -7,7 +7,7 @@
 
             <data-table ref="datatable" id="station_streamer_broadcasts" :show-toolbar="false"
                         :fields="fields" :api-url="listUrl">
-                <template v-slot:cell(recording_links_download)="row">
+                <template #cell(recording_links_download)="row">
                     <template v-if="row.item.recording_links_download">
                         <a class="file-icon btn-audio" href="#"
                            @click.prevent="playAudio(row.item.recording_links_download)" :title="langPlayPause">
@@ -20,7 +20,7 @@
                     </template>
                     <template v-else>&nbsp;</template>
                 </template>
-                <template v-slot:cell(actions)="row">
+                <template #cell(actions)="row">
                     <b-button-group size="sm" v-if="row.item.recording_links_download">
                         <b-button size="sm" variant="danger" @click.prevent="doDelete(row.item.recording_links_delete)">
                             <translate key="lang_btn_delete">Delete</translate>
@@ -30,7 +30,7 @@
                 </template>
             </data-table>
         </template>
-        <template v-slot:modal-footer>
+        <template #modal-footer>
             <b-button variant="default" @click="close">
                 <translate key="lang_btn_close">Close</translate>
             </b-button>

@@ -31,6 +31,10 @@
                             <template #label>
                                 <translate key="lang_edit_form_start_time">Start Time</translate>
                             </template>
+                            <template #default="props">
+                                <playlist-time :id="props.id" v-model="props.field.$model"
+                                               :state="props.state"></playlist-time>
+                            </template>
                         </b-wrapped-form-group>
 
                         <b-wrapped-form-group class="col-md-4" :id="'edit_form_end_time_'+index" :field="row.end_time">
@@ -39,6 +43,10 @@
                             </template>
                             <template #description>
                                 <translate key="lang_edit_form_end_time_desc">If the end time is before the start time, the schedule entry will continue overnight.</translate>
+                            </template>
+                            <template #default="props">
+                                <playlist-time :id="props.id" v-model="props.field.$model"
+                                               :state="props.state"></playlist-time>
                             </template>
                         </b-wrapped-form-group>
 

@@ -164,7 +164,7 @@ class MountsController extends AbstractStationApiCrudController
     public function deleteAction(
         ServerRequest $request,
         Response $response,
-        int $station_id,
+        $station_id,
         int $id
     ): ResponseInterface {
         $record = $this->getRecord($this->getStation($request), $id);

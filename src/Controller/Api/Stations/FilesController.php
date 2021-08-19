@@ -184,7 +184,7 @@ class FilesController extends AbstractStationApiCrudController
     public function editAction(
         ServerRequest $request,
         Response $response,
-        int $station_id,
+        $station_id,
         int $id
     ): ResponseInterface {
         $station = $this->getStation($request);

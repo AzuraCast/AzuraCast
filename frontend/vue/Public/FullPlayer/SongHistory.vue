@@ -3,7 +3,7 @@
         <p v-if="history.length <= 0">{{ langNoRecords }}</p>
         <div class="song" v-for="(row, index) in history">
             <strong class="order">{{ history.length - index }}</strong>
-            <img class="art" :src="row.song.art">
+            <img v-if="showAlbumArt" class="art" :src="row.song.art">
             <div class="name">
                 <strong v-html="row.song.title"></strong>
                 <span v-html="albumAndArtist(row.song)"></span>
@@ -80,7 +80,11 @@
 <script>
 export default {
     props: {
-        history: Array
+        history: Array,
+        showAlbumArt: {
+            type: Boolean,
+            default: true
+        },
     },
     computed: {
         langNoRecords () {

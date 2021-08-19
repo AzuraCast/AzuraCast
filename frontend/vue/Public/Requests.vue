@@ -2,7 +2,7 @@
     <data-table ref="datatable" id="song_requests" paginated select-fields :page-options="pageOptions" :fields="fields"
                 :responsive="false" :api-url="requestListUri">
         <template #cell(name)="row">
-            <album-art :src="row.item.song_art" :width="40" class="float-left pr-3"></album-art>
+            <album-art v-if="showAlbumArt" :src="row.item.song_art" :width="40" class="float-left pr-3"></album-art>
             {{ row.item.song_title }}<br>
             <small>{{ row.item.song_artist }}</small>
         </template>
@@ -38,6 +38,10 @@ export default {
         requestListUri: {
             type: String,
             required: true
+        },
+        showAlbumArt: {
+            type: Boolean,
+            default: true
         },
         customFields: {
             type: Array,

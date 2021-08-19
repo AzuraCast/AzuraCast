@@ -12,6 +12,7 @@ $this->layout(
 
 $props = [
     'customFields' => $customFields,
+    'showAlbumArt' => !$customization->hideAlbumArt(),
     'requestListUri' => (string)$router->named('api:requests:list', ['station_id' => $station->getId()]),
 ];
 

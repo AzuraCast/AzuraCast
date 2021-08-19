@@ -1,6 +1,6 @@
 <template>
     <b-modal size="md" id="song_history_modal" ref="modal" :title="langTitle" centered hide-footer>
-        <song-history :history="history"></song-history>
+        <song-history :show-album-art="showAlbumArt" :history="history"></song-history>
     </b-modal>
 </template>
 
@@ -8,14 +8,20 @@
 import SongHistory from './SongHistory';
 
 export default {
-    components: { SongHistory },
-    data () {
+    components: {SongHistory},
+    props: {
+        showAlbumArt: {
+            type: Boolean,
+            default: true
+        },
+    },
+    data() {
         return {
             history: []
         };
     },
     computed: {
-        langTitle () {
+        langTitle() {
             return this.$gettext('Song History');
         }
     },

@@ -300,7 +300,7 @@ return [
                 ],
 
                 StationFrontendConfiguration::BANNED_COUNTRIES => [
-                    'multipleselect',
+                    'multiselect',
                     [
                         'label' => __('Banned Countries'),
                         'label_class' => 'advanced',

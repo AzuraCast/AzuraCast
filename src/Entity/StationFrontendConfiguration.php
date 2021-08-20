@@ -125,4 +125,28 @@ class StationFrontendConfiguration extends ArrayCollection
     {
         $this->set(self::BANNED_IPS, $ips);
     }
+
+    public const BANNED_COUNTRIES = 'banned_countries';
+
+    public function getBannedCountries(): ?array
+    {
+        return $this->get(self::BANNED_COUNTRIES);
+    }
+
+    public function setBannedCountries(?array $countries): void
+    {
+        $this->set(self::BANNED_COUNTRIES, $countries);
+    }
+
+    public const ALLOWED_IPS = 'allowed_ips';
+
+    public function getAllowedIps(): ?string
+    {
+        return $this->get(self::ALLOWED_IPS);
+    }
+
+    public function setAllowedIps(?string $ips): void
+    {
+        $this->set(self::ALLOWED_IPS, $ips);
+    }
 }

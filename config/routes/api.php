@@ -102,6 +102,13 @@ return function (App $app) {
                                 '/feedback',
                                 Controller\Api\InternalController::class . ':feedbackAction'
                             )->setName('api:internal:feedback');
+
+                            // Icecast internal auth functions
+                            $group->map(
+                                ['GET', 'POST'],
+                                '/listener-auth',
+                                Controller\Api\InternalController::class . ':listenerAuthAction'
+                            )->setName('api:internal:listener-auth');
                         }
                     )->add(Middleware\GetStation::class);
 

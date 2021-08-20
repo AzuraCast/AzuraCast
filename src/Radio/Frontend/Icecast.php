@@ -218,6 +218,29 @@ class Icecast extends AbstractFrontend
                 ];
             }
 
+            $bannedCountries = $station->getFrontendConfig()->getBannedCountries() ?? [];
+            if (!empty($bannedCountries)) {
+                $mountAuthenticationUrl = $this->environment->isDocker()
+                    ? 'http://web/api/internal/' . $station->getIdRequired() . '/listener-auth'
+                    : 'http://localhost/api/internal/' . $station->getId() . '/listener-auth';
+
+                $mountAuthenticationUrl .= '?api_auth=' . $station->getAdapterApiKey();
+
+                $mount['authentication'][] = [
+                    '@type' => 'url',
+                    'option' => [
+                        [
+                            '@name' => 'listener_add',
+                            '@value' => $mountAuthenticationUrl,
+                        ],
+                        [
+                            '@name' => 'auth_header',
+                            '@value' => 'icecast-auth-user: 1',
+                        ],
+                    ],
+                ];
+            }
+
             $config['mount'][] = $mount;
         }
 

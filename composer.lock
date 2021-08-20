@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "b8aa90312ac9b18d6f3a94a19e9ca9e498e78f8a"
+                "reference": "c6a8b279b189c3ebe70a18ed7650ec195cbe702a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/b8aa90312ac9b18d6f3a94a19e9ca9e498e78f8a",
-                "reference": "b8aa90312ac9b18d6f3a94a19e9ca9e498e78f8a",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/c6a8b279b189c3ebe70a18ed7650ec195cbe702a",
+                "reference": "c6a8b279b189c3ebe70a18ed7650ec195cbe702a",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-08-14T14:28:01+00:00"
+            "time": "2021-08-20T15:53:02+00:00"
         },
         {
             "name": "azuracast/flysystem-v2-extensions",

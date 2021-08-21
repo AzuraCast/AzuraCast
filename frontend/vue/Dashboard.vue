@@ -161,7 +161,7 @@ import DataTable from './Common/DataTable';
 import axios from 'axios';
 import store from 'store';
 import Icon from './Common/Icon';
-import Avatar, { avatarProps } from './Common/Avatar';
+import Avatar, {avatarProps} from './Common/Avatar';
 import handleAxiosError from './Function/handleAxiosError';
 
 export default {
@@ -226,12 +226,14 @@ export default {
             this.chartsVisible = true;
         }
 
-        axios.get(this.chartsUrl).then((response) => {
-            this.chartsData = response.data;
-            this.chartsLoading = false;
-        }).catch((error) => {
-            handleAxiosError(error);
-        });
+        if (this.showCharts) {
+            axios.get(this.chartsUrl).then((response) => {
+                this.chartsData = response.data;
+                this.chartsLoading = false;
+            }).catch((error) => {
+                handleAxiosError(error);
+            });
+        }
 
         axios.get(this.notificationsUrl).then((response) => {
             this.notifications = response.data;

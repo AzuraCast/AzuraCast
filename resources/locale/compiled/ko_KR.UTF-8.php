@@ -1,6 +1,6 @@
 <?php return array (
   'domain' => NULL,
-  'plural-forms' => 'nplurals=2; plural=(n != 1);',
+  'plural-forms' => 'nplurals=1; plural=0;',
   'messages' => 
   array (
     '' => 
@@ -10,28 +10,28 @@
         0 => 'Project-Id-Version: azuracast
 Report-Msgid-Bugs-To: 
 Last-Translator: 
-Language-Team: Portuguese
+Language-Team: Korean
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2021-08-20T16:39:31+00:00
 PO-Revision-Date: 2021-08-22 15:51
-Language: pt_PT
-Plural-Forms: nplurals=2; plural=(n != 1);
+Language: ko_KR
+Plural-Forms: nplurals=1; plural=0;
 X-Crowdin-Project: azuracast
 X-Crowdin-Project-ID: 217396
-X-Crowdin-Language: pt-PT
+X-Crowdin-Language: ko
 X-Crowdin-File: /main/resources/locale/default.pot
 X-Crowdin-File-ID: 4
 ',
       ),
       'This value is already used.' => 
       array (
-        0 => '',
+        0 => '이 값은 이미 사용되고 있습니다.',
       ),
       'The port %s is in use by another station.' => 
       array (
-        0 => 'A porta %s está em uso por outra estação.',
+        0 => '%s 포트를 다른 스테이션에서 사용중입니다.',
       ),
       'Storage location %s could not be validated: %s' => 
       array (
@@ -43,39 +43,39 @@ X-Crowdin-File-ID: 4
       ),
       'Invalid token specified.' => 
       array (
-        0 => '',
+        0 => '잘못된 토큰을 지정했습니다.',
       ),
       'Logged in using account recovery token' => 
       array (
-        0 => '',
+        0 => '계정 복구 토큰을 사용하여 로그인됨',
       ),
       'Your password has been updated.' => 
       array (
-        0 => '',
+        0 => '비밀번호가 변경되었습니다.',
       ),
       'Too many login attempts' => 
       array (
-        0 => 'Demasiadas tentativas de login',
+        0 => '로그인을 너무 많이 시도했습니다.',
       ),
       'You have attempted to log in too many times. Please wait 30 seconds and try again.' => 
       array (
-        0 => 'Tentou fazer login demasiadas vezes. Por favor, espere 30 segundos e tente novamente.',
+        0 => '',
       ),
       'Logged in successfully.' => 
       array (
-        0 => 'Sessão iniciada com sucesso.',
+        0 => '로그인 성공',
       ),
       'Complete the setup process to get started.' => 
       array (
-        0 => '',
+        0 => '시작하려면 설정 프로세스를 완료하십시오.',
       ),
       'Login unsuccessful' => 
       array (
-        0 => 'Login malsucedido',
+        0 => '로그인 실패',
       ),
       'Your credentials could not be verified.' => 
       array (
-        0 => 'Não foi possível verificar as suas informações.',
+        0 => '자격 증명을 확인할 수 없습니다.',
       ),
       'Too many forgot password attempts' => 
       array (
@@ -87,127 +87,127 @@ X-Crowdin-File-ID: 4
       ),
       'Account Recovery Link' => 
       array (
-        0 => '',
+        0 => '계정 복구 링크',
       ),
       'Account recovery e-mail sent.' => 
       array (
-        0 => '',
+        0 => '계정 복구 이메일을 보냈습니다.',
       ),
       'If the e-mail address you provided is in the system, check your inbox for a password reset message.' => 
       array (
-        0 => '',
+        0 => '입력한 이메일 주소가 시스템에 있는 경우, 받은 메일함에 암호 재설정 메시지가 있는지 확인합니다.',
       ),
       'Episode not found.' => 
       array (
-        0 => '',
+        0 => '에피소드를 찾을 수 없습니다.',
       ),
       'No episodes found.' => 
       array (
-        0 => '',
+        0 => '에피소드를 찾을 수 없습니다.',
       ),
       'Profile saved!' => 
       array (
-        0 => 'Perfil guardado!',
+        0 => '프로필이 저장되었습니다!',
       ),
       'Edit Profile' => 
       array (
-        0 => 'Alterar Perfil',
+        0 => '프로필 편집',
       ),
       'Two-factor authentication disabled.' => 
       array (
-        0 => 'Autenticação de dois fatores desativada.',
+        0 => '',
       ),
       'The token you supplied is invalid. Please try again.' => 
       array (
-        0 => 'O token que forneceu é inválido. Por favor, tente novamente.',
+        0 => '',
       ),
       'Two-factor authentication enabled.' => 
       array (
-        0 => 'Autenticação de dois fatores ativada.',
+        0 => '2단계 인증이 활성화되었습니다.',
       ),
       'Setup has already been completed!' => 
       array (
-        0 => 'A instalação já foi concluída!',
+        0 => '설치가 이미 완료되었습니다!',
       ),
       'Super Administrator' => 
       array (
-        0 => 'Super Administrador',
+        0 => '최고 관리자',
       ),
       'Setup is now complete!' => 
       array (
-        0 => 'A instalação está concluída!',
+        0 => '설치가 완료되었습니다!',
       ),
       'Continue setting up your station in the main AzuraCast app.' => 
       array (
-        0 => 'Continue a configurar a sua estação na aplicação principal do AzuraCast.',
+        0 => '메인 AzuraCast 앱에서 스테이션 설정을 계속합니다.',
       ),
       'API Key not found.' => 
       array (
-        0 => 'Chave de API não encontrada.',
+        0 => 'API 키를 찾을 수 없습니다.',
       ),
       'API Key updated.' => 
       array (
-        0 => 'Chave de API atualizada.',
+        0 => 'API 키 업데이트됨',
       ),
       'Edit API Key' => 
       array (
-        0 => 'Editar chave de API',
+        0 => 'API 키 편집',
       ),
       'Add API Key' => 
       array (
-        0 => 'Adicionar Chave de API',
+        0 => 'API 키 추가',
       ),
       'API Key deleted.' => 
       array (
-        0 => 'Chave de API eliminada.',
+        0 => 'API 키 삭제됨.',
       ),
       'SHOUTcast version "%s" is currently installed.' => 
       array (
-        0 => 'A versão "%s" do SHOUTcast está atualmente instalada.',
+        0 => '',
       ),
       'Install SHOUTcast' => 
       array (
-        0 => 'Instalar SHOUTcast',
+        0 => '',
       ),
       'Changes saved.' => 
       array (
-        0 => 'Alterações guardadas.',
+        0 => '변경 내용 저장.',
       ),
       'An error occurred while downloading the GeoLite database: %s' => 
       array (
-        0 => 'Um erro ocorreu ao transferir a base de dados do GeoLite: %s',
+        0 => '',
       ),
       'Install GeoLite IP Database' => 
       array (
-        0 => 'Instalar a Base de Dados do GeoLite',
+        0 => '',
       ),
       'GeoLite database uninstalled.' => 
       array (
-        0 => 'Base de Dados do Geolite desinstalada.',
+        0 => '',
       ),
       'Station updated.' => 
       array (
-        0 => 'Estação atualizada.',
+        0 => '스테이션 업데이트됨.',
       ),
       'Station added.' => 
       array (
-        0 => 'Estação adicionada.',
+        0 => '스테이션 추가됨.',
       ),
       'Edit Station' => 
       array (
-        0 => 'Editar Estação',
+        0 => '스테이션 편집',
       ),
       'Station deleted.' => 
       array (
-        0 => 'Estação apagada.',
+        0 => '스테이션 제거됨.',
       ),
       'Station not found.' => 
       array (
-        0 => 'Estação não encontrada.',
+        0 => '스테이션을 찾을 수 없습니다.',
       ),
       'Clone Station: %s' => 
       array (
-        0 => 'Clonar estação: %s',
+        0 => '',
       ),
       'Run Synchronized Task' => 
       array (
@@ -215,231 +215,231 @@ X-Crowdin-File-ID: 4
       ),
       'Debug Output' => 
       array (
-        0 => 'Output de Depuração',
+        0 => '',
       ),
       'User updated.' => 
       array (
-        0 => 'Utilizador atualizado.',
+        0 => '사용자 업데이트됨.',
       ),
       'User added.' => 
       array (
-        0 => 'Utilizador adicionado.',
+        0 => '사용자 추가됨.',
       ),
       'Another user already exists with this e-mail address. Please update the e-mail address.' => 
       array (
-        0 => 'Já existe um utilizador com esse endereço de email. Por favor, mude o endereço de email.',
+        0 => '이 이메일 주소를 가진 다른 사용자가 이미 있습니다. 이메일 주소를 업데이트해 주세요.',
       ),
       'Edit User' => 
       array (
-        0 => 'Editar Utilizador',
+        0 => '사용자 편집',
       ),
       'Add User' => 
       array (
-        0 => 'Adicionar Utilizador',
+        0 => '사용자 추가',
       ),
       'You cannot delete your own account.' => 
       array (
-        0 => 'Não pode apagar a sua própria conta.',
+        0 => '자신의 계정은 스스로 제거할 수 없습니다.',
       ),
       'User deleted.' => 
       array (
-        0 => 'Utilizador apagado.',
+        0 => '사용자가 삭제되었습니다.',
       ),
       'User not found.' => 
       array (
-        0 => 'Utilizador não encontrado.',
+        0 => '사용자를 찾을 수 없습니다.',
       ),
       'Custom Field updated.' => 
       array (
-        0 => 'Campo Personalizado atualizado.',
+        0 => '',
       ),
       'Custom Field added.' => 
       array (
-        0 => 'Campo Personalizado criado.',
+        0 => '',
       ),
       'Edit Custom Field' => 
       array (
-        0 => 'Editar Campo Personalizado',
+        0 => '',
       ),
       'Add Custom Field' => 
       array (
-        0 => 'Adicionar Campo Personalizado',
+        0 => '',
       ),
       'Custom Field deleted.' => 
       array (
-        0 => 'Campo Personalizado Apagado.',
+        0 => '',
       ),
       'Configure Backups' => 
       array (
-        0 => 'Configurar Cópias de Segurança',
+        0 => '백업 구성',
       ),
       'Run Manual Backup' => 
       array (
-        0 => 'Executar Cópia de Segurança Manual',
+        0 => '수동 백업 실행',
       ),
       'Backup deleted.' => 
       array (
-        0 => 'Cópia de segurança eliminada.',
+        0 => '백업이 삭제되었습니다.',
       ),
       'Backup not found.' => 
       array (
-        0 => 'Cópia de segurança não encontrada.',
+        0 => '백업을 찾을 수 없습니다.',
       ),
       'Record not found.' => 
       array (
-        0 => 'Registo não encontrado.',
+        0 => '기록을 찾을 수 없습니다.',
       ),
       'Permission updated.' => 
       array (
-        0 => 'Permissão atualizada.',
+        0 => '권한이 업데이트되었습니다.',
       ),
       'Permission added.' => 
       array (
-        0 => 'Permissão adicionada.',
+        0 => '권한이 추가되었습니다.',
       ),
       'Edit Permission' => 
       array (
-        0 => 'Alterar Permissão',
+        0 => '권한 편집',
       ),
       'Add Permission' => 
       array (
-        0 => 'Adicionar Permissão',
+        0 => '권한 추가',
       ),
       'Permission deleted.' => 
       array (
-        0 => 'Permissão apagada.',
+        0 => '권한이 제거되었습니다.',
       ),
       'System Settings' => 
       array (
-        0 => 'Definições do Sistema',
+        0 => '시스템 설정',
       ),
       'AzuraCast Application Log' => 
       array (
-        0 => 'Log do AzuraCast',
+        0 => 'AzuraCast 응용 프로그램 로그',
       ),
       'Nginx Access Log' => 
       array (
-        0 => 'Log de Acesso do Nginx',
+        0 => 'Nginx 액세스 로그',
       ),
       'Nginx Error Log' => 
       array (
-        0 => 'Log de Erros do Nginx',
+        0 => 'Nginx 오류 로그',
       ),
       'PHP Application Log' => 
       array (
-        0 => 'Log do PHP',
+        0 => 'PHP 응용 프로그램 로그',
       ),
       'Supervisord Log' => 
       array (
-        0 => 'Log do Supervisord',
+        0 => '',
       ),
       'Streamers enabled!' => 
       array (
-        0 => 'Streamers ativados!',
+        0 => '',
       ),
       'You can now set up streamer (DJ) accounts.' => 
       array (
-        0 => 'Pode agora configurar contas de streamers (DJ).',
+        0 => '',
       ),
       'Save Changes' => 
       array (
-        0 => 'Guardar Alterações',
+        0 => '변경 내용 저장',
       ),
       'Edit Liquidsoap Configuration' => 
       array (
-        0 => 'Alterar Configuração do Liquidsoap',
+        0 => '',
       ),
       'This feature is not currently supported on this station.' => 
       array (
-        0 => 'Esta funcionalidade não é suportada nesta estação de momento.',
+        0 => '',
       ),
       'Automated assignment complete!' => 
       array (
-        0 => 'Atribuição automática completa!',
+        0 => '',
       ),
       'Automated assignment error' => 
       array (
-        0 => 'Erro na atribuição automática',
+        0 => '',
       ),
       'Web Hook added.' => 
       array (
-        0 => 'Web Hook adicionado.',
+        0 => '',
       ),
       'Add Web Hook' => 
       array (
-        0 => 'Adicionar Web Hook',
+        0 => '웹 훅 추가',
       ),
       'Web Hook updated.' => 
       array (
-        0 => 'Web Hook atualizado.',
+        0 => '',
       ),
       'Edit Web Hook' => 
       array (
-        0 => 'Alterar Web Hook',
+        0 => '',
       ),
       'Web hook enabled.' => 
       array (
-        0 => 'Web Hook ativado.',
+        0 => '',
       ),
       'Web Hook disabled.' => 
       array (
-        0 => 'Web Hook desativado.',
+        0 => '',
       ),
       'Web Hook Test Output' => 
       array (
-        0 => 'Saída de teste do Web Hook',
+        0 => '',
       ),
       'Web Hook deleted.' => 
       array (
-        0 => 'Web Hook apagado.',
+        0 => '',
       ),
       'SoundExchange Report' => 
       array (
-        0 => 'Relatório SoundExchange',
+        0 => '',
       ),
       'Edit SFTP User' => 
       array (
-        0 => 'Alterar Utilizador SFTP',
+        0 => '',
       ),
       'Add SFTP User' => 
       array (
-        0 => 'Adicionar Utilizador SFTP',
+        0 => 'SFTP 사용자 추가',
       ),
       'SFTP User deleted.' => 
       array (
-        0 => 'Utilizador SFTP apagado.',
+        0 => '',
       ),
       'Changes saved successfully.' => 
       array (
-        0 => 'Configurações guardadas com sucesso.',
+        0 => '',
       ),
       'All Stations' => 
       array (
-        0 => 'Todas as Estações',
+        0 => '모든 스테이션',
       ),
       'Listeners' => 
       array (
-        0 => 'Ouvintes',
+        0 => '청취자',
       ),
       'You cannot remove yourself.' => 
       array (
-        0 => 'Não se pode eliminar a si próprio.',
+        0 => '',
       ),
       'Record deleted successfully.' => 
       array (
-        0 => 'Registo apagado com sucesso.',
+        0 => '',
       ),
       'This station does not support on-demand streaming.' => 
       array (
-        0 => 'Esta estação não suporta streaming sob demanda.',
+        0 => '',
       ),
       'Podcast not found!' => 
       array (
-        0 => '',
+        0 => '팟캐스트를 찾을 수 없습니다!',
       ),
       'Podcast artwork successfully cleared.' => 
       array (
-        0 => '',
+        0 => '팟캐스트 아트워크를 제거했습니다.',
       ),
       'Episode artwork successfully cleared.' => 
       array (
@@ -447,11 +447,11 @@ X-Crowdin-File-ID: 4
       ),
       'This station does not accept requests currently.' => 
       array (
-        0 => 'Esta estação não aceita pedidos atualmente.',
+        0 => '',
       ),
       'Request submitted successfully.' => 
       array (
-        0 => 'Pedido enviado com sucesso.',
+        0 => '',
       ),
       'No directory specified' => 
       array (
@@ -459,7 +459,7 @@ X-Crowdin-File-ID: 4
       ),
       'Directory' => 
       array (
-        0 => 'Diretório',
+        0 => '디렉터리',
       ),
       'File Not Processed: %s' => 
       array (
@@ -471,151 +471,151 @@ X-Crowdin-File-ID: 4
       ),
       'File not specified.' => 
       array (
-        0 => 'Ficheiro não especificado.',
+        0 => '파일이 지정되지 않았습니다.',
       ),
       'New path not specified.' => 
       array (
-        0 => 'Novo caminho não especificado.',
+        0 => '새 경로가 지정되지 않았습니다.',
       ),
       'This station is out of available storage space.' => 
       array (
-        0 => 'Esta estação está sem espaço disponível.',
+        0 => '',
       ),
       'Playlist enabled.' => 
       array (
-        0 => 'Lista de reprodução ativada.',
+        0 => '',
       ),
       'Playlist disabled.' => 
       array (
-        0 => 'Lista de reprodução desativada.',
+        0 => '',
       ),
       'This playlist is not a sequential playlist.' => 
       array (
-        0 => 'Esta playlist não é sequencial.',
+        0 => '',
       ),
       'Playlist successfully imported; %d of %d files were successfully matched.' => 
       array (
-        0 => 'Lista de reprodução importada com sucesso; %d de %d ficheiros foram encontrados com sucesso.',
+        0 => '',
       ),
       'Playlist not found.' => 
       array (
-        0 => 'Lista de reprodução não encontrada.',
+        0 => '',
       ),
       'Playlist reshuffled.' => 
       array (
-        0 => 'Lista de reprodução misturada.',
+        0 => '',
       ),
       'Playlist queue cleared.' => 
       array (
-        0 => '',
+        0 => '재생 목록 대기열을 비웠습니다',
       ),
       'Station restarted.' => 
       array (
-        0 => 'Estação reiniciada.',
+        0 => '',
       ),
       'Frontend stopped.' => 
       array (
-        0 => 'Frontend parado.',
+        0 => '',
       ),
       'Frontend started.' => 
       array (
-        0 => 'Frontend iniciado.',
+        0 => '',
       ),
       'Frontend restarted.' => 
       array (
-        0 => 'Frontend reiniciado.',
+        0 => '',
       ),
       'Song skipped.' => 
       array (
-        0 => 'Música ignorada.',
+        0 => '',
       ),
       'Streamer disconnected.' => 
       array (
-        0 => 'Streamer desconectado.',
+        0 => '',
       ),
       'Backend stopped.' => 
       array (
-        0 => 'Backend parou.',
+        0 => '',
       ),
       'Backend started.' => 
       array (
-        0 => 'Backend iniciado.',
+        0 => '',
       ),
       'Backend restarted.' => 
       array (
-        0 => 'Backend reiniciado.',
+        0 => '',
       ),
       'No recording available.' => 
       array (
-        0 => 'Nenhuma gravação disponível.',
+        0 => '',
       ),
       'Listeners by Day' => 
       array (
-        0 => 'Ouvintes por Dia',
+        0 => '',
       ),
       'Listeners by Day of Week' => 
       array (
-        0 => 'Ouvintes por Dia da Semana',
+        0 => '',
       ),
       'Monday' => 
       array (
-        0 => 'Segunda-Feira',
+        0 => '월요일',
       ),
       'Tuesday' => 
       array (
-        0 => 'Terça-Feira',
+        0 => '화요일',
       ),
       'Wednesday' => 
       array (
-        0 => 'Quarta-Feira',
+        0 => '수요일',
       ),
       'Thursday' => 
       array (
-        0 => 'Quinta-Feira',
+        0 => '목요일',
       ),
       'Friday' => 
       array (
-        0 => 'Sexta-Feira',
+        0 => '금요일',
       ),
       'Saturday' => 
       array (
-        0 => 'Sábado',
+        0 => '토요일',
       ),
       'Sunday' => 
       array (
-        0 => 'Domingo',
+        0 => '일요일',
       ),
       'Listeners by Hour' => 
       array (
-        0 => 'Ouvintes por Hora',
+        0 => '',
       ),
       'Liquidsoap Log' => 
       array (
-        0 => 'Log do Liquidsoap',
+        0 => '',
       ),
       'Liquidsoap Configuration' => 
       array (
-        0 => 'Configuração do Liquidsoap',
+        0 => '',
       ),
       'Icecast Access Log' => 
       array (
-        0 => 'Log de acesso do Icecast',
+        0 => '',
       ),
       'Icecast Error Log' => 
       array (
-        0 => 'Log de erros do Icecast',
+        0 => '',
       ),
       'Icecast Configuration' => 
       array (
-        0 => 'Configuração do Icecast',
+        0 => '',
       ),
       'SHOUTcast Log' => 
       array (
-        0 => 'Log do SHOUTcast',
+        0 => '',
       ),
       'SHOUTcast Configuration' => 
       array (
-        0 => 'Configuração do SHOUTcast',
+        0 => '',
       ),
       'Record not found' => 
       array (
@@ -667,7 +667,7 @@ X-Crowdin-File-ID: 4
       ),
       'You have submitted a request too recently! Please wait before submitting another one.' => 
       array (
-        0 => 'Você enviou um pedido recentemente. Por favor espere antes de enviar outro.',
+        0 => '',
       ),
       'Duplicate request: this song was already requested and will play soon.' => 
       array (
@@ -683,135 +683,135 @@ X-Crowdin-File-ID: 4
       ),
       'All Permissions' => 
       array (
-        0 => 'Todas as permissões',
+        0 => '모든 권한',
       ),
       'View Administration Page' => 
       array (
-        0 => 'Ver a página de Administração',
+        0 => '관리 페이지 보기',
       ),
       'View System Logs' => 
       array (
-        0 => 'Ver os logs do sistema',
+        0 => '시스템 로그 보기',
       ),
       'Administer Settings' => 
       array (
-        0 => 'Administrar Definições',
+        0 => '설정 관리',
       ),
       'Administer API Keys' => 
       array (
-        0 => 'Administrar Chaves de API',
+        0 => 'API 키 관리',
       ),
       'Administer Stations' => 
       array (
-        0 => 'Administrar Estações',
+        0 => '스테이션 관리',
       ),
       'Administer Custom Fields' => 
       array (
-        0 => 'Administrar Campos Personalizados',
+        0 => '사용자 지정 필드 관리',
       ),
       'Administer Backups' => 
       array (
-        0 => 'Administrar Cópias de Segurança',
+        0 => '백업 관리',
       ),
       'Administer Storage Locations' => 
       array (
-        0 => 'Administrar Localizações de Armazenamento',
+        0 => '저장소 위치 관리',
       ),
       'View Station Page' => 
       array (
-        0 => 'Ver a página da estação',
+        0 => '스테이션 페이지 보기',
       ),
       'View Station Reports' => 
       array (
-        0 => 'Ver relatórios da estação',
+        0 => '스테이션 보고서 보기',
       ),
       'View Station Logs' => 
       array (
-        0 => 'Ver logs da estação',
+        0 => '스테이션 로그 보기',
       ),
       'Manage Station Profile' => 
       array (
-        0 => 'Gerir Perfil da Estação',
+        0 => '스테이션 프로필 관리',
       ),
       'Manage Station Broadcasting' => 
       array (
-        0 => 'Gerir Transmissão da Estação',
+        0 => '스테이션 방송 관리',
       ),
       'Manage Station Streamers' => 
       array (
-        0 => 'Gerir DJ\'s da Estação',
+        0 => '스테이션 스트리머 관리',
       ),
       'Manage Station Mount Points' => 
       array (
-        0 => 'Gerir Pontos de Montagem da Estação',
+        0 => '스테이션 마운트 지점 관리',
       ),
       'Manage Station Remote Relays' => 
       array (
-        0 => 'Gerir Relés Remotos da Estação',
+        0 => '',
       ),
       'Manage Station Media' => 
       array (
-        0 => 'Gerir Ficheiros Multimédia da Estação',
+        0 => '스테이션 미디어 관리',
       ),
       'Manage Station Automation' => 
       array (
-        0 => 'Gerir Automação da Estação',
+        0 => '',
       ),
       'Manage Station Web Hooks' => 
       array (
-        0 => 'Gerir Web Hooks da Estação',
+        0 => '스테이션 웹 훅 관리',
       ),
       'Manage Station Podcasts' => 
       array (
-        0 => '',
+        0 => '스테이션 팟캐스트 관리',
       ),
       'You must be logged in to access this page.' => 
       array (
-        0 => 'Deve fazer login para aceder a esta página.',
+        0 => '',
       ),
       'You do not have permission to access this portion of the site.' => 
       array (
-        0 => 'Não tem permissão para aceder a esta parte do site.',
+        0 => '',
       ),
       'Now Playing Data' => 
       array (
-        0 => 'Dados da reprodução atual',
+        0 => '',
       ),
       '1-Minute Sync' => 
       array (
-        0 => 'Sincronização de 1 minuto',
+        0 => '',
       ),
       'Song Requests Queue' => 
       array (
-        0 => 'Fila de pedidos de músicas',
+        0 => '',
       ),
       '5-Minute Sync' => 
       array (
-        0 => 'Sincronização de 5 minutos',
+        0 => '',
       ),
       'Check Media Folders' => 
       array (
-        0 => 'Verificar pastas de multimédia',
+        0 => '',
       ),
       '1-Hour Sync' => 
       array (
-        0 => 'Sincronização de 1 hora',
+        0 => '',
       ),
       'Analytics/Statistics' => 
       array (
-        0 => 'Análise/Estatísticas',
+        0 => '',
       ),
       'Cleanup' => 
       array (
-        0 => 'Limpeza',
+        0 => '',
       ),
       'You should update your <code>docker-compose.yml</code> file to reflect the newest changes.' => 
       array (
-        0 => '',
+        0 => '최신 변경 사항을 반영하려면 <code>docker-compose.yml</code> 파일을 업데이트해야 합니다.',
       ),
       'If you manually maintain this file, review the <a href="%s" target="_blank">latest version of the file</a> and make any changes needed.' => 
       array (
-        0 => '',
+        0 => '이 파일을 수동으로 유지 관리하는 경우 <a href="%s" target="_blank">최신 버전의 파일</a>을 검토하고 필요한 내용을 변경하십시오.',
       ),
       'Otherwise, update your installation and answer "Y" when prompted to update the file.' => 
       array (
@@ -819,11 +819,11 @@ X-Crowdin-File-ID: 4
       ),
       'Your <code>docker-compose.yml</code> file is out of date!' => 
       array (
-        0 => 'O seu ficheiro <code>docker-compose.yml</code> está desatualizado!',
+        0 => '<code>docker-compose.yml</code> 파일이 최신 버전이 아닙니다!',
       ),
       'Update Instructions' => 
       array (
-        0 => '',
+        0 => '지침 업데이트',
       ),
       'Installation Not Recently Backed Up' => 
       array (
@@ -831,15 +831,15 @@ X-Crowdin-File-ID: 4
       ),
       'This installation has not been backed up in the last two weeks.' => 
       array (
-        0 => '',
+        0 => '이 설치는 지난 2주 동안 백업되지 않았습니다.',
       ),
       'Backups' => 
       array (
-        0 => 'Cópias de Segurança',
+        0 => '백업',
       ),
       'The performance profiling extension is currently enabled on this installation.' => 
       array (
-        0 => '',
+        0 => '성능 프로파일링 확장이 현재 이 설치에서 실행되어 있습니다.',
       ),
       'You can track the execution time and memory usage of any AzuraCast page or application from the profiler page.' => 
       array (
@@ -859,19 +859,19 @@ X-Crowdin-File-ID: 4
       ),
       'AzuraCast <a href="%s" target="_blank">version %s</a> is now available.' => 
       array (
-        0 => 'A versão <a href="%s" target="_blank">%s</a> do AzuraCast está disponível.',
+        0 => '',
       ),
       'You are currently running version %s. Updating is highly recommended.' => 
       array (
-        0 => 'Está a usar a versão %s neste momento. Atualizar é altamente recomendado.',
+        0 => '',
       ),
       'New AzuraCast Release Version Available' => 
       array (
-        0 => 'Nova versão do AzuraCast disponível',
+        0 => '',
       ),
       'Your installation is currently %d update(s) behind the latest version.' => 
       array (
-        0 => 'A sua instalação está atualmente %d atualização(ões) atrás da última versão.',
+        0 => '',
       ),
       'View the changelog for full details.' => 
       array (
@@ -879,11 +879,11 @@ X-Crowdin-File-ID: 4
       ),
       'You should update to take advantage of bug and security fixes.' => 
       array (
-        0 => 'Deve atualizar para aproveitar as correções de bugs e segurança.',
+        0 => '',
       ),
       'New AzuraCast Updates Available' => 
       array (
-        0 => 'Novas atualizações do AzuraCast disponíveis',
+        0 => '',
       ),
       'Synchronized Task Not Recently Run' => 
       array (
@@ -911,7 +911,7 @@ X-Crowdin-File-ID: 4
       ),
       'HTTP Port' => 
       array (
-        0 => '',
+        0 => 'HTTP 포트',
       ),
       'The main port AzuraCast listens to for insecure HTTP connections.' => 
       array (
@@ -919,7 +919,7 @@ X-Crowdin-File-ID: 4
       ),
       'HTTPS Port' => 
       array (
-        0 => '',
+        0 => 'HTTPS 포트',
       ),
       'The main port AzuraCast listens to for secure HTTPS connections.' => 
       array (
@@ -927,7 +927,7 @@ X-Crowdin-File-ID: 4
       ),
       'SFTP Port' => 
       array (
-        0 => '',
+        0 => 'SFTP 포트',
       ),
       'The port AzuraCast listens to for SFTP file management connections.' => 
       array (
@@ -963,7 +963,7 @@ X-Crowdin-File-ID: 4
       ),
       'LetsEncrypt Domain Name(s)' => 
       array (
-        0 => '',
+        0 => 'LetsEncrypt 도메인 이름',
       ),
       'Domain name (example.com) or names (example.com,foo.bar) to use with LetsEncrypt.' => 
       array (
@@ -971,7 +971,7 @@ X-Crowdin-File-ID: 4
       ),
       'LetsEncrypt E-mail Address' => 
       array (
-        0 => '',
+        0 => 'LetsEncrypt 이메일 주소',
       ),
       'Optionally provide an e-mail address for updates from LetsEncrypt.' => 
       array (
@@ -995,7 +995,7 @@ X-Crowdin-File-ID: 4
       ),
       'Default: %s' => 
       array (
-        0 => '',
+        0 => '기본값: %s',
       ),
       'Additional Environment Variables' => 
       array (
@@ -1047,7 +1047,7 @@ X-Crowdin-File-ID: 4
       ),
       'MariaDB Port' => 
       array (
-        0 => '',
+        0 => 'MariaDB 포트',
       ),
       'MariaDB Username' => 
       array (
@@ -1055,7 +1055,7 @@ X-Crowdin-File-ID: 4
       ),
       'MariaDB Password' => 
       array (
-        0 => '',
+        0 => 'MariaDB 암호',
       ),
       'MariaDB Database Name' => 
       array (
@@ -1067,7 +1067,7 @@ X-Crowdin-File-ID: 4
       ),
       'MariaDB Root Password' => 
       array (
-        0 => '',
+        0 => 'MariaDB 루트 암호',
       ),
       'Enable MariaDB Slow Query Log' => 
       array (
@@ -1087,7 +1087,7 @@ X-Crowdin-File-ID: 4
       ),
       'Enable Redis' => 
       array (
-        0 => '',
+        0 => 'Redis 활성화',
       ),
       'Disable to use a flatfile cache instead of Redis.' => 
       array (
@@ -1095,11 +1095,11 @@ X-Crowdin-File-ID: 4
       ),
       'Redis Host' => 
       array (
-        0 => '',
+        0 => 'Redis 호스트',
       ),
       'Redis Port' => 
       array (
-        0 => '',
+        0 => 'Redis 포트',
       ),
       'Redis Database Index' => 
       array (
@@ -1211,11 +1211,11 @@ X-Crowdin-File-ID: 4
       ),
       'Set up LetsEncrypt?' => 
       array (
-        0 => '',
+        0 => 'LetsEncrypt를 설정하시겠습니까?',
       ),
       'Writing configuration files...' => 
       array (
-        0 => '',
+        0 => '구성 파일을 쓰는 중입니다...',
       ),
       'Server configuration complete!' => 
       array (
@@ -1223,43 +1223,43 @@ X-Crowdin-File-ID: 4
       ),
       'Configuration successfully written.' => 
       array (
-        0 => 'Configuração escrita com sucesso.',
+        0 => '',
       ),
       'Backup path %s not found!' => 
       array (
-        0 => 'Diretório de cópia de segurança %s não encontrado!',
+        0 => '',
       ),
       'AzuraCast Backup' => 
       array (
-        0 => 'Cópia de Segurança do AzuraCast',
+        0 => '',
       ),
       'Please wait while a backup is generated...' => 
       array (
-        0 => 'Por favor aguarde enquanto a cópia de segurança é criada...',
+        0 => '',
       ),
       'Creating temporary directories...' => 
       array (
-        0 => 'Criando diretórios temporários...',
+        0 => '',
       ),
       'Directory "%s" was not created' => 
       array (
-        0 => 'O diretório "%s" não foi criado',
+        0 => '',
       ),
       'Backing up MariaDB...' => 
       array (
-        0 => 'Fazendo cópia de segurança do MariaDB...',
+        0 => 'MariaDB 백업 중...',
       ),
       'Creating backup archive...' => 
       array (
-        0 => 'Criando ficheiro da cópia de segurança...',
+        0 => '백업 아카이브를 생성하는 중...',
       ),
       'Cleaning up temporary files...' => 
       array (
-        0 => 'Limpando os ficheiros temporários...',
+        0 => '임시 파일을 정리하는 중...',
       ),
       'Backup complete in %.2f seconds.' => 
       array (
-        0 => 'Cópia de segurança concluída em %.2f segundos.',
+        0 => '',
       ),
       'Initialize AzuraCast' => 
       array (
@@ -1271,23 +1271,23 @@ X-Crowdin-File-ID: 4
       ),
       'Environment: %s' => 
       array (
-        0 => 'Ambiente: %s',
+        0 => '',
       ),
       'Installation Method: %s' => 
       array (
-        0 => 'Método de Instalação: %s',
+        0 => '',
       ),
       'Running Database Migrations' => 
       array (
-        0 => 'A executar as Migrações da Base de Dados',
+        0 => '데이터베이스 마이그레이션 실행',
       ),
       'Generating Database Proxy Classes' => 
       array (
-        0 => 'A Criar Classes de Proxy da Base de Dados',
+        0 => '',
       ),
       'Reload System Data' => 
       array (
-        0 => 'Recarregar dados do sistema',
+        0 => '',
       ),
       'AzuraCast is now initialized.' => 
       array (
@@ -1295,63 +1295,63 @@ X-Crowdin-File-ID: 4
       ),
       'Fixtures loaded.' => 
       array (
-        0 => 'Instalações carregadas.',
+        0 => '',
       ),
       'AzuraCast Settings' => 
       array (
-        0 => 'Definições do AzuraCast',
+        0 => 'AzuraCast 설정',
       ),
       'Setting Key' => 
       array (
-        0 => 'Chave de Definição',
+        0 => '설정 키',
       ),
       'Setting Value' => 
       array (
-        0 => 'Valor da Definição',
+        0 => '설정 값',
       ),
       'The account associated with e-mail address "%s" has been set as an administrator' => 
       array (
-        0 => 'A conta com o email "%s" associado foi definida como administrador',
+        0 => '',
       ),
       'Account not found.' => 
       array (
-        0 => 'Conta não encontrada.',
+        0 => '',
       ),
       'AzuraCast Setup' => 
       array (
-        0 => 'Instalação do AzuraCast',
+        0 => 'AzuraCast 설치',
       ),
       'Welcome to AzuraCast. Please wait while some key dependencies of AzuraCast are set up...' => 
       array (
-        0 => 'Bem-vindo ao AzuraCast. Por favor aguarde enquanto algumas dependências chave do AzuraCast são instaladas...',
+        0 => 'AzuraCast에 오신 것을 환영합니다. AzuraCast의 일부 주요 종속성을 설정하는 동안 잠시 기다려 주십시오...',
       ),
       'Installing Data Fixtures' => 
       array (
-        0 => 'A Instalar Conjunto de Dados de Teste',
+        0 => '',
       ),
       'Refreshing All Stations' => 
       array (
-        0 => 'Atualizando todas as estações',
+        0 => '모든 스테이션 새로 고침',
       ),
       'AzuraCast is now updated to the latest version!' => 
       array (
-        0 => 'AzuraCast está agora atualizado para a última versão!',
+        0 => 'AzuraCast가 최신 버전으로 업데이트되었습니다!',
       ),
       'AzuraCast installation complete!' => 
       array (
-        0 => 'Instalação do AzuraCast concluída!',
+        0 => 'AzuraCast 설치 완료!',
       ),
       'Visit %s to complete setup.' => 
       array (
-        0 => 'Visite %s para concluir a instalação.',
+        0 => '',
       ),
       'Imported locale: %s' => 
       array (
-        0 => 'Tradução %s importada.',
+        0 => '',
       ),
       'Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.' => 
       array (
-        0 => 'Quer usar o SHOUTcast 2? <a href="%s" target="_blank"> Instale-o aqui</a> e depois atualize esta página.',
+        0 => '',
       ),
       '<a href="%s" target="_blank">Manage storage locations and storage quota here</a>.' => 
       array (
@@ -1367,15 +1367,15 @@ X-Crowdin-File-ID: 4
       ),
       'Select File' => 
       array (
-        0 => 'Selecionar Ficheiro',
+        0 => '파일 선택',
       ),
       'Select...' => 
       array (
-        0 => 'Selecionar...',
+        0 => '',
       ),
       'IP Geolocation by DB-IP' => 
       array (
-        0 => 'Geolocalização de IP por DB-IP',
+        0 => '',
       ),
       'This product includes GeoLite2 data created by MaxMind, available from %s.' => 
       array (
@@ -1399,63 +1399,63 @@ X-Crowdin-File-ID: 4
       ),
       '%s is not recognized as a service.' => 
       array (
-        0 => '%s não é reconhecido como um serviço.',
+        0 => '',
       ),
       'It may not be registered with Supervisor yet. Restarting broadcasting may help.' => 
       array (
-        0 => 'Pode ainda não estar registado com o Supervisor. Reiniciar a transmissão poderá ajudar.',
+        0 => '아직 감독관에 등록되지 않았을 수 있습니다. 방송을 다시 시작하면 도움이 될 수 있습니다.',
       ),
       '%s cannot start' => 
       array (
-        0 => '%s não consegue iniciar',
+        0 => '',
       ),
       'It is already running.' => 
       array (
-        0 => 'Já está em execução.',
+        0 => '',
       ),
       '%s cannot stop' => 
       array (
-        0 => '%s não consegue parar',
+        0 => '',
       ),
       'It is not running.' => 
       array (
-        0 => 'Não está em execução.',
+        0 => '',
       ),
       '%s encountered an error' => 
       array (
-        0 => '%s encontrou um erro',
+        0 => '',
       ),
       'Check the log for details.' => 
       array (
-        0 => 'Verifique os logs para detalhes.',
+        0 => '',
       ),
       'Use <b>%s</b> on this server' => 
       array (
-        0 => 'Utilize <b>%s</b> neste servidor',
+        0 => '',
       ),
       'Connect to a <b>remote radio server</b>' => 
       array (
-        0 => 'Ligar a um <b>servidor de rádio remoto</b>',
+        0 => '',
       ),
       '<b>Do not use</b> an AutoDJ service' => 
       array (
-        0 => '<b>Não usar</b> um serviço de AutoDJ',
+        0 => '',
       ),
       'System Maintenance' => 
       array (
-        0 => 'Manutenção do Sistema',
+        0 => '',
       ),
       'Custom Branding' => 
       array (
-        0 => 'Marca Personalizada',
+        0 => '',
       ),
       'System Logs' => 
       array (
-        0 => 'Logs do Sistema',
+        0 => '',
       ),
       'Storage Locations' => 
       array (
-        0 => '',
+        0 => '저장소 위치',
       ),
       'System Debugger' => 
       array (
@@ -1463,123 +1463,123 @@ X-Crowdin-File-ID: 4
       ),
       'Users' => 
       array (
-        0 => 'Utilizadores',
+        0 => '',
       ),
       'User Accounts' => 
       array (
-        0 => 'Contas de Utilizador',
+        0 => '',
       ),
       'Permissions' => 
       array (
-        0 => 'Permissões',
+        0 => '',
       ),
       'Audit Log' => 
       array (
-        0 => 'Registo de Auditoria',
+        0 => '',
       ),
       'API Keys' => 
       array (
-        0 => 'Chaves API',
+        0 => '',
       ),
       'Stations' => 
       array (
-        0 => 'Estações',
+        0 => '',
       ),
       'Custom Fields' => 
       array (
-        0 => 'Campos personalizados',
+        0 => '사용자 정의 필드',
       ),
       'Connected AzuraRelays' => 
       array (
-        0 => 'AzuraRelays Conectados',
+        0 => '',
       ),
       'Start Station' => 
       array (
-        0 => 'Ligar Estação',
+        0 => '',
       ),
       'Ready to start broadcasting? Click to start your station.' => 
       array (
-        0 => 'Pronto para começar a transmitir? Clique para ligar a estação.',
+        0 => '방송을 시작하시겠습니까? 스테이션을 시작하려면 클릭하십시오.',
       ),
       'Restart broadcasting? This will disconnect any current listeners.' => 
       array (
-        0 => '',
+        0 => '방송을 다시 시작하시겠습니까? 그러면 현재 청취자들의 연결이 끊어집니다.',
       ),
       'Restart to Apply Changes' => 
       array (
-        0 => 'Reinicie para aplicar as mudanças',
+        0 => '',
       ),
       'Click to restart your station and apply configuration changes.' => 
       array (
-        0 => 'Clique para reiniciar a estação e aplicar as mudanças na configuração.',
+        0 => '',
       ),
       'Profile' => 
       array (
-        0 => 'Perfil',
+        0 => '프로필',
       ),
       'Public Page' => 
       array (
-        0 => 'Página Pública',
+        0 => '공용 페이지',
       ),
       'On-Demand Media' => 
       array (
-        0 => '',
+        0 => '주문형 미디어',
       ),
       'Music Files' => 
       array (
-        0 => 'Ficheiros Multimédia',
+        0 => '',
       ),
       'Playlists' => 
       array (
-        0 => 'Listas de Reprodução',
+        0 => '재생 목록',
       ),
       'Podcasts (Beta)' => 
       array (
-        0 => '',
+        0 => '팟캐스트 (베타)',
       ),
       'Streamer/DJ Accounts' => 
       array (
-        0 => 'Contas de Streamer/DJ',
+        0 => '스트리머/DJ 계정',
       ),
       'Web DJ' => 
       array (
-        0 => 'DJ Online',
+        0 => '웹 DJ',
       ),
       'Mount Points' => 
       array (
-        0 => 'Pontos de Montagem',
+        0 => '',
       ),
       'Remote Relays' => 
       array (
-        0 => 'Relés Remotos',
+        0 => '원격 릴레이',
       ),
       'Web Hooks' => 
       array (
-        0 => 'Web Hooks',
+        0 => '',
       ),
       'Reports' => 
       array (
-        0 => 'Relatórios',
+        0 => '',
       ),
       'Statistics Overview' => 
       array (
-        0 => 'Visão Geral das Estatísticas',
+        0 => '',
       ),
       'Song Requests' => 
       array (
-        0 => 'Pedidos de Músicas',
+        0 => '요청 곡',
       ),
       'Song Playback Timeline' => 
       array (
-        0 => 'Linha do Tempo de Reprodução de Músicas',
+        0 => '',
       ),
       'Song Listener Impact' => 
       array (
-        0 => 'Impacto de Músicas nos Ouvintes',
+        0 => '',
       ),
       'Duplicate Songs' => 
       array (
-        0 => 'Músicas Duplicadas',
+        0 => '',
       ),
       'Unprocessable Files' => 
       array (
@@ -1587,11 +1587,11 @@ X-Crowdin-File-ID: 4
       ),
       'SoundExchange Royalties' => 
       array (
-        0 => 'Direitos do SoundExchange',
+        0 => '',
       ),
       'Utilities' => 
       array (
-        0 => 'Utilitários',
+        0 => '',
       ),
       'SFTP Users' => 
       array (
@@ -1599,31 +1599,31 @@ X-Crowdin-File-ID: 4
       ),
       'Automated Assignment' => 
       array (
-        0 => 'Atribuição Automática',
+        0 => '',
       ),
       'Log Viewer' => 
       array (
-        0 => 'Visualizador de Logs',
+        0 => '',
       ),
       'Upcoming Song Queue' => 
       array (
-        0 => 'Fila das Próximas Músicas',
+        0 => '다가오는 곡 대기열',
       ),
       'Restart Broadcasting' => 
       array (
-        0 => 'Reiniciar Transmissão',
+        0 => '방송 재시작',
       ),
       'Generic Web Hook' => 
       array (
-        0 => 'Web Hook Genérico',
+        0 => '',
       ),
       'Automatically send a message to any URL when your station data changes.' => 
       array (
-        0 => 'Enviar automaticamente uma mensagem para qualquer URL quando os dados da sua estação mudam.',
+        0 => '',
       ),
       'Send E-mail' => 
       array (
-        0 => '',
+        0 => '이메일 전송',
       ),
       'Send an e-mail to specified address(es).' => 
       array (
@@ -1631,35 +1631,35 @@ X-Crowdin-File-ID: 4
       ),
       'TuneIn AIR' => 
       array (
-        0 => 'TuneIn AIR',
+        0 => '',
       ),
       'Send song metadata changes to TuneIn.' => 
       array (
-        0 => 'Enviar alterações de metadados para o TuneIn.',
+        0 => '',
       ),
       'Discord Webhook' => 
       array (
-        0 => 'Webhook do Discord',
+        0 => '',
       ),
       'Automatically send a customized message to your Discord server.' => 
       array (
-        0 => 'Enviar automaticamente uma mensagem personalizada para o seu servidor no Discord.',
+        0 => '',
       ),
       'Telegram Chat Message' => 
       array (
-        0 => 'Mensagem do Chat do Telegram',
+        0 => '',
       ),
       'Use the Telegram Bot API to send a message to a channel.' => 
       array (
-        0 => 'Utilize a API do Bot do Telegram para enviar uma mensagem para um canal.',
+        0 => '',
       ),
       'Twitter Post' => 
       array (
-        0 => 'Post no Twitter',
+        0 => '',
       ),
       'Automatically send a tweet.' => 
       array (
-        0 => 'Enviar automaticamente um tweet.',
+        0 => '',
       ),
       'Google Analytics Integration' => 
       array (
@@ -1679,23 +1679,23 @@ X-Crowdin-File-ID: 4
       ),
       'Any time the currently playing song changes' => 
       array (
-        0 => 'Cada vez que a música atual mudar',
+        0 => '',
       ),
       'Any time the listener count increases' => 
       array (
-        0 => 'Qualquer vez que a contagem de ouvintes aumentar',
+        0 => '',
       ),
       'Any time the listener count decreases' => 
       array (
-        0 => 'Qualquer vez que a contagem de ouvintes diminuir',
+        0 => '',
       ),
       'Any time a live streamer/DJ connects to the stream' => 
       array (
-        0 => 'Qualquer vez que um streamer/DJ se ligue à transmissão',
+        0 => '',
       ),
       'Any time a live streamer/DJ disconnects from the stream' => 
       array (
-        0 => 'Qualquer vez que um streamer/DJ se desligue da transmissão',
+        0 => '',
       ),
       'When the station broadcast goes offline.' => 
       array (
@@ -1711,7 +1711,7 @@ X-Crowdin-File-ID: 4
       ),
       'Advanced' => 
       array (
-        0 => 'Avançado',
+        0 => '고급',
       ),
       'Enter a password to continue.' => 
       array (
@@ -1731,11 +1731,11 @@ X-Crowdin-File-ID: 4
       ),
       'Yes' => 
       array (
-        0 => 'Sim',
+        0 => '',
       ),
       'No' => 
       array (
-        0 => 'Não',
+        0 => '',
       ),
       'Web Hook Details' => 
       array (
@@ -1759,7 +1759,7 @@ X-Crowdin-File-ID: 4
       ),
       'Web Hook URL' => 
       array (
-        0 => '',
+        0 => '웹 훅 URL',
       ),
       'The URL that will receive the POST messages any time an event is triggered.' => 
       array (
@@ -1811,15 +1811,15 @@ X-Crowdin-File-ID: 4
       ),
       'Title' => 
       array (
-        0 => '',
+        0 => '제목',
       ),
       'Description' => 
       array (
-        0 => 'Descrição',
+        0 => '설명',
       ),
       'URL' => 
       array (
-        0 => '',
+        0 => 'URL',
       ),
       'Author Name' => 
       array (
@@ -2014,7 +2014,7 @@ X-Crowdin-File-ID: 4
       ),
       'Streamers/DJs' => 
       array (
-        0 => '',
+        0 => '스트리머/DJ',
       ),
       'User Permissions' => 
       array (
@@ -2030,71 +2030,71 @@ X-Crowdin-File-ID: 4
       ),
       '<p>SHOUTcast 2 DNAS is not free software, and its restrictive license does not allow AzuraCast to distribute the SHOUTcast binary. In order to install SHOUTcast, you should download the Linux x64 binary from the <a href="%s" target="_blank">SHOUTcast Radio Manager</a> web site. Upload the <code>sc_serv2_linux_x64-latest.tar.gz</code> into the field below to automatically extract it into the proper directory.</p>' => 
       array (
-        0 => '<p>O SHOUTcast 2 DNAS não é software gratuito, e a sua licença restritiva não permite ao AzuraCast distribuir o executável do SHOUTcast. Para instalar SHOUTcast, você deve transferir o executável Linux x64 da página <a href="%s" target="_blank">SHOUTcast Radio Manager</a>. Envie o <code>sc_serv2_linux_x64-latest.tar.gz</code> para o campo abaixo para extraí-lo automaticamente no diretório apropriado.</p>',
+        0 => '',
       ),
       'Current Installed Version' => 
       array (
-        0 => 'Versão Atualmente Instalada',
+        0 => '',
       ),
       'SHOUTcast is not currently installed on this installation.' => 
       array (
-        0 => 'O SHOUTcast não está atualmente instalado nesta instalação do AzuraCast.',
+        0 => '',
       ),
       'Select SHOUTcast 64-bit .tar.gz File' => 
       array (
-        0 => 'Selecione o Ficheiro SHOUTcast 64-bit .tar.gz',
+        0 => '',
       ),
       'Upload' => 
       array (
-        0 => 'Enviar',
+        0 => '',
       ),
       'Station Profile' => 
       array (
-        0 => 'Perfil da Estação',
+        0 => '스테이션 프로필',
       ),
       'Broadcasting' => 
       array (
-        0 => 'Transmissão',
+        0 => '방송',
       ),
       'AutoDJ' => 
       array (
-        0 => 'AutoDJ',
+        0 => '',
       ),
       'Administration' => 
       array (
-        0 => 'Administração',
+        0 => '관리',
       ),
       'Name' => 
       array (
-        0 => 'Nome',
+        0 => '이름',
       ),
       'Genre' => 
       array (
-        0 => 'Género',
+        0 => '장르',
       ),
       'Web Site URL' => 
       array (
-        0 => 'URL do Website',
+        0 => '웹 사이트 URL',
       ),
       'Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.' => 
       array (
-        0 => 'Nota: Esta deve ser a página pública da estação, e não a URL do AzuraCast. Este URL será incluído nos detalhes da transmissão.',
+        0 => '',
       ),
       'Time Zone' => 
       array (
-        0 => 'Fuso Horário',
+        0 => '',
       ),
       'Scheduled playlists and other timed items will be controlled by this time zone.' => 
       array (
-        0 => 'Listas de reprodução agendadas e outros items cronometrados serão controlados por este fuso horário.',
+        0 => '',
       ),
       'Enable Public Page' => 
       array (
-        0 => 'Ativar Página Pública',
+        0 => '',
       ),
       'Show the station in public pages and general API results.' => 
       array (
-        0 => 'Mostrar a estação em páginas públicas e nos resultados da API geral.',
+        0 => '',
       ),
       'Enable On-Demand Streaming' => 
       array (
@@ -2106,11 +2106,11 @@ X-Crowdin-File-ID: 4
       ),
       'Default Album Art URL' => 
       array (
-        0 => 'Endereço de Arte do Álbum Padrão',
+        0 => '기본 앨범아트 URL',
       ),
       'If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.' => 
       array (
-        0 => 'Se uma música não tiver arte do álbum, este endereço será mostrado. Deixe em branco para usar a arte padrão.',
+        0 => '',
       ),
       'Enable Downloads on On-Demand Page' => 
       array (
@@ -2118,67 +2118,67 @@ X-Crowdin-File-ID: 4
       ),
       'URL Stub' => 
       array (
-        0 => 'Sufixo da URL',
+        0 => '',
       ),
       'Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.' => 
       array (
-        0 => 'Opcionalmente, especifique um nome amigável para a URL curta, como <code>nome_da_estação</code>, que irá ser usado nos URL\'s da estação. Deixe este campo em branco para criar um com base no nome da estação.',
+        0 => '',
       ),
       'Number of Recently Played Songs' => 
       array (
-        0 => 'Número de Músicas Tocadas Recentemente',
+        0 => '',
       ),
       'Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.' => 
       array (
-        0 => 'Personalize o número de músicas que aparecerão na secção "Histórico de Músicas" para esta estação e em todas as API\'s públicas.',
+        0 => '이 스테이션의 "재생 기록" 섹션과 모든 공용 API에 나타날 노래 수를 사용자 지정합니다.',
       ),
       'Disabled' => 
       array (
-        0 => 'Desativado',
+        0 => '비활성화',
       ),
       'Broadcasting Service' => 
       array (
-        0 => 'Serviço de Transmissão',
+        0 => '방송 서비스',
       ),
       'This software delivers your broadcast to the listening audience.' => 
       array (
-        0 => 'Este software transmite a sua emissão aos seus ouvintes.',
+        0 => '',
       ),
       'Customize Source Password' => 
       array (
-        0 => 'Personalizar Palavra-Passe da Fonte',
+        0 => '',
       ),
       'Leave blank to automatically generate a new password.' => 
       array (
-        0 => 'Deixe em branco para criar uma automaticamente.',
+        0 => '',
       ),
       'Customize Administrator Password' => 
       array (
-        0 => 'Personalizar a Palavra-Passe de Administrador',
+        0 => '',
       ),
       'Customize Broadcasting Port' => 
       array (
-        0 => 'Personalizar a Porta de Transmissão',
+        0 => '방송 포트 개인화',
       ),
       'No other program can be using this port. Leave blank to automatically assign a port.' => 
       array (
-        0 => 'Mais nenhum programa pode usar esta porta. Deixe em branco para automaticamente atribuir uma porta.',
+        0 => '',
       ),
       'Maximum Listeners' => 
       array (
-        0 => 'Ouvintes Máximos',
+        0 => '최대 청취자',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
-        0 => 'Número máximo de ouvintes totais em todas as transmissões. Deixe em branco para usar o padrão (250).',
+        0 => '',
       ),
       'Custom Configuration' => 
       array (
-        0 => 'Configuração Personalizada',
+        0 => '',
       ),
       'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
       array (
-        0 => 'Este código será incluído na configuração de frontend. Você pode usar JSON {"nova_chave": "novo_valor"} ou formato XML &lt;nova_chave&gt;novo_valor&lt;/nova_chave&gt;.',
+        0 => '',
       ),
       'For SHOUTcast Premium users, you can use custom configuration in this format: <code>{ "licenceid": "YOUR_LICENSE_ID" "userid": "YOUR_USER_ID" }</code>' => 
       array (
@@ -2210,59 +2210,59 @@ X-Crowdin-File-ID: 4
       ),
       'AutoDJ Service' => 
       array (
-        0 => 'Serviço AutoDJ',
+        0 => 'AutoDJ 서비스',
       ),
       'This software shuffles from playlists of music constantly and plays when no other radio source is available.' => 
       array (
-        0 => 'Este software reproduz listas de reprodução de música quando nenhuma outra fonte está disponível.',
+        0 => '',
       ),
       'Crossfade Method' => 
       array (
-        0 => 'Método de Transição',
+        0 => '',
       ),
       'Choose a method to use when transitioning from one song to another. Smart Mode considers the volume of the two tracks when fading for a smoother effect, but requires more CPU resources.' => 
       array (
-        0 => 'Escolha um método a usar quando transitando de uma música para outra. O Modo Inteligente considera o volume das duas faixas para um efeito mais suave, mas requer mais recursos do processador.',
+        0 => '',
       ),
       'Smart Mode' => 
       array (
-        0 => 'Modo Inteligente',
+        0 => '',
       ),
       'Normal Mode' => 
       array (
-        0 => 'Modo Normal',
+        0 => '',
       ),
       'Disable Crossfading' => 
       array (
-        0 => 'Desativar Transição',
+        0 => '',
       ),
       'Crossfade Duration (Seconds)' => 
       array (
-        0 => 'Duração da Transição (Segundos)',
+        0 => '',
       ),
       'Number of seconds to overlap songs.' => 
       array (
-        0 => 'Número de segundos para sobrepor músicas.',
+        0 => '',
       ),
       'Apply Compression and Normalization' => 
       array (
-        0 => 'Aplicar Compressão e Normalização',
+        0 => '',
       ),
       'Compress and normalize your station\'s audio, producing a more uniform and "full" sound.' => 
       array (
-        0 => 'Comprimir e normalizar o som da estação, produzindo um som mais uniforme e completo.',
+        0 => '',
       ),
       'Allow Song Requests' => 
       array (
-        0 => 'Permitir Pedidos de Músicas',
+        0 => '',
       ),
       'Enable listeners to request a song for play on your station. Only songs that are already in your playlists are requestable.' => 
       array (
-        0 => 'Permitir que os ouvintes peçam uma música para tocar na sua rádio. Apenas músicas que se encontram já na sua estação estão disponíveis para pedir.',
+        0 => '',
       ),
       'Request Minimum Delay (Minutes)' => 
       array (
-        0 => 'Atraso Mínimo do Pedido (Minutos)',
+        0 => '',
       ),
       'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
       array (
@@ -2378,7 +2378,7 @@ X-Crowdin-File-ID: 4
       ),
       'This specifies the time range (in minutes) of the song history that the duplicate song prevention algorithm should take into account.' => 
       array (
-        0 => '',
+        0 => '중복된 노래 방지 알고리즘을 고려한 재생 기록의 시간 범위(분) 를 지정합니다.',
       ),
       'Media Storage Location' => 
       array (
@@ -2394,7 +2394,7 @@ X-Crowdin-File-ID: 4
       ),
       'Enable Broadcasting' => 
       array (
-        0 => '',
+        0 => '방송 활성화',
       ),
       'If disabled, the station will not broadcast or shuffle its AutoDJ.' => 
       array (
@@ -2434,47 +2434,47 @@ X-Crowdin-File-ID: 4
       ),
       'Account Information' => 
       array (
-        0 => 'Informações da Conta',
+        0 => '',
       ),
       'E-mail Address' => 
       array (
-        0 => 'Endereço de Email',
+        0 => '이메일 주소',
       ),
       'Password' => 
       array (
-        0 => 'Palavra-Passe',
+        0 => '비밀번호',
       ),
       'Create Account' => 
       array (
-        0 => '',
+        0 => '계정 생성',
       ),
       'Comments' => 
       array (
-        0 => 'Comentários',
+        0 => '댓글',
       ),
       'Describe the use-case for this API key for future reference.' => 
       array (
-        0 => 'Descreva o uso para esta chave de API para referência futura.',
+        0 => '',
       ),
       'Run Automatic Nightly Backups' => 
       array (
-        0 => 'Executar Cópias de Segurança Noturnas Automáticas',
+        0 => '',
       ),
       'Enable to have AzuraCast automatically run nightly backups at the time specified.' => 
       array (
-        0 => 'Ativar para que o AzuraCast execute automaticamente cópias de segurança noturnas automaticamente no tempo especificado.',
+        0 => '',
       ),
       'Scheduled Backup Time' => 
       array (
-        0 => 'Tempo Agendado para Cópias de Segurança',
+        0 => '',
       ),
       'The time (in UTC) to run the automated backup, if enabled.' => 
       array (
-        0 => 'O tempo (em UTC) para executar a cópia de segurança automática, se ativo.',
+        0 => '',
       ),
       'Exclude Media from Backups' => 
       array (
-        0 => 'Excluir Ficheiros Multimédia das Cópias de Segurança',
+        0 => '',
       ),
       'Excluding media from automated backups will save space, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
       array (
@@ -2482,11 +2482,11 @@ X-Crowdin-File-ID: 4
       ),
       'Number of Backup Copies to Keep' => 
       array (
-        0 => 'Número de Cópias de Segurança para Manter',
+        0 => '',
       ),
       'Copies older than the specified number of days will automatically be deleted. Set to zero to disable automatic deletion.' => 
       array (
-        0 => 'As cópias de segurança mais antigas que o número especificado vão ser automaticamente apagadas. Defina como zero para não eliminar cópias de segurança.',
+        0 => '',
       ),
       'Storage Location' => 
       array (
@@ -2494,43 +2494,43 @@ X-Crowdin-File-ID: 4
       ),
       'Enable Automated Assignment' => 
       array (
-        0 => 'Ativar Atribuição Automática',
+        0 => '',
       ),
       'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => 'Permitir que o sistema atribua periodicamente músicas a listas de reprodução com base no seu desempenho. Este processo será executado em segundo plano, e só será executado se esta opção for definida como "Ativada" e pelo menos uma lista de reprodução for definida para "Incluir em Atribuição Automática".',
+        0 => '',
       ),
       'Enabled' => 
       array (
-        0 => 'Ativo',
+        0 => '활성화',
       ),
       'Days Between Automated Assignments' => 
       array (
-        0 => 'Dias Entre Atribuições Automáticas',
+        0 => '',
       ),
       'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => 'Com base nesta configuração, o sistema irá automaticamente reatribuir músicas a cada (estes) dias usando dados dos (estes) dias anteriores.',
+        0 => '',
       ),
       '%d days' => 
       array (
-        0 => '%d dias',
+        0 => '',
       ),
       'Field Name' => 
       array (
-        0 => 'Nome do Campo',
+        0 => '',
       ),
       'This will be used as the label when editing individual songs, and will show in API results.' => 
       array (
-        0 => 'Isto será usado como rótulo ao editar músicas individuais, e será exibido nos resultados da API.',
+        0 => '',
       ),
       'Programmatic Name' => 
       array (
-        0 => 'Nome Programático',
+        0 => '',
       ),
       'Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.' => 
       array (
-        0 => 'Especifique um nome amigável (opcional) para a API, como <code>nome_campo</code>. Deixe em branco para automaticamente criar um baseado no nome.',
+        0 => '',
       ),
       'Automatically Set from ID3v2 Value' => 
       array (
@@ -2542,11 +2542,11 @@ X-Crowdin-File-ID: 4
       ),
       'Disable' => 
       array (
-        0 => '',
+        0 => '비활성화',
       ),
       'Album' => 
       array (
-        0 => '',
+        0 => '앨범',
       ),
       'Album Artist Sort Order' => 
       array (
@@ -2558,7 +2558,7 @@ X-Crowdin-File-ID: 4
       ),
       'Artist' => 
       array (
-        0 => '',
+        0 => '아티스트',
       ),
       'Band' => 
       array (
@@ -2618,135 +2618,135 @@ X-Crowdin-File-ID: 4
       ),
       'File Type' => 
       array (
-        0 => '',
+        0 => '파일 유형',
       ),
       'Initial Key' => 
       array (
-        0 => 'Chave Inicial',
+        0 => '',
       ),
       'Internet Radio Station Name' => 
       array (
-        0 => 'Nome da Estação de Rádio na Internet',
+        0 => '',
       ),
       'Internet Radio Station Owner' => 
       array (
-        0 => 'Proprietário da Estação de Rádio na Internet',
+        0 => '',
       ),
       'Involved People List' => 
       array (
-        0 => 'Lista de Pessoas Envolvidas',
+        0 => '',
       ),
       'ISRC' => 
       array (
-        0 => 'Código de Gravação Padrão Internacional',
+        0 => 'ISRC (국제 표준 녹음 코드)',
       ),
       'Language' => 
       array (
-        0 => 'Idioma',
+        0 => '언어',
       ),
       'Length' => 
       array (
-        0 => 'Duração',
+        0 => '길이',
       ),
       'Linked Information' => 
       array (
-        0 => 'Informação Associada',
+        0 => '',
       ),
       'Lyricist' => 
       array (
-        0 => 'Autor das Letras',
+        0 => '',
       ),
       'Media Type' => 
       array (
-        0 => 'Tipo de Multimédia',
+        0 => '',
       ),
       'Mood' => 
       array (
-        0 => 'Género',
+        0 => '',
       ),
       'Music CD Identifier' => 
       array (
-        0 => 'Identificador de Música no CD',
+        0 => '',
       ),
       'Musician Credits List' => 
       array (
-        0 => 'Lista de Créditos Músicos',
+        0 => '',
       ),
       'Original Album' => 
       array (
-        0 => 'Álbum Original',
+        0 => '',
       ),
       'Original Artist' => 
       array (
-        0 => 'Artista Original',
+        0 => '',
       ),
       'Original Filename' => 
       array (
-        0 => 'Nome do Ficheiro Original',
+        0 => '',
       ),
       'Original Lyricist' => 
       array (
-        0 => 'Letra Original',
+        0 => '',
       ),
       'Original Release Time' => 
       array (
-        0 => 'Data de Publicação Original',
+        0 => '',
       ),
       'Original Year' => 
       array (
-        0 => 'Ano Original',
+        0 => '',
       ),
       'Part Of A Compilation' => 
       array (
-        0 => 'Parte de uma Compilação',
+        0 => '',
       ),
       'Part Of A Set' => 
       array (
-        0 => 'Parte de um Conjunto',
+        0 => '',
       ),
       'Performer Sort Order' => 
       array (
-        0 => 'Ordem de Classificação',
+        0 => '',
       ),
       'Playlist Delay' => 
       array (
-        0 => 'Atraso da Lista de Reprodução',
+        0 => '',
       ),
       'Produced Notice' => 
       array (
-        0 => 'Aviso Produzido',
+        0 => '',
       ),
       'Publisher' => 
       array (
-        0 => 'Editora',
+        0 => '',
       ),
       'Recording Time' => 
       array (
-        0 => 'Data de Gravação',
+        0 => '',
       ),
       'Release Time' => 
       array (
-        0 => 'Data de Lançamento',
+        0 => '',
       ),
       'Remixer' => 
       array (
-        0 => 'Misturador',
+        0 => '',
       ),
       'Set Subtitle' => 
       array (
-        0 => 'Legenda',
+        0 => '',
       ),
       'Subtitle' => 
       array (
-        0 => 'Legenda',
+        0 => '',
       ),
       'Tagging Time' => 
       array (
-        0 => 'Tempo de Marcação',
+        0 => '',
       ),
       'Terms Of Use' => 
       array (
-        0 => 'Termos de Uso',
+        0 => '',
       ),
       'Title Sort Order' => 
       array (
@@ -2802,7 +2802,7 @@ X-Crowdin-File-ID: 4
       ),
       'Settings' => 
       array (
-        0 => 'Definições',
+        0 => '설정',
       ),
       'Security' => 
       array (
@@ -2858,27 +2858,27 @@ X-Crowdin-File-ID: 4
       ),
       'Last 14 Days' => 
       array (
-        0 => '',
+        0 => '지난 14일',
       ),
       'Last 30 Days' => 
       array (
-        0 => '',
+        0 => '지난 30일',
       ),
       'Last 60 Days' => 
       array (
-        0 => '',
+        0 => '지난 60일',
       ),
       'Last Year' => 
       array (
-        0 => '',
+        0 => '지난 해',
       ),
       'Last 2 Years' => 
       array (
-        0 => '',
+        0 => '지난 2년',
       ),
       'Indefinitely' => 
       array (
-        0 => '',
+        0 => '무기한',
       ),
       'Use WebSockets for Now Playing Updates' => 
       array (
@@ -2926,11 +2926,11 @@ X-Crowdin-File-ID: 4
       ),
       '<b>Limited:</b> Only collect aggregate listener statistics' => 
       array (
-        0 => '<b>Limitado:</b> Apenas recolher estatísticas agregadas de ouvintes',
+        0 => '',
       ),
       '<b>None:</b> Do not collect any listener analytics' => 
       array (
-        0 => '<b>Nenhum</b> Não recolher estatísticas de ouvintes',
+        0 => '',
       ),
       'AzuraCast Update Checks' => 
       array (
@@ -2970,7 +2970,7 @@ X-Crowdin-File-ID: 4
       ),
       'Sender E-mail Address' => 
       array (
-        0 => '',
+        0 => '발신자 이메일 주소',
       ),
       'SMTP Host' => 
       array (
@@ -2994,7 +2994,7 @@ X-Crowdin-File-ID: 4
       ),
       'SMTP Password' => 
       array (
-        0 => '',
+        0 => 'SMTP 암호',
       ),
       'Avatar Services' => 
       array (
@@ -3022,7 +3022,7 @@ X-Crowdin-File-ID: 4
       ),
       'Last.fm API Key' => 
       array (
-        0 => '',
+        0 => 'Last.fm API 키',
       ),
       '<a href="%s" target="_blank">Apply for an API key here</a>. This service can provide album art for tracks where none is available locally.' => 
       array (
@@ -3042,51 +3042,51 @@ X-Crowdin-File-ID: 4
       ),
       'Use Browser Default' => 
       array (
-        0 => 'Utilizar o Padrão do Navegador',
+        0 => '',
       ),
       'Reset Password' => 
       array (
-        0 => 'Restaurar Palavra-Passe',
+        0 => '암호 재설정',
       ),
       'Leave these fields blank to continue using your current password.' => 
       array (
-        0 => 'Deixe estes campos em branco para continuar a usar a palavra-passe atual.',
+        0 => '현재 암호를 계속 사용하려면 이 필드를 공백으로 두십시오.',
       ),
       'Current Password' => 
       array (
-        0 => 'Palavra-Passe Atual',
+        0 => '현재 암호',
       ),
       'New Password' => 
       array (
-        0 => 'Nova Palavra-Passe',
+        0 => '새 암호',
       ),
       'Confirm New Password' => 
       array (
-        0 => 'Confirmar Nova Palavra-Passe',
+        0 => '새 암호 확인',
       ),
       'Customization' => 
       array (
-        0 => 'Personalização',
+        0 => '사용자 정의',
       ),
       'Site Theme' => 
       array (
-        0 => 'Tema do Site',
+        0 => '사이트 테마',
       ),
       'Prefer System Default' => 
       array (
-        0 => '',
+        0 => '시스템 기본값',
       ),
       'Light' => 
       array (
-        0 => 'Claro',
+        0 => '',
       ),
       'Dark' => 
       array (
-        0 => 'Escuro',
+        0 => '',
       ),
       'Backup Filename' => 
       array (
-        0 => 'Nome da Cópia de Segurança',
+        0 => '',
       ),
       'This will be the file name for your backup, include the file type (.zip or .rar) you wish to use.' => 
       array (
@@ -3094,7 +3094,7 @@ X-Crowdin-File-ID: 4
       ),
       'Exclude Media from Backup' => 
       array (
-        0 => 'Excluir Ficheiros Multimédia da Cópia de Segurança',
+        0 => '',
       ),
       'This will produce a significantly smaller backup, but you should make sure to back up your media elsewhere. Note that only locally stored media will be backed up.' => 
       array (
@@ -3102,7 +3102,7 @@ X-Crowdin-File-ID: 4
       ),
       'Display Name' => 
       array (
-        0 => 'Nome de Exibição',
+        0 => '표시 이름',
       ),
       'Leave blank to use the current password.' => 
       array (
@@ -3114,19 +3114,19 @@ X-Crowdin-File-ID: 4
       ),
       'Code from Authenticator App' => 
       array (
-        0 => 'Código da Aplicação de Autenticação',
+        0 => '인증자 앱의 코드',
       ),
       'Enter the current code provided by your authenticator app to verify that it\'s working correctly.' => 
       array (
-        0 => 'Introduza o código atual fornecido pela aplicação de autenticação para verificar que está a funcionar corretamente.',
+        0 => '',
       ),
       'Verify Authenticator' => 
       array (
-        0 => 'Verificar Autenticador',
+        0 => '',
       ),
       'Username' => 
       array (
-        0 => '',
+        0 => '사용자 이름',
       ),
       'SSH Public Keys' => 
       array (
@@ -3138,11 +3138,11 @@ X-Crowdin-File-ID: 4
       ),
       'Generate the translation locale file.' => 
       array (
-        0 => 'Criar o ficheiro de tradução.',
+        0 => '',
       ),
       'Convert translated locale files into PHP arrays.' => 
       array (
-        0 => 'Converter ficheiro de tradução num array PHP.',
+        0 => '',
       ),
       'Ensure key settings are initialized within AzuraCast.' => 
       array (
@@ -3150,7 +3150,7 @@ X-Crowdin-File-ID: 4
       ),
       'Migrate existing configuration to new INI format if any exists.' => 
       array (
-        0 => 'Migrar configuração atual para um formato INI se alguma existir.',
+        0 => '',
       ),
       'Install fixtures for demo / local development.' => 
       array (
@@ -3158,7 +3158,7 @@ X-Crowdin-File-ID: 4
       ),
       'Run all general AzuraCast setup steps.' => 
       array (
-        0 => 'Executar todos os passos gerais de instalação do AzuraCast.',
+        0 => '',
       ),
       'Run one or more scheduled synchronization tasks.' => 
       array (
@@ -3166,7 +3166,7 @@ X-Crowdin-File-ID: 4
       ),
       'Process the message queue.' => 
       array (
-        0 => 'Processar a fila de mensagens.',
+        0 => '',
       ),
       'Clear the contents of the message queue.' => 
       array (
@@ -3174,15 +3174,15 @@ X-Crowdin-File-ID: 4
       ),
       'List all settings in the AzuraCast settings database.' => 
       array (
-        0 => 'Listar todas as definições na base de dados de definições do AzuraCast.',
+        0 => '',
       ),
       'Back up the AzuraCast database and statistics (and optionally media).' => 
       array (
-        0 => 'Fazer cópia de segurança da base de dados do AzuraCast e estatísticas (e ficheiros multimédia opcionalmente).',
+        0 => '',
       ),
       'Skip to main content' => 
       array (
-        0 => '',
+        0 => '주요 콘텐츠로 건너뛰기',
       ),
       'Toggle Sidebar' => 
       array (
@@ -3194,35 +3194,35 @@ X-Crowdin-File-ID: 4
       ),
       'Dashboard' => 
       array (
-        0 => '',
+        0 => '대시보드',
       ),
       'System Administration' => 
       array (
-        0 => '',
+        0 => '시스템 관리',
       ),
       'My Account' => 
       array (
-        0 => '',
+        0 => '나의 계정',
       ),
       'Switch Theme' => 
       array (
-        0 => '',
+        0 => '테마 전환',
       ),
       'My API Keys' => 
       array (
-        0 => '',
+        0 => '내 API 키',
       ),
       'Help' => 
       array (
-        0 => '',
+        0 => '도움말',
       ),
       'End Session' => 
       array (
-        0 => '',
+        0 => '세션 종료',
       ),
       'Sign Out' => 
       array (
-        0 => '',
+        0 => '로그아웃',
       ),
       'Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>' => 
       array (
@@ -3230,7 +3230,7 @@ X-Crowdin-File-ID: 4
       ),
       'Account Recovery' => 
       array (
-        0 => '',
+        0 => '비밀번호 재설정',
       ),
       'An account recovery link has been requested for your account on "%s".' => 
       array (
@@ -3242,11 +3242,11 @@ X-Crowdin-File-ID: 4
       ),
       'Download CSV' => 
       array (
-        0 => '',
+        0 => 'CSV로 내려받기',
       ),
       'Filename' => 
       array (
-        0 => '',
+        0 => '파일 이름',
       ),
       'Length Text' => 
       array (
@@ -3306,7 +3306,7 @@ X-Crowdin-File-ID: 4
       ),
       'Song Title' => 
       array (
-        0 => 'Título da música',
+        0 => '곡 제목',
       ),
       'Requester IP' => 
       array (
@@ -3314,7 +3314,7 @@ X-Crowdin-File-ID: 4
       ),
       'Actions' => 
       array (
-        0 => '',
+        0 => '액션',
       ),
       'Not Played' => 
       array (
@@ -3326,7 +3326,7 @@ X-Crowdin-File-ID: 4
       ),
       'Delete' => 
       array (
-        0 => '',
+        0 => '삭제',
       ),
       'Live Listeners' => 
       array (
@@ -3338,27 +3338,27 @@ X-Crowdin-File-ID: 4
       ),
       'Today' => 
       array (
-        0 => '',
+        0 => '오늘',
       ),
       'Yesterday' => 
       array (
-        0 => '',
+        0 => '어제',
       ),
       'Last 7 Days' => 
       array (
-        0 => '',
+        0 => '지난 7일',
       ),
       'This Month' => 
       array (
-        0 => '',
+        0 => '이번 달',
       ),
       'Last Month' => 
       array (
-        0 => '',
+        0 => '지난 달',
       ),
       'Unique Listeners' => 
       array (
-        0 => '',
+        0 => '특별 청취자',
       ),
       'for selected period' => 
       array (
@@ -3370,11 +3370,11 @@ X-Crowdin-File-ID: 4
       ),
       'IP' => 
       array (
-        0 => '',
+        0 => 'IP',
       ),
       'Time' => 
       array (
-        0 => '',
+        0 => '시간',
       ),
       'Time (sec)' => 
       array (
@@ -3406,7 +3406,7 @@ X-Crowdin-File-ID: 4
       ),
       'Local' => 
       array (
-        0 => '',
+        0 => '로컬',
       ),
       'Remote' => 
       array (
@@ -3422,15 +3422,15 @@ X-Crowdin-File-ID: 4
       ),
       'Source' => 
       array (
-        0 => 'Fonte',
+        0 => '소스',
       ),
       'Listener Request' => 
       array (
-        0 => '',
+        0 => '청취자 요청',
       ),
       'Playlist:' => 
       array (
-        0 => '',
+        0 => '재생 목록：',
       ),
       'Live Streamer:' => 
       array (
@@ -3438,7 +3438,7 @@ X-Crowdin-File-ID: 4
       ),
       'Podcasts' => 
       array (
-        0 => '',
+        0 => '팟캐스트',
       ),
       'Station Time' => 
       array (
@@ -3454,7 +3454,7 @@ X-Crowdin-File-ID: 4
       ),
       'You can also upload files in bulk via SFTP.' => 
       array (
-        0 => '',
+        0 => 'SFTP를 통해 파일을 대량으로 업로드할 수도 있습니다.',
       ),
       'Manage SFTP Accounts' => 
       array (
@@ -3510,19 +3510,19 @@ X-Crowdin-File-ID: 4
       ),
       'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
       array (
-        0 => '',
+        0 => '방송 소프트웨어에 대한 설치 지침은 <a href="%s" target="_blank">AzuraCast Wiki</a>에서 사용할 수 있습니다.',
       ),
       'Please wait...' => 
       array (
-        0 => '',
+        0 => '잠시만 기다려주세요...',
       ),
       'Station Broadcasting Disabled' => 
       array (
-        0 => '',
+        0 => '스테이션 방송 비활성화',
       ),
       'Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, <a href="%s">edit your station profile</a>.' => 
       array (
-        0 => '',
+        0 => '귀하의 스테이션은 현재 방송에 사용할 수 없습니다. 미디어, 재생 목록 및 기타 방송국 설정을 계속 관리할 수 있습니다. 방송을 다시 활성화하려면, <a href="%s"> 귀하의 스테이션 프로필을 수정하십시오</a>.',
       ),
       'Automated Playlist Assignment' => 
       array (
@@ -3562,11 +3562,11 @@ X-Crowdin-File-ID: 4
       ),
       'Edit' => 
       array (
-        0 => '',
+        0 => '편집',
       ),
       'Enable' => 
       array (
-        0 => '',
+        0 => '활성화',
       ),
       'Trigger the web hook manually and view the raw response.' => 
       array (
@@ -3590,7 +3590,7 @@ X-Crowdin-File-ID: 4
       ),
       'Need Help?' => 
       array (
-        0 => '',
+        0 => '도움이 필요하십니까?',
       ),
       'You can find answers for many common questions in our <a href="%s" target="_blank">support documents</a>.' => 
       array (
@@ -3610,19 +3610,19 @@ X-Crowdin-File-ID: 4
       ),
       'Stop' => 
       array (
-        0 => '',
+        0 => '정지',
       ),
       'Play' => 
       array (
-        0 => '',
+        0 => '재생',
       ),
       'Copy to Clipboard' => 
       array (
-        0 => '',
+        0 => '클립보드에 복사',
       ),
       'Log View' => 
       array (
-        0 => '',
+        0 => '로그 보기',
       ),
       'Automatically scroll to the bottom of the log' => 
       array (
@@ -3642,11 +3642,11 @@ X-Crowdin-File-ID: 4
       ),
       'Latest Update' => 
       array (
-        0 => '',
+        0 => '최신 업데이트',
       ),
       'Log In' => 
       array (
-        0 => '',
+        0 => '로그인',
       ),
       'Delete user "%s"?' => 
       array (
@@ -3666,19 +3666,19 @@ X-Crowdin-File-ID: 4
       ),
       'Global' => 
       array (
-        0 => '',
+        0 => '전역',
       ),
       'API Key' => 
       array (
-        0 => 'Chave de API',
+        0 => 'API 키',
       ),
       'Owner' => 
       array (
-        0 => '',
+        0 => '소유자',
       ),
       'Revoke' => 
       array (
-        0 => '',
+        0 => '취소',
       ),
       'Manage Stations' => 
       array (
@@ -3686,15 +3686,15 @@ X-Crowdin-File-ID: 4
       ),
       'Add Station' => 
       array (
-        0 => '',
+        0 => '스테이션 추가',
       ),
       'Station' => 
       array (
-        0 => 'Estação',
+        0 => '',
       ),
       'Manage' => 
       array (
-        0 => '',
+        0 => '관리',
       ),
       'Clone' => 
       array (
@@ -3742,7 +3742,7 @@ X-Crowdin-File-ID: 4
       ),
       'Clear Queue' => 
       array (
-        0 => '',
+        0 => '대기열 비우기',
       ),
       'Station-Specific Debugging' => 
       array (
@@ -3786,7 +3786,7 @@ X-Crowdin-File-ID: 4
       ),
       'Last run: %s' => 
       array (
-        0 => '',
+        0 => '마지막 실행: %s',
       ),
       'Never run' => 
       array (
@@ -3814,19 +3814,19 @@ X-Crowdin-File-ID: 4
       ),
       'Backup' => 
       array (
-        0 => 'Cópia de Segurança',
+        0 => '',
       ),
       'Last Modified' => 
       array (
-        0 => '',
+        0 => '최종 수정',
       ),
       'Size' => 
       array (
-        0 => 'Tamanho',
+        0 => '크기',
       ),
       'Download' => 
       array (
-        0 => '',
+        0 => '다운로드',
       ),
       'Delete backup "%s"?' => 
       array (
@@ -3902,31 +3902,31 @@ X-Crowdin-File-ID: 4
       ),
       'User' => 
       array (
-        0 => 'Utilizador',
+        0 => '사용자',
       ),
       'Identifier' => 
       array (
-        0 => '',
+        0 => '식별자',
       ),
       'Target' => 
       array (
-        0 => '',
+        0 => '대상',
       ),
       'Changes' => 
       array (
-        0 => '',
+        0 => '변경 사항',
       ),
       'Field' => 
       array (
-        0 => '',
+        0 => '필드',
       ),
       'Previous' => 
       array (
-        0 => '',
+        0 => '이전',
       ),
       'Updated' => 
       array (
-        0 => '',
+        0 => '업데이트됨',
       ),
       'Insert' => 
       array (
@@ -3934,15 +3934,15 @@ X-Crowdin-File-ID: 4
       ),
       'Update' => 
       array (
-        0 => '',
+        0 => '업데이트',
       ),
       'Create Station' => 
       array (
-        0 => '',
+        0 => '스테이션 생성',
       ),
       'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
       array (
-        0 => '',
+        0 => '방송 환경에 대한 정보를 제공하여 설정 프로세스를 완료합니다. 이러한 설정은 나중에 관리 패널에서 변경할 수 있습니다.',
       ),
       'Customize AzuraCast Settings' => 
       array (
@@ -3950,11 +3950,11 @@ X-Crowdin-File-ID: 4
       ),
       'AzuraCast First-Time Setup' => 
       array (
-        0 => '',
+        0 => 'AzuraCast 최초 설정',
       ),
       'Welcome to AzuraCast!' => 
       array (
-        0 => '',
+        0 => 'AzuraCast에 오신 것을 환영합니다!',
       ),
       'Let\'s get started by creating your Super Administrator account.' => 
       array (
@@ -3966,27 +3966,27 @@ X-Crowdin-File-ID: 4
       ),
       'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
-        0 => '',
+        0 => '아래에서 첫 번째 라디오 스테이션을 만들어 설정 과정을 계속합니다. 이러한 세부 내용은 나중에 편집할 수 있습니다.',
       ),
       'Create a New Radio Station' => 
       array (
-        0 => '',
+        0 => '새 라디오 스테이션 생성',
       ),
       'Episodes' => 
       array (
-        0 => '',
+        0 => '에피소드',
       ),
       'Back' => 
       array (
-        0 => 'Voltar',
+        0 => '뒤로',
       ),
       'RSS Feed' => 
       array (
-        0 => '',
+        0 => 'RSS 피드',
       ),
       'View Details' => 
       array (
-        0 => '',
+        0 => '세부 정보 보기',
       ),
       'Contains explicit content' => 
       array (
@@ -3998,11 +3998,11 @@ X-Crowdin-File-ID: 4
       ),
       'Schedule' => 
       array (
-        0 => 'Agendar',
+        0 => '',
       ),
       'Categories' => 
       array (
-        0 => '',
+        0 => '카테고리',
       ),
       'No entries found.' => 
       array (
@@ -4018,7 +4018,7 @@ X-Crowdin-File-ID: 4
       ),
       'Your full API key is below:' => 
       array (
-        0 => '',
+        0 => '전체 API 키는 다음과 같습니다：',
       ),
       'When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.' => 
       array (
@@ -4026,7 +4026,7 @@ X-Crowdin-File-ID: 4
       ),
       'Continue' => 
       array (
-        0 => '',
+        0 => '계속',
       ),
       'API keys can be used to access some system functionality without needing to log in. All of the keys
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.' => 
@@ -4039,15 +4039,15 @@ X-Crowdin-File-ID: 4
       ),
       'Customize' => 
       array (
-        0 => '',
+        0 => '개인화',
       ),
       'Two-Factor Authentication' => 
       array (
-        0 => '',
+        0 => '2단계 인증',
       ),
       'Two-factor authentication improves the security of your account by requiring a second one-time access code in addition to your password when you log in.' => 
       array (
-        0 => '',
+        0 => '2단계 인증은 로그인할 때 암호 외에 두 번째 일회용 액세스 코드를 요구하여 계정의 보안을 향상시킵니다.',
       ),
       'Disable Two-Factor' => 
       array (
@@ -4055,15 +4055,15 @@ X-Crowdin-File-ID: 4
       ),
       'Enable Two-Factor' => 
       array (
-        0 => '',
+        0 => '2단계 인증 활성화',
       ),
       'Enable Two-Factor Authentication' => 
       array (
-        0 => '',
+        0 => '2단계 인증 활성화',
       ),
       'Step 1: Scan QR Code' => 
       array (
-        0 => '',
+        0 => 'Step 1: QR 코드 스캔',
       ),
       'From your smartphone, scan the code to the right using an authentication app of your choice (FreeOTP, Authy, etc).' => 
       array (
@@ -4071,7 +4071,7 @@ X-Crowdin-File-ID: 4
       ),
       'Step 2: Verify Generated Code' => 
       array (
-        0 => '',
+        0 => 'Step 2: 생성된 코드 확인',
       ),
       'To verify that the code was set up correctly, enter the 6-digit code the app shows you.' => 
       array (
@@ -4079,15 +4079,15 @@ X-Crowdin-File-ID: 4
       ),
       'QR-Code' => 
       array (
-        0 => '',
+        0 => 'QR 코드',
       ),
       'AzuraCast User' => 
       array (
-        0 => '',
+        0 => 'AzuraCast 사용자',
       ),
       'Forgot Password' => 
       array (
-        0 => '',
+        0 => '암호를 잊어버림',
       ),
       'This installation\'s administrator has not configured this functionality.' => 
       array (
@@ -4103,23 +4103,23 @@ X-Crowdin-File-ID: 4
       ),
       'Enter Two-Factor Code' => 
       array (
-        0 => '',
+        0 => '2단계 인증 코드 입력',
       ),
       'Your account uses a two-factor security code. Enter the code your device is currently showing below.' => 
       array (
-        0 => '',
+        0 => '계정에서 2단계 보안 코드를 사용합니다. 장치에 현재 표시되는 코드를 아래에 입력하십시오.',
       ),
       'Security Code' => 
       array (
-        0 => '',
+        0 => '보안 코드',
       ),
       'Sign in' => 
       array (
-        0 => '',
+        0 => '로그인',
       ),
       'Recover Account' => 
       array (
-        0 => '',
+        0 => '계정 복구',
       ),
       'Choose a new password for your account.' => 
       array (
@@ -4127,47 +4127,47 @@ X-Crowdin-File-ID: 4
       ),
       'Enter your password' => 
       array (
-        0 => '',
+        0 => '암호를 입력하세요',
       ),
       'Welcome!' => 
       array (
-        0 => '',
+        0 => '환영합니다!',
       ),
       'Welcome to %s!' => 
       array (
-        0 => '',
+        0 => '%s에 오신 것을 환영합니다!',
       ),
       'name@example.com' => 
       array (
-        0 => '',
+        0 => 'name@example.com',
       ),
       'Remember me' => 
       array (
-        0 => '',
+        0 => '자동 로그인',
       ),
       'Please log in to continue.' => 
       array (
-        0 => '',
+        0 => '계속하려면 로그인하십시오.',
       ),
       'Forgot your password?' => 
       array (
-        0 => '',
+        0 => '암호를 잊으셨습니까?',
       ),
       'Send Recovery E-mail' => 
       array (
-        0 => '',
+        0 => '복구 이메일 보내기',
       ),
       'Errors were encountered when trying to save changes:' => 
       array (
-        0 => '',
+        0 => '변경 내용을 저장하는 동안 오류가 발생했습니다：',
       ),
       'General' => 
       array (
-        0 => '',
+        0 => '일반',
       ),
       'Details' => 
       array (
-        0 => '',
+        0 => '세부정보',
       ),
     ),
   ),
